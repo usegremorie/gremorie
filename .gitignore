@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.angular/
+.nx/cache
+.nx/workspace-data
+tmp/
+
+# Test / coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Editor / OS
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# Storybook
+storybook-static/
+
+# Misc
+*.tsbuildinfo
+.eslintcache
+.turbo
