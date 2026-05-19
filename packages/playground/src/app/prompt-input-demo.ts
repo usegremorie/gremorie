@@ -8,7 +8,13 @@ import {
 
 import {
   PromptInput,
+  PromptInputActionMenu,
+  PromptInputAttachment,
+  PromptInputAttachmentError,
+  PromptInputAttachments,
   PromptInputButton,
+  PromptInputModelOption,
+  PromptInputModelSelect,
   PromptInputState,
   PromptInputSubmit,
   PromptInputSubmitEvent,
@@ -16,6 +22,33 @@ import {
   PromptInputToolbar,
   PromptInputTools,
 } from '@kalvner/shadng-prompt-input';
+
+const MODELS: readonly PromptInputModelOption[] = [
+  {
+    id: 'claude-opus-4-7',
+    label: 'Claude Opus 4.7',
+    description: 'Highest quality, slower',
+    badge: 'flagship',
+  },
+  {
+    id: 'claude-sonnet-4-6',
+    label: 'Claude Sonnet 4.6',
+    description: 'Balanced',
+  },
+  {
+    id: 'claude-haiku-4-5',
+    label: 'Claude Haiku 4.5',
+    description: 'Fastest, cheapest',
+  },
+  {
+    id: 'gpt-5',
+    label: 'GPT-5',
+    description: 'Coming soon',
+    disabled: true,
+  },
+];
+
+const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
 
 @Component({
   selector: 'app-prompt-input-demo',
@@ -25,6 +58,10 @@ import {
     PromptInputToolbar,
     PromptInputTools,
     PromptInputButton,
+    PromptInputActionMenu,
+    PromptInputModelSelect,
+    PromptInputAttachments,
+    PromptInputAttachment,
     PromptInputSubmit,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,14 +81,51 @@ import {
 
       <prompt-input
         [(value)]="value"
+        [(attachments)]="attachments"
         [state]="initialState()"
+        [acceptAttachments]="accept"
+        [maxAttachments]="5"
         (submitted)="onSubmit($event)"
         (canceled)="onCancel()"
         (retried)="onRetry()"
+        (attachmentError)="onAttachmentError($event)"
       >
-        <prompt-input-textarea placeholder="Ask anything…" />
+        @if (attachments().length > 0) {
+          <prompt-input-attachments>
+            @for (file of attachments(); track file.name + file.size) {
+              <prompt-input-attachment [file]="file" />
+            }
+          </prompt-input-attachments>
+        }
+
+        <prompt-input-textarea placeholder="Ask anything — or drop a file here…" />
+
         <prompt-input-toolbar>
           <prompt-input-tools>
+            <prompt-input-action-menu ariaLabel="More actions">
+              <button
+                type="button"
+                class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
+                (click)="onMenuPick('photo')"
+              >
+                Take a photo
+              </button>
+              <button
+                type="button"
+                class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
+                (click)="onMenuPick('voice')"
+              >
+                Record voice
+              </button>
+              <button
+                type="button"
+                class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
+                (click)="onMenuPick('connect')"
+              >
+                Connect tool…
+              </button>
+            </prompt-input-action-menu>
+
             <prompt-input-button
               ariaLabel="Attach file"
               title="Attach file"
@@ -62,18 +136,10 @@ import {
               </svg>
             </prompt-input-button>
 
-            <prompt-input-button
-              ariaLabel="Voice input"
-              title="Voice input"
-              (pressedChange)="onTool('voice')"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="9" y="2" width="6" height="12" rx="3" />
-                <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-                <line x1="12" y1="18" x2="12" y2="22" />
-                <line x1="8" y1="22" x2="16" y2="22" />
-              </svg>
-            </prompt-input-button>
+            <prompt-input-model-select
+              [options]="models"
+              [(value)]="selectedModel"
+            />
           </prompt-input-tools>
 
           <prompt-input-submit />
@@ -85,7 +151,7 @@ import {
           Last event:
           <code class="font-mono">{{ events()[events().length - 1] }}</code>
         } @else {
-          No events yet.
+          No events yet — try drag-and-drop, paste an image, or open the menu.
         }
       </p>
     </section>
@@ -97,12 +163,21 @@ export class PromptInputDemo {
   readonly initialState = input<PromptInputState>('ready');
 
   protected readonly value = signal('');
+  protected readonly attachments = signal<readonly File[]>([]);
+  protected readonly selectedModel = signal<string | null>('claude-sonnet-4-6');
   protected readonly events = signal<string[]>([]);
+  protected readonly models = MODELS;
+  protected readonly accept = ACCEPT;
 
   protected readonly stateLabel = computed(() => this.initialState());
 
   protected onSubmit(event: PromptInputSubmitEvent): void {
-    this.pushEvent(`submitted: "${event.value}"`);
+    const attachmentSummary = event.attachments.length
+      ? ` + ${event.attachments.length} file(s)`
+      : '';
+    this.pushEvent(
+      `submitted: "${event.value}"${attachmentSummary} (model: ${this.selectedModel()})`,
+    );
   }
 
   protected onCancel(): void {
@@ -115,6 +190,14 @@ export class PromptInputDemo {
 
   protected onTool(name: string): void {
     this.pushEvent(`tool clicked: ${name}`);
+  }
+
+  protected onMenuPick(name: string): void {
+    this.pushEvent(`menu item: ${name}`);
+  }
+
+  protected onAttachmentError(error: PromptInputAttachmentError): void {
+    this.pushEvent(`attachment error (${error.reason}): ${error.message}`);
   }
 
   private pushEvent(message: string): void {

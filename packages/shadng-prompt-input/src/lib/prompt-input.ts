@@ -8,10 +8,12 @@ import {
   input,
   model,
   output,
+  signal,
   ViewEncapsulation,
 } from '@angular/core';
 
 import {
+  PromptInputAttachmentError,
   PromptInputSize,
   PromptInputState,
   PromptInputSubmitEvent,
@@ -32,13 +34,19 @@ import { cn } from './utils';
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
     '[attr.data-state]': 'state()',
     '[attr.data-disabled]': 'disabled() ? "" : null',
+    '[attr.data-dragging]': 'isDragging() ? "" : null',
     '(keydown)': 'handleKeydown($event)',
+    '(dragover)': 'handleDragOver($event)',
+    '(dragenter)': 'handleDragEnter($event)',
+    '(dragleave)': 'handleDragLeave($event)',
+    '(drop)': 'handleDrop($event)',
   },
 })
 export class PromptInput {
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 
   readonly value = model<string>('');
+  readonly attachments = model<readonly File[]>([]);
 
   readonly state = input<PromptInputState>('ready');
   readonly size = input<PromptInputSize>('md');
@@ -47,9 +55,28 @@ export class PromptInput {
   readonly submitOnEnter = input<boolean>(true);
   readonly ariaLabel = input<string>('AI prompt input');
 
+  /**
+   * When `false`, file attachments are disabled (drag-drop and paste ignored).
+   * Otherwise, an array of MIME patterns (`image/*`, `application/pdf`, etc.)
+   * that are accepted.
+   */
+  readonly acceptAttachments = input<readonly string[] | false>(false);
+  readonly maxAttachments = input<number>(10);
+  readonly maxAttachmentSize = input<number>(10 * 1024 * 1024); // 10MB
+
   readonly submitted = output<PromptInputSubmitEvent>();
   readonly canceled = output<void>();
   readonly retried = output<void>();
+  readonly attachmentError = output<PromptInputAttachmentError>();
+
+  private readonly dragCounter = signal(0);
+
+  readonly isDragging = computed(() => this.dragCounter() > 0);
+
+  readonly attachmentsEnabled = computed(() => {
+    const accept = this.acceptAttachments();
+    return accept !== false && !this.disabled();
+  });
 
   readonly hostClass = computed(() => {
     const sizeMap: Record<PromptInputSize, string> = {
@@ -63,12 +90,13 @@ export class PromptInput {
       bordered: 'border-2 border-input bg-background',
     };
     return cn(
-      'flex w-full flex-col rounded-md transition-colors',
+      'relative flex w-full flex-col rounded-md transition-colors',
       'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
       sizeMap[this.size()],
       variantMap[this.variant()],
       this.state() === 'error' && 'border-destructive focus-within:ring-destructive',
       this.disabled() && 'pointer-events-none opacity-50',
+      this.isDragging() && 'ring-2 ring-ring ring-offset-2',
     );
   });
 
@@ -107,6 +135,69 @@ export class PromptInput {
     }
   }
 
+  @HostListener('paste', ['$event'])
+  handlePaste(event: ClipboardEvent): void {
+    if (!this.attachmentsEnabled()) {
+      return;
+    }
+    const items = event.clipboardData?.items;
+    if (!items) {
+      return;
+    }
+    const files: File[] = [];
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file) {
+          files.push(file);
+        }
+      }
+    }
+    if (files.length > 0) {
+      event.preventDefault();
+      this.addFiles(files);
+    }
+  }
+
+  handleDragOver(event: DragEvent): void {
+    if (!this.attachmentsEnabled()) {
+      return;
+    }
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'copy';
+    }
+  }
+
+  handleDragEnter(event: DragEvent): void {
+    if (!this.attachmentsEnabled()) {
+      return;
+    }
+    event.preventDefault();
+    this.dragCounter.update((n) => n + 1);
+  }
+
+  handleDragLeave(event: DragEvent): void {
+    if (!this.attachmentsEnabled()) {
+      return;
+    }
+    event.preventDefault();
+    this.dragCounter.update((n) => Math.max(0, n - 1));
+  }
+
+  handleDrop(event: DragEvent): void {
+    if (!this.attachmentsEnabled()) {
+      return;
+    }
+    event.preventDefault();
+    this.dragCounter.set(0);
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.addFiles(Array.from(files));
+    }
+  }
+
   submit(): void {
     if (this.disabled()) {
       return;
@@ -126,6 +217,7 @@ export class PromptInput {
 
     const event: PromptInputSubmitEvent = {
       value: this.value(),
+      attachments: this.attachments(),
       preventDefault: () => {
         /* Consumer can short-circuit clearing/UI by calling this. */
       },
@@ -135,11 +227,65 @@ export class PromptInput {
 
   clear(): void {
     this.value.set('');
+    this.attachments.set([]);
   }
 
   focusTextarea(): void {
     const textarea = this.elementRef.nativeElement.querySelector('textarea');
     textarea?.focus();
+  }
+
+  addFiles(files: readonly File[]): void {
+    for (const file of files) {
+      const error = this.validateFile(file);
+      if (error) {
+        this.attachmentError.emit(error);
+        continue;
+      }
+      this.attachments.update((prev) => [...prev, file]);
+    }
+  }
+
+  removeAttachment(file: File): void {
+    this.attachments.update((prev) => prev.filter((f) => f !== file));
+  }
+
+  private validateFile(file: File): PromptInputAttachmentError | null {
+    const accept = this.acceptAttachments();
+    if (accept !== false && accept.length > 0) {
+      const isAccepted = accept.some((pattern) => {
+        if (pattern.endsWith('/*')) {
+          return file.type.startsWith(pattern.slice(0, -1));
+        }
+        return file.type === pattern;
+      });
+      if (!isAccepted) {
+        return {
+          file,
+          reason: 'invalid-mime',
+          message: `MIME type "${file.type}" not accepted`,
+        };
+      }
+    }
+
+    if (file.size > this.maxAttachmentSize()) {
+      const mb = (this.maxAttachmentSize() / (1024 * 1024)).toFixed(1);
+      return {
+        file,
+        reason: 'too-large',
+        message: `File "${file.name}" exceeds maximum size of ${mb} MB`,
+      };
+    }
+
+    if (this.attachments().length >= this.maxAttachments()) {
+      return {
+        file,
+        reason: 'max-count',
+        message: `Maximum of ${this.maxAttachments()} attachments reached`,
+      };
+    }
+
+    return null;
   }
 
   private handleEscape(): void {

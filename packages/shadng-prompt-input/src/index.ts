@@ -8,8 +8,14 @@ export {
   type PromptInputButtonSize,
   type PromptInputButtonVariant,
 } from './lib/prompt-input-button';
+export { PromptInputAttachments } from './lib/prompt-input-attachments';
+export { PromptInputAttachment } from './lib/prompt-input-attachment';
+export { PromptInputActionMenu } from './lib/prompt-input-action-menu';
+export { PromptInputModelSelect } from './lib/prompt-input-model-select';
 export type {
   PromptInputAttachmentError,
+  PromptInputAttachmentType,
+  PromptInputModelOption,
   PromptInputSize,
   PromptInputState,
   PromptInputSubmitEvent,
