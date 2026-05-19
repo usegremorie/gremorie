@@ -47,7 +47,7 @@
       "options": {
         "port": 4400,
         "configDir": "packages/shadng-prompt-input/.storybook",
-        "browserTarget": "shadng-prompt-input:build-storybook",
+        "browserTarget": "playground:build",
         "compodoc": false
       },
       "configurations": {
@@ -62,7 +62,7 @@
       "options": {
         "outputDir": "dist/storybook/shadng-prompt-input",
         "configDir": "packages/shadng-prompt-input/.storybook",
-        "browserTarget": "shadng-prompt-input:build-storybook",
+        "browserTarget": "playground:build",
         "compodoc": false
       },
       "configurations": {

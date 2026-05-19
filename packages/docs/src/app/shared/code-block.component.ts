@@ -1,11 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
-  inject,
   input,
   signal,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 
@@ -21,7 +18,7 @@ import {
           <span>{{ title() || lang() }}</span>
         </div>
       }
-      <pre #pre class="overflow-x-auto p-4 text-[13px] leading-relaxed text-foreground"><code [class]="codeClass()">{{ code() }}</code></pre>
+      <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed text-foreground"><code [class]="codeClass()">{{ code() }}</code></pre>
       <button
         type="button"
         class="absolute right-2 top-2 inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2 text-xs font-medium text-foreground opacity-0 transition-opacity hover:bg-accent group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -48,8 +45,6 @@ export class DocsCodeBlock {
   readonly code = input.required<string>();
   readonly lang = input<string>('');
   readonly title = input<string>('');
-
-  @ViewChild('pre') private pre?: ElementRef<HTMLElement>;
 
   protected readonly copied = signal(false);
 
