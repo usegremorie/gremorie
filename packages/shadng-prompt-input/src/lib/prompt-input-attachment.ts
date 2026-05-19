@@ -124,6 +124,7 @@ export class PromptInputAttachment {
   protected readonly cardClass = computed(() =>
     cn(
       'inline-flex max-w-[220px] items-center gap-2 rounded-md border border-border bg-card p-2',
+      'motion-safe:animate-[shadng-fade-in_120ms_ease-out] motion-safe:transition-colors',
       this.errored() && 'border-destructive',
     ),
   );

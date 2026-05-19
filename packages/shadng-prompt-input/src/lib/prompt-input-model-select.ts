@@ -45,7 +45,7 @@ import { cn } from './utils';
       <div
         role="listbox"
         [attr.aria-label]="ariaLabel()"
-        class="absolute z-50 mt-2 min-w-full origin-top-left rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
+        class="absolute z-50 mt-2 min-w-full origin-top-left rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[shadng-pop-in_120ms_ease-out]"
         [style.top.px]="menuTopOffset"
       >
         @for (option of options(); track option.id) {
@@ -111,8 +111,8 @@ export class PromptInputModelSelect {
 
   protected readonly triggerClass = () =>
     cn(
-      'inline-flex h-9 max-w-[12rem] items-center gap-2 rounded-md px-2.5 text-sm font-medium',
-      'bg-transparent text-foreground transition-colors',
+      'inline-flex h-9 min-w-0 max-w-[12rem] items-center gap-2 rounded-md px-2.5 text-sm font-medium',
+      'bg-transparent text-foreground motion-safe:transition-colors',
       'hover:bg-accent hover:text-accent-foreground',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
       'disabled:pointer-events-none disabled:opacity-50',

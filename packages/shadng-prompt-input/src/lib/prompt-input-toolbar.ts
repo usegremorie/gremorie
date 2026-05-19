@@ -19,7 +19,7 @@ import { cn } from './utils';
 })
 export class PromptInputToolbar {
   protected readonly hostClass = cn(
-    'flex w-full items-center gap-2',
+    'flex w-full flex-wrap items-center gap-2',
     // Light separation from the textarea above without a hard border line.
     'pt-1',
   );

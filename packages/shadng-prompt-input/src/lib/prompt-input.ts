@@ -26,7 +26,10 @@ import { cn } from './utils';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content />`,
+  template: `
+    <ng-content />
+    <span class="sr-only" aria-live="polite" aria-atomic="true">{{ statusAnnouncement() }}</span>
+  `,
   host: {
     role: 'form',
     '[class]': 'hostClass()',
@@ -76,6 +79,19 @@ export class PromptInput {
   readonly attachmentsEnabled = computed(() => {
     const accept = this.acceptAttachments();
     return accept !== false && !this.disabled();
+  });
+
+  readonly statusAnnouncement = computed(() => {
+    switch (this.state()) {
+      case 'submitted':
+        return 'Message submitted. Waiting for response.';
+      case 'streaming':
+        return 'AI is responding.';
+      case 'error':
+        return 'Submission failed. Press the button to retry.';
+      default:
+        return '';
+    }
   });
 
   readonly hostClass = computed(() => {

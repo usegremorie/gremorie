@@ -42,7 +42,7 @@ import { cn } from './utils';
       <div
         role="menu"
         [attr.aria-label]="ariaLabel()"
-        class="absolute z-50 mt-2 min-w-[12rem] origin-top-left rounded-md border border-border bg-popover p-1 shadow-md text-popover-foreground"
+        class="absolute z-50 mt-2 min-w-[12rem] origin-top-left rounded-md border border-border bg-popover p-1 shadow-md text-popover-foreground motion-safe:animate-[shadng-pop-in_120ms_ease-out]"
         [style.left.px]="0"
         [style.top.px]="menuTopOffset"
       >

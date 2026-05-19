@@ -7,7 +7,22 @@
     "type": "git",
     "url": "https://github.com/kalvner/shadng.git"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "nx run-many -t build",
+    "build:lib": "nx build shadng-prompt-input",
+    "build:docs": "nx build docs",
+    "build:playground": "nx build playground",
+    "lint": "nx run-many -t lint",
+    "test": "nx run-many -t test",
+    "serve:playground": "nx serve playground",
+    "serve:docs": "nx serve docs",
+    "storybook": "nx storybook shadng-prompt-input",
+    "build-storybook": "nx build-storybook shadng-prompt-input",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "nx run-many -t build --projects=shadng-prompt-input && changeset publish",
+    "release": "npm run changeset:publish"
+  },
   "private": true,
   "devDependencies": {
     "@analogjs/platform": "^2.5.1",
@@ -19,6 +34,8 @@
     "@angular/cli": "~21.2.0",
     "@angular/compiler-cli": "~21.2.0",
     "@angular/language-service": "~21.2.0",
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.31.0",
     "@eslint/js": "^9.8.0",
     "@nx/angular": "^22.7.2",
     "@nx/devkit": "22.7.2",

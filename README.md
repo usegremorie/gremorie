@@ -58,11 +58,24 @@ shadng/
 
 ```bash
 npm install
-npx nx serve playground             # localhost:4200 — visual demo
-npx nx serve docs                   # localhost:4200 — Analog docs (SSR)
-npx nx build shadng-prompt-input    # build the library
-npx nx test shadng-prompt-input     # unit tests (Vitest)
-npx nx lint shadng-prompt-input     # ESLint
+
+# Apps
+npm run serve:playground            # localhost:4200 — visual smoke test
+npm run serve:docs                  # localhost:4200 — Analog docs (SSR)
+
+# Library
+npm run build:lib                   # build @kalvner/shadng-prompt-input
+npm run storybook                   # localhost:4400 — Storybook 10
+
+# Quality
+npm run lint                        # ESLint affected
+npm run test                        # Vitest affected
+npm run build                       # all builds via Nx affected
+
+# Release flow (Changesets)
+npm run changeset                   # describe a change
+npm run changeset:version           # bump versions and update changelogs
+npm run release                     # build lib + publish to npm
 ```
 
 ## Roadmap
@@ -76,15 +89,27 @@ npx nx lint shadng-prompt-input     # ESLint
 | v0.5.0 | Artifact + Citation + Sandbox |
 | v1.0.0 | Stable |
 
-## TODOs deferred from Phase 0
+## Status
 
-These were planned for Phase 0 but blocked by environment constraints:
+| Phase | Scope | Status |
+|---|---|---|
+| 0 | Bootstrap (Nx + Angular 21 + Tailwind v4 + Analog + Storybook + Changesets + CI) | ✅ |
+| 1 | Core (`PromptInput` + `Textarea` + `Submit`) | ✅ |
+| 2 | Toolbar (`Toolbar` + `Tools` + `Button`) | ✅ |
+| 3 | Attachments (`Attachments` + `Attachment` + drag/drop + paste) | ✅ |
+| 4 | Action menu + Model select | ✅ |
+| 5 | Polish (a11y, reduced-motion, animations, mobile, aria-live) | ✅ |
+| 6 | Documentation (component pages on `packages/docs`) | pending |
+| 7 | CLI (`npx shadng add prompt-input`) | pending |
+| 8 | Site (landing, search, dark toggle, OG images) | pending |
+| 9 | Launch (v0.1.0 tag, npm publish, posts) | pending |
 
-- [ ] **Storybook 10 setup** in `packages/shadng-prompt-input` — partial config was generated but the npm install failed due to disk space on C: drive. Retry once disk is freed: `npx nx g @nx/angular:storybook-configuration --project=shadng-prompt-input --interactive=false`.
-- [ ] **Changesets** for release management — `npm i -D @changesets/cli && npx changeset init`.
-- [ ] **Real Home page in `packages/docs`** — Analog generated a placeholder home (`src/app/pages/(home).page.ts` rendering `analog-welcome.component.ts`). Replace with a real landing presenting the project (hero, value props, install command, GitHub link). Phase 8 in the original plan; can be anticipated.
+## TODOs
+
+- [ ] **Real Home page in `packages/docs`** — Analog generated a placeholder home. Replace with a real landing presenting the project (hero, value props, install command, GitHub link). Phase 8 in the original plan; can be anticipated.
 - [ ] **Vercel deploy of `packages/docs`** — configure preview deploys per branch once Vercel CLI is installed locally (`npm i -g vercel`).
 - [ ] **spartan-ng theme init** — we use our own three-tier tokens in `packages/shadng-prompt-input/src/lib/theme.css` instead of the spartan default. Decision documented in vault as ADR-013.
+- [ ] **Authoring stories** for the remaining 9 subcomponents in Storybook (Phase 6 work — the container has a starter story shipping today).
 
 ## License
 
