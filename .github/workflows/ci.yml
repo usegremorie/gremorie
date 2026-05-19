@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main, staging, develop]
+  pull_request:
+    branches: [main, staging, develop]
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  ci:
+    name: lint • test • build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Setup Nx SHAs for affected
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format check
+        run: npx nx format:check
+
+      - name: Lint affected
+        run: npx nx affected -t lint --parallel=3
+
+      - name: Build affected
+        env:
+          NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
+        run: npx nx affected -t build --parallel=3
+
+      - name: Test affected
+        env:
+          NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
+        run: npx nx affected -t test --parallel=3

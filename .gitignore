@@ -52,3 +52,9 @@ storybook-static/
 *.tsbuildinfo
 .eslintcache
 .turbo
+
+.angular
+
+test-output
+
+__screenshots__/
