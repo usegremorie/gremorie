@@ -8,11 +8,17 @@ import {
 
 import { Button } from '@shadng/core';
 import {
+  AttachmentInfo,
+  AttachmentItem,
+  AttachmentList,
+  AttachmentPreview,
+  AttachmentRemove,
+  type AttachmentData,
+} from '@shadng/attachments';
+import {
   PromptInput,
   PromptInputActionMenu,
-  PromptInputAttachment,
   PromptInputAttachmentError,
-  PromptInputAttachments,
   PromptInputModelOption,
   PromptInputModelSelect,
   PromptInputState,
@@ -60,8 +66,11 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
     Button,
     PromptInputActionMenu,
     PromptInputModelSelect,
-    PromptInputAttachments,
-    PromptInputAttachment,
+    AttachmentList,
+    AttachmentItem,
+    AttachmentPreview,
+    AttachmentInfo,
+    AttachmentRemove,
     PromptInputSubmit,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -91,11 +100,15 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
         (attachmentError)="onAttachmentError($event)"
       >
         @if (attachments().length > 0) {
-          <prompt-input-attachments>
-            @for (file of attachments(); track file.name + file.size) {
-              <prompt-input-attachment [file]="file" />
+          <attachment-list variant="inline">
+            @for (item of attachments(); track item.id) {
+              <attachment-item [data]="item" (removed)="onAttachmentRemoved($event)">
+                <attachment-preview />
+                <attachment-info [showSize]="false" />
+                <attachment-remove />
+              </attachment-item>
             }
-          </prompt-input-attachments>
+          </attachment-list>
         }
 
         <prompt-input-textarea placeholder="Ask anything — or drop a file here…" />
@@ -165,7 +178,7 @@ export class PromptInputDemo {
   readonly initialState = input<PromptInputState>('ready');
 
   protected readonly value = signal('');
-  protected readonly attachments = signal<readonly File[]>([]);
+  protected readonly attachments = signal<readonly AttachmentData[]>([]);
   protected readonly selectedModel = signal<string | null>('claude-sonnet-4-6');
   protected readonly events = signal<string[]>([]);
   protected readonly models = MODELS;
@@ -200,6 +213,11 @@ export class PromptInputDemo {
 
   protected onAttachmentError(error: PromptInputAttachmentError): void {
     this.pushEvent(`attachment error (${error.reason}): ${error.message}`);
+  }
+
+  protected onAttachmentRemoved(item: AttachmentData): void {
+    this.attachments.update((prev) => prev.filter((it) => it.id !== item.id));
+    this.pushEvent(`attachment removed: ${item.filename}`);
   }
 
   private pushEvent(message: string): void {

@@ -1,3 +1,5 @@
+import type { AttachmentData } from '@shadng/attachments';
+
 export type PromptInputState =
   | 'ready'
   | 'submitted'
@@ -8,17 +10,9 @@ export type PromptInputSize = 'sm' | 'md' | 'lg';
 
 export type PromptInputVariant = 'default' | 'ghost' | 'bordered';
 
-export type PromptInputAttachmentType =
-  | 'image'
-  | 'video'
-  | 'audio'
-  | 'pdf'
-  | 'text'
-  | 'generic';
-
 export interface PromptInputSubmitEvent {
   value: string;
-  attachments: readonly File[];
+  attachments: readonly AttachmentData[];
   preventDefault: () => void;
 }
 

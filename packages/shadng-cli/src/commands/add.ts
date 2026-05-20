@@ -75,6 +75,14 @@ export async function addCommand(
     console.log(kleur.cyan(`  } from '${entry.pkg}';`));
   } else if (entry.name === 'core') {
     console.log(kleur.cyan(`  import { Button, cn } from '${entry.pkg}';`));
+  } else if (entry.name === 'attachments') {
+    console.log(kleur.cyan(`  import {`));
+    console.log(kleur.cyan(`    AttachmentList,`));
+    console.log(kleur.cyan(`    AttachmentItem,`));
+    console.log(kleur.cyan(`    AttachmentPreview,`));
+    console.log(kleur.cyan(`    AttachmentInfo,`));
+    console.log(kleur.cyan(`    AttachmentRemove,`));
+    console.log(kleur.cyan(`  } from '${entry.pkg}';`));
   }
   console.log();
   console.log(

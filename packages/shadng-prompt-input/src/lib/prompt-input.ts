@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { cva } from 'class-variance-authority';
 import { cn } from '@shadng/core';
+import { toAttachmentData, type AttachmentData } from '@shadng/attachments';
 
 import {
   PromptInputAttachmentError,
@@ -79,7 +80,7 @@ export class PromptInput {
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 
   readonly value = model<string>('');
-  readonly attachments = model<readonly File[]>([]);
+  readonly attachments = model<readonly AttachmentData[]>([]);
 
   readonly state = input<PromptInputState>('ready');
   readonly size = input<PromptInputSize>('md');
@@ -278,12 +279,23 @@ export class PromptInput {
         this.attachmentError.emit(error);
         continue;
       }
-      this.attachments.update((prev) => [...prev, file]);
+      this.attachments.update((prev) => [...prev, toAttachmentData(file)]);
     }
   }
 
-  removeAttachment(file: File): void {
-    this.attachments.update((prev) => prev.filter((f) => f !== file));
+  /**
+   * Remove an attachment by reference, by id, or by underlying File. The
+   * three signatures let consumers match whatever they have in hand
+   * (full object, just the id, or the original File from drag-drop).
+   */
+  removeAttachment(target: AttachmentData | string | File): void {
+    this.attachments.update((prev) =>
+      prev.filter((item) => {
+        if (typeof target === 'string') return item.id !== target;
+        if (target instanceof File) return item.file !== target;
+        return item.id !== target.id;
+      }),
+    );
   }
 
   private validateFile(file: File): PromptInputAttachmentError | null {

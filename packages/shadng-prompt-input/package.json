@@ -11,6 +11,7 @@
   "keywords": ["angular", "ai", "ui", "shadcn", "prompt", "chat"],
   "peerDependencies": {
     "@angular/core": "^21.2.0",
+    "@shadng/attachments": "^0.0.1",
     "@shadng/core": "^0.0.1",
     "class-variance-authority": "^0.7.1"
   },

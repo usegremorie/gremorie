@@ -1,0 +1,468 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "SHAD ng" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: SHAD
+        - generic [ref=e10]: ng
+      - navigation [ref=e11]:
+        - link "Docs" [ref=e12] [cursor=pointer]:
+          - /url: /docs/getting-started
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/kalvner/shadng
+          - img [ref=e14]
+          - text: GitHub
+        - button "Switch to dark theme" [ref=e17]:
+          - img [ref=e18]
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - heading "Getting Started" [level=2] [ref=e24]
+          - generic [ref=e25]:
+            - link "Introduction" [ref=e26] [cursor=pointer]:
+              - /url: /docs/getting-started
+            - link "CLI" [ref=e27] [cursor=pointer]:
+              - /url: /docs/cli
+        - generic [ref=e28]:
+          - heading "Components" [level=2] [ref=e29]
+          - generic [ref=e30]:
+            - generic [ref=e31]:
+              - heading "Chatbot" [level=3] [ref=e32]
+              - link "Attachments" [ref=e33] [cursor=pointer]:
+                - /url: /docs/components/attachments
+              - link "Prompt Input" [ref=e34] [cursor=pointer]:
+                - /url: /docs/components/prompt-input
+            - generic [ref=e35]:
+              - heading "Code soon" [level=3] [ref=e36]:
+                - text: Code
+                - generic [ref=e37]: soon
+              - generic [ref=e38]: Coming in v0.2
+        - generic [ref=e39]:
+          - heading "Primitives" [level=2] [ref=e40]
+          - generic [ref=e41]:
+            - link "Button" [ref=e42] [cursor=pointer]:
+              - /url: /docs/primitives/button
+            - link "Theme tokens" [ref=e43] [cursor=pointer]:
+              - /url: /docs/primitives/theme
+            - link "cn() utility" [ref=e44] [cursor=pointer]:
+              - /url: /docs/primitives/cn
+        - generic [ref=e45]:
+          - heading "Integrations" [level=2] [ref=e46]
+          - link "Plain signals" [ref=e48] [cursor=pointer]:
+            - /url: /docs/integrations/signals
+    - main [ref=e49]:
+      - generic "Attachments" [ref=e50]:
+        - article [ref=e51]:
+          - generic [ref=e52]:
+            - generic [ref=e53]: Component · Chatbot
+            - heading "Attachments" [level=1] [ref=e54]
+            - paragraph [ref=e55]: Composable system for displaying file attachments — inline badges in a prompt input, grid cards in a message bubble, or full-detail rows in an upload UI. Works standalone or inside PromptInput.
+          - generic "Preview — grid" [ref=e56]:
+            - generic [ref=e57]:
+              - heading "Preview — grid" [level=2] [ref=e58]
+              - list "Attachments" [ref=e61]:
+                - listitem [ref=e62]:
+                  - img [ref=e65]
+                  - generic [ref=e68]:
+                    - generic "design-spec.pdf" [ref=e69]
+                    - generic [ref=e70]: application/pdf · 240.0 KB
+                  - button "Remove attachment" [ref=e71]:
+                    - img [ref=e72]
+                - listitem [ref=e75]:
+                  - img [ref=e78]
+                  - generic [ref=e81]:
+                    - generic "voice-note.mp3" [ref=e82]
+                    - generic [ref=e83]: audio/mpeg · 2.0 MB
+                  - button "Remove attachment" [ref=e84]:
+                    - img [ref=e85]
+                - listitem [ref=e88]:
+                  - img [ref=e91]
+                  - generic [ref=e94]:
+                    - generic "screen-recording.mp4" [ref=e95]
+                    - generic [ref=e96]: video/mp4 · 14.0 MB
+                  - button "Remove attachment" [ref=e97]:
+                    - img [ref=e98]
+          - generic "Preview — inline" [ref=e101]:
+            - generic [ref=e102]:
+              - heading "Preview — inline" [level=2] [ref=e103]
+              - list "Attachments" [ref=e106]:
+                - listitem [ref=e107]:
+                  - img [ref=e110]
+                  - generic [ref=e112]: design-spec.pdf
+                  - button "Remove attachment" [ref=e114]:
+                    - img [ref=e115]
+                - listitem [ref=e118]:
+                  - img [ref=e121]
+                  - generic [ref=e123]: voice-note.mp3
+                  - button "Remove attachment" [ref=e125]:
+                    - img [ref=e126]
+                - listitem [ref=e129]:
+                  - img [ref=e132]
+                  - generic [ref=e134]: screen-recording.mp4
+                  - button "Remove attachment" [ref=e136]:
+                    - img [ref=e137]
+          - generic "Preview — list" [ref=e140]:
+            - generic [ref=e141]:
+              - heading "Preview — list" [level=2] [ref=e142]
+              - list "Attachments" [ref=e145]:
+                - listitem [ref=e146]:
+                  - img [ref=e149]
+                  - generic [ref=e151]:
+                    - generic [ref=e152]: design-spec.pdf
+                    - generic [ref=e153]: 240.0 KB
+                  - button "Remove attachment" [ref=e155]:
+                    - img [ref=e156]
+                - listitem [ref=e159]:
+                  - img [ref=e162]
+                  - generic [ref=e164]:
+                    - generic [ref=e165]: voice-note.mp3
+                    - generic [ref=e166]: 2.0 MB
+                  - button "Remove attachment" [ref=e168]:
+                    - img [ref=e169]
+                - listitem [ref=e172]:
+                  - img [ref=e175]
+                  - generic [ref=e177]:
+                    - generic [ref=e178]: screen-recording.mp4
+                    - generic [ref=e179]: 14.0 MB
+                  - button "Remove attachment" [ref=e181]:
+                    - img [ref=e182]
+          - generic "Empty state" [ref=e185]:
+            - generic [ref=e186]:
+              - heading "Empty state" [level=2] [ref=e187]
+              - list "Attachments" [ref=e190]:
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - paragraph [ref=e195]: Drop files here or paste an image.
+          - generic "Anatomy" [ref=e196]:
+            - generic [ref=e197]:
+              - heading "Anatomy" [level=2] [ref=e198]
+              - generic [ref=e201]:
+                - generic [ref=e203]: text
+                - code [ref=e205]: "<attachment-list variant=\"grid | inline | list\"> ├── <attachment-item [data]=\"...\" (removed)=\"...\"> │ ├── <attachment-preview [fallback]=\"...\" /> Image / video / icon │ ├── <attachment-info [showMediaType]=\"...\" /> Name + secondary line │ │ — or finer-grained: │ ├── <attachment-name /> Filename only │ ├── <attachment-size /> Formatted bytes │ └── <attachment-remove [label]=\"...\" /> Close button └── <attachment-empty> Empty-state slot Custom message via <ng-content> </attachment-empty>"
+                - button "Copy code" [ref=e206]:
+                  - img [ref=e207]
+                  - text: Copy
+          - generic "Installation" [ref=e210]:
+            - generic [ref=e211]:
+              - heading "Installation" [level=2] [ref=e212]
+              - generic [ref=e213]:
+                - generic [ref=e215]:
+                  - generic [ref=e217]: bash
+                  - code [ref=e219]: npm install @shadng/attachments @shadng/core
+                  - button "Copy code" [ref=e220]:
+                    - img [ref=e221]
+                    - text: Copy
+                - paragraph [ref=e226]: "Or via the CLI:"
+                - generic [ref=e228]:
+                  - generic [ref=e230]: bash
+                  - code [ref=e232]: npx shadng add attachments
+                  - button "Copy code" [ref=e233]:
+                    - img [ref=e234]
+                    - text: Copy
+          - generic "Basic usage" [ref=e237]:
+            - generic [ref=e238]:
+              - heading "Basic usage" [level=2] [ref=e239]
+              - generic [ref=e242]:
+                - generic [ref=e244]: typescript
+                - code [ref=e246]: "import { Component, signal } from '@angular/core'; import { AttachmentInfo, AttachmentItem, AttachmentList, AttachmentPreview, AttachmentRemove, toAttachmentData, type AttachmentData, } from '@shadng/attachments'; @Component({ selector: 'app-uploader', imports: [ AttachmentList, AttachmentItem, AttachmentPreview, AttachmentInfo, AttachmentRemove, ], template: ` <attachment-list variant=\"grid\"> @for (item of items(); track item.id) { <attachment-item [data]=\"item\" (removed)=\"onRemove($event)\"> <attachment-preview /> <attachment-info [showMediaType]=\"true\" /> <attachment-remove label=\"Remove this file\" /> </attachment-item> } </attachment-list> `, }) export class Uploader { items = signal<AttachmentData[]>([]); onFileSelected(file: File) { this.items.update((prev) => [...prev, toAttachmentData(file)]); } onRemove(item: AttachmentData) { this.items.update((prev) => prev.filter((it) => it.id !== item.id)); } }"
+                - button "Copy code" [ref=e247]:
+                  - img [ref=e248]
+                  - text: Copy
+          - generic "Variants" [ref=e251]:
+            - generic [ref=e252]:
+              - heading "Variants" [level=2] [ref=e253]
+              - list [ref=e257]:
+                - listitem [ref=e258]:
+                  - strong [ref=e259]: grid
+                  - text: (default) — wraps cards with a thumbnail header. Best for message bubbles and rich previews.
+                - listitem [ref=e260]:
+                  - strong [ref=e261]: inline
+                  - text: — compact badge row. Best for the row above a prompt input's textarea.
+                - listitem [ref=e262]:
+                  - strong [ref=e263]: list
+                  - text: — vertical stack with full metadata. Best for upload UIs.
+          - generic "Composition with PromptInput" [ref=e264]:
+            - generic [ref=e265]:
+              - heading "Composition with PromptInput" [level=2] [ref=e266]
+              - generic [ref=e267]:
+                - paragraph [ref=e270]:
+                  - text: When nested inside a
+                  - link "PromptInput" [ref=e271] [cursor=pointer]:
+                    - /url: /docs/components/prompt-input
+                  - text: ", the attachment state is owned by the container. Bind the"
+                  - code [ref=e272]: attachments
+                  - text: "model both ways and wire the list:"
+                - generic [ref=e274]:
+                  - generic [ref=e276]: typescript
+                  - code [ref=e278]: "<prompt-input [(value)]=\"text\" [(attachments)]=\"attachments\" [acceptAttachments]=\"['image/*', 'application/pdf']\" (submitted)=\"send($event)\" > @if (attachments().length > 0) { <attachment-list variant=\"inline\"> @for (item of attachments(); track item.id) { <attachment-item [data]=\"item\" (removed)=\"removeAttachment($event)\"> <attachment-preview /> <attachment-name /> <attachment-remove /> </attachment-item> } </attachment-list> } <prompt-input-textarea /> <prompt-input-toolbar> <prompt-input-submit /> </prompt-input-toolbar> </prompt-input>"
+                  - button "Copy code" [ref=e279]:
+                    - img [ref=e280]
+                    - text: Copy
+          - generic "API — AttachmentData" [ref=e283]:
+            - generic [ref=e284]:
+              - heading "API — AttachmentData" [level=2] [ref=e285]
+              - generic [ref=e286]:
+                - paragraph [ref=e289]:
+                  - text: The shape every item accepts. Compatible with
+                  - code [ref=e290]: FileUIPart
+                  - text: from the Vercel AI SDK.
+                - table [ref=e293]:
+                  - rowgroup [ref=e294]:
+                    - row "Name Type Description" [ref=e295]:
+                      - columnheader "Name" [ref=e296]
+                      - columnheader "Type" [ref=e297]
+                      - columnheader "Description" [ref=e298]
+                  - rowgroup [ref=e299]:
+                    - row "id string Stable identifier — used for tracking in @for loops." [ref=e300]:
+                      - cell "id" [ref=e301]
+                      - cell "string" [ref=e302]
+                      - cell "Stable identifier — used for tracking in @for loops." [ref=e303]
+                    - row "filename string? Display name. Falls back to a category label (\"Image\", \"Document\") when omitted." [ref=e304]:
+                      - cell "filename" [ref=e305]
+                      - cell "string?" [ref=e306]
+                      - cell "Display name. Falls back to a category label (\"Image\", \"Document\") when omitted." [ref=e307]
+                    - row "mediaType string? MIME type. Drives the preview surface and label fallback." [ref=e308]:
+                      - cell "mediaType" [ref=e309]
+                      - cell "string?" [ref=e310]
+                      - cell "MIME type. Drives the preview surface and label fallback." [ref=e311]
+                    - row "url string? Already-uploaded URL — used as <img>/<video> source." [ref=e312]:
+                      - cell "url" [ref=e313]
+                      - cell "string?" [ref=e314]
+                      - cell "Already-uploaded URL — used as <img>/<video> source." [ref=e315]
+                    - row "file File? Native File — used to derive a blob URL for image previews." [ref=e316]:
+                      - cell "file" [ref=e317]
+                      - cell "File?" [ref=e318]
+                      - cell "Native File — used to derive a blob URL for image previews." [ref=e319]
+                    - 'row "size number? Bytes. When omitted but `file` is set, derived from file.size." [ref=e320]':
+                      - cell "size" [ref=e321]
+                      - cell "number?" [ref=e322]
+                      - 'cell "Bytes. When omitted but `file` is set, derived from file.size." [ref=e323]'
+          - generic "API — AttachmentList" [ref=e324]:
+            - generic [ref=e325]:
+              - heading "API — AttachmentList" [level=2] [ref=e326]
+              - table [ref=e330]:
+                - rowgroup [ref=e331]:
+                  - row "Name Type Default Description" [ref=e332]:
+                    - columnheader "Name" [ref=e333]
+                    - columnheader "Type" [ref=e334]
+                    - columnheader "Default" [ref=e335]
+                    - columnheader "Description" [ref=e336]
+                - rowgroup [ref=e337]:
+                  - row "variant 'grid' | 'inline' | 'list' 'grid' Layout shape. Items read this from the list via DI." [ref=e338]:
+                    - cell "variant" [ref=e339]
+                    - cell "'grid' | 'inline' | 'list'" [ref=e340]
+                    - cell "'grid'" [ref=e341]
+                    - cell "Layout shape. Items read this from the list via DI." [ref=e342]
+                  - row "ariaLabel string 'Attachments' aria-label applied to the role=\"list\" host." [ref=e343]:
+                    - cell "ariaLabel" [ref=e344]
+                    - cell "string" [ref=e345]
+                    - cell "'Attachments'" [ref=e346]
+                    - cell "aria-label applied to the role=\"list\" host." [ref=e347]
+          - generic "API — AttachmentItem" [ref=e348]:
+            - generic [ref=e349]:
+              - heading "API — AttachmentItem" [level=2] [ref=e350]
+              - table [ref=e354]:
+                - rowgroup [ref=e355]:
+                  - row "Name Type Default Description" [ref=e356]:
+                    - columnheader "Name" [ref=e357]
+                    - columnheader "Type" [ref=e358]
+                    - columnheader "Default" [ref=e359]
+                    - columnheader "Description" [ref=e360]
+                - rowgroup [ref=e361]:
+                  - row "data AttachmentData (required) The attachment to render." [ref=e362]:
+                    - cell "data" [ref=e363]
+                    - cell "AttachmentData" [ref=e364]
+                    - cell "(required)" [ref=e365]
+                    - cell "The attachment to render." [ref=e366]
+                  - row "loading boolean false Show animated skeleton overlay on the preview." [ref=e367]:
+                    - cell "loading" [ref=e368]
+                    - cell "boolean" [ref=e369]
+                    - cell "false" [ref=e370]
+                    - cell "Show animated skeleton overlay on the preview." [ref=e371]
+                  - row "errored boolean false Destructive border + \"Error\" badge." [ref=e372]:
+                    - cell "errored" [ref=e373]
+                    - cell "boolean" [ref=e374]
+                    - cell "false" [ref=e375]
+                    - cell "Destructive border + \"Error\" badge." [ref=e376]
+                  - row "variant 'grid' | 'inline' | 'list' | undefined undefined Override the parent list variant for a single item." [ref=e377]:
+                    - cell "variant" [ref=e378]
+                    - cell "'grid' | 'inline' | 'list' | undefined" [ref=e379]
+                    - cell "undefined" [ref=e380]
+                    - cell "Override the parent list variant for a single item." [ref=e381]
+          - generic "API — AttachmentItem outputs" [ref=e382]:
+            - generic [ref=e383]:
+              - heading "API — AttachmentItem outputs" [level=2] [ref=e384]
+              - table [ref=e388]:
+                - rowgroup [ref=e389]:
+                  - row "Name Type Description" [ref=e390]:
+                    - columnheader "Name" [ref=e391]
+                    - columnheader "Type" [ref=e392]
+                    - columnheader "Description" [ref=e393]
+                - rowgroup [ref=e394]:
+                  - row "removed AttachmentData Emitted when AttachmentRemove inside the item is clicked. Carries the data object." [ref=e395]:
+                    - cell "removed" [ref=e396]
+                    - cell "AttachmentData" [ref=e397]
+                    - cell "Emitted when AttachmentRemove inside the item is clicked. Carries the data object." [ref=e398]
+          - generic "API — AttachmentPreview" [ref=e399]:
+            - generic [ref=e400]:
+              - heading "API — AttachmentPreview" [level=2] [ref=e401]
+              - table [ref=e405]:
+                - rowgroup [ref=e406]:
+                  - row "Name Type Default Description" [ref=e407]:
+                    - columnheader "Name" [ref=e408]
+                    - columnheader "Type" [ref=e409]
+                    - columnheader "Default" [ref=e410]
+                    - columnheader "Description" [ref=e411]
+                - rowgroup [ref=e412]:
+                  - row "fallback TemplateRef<unknown> | null null Custom non-image surface (your own icon system, custom layout, etc)." [ref=e413]:
+                    - cell "fallback" [ref=e414]
+                    - cell "TemplateRef<unknown> | null" [ref=e415]
+                    - cell "null" [ref=e416]
+                    - cell "Custom non-image surface (your own icon system, custom layout, etc)." [ref=e417]
+          - generic "API — AttachmentInfo" [ref=e418]:
+            - generic [ref=e419]:
+              - heading "API — AttachmentInfo" [level=2] [ref=e420]
+              - table [ref=e424]:
+                - rowgroup [ref=e425]:
+                  - row "Name Type Default Description" [ref=e426]:
+                    - columnheader "Name" [ref=e427]
+                    - columnheader "Type" [ref=e428]
+                    - columnheader "Default" [ref=e429]
+                    - columnheader "Description" [ref=e430]
+                - rowgroup [ref=e431]:
+                  - row "showMediaType boolean false Add the MIME type to the secondary line." [ref=e432]:
+                    - cell "showMediaType" [ref=e433]
+                    - cell "boolean" [ref=e434]
+                    - cell "false" [ref=e435]
+                    - cell "Add the MIME type to the secondary line." [ref=e436]
+                  - row "showSize boolean true Add the formatted file size to the secondary line." [ref=e437]:
+                    - cell "showSize" [ref=e438]
+                    - cell "boolean" [ref=e439]
+                    - cell "true" [ref=e440]
+                    - cell "Add the formatted file size to the secondary line." [ref=e441]
+          - generic "API — AttachmentRemove" [ref=e442]:
+            - generic [ref=e443]:
+              - heading "API — AttachmentRemove" [level=2] [ref=e444]
+              - table [ref=e448]:
+                - rowgroup [ref=e449]:
+                  - row "Name Type Default Description" [ref=e450]:
+                    - columnheader "Name" [ref=e451]
+                    - columnheader "Type" [ref=e452]
+                    - columnheader "Default" [ref=e453]
+                    - columnheader "Description" [ref=e454]
+                - rowgroup [ref=e455]:
+                  - row "label string 'Remove attachment' Screen-reader label and tooltip." [ref=e456]:
+                    - cell "label" [ref=e457]
+                    - cell "string" [ref=e458]
+                    - cell "'Remove attachment'" [ref=e459]
+                    - cell "Screen-reader label and tooltip." [ref=e460]
+          - generic "Utility functions" [ref=e461]:
+            - generic [ref=e462]:
+              - heading "Utility functions" [level=2] [ref=e463]
+              - generic [ref=e464]:
+                - paragraph [ref=e467]:
+                  - text: Re-exported from
+                  - code [ref=e468]: "@shadng/attachments"
+                  - text: ":"
+                - table [ref=e471]:
+                  - rowgroup [ref=e472]:
+                    - row "Name Type Description" [ref=e473]:
+                      - columnheader "Name" [ref=e474]
+                      - columnheader "Type" [ref=e475]
+                      - columnheader "Description" [ref=e476]
+                  - rowgroup [ref=e477]:
+                    - row "toAttachmentData(file, overrides?) (File, Partial<AttachmentData>?) => AttachmentData Convert a native File into the shape components consume. Generates an id if you do not provide one." [ref=e478]:
+                      - cell "toAttachmentData(file, overrides?)" [ref=e479]
+                      - cell "(File, Partial<AttachmentData>?) => AttachmentData" [ref=e480]
+                      - cell "Convert a native File into the shape components consume. Generates an id if you do not provide one." [ref=e481]
+                    - row "getMediaCategory(data) (data) => \"image\" | \"video\" | \"audio\" | \"document\" | \"source\" | \"unknown\" Coarse classification driving the preview surface." [ref=e482]:
+                      - cell "getMediaCategory(data)" [ref=e483]
+                      - cell "(data) => \"image\" | \"video\" | \"audio\" | \"document\" | \"source\" | \"unknown\"" [ref=e484]
+                      - cell "Coarse classification driving the preview surface." [ref=e485]
+                    - row "getAttachmentLabel(data) (data) => string Best human-readable label — filename, then category fallback, then \"Attachment\"." [ref=e486]:
+                      - cell "getAttachmentLabel(data)" [ref=e487]
+                      - cell "(data) => string" [ref=e488]
+                      - cell "Best human-readable label — filename, then category fallback, then \"Attachment\"." [ref=e489]
+                    - row "formatFileSize(bytes) (number | undefined) => string Format bytes as a short string like \"240 KB\" or \"12.4 MB\"." [ref=e490]:
+                      - cell "formatFileSize(bytes)" [ref=e491]
+                      - cell "(number | undefined) => string" [ref=e492]
+                      - cell "Format bytes as a short string like \"240 KB\" or \"12.4 MB\"." [ref=e493]
+          - generic "Accessibility" [ref=e494]:
+            - generic [ref=e495]:
+              - heading "Accessibility" [level=2] [ref=e496]
+              - list [ref=e500]:
+                - listitem [ref=e501]:
+                  - strong [ref=e502]: role="list"
+                  - text: on the AttachmentList container, configurable
+                  - code [ref=e503]: ariaLabel
+                - listitem [ref=e504]:
+                  - strong [ref=e505]: role="listitem"
+                  - text: on each AttachmentItem, with
+                  - code [ref=e506]: data-media-category
+                  - text: for CSS targeting
+                - listitem [ref=e507]:
+                  - text: Remove button has an explicit
+                  - code [ref=e508]: aria-label
+                  - text: (default "Remove attachment")
+                - listitem [ref=e509]:
+                  - text: Preview images get an
+                  - code [ref=e510]: alt
+                  - text: derived from the filename — pass a more descriptive value via your own
+                  - code [ref=e511]: fallback
+                  - text: template when needed
+                - listitem [ref=e512]: Errored state surfaces a visible "Error" badge in addition to the destructive border
+          - generic "Theming" [ref=e513]:
+            - generic [ref=e514]:
+              - heading "Theming" [level=2] [ref=e515]
+              - generic [ref=e518]:
+                - paragraph [ref=e519]: "Semantic tokens consumed:"
+                - list [ref=e520]:
+                  - listitem [ref=e521]:
+                    - code [ref=e522]: "--card"
+                    - text: /
+                    - code [ref=e523]: "--card-foreground"
+                    - text: — item background
+                  - listitem [ref=e524]:
+                    - code [ref=e525]: "--border"
+                    - text: — item border
+                  - listitem [ref=e526]:
+                    - code [ref=e527]: "--muted"
+                    - text: /
+                    - code [ref=e528]: "--muted-foreground"
+                    - text: — preview background, secondary text
+                  - listitem [ref=e529]:
+                    - code [ref=e530]: "--accent"
+                    - text: /
+                    - code [ref=e531]: "--accent-foreground"
+                    - text: — remove button hover
+                  - listitem [ref=e532]:
+                    - code [ref=e533]: "--destructive"
+                    - text: /
+                    - code [ref=e534]: "--destructive-foreground"
+                    - text: — errored item border + error badge
+                  - listitem [ref=e535]:
+                    - code [ref=e536]: "--ring"
+                    - text: — focus rings
+                - paragraph [ref=e537]:
+                  - text: The component does
+                  - strong [ref=e538]: not
+                  - text: ship its own tokens — see
+                  - link "Theme tokens" [ref=e539] [cursor=pointer]:
+                    - /url: /docs/primitives/theme
+                  - text: for the full list.
+          - generic "Known issues" [ref=e540]:
+            - generic [ref=e541]:
+              - heading "Known issues" [level=2] [ref=e542]
+              - list [ref=e546]:
+                - listitem [ref=e547]:
+                  - strong [ref=e548]: Hover cards deferred to v0.2.
+                  - text: "AI Elements ships an AttachmentHoverCard for showing a larger preview on hover in inline variant. ShadNG will adopt it once the popover primitive lands (target: v0.2 alongside Conversation)."
+                - listitem [ref=e549]:
+                  - strong [ref=e550]: id generation.
+                  - code [ref=e551]: toAttachmentData()
+                  - text: uses an internal counter for ids. If you persist attachments across reloads, generate stable ids yourself.
+  - contentinfo [ref=e552]:
+    - generic [ref=e553]:
+      - generic [ref=e554]: MIT © Kalvner
+      - generic [ref=e555]: v0.1.0 · pre-release

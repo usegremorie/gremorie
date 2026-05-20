@@ -38,6 +38,7 @@ const NAV: NavSection[] = [
       {
         title: 'Chatbot',
         items: [
+          { label: 'Attachments', href: '/docs/components/attachments' },
           { label: 'Prompt Input', href: '/docs/components/prompt-input' },
         ],
       },

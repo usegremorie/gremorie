@@ -2,6 +2,7 @@
 @import '../../shadng-core/styles/theme.css';
 
 @source '../../shadng-core/src/**/*.{ts,html}';
+@source '../../shadng-attachments/src/**/*.{ts,html}';
 @source '../../shadng-prompt-input/src/**/*.{ts,html}';
 
 html,
