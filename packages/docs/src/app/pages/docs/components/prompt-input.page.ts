@@ -12,6 +12,7 @@ import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
 import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import { DocsPreview } from '../../../shared/preview.component';
 
 @Component({
   selector: 'docs-prompt-input',
@@ -22,6 +23,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
     DocsProse,
     DocsCodeBlock,
     DocsApiTable,
+    DocsPreview,
     PromptInput,
     PromptInputTextarea,
     PromptInputToolbar,
@@ -37,14 +39,14 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         lede="Container for AI prompt entry. Owns the state machine (ready → submitted → streaming → error), keyboard shortcuts, attachment validation, and coordinates all subcomponents."
       >
         <docs-section title="Preview" anchor="preview">
-          <div class="rounded-lg border border-border bg-card p-5">
+          <docs-preview [code]="previewCode" lang="html">
             <prompt-input [(value)]="previewValue" class="max-w-xl">
               <prompt-input-textarea placeholder="Type a prompt — Mod+K focuses globally" />
               <prompt-input-toolbar>
                 <prompt-input-submit />
               </prompt-input-toolbar>
             </prompt-input>
-          </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Anatomy" anchor="anatomy">
@@ -182,6 +184,13 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
 })
 export default class PromptInputPage {
   protected readonly previewValue = signal('');
+
+  protected readonly previewCode = `<prompt-input [(value)]="message">
+  <prompt-input-textarea placeholder="Type a prompt — Mod+K focuses globally" />
+  <prompt-input-toolbar>
+    <prompt-input-submit />
+  </prompt-input-toolbar>
+</prompt-input>`;
 
   protected readonly anatomy = `<prompt-input>
 ├── <prompt-input-attachments>           (optional, see Attachments docs)

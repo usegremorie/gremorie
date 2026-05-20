@@ -17,6 +17,7 @@ import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
 import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import { DocsPreview } from '../../../shared/preview.component';
 
 const PREVIEW_ITEMS: AttachmentData[] = [
   {
@@ -48,6 +49,7 @@ const PREVIEW_ITEMS: AttachmentData[] = [
     DocsProse,
     DocsCodeBlock,
     DocsApiTable,
+    DocsPreview,
     AttachmentList,
     AttachmentItem,
     AttachmentPreview,
@@ -67,7 +69,7 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         lede="Composable system for displaying file attachments — inline badges in a prompt input, grid cards in a message bubble, or full-detail rows in an upload UI. Works standalone or inside PromptInput."
       >
         <docs-section title="Preview — grid" anchor="preview-grid">
-          <div class="rounded-lg border border-border bg-card p-5">
+          <docs-preview [code]="gridCode" lang="html">
             <attachment-list variant="grid">
               @for (item of previewItems; track item.id) {
                 <attachment-item [data]="item" (removed)="onRemoved($event)">
@@ -77,11 +79,11 @@ const PREVIEW_ITEMS: AttachmentData[] = [
                 </attachment-item>
               }
             </attachment-list>
-          </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Preview — inline" anchor="preview-inline">
-          <div class="rounded-lg border border-border bg-card p-5">
+          <docs-preview [code]="inlineCode" lang="html">
             <attachment-list variant="inline">
               @for (item of previewItems; track item.id) {
                 <attachment-item [data]="item" (removed)="onRemoved($event)">
@@ -91,11 +93,11 @@ const PREVIEW_ITEMS: AttachmentData[] = [
                 </attachment-item>
               }
             </attachment-list>
-          </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Preview — list" anchor="preview-list">
-          <div class="rounded-lg border border-border bg-card p-5">
+          <docs-preview [code]="listCode" lang="html">
             <attachment-list variant="list">
               @for (item of previewItems; track item.id) {
                 <attachment-item [data]="item" (removed)="onRemoved($event)">
@@ -108,17 +110,17 @@ const PREVIEW_ITEMS: AttachmentData[] = [
                 </attachment-item>
               }
             </attachment-list>
-          </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Empty state" anchor="preview-empty">
-          <div class="rounded-lg border border-border bg-card p-5">
+          <docs-preview [code]="emptyCode" lang="html">
             <attachment-list>
               <attachment-empty>
                 <p class="text-sm">Drop files here or paste an image.</p>
               </attachment-empty>
             </attachment-list>
-          </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Anatomy" anchor="anatomy">
@@ -243,6 +245,45 @@ export default class AttachmentsPage {
     // Preview pages don't actually remove from the list — just log.
     this.removedAt.set(item.id);
   }
+
+  protected readonly gridCode = `<attachment-list variant="grid">
+  @for (item of attachments(); track item.id) {
+    <attachment-item [data]="item" (removed)="onRemove($event)">
+      <attachment-preview />
+      <attachment-info [showMediaType]="true" />
+      <attachment-remove />
+    </attachment-item>
+  }
+</attachment-list>`;
+
+  protected readonly inlineCode = `<attachment-list variant="inline">
+  @for (item of attachments(); track item.id) {
+    <attachment-item [data]="item" (removed)="onRemove($event)">
+      <attachment-preview />
+      <attachment-name />
+      <attachment-remove />
+    </attachment-item>
+  }
+</attachment-list>`;
+
+  protected readonly listCode = `<attachment-list variant="list">
+  @for (item of attachments(); track item.id) {
+    <attachment-item [data]="item" (removed)="onRemove($event)">
+      <attachment-preview />
+      <div class="flex min-w-0 flex-1 flex-col">
+        <attachment-name />
+        <attachment-size />
+      </div>
+      <attachment-remove />
+    </attachment-item>
+  }
+</attachment-list>`;
+
+  protected readonly emptyCode = `<attachment-list>
+  <attachment-empty>
+    <p class="text-sm">Drop files here or paste an image.</p>
+  </attachment-empty>
+</attachment-list>`;
 
   protected readonly anatomy = `<attachment-list variant="grid | inline | list">
 ├── <attachment-item [data]="..." (removed)="...">

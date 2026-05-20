@@ -5,6 +5,7 @@ import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
 import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import { DocsPreview } from '../../../shared/preview.component';
 
 @Component({
   selector: 'docs-primitive-button',
@@ -15,6 +16,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
     DocsProse,
     DocsCodeBlock,
     DocsApiTable,
+    DocsPreview,
     Button,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,29 +28,33 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         lede="The Button primitive — 6 variants × 4 sizes. Mirrors the shadcn/ui Button surface so muscle memory translates 1:1. Used inside ShadNG components and freely composable in your own UI."
       >
         <docs-section title="Preview — variants" anchor="preview-variants">
-          <div class="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card p-5">
-            <ai-button ariaLabel="Default">Default</ai-button>
-            <ai-button variant="destructive" ariaLabel="Destructive">Destructive</ai-button>
-            <ai-button variant="outline" ariaLabel="Outline">Outline</ai-button>
-            <ai-button variant="secondary" ariaLabel="Secondary">Secondary</ai-button>
-            <ai-button variant="ghost" ariaLabel="Ghost">Ghost</ai-button>
-            <ai-button variant="link" ariaLabel="Link">Link</ai-button>
-          </div>
+          <docs-preview [code]="variantsCode" lang="html">
+            <div class="flex flex-wrap items-center gap-2">
+              <ai-button ariaLabel="Default">Default</ai-button>
+              <ai-button variant="destructive" ariaLabel="Destructive">Destructive</ai-button>
+              <ai-button variant="outline" ariaLabel="Outline">Outline</ai-button>
+              <ai-button variant="secondary" ariaLabel="Secondary">Secondary</ai-button>
+              <ai-button variant="ghost" ariaLabel="Ghost">Ghost</ai-button>
+              <ai-button variant="link" ariaLabel="Link">Link</ai-button>
+            </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Preview — sizes" anchor="preview-sizes">
-          <div class="flex flex-wrap items-end gap-2 rounded-lg border border-border bg-card p-5">
-            <ai-button size="sm" ariaLabel="Small">Small</ai-button>
-            <ai-button ariaLabel="Default size">Default</ai-button>
-            <ai-button size="lg" ariaLabel="Large">Large</ai-button>
-            <ai-button size="icon" variant="outline" ariaLabel="Icon button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </ai-button>
-            <ai-button [disabled]="true" ariaLabel="Disabled">Disabled</ai-button>
-          </div>
+          <docs-preview [code]="sizesCode" lang="html">
+            <div class="flex flex-wrap items-end gap-2">
+              <ai-button size="sm" ariaLabel="Small">Small</ai-button>
+              <ai-button ariaLabel="Default size">Default</ai-button>
+              <ai-button size="lg" ariaLabel="Large">Large</ai-button>
+              <ai-button size="icon" variant="outline" ariaLabel="Icon button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </ai-button>
+              <ai-button [disabled]="true" ariaLabel="Disabled">Disabled</ai-button>
+            </div>
+          </docs-preview>
         </docs-section>
 
         <docs-section title="Installation" anchor="install">
@@ -105,6 +111,21 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
   `,
 })
 export default class ButtonPrimitivePage {
+  protected readonly variantsCode = `<ai-button>Default</ai-button>
+<ai-button variant="destructive">Destructive</ai-button>
+<ai-button variant="outline">Outline</ai-button>
+<ai-button variant="secondary">Secondary</ai-button>
+<ai-button variant="ghost">Ghost</ai-button>
+<ai-button variant="link">Link</ai-button>`;
+
+  protected readonly sizesCode = `<ai-button size="sm">Small</ai-button>
+<ai-button>Default</ai-button>
+<ai-button size="lg">Large</ai-button>
+<ai-button size="icon" variant="outline" ariaLabel="Search">
+  <svg><!-- icon --></svg>
+</ai-button>
+<ai-button [disabled]="true">Disabled</ai-button>`;
+
   protected readonly usage = `import { Component } from '@angular/core';
 import { Button } from '@shadng/core';
 
