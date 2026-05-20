@@ -6,10 +6,10 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cva } from 'class-variance-authority';
 
 import { PromptInput } from './prompt-input';
 import { PromptInputState } from './prompt-input.types';
-import { cn } from './utils';
 
 const ICON_MAP: Record<PromptInputState, string> = {
   ready: 'M5 12h14M13 5l7 7-7 7',
@@ -24,6 +24,23 @@ const LABEL_MAP: Record<PromptInputState, string> = {
   streaming: 'Stop generating',
   error: 'Retry',
 };
+
+const submitVariants = cva(
+  'inline-flex size-9 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  {
+    variants: {
+      state: {
+        ready: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        submitted: 'bg-muted text-muted-foreground',
+        streaming: 'bg-destructive/10 text-destructive hover:bg-destructive/20',
+        error: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+      },
+    },
+    defaultVariants: {
+      state: 'ready',
+    },
+  },
+);
 
 @Component({
   selector: 'prompt-input-submit',
@@ -98,23 +115,9 @@ export class PromptInputSubmit {
   protected readonly ariaLabel = computed(() => LABEL_MAP[this.state()]);
   protected readonly iconPath = computed(() => ICON_MAP[this.state()]);
 
-  protected readonly buttonClass = computed(() => {
-    const base = cn(
-      'inline-flex size-9 shrink-0 items-center justify-center rounded-md',
-      'transition-colors',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-      'disabled:cursor-not-allowed disabled:opacity-50',
-    );
-
-    const stateMap: Record<PromptInputState, string> = {
-      ready: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      submitted: 'bg-muted text-muted-foreground',
-      streaming: 'bg-destructive/10 text-destructive hover:bg-destructive/20',
-      error: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-    };
-
-    return cn(base, stateMap[this.state()]);
-  });
+  protected readonly buttonClass = computed(() =>
+    submitVariants({ state: this.state() }),
+  );
 
   handleClick(): void {
     this.parent.submit();

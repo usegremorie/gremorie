@@ -7,12 +7,38 @@ import {
   output,
   ViewEncapsulation,
 } from '@angular/core';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 import { PromptInput } from './prompt-input';
-import { cn } from './utils';
 
-export type PromptInputButtonVariant = 'ghost' | 'subtle';
-export type PromptInputButtonSize = 'sm' | 'md';
+const buttonVariants = cva(
+  'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        ghost:
+          'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
+        subtle:
+          'bg-muted text-foreground hover:bg-accent hover:text-accent-foreground',
+      },
+      size: {
+        sm: 'size-7 [&_svg]:size-3.5',
+        md: 'size-9 [&_svg]:size-4',
+      },
+    },
+    defaultVariants: {
+      variant: 'ghost',
+      size: 'md',
+    },
+  },
+);
+
+export type PromptInputButtonVariant = NonNullable<
+  VariantProps<typeof buttonVariants>['variant']
+>;
+export type PromptInputButtonSize = NonNullable<
+  VariantProps<typeof buttonVariants>['size']
+>;
 
 @Component({
   selector: 'prompt-input-button',
@@ -58,28 +84,9 @@ export class PromptInputButton {
     return value === null ? null : value ? 'true' : 'false';
   });
 
-  protected readonly buttonClass = computed(() => {
-    const base = cn(
-      'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md',
-      'text-sm font-medium transition-colors',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-      'disabled:pointer-events-none disabled:opacity-50',
-    );
-
-    const sizeMap: Record<PromptInputButtonSize, string> = {
-      sm: 'size-7 [&_svg]:size-3.5',
-      md: 'size-9 [&_svg]:size-4',
-    };
-
-    const variantMap: Record<PromptInputButtonVariant, string> = {
-      ghost:
-        'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
-      subtle:
-        'bg-muted text-foreground hover:bg-accent hover:text-accent-foreground',
-    };
-
-    return cn(base, sizeMap[this.size()], variantMap[this.variant()]);
-  });
+  protected readonly buttonClass = computed(() =>
+    buttonVariants({ variant: this.variant(), size: this.size() }),
+  );
 
   handleClick(event: MouseEvent): void {
     this.pressedChange.emit(event);

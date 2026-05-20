@@ -11,6 +11,8 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { cva } from 'class-variance-authority';
+import { cn } from './utils';
 
 import {
   PromptInputAttachmentError,
@@ -19,7 +21,35 @@ import {
   PromptInputSubmitEvent,
   PromptInputVariant,
 } from './prompt-input.types';
-import { cn } from './utils';
+
+const containerVariants = cva(
+  'relative flex w-full flex-col rounded-md transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
+  {
+    variants: {
+      size: {
+        sm: 'gap-1.5 p-2.5 text-sm',
+        md: 'gap-2 p-3 text-sm',
+        lg: 'gap-3 p-4 text-base',
+      },
+      variant: {
+        default: 'border border-input bg-background',
+        ghost: 'border border-transparent bg-transparent',
+        bordered: 'border-2 border-input bg-background',
+      },
+      state: {
+        ready: '',
+        submitted: '',
+        streaming: '',
+        error: 'border-destructive focus-within:ring-destructive',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+      variant: 'default',
+      state: 'ready',
+    },
+  },
+);
 
 @Component({
   selector: 'prompt-input',
@@ -94,27 +124,17 @@ export class PromptInput {
     }
   });
 
-  readonly hostClass = computed(() => {
-    const sizeMap: Record<PromptInputSize, string> = {
-      sm: 'gap-1.5 p-2.5 text-sm',
-      md: 'gap-2 p-3 text-sm',
-      lg: 'gap-3 p-4 text-base',
-    };
-    const variantMap: Record<PromptInputVariant, string> = {
-      default: 'border border-input bg-background',
-      ghost: 'border border-transparent bg-transparent',
-      bordered: 'border-2 border-input bg-background',
-    };
-    return cn(
-      'relative flex w-full flex-col rounded-md transition-colors',
-      'focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
-      sizeMap[this.size()],
-      variantMap[this.variant()],
-      this.state() === 'error' && 'border-destructive focus-within:ring-destructive',
+  readonly hostClass = computed(() =>
+    cn(
+      containerVariants({
+        size: this.size(),
+        variant: this.variant(),
+        state: this.state(),
+      }),
       this.disabled() && 'pointer-events-none opacity-50',
       this.isDragging() && 'ring-2 ring-ring ring-offset-2',
-    );
-  });
+    ),
+  );
 
   handleKeydown(event: KeyboardEvent): void {
     if (this.disabled()) {

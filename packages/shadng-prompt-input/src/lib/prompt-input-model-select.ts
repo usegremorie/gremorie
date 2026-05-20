@@ -10,10 +10,36 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { cva } from 'class-variance-authority';
 
 import { PromptInput } from './prompt-input';
 import { PromptInputModelOption } from './prompt-input.types';
-import { cn } from './utils';
+
+const triggerVariants = cva(
+  'inline-flex h-9 min-w-0 max-w-[12rem] items-center gap-2 rounded-md px-2.5 text-sm font-medium bg-transparent text-foreground motion-safe:transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      open: {
+        true: 'bg-accent text-accent-foreground',
+        false: '',
+      },
+    },
+    defaultVariants: { open: false },
+  },
+);
+
+const optionVariants = cva(
+  'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      selected: {
+        true: 'bg-accent text-accent-foreground',
+        false: '',
+      },
+    },
+    defaultVariants: { selected: false },
+  },
+);
 
 /**
  * v0.1 implementation — minimal select.
@@ -82,7 +108,7 @@ import { cn } from './utils';
     }
   `,
   host: {
-    '[class]': 'hostClass',
+    class: 'relative inline-flex',
   },
 })
 export class PromptInputModelSelect {
@@ -98,8 +124,6 @@ export class PromptInputModelSelect {
   protected readonly open = signal(false);
   protected readonly menuTopOffset = 36;
 
-  protected readonly hostClass = cn('relative inline-flex');
-
   protected readonly selectedLabel = computed(() => {
     const id = this.value();
     if (id === null) {
@@ -110,23 +134,10 @@ export class PromptInputModelSelect {
   });
 
   protected readonly triggerClass = () =>
-    cn(
-      'inline-flex h-9 min-w-0 max-w-[12rem] items-center gap-2 rounded-md px-2.5 text-sm font-medium',
-      'bg-transparent text-foreground motion-safe:transition-colors',
-      'hover:bg-accent hover:text-accent-foreground',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-      'disabled:pointer-events-none disabled:opacity-50',
-      this.open() && 'bg-accent text-accent-foreground',
-    );
+    triggerVariants({ open: this.open() });
 
   protected optionClass(option: PromptInputModelOption): string {
-    return cn(
-      'flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-foreground transition-colors',
-      'hover:bg-accent hover:text-accent-foreground',
-      'focus-visible:outline-none focus-visible:bg-accent focus-visible:text-accent-foreground',
-      'disabled:pointer-events-none disabled:opacity-50',
-      this.value() === option.id && 'bg-accent text-accent-foreground',
-    );
+    return optionVariants({ selected: this.value() === option.id });
   }
 
   protected isDisabled(): boolean {

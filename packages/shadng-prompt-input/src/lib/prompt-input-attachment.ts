@@ -9,10 +9,10 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { cva } from 'class-variance-authority';
 
 import { PromptInput } from './prompt-input';
 import { PromptInputAttachmentType } from './prompt-input.types';
-import { cn } from './utils';
 
 const ICON_PATHS: Record<Exclude<PromptInputAttachmentType, 'image'>, string> = {
   pdf: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
@@ -25,6 +25,19 @@ const ICON_PATHS: Record<Exclude<PromptInputAttachmentType, 'image'>, string> = 
     'M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z M13 2v7h7',
 };
 
+const cardVariants = cva(
+  'inline-flex max-w-[220px] items-center gap-2 rounded-md border border-border bg-card p-2 motion-safe:animate-[shadng-fade-in_120ms_ease-out] motion-safe:transition-colors',
+  {
+    variants: {
+      errored: {
+        true: 'border-destructive',
+        false: '',
+      },
+    },
+    defaultVariants: { errored: false },
+  },
+);
+
 @Component({
   selector: 'prompt-input-attachment',
   standalone: true,
@@ -32,7 +45,7 @@ const ICON_PATHS: Record<Exclude<PromptInputAttachmentType, 'image'>, string> = 
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="cardClass()">
-      <div [class]="previewClass()">
+      <div class="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded bg-muted text-muted-foreground">
         @if (type() === 'image' && previewUrl(); as src) {
           <img [src]="src" [alt]="file().name" class="size-full object-cover" />
         } @else {
@@ -60,7 +73,7 @@ const ICON_PATHS: Record<Exclude<PromptInputAttachmentType, 'image'>, string> = 
       </div>
 
       <div class="flex min-w-0 flex-1 flex-col">
-        <span [class]="nameClass()" [title]="file().name">{{ file().name }}</span>
+        <span class="truncate text-sm text-foreground" [title]="file().name">{{ file().name }}</span>
         <span class="text-xs text-muted-foreground">{{ formattedSize() }}</span>
       </div>
 
@@ -122,21 +135,7 @@ export class PromptInputAttachment {
   });
 
   protected readonly cardClass = computed(() =>
-    cn(
-      'inline-flex max-w-[220px] items-center gap-2 rounded-md border border-border bg-card p-2',
-      'motion-safe:animate-[shadng-fade-in_120ms_ease-out] motion-safe:transition-colors',
-      this.errored() && 'border-destructive',
-    ),
-  );
-
-  protected readonly previewClass = computed(() =>
-    cn(
-      'relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded bg-muted text-muted-foreground',
-    ),
-  );
-
-  protected readonly nameClass = computed(() =>
-    cn('truncate text-sm text-foreground'),
+    cardVariants({ errored: this.errored() }),
   );
 
   constructor() {

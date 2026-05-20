@@ -8,9 +8,24 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { cva } from 'class-variance-authority';
 
 import { PromptInput } from './prompt-input';
-import { cn } from './utils';
+
+const triggerVariants = cva(
+  'inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-transparent text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      open: {
+        true: 'bg-accent text-accent-foreground',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      open: false,
+    },
+  },
+);
 
 /**
  * v0.1 implementation — minimal dropdown.
@@ -51,7 +66,7 @@ import { cn } from './utils';
     }
   `,
   host: {
-    '[class]': 'hostClass',
+    class: 'relative inline-flex',
   },
 })
 export class PromptInputActionMenu {
@@ -64,17 +79,8 @@ export class PromptInputActionMenu {
   protected readonly open = signal(false);
   protected readonly menuTopOffset = 36; // matches button size-9
 
-  protected readonly hostClass = cn('relative inline-flex');
-
   protected readonly triggerClass = () =>
-    cn(
-      'inline-flex size-9 shrink-0 items-center justify-center rounded-md',
-      'bg-transparent text-foreground transition-colors',
-      'hover:bg-accent hover:text-accent-foreground',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-      'disabled:pointer-events-none disabled:opacity-50',
-      this.open() && 'bg-accent text-accent-foreground',
-    );
+    triggerVariants({ open: this.open() });
 
   protected isDisabled(): boolean {
     return this.disabled() || (this.parent?.disabled() ?? false);
