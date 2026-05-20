@@ -14,9 +14,9 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
       <docs-page
         eyebrow="Primitive · Tokens"
         title="Theme tokens"
-        lede="ShadNG uses a three-tier token system — primitives → semantics → AI-specific — compatible with shadcn. Rebrand the whole library by editing a single layer, or remap dark mode by overriding only the semantics."
+        lede="ShadNG uses a two-tier token system — primitives → semantics — fully shadcn-compatible. Rebrand the whole library by editing the primitive palette, or remap dark mode by overriding semantics inside .dark."
       >
-        <docs-section title="Why three tiers" anchor="why">
+        <docs-section title="Why two tiers" anchor="why">
           <docs-prose>
             <p>
               <strong>Primitives</strong> are the raw palette and base radii — pure colors and
@@ -26,12 +26,13 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
             <p>
               <strong>Semantics</strong> are what components consume — <code>--background</code>,
               <code>--foreground</code>, <code>--primary</code>, etc. Dark mode just remaps these.
-              These are shadcn-compatible, so existing shadcn themes work as-is.
+              Names match shadcn 1:1, so existing shadcn themes work as-is.
             </p>
             <p>
-              <strong>AI tokens</strong> are AI-specific niceties that don't exist in shadcn —
-              <code>--ai-streaming-cursor</code>, <code>--ai-reasoning-bg</code>,
-              <code>--ai-tool-call-bg</code>. Future components consume these.
+              ShadNG does <strong>not</strong> ship component-specific tokens. If a future AI
+              component needs a surface that doesn't fit the existing semantics, the right move
+              is to add a new <em>semantic</em> token shared by every consumer — not a
+              component-scoped one.
             </p>
           </docs-prose>
         </docs-section>
@@ -55,13 +56,6 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
             <p>What components actually consume. Edit <code>.dark</code> overrides to retune dark mode.</p>
           </docs-prose>
           <docs-api-table [rows]="semantics" [showDefault]="false" />
-        </docs-section>
-
-        <docs-section title="AI-specific" anchor="ai">
-          <docs-prose>
-            <p>Not in shadcn — exclusive to ShadNG. Used by streaming, reasoning, and tool-call surfaces.</p>
-          </docs-prose>
-          <docs-api-table [rows]="ai" [showDefault]="false" />
         </docs-section>
 
         <docs-section title="Rebrand examples" anchor="rebrand">
@@ -122,11 +116,5 @@ export default class ThemePrimitivePage {
     { name: '--destructive / --destructive-foreground', type: 'state', description: 'Error states, dangerous actions.' },
     { name: '--border / --input', type: 'border', description: 'Component borders. Input is slightly stronger.' },
     { name: '--ring', type: 'focus', description: 'Focus ring color.' },
-  ];
-
-  protected readonly ai: readonly ApiRow[] = [
-    { name: '--ai-streaming-cursor', type: 'cursor', description: 'Blinking cursor color while AI is streaming text.' },
-    { name: '--ai-reasoning-bg', type: 'surface', description: 'Background tint for collapsed reasoning blocks (v0.4).' },
-    { name: '--ai-tool-call-bg', type: 'surface', description: 'Background tint for tool-call cards (v0.4).' },
   ];
 }

@@ -146,7 +146,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
                 (<a routerLink="/docs/getting-started">ADR-012</a>).
               </li>
               <li>
-                <strong>Three-tier tokens</strong> (primitives → semantics → AI-specific) — rebrand
+                <strong>Two-tier tokens</strong> (primitives → semantics, shadcn-compatible) — rebrand
                 in one edit (<a routerLink="/docs/getting-started">ADR-013</a>).
               </li>
               <li>

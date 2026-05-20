@@ -21,7 +21,7 @@ ShadNG fills the visual layer. Logic stays in Hashbrown.
 
 - **Angular 21 LTS** (minimum and target until Angular 22 reaches GA)
 - **TypeScript 5.9**
-- **Tailwind CSS v4** (OKLCH-based, three-tier tokens)
+- **Tailwind CSS v4** (OKLCH-based, two-tier tokens — shadcn-compatible)
 - **@spartan-ng/brain** for headless primitives (peer dep, used as needed)
 - **Nx 22** monorepo
 - **Analog.js v2** for the docs site (SSR + file-based routing)
@@ -108,7 +108,7 @@ npm run release                     # build lib + publish to npm
 
 - [ ] **Real Home page in `packages/docs`** — Analog generated a placeholder home. Replace with a real landing presenting the project (hero, value props, install command, GitHub link). Phase 8 in the original plan; can be anticipated.
 - [ ] **Vercel deploy of `packages/docs`** — configure preview deploys per branch once Vercel CLI is installed locally (`npm i -g vercel`).
-- [ ] **spartan-ng theme init** — we use our own three-tier tokens in `packages/shadng-prompt-input/src/lib/theme.css` instead of the spartan default. Decision documented in vault as ADR-013.
+- [ ] **spartan-ng theme init** — we ship our own two-tier tokens in `packages/shadng-core/styles/theme.css` instead of the spartan default. Decision documented in vault as ADR-013.
 - [ ] **Authoring stories** for the remaining 9 subcomponents in Storybook (Phase 6 work — the container has a starter story shipping today).
 
 ## License

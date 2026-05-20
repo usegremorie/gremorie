@@ -1,14 +1,12 @@
 /*
- * ShadNG — Three-tier token system
+ * ShadNG — Two-tier token system (shadcn-compatible)
  *
  * Layer 1 (Primitives): raw palette, base radii
- * Layer 2 (Semantics):  compatible with shadcn — what components consume
- * Layer 3 (AI):         AI-specific tokens not in shadcn
+ * Layer 2 (Semantics):  what components consume
  *
  * Components NEVER consume primitives directly.
  * Editing primitives = rebrand global.
- * Editing semantics = remap (e.g. dark mode).
- * Editing AI tokens = AI-specific tweaks.
+ * Editing semantics inside .dark = remap dark mode.
  */
 
 @theme {
@@ -65,11 +63,6 @@
   --border: var(--color-gray-200);
   --input: var(--color-gray-200);
   --ring: var(--color-gray-400);
-
-  /* ─── 3. AI-SPECIFIC ───────────────────────────────── */
-  --ai-streaming-cursor: var(--primary);
-  --ai-reasoning-bg: oklch(0.97 0.03 90);
-  --ai-tool-call-bg: var(--muted);
 }
 
 .dark {
@@ -101,18 +94,8 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: var(--color-gray-500);
-
-  --ai-reasoning-bg: oklch(0.25 0.03 90);
 }
 
-/*
- * Tailwind v4 utility wiring.
- * Inline @theme block above exposes primitive colors as utilities
- * (text-gray-500, bg-red-500, etc.) and radii as radius scales.
- * The semantics below expose --background, --foreground, etc. as
- * Tailwind utilities (bg-background, text-foreground, etc.)
- * via the @theme inline mechanism.
- */
 /*
  * ─── Animations ───────────────────────────────────────
  * Used by dropdowns (action-menu, model-select) and attachments.
@@ -156,6 +139,11 @@
   }
 }
 
+/*
+ * Tailwind v4 utility wiring.
+ * Exposes the semantics above as Tailwind utilities so you can write
+ * `bg-background`, `text-foreground`, `border-input`, etc.
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -176,8 +164,4 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-
-  --color-ai-streaming-cursor: var(--ai-streaming-cursor);
-  --color-ai-reasoning-bg: var(--ai-reasoning-bg);
-  --color-ai-tool-call-bg: var(--ai-tool-call-bg);
 }

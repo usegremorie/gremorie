@@ -46,8 +46,8 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Add the theme" anchor="theme">
           <docs-prose>
             <p>
-              ShadNG ships a three-tier token system (primitives → semantics → AI-specific)
-              compatible with shadcn. Import it once in your global stylesheet, then customize
+              ShadNG ships a two-tier token system (primitives → semantics), fully
+              shadcn-compatible. Import it once in your global stylesheet, then customize
               the variables for rebrand.
             </p>
           </docs-prose>
