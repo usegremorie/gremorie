@@ -1,0 +1,184 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "SHAD ng" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: SHAD
+        - generic [ref=e10]: ng
+      - navigation [ref=e11]:
+        - link "Docs" [ref=e12] [cursor=pointer]:
+          - /url: /docs/getting-started
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/kalvner/shadng
+          - img [ref=e14]
+          - text: GitHub
+        - button "Switch to dark theme" [ref=e17]:
+          - img [ref=e18]
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - heading "Getting Started" [level=2] [ref=e24]
+          - generic [ref=e25]:
+            - link "Introduction" [ref=e26] [cursor=pointer]:
+              - /url: /docs/getting-started
+            - link "CLI" [ref=e27] [cursor=pointer]:
+              - /url: /docs/cli
+        - generic [ref=e28]:
+          - heading "Components" [level=2] [ref=e29]
+          - generic [ref=e30]:
+            - generic [ref=e31]:
+              - heading "Chatbot" [level=3] [ref=e32]
+              - link "Prompt Input" [ref=e33] [cursor=pointer]:
+                - /url: /docs/components/prompt-input
+            - generic [ref=e34]:
+              - heading "Code soon" [level=3] [ref=e35]:
+                - text: Code
+                - generic [ref=e36]: soon
+              - generic [ref=e37]: Coming in v0.2
+        - generic [ref=e38]:
+          - heading "Primitives" [level=2] [ref=e39]
+          - generic [ref=e40]:
+            - link "Button" [ref=e41] [cursor=pointer]:
+              - /url: /docs/primitives/button
+            - link "Theme tokens" [ref=e42] [cursor=pointer]:
+              - /url: /docs/primitives/theme
+            - link "cn() utility" [ref=e43] [cursor=pointer]:
+              - /url: /docs/primitives/cn
+        - generic [ref=e44]:
+          - heading "Integrations" [level=2] [ref=e45]
+          - link "Plain signals" [ref=e47] [cursor=pointer]:
+            - /url: /docs/integrations/signals
+    - main [ref=e48]:
+      - generic "CLI" [ref=e49]:
+        - article [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]: Tooling
+            - heading "CLI" [level=1] [ref=e53]
+            - paragraph [ref=e54]: The shadng CLI scaffolds the theme + dependencies, installs component families, and shows what is available. Use it once for setup, then once per component you adopt.
+          - generic "Install" [ref=e55]:
+            - generic [ref=e56]:
+              - heading "Install" [level=2] [ref=e57]
+              - generic [ref=e58]:
+                - paragraph [ref=e61]:
+                  - text: No global install needed — use
+                  - code [ref=e62]: npx
+                  - text: ":"
+                - generic [ref=e64]:
+                  - generic [ref=e66]: bash
+                  - code [ref=e68]: npx shadng init
+                  - button "Copy code" [ref=e69]:
+                    - img [ref=e70]
+                    - text: Copy
+                - paragraph [ref=e75]: "Or install globally if you prefer:"
+                - generic [ref=e77]:
+                  - generic [ref=e79]: bash
+                  - code [ref=e81]: npm install -g @shadng/cli
+                  - button "Copy code" [ref=e82]:
+                    - img [ref=e83]
+                    - text: Copy
+          - generic "shadng init" [ref=e86]:
+            - generic [ref=e87]:
+              - heading "shadng init" [level=2] [ref=e88]
+              - generic [ref=e89]:
+                - paragraph [ref=e92]:
+                  - text: Set up the theme + dependencies in an existing Angular project. Detects your package manager (npm / pnpm / yarn / bun), installs
+                  - code [ref=e93]: "@shadng/core"
+                  - text: with its peer deps, and prepends the theme import to
+                  - code [ref=e94]: src/styles.css
+                  - text: .
+                - generic [ref=e96]:
+                  - generic [ref=e98]: bash
+                  - code [ref=e100]: shadng init
+                  - button "Copy code" [ref=e101]:
+                    - img [ref=e102]
+                    - text: Copy
+                - paragraph [ref=e107]: "Preview what it will do before writing anything:"
+                - generic [ref=e109]:
+                  - generic [ref=e111]: bash
+                  - code [ref=e113]: shadng init --dry-run
+                  - button "Copy code" [ref=e114]:
+                    - img [ref=e115]
+                    - text: Copy
+          - generic "shadng add" [ref=e118]:
+            - generic [ref=e119]:
+              - heading "shadng add" [level=2] [ref=e120]
+              - generic [ref=e121]:
+                - paragraph [ref=e124]: Install a component family by friendly name. The CLI runs the install for you and prints an import snippet.
+                - generic [ref=e126]:
+                  - generic [ref=e128]: bash
+                  - code [ref=e130]: shadng add prompt-input
+                  - button "Copy code" [ref=e131]:
+                    - img [ref=e132]
+                    - text: Copy
+                - generic [ref=e136]:
+                  - paragraph [ref=e137]: "Available today:"
+                  - list [ref=e138]:
+                    - listitem [ref=e139]:
+                      - code [ref=e140]: core
+                      - text: — utilities + Button primitive (
+                      - link "docs" [ref=e141] [cursor=pointer]:
+                        - /url: /docs/primitives/button
+                      - text: )
+                    - listitem [ref=e142]:
+                      - code [ref=e143]: prompt-input
+                      - text: — PromptInput family (
+                      - link "docs" [ref=e144] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input
+                      - text: )
+          - generic "shadng list" [ref=e145]:
+            - generic [ref=e146]:
+              - heading "shadng list" [level=2] [ref=e147]
+              - generic [ref=e148]:
+                - paragraph [ref=e151]: Show what's available and what's scheduled. Useful to scan the roadmap at a glance.
+                - generic [ref=e153]:
+                  - generic [ref=e155]: bash
+                  - code [ref=e157]: shadng list
+                  - button "Copy code" [ref=e158]:
+                    - img [ref=e159]
+                    - text: Copy
+          - generic "Flags" [ref=e162]:
+            - generic [ref=e163]:
+              - heading "Flags" [level=2] [ref=e164]
+              - table [ref=e168]:
+                - rowgroup [ref=e169]:
+                  - row "Name Type Description" [ref=e170]:
+                    - columnheader "Name" [ref=e171]
+                    - columnheader "Type" [ref=e172]
+                    - columnheader "Description" [ref=e173]
+                - rowgroup [ref=e174]:
+                  - row "--dry-run bool Print what would happen without writing files or running installs. Available on init + add." [ref=e175]:
+                    - cell "--dry-run" [ref=e176]
+                    - cell "bool" [ref=e177]
+                    - cell "Print what would happen without writing files or running installs. Available on init + add." [ref=e178]
+                  - row "-y, --yes bool Skip confirmation prompts. Available on init." [ref=e179]:
+                    - cell "-y, --yes" [ref=e180]
+                    - cell "bool" [ref=e181]
+                    - cell "Skip confirmation prompts. Available on init." [ref=e182]
+                  - row "-v, --version bool Print the CLI version." [ref=e183]:
+                    - cell "-v, --version" [ref=e184]
+                    - cell "bool" [ref=e185]
+                    - cell "Print the CLI version." [ref=e186]
+                  - row "-h, --help bool Show help for the command." [ref=e187]:
+                    - cell "-h, --help" [ref=e188]
+                    - cell "bool" [ref=e189]
+                    - cell "Show help for the command." [ref=e190]
+          - generic "Roadmap" [ref=e191]:
+            - generic [ref=e192]:
+              - heading "Roadmap" [level=2] [ref=e193]
+              - list [ref=e197]:
+                - listitem [ref=e198]:
+                  - strong [ref=e199]: v0.1 (current)
+                  - text: — installs pre-built packages from npm.
+                - listitem [ref=e200]:
+                  - strong [ref=e201]: v0.2
+                  - text: — copies source files into your project (shadcn-style). You own the code.
+                - listitem [ref=e202]:
+                  - strong [ref=e203]: v0.3
+                  - text: — hosted registry at
+                  - code [ref=e204]: shadng.dev/registry
+                  - text: so new components don't need a CLI release.
+  - contentinfo [ref=e205]:
+    - generic [ref=e206]:
+      - generic [ref=e207]: MIT © Kalvner
+      - generic [ref=e208]: v0.1.0 · pre-release

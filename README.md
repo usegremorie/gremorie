@@ -39,10 +39,12 @@ Every component must pass the full documentation checklist before being released
 ```
 shadng/
 ├── packages/
-│   ├── docs/                       # Analog.js SSR site
+│   ├── docs/                       # Analog.js SSR site (shadng.dev)
 │   ├── docs-e2e/                   # Playwright E2E
 │   ├── playground/                 # Angular demo app (visual smoke tests)
-│   └── shadng-prompt-input/        # The library (Phase 1 in progress)
+│   ├── shadng-core/                # @shadng/core — tokens + cn() + Button primitive
+│   ├── shadng-prompt-input/        # @shadng/prompt-input — PromptInput family
+│   └── shadng-cli/                 # @shadng/cli — `npx shadng init/add/list`
 ├── .github/workflows/
 │   └── ci.yml                      # lint • test • build (Nx affected)
 └── tsconfig.base.json              # path mappings
@@ -64,7 +66,9 @@ npm run serve:playground            # localhost:4200 — visual smoke test
 npm run serve:docs                  # localhost:4200 — Analog docs (SSR)
 
 # Library
-npm run build:lib                   # build @kalvner/shadng-prompt-input
+npm run build:core                  # build @shadng/core
+npm run build:lib                   # build @shadng/prompt-input
+npx nx build shadng-cli             # build @shadng/cli (binary in packages/shadng-cli/dist)
 npm run storybook                   # localhost:4400 — Storybook 10
 
 # Quality
