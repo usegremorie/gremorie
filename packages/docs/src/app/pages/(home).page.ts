@@ -80,7 +80,7 @@ import { DocsLayout } from '../shared/doc-layout.component';
           <h2 class="text-xl font-semibold tracking-tight text-foreground">Install</h2>
           <docs-code-block
             lang="bash"
-            code="npm install @kalvner/shadng-prompt-input"
+            code="npm install @shadng/prompt-input"
           />
           <p class="text-sm text-muted-foreground">
             Then import the components you need:
@@ -100,5 +100,5 @@ export default class HomePage {
   PromptInputTextarea,
   PromptInputSubmit,
   PromptInputToolbar,
-} from '@kalvner/shadng-prompt-input';`;
+} from '@shadng/prompt-input';`;
 }

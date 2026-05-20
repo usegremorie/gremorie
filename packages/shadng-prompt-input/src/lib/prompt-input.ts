@@ -12,7 +12,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { cva } from 'class-variance-authority';
-import { cn } from './utils';
+import { cn } from '@shadng/core';
 
 import {
   PromptInputAttachmentError,

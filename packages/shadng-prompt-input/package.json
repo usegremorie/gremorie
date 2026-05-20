@@ -1,5 +1,5 @@
 {
-  "name": "@kalvner/shadng-prompt-input",
+  "name": "@shadng/prompt-input",
   "version": "0.0.1",
   "description": "PromptInput component family for AI interfaces — part of ShadNG.",
   "license": "MIT",
@@ -11,8 +11,8 @@
   "keywords": ["angular", "ai", "ui", "shadcn", "prompt", "chat"],
   "peerDependencies": {
     "@angular/core": "^21.2.0",
-    "clsx": "^2.1.0",
-    "tailwind-merge": "^3.0.0"
+    "@shadng/core": "^0.0.1",
+    "class-variance-authority": "^0.7.1"
   },
   "sideEffects": false
 }

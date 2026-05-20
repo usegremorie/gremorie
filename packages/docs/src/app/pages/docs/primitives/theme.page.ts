@@ -91,7 +91,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
 })
 export default class ThemePrimitivePage {
   protected readonly install = `@import 'tailwindcss';
-@import '@kalvner/shadng-prompt-input/theme.css';`;
+@import '@shadng/core/theme.css';`;
 
   protected readonly brandExample = `:root {
   --primary: oklch(0.5 0.2 250);          /* your blue */

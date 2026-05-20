@@ -1,0 +1,455 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "SHAD ng" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: SHAD
+        - generic [ref=e10]: ng
+      - navigation [ref=e11]:
+        - link "Docs" [ref=e12] [cursor=pointer]:
+          - /url: /docs/getting-started
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/kalvner/shadng
+          - img [ref=e14]
+          - text: GitHub
+        - button "Switch to dark theme" [ref=e17]:
+          - img [ref=e18]
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - heading "Getting Started" [level=2] [ref=e24]
+          - link "Introduction" [ref=e26] [cursor=pointer]:
+            - /url: /docs/getting-started
+        - generic [ref=e27]:
+          - heading "Components" [level=2] [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - heading "Chatbot" [level=3] [ref=e31]
+              - link "Prompt Input" [ref=e32] [cursor=pointer]:
+                - /url: /docs/components/prompt-input
+            - generic [ref=e33]:
+              - heading "Code soon" [level=3] [ref=e34]:
+                - text: Code
+                - generic [ref=e35]: soon
+              - generic [ref=e36]: Coming in v0.2
+        - generic [ref=e37]:
+          - heading "Primitives" [level=2] [ref=e38]
+          - generic [ref=e39]:
+            - link "Button" [ref=e40] [cursor=pointer]:
+              - /url: /docs/primitives/button
+            - link "Theme tokens" [ref=e41] [cursor=pointer]:
+              - /url: /docs/primitives/theme
+            - link "cn() utility" [ref=e42] [cursor=pointer]:
+              - /url: /docs/primitives/cn
+        - generic [ref=e43]:
+          - heading "Integrations" [level=2] [ref=e44]
+          - link "Plain signals" [ref=e46] [cursor=pointer]:
+            - /url: /docs/integrations/signals
+    - main [ref=e47]:
+      - generic "PromptInput" [ref=e48]:
+        - article [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: Component · Container
+            - heading "PromptInput" [level=1] [ref=e52]
+            - paragraph [ref=e53]: Container for AI prompt entry. Owns the state machine (ready → submitted → streaming → error), keyboard shortcuts, attachment validation, and coordinates all subcomponents.
+          - generic "Preview" [ref=e54]:
+            - generic [ref=e55]:
+              - heading "Preview" [level=2] [ref=e56]
+              - form "AI prompt input" [ref=e59]:
+                - textbox "Prompt" [ref=e61]:
+                  - /placeholder: Type a prompt — Mod+K focuses globally
+                - toolbar [ref=e62]:
+                  - button "Send message" [disabled] [ref=e64]:
+                    - img [ref=e65]
+          - generic "Anatomy" [ref=e68]:
+            - generic [ref=e69]:
+              - heading "Anatomy" [level=2] [ref=e70]
+              - generic [ref=e71]:
+                - generic [ref=e73]:
+                  - generic [ref=e75]: text
+                  - code [ref=e77]: <prompt-input> ├── <prompt-input-attachments> (optional, see Attachments docs) │ └── <prompt-input-attachment> ├── <prompt-input-textarea> (required) └── <prompt-input-toolbar> (optional but recommended) ├── <prompt-input-tools> │ ├── <prompt-input-action-menu> │ ├── <ai-button> │ └── <prompt-input-model-select> └── <prompt-input-submit> (one per toolbar)
+                  - button "Copy code" [ref=e78]:
+                    - img [ref=e79]
+                    - text: Copy
+                - generic [ref=e83]:
+                  - paragraph [ref=e84]: "Each subcomponent has its own reference page:"
+                  - list [ref=e85]:
+                    - listitem [ref=e86]:
+                      - link "PromptInputTextarea" [ref=e87] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-textarea
+                      - text: — auto-expanding text input
+                    - listitem [ref=e88]:
+                      - link "PromptInputSubmit" [ref=e89] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-submit
+                      - text: — 4-state submit button
+                    - listitem [ref=e90]:
+                      - link "PromptInputToolbar" [ref=e91] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-toolbar
+                      - text: — flex wrapper for the bottom row
+                    - listitem [ref=e92]:
+                      - link "PromptInputTools" [ref=e93] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-tools
+                      - text: — left-side group of actions
+                    - listitem [ref=e94]:
+                      - link "Button" [ref=e95] [cursor=pointer]:
+                        - /url: /docs/primitives/button
+                      - text: — toolbar action button (from
+                      - code [ref=e96]: "@shadng/core"
+                      - text: )
+                    - listitem [ref=e97]:
+                      - link "PromptInputAttachments" [ref=e98] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-attachments
+                      - text: — attachment list container
+                    - listitem [ref=e99]:
+                      - link "PromptInputAttachment" [ref=e100] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-attachment
+                      - text: — individual attachment card
+                    - listitem [ref=e101]:
+                      - link "PromptInputActionMenu" [ref=e102] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-action-menu
+                      - text: — dropdown for less-frequent actions
+                    - listitem [ref=e103]:
+                      - link "PromptInputModelSelect" [ref=e104] [cursor=pointer]:
+                        - /url: /docs/components/prompt-input-model-select
+                      - text: — model picker
+          - generic "Installation" [ref=e105]:
+            - generic [ref=e106]:
+              - heading "Installation" [level=2] [ref=e107]
+              - generic [ref=e110]:
+                - generic [ref=e112]: bash
+                - code [ref=e114]: npm install @shadng/prompt-input
+                - button "Copy code" [ref=e115]:
+                  - img [ref=e116]
+                  - text: Copy
+          - generic "Basic usage" [ref=e119]:
+            - generic [ref=e120]:
+              - heading "Basic usage" [level=2] [ref=e121]
+              - generic [ref=e124]:
+                - generic [ref=e126]: typescript
+                - code [ref=e128]: "import { Component, signal } from '@angular/core'; import { PromptInput, PromptInputSubmit, PromptInputSubmitEvent, PromptInputTextarea, PromptInputToolbar, } from '@shadng/prompt-input'; @Component({ selector: 'app-chat', imports: [PromptInput, PromptInputTextarea, PromptInputToolbar, PromptInputSubmit], template: ` <prompt-input [(value)]=\"message\" [state]=\"status()\" (submitted)=\"onSubmit($event)\" > <prompt-input-textarea placeholder=\"Ask anything…\" /> <prompt-input-toolbar> <prompt-input-submit /> </prompt-input-toolbar> </prompt-input> `, }) export class ChatComponent { message = signal(''); status = signal<'ready' | 'submitted' | 'streaming' | 'error'>('ready'); async onSubmit({ value }: PromptInputSubmitEvent) { this.status.set('submitted'); // ... call your LLM, set 'streaming' on first chunk, 'ready' on done, 'error' on failure } }"
+                - button "Copy code" [ref=e129]:
+                  - img [ref=e130]
+                  - text: Copy
+          - generic "API — Inputs" [ref=e133]:
+            - generic [ref=e134]:
+              - heading "API — Inputs" [level=2] [ref=e135]
+              - table [ref=e139]:
+                - rowgroup [ref=e140]:
+                  - row "Name Type Default Description" [ref=e141]:
+                    - columnheader "Name" [ref=e142]
+                    - columnheader "Type" [ref=e143]
+                    - columnheader "Default" [ref=e144]
+                    - columnheader "Description" [ref=e145]
+                - rowgroup [ref=e146]:
+                  - row "value Signal<string> signal('') Textarea value. Two-way bindable with [(value)]." [ref=e147]:
+                    - cell "value" [ref=e148]
+                    - cell "Signal<string>" [ref=e149]
+                    - cell "signal('')" [ref=e150]
+                    - cell "Textarea value. Two-way bindable with [(value)]." [ref=e151]
+                  - row "attachments Signal<readonly File[]> signal([]) List of attached files. Two-way bindable." [ref=e152]:
+                    - cell "attachments" [ref=e153]
+                    - cell "Signal<readonly File[]>" [ref=e154]
+                    - cell "signal([])" [ref=e155]
+                    - cell "List of attached files. Two-way bindable." [ref=e156]
+                  - row "state 'ready' | 'submitted' | 'streaming' | 'error' 'ready' State machine. Drives submit visual + Esc behavior + aria-live announcements." [ref=e157]:
+                    - cell "state" [ref=e158]
+                    - cell "'ready' | 'submitted' | 'streaming' | 'error'" [ref=e159]
+                    - cell "'ready'" [ref=e160]
+                    - cell "State machine. Drives submit visual + Esc behavior + aria-live announcements." [ref=e161]
+                  - row "size 'sm' | 'md' | 'lg' 'md' Visual size — padding, gap, font." [ref=e162]:
+                    - cell "size" [ref=e163]
+                    - cell "'sm' | 'md' | 'lg'" [ref=e164]
+                    - cell "'md'" [ref=e165]
+                    - cell "Visual size — padding, gap, font." [ref=e166]
+                  - row "variant 'default' | 'ghost' | 'bordered' 'default' Border treatment." [ref=e167]:
+                    - cell "variant" [ref=e168]
+                    - cell "'default' | 'ghost' | 'bordered'" [ref=e169]
+                    - cell "'default'" [ref=e170]
+                    - cell "Border treatment." [ref=e171]
+                  - row "disabled boolean false Disables the whole container (children inherit via DI)." [ref=e172]:
+                    - cell "disabled" [ref=e173]
+                    - cell "boolean" [ref=e174]
+                    - cell "false" [ref=e175]
+                    - cell "Disables the whole container (children inherit via DI)." [ref=e176]
+                  - row "submitOnEnter boolean true When false, only Mod+Enter submits. Useful for multi-line drafting." [ref=e177]:
+                    - cell "submitOnEnter" [ref=e178]
+                    - cell "boolean" [ref=e179]
+                    - cell "true" [ref=e180]
+                    - cell "When false, only Mod+Enter submits. Useful for multi-line drafting." [ref=e181]
+                  - row "ariaLabel string 'AI prompt input' aria-label for the form container." [ref=e182]:
+                    - cell "ariaLabel" [ref=e183]
+                    - cell "string" [ref=e184]
+                    - cell "'AI prompt input'" [ref=e185]
+                    - cell "aria-label for the form container." [ref=e186]
+                  - row "acceptAttachments readonly string[] | false false MIME patterns accepted (e.g. ['image/*', 'application/pdf']). false disables attachments." [ref=e187]:
+                    - cell "acceptAttachments" [ref=e188]
+                    - cell "readonly string[] | false" [ref=e189]
+                    - cell "false" [ref=e190]
+                    - cell "MIME patterns accepted (e.g. ['image/*', 'application/pdf']). false disables attachments." [ref=e191]
+                  - row "maxAttachments number 10 Maximum simultaneous attachments." [ref=e192]:
+                    - cell "maxAttachments" [ref=e193]
+                    - cell "number" [ref=e194]
+                    - cell "10" [ref=e195]
+                    - cell "Maximum simultaneous attachments." [ref=e196]
+                  - row "maxAttachmentSize number 10485760 Maximum bytes per file (10MB default)." [ref=e197]:
+                    - cell "maxAttachmentSize" [ref=e198]
+                    - cell "number" [ref=e199]
+                    - cell "10485760" [ref=e200]
+                    - cell "Maximum bytes per file (10MB default)." [ref=e201]
+          - generic "API — Outputs" [ref=e202]:
+            - generic [ref=e203]:
+              - heading "API — Outputs" [level=2] [ref=e204]
+              - table [ref=e208]:
+                - rowgroup [ref=e209]:
+                  - row "Name Type Description" [ref=e210]:
+                    - columnheader "Name" [ref=e211]
+                    - columnheader "Type" [ref=e212]
+                    - columnheader "Description" [ref=e213]
+                - rowgroup [ref=e214]:
+                  - 'row "submitted PromptInputSubmitEvent Fires on Enter (when submitOnEnter), Mod+Enter, or submit button click in ready state. Payload: { value, attachments, preventDefault }." [ref=e215]':
+                    - cell "submitted" [ref=e216]
+                    - cell "PromptInputSubmitEvent" [ref=e217]
+                    - 'cell "Fires on Enter (when submitOnEnter), Mod+Enter, or submit button click in ready state. Payload: { value, attachments, preventDefault }." [ref=e218]'
+                  - row "canceled void Fires on submit click during streaming, or Esc during streaming." [ref=e219]:
+                    - cell "canceled" [ref=e220]
+                    - cell "void" [ref=e221]
+                    - cell "Fires on submit click during streaming, or Esc during streaming." [ref=e222]
+                  - row "retried void Fires on submit click in error state." [ref=e223]:
+                    - cell "retried" [ref=e224]
+                    - cell "void" [ref=e225]
+                    - cell "Fires on submit click in error state." [ref=e226]
+                  - 'row "attachmentError PromptInputAttachmentError Fires when an attachment is rejected. Payload: { file, reason, message }." [ref=e227]':
+                    - cell "attachmentError" [ref=e228]
+                    - cell "PromptInputAttachmentError" [ref=e229]
+                    - 'cell "Fires when an attachment is rejected. Payload: { file, reason, message }." [ref=e230]'
+          - generic "API — Imperative methods" [ref=e231]:
+            - generic [ref=e232]:
+              - heading "API — Imperative methods" [level=2] [ref=e233]
+              - generic [ref=e234]:
+                - paragraph [ref=e237]:
+                  - text: Access via
+                  - code [ref=e238]: "@ViewChild(PromptInput)"
+                  - text: ":"
+                - table [ref=e241]:
+                  - rowgroup [ref=e242]:
+                    - row "Name Type Description" [ref=e243]:
+                      - columnheader "Name" [ref=e244]
+                      - columnheader "Type" [ref=e245]
+                      - columnheader "Description" [ref=e246]
+                  - rowgroup [ref=e247]:
+                    - row "submit() () => void Programmatically trigger submit (respects current state)." [ref=e248]:
+                      - cell "submit()" [ref=e249]
+                      - cell "() => void" [ref=e250]
+                      - cell "Programmatically trigger submit (respects current state)." [ref=e251]
+                    - row "clear() () => void Clear textarea value and attachments." [ref=e252]:
+                      - cell "clear()" [ref=e253]
+                      - cell "() => void" [ref=e254]
+                      - cell "Clear textarea value and attachments." [ref=e255]
+                    - row "focusTextarea() () => void Focus the first <textarea> descendant." [ref=e256]:
+                      - cell "focusTextarea()" [ref=e257]
+                      - cell "() => void" [ref=e258]
+                      - cell "Focus the first <textarea> descendant." [ref=e259]
+                    - 'row "addFiles(files) (files: readonly File[]) => void Add files programmatically — runs validation and emits errors." [ref=e260]':
+                      - cell "addFiles(files)" [ref=e261]
+                      - 'cell "(files: readonly File[]) => void" [ref=e262]'
+                      - cell "Add files programmatically — runs validation and emits errors." [ref=e263]
+                    - 'row "removeAttachment(file) (file: File) => void Remove a specific attachment." [ref=e264]':
+                      - cell "removeAttachment(file)" [ref=e265]
+                      - 'cell "(file: File) => void" [ref=e266]'
+                      - cell "Remove a specific attachment." [ref=e267]
+          - generic "States" [ref=e268]:
+            - generic [ref=e269]:
+              - heading "States" [level=2] [ref=e270]
+              - generic [ref=e271]:
+                - paragraph [ref=e274]:
+                  - text: The container holds a state machine driven by the
+                  - code [ref=e275]: state
+                  - text: input. Visual treatment and submit behavior change per state. All children of
+                  - code [ref=e276]: <prompt-input>
+                  - text: read state via dependency injection.
+                - table [ref=e279]:
+                  - rowgroup [ref=e280]:
+                    - row "Name Type Description" [ref=e281]:
+                      - columnheader "Name" [ref=e282]
+                      - columnheader "Type" [ref=e283]
+                      - columnheader "Description" [ref=e284]
+                  - rowgroup [ref=e285]:
+                    - row "ready state Default. User can type and submit." [ref=e286]:
+                      - cell "ready" [ref=e287]
+                      - cell "state" [ref=e288]
+                      - cell "Default. User can type and submit." [ref=e289]
+                    - row "submitted state Message sent, waiting for first chunk. Submit shows spinner. Textarea disabled." [ref=e290]:
+                      - cell "submitted" [ref=e291]
+                      - cell "state" [ref=e292]
+                      - cell "Message sent, waiting for first chunk. Submit shows spinner. Textarea disabled." [ref=e293]
+                    - row "streaming state Receiving response. Submit becomes Stop button (destructive tint). Esc cancels." [ref=e294]:
+                      - cell "streaming" [ref=e295]
+                      - cell "state" [ref=e296]
+                      - cell "Receiving response. Submit becomes Stop button (destructive tint). Esc cancels." [ref=e297]
+                    - row "error state Last submit failed. Container border destructive. Submit becomes Retry." [ref=e298]:
+                      - cell "error" [ref=e299]
+                      - cell "state" [ref=e300]
+                      - cell "Last submit failed. Container border destructive. Submit becomes Retry." [ref=e301]
+          - generic "Variants" [ref=e302]:
+            - generic [ref=e303]:
+              - heading "Variants" [level=2] [ref=e304]
+              - generic [ref=e307]:
+                - paragraph [ref=e308]:
+                  - strong [ref=e309]: size
+                  - text: ":"
+                  - code [ref=e310]: sm
+                  - text: "|"
+                  - code [ref=e311]: md
+                  - text: (default) |
+                  - code [ref=e312]: lg
+                  - text: — affects padding, gap, font size.
+                - paragraph [ref=e313]:
+                  - strong [ref=e314]: variant
+                  - text: ":"
+                  - code [ref=e315]: default
+                  - text: (border + bg) |
+                  - code [ref=e316]: ghost
+                  - text: (transparent) |
+                  - code [ref=e317]: bordered
+                  - text: (heavier border).
+          - generic "Keyboard shortcuts" [ref=e318]:
+            - generic [ref=e319]:
+              - heading "Keyboard shortcuts" [level=2] [ref=e320]
+              - table [ref=e324]:
+                - rowgroup [ref=e325]:
+                  - row "Name Type Description" [ref=e326]:
+                    - columnheader "Name" [ref=e327]
+                    - columnheader "Type" [ref=e328]
+                    - columnheader "Description" [ref=e329]
+                - rowgroup [ref=e330]:
+                  - row "Enter on container Submit (if submitOnEnter=true). Otherwise newline." [ref=e331]:
+                    - cell "Enter" [ref=e332]
+                    - cell "on container" [ref=e333]
+                    - cell "Submit (if submitOnEnter=true). Otherwise newline." [ref=e334]
+                  - row "Shift+Enter in textarea Insert newline. Never submits." [ref=e335]:
+                    - cell "Shift+Enter" [ref=e336]
+                    - cell "in textarea" [ref=e337]
+                    - cell "Insert newline. Never submits." [ref=e338]
+                  - row "Mod+Enter on container Force submit regardless of submitOnEnter." [ref=e339]:
+                    - cell "Mod+Enter" [ref=e340]
+                    - cell "on container" [ref=e341]
+                    - cell "Force submit regardless of submitOnEnter." [ref=e342]
+                  - row "Esc on container Clear textarea (in ready/error) or cancel streaming." [ref=e343]:
+                    - cell "Esc" [ref=e344]
+                    - cell "on container" [ref=e345]
+                    - cell "Clear textarea (in ready/error) or cancel streaming." [ref=e346]
+                  - row "Mod+K global (document) Focus the first textarea on the page." [ref=e347]:
+                    - cell "Mod+K" [ref=e348]
+                    - cell "global (document)" [ref=e349]
+                    - cell "Focus the first textarea on the page." [ref=e350]
+          - generic "Accessibility" [ref=e351]:
+            - generic [ref=e352]:
+              - heading "Accessibility" [level=2] [ref=e353]
+              - list [ref=e357]:
+                - listitem [ref=e358]:
+                  - strong [ref=e359]: role
+                  - text: ":"
+                  - code [ref=e360]: form
+                  - text: with configurable
+                  - code [ref=e361]: aria-label
+                - listitem [ref=e362]:
+                  - strong [ref=e363]: aria-live
+                  - text: polite region announces state changes ("Message submitted", "AI is responding", "Submission failed")
+                - listitem [ref=e364]:
+                  - strong [ref=e365]: aria-disabled
+                  - text: reflects the
+                  - code [ref=e366]: disabled
+                  - text: input
+                - listitem [ref=e367]:
+                  - strong [ref=e368]: data-state
+                  - text: attribute exposes current state for CSS targeting
+                - listitem [ref=e369]:
+                  - strong [ref=e370]: focus-within
+                  - text: ring on the container for keyboard navigation
+                - listitem [ref=e371]:
+                  - strong [ref=e372]: Reduced motion
+                  - text: ": respects"
+                  - code [ref=e373]: prefers-reduced-motion
+                  - text: — dropdowns skip the scale animation
+          - generic "Theming" [ref=e374]:
+            - generic [ref=e375]:
+              - heading "Theming" [level=2] [ref=e376]
+              - generic [ref=e377]:
+                - paragraph [ref=e380]: "Semantic CSS variables consumed by the container:"
+                - table [ref=e383]:
+                  - rowgroup [ref=e384]:
+                    - row "Name Type Description" [ref=e385]:
+                      - columnheader "Name" [ref=e386]
+                      - columnheader "Type" [ref=e387]
+                      - columnheader "Description" [ref=e388]
+                  - rowgroup [ref=e389]:
+                    - row "--background semantic Container background." [ref=e390]:
+                      - cell "--background" [ref=e391]
+                      - cell "semantic" [ref=e392]
+                      - cell "Container background." [ref=e393]
+                    - row "--input semantic Container border (default variant)." [ref=e394]:
+                      - cell "--input" [ref=e395]
+                      - cell "semantic" [ref=e396]
+                      - cell "Container border (default variant)." [ref=e397]
+                    - row "--ring semantic Focus-within ring." [ref=e398]:
+                      - cell "--ring" [ref=e399]
+                      - cell "semantic" [ref=e400]
+                      - cell "Focus-within ring." [ref=e401]
+                    - row "--destructive semantic Border + ring tint when state=\"error\"." [ref=e402]:
+                      - cell "--destructive" [ref=e403]
+                      - cell "semantic" [ref=e404]
+                      - cell "Border + ring tint when state=\"error\"." [ref=e405]
+                    - row "--radius-md semantic Container border-radius." [ref=e406]:
+                      - cell "--radius-md" [ref=e407]
+                      - cell "semantic" [ref=e408]
+                      - cell "Container border-radius." [ref=e409]
+          - generic "Design decisions" [ref=e410]:
+            - generic [ref=e411]:
+              - heading "Design decisions" [level=2] [ref=e412]
+              - list [ref=e416]:
+                - listitem [ref=e417]:
+                  - strong [ref=e418]: Monolithic components
+                  - text: (no Brain/Helm split) — follow shadcn original; spartan-ng/brain supplies headless primitives when needed (
+                  - link "ADR-011" [ref=e419] [cursor=pointer]:
+                    - /url: /docs/getting-started
+                  - text: ).
+                - listitem [ref=e420]:
+                  - strong [ref=e421]: No library-namespace prefix
+                  - text: on selectors — preserves white-label (
+                  - link "ADR-012" [ref=e422] [cursor=pointer]:
+                    - /url: /docs/getting-started
+                  - text: ).
+                - listitem [ref=e423]:
+                  - strong [ref=e424]: Three-tier tokens
+                  - text: (primitives → semantics → AI-specific) — rebrand in one edit (
+                  - link "ADR-013" [ref=e425] [cursor=pointer]:
+                    - /url: /docs/getting-started
+                  - text: ).
+                - listitem [ref=e426]:
+                  - strong [ref=e427]: State machine over reactive state
+                  - text: — explicit transitions, easier to reason about under streaming.
+          - generic "Known issues" [ref=e428]:
+            - generic [ref=e429]:
+              - heading "Known issues" [level=2] [ref=e430]
+              - list [ref=e434]:
+                - listitem [ref=e435]:
+                  - text: The global
+                  - code [ref=e436]: Mod+K
+                  - text: shortcut focuses the first
+                  - code [ref=e437]: <textarea>
+                  - text: inside the container. If multiple PromptInputs are mounted, the first one in DOM wins.
+                - listitem [ref=e438]:
+                  - text: Drag-and-drop and paste validation only run when
+                  - code [ref=e439]: acceptAttachments
+                  - text: is set to an array. Default
+                  - code [ref=e440]: "false"
+                  - text: disables attachments entirely.
+                - listitem [ref=e441]:
+                  - text: Dropdown components (action-menu, model-select) use a v0.1 native popover. Migration to
+                  - code [ref=e442]: "@spartan-ng/brain"
+                  - text: menu/select is planned for v0.2 once their API stabilizes.
+  - contentinfo [ref=e443]:
+    - generic [ref=e444]:
+      - generic [ref=e445]: MIT © Kalvner
+      - generic [ref=e446]: v0.1.0 · pre-release

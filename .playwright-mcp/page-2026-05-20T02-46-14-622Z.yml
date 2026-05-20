@@ -1,0 +1,112 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "SHAD ng" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: SHAD
+        - generic [ref=e10]: ng
+      - navigation [ref=e11]:
+        - link "Docs" [ref=e12] [cursor=pointer]:
+          - /url: /docs/getting-started
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/kalvner/shadng
+          - img [ref=e14]
+          - text: GitHub
+        - button "Switch to dark theme" [ref=e17]:
+          - img [ref=e18]
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - heading "Getting Started" [level=2] [ref=e24]
+          - link "Introduction" [ref=e26] [cursor=pointer]:
+            - /url: /docs/getting-started
+        - generic [ref=e27]:
+          - heading "Components" [level=2] [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - heading "Chatbot" [level=3] [ref=e31]
+              - link "Prompt Input" [ref=e32] [cursor=pointer]:
+                - /url: /docs/components/prompt-input
+            - generic [ref=e33]:
+              - heading "Code soon" [level=3] [ref=e34]:
+                - text: Code
+                - generic [ref=e35]: soon
+              - generic [ref=e36]: Coming in v0.2
+        - generic [ref=e37]:
+          - heading "Primitives" [level=2] [ref=e38]
+          - generic [ref=e39]:
+            - link "Button" [ref=e40] [cursor=pointer]:
+              - /url: /docs/primitives/button
+            - link "Theme tokens" [ref=e41] [cursor=pointer]:
+              - /url: /docs/primitives/theme
+            - link "cn() utility" [ref=e42] [cursor=pointer]:
+              - /url: /docs/primitives/cn
+        - generic [ref=e43]:
+          - heading "Integrations" [level=2] [ref=e44]
+          - link "Plain signals" [ref=e46] [cursor=pointer]:
+            - /url: /docs/integrations/signals
+    - main [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]: v0.1.0 · pre-release
+          - heading "AI-native components for Angular." [level=1] [ref=e51]:
+            - text: AI-native components
+            - text: for Angular.
+          - paragraph [ref=e52]:
+            - text: ShadNG is the Angular library of AI-native components that should exist but doesn't. Built on
+            - link "spartan-ng" [ref=e53] [cursor=pointer]:
+              - /url: https://www.spartan.ng
+            - text: primitives, integrates cleanly with
+            - link "Hashbrown" [ref=e54] [cursor=pointer]:
+              - /url: https://hashbrown.dev
+            - text: for LLM logic. Tribute to
+            - link "shadcn/ui" [ref=e55] [cursor=pointer]:
+              - /url: https://ui.shadcn.com
+            - text: .
+          - generic [ref=e56]:
+            - link "Get started" [ref=e57] [cursor=pointer]:
+              - /url: /docs/getting-started
+              - text: Get started
+              - img [ref=e58]
+            - link "Browse components" [ref=e60] [cursor=pointer]:
+              - /url: /docs/components/prompt-input
+            - link "GitHub" [ref=e61] [cursor=pointer]:
+              - /url: https://github.com/kalvner/shadng
+              - img [ref=e62]
+              - text: GitHub
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - heading "10 components" [level=3] [ref=e66]
+            - paragraph [ref=e67]: Full PromptInput family — container, textarea, toolbar, attachments, model select, and submit with 4 states.
+          - generic [ref=e68]:
+            - heading "Streaming-aware" [level=3] [ref=e69]
+            - paragraph [ref=e70]:
+              - text: Built around an explicit
+              - code [ref=e71]: ready → submitted → streaming → error
+              - text: state machine.
+          - generic [ref=e72]:
+            - heading "Bring your own state" [level=3] [ref=e73]
+            - paragraph [ref=e74]:
+              - text: Inputs accept signals from Hashbrown, Vercel AI SDK, NgRx, or plain
+              - code [ref=e75]: fetch()
+              - text: .
+        - generic [ref=e76]:
+          - heading "Install" [level=2] [ref=e77]
+          - generic [ref=e79]:
+            - generic [ref=e81]: bash
+            - code [ref=e83]: npm install @shadng/prompt-input
+            - button "Copy code" [ref=e84]:
+              - img [ref=e85]
+              - text: Copy
+          - paragraph [ref=e88]: "Then import the components you need:"
+          - generic [ref=e90]:
+            - generic [ref=e92]: typescript
+            - code [ref=e94]: "import { PromptInput, PromptInputTextarea, PromptInputSubmit, PromptInputToolbar, } from '@shadng/prompt-input';"
+            - button "Copy code" [ref=e95]:
+              - img [ref=e96]
+              - text: Copy
+  - contentinfo [ref=e99]:
+    - generic [ref=e100]:
+      - generic [ref=e101]: MIT © Kalvner
+      - generic [ref=e102]: v0.1.0 · pre-release

@@ -4,7 +4,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 
-import { cn } from './utils';
+import { cn } from '@shadng/core';
 
 @Component({
   selector: 'prompt-input-attachments',

@@ -6,13 +6,13 @@ import {
   signal,
 } from '@angular/core';
 
+import { Button } from '@shadng/core';
 import {
   PromptInput,
   PromptInputActionMenu,
   PromptInputAttachment,
   PromptInputAttachmentError,
   PromptInputAttachments,
-  PromptInputButton,
   PromptInputModelOption,
   PromptInputModelSelect,
   PromptInputState,
@@ -21,7 +21,7 @@ import {
   PromptInputTextarea,
   PromptInputToolbar,
   PromptInputTools,
-} from '@kalvner/shadng-prompt-input';
+} from '@shadng/prompt-input';
 
 const MODELS: readonly PromptInputModelOption[] = [
   {
@@ -57,7 +57,7 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
     PromptInputTextarea,
     PromptInputToolbar,
     PromptInputTools,
-    PromptInputButton,
+    Button,
     PromptInputActionMenu,
     PromptInputModelSelect,
     PromptInputAttachments,
@@ -126,7 +126,9 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
               </button>
             </prompt-input-action-menu>
 
-            <prompt-input-button
+            <ai-button
+              variant="ghost"
+              size="icon"
               ariaLabel="Attach file"
               title="Attach file"
               (pressedChange)="onTool('attach')"
@@ -134,7 +136,7 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 17.93 8.8l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
               </svg>
-            </prompt-input-button>
+            </ai-button>
 
             <prompt-input-model-select
               [options]="models"

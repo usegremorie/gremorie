@@ -93,7 +93,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@kalvner/shadng-prompt-input';
+} from '@shadng/prompt-input';
 
 @Component({
   selector: 'app-chat',

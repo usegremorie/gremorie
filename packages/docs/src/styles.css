@@ -1,6 +1,7 @@
 @import 'tailwindcss';
-@import '../../shadng-prompt-input/src/lib/theme.css';
+@import '../../shadng-core/styles/theme.css';
 
+@source '../../shadng-core/src/**/*.{ts,html}';
 @source '../../shadng-prompt-input/src/**/*.{ts,html}';
 
 html,

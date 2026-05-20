@@ -11,8 +11,9 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 
+import { cn } from '@shadng/core';
+
 import { PromptInput } from './prompt-input';
-import { cn } from './utils';
 
 @Component({
   selector: 'prompt-input-textarea',

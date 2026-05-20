@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "nx run-many -t build",
+    "build:core": "nx build shadng-core",
     "build:lib": "nx build shadng-prompt-input",
     "build:docs": "nx build docs",
     "build:playground": "nx build playground",
@@ -20,7 +21,7 @@
     "build-storybook": "nx build-storybook shadng-prompt-input",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "changeset:publish": "nx run-many -t build --projects=shadng-prompt-input && changeset publish",
+    "changeset:publish": "nx run-many -t build --projects=shadng-core,shadng-prompt-input && changeset publish",
     "release": "npm run changeset:publish"
   },
   "private": true,

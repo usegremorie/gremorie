@@ -29,7 +29,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         </docs-section>
 
         <docs-section title="Install the library" anchor="install">
-          <docs-code-block lang="bash" code="npm install @kalvner/shadng-prompt-input" />
+          <docs-code-block lang="bash" code="npm install @shadng/prompt-input" />
           <docs-prose>
             <p>
               <code>&#64;kalvner/shadng-prompt-input</code> ships the full PromptInput family
@@ -106,7 +106,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
 })
 export default class GettingStartedPage {
   protected readonly themeImport = `@import 'tailwindcss';
-@import '@kalvner/shadng-prompt-input/theme.css';
+@import '@shadng/prompt-input/theme.css';
 
 /* Optional: override primitives or semantics here */
 :root {
@@ -120,7 +120,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@kalvner/shadng-prompt-input';
+} from '@shadng/prompt-input';
 
 @Component({
   selector: 'app-chat',

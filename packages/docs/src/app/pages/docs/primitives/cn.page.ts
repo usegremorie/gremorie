@@ -61,7 +61,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
   `,
 })
 export default class CnPrimitivePage {
-  protected readonly importExample = `import { cn } from '@kalvner/shadng-prompt-input';`;
+  protected readonly importExample = `import { cn } from '@shadng/core';`;
 
   protected readonly usage = `// Conditional classes
 const className = cn(

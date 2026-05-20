@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-
-import { PromptInputButton } from '@kalvner/shadng-prompt-input';
+import { Button } from '@shadng/core';
 
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -17,8 +15,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
     DocsProse,
     DocsCodeBlock,
     DocsApiTable,
-    PromptInputButton,
-    RouterLink,
+    Button,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -26,62 +23,36 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
       <docs-page
         eyebrow="Primitive"
         title="Button"
-        lede="The generic icon button used throughout the PromptInput family. Two variants (ghost, subtle), two sizes (sm, md), and full toggle semantics. Use it standalone for any AI-adjacent action."
+        lede="The Button primitive — 6 variants × 4 sizes. Mirrors the shadcn/ui Button surface so muscle memory translates 1:1. Used inside ShadNG components and freely composable in your own UI."
       >
-        <docs-section title="Preview" anchor="preview">
-          <div class="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-5">
-            <prompt-input-button ariaLabel="Demo ghost md">
+        <docs-section title="Preview — variants" anchor="preview-variants">
+          <div class="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card p-5">
+            <ai-button ariaLabel="Default">Default</ai-button>
+            <ai-button variant="destructive" ariaLabel="Destructive">Destructive</ai-button>
+            <ai-button variant="outline" ariaLabel="Outline">Outline</ai-button>
+            <ai-button variant="secondary" ariaLabel="Secondary">Secondary</ai-button>
+            <ai-button variant="ghost" ariaLabel="Ghost">Ghost</ai-button>
+            <ai-button variant="link" ariaLabel="Link">Link</ai-button>
+          </div>
+        </docs-section>
+
+        <docs-section title="Preview — sizes" anchor="preview-sizes">
+          <div class="flex flex-wrap items-end gap-2 rounded-lg border border-border bg-card p-5">
+            <ai-button size="sm" ariaLabel="Small">Small</ai-button>
+            <ai-button ariaLabel="Default size">Default</ai-button>
+            <ai-button size="lg" ariaLabel="Large">Large</ai-button>
+            <ai-button size="icon" variant="outline" ariaLabel="Icon button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
-            </prompt-input-button>
-
-            <prompt-input-button variant="subtle" ariaLabel="Demo subtle md">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 12h18M3 6h18M3 18h18" />
-              </svg>
-            </prompt-input-button>
-
-            <prompt-input-button size="sm" ariaLabel="Demo ghost sm">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-              </svg>
-            </prompt-input-button>
-
-            <prompt-input-button [pressed]="true" ariaLabel="Demo pressed">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z" />
-              </svg>
-            </prompt-input-button>
-
-            <prompt-input-button [disabled]="true" ariaLabel="Demo disabled">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
-              </svg>
-            </prompt-input-button>
+            </ai-button>
+            <ai-button [disabled]="true" ariaLabel="Disabled">Disabled</ai-button>
           </div>
         </docs-section>
 
-        <docs-section title="When to use" anchor="when">
-          <docs-prose>
-            <p>
-              Reach for <code>Button</code> when you need a compact, icon-driven control. It is the
-              same primitive that drives toolbar actions inside <a routerLink="/docs/components/prompt-input">PromptInput</a>,
-              so reusing it keeps your interface visually consistent.
-            </p>
-            <p>
-              For text-driven actions or primary CTAs, prefer your application's regular button (or
-              one from <a href="https://www.spartan.ng" target="_blank" rel="noopener">spartan-ng</a>).
-              For the prompt submit specifically — with the 4-state visual treatment — use
-              <a routerLink="/docs/components/prompt-input-submit">PromptInputSubmit</a>.
-            </p>
-          </docs-prose>
-        </docs-section>
-
         <docs-section title="Installation" anchor="install">
-          <docs-code-block lang="bash" code="npm install @kalvner/shadng-prompt-input" />
+          <docs-code-block lang="bash" code="npm install @shadng/core" />
         </docs-section>
 
         <docs-section title="Usage" anchor="usage">
@@ -97,41 +68,35 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         </docs-section>
 
         <docs-section title="Variants" anchor="variants">
-          <docs-prose>
-            <ul class="ml-5 list-disc space-y-1">
-              <li><strong>ghost</strong> — transparent background, hover reveals <code>accent</code>. Use in toolbars or alongside other content.</li>
-              <li><strong>subtle</strong> — muted background, slightly more visible at rest. Use when the action needs more emphasis.</li>
-            </ul>
-          </docs-prose>
+          <docs-api-table [rows]="variants" [showDefault]="false" />
         </docs-section>
 
         <docs-section title="Sizes" anchor="sizes">
-          <docs-prose>
-            <ul class="ml-5 list-disc space-y-1">
-              <li><strong>md</strong> (default) — 36px square. Matches <a routerLink="/docs/components/prompt-input-submit">PromptInputSubmit</a> and WCAG 2.2 SC 2.5.8 (minimum 24×24).</li>
-              <li><strong>sm</strong> — 28px square. Use only when space is tight; avoid on touch-primary devices.</li>
-            </ul>
-          </docs-prose>
+          <docs-api-table [rows]="sizes" [showDefault]="false" />
         </docs-section>
 
         <docs-section title="Accessibility" anchor="a11y">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><code>ariaLabel</code> is required — there is no visible text in icon-only buttons.</li>
-              <li><code>aria-pressed</code> is emitted only when <code>pressed</code> is true/false (skipped when null).</li>
-              <li>Inherits <code>disabled</code> from a parent <code>&lt;prompt-input&gt;</code> via DI when nested inside one.</li>
-              <li>Focus ring uses the <code>--ring</code> semantic token.</li>
+              <li>Native <code>&lt;button&gt;</code> under the hood — full keyboard support out of the box (Tab, Enter, Space).</li>
+              <li><code>ariaLabel</code> recommended for icon-only buttons (size <code>icon</code>) — required by AT for context.</li>
+              <li><code>pressed</code> input toggles <code>aria-pressed</code> for toggle-button semantics (null = not a toggle).</li>
+              <li>Focus ring uses the <code>--ring</code> semantic token, with offset against <code>--background</code>.</li>
+              <li>Touch targets: <code>default</code>/<code>icon</code> = 36px, <code>sm</code> = 32px, <code>lg</code> = 40px — meets WCAG 2.2 SC 2.5.8.</li>
             </ul>
           </docs-prose>
         </docs-section>
 
         <docs-section title="Theming" anchor="theming">
           <docs-prose>
+            <p>Semantic tokens consumed per variant:</p>
             <ul class="ml-5 list-disc space-y-1">
-              <li><code>--accent</code> / <code>--accent-foreground</code> — hover state and pressed state</li>
-              <li><code>--muted</code> — subtle variant background</li>
-              <li><code>--ring</code> — focus ring color</li>
-              <li><code>--radius-md</code> — corner radius</li>
+              <li><strong>default</strong> — <code>--primary</code> / <code>--primary-foreground</code></li>
+              <li><strong>destructive</strong> — <code>--destructive</code> / <code>--destructive-foreground</code></li>
+              <li><strong>outline</strong> — <code>--input</code> (border) + <code>--background</code> + hover <code>--accent</code></li>
+              <li><strong>secondary</strong> — <code>--secondary</code> / <code>--secondary-foreground</code></li>
+              <li><strong>ghost</strong> — transparent + hover <code>--accent</code></li>
+              <li><strong>link</strong> — <code>--primary</code> as text color</li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -141,37 +106,70 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
 })
 export default class ButtonPrimitivePage {
   protected readonly usage = `import { Component } from '@angular/core';
-import { PromptInputButton } from '@kalvner/shadng-prompt-input';
+import { Button } from '@shadng/core';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [PromptInputButton],
+  imports: [Button],
   template: \`
-    <prompt-input-button
-      ariaLabel="Search"
-      title="Search"
-      variant="ghost"
-      size="md"
-      (pressedChange)="onSearch()"
+    <ai-button
+      variant="default"
+      size="default"
+      (pressedChange)="onClick()"
     >
-      <svg><!-- search icon --></svg>
-    </prompt-input-button>
+      Search
+    </ai-button>
+
+    <ai-button
+      variant="destructive"
+      (pressedChange)="onDelete()"
+    >
+      Delete
+    </ai-button>
+
+    <ai-button
+      variant="outline"
+      size="icon"
+      ariaLabel="Toggle theme"
+      [pressed]="isDark()"
+      (pressedChange)="toggleTheme()"
+    >
+      <svg><!-- icon --></svg>
+    </ai-button>
   \`,
 })
 export class SearchBar {
-  onSearch() { /* ... */ }
+  onClick() { /* ... */ }
+  onDelete() { /* ... */ }
 }`;
 
   protected readonly inputs: readonly ApiRow[] = [
-    { name: 'ariaLabel', type: 'string', default: '(required)', description: 'Accessible name. Required for icon-only buttons.' },
-    { name: 'title', type: 'string', default: "''", description: 'Native tooltip. Falls back to ariaLabel.' },
-    { name: 'variant', type: "'ghost' | 'subtle'", default: "'ghost'", description: 'Visual treatment.' },
-    { name: 'size', type: "'sm' | 'md'", default: "'md'", description: 'Touch target size.' },
-    { name: 'pressed', type: 'boolean | null', default: 'null', description: 'Toggle state. null means not a toggle.' },
-    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable independently of parent context.' },
+    { name: 'variant', type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", default: "'default'", description: 'Visual treatment.' },
+    { name: 'size', type: "'default' | 'sm' | 'lg' | 'icon'", default: "'default'", description: 'Size class. Use icon for icon-only buttons (square).' },
+    { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type. Stays as button by default to avoid accidental form submissions.' },
+    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the button.' },
+    { name: 'pressed', type: 'boolean | null', default: 'null', description: 'Toggle state. null means not a toggle (no aria-pressed emitted).' },
+    { name: 'ariaLabel', type: 'string', default: "''", description: 'Accessible name. Required for icon-only buttons.' },
+    { name: 'title', type: 'string', default: "''", description: 'Native HTML title tooltip.' },
   ];
 
   protected readonly outputs: readonly ApiRow[] = [
-    { name: 'pressedChange', type: 'MouseEvent', description: 'Fires on click. Carries the native MouseEvent in case you need modifier keys.' },
+    { name: 'pressedChange', type: 'MouseEvent', description: 'Fires on click. Carries the native MouseEvent in case modifier keys matter.' },
+  ];
+
+  protected readonly variants: readonly ApiRow[] = [
+    { name: 'default', type: 'variant', description: 'Primary CTA. Solid background using --primary.' },
+    { name: 'destructive', type: 'variant', description: 'Dangerous actions (delete, remove). Uses --destructive.' },
+    { name: 'outline', type: 'variant', description: 'Bordered, transparent fill. Secondary actions where presence is needed but not bold.' },
+    { name: 'secondary', type: 'variant', description: 'Soft alternative to default. Uses --secondary.' },
+    { name: 'ghost', type: 'variant', description: 'No background at rest, accent on hover. Use in toolbars or compact layouts.' },
+    { name: 'link', type: 'variant', description: 'Renders like an underlined link. Use for inline navigation actions.' },
+  ];
+
+  protected readonly sizes: readonly ApiRow[] = [
+    { name: 'default', type: 'size', description: '36px high (h-9), text-sm. The standard for most buttons.' },
+    { name: 'sm', type: 'size', description: '32px high (h-8), text-xs. Compact rows.' },
+    { name: 'lg', type: 'size', description: '40px high (h-10). Heroes and primary CTAs.' },
+    { name: 'icon', type: 'size', description: '36px square. Icon-only buttons. Pair with ariaLabel.' },
   ];
 }

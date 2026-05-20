@@ -18,9 +18,8 @@
     "target": "es2022",
     "customConditions": ["shadng"],
     "paths": {
-      "@kalvner/shadng-prompt-input": [
-        "./packages/shadng-prompt-input/src/index.ts"
-      ]
+      "@shadng/core": ["./packages/shadng-core/src/index.ts"],
+      "@shadng/prompt-input": ["./packages/shadng-prompt-input/src/index.ts"]
     }
   }
 }
