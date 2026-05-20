@@ -1,0 +1,249 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "SHAD ng" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: SHAD
+        - generic [ref=e10]: ng
+      - navigation [ref=e11]:
+        - link "Docs" [ref=e12] [cursor=pointer]:
+          - /url: /docs/getting-started
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/kalvner/shadng
+          - img [ref=e14]
+          - text: GitHub
+        - button "Switch to dark theme" [ref=e17]:
+          - img [ref=e18]
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - heading "Getting Started" [level=2] [ref=e24]
+          - link "Introduction" [ref=e26] [cursor=pointer]:
+            - /url: /docs/getting-started
+        - generic [ref=e27]:
+          - heading "Components" [level=2] [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - heading "Chatbot" [level=3] [ref=e31]
+              - link "PromptInput" [ref=e32] [cursor=pointer]:
+                - /url: /docs/components/prompt-input
+              - link "PromptInputTextarea" [ref=e33] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-textarea
+              - link "PromptInputSubmit" [ref=e34] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-submit
+              - link "PromptInputToolbar" [ref=e35] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-toolbar
+              - link "PromptInputTools" [ref=e36] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-tools
+              - link "PromptInputButton" [ref=e37] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-button
+              - link "PromptInputAttachments" [ref=e38] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-attachments
+              - link "PromptInputAttachment" [ref=e39] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-attachment
+              - link "PromptInputActionMenu" [ref=e40] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-action-menu
+              - link "PromptInputModelSelect" [ref=e41] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-model-select
+            - generic [ref=e42]:
+              - heading "Code soon" [level=3] [ref=e43]:
+                - text: Code
+                - generic [ref=e44]: soon
+              - generic [ref=e45]: Coming in v0.2
+        - generic [ref=e46]:
+          - heading "Primitives" [level=2] [ref=e47]
+          - generic [ref=e48]:
+            - link "Button" [ref=e49] [cursor=pointer]:
+              - /url: /docs/primitives/button
+            - link "Theme tokens" [ref=e50] [cursor=pointer]:
+              - /url: /docs/primitives/theme
+            - link "cn() utility" [ref=e51] [cursor=pointer]:
+              - /url: /docs/primitives/cn
+        - generic [ref=e52]:
+          - heading "Integrations" [level=2] [ref=e53]
+          - link "Plain signals" [ref=e55] [cursor=pointer]:
+            - /url: /docs/integrations/signals
+    - main [ref=e56]:
+      - generic "Button" [ref=e57]:
+        - article [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]: Primitive
+            - heading "Button" [level=1] [ref=e61]
+            - paragraph [ref=e62]: The generic icon button used throughout the PromptInput family. Two variants (ghost, subtle), two sizes (sm, md), and full toggle semantics. Use it standalone for any AI-adjacent action.
+          - generic "Preview" [ref=e63]:
+            - generic [ref=e64]:
+              - heading "Preview" [level=2] [ref=e65]
+              - generic [ref=e67]:
+                - button "Demo ghost md" [ref=e69]:
+                  - img [ref=e70]
+                - button "Demo subtle md" [ref=e74]:
+                  - img [ref=e75]
+                - button "Demo ghost sm" [ref=e78]:
+                  - img [ref=e79]
+                - button "Demo pressed" [pressed] [ref=e82]:
+                  - img [ref=e83]
+                - generic [ref=e85]:
+                  - button "Demo disabled" [disabled]:
+                    - img
+          - generic "When to use" [ref=e86]:
+            - generic [ref=e87]:
+              - heading "When to use" [level=2] [ref=e88]
+              - generic [ref=e91]:
+                - paragraph [ref=e92]:
+                  - text: Reach for
+                  - code [ref=e93]: Button
+                  - text: when you need a compact, icon-driven control. It is the same primitive that drives toolbar actions inside
+                  - link "PromptInput" [ref=e94] [cursor=pointer]:
+                    - /url: /docs/components/prompt-input
+                  - text: ", so reusing it keeps your interface visually consistent."
+                - paragraph [ref=e95]:
+                  - text: For text-driven actions or primary CTAs, prefer your application's regular button (or one from
+                  - link "spartan-ng" [ref=e96] [cursor=pointer]:
+                    - /url: https://www.spartan.ng
+                  - text: ). For the prompt submit specifically — with the 4-state visual treatment — use
+                  - link "PromptInputSubmit" [ref=e97] [cursor=pointer]:
+                    - /url: /docs/components/prompt-input-submit
+                  - text: .
+          - generic "Installation" [ref=e98]:
+            - generic [ref=e99]:
+              - heading "Installation" [level=2] [ref=e100]
+              - generic [ref=e103]:
+                - generic [ref=e105]: bash
+                - code [ref=e107]: npm install @kalvner/shadng-prompt-input
+                - button "Copy code" [ref=e108]:
+                  - img [ref=e109]
+                  - text: Copy
+          - generic "Usage" [ref=e112]:
+            - generic [ref=e113]:
+              - heading "Usage" [level=2] [ref=e114]
+              - generic [ref=e117]:
+                - generic [ref=e119]: typescript
+                - code [ref=e121]: "import { Component } from '@angular/core'; import { PromptInputButton } from '@kalvner/shadng-prompt-input'; @Component({ selector: 'app-search-bar', imports: [PromptInputButton], template: ` <prompt-input-button ariaLabel=\"Search\" title=\"Search\" variant=\"ghost\" size=\"md\" (pressedChange)=\"onSearch()\" > <svg><!-- search icon --></svg> </prompt-input-button> `, }) export class SearchBar { onSearch() { /* ... */ } }"
+                - button "Copy code" [ref=e122]:
+                  - img [ref=e123]
+                  - text: Copy
+          - generic "API — Inputs" [ref=e126]:
+            - generic [ref=e127]:
+              - heading "API — Inputs" [level=2] [ref=e128]
+              - table [ref=e132]:
+                - rowgroup [ref=e133]:
+                  - row "Name Type Default Description" [ref=e134]:
+                    - columnheader "Name" [ref=e135]
+                    - columnheader "Type" [ref=e136]
+                    - columnheader "Default" [ref=e137]
+                    - columnheader "Description" [ref=e138]
+                - rowgroup [ref=e139]:
+                  - row "ariaLabel string (required) Accessible name. Required for icon-only buttons." [ref=e140]:
+                    - cell "ariaLabel" [ref=e141]
+                    - cell "string" [ref=e142]
+                    - cell "(required)" [ref=e143]
+                    - cell "Accessible name. Required for icon-only buttons." [ref=e144]
+                  - row "title string '' Native tooltip. Falls back to ariaLabel." [ref=e145]:
+                    - cell "title" [ref=e146]
+                    - cell "string" [ref=e147]
+                    - cell "''" [ref=e148]
+                    - cell "Native tooltip. Falls back to ariaLabel." [ref=e149]
+                  - row "variant 'ghost' | 'subtle' 'ghost' Visual treatment." [ref=e150]:
+                    - cell "variant" [ref=e151]
+                    - cell "'ghost' | 'subtle'" [ref=e152]
+                    - cell "'ghost'" [ref=e153]
+                    - cell "Visual treatment." [ref=e154]
+                  - row "size 'sm' | 'md' 'md' Touch target size." [ref=e155]:
+                    - cell "size" [ref=e156]
+                    - cell "'sm' | 'md'" [ref=e157]
+                    - cell "'md'" [ref=e158]
+                    - cell "Touch target size." [ref=e159]
+                  - row "pressed boolean | null null Toggle state. null means not a toggle." [ref=e160]:
+                    - cell "pressed" [ref=e161]
+                    - cell "boolean | null" [ref=e162]
+                    - cell "null" [ref=e163]
+                    - cell "Toggle state. null means not a toggle." [ref=e164]
+                  - row "disabled boolean false Disable independently of parent context." [ref=e165]:
+                    - cell "disabled" [ref=e166]
+                    - cell "boolean" [ref=e167]
+                    - cell "false" [ref=e168]
+                    - cell "Disable independently of parent context." [ref=e169]
+          - generic "API — Outputs" [ref=e170]:
+            - generic [ref=e171]:
+              - heading "API — Outputs" [level=2] [ref=e172]
+              - table [ref=e176]:
+                - rowgroup [ref=e177]:
+                  - row "Name Type Description" [ref=e178]:
+                    - columnheader "Name" [ref=e179]
+                    - columnheader "Type" [ref=e180]
+                    - columnheader "Description" [ref=e181]
+                - rowgroup [ref=e182]:
+                  - row "pressedChange MouseEvent Fires on click. Carries the native MouseEvent in case you need modifier keys." [ref=e183]:
+                    - cell "pressedChange" [ref=e184]
+                    - cell "MouseEvent" [ref=e185]
+                    - cell "Fires on click. Carries the native MouseEvent in case you need modifier keys." [ref=e186]
+          - generic "Variants" [ref=e187]:
+            - generic [ref=e188]:
+              - heading "Variants" [level=2] [ref=e189]
+              - list [ref=e193]:
+                - listitem [ref=e194]:
+                  - strong [ref=e195]: ghost
+                  - text: — transparent background, hover reveals
+                  - code [ref=e196]: accent
+                  - text: . Use in toolbars or alongside other content.
+                - listitem [ref=e197]:
+                  - strong [ref=e198]: subtle
+                  - text: — muted background, slightly more visible at rest. Use when the action needs more emphasis.
+          - generic "Sizes" [ref=e199]:
+            - generic [ref=e200]:
+              - heading "Sizes" [level=2] [ref=e201]
+              - list [ref=e205]:
+                - listitem [ref=e206]:
+                  - strong [ref=e207]: md
+                  - text: (default) — 36px square. Matches
+                  - link "PromptInputSubmit" [ref=e208] [cursor=pointer]:
+                    - /url: /docs/components/prompt-input-submit
+                  - text: and WCAG 2.2 SC 2.5.8 (minimum 24×24).
+                - listitem [ref=e209]:
+                  - strong [ref=e210]: sm
+                  - text: — 28px square. Use only when space is tight; avoid on touch-primary devices.
+          - generic "Accessibility" [ref=e211]:
+            - generic [ref=e212]:
+              - heading "Accessibility" [level=2] [ref=e213]
+              - list [ref=e217]:
+                - listitem [ref=e218]:
+                  - code [ref=e219]: ariaLabel
+                  - text: is required — there is no visible text in icon-only buttons.
+                - listitem [ref=e220]:
+                  - code [ref=e221]: aria-pressed
+                  - text: is emitted only when
+                  - code [ref=e222]: pressed
+                  - text: is true/false (skipped when null).
+                - listitem [ref=e223]:
+                  - text: Inherits
+                  - code [ref=e224]: disabled
+                  - text: from a parent
+                  - code [ref=e225]: <prompt-input>
+                  - text: via DI when nested inside one.
+                - listitem [ref=e226]:
+                  - text: Focus ring uses the
+                  - code [ref=e227]: "--ring"
+                  - text: semantic token.
+          - generic "Theming" [ref=e228]:
+            - generic [ref=e229]:
+              - heading "Theming" [level=2] [ref=e230]
+              - list [ref=e234]:
+                - listitem [ref=e235]:
+                  - code [ref=e236]: "--accent"
+                  - text: /
+                  - code [ref=e237]: "--accent-foreground"
+                  - text: — hover state and pressed state
+                - listitem [ref=e238]:
+                  - code [ref=e239]: "--muted"
+                  - text: — subtle variant background
+                - listitem [ref=e240]:
+                  - code [ref=e241]: "--ring"
+                  - text: — focus ring color
+                - listitem [ref=e242]:
+                  - code [ref=e243]: "--radius-md"
+                  - text: — corner radius
+  - contentinfo [ref=e244]:
+    - generic [ref=e245]:
+      - generic [ref=e246]: MIT © Kalvner
+      - generic [ref=e247]: v0.1.0 · pre-release

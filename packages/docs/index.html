@@ -2,11 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>docs</title>
+    <title>ShadNG — AI-native components for Angular</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ShadNG is the Angular library of AI-native components. Built on spartan-ng primitives, designed to integrate cleanly with Hashbrown. Tribute to shadcn/ui." />
+    <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/src/styles.css" />
+    <script>
+      // SSR-safe theme bootstrap — runs before Angular hydrates so there is
+      // no flash of incorrect theme. Mirrors the logic in DocsThemeToggle.
+      (function () {
+        try {
+          var stored = window.localStorage.getItem('shadng-theme');
+          var theme;
+          if (stored === 'dark' || stored === 'light') {
+            theme = stored;
+          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark';
+          } else {
+            theme = 'light';
+          }
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>

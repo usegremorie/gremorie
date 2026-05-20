@@ -1,0 +1,130 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - link "SHAD ng" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: SHAD
+        - generic [ref=e10]: ng
+      - navigation [ref=e11]:
+        - link "Docs" [ref=e12] [cursor=pointer]:
+          - /url: /docs/getting-started
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/kalvner/shadng
+          - img [ref=e14]
+          - text: GitHub
+        - button "Switch to dark theme" [ref=e17]:
+          - img [ref=e18]
+  - generic [ref=e20]:
+    - complementary [ref=e21]:
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - heading "Getting Started" [level=2] [ref=e24]
+          - link "Introduction" [ref=e26] [cursor=pointer]:
+            - /url: /docs/getting-started
+        - generic [ref=e27]:
+          - heading "Components" [level=2] [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - heading "Chatbot" [level=3] [ref=e31]
+              - link "PromptInput" [ref=e32] [cursor=pointer]:
+                - /url: /docs/components/prompt-input
+              - link "PromptInputTextarea" [ref=e33] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-textarea
+              - link "PromptInputSubmit" [ref=e34] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-submit
+              - link "PromptInputToolbar" [ref=e35] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-toolbar
+              - link "PromptInputTools" [ref=e36] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-tools
+              - link "PromptInputButton" [ref=e37] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-button
+              - link "PromptInputAttachments" [ref=e38] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-attachments
+              - link "PromptInputAttachment" [ref=e39] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-attachment
+              - link "PromptInputActionMenu" [ref=e40] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-action-menu
+              - link "PromptInputModelSelect" [ref=e41] [cursor=pointer]:
+                - /url: /docs/components/prompt-input-model-select
+            - generic [ref=e42]:
+              - heading "Code soon" [level=3] [ref=e43]:
+                - text: Code
+                - generic [ref=e44]: soon
+              - generic [ref=e45]: Coming in v0.2
+        - generic [ref=e46]:
+          - heading "Primitives" [level=2] [ref=e47]
+          - generic [ref=e48]:
+            - link "Button" [ref=e49] [cursor=pointer]:
+              - /url: /docs/primitives/button
+            - link "Theme tokens" [ref=e50] [cursor=pointer]:
+              - /url: /docs/primitives/theme
+            - link "cn() utility" [ref=e51] [cursor=pointer]:
+              - /url: /docs/primitives/cn
+        - generic [ref=e52]:
+          - heading "Integrations" [level=2] [ref=e53]
+          - link "Plain signals" [ref=e55] [cursor=pointer]:
+            - /url: /docs/integrations/signals
+    - main [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]: v0.1.0 · pre-release
+          - heading "AI-native components for Angular." [level=1] [ref=e60]:
+            - text: AI-native components
+            - text: for Angular.
+          - paragraph [ref=e61]:
+            - text: ShadNG is the Angular library of AI-native components that should exist but doesn't. Built on
+            - link "spartan-ng" [ref=e62] [cursor=pointer]:
+              - /url: https://www.spartan.ng
+            - text: primitives, integrates cleanly with
+            - link "Hashbrown" [ref=e63] [cursor=pointer]:
+              - /url: https://hashbrown.dev
+            - text: for LLM logic. Tribute to
+            - link "shadcn/ui" [ref=e64] [cursor=pointer]:
+              - /url: https://ui.shadcn.com
+            - text: .
+          - generic [ref=e65]:
+            - link "Get started" [ref=e66] [cursor=pointer]:
+              - /url: /docs/getting-started
+              - text: Get started
+              - img [ref=e67]
+            - link "Browse components" [ref=e69] [cursor=pointer]:
+              - /url: /docs/components/prompt-input
+            - link "GitHub" [ref=e70] [cursor=pointer]:
+              - /url: https://github.com/kalvner/shadng
+              - img [ref=e71]
+              - text: GitHub
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - heading "10 components" [level=3] [ref=e75]
+            - paragraph [ref=e76]: Full PromptInput family — container, textarea, toolbar, attachments, model select, and submit with 4 states.
+          - generic [ref=e77]:
+            - heading "Streaming-aware" [level=3] [ref=e78]
+            - paragraph [ref=e79]:
+              - text: Built around an explicit
+              - code [ref=e80]: ready → submitted → streaming → error
+              - text: state machine.
+          - generic [ref=e81]:
+            - heading "Bring your own state" [level=3] [ref=e82]
+            - paragraph [ref=e83]:
+              - text: Inputs accept signals from Hashbrown, Vercel AI SDK, NgRx, or plain
+              - code [ref=e84]: fetch()
+              - text: .
+        - generic [ref=e85]:
+          - heading "Install" [level=2] [ref=e86]
+          - generic [ref=e88]:
+            - generic [ref=e90]: bash
+            - code [ref=e92]: npm install @kalvner/shadng-prompt-input
+            - button "Copy code" [ref=e93]:
+              - img [ref=e94]
+              - text: Copy
+          - paragraph [ref=e97]: "Then import the components you need:"
+          - generic [ref=e99]:
+            - generic [ref=e101]: typescript
+            - code [ref=e103]: "import { PromptInput, PromptInputTextarea, PromptInputSubmit, PromptInputToolbar, } from '@kalvner/shadng-prompt-input';"
+            - button "Copy code" [ref=e104]:
+              - img [ref=e105]
+              - text: Copy
+  - contentinfo [ref=e108]:
+    - generic [ref=e109]:
+      - generic [ref=e110]: MIT © Kalvner
+      - generic [ref=e111]: v0.1.0 · pre-release

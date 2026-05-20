@@ -5,38 +5,66 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { DocsThemeToggle } from './theme-toggle.component';
+
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface NavCategory {
+  title: string;
+  items: NavItem[];
+  comingSoon?: boolean;
+}
+
 interface NavSection {
   title: string;
-  items: { label: string; href: string }[];
+  categories?: NavCategory[]; // grouped (Components)
+  items?: NavItem[]; // flat (Getting Started, Primitives, Integrations)
 }
 
 const NAV: NavSection[] = [
   {
     title: 'Getting Started',
-    items: [
-      { label: 'Introduction', href: '/docs/getting-started' },
-    ],
+    items: [{ label: 'Introduction', href: '/docs/getting-started' }],
   },
   {
     title: 'Components',
+    categories: [
+      {
+        title: 'Chatbot',
+        items: [
+          { label: 'PromptInput', href: '/docs/components/prompt-input' },
+          { label: 'PromptInputTextarea', href: '/docs/components/prompt-input-textarea' },
+          { label: 'PromptInputSubmit', href: '/docs/components/prompt-input-submit' },
+          { label: 'PromptInputToolbar', href: '/docs/components/prompt-input-toolbar' },
+          { label: 'PromptInputTools', href: '/docs/components/prompt-input-tools' },
+          { label: 'PromptInputButton', href: '/docs/components/prompt-input-button' },
+          { label: 'PromptInputAttachments', href: '/docs/components/prompt-input-attachments' },
+          { label: 'PromptInputAttachment', href: '/docs/components/prompt-input-attachment' },
+          { label: 'PromptInputActionMenu', href: '/docs/components/prompt-input-action-menu' },
+          { label: 'PromptInputModelSelect', href: '/docs/components/prompt-input-model-select' },
+        ],
+      },
+      {
+        title: 'Code',
+        items: [],
+        comingSoon: true,
+      },
+    ],
+  },
+  {
+    title: 'Primitives',
     items: [
-      { label: 'PromptInput', href: '/docs/components/prompt-input' },
-      { label: 'PromptInputTextarea', href: '/docs/components/prompt-input-textarea' },
-      { label: 'PromptInputSubmit', href: '/docs/components/prompt-input-submit' },
-      { label: 'PromptInputToolbar', href: '/docs/components/prompt-input-toolbar' },
-      { label: 'PromptInputTools', href: '/docs/components/prompt-input-tools' },
-      { label: 'PromptInputButton', href: '/docs/components/prompt-input-button' },
-      { label: 'PromptInputAttachments', href: '/docs/components/prompt-input-attachments' },
-      { label: 'PromptInputAttachment', href: '/docs/components/prompt-input-attachment' },
-      { label: 'PromptInputActionMenu', href: '/docs/components/prompt-input-action-menu' },
-      { label: 'PromptInputModelSelect', href: '/docs/components/prompt-input-model-select' },
+      { label: 'Button', href: '/docs/primitives/button' },
+      { label: 'Theme tokens', href: '/docs/primitives/theme' },
+      { label: 'cn() utility', href: '/docs/primitives/cn' },
     ],
   },
   {
     title: 'Integrations',
-    items: [
-      { label: 'Plain signals', href: '/docs/integrations/signals' },
-    ],
+    items: [{ label: 'Plain signals', href: '/docs/integrations/signals' }],
   },
 ];
 
@@ -45,7 +73,7 @@ const NAV: NavSection[] = [
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, DocsThemeToggle],
   template: `
     <div class="flex min-h-screen flex-col bg-background text-foreground">
       <header class="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
@@ -71,26 +99,61 @@ const NAV: NavSection[] = [
               </svg>
               GitHub
             </a>
+            <docs-theme-toggle />
           </nav>
         </div>
       </header>
 
       <div class="mx-auto flex w-full max-w-6xl flex-1 gap-8 px-4 py-8">
-        <aside class="sticky top-20 hidden h-[calc(100vh-6rem)] w-56 shrink-0 overflow-y-auto md:block">
+        <aside class="sticky top-20 hidden h-[calc(100vh-6rem)] w-60 shrink-0 overflow-y-auto pr-2 md:block">
           <nav class="flex flex-col gap-6">
             @for (section of nav; track section.title) {
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-2">
                 <h2 class="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {{ section.title }}
                 </h2>
-                @for (item of section.items; track item.href) {
-                  <a
-                    [routerLink]="item.href"
-                    routerLinkActive="bg-accent text-accent-foreground font-medium"
-                    class="block rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                  >
-                    {{ item.label }}
-                  </a>
+
+                @if (section.items) {
+                  <div class="flex flex-col gap-0.5">
+                    @for (item of section.items; track item.href) {
+                      <a
+                        [routerLink]="item.href"
+                        routerLinkActive="bg-accent text-accent-foreground font-medium"
+                        class="block rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >
+                        {{ item.label }}
+                      </a>
+                    }
+                  </div>
+                }
+
+                @if (section.categories) {
+                  <div class="flex flex-col gap-3">
+                    @for (category of section.categories; track category.title) {
+                      <div class="flex flex-col gap-0.5">
+                        <h3 class="flex items-center gap-2 px-2 pt-1 text-[11px] font-semibold uppercase tracking-wider text-foreground/70">
+                          {{ category.title }}
+                          @if (category.comingSoon) {
+                            <span class="rounded bg-muted px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-muted-foreground">soon</span>
+                          }
+                        </h3>
+                        @for (item of category.items; track item.href) {
+                          <a
+                            [routerLink]="item.href"
+                            routerLinkActive="bg-accent text-accent-foreground font-medium"
+                            class="block rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                          >
+                            {{ item.label }}
+                          </a>
+                        }
+                        @if (category.items.length === 0 && category.comingSoon) {
+                          <span class="block px-2 py-1 text-xs italic text-muted-foreground/70">
+                            Coming in v0.2
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
                 }
               </div>
             }
