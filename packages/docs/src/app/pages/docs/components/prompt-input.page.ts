@@ -49,6 +49,20 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
 
         <docs-section title="Anatomy" anchor="anatomy">
           <docs-code-block lang="text" [code]="anatomy" />
+          <docs-prose>
+            <p>Each subcomponent has its own reference page:</p>
+            <ul class="ml-5 list-disc space-y-1">
+              <li><a routerLink="/docs/components/prompt-input-textarea">PromptInputTextarea</a> — auto-expanding text input</li>
+              <li><a routerLink="/docs/components/prompt-input-submit">PromptInputSubmit</a> — 4-state submit button</li>
+              <li><a routerLink="/docs/components/prompt-input-toolbar">PromptInputToolbar</a> — flex wrapper for the bottom row</li>
+              <li><a routerLink="/docs/components/prompt-input-tools">PromptInputTools</a> — left-side group of actions</li>
+              <li><a routerLink="/docs/components/prompt-input-button">PromptInputButton</a> — toolbar action button</li>
+              <li><a routerLink="/docs/components/prompt-input-attachments">PromptInputAttachments</a> — attachment list container</li>
+              <li><a routerLink="/docs/components/prompt-input-attachment">PromptInputAttachment</a> — individual attachment card</li>
+              <li><a routerLink="/docs/components/prompt-input-action-menu">PromptInputActionMenu</a> — dropdown for less-frequent actions</li>
+              <li><a routerLink="/docs/components/prompt-input-model-select">PromptInputModelSelect</a> — model picker</li>
+            </ul>
+          </docs-prose>
         </docs-section>
 
         <docs-section title="Installation" anchor="install">

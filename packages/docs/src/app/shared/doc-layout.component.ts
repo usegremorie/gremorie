@@ -35,16 +35,7 @@ const NAV: NavSection[] = [
       {
         title: 'Chatbot',
         items: [
-          { label: 'PromptInput', href: '/docs/components/prompt-input' },
-          { label: 'PromptInputTextarea', href: '/docs/components/prompt-input-textarea' },
-          { label: 'PromptInputSubmit', href: '/docs/components/prompt-input-submit' },
-          { label: 'PromptInputToolbar', href: '/docs/components/prompt-input-toolbar' },
-          { label: 'PromptInputTools', href: '/docs/components/prompt-input-tools' },
-          { label: 'PromptInputButton', href: '/docs/components/prompt-input-button' },
-          { label: 'PromptInputAttachments', href: '/docs/components/prompt-input-attachments' },
-          { label: 'PromptInputAttachment', href: '/docs/components/prompt-input-attachment' },
-          { label: 'PromptInputActionMenu', href: '/docs/components/prompt-input-action-menu' },
-          { label: 'PromptInputModelSelect', href: '/docs/components/prompt-input-model-select' },
+          { label: 'Prompt Input', href: '/docs/components/prompt-input' },
         ],
       },
       {
