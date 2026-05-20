@@ -17,11 +17,11 @@ import { formatFileSize } from './attachment.utils';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    @if (formatted(); as size) {
-      <span class="text-xs text-muted-foreground">{{ size }}</span>
-    }
-  `,
+  template: `@if (formatted(); as size) {{{ size }}}`,
+  host: {
+    class: 'text-xs text-muted-foreground',
+    '[hidden]': '!formatted()',
+  },
 })
 export class AttachmentSize {
   protected readonly parent = inject(AttachmentItem);

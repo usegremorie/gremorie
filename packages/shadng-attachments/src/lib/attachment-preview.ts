@@ -49,43 +49,48 @@ const ICON_BY_CATEGORY: Record<
  *
  * Override entirely via the optional `fallback` TemplateRef input —
  * useful when you have your own icon system (lucide / heroicons / etc).
+ *
+ * Classes are applied to the host so the element behaves as the styled
+ * box itself (no extra wrapper layer between item and image/icon).
  */
 @Component({
   selector: 'attachment-preview',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div [class]="hostClass()">
-      @if (mediaCategory() === 'image' && imageSrc(); as src) {
-        <img [src]="src" [alt]="alt()" class="size-full object-cover" />
-      } @else if (fallback()) {
-        <ng-container *ngTemplateOutlet="fallback()!"></ng-container>
-      } @else {
-        <svg
-          [class]="iconClass()"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path [attr.d]="iconPath()"></path>
-        </svg>
-      }
-      @if (parent.loading()) {
-        <span class="absolute inset-0 animate-pulse bg-muted/60"></span>
-      }
-      @if (parent.errored()) {
-        <span class="absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-[10px] font-medium text-destructive-foreground">
-          Error
-        </span>
-      }
-    </div>
-  `,
   imports: [NgTemplateOutlet],
+  template: `
+    @if (mediaCategory() === 'image' && imageSrc(); as src) {
+      <img [src]="src" [alt]="alt()" class="size-full object-cover" />
+    } @else if (fallback(); as tmpl) {
+      <ng-container *ngTemplateOutlet="tmpl"></ng-container>
+    } @else {
+      <svg
+        [class]="iconClass()"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path [attr.d]="iconPath()"></path>
+      </svg>
+    }
+    @if (parent.loading()) {
+      <span class="absolute inset-0 animate-pulse bg-muted/60"></span>
+    }
+    @if (parent.errored()) {
+      <span class="absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-[10px] font-medium text-destructive-foreground">
+        Error
+      </span>
+    }
+  `,
+  host: {
+    '[class]': 'hostClass()',
+    '[attr.data-variant]': 'parent.resolvedVariant()',
+  },
 })
 export class AttachmentPreview {
   protected readonly parent = inject(AttachmentItem);

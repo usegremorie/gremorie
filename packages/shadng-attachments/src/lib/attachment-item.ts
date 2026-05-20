@@ -22,22 +22,22 @@ import {
 } from './attachment.utils';
 
 const itemVariants = cva(
-  'group/attachment relative inline-flex items-center gap-2 rounded-md border border-border bg-card text-card-foreground transition-colors motion-safe:animate-[shadng-fade-in_120ms_ease-out]',
+  'group/attachment relative rounded-md border border-border bg-card text-card-foreground transition-colors motion-safe:animate-[shadng-fade-in_120ms_ease-out]',
   {
     variants: {
       variant: {
-        grid: 'min-w-[180px] max-w-[260px] flex-col items-start gap-0 p-2',
-        inline: 'h-9 max-w-[180px] gap-1.5 px-2 py-1',
-        list: 'w-full gap-3 p-2',
+        // Column-flex card with thumbnail on top, info below.
+        grid: 'flex w-[220px] flex-col items-stretch gap-2 p-2',
+        // Compact badge — row-flex, small icon + text + remove.
+        inline: 'inline-flex h-9 max-w-[220px] items-center gap-1.5 px-2 py-1',
+        // Wide row — square thumbnail, info, remove.
+        list: 'flex w-full items-center gap-3 p-2',
       },
       errored: {
         true: 'border-destructive',
         false: '',
       },
     },
-    compoundVariants: [
-      { variant: 'grid', errored: false, class: '' },
-    ],
     defaultVariants: {
       variant: 'grid',
       errored: false,

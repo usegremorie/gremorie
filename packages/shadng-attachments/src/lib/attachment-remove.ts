@@ -13,8 +13,8 @@ import { AttachmentItem } from './attachment-item';
  * Remove button. Calls the parent {@link AttachmentItem}'s `removed`
  * output via DI — consumers can put it anywhere inside the item.
  *
- * Default styling positions it absolutely in the top-right for grid
- * variant (revealed on hover) and inline for list/inline variants.
+ * Position-aware: absolute top-right for the `grid` variant (revealed
+ * on hover), inline for `list` and `inline` variants.
  */
 @Component({
   selector: 'attachment-remove',
@@ -43,18 +43,30 @@ import { AttachmentItem } from './attachment-item';
       </svg>
     </button>
   `,
+  host: {
+    '[class]': 'hostClass()',
+  },
 })
 export class AttachmentRemove {
   protected readonly parent = inject(AttachmentItem);
 
   readonly label = input<string>('Remove attachment');
 
+  protected readonly hostClass = computed(() => {
+    const variant = this.parent.resolvedVariant();
+    // For grid variant the host floats absolutely; for others it sits inline.
+    if (variant === 'grid') {
+      return 'absolute right-1.5 top-1.5 z-10 inline-flex';
+    }
+    return 'inline-flex shrink-0';
+  });
+
   protected readonly buttonClass = computed(() => {
     const variant = this.parent.resolvedVariant();
     const base =
       'inline-flex size-6 shrink-0 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
     if (variant === 'grid') {
-      return `${base} absolute right-1.5 top-1.5 z-10 bg-background/80 opacity-0 backdrop-blur-sm group-hover/attachment:opacity-100 focus-visible:opacity-100`;
+      return `${base} bg-background/80 opacity-0 backdrop-blur-sm group-hover/attachment:opacity-100 focus-visible:opacity-100`;
     }
     return base;
   });
