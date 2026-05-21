@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { createClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
 export interface Conversation {
@@ -19,22 +19,15 @@ export interface DbMessage {
   created_at: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnySupabaseClient = SupabaseClient<any, any, any, any, any>;
-
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
-  private readonly client: AnySupabaseClient;
+  private readonly client = createClient(environment.supabaseUrl, environment.supabaseAnonKey, {
+    db: { schema: 'iap' },
+  });
 
   readonly conversations = signal<Conversation[]>([]);
   readonly user = signal<User | null>(null);
   readonly authError = signal<string | null>(null);
-
-  constructor() {
-    this.client = createClient(environment.supabaseUrl, environment.supabaseAnonKey, {
-      db: { schema: 'iap' },
-    });
-  }
 
   async init(): Promise<void> {
     await this.signIn();
