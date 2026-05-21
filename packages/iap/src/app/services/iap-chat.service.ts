@@ -153,7 +153,7 @@ export class IapChatService {
               ),
             );
           } else if (name === 'step') {
-            this.steps.update((steps) => [...steps, payload as StepEvent]);
+            this.steps.update((steps) => [...steps, payload as unknown as StepEvent]);
           } else if (name === 'error') {
             throw new Error(payload['message'] as string);
           }
