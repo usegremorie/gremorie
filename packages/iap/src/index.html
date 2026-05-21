@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>IAP Chat</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // Aplicar tema salvo antes de renderizar (evita flash)
+      (function () {
+        try {
+          var dark = localStorage.getItem('shadng-theme');
+          if (dark === 'dark') document.documentElement.classList.add('dark');
+          var preset = localStorage.getItem('shadng-color-preset');
+          if (preset && preset !== 'default') document.documentElement.dataset['colorTheme'] = preset;
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

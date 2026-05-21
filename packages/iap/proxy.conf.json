@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "SUBSTITUA_ENDPOINT_URL",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "info"
+  }
+}
