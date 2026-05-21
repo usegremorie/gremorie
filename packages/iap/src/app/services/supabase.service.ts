@@ -1,0 +1,109 @@
+import { Injectable, signal } from '@angular/core';
+import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
+
+export interface Conversation {
+  id: string;
+  user_id: string;
+  title: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DbMessage {
+  id: string;
+  conversation_id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  meta: Record<string, unknown> | null;
+  created_at: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnySupabaseClient = SupabaseClient<any, any, any, any, any>;
+
+@Injectable({ providedIn: 'root' })
+export class SupabaseService {
+  private readonly client: AnySupabaseClient;
+
+  readonly conversations = signal<Conversation[]>([]);
+  readonly user = signal<User | null>(null);
+  readonly authError = signal<string | null>(null);
+
+  constructor() {
+    this.client = createClient(environment.supabaseUrl, environment.supabaseAnonKey, {
+      db: { schema: 'iap' },
+    });
+  }
+
+  async init(): Promise<void> {
+    await this.signIn();
+    await this.loadConversations();
+  }
+
+  private async signIn(): Promise<void> {
+    try {
+      const { data, error } = await this.client.auth.signInWithPassword({
+        email: 'admin@kalvner.com',
+        password: '123456',
+      });
+      if (error) {
+        this.authError.set(error.message);
+      } else {
+        this.user.set(data.user);
+      }
+    } catch (err) {
+      this.authError.set(err instanceof Error ? err.message : 'Erro ao autenticar');
+    }
+  }
+
+  async loadConversations(): Promise<void> {
+    try {
+      const { data } = await this.client
+        .from('conversations')
+        .select('*')
+        .order('updated_at', { ascending: false });
+      this.conversations.set((data ?? []) as Conversation[]);
+    } catch {
+      // mantém lista atual em caso de falha
+    }
+  }
+
+  async createConversation(title: string): Promise<string> {
+    const userId = this.user()?.id;
+    const { data, error } = await this.client
+      .from('conversations')
+      .insert({ title: title.slice(0, 60), user_id: userId })
+      .select('id')
+      .single();
+    if (error) throw new Error(error.message);
+    await this.loadConversations();
+    return (data as { id: string }).id;
+  }
+
+  async insertMessage(
+    conversationId: string,
+    role: 'user' | 'assistant',
+    content: string,
+    meta?: Record<string, unknown>,
+  ): Promise<void> {
+    await this.client
+      .from('messages')
+      .insert({ conversation_id: conversationId, role, content, meta: meta ?? null });
+    // Atualiza updated_at da conversa
+    await this.client
+      .from('conversations')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', conversationId);
+    await this.loadConversations();
+  }
+
+  async loadMessages(conversationId: string): Promise<DbMessage[]> {
+    const { data } = await this.client
+      .from('messages')
+      .select('*')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true });
+    return (data ?? []) as DbMessage[];
+  }
+}
