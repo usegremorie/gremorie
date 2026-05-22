@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "SUBSTITUA_ENDPOINT_URL",
+    "target": "https://up-product.vercel.app",
     "secure": true,
     "changeOrigin": true,
     "logLevel": "info"

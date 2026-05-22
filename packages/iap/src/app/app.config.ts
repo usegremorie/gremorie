@@ -1,14 +1,14 @@
 import {
   APP_INITIALIZER,
   ApplicationConfig,
-  provideZoneChangeDetection,
+  provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { SupabaseService } from './services/supabase.service';
 import { ThemeService } from './services/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideBrowserGlobalErrorListeners(),
     {
       provide: APP_INITIALIZER,
       useFactory: (supabase: SupabaseService, theme: ThemeService) => () => {
