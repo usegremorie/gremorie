@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { SupabaseService } from './supabase.service';
+import { SupabaseService, type ContextItem } from './supabase.service';
 
 export interface IapMessage {
   id: string;
@@ -19,6 +19,8 @@ export interface StepEvent {
 
 export type ChatInputState = 'ready' | 'submitted' | 'streaming' | 'error';
 
+export type IapMode = 'auto' | 'ask' | 'analyse';
+
 @Injectable({ providedIn: 'root' })
 export class IapChatService {
   private readonly supabaseService = inject(SupabaseService);
@@ -28,6 +30,10 @@ export class IapChatService {
   readonly inputState = signal<ChatInputState>('ready');
   readonly conversationId = signal<string | undefined>(undefined);
   readonly error = signal<string | null>(null);
+  readonly mode = signal<IapMode>('auto');
+  // Contexto selecionado no menu "Selecionar contexto".
+  // Por ora apenas visual — ainda não enviado ao backend (aguarda suporte no /api/iap/chat).
+  readonly selectedContext = signal<ContextItem[]>([]);
 
   reset(): void {
     this.messages.set([]);
@@ -115,7 +121,7 @@ export class IapChatService {
           question,
           conversationId: convId,
           isFirstQuestion,
-          mode: 'auto',
+          mode: this.mode(),
           history,
         }),
       });

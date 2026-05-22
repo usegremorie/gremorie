@@ -19,6 +19,28 @@ export interface DbMessage {
   created_at: string;
 }
 
+export type ContextType = 'evaluation' | 'pdi' | 'survey' | 'department';
+
+export interface ContextItem {
+  id: string;
+  type: ContextType;
+  name: string;
+  date: string | null;
+}
+
+export interface ContextGroup {
+  type: ContextType;
+  label: string;
+  items: ContextItem[];
+}
+
+interface NamedDatedRow {
+  id: string;
+  name: string;
+  starts_at?: string | null;
+  sent_at?: string | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
   private readonly client = createClient(environment.supabaseUrl, environment.supabaseAnonKey, {
@@ -98,5 +120,79 @@ export class SupabaseService {
       .eq('conversation_id', conversationId)
       .order('created_at', { ascending: true });
     return (data ?? []) as DbMessage[];
+  }
+
+  /**
+   * Carrega os itens de contexto (avaliações, PDIs, pesquisas, departamentos)
+   * do schema `public` para o menu "Selecionar contexto". O client é
+   * configurado para o schema `iap`, então sobrescrevemos com `.schema('public')`.
+   */
+  async loadContextItems(): Promise<ContextGroup[]> {
+    const pub = this.client.schema('public');
+    const [evals, pdis, surveys, depts] = await Promise.all([
+      pub
+        .from('evaluations')
+        .select('id, name, starts_at')
+        .eq('is_archived', false)
+        .order('starts_at', { ascending: false }),
+      pub
+        .from('pdis')
+        .select('id, name, starts_at')
+        .order('starts_at', { ascending: false }),
+      pub
+        .from('surveys')
+        .select('id, name, sent_at')
+        .eq('is_archived', false)
+        .order('sent_at', { ascending: false }),
+      pub
+        .from('departments')
+        .select('id, name')
+        .order('name', { ascending: true }),
+    ]);
+
+    const groups: ContextGroup[] = [
+      {
+        type: 'evaluation',
+        label: 'Avaliações',
+        items: ((evals.data ?? []) as NamedDatedRow[]).map((r) => ({
+          id: r.id,
+          type: 'evaluation' as const,
+          name: r.name,
+          date: r.starts_at ?? null,
+        })),
+      },
+      {
+        type: 'pdi',
+        label: 'PDIs',
+        items: ((pdis.data ?? []) as NamedDatedRow[]).map((r) => ({
+          id: r.id,
+          type: 'pdi' as const,
+          name: r.name,
+          date: r.starts_at ?? null,
+        })),
+      },
+      {
+        type: 'survey',
+        label: 'Pesquisas',
+        items: ((surveys.data ?? []) as NamedDatedRow[]).map((r) => ({
+          id: r.id,
+          type: 'survey' as const,
+          name: r.name,
+          date: r.sent_at ?? null,
+        })),
+      },
+      {
+        type: 'department',
+        label: 'Departamentos',
+        items: ((depts.data ?? []) as NamedDatedRow[]).map((r) => ({
+          id: r.id,
+          type: 'department' as const,
+          name: r.name,
+          date: null,
+        })),
+      },
+    ];
+
+    return groups.filter((g) => g.items.length > 0);
   }
 }
