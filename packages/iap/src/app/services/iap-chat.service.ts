@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { SupabaseService } from './supabase.service';
 
 export interface IapMessage {
@@ -107,7 +108,7 @@ export class IapChatService {
       }
 
       // Inicia stream SSE via fetch (não usa EventSource — endpoint é POST)
-      const res = await fetch('/api/iap/chat', {
+      const res = await fetch(`${environment.apiUrl}/api/iap/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
