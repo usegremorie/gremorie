@@ -46,6 +46,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     phase: 1,
     available: true,
   },
+  {
+    name: 'scroll-area',
+    pkg: '@shadng/scroll-area',
+    description: 'Design-system styled scrollbar — wrapper over ngx-scrollbar.',
+    depends: ['ngx-scrollbar'],
+    phase: 1,
+    available: true,
+  },
   // Future:
   {
     name: 'response',

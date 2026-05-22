@@ -43,6 +43,12 @@ const NAV: NavSection[] = [
         ],
       },
       {
+        title: 'Layout',
+        items: [
+          { label: 'Scroll Area', href: '/docs/components/scroll-area' },
+        ],
+      },
+      {
         title: 'Code',
         items: [],
         comingSoon: true,
