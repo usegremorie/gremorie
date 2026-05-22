@@ -7,6 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BrnSeparatorImports } from '@spartan-ng/brain/separator';
+import { ScrollAreaImports } from '@shadng/scroll-area';
 import { IapChatService } from '../../services/iap-chat.service';
 import { SupabaseService } from '../../services/supabase.service';
 import type { Conversation } from '../../services/supabase.service';
@@ -30,7 +31,7 @@ function isSameDay(a: Date, b: Date): boolean {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BrnSeparatorImports, ConversationItem],
+  imports: [BrnSeparatorImports, ConversationItem, ScrollAreaImports],
   template: `
     <aside class="flex h-full w-[280px] shrink-0 flex-col border-r border-border bg-background">
       <!-- Header: New Chat -->
@@ -66,32 +67,34 @@ function isSameDay(a: Date, b: Date): boolean {
       <brn-separator decorative class="block h-px bg-border" />
 
       <!-- Conversation list -->
-      <nav class="flex flex-1 flex-col gap-4 overflow-y-auto p-3" aria-label="Conversas">
-        @if (supabaseService.authError(); as authErr) {
-          <p class="text-xs text-destructive">Falha ao autenticar: {{ authErr }}</p>
-        }
+      <ng-scrollbar shadng appearance="compact" visibility="hover" class="flex-1">
+        <nav class="flex flex-col gap-4 p-3" aria-label="Conversas">
+          @if (supabaseService.authError(); as authErr) {
+            <p class="text-xs text-destructive">Falha ao autenticar: {{ authErr }}</p>
+          }
 
-        @for (group of groupedConversations(); track group.label) {
-          <div class="flex flex-col gap-0.5">
-            <h2 class="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              {{ group.label }}
-            </h2>
-            @for (conv of group.items; track conv.id) {
-              <iap-conversation-item
-                [conversation]="conv"
-                [active]="chatService.conversationId() === conv.id"
-                (selected)="onConversationSelect($event)"
-              />
-            }
-          </div>
-        }
+          @for (group of groupedConversations(); track group.label) {
+            <div class="flex flex-col gap-0.5">
+              <h2 class="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {{ group.label }}
+              </h2>
+              @for (conv of group.items; track conv.id) {
+                <iap-conversation-item
+                  [conversation]="conv"
+                  [active]="chatService.conversationId() === conv.id"
+                  (selected)="onConversationSelect($event)"
+                />
+              }
+            </div>
+          }
 
-        @if (groupedConversations().length === 0) {
-          <p class="px-2 text-xs text-muted-foreground">
-            {{ searchQuery() ? 'Nenhuma conversa encontrada.' : 'Nenhuma conversa ainda.' }}
-          </p>
-        }
-      </nav>
+          @if (groupedConversations().length === 0) {
+            <p class="px-2 text-xs text-muted-foreground">
+              {{ searchQuery() ? 'Nenhuma conversa encontrada.' : 'Nenhuma conversa ainda.' }}
+            </p>
+          }
+        </nav>
+      </ng-scrollbar>
     </aside>
   `,
 })
