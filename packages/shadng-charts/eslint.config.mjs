@@ -11,7 +11,15 @@ export default [
       '@nx/dependency-checks': [
         'error',
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
+          // Only the publishable library source counts toward peerDependencies.
+          // Test/config/story files pull dev-only deps that consumers never get.
+          ignoredFiles: [
+            '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/vitest.config.{js,ts,mts}',
+            '{projectRoot}/src/test-setup.ts',
+            '{projectRoot}/**/*.spec.ts',
+            '{projectRoot}/**/*.stories.ts',
+          ],
         },
       ],
     },
