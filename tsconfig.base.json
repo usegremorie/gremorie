@@ -21,7 +21,8 @@
       "@shadng/core": ["./packages/shadng-core/src/index.ts"],
       "@shadng/attachments": ["./packages/shadng-attachments/src/index.ts"],
       "@shadng/prompt-input": ["./packages/shadng-prompt-input/src/index.ts"],
-      "@shadng/scroll-area": ["./packages/shadng-scroll-area/src/index.ts"]
+      "@shadng/scroll-area": ["./packages/shadng-scroll-area/src/index.ts"],
+      "@shadng/charts": ["./packages/shadng-charts/src/index.ts"]
     }
   }
 }
