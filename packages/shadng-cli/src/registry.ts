@@ -54,6 +54,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     phase: 1,
     available: true,
   },
+  {
+    name: 'charts',
+    pkg: '@shadng/charts',
+    description: 'Dashboard charts on D3 — headless primitives + styled presets (Area first).',
+    depends: ['@shadng/core'],
+    phase: 1,
+    available: true,
+  },
   // Future:
   {
     name: 'response',
