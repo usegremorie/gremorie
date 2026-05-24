@@ -6,3 +6,5 @@ export * from './lib/headless/domain';
 export * from './lib/headless/chart-context';
 export * from './lib/headless/area';
 export * from './lib/headless/axis';
+export * from './lib/headless/chart-frame';
+export * from './lib/headless/cartesian-grid';
