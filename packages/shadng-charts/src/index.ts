@@ -8,3 +8,4 @@ export * from './lib/headless/area';
 export * from './lib/headless/axis';
 export * from './lib/headless/chart-frame';
 export * from './lib/headless/cartesian-grid';
+export * from './lib/styled/area-chart';
