@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { computeYDomain, type SeriesReg } from './domain';
-import { linearScale, pointScale } from './scales';
+import { linearScale, niceMax, pointScale } from './scales';
 import { DEFAULT_MARGIN, type Datum, type Margin } from './types';
 
 /**
@@ -33,7 +33,12 @@ export class ChartContext {
     Math.max(0, this.height() - this.margin().top - this.margin().bottom),
   );
 
-  readonly yDomain = computed(() => computeYDomain(this.registry()));
+  readonly yDomain = computed<[number, number]>(() => {
+    const [min, rawMax] = computeYDomain(this.registry());
+    // Round the upper bound to a readable value so axis ticks land on
+    // clean numbers (e.g. 305 -> 400 -> ticks 0/100/200/300/400).
+    return [min, niceMax(rawMax)];
+  });
 
   readonly yScale = computed(() => linearScale(this.yDomain(), [this.innerHeight(), 0]));
 

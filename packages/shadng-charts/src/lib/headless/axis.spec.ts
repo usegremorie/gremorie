@@ -12,4 +12,9 @@ describe('computeTicks', () => {
   it('handles a zero max as a single [0]', () => {
     expect(computeTicks(0, 5)).toEqual([0]);
   });
+
+  it('guards against a non-positive count', () => {
+    expect(computeTicks(100, 0)).toEqual([0]);
+    expect(computeTicks(100, -2)).toEqual([0]);
+  });
 });

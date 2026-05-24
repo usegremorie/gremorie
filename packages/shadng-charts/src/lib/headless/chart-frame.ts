@@ -1,5 +1,6 @@
 import {
   afterNextRender,
+  computed,
   Directive,
   effect,
   ElementRef,
@@ -38,7 +39,7 @@ export class ChartFrame {
   readonly xKey = input.required<string>();
   readonly margin = input<Margin>(DEFAULT_MARGIN);
 
-  readonly viewBox = () => `0 0 ${this.ctx.width()} ${this.ctx.height()}`;
+  readonly viewBox = computed(() => `0 0 ${this.ctx.width()} ${this.ctx.height()}`);
 
   constructor() {
     effect(() => {

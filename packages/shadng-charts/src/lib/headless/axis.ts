@@ -4,7 +4,7 @@ import { formatValue } from './format';
 
 /** Pure: `count` evenly spaced tick values from 0..max inclusive. */
 export function computeTicks(max: number, count: number): number[] {
-  if (max <= 0) return [0];
+  if (max <= 0 || count <= 0) return [0];
   const step = max / count;
   return Array.from({ length: count + 1 }, (_, i) => Math.round(i * step * 1e6) / 1e6);
 }
