@@ -67,20 +67,22 @@ Area, Line, Bar (stacked/grouped), Pie/Donut, Radar, RadialBar, **Scatter/Bubble
 
 ## Composição (API)
 
-Estilo Recharts — composição por elementos:
+Estilo Recharts — composição por elementos. **Sem prefixo de lib**
+(decisão D-14 do projeto: preserva white-label — o usuário copia e é
+dono do código, não fica marcado como "shadng"):
 
 ```html
 <!-- Camada headless: controle total -->
-<svg shadngChartFrame [data]="data">
-  <g shadngCartesianGrid></g>
-  <g shadngXAxis dataKey="month"></g>
-  <g shadngYAxis [tickFormat]="'currency:BRL'"></g>
-  <path shadngArea dataKey="sales" color="var(--chart-1)"></path>
-  <path shadngLine dataKey="profit" color="var(--chart-2)"></path>
+<svg chart-frame [data]="data">
+  <g cartesian-grid></g>
+  <g x-axis dataKey="month"></g>
+  <g y-axis [tickFormat]="'currency:BRL'"></g>
+  <path area dataKey="sales" color="var(--chart-1)"></path>
+  <path line dataKey="profit" color="var(--chart-2)"></path>
 </svg>
 
 <!-- Camada styled: uma linha -->
-<shadng-area-chart [data]="data" [config]="chartConfig" />
+<area-chart [data]="data" [config]="chartConfig" />
 ```
 
 ## Data flow (signals, zoneless)
