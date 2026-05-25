@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { PromptInputDemo } from './prompt-input-demo';
-import { AreaChartDemo } from './area-chart-demo';
+import { ChartsDemo } from './charts-demo';
 
 @Component({
-  imports: [PromptInputDemo, AreaChartDemo],
+  imports: [PromptInputDemo, ChartsDemo],
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <main class="mx-auto flex max-w-2xl flex-col gap-6 p-8">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
       <header class="flex flex-col gap-2">
         <h1 class="text-3xl font-semibold tracking-tight text-foreground">
           {{ title }}
@@ -19,8 +19,7 @@ import { AreaChartDemo } from './area-chart-demo';
         </p>
       </header>
 
-      <app-area-chart-demo />
-
+      <app-charts-demo />
 
       <app-prompt-input-demo
         label="Ready"
