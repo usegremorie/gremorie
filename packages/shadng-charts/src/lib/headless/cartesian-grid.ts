@@ -4,12 +4,14 @@ import { computeTicks } from './axis';
 
 interface GridLine {
   y: number;
+  x1: number;
+  x2: number;
 }
 
 /**
  * Horizontal gridlines aligned to the Y ticks. Apply to a `<g>` inside a
- * `[chartFrame]` SVG. Exposes `lines()`; the styled layer draws them so the
- * headless layer stays visual-free.
+ * `[chartFrame]` SVG. Exposes `lines()` (each spanning the plot width); the
+ * styled layer draws them so the headless layer stays visual-free.
  */
 @Directive({
   selector: 'g[cartesianGrid]',
@@ -22,6 +24,8 @@ export class CartesianGrid {
   readonly lines = computed<GridLine[]>(() => {
     const [, max] = this.ctx.yDomain();
     const y = this.ctx.yScale();
-    return computeTicks(max, 4).map((value) => ({ y: y(value) }));
+    const x1 = this.ctx.plotLeft();
+    const x2 = this.ctx.plotRight();
+    return computeTicks(max, 4).map((value) => ({ y: y(value), x1, x2 }));
   });
 }

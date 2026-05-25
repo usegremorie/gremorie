@@ -50,7 +50,8 @@ export class Area implements OnInit, OnDestroy {
       this.dataKey(),
       (v) => this.ctx.xScale()(v),
       (v) => this.ctx.yScale()(v),
-      this.ctx.innerHeight(),
+      // Baseline = pixel position of value 0 (bottom of the plot band).
+      this.ctx.yScale()(0),
     ),
   );
 

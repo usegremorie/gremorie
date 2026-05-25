@@ -31,6 +31,9 @@ export class YAxis {
   readonly count = 4;
   readonly format = '';
 
+  /** X position for right-aligned tick labels, inside the left gutter. */
+  readonly labelX = computed(() => Math.max(0, this.ctx.plotLeft() - 6));
+
   readonly ticks = computed<YTick[]>(() => {
     const [, max] = this.ctx.yDomain();
     const y = this.ctx.yScale();
@@ -50,6 +53,9 @@ export class YAxis {
 })
 export class XAxis {
   private readonly ctx = inject(ChartContext);
+
+  /** Y baseline for tick labels, inside the bottom gutter. */
+  readonly labelY = computed(() => this.ctx.plotBottom() + 16);
 
   readonly ticks = computed<XTick[]>(() => {
     const x = this.ctx.xScale();

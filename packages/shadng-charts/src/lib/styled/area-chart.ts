@@ -37,8 +37,8 @@ interface SeriesView {
         <svg:g cartesianGrid #grid="cartesianGrid">
           @for (line of grid.lines(); track $index) {
             <svg:line
-              x1="0"
-              x2="100%"
+              [attr.x1]="line.x1"
+              [attr.x2]="line.x2"
               [attr.y1]="line.y"
               [attr.y2]="line.y"
               stroke="currentColor"
@@ -61,8 +61,7 @@ interface SeriesView {
           @for (t of x.ticks(); track t.label) {
             <svg:text
               [attr.x]="t.x"
-              y="100%"
-              dy="-2"
+              [attr.y]="x.labelY()"
               text-anchor="middle"
               class="fill-muted-foreground text-[10px]"
             >{{ t.label }}</svg:text>
@@ -72,9 +71,10 @@ interface SeriesView {
         <svg:g yAxis #y="yAxis">
           @for (t of y.ticks(); track t.value) {
             <svg:text
-              x="0"
+              [attr.x]="y.labelX()"
               [attr.y]="t.y"
-              dy="-2"
+              text-anchor="end"
+              dominant-baseline="middle"
               class="fill-muted-foreground text-[10px]"
             >{{ t.label }}</svg:text>
           }

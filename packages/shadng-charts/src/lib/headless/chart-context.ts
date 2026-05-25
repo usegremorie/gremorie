@@ -33,19 +33,33 @@ export class ChartContext {
     Math.max(0, this.height() - this.margin().top - this.margin().bottom),
   );
 
+  // Plot bounds in absolute SVG coordinates. Scales map into these so the
+  // margins become real gutters (Y labels on the left, X labels below) instead
+  // of dead space — without needing a `<g transform="translate(...)">` wrapper.
+  readonly plotLeft = computed(() => this.margin().left);
+  readonly plotRight = computed(() =>
+    Math.max(this.margin().left, this.width() - this.margin().right),
+  );
+  readonly plotTop = computed(() => this.margin().top);
+  readonly plotBottom = computed(() =>
+    Math.max(this.margin().top, this.height() - this.margin().bottom),
+  );
+
   readonly yDomain = computed<[number, number]>(() => {
     const [min, rawMax] = computeYDomain(this.registry());
     // Round the upper bound to a readable value so axis ticks land on
-    // clean numbers (e.g. 305 -> 400 -> ticks 0/100/200/300/400).
+    // clean numbers (e.g. 305 -> 500 -> ticks 0/125/250/375/500).
     return [min, niceMax(rawMax)];
   });
 
-  readonly yScale = computed(() => linearScale(this.yDomain(), [this.innerHeight(), 0]));
+  readonly yScale = computed(() =>
+    linearScale(this.yDomain(), [this.plotBottom(), this.plotTop()]),
+  );
 
   readonly xScale = computed(() =>
     pointScale(
       this.data().map((d) => String(d[this.xKey()])),
-      [0, this.innerWidth()],
+      [this.plotLeft(), this.plotRight()],
     ),
   );
 }
