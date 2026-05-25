@@ -4,6 +4,7 @@
 @source '../../shadng-core/src/**/*.{ts,html}';
 @source '../../shadng-attachments/src/**/*.{ts,html}';
 @source '../../shadng-prompt-input/src/**/*.{ts,html}';
+@source '../../shadng-charts/src/**/*.{ts,html}';
 
 html,
 body {

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { PromptInputDemo } from './prompt-input-demo';
+import { AreaChartDemo } from './area-chart-demo';
 
 @Component({
-  imports: [PromptInputDemo],
+  imports: [PromptInputDemo, AreaChartDemo],
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -17,6 +18,9 @@ import { PromptInputDemo } from './prompt-input-demo';
           the four states of <code class="font-mono">PromptInput</code>.
         </p>
       </header>
+
+      <app-area-chart-demo />
+
 
       <app-prompt-input-demo
         label="Ready"
