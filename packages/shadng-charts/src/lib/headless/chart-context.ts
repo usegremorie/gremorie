@@ -26,6 +26,9 @@ export class ChartContext {
     this.registry.update((r) => r.filter((s) => s.key !== key));
   }
 
+  /** Registered series keys in registration order — used for grouped layouts. */
+  readonly seriesKeys = computed(() => this.registry().map((s) => s.key));
+
   readonly innerWidth = computed(() =>
     Math.max(0, this.width() - this.margin().left - this.margin().right),
   );
