@@ -1,0 +1,20 @@
+{
+  "name": "rx-core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/rx-core/src",
+  "projectType": "library",
+  "tags": ["scope:lib", "type:core", "framework:react"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "packages/rx-core",
+        "command": "tsc -p tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

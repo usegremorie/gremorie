@@ -1,0 +1,277 @@
+---
+title: PromptInput
+description: Rich prompt input - textarea, toolbar, submit with lifecycle states (ready / submitted / streaming / stop / error).
+---
+
+`PromptInput` is the **input area** of an AI chat. It auto-resizes the
+textarea, exposes a toolbar slot for actions (attach, mic, web search,
+model select), and renders a Submit button whose icon flips by status -
+`ready` shows an arrow, `submitted` shows a spinner, `streaming` shows
+a stop control.
+
+Two editions ship today:
+
+- **Angular**: `@gremorie/ng-ai` - full family including action menus,
+  model selector, attachment hover-card previews.
+- **React**: `@gremorie/rx-ai` (pilot) - state machine, drag-drop,
+  paste-to-attach, status-driven Submit. Action menus, hover-card
+  previews, model selector, and command palette land in the next
+  iteration once rx-forms and rx-overlays ship.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+npx gremorie add ng-ai
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-ai
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+import {
+  PromptInput,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputToolbar,
+} from '@gremorie/ng-ai';
+
+@Component({
+  selector: 'app-chat-box',
+  standalone: true,
+  imports: [PromptInput, PromptInputTextarea, PromptInputToolbar, PromptInputSubmit],
+  template: `
+    <gremorie-prompt-input [(value)]="draft" (gremoriePromptSubmit)="onSubmit($event)">
+      <gremorie-prompt-input-textarea placeholder="Ask anything"></gremorie-prompt-input-textarea>
+      <gremorie-prompt-input-toolbar>
+        <gremorie-prompt-input-submit></gremorie-prompt-input-submit>
+      </gremorie-prompt-input-toolbar>
+    </gremorie-prompt-input>
+  `,
+})
+export class ChatBoxComponent {
+  draft = signal('');
+  onSubmit(event: PromptInputSubmitEvent) {
+    sendMessage(event.value, event.attachments);
+  }
+}
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  PromptInput,
+  PromptInputBody,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  type ChatStatus,
+} from "@gremorie/rx-ai";
+
+export function ChatBox() {
+  const [status, setStatus] = useState<ChatStatus>("ready");
+
+  return (
+    <PromptInput
+      onSubmit={(message) => sendMessage(message.text, message.files)}
+    >
+      <PromptInputBody>
+        <PromptInputTextarea placeholder="Ask anything" />
+        <PromptInputFooter>
+          <span />
+          <PromptInputSubmit status={status} />
+        </PromptInputFooter>
+      </PromptInputBody>
+    </PromptInput>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+PromptInput (root form, owns state machine)
+  PromptInputBody
+    PromptInputAttachments (optional, lists attached files)
+    PromptInputHeader (optional, model selector slot)
+    PromptInputTextarea (auto-resize, Enter submits, Shift+Enter newline)
+    PromptInputFooter
+      PromptInputTools (left, action buttons)
+        PromptInputButton (attach, mic, web search, ...)
+      PromptInputSubmit (right, status-driven)
+```
+
+## Composition with toolbar
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+template: `
+  <gremorie-prompt-input [(value)]="draft" (gremoriePromptSubmit)="onSubmit($event)">
+    <gremorie-prompt-input-textarea></gremorie-prompt-input-textarea>
+    <gremorie-prompt-input-toolbar>
+      <gremorie-prompt-input-tools>
+        <gremorie-prompt-input-action-menu></gremorie-prompt-input-action-menu>
+        <button type="button"><ng-icon name="lucideMic"></ng-icon></button>
+        <button type="button"><ng-icon name="lucideGlobe"></ng-icon> Web</button>
+      </gremorie-prompt-input-tools>
+      <gremorie-prompt-input-model-select [options]="models"></gremorie-prompt-input-model-select>
+      <gremorie-prompt-input-submit [status]="status()"></gremorie-prompt-input-submit>
+    </gremorie-prompt-input-toolbar>
+  </gremorie-prompt-input>
+`
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Globe, Mic, Paperclip } from "lucide-react";
+import {
+  PromptInput,
+  PromptInputBody,
+  PromptInputButton,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputTools,
+} from "@gremorie/rx-ai";
+
+<PromptInput onSubmit={handle}>
+  <PromptInputBody>
+    <PromptInputTextarea />
+    <PromptInputFooter>
+      <PromptInputTools>
+        <PromptInputButton aria-label="Attach"><Paperclip /></PromptInputButton>
+        <PromptInputButton aria-label="Mic"><Mic /></PromptInputButton>
+        <PromptInputButton aria-label="Web"><Globe /> Web</PromptInputButton>
+      </PromptInputTools>
+      <PromptInputSubmit status={status} />
+    </PromptInputFooter>
+  </PromptInputBody>
+</PromptInput>
+```
+
+</Tab>
+
+</Tabs>
+
+## States
+
+`status` drives the Submit button icon and behaviour.
+
+| Status        | Icon              | Behaviour                                                       |
+| ------------- | ----------------- | --------------------------------------------------------------- |
+| `ready`       | Arrow up          | Submit normally on Enter or click. Disabled if textarea empty.  |
+| `submitted`   | Spinner           | Awaiting response. Submit disabled, prevents double submission. |
+| `streaming`   | Stop (square)     | Allow the user to interrupt generation.                         |
+| `error`       | X                 | Indicates an error - host can retry on click.                   |
+
+## Drag-drop
+
+Both editions accept files dragged onto the form. Pass `globalDrop` to
+accept drops anywhere on the document.
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+template: `
+  <gremorie-prompt-input
+    [globalDrop]="true"
+    [accept]="'image/*'"
+    [maxFileSize]="5_000_000"
+  >
+    ...
+  </gremorie-prompt-input>
+`
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+<PromptInput
+  globalDrop
+  accept="image/*"
+  maxFileSize={5_000_000}
+  onSubmit={handle}
+>
+  ...
+</PromptInput>
+```
+
+</Tab>
+
+</Tabs>
+
+## When to use
+
+- The input area in any AI chat surface.
+- A "compose" surface with upload, voice input, and web-search shortcuts.
+
+## When not to use
+
+- A plain text input - use a native textarea or your design system's
+  Textarea primitive.
+- A multi-field form (signup, settings) - use Form.
+
+## Best practices
+
+- **Always pass `status`** to Submit. Without it, the icon stays on
+  `ready` even while a response is streaming.
+- **Disable the textarea** while `submitted` or `streaming`. Both
+  editions support this via the textarea `disabled` prop.
+- **Use a meaningful placeholder.** "Ask anything..." beats "Message".
+- **Constrain attachments** with `accept` and `maxFileSize` - never
+  trust the client.
+
+## Accessibility
+
+- Both editions render a real `<form>` element. Enter submits, Shift+Enter
+  inserts a newline. Backspace on an empty textarea removes the last
+  attachment.
+- Submit carries `aria-label` based on `status` ("Submit message",
+  "Stop generation").
+- Drag-drop zones are focusable and announce file additions to assistive
+  tech via standard `<input type="file">` semantics.
+
+## Reference
+
+- Angular edition: `packages/ng-ai/src/lib/prompt-input/` in the monorepo.
+- React edition: `packages/rx-ai/src/lib/prompt-input/` in the monorepo.
+- Registry items: `https://gremorie.com/r/ng/ng-ai.json` and
+  `https://gremorie.com/r/react/rx-ai.json`.

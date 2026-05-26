@@ -1,0 +1,6 @@
+{
+  "title": "AI",
+  "description": "AI chat primitives - PromptInput, Attachments, and friends",
+  "icon": "Sparkles",
+  "pages": ["prompt-input"]
+}

@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 
 import kleur from 'kleur';
 
+import { detectFramework } from '../lib/framework-detect.js';
 import {
   createRegistryClient,
   type RegistryFramework,
@@ -19,13 +20,15 @@ export async function addCommand(
   options: AddOptions = {},
 ): Promise<void> {
   const cwd = process.cwd();
-  const framework: RegistryFramework = options.framework ?? 'ng';
+  const framework: RegistryFramework =
+    options.framework ?? detectFramework(cwd) ?? 'ng';
   const client = createRegistryClient();
 
   console.log();
   console.log(kleur.bold().cyan(`gremorie add ${name}`));
-  console.log(kleur.dim(`  registry: ${client.baseUrl}`));
-  console.log(kleur.dim(`  target:   ${cwd}`));
+  console.log(kleur.dim(`  registry:  ${client.baseUrl}`));
+  console.log(kleur.dim(`  framework: ${framework}${options.framework ? '' : ' (auto-detected)'}`));
+  console.log(kleur.dim(`  target:    ${cwd}`));
   console.log();
 
   // 1. Fetch the item plus all transitive registryDependencies.

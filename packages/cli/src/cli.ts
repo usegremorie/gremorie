@@ -24,9 +24,12 @@ program
 
 program
   .command('add <component>')
-  .description('Install a Gremorie registry item (e.g. ng-prompt-input).')
+  .description('Install a Gremorie registry item (e.g. ng-ai, rx-ai).')
   .option('--dry-run', 'Print what would happen without writing files.')
-  .option('--framework <fw>', 'Framework to install for (ng | react | vue).', 'ng')
+  .option(
+    '--framework <fw>',
+    'Framework to install for (ng | react | vue). Auto-detected from your package.json when omitted.',
+  )
   .action(async (component: string, options) => {
     await addCommand(component, {
       dryRun: options.dryRun,
@@ -55,7 +58,9 @@ ${kleur.dim('Registry URL:')}
 
 ${kleur.dim('Examples:')}
   ${kleur.cyan('gremorie init')}                    Set up theme and deps
-  ${kleur.cyan('gremorie add ng-prompt-input')}     Install the PromptInput family
+  ${kleur.cyan('gremorie add ng-ai')}               Install the Angular AI primitives (PromptInput + Attachments)
+  ${kleur.cyan('gremorie add rx-ai')}               Install the React AI primitives (PromptInput pilot)
+  ${kleur.cyan('gremorie add ng-data')}             Install Angular charts
   ${kleur.cyan('gremorie list')}                    See what is available
 `,
   );

@@ -16,11 +16,11 @@
       "registryDependencies": []
     },
     {
-      "name": "ng-attachments",
+      "name": "ng-ai",
       "type": "registry:block",
       "framework": "ng",
-      "title": "Attachments",
-      "description": "Composable attachment list with grid, inline, and list variants. Built on top of ng-core.",
+      "title": "AI (Angular)",
+      "description": "AI primitives for Angular - PromptInput family with state machine and drag-drop, plus composable Attachments parts. The cornerstone of any AI chat surface.",
       "categories": [
         "ai",
         "forms"
@@ -30,44 +30,55 @@
       ]
     },
     {
-      "name": "ng-prompt-input",
+      "name": "ng-containers",
       "type": "registry:block",
       "framework": "ng",
-      "title": "Prompt Input",
-      "description": "Prompt input family with state machine, drag-drop, and submit. The cornerstone of any AI chat surface.",
+      "title": "Containers (Angular)",
+      "description": "Container primitives - ScrollArea wrapper over ngx-scrollbar styled to match Gremorie.",
       "categories": [
-        "ai",
-        "forms"
-      ],
-      "registryDependencies": [
-        "ng-core",
-        "ng-attachments"
-      ]
-    },
-    {
-      "name": "ng-scroll-area",
-      "type": "registry:block",
-      "framework": "ng",
-      "title": "Scroll Area",
-      "description": "Design-system styled scrollbar — wrapper over ngx-scrollbar with the Gremorie look.",
-      "categories": [
+        "containers",
         "layout"
       ],
       "registryDependencies": []
     },
     {
-      "name": "ng-charts",
+      "name": "ng-data",
       "type": "registry:block",
       "framework": "ng",
-      "title": "Charts",
-      "description": "Charts for dashboards and generative UI. Headless primitives plus styled presets (area, line, bar, scatter, pie, radar, radial) on D3.",
+      "title": "Data (Angular)",
+      "description": "Data visualisation primitives - charts on D3, headless plus styled presets (area, line, bar, scatter, pie, radar, radial).",
       "categories": [
-        "ai",
         "data",
         "charts"
       ],
       "registryDependencies": [
         "ng-core"
+      ]
+    },
+    {
+      "name": "rx-core",
+      "type": "registry:block",
+      "framework": "react",
+      "title": "Core (React)",
+      "description": "React cross-category utilities - cn() helper for class name merging with Tailwind conflict resolution.",
+      "categories": [
+        "core",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-ai",
+      "type": "registry:block",
+      "framework": "react",
+      "title": "AI (React)",
+      "description": "React AI primitives - PromptInput family with state machine and drag-drop (pilot edition). Cornerstone of any AI chat surface.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-core"
       ]
     }
   ]

@@ -10,8 +10,10 @@
   },
   "keywords": ["angular", "ai", "ui", "shadcn", "prompt", "chat", "attachments"],
   "peerDependencies": {
-    "@angular/core": "^21.2.0",
+    "@analogjs/vitest-angular": "^2.5.1",
     "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
     "@gremorie/ng-core": "^0.0.1",
     "class-variance-authority": "^0.7.1"
   },

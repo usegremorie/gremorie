@@ -1,11 +1,12 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "ng-scroll-area",
+  "name": "ng-containers",
   "type": "registry:block",
   "framework": "ng",
-  "title": "Scroll Area",
-  "description": "Design-system styled scrollbar — wrapper over ngx-scrollbar with the Gremorie look.",
+  "title": "Containers (Angular)",
+  "description": "Container primitives - ScrollArea wrapper over ngx-scrollbar styled to match Gremorie.",
   "categories": [
+    "containers",
     "layout"
   ],
   "dependencies": [
@@ -16,16 +17,16 @@
   "registryDependencies": [],
   "files": [
     {
-      "path": "src/lib/scroll-area.ts",
+      "path": "src/lib/scroll-area/scroll-area.ts",
       "content": "import { Directive } from '@angular/core';\n\n/**\n * Gremorie NG ScrollArea — a thin design-system styling layer over ngx-scrollbar's\n * `<ng-scrollbar>`. It applies the Gremorie NG scrollbar look (thin, rounded,\n * `--border`-colored thumb) through ngx-scrollbar's own CSS custom properties,\n * so the heavy lifting (cross-browser overlay scrollbar, smooth scrolling) is\n * delegated to ngx-scrollbar while Gremorie NG owns the visual tokens.\n *\n * Override any token per-instance with a plain `style` binding, e.g.\n * `[style.--scrollbar-thickness]=\"10\"`.\n *\n * @example\n * ```html\n * <ng-scrollbar gremorie class=\"h-72 rounded-md border border-border\">\n *   <div class=\"p-4\">…long content…</div>\n * </ng-scrollbar>\n * ```\n */\n@Directive({\n  selector: 'ng-scrollbar[gremorie], ng-scrollbar[gremorieScrollbar]',\n  host: {\n    'data-slot': 'scroll-area',\n    class: 'block',\n    '[style.--scrollbar-border-radius]': '\"100px\"',\n    '[style.--scrollbar-offset]': '3',\n    '[style.--scrollbar-thumb-color]': '\"var(--border)\"',\n    '[style.--scrollbar-thumb-hover-color]': '\"var(--border)\"',\n    '[style.--scrollbar-thickness]': '7',\n  },\n})\nexport class ScrollArea {}\n",
       "type": "registry:component",
-      "target": "src/app/gremorie/scroll-area/lib/scroll-area.ts"
+      "target": "src/app/gremorie/containers/lib/scroll-area/scroll-area.ts"
     },
     {
       "path": "src/index.ts",
-      "content": "import { NgScrollbarModule } from 'ngx-scrollbar';\nimport { ScrollArea } from './lib/scroll-area';\n\nexport { ScrollArea } from './lib/scroll-area';\nexport { NgScrollbar, NgScrollbarModule } from 'ngx-scrollbar';\n\n/**\n * Convenience bundle — import this single const to get both the ngx-scrollbar\n * `<ng-scrollbar>` component and the Gremorie NG `[gremorie]` styling directive.\n *\n * @example\n * ```ts\n * @Component({ imports: [ScrollAreaImports], ... })\n * ```\n */\nexport const ScrollAreaImports = [NgScrollbarModule, ScrollArea];\n",
+      "content": "import { NgScrollbarModule } from 'ngx-scrollbar';\nimport { ScrollArea } from './lib/scroll-area/scroll-area';\n\n// Scroll Area\nexport { ScrollArea } from './lib/scroll-area/scroll-area';\nexport { NgScrollbar, NgScrollbarModule } from 'ngx-scrollbar';\n\n/**\n * Convenience bundle - import this single const to get both the ngx-scrollbar\n * <ng-scrollbar> component and the Gremorie [gremorie] styling directive.\n *\n * @example\n * import { ScrollAreaImports } from '@gremorie/ng-containers';\n *\n * @Component({ imports: [ScrollAreaImports], ... })\n */\nexport const ScrollAreaImports = [NgScrollbarModule, ScrollArea];\n",
       "type": "registry:lib",
-      "target": "src/app/gremorie/scroll-area/index.ts"
+      "target": "src/app/gremorie/containers/index.ts"
     }
   ],
   "cssVars": {},
@@ -33,11 +34,11 @@
     "whenToUse": "Any scrollable region that should match the Gremorie look and feel - long chat threads, code blocks, virtualised lists.",
     "whenNotToUse": "Document-level scroll (the browser handles that natively). Or short regions where the native scrollbar is fine.",
     "bestPractices": [
-      "Wrap the scrollable content in `gremorie-scroll-area` and set an explicit height on the host.",
-      "Use `ScrollAreaImports` instead of importing the directive and ngx-scrollbar module separately."
+      "Wrap the scrollable content in gremorie-scroll-area and set an explicit height on the host.",
+      "Use ScrollAreaImports instead of importing the directive and ngx-scrollbar module separately."
     ],
     "antipatterns": [
-      "Setting `overflow: scroll` on the host and nesting `gremorie-scroll-area` - they fight each other.",
+      "Setting overflow: scroll on the host and nesting gremorie-scroll-area - they fight each other.",
       "Using the scroll area for the whole app shell - body scroll is usually the right answer."
     ],
     "examples": [

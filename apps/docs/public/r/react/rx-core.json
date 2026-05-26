@@ -1,0 +1,55 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-core",
+  "type": "registry:block",
+  "framework": "react",
+  "title": "Core (React)",
+  "description": "React cross-category utilities - cn() helper for class name merging with Tailwind conflict resolution.",
+  "categories": [
+    "core",
+    "primitives"
+  ],
+  "dependencies": [
+    "react",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/utils.ts",
+      "content": "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]): string {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib",
+      "target": "src/components/gremorie/core/lib/utils.ts"
+    },
+    {
+      "path": "src/index.ts",
+      "content": "export { cn } from './lib/utils';\n",
+      "type": "registry:lib",
+      "target": "src/components/gremorie/core/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any React project consuming Gremorie components - provides the cn() utility for merging class names with Tailwind merge.",
+    "whenNotToUse": "Plain class concatenation when no Tailwind conflict resolution is needed - a simple template literal is enough.",
+    "bestPractices": [
+      "Use cn() inside React components when composing className from props with conditional or array inputs.",
+      "Keep rx-core small - new utilities only when they are genuinely cross-category."
+    ],
+    "antipatterns": [
+      "Importing clsx + twMerge directly instead of cn() - defeats the point of having a shared helper."
+    ],
+    "api": {
+      "inputs": [],
+      "outputs": []
+    },
+    "examples": [
+      {
+        "title": "Compose class names",
+        "code": "import { cn } from '@gremorie/rx-core';\n\nfunction Button({ className, ...props }) {\n  return (\n    <button\n      className={cn('rounded-md bg-primary px-3 py-1', className)}\n      {...props}\n    />\n  );\n}\n"
+      }
+    ]
+  }
+}

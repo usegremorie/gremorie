@@ -1,0 +1,31 @@
+{
+  "name": "@gremorie/rx-ai",
+  "version": "0.0.1",
+  "description": "React AI primitives for Gremorie - PromptInput, Attachments. Pilot edition.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-ai"
+  },
+  "keywords": ["react", "ai", "ui", "shadcn", "prompt", "chat"],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "peerDependencies": {
+    "@gremorie/rx-core": "^0.0.1",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}
