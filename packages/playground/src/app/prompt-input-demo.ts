@@ -14,8 +14,6 @@ import {
   AttachmentPreview,
   AttachmentRemove,
   type AttachmentData,
-} from '@gremorie/ng-attachments';
-import {
   PromptInput,
   PromptInputActionMenu,
   PromptInputAttachmentError,
@@ -27,7 +25,7 @@ import {
   PromptInputTextarea,
   PromptInputToolbar,
   PromptInputTools,
-} from '@gremorie/ng-prompt-input';
+} from '@gremorie/ng-ai';
 
 const MODELS: readonly PromptInputModelOption[] = [
   {

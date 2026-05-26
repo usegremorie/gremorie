@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { NgScrollbar, ScrollArea } from '@gremorie/ng-scroll-area';
+import { NgScrollbar, ScrollArea } from '@gremorie/ng-containers';
 
 import { ApiRow, DocsApiTable } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -85,7 +85,7 @@ import { DocsPreview } from '../../../shared/preview.component';
 export default class ScrollAreaPage {
   protected readonly items = Array.from({ length: 24 }, (_, i) => 'Item ' + (i + 1));
 
-  protected readonly install = 'npm install ngx-scrollbar @gremorie/ng-scroll-area';
+  protected readonly install = 'npm install ngx-scrollbar @gremorie/ng-containers';
 
   protected readonly installCli = 'npx gremorie add scroll-area';
 
@@ -101,7 +101,7 @@ export default class ScrollAreaPage {
 
   protected readonly component = [
     "import { Component } from '@angular/core';",
-    "import { ScrollAreaImports } from '@gremorie/ng-scroll-area';",
+    "import { ScrollAreaImports } from '@gremorie/ng-containers';",
     '',
     '@Component({',
     "  selector: 'app-example',",

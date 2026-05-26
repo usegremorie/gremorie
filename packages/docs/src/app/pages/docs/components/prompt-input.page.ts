@@ -6,7 +6,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@gremorie/ng-prompt-input';
+} from '@gremorie/ng-ai';
 
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -68,7 +68,7 @@ import { DocsPreview } from '../../../shared/preview.component';
         </docs-section>
 
         <docs-section title="Installation" anchor="install">
-          <docs-code-block lang="bash" code="npm install @gremorie/ng-prompt-input" />
+          <docs-code-block lang="bash" code="npm install @gremorie/ng-ai" />
         </docs-section>
 
         <docs-section title="Basic usage" anchor="usage">
@@ -210,7 +210,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@gremorie/ng-prompt-input';
+} from '@gremorie/ng-ai';
 
 @Component({
   selector: 'app-chat',

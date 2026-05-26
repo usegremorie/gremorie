@@ -19,12 +19,13 @@ gremorie/
 │   ├── tokens/             # visual token editor (Phase 5: depends on @gremorie/react)
 │   └── mcp/                # MCP server (Phase 4)
 ├── packages/
-│   ├── ng-core/            # @gremorie/ng-core — Angular core
-│   ├── ng-prompt-input/    # @gremorie/ng-prompt-input — AI input
-│   ├── ng-charts/          # @gremorie/ng-charts — chart primitives
-│   ├── ng-attachments/     # @gremorie/ng-attachments
-│   ├── ng-scroll-area/     # @gremorie/ng-scroll-area
-│   ├── cli/                # @gremorie/cli — the `gremorie` CLI
+│   ├── ng-core/            # @gremorie/ng-core (Angular cross-category utilities)
+│   ├── ng-ai/              # @gremorie/ng-ai (PromptInput, Attachments)
+│   ├── ng-containers/      # @gremorie/ng-containers (ScrollArea, ...)
+│   ├── ng-data/            # @gremorie/ng-data (Charts on D3)
+│   ├── rx-core/            # @gremorie/rx-core (React cross-category utilities)
+│   ├── rx-ai/              # @gremorie/rx-ai (React AI primitives, starting with PromptInput)
+│   ├── cli/                # @gremorie/cli (the `gremorie` CLI)
 │   ├── docs/               # Analog docs host (becomes docs-ng — Angular preview iframe)
 │   ├── iap/                # IAP harness package
 │   ├── playground/         # internal playground
@@ -70,7 +71,7 @@ channel. Instead, components are installed as source via a registry — like
 shadcn/ui.
 
 ```bash
-npx gremorie add ng-prompt-input
+npx gremorie add ng-ai
 ```
 
 The `gremorie` CLI reads the registry, fetches the requested item, and writes

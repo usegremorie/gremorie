@@ -11,7 +11,7 @@ import {
   AttachmentSize,
   AttachmentEmpty,
   type AttachmentData,
-} from '@gremorie/ng-attachments';
+} from '@gremorie/ng-ai';
 
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -128,7 +128,7 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         </docs-section>
 
         <docs-section title="Installation" anchor="install">
-          <docs-code-block lang="bash" code="npm install @gremorie/ng-attachments @gremorie/ng-core" />
+          <docs-code-block lang="bash" code="npm install @gremorie/ng-ai @gremorie/ng-core" />
           <docs-prose>
             <p>Or via the CLI:</p>
           </docs-prose>
@@ -306,7 +306,7 @@ import {
   AttachmentRemove,
   toAttachmentData,
   type AttachmentData,
-} from '@gremorie/ng-attachments';
+} from '@gremorie/ng-ai';
 
 @Component({
   selector: 'app-uploader',

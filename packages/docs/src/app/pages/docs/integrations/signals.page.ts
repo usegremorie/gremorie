@@ -93,7 +93,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@gremorie/ng-prompt-input';
+} from '@gremorie/ng-ai';
 
 @Component({
   selector: 'app-chat',

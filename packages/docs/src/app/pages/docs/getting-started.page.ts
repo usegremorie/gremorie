@@ -29,7 +29,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         </docs-section>
 
         <docs-section title="Install the library" anchor="install">
-          <docs-code-block lang="bash" code="npm install @gremorie/ng-prompt-input" />
+          <docs-code-block lang="bash" code="npm install @gremorie/ng-ai" />
           <docs-prose>
             <p>
               <code>&#64;usegremorie/gremorie-prompt-input</code> ships the full PromptInput family
@@ -106,7 +106,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
 })
 export default class GettingStartedPage {
   protected readonly themeImport = `@import 'tailwindcss';
-@import '@gremorie/ng-prompt-input/theme.css';
+@import '@gremorie/ng-ai/theme.css';
 
 /* Optional: override primitives or semantics here */
 :root {
@@ -120,7 +120,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@gremorie/ng-prompt-input';
+} from '@gremorie/ng-ai';
 
 @Component({
   selector: 'app-chat',

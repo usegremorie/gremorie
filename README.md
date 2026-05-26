@@ -42,9 +42,13 @@ shadng/
 │   ├── docs/                       # Analog.js SSR site (shadng.dev)
 │   ├── docs-e2e/                   # Playwright E2E
 │   ├── playground/                 # Angular demo app (visual smoke tests)
-│   ├── shadng-core/                # @gremorie/ng-core — tokens + cn() + Button primitive
-│   ├── shadng-prompt-input/        # @gremorie/ng-prompt-input — PromptInput family
-│   └── shadng-cli/                 # @gremorie/ng-cli — `npx shadng init/add/list`
+│   ├── ng-core/                    # @gremorie/ng-core (cross-category utilities, Button)
+│   ├── ng-ai/                      # @gremorie/ng-ai (PromptInput, Attachments)
+│   ├── ng-containers/              # @gremorie/ng-containers (ScrollArea, ...)
+│   ├── ng-data/                    # @gremorie/ng-data (Charts on D3)
+│   ├── rx-core/                    # @gremorie/rx-core (React cross-category utilities)
+│   ├── rx-ai/                      # @gremorie/rx-ai (React AI, starting with PromptInput)
+│   └── cli/                        # @gremorie/cli (`npx gremorie init/add/list`)
 ├── .github/workflows/
 │   └── ci.yml                      # lint • test • build (Nx affected)
 └── tsconfig.base.json              # path mappings
@@ -67,8 +71,12 @@ npm run serve:docs                  # localhost:4200 — Analog docs (SSR)
 
 # Library
 npm run build:core                  # build @gremorie/ng-core
-npm run build:lib                   # build @gremorie/ng-prompt-input
-npx nx build shadng-cli             # build @gremorie/ng-cli (binary in packages/shadng-cli/dist)
+npm run build:ai                    # build @gremorie/ng-ai (PromptInput + Attachments)
+npm run build:containers            # build @gremorie/ng-containers (ScrollArea)
+npm run build:data                  # build @gremorie/ng-data (Charts)
+npm run build:rx-core               # build @gremorie/rx-core
+npm run build:rx-ai                 # build @gremorie/rx-ai (React PromptInput)
+npx nx build cli                    # build @gremorie/cli
 npm run storybook                   # localhost:4400 — Storybook 10
 
 # Quality
