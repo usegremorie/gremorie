@@ -1,15 +1,17 @@
-import { execSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 
 import kleur from 'kleur';
 
-import { findEntry, REGISTRY } from '../registry.js';
 import {
-  detectPackageManager,
-  installCommand,
-} from '../lib/package-manager.js';
+  createRegistryClient,
+  type RegistryFramework,
+  type RegistryItem,
+} from '../registry.js';
 
 export interface AddOptions {
   dryRun?: boolean;
+  framework?: RegistryFramework;
 }
 
 export async function addCommand(
@@ -17,77 +19,104 @@ export async function addCommand(
   options: AddOptions = {},
 ): Promise<void> {
   const cwd = process.cwd();
+  const framework: RegistryFramework = options.framework ?? 'ng';
+  const client = createRegistryClient();
+
   console.log();
   console.log(kleur.bold().cyan(`gremorie add ${name}`));
+  console.log(kleur.dim(`  registry: ${client.baseUrl}`));
+  console.log(kleur.dim(`  target:   ${cwd}`));
   console.log();
 
-  const entry = findEntry(name);
-  if (!entry) {
-    console.log(kleur.red('✗'), `Unknown component: "${name}"`);
-    console.log();
-    console.log(kleur.dim('Available components:'));
-    for (const item of REGISTRY) {
-      const status = item.available ? kleur.green('●') : kleur.yellow('○');
-      console.log(`  ${status} ${item.name}`);
-    }
-    console.log();
-    process.exit(1);
-  }
-
-  if (!entry.available) {
-    console.log(
-      kleur.yellow('⚠'),
-      `"${name}" is planned for v0.${entry.phase} and not yet available.`,
-    );
-    console.log(kleur.dim('Run'), kleur.cyan('gremorie list'), kleur.dim('to see what ships today.'));
-    console.log();
-    process.exit(1);
-  }
-
-  const pm = detectPackageManager(cwd);
-  const packages = [entry.pkg, ...(entry.depends ?? [])];
-  const cmd = installCommand(pm, packages);
-
-  if (options.dryRun) {
-    console.log(kleur.yellow('→'), kleur.dim(`would run: ${cmd}`));
-    return;
-  }
-
-  console.log(kleur.cyan('→'), `running: ${cmd}`);
+  // 1. Fetch the item plus all transitive registryDependencies.
+  const ordered: RegistryItem[] = [];
+  const seen = new Set<string>();
   try {
-    execSync(cmd, { cwd, stdio: 'inherit' });
-  } catch {
-    console.log(kleur.red('✗'), 'Install failed — fix the error above and re-run.');
+    await resolve(name, framework, client, ordered, seen);
+  } catch (err) {
+    console.error(
+      kleur.red('x'),
+      err instanceof Error ? err.message : String(err),
+    );
     process.exit(1);
   }
 
+  // 2. Aggregate npm dependencies so the user knows what to install.
+  const npmDeps = new Set<string>();
+  const npmDevDeps = new Set<string>();
+  for (const item of ordered) {
+    for (const dep of item.dependencies) npmDeps.add(dep);
+    for (const dep of item.devDependencies ?? []) npmDevDeps.add(dep);
+  }
+
+  // 3. Write files (or print what would be written).
+  let writtenCount = 0;
+  for (const item of ordered) {
+    console.log(
+      kleur.bold(`-> ${item.name}`),
+      kleur.dim(`(${item.files.length} files)`),
+    );
+    for (const file of item.files) {
+      const dest = join(cwd, file.target ?? file.path);
+      if (options.dryRun) {
+        console.log(
+          kleur.yellow('  ~'),
+          kleur.dim(file.target ?? file.path),
+        );
+      } else {
+        mkdirSync(dirname(dest), { recursive: true });
+        writeFileSync(dest, file.content, 'utf-8');
+        writtenCount += 1;
+        console.log(
+          kleur.green('  +'),
+          kleur.dim(file.target ?? file.path),
+        );
+      }
+    }
+  }
+
   console.log();
-  console.log(kleur.green('✓'), `Installed ${kleur.bold(entry.pkg)}.`);
-  console.log();
-  console.log(kleur.dim('Next step — import in your component:'));
-  console.log();
-  if (entry.name === 'prompt-input') {
-    console.log(kleur.cyan(`  import {`));
-    console.log(kleur.cyan(`    PromptInput,`));
-    console.log(kleur.cyan(`    PromptInputTextarea,`));
-    console.log(kleur.cyan(`    PromptInputSubmit,`));
-    console.log(kleur.cyan(`    PromptInputToolbar,`));
-    console.log(kleur.cyan(`  } from '${entry.pkg}';`));
-  } else if (entry.name === 'core') {
-    console.log(kleur.cyan(`  import { Button, cn } from '${entry.pkg}';`));
-  } else if (entry.name === 'attachments') {
-    console.log(kleur.cyan(`  import {`));
-    console.log(kleur.cyan(`    AttachmentList,`));
-    console.log(kleur.cyan(`    AttachmentItem,`));
-    console.log(kleur.cyan(`    AttachmentPreview,`));
-    console.log(kleur.cyan(`    AttachmentInfo,`));
-    console.log(kleur.cyan(`    AttachmentRemove,`));
-    console.log(kleur.cyan(`  } from '${entry.pkg}';`));
+  if (options.dryRun) {
+    console.log(kleur.yellow('dry-run:'), 'no files were written.');
+  } else {
+    console.log(
+      kleur.bold().green('OK'),
+      `wrote ${writtenCount} file(s) across ${ordered.length} registry item(s).`,
+    );
+  }
+
+  if (npmDeps.size > 0) {
+    console.log();
+    console.log(kleur.dim('Make sure these npm packages are installed:'));
+    for (const dep of npmDeps) {
+      console.log(`  ${kleur.cyan(dep)}`);
+    }
+  }
+  if (npmDevDeps.size > 0) {
+    console.log();
+    console.log(kleur.dim('Plus dev dependencies:'));
+    for (const dep of npmDevDeps) {
+      console.log(`  ${kleur.cyan(dep)}`);
+    }
   }
   console.log();
-  console.log(
-    kleur.dim('Docs:'),
-    kleur.cyan(`https://gremorie.com/docs/components/${entry.name}`),
-  );
-  console.log();
+}
+
+async function resolve(
+  name: string,
+  framework: RegistryFramework,
+  client: ReturnType<typeof createRegistryClient>,
+  ordered: RegistryItem[],
+  seen: Set<string>,
+): Promise<void> {
+  if (seen.has(name)) return;
+  seen.add(name);
+
+  const item = await client.fetchItem(name, framework);
+
+  // Resolve dependencies first so installed order is deterministic.
+  for (const dep of item.registryDependencies) {
+    await resolve(dep, framework, client, ordered, seen);
+  }
+  ordered.push(item);
 }

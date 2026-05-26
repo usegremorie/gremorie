@@ -1,0 +1,74 @@
+{
+  "$schema": "https://gremorie.com/schema/registry.json",
+  "name": "gremorie",
+  "homepage": "https://gremorie.com",
+  "items": [
+    {
+      "name": "ng-core",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Core",
+      "description": "Shared utilities, design tokens, and the Button primitive.",
+      "categories": [
+        "core",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-attachments",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Attachments",
+      "description": "Composable attachment list with grid, inline, and list variants. Built on top of ng-core.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-core"
+      ]
+    },
+    {
+      "name": "ng-prompt-input",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Prompt Input",
+      "description": "Prompt input family with state machine, drag-drop, and submit. The cornerstone of any AI chat surface.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-core",
+        "ng-attachments"
+      ]
+    },
+    {
+      "name": "ng-scroll-area",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Scroll Area",
+      "description": "Design-system styled scrollbar — wrapper over ngx-scrollbar with the Gremorie look.",
+      "categories": [
+        "layout"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-charts",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Charts",
+      "description": "Charts for dashboards and generative UI. Headless primitives plus styled presets (area, line, bar, scatter, pie, radar, radial) on D3.",
+      "categories": [
+        "ai",
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-core"
+      ]
+    }
+  ]
+}

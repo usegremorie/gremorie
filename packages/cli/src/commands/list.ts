@@ -1,38 +1,52 @@
 import kleur from 'kleur';
 
-import { REGISTRY } from '../registry.js';
+import { createRegistryClient } from '../registry.js';
 
-export function listCommand(): void {
-  const available = REGISTRY.filter((entry) => entry.available);
-  const upcoming = REGISTRY.filter((entry) => !entry.available);
+export async function listCommand(): Promise<void> {
+  const client = createRegistryClient();
 
   console.log();
-  console.log(kleur.bold().white('Available now'));
-  console.log(kleur.dim('━'.repeat(50)));
-  for (const entry of available) {
-    const name = kleur.cyan(entry.name.padEnd(16));
-    const pkg = kleur.dim(entry.pkg);
-    console.log(`  ${name}${pkg}`);
-    console.log(`  ${' '.repeat(16)}${kleur.dim(entry.description)}`);
+  console.log(kleur.bold().cyan('gremorie list'));
+  console.log(kleur.dim(`  registry: ${client.baseUrl}`));
+  console.log();
+
+  let index;
+  try {
+    index = await client.fetchIndex();
+  } catch (err) {
+    console.error(
+      kleur.red('x'),
+      err instanceof Error ? err.message : String(err),
+    );
+    process.exit(1);
   }
 
-  if (upcoming.length > 0) {
+  if (index.items.length === 0) {
+    console.log(kleur.yellow('No items found in the registry.'));
     console.log();
-    console.log(kleur.bold().white('Coming soon'));
-    console.log(kleur.dim('━'.repeat(50)));
-    for (const entry of upcoming) {
-      const name = kleur.gray(entry.name.padEnd(16));
-      const phase = kleur.yellow(`v0.${entry.phase}`);
-      console.log(`  ${name}${phase}`);
-      console.log(`  ${' '.repeat(16)}${kleur.dim(entry.description)}`);
+    return;
+  }
+
+  console.log(kleur.bold().white('Available items'));
+  console.log(kleur.dim('-'.repeat(60)));
+  for (const item of index.items) {
+    const name = kleur.cyan(item.name.padEnd(20));
+    const framework = kleur.gray(`[${item.framework}]`);
+    console.log(`  ${name}${framework}`);
+    console.log(`  ${' '.repeat(20)}${kleur.dim(item.description)}`);
+    if (item.registryDependencies.length > 0) {
+      console.log(
+        `  ${' '.repeat(20)}${kleur.dim(
+          `depends on: ${item.registryDependencies.join(', ')}`,
+        )}`,
+      );
     }
   }
 
   console.log();
   console.log(
-    kleur.dim('Install one with:') +
-      ' ' +
-      kleur.cyan('gremorie add <name>'),
+    kleur.dim('Install one with:'),
+    kleur.cyan('gremorie add <name>'),
   );
   console.log();
 }

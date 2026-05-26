@@ -4,17 +4,18 @@ import kleur from 'kleur';
 import { addCommand } from './commands/add.js';
 import { initCommand } from './commands/init.js';
 import { listCommand } from './commands/list.js';
+import { getRegistryUrl } from './registry.js';
 
 const program = new Command();
 
 program
   .name('gremorie')
-  .description('Scaffold AI components into your Angular app.')
+  .description('Scaffold AI components into your Angular app via the Gremorie registry.')
   .version('0.0.1', '-v, --version');
 
 program
   .command('init')
-  .description('Set up the Gremorie NG theme + dependencies in this project.')
+  .description('Set up the Gremorie theme + dependencies in this project.')
   .option('--dry-run', 'Print what would happen without writing anything.')
   .option('-y, --yes', 'Skip confirmation prompts.')
   .action(async (options) => {
@@ -23,18 +24,22 @@ program
 
 program
   .command('add <component>')
-  .description('Install a Gremorie NG component (e.g. prompt-input).')
-  .option('--dry-run', 'Print what would happen without installing.')
+  .description('Install a Gremorie registry item (e.g. ng-prompt-input).')
+  .option('--dry-run', 'Print what would happen without writing files.')
+  .option('--framework <fw>', 'Framework to install for (ng | react | vue).', 'ng')
   .action(async (component: string, options) => {
-    await addCommand(component, options);
+    await addCommand(component, {
+      dryRun: options.dryRun,
+      framework: options.framework,
+    });
   });
 
 program
   .command('list')
   .alias('ls')
-  .description('List available components and what is coming soon.')
-  .action(() => {
-    listCommand();
+  .description('List items available in the registry.')
+  .action(async () => {
+    await listCommand();
   });
 
 program
@@ -44,14 +49,18 @@ program
   .addHelpText(
     'after',
     `
+${kleur.dim('Registry URL:')}
+  ${kleur.cyan(getRegistryUrl())}
+  ${kleur.dim('(override with GREMORIE_REGISTRY_URL)')}
+
 ${kleur.dim('Examples:')}
-  ${kleur.cyan('gremorie init')}                Set up tokens and core deps
-  ${kleur.cyan('gremorie add prompt-input')}    Install the PromptInput family
-  ${kleur.cyan('gremorie list')}                See what is shipping and what is planned
+  ${kleur.cyan('gremorie init')}                    Set up theme and deps
+  ${kleur.cyan('gremorie add ng-prompt-input')}     Install the PromptInput family
+  ${kleur.cyan('gremorie list')}                    See what is available
 `,
   );
 
 program.parseAsync(process.argv).catch((err) => {
-  console.error(kleur.red('✗'), err instanceof Error ? err.message : err);
+  console.error(kleur.red('x'), err instanceof Error ? err.message : err);
   process.exit(1);
 });

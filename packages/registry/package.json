@@ -1,0 +1,40 @@
+{
+  "name": "@gremorie/registry",
+  "version": "0.0.1",
+  "description": "Gremorie registry generator. Reads packages/ng-* source + co-located usage.md and emits the JSON registry consumed by the CLI and the MCP server.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/registry"
+  },
+  "keywords": [
+    "gremorie",
+    "registry",
+    "shadcn",
+    "design-system",
+    "ai"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "gremorie-registry": "./bin/registry.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "kleur": "^4.1.5",
+    "tslib": "^2.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

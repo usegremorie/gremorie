@@ -1,0 +1,124 @@
+/**
+ * The JSON Schema published at `gremorie.com/schema/registry-item.json`. Keeps
+ * external consumers (other registries, MCP clients) in sync with the shape of
+ * a Gremorie registry item.
+ */
+export const REGISTRY_ITEM_SCHEMA = {
+  $schema: 'http://json-schema.org/draft-07/schema#',
+  $id: 'https://gremorie.com/schema/registry-item.json',
+  title: 'Gremorie Registry Item',
+  description:
+    'A single registry item served by gremorie.com/r/<framework>/<name>.json. Compatible with shadcn-registry-item with an additional `usage` block that the MCP server feeds to AI clients.',
+  type: 'object',
+  required: [
+    '$schema',
+    'name',
+    'type',
+    'framework',
+    'title',
+    'description',
+    'categories',
+    'dependencies',
+    'registryDependencies',
+    'files',
+    'usage',
+  ],
+  properties: {
+    $schema: { type: 'string', format: 'uri' },
+    name: { type: 'string', pattern: '^[a-z0-9-]+$' },
+    type: {
+      type: 'string',
+      enum: [
+        'registry:component',
+        'registry:block',
+        'registry:hook',
+        'registry:lib',
+        'registry:style',
+        'registry:theme',
+      ],
+    },
+    framework: { type: 'string', enum: ['ng', 'react', 'vue'] },
+    title: { type: 'string' },
+    description: { type: 'string' },
+    categories: { type: 'array', items: { type: 'string' } },
+    dependencies: { type: 'array', items: { type: 'string' } },
+    devDependencies: { type: 'array', items: { type: 'string' } },
+    registryDependencies: { type: 'array', items: { type: 'string' } },
+    files: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['path', 'content', 'type'],
+        properties: {
+          path: { type: 'string' },
+          content: { type: 'string' },
+          type: {
+            type: 'string',
+            enum: [
+              'registry:component',
+              'registry:hook',
+              'registry:lib',
+              'registry:block',
+              'registry:style',
+            ],
+          },
+          target: { type: 'string' },
+        },
+      },
+    },
+    cssVars: { type: 'object', additionalProperties: { type: 'string' } },
+    usage: {
+      type: 'object',
+      required: ['whenToUse', 'whenNotToUse', 'bestPractices', 'antipatterns'],
+      properties: {
+        whenToUse: { type: 'string' },
+        whenNotToUse: { type: 'string' },
+        bestPractices: { type: 'array', items: { type: 'string' } },
+        antipatterns: { type: 'array', items: { type: 'string' } },
+        api: {
+          type: 'object',
+          properties: {
+            inputs: {
+              type: 'array',
+              items: {
+                type: 'object',
+                required: ['name', 'type'],
+                properties: {
+                  name: { type: 'string' },
+                  type: { type: 'string' },
+                  required: { type: 'boolean' },
+                  description: { type: 'string' },
+                  default: { type: 'string' },
+                },
+              },
+            },
+            outputs: {
+              type: 'array',
+              items: {
+                type: 'object',
+                required: ['name', 'payload'],
+                properties: {
+                  name: { type: 'string' },
+                  payload: { type: 'string' },
+                  description: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        examples: {
+          type: 'array',
+          items: {
+            type: 'object',
+            required: ['title', 'code'],
+            properties: {
+              title: { type: 'string' },
+              description: { type: 'string' },
+              code: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  },
+};
