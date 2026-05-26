@@ -1,0 +1,416 @@
+---
+title: Chart
+description: Sistema de visualização de dados — ChartContainer, tooltips, legendas, e os 6 tipos de gráficos (Area, Bar, Line, Pie, Radar, Radial).
+component: Chart
+importPath: '@kalvner/kds/data/chart'
+status: stable
+---
+
+import {
+  AreaDefaultDemo,
+  AreaStackedDemo,
+  AreaGradientDemo,
+  AreaStepDemo,
+  BarDefaultDemo,
+  BarHorizontalDemo,
+  BarStackedDemo,
+  BarMixedDemo,
+  LineDefaultDemo,
+  LineMultipleDemo,
+  LineDashedDemo,
+  PieDefaultDemo,
+  PieDonutDemo,
+  PieLabelDemo,
+  PieLegendDemo,
+  RadarDefaultDemo,
+  RadarMultipleDemo,
+  RadialDefaultDemo,
+  RadialLabelDemo,
+  UsageBasicDemo
+} from "@/components/chart-demos";
+
+## Overview
+
+`Chart` é o sistema de visualização de dados do KDS. Ele não inventa
+um motor próprio: empacota o **Recharts** num conjunto de componentes
+opinados (`ChartContainer`, `ChartTooltip`, `ChartLegend`, mais o
+helper `ChartStyle`) que tipam, normalizam estilo e plugam direto na
+arquitetura de tokens canônica — os 5 esquemas cromáticos descritos
+na seção de [Tokens / Chart](/docs/tokens/chart).
+
+A escolha por Recharts é deliberada. Ele cobre sem fricção os 6
+tipos clássicos de gráfico (Area, Bar, Line, Pie, Radar, Radial)
+que rodam 90% dos dashboards de produto, expõe API declarativa em
+JSX que combina com as convenções do KDS, e tem footprint razoável
+quando comparado a alternativas full-canvas como ECharts.
+
+Para visualizações fora dessa cobertura — geomaps, sankey
+complexos, force-directed networks — esse primitivo não é o caminho;
+saia da abstração e instale a biblioteca apropriada (Visx, ECharts,
+Mapbox) na própria página, sem tentar moldar Chart para o que ele
+não foi feito.
+
+## Anatomy
+
+```
+ChartContainer (config + responsive wrapper)
+└─ Recharts chart (AreaChart | BarChart | LineChart | PieChart | RadarChart | RadialBarChart)
+   ├─ CartesianGrid / PolarGrid       ← grade (opcional)
+   ├─ XAxis / YAxis / PolarAngleAxis  ← eixos
+   ├─ ChartTooltip
+   │  └─ ChartTooltipContent          ← tooltip estilizado
+   ├─ ChartLegend
+   │  └─ ChartLegendContent           ← legenda estilizada
+   └─ Area | Bar | Line | Pie | Radar | RadialBar  ← séries
+```
+
+`ChartContainer` cuida de três coisas: contexto (passa o `config`
+para tooltip e legenda), responsividade (envolve em
+`ResponsiveContainer` do Recharts) e geração de variáveis CSS
+(`ChartStyle`) para que cada série tenha cor consistente em light
+e dark mode. Tudo o que vai dentro é Recharts puro — você compõe a
+visualização exatamente como faria no Recharts standalone, sem
+camadas extras de DSL.
+
+## Subcomponents
+
+| Subcomponente | O que faz | Onde fica na anatomia |
+|---|---|---|
+| `ChartContainer` | Provê contexto (`config`), responsividade e estilos CSS para cada série. Recebe `children` Recharts. | Raiz do gráfico |
+| `ChartStyle` | Injeta as variáveis CSS de cor por série derivadas do `config`. Renderizado internamente por `ChartContainer`. | Dentro do container, invisível |
+| `ChartTooltip` | Re-export tipado de `Recharts.Tooltip`. Aceita `content` para estilização. | Filho direto do chart Recharts |
+| `ChartTooltipContent` | Conteúdo do tooltip alinhado ao KDS (border, sombra, indicador de série). | Como `content` de `ChartTooltip` |
+| `ChartLegend` | Re-export tipado de `Recharts.Legend`. Aceita `content`. | Filho direto do chart Recharts |
+| `ChartLegendContent` | Item de legenda com swatch de cor e label do `config`. | Como `content` de `ChartLegend` |
+| `ChartConfig` | Tipo TS para o objeto de configuração: `{ <key>: { label, color, icon } }`. | No tipo do componente que usa Chart |
+
+## Usage
+
+A composição mínima leva `ChartContainer` envolvendo uma chart do
+Recharts, com tooltip e legenda nos slots correspondentes:
+
+<UsageBasicDemo />
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig
+} from "@kalvner/kds/data/chart";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+
+const config = {
+  revenue: { label: "Receita", color: "var(--color-chart-cat-1)" }
+} satisfies ChartConfig;
+
+export function MonthlyRevenue({ data }) {
+  return (
+    <ChartContainer config={config} className="h-[220px] w-full">
+      <AreaChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} />
+        <YAxis hide />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <Area
+          dataKey="revenue"
+          type="monotone"
+          stroke="var(--color-chart-cat-1)"
+          fill="var(--color-chart-cat-1)"
+          fillOpacity={0.3}
+        />
+      </AreaChart>
+    </ChartContainer>
+  );
+}
+```
+
+### Setup
+
+<Steps>
+
+<Step>
+**Importe os subcomponentes** do subpath canônico
+`@kalvner/kds/data/chart`. Isso garante tree-shaking — você só carrega
+o que usa.
+</Step>
+
+<Step>
+**Importe os blocos do Recharts** (`AreaChart`, `Bar`, `Line` etc)
+diretamente de `recharts`. O KDS não re-exporta o Recharts; usar a
+biblioteca direto deixa o tipo e a documentação intactos.
+</Step>
+
+<Step>
+**Defina o `config`** mapeando cada `dataKey` para `{ label, color }`.
+Use `var(--color-chart-cat-N)` ou outro token do KDS — nunca hex
+hardcoded.
+</Step>
+
+<Step>
+**Componha** a chart Recharts dentro de `ChartContainer`, plugando
+`ChartTooltip` e `ChartLegend` nos slots correspondentes para herdar
+o estilo do KDS.
+</Step>
+
+</Steps>
+
+## Chart variants
+
+<Tabs items={["Area", "Bar", "Line", "Pie", "Radar", "Radial"]}>
+
+<Tab value="Area">
+
+Áreas comunicam **tendência ao longo do tempo** com noção visual de
+volume. Use quando o "quanto" importa tanto quanto o "para onde".
+
+<div className="grid gap-4 md:grid-cols-2">
+  <AreaDefaultDemo />
+  <AreaStackedDemo />
+  <AreaGradientDemo />
+  <AreaStepDemo />
+</div>
+
+</Tab>
+
+<Tab value="Bar">
+
+Barras são o **default seguro para comparação categórica**. Quando em
+dúvida entre Bar, Pie ou Line, escolha Bar — ele lê bem com qualquer
+quantidade razoável de itens e qualquer escala.
+
+<div className="grid gap-4 md:grid-cols-2">
+  <BarDefaultDemo />
+  <BarHorizontalDemo />
+  <BarStackedDemo />
+  <BarMixedDemo />
+</div>
+
+</Tab>
+
+<Tab value="Line">
+
+Linhas são imbatíveis para **tendência temporal** com várias séries
+co-existindo. Ao contrário de Area, não comunicam volume — apenas
+direção e velocidade da mudança.
+
+<div className="grid gap-4 md:grid-cols-2">
+  <LineDefaultDemo />
+  <LineMultipleDemo />
+  <LineDashedDemo />
+</div>
+
+</Tab>
+
+<Tab value="Pie">
+
+Pies funcionam **apenas para composição com até 5 fatias**. Acima
+disso, fatias finas viram ruído e a leitura desmorona — Bar
+horizontal é estritamente melhor.
+
+<Callout type="warn">
+Mais de 5 fatias num pie é anti-pattern. Se a distribuição tem 6+
+categorias significativas, troque para BarChart horizontal — você não
+perde leitura nem semântica.
+</Callout>
+
+<div className="grid gap-4 md:grid-cols-2">
+  <PieDefaultDemo />
+  <PieDonutDemo />
+  <PieLabelDemo />
+  <PieLegendDemo />
+</div>
+
+</Tab>
+
+<Tab value="Radar">
+
+Radars comparam um sujeito **em várias dimensões na mesma escala**.
+Auditorias técnicas (Lighthouse), scorecards de produto e perfis
+de habilidade são casos de uso clássicos.
+
+<div className="grid gap-4 md:grid-cols-2">
+  <RadarDefaultDemo />
+  <RadarMultipleDemo />
+</div>
+
+</Tab>
+
+<Tab value="Radial">
+
+Barras radiais são **gauges modernos** — comunicam progresso ou
+conclusão de forma compacta. Funcionam particularmente bem em tiles
+de KPI.
+
+<div className="grid gap-4 md:grid-cols-2">
+  <RadialDefaultDemo />
+  <RadialLabelDemo />
+</div>
+
+</Tab>
+
+</Tabs>
+
+## ChartConfig
+
+`ChartConfig` é o tipo do objeto que descreve cada série da chart —
+label exibido em tooltip e legenda, cor (token CSS), e ícone
+opcional. As chaves precisam casar com os `dataKey` usados nas
+séries Recharts.
+
+<TypeTable
+  type={{
+    label: {
+      description: "Texto exibido no tooltip e na legenda. Aceita string ou ReactNode.",
+      type: "ReactNode",
+      required: false
+    },
+    color: {
+      description: "Cor da série como CSS color value. Use sempre tokens KDS (var(--color-chart-cat-N), --color-chart-status-*, etc).",
+      type: "string",
+      required: false
+    },
+    theme: {
+      description: "Alternativa a color — par light/dark de cores aplicadas via @media e classe .dark. Mutuamente exclusivo com color.",
+      type: "{ light: string; dark: string }",
+      required: false
+    },
+    icon: {
+      description: "Componente React renderizado antes do label na legenda e no tooltip. Útil para reforçar a série além da cor.",
+      type: "ComponentType",
+      required: false
+    }
+  }}
+/>
+
+```ts
+import type { ChartConfig } from "@kalvner/kds/data/chart";
+
+const config = {
+  revenue: {
+    label: "Receita",
+    color: "var(--color-chart-cat-1)"
+  },
+  target: {
+    label: "Meta",
+    color: "var(--color-chart-cat-2)"
+  }
+} satisfies ChartConfig;
+```
+
+## Tooltip & Legend
+
+Os helpers `ChartTooltipContent` e `ChartLegendContent` aceitam
+variações para casos diferentes. Use o que melhor responde à pergunta
+"o que o leitor precisa saber ao passar o mouse?".
+
+| Subcomponente | Variação | Quando usar |
+|---|---|---|
+| `ChartTooltipContent` | default | Múltiplas séries, label do eixo X importante (ex. "Mar 2026"). |
+| `ChartTooltipContent` | `hideLabel` | Pies e radials onde o nome da fatia já é suficiente — sem header. |
+| `ChartTooltipContent` | `indicator="line"` | Quando a série usa linha (não barra) — alinha a forma do indicador. |
+| `ChartTooltipContent` | `indicator="dashed"` | Mesmo que line, mas para séries projetadas / pontilhadas. |
+| `ChartLegendContent` | default | Múltiplas séries cartesianas (Bar/Line/Area). |
+| `ChartLegendContent` | `nameKey="plan"` | Pies — pega o label da chave do datapoint, não do `dataKey`. |
+| `ChartLegendContent` | `hideIcon` | Quando você quer só os labels textuais (raro — perde affordance de cor). |
+
+## When to use
+
+A escolha entre os 6 tipos depende **da forma do dado** — não do
+gosto. A matriz abaixo é a heurística canônica do KDS, com link
+para o esquema cromático recomendado em cada caso.
+
+| Pergunta do leitor | Tipo de gráfico | Esquema de cor |
+|---|---|---|
+| "Como evoluiu ao longo do tempo, e qual o volume?" | **Area** (single ou stacked) | [Categorical](/docs/tokens/chart/categorical) |
+| "Qual a tendência ao longo do tempo, com várias séries?" | **Line** (multiple) | [Categorical](/docs/tokens/chart/categorical) |
+| "Como categorias se comparam em magnitude?" | **Bar** vertical | [Categorical](/docs/tokens/chart/categorical) ou [Sequential](/docs/tokens/chart/sequential) |
+| "Como categorias com nomes longos se comparam?" | **Bar** horizontal | [Categorical](/docs/tokens/chart/categorical) |
+| "Qual a composição (parte/todo) com até 5 fatias?" | **Pie** ou **Donut** | [Categorical](/docs/tokens/chart/categorical) |
+| "Como esse sujeito se comporta em N dimensões?" | **Radar** | [Categorical](/docs/tokens/chart/categorical) ou [Comparison](/docs/tokens/chart/comparison) |
+| "Quanto está concluído de uma meta?" | **Radial** | [Sequential](/docs/tokens/chart/sequential) ou [Status](/docs/tokens/chart/status) |
+| "Qual está em destaque vs as outras?" | **Bar** ou **Line** | [Comparison](/docs/tokens/chart/comparison) |
+| "Estados discretos (sucesso/erro/aviso)?" | **Bar** ou tile | [Status](/docs/tokens/chart/status) |
+| "Variação acima/abaixo de baseline?" | **Bar** ou **Line** | [Divergent](/docs/tokens/chart/divergent) |
+
+## When not to use
+
+- **Geomaps** — choropleth, bubble maps, point maps. Use uma lib
+  dedicada (Mapbox GL, Leaflet, react-simple-maps).
+- **Networks / sankey / hierarquias** — Recharts não tem cobertura
+  decente; instale Visx ou ECharts pontualmente para esses casos.
+- **Heatmaps densos** (matrizes >50×50) — performance e leitura caem;
+  use ECharts ou D3 puro.
+- **Charts críticos para acessibilidade plena** — quando o gráfico é
+  o conteúdo principal de uma página e precisa ser navegável por
+  leitor de tela com semântica de tabela, considere renderizar
+  também uma `<table>` correspondente em vez de depender só de SVG.
+
+## Best practices
+
+<Callout type="info">
+Cor é o eixo de informação mais escasso da visualização — gaste com
+intenção. Cada cor adicional num gráfico aumenta carga cognitiva
+linear e degrada leitura para usuários com deficiência de cor.
+</Callout>
+
+### Do
+
+- **Use sempre tokens KDS** (`var(--color-chart-cat-N)`,
+  `--color-chart-status-*`, etc) para cores de série. O sistema
+  garante consistência multi-tema e segurança para daltonismo.
+- **Limite Categorical a 5-6 séries** — acima disso, agrupe ("Outros")
+  ou troque para small multiples (vários gráficos pequenos).
+- **Reserve `Status` para gráficos que encodam significado**
+  (sucesso/erro). Em charts puramente categóricos, usar verde =
+  "bom" polui a leitura.
+- **Mantenha a altura do `ChartContainer` fixa**, mesmo durante
+  loading. Layout shift em dashboards é particularmente desagradável.
+- **Tooltips com `hideLabel` em pies e radials** — o nome da fatia já
+  é informação suficiente, o header redundante pesa.
+
+### Don't
+
+- **Não use Pie com mais de 5 fatias** — fatias finas viram ruído.
+  Migre para Bar horizontal.
+- **Não chumbe hex hardcoded em séries** — viola a arquitetura de
+  tokens e quebra dark mode.
+- **Não confie só em cor** para diferenciar séries críticas. Reforce
+  com forma (sólido/tracejado), label direto na linha, ou ícone via
+  `config.icon`.
+- **Não empilhe Bar/Area** quando a soma não tem significado real —
+  o leitor vai inferir uma métrica composta que você não pretendeu
+  comunicar.
+- **Não use Divergent** sem ponto central explícito (zero, baseline,
+  média) — sem o pivô, a paleta vira só "duas cores".
+
+## Accessibility
+
+Charts em SVG têm limitações herdadas: leitores de tela leem o SVG
+como uma lista de elementos, não como uma tabela tabular. O Chart
+KDS dá ferramentas para mitigar — não milagres.
+
+| Recurso | Como aplicar |
+|---|---|
+| **Color-blind safety** | Os esquemas KDS já evitam os pares conflitantes (Red-Green em Divergent é proibido — usamos Red-Blue). Veja [chart color schemes](/docs/tokens/chart). |
+| **Reforço além de cor** | Use `config.icon` na legenda, varie `strokeDasharray` em linhas, ou rotule séries direto no gráfico. Cor sozinha falha para 8% dos homens. |
+| **Aria labels** | Adicione `role="img"` e `aria-label` no wrapper externo do `ChartContainer` descrevendo a métrica e o resumo: `"Receita mensal: cresceu de R$ 18 mil em janeiro para R$ 33 mil em setembro."`. |
+| **Fallback textual** | Em painéis críticos, renderize uma `<table>` visualmente oculta (`sr-only`) com os mesmos dados — leitores de tela preferem tabelas a SVG. |
+| **Tooltip e foco** | Recharts emite eventos de mouse e teclado, mas a navegação por teclado em séries não é trivial. Para dashboards críticos, considere eixos clicáveis e legendas como controles. |
+| **Contraste** | Tokens do KDS atendem WCAG AA contra fundo claro e escuro. Se redefinir cores ad-hoc, valide o contraste manualmente. |
+
+## Related
+
+- [Tokens · Chart](/docs/tokens/chart) — os 5 esquemas canônicos
+  com guia de uso por tipo de dado
+- [Tokens · Sequential](/docs/tokens/chart/sequential) —
+  gradiente de uma matiz para dados ordenados
+- [Tokens · Categorical](/docs/tokens/chart/categorical) —
+  hues distintos para categorias nominais
+- [Tokens · Status](/docs/tokens/chart/status) —
+  estado semântico discreto
+- [Recharts](https://recharts.org/) — biblioteca subjacente, para
+  composição de chart-types não cobertos aqui
+- ChartConfig type — exportado de `@kalvner/kds/data/chart`
+- Chart color schemes foundations (vault interno) — fundamentação
+  acadêmica e de mercado dos 5 esquemas

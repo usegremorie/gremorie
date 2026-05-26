@@ -1,0 +1,6 @@
+{
+  "title": "Data",
+  "description": "Primitivos para visualização de dados",
+  "icon": "BarChart3",
+  "pages": ["chart"]
+}

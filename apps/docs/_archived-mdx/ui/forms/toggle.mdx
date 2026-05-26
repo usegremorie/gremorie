@@ -1,0 +1,186 @@
+---
+title: Toggle
+description: Botão único com estado on/off — formatação, modos de visualização, filtros.
+component: Toggle
+importPath: "@kalvner/kds/forms/toggle"
+status: stable
+---
+
+import { Toggle } from "@kalvner/kds/forms/toggle";
+import { Bold, Italic, Underline } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Toggle` é um botão de duas posições — `aria-pressed=true|false`. Use
+para **estado de ação fora de form**: bold/italic em editor de texto,
+modo grade vs. lista, chips de filtro ativável.
+
+A diferença em relação a [Switch](./switch) é semântica: Switch é
+configuração persistida (notificações, dark mode). Toggle é estado de
+**comando** ou **filtro** — visualmente um botão, com efeito agora.
+Para form-bound boolean, use [Checkbox](./checkbox).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Toggle de formatação (Bold).</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Toggle aria-label="Negrito">
+      <Bold />
+    </Toggle>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Toggle variant="default" | "outline" size="sm" | "default" | "lg">
+  ├─ [data-state="on" | "off"]
+  └─ <icon /> | <text />
+</Toggle>
+```
+
+## Usage
+
+```tsx
+import { Toggle } from "@kalvner/kds/forms/toggle";
+import { Bold } from "lucide-react";
+
+export function BoldToggle({ pressed, onPressedChange }) {
+  return (
+    <Toggle
+      pressed={pressed}
+      onPressedChange={onPressedChange}
+      aria-label="Negrito"
+    >
+      <Bold />
+    </Toggle>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `pressed` | `boolean` | — | Controlado. |
+| `defaultPressed` | `boolean` | `false` | Não controlado. |
+| `onPressedChange` | `(v: boolean) => void` | — | Callback. |
+| `variant` | `'default' \| 'outline'` | `'default'` | Aparência. |
+| `size` | `'sm' \| 'default' \| 'lg'` | `'default'` | h-8 / h-9 / h-10. |
+| `disabled` | `boolean` | `false` | Bloqueia interação. |
+| `aria-label` | `string` | — | Obrigatório quando só ícone. |
+
+## Subcomponents
+
+`Toggle` é monolítico. Para grupos coordenados, use
+[ToggleGroup](./toggle-group), que aplica `variant` e `size` a todos
+os filhos via context.
+
+## Variants
+
+<div className="grid gap-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Default vs. Outline</CardTitle>
+      <CardDescription>Outline aparece com borda, útil em barras de formatação.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Toggle aria-label="Default"><Bold /></Toggle>
+        <Toggle variant="outline" aria-label="Outline"><Italic /></Toggle>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Sizes</CardTitle>
+      <CardDescription>sm para toolbar densa, default padrão, lg para destaque.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Toggle size="sm" aria-label="sm"><Bold /></Toggle>
+        <Toggle size="default" aria-label="default"><Bold /></Toggle>
+        <Toggle size="lg" aria-label="lg"><Bold /></Toggle>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| `data-state=off` | Background transparente (variants default + outline). |
+| `data-state=on` | Background `accent`, texto `accent-foreground`. |
+| `disabled` | Pointer-events none, opacity 50%. |
+
+## Composition
+
+Toggles individuais raramente aparecem sozinhos. Padrões:
+
+- Em editor de texto, agrupe via [ToggleGroup](./toggle-group)
+  `type="multiple"` para combinar formatações.
+- Como chip de filtro, use Toggles soltos (cada filtro é independente).
+- Em alternância exclusiva (ex.: alinhamento), use ToggleGroup
+  `type="single"`.
+
+```tsx
+<ToggleGroup type="multiple" aria-label="Formatação">
+  <ToggleGroupItem value="bold"><Bold /></ToggleGroupItem>
+  <ToggleGroupItem value="italic"><Italic /></ToggleGroupItem>
+  <ToggleGroupItem value="underline"><Underline /></ToggleGroupItem>
+</ToggleGroup>
+```
+
+## When to use
+
+- Editores rich-text (B, I, U).
+- Alternar modos de visualização (grade ↔ lista).
+- Chips de filtro ativável (independentes).
+- Botões de menu de visualização (mostrar grade, ocultar barra).
+
+## When not to use
+
+- Configuração persistida — use [Switch](./switch).
+- Valor de form bound — use [Checkbox](./checkbox).
+- Navegação — use [Link](https://nextjs.org/docs/app/api-reference/components/link)
+  ou [Tabs](../navigation/tabs).
+- Múltiplos toggles relacionados que devem coordenar — use
+  [ToggleGroup](./toggle-group).
+
+## Best practices
+
+- **`aria-label` é obrigatório** quando o botão só tem ícone. Sem isso,
+  leitor de tela diz "botão" e nada mais.
+- Pareie ícone + texto quando o significado não é universalmente claro
+  (não confie só em "B" sem contexto).
+- Para action commands não-stateful (Save, Delete), use [Button](./button),
+  não Toggle.
+- Tamanho `sm` em toolbars densas; `default` em painéis amplos.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Role** | `button` com `aria-pressed` (não checkbox). |
+| **Keyboard** | `Space`/`Enter` alterna. |
+| **Focus** | `focus-visible:ring-[3px]` (3px ring no token). |
+| **Label** | `aria-label` obrigatório quando só ícone. |
+| **Disabled** | `disabled` remove do tab order; pointer-events none. |
+| **Estado** | Leitor de tela anuncia "pressionado" / "não pressionado". |
+
+## Related
+
+- [ToggleGroup](./toggle-group) — múltiplos coordenados.
+- [Switch](./switch) — configuração persistida (efeito imediato).
+- [Checkbox](./checkbox) — valor bound a form.
+- [Button](./button) — ação sem estado.

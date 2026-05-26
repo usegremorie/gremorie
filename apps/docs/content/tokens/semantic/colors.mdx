@@ -1,0 +1,77 @@
+---
+title: Colors
+description: Mapeamento intenção → primitivo para os quatro temas KDS, em light e dark mode.
+---
+
+import { SemanticThemeTable } from "@/components/token-tables";
+
+Tokens semânticos são **intenções** — `primary`, `foreground`,
+`border`. Cada tema preenche essas intenções com primitivos
+diferentes, e cada modo (light / dark) traz seu próprio
+mapeamento. Esta página é a **tabela de verdade** para os quatro
+temas embarcados.
+
+## Como ler as tabelas
+
+- A coluna **Light** mostra a swatch resolvida do primitivo
+  referenciado no estado claro.
+- A coluna **Dark** mostra a swatch resolvida no estado escuro.
+- As colunas **Primitivo** trazem o nome do primitivo apontado
+  via `var(--color-<token>)`.
+
+Se você está auditando um componente que parece "errado" em algum
+tema, comece por aqui — comparar a intenção (e.g. `--primary`) com
+o primitivo apontado em cada tema diz se a inconsistência é da
+chrome do componente ou do mapeamento do tema.
+
+<Callout type="info">
+  As swatches das colunas Light e Dark abaixo só renderizam com
+  fidelidade quando você visualiza no modo correspondente. Se
+  estiver em light mode, as swatches Dark mostram o primitivo
+  como ele aparece **na sua janela atual** — útil para auditar,
+  não para inspecionar o tema dark de fato.
+</Callout>
+
+<SemanticThemeTable themeId="default" />
+
+<SemanticThemeTable themeId="amber-minimal" />
+
+<SemanticThemeTable themeId="amethyst-haze" />
+
+<SemanticThemeTable themeId="claude" />
+
+## Sobre os tokens de sidebar
+
+Os `--sidebar-*` são uma **família paralela** que cobre a chrome
+de navegação lateral. Eles existem porque sidebars são surfaces
+muitas vezes pintadas distintas do `background` (mais escuras,
+mais claras, contrastantes). Manter intenções dedicadas evita o
+truque de "background com tint" que se quebra ao mudar de tema.
+
+## Editando ou adicionando temas
+
+A receita curta:
+
+1. **Crie** um novo arquivo em
+   `packages/kds/src/styles/tokens/semantic/colors-<id>.css`.
+2. **Defina** os dois selectors:
+   ```css
+   [data-theme="<id>"] { /* light */ }
+   [data-theme="<id>"].dark { /* dark */ }
+   ```
+3. **Preencha** todas as 27 intenções da tabela acima — light e
+   dark — referenciando primitivos via `var(--color-<token>)`.
+4. **Importe** o arquivo no entry CSS principal do KDS.
+5. **Audite** rodando o tema na app e comparando com os
+   componentes principais.
+
+Não é trabalho pequeno — preencher 54 valores (27 × 2) sem que
+nada quebre exige rodar componentes em todos os estados. Por
+isso a KDS embarca apenas quatro temas curados.
+
+<Callout type="warn">
+  **Não digite OKLCH ou hex em arquivos de tema.** Se o primitivo
+  certo não existe, **adicione-o** primeiro em
+  `tokens/primitive/colors.css`. Hardcoded values em temas
+  quebram a cascata.
+</Callout>

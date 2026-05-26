@@ -1,0 +1,253 @@
+---
+title: Conversation
+description: Container de chat com sticky-bottom — encaixa Message, PromptInput e ScrollButton no fluxo natural.
+component: Conversation
+importPath: "@kalvner/kds/ai/conversation"
+status: stable
+---
+
+import { ConversationPreview, ConversationEmptyPreview, ConversationLongPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Conversation` é o **container raiz** de uma UI de chat — gerencia
+scroll, sticky-bottom e empty state. Construído sobre
+[`use-stick-to-bottom`](https://github.com/streetwriters/use-stick-to-bottom):
+quando o usuário está no fim, novas mensagens empurram o scroll
+junto; quando rolou pra cima, o scroll fica preso e um botão
+flutuante aparece pra voltar.
+
+O comportamento é tão crítico em chat que vale documentar a
+expectativa: **se o usuário está lendo um histórico antigo e uma
+mensagem nova chega, o scroll NÃO pode pular**. Conversation cuida
+disso.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Conversation com 4 bubbles user/assistant.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ConversationPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Conversation>
+  ├─ <ConversationContent>      ← flex column, gap-8, p-4
+  │    └─ <Message />           ← um por entrada do chat
+  ├─ <ConversationEmptyState />  ← opcional, quando não há mensagens
+  └─ <ConversationScrollButton /> ← aparece auto quando isAtBottom=false
+</Conversation>
+```
+
+## Usage
+
+```tsx
+"use client";
+
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton
+} from "@kalvner/kds/ai/conversation";
+import { Message, MessageContent } from "@kalvner/kds/ai/message";
+import { MessagesSquare } from "lucide-react";
+
+export function ChatThread({ messages }: { messages: ChatMessage[] }) {
+  if (messages.length === 0) {
+    return (
+      <Conversation>
+        <ConversationEmptyState
+          icon={<MessagesSquare className="size-12" />}
+          title="Nenhuma conversa ainda"
+          description="Comece digitando uma pergunta."
+        />
+      </Conversation>
+    );
+  }
+
+  return (
+    <Conversation>
+      <ConversationContent>
+        {messages.map((m) => (
+          <Message key={m.id} from={m.role}>
+            <MessageContent>{m.text}</MessageContent>
+          </Message>
+        ))}
+      </ConversationContent>
+      <ConversationScrollButton />
+    </Conversation>
+  );
+}
+```
+
+## Props
+
+### Conversation (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `initial` | `'smooth' \| 'instant' \| false` | `'smooth'` | Comportamento do scroll inicial. |
+| `resize` | `'smooth' \| 'instant' \| false` | `'smooth'` | Comportamento ao redimensionar (ex.: viewport mobile rotaciona). |
+| `role` | `string` | `'log'` | Role ARIA — sempre `log` para que leitores de tela anunciem novas entradas. |
+| `className` | `string` | — | Override (`relative flex-1 overflow-y-hidden` é o default). |
+
+Todos os props extras herdam de `<StickToBottom>` do
+`use-stick-to-bottom`.
+
+### ConversationContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `className` | `string` | `'flex flex-col gap-8 p-4'` | Override do wrapper interno. |
+
+Aceita qualquer prop válida em `<StickToBottom.Content>` (que é
+`<div>`).
+
+### ConversationEmptyState
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `title` | `string` | `'No messages yet'` | Título do estado vazio. |
+| `description` | `string` | `'Start a conversation to see messages here'` | Subtexto. |
+| `icon` | `ReactNode` | — | Ícone opcional (Lucide ~`size-12`). |
+| `children` | `ReactNode` | — | Override total — substitui icon/title/description. |
+
+### ConversationScrollButton
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `className` | `string` | — | Override de posição/aparência. |
+
+Herda todos os props de [Button](../../forms/button) — `variant`,
+`size`, etc. Por padrão é `variant="outline"` `size="icon"`,
+posicionado `absolute bottom-4 left-1/2`.
+
+## Subcomponents
+
+- **`Conversation`** — wrapper raiz. Gerencia o contexto de
+  sticky-bottom; sem ele, os outros subcomponentes não funcionam
+  (lançam erro do `use-stick-to-bottom`).
+- **`ConversationContent`** — wrapper que recebe a ref do hook,
+  responsável por detectar a posição do scroll. Coloque suas
+  mensagens aqui.
+- **`ConversationEmptyState`** — placeholder centralizado quando o
+  histórico está vazio. Aceita `children` pra override total ou os
+  campos `icon`/`title`/`description` pra preencher o slot padrão.
+- **`ConversationScrollButton`** — botão circular que aparece **só
+  quando** `isAtBottom=false`. Ao clicar, chama `scrollToBottom()`
+  do contexto. Não exige props — funciona automaticamente.
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| `isAtBottom=true` | Scroll fica grudado no fim; novas mensagens empurram junto. |
+| `isAtBottom=false` | Scroll preso; ScrollButton aparece. |
+| Empty | EmptyState ocupa o container inteiro (centralizado). |
+| Resize | `resize="smooth"` rola pra mostrar o último item de novo. |
+
+## Variants
+
+Não há variantes — Conversation é estrutural. Variação acontece pelo
+que você renderiza dentro (Message com avatares, sem avatares, com
+Tool, com Reasoning, etc).
+
+## Composition
+
+### Empty + Suggestion combo
+
+Pra primeira impressão, combine EmptyState com [Suggestion](./suggestion)
+pra sugerir queries de partida:
+
+```tsx
+{messages.length === 0 ? (
+  <ConversationEmptyState>
+    <h3>Bem-vindo</h3>
+    <p>Comece com uma destas:</p>
+    <Suggestions>
+      <Suggestion suggestion="Como configuro multi-tema?" />
+      <Suggestion suggestion="Quais tokens chart estão disponíveis?" />
+    </Suggestions>
+  </ConversationEmptyState>
+) : (
+  <ConversationContent>{/* messages */}</ConversationContent>
+)}
+```
+
+### Conversation + PromptInput layout
+
+Conversation ocupa o espaço flex-1; PromptInput fica fixo no rodapé
+fora do Conversation:
+
+```tsx
+<div className="flex h-dvh flex-col">
+  <Conversation>
+    <ConversationContent>
+      {messages.map(...)}
+    </ConversationContent>
+    <ConversationScrollButton />
+  </Conversation>
+  <PromptInput onSubmit={handleSubmit}>
+    <PromptInputBody>
+      <PromptInputTextarea />
+      <PromptInputFooter>
+        <PromptInputSubmit />
+      </PromptInputFooter>
+    </PromptInputBody>
+  </PromptInput>
+</div>
+```
+
+## When to use
+
+- Qualquer UI de chat (assistente, agente, IA).
+- Logs de mensagens em tempo real (Slack-like).
+- Console de eventos com sticky-bottom no tail.
+
+## When not to use
+
+- Listas estáticas que não recebem novos itens — use `<ul>` ou Card grid.
+- Streams de dados não-textuais (gráficos em tempo real) — Conversation
+  é desenhado pra texto; pra dados use Chart com `domain="auto"`.
+- Conteúdo que precisa de foco em itens passados (pesquisa retroativa)
+  — sticky-bottom prende foco no fim, dificulta navegação.
+
+## Best practices
+
+- **Sempre coloque ScrollButton.** Sem ele, o usuário fica preso ao
+  rolar pra cima e novas mensagens entram fora da view.
+- **Use ConversationContent**, não envelope Message direto no root.
+  Sem o Content, a ref do `use-stick-to-bottom` não engata.
+- **Empty state com ação.** Combine com [Suggestion](./suggestion)
+  pra dar pontos de partida — UIs de chat vazias matam onboarding.
+- **Não aninhe Conversation.** O contexto não suporta — uma Conversation
+  por viewport.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Role** | `role="log"` no root — leitores de tela anunciam novas entradas automaticamente. |
+| **Live region** | O `log` é implicitamente `aria-live="polite"`. Para mensagens críticas (erros do agente), use Sonner toast em vez de só uma Message. |
+| **Focus** | ScrollButton tem `focus-visible:ring-[3px]` herdado de Button. |
+| **Reduced motion** | `initial="smooth"` e `resize="smooth"` respeitam `prefers-reduced-motion` (vira `instant`). |
+| **Screen reader** | Em listas longas, anuncie remetente antes do texto: `<Message from="user">[user said] {text}</Message>` ou via Streamdown. |
+
+## Related
+
+- [Message](./message) — entrada individual do chat.
+- [PromptInput](./prompt-input) — campo de envio.
+- [Suggestion](./suggestion) — chips de sugestão pro empty state.
+- [Reasoning](./reasoning) / [Tool](./tool) — surface de pensamento e tool-calls dentro de Message.

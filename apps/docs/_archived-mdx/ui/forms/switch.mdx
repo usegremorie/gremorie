@@ -1,0 +1,224 @@
+---
+title: Switch
+description: Toggle de efeito imediato — on / off, sem botão Salvar.
+component: Switch
+importPath: "@kalvner/kds/forms/switch"
+status: stable
+---
+
+import { Switch } from "@kalvner/kds/forms/switch";
+import { Label } from "@kalvner/kds/forms/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Switch` é um toggle visual que sinaliza estado ligado / desligado.
+A diferença crítica em relação ao [`Checkbox`](./checkbox) é
+**comportamental**: Switch tem efeito imediato — o usuário move o
+controle e a mudança é persistida agora, sem botão `Salvar`. Checkbox
+faz parte de uma form que será submetida.
+
+Use Switch em painéis de configurações (notificações, dark mode,
+permissões), feature flags, controles de produto. Não use Switch em
+forms multi-campo que terminam num Submit — ali, Checkbox é o
+componente correto.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Switch com Label ao lado.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="flex items-center gap-3">
+      <Switch id="prev-sw" />
+      <Label htmlFor="prev-sw">Notificações</Label>
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Switch>
+  ├─ [data-slot="switch"]
+  ├─ [data-state="checked" | "unchecked"]
+  ├─ [data-size="sm" | "default"]
+  └─ <Thumb /> (translate-x baseado no state)
+</Switch>
+```
+
+## Usage
+
+```tsx
+import { Switch } from "@kalvner/kds/forms/switch";
+import { Label } from "@kalvner/kds/forms/label";
+
+export function NotificationsToggle() {
+  return (
+    <div className="flex items-center gap-3">
+      <Switch
+        id="notify"
+        onCheckedChange={(v) => persist({ notify: v })}
+      />
+      <Label htmlFor="notify">Notificações</Label>
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `checked` | `boolean` | — | Controlado. |
+| `defaultChecked` | `boolean` | `false` | Não controlado. |
+| `onCheckedChange` | `(v: boolean) => void` | — | Callback. |
+| `size` | `'sm' \| 'default'` | `'default'` | Altura do switch + thumb. |
+| `disabled` | `boolean` | `false` | Bloqueia interação. |
+| `id` | `string` | — | Vincula ao Label. |
+
+## Variants
+
+<Card>
+  <CardHeader>
+    <CardTitle>Sizes</CardTitle>
+    <CardDescription>sm para listas densas, default para painéis.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="flex items-center gap-6">
+      <Switch size="sm" aria-label="Small" defaultChecked />
+      <Switch size="default" aria-label="Default" defaultChecked />
+    </div>
+  </CardContent>
+</Card>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Off</CardTitle>
+      <CardDescription>Background input, thumb à esquerda.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Switch aria-label="Off" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>On</CardTitle>
+      <CardDescription>Background primary, thumb à direita.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Switch defaultChecked aria-label="On" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Sem pointer events, opacidade reduzida.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Switch disabled defaultChecked aria-label="Disabled" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>With label on the side</CardTitle>
+      <CardDescription>Padrão de painel de configurações.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="dark" className="font-normal">
+          Modo escuro
+        </Label>
+        <Switch id="dark" />
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Settings panel</CardTitle>
+    <CardDescription>Linhas com label + descrição + switch à direita.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="divide-y divide-border rounded-lg border bg-card">
+      <div className="flex items-start justify-between gap-4 p-4">
+        <div className="grid gap-1">
+          <Label htmlFor="sp-notify" className="font-medium">
+            Notificações por e-mail
+          </Label>
+          <span className="text-sm text-muted-foreground">
+            Resumo diário e alertas importantes.
+          </span>
+        </div>
+        <Switch id="sp-notify" defaultChecked />
+      </div>
+      <div className="flex items-start justify-between gap-4 p-4">
+        <div className="grid gap-1">
+          <Label htmlFor="sp-2fa" className="font-medium">
+            Autenticação em dois fatores
+          </Label>
+          <span className="text-sm text-muted-foreground">
+            Recomendado — adiciona uma camada extra de segurança.
+          </span>
+        </div>
+        <Switch id="sp-2fa" defaultChecked />
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+## When to use
+
+- Configurações persistidas imediatamente (dark mode, notificações,
+  feature flags do produto).
+- Permissões granulares em painéis de admin.
+- Qualquer "ligar/desligar" que tem efeito agora, sem submit.
+
+## When not to use
+
+- Em formulários multi-campo que terminam num submit — use
+  [`Checkbox`](./checkbox). Switch num form com Submit gera ambiguidade
+  (a configuração foi aplicada agora ou só após submit?).
+- Para escolher entre múltiplas opções — use [`RadioGroup`](./radio-group).
+- Para acionar uma ação destrutiva — use [`Button`](./button) com Dialog
+  de confirmação.
+
+## Best practices
+
+- **Estado on é a configuração ativa.** "Notificações" = ON significa
+  notificações ativas. Evite labels invertidas como "Desativar
+  notificações" — confunde o usuário do estado.
+- **Persiste em onChange.** Se a operação pode falhar (rede), mostre
+  estado optimista + rollback em erro com Toast.
+- **Não desabilite sem explicação.** Switch desabilitado merece um
+  Tooltip ou helper text dizendo o porquê.
+- **Sem label "On / Off" próprio.** O Label descreve o que é
+  controlado; o estado é inferido do Switch.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix expõe `role="switch"` + `aria-checked`. |
+| **Keyboard** | `Tab` foca; `Space` ou `Enter` alterna. |
+| **Label** | Vincule via `htmlFor` + `id` ou `aria-label`. |
+| **Disabled** | `disabled` bloqueia foco e interação. |
+| **Touch target** | Default size (32×18px) é pequeno para mobile — combine com Label clicável (a linha inteira em painéis), ampliando a área hit. |
+| **Anúncio** | Leitores de tela falam "ligado" / "desligado" + texto do label. |
+
+## Related
+
+- [`Checkbox`](./checkbox) — quando o valor faz parte de um form a ser submetido.
+- [`Form`](./form) — wrappers de RHF para forms estruturados.

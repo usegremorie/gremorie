@@ -1,0 +1,94 @@
+---
+title: Controls
+description: Botões de zoom in / out / fit / lock no canto inferior do Canvas.
+component: Controls
+importPath: "@kalvner/kds/ai/controls"
+status: stable
+---
+
+import { ControlsPreview } from "@/components/ai-workflow-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Controls` é o conjunto canônico de **botões de zoom** dentro de
+[Canvas](./canvas) — Zoom In, Zoom Out, Fit View, Lock. Wrapper
+sobre `<Controls>` do ReactFlow com tokens KDS (rounded, border,
+bg-card, hover bg-secondary).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Botões de zoom in / out / fit / lock.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ControlsPreview />
+  </CardContent>
+</Card>
+
+## Usage
+
+```tsx
+<Canvas nodes={nodes} edges={edges}>
+  <Controls />
+</Canvas>
+```
+
+## Props
+
+Aceita **todos** os props de
+[`<Controls>`](https://reactflow.dev/api-reference/components/controls) do ReactFlow:
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | `'bottom-left'` | Canto. |
+| `showZoom` | `boolean` | `true` | Mostra zoom in/out. |
+| `showFitView` | `boolean` | `true` | Mostra fit-view. |
+| `showInteractive` | `boolean` | `true` | Mostra lock toggle. |
+| `className` | `string` | KDS aplica radius + border. | Override. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'vertical'` | Direção dos botões. |
+
+## Subcomponents
+
+Controls é um conjunto fixo — não há slots customizáveis. Os
+botões internos são:
+
+- **Zoom in** — `+`
+- **Zoom out** — `−`
+- **Fit view** — Maximize icon
+- **Lock interactive** — Lock/unlock icon
+
+Pra customizar individualmente, use props `showZoom`/`showFitView`/`showInteractive`
+ou monte sua própria toolbar via [Panel](./panel) + Buttons.
+
+## When to use
+
+- Sempre em workflows interativos. UX padrão — user procura por isso.
+
+## When not to use
+
+- Workflow read-only sem zoom — Controls fora de contexto.
+- Apps mobile-only (touch devices) — gestos pinch já fazem zoom.
+
+## Best practices
+
+- **Posição padrão (bottom-left)** é o convention da indústria.
+- **showInteractive=false** quando o workflow é read-only.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Buttons** | Todos os botões internos têm `aria-label` ("zoom in", "zoom out", "fit view", "lock"). |
+| **Keyboard** | Tab navega entre botões; Enter ativa. |
+
+## Related
+
+- [Canvas](./canvas) — container.
+- [Panel](./panel) — wrapper genérico (Controls é um Panel especializado).

@@ -1,0 +1,70 @@
+---
+title: Contributing
+description: How to add components, patterns, and docs to Gremorie.
+---
+
+How to add to Gremorie. The Angular edition is the active workstream — Phase 3
+adds the registry, Phase 4 the MCP server, Phase 5 the React edition.
+
+## Where to start
+
+Before any task, read:
+
+1. The migration plan: `missions/kal/gremorie/architecture/03-migracao.md` in
+   the Kalvnor vault. Identify which phase the task belongs to.
+2. The distribution and monorepo specs in the same folder
+   (`01-distribuicao.md`, `02-monorepo.md`).
+
+## Adding a new Angular primitive
+
+1. Pick a functional category (Containers, Forms, Display, Data, Feedback,
+   Navigation, Overlays, AI). Categories follow the same canonical list used
+   by the React edition; AI is a category, not a special case.
+2. Generate a new Nx library: `nx g @nx/angular:lib --name=ng-<component> --directory=packages/ng-<component>`.
+3. Build on Spartan-NG primitives where possible — don't reinvent.
+4. Replace any raw colour / spacing values with semantic tokens
+   (`bg-primary`, `text-foreground`).
+5. Write Storybook CSF3 stories: `Default` first, individual variants,
+   individual states, plus a composed `render` story. AI components also get
+   `Streaming`, `Loading`, `Error`.
+6. Write the docs MDX in `apps/docs/content/...` (once content sections are
+   restored after the migration).
+7. Add the package path to the root `tsconfig.base.json` `paths` block:
+   ```json
+   "@gremorie/ng-<component>": ["./packages/ng-<component>/src/index.ts"]
+   ```
+
+## Tokens
+
+Three layers, in priority order:
+
+1. **Primitive** — `--color-<palette>-<stop>`, lives in `@theme {}` blocks.
+   Almost never edited.
+2. **Semantic** — `--<role>` with no prefix, in `:root` / `[data-theme]`
+   selectors. Per theme switch.
+3. **Chart** — `--color-chart-<group>-<n>`, in `@theme inline {}`. Per chart
+   context.
+
+Never hardcode hex / oklch / rgb in components — always semantic tokens.
+
+## What NOT to do
+
+- Don't render token pages as grids of swatch cards — always tables.
+- Don't skip Storybook stories — every primitive needs them.
+- Don't use "Tailwind class" as a column header — always "Class".
+- Don't invent theme names — use the canonical list from the migrated tokens.
+
+## Commits & PRs
+
+- Conventional commits required:
+  `feat(ng-core): add Conversation primitive`,
+  `docs(content): add Tokens overview`,
+  `chore(deps): bump Nx to 22.7.2`.
+- Scopes: `ng-core`, `ng-prompt-input`, `ng-charts`, `cli`, `docs`,
+  `token-engine`, `registry`, `mcp`, `tooling`, `deps`.
+- PR description must include what changed and which Phase it advances.
+
+## Releases
+
+Phase 3 introduces the registry; phase-by-phase the Angular primitives ship
+into it. Changeset-driven semver kicks in once the registry stabilises.

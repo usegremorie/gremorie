@@ -1,0 +1,75 @@
+---
+title: Sequential
+description: Gradiente de uma única matiz para dados ordenados — heatmaps, choropleths, intensidade.
+---
+
+import {
+  ChartSchemeSwatchRow,
+  ChartSchemeTable
+} from "@/components/token-tables";
+import { SEQUENTIAL_SCHEME } from "@/lib/chart-tokens";
+
+**Sequential** é o esquema de uma matiz só — cinco stops de blue,
+do `200` (mais claro) ao `900` (mais escuro). É color-blind safe
+**por construção**: a leitura acontece pela claridade, não pela
+matiz. Mesmo um leitor com deuteranopia (a forma mais comum de
+deficiência de visão de cor) consegue ordenar os stops sem
+problema.
+
+<ChartSchemeSwatchRow scheme={SEQUENTIAL_SCHEME} />
+
+## Tokens
+
+<ChartSchemeTable scheme={SEQUENTIAL_SCHEME} />
+
+## Quando usar
+
+- **Heatmaps de atividade por hora ou dia** — densidade
+  posicional, ordem natural baixo → alto.
+- **Mapas coropléticos** — densidade populacional, taxa de
+  evento por região.
+- **Bar charts com gradiente** — quando a magnitude é o ponto e
+  você quer reforçar a leitura visualmente.
+- **Escalas ordenadas de intensidade** — detractor → passivo →
+  promotor (NPS), low → medium → high (severity).
+
+## Quando não usar
+
+Categorias **sem ordem** (regiões, tipos de produto). Sequential
+sugere uma progressão que não existe — você está enganando o
+leitor sobre a estrutura do dado.
+
+Em vez disso, use [Categorical](/docs/tokens/chart/categorical).
+
+## Anti-patterns
+
+<Callout type="warn">
+  Aplicar Sequential a uma escala bipolar com midpoint
+  significativo (variação acima/abaixo da média, sentiment) —
+  você apaga o pivô neutro e perde o ponto de referência. Use
+  [Divergent](/docs/tokens/chart/divergent).
+</Callout>
+
+<Callout type="warn">
+  Usar mais de 5 stops num gráfico Sequential — a partir de 6, a
+  diferença de claridade entre stops adjacentes fica muito sutil
+  para leitura confiável. Se você precisa de mais granularidade,
+  considere uma escala contínua (e.g. `interpolate(blue-200,
+  blue-900)`) em vez de stops discretos.
+</Callout>
+
+## Exemplo de consumo
+
+```tsx
+import { Bar, BarChart } from "recharts";
+
+const data = [
+  { hora: "09h", uso: 12, level: "seq-1" },
+  { hora: "12h", uso: 87, level: "seq-4" },
+  { hora: "15h", uso: 134, level: "seq-5" },
+];
+
+<BarChart data={data}>
+  <Bar dataKey="uso" fill={(entry) => `var(--color-chart-${entry.level})`} />
+</BarChart>
+```

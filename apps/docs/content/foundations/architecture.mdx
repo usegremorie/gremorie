@@ -1,0 +1,86 @@
+---
+title: Architecture
+description: How the Gremorie monorepo is organised and how the pieces fit together.
+---
+
+How Gremorie is organised at the repo level, and how distribution works for an
+AI-native system.
+
+## Repository structure
+
+Gremorie is an Nx monorepo at `usegremorie/gremorie` (transferred from
+`kalvner/shadng` in Phase 0 of the migration). It hosts the Angular edition
+today; the registry, MCP server, and React edition land in later phases.
+
+```
+gremorie/
+├── apps/
+│   ├── docs/               # this site (Fumadocs)
+│   ├── tokens/             # visual token editor (Phase 5: depends on @gremorie/react)
+│   └── mcp/                # MCP server (Phase 4)
+├── packages/
+│   ├── ng-core/            # @gremorie/ng-core — Angular core
+│   ├── ng-prompt-input/    # @gremorie/ng-prompt-input — AI input
+│   ├── ng-charts/          # @gremorie/ng-charts — chart primitives
+│   ├── ng-attachments/     # @gremorie/ng-attachments
+│   ├── ng-scroll-area/     # @gremorie/ng-scroll-area
+│   ├── cli/                # @gremorie/cli — the `gremorie` CLI
+│   ├── docs/               # Analog docs host (becomes docs-ng — Angular preview iframe)
+│   ├── iap/                # IAP harness package
+│   ├── playground/         # internal playground
+│   ├── token-engine/       # @gremorie/token-engine — token graph / CSS parsing
+│   ├── registry/           # @gremorie/registry (Phase 3)
+│   ├── eslint-config/      # @gremorie/eslint-config
+│   └── tsconfig/           # @gremorie/tsconfig
+└── tools/                  # Nx generators and scripts
+```
+
+## Token architecture (3 layers)
+
+Three layers, each with a distinct responsibility:
+
+| Layer | Lives in | Naming | Changes |
+|---|---|---|---|
+| **1. Primitive** | `@theme {}` blocks | `--color-<palette>-<stop>` | Almost never (follows Tailwind) |
+| **2. Semantic** | `:root` / `[data-theme]` selectors | `--<role>` (no prefix) | Per theme switch |
+| **3. Chart** | `@theme inline {}` blocks | `--color-chart-<group>-<n>` | Per chart-data context |
+
+Editing a primitive cascades through every theme that references it.
+Switching `data-theme="X"` updates every semantic token in-place — components
+stay ignorant of which theme is active.
+
+## Categories (functional groups)
+
+Components are organised by **what they do**, not what they look like. The
+canonical categories are:
+
+```
+Containers · Typography · Forms · Display · Data
+Feedback · Navigation · Overlays · AI
+```
+
+`AI` is one category alongside the others — not a special case. The Angular
+edition starts with the AI category (PromptInput, Conversation, Message); the
+broader categories ship as the registry grows.
+
+## Distribution
+
+Gremorie does **not** publish a versioned npm package as the primary delivery
+channel. Instead, components are installed as source via a registry — like
+shadcn/ui.
+
+```bash
+npx gremorie add ng-prompt-input
+```
+
+The `gremorie` CLI reads the registry, fetches the requested item, and writes
+it into the consumer's project. An MCP server (Phase 4) reads the same
+registry and exposes tools like `list_components`, `get_component`,
+`get_guidelines` to language models — so an AI agent can generate code that
+uses the system correctly.
+
+## Build & deploy
+
+This site deploys to `gremorie.com` via Vercel (domain to register). The Nx
+workspace uses `nx run-many` for cross-package builds; CI runs lint +
+typecheck + build per package on every push.

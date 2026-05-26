@@ -1,0 +1,155 @@
+---
+title: Edge
+description: Conectores entre nodes — variantes Animated (com partícula) e Temporary (tracejada).
+component: Edge
+importPath: "@kalvner/kds/ai/edge"
+status: stable
+---
+
+import { EdgeAnimatedPreview, EdgeTemporaryPreview } from "@/components/ai-workflow-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Edge` é um **map de variantes** de edge que você passa pra
+`Canvas` via `edgeTypes`. Não é um componente único — exporta um
+objeto `{ Animated, Temporary }` com renderers específicos.
+
+- `Animated` — curva Bezier com partícula percorrendo o caminho.
+- `Temporary` — linha tracejada (drafts, suggested connections).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Edge animada com partícula percorrendo o caminho.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <EdgeAnimatedPreview />
+  </CardContent>
+</Card>
+
+## Usage
+
+```tsx
+import { Canvas } from "@kalvner/kds/ai/canvas";
+import { Edge } from "@kalvner/kds/ai/edge";
+
+const edgeTypes = {
+  animated: Edge.Animated,
+  temporary: Edge.Temporary
+};
+
+<Canvas
+  nodes={nodes}
+  edges={[
+    { id: "e1", source: "1", target: "2", type: "animated" },
+    { id: "e2", source: "2", target: "3", type: "temporary" }
+  ]}
+  edgeTypes={edgeTypes}
+/>
+```
+
+## Anatomy
+
+Edges são SVG paths gerados pelo ReactFlow. Cada variante define
+o estilo:
+
+```
+Edge.Animated
+  ├─ <BaseEdge path stroke />
+  └─ <circle> com <animateMotion path />
+
+Edge.Temporary
+  └─ <BaseEdge path strokeDasharray="5,5" stroke="ring" />
+```
+
+## Variants
+
+### `Edge.Animated`
+
+Curva Bezier (`getBezierPath`) com partícula `<circle>` animada
+percorrendo o caminho via SMIL `<animateMotion>`. Loop infinito,
+duração 2s.
+
+Use pra **fluxos ativos** — workflows em execução.
+
+### `Edge.Temporary`
+
+Linha tracejada (`strokeDasharray="5, 5"`) usando `getSimpleBezierPath`.
+Visual mais leve, sem animação.
+
+Use pra **conexões pendentes** ou rascunho.
+
+## Props
+
+Edge variants seguem a interface
+[`EdgeProps`](https://reactflow.dev/api-reference/types/edge-props)
+do ReactFlow:
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `id` | `string` | ID único. |
+| `source` / `target` | `string` | Node IDs. |
+| `sourceX` / `sourceY` | `number` | Coords (auto pelo ReactFlow). |
+| `targetX` / `targetY` | `number` | Coords (auto). |
+| `sourcePosition` / `targetPosition` | `Position` | Lados (Left, Right, Top, Bottom). |
+| `style` | `CSSProperties` | Override. |
+| `markerEnd` | `string` | Setinha no final. |
+
+Você não passa essas props diretamente — passa via array `edges` ao
+Canvas, e o ReactFlow as injeta no renderer.
+
+## Subcomponents
+
+- **`Edge.Animated`** — variante com partícula em movimento.
+- **`Edge.Temporary`** — variante tracejada.
+
+Não há subcomponentes — são funções de renderização puras.
+
+## When to use
+
+- `Edge.Animated` em workflows em execução (visual feedback).
+- `Edge.Temporary` em drafts, autocomplete de conexões.
+- Edge default do ReactFlow pra conexões finalizadas estáticas.
+
+## When not to use
+
+- Single edge type universalmente — combine variantes baseado no
+  estado da conexão.
+- Custom highly-styled edges — escreva seu próprio EdgeRenderer.
+
+## Best practices
+
+- **Reduce motion check.** `Edge.Animated` tem SMIL animation que
+  ignora `prefers-reduced-motion`. Para apps strict-a11y, condicione:
+
+```tsx
+const edgeTypes = useMemo(
+  () => prefersReducedMotion ? { default: BaseEdge } : { animated: Edge.Animated },
+  [prefersReducedMotion]
+);
+```
+
+- **Animação só em flow ativo.** Quando o workflow termina, troque
+  `type: "animated"` → `type: "default"` pra parar a partícula.
+- **Temporary em hover de connection.** Quando user arrasta mas não
+  conectou, mostre temporary.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Reduced motion** | SMIL não respeita `prefers-reduced-motion` automaticamente — implementar lógica externa. |
+| **Color** | Stroke usa `var(--ring)` — adapta ao tema. |
+
+## Related
+
+- [Canvas](./canvas) — container.
+- [Connection](./connection) — linha durante drag.
+- [Node](./node) — origem/destino das edges.

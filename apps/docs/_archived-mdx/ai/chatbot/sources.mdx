@@ -1,0 +1,146 @@
+---
+title: Sources
+description: Lista colapsável de fontes citadas — abaixo da resposta do modelo.
+component: Sources
+importPath: "@kalvner/kds/ai/sources"
+status: stable
+---
+
+import { SourcesPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Sources` é a lista de **referências externas** que o modelo
+consultou pra montar a resposta. Aparece colapsada por padrão com
+contador ("3 sources"); user expande pra ver os links.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Sources collapsado com 3 referências.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <SourcesPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Sources>
+  ├─ <SourcesTrigger count={N} />
+  └─ <SourcesContent>
+       └─ <Source href title />
+</Sources>
+```
+
+## Usage
+
+```tsx
+<Sources>
+  <SourcesTrigger count={3} />
+  <SourcesContent>
+    <Source href="https://ds.kalvner.com/tokens/primitive" title="Tokens primitivos" />
+    <Source href="https://ds.kalvner.com/tokens/semantic" title="Tokens semânticos" />
+    <Source href="https://radix-ui.com" title="Radix UI" />
+  </SourcesContent>
+</Sources>
+```
+
+## Props
+
+### Sources (Root)
+
+Aceita `ComponentProps<"div">`. É um [Collapsible](../../ui/display/collapsible)
+por baixo.
+
+### SourcesTrigger
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `count` | `number` | — | Número exibido no badge ("3 sources"). |
+| `className` | `string` | — | Override. |
+
+### SourcesContent
+
+Wrapper das `<Source>` filhas. Aceita `ComponentProps<"div">`.
+
+### Source
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `href` | `string` | — | URL do link. |
+| `title` | `string` | — | Texto exibido. |
+| `children` | `ReactNode` | — | Override do conteúdo (ex.: ícone + título custom). |
+
+Aceita `ComponentProps<"a">` — `target="_blank"` etc.
+
+## Subcomponents
+
+- **`Sources`** — root colapsável.
+- **`SourcesTrigger`** — header com chevron + contador.
+- **`SourcesContent`** — lista revelada.
+- **`Source`** — item individual. Renderiza `<a>` com `BookOpenIcon` + título.
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| Collapsed | Mostra trigger com count. |
+| Expanded | Lista de Sources visível. |
+
+## Composition
+
+Combine com [InlineCitation](./inline-citation) — citations inline no
+texto remetem a items aqui via index:
+
+```tsx
+<MessageContent>
+  <p>Tokens usam Tailwind v4 <InlineCitation>[1]</InlineCitation>...</p>
+  <Sources>
+    <SourcesTrigger count={1} />
+    <SourcesContent>
+      <Source href="..." title="Tailwind docs" />
+    </SourcesContent>
+  </Sources>
+</MessageContent>
+```
+
+## When to use
+
+- Resposta do modelo baseada em RAG — citar as fontes consultadas.
+- Search agents — listar resultados explorados.
+- Resposta com web search — links das páginas usadas.
+
+## When not to use
+
+- 1 fonte só — render inline com link direto, sem Sources wrapper.
+- Citations que precisam aparecer dentro do texto — use [InlineCitation](./inline-citation).
+- Documentos do user — Attachments, não Sources.
+
+## Best practices
+
+- **Trunque títulos longos.** URLs não cabem; mostre o título da página
+  ou primeira frase semântica.
+- **target="_blank"** + `rel="noreferrer"` — sources são externas.
+- **Ordem importa.** Liste por relevância ou ordem de uso, não alfabética.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Trigger é `<button>` com `aria-expanded`. |
+| **External links** | `<a target="_blank">` com `rel="noreferrer"` automático no Source. |
+| **Contagem** | Trigger lê "Sources, 3" pra screen readers. |
+
+## Related
+
+- [InlineCitation](./inline-citation) — citations inline.
+- [Conversation](./conversation) — Sources viver dentro de Message dentro de Conversation.

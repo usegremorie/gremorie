@@ -1,0 +1,148 @@
+---
+title: Canvas
+description: Wrapper do ReactFlow pra agent workflows visuais — pan, zoom, fit-view com defaults sensatos.
+component: Canvas
+importPath: "@kalvner/kds/ai/canvas"
+status: stable
+---
+
+import { CanvasPreview } from "@/components/ai-workflow-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Canvas` é o **container raiz** dos workflow components. Wrapper
+sobre [`@xyflow/react`](https://reactflow.dev/) com defaults
+otimizados pra agent workflows: pan-on-scroll (não drag), select-on-drag,
+no zoom-on-doubleclick, fit-view automático.
+
+Os outros componentes da categoria Workflow (Node, Edge, Connection,
+Panel, Controls, Toolbar) só funcionam dentro de Canvas.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Canvas com 3 nodes em pipeline linear.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <CanvasPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Canvas nodes edges nodeTypes edgeTypes>
+  ├─ <Controls />          ← zoom in/out/fit
+  ├─ <Panel position>...    ← painel flutuante
+  └─ <Toolbar isVisible nodeId>...  ← contextual ao node
+</Canvas>
+```
+
+Backgrounds são adicionados internamente (cor `--sidebar`).
+
+## Usage
+
+```tsx
+"use client";
+
+import "@xyflow/react/dist/style.css";
+import { Canvas } from "@kalvner/kds/ai/canvas";
+
+const nodes = [
+  { id: "1", position: { x: 0, y: 0 }, data: { label: "Receber prompt" }, type: "input" },
+  { id: "2", position: { x: 220, y: 0 }, data: { label: "Buscar contexto" } },
+  { id: "3", position: { x: 440, y: 0 }, data: { label: "Gerar resposta" }, type: "output" }
+];
+
+const edges = [
+  { id: "e1-2", source: "1", target: "2", animated: true },
+  { id: "e2-3", source: "2", target: "3", animated: true }
+];
+
+export function Workflow() {
+  return (
+    <div className="h-[600px] w-full">
+      <Canvas nodes={nodes} edges={edges} />
+    </div>
+  );
+}
+```
+
+## Props
+
+### Canvas (Root)
+
+Aceita **todos** os props de [`<ReactFlow>`](https://reactflow.dev/api-reference/react-flow). Os mais comuns:
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `nodes` | `Node[]` | Array de nodes. |
+| `edges` | `Edge[]` | Array de edges. |
+| `onNodesChange` | `OnNodesChange` | Callback de mudanças (drag, delete). |
+| `onEdgesChange` | `OnEdgesChange` | Callback de mudanças. |
+| `onConnect` | `OnConnect` | Quando user conecta dois handles. |
+| `nodeTypes` | `Record<string, NodeComponent>` | Map de custom node renderers. |
+| `edgeTypes` | `Record<string, EdgeComponent>` | Map de custom edge renderers. |
+| `fitView` | `boolean` | `true` por default no KDS. |
+| `panOnDrag` | `boolean` | `false` no KDS (drag = select). |
+| `panOnScroll` | `boolean` | `true` no KDS. |
+| `selectionOnDrag` | `boolean` | `true` no KDS. |
+| `zoomOnDoubleClick` | `boolean` | `false` no KDS. |
+| `deleteKeyCode` | `string \| string[]` | `["Backspace", "Delete"]` no KDS. |
+
+KDS aplica esses defaults; você pode override individualmente.
+
+## Subcomponents
+
+`Canvas` é monolítico — não tem subcomponentes próprios. Os
+"filhos" canônicos vêm de outros primitivos do mesmo namespace:
+
+- **[Node](./node)** — vai em `nodeTypes` ou inline via custom render.
+- **[Edge](./edge)** — vai em `edgeTypes` (`Animated`, `Temporary`).
+- **[Connection](./connection)** — passe em `connectionLineComponent`.
+- **[Controls](./controls)** — zoom UI dentro do Canvas.
+- **[Panel](./panel)** — painel flutuante.
+- **[Toolbar](./toolbar)** — toolbar contextual de um Node selecionado.
+
+## When to use
+
+- Agent workflows visuais (n8n-style, Langflow, Flowise).
+- Pipeline editors (input → process → output).
+- DAG visualization.
+
+## When not to use
+
+- Listas lineares — use [Plan](../chatbot/plan) ou [ChainOfThought](../chatbot/chain-of-thought).
+- Decision trees curtas — use Accordion ou Collapsible.
+- Charts de dados — use [Chart](../../ui/data/chart).
+
+## Best practices
+
+- **Container com altura fixa.** Canvas precisa de `height` definido
+  (não `auto`) — sem isso, o ReactFlow não inicializa.
+- **Import o CSS.** `import "@xyflow/react/dist/style.css"` no
+  topo do arquivo é obrigatório.
+- **fitView** garante que o conteúdo cabe no viewport ao montar.
+- **deleteKeyCode** customizado evita perdas acidentais.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Keyboard** | ReactFlow tem keyboard nav nativo (Tab, Arrow keys). |
+| **Screen reader** | Workflow visual é difícil pra screen reader; pareie com lista textual fallback. |
+| **Reduced motion** | Animated edges não têm fallback automático — implemente check de `prefers-reduced-motion` se for crítico. |
+
+## Related
+
+- [Node](./node) — entidade visual.
+- [Edge](./edge) — conexão entre nodes.
+- [Controls](./controls) / [Panel](./panel) / [Toolbar](./toolbar) — UI dentro do Canvas.
+- [@xyflow/react docs](https://reactflow.dev/) — biblioteca subjacente.

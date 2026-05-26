@@ -1,0 +1,316 @@
+---
+title: Alert
+description: Mensagem persistente, em fluxo de página — distinto de Toast (transiente) e Banner (page-spanning).
+component: Alert
+importPath: "@kalvner/kds/feedback/alert"
+status: stable
+---
+
+import { Alert, AlertDescription, AlertTitle } from "@kalvner/kds/feedback/alert";
+import { Button } from "@kalvner/kds/forms/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Info,
+  XCircle
+} from "lucide-react";
+
+## Overview
+
+`Alert` é a mensagem **persistente, em fluxo** do KDS. Aparece dentro
+da página (não em overlay) e fica até que o usuário ou o sistema a
+remova. Convive com dois irmãos:
+
+- **Toast** (Phase 2 — Sonner): transitivo, flutuante. Some sozinho.
+- **Banner** (futuro): page-spanning, no topo do app. Comunica algo
+  global (manutenção, conta suspensa).
+- **Alert**: in-flow, contextual. Persistente.
+
+A escolha errada aqui é a fonte mais comum de UX confuso — Alert
+para algo passageiro vira ruído visual; Toast para algo crítico
+desaparece antes do usuário ler.
+
+shadcn entrega apenas duas variantes: `default` e `destructive`. KDS
+não introduz mais variantes visuais. Para semântica de info/success/warning,
+use **um ícone à esquerda** e mantenha a variante `default`. Mantém
+a paleta enxuta e força uma hierarquia clara: variante `destructive`
+é só para **erros**.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Alert default com ícone informacional.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Alert>
+      <Info />
+      <AlertTitle>Heads up!</AlertTitle>
+      <AlertDescription>
+        Você pode adicionar componentes ao seu app usando a CLI.
+      </AlertDescription>
+    </Alert>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Alert variant="default">
+  ├─ [data-slot="alert"]
+  ├─ role="alert"
+  ├─ <Icon /> (opcional — primeiro filho, ocupa col 1)
+  ├─ <AlertTitle />        ← linha de cabeçalho, font-medium
+  └─ <AlertDescription />   ← corpo, text-muted-foreground
+</Alert>
+```
+
+O grid CSS reserva uma coluna para o ícone (`grid-cols-[0_1fr]` →
+`grid-cols-[calc(var(--spacing)*4)_1fr]` quando há SVG). Sem ícone,
+título e descrição ocupam tudo.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Alert` | Container com `role="alert"` e variante. |
+| `AlertTitle` | Headline — `font-medium`, `tracking-tight`. |
+| `AlertDescription` | Corpo do texto — `text-muted-foreground`. |
+
+## Usage
+
+```tsx
+import { Alert, AlertDescription, AlertTitle } from "@kalvner/kds/feedback/alert";
+import { Info } from "lucide-react";
+
+export function MaintenanceNotice() {
+  return (
+    <Alert>
+      <Info />
+      <AlertTitle>Manutenção programada</AlertTitle>
+      <AlertDescription>
+        O sistema ficará indisponível domingo, das 02:00 às 04:00 (BRT).
+      </AlertDescription>
+    </Alert>
+  );
+}
+```
+
+## Props
+
+### Alert
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `variant` | `'default' \| 'destructive'` | `'default'` | Variante visual. |
+| `...rest` | `React.ComponentProps<'div'>` | — | Tudo o que `<div>` aceita. `role="alert"` é fixo. |
+
+### AlertTitle / AlertDescription
+
+Aceitam todos os props de `<div>` (`className`, `id`).
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Default</CardTitle>
+      <CardDescription>Texto neutro em fundo card. Use ícone para semântica.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Alert>
+        <Info />
+        <AlertTitle>Atualização disponível</AlertTitle>
+        <AlertDescription>
+          Uma nova versão do app está pronta para instalar.
+        </AlertDescription>
+      </Alert>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Destructive</CardTitle>
+      <CardDescription>Reservado para erros — tom destructive.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Alert variant="destructive">
+        <XCircle />
+        <AlertTitle>Erro ao salvar</AlertTitle>
+        <AlertDescription>
+          Não conseguimos salvar suas alterações. Verifique a conexão.
+        </AlertDescription>
+      </Alert>
+    </CardContent>
+  </Card>
+</div>
+
+### Padrões semânticos via ícone
+
+shadcn entrega apenas `default` e `destructive`. Para
+informacional / sucesso / aviso, KDS usa `default` + ícone semântico:
+
+<div className="grid gap-4 md:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Info</CardTitle>
+      <CardDescription>Ícone Info, variante default.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Alert>
+        <Info />
+        <AlertTitle>Manutenção programada</AlertTitle>
+        <AlertDescription>Domingo das 02:00 às 04:00.</AlertDescription>
+      </Alert>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Success</CardTitle>
+      <CardDescription>CheckCircle2 em emerald-600.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Alert>
+        <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" />
+        <AlertTitle>Convite enviado</AlertTitle>
+        <AlertDescription>Bruno receberá um email.</AlertDescription>
+      </Alert>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Warning</CardTitle>
+      <CardDescription>AlertTriangle em amber-600.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Alert>
+        <AlertTriangle className="text-amber-600 dark:text-amber-400" />
+        <AlertTitle>Quase no limite</AlertTitle>
+        <AlertDescription>9 de 10 projetos usados.</AlertDescription>
+      </Alert>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<Card>
+  <CardHeader>
+    <CardTitle>With action</CardTitle>
+    <CardDescription>Alert com ação à direita — Reconectar, Tentar novamente.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Alert className="grid grid-cols-[calc(var(--spacing)*4)_1fr_auto] items-center gap-x-3">
+      <Info />
+      <div className="space-y-0.5">
+        <AlertTitle>Sessão expirada</AlertTitle>
+        <AlertDescription>
+          Sua sessão expirou — entre novamente para continuar.
+        </AlertDescription>
+      </div>
+      <Button variant="ghost" size="sm">
+        Reconectar
+      </Button>
+    </Alert>
+  </CardContent>
+</Card>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Form-level error</CardTitle>
+      <CardDescription>Alert no topo de um form, agregando erros do servidor.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <Alert variant="destructive">
+          <XCircle />
+          <AlertTitle>Credenciais inválidas</AlertTitle>
+          <AlertDescription>Email ou senha incorretos.</AlertDescription>
+        </Alert>
+        <div className="h-9 rounded-md border border-input bg-background" />
+        <div className="h-9 rounded-md border border-input bg-background" />
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>In-page success</CardTitle>
+      <CardDescription>Confirmação após salvar — sticky até next mudança.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Alert>
+        <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" />
+        <AlertTitle>Configurações salvas</AlertTitle>
+        <AlertDescription>
+          Suas preferências de notificação foram atualizadas.
+        </AlertDescription>
+      </Alert>
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Erros de validação **agregados** no topo de um formulário (não
+  inline em cada campo — esses ficam em FormMessage).
+- Confirmação que precisa ficar visível por mais que segundos —
+  "Configurações salvas" enquanto o usuário ainda olha a tela.
+- Avisos contextuais em settings ("Workspaces privados não são
+  listados").
+- Estado degradado em uma área específica ("Sincronização pausada
+  — clique para reconectar").
+
+## When not to use
+
+- Para feedback breve de uma ação (Item adicionado, Copiado pra
+  clipboard) — use Toast (Sonner, Phase 2).
+- Para anúncios globais que afetam o app inteiro — use Banner no
+  topo do layout (futuro Phase).
+- Para erros de campo específicos em um form — use FormMessage,
+  inline abaixo do campo. Alert no topo deve ser para o agregado.
+- Para diálogos de confirmação — use Dialog/AlertDialog (Phase 2).
+
+## Best practices
+
+- **Um Alert por superfície.** Múltiplos Alerts competem por
+  atenção e o usuário ignora todos. Se você está empilhando 3,
+  consolide em um Alert com lista interna.
+- **Variante destructive só para erros.** "Beta" não é destructive,
+  "Em rascunho" não é destructive. Reserve para falhas de verdade.
+- **Ícone reforça, não substitui texto.** Mesmo com ícone, Title
+  e Description devem ser auto-suficientes — leitores de tela
+  pulam SVG decorativo.
+- **Não anime altura na entrada.** Alert que cresce/encolhe causa
+  CLS — ver [[ui/layout/cumulative-layout-shift]]. Renderize em
+  posição fixa ou reserve espaço com `min-height`.
+- **Texto direto.** Evite "Houve um problema." Diga **o que**
+  aconteceu e, idealmente, **o que fazer**.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `role="alert"` aplicado pelo componente — leitores de tela anunciam o conteúdo assim que aparece. |
+| **Live region** | `role="alert"` é uma `aria-live="assertive"` implícita. Mantém para erros críticos; para info passiva, considere envolver em região com `aria-live="polite"`. |
+| **Keyboard** | Alert em si não recebe foco. Quando há ação inline, garanta que o botão da ação está no fluxo de tab natural. |
+| **Cor + ícone + texto** | Variante `destructive` usa cor para semântica — combine com ícone (`XCircle`) e texto claro (Erro, Falhou) para usuários com daltonismo. |
+| **Não use Alert para confirmação** | `role="alertdialog"` é diferente — esse exige Dialog/AlertDialog (Phase 2) com gestão de foco. |
+| **Animação de entrada** | Se animar entrada, evite mover conteúdo abaixo. Use `opacity` + altura reservada. |
+
+## Related
+
+- [`Button`](../forms/button) — para a ação inline ("Reconectar",
+  "Tentar novamente").
+- [`Form`](../forms/form) — Alert costuma sentar acima de formulários
+  para erros agregados.
+- Toast (Phase 2) — feedback transitivo em vez de in-flow.
+- [[ui/layout/cumulative-layout-shift]] — sobre por que reservar
+  espaço em vez de empurrar conteúdo.

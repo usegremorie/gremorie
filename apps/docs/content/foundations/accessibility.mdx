@@ -1,0 +1,99 @@
+---
+title: Accessibility
+description: WCAG 2.2 AA targets, contrast rules, and per-component a11y requirements.
+---
+
+KDS targets **WCAG 2.2 AA** minimum on every component. Higher
+levels (AAA) are pursued where they don't conflict with product
+goals, particularly on text contrast and motion.
+
+## Non-negotiables
+
+Every component MUST document and ship:
+
+1. **Keyboard navigation** — every interactive element reachable
+   via Tab, activatable via Enter / Space (or appropriate key per
+   ARIA Authoring Practices Guide).
+2. **Visible focus indicator** — ring tokens (`--ring`) styled per
+   theme; never `outline: none` without a replacement.
+3. **ARIA semantics** — proper roles, names, states. Decorative
+   elements `aria-hidden`; icon-only buttons get `aria-label`.
+4. **Screen-reader announcements** — dynamic content uses
+   `aria-live` regions where appropriate; loading states have
+   accessible labels.
+5. **Colour-independent meaning** — never rely on colour alone
+   (WCAG 1.4.1). Status indicators pair colour with text + icon.
+6. **Reduced motion** — respect `prefers-reduced-motion`; transitions
+   shorter than 100ms or non-essential disabled when set.
+
+## Contrast targets
+
+| Surface | Body text | Large text | Non-text UI |
+|---|---|---|---|
+| Light themes | ≥ 4.5:1 | ≥ 3:1 | ≥ 3:1 |
+| Dark themes | ≥ 4.5:1 | ≥ 3:1 | ≥ 3:1 |
+
+Both light and dark variants of every theme are validated. Themes
+that fall below threshold are rejected — fix the primitive
+references before merge.
+
+## Per-component MDX
+
+Every component's MDX includes an **Accessibility** section
+covering:
+
+- Keyboard map (key → behaviour table)
+- ARIA attributes (which, when, why)
+- Screen-reader behaviour (announcements, state changes)
+- Focus management (where focus goes on open/close)
+- Colour contrast (verified or referenced)
+- Touch targets (≥ 44×44 CSS pixels)
+- Motion sensitivity (animations gated on `prefers-reduced-motion`)
+
+If any of these doesn't apply to a particular component, the MDX
+states why — silence is not an answer.
+
+## AI components — extra rules
+
+Components in `Primitives/AI/*` have stricter accessibility
+requirements because their output is dynamic and easy to miss with
+a screen reader:
+
+- **Live regions are mandatory** — streaming output must be
+  announced. `aria-live="polite"` for non-urgent, `aria-live="assertive"`
+  for errors.
+- **Focus management on streaming** — focus must not escape into
+  newly-rendered content unless the user initiated it.
+- **Cancellation must be reachable** — abort/cancel actions on
+  streaming responses are first-class, not buried.
+- **Reasoning UI** — collapsed by default; opening doesn't steal
+  focus from the main response.
+- **Citation links** — every citation has a textual context, not
+  just a number.
+
+See the `storybook-component-doc/rules/ai-components.md` skill for
+the full checklist applied to every AI component before merge.
+
+## Testing
+
+- **axe-core** runs on every story via the `@storybook/addon-a11y`
+  addon (added in Phase 2).
+- **Manual keyboard pass** is part of every component's review
+  checklist — no PR ships without one.
+- **Screen reader smoke test** at minimum NVDA + macOS VoiceOver
+  for AI components (because the dynamic behaviour is the failure
+  mode).
+
+## What KDS doesn't do for you
+
+KDS gives you accessible building blocks. It can't make your
+**page** accessible by itself:
+
+- Heading hierarchy is your responsibility
+- Form labels and error association is your responsibility
+- Page-level landmarks (`<main>`, `<nav>`, etc.) are your
+  responsibility
+- Reading order in custom layouts is your responsibility
+
+Use the **Patterns** and **Layouts** sections — they implement the
+page-level scaffolding accessibly so you don't have to.

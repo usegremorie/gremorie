@@ -1,0 +1,7 @@
+.next/
+.source/
+.turbo/
+node_modules/
+*.tsbuildinfo
+
+.vercel

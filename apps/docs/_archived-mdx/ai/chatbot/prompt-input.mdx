@@ -1,0 +1,241 @@
+---
+title: PromptInput
+description: Input rico de prompt — textarea + toolbar + submit com lifecycle states (ready / streaming / stop).
+component: PromptInput
+importPath: "@kalvner/kds/ai/prompt-input"
+status: stable
+---
+
+import { PromptInputPreview, PromptInputToolsPreview, PromptInputLifecyclePreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`PromptInput` é o **campo de entrada** de um chat. Auto-resize na
+textarea, slot de toolbar pra ações (anexar, microfone, web search,
+modelo), e um Submit que muda de ícone conforme o estado da geração
+— `ready` mostra arrow, `submitted` mostra spinner, `streaming`
+mostra stop.
+
+Construído sobre o [InputGroup](../../ui/forms/input-group) por
+baixo. Provider interno gerencia anexos (`PromptInputProvider` é
+opcional — útil quando você precisa controle externo dos files).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Textarea + Submit, sem toolbar.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PromptInputPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<PromptInput onSubmit={...}>
+  └─ <PromptInputBody>
+       ├─ <PromptInputAttachments>
+       │    └─ <PromptInputAttachment data={file} />
+       ├─ <PromptInputHeader>           ← opcional, model selector
+       ├─ <PromptInputTextarea />        ← auto-resize, ⌘+Enter envia
+       └─ <PromptInputFooter>
+            ├─ <PromptInputTools>        ← left: actions
+            │    ├─ <PromptInputButton />
+            │    ├─ <PromptInputActionAddAttachments />
+            │    └─ <PromptInputActionMenu>
+            └─ <PromptInputSubmit />     ← right
+</PromptInput>
+```
+
+## Usage
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  PromptInput,
+  PromptInputBody,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea
+} from "@kalvner/kds/ai/prompt-input";
+
+export function ChatBox() {
+  const [status, setStatus] = useState<"ready" | "submitted" | "streaming">("ready");
+
+  return (
+    <PromptInput onSubmit={(message) => sendMessage(message.text, message.files)}>
+      <PromptInputBody>
+        <PromptInputTextarea placeholder="Pergunte qualquer coisa..." />
+        <PromptInputFooter>
+          <span />
+          <PromptInputSubmit status={status} />
+        </PromptInputFooter>
+      </PromptInputBody>
+    </PromptInput>
+  );
+}
+```
+
+## Props
+
+### PromptInput (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `onSubmit` | `(message: PromptInputMessage, e: FormEvent) => void` | — | Disparado em ⌘+Enter ou click no Submit. `message: { text, files }`. |
+| `accept` | `string` | — | MIME types aceitos no upload (passa pro `<input type="file">`). |
+| `maxFiles` | `number` | — | Limite de anexos. |
+| `maxFileSize` | `number` | — | Bytes max por arquivo. |
+| `multiple` | `boolean` | `true` | Permite múltiplos files. |
+| `controller` | `PromptInputController` | — | Controller externo (ver subcomponents). |
+| `globalDrop` | `boolean` | `false` | Aceita drop em qualquer parte do componente, não só na zona dedicada. |
+
+Aceita `HTMLAttributes<HTMLFormElement>` (é um `<form>` por baixo).
+
+### PromptInputTextarea
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `placeholder` | `string` | — | Sempre forneça — campos vazios sem hint matam UX. |
+| `disabled` | `boolean` | `false` | Bloqueia digitação (use durante `submitted`/`streaming`). |
+| `autoFocus` | `boolean` | `true` | Foco ao montar. |
+
+Auto-resize via `field-sizing-content`. Aceita `HTMLAttributes<HTMLTextAreaElement>`.
+
+### PromptInputSubmit
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `status` | `'ready' \| 'submitted' \| 'streaming'` | `'ready'` | Controla o ícone exibido. |
+| `children` | `ReactNode` | (auto por status) | Override do ícone. |
+
+Herda de [Button](../../ui/forms/button). `streaming` desabilita o
+form-submit padrão e dispara `onClick` (consumidor interrompe).
+
+### PromptInputButton · PromptInputActionMenu
+
+| Componente | Função |
+|---|---|
+| `PromptInputButton` | Botão na Toolbar — herda de [InputGroupButton](../../ui/forms/input-group). |
+| `PromptInputActionAddAttachments` | Botão pré-feito que abre file picker. |
+| `PromptInputActionMenu` + `Trigger`/`Content`/`Item` | DropdownMenu wrapper pra agrupar actions secundárias. |
+
+### PromptInputProvider · controller
+
+| Hook | Retorno |
+|---|---|
+| `usePromptInputController()` | Controller — `{ attachments, addFile(s), removeFile(id), clear() }`. |
+| `usePromptInputAttachments()` | Lista atual de attachments dentro do form. |
+
+Use `<PromptInputProvider>` no parent quando precisar controlar
+attachments fora do form (ex.: arrastar arquivo no Conversation
+inteiro pra adicionar ao prompt).
+
+## Subcomponents
+
+- **`PromptInput`** — `<form>` raiz. Provider interno gerencia
+  attachments e textarea state.
+- **`PromptInputBody`** — wrapper do InputGroup. Contém
+  Attachments, Textarea, Header, Footer.
+- **`PromptInputHeader`** — slot superior — model selector,
+  título de contexto, etc.
+- **`PromptInputTextarea`** — campo principal. Auto-resize,
+  ⌘+Enter dispara submit.
+- **`PromptInputFooter`** — flex horizontal: tools à esquerda,
+  Submit à direita.
+- **`PromptInputTools`** — wrapper que agrupa botões na toolbar.
+- **`PromptInputButton`** — botão genérico (anexar, web, mic).
+- **`PromptInputActionAddAttachments`** — botão pré-feito que
+  abre file picker (acessibilidade + accept correto).
+- **`PromptInputActionMenu`** + Trigger/Content/Item — menu
+  dropdown pra actions secundárias.
+- **`PromptInputAttachments`** + `PromptInputAttachment` — lista
+  visível dos anexos (com X pra remover).
+- **`PromptInputSubmit`** — botão de envio com lifecycle.
+
+## States
+
+| Status | Ícone | Comportamento |
+|---|---|---|
+| `ready` | ArrowUpIcon | Submit normal. Disabled se textarea vazia. |
+| `submitted` | Loader2 spinning | Aguardando resposta. Desabilitado. |
+| `streaming` | SquareIcon (stop) | Permite cancelar a geração. |
+| `error` | XIcon | (custom — passe `children`) |
+
+## Composition
+
+### Com tools + model selector
+
+```tsx
+<PromptInput onSubmit={handle}>
+  <PromptInputBody>
+    <PromptInputHeader>
+      <ModelSelector ... />
+    </PromptInputHeader>
+    <PromptInputTextarea placeholder="..." />
+    <PromptInputFooter>
+      <PromptInputTools>
+        <PromptInputActionAddAttachments />
+        <PromptInputButton><Mic /></PromptInputButton>
+        <PromptInputButton><Globe />Web</PromptInputButton>
+      </PromptInputTools>
+      <PromptInputSubmit status={status} />
+    </PromptInputFooter>
+  </PromptInputBody>
+</PromptInput>
+```
+
+### Drag-to-drop global
+
+```tsx
+<PromptInput globalDrop accept="image/*" maxFileSize={5_000_000}>
+  ...
+</PromptInput>
+```
+
+## When to use
+
+- Campo de envio em qualquer chat de IA.
+- Surface de "compose" rica com upload, voice, web search.
+
+## When not to use
+
+- Input simples de texto sem upload — use [Input](../../ui/forms/input)
+  ou [Textarea](../../ui/forms/textarea) direto.
+- Forms multi-campo (cadastro) — use [Form](../../ui/forms/form).
+
+## Best practices
+
+- **Sempre passe `status`** ao Submit — sem isso, o ícone fica preso
+  em `ready` durante streaming, confundindo o usuário.
+- **Disabled em flight.** Desabilite a textarea durante
+  `submitted`/`streaming` pra evitar dupla submissão.
+- **Placeholder ativo.** "Pergunte qualquer coisa..." > "Mensagem".
+- **`maxFileSize` + `accept`** sempre — sem isso, usuário pode
+  travar a UI com upload de 100MB.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Form** | É um `<form>` real — Enter envia em browsers desktop, ⌘+Enter força submit. |
+| **Textarea** | Auto-focus ao montar (`autoFocus`); pode desativar pra fluxos sem chat aberto inicialmente. |
+| **Submit** | `aria-label` baseado no `status` ("Send message", "Stop generation"). |
+| **Attachments** | `MessageAttachment` (no Message) e `PromptInputAttachment` (aqui) compartilham aria patterns. |
+| **Keyboard** | ⌘/Ctrl+Enter envia; Escape limpa. |
+
+## Related
+
+- [Conversation](./conversation) — container do thread.
+- [ModelSelector](./model-selector) — pra encaixar no Header.
+- [Suggestion](./suggestion) — chips de sugestão acima do PromptInput.

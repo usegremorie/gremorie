@@ -22,7 +22,11 @@
       "@gremorie/ng-attachments": ["./packages/ng-attachments/src/index.ts"],
       "@gremorie/ng-prompt-input": ["./packages/ng-prompt-input/src/index.ts"],
       "@gremorie/ng-scroll-area": ["./packages/ng-scroll-area/src/index.ts"],
-      "@gremorie/ng-charts": ["./packages/ng-charts/src/index.ts"]
+      "@gremorie/ng-charts": ["./packages/ng-charts/src/index.ts"],
+      "@gremorie/token-engine": ["./packages/token-engine/src/index.ts"],
+      "@gremorie/token-engine/graph/types": ["./packages/token-engine/src/graph/types.ts"],
+      "@gremorie/token-engine/serializer/apply-changes": ["./packages/token-engine/src/serializer/apply-changes.ts"],
+      "@gremorie/token-engine/git/status": ["./packages/token-engine/src/git/status.ts"]
     }
   }
 }

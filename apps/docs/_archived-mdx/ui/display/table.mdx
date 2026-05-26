@@ -1,0 +1,235 @@
+---
+title: Table
+description: Wrapper estilizado sobre `<table>` semântico — base do DataTable pattern.
+component: Table
+importPath: "@kalvner/kds/display/table"
+status: stable
+---
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@kalvner/kds/display/table";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Table` é o **skin** sobre `<table>` semântico — sem comportamento,
+apenas estilização. Aplica padding, borders, hover, tipografia, e
+embrulha a tabela num container scroll-x para responsividade.
+
+Para sorting, filtering, paginação e seleção, suba para o **DataTable
+pattern** (na seção Patterns) que combina este Table + headless logic
+do `@tanstack/react-table` + Pagination + Popover de filtros. Esta
+página cobre só o primitivo display.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Tabela básica de faturas.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Fatura</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right">Total</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell className="font-medium">INV001</TableCell>
+          <TableCell>Pago</TableCell>
+          <TableCell className="text-right">R$ 250,00</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell className="font-medium">INV002</TableCell>
+          <TableCell>Pendente</TableCell>
+          <TableCell className="text-right">R$ 150,00</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Table>
+  ├─ <TableCaption /> (opcional, abaixo da tabela)
+  ├─ <TableHeader>
+  │    └─ <TableRow>
+  │         └─ <TableHead />
+  ├─ <TableBody>
+  │    └─ <TableRow>
+  │         └─ <TableCell />
+  └─ <TableFooter> (opcional, totais)
+</Table>
+```
+
+O wrapper `<div data-slot="table-container">` adiciona overflow-x
+auto — tabelas largas rolam horizontalmente em mobile sem quebrar
+a página.
+
+## Usage
+
+```tsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@kalvner/kds/display/table";
+
+export function InvoicesTable({ invoices }) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Fatura</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right">Total</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {invoices.map((inv) => (
+          <TableRow key={inv.id}>
+            <TableCell className="font-medium">{inv.id}</TableCell>
+            <TableCell>{inv.status}</TableCell>
+            <TableCell className="text-right">{inv.amount}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+## Props
+
+Todos os componentes herdam props nativas dos elementos HTML
+correspondentes (`<table>`, `<thead>`, `<tr>`, `<th>`, `<td>`,
+`<tfoot>`, `<caption>`).
+
+| Componente | Aceita | Notas |
+|---|---|---|
+| `Table` | `React.ComponentProps<'table'>` | Embrulhado em container scroll-x. |
+| `TableHeader` | `<thead>` | Border-bottom em todas as rows. |
+| `TableBody` | `<tbody>` | Última row sem border. |
+| `TableFooter` | `<tfoot>` | `bg-muted/50 font-medium`. |
+| `TableRow` | `<tr>` | Hover state, suporte a `data-state="selected"`. |
+| `TableHead` | `<th>` | h-10, font-medium, text-foreground. |
+| `TableCell` | `<td>` | p-2, align-middle. |
+| `TableCaption` | `<caption>` | mt-4, muted, text-sm. |
+
+## Subcomponents
+
+Cada subcomponente é um wrapper fino com estilização. `TableRow`
+suporta `data-state="selected"` para destacar linhas selecionadas
+(usado pelo DataTable pattern).
+
+## Variants
+
+Não há variantes embutidas — tabelas são tipográficas, e variações
+visuais costumam ser piores que neutras. Para densidade variável,
+ajuste padding via `className` no `TableCell`/`TableHead`.
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| Row hover | `bg-muted/50`. |
+| Row `data-state="selected"` | `bg-muted` permanente. |
+| `caption-bottom` | Caption renderizado **abaixo** da tabela (HTML default). |
+
+## Composition
+
+### With selection
+
+Use [Checkbox](../forms/checkbox) na primeira coluna + `data-state` no row:
+
+```tsx
+<TableRow data-state={selected ? "selected" : undefined}>
+  <TableCell><Checkbox checked={selected} onCheckedChange={...} /></TableCell>
+  ...
+</TableRow>
+```
+
+### With sorting
+
+Headers tornam-se botões clicáveis; ícone de seta indica direção:
+
+```tsx
+<TableHead>
+  <Button variant="ghost" onClick={() => toggleSort("amount")}>
+    Total <ArrowUpDown className="ml-2 size-4" />
+  </Button>
+</TableHead>
+```
+
+### DataTable pattern
+
+Para o stack completo (sorting + filtering + paginação + seleção +
+column visibility), veja a página **DataTable** na seção Patterns —
+combina este Table com `@tanstack/react-table` (headless) e os
+demais primitivos KDS.
+
+## When to use
+
+- Listas tabulares com 2+ colunas comparáveis.
+- Faturas, pedidos, usuários, logs.
+- Dados estruturados onde alinhamento por coluna importa.
+
+## When not to use
+
+- 1 coluna — use lista simples.
+- Cards visuais com hierarquia (foto + título + meta) — use Grid de
+  [Card](./card).
+- Ainda menor que 5 itens, sem comparação cross-row — use lista.
+- Listas que precisam de filter/sort/page — suba pra **DataTable
+  pattern**, não monte à mão.
+
+## Best practices
+
+- **`<table>` semântico** + tags corretas (`thead`, `tbody`, `tfoot`).
+  Não use `<div>` faking — perde acessibilidade e funcionalidade do
+  browser (scroll horizontal nativo, anúncio de leitor de tela).
+- Numbers à direita, texto à esquerda, status com badge no centro
+  (convenção típica de financial UI).
+- Use `font-medium` na primeira coluna (a "chave" da row).
+- Em mobile, deixe a scroll-x do container fazer o trabalho — não
+  esconda colunas via `display: none` (perde dado).
+- Use `<TableCaption>` para descrever a tabela; é anunciado por
+  leitor de tela antes do conteúdo.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Semantics** | Usa `<table>` real — leitor de tela navega por linha/coluna. |
+| **Caption** | `<caption>` é anunciado primeiro; descreva o conteúdo. |
+| **Header cells** | `<th>` é announced como header durante navegação por celula. |
+| **Scope** | Adicione `scope="col"` nos `<th>` em tabelas complexas. |
+| **Selection** | Use `aria-selected` na row se houver seleção fora de DataTable. |
+| **Mobile** | Container scroll-x preserva todas as colunas; usuário rola. |
+
+## Related
+
+- [Card](./card) — para listas mais visuais (com imagens, hierarquia).
+- [Pagination](../navigation/pagination) — para tabelas extensas.
+- DataTable (Patterns layer) — sorting + filter + paginação completos.

@@ -1,0 +1,21 @@
+{
+  "title": "Forms",
+  "pages": [
+    "button",
+    "input",
+    "label",
+    "textarea",
+    "selection-controls",
+    "checkbox",
+    "radio-group",
+    "switch",
+    "select",
+    "form",
+    "slider",
+    "toggle",
+    "toggle-group",
+    "calendar",
+    "date-picker",
+    "input-otp"
+  ]
+}

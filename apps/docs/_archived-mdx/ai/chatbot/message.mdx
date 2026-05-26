@@ -1,0 +1,245 @@
+---
+title: Message
+description: Entrada individual do chat — user vs. assistant, com slots de actions, branching, anexos e response markdown.
+component: Message
+importPath: "@kalvner/kds/ai/message"
+status: stable
+---
+
+import { MessageAssistantPreview, MessageUserPreview, MessageMarkdownPreview, MessagePairPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Message` é a **unidade atômica** do chat. Aceita `from="user"`
+(alinha à direita com fundo `secondary`) ou `from="assistant"`
+(alinha à esquerda, sem fundo).
+
+A composição é granular: você pode ter só Message + MessageContent
+(simples), ou montar uma surface rica com Response (markdown
+streaming), Toolbar (actions abaixo), Branches (alternativas de
+geração) e Attachments (anexos do user).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Message do assistente — alinhada à esquerda, sem fundo.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <MessageAssistantPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Message from="user" | "assistant">
+  ├─ <MessageAttachments>          ← opcional, anexos enviados pelo user
+  │    └─ <MessageAttachment data={file} />
+  ├─ <MessageContent>              ← bubble do texto
+  │    └─ <MessageResponse />      ← Streamdown (markdown stream)
+  └─ <MessageToolbar>              ← actions, branches
+       ├─ <MessageActions>
+       │    └─ <MessageAction tooltip="...">...
+       └─ <MessageBranch>          ← Prev/Next entre regenerações
+            ├─ <MessageBranchSelector from>
+            ├─ <MessageBranchPrevious />
+            ├─ <MessageBranchPage />
+            └─ <MessageBranchNext />
+</Message>
+```
+
+## Usage
+
+```tsx
+import { Message, MessageContent, MessageResponse } from "@kalvner/kds/ai/message";
+
+<Message from="assistant">
+  <MessageContent>
+    <MessageResponse>
+      {markdownString /* streaming OK */}
+    </MessageResponse>
+  </MessageContent>
+</Message>
+```
+
+## Props
+
+### Message (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `from` | `'user' \| 'assistant' \| 'system' \| 'tool'` | — | Papel do remetente. Aplica `is-user`/`is-assistant` para variants CSS internos. |
+| `className` | `string` | — | Override do wrapper. |
+
+Aceita qualquer `HTMLAttributes<HTMLDivElement>` (id, role, etc).
+
+### MessageContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `className` | `string` | — | Override do bubble. User: `bg-secondary px-4 py-3 rounded-lg`. Assistant: sem fundo. |
+| `children` | `ReactNode` | — | Texto, markdown ou MessageResponse. |
+
+### MessageResponse
+
+Wrapper memoizado sobre [`Streamdown`](https://github.com/vercel/streamdown).
+Re-renderiza só quando `children` muda — eficiente em streams longos.
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `children` | `string` | — | Markdown source (parcial OK em stream). |
+| `className` | `string` | — | Override; `[&>*:first-child]:mt-0 [&>*:last-child]:mb-0` é o default (remove margem das pontas). |
+
+Herda os outros props de `Streamdown` — `mode`, `parseMarkdownIntoBlocksFn`, etc.
+
+### MessageActions · MessageAction
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `tooltip` (Action) | `string` | — | Texto do tooltip. |
+| `label` (Action) | `string` | — | Override do `aria-label`/sr-only (default: `tooltip`). |
+| `variant` (Action) | `ButtonVariant` | `'ghost'` | Visual. |
+| `size` (Action) | `ButtonSize` | `'icon-sm'` | Tamanho. |
+
+### MessageBranch · branch nav
+
+| Componente | Função |
+|---|---|
+| `MessageBranch` | Provider — segura o estado `currentBranch`. Aceita `defaultBranch={0}` e `onBranchChange={(i) => ...}`. |
+| `MessageBranchContent` | Wrapper — cada filho direto vira uma branch. Mostra só o atual. |
+| `MessageBranchSelector` | Wrapper visual com `from` (alinha igual à Message). |
+| `MessageBranchPrevious` / `Next` | Setas de navegação. Se houver ≤1 branch, ficam disabled. |
+| `MessageBranchPage` | Indicador "1 of 3". |
+
+### MessageAttachments · MessageAttachment
+
+`MessageAttachment` aceita `data: FileUIPart` (do AI SDK) +
+`onRemove?: () => void`. Detecta image vs. file pela `mediaType`.
+Hover mostra botão remove flutuante.
+
+| Prop (Attachment) | Tipo | Descrição |
+|---|---|---|
+| `data` | `FileUIPart` | `{ filename, mediaType, url }`. |
+| `onRemove` | `() => void` | Callback opcional — habilita o XIcon hover. |
+
+## Subcomponents
+
+- **`Message`** — root. O `from` controla CSS variants
+  (`is-user`/`is-assistant`).
+- **`MessageContent`** — bubble. User vai pra direita com fundo;
+  assistant fica na coluna sem fundo (apenas texto).
+- **`MessageResponse`** — render de markdown via Streamdown,
+  memoizado. Use pra mensagens do assistente que stream tokens.
+- **`MessageActions`** + **`MessageAction`** — toolbar abaixo da
+  bubble: copy, regenerate, thumbs up/down, etc. `tooltip` é
+  obrigatório quando só ícone.
+- **`MessageToolbar`** — wrapper flex que hospeda `MessageActions`
+  + `MessageBranch*`.
+- **`MessageBranch*`** — navegação entre alternativas de geração
+  (regenerate cria branches).
+- **`MessageAttachments`** + **`MessageAttachment`** — fileia
+  anexos do user (acima da bubble, alinhado à direita).
+
+## Variants
+
+`from="user"` (`bg-secondary` à direita) vs. `from="assistant"`
+(transparente à esquerda) cobrem 95% dos casos. Para variantes
+exóticas (system messages, tool messages) ajuste `className` no
+MessageContent.
+
+## States
+
+| Estado | Como é refletido |
+|---|---|
+| Streaming | `MessageResponse` re-renderiza eficientemente conforme `children` muda. |
+| Editado | Adicione MessageAction com tooltip "Editar" + ícone Pencil. |
+| Erro | Use [Alert](../../ui/feedback/alert) dentro do MessageContent. |
+| Tool-call | Coloque [Tool](./tool) dentro do MessageContent. |
+| Reasoning | Coloque [Reasoning](./reasoning) antes do texto principal. |
+
+## Composition
+
+### Message com Reasoning + Response
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Reasoning isStreaming={status === "thinking"}>
+      <ReasoningTrigger />
+      <ReasoningContent>{thoughtTokens}</ReasoningContent>
+    </Reasoning>
+    <MessageResponse>{responseMarkdown}</MessageResponse>
+  </MessageContent>
+  <MessageToolbar>
+    <MessageActions>
+      <MessageAction tooltip="Copiar"><Copy /></MessageAction>
+      <MessageAction tooltip="Regerar"><RefreshCw /></MessageAction>
+    </MessageActions>
+  </MessageToolbar>
+</Message>
+```
+
+### Message com Tool
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Tool defaultOpen>
+      <ToolHeader type="search" state="output-available" />
+      <ToolContent>
+        <ToolInput input={params} />
+        <ToolOutput output={result} />
+      </ToolContent>
+    </Tool>
+    <MessageResponse>{summary}</MessageResponse>
+  </MessageContent>
+</Message>
+```
+
+## When to use
+
+- Toda entrada de chat — user prompts, assistant responses, tool calls.
+- Logs de eventos formatados (assistant pode dar feedback via Message).
+
+## When not to use
+
+- Notificações fora do chat — use [Sonner](../../ui/overlays/sonner).
+- Lista de itens estática — use Card grid.
+- Mensagens críticas que NÃO podem ser missadas — Streamdown pode
+  ser longo; pra alertas use Alert ou AlertDialog.
+
+## Best practices
+
+- **`from` é único por mensagem.** Não combine user e assistant na
+  mesma `<Message>` — quebra a visual.
+- **MessageResponse para markdown.** Não passe markdown puro pra
+  MessageContent; sem Streamdown, headings/code/links não renderizam.
+- **Branches usam `defaultBranch` controlado pelo parent.** Salve em
+  state externo se quiser "lembrar" qual branch o usuário escolheu.
+- **MessageAction precisa de tooltip** quando só ícone — sem isso
+  leitor de tela diz "botão" e nada mais.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<Message>` é `<div>` neutro; herda do parent `Conversation` (`role="log"`). |
+| **Streaming** | `MessageResponse` é memoizado; updates não disparam announcements duplicados. |
+| **Branches** | `MessageBranchPrevious`/`Next` têm `aria-label` ("Previous branch" / "Next branch"). |
+| **Attachments** | `MessageAttachment` usa `<img alt={filename}>` — sempre pareie com filename. |
+| **Toolbar** | MessageAction com `tooltip` injeta `aria-label`/`<span class="sr-only">`. |
+
+## Related
+
+- [Conversation](./conversation) — container que segura múltiplas Messages.
+- [Reasoning](./reasoning) — pensamento do modelo dentro de Message.
+- [Tool](./tool) — tool-call dentro de Message.
+- [InlineCitation](./inline-citation) — citações inline no texto.
+- [Sources](./sources) — lista de fontes abaixo da resposta.

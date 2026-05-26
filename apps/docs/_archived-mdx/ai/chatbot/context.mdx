@@ -1,0 +1,167 @@
+---
+title: Context
+description: Indicador de uso de tokens / context window — popover com breakdown por categoria.
+component: Context
+importPath: "@kalvner/kds/ai/context"
+status: stable
+---
+
+import { ContextPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Context` mostra **uso de tokens** do modelo num HoverCard. Trigger
+é um button compacto com Progress circular; ao hover, abre painel
+com breakdown (input / output / reasoning / cached). Usa
+[`tokenlens`](https://github.com/jamesnw/tokenlens) pra calcular
+percentages relativos ao `maxTokens` do modelo.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Context badge — hover/click pra abrir o breakdown.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ContextPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Context maxTokens={N} usedTokens={N} usage={...} modelId="...">
+  ├─ <ContextTrigger />
+  └─ <ContextContent>
+       ├─ <ContextContentHeader />
+       ├─ <ContextContentBody>
+       │    ├─ <ContextInputUsage />
+       │    ├─ <ContextOutputUsage />
+       │    ├─ <ContextReasoningUsage />
+       │    └─ <ContextCacheUsage />
+       └─ <ContextContentFooter />
+</Context>
+```
+
+## Usage
+
+```tsx
+<Context
+  maxTokens={128_000}
+  usedTokens={usage.totalTokens}
+  usage={usage}
+  modelId="claude-opus-4-7"
+>
+  <ContextTrigger />
+  <ContextContent>
+    <ContextContentHeader />
+    <ContextContentBody>
+      <ContextInputUsage />
+      <ContextOutputUsage />
+      <ContextReasoningUsage />
+      <ContextCacheUsage />
+    </ContextContentBody>
+    <ContextContentFooter />
+  </ContextContent>
+</Context>
+```
+
+## Props
+
+### Context (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `maxTokens` | `number` | — | Tamanho do context window do modelo. Usado pra calcular percentages. |
+| `usedTokens` | `number` | — | Total de tokens consumidos. |
+| `usage` | `LanguageModelUsage` (AI SDK) | — | Breakdown por categoria — input, output, reasoning, cached. |
+| `modelId` | `string` | — | ID do modelo (claude-opus-4-7, gpt-4o, ...). |
+
+Herda de [HoverCard](../../ui/overlays/hover-card) — `openDelay`, `closeDelay`.
+
+### ContextTrigger
+
+Aceita `ComponentProps<typeof Button>`. Default visual: ring de
+progresso SVG + porcentagem.
+
+### ContextContent · Header / Body / Footer
+
+| Componente | Função |
+|---|---|
+| `ContextContent` | Wrapper do HoverCardContent. |
+| `ContextContentHeader` | Título do popover (ex.: "Context · 21k / 128k"). |
+| `ContextContentBody` | Wrapper das linhas de breakdown. |
+| `ContextContentFooter` | Total + modelId + estimativa de custo (via tokenlens). |
+
+### ContextInputUsage · OutputUsage · ReasoningUsage · CacheUsage
+
+Linhas individuais. Cada uma lê do `usage` provider e mostra:
+- Label (Input / Output / Reasoning / Cache)
+- Valor numérico
+- Mini-progress bar (porção do max)
+
+Não aceitam props além de `className` — leem tudo do contexto.
+
+## Subcomponents
+
+- **`Context`** — root, é HoverCard provider + ContextContext.
+- **`ContextTrigger`** — botão compacto com ring SVG circular.
+- **`ContextContent`** — popover content.
+- **`ContextContentHeader/Body/Footer`** — slots semânticos.
+- **`Context*Usage`** (Input / Output / Reasoning / Cache) — linhas
+  de breakdown auto-leitas do `usage`.
+
+### `useContextValue()`
+
+Hook interno que retorna `{ usedTokens, maxTokens, usage, modelId }`.
+Use pra construir variantes custom de breakdown.
+
+## States
+
+| Estado | Visual |
+|---|---|
+| Used menor que 50% | Ring verde. |
+| Used 50-80% | Ring amarelo (yellow-500). |
+| Used acima de 80% | Ring vermelho (red-500) — alerta de saturação. |
+
+Cores específicas dependem do tema.
+
+## When to use
+
+- Apps de IA com long-context — usuário precisa saber quando se
+  aproxima do limite.
+- Debug UI pra otimizar prompt size.
+- Painéis admin de billing baseado em tokens.
+
+## When not to use
+
+- Apps com modelo único curto onde o limite raramente importa.
+- Surfaces simples — adiciona ruído visual.
+
+## Best practices
+
+- **Sempre passe `modelId`.** Sem isso, footer não pode estimar custo.
+- **`usage` da própria response.** AI SDK retorna `usage` em
+  `onFinish`/`finish` — passe direto.
+- **Cuidado com cache em prompts dinâmicos.** Cached tokens só
+  contam se você usou caching explicitamente — sem isso, aparece 0.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **HoverCard** | Acessível via teclado (Tab focus + Enter). |
+| **Progress visual** | Pareie com texto — ring sozinho é canal único. |
+| **Number formatting** | Use `Intl.NumberFormat` pra "21,320" em vez de "21320". |
+
+## Related
+
+- [HoverCard](../../ui/overlays/hover-card) — base subjacente.
+- [Progress](../../ui/feedback/progress) — barra linear (alternativa).
+- AI SDK [`finish` callback](https://ai-sdk.dev/docs) — fonte do `usage`.

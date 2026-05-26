@@ -1,0 +1,12 @@
+{
+  "title": "Workflow",
+  "pages": [
+    "canvas",
+    "node",
+    "edge",
+    "connection",
+    "panel",
+    "controls",
+    "toolbar"
+  ]
+}

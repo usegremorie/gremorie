@@ -1,0 +1,301 @@
+---
+title: Skeleton
+description: Bloco placeholder pulsante que reserva geometria enquanto o conteúdo real carrega.
+component: Skeleton
+importPath: "@kalvner/kds/feedback/skeleton"
+status: stable
+---
+
+import { Skeleton } from "@kalvner/kds/feedback/skeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Skeleton` é o componente de loading mais subestimado do KDS.
+Visualmente é apenas um retângulo pulsante (`animate-pulse` em cima
+de `bg-accent`), mas o trabalho real é arquitetural: ele **reserva
+a geometria do conteúdo real** para que, quando os dados chegarem,
+nada se mova. Isso é o coração da prevenção de
+[[ui/layout/cumulative-layout-shift]].
+
+A regra principal: a forma do skeleton deve casar com a forma do
+conteúdo que vai aparecer. Se o conteúdo final é um avatar circular
+de 40px ao lado de duas linhas de texto, o skeleton precisa ser
+exatamente isso — não um retângulo gigante de placeholder.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Três geometrias lado a lado — texto, avatar, card.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="flex items-start gap-6">
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-40" />
+        <Skeleton className="h-4 w-32" />
+      </div>
+      <Skeleton className="size-10 rounded-full" />
+      <div className="space-y-3">
+        <Skeleton className="h-20 w-32 rounded-md" />
+        <Skeleton className="h-3 w-24" />
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Skeleton
+  ├─ [data-slot="skeleton"]
+  ├─ animate-pulse
+  ├─ rounded-md (override para -full / -lg)
+  └─ bg-accent
+/>
+```
+
+`Skeleton` é apenas um `<div>`. Toda a geometria — width, height,
+`rounded-*` — é controlada pelo consumidor via `className`. Isso é
+intencional: cada caso de uso tem geometria diferente.
+
+## Usage
+
+```tsx
+import { Skeleton } from "@kalvner/kds/feedback/skeleton";
+
+export function UserCardLoading() {
+  return (
+    <div
+      className="flex items-center gap-3 p-3"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <Skeleton className="size-10 rounded-full" />
+      <div className="flex-1 space-y-2">
+        <Skeleton className="h-3 w-[60%]" />
+        <Skeleton className="h-3 w-[40%]" />
+      </div>
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `className` | `string` | — | Geometria (width, height, rounded). É a única coisa que você costuma passar. |
+| `...rest` | `React.ComponentProps<'div'>` | — | Tudo o que `<div>` aceita (`id`, `aria-*`). |
+
+Sem props específicas — Skeleton é puramente um `<div>` estilizado.
+A geometria fica em `className`.
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Text line</CardTitle>
+      <CardDescription>Linha de texto. h-4 para texto base.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-4 w-48" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Multi-line</CardTitle>
+      <CardDescription>Width descendente imita parágrafo real.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2">
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-[80%]" />
+        <Skeleton className="h-3 w-[60%]" />
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Avatar circle</CardTitle>
+      <CardDescription>size-10 + rounded-full = 40px circular.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="size-10 rounded-full" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Card block</CardTitle>
+      <CardDescription>Bloco grande — banner, imagem, mídia.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-32 w-full rounded-md" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Button placeholder</CardTitle>
+      <CardDescription>h-9 casa com a altura padrão de Button.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-9 w-24 rounded-md" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Tag pill</CardTitle>
+      <CardDescription>h-5 + rounded-full pra Badge / chips.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex gap-1.5">
+        <Skeleton className="h-5 w-16 rounded-full" />
+        <Skeleton className="h-5 w-20 rounded-full" />
+        <Skeleton className="h-5 w-12 rounded-full" />
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Pulsing (default)</CardTitle>
+      <CardDescription>animate-pulse comunica "estou trabalhando".</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-4 w-48" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Reduced motion</CardTitle>
+      <CardDescription>Em SO com motion reduzido, fica estático.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-48" />
+        <p className="text-xs text-muted-foreground">
+          O Tailwind v4 desabilita `animate-pulse` automaticamente para
+          usuários com `prefers-reduced-motion: reduce`.
+        </p>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>List loading</CardTitle>
+      <CardDescription>Três itens — avatar + duas linhas.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4" aria-busy="true" aria-live="polite">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="flex items-center gap-3">
+            <Skeleton className="size-10 rounded-full" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-3 w-[60%]" />
+              <Skeleton className="h-3 w-[40%]" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Profile card loading</CardTitle>
+      <CardDescription>Banner + avatar sobreposto + meta.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div
+        className="overflow-hidden rounded-md border bg-card"
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <Skeleton className="h-20 w-full rounded-none" />
+        <div className="space-y-3 p-4">
+          <Skeleton className="-mt-10 size-14 rounded-full ring-4 ring-card" />
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Sempre que o consumidor precisa esperar dados que vão **ocupar
+  uma forma previsível** — lista de mensagens, card de perfil, linha
+  de tabela.
+- Quando substituir um spinner faria a UI parecer mais lenta. Skeleton
+  comunica progresso sem capturar atenção.
+- Em primeira renderização de páginas com SSR — o servidor entrega o
+  shell + skeletons; o cliente hidrata e troca por dados reais.
+
+## When not to use
+
+- Para botões durante submit — use `disabled + spinner` no próprio
+  botão. Skeleton ali parece troca de elemento.
+- Para conteúdo cuja geometria você não conhece (long-form,
+  rich-text). Aí o skeleton vira chute — prefira spinner ou
+  progressive loading.
+- Para erros — Skeleton sozinho infinito faz o usuário acreditar que
+  ainda está carregando. Tenha um timeout que troca para `Alert` de
+  erro com retry.
+- Para ações instantâneas (&lt; 200ms). O flicker do skeleton é pior
+  que o vazio passageiro.
+
+## Best practices
+
+- **Geometria do skeleton = geometria do conteúdo.** Reserve a mesma
+  altura, a mesma largura aproximada e o mesmo raio. Sem isso, há
+  layout shift no momento da troca — exatamente o que o skeleton
+  deveria evitar. Ver [[ui/layout/cumulative-layout-shift]].
+- **Use `aria-busy="true"` no container.** O Skeleton em si não tem
+  semântica para AT — quem comunica o estado de loading é a região
+  ao redor. Combine com `aria-live="polite"` para anunciar quando o
+  conteúdo carregar.
+- **Pulsar é melhor que rodar.** Spinner quando você não tem
+  geometria; Skeleton quando você tem. A regra é a forma — não a
+  duração.
+- **Não anime cor para cinza-mais-escuro.** O `animate-pulse` do
+  Tailwind faz opacidade. Trocar por animação de gradiente
+  ("shimmer") é uma escolha legítima, mas exige garantir
+  reduced-motion.
+- **Não exiba mais skeletons do que o número provável de itens.**
+  Se a lista típica tem 5 itens, mostre 5 — não 20. Skeletons em
+  excesso parecem fake content.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Sem role específico — Skeleton é puramente visual. A semântica de "carregando" deve vir do container via `aria-busy="true"`. |
+| **Live region** | Combine com `aria-live="polite"` no container para anunciar quando o conteúdo aparecer. |
+| **Keyboard** | Não recebe foco. |
+| **Reduced motion** | `animate-pulse` é desligado automaticamente para usuários com `prefers-reduced-motion: reduce`. O bloco fica estático e a comunicação visual continua via `bg-accent` em contraste com o fundo. |
+| **Contraste** | `bg-accent` tem contraste sutil — não dependa do skeleton para transmitir informação além de "espaço reservado". |
+| **Touch / mobile** | Não interativo. Mantenha a geometria do skeleton casando com o conteúdo real para evitar shift quando o usuário rola. |
+
+## Related
+
+- [`Card`](../display/card) — frequente container de skeletons em
+  loading de dashboards e perfis.
+- [`Avatar`](../display/avatar) — pareie um Skeleton circular do
+  mesmo tamanho enquanto carrega.
+- [[ui/layout/cumulative-layout-shift]] — fundamentação completa
+  sobre por que reservar geometria importa.

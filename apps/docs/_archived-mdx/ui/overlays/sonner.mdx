@@ -1,0 +1,261 @@
+---
+title: Sonner
+description: Toasts transientes flutuantes — feedback breve que não bloqueia, com promise / undo embutidos.
+component: Toaster
+importPath: "@kalvner/kds/overlays/sonner"
+status: stable
+---
+
+import { Button } from "@kalvner/kds/forms/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  ToastDefault,
+  ToastError,
+  ToastInfo,
+  ToastPromise,
+  ToastSuccess,
+  ToastWarning,
+  ToastWithDescription,
+  ToastWithUndo
+} from "@/components/overlay-demos";
+
+## Overview
+
+`Sonner` é o sistema de **toasts transientes** do KDS. Toasts são
+mensagens flutuantes que aparecem por alguns segundos e somem — feedback
+breve que não bloqueia o fluxo. KDS usa a biblioteca
+[`sonner`](https://sonner.emilkowal.ski) do Emil Kowalski; ela cuida
+de stacking, swipe-to-dismiss, animação suave e variantes
+semânticas.
+
+A hierarquia de feedback é importante:
+
+| Primitive | Forma | Tempo | Uso |
+|---|---|---|---|
+| **Sonner (toast)** | flutuante, canto da tela | 4–6s | "Salvo", "Convite enviado", "Excluído. Desfazer." |
+| [`Alert`](../feedback/alert) | in-flow, parte da página | persistente | "Sessão expirada", "Plano quase no limite" |
+| Banner (próximo) | page-spanning topo | persistente | "Manutenção programada para hoje 02:00" |
+| [`AlertDialog`](./alert-dialog) | modal bloqueante | exige ação | "Excluir conta para sempre?" |
+
+Toast é o canal certo para a maioria dos resultados — `Salvo`,
+`Falhou`, `Enviado`. Para algo que o usuário precisa **ler antes de
+agir**, escale.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Clique para disparar um toast padrão.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ToastDefault />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+// app/layout.tsx — uma vez no root
+<Toaster />
+
+// em qualquer componente
+import { toast } from "@kalvner/kds/overlays/sonner";
+
+toast("Mensagem")
+toast.success("Convite enviado")
+toast.error("Falha ao salvar")
+toast.info("Manutenção programada")
+toast.warning("Plano quase no limite")
+toast.promise(promise, { loading, success, error })
+```
+
+`Toaster` é o **mount root**. O `toast()` é uma função imperativa —
+não precisa de provider, não precisa de hook. Funciona de qualquer
+lugar.
+
+## Subcomponents / API
+
+| API | Descrição |
+|---|---|
+| `<Toaster />` | Mount no root da app (uma única vez). |
+| `toast(message)` | Toast neutro. |
+| `toast.success(message)` | Variante success com ícone. |
+| `toast.error(message)` | Variante error com ícone. |
+| `toast.info(message)` | Variante info. |
+| `toast.warning(message)` | Variante warning. |
+| `toast.promise(promise, { loading, success, error })` | Mostra loading e troca para success ou error quando a promessa resolve. |
+| `toast(message, { description, action })` | Toast com descrição e/ou botão de ação (ex.: "Desfazer"). |
+
+## Usage
+
+```tsx
+// app/layout.tsx
+import { Toaster } from "@kalvner/kds/overlays/sonner";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Toaster />
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+// any component
+"use client";
+import { toast } from "@kalvner/kds/overlays/sonner";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function SaveButton() {
+  return (
+    <Button onClick={() => toast.success("Salvo")}>Salvar</Button>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Default</CardTitle>
+      <CardDescription>Toast neutro, sem ícone.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ToastDefault />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Success</CardTitle>
+      <CardDescription>Operação concluída.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ToastSuccess />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Error</CardTitle>
+      <CardDescription>Operação falhou (não-crítica).</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ToastError />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Info</CardTitle>
+      <CardDescription>Informação neutra.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ToastInfo />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Warning</CardTitle>
+      <CardDescription>Atenção sem bloqueio.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ToastWarning />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>With description</CardTitle>
+      <CardDescription>Linha extra de contexto.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ToastWithDescription />
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Undo affordance (Tier 2 stakes)</CardTitle>
+    <CardDescription>
+      Fecha o loop com a Tier 2 do <a href="./dialog#stakes">modelo de stakes</a> em Dialog. Após confirmar
+      "Excluir", o toast "Excluído. Desfazer." dá ~6s para reverter.
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ToastWithUndo />
+  </CardContent>
+</Card>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Promise toast</CardTitle>
+    <CardDescription>
+      `toast.promise(...)` mostra loading → success/error automaticamente.
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ToastPromise />
+  </CardContent>
+</Card>
+
+## When to use
+
+- Confirmar uma ação concluída — "Salvo", "Enviado", "Convidado".
+- Fechar o loop de Tier 2 do stakes model — "Excluído. Desfazer."
+- Mostrar progresso de operações async com `toast.promise(...)`.
+- Erros recuperáveis e não-bloqueantes ("Falhou — tente de novo").
+
+## When not to use
+
+- Para erros críticos que precisam acknowledgment — use
+  [`AlertDialog`](./alert-dialog) ou Alert in-flow com botão de
+  ação.
+- Para mensagens persistentes — use [`Alert`](../feedback/alert) ou
+  Banner.
+- Para confirmações antes de uma ação — use Dialog ou AlertDialog.
+- Para feedback que precisa ficar visível por mais de 10s — toast
+  some, e o usuário pode ter perdido. Use Alert.
+
+## Best practices
+
+- **Auto-dismiss em 4–6s.** Default do sonner é 4s. Nunca abaixo
+  de 3s — usuários com leitura mais lenta perdem a mensagem.
+- **Mensagem curta.** Toast é uma frase. Se precisa de duas linhas,
+  use `description` para a segunda. Mais que isso, é Alert.
+- **Toast destrutivo + undo.** Sempre que possível, expor undo.
+  Reduz o custo de erros de Tier 2 a quase zero.
+- **Não empilhe toasts iguais.** Sonner faz dedup automaticamente
+  via `id`; passe um id estável quando a mesma operação puder ser
+  repetida.
+- **Não substitua Alert por toast em forms.** Erro de validação fica
+  inline, na linha do campo. Falha de rede agregada vai para Alert
+  no topo do form. Toast é para feedback **após** envio.
+- **Toaster vai uma vez.** Se você montar dois Toasters por
+  acidente, vai ver duplicação. Mount no layout.tsx, não em
+  páginas.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Sonner usa `role="status"` (default) ou `role="alert"` (para errors), com `aria-live`. |
+| **Foco** | Toasts não roubam foco. Usuário continua trabalhando. |
+| **Keyboard** | Toast com action (`Desfazer`) é alcançável via Tab da próxima vez que o trigger ganhar foco. |
+| **Screen reader** | `aria-live="polite"` (default) ou `aria-live="assertive"` (errors). Mensagens são anunciadas sem interromper o que o usuário estiver fazendo. |
+| **Reduced motion** | A entrada/saída respeita `prefers-reduced-motion` no nível do tema. |
+
+## Related
+
+- [`Alert`](../feedback/alert) — feedback persistente em fluxo.
+- [`AlertDialog`](./alert-dialog) — confirmação modal antes da ação.
+- [`Dialog`](./dialog) — referência ao modelo de stakes.

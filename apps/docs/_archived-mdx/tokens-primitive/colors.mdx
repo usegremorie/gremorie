@@ -1,0 +1,134 @@
+---
+title: Colors
+description: 26 paletas × 11 stops — Tailwind v4 estendido com 4 paletas customizadas (mauve, mist, olive, taupe) sintetizadas para suportar os temas KDS.
+---
+
+import {
+  ColorPaletteTable
+} from "@/components/token-tables";
+import { COLOR_PALETTES } from "@/lib/primitive-tokens";
+
+A KDS herda as paletas do Tailwind v4 e estende com **quatro
+paletas customizadas** (mauve, mist, olive, taupe) — necessárias
+para suportar os temas Amber Minimal, Amethyst Haze e Claude com
+primitivos consistentes em vez de OKLCH literal.
+
+São **26 paletas × 11 stops = 286 cores**. Cada stop é
+intencionalmente espaçado em claridade (perceptualmente uniforme
+no espaço OKLCH), garantindo que `slate-200` e `blue-200` se
+comportam de forma similar quando usados como surface, mesmo sendo
+hues completamente diferentes.
+
+## Como ler a escala
+
+Os stops vão de **50** (mais claro) a **950** (mais escuro). Não
+existe regra rígida de uso — mas há padrões fortes:
+
+| Faixa | Uso típico |
+|---|---|
+| **50, 100** | Backgrounds, hover de itens, surfaces sutis |
+| **200, 300** | Borders, separadores, surfaces secundárias |
+| **400, 500** | Texto secundário, ícones, placeholders |
+| **600, 700** | Texto principal, primary actions, ícones de UI ativa |
+| **800, 900, 950** | Headings, dark mode surfaces |
+
+Esses stops também são **stable**: Tailwind v4 não muda OKLCH
+quando você atualiza versão minor. Se quiser mudar o tom de
+algum, edite o primitivo na KDS — a mudança cascateia.
+
+## Como consumir
+
+Três formas, todas equivalentes:
+
+```tsx
+// 1. CSS variable
+<div style={{ background: "var(--color-blue-600)" }} />
+
+// 2. Utilitário Tailwind (gerado automaticamente)
+<div className="bg-blue-600" />
+
+// 3. JS via design tokens (no consumo programático)
+import tokens from "@kalvner/kds/tokens";
+const blue600 = tokens.color.blue[600];
+```
+
+Se você está dentro de um componente que respeita o tema, a quase
+totalidade dos casos é consumir um **token semântico** (`bg-primary`,
+`text-foreground`) em vez de um primitivo.
+
+<Callout type="info">
+  **HEX é aproximação.** Os valores HEX nas tabelas abaixo são a
+  conversão sRGB-clamped do OKLCH. Para stops saturados em fuchsia,
+  lime, etc., o OKLCH descreve cores **fora do gamut sRGB** —
+  o HEX é o ponto mais próximo dentro do gamut, não o valor
+  exato. A fonte da verdade é sempre OKLCH.
+</Callout>
+
+## Neutros
+
+Nove paletas neutras cobrem o espectro de "cinza puro" (neutral)
+até variações com viés de temperatura (slate frio, stone quente,
+mauve violeta-rosado). Use-as para chrome, surfaces, texto e
+backgrounds. **Cinco delas são padrão Tailwind**, **quatro são
+customizações KDS** (mauve, mist, olive, taupe) sintetizadas para
+permitir mapeamento fiel dos temas tweakcn-importados.
+
+{COLOR_PALETTES.filter((p) =>
+  ["slate", "gray", "zinc", "neutral", "stone", "mauve", "olive", "mist", "taupe"].includes(p.id)
+).map((p) => (
+  <ColorPaletteTable key={p.id} palette={p} />
+))}
+
+## Espectro quente
+
+Vermelhos, laranjas, âmbares, amarelos, limas e verdes. A
+amplitude vai do crítico (red, para destrutivo) até o orgânico
+(green, lime). **Amber** define o tema Amber Minimal e é uma das
+melhores cores para warning sem cair na clichê do amarelo puro.
+
+{COLOR_PALETTES.filter((p) =>
+  ["red", "orange", "amber", "yellow", "lime", "green"].includes(p.id)
+).map((p) => (
+  <ColorPaletteTable key={p.id} palette={p} />
+))}
+
+## Espectro frio
+
+Verdes-azulados (emerald, teal), ciano, azuis e a transição para
+violeta (indigo, violet, purple). É a faixa mais "produto digital"
+da paleta — onde caem os defaults para links, primary actions e
+charts categóricos. **Emerald** é o token de sucesso em charts;
+**sky** é o token de info.
+
+{COLOR_PALETTES.filter((p) =>
+  ["emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple"].includes(p.id)
+).map((p) => (
+  <ColorPaletteTable key={p.id} palette={p} />
+))}
+
+## Acentos
+
+Magentas, rosas e rosa-vermelhos para casos onde o produto pede
+mais personalidade. **Rose** define o lado quente do esquema
+Divergent (Red-Blue) e combina particularmente bem com stone e
+taupe.
+
+{COLOR_PALETTES.filter((p) =>
+  ["fuchsia", "pink", "rose"].includes(p.id)
+).map((p) => (
+  <ColorPaletteTable key={p.id} palette={p} />
+))}
+
+## Boas práticas
+
+- **Não use stops 50-200 para texto** sobre branco — contraste
+  insuficiente. Use-os como surfaces.
+- **Stops 400** são tricky: bons como divisor visual entre
+  primário e secundário, mas perigosos para texto crítico (ratio
+  varia muito entre paletas).
+- **Dark mode espelha**, não inverte: 950 é o background, 50 é o
+  foreground. Não troque os tons do meio na lógica — escolha
+  primitivos diferentes.
+- **Quatro paletas customizadas** (mauve, mist, olive, taupe) são
+  específicas da KDS. Se você está exportando o sistema para fora,
+  documente que essas não são padrão Tailwind.

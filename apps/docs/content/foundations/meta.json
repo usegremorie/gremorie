@@ -1,0 +1,14 @@
+{
+  "root": true,
+  "title": "Foundations",
+  "description": "Welcome, princípios e tokens",
+  "icon": "Compass",
+  "pages": [
+    "about",
+    "principles",
+    "architecture",
+    "accessibility",
+    "layout-stability",
+    "contributing"
+  ]
+}

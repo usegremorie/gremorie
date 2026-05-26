@@ -1,0 +1,12 @@
+{
+  "title": "Primitive",
+  "icon": "Layers",
+  "pages": [
+    "index",
+    "typography",
+    "spacing",
+    "radius",
+    "shadow",
+    "motion"
+  ]
+}

@@ -1,0 +1,99 @@
+---
+title: Panel
+description: Painel flutuante dentro do Canvas — wrapper estilizado do `<Panel>` do ReactFlow.
+component: Panel
+importPath: "@kalvner/kds/ai/panel"
+status: stable
+---
+
+import { PanelPreview } from "@/components/ai-workflow-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Panel` é um **container flutuante** dentro de [Canvas](./canvas) —
+posicionável pelas bordas (top-left, top-right, bottom-left,
+bottom-right). Wrapper sobre `<Panel>` do ReactFlow com tokens KDS
+(border, bg-card, padding, rounded).
+
+Use pra status, controles secundários, info contextual.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Dois Panels flutuantes em cantos opostos.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PanelPreview />
+  </CardContent>
+</Card>
+
+## Usage
+
+```tsx
+<Canvas nodes={nodes} edges={edges}>
+  <Panel position="top-left">
+    Workflow status: 3 nodes
+  </Panel>
+  <Panel position="top-right">
+    <Button>Run</Button>
+  </Panel>
+</Canvas>
+```
+
+## Props
+
+Aceita **todos** os props de
+[`<Panel>`](https://reactflow.dev/api-reference/components/panel) do ReactFlow:
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'top-left'` | Canto onde o panel fica fixo. |
+| `className` | `string` | KDS aplica `m-4 rounded-md border bg-card p-1`. | Override. |
+
+Aceita `ComponentProps<"div">`.
+
+## Subcomponents
+
+Panel é monolítico — sem subcomponentes próprios. Conteúdo é
+free-form.
+
+## When to use
+
+- Status / metadata fixo (count de nodes, latência total).
+- Botões de ação contextual (Run, Save, Export).
+- Mini-mapa, legenda, controles auxiliares.
+
+## When not to use
+
+- Toolbar de Node selecionado — use [Toolbar](./toolbar).
+- Zoom controls — use [Controls](./controls) (já vem pronto).
+- Conteúdo modal — use [Dialog](../../ui/overlays/dialog).
+
+## Best practices
+
+- **Posicionamento intencional.** Status à esquerda (lê-se primeiro);
+  ações à direita (where the cursor goes); legenda no rodapé.
+- **Não polua.** Múltiplos panels viram clutter; combine em UM panel
+  com seções.
+- **Não bloqueie nodes.** Em viewports pequenos, panel grande tampa
+  o conteúdo — limite o tamanho.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Position** | Panel fica em camada absoluta — leitor de tela pode pegar fora de ordem. Pareie com `aria-label`. |
+| **Focus** | Botões dentro do Panel são acessíveis via Tab. |
+
+## Related
+
+- [Canvas](./canvas) — onde Panel vive.
+- [Controls](./controls) — Panel pré-feito de zoom.
+- [Toolbar](./toolbar) — toolbar contextual de Node.

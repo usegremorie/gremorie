@@ -1,0 +1,247 @@
+---
+title: Separator
+description: Linha fina semântica ou decorativa para dividir grupos de conteúdo.
+component: Separator
+importPath: "@kalvner/kds/display/separator"
+status: stable
+---
+
+import { Separator } from "@kalvner/kds/display/separator";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Separator` é um divisor visual entre grupos de conteúdo. Constrói em
+cima do [`@radix-ui/react-separator`](https://www.radix-ui.com/primitives/docs/components/separator),
+o que dá um detalhe importante de acessibilidade: o flag `decorative`
+controla se o separador é exposto a leitores de tela
+(`role="separator"` com `aria-orientation`) ou tratado como ornamento
+puro (`role="none"`).
+
+A pergunta que precede a inclusão de um Separator é: **a respiração
+do espaço não está bastando?** Espaçamento entre seções (`space-y-6`,
+`gap-8`) costuma comunicar agrupamento sem nenhum traço — só recorra
+ao Separator quando o agrupamento precisa ser explícito ou quando
+o ar disponível é escasso (sidebar de 240px, toolbar densa).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Separador horizontal padrão.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-3">
+      <p className="text-sm">Linha de cima</p>
+      <Separator />
+      <p className="text-sm">Linha de baixo</p>
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Separator
+  ├─ [data-slot="separator"]
+  ├─ [data-orientation="horizontal" | "vertical"]
+  ├─ orientation = "horizontal" (default) | "vertical"
+  └─ decorative = true (default) | false
+/>
+```
+
+A altura/largura do separador é `1px` em qualquer eixo. No horizontal
+ocupa 100% da largura disponível; no vertical precisa de um container
+`flex` com altura definida — caso contrário ele colapsa.
+
+## Usage
+
+```tsx
+import { Separator } from "@kalvner/kds/display/separator";
+
+export function SettingsHeader() {
+  return (
+    <div className="space-y-1">
+      <h3 className="text-sm font-semibold">Conta</h3>
+      <p className="text-sm text-muted-foreground">
+        Email, senha, idioma.
+      </p>
+      <Separator className="my-4" />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Eixo do separador. |
+| `decorative` | `boolean` | `true` | Quando `true`, expõe `role="none"` (ornamento). Quando `false`, expõe `role="separator"` semântico. |
+| `...rest` | `React.ComponentProps<'div'>` | — | Tudo o que `<div>` aceita (`className`, `id`, `aria-*`). |
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Horizontal</CardTitle>
+      <CardDescription>Default — divide blocos empilhados.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2">
+        <p className="text-sm">Bloco A</p>
+        <Separator />
+        <p className="text-sm">Bloco B</p>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Vertical</CardTitle>
+      <CardDescription>Divide grupos lado a lado em uma linha.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex h-8 items-center gap-3 text-sm">
+        <span>Esquerda</span>
+        <Separator orientation="vertical" />
+        <span>Centro</span>
+        <Separator orientation="vertical" />
+        <span>Direita</span>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Decorative (default)</CardTitle>
+      <CardDescription>role="none" — ignorado por leitores de tela.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <p>Hoje</p>
+        <Separator />
+        <p>Ontem</p>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Semantic</CardTitle>
+      <CardDescription>decorative=false expõe role="separator".</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-2 text-sm">
+        <p>Hoje</p>
+        <Separator decorative={false} />
+        <p>Ontem</p>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Settings sections</CardTitle>
+      <CardDescription>Cada bloco de settings termina com um Separator.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="rounded-md border bg-card p-4">
+        <div className="space-y-1">
+          <p className="text-sm font-medium">Conta</p>
+          <p className="text-xs text-muted-foreground">Email, senha, idioma.</p>
+        </div>
+        <Separator className="my-4" />
+        <div className="space-y-1">
+          <p className="text-sm font-medium">Notificações</p>
+          <p className="text-xs text-muted-foreground">Push, email, resumo.</p>
+        </div>
+        <Separator className="my-4" />
+        <div className="space-y-1">
+          <p className="text-sm font-medium">Aparência</p>
+          <p className="text-xs text-muted-foreground">Tema, densidade.</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Toolbar groups</CardTitle>
+      <CardDescription>Vertical separators entre grupos de ações.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex h-9 w-fit items-center gap-2 rounded-md border bg-card p-1.5 text-sm">
+        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">B</button>
+        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">I</button>
+        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">U</button>
+        <Separator orientation="vertical" />
+        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">L</button>
+        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">C</button>
+        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">R</button>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Para terminar um agrupamento dentro de um Card denso, quando a
+  respiração natural não basta.
+- Em sidebars estreitas onde o espaço para `space-y-6` não cabe.
+- Em toolbars horizontais para isolar grupos de ações relacionadas.
+- Em listas de eventos/atividades para marcar a transição entre
+  janelas temporais (Hoje, Ontem, Semana passada).
+
+## When not to use
+
+- Como elemento decorativo aleatório — se a função do separador não
+  é dividir grupos, ele vira ruído visual.
+- Para separar título e descrição dentro de um mesmo bloco — tipografia
+  e espaçamento já fazem isso.
+- Como borda inferior de Card — use `border-b` direto no Card.
+- Para dividir colunas de uma tabela — a tabela já tem grid lines.
+
+## Best practices
+
+- **Ar primeiro, separador depois.** Aumente `gap-*` e veja se o
+  agrupamento já fica claro. Separador é a última camada de
+  hierarquia visual.
+- **Decorativo é o default certo.** Em 99% dos casos, o separador
+  não carrega significado para leitor de tela. Só passe
+  `decorative={false}` quando o contexto realmente muda (Hoje vs
+  Ontem em um feed cronológico, por exemplo).
+- **Vertical exige container com altura.** Sem altura definida no
+  flex parent, o separador colapsa para 0px. Use `h-8`, `h-full`
+  ou um wrapper com altura conhecida.
+- **Mantenha a mesma cor (`bg-border`).** Não invente tokens de
+  separador — use a borda padrão do tema. Se precisar de um divisor
+  mais forte, considere se um Card ou Section seria mais adequado.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Quando `decorative={true}` (default): `role="none"`. Quando `decorative={false}`: `role="separator"` com `aria-orientation`. |
+| **Keyboard** | Não recebe foco — separador não é interativo. |
+| **Screen reader** | No modo decorativo, leitor de tela ignora. No modo semântico, anuncia "separator" e a orientação. |
+| **Contraste** | `bg-border` é um cinza muito sutil — ele cumpre o papel de respiração visual, não de elemento informacional. Não dependa do separador para transmitir informação crítica. |
+| **Mobile / touch** | Não aplicável — separador é estático. |
+
+## Related
+
+- [`Card`](../display/card) — wrapper que costuma alojar Separators
+  internos entre suas seções.
+- [`Stack`](../containers/stack) — quando `gap` resolve, o Separator
+  não é necessário.

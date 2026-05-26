@@ -1,0 +1,159 @@
+---
+title: DatePicker
+description: Composto Popover + Calendar — seleção de data em forms compactos.
+component: DatePicker
+importPath: "@kalvner/kds/forms/date-picker"
+status: stable
+---
+
+import { DatePicker } from "@kalvner/kds/forms/date-picker";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`DatePicker` é o **padrão composto** que junta [Popover](../overlays/popover)
++ [Calendar](./calendar) num único componente — botão que mostra a data
+escolhida, popover com a grade de seleção. É o equivalente a um input
+de data, mas com UI rica e teclado-acessível.
+
+KDS exporta esse composto pronto pra economizar boilerplate. Para
+intervalo (`range`), use Calendar inline ou monte seu próprio
+`DatePickerRange` espelhando esse padrão.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Botão com placeholder até selecionar.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <DatePicker placeholder="Selecione uma data" />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<DatePicker>
+  └─ <Popover>
+       ├─ <PopoverTrigger asChild>
+       │    └─ <Button variant="outline">         ← mostra data ou placeholder
+       └─ <PopoverContent>
+            └─ <Calendar mode="single" autoFocus />
+</DatePicker>
+```
+
+## Usage
+
+```tsx
+"use client";
+
+import * as React from "react";
+import { DatePicker } from "@kalvner/kds/forms/date-picker";
+
+export function CheckoutDate() {
+  const [date, setDate] = React.useState<Date>();
+  return (
+    <DatePicker
+      value={date}
+      onValueChange={setDate}
+      placeholder="Quando você entrega?"
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `value` | `Date` | — | Data selecionada (controlada). |
+| `onValueChange` | `(date: Date \| undefined) => void` | — | Callback. |
+| `placeholder` | `string` | `'Selecione uma data'` | Texto antes da seleção. |
+| `disabled` | `boolean` | `false` | Bloqueia o trigger. |
+| `className` | `string` | `'w-[240px]'` | Override no botão. |
+
+Para faixas e modos avançados, monte seu próprio composto usando
+[Calendar](./calendar) + [Popover](../overlays/popover) diretamente.
+
+## Subcomponents
+
+`DatePicker` não expõe subcomponentes — é um wrapper. Para customizar
+visualmente, use [Calendar](./calendar) inline em [Popover](../overlays/popover).
+
+## Variants
+
+DatePicker é monolítico. Para variantes, prefira o composto à mão
+(troque o trigger por Input, ou Calendar por modo `range`).
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| Vazio | Botão mostra `placeholder` em `text-muted-foreground`. |
+| Preenchido | Botão mostra a data formatada (`PP`, ex: "May 9, 2026"). |
+| `disabled` | Botão sem hover, opacity 50%. |
+| Aberto | Popover abre alinhado ao botão, foco no Calendar. |
+
+## Composition
+
+Para integrar com [Form](./form) (RHF + zod):
+
+```tsx
+<FormField
+  control={form.control}
+  name="dob"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Data de nascimento</FormLabel>
+      <FormControl>
+        <DatePicker value={field.value} onValueChange={field.onChange} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+```
+
+## When to use
+
+- Forms com data única (cadastro, agendamento simples).
+- Filtros de "data específica" em dashboards.
+- Qualquer input de data em layout compacto.
+
+## When not to use
+
+- Faixas (de–até) — use [Calendar](./calendar) `mode="range"` inline.
+- Múltiplas datas independentes — use Calendar `mode="multiple"`.
+- Mobile sem espaço para Popover — prefira [Drawer](../overlays/drawer)
+  + Calendar inline.
+
+## Best practices
+
+- **Use formato local.** O default `PP` do date-fns adapta ao locale.
+  Sem locale configurado, sai em inglês.
+- **Placeholder descreve a função.** "Quando você quer?" > "Data".
+- Para datas no passado, bloqueie via `Calendar disabled={{ after: today }}` —
+  monte o composto à mão se precisar de controle fino.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Trigger** | Button com `aria-haspopup="dialog"` (via Popover). |
+| **Calendar** | Recebe `autoFocus` ao abrir — foco no dia atual. |
+| **Keyboard** | Setas navegam pelo Calendar; `Esc` fecha o Popover. |
+| **Label** | Pareie com [Label](./label) externamente — DatePicker não embute label. |
+| **Locale** | Configure no Calendar via `locale` para anúncios corretos. |
+
+## Related
+
+- [Calendar](./calendar) — primitivo subjacente.
+- [Popover](../overlays/popover) — wrapper subjacente.
+- [Drawer](../overlays/drawer) — alternativa mobile.
+- [Form](./form) — integração com RHF + zod.

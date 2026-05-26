@@ -12,11 +12,14 @@
     "build:core": "nx build ng-core",
     "build:lib": "nx build ng-prompt-input",
     "build:docs": "nx build docs",
+    "build:docs-ng": "nx build docs-ng",
     "build:playground": "nx build playground",
     "lint": "nx run-many -t lint",
     "test": "nx run-many -t test",
     "serve:playground": "nx serve playground",
     "serve:docs": "nx serve docs",
+    "serve:docs-ng": "nx serve docs-ng",
+    "serve:tokens": "nx serve tokens",
     "storybook": "nx storybook ng-prompt-input",
     "build-storybook": "nx build-storybook ng-prompt-input",
     "changeset": "changeset",
@@ -82,6 +85,7 @@
     "vitest": "4.0.18"
   },
   "workspaces": [
+    "apps/*",
     "packages/*"
   ],
   "dependencies": {

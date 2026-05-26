@@ -1,0 +1,181 @@
+---
+title: Resizable
+description: Painéis com handles arrastáveis — para layouts de dev tools e pro apps.
+component: Resizable
+importPath: "@kalvner/kds/containers/resizable"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  ResizableEditor,
+  ResizableHorizontal,
+  ResizableThreePane,
+  ResizableVertical
+} from "@/components/navigation-demos";
+
+## Overview
+
+`Resizable` divide um espaço em **panes redimensionáveis** com handles
+arrastáveis entre eles. É a base para layouts profissionais — code
+editors, email clients, file managers, design tools com sidebar +
+canvas + properties.
+
+Para superfícies consumer-facing, **layouts fixos com responsive
+breakpoints** quase sempre lêem melhor. Reach for Resizable quando
+o usuário tem **trabalho profissional para fazer** e precisa
+ajustar o canvas para o que está fazendo agora.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Split horizontal 50/50, arrastar a alça central para redimensionar.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ResizableHorizontal />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<ResizablePanelGroup orientation="horizontal">
+  <ResizablePanel defaultSize={50}>{/* esquerda */}</ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={50}>{/* direita */}</ResizablePanel>
+</ResizablePanelGroup>
+```
+
+`ResizablePanelGroup` é o frame e define `orientation`.
+`ResizablePanel` claim uma fração via `defaultSize` (0–100).
+`ResizableHandle` é o divisor entre dois panels — passa
+`withHandle` para mostrar uma alça visível.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `ResizablePanelGroup` | Frame que coordena os panels; aceita `orientation`. |
+| `ResizablePanel` | Painel filho; aceita `defaultSize`, `minSize`, `maxSize`, `collapsible`. |
+| `ResizableHandle` | Divisor arrastável entre dois panels; `withHandle` mostra alça. |
+
+## Usage
+
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from "@kalvner/kds/containers/resizable";
+
+export function EditorLayout() {
+  return (
+    <ResizablePanelGroup orientation="horizontal" className="h-full">
+      <ResizablePanel defaultSize={20} minSize={15}>
+        <FileTree />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={50}>
+        <Editor />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={30}>
+        <Preview />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Vertical split</CardTitle>
+      <CardDescription>Topo + inferior — útil para split editor + terminal.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ResizableVertical />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Three-pane</CardTitle>
+      <CardDescription>Sidebar + main + inspector — padrão Mail / IDE.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ResizableThreePane />
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Code editor layout</CardTitle>
+    <CardDescription>FileTree + editor + preview — padrão VS Code / CodeSandbox.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ResizableEditor />
+  </CardContent>
+</Card>
+
+## When to use
+
+- **IDEs e code editors web** com FileTree + Editor + Preview.
+- **Email clients** com Folders + List + Reader.
+- **Design tools** com Sidebar + Canvas + Properties.
+- **Logs/observability tools** com filtro lateral + log viewer.
+- Sempre que o usuário **gasta horas** no app e quer ajustar
+  o canvas.
+
+## When not to use
+
+- Sites de marketing — fixed proportions + responsive servem.
+- CRUD apps simples — é over-engineering.
+- Mobile — handles arrastáveis são imprecisos em touch screens
+  pequenos. Em mobile, force layout fixo ou Sheet.
+- Conteúdo onde o usuário lê passivamente (artigos, dashboards
+  read-only) — resizable adiciona complexidade sem ganho.
+
+## Best practices
+
+- **Persista o tamanho.** Use `onLayout` callback para gravar em
+  localStorage. Refresh deve restaurar a configuração do usuário —
+  é a mesma promessa de um IDE nativo.
+- **`minSize` em todos os panels.** Sem isso o usuário pode
+  arrastar até 0 e ter um panel invisível. Mínimo de ~10–15%.
+- **`withHandle` para handles funcionais.** Sem a alça visível,
+  só um pixel divisor sutil — usuários novos não descobrem que
+  é arrastável. Handle visível é discoverability.
+- **Não anime tamanhos.** Resize precisa ser síncrono e direto;
+  transitions atrapalham a sensação de controle.
+- **Escolha defaults inteligentes.** 20% (sidebar) / 60% (main)
+  / 20% (inspector) é uma proporção que serve de partida para
+  90% dos pro apps.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Handles têm `role="separator"`; `aria-orientation` reflete a direção do split. |
+| **Keyboard** | Handle focável via Tab; setas movem o handle (10px por step); `Home`/`End` saltam para limites; `Enter` em handles colapsáveis (`collapsible` panel) fecha/abre. |
+| **Focus** | Foco visível com ring; ring offset evita confusão com hover state. |
+| **Screen reader** | Anuncia "separator, vertical/horizontal" e mudanças de tamanho percentual. |
+| **Touch** | Handles funcionam em touch, mas área de hit é 4px por padrão — em mobile, prefira layout fixo. |
+
+## Related
+
+- [`ScrollArea`](./scroll-area) — para overflow vertical/horizontal
+  dentro de um panel.
+- [`Stack`](./stack) — quando layouts proporcionais bastam.
+- [`Sheet`](../overlays/sheet) — alternativa em mobile para
+  panels secundários.

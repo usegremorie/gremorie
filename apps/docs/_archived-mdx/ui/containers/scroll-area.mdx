@@ -1,0 +1,158 @@
+---
+title: ScrollArea
+description: Container scrollable com scrollbar themeable — para casos onde o native bar não atende.
+component: ScrollArea
+importPath: "@kalvner/kds/containers/scroll-area"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  ScrollAreaHorizontal,
+  ScrollAreaList,
+  ScrollAreaPreview
+} from "@/components/navigation-demos";
+
+## Overview
+
+`ScrollArea` substitui a barra de rolagem nativa por uma versão
+estilizada e cross-OS. **Native scroll é fine 99% do tempo** — só
+recorra a ScrollArea quando você precisar de:
+
+1. **Estilo consistente** entre macOS, Windows e Linux (em macOS
+   a barra esconde por default; em Windows/Linux ocupa espaço).
+2. **Containers com border-radius** onde a barra nativa "vaza"
+   além do raio.
+3. **Eixos não convencionais** (carrosséis horizontais com indicador
+   visível).
+
+Não use por reflexo — adicionar ScrollArea sem necessidade introduz
+uma camada de JS e quebra o instinto muscular do usuário com scroll
+nativo.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Lista vertical longa, ScrollArea com altura fixa.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ScrollAreaPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<ScrollArea className="h-72 w-48">
+  {/* conteúdo que extrapola */}
+  <ScrollBar orientation="horizontal" />  ← opcional
+</ScrollArea>
+```
+
+A ScrollArea já monta uma barra vertical por padrão. Para horizontal,
+adicione um `<ScrollBar orientation="horizontal" />` explicitamente.
+Para ambos os eixos, adicione um por orientação.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `ScrollArea` | Container scrollable. Aceita classes de altura/largura. |
+| `ScrollBar` | A barra; aceita `orientation="vertical"` (default) ou `"horizontal"`. |
+
+## Usage
+
+```tsx
+import { ScrollArea } from "@kalvner/kds/containers/scroll-area";
+
+export function NotificationsList({ items }) {
+  return (
+    <ScrollArea className="h-72 w-full">
+      <ul className="divide-y">
+        {items.map((item) => (
+          <li key={item.id} className="px-4 py-3">{item.title}</li>
+        ))}
+      </ul>
+    </ScrollArea>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card className="md:col-span-2">
+    <CardHeader>
+      <CardTitle>Horizontal</CardTitle>
+      <CardDescription>Carrosséis e tracks de imagens com indicador visível.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <ScrollAreaHorizontal />
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Long list inside a card</CardTitle>
+    <CardDescription>Header fixo, lista scrollável dentro do mesmo card.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ScrollAreaList />
+  </CardContent>
+</Card>
+
+## When to use
+
+- **Cards com bordas arredondadas** onde o native bar bleeds para
+  fora do radius.
+- **Carrosséis horizontais** que precisam de indicador visível.
+- Apps cross-platform onde scrollbar consistency importa para
+  branding.
+- **Notificações, history feeds, comments** dentro de containers
+  fixos.
+
+## When not to use
+
+- **Página inteira.** Não envolva o `<body>` em ScrollArea — perde
+  scroll-restoration, behavior nativo de pull-to-refresh, etc.
+- **Conteúdo curto** que não extrapola. ScrollArea sem overflow é
+  dead code (mas não dá erro — a barra simplesmente não aparece).
+- **Áreas com input pesado** (grandes textareas, code editors) —
+  use o container nativo do editor.
+- Quando a equipe tem aversão a JS no scroll path. ScrollArea é
+  Radix + DOM observer; não é nada pesado, mas tem custo zero não tem.
+
+## Best practices
+
+- **Defina altura/largura.** ScrollArea precisa de constraint para
+  scrollar — `h-72`, `max-h-[60vh]`, etc.
+- **Indicador horizontal explícito.** Para scroll lateral, mostre
+  o `<ScrollBar orientation="horizontal" />` ou afford com gradient
+  de fade nas bordas.
+- **`focus-visible` no viewport.** Já existe — não remova; é
+  importante para keyboard scrolling.
+- **Não aninhe ScrollAreas.** Dois eventos de scroll concorrem;
+  use uma só.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix preserva `tabindex` no viewport — a área é focável e teclado funciona. |
+| **Keyboard** | `Arrow` move; `PageUp`/`PageDown` paginam; `Home`/`End` saltam. |
+| **Touch** | Drag funciona normalmente em touch devices. |
+| **Reduced motion** | A barra anima com fade — respeite `prefers-reduced-motion` no nível do tema (já configurado nos tokens de motion). |
+
+## Related
+
+- [`Stack`](./stack) — quando o conteúdo cabe sem overflow.
+- [`AspectRatio`](./aspect-ratio) — reservar espaço para mídia.

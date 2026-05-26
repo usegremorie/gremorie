@@ -1,0 +1,251 @@
+---
+title: Stack
+description: Vertical layout primitive — flex column with consistent gap, align, and justify props.
+component: Stack
+importPath: '@kalvner/kds/containers/stack'
+status: stable
+---
+
+import { Stack } from "@kalvner/kds/containers/stack";
+
+# Stack
+
+> Vertical layout primitive — a `<div>` configured as `flex flex-col`
+> with consistent `gap`, `align`, and `justify` props.
+
+`Stack` is the right choice any time you have items flowing
+top-to-bottom with consistent spacing — card contents, form
+sections, settings rows, vertical menus. For row layouts use
+`Flex` (coming soon); for two-axis grids use `Grid` (coming soon);
+for one-off styled divs without layout intent use `Box` (coming
+soon).
+
+## Preview
+
+<div className="my-4 rounded-md border border-fd-border p-4">
+  <Stack gap="md">
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">First item</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">Second item</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">Third item</div>
+  </Stack>
+</div>
+
+## Installation
+
+`Stack` ships with `@kalvner/kds`. Import it via its dedicated subpath
+for guaranteed tree-shaking (per ADR-012):
+
+```tsx
+import { Stack } from "@kalvner/kds/containers/stack";
+```
+
+The barrel root export (`@kalvner/kds`) exists as a fallback but
+the path-per-component subpath is preferred for new code.
+
+## Anatomy
+
+```
+<Stack gap="md" align="stretch" justify="start">
+  ├─ child 1
+  ├─ child 2
+  └─ child 3
+</Stack>
+```
+
+`Stack` renders a single `<div>` with classes:
+
+```
+flex flex-col gap-{gap} items-{align} justify-{justify}
+```
+
+It accepts every native `div` prop (`id`, `className`,
+`onClick`, ARIA attributes, etc.) and forwards them through. The
+`ref` prop forwards to the underlying `div` — no `forwardRef` wrapper
+needed thanks to React 19's ref-as-prop API.
+
+## Usage
+
+### When to use
+
+- Any list of items flowing **top-to-bottom**
+- Form sections (label, input, helper text)
+- Card body composition (heading, description, action)
+- Vertical navigation menus
+- Any time you'd reach for `flex flex-col gap-N` you should use
+  Stack instead
+
+### When NOT to use
+
+- **Row layouts** — use `Flex` (coming soon)
+- **Grid / two-dimensional layouts** — use `Grid` (coming soon)
+- **One-off styled divs without layout** — use `Box` (coming soon)
+- **Very long lists** — prefer a virtualised list (e.g. TanStack
+  Virtual) since Stack renders every child eagerly
+- **Nesting just to add spacing** — Stack handles spacing itself; a
+  Stack-of-Stacks is the right pattern when you genuinely need
+  hierarchical groups, not for spacing alone
+
+## Examples
+
+### Gap scale
+
+All seven gap values, from `none` (no spacing) to `2xl` (3rem). Pick
+the smallest gap that reads as separation.
+
+<div className="my-4 rounded-md border border-fd-border p-4">
+  <Stack gap="lg">
+    {(["none", "xs", "sm", "md", "lg", "xl", "2xl"]).map((g) => (
+      <div key={g}>
+        <p className="mb-2 font-mono text-xs text-fd-muted-foreground">gap=&quot;{g}&quot;</p>
+        <Stack gap={g}>
+          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">A</div>
+          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">B</div>
+          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">C</div>
+        </Stack>
+      </div>
+    ))}
+  </Stack>
+</div>
+
+### Cross-axis alignment
+
+Cross-axis alignment maps to CSS `align-items`. `stretch` (default)
+makes children fill the container width.
+
+<div className="my-4 rounded-md border border-fd-border p-4">
+  <Stack align="start" gap="sm">
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">Short</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">A medium item</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">Longer item with more text</div>
+  </Stack>
+</div>
+
+### Main-axis distribution
+
+Main-axis distribution maps to CSS `justify-content`. Only visible
+when the Stack has a fixed height larger than its content.
+
+<div className="my-4 rounded-md border border-fd-border p-4">
+  <Stack justify="between" gap="none" className="h-40 rounded-md bg-fd-muted/40 p-2">
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">A</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">B</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">C</div>
+  </Stack>
+</div>
+
+## Composition
+
+Stack composes recursively — a Stack child can itself be a Stack
+with its own gap and alignment. This is the canonical pattern for
+form panels and card bodies:
+
+<div className="my-4 rounded-md border border-fd-border p-4">
+  <div className="w-[420px] max-w-full rounded-lg border border-fd-border bg-fd-card p-6">
+    <Stack gap="lg">
+      <header>
+        <h3 className="text-lg font-semibold text-fd-foreground">Notifications</h3>
+        <p className="text-sm text-fd-muted-foreground">Choose which events generate an alert.</p>
+      </header>
+
+      <Stack gap="md" className="border-t border-fd-border pt-4">
+        <Stack gap="xs">
+          <span className="text-sm font-medium text-fd-foreground">Direct mentions</span>
+          <span className="text-xs text-fd-muted-foreground">Anyone tags you in a comment.</span>
+        </Stack>
+        <Stack gap="xs">
+          <span className="text-sm font-medium text-fd-foreground">Workflow updates</span>
+          <span className="text-xs text-fd-muted-foreground">A pipeline finishes or fails.</span>
+        </Stack>
+        <Stack gap="xs">
+          <span className="text-sm font-medium text-fd-foreground">Weekly digest</span>
+          <span className="text-xs text-fd-muted-foreground">Summary of the week's activity, every Monday.</span>
+        </Stack>
+      </Stack>
+    </Stack>
+  </div>
+</div>
+
+```tsx
+<Stack gap="lg">
+  <header>...</header>
+
+  <Stack gap="md">
+    <Stack gap="xs">
+      <span>Direct mentions</span>
+      <span>Anyone tags you in a comment.</span>
+    </Stack>
+    {/* ... */}
+  </Stack>
+
+  <Stack gap="sm">
+    <button>Save changes</button>
+    <button>Cancel</button>
+  </Stack>
+</Stack>
+```
+
+## API Reference
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `gap` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | `'md'` | Spacing between items via Tailwind's gap scale |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch' \| 'baseline'` | `'stretch'` | Cross-axis alignment (`align-items`) |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between' \| 'around' \| 'evenly'` | `'start'` | Main-axis distribution (`justify-content`) |
+
+In addition to the props above, Stack accepts every standard `div`
+prop (forwarded to the rendered element). The `ref` prop is
+forwarded to the underlying `<div>` via React 19's ref-as-prop API.
+
+## Accessibility
+
+Stack is a **layout primitive only** — it does not introduce any
+ARIA roles or interactive behaviour. It renders an unstyled,
+semantically-neutral `<div>` and inherits the surrounding document
+flow.
+
+| Concern | Behaviour |
+|---|---|
+| **Roles** | None added. Pass `role="..."` if the content needs one (e.g. `role="list"` for menus). |
+| **Keyboard navigation** | Stack itself is non-interactive and not focusable. Children handle their own keyboard semantics. |
+| **Screen readers** | Stack is invisible to AT — only its children are announced. |
+| **Focus management** | None. Use the `tabIndex` and `onFocus` props of children if you need focus-trap or skip-link behaviour. |
+| **Touch targets** | Spacing between children comes from `gap` — pick `md` (1rem) or larger if children are touch targets, to keep them ≥ 44×44 CSS px when stacked. |
+| **Motion** | None. |
+
+If you're stacking semantically-related items, mark the wrapping
+element accordingly — `<Stack as="nav">` or `role="list"` makes the
+relationship explicit for assistive tech.
+
+## Do / Don't
+
+### Do
+
+- Pick the smallest `gap` that still reads as separation. Crowded
+  layouts read as denser; spaced ones read as more important.
+- Compose Stack with itself — nested Stacks are the
+  canonical way to build form panels and card bodies.
+- Use `justify="between"` when you genuinely have content + actions
+  at the top and bottom of a fixed-height container.
+- Pass through ARIA roles (`role="list"`, `aria-labelledby`) on
+  the Stack itself when the children form a semantic group.
+
+### Don't
+
+- Don't use Stack as a generic styled wrapper — that's `Box`
+  (coming soon).
+- Don't rely on Stack for row layouts — use `Flex` (coming soon)
+  with `direction="row"` instead.
+- Don't manually add `mb-N` to children — that's what `gap` is
+  for. Mixed margins + gap leads to inconsistent spacing.
+- Don't render hundreds of items — virtualise instead. Stack
+  doesn't lazy-render.
+
+## Related
+
+- `Flex` (coming soon) — row layouts with `direction`, `wrap`,
+  `align`, `justify` props
+- `Grid` (coming soon) — two-axis CSS Grid with `cols` / `rows` /
+  `gap`
+- `Box` (coming soon) — generic styled `<div>` without layout intent
+- `Spacer` (coming soon) — fills remaining flex space (used inside
+  Flex more than Stack)

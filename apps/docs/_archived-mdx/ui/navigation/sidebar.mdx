@@ -1,0 +1,207 @@
+---
+title: Sidebar
+description: App-shell sidebar composta — header, content, footer, com modos collapsible e mobile.
+component: Sidebar
+importPath: "@kalvner/kds/navigation/sidebar"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  SidebarPreview,
+  SidebarSaaS
+} from "@/components/navigation-demos";
+
+## Overview
+
+`Sidebar` é o **componente mais composto** do KDS — 20+ subcomponentes
+que combinam para formar uma navegação lateral de aplicação tipo
+SaaS / dashboard. Header (logo / team switcher), Content (groups
+de menu items), Footer (suporte / settings / user) — toda a
+anatomia esperada de produtos como Linear, Vercel, Notion.
+
+> **Aviso sobre estes previews.** Os exemplos abaixo são **escopados
+> dentro de cards** com seu próprio `SidebarProvider`. **Não monte
+> um `<SidebarProvider>` global em `apps/docs/app/layout.tsx`** — o
+> Fumadocs já tem sua própria sidebar, e dois providers concorrendo
+> quebram focus management e medições. Cada Card aqui é um shell
+> isolado.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>App shell minimal: Header + Content + Footer.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <SidebarPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<SidebarProvider>
+  <Sidebar>
+    <SidebarHeader>
+      {/* logo, team switcher, search */}
+    </SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton isActive>
+                <Icon /> Label
+                <SidebarMenuBadge>4</SidebarMenuBadge>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+    <SidebarFooter>
+      {/* user menu, support */}
+    </SidebarFooter>
+  </Sidebar>
+  <SidebarInset>
+    {/* main app content */}
+  </SidebarInset>
+</SidebarProvider>
+```
+
+`SidebarProvider` é obrigatório como ancestor de qualquer Sidebar
+ou `useSidebar()`. Ele guarda o estado expanded/collapsed,
+detecta mobile, e instala o atalho `⌘B` para toggle.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `SidebarProvider` | Provider de contexto — estado, mobile detection, keyboard shortcut. |
+| `Sidebar` | Container principal; aceita `side` (left/right), `variant` (sidebar/floating/inset), `collapsible` (offcanvas/icon/none). |
+| `SidebarTrigger` | Botão que abre/fecha (hamburger). |
+| `SidebarRail` | Barra fina lateral que serve como handle de toggle (desktop). |
+| `SidebarInset` | `<main>` que carrega o conteúdo principal ao lado da sidebar. |
+| `SidebarHeader` / `SidebarContent` / `SidebarFooter` | Regiões verticais. |
+| `SidebarGroup` / `SidebarGroupLabel` / `SidebarGroupContent` / `SidebarGroupAction` | Agrupar menu items por seção. |
+| `SidebarMenu` / `SidebarMenuItem` / `SidebarMenuButton` | A lista propriamente dita. |
+| `SidebarMenuBadge` / `SidebarMenuAction` | Badges (counts) ou ações secundárias por item. |
+| `SidebarMenuSub` / `SidebarMenuSubItem` / `SidebarMenuSubButton` | Sub-itens aninhados. |
+| `SidebarMenuSkeleton` | Loading state com largura aleatória. |
+| `SidebarSeparator` | Linha divisora. |
+| `SidebarInput` | Search field com estilo da sidebar. |
+| `useSidebar` | Hook para acessar estado e ações. |
+
+## Usage
+
+```tsx
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger
+} from "@kalvner/kds/navigation/sidebar";
+
+export default function AppLayout({ children }) {
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>…</SidebarHeader>
+        <SidebarContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton isActive>Início</SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <header>
+          <SidebarTrigger />
+        </header>
+        <main>{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
+```
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>SaaS dashboard</CardTitle>
+    <CardDescription>Team switcher + grupos de itens + footer com settings.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <SidebarSaaS />
+  </CardContent>
+</Card>
+
+## Variants
+
+| Prop | Valores | Quando usar |
+|---|---|---|
+| `side` | `"left"` (default) / `"right"` | Right é raro — útil para inspector / properties panel. |
+| `variant` | `"sidebar"` / `"floating"` / `"inset"` | Floating = card flutuante; Inset = sidebar aninhada com gap externo. |
+| `collapsible` | `"offcanvas"` (default) / `"icon"` / `"none"` | Icon mantém ícones quando collapsed; offcanvas esconde tudo; none desabilita o toggle. |
+
+## When to use
+
+- SaaS / dashboards / internal tools com nav lateral persistente.
+- Apps com ≥6 destinos top-level que precisam de agrupamento.
+- Quando hierarquia de seções é a primeira affordance da app (Linear,
+  Notion, Vercel).
+
+## When not to use
+
+- Sites de marketing — use [`NavigationMenu`](./navigation-menu).
+- Apps com ≤4 destinos — overhead. Use Tabs ou navbar simples.
+- Conteúdo focado (artigo, formulário longo) — sidebar concorre
+  com a leitura.
+- Em telas pequenas como nav primária — em mobile, vira Sheet (já
+  acontece automaticamente quando `useIsMobile()` detecta).
+
+## Best practices
+
+- **Agrupe por propósito, não por tipo.** "Workspace > Ferramentas
+  > Admin" beats "Pages > Components > Settings".
+- **Active state vem do router.** Sidebar não detecta rota — o
+  consumidor passa `isActive` no item correspondente.
+- **Badges para counts, não para status.** Inbox (4) é OK; "Novo"
+  como badge não é. Use ícone de status.
+- **Footer enxuto.** User menu, settings, suporte. Não é lugar
+  para CTAs.
+- **Persista o estado.** O `SidebarProvider` já grava em cookie por
+  default; honre o estado restaurado do cookie em SSR para evitar
+  layout shift.
+- **Keyboard shortcut respeite ⌘B.** É o padrão da indústria
+  (VS Code, Linear, Notion). Não troque.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Estrutura semântica via `<nav>` no `<aside>`/`<div>` da Sidebar; menu items são `<button>` ou `<a>`. |
+| **Keyboard** | Tab navega entre items; `⌘B` / `Ctrl+B` toggla a sidebar. |
+| **Focus** | Em modo collapsed/icon, o foco continua acessível e tooltips revelam labels. |
+| **Mobile** | Em telas estreitas, automaticamente vira um Sheet com `role="dialog"`. |
+| **Screen reader** | `SidebarMenuButton` herda semântica de `<button>`; estado ativo via `aria-current="page"` quando o consumidor aplica. |
+
+## Related
+
+- [`Tabs`](./tabs) — alternar dentro de uma view.
+- [`NavigationMenu`](./navigation-menu) — header de marketing.
+- [`Sheet`](../overlays/sheet) — usado por baixo dos panos em mobile.

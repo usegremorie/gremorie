@@ -1,0 +1,179 @@
+---
+title: Calendar
+description: Grade de seleção de data — single, range, multiple — sobre react-day-picker.
+component: Calendar
+importPath: "@kalvner/kds/forms/calendar"
+status: stable
+---
+
+import { Calendar } from "@kalvner/kds/forms/calendar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Calendar` é a grade de seleção de data construída sobre
+[react-day-picker v10](https://daypicker.dev/). Três modos via `mode`:
+
+- **`single`** — uma data.
+- **`range`** — intervalo (de–até).
+- **`multiple`** — várias datas independentes.
+
+Use Calendar **inline** em páginas com espaço (agendas, planejadores).
+Para forms compactos, prefira o composto [DatePicker](./date-picker)
+(Popover + Calendar). Em mobile com pouco espaço, use
+[Drawer](../overlays/drawer) + Calendar — Popover não cabe bem em
+telas pequenas.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Single mode com data inicial.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Calendar mode="single" className="rounded-md border" />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Calendar mode="single" | "range" | "multiple">
+  ├─ Nav (◀ Mês ▶)
+  ├─ MonthCaption
+  ├─ Weekdays (D S T Q Q S S)
+  └─ Weeks
+       └─ Days   ← clicáveis, com data-modifier (today, selected, outside, ...)
+</Calendar>
+```
+
+## Usage
+
+```tsx
+"use client";
+
+import * as React from "react";
+import { Calendar } from "@kalvner/kds/forms/calendar";
+
+export function BookingCalendar() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+      className="rounded-md border"
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `mode` | `'single' \| 'range' \| 'multiple'` | — | Modo de seleção. |
+| `selected` | `Date \| Date[] \| DateRange` | — | Conforme o `mode`. |
+| `onSelect` | `(value) => void` | — | Callback. Tipagem casa com o `mode`. |
+| `disabled` | `Date \| Matcher` | — | Datas bloqueadas (passadas, fim de semana, custom). |
+| `numberOfMonths` | `number` | `1` | Útil em `range` (`2` mostra 2 meses lado a lado). |
+| `defaultMonth` | `Date` | hoje | Mês visível no carregamento. |
+| `showOutsideDays` | `boolean` | `true` | Exibe dias do mês adjacente esmaecidos. |
+| `autoFocus` | `boolean` | `false` | Foca o dia ao montar — use em Popover. |
+| `locale` | `Locale` (date-fns) | `enUS` | Pt-BR via `import { ptBR } from "date-fns/locale"`. |
+| `weekStartsOn` | `0..6` | `0` | 1 para semana começando na segunda. |
+
+A lista completa segue a API do
+[react-day-picker](https://daypicker.dev/api/interfaces/PropsBase).
+
+## Subcomponents
+
+`Calendar` é exportado como bloco único — sub-elementos (`Day`,
+`Weekday`, `Nav`, etc.) são gerenciados internamente pelo
+react-day-picker, customizáveis via `classNames` ou `components`.
+
+## Variants
+
+<div className="grid gap-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Range (2 meses)</CardTitle>
+      <CardDescription>Filtros de período em uma só visualização.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Calendar mode="range" numberOfMonths={2} className="rounded-md border" />
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| `selected` | Day com `bg-primary text-primary-foreground`. |
+| `today` | Day com `bg-accent text-accent-foreground`. |
+| `outside` | Day adjacente ao mês corrente, opacidade reduzida. |
+| `disabled` | Day bloqueado para clique e foco. |
+
+## Composition
+
+### DatePicker = Popover + Calendar
+
+O composto canônico — botão que mostra a data, popover com Calendar.
+Já vem pronto: [DatePicker](./date-picker).
+
+### Date range filter
+
+```tsx
+<Calendar
+  mode="range"
+  selected={range}
+  onSelect={setRange}
+  numberOfMonths={2}
+  disabled={{ after: new Date() }}
+/>
+```
+
+## When to use
+
+- Agendamentos (booking, marcar reunião).
+- Filtros de período (relatórios, analytics).
+- Inputs de data em forms quando há espaço.
+
+## When not to use
+
+- Forms compactos — use [DatePicker](./date-picker).
+- Mobile sem espaço — use [Drawer](../overlays/drawer) + Calendar.
+- Apenas escolha de mês/ano — use [Select](./select) com listas.
+
+## Best practices
+
+- **Sempre defina `locale`** se o usuário não estiver em pt-BR; o
+  default é `enUS` e os dias da semana saem em inglês.
+- Para faixas, `numberOfMonths={2}` evita scroll mental ("o
+  fim do mês está antes ou depois do início?").
+- Bloqueie datas inválidas via `disabled` — não deixe o usuário
+  escolher uma e mostrar erro depois.
+- Em pt-BR, `weekStartsOn={1}` (segunda-feira como início) é o
+  padrão cultural.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Grid ARIA com `role="grid"`, células `role="gridcell"`. |
+| **Keyboard** | `←` `→` `↑` `↓` movem dia/semana, `PageUp`/`PageDown` mês, `Home`/`End` início/fim da semana. |
+| **Focus** | `autoFocus` + Popover dá foco automático ao abrir. |
+| **Locale** | Anúncios de leitor de tela respeitam `locale`. |
+| **Disabled** | Dias bloqueados não recebem foco. |
+
+## Related
+
+- [DatePicker](./date-picker) — composto Popover + Calendar.
+- [Drawer](../overlays/drawer) — alternativa mobile-friendly.
+- [Form](./form) — para integrar Calendar em react-hook-form.

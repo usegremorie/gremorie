@@ -1,0 +1,13 @@
+{
+  "title": "Display",
+  "pages": [
+    "card",
+    "separator",
+    "badge",
+    "avatar",
+    "accordion",
+    "collapsible",
+    "carousel",
+    "table"
+  ]
+}

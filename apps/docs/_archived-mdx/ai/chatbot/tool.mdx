@@ -1,0 +1,225 @@
+---
+title: Tool
+description: Surface colapsável de tool-call — header com badge de status, input/output, suporte a HITL.
+component: Tool
+importPath: "@kalvner/kds/ai/tool"
+status: stable
+---
+
+import { ToolRunningPreview, ToolCompletedPreview, ToolErrorPreview, ToolApprovalPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Tool` mostra a **execução de um tool-call** — function call do
+modelo. Status com ícone (running, completed, error, denied,
+awaiting approval), input formatado em JSON, output renderizado.
+
+Aceita o tipo `ToolUIPart` da AI SDK direto — você pega o `state`,
+`type`, `input`, `output` da resposta do modelo e passa pros props
+correspondentes.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Tool em execução (state input-available).</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ToolRunningPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Tool>
+  ├─ <ToolHeader type="..." state="..." title="..." />
+  └─ <ToolContent>
+       ├─ <ToolInput input={...} />     ← JSON formatado
+       └─ <ToolOutput output={...} errorText={...} />
+</Tool>
+```
+
+## Usage
+
+```tsx
+import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@kalvner/kds/ai/tool";
+
+<Tool defaultOpen>
+  <ToolHeader
+    type="tool-search"
+    state="output-available"
+    title="search"
+  />
+  <ToolContent>
+    <ToolInput input={{ query: "tokens", limit: 5 }} />
+    <ToolOutput output={<pre>{JSON.stringify(results, null, 2)}</pre>} />
+  </ToolContent>
+</Tool>
+```
+
+## Props
+
+### Tool (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `open` / `defaultOpen` | `boolean` | — | Controle do collapsible. |
+| `className` | `string` | — | Override; padrão tem `border rounded-md`. |
+
+Herda os outros props de [Collapsible](../../ui/display/collapsible).
+
+### ToolHeader
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `type` | `ToolUIPart["type"]` | — | Tipo do tool — string como `tool-search`, `tool-fetch`. Mostrado como label. |
+| `state` | `ToolUIPart["state"]` | — | Estado da execução. Controla o badge + ícone. |
+| `title` | `string` | — | Override do label exibido (default: `type` sem prefixo `tool-`). |
+| `className` | `string` | — | Override do header. |
+
+#### `state` values e visuais
+
+| State | Badge | Ícone |
+|---|---|---|
+| `input-streaming` | "Pending" | `CircleIcon` |
+| `input-available` | "Running" | `ClockIcon` (animate-pulse) |
+| `approval-requested` | "Awaiting Approval" | `ClockIcon` (yellow) |
+| `approval-responded` | "Responded" | `CheckCircleIcon` (blue) |
+| `output-available` | "Completed" | `CheckCircleIcon` (green) |
+| `output-error` | "Error" | `XCircleIcon` (red) |
+| `output-denied` | "Denied" | `XCircleIcon` (orange) |
+
+### ToolContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `className` | `string` | — | Override. |
+
+Aceita `ToolInput` + `ToolOutput` como filhos canônicos.
+
+### ToolInput
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `input` | `unknown` | — | Objeto/valor que será serializado como JSON pretty-print via [CodeBlock](../code/code-block). |
+| `className` | `string` | — | Override. |
+
+### ToolOutput
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `output` | `ReactNode` | — | Resultado renderizado. Pode ser JSX, string, JSON pretty-print. |
+| `errorText` | `string` | — | Quando presente, sobrescreve o output mostrando erro em vermelho. |
+| `className` | `string` | — | Override. |
+
+## Subcomponents
+
+- **`Tool`** — root colapsável. Sem ele, os filhos não funcionam
+  (são detalhes do collapsible).
+- **`ToolHeader`** — display do tool name + badge de status. O
+  ícone do badge muda conforme `state`.
+- **`ToolContent`** — wrapper das duas seções (input + output).
+  Esconde quando `Tool` está collapsed.
+- **`ToolInput`** — JSON pretty-print do input enviado pro tool.
+  Usa CodeBlock por baixo (com Shiki highlighting).
+- **`ToolOutput`** — resultado. Aceita `output` (sucesso) OU
+  `errorText` (falha); errorText tem prioridade.
+
+## States
+
+Ver tabela em ToolHeader → `state` values. O state afeta:
+- Cor + ícone do badge
+- Comportamento do TolOutput (mostra errorText quando state é `output-error`/`output-denied`)
+- Visibilidade automática do ToolOutput em alguns states
+
+## Variants
+
+Não há variantes embutidas — variação é via composição do state.
+Pra UI custom de approval, combine com [Confirmation](./confirmation).
+
+## Composition
+
+### HITL — approval flow
+
+```tsx
+<Tool defaultOpen>
+  <ToolHeader
+    type="tool-delete-record"
+    state="approval-requested"
+    title="delete_record"
+  />
+  <ToolContent>
+    <ToolInput input={{ recordId: "user_42" }} />
+  </ToolContent>
+  <Confirmation approval={part.approval} state={part.state}>
+    <ConfirmationTitle>
+      Aprovar exclusão?
+    </ConfirmationTitle>
+    <ConfirmationActions>
+      <ConfirmationAction onClick={approve}>Aprovar</ConfirmationAction>
+      <ConfirmationAction variant="outline" onClick={reject}>
+        Rejeitar
+      </ConfirmationAction>
+    </ConfirmationActions>
+  </Confirmation>
+</Tool>
+```
+
+### Streaming input
+
+```tsx
+<Tool defaultOpen>
+  <ToolHeader type="tool-fetch" state="input-streaming" />
+  <ToolContent>
+    <ToolInput input={partialInput} />
+  </ToolContent>
+</Tool>
+```
+
+## When to use
+
+- Toda função call do modelo (search, fetch, calculator, exec).
+- Surface de tool execution em UI de agente.
+
+## When not to use
+
+- Mensagem texto pura — use [Message](./message).
+- Pensamento interno (sem execução) — use [Reasoning](./reasoning).
+- Pra exibir o RESULTADO sem colapsável (ex.: tabela de search
+  results) — Tool é sempre colapsável; pra mostrar inline use só
+  o output formatado direto.
+
+## Best practices
+
+- **`type` deve refletir o nome da tool.** Modelos com tool-use
+  marcam `type: "tool-<name>"` — mantenha o prefixo pra parsing
+  consistente.
+- **`title` curto e útil.** Default tira o `tool-` mas você pode
+  customizar (ex.: `title="🔍 search"`).
+- **defaultOpen=true** durante streaming, fechado depois. Usuário
+  quer ver execução happening, mas não bloat depois que terminou.
+- **Pra HITL, sempre combine com Confirmation.** Tool sozinho não
+  oferece UI de approve/deny — precisa do Confirmation pra isso.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Trigger é `<button>` com `aria-expanded`. Content é `<region>`. |
+| **Badge** | `aria-label` no ícone (ex.: "Awaiting approval"). |
+| **Status changes** | Mudanças de `state` são visuais — combine com `aria-live="polite"` no parent (Conversation `role="log"` já cobre). |
+| **Code highlighting** | ToolInput herda acessibilidade do CodeBlock. |
+
+## Related
+
+- [Message](./message) — wrapper dentro do qual Tool vive.
+- [Confirmation](./confirmation) — fluxo de approve/deny pra HITL.
+- [Reasoning](./reasoning) — pensamento, não execução.
+- [CodeBlock](../code/code-block) — usado por ToolInput pra JSON pretty-print.

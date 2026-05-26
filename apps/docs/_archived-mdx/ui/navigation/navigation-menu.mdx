@@ -1,0 +1,170 @@
+---
+title: NavigationMenu
+description: Header primário de marketing com painéis ricos — padrão Vercel/Stripe.
+component: NavigationMenu
+importPath: "@kalvner/kds/navigation/navigation-menu"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  NavigationMenuPreview,
+  NavigationMenuRichPanel
+} from "@/components/navigation-demos";
+
+## Overview
+
+`NavigationMenu` é o **menu primário de header** de sites de marketing
+e produto — Products / Solutions / Pricing / Docs com painéis ricos
+sob cada gatilho. É o padrão que Vercel, Stripe, Linear e Tailwind
+usam para revelar uma estrutura de produto sem comprometer a
+hierarquia visual da homepage.
+
+Para **navegação app-internal** (sidebar, settings) use `Sidebar`.
+Para **menus de ação** dentro de uma página (ex.: "+ New") use
+`DropdownMenu`. Não aninhe overlays interativos (Dialog, Popover)
+dentro de um painel — o focus management fica frágil rapidamente.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Trigger com painel + links diretos.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <NavigationMenuPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="/a">…</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+        Pricing
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Itens podem ser triggers com painel ou links diretos. Use
+`navigationMenuTriggerStyle()` para alinhar o estilo de links diretos
+com triggers.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `NavigationMenu` | Raiz; aceita `viewport={false}` para ancorar painéis sob cada item. |
+| `NavigationMenuList` | `<ul>` horizontal dos triggers. |
+| `NavigationMenuItem` | `<li>` que abriga trigger + content. |
+| `NavigationMenuTrigger` | Botão que abre o painel; renderiza chevron de affordance. |
+| `NavigationMenuContent` | Painel que aparece sob o trigger ativo. |
+| `NavigationMenuLink` | Link — direto ou dentro de um painel. |
+| `NavigationMenuIndicator` | Setinha animada que segue o trigger ativo. |
+| `NavigationMenuViewport` | Container que renderiza o painel. |
+| `navigationMenuTriggerStyle` | Helper CVA — o mesmo estilo do trigger para links diretos. |
+
+## Usage
+
+```tsx
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from "@kalvner/kds/navigation/navigation-menu";
+
+export function HeaderNav() {
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-2 p-3 md:grid-cols-2">…</ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/pricing">
+            Pricing
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+```
+
+## Variants
+
+<Card>
+  <CardHeader>
+    <CardTitle>Rich panel</CardTitle>
+    <CardDescription>Hero à esquerda + lista de links à direita — padrão "categorias do produto".</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <NavigationMenuRichPanel />
+  </CardContent>
+</Card>
+
+## When to use
+
+- **Header primário** em sites de marketing e landing pages.
+- Quando o produto tem múltiplas linhas e cada uma precisa de
+  contexto além do nome (descrição, ícone, mini-hero).
+- Para navegação que mistura links diretos + grupos com painel.
+
+## When not to use
+
+- Para nav interna de aplicação — use [`Sidebar`](./sidebar).
+- Para alternar views da mesma página — use [`Tabs`](./tabs).
+- Para mobile-first sem fallback — em telas estreitas, transforme
+  no padrão drawer + accordion.
+- Para action menus — use [`DropdownMenu`](../overlays/dropdown-menu).
+
+## Best practices
+
+- **Painéis curtos.** 3–6 itens por painel; passou disso, repense
+  a categorização.
+- **Hero opcional, não decorativo.** Use a área `row-span-3` quando
+  o link merece destaque (link de produto principal, demo). Caso
+  contrário, deixe lista plana.
+- **Mobile fallback.** Em mobile, troque por Drawer + Accordion
+  (links agrupados em sections expansíveis).
+- **Não aninhe overlays.** Dialog dentro de NavigationMenu quebra
+  focus. Use o painel como teaser, leve para a página completa.
+- **Active state via router.** Marque o item ativo com
+  `data-active="true"` no `NavigationMenuLink` correspondente.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix aplica `role="menubar"` na lista, `role="menuitem"` nos triggers, e gerencia `aria-expanded`. |
+| **Keyboard** | Setas movem entre triggers; `Enter`/`Space` abre painel; `Esc` fecha; `Tab` saindo do painel mantém ordem. |
+| **Focus** | Foco entra no painel quando aberto; `Esc` retorna ao trigger. |
+| **Screen reader** | Triggers anunciados como "Products, expanded/collapsed, menu". |
+
+## Related
+
+- [`Sidebar`](./sidebar) — navegação interna de aplicação.
+- [`Menubar`](./menubar) — menu bar em apps desktop-style.
+- [`Tabs`](./tabs) — alternar views dentro de um escopo.

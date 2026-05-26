@@ -1,0 +1,178 @@
+---
+title: Drawer
+description: Bottom sheet mobile-first com gesture support — baseado em vaul.
+component: Drawer
+importPath: "@kalvner/kds/overlays/drawer"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { DrawerPreview } from "@/components/overlay-demos";
+
+## Overview
+
+`Drawer` é um bottom sheet baseado em [`vaul`](https://github.com/emilkowalski/vaul)
+— biblioteca do Emil Kowalski que traz drag-to-dismiss, momentum e o
+visual familiar de iOS/Android. **Mobile-first**: ergonomia de polegar,
+gesture nativo, prende foco como modal mas se sente leve.
+
+A heurística simples: em telas pequenas, **Drawer** é a melhor casa
+para confirmações, edições rápidas e seletores. Em telas médias e
+grandes, troque por `Dialog` ou `Sheet` — bottom sheets em desktop
+forçam o usuário a olhar para baixo, o que é desconfortável.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Drawer padrão deslizando da base.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <DrawerPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Drawer>
+  <DrawerTrigger />
+  <DrawerContent>
+    {/* handle bar — só visível na direção bottom */}
+    <DrawerHeader>
+      <DrawerTitle />
+      <DrawerDescription />
+    </DrawerHeader>
+    {/* conteúdo */}
+    <DrawerFooter>
+      <Button>Confirmar</Button>
+      <DrawerClose>Cancelar</DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Drawer` | Raiz, baseada em `vaul`. |
+| `DrawerTrigger` | Elemento que abre o drawer. |
+| `DrawerContent` | Container com handle bar (em direção bottom). |
+| `DrawerHeader` | Wrapper de título + descrição. |
+| `DrawerTitle` | Título obrigatório. |
+| `DrawerDescription` | Descrição opcional. |
+| `DrawerFooter` | Rodapé com ações. |
+| `DrawerClose` | Wrapper que fecha o drawer. |
+
+## Usage
+
+```tsx
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose
+} from "@kalvner/kds/overlays/drawer";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function ConfirmOrder() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button>Finalizar</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Confirmar pedido?</DrawerTitle>
+          <DrawerDescription>R$ 258,00 total</DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button>Confirmar</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancelar</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+
+## Composition — responsive
+
+Padrão útil: usar `Drawer` em mobile e `Dialog` em desktop. A
+escolha vive na lógica de breakpoint da página, não no primitivo.
+
+```tsx
+import { useMediaQuery } from "@/hooks/use-media-query";
+
+export function ResponsiveOverlay({ children }: { children: React.ReactNode }) {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  if (isDesktop) {
+    return (
+      <Dialog>
+        {/* mesmos children, semantic equivalent */}
+      </Dialog>
+    );
+  }
+  return (
+    <Drawer>
+      {/* mesmos children */}
+    </Drawer>
+  );
+}
+```
+
+## When to use
+
+- Confirmações em mobile.
+- Pickers (data, hora, opção) em mobile.
+- Quick actions em apps mobile-web ou PWAs.
+- Bottom-sheet padrão de iOS/Android quando o app foge do feel
+  desktop-default.
+
+## When not to use
+
+- Em desktop puro — use [`Dialog`](./dialog) ou [`Sheet`](./sheet).
+- Para conteúdo inline e contextual — use [`Popover`](./popover).
+- Para fluxos longos com múltiplas seções em mobile — `Sheet` com
+  `side="bottom"` em mobile e `side="right"` em desktop é mais
+  flexível.
+
+## Best practices
+
+- **Handle bar comunica drag.** A barrinha no topo é affordance
+  visual de "pode arrastar para fechar". Em direção `bottom`, ela
+  aparece automaticamente.
+- **Footer sticky.** Ações primárias devem permanecer visíveis quando
+  o conteúdo rola — use `mt-auto`.
+- **Não use em desktop.** Mesmo que técnico funcione, viola a
+  convenção do sistema operacional.
+- **Drag-to-dismiss respeita o estado.** Se houver mudanças não-salvas,
+  intercepte o `onOpenChange` para confirmar antes de descartar.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `vaul` aplica `role="dialog"` + `aria-modal="true"`. |
+| **Foco** | Focus trap ativo. Escape fecha. Foco volta ao trigger. |
+| **Keyboard** | `Tab` cicla. `Esc` fecha. Drag é gesture-only. |
+| **Screen reader** | `DrawerTitle` é o nome; `DrawerDescription` a descrição. |
+| **Reduced motion** | A animação de slide respeita `prefers-reduced-motion` no nível do tema. |
+
+## Related
+
+- [`Dialog`](./dialog) — equivalente desktop.
+- [`Sheet`](./sheet) — painel lateral para fluxos longos.
+- [`Popover`](./popover) — overlay inline contextual.

@@ -1,0 +1,307 @@
+---
+title: Card
+description: Superfície composta — Header → Content → Footer — para agrupar conteúdo relacionado.
+component: Card
+importPath: "@kalvner/kds/display/card"
+status: stable
+---
+
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { Button } from "@kalvner/kds/forms/button";
+import { Badge } from "@kalvner/kds/display/badge";
+import { Separator } from "@kalvner/kds/display/separator";
+import { TrendingUp } from "lucide-react";
+
+## Overview
+
+`Card` é a **superfície base** para agrupar conteúdo relacionado.
+Não é uma única caixa — é uma **composição** de partes
+(`CardHeader`, `CardTitle`, `CardDescription`, `CardAction`,
+`CardContent`, `CardFooter`) que você liga conforme a necessidade.
+
+A diferença em relação a outros wrappers:
+
+- **Card vs. plain div** — Card já traz `bg-card`, borda,
+  `rounded-xl`, sombra, ritmo vertical (`gap-6`) e padding consistente
+  (`px-6 py-6`). Tudo via tokens semânticos — muda com tema.
+- **Card vs. Section/Article** — Card é **container visual**, não
+  semântico. Use `<section>`/`<article>` por fora se a hierarquia
+  importar pra leitor de tela.
+
+KPIs, tiles de dashboard, gráficos com título e legenda, marketing
+features, formulários encapsulados — Card é o coringa de superfícies.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Receita do mês</CardTitle>
+    <CardDescription>Comparado a 30 dias anteriores.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="text-3xl font-semibold tabular-nums">R$ 28.430</div>
+    <div className="text-sm text-muted-foreground">+12% vs. abril</div>
+  </CardContent>
+  <CardFooter className="text-sm text-muted-foreground">
+    <TrendingUp className="mr-2 size-4 text-primary" />
+    Tendência de alta há 4 semanas.
+  </CardFooter>
+</Card>
+
+## Anatomy
+
+```
+<Card>                        ← surface (rounded-xl, border, shadow, py-6)
+  ├─ <CardHeader>             ← grid, gap-1.5, px-6
+  │    ├─ <CardTitle />        ← font-semibold, leading-none
+  │    ├─ <CardDescription /> ← text-muted-foreground, text-sm
+  │    └─ <CardAction />       ← justify-self-end (botão/menu canto)
+  ├─ <CardContent />           ← px-6
+  └─ <CardFooter />            ← flex, px-6, items-center
+</Card>
+```
+
+A composição é **opt-in**. Um Card pode ser só `<Card>{kpi}</Card>` —
+nenhum subcomponente é obrigatório. Os data-slots permitem
+estilização contextual (`[.border-b]:pb-6` em Header, `[.border-t]:pt-6`
+em Footer) — adicione `border-b`/`border-t` à classe do Header/Footer
+e o padding interno se ajusta automaticamente.
+
+## Usage
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+export function KpiTile() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Receita</CardTitle>
+        <CardDescription>Mês corrente</CardDescription>
+      </CardHeader>
+      <CardContent>R$ 28.430</CardContent>
+      <CardFooter>+12% vs. abril</CardFooter>
+    </Card>
+  );
+}
+```
+
+## Props
+
+Todos os subcomponentes herdam `ComponentPropsWithoutRef<"div">` —
+qualquer prop válida em `<div>` (className, id, onClick, role, aria-*…)
+funciona. Apenas o `className` é estilizado; o resto passa direto.
+
+| Componente | Estilo aplicado |
+|---|---|
+| `Card` | `bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm` |
+| `CardHeader` | `grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6` (com slot `card-action`: `grid-cols-[1fr_auto]`) |
+| `CardTitle` | `leading-none font-semibold` |
+| `CardDescription` | `text-muted-foreground text-sm` |
+| `CardAction` | `col-start-2 row-span-2 row-start-1 self-start justify-self-end` |
+| `CardContent` | `px-6` |
+| `CardFooter` | `flex items-center px-6` |
+
+Cada subcomponente expõe um `data-slot` (`card`, `card-header`,
+`card-title`, `card-description`, `card-action`, `card-content`,
+`card-footer`) — útil para selectores CSS de tema avançado.
+
+## Subcomponents
+
+- **`Card`** — wrapper externo, define a superfície.
+- **`CardHeader`** — usa CSS Grid para acomodar Title + Description
+  + Action automaticamente. Quando há `<CardAction>`, vira layout
+  2 colunas com a action à direita ocupando ambas as linhas.
+- **`CardTitle`** — texto destaque do header. Use `<h2>`/`<h3>`
+  semânticos por fora se a hierarquia importar para leitor de tela
+  (Card é puramente visual).
+- **`CardDescription`** — sublinha ou contextualiza o título.
+  Muted, opcional.
+- **`CardAction`** — encaixa um botão (Save, fechar, menu) no canto
+  superior direito do header sem hack de posicionamento absoluto.
+- **`CardContent`** — corpo. Sem padding vertical próprio (Card já
+  tem `py-6`), só horizontal — você controla o espaçamento entre
+  Content e Header/Footer via `gap-6` do root.
+- **`CardFooter`** — flex horizontal, ideal para chips de meta,
+  trend captions ou linha de botões.
+
+## Variants
+
+Card não tem variantes embutidas — variação acontece pela composição
+(quais subcomponentes você usa) e pelo overlay com `className`.
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Header + Content + Footer</CardTitle>
+      <CardDescription>Padrão completo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      Corpo principal do card.
+    </CardContent>
+    <CardFooter className="text-sm text-muted-foreground">
+      Linha de meta no rodapé.
+    </CardFooter>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Header + Action</CardTitle>
+      <CardDescription>CardAction encaixa à direita.</CardDescription>
+      <CardAction>
+        <Button variant="ghost" size="sm">Editar</Button>
+      </CardAction>
+    </CardHeader>
+    <CardContent>
+      A action ocupa as duas linhas do header.
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader className="border-b">
+      <CardTitle>Header com separador</CardTitle>
+      <CardDescription>border-b ajusta o pb-6 automaticamente.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      Conteúdo isolado por linha.
+    </CardContent>
+  </Card>
+  <Card>
+    <CardContent>
+      <div className="flex items-center gap-3">
+        <Badge>Beta</Badge>
+        <span className="text-sm">Card só com Content — sem header.</span>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+Card é puramente visual — não tem estados próprios. Estados
+contextuais aparecem na composição:
+
+| Comportamento | Como adicionar |
+|---|---|
+| Hover destacado | `className="transition-shadow hover:shadow-md"` |
+| Selecionado | `className="border-primary ring-2 ring-primary/20"` |
+| Disabled / desabilitado | `className="opacity-60 pointer-events-none"` |
+| Linkado (clicável) | Embrulhe em `<a>` ou use Button como Card via Slot |
+
+## Composition
+
+### KPI tile (com tendência)
+
+<Card className="max-w-sm">
+  <CardHeader>
+    <CardTitle>Receita do mês</CardTitle>
+    <CardDescription>Comparado a 30 dias anteriores.</CardDescription>
+    <CardAction>
+      <Badge variant="secondary">+12%</Badge>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <div className="text-3xl font-semibold tabular-nums">R$ 28.430</div>
+  </CardContent>
+  <CardFooter className="text-sm text-muted-foreground">
+    <TrendingUp className="mr-2 size-4 text-primary" />
+    Tendência de alta há 4 semanas.
+  </CardFooter>
+</Card>
+
+### Card como wrapper de gráfico
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Receita por mês</CardTitle>
+    <CardDescription>Jan – Jun 2026</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ChartContainer config={...}>
+      <BarChart data={...}>...</BarChart>
+    </ChartContainer>
+  </CardContent>
+  <CardFooter className="flex items-center gap-2 text-sm text-muted-foreground">
+    <TrendingUp className="size-4 text-primary" />
+    +5,2% no semestre
+  </CardFooter>
+</Card>
+```
+
+### Card de feature (marketing)
+
+<Card className="max-w-md">
+  <CardHeader>
+    <CardTitle>Multi-tema</CardTitle>
+    <CardDescription>4 temas, light + dark, todos com tokens semânticos.</CardDescription>
+  </CardHeader>
+  <CardContent className="text-sm text-muted-foreground">
+    Cada tema é um diff em um só arquivo CSS. Componentes nunca hardcodam cor.
+  </CardContent>
+  <CardFooter>
+    <Button variant="outline" size="sm">Ver tokens</Button>
+  </CardFooter>
+</Card>
+
+## When to use
+
+- KPI tiles, dashboards, métricas isoladas.
+- Gráficos (Card é o wrapper canônico do `<Chart>` no KDS).
+- Marketing features (grade de capabilities com ícone + título + descrição).
+- Feature toggles ou sub-formulários encapsulados.
+- Itens de lista visualmente ricos (foto + título + meta + CTA).
+
+## When not to use
+
+- Para listas tabulares — use [Table](./table) (semântico, scroll-x).
+- Quando o "card" é só um container fino com 1 linha de texto —
+  uma `<div>` com Tailwind direto é mais leve.
+- Para conteúdo de página inteira — Card aninha mal em si mesmo;
+  prefira [Section](../containers/stack) ou layout customizado.
+- Para itens clicáveis grandes que viram navegação — embrulhe num
+  `<a>` ou use `<Link>` por fora; não tente fazer Card "ser" um
+  link via `onClick` direto (perde semântica).
+
+## Best practices
+
+- **Composição opt-in.** Não force os subcomponentes — Cards
+  pequenos podem ser só `<Card><CardContent>...</CardContent></Card>`.
+- **Use `CardAction` em vez de `absolute`.** Posicionar botão no
+  canto direto do header com classes absolutas quebra com hover/focus
+  states; CardAction usa o grid do header pra encaixar limpo.
+- **Hierarquia semântica vai por fora.** Em listas, embrulhe Card
+  num `<article>` com `<h2>`/`<h3>` próprio — Card só dá visual.
+- **Não aninhe Cards.** Se você quer "card dentro de card", revise
+  o layout — geralmente é Section + lista de Cards filhos, não
+  matrioshka.
+- **Bordas de header/footer via `border-b`/`border-t` no className.**
+  O Card tem CSS que ajusta padding interno automaticamente.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Card é `<div>` puro — sem role implícito. Para grupos semânticos (lista de cards), use `<ul>/<li>` por fora. |
+| **Heading** | `CardTitle` é `<div>` por padrão; embrulhe em `<h2>` ou similar quando a página tiver hierarquia. |
+| **Action focus** | `CardAction` herda o focus do filho (Button tem `focus-visible:ring`). |
+| **Linkado** | Para Cards inteiramente clicáveis, prefira `<a>` ou `<Link>` em volta — não JS-only `onClick`. |
+| **Contraste** | `bg-card` + `text-card-foreground` garantem AA em todos os 4 temas. |
+
+## Related
+
+- [Stack](../containers/stack) — para empilhar Cards num grid responsivo.
+- [Separator](./separator) — divisor dentro de Card (substitui bordas customizadas).
+- [Chart](../data/chart) — Card é o wrapper canônico de gráficos.
+- [Badge](./badge) — combina bem em CardAction ou no Footer.

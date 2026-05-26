@@ -1,0 +1,40 @@
+---
+title: Welcome to Gremorie
+description: AI-native design system. Angular first; React coming. Distributed via registry + MCP.
+---
+
+Welcome to **Gremorie** — an AI-native design system.
+
+Gremorie is built around a single idea: the design system is a **memory** —
+consultable by humans, AI agents, and tooling. Components and tokens are
+distributed via a registry (read by CLI and MCP server) rather than a
+classical npm package. This makes the system legible to both designers and
+language models.
+
+## Editions
+
+- **Angular** (ng-*) — the first edition. Built on Spartan-NG and shipped as
+  installable source via `gremorie add`.
+- **React** — coming after the registry and MCP server land. The legacy KDS
+  React content from the Bridge monorepo lives in `_archived-mdx/` until
+  rewritten against `@gremorie/react-*`.
+
+## How this site is organised
+
+- **Foundations** — design principles, architecture, accessibility,
+  contribution rules
+- **Tokens** — the three-layer token system (primitive, semantic, chart)
+  and its theming model
+
+The full UI / AI / Blocks reference is paused while the Bridge content is
+re-authored against the Gremorie packages. Track progress in the migration
+plan at `missions/kal/gremorie/architecture/03-migracao.md` in the Kalvnor
+vault.
+
+## Status
+
+This site was migrated from `kalvner/bridge` (KDS Fumadocs) into the
+Gremorie monorepo during Phase 2. The Angular edition (ng-core,
+ng-prompt-input, ng-charts, ng-attachments, ng-scroll-area) is the active
+workstream; the React edition resumes in Phase 5 after the registry and MCP
+server are in place.

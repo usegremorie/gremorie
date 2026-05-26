@@ -1,0 +1,93 @@
+---
+title: Layout & stability
+description: How KDS thinks about layout stability, Cumulative Layout Shift (CLS), and the patterns we apply to keep interfaces still.
+---
+
+KDS treats **layout stability** as a foundational concern, on equal footing with accessibility and color contrast. Layouts that move involuntarily after first paint cause mis-clicks, broken reading flow, and disproportionate harm to users with cognitive disabilities or screen magnifiers. They also tank Core Web Vitals scores and, by extension, search visibility.
+
+This page explains what layout shift is, why it happens, and the patterns KDS uses to prevent it across primitives, patterns, and the apps that consume them.
+
+## What is Cumulative Layout Shift
+
+**Cumulative Layout Shift (CLS)** is one of three Core Web Vitals that Google uses to grade page experience, alongside Largest Contentful Paint (LCP) and Interaction to Next Paint (INP). CLS measures the largest **burst** of involuntary visual movement during the lifetime of a page, normalised by viewport size.
+
+Each shift contributes a score equal to `impact-fraction × distance-fraction`:
+
+- **Impact fraction** — how much of the viewport was affected by the movement
+- **Distance fraction** — the largest distance an element moved, divided by the larger viewport dimension
+
+Google's classification:
+
+| Score | Rating |
+|---|---|
+| ≤ 0.1 | Good |
+| 0.1 – 0.25 | Needs improvement |
+| ≥ 0.25 | Poor |
+
+A single 100px banner injecting at the top of a 1080px-tall viewport can already consume ~90% of the "Good" budget. The discipline isn't about absorbing one bad shift — it's about not having any.
+
+## Why we care
+
+**For users.** Layout shift causes mis-clicks ("I went to add to cart, the button moved, I deleted my account"), breaks reading flow when banners or embeds inject into prose, and is uniquely punishing for assistive technology users. People using zoom, magnifiers, or screen readers depend on stable spatial models — every shift forces them to re-orient.
+
+**For the product.** Web Vitals affect Google search ranking since 2021. Sites with high CLS see measurable decay in organic traffic. A/B tests across e-commerce show 10-15% conversion correlation with CLS quality, controlled for other factors.
+
+**For us, internally.** Components that don't reserve their space cause cascading shifts in containers that consume them. A single sloppy primitive (an `<Avatar>` without dimensions, an `<Image>` without aspect ratio) can wreck the CLS of every page that uses it. Fixing it once at the primitive level fixes it everywhere.
+
+## The five dominant causes
+
+1. **Media without reserved dimensions.** `<img>` and `<video>` elements that don't declare `width`/`height` or have an `aspect-ratio` set in CSS. The browser can't reserve space until the asset downloads — when it lands, surrounding content shifts.
+
+2. **Font swaps (FOIT / FOUT).** Custom fonts that load asynchronously and replace the fallback after first paint, with different metrics. Even a small line-height delta cascades through text-heavy pages.
+
+3. **Late-injected content.** Ads, cookie banners, third-party embeds (Twitter, YouTube), live regions. They render after JavaScript hydration and push everything below them down.
+
+4. **Animations on layout-triggering properties.** Animating `top`, `left`, `width`, `height`, `margin`, or `padding` triggers layout reflow on every frame. Visible elements around the animated one shift on each tick.
+
+5. **Scrollbar appearing late.** A page that grows past the viewport height materializes a vertical scrollbar 16px wide. Without `scrollbar-gutter: stable`, that 16px is taken from the layout — every column re-flows horizontally on first scroll.
+
+## KDS patterns to prevent shift
+
+### Media primitives reserve space
+
+Every component that renders mixed-size content (`<Avatar>`, `<Image>`, `<Card>` with cover image, charts) declares either an explicit `width`/`height` pair or a CSS `aspect-ratio`. The chart container (KDS Phase 4) is `aspect-ratio: 16 / 9` by default; `<Avatar>` is square; `<Image>` requires explicit dimensions and lints if missing.
+
+### Containers reserve space for dynamic children
+
+Components that fetch or stream content (skeletons, async loaders, AI streaming responses) declare a `min-height` matching the expected content size. A `<MessageList>` with 0 messages reserves the height of one message; a `<Skeleton>` matches the dimensions of the content it stands in for.
+
+### Animations only on transform and opacity
+
+KDS components and patterns animate exclusively via `transform` and `opacity` — both run on the GPU compositor and don't trigger layout. Sliding menus use `translateX`, fade transitions use `opacity`, scale animations use `scale()`. **Do not** animate `width`, `height`, `top`, or `left` on shipped components; if you need a width transition, use `transform: scaleX()` from a fixed inner element.
+
+### Viewport-anchored layouts use scrollbar-gutter
+
+The `--fd-layout-width: 100vw` setup that pins the docs site's sidebar to the viewport edge depends on `scrollbar-gutter: stable` on `<html>`. Without it, the scrollbar appearing on long pages would steal 16px from the right column, clipping the TOC and shifting the entire grid. Any KDS layout primitive that consumes 100vw should include the same companion rule.
+
+### Fonts loaded with `next/font` (or equivalent)
+
+KDS recommends `next/font` for the consumer app. It applies `font-display`, `size-adjust`, and metric overrides automatically so the fallback metric matches the custom font, eliminating swap-induced shift. Both `apps/docs` and `apps/portfolio` use Geist Sans / Geist Mono via `next/font/google`.
+
+## Measuring CLS
+
+In dev, watch the **Performance → Web Vitals** lane in Chrome DevTools — it highlights each shift visually and points at the culprit element.
+
+In CI, gate on a Lighthouse run or Vercel Speed Insights threshold. Regressions block merge.
+
+In production, use Vercel Speed Insights for real-user metrics, or wire up the [`web-vitals`](https://github.com/GoogleChrome/web-vitals) library to your analytics.
+
+## Anti-patterns
+
+- ❌ `overflow: hidden` on `<body>` to "hide" the scrollbar — breaks keyboard scrolling and accessibility.
+- ❌ `overflow-y: scroll` on `<html>` — forces the scrollbar to always render even when not needed; `scrollbar-gutter: stable` is better (reserves without forcing).
+- ❌ Animating widths or positions for movement — use `transform`.
+- ❌ Banners or notifications appended to `<body>` without reserved space.
+- ❌ Images without dimensions, even in MDX — the `<Preview>` component lints for missing aspect ratios.
+
+## Further reading
+
+- web.dev — [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls)
+- web.dev — [Optimize CLS](https://web.dev/articles/optimize-cls)
+- MDN — [scrollbar-gutter](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter)
+- Smashing Magazine — [Setting Height and Width on Images is Important Again](https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/)
+- Vercel — [Speed Insights documentation](https://vercel.com/docs/speed-insights)

@@ -1,0 +1,183 @@
+---
+title: Breadcrumb
+description: Trilha hierárquica para hierarquias com ≥3 níveis — orientação espacial sem custo de cliques.
+component: Breadcrumb
+importPath: "@kalvner/kds/navigation/breadcrumb"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  BreadcrumbCollapsed,
+  BreadcrumbCustomSeparator,
+  BreadcrumbDeep,
+  BreadcrumbPreview
+} from "@/components/navigation-demos";
+
+## Overview
+
+`Breadcrumb` mostra **onde o usuário está** dentro de uma hierarquia
+e oferece um caminho de volta. Reservar para sites com hierarquia
+real — ≥3 níveis. Em sites flat (3 páginas top-level), breadcrumb
+adiciona ruído sem ganho.
+
+A última posição é a página atual e não deve ser link —
+`<BreadcrumbPage>` aplica `aria-current="page"` para que SRs anunciem
+corretamente. Em mobile com hierarquias profundas, prefira a versão
+colapsada com `<BreadcrumbEllipsis>` revelando os passos
+intermediários via popover.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Trilha padrão com chevron como separador.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <BreadcrumbPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/" />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage />          ← último item, sem link
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+Markup nativo: `<nav>` + `<ol>` + `<li>`. Sem dependências, sem
+JavaScript de runtime; SSR-friendly por padrão.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Breadcrumb` | `<nav aria-label="breadcrumb">`. |
+| `BreadcrumbList` | `<ol>` que enfileira os itens. |
+| `BreadcrumbItem` | `<li>` para cada nível. |
+| `BreadcrumbLink` | Link clicável; aceita `asChild` para integrar com routers. |
+| `BreadcrumbPage` | Página atual — não navegável, com `aria-current="page"`. |
+| `BreadcrumbSeparator` | Separador (chevron padrão; passa `children` para customizar). |
+| `BreadcrumbEllipsis` | Indica passos colapsados, geralmente acoplado a um Popover/Dropdown. |
+
+## Usage
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+} from "@kalvner/kds/navigation/breadcrumb";
+
+export function PageTrail() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Settings</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Custom separator</CardTitle>
+      <CardDescription>Slash, dot, ou ícone próprio — passe via children.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <BreadcrumbCustomSeparator />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Collapsed middle</CardTitle>
+      <CardDescription>Para hierarquias profundas em mobile.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <BreadcrumbCollapsed />
+    </CardContent>
+  </Card>
+  <Card className="md:col-span-2">
+    <CardHeader>
+      <CardTitle>Deeply nested</CardTitle>
+      <CardDescription>Quando todos os níveis são relevantes.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <BreadcrumbDeep />
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Sites e apps com **hierarquia ≥3 níveis** — admin, e-commerce, doc
+  trees, knowledge bases.
+- Quando o usuário navegou via search ou link direto e não tem
+  contexto da posição.
+- Em settings com múltiplas seções aninhadas.
+
+## When not to use
+
+- Sites flat (≤2 níveis): adiciona ruído sem benefício.
+- Em fluxos lineares (checkout, wizard) — use `Stepper`.
+- Como navegação primária — Breadcrumb é orientação, não menu.
+- Quando a hierarquia muda dinamicamente sem padrão estável.
+
+## Best practices
+
+- **Página atual nunca é link.** Use `<BreadcrumbPage>` no último
+  nível; SRs anunciam como `aria-current="page"`.
+- **Mostre o caminho real.** Se o usuário chegou em `/posts/123`
+  via search, ainda assim mostre `Home > Blog > Título`. A
+  trilha é uma promessa do site, não do histórico de navegação.
+- **Mobile colapsa.** Em telas estreitas, `Home > ... > Atual`
+  + Popover. Não tente fazer scroll horizontal.
+- **Limite até 6 níveis.** Acima disso a hierarquia provavelmente
+  está mal estruturada.
+- **Não use ícones sozinhos.** Texto sempre. Ícone como reforço,
+  não substituição.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<nav aria-label="breadcrumb">` envolve uma `<ol>` ordenada. |
+| **Current page** | `BreadcrumbPage` aplica `role="link"` + `aria-disabled="true"` + `aria-current="page"` para SRs. |
+| **Keyboard** | Tab segue a ordem do DOM; cada link é focável. Os separadores são `aria-hidden`. |
+| **Screen reader** | Anunciado como "navigation, breadcrumb". Os itens são anunciados em ordem. |
+| **Custom separator** | Garanta `aria-hidden="true"` no ícone (já aplicado pelo `BreadcrumbSeparator`). |
+
+## Related
+
+- [`Pagination`](./pagination) — para navegar páginas de uma lista,
+  não para hierarquia.
+- [`NavigationMenu`](./navigation-menu) — navegação top-level com
+  painéis ricos.
+- [`Tabs`](./tabs) — alternar views dentro do mesmo escopo.

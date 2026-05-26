@@ -1,0 +1,189 @@
+---
+title: Progress
+description: Indicador determinado de progresso (0–100) — uploads, multi-step, batch jobs.
+component: Progress
+importPath: "@kalvner/kds/feedback/progress"
+status: stable
+---
+
+import { Progress } from "@kalvner/kds/feedback/progress";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Progress` é uma **barra determinada** — você sabe a percentagem.
+Use em uploads, multi-step forms, jobs que reportam progresso real.
+Quando a duração é desconhecida, use [Skeleton](./skeleton) ou
+spinner em vez disso.
+
+A regra firme: **nunca renderize a barra silenciosa**. Sempre pareie
+com um valor numérico ou label de contexto — barras sem número
+confundem sobre o estado real ("É 60%? 70%?").
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Progress 72% com label.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-baseline justify-between">
+        <span className="text-sm font-medium">Importando ativos</span>
+        <span className="text-sm tabular-nums text-muted-foreground">72%</span>
+      </div>
+      <Progress value={72} aria-label="72 por cento" />
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Progress value={0..100}>
+  ├─ [data-slot="progress"]            ← track (h-2, bg-primary/20)
+  └─ <Indicator />                      ← preenchimento (transform translateX)
+</Progress>
+```
+
+## Usage
+
+```tsx
+import { Progress } from "@kalvner/kds/feedback/progress";
+
+export function Upload({ pct }: { pct: number }) {
+  return <Progress value={pct} aria-label={`${pct} por cento`} />;
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `value` | `number \| null` | `0` | 0..100. `null` reservado para indeterminado. |
+| `max` | `number` | `100` | Valor máximo. |
+| `aria-label` | `string` | — | **Obrigatório** se não houver label visível associado. |
+| `className` | `string` | — | Override no track (h, w, bg). |
+
+## Subcomponents
+
+`Progress` é monolítico — exporta apenas o root. O indicator é
+interno (`data-slot="progress-indicator"`) e estilizado via
+descendentes do track.
+
+## Variants
+
+Não há variantes embutidas. Para tamanhos custom, ajuste `className`:
+
+```tsx
+<Progress value={50} className="h-1" />     // mais fino
+<Progress value={50} className="h-3" />     // mais grosso
+```
+
+Para cor de status (sucesso/aviso/erro), aplique no descendente:
+
+```tsx
+<Progress
+  value={100}
+  className="bg-green-500/20 [&>[data-slot=progress-indicator]]:bg-green-500"
+/>
+```
+
+## States
+
+<div className="grid gap-3 md:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Empty</CardTitle>
+      <CardDescription>value=0</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Progress value={0} aria-label="0 por cento" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Half</CardTitle>
+      <CardDescription>value=50</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Progress value={50} aria-label="50 por cento" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Full</CardTitle>
+      <CardDescription>value=100</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Progress value={100} aria-label="100 por cento" />
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+Padrão clássico de upload — label + porcentagem + barra:
+
+```tsx
+<div className="space-y-2">
+  <div className="flex items-baseline justify-between">
+    <Label>Enviando arquivo</Label>
+    <span className="tabular-nums text-muted-foreground">{pct}%</span>
+  </div>
+  <Progress value={pct} aria-label={`${pct} por cento`} />
+</div>
+```
+
+Em multi-step forms, mostre `current/total` em vez de porcentagem:
+
+```tsx
+<div className="space-y-2">
+  <span className="text-sm">Passo 2 de 4</span>
+  <Progress value={(2 / 4) * 100} aria-label="Passo 2 de 4" />
+</div>
+```
+
+## When to use
+
+- Uploads / downloads em andamento.
+- Multi-step forms (passo N de M).
+- Batch jobs com porcentagem real.
+- Onboarding com checklist progressivo.
+
+## When not to use
+
+- Operações de duração desconhecida — use [Skeleton](./skeleton)
+  ou spinner.
+- "Loading..." curto (menos de 1s) — não vale a pena mostrar.
+- Dados em tempo real que sobem e descem (CPU, memória) — use um
+  gráfico Sequential da Chart layer.
+
+## Best practices
+
+- **Sempre** pareie com número visível ou label dinâmico.
+- Use `tabular-nums` no número para evitar saltos de largura.
+- Em uploads que podem cancelar, ofereça botão `Cancel` ao lado
+  da barra.
+- Para 100%, troque a label para uma confirmação ("Concluído")
+  e mantenha a barra cheia 800ms antes de remover — evita flash.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix expõe `role="progressbar"` com `aria-valuenow`, `aria-valuemin=0`, `aria-valuemax=100`. |
+| **Label** | `aria-label` ou `aria-labelledby` é obrigatório. |
+| **Live region** | Para feedback de operação, embrulhe num `aria-live="polite"` no container. |
+| **Reduced motion** | A `transition-all` no indicator respeita `prefers-reduced-motion`. |
+
+## Related
+
+- [Skeleton](./skeleton) — quando a duração é desconhecida.
+- [Alert](./alert) — para reportar resultado final (sucesso/erro).
+- [Sonner](../overlays/sonner) — toast de upload concluído.

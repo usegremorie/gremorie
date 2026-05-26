@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "title": "UI",
+  "description": "Componentes primitivos do shadcn",
+  "icon": "LayoutGrid",
+  "pages": [
+    "index",
+    "containers",
+    "forms",
+    "display",
+    "feedback",
+    "overlays",
+    "navigation",
+    "data"
+  ]
+}

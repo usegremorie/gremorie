@@ -1,0 +1,78 @@
+---
+title: Motion
+description: Curvas de easing, durações canônicas e animações bundled — feedback temporal entre estado e estado.
+---
+
+import {
+  AnimationTable,
+  DurationTable,
+  EaseTable
+} from "@/components/token-tables";
+
+Motion é a **gramática temporal** da interface. Quando um botão
+muda de cor instantaneamente, ele parece quebrado. Quando muda
+em 600ms, ele parece preguiçoso. A faixa de 100-300ms é onde a
+percepção humana ressoa com mudança de estado em UI.
+
+## Transitions vs. animations
+
+Duas famílias de motion, com papéis diferentes:
+
+- **Transitions** acontecem entre **dois estados** (hover de
+  botão, abertura de drawer, troca de tab). Use `transition-*`
+  + `duration-*` + `ease-*`.
+- **Animations** rodam **continuamente** ou em loop discreto
+  (loaders, pulses, skeletons). Use `animate-*`.
+
+A regra geral: prefira transitions — elas são **conduzidas pelo
+estado**, então o motion é sempre semanticamente justificável.
+Animations gastam atenção, então use-as quando a continuidade é
+o ponto (loading, pulsando atenção).
+
+## Easing
+
+Três curvas cobrem 95% dos casos. Para o resto (bouncy, elastic,
+overshoot), use a sintaxe arbitrária do Tailwind:
+`ease-[cubic-bezier(0.34,1.56,0.64,1)]`.
+
+<EaseTable />
+
+## Duração
+
+A KDS não declara variáveis específicas para `duration-*` —
+Tailwind v4 já gera `duration-75`, `duration-100`, etc, que
+escrevem o ms direto. O **default global** (quando nenhum
+duration é especificado em `transition`) é **150ms**, definido por
+`--default-transition-duration`.
+
+<DurationTable />
+
+## Animações bundled
+
+Tailwind v4 traz quatro animações de uso geral. Você pode
+adicionar mais via `@theme` (em projetos consumidores), mas elas
+cobrem os principais casos.
+
+<AnimationTable />
+
+## Boas práticas
+
+- **Use `ease-out` para entradas**, `ease-in` para saídas. É
+  contra-intuitivo, mas combina com a percepção física: objetos
+  desaceleram ao chegar e aceleram ao sair do campo de visão.
+- **150ms é o sweet spot** para transitions de UI. Mais rápido
+  parece glitch, mais devagar parece preguiçoso.
+- **300ms+** é território de animação narrativa — abertura de
+  drawer, transição de página. Acima de 500ms, você está fazendo
+  o usuário esperar.
+- **Respeite `prefers-reduced-motion`.** Nos componentes da KDS,
+  motion crítico (loaders) permanece — mas decorativo
+  (parallax, swooshes) deve ser desabilitado:
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    .my-fancy-animation { animation: none; }
+  }
+  ```
+- **Não anime tudo ao mesmo tempo.** Se uma transition envolve 5
+  propriedades, considere se 2 ou 3 não bastam — motion paralelo
+  vira ruído visual rápido.

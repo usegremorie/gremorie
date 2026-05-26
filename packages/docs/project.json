@@ -1,5 +1,5 @@
 {
-  "name": "docs",
+  "name": "docs-ng",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
@@ -31,16 +31,16 @@
       "continuous": true,
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "docs:build",
+        "buildTarget": "docs-ng:build",
         "port": 4200
       },
       "configurations": {
         "development": {
-          "buildTarget": "docs:build:development",
+          "buildTarget": "docs-ng:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "docs:build:production"
+          "buildTarget": "docs-ng:build:production"
         }
       }
     },
@@ -51,7 +51,7 @@
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "docs:build",
+        "buildTarget": "docs-ng:build",
         "port": 4200,
         "staticFilePath": "dist/packages/docs/browser",
         "spa": true

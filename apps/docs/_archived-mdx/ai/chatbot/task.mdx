@@ -1,0 +1,151 @@
+---
+title: Task
+description: Lista de tarefas colapsável com arquivos referenciados — execução estruturada de agente.
+component: Task
+importPath: "@kalvner/kds/ai/task"
+status: stable
+---
+
+import { TaskCollapsedPreview, TaskExpandedPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Task` é uma **lista colapsável de itens executáveis** — usado por
+agentes que reportam progresso de várias subtarefas relacionadas.
+Cada `TaskItem` pode citar arquivos (`TaskItemFile`) que o agente
+está modificando.
+
+Diferença de [Plan](./plan): Task é lista plana de execução; Plan
+tem header rico (título + descrição) + footer.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Task collapsado.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <TaskCollapsedPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Task>
+  ├─ <TaskTrigger title="..." />
+  └─ <TaskContent>
+       └─ <TaskItem>
+            label
+            <TaskItemFile>caminho/arquivo.ts</TaskItemFile>
+</Task>
+```
+
+## Usage
+
+```tsx
+<Task defaultOpen>
+  <TaskTrigger title="Refactor de tokens semânticos" />
+  <TaskContent>
+    <TaskItem>
+      Migrar arquivos:
+      <TaskItemFile>tokens/colors.css</TaskItemFile>
+      <TaskItemFile>tokens/colors-amber.css</TaskItemFile>
+    </TaskItem>
+    <TaskItem>Atualizar referências em globals.css</TaskItem>
+  </TaskContent>
+</Task>
+```
+
+## Props
+
+### Task (Root)
+
+Herda de [Collapsible](../../ui/display/collapsible) — `open`,
+`defaultOpen`, `onOpenChange`, `disabled`.
+
+### TaskTrigger
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `title` | `string` | — | Texto do header. |
+| `className` | `string` | — | Override. |
+
+### TaskItem
+
+Aceita `ComponentProps<"div">`. Filhos podem ser texto, links,
+`<TaskItemFile>` chips.
+
+### TaskItemFile
+
+Aceita `ComponentProps<"div">`. Renderiza chip com ícone de arquivo
+(`FileIcon`) + monospace.
+
+## Subcomponents
+
+- **`Task`** — root colapsável.
+- **`TaskTrigger`** — header com `title` + chevron.
+- **`TaskContent`** — wrapper dos itens.
+- **`TaskItem`** — entrada da lista. Texto + opcionalmente
+  TaskItemFile chips.
+- **`TaskItemFile`** — chip de arquivo (`<code>` + ícone), pra
+  referenciar paths que o agente está modificando.
+
+## States
+
+Herda os do Collapsible — open / closed / disabled.
+
+## Composition
+
+Task dentro de Message:
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Task defaultOpen>
+      <TaskTrigger title="Aplicando refactor" />
+      <TaskContent>
+        <TaskItem>Renomeei <TaskItemFile>colors.css</TaskItemFile> → <TaskItemFile>colors-default.css</TaskItemFile></TaskItem>
+        <TaskItem>Atualizei imports em <TaskItemFile>globals.css</TaskItemFile></TaskItem>
+      </TaskContent>
+    </Task>
+    <MessageResponse>{summary}</MessageResponse>
+  </MessageContent>
+</Message>
+```
+
+## When to use
+
+- Agente reportando subtarefas executadas (rename, edit, create).
+- Logs estruturados de execução com referências a arquivos.
+
+## When not to use
+
+- Plano antes da execução — use [Plan](./plan).
+- Steps de raciocínio — use [ChainOfThought](./chain-of-thought).
+- Tool-calls individuais — use [Tool](./tool).
+
+## Best practices
+
+- **defaultOpen=true** durante execução, fechado depois.
+- Limite a ~10 items. Listas longas viram poluição.
+- TaskItemFile usa `font-mono` — pareça com path real, não label.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Trigger é `<button>` (Collapsible). |
+| **Lists** | Considere wrap em `<ul>` se a hierarquia importar pra leitor de tela. |
+
+## Related
+
+- [Plan](./plan) — plano formal antes da execução.
+- [ChainOfThought](./chain-of-thought) — raciocínio numerado.
+- [Tool](./tool) — execução individual.
