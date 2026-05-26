@@ -41,8 +41,9 @@
       "type": "string",
       "enum": [
         "ng",
-        "react",
-        "vue"
+        "rx",
+        "vue",
+        "sv"
       ]
     },
     "title": {

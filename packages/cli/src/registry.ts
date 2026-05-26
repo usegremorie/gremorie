@@ -22,7 +22,7 @@ export type RegistryFileType =
   | 'registry:block'
   | 'registry:style';
 
-export type RegistryFramework = 'ng' | 'react' | 'vue';
+export type RegistryFramework = 'ng' | 'rx' | 'vue' | 'sv';
 
 export interface RegistryFile {
   path: string;

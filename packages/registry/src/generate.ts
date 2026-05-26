@@ -116,6 +116,10 @@ export async function generate(
 }
 
 function buildItem(cwd: string, item: ItemConfig): RegistryItem {
+  const srcStrip = item.srcStrip ?? 'src/';
+  const stripPrefix = (rel: string): string =>
+    rel.startsWith(srcStrip) ? rel.slice(srcStrip.length) : rel;
+
   const files: RegistryFile[] = [];
   for (const rel of item.sourceFiles) {
     const abs = join(cwd, item.packageRoot, rel);
@@ -129,10 +133,7 @@ function buildItem(cwd: string, item: ItemConfig): RegistryItem {
       path: rel,
       content,
       type: inferFileType(rel),
-      target: join(item.targetPrefix, rel.replace(/^src\//, '')).replace(
-        /\\/g,
-        '/',
-      ),
+      target: join(item.targetPrefix, stripPrefix(rel)).replace(/\\/g, '/'),
     });
   }
   for (const rel of item.assetFiles ?? []) {

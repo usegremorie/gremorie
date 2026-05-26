@@ -37,7 +37,7 @@ export const REGISTRY_ITEM_SCHEMA = {
         'registry:theme',
       ],
     },
-    framework: { type: 'string', enum: ['ng', 'react', 'vue'] },
+    framework: { type: 'string', enum: ['ng', 'rx', 'vue', 'sv'] },
     title: { type: 'string' },
     description: { type: 'string' },
     categories: { type: 'array', items: { type: 'string' } },

@@ -25,7 +25,13 @@ Two editions ship today:
 <Tab value="Angular">
 
 ```bash
-npx gremorie add ng-ai
+npx gremorie add ng-prompt-input
+```
+
+This pulls in `ng-utils` (the `cn()` helper) and `ng-attachments` (the Attachment family used by drag-drop and paste-to-attach) as registry dependencies. If you only need the attachment UI in isolation, install it directly:
+
+```bash
+npx gremorie add ng-attachments
 ```
 
 </Tab>
@@ -33,8 +39,10 @@ npx gremorie add ng-ai
 <Tab value="React">
 
 ```bash
-npx gremorie add rx-ai
+npx gremorie add rx-prompt-input
 ```
+
+Pulls in `rx-utils` (the `cn()` helper). The React edition is a single-file pilot - attachments, action menu, model select, and hover-card previews land in a later iteration.
 
 </Tab>
 
@@ -273,5 +281,7 @@ template: `
 
 - Angular edition: `packages/ng-ai/src/lib/prompt-input/` in the monorepo.
 - React edition: `packages/rx-ai/src/lib/prompt-input/` in the monorepo.
-- Registry items: `https://gremorie.com/r/ng/ng-ai.json` and
-  `https://gremorie.com/r/react/rx-ai.json`.
+- Registry items:
+  - `https://gremorie.com/r/ng/ng-prompt-input.json`
+  - `https://gremorie.com/r/ng/ng-attachments.json`
+  - `https://gremorie.com/r/rx/rx-prompt-input.json`

@@ -20,8 +20,13 @@ export async function addCommand(
   options: AddOptions = {},
 ): Promise<void> {
   const cwd = process.cwd();
+  const requested = options.framework;
+  // Treat the legacy alias "react" as "rx" so old scripts keep working.
+  const normalised = (requested === ('react' as RegistryFramework))
+    ? 'rx'
+    : requested;
   const framework: RegistryFramework =
-    options.framework ?? detectFramework(cwd) ?? 'ng';
+    normalised ?? detectFramework(cwd) ?? 'ng';
   const client = createRegistryClient();
 
   console.log();

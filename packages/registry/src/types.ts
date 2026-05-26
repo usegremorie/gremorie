@@ -72,7 +72,7 @@ export interface RegistryUsage {
   examples?: UsageExample[];
 }
 
-export type RegistryFramework = 'ng' | 'react' | 'vue';
+export type RegistryFramework = 'ng' | 'rx' | 'vue' | 'sv';
 
 export interface RegistryItem {
   $schema: string;
@@ -136,6 +136,18 @@ export interface ItemConfig {
   assetFiles?: string[];
   /** Target path prefix inside the consumer project. */
   targetPrefix: string;
+  /**
+   * Optional prefix to strip from each source file path before applying
+   * `targetPrefix`. Defaults to `src/`.
+   *
+   * Useful for granular items that live deep inside the source tree but
+   * should land at a clean, semantic location in the consumer project.
+   * Example: with `srcStrip: 'src/lib/prompt-input/'` and `targetPrefix:
+   * 'src/app/gremorie/ai/prompt-input'`, the source
+   * `src/lib/prompt-input/prompt-input.ts` becomes
+   * `src/app/gremorie/ai/prompt-input/prompt-input.ts`.
+   */
+  srcStrip?: string;
   /** npm runtime dependencies. */
   dependencies: string[];
   /** npm dev dependencies. */

@@ -41,8 +41,19 @@ interface UsageFrontmatter {
  * Missing files yield a `TBD` placeholder so the generator never blocks.
  */
 export function readUsage(packageRoot: string, itemName: string): RegistryUsage {
-  const usagePath = join(packageRoot, 'usage.md');
-  if (!existsSync(usagePath)) {
+  // Prefer per-item usage at usage/<item>.md; fall back to the package-level
+  // usage.md when the per-item file is absent. This gives granular items room
+  // to grow their own docs over time while keeping shared docs for packages
+  // that have not been broken out yet.
+  const perItemPath = join(packageRoot, 'usage', `${itemName}.md`);
+  const packagePath = join(packageRoot, 'usage.md');
+  const usagePath = existsSync(perItemPath)
+    ? perItemPath
+    : existsSync(packagePath)
+      ? packagePath
+      : null;
+
+  if (!usagePath) {
     return placeholder(itemName);
   }
 

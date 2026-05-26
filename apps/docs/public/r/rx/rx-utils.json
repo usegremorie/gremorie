@@ -1,16 +1,15 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "rx-core",
+  "name": "rx-utils",
   "type": "registry:block",
-  "framework": "react",
-  "title": "Core (React)",
-  "description": "React cross-category utilities - cn() helper for class name merging with Tailwind conflict resolution.",
+  "framework": "rx",
+  "title": "Utils (React)",
+  "description": "Shared utilities for the React edition - cn() helper that merges Tailwind class names with conflict resolution (clsx + tailwind-merge).",
   "categories": [
     "core",
-    "primitives"
+    "utils"
   ],
   "dependencies": [
-    "react",
     "clsx",
     "tailwind-merge"
   ],
@@ -21,13 +20,7 @@
       "path": "src/lib/utils.ts",
       "content": "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]): string {\n  return twMerge(clsx(inputs));\n}\n",
       "type": "registry:lib",
-      "target": "src/components/gremorie/core/lib/utils.ts"
-    },
-    {
-      "path": "src/index.ts",
-      "content": "export { cn } from './lib/utils';\n",
-      "type": "registry:lib",
-      "target": "src/components/gremorie/core/index.ts"
+      "target": "src/components/gremorie/utils/utils.ts"
     }
   ],
   "cssVars": {},

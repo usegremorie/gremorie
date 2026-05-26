@@ -5,7 +5,7 @@ import { createElement } from "react";
 import { docs } from "@/.source/server";
 
 export const source = loader({
-  baseUrl: "/docs",
+  baseUrl: "/",
   source: docs.toFumadocsSource(),
   icon(icon) {
     if (!icon) return undefined;

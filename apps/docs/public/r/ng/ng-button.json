@@ -1,0 +1,82 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-button",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Button (Angular)",
+  "description": "Button primitive for the Angular edition - 6 variants x 4 sizes, mirrors the shadcn/ui Button surface.",
+  "categories": [
+    "core",
+    "primitives",
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "class-variance-authority"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/button.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  output,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cva, type VariantProps } from 'class-variance-authority';\n\n/**\n * The Button primitive — used across Gremorie NG components and freely composable\n * by consumers. Mirrors the shadcn/ui Button surface (6 variants × 4 sizes)\n * so muscle memory from shadcn-react translates 1:1.\n */\nconst buttonVariants = cva(\n  'inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-4',\n  {\n    variants: {\n      variant: {\n        default: 'bg-primary text-primary-foreground hover:bg-primary/90',\n        destructive:\n          'bg-destructive text-destructive-foreground hover:bg-destructive/90',\n        outline:\n          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',\n        secondary:\n          'bg-secondary text-secondary-foreground hover:bg-secondary/80',\n        ghost:\n          'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',\n        link: 'text-primary underline-offset-4 hover:underline bg-transparent',\n      },\n      size: {\n        default: 'h-9 px-4 py-2',\n        sm: 'h-8 rounded-md px-3 text-xs',\n        lg: 'h-10 rounded-md px-6',\n        icon: 'size-9',\n      },\n    },\n    defaultVariants: {\n      variant: 'default',\n      size: 'default',\n    },\n  },\n);\n\nexport type ButtonVariant = NonNullable<\n  VariantProps<typeof buttonVariants>['variant']\n>;\nexport type ButtonSize = NonNullable<\n  VariantProps<typeof buttonVariants>['size']\n>;\n\n@Component({\n  selector: 'ai-button',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      [attr.type]=\"type()\"\n      [class]=\"buttonClass()\"\n      [attr.aria-label]=\"ariaLabel() || null\"\n      [attr.aria-pressed]=\"ariaPressed()\"\n      [attr.title]=\"title() || null\"\n      [disabled]=\"disabled()\"\n      (click)=\"handleClick($event)\"\n    >\n      <ng-content />\n    </button>\n  `,\n})\nexport class Button {\n  readonly variant = input<ButtonVariant>('default');\n  readonly size = input<ButtonSize>('default');\n  readonly type = input<'button' | 'submit' | 'reset'>('button');\n  readonly disabled = input<boolean>(false);\n  readonly pressed = input<boolean | null>(null);\n  readonly ariaLabel = input<string>('');\n  readonly title = input<string>('');\n\n  readonly pressedChange = output<MouseEvent>();\n\n  protected readonly ariaPressed = computed(() => {\n    const value = this.pressed();\n    return value === null ? null : value ? 'true' : 'false';\n  });\n\n  protected readonly buttonClass = computed(() =>\n    buttonVariants({ variant: this.variant(), size: this.size() }),\n  );\n\n  handleClick(event: MouseEvent): void {\n    this.pressedChange.emit(event);\n  }\n}\n\nexport { buttonVariants };\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/button/button.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Foundational utilities and the Button primitive. Install before any other Gremorie package.",
+    "whenNotToUse": "Standalone primitive usage outside an Angular app - this package depends on @angular/core.",
+    "bestPractices": [
+      "Import `cn` from @gremorie/ng-core to merge Tailwind classes; do not pull in clsx or tailwind-merge directly.",
+      "Use the Button primitive as-is. Variants and sizes mirror shadcn/ui so muscle memory carries over.",
+      "Apply the theme.css once at the root of the app (`@import '@gremorie/ng-core/theme.css';`)."
+    ],
+    "antipatterns": [
+      "Re-implementing a Button via raw `<button>` plus Tailwind classes - the primitive already covers variants, sizes, icons, disabled states.",
+      "Forking the cva calls in button.ts - extend through composition instead so future upstream updates flow in."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "variant",
+          "type": "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+          "required": false,
+          "default": "'default'"
+        },
+        {
+          "name": "size",
+          "type": "'default' | 'sm' | 'lg' | 'icon'",
+          "required": false,
+          "default": "'default'"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremorieClick",
+          "payload": "MouseEvent",
+          "description": "Emitted on click when the button is not disabled."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Default button",
+        "code": "<button gButton>Save</button>\n"
+      },
+      {
+        "title": "Destructive icon button",
+        "code": "<button gButton variant=\"destructive\" size=\"icon\">\n  <trash-icon />\n</button>\n"
+      }
+    ]
+  }
+}
