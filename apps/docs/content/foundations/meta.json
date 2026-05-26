@@ -7,8 +7,12 @@
     "about",
     "principles",
     "architecture",
+    "storybook-structure",
+    "documentation-standard",
+    "component-catalog",
     "accessibility",
     "layout-stability",
+    "corpus",
     "contributing"
   ]
 }

@@ -1,0 +1,277 @@
+---
+title: Storybook structure
+description: The canonical 8-section sidebar tree, 9 Primitives categories, AI split (Chatbot + Code), and Chart Token groups. The same tree applies to both NG and RX editions.
+---
+
+How Gremorie organises components across its two editions (NG and RX). The
+same tree applies in both — only the underlying implementation differs. This
+mirrors the Kalvner DS standard captured in the vault knowledge base and the
+Vercel AI Elements layout.
+
+## The 8-section tree
+
+Every Gremorie Storybook (NG, RX, and the public docs site) lays out the
+sidebar in this exact order:
+
+```
+Welcome -> Showcase -> Foundations -> Tokens -> Primitives -> Patterns -> Layouts -> Blocks
+```
+
+Each section that lists 3+ items begins with an **Overview** page (a GPS
+before the list).
+
+```text
+Storybook
+|
++-- Welcome
+|
++-- Showcase                              top-level, single page
+|
++-- Foundations
+|   +-- About
+|   +-- Principles
+|   +-- Architecture
+|   +-- Accessibility
+|   +-- Contributing
+|
++-- Tokens
+|   +-- Overview
+|   +-- Primitive       (Colors, Spacing, Radius, Shadow, Typography, Motion)
+|   +-- Semantic        (UI intents, per theme if multi-theme)
+|   +-- Chart           only when the product has dataviz
+|       +-- Sequential
+|       +-- Categorical
+|       +-- Divergent
+|       +-- Status
+|       +-- Comparison
+|
++-- Primitives                            9 functional categories
+|   +-- Overview
+|   +-- Containers
+|   +-- Typography
+|   +-- Forms
+|   +-- Display
+|   +-- Data
+|   +-- Feedback
+|   +-- Navigation
+|   +-- Overlays
+|   +-- AI              2 sub-categories from Vercel AI Elements
+|       +-- Chatbot     (18 conversational components)
+|       +-- Code        (15 dev-agent / code-tool components)
+|
++-- Patterns                              flat up to ~12, AI grouped at end
++-- Layouts
++-- Blocks
+```
+
+## The 9 Primitives categories
+
+Validated against Material UI, Atlassian ADS, Polaris, shadcn/ui, Mantine,
+Chakra, and Radix Primitives. Components are organised by **what they do**,
+not what they look like.
+
+| Category | Function | Examples |
+|---|---|---|
+| **Containers** | Structure and spacing helpers | Stack, Flex, Grid, Box, Spacer, ScrollArea, AspectRatio |
+| **Typography** | Text and textual elements | Heading, Text, Code (static), KBD, Blockquote, Link, List |
+| **Forms** | User input collection | Button, Input, Select, Checkbox, Radio, Switch, Slider, Textarea, Combobox, DatePicker, FileUpload, Field |
+| **Display** | Non-textual static presentation | Avatar, Badge, Card, Item, Image, Icon, Separator, Accordion |
+| **Data** | Structured data visualisation | Table, Chart, Stat, Sparkline, KPI, Tree, DescriptionList |
+| **Feedback** | Temporary states and indicators | Alert, Banner, Progress, Spinner, Skeleton, Toast, Empty |
+| **Navigation** | Section-to-section navigation | Tabs, Breadcrumb, Pagination, NavigationMenu, Sidebar, Steps |
+| **Overlays** | Floating layers | Dialog, Sheet, Drawer, AlertDialog, Popover, Tooltip, DropdownMenu, Command |
+| **AI** | AI-native components | See sub-categories below |
+
+`AI` is one of the nine categories, not a special case. The Angular edition
+opens with the AI category (PromptInput, Conversation, Message); broader
+categories ship as the registry grows.
+
+## The AI category: Chatbot + Code
+
+Two sub-categories that mirror [Vercel AI Elements](https://elements.ai-sdk.dev/).
+
+### Primitives / AI / Chatbot (18)
+
+Conversational UI components:
+
+Attachments, ChainOfThought, Checkpoint, Confirmation, Context, Conversation,
+InlineCitation, Message, ModelSelector, Plan, PromptInput, Queue, Reasoning,
+Shimmer, Sources, Suggestion, Task, Tool.
+
+### Primitives / AI / Code (15)
+
+Dev-agent and code-tool components:
+
+Agent, Artifact, CodeBlock (streaming), Commit, EnvironmentVariables,
+FileTree, JsxPreview, PackageInfo, Sandbox, SchemaDisplay, Snippet,
+StackTrace, Terminal, TestResults, WebPreview.
+
+### Why the split
+
+1. **Mirrors AI Elements.** Tracking and updates align with the upstream
+   reference.
+2. **Distinct use cases.** Chatbot is conversational UI; Code is dev tooling.
+   Search behaviour differs.
+3. **Focused audit surface.** 33 components flat under `Primitives/AI/` is
+   too dense; two lists are navigable.
+4. **Justified asymmetry.** Other categories (Forms, Display) have no
+   pre-existing canonical split. AI does, so we honour it.
+
+### Disambiguating edge cases
+
+| Component | Lives in | Why |
+|---|---|---|
+| Skeleton | Feedback | Loading state, pairs with Spinner |
+| Toast | Feedback | Primary function is feedback |
+| Sidebar | Navigation | Navigating container |
+| CodeBlock (static) | Typography | No streaming, no tool call |
+| CodeBlock (streaming) | AI / Code | Generated during AI response |
+| Snippet (AI Elements) | AI / Code | Agent-generated, distinct from Typography Code |
+| Shimmer | AI / Chatbot | AI-streaming specific, not the generic Feedback Skeleton |
+| Link | Typography | Text that navigates |
+| Banner | Feedback | In-flow persistent message |
+
+## Tokens: three coexisting types
+
+The Tokens layer has three types in parallel, each with a distinct purpose.
+
+### Primitive Tokens — `Tokens/Primitive/`
+
+Raw colours (50-950) and non-colour scales (Spacing, Radius, Shadow,
+Typography, Motion). No usage semantics — these are raw values.
+
+### Semantic Tokens — `Tokens/Semantic/`
+
+UI intents: `--primary`, `--foreground`, `--background`, `--accent`. Each
+semantic token references a primitive. Supports multi-theme (one section per
+theme).
+
+### Chart Color Schemes — `Tokens/Chart/`
+
+**Only when the product has dataviz** (charts, dashboards, analytics). Full
+palettes for encoding data, in 5 canonical groups:
+
+| Group | Data type | Foundation |
+|---|---|---|
+| **Sequential** | Ordered, low to high | ColorBrewer (Cynthia Brewer, Penn State) |
+| **Categorical** | Nominal, no order | ColorBrewer |
+| **Divergent** | Significant centre point | ColorBrewer |
+| **Status** | State / severity | AWS Cloudscape, IBM Carbon |
+| **Comparison** | 2 discrete groups plus neutral baseline | Kalvner DS Standard (A/B test, actual vs target) |
+
+The first three are academic consensus since the 1990s (ColorBrewer). Status
+and Comparison are product-DS standard. **Cyclical** and **Highlight** are
+optional; add only when there's a real use case.
+
+#### CSS variable naming
+
+| Group | Prefix | Example |
+|---|---|---|
+| Sequential default (shadcn-compatible) | `--chart-1..5` | `--chart-1`, ..., `--chart-5` |
+| Sequential additional | `--chart-<color>-1..5` | `--chart-green-1` |
+| Categorical | `--chart-cat-1..N` | `--chart-cat-1` |
+| Divergent | `--chart-div-1..N` | `--chart-div-1` (with centre) |
+| Status | `--chart-status-<intent>` | `--chart-status-success`, `--chart-status-error` |
+| Comparison | `--chart-cmp-a`, `--chart-cmp-b`, `--chart-cmp-baseline` | pair plus neutral baseline |
+
+### Why Chart is a peer of Primitive and Semantic
+
+Chart palettes are not UI intents — they're encoding palettes. Mixing them
+with Semantic Colors (primary, foreground) pollutes both. Separating keeps
+the intent obvious: UI styling looks at `Tokens/Semantic/Colors`, charts
+look at `Tokens/Chart/`.
+
+## Overview pages — the rule
+
+Every section listing **3 or more items** gets an `Overview` page. Two types
+of Overview exist with different content shapes.
+
+### Level Overview
+
+`Primitives/Overview`, `Patterns/Overview`, `Tokens/Chart/Overview`,
+`Primitives/AI/Overview`. Narrative for the layer:
+
+1. What this layer is — definition in one sentence + example
+2. When to create / use — admission rule
+3. How it relates to the other layers — dependency flow
+
+### Category Overview
+
+`Primitives/Forms/Overview`, `Primitives/AI/Chatbot/Overview`,
+`Primitives/AI/Code/Overview`. Practical, transversal patterns:
+
+1. What defines this category
+2. Shared patterns (props, ARIA, behaviours)
+3. List of components with short descriptions
+4. When to use X vs Y inside the category
+5. Anti-patterns specific to the type
+
+## Showcase
+
+A **single** page that demonstrates components applied in real context. Lives
+at the top level next to Welcome. Possible content shapes:
+
+- **Vignettes** (shadcn-style home) — multiple compact mini-apps in cards
+- **Dense dashboard** (tweakcn-style) — one rich application
+- **Combination** — dashboard at top, vignettes below
+
+Showcase uses **only** documented components and semantic tokens. With
+multi-theme support, Showcase must respond to the theme selector.
+
+## storySort.order for AI sub-categories
+
+To preserve Chatbot then Code inside AI, the `storySort` in `preview.ts`:
+
+```ts
+storySort: {
+  order: [
+    'Welcome',
+    'Showcase',
+    'Foundations',
+    ['About', 'Principles', 'Architecture', 'Accessibility', 'Contributing'],
+    'Tokens',
+    ['Overview', 'Primitive', 'Semantic', 'Chart'],
+    'Primitives',
+    [
+      'Overview',
+      'Containers',
+      'Typography',
+      'Forms',
+      'Display',
+      'Data',
+      'Feedback',
+      'Navigation',
+      'Overlays',
+      'AI',
+      ['Overview', 'Chatbot', 'Code'],
+    ],
+    'Patterns',
+    ['Overview', '*', 'AI'],
+    'Layouts',
+    ['Overview', '*'],
+    'Blocks',
+    ['Overview', '*'],
+  ],
+}
+```
+
+## Counter-cases and limits
+
+- **Product Storybook, not DS.** Doesn't need this hierarchy.
+- **Very small DS (under 15 primitives).** Categorisation is overhead; stay
+  flat, migrate when it grows.
+- **Category with fewer than 3 components.** No category Overview.
+- **Blocks not yet authored.** Omit the section until the first block lands.
+- **Empty AI category.** Don't create an empty Overview.
+- **AI but only Chatbot or only Code.** Use only the present sub-category.
+- **Chart Tokens without dataviz.** Don't add the layer.
+- **Showcase needs curation.** A stale Showcase misleads.
+- **An Overview with no content is worse than no Overview.**
+
+## Sources
+
+- [Vercel AI Elements](https://elements.ai-sdk.dev/) — canonical AI catalogue
+- [ColorBrewer 2.0](https://colorbrewer2.org/) — sequential / diverging / qualitative
+- [AWS Cloudscape Data Vis Colors](https://cloudscape.design/foundation/visual-foundation/data-vis-colors/)
+- [IBM Carbon Data Visualization](https://carbondesignsystem.com/data-visualization/color-palettes/)
+- [Atlassian Design System](https://atlassian.design/), [Material UI](https://mui.com/material-ui/), [Polaris](https://polaris.shopify.com/), [Mantine](https://mantine.dev/), [shadcn/ui](https://ui.shadcn.com/)

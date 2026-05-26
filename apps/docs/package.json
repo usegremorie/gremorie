@@ -15,16 +15,19 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "@xyflow/react": "^12.10.2",
     "ai": "^6.0.177",
     "fumadocs-core": "^16.0.0",
     "fumadocs-mdx": "^14.0.0",
     "fumadocs-ui": "^16.0.0",
     "lucide-react": "^0.468.0",
+    "mcp-handler": "^1.1.0",
     "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "3.8.0"
+    "recharts": "3.8.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@gremorie/eslint-config": "*",
