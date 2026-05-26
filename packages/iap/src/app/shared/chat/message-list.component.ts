@@ -8,7 +8,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { ScrollAreaImports } from '@shadng/scroll-area';
+import { ScrollAreaImports } from '@gremorie/ng-scroll-area';
 import { IapChatService } from '../../services/iap-chat.service';
 import { ChatMessage } from './chat-message.component';
 import { ThinkingIndicator } from './thinking-indicator.component';
@@ -20,7 +20,7 @@ import { ThinkingIndicator } from './thinking-indicator.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ChatMessage, ThinkingIndicator, ScrollAreaImports],
   template: `
-    <ng-scrollbar shadng appearance="compact" visibility="hover" class="flex-1">
+    <ng-scrollbar gremorie appearance="compact" visibility="hover" class="flex-1">
       <div class="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6">
         @for (message of chatService.messages(); track message.id) {
           <iap-chat-message [message]="message" />

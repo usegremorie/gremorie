@@ -6,7 +6,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@shadng/prompt-input';
+} from '@gremorie/ng-prompt-input';
 
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -58,7 +58,7 @@ import { DocsPreview } from '../../../shared/preview.component';
               <li><a routerLink="/docs/components/prompt-input-submit">PromptInputSubmit</a> — 4-state submit button</li>
               <li><a routerLink="/docs/components/prompt-input-toolbar">PromptInputToolbar</a> — flex wrapper for the bottom row</li>
               <li><a routerLink="/docs/components/prompt-input-tools">PromptInputTools</a> — left-side group of actions</li>
-              <li><a routerLink="/docs/primitives/button">Button</a> — toolbar action button (from <code>&#64;shadng/core</code>)</li>
+              <li><a routerLink="/docs/primitives/button">Button</a> — toolbar action button (from <code>&#64;Gremorie NG/core</code>)</li>
               <li><a routerLink="/docs/components/prompt-input-attachments">PromptInputAttachments</a> — attachment list container</li>
               <li><a routerLink="/docs/components/prompt-input-attachment">PromptInputAttachment</a> — individual attachment card</li>
               <li><a routerLink="/docs/components/prompt-input-action-menu">PromptInputActionMenu</a> — dropdown for less-frequent actions</li>
@@ -68,7 +68,7 @@ import { DocsPreview } from '../../../shared/preview.component';
         </docs-section>
 
         <docs-section title="Installation" anchor="install">
-          <docs-code-block lang="bash" code="npm install @shadng/prompt-input" />
+          <docs-code-block lang="bash" code="npm install @gremorie/ng-prompt-input" />
         </docs-section>
 
         <docs-section title="Basic usage" anchor="usage">
@@ -210,7 +210,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@shadng/prompt-input';
+} from '@gremorie/ng-prompt-input';
 
 @Component({
   selector: 'app-chat',

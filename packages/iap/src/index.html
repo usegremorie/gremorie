@@ -9,9 +9,9 @@
       // Aplicar tema salvo antes de renderizar (evita flash)
       (function () {
         try {
-          var dark = localStorage.getItem('shadng-theme');
+          var dark = localStorage.getItem('gremorie-theme');
           if (dark === 'dark') document.documentElement.classList.add('dark');
-          var preset = localStorage.getItem('shadng-color-preset');
+          var preset = localStorage.getItem('gremorie-color-preset');
           if (preset && preset !== 'default') document.documentElement.dataset['colorTheme'] = preset;
         } catch (_) {}
       })();

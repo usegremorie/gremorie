@@ -90,7 +90,7 @@ const NAV: NavSection[] = [
               class="rounded-md px-2.5 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             >Docs</a>
             <a
-              href="https://github.com/kalvner/shadng"
+              href="https://github.com/usegremorie/gremorie"
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"

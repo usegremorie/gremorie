@@ -1,27 +1,27 @@
 {
-  "name": "shadng",
+  "name": "gremorie",
   "version": "0.0.0",
   "license": "MIT",
-  "description": "Angular AI-native component library — shadcn for Angular, focused on AI.",
+  "description": "Gremorie: AI-native design system. Distributed via registry + MCP for AI-driven generation. Angular edition first; React coming.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kalvner/shadng.git"
+    "url": "https://github.com/usegremorie/gremorie.git"
   },
   "scripts": {
     "build": "nx run-many -t build",
-    "build:core": "nx build shadng-core",
-    "build:lib": "nx build shadng-prompt-input",
+    "build:core": "nx build ng-core",
+    "build:lib": "nx build ng-prompt-input",
     "build:docs": "nx build docs",
     "build:playground": "nx build playground",
     "lint": "nx run-many -t lint",
     "test": "nx run-many -t test",
     "serve:playground": "nx serve playground",
     "serve:docs": "nx serve docs",
-    "storybook": "nx storybook shadng-prompt-input",
-    "build-storybook": "nx build-storybook shadng-prompt-input",
+    "storybook": "nx storybook ng-prompt-input",
+    "build-storybook": "nx build-storybook ng-prompt-input",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "changeset:publish": "nx run-many -t build --projects=shadng-core,shadng-prompt-input && changeset publish",
+    "changeset:publish": "nx run-many -t build --projects=ng-core,ng-prompt-input && changeset publish",
     "release": "npm run changeset:publish"
   },
   "private": true,

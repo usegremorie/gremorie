@@ -14,7 +14,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
       <docs-page
         eyebrow="Primitive · Tokens"
         title="Theme tokens"
-        lede="ShadNG uses a two-tier token system — primitives → semantics — fully shadcn-compatible. Rebrand the whole library by editing the primitive palette, or remap dark mode by overriding semantics inside .dark."
+        lede="Gremorie NG uses a two-tier token system — primitives → semantics — fully shadcn-compatible. Rebrand the whole library by editing the primitive palette, or remap dark mode by overriding semantics inside .dark."
       >
         <docs-section title="Why two tiers" anchor="why">
           <docs-prose>
@@ -29,7 +29,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
               Names match shadcn 1:1, so existing shadcn themes work as-is.
             </p>
             <p>
-              ShadNG does <strong>not</strong> ship component-specific tokens. If a future AI
+              Gremorie NG does <strong>not</strong> ship component-specific tokens. If a future AI
               component needs a surface that doesn't fit the existing semantics, the right move
               is to add a new <em>semantic</em> token shared by every consumer — not a
               component-scoped one.
@@ -85,7 +85,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
 })
 export default class ThemePrimitivePage {
   protected readonly install = `@import 'tailwindcss';
-@import '@shadng/core/theme.css';`;
+@import '@gremorie/ng-core/theme.css';`;
 
   protected readonly brandExample = `:root {
   --primary: oklch(0.5 0.2 250);          /* your blue */

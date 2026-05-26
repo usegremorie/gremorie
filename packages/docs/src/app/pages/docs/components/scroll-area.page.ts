@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { NgScrollbar, ScrollArea } from '@shadng/scroll-area';
+import { NgScrollbar, ScrollArea } from '@gremorie/ng-scroll-area';
 
 import { ApiRow, DocsApiTable } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -27,7 +27,7 @@ import { DocsPreview } from '../../../shared/preview.component';
       <docs-page
         eyebrow="Component · Layout"
         title="Scroll Area"
-        lede="Cross-browser, overlay scrollbar styled with ShadNG design tokens. A thin directive over ngx-scrollbar — the same primitive Spartan uses — so you get smooth, consistent scrollbars without fighting native browser styles."
+        lede="Cross-browser, overlay scrollbar styled with Gremorie NG design tokens. A thin directive over ngx-scrollbar — the same primitive Spartan uses — so you get smooth, consistent scrollbars without fighting native browser styles."
       >
         <docs-section title="Installation" anchor="install">
           <docs-prose>
@@ -36,17 +36,17 @@ import { DocsPreview } from '../../../shared/preview.component';
             so install both:
           </docs-prose>
           <docs-code-block lang="bash" [code]="install" />
-          <docs-prose>Or via the ShadNG CLI:</docs-prose>
+          <docs-prose>Or via the Gremorie NG CLI:</docs-prose>
           <docs-code-block lang="bash" [code]="installCli" />
         </docs-section>
 
         <docs-section
           title="Usage"
           anchor="usage"
-          lede="Add the [shadng] attribute to an <ng-scrollbar> and give it a constrained height."
+          lede="Add the [gremorie] attribute to an <ng-scrollbar> and give it a constrained height."
         >
           <docs-preview [code]="usage" label="vertical scroll">
-            <ng-scrollbar shadng class="h-56 w-full rounded-md border border-border">
+            <ng-scrollbar gremorie class="h-56 w-full rounded-md border border-border">
               <div class="flex flex-col gap-2 p-4">
                 @for (item of items; track item) {
                   <div class="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground">
@@ -72,7 +72,7 @@ import { DocsPreview } from '../../../shared/preview.component';
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
               <li><code>ScrollArea</code> is an attribute directive — it does not render its own element, it styles <code>&lt;ng-scrollbar&gt;</code>.</li>
-              <li>Import <code>ScrollAreaImports</code> to pull in both <code>NgScrollbarModule</code> and the <code>[shadng]</code> directive at once.</li>
+              <li>Import <code>ScrollAreaImports</code> to pull in both <code>NgScrollbarModule</code> and the <code>[gremorie]</code> directive at once.</li>
               <li>The host gets <code>display: block</code> and <code>data-slot="scroll-area"</code> for styling/testing hooks.</li>
               <li>ngx-scrollbar handles the heavy lifting (overlay scrollbar, smooth scroll, RTL, virtual scroll integration).</li>
             </ul>
@@ -85,12 +85,12 @@ import { DocsPreview } from '../../../shared/preview.component';
 export default class ScrollAreaPage {
   protected readonly items = Array.from({ length: 24 }, (_, i) => 'Item ' + (i + 1));
 
-  protected readonly install = 'npm install ngx-scrollbar @shadng/scroll-area';
+  protected readonly install = 'npm install ngx-scrollbar @gremorie/ng-scroll-area';
 
-  protected readonly installCli = 'npx shadng add scroll-area';
+  protected readonly installCli = 'npx gremorie add scroll-area';
 
   protected readonly usage = [
-    '<ng-scrollbar shadng class="h-56 w-full rounded-md border border-border">',
+    '<ng-scrollbar gremorie class="h-56 w-full rounded-md border border-border">',
     '  <div class="flex flex-col gap-2 p-4">',
     '    @for (item of items; track item) {',
     '      <div class="...">{{ item }}</div>',
@@ -101,7 +101,7 @@ export default class ScrollAreaPage {
 
   protected readonly component = [
     "import { Component } from '@angular/core';",
-    "import { ScrollAreaImports } from '@shadng/scroll-area';",
+    "import { ScrollAreaImports } from '@gremorie/ng-scroll-area';",
     '',
     '@Component({',
     "  selector: 'app-example',",
@@ -114,7 +114,7 @@ export default class ScrollAreaPage {
   protected readonly customize = [
     '<!-- Thicker bar, accent thumb, for this instance only -->',
     '<ng-scrollbar',
-    '  shadng',
+    '  Gremorie NG',
     '  class="h-72"',
     '  [style.--scrollbar-thickness]="10"',
     "  [style.--scrollbar-thumb-color]=\"'var(--primary)'\"",

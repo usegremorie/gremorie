@@ -1,0 +1,17 @@
+{
+  "name": "@gremorie/ng-scroll-area",
+  "version": "0.0.1",
+  "description": "ScrollArea for AI interfaces — design-system styled wrapper over ngx-scrollbar, part of ShadNG.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/ng-scroll-area"
+  },
+  "keywords": ["angular", "ai", "ui", "shadcn", "scroll-area", "scrollbar"],
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "ngx-scrollbar": "^19.0.0"
+  },
+  "sideEffects": false
+}

@@ -13,12 +13,12 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
       <docs-page
         eyebrow="Integration"
         title="Plain signals — no AI library"
-        lede="End-to-end streaming chat using only Angular signals, fetch, and ReadableStream. No Hashbrown, no Vercel AI SDK, no NgRx. Use this as a reference when wiring ShadNG to a custom backend."
+        lede="End-to-end streaming chat using only Angular signals, fetch, and ReadableStream. No Hashbrown, no Vercel AI SDK, no NgRx. Use this as a reference when wiring Gremorie NG to a custom backend."
       >
         <docs-section title="What this shows" anchor="overview">
           <docs-prose>
             <p>
-              ShadNG components consume <strong>signal-driven inputs</strong> for state, value,
+              Gremorie NG components consume <strong>signal-driven inputs</strong> for state, value,
               and attachments. The library doesn't import any AI framework — you bring your
               own state. This example uses a backend that returns server-sent events (SSE),
               streamed chunk by chunk into a signal.
@@ -93,7 +93,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@shadng/prompt-input';
+} from '@gremorie/ng-prompt-input';
 
 @Component({
   selector: 'app-chat',

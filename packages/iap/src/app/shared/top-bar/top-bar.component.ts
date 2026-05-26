@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { COLOR_PRESETS, type ColorPreset, ThemeService } from '../../services/theme.service';
-import { cn } from '@shadng/core';
+import { cn } from '@gremorie/ng-core';
 
 @Component({
   selector: 'iap-top-bar',

@@ -7,7 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { cn } from '@shadng/core';
+import { cn } from '@gremorie/ng-core';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import type { IapMessage } from '../../services/iap-chat.service';

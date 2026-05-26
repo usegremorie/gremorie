@@ -9,7 +9,7 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import { cn } from '@shadng/core';
+import { cn } from '@gremorie/ng-core';
 import type { IapMode } from '../../services/iap-chat.service';
 
 interface ModeOption {
@@ -84,7 +84,7 @@ const MODES: readonly ModeOption[] = [
       <div
         role="listbox"
         aria-label="Modos"
-        class="absolute bottom-full left-0 z-50 mb-2 min-w-[12rem] origin-bottom-left rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg motion-safe:animate-[shadng-pop-in_120ms_ease-out]"
+        class="absolute bottom-full left-0 z-50 mb-2 min-w-[12rem] origin-bottom-left rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         @for (option of modes; track option.id) {
           <button

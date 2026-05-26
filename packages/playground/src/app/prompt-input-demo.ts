@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 
-import { Button } from '@shadng/core';
+import { Button } from '@gremorie/ng-core';
 import {
   AttachmentInfo,
   AttachmentItem,
@@ -14,7 +14,7 @@ import {
   AttachmentPreview,
   AttachmentRemove,
   type AttachmentData,
-} from '@shadng/attachments';
+} from '@gremorie/ng-attachments';
 import {
   PromptInput,
   PromptInputActionMenu,
@@ -27,7 +27,7 @@ import {
   PromptInputTextarea,
   PromptInputToolbar,
   PromptInputTools,
-} from '@shadng/prompt-input';
+} from '@gremorie/ng-prompt-input';
 
 const MODELS: readonly PromptInputModelOption[] = [
   {

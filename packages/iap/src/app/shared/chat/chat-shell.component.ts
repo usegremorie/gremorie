@@ -13,7 +13,7 @@ import {
   PromptInputTextarea,
   PromptInputToolbar,
   PromptInputSubmitEvent,
-} from '@shadng/prompt-input';
+} from '@gremorie/ng-prompt-input';
 import { IapChatService } from '../../services/iap-chat.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { MessageList } from './message-list.component';

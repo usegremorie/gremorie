@@ -6,7 +6,7 @@ import {
   output,
   ViewEncapsulation,
 } from '@angular/core';
-import { cn } from '@shadng/core';
+import { cn } from '@gremorie/ng-core';
 import type { Conversation } from '../../services/supabase.service';
 
 @Component({

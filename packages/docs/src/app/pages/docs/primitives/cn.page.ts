@@ -24,7 +24,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
               <li>You want to conditionally include classes based on state (<code>disabled</code>, <code>active</code>, etc.) — <code>clsx</code> solves this.</li>
               <li>You want consumers to override your base classes — <code>tailwind-merge</code> resolves <code>p-2 p-4</code> to <code>p-4</code>, instead of letting both win randomly.</li>
             </ul>
-            <p><strong>cn()</strong> combines both in one call. Every ShadNG component uses it internally.</p>
+            <p><strong>cn()</strong> combines both in one call. Every Gremorie NG component uses it internally.</p>
           </docs-prose>
         </docs-section>
 
@@ -61,7 +61,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
   `,
 })
 export default class CnPrimitivePage {
-  protected readonly importExample = `import { cn } from '@shadng/core';`;
+  protected readonly importExample = `import { cn } from '@gremorie/ng-core';`;
 
   protected readonly usage = `// Conditional classes
 const className = cn(

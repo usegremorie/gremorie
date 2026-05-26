@@ -8,7 +8,7 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import { cn } from '@shadng/core';
+import { cn } from '@gremorie/ng-core';
 import { IapChatService } from '../../services/iap-chat.service';
 import {
   SupabaseService,
@@ -155,7 +155,7 @@ export class ContextSelect {
 
   protected readonly dropdownClass = computed(() =>
     cn(
-      'absolute left-0 z-50 w-[28rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg motion-safe:animate-[shadng-pop-in_120ms_ease-out]',
+      'absolute left-0 z-50 w-[28rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg motion-safe:animate-[gremorie-pop-in_120ms_ease-out]',
       this.openUp()
         ? 'bottom-full mb-2 origin-bottom-left'
         : 'top-full mt-2 origin-top-left',

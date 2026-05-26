@@ -1,10 +1,10 @@
 @import 'tailwindcss';
-@import '../../shadng-core/styles/theme.css';
+@import '../../ng-core/styles/theme.css';
 
-@source '../../shadng-core/src/**/*.{ts,html}';
-@source '../../shadng-attachments/src/**/*.{ts,html}';
-@source '../../shadng-prompt-input/src/**/*.{ts,html}';
-@source '../../shadng-charts/src/**/*.{ts,html}';
+@source '../../ng-core/src/**/*.{ts,html}';
+@source '../../ng-attachments/src/**/*.{ts,html}';
+@source '../../ng-prompt-input/src/**/*.{ts,html}';
+@source '../../ng-charts/src/**/*.{ts,html}';
 
 html,
 body {

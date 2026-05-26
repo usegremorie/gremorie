@@ -1,0 +1,181 @@
+/*
+ * Gremorie NG — Two-tier token system (shadcn-compatible)
+ *
+ * Layer 1 (Primitives): raw palette, base radii
+ * Layer 2 (Semantics):  what components consume
+ *
+ * Components NEVER consume primitives directly.
+ * Editing primitives = rebrand global.
+ * Editing semantics inside .dark = remap dark mode.
+ */
+
+@theme {
+  /* ─── 1. PRIMITIVES ───────────────────────────────── */
+  --color-gray-50: oklch(0.985 0 0);
+  --color-gray-100: oklch(0.97 0 0);
+  --color-gray-200: oklch(0.922 0 0);
+  --color-gray-300: oklch(0.87 0 0);
+  --color-gray-400: oklch(0.708 0 0);
+  --color-gray-500: oklch(0.556 0 0);
+  --color-gray-600: oklch(0.45 0 0);
+  --color-gray-700: oklch(0.35 0 0);
+  --color-gray-800: oklch(0.269 0 0);
+  --color-gray-900: oklch(0.205 0 0);
+  --color-gray-950: oklch(0.145 0 0);
+
+  --color-red-400: oklch(0.704 0.191 22.216);
+  --color-red-500: oklch(0.577 0.245 27.325);
+
+  /* Radii base */
+  --radius-base: 0.625rem;
+  --radius-sm: calc(var(--radius-base) * 0.6);
+  --radius-md: calc(var(--radius-base) * 0.8);
+  --radius-lg: var(--radius-base);
+  --radius-xl: calc(var(--radius-base) * 1.4);
+}
+
+:root {
+  /* ─── 2. SEMANTICS (shadcn-compatible) ─────────────── */
+  --background: var(--color-gray-50);
+  --foreground: var(--color-gray-950);
+
+  --card: var(--background);
+  --card-foreground: var(--foreground);
+
+  --popover: var(--background);
+  --popover-foreground: var(--foreground);
+
+  --primary: var(--color-gray-900);
+  --primary-foreground: var(--color-gray-50);
+
+  --secondary: var(--color-gray-100);
+  --secondary-foreground: var(--color-gray-900);
+
+  --muted: var(--color-gray-100);
+  --muted-foreground: var(--color-gray-500);
+
+  --accent: var(--color-gray-100);
+  --accent-foreground: var(--color-gray-900);
+
+  --destructive: var(--color-red-500);
+  --destructive-foreground: var(--color-gray-50);
+
+  --border: var(--color-gray-200);
+  --input: var(--color-gray-200);
+  --ring: var(--color-gray-400);
+
+  /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+}
+
+.dark {
+  /* Only remap semantics. Primitives stay intact. */
+  --background: var(--color-gray-950);
+  --foreground: var(--color-gray-50);
+
+  --card: var(--color-gray-900);
+  --card-foreground: var(--color-gray-50);
+
+  --popover: var(--color-gray-900);
+  --popover-foreground: var(--color-gray-50);
+
+  --primary: var(--color-gray-100);
+  --primary-foreground: var(--color-gray-900);
+
+  --secondary: var(--color-gray-800);
+  --secondary-foreground: var(--color-gray-50);
+
+  --muted: var(--color-gray-800);
+  --muted-foreground: var(--color-gray-400);
+
+  --accent: var(--color-gray-800);
+  --accent-foreground: var(--color-gray-50);
+
+  --destructive: var(--color-red-400);
+  --destructive-foreground: var(--color-gray-50);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--color-gray-500);
+
+  /* Chart series (dark) */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+}
+
+/*
+ * ─── Animations ───────────────────────────────────────
+ * Used by dropdowns (action-menu, model-select) and attachments.
+ * All applied via motion-safe: utilities — disabled under
+ * prefers-reduced-motion (see block below).
+ */
+@keyframes gremorie-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes gremorie-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * Reduced motion — global override.
+ * Users who set prefers-reduced-motion get drastically shortened durations
+ * for animations, transitions, and scroll. Essential indicators (aria-busy,
+ * spinners) still update visually but without the spin animation cost.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Tailwind v4 utility wiring.
+ * Exposes the semantics above as Tailwind utilities so you can write
+ * `bg-background`, `text-foreground`, `border-input`, etc.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}

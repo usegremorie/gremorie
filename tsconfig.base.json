@@ -16,13 +16,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["shadng"],
+    "customConditions": ["gremorie"],
     "paths": {
-      "@shadng/core": ["./packages/shadng-core/src/index.ts"],
-      "@shadng/attachments": ["./packages/shadng-attachments/src/index.ts"],
-      "@shadng/prompt-input": ["./packages/shadng-prompt-input/src/index.ts"],
-      "@shadng/scroll-area": ["./packages/shadng-scroll-area/src/index.ts"],
-      "@shadng/charts": ["./packages/shadng-charts/src/index.ts"]
+      "@gremorie/ng-core": ["./packages/ng-core/src/index.ts"],
+      "@gremorie/ng-attachments": ["./packages/ng-attachments/src/index.ts"],
+      "@gremorie/ng-prompt-input": ["./packages/ng-prompt-input/src/index.ts"],
+      "@gremorie/ng-scroll-area": ["./packages/ng-scroll-area/src/index.ts"],
+      "@gremorie/ng-charts": ["./packages/ng-charts/src/index.ts"]
     }
   }
 }

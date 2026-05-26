@@ -7,7 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BrnSeparatorImports } from '@spartan-ng/brain/separator';
-import { ScrollAreaImports } from '@shadng/scroll-area';
+import { ScrollAreaImports } from '@gremorie/ng-scroll-area';
 import { IapChatService } from '../../services/iap-chat.service';
 import { SupabaseService } from '../../services/supabase.service';
 import type { Conversation } from '../../services/supabase.service';
@@ -67,7 +67,7 @@ function isSameDay(a: Date, b: Date): boolean {
       <brn-separator decorative class="block h-px bg-border" />
 
       <!-- Conversation list -->
-      <ng-scrollbar shadng appearance="compact" visibility="hover" class="flex-1">
+      <ng-scrollbar gremorie appearance="compact" visibility="hover" class="flex-1">
         <nav class="flex flex-col gap-4 p-3" aria-label="Conversas">
           @if (supabaseService.authError(); as authErr) {
             <p class="text-xs text-destructive">Falha ao autenticar: {{ authErr }}</p>

@@ -1,0 +1,19 @@
+{
+  "name": "@gremorie/ng-prompt-input",
+  "version": "0.0.1",
+  "description": "PromptInput component family for AI interfaces — part of ShadNG.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/ng-prompt-input"
+  },
+  "keywords": ["angular", "ai", "ui", "shadcn", "prompt", "chat"],
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "@gremorie/ng-attachments": "^0.0.1",
+    "@gremorie/ng-core": "^0.0.1",
+    "class-variance-authority": "^0.7.1"
+  },
+  "sideEffects": false
+}

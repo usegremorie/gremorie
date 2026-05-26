@@ -33,8 +33,8 @@ export class ThemeService {
   init(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    const storedDark = window.localStorage.getItem('shadng-theme') as DarkMode | null;
-    const storedPreset = window.localStorage.getItem('shadng-color-preset') as ColorPreset | null;
+    const storedDark = window.localStorage.getItem('gremorie-theme') as DarkMode | null;
+    const storedPreset = window.localStorage.getItem('gremorie-color-preset') as ColorPreset | null;
 
     const darkMode: DarkMode =
       storedDark === 'dark' || storedDark === 'light'
@@ -59,14 +59,14 @@ export class ThemeService {
     const next: DarkMode = this.darkMode() === 'dark' ? 'light' : 'dark';
     this.applyDarkMode(next);
     if (isPlatformBrowser(this.platformId)) {
-      try { window.localStorage.setItem('shadng-theme', next); } catch { /* ignore */ }
+      try { window.localStorage.setItem('gremorie-theme', next); } catch { /* ignore */ }
     }
   }
 
   setColorPreset(preset: ColorPreset): void {
     this.applyColorPreset(preset);
     if (isPlatformBrowser(this.platformId)) {
-      try { window.localStorage.setItem('shadng-color-preset', preset); } catch { /* ignore */ }
+      try { window.localStorage.setItem('gremorie-color-preset', preset); } catch { /* ignore */ }
     }
   }
 
