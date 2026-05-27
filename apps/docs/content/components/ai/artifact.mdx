@@ -1,0 +1,78 @@
+---
+title: Artifact
+description: Generic artifact card for AI-generated objects (code, doc, chart, image preview). The chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.
+---
+
+`Artifact` is part of the **AI code family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives and ships with full Bridge parity.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-artifact
+```
+
+Pulls in the registry dependencies declared for `rx-artifact` (cross-primitive Gremorie components - see `registry.json`).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Artifact,
+  ArtifactHeader,
+  ArtifactTitle,
+  ArtifactDescription,
+  ArtifactActions,
+  ArtifactAction,
+  ArtifactClose,
+  ArtifactContent,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <Artifact>
+      <ArtifactHeader>
+        <ArtifactTitle>chart.png</ArtifactTitle>
+        <ArtifactActions>
+          <ArtifactClose />
+        </ArtifactActions>
+      </ArtifactHeader>
+      <ArtifactContent>
+        <img src={chartUrl} />
+      </ArtifactContent>
+    </Artifact>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j code batch (Bridge parity for the AI category).
+- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-artifact` without pulling unrelated AI components.

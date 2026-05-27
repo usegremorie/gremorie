@@ -18,3 +18,8 @@ export * from "./lib/sources";
 export * from "./lib/suggestion";
 export * from "./lib/task";
 export * from "./lib/tool";
+
+// Code family (Fase 5j - Batch 2)
+export * from "./lib/artifact";
+export * from "./lib/code-block";
+export * from "./lib/web-preview";

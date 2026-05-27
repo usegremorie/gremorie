@@ -1300,4 +1300,56 @@ export const ITEMS: ItemConfig[] = [
     dependencies: [],
     registryDependencies: ['rx-utils', 'rx-command', 'rx-dialog'],
   },
+
+  // ============================================================
+  // Fase 5j - Batch 2: Code family (3 primitives)
+  // ============================================================
+  {
+    name: 'rx-artifact',
+    framework: 'rx',
+    title: 'Artifact (React)',
+    description:
+      'Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.',
+    categories: ['ai', 'code'],
+    packageRoot: 'packages/rx-ai',
+    sourceFiles: ['src/lib/artifact/artifact.tsx'],
+    targetPrefix: 'src/components/gremorie/ai/artifact',
+    srcStrip: 'src/lib/artifact/',
+    dependencies: [],
+    registryDependencies: ['rx-utils', 'rx-button', 'rx-tooltip'],
+  },
+  {
+    name: 'rx-code-block',
+    framework: 'rx',
+    title: 'Code Block (React)',
+    description:
+      'Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; exposes CodeBlockCopyButton with copy/copied state. Pass code + language, optional showLineNumbers; ships dark + light themes by default.',
+    categories: ['ai', 'code'],
+    packageRoot: 'packages/rx-ai',
+    sourceFiles: ['src/lib/code-block/code-block.tsx'],
+    targetPrefix: 'src/components/gremorie/ai/code-block',
+    srcStrip: 'src/lib/code-block/',
+    dependencies: ['shiki'],
+    registryDependencies: ['rx-utils', 'rx-button'],
+  },
+  {
+    name: 'rx-web-preview',
+    framework: 'rx',
+    title: 'Web Preview (React)',
+    description:
+      'Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable Input, WebPreviewBody renders an iframe with the current URL, and WebPreviewConsole (Collapsible) shows console logs and errors below.',
+    categories: ['ai', 'code'],
+    packageRoot: 'packages/rx-ai',
+    sourceFiles: ['src/lib/web-preview/web-preview.tsx'],
+    targetPrefix: 'src/components/gremorie/ai/web-preview',
+    srcStrip: 'src/lib/web-preview/',
+    dependencies: [],
+    registryDependencies: [
+      'rx-utils',
+      'rx-button',
+      'rx-collapsible',
+      'rx-input',
+      'rx-tooltip',
+    ],
+  },
 ];

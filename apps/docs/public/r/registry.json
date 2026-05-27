@@ -1139,6 +1139,55 @@
         "rx-command",
         "rx-dialog"
       ]
+    },
+    {
+      "name": "rx-artifact",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Artifact (React)",
+      "description": "Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-code-block",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Code Block (React)",
+      "description": "Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; exposes CodeBlockCopyButton with copy/copied state. Pass code + language, optional showLineNumbers; ships dark + light themes by default.",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-web-preview",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Web Preview (React)",
+      "description": "Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable Input, WebPreviewBody renders an iframe with the current URL, and WebPreviewConsole (Collapsible) shows console logs and errors below.",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-collapsible",
+        "rx-input",
+        "rx-tooltip"
+      ]
     }
   ]
 }

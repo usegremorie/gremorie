@@ -20,6 +20,10 @@
     "queue",
     "suggestion",
     "shimmer",
-    "model-selector"
+    "model-selector",
+    "---Code---",
+    "artifact",
+    "code-block",
+    "web-preview"
   ]
 }

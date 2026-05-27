@@ -1,0 +1,64 @@
+---
+title: Code Block
+description: Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; ships dark + light themes; exposes a copy button with copy/copied state.
+---
+
+`Code Block` is part of the **AI code family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives and ships with full Bridge parity.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-code-block
+```
+
+Pulls in the registry dependencies declared for `rx-code-block` (cross-primitive Gremorie components - see `registry.json`).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  CodeBlock,
+  CodeBlockCopyButton,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <CodeBlock code={source} language="tsx" showLineNumbers>
+      <CodeBlockCopyButton />
+    </CodeBlock>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j code batch (Bridge parity for the AI category).
+- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-code-block` without pulling unrelated AI components.
