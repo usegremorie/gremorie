@@ -1,0 +1,113 @@
+---
+title: Context Menu
+description: Secondary action menu invoked via right-click.
+---
+
+`ContextMenu` is the right-click sibling of `DropdownMenu`. It anchors
+to a region rather than a trigger button - wrap the region in
+`<ContextMenuTrigger>`. Right-click is invisible to most users, so
+treat ContextMenu as a power-user accelerator: every option here
+should also be reachable through a button, DropdownMenu, or keyboard
+shortcut elsewhere.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular ContextMenu lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-context-menu
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@gremorie/rx-overlays";
+
+export function CanvasArea() {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className="grid h-64 place-items-center rounded border border-dashed">
+        Right-click here
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem>
+          Cut <ContextMenuShortcut>Cmd+X</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem>
+          Copy <ContextMenuShortcut>Cmd+C</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem>
+          Paste <ContextMenuShortcut>Cmd+V</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+ContextMenu
+  ContextMenuTrigger (wraps the region)
+  ContextMenuContent
+    ContextMenuLabel
+    ContextMenuItem [variant="destructive"]
+    ContextMenuCheckboxItem
+    ContextMenuRadioGroup
+      ContextMenuRadioItem
+    ContextMenuSeparator
+    ContextMenuSub
+      ContextMenuSubTrigger
+      ContextMenuSubContent
+    ContextMenuShortcut
+```
+
+## Best practices
+
+- **Never ship as the only path.** Right-click is invisible to most
+  users. Always provide a visible alternative.
+- **Mirror DropdownMenu API.** Same items, same variants, same sub-menu
+  shape - just a different trigger surface.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/context-menu/context-menu.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-context-menu.json`.

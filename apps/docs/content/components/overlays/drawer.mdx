@@ -1,0 +1,114 @@
+---
+title: Drawer
+description: Bottom-up sheet for mobile contexts - built on vaul.
+---
+
+`Drawer` slides up from the bottom (or any edge) with native gesture
+support: drag-to-dismiss, momentum, snap points. Best for mobile -
+confirmations, quick actions, simple forms. On `md` and up, prefer
+Dialog (focused decision) or Sheet (longer flow). A responsive pattern
+swaps Drawer below `md` for Dialog/Sheet above.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Drawer lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-drawer
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@gremorie/rx-overlays";
+
+export function NewItemDrawer() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button>Open</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>New item</DrawerTitle>
+          <DrawerDescription>
+            Pick a name and category for the new item.
+          </DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button>Save</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Drawer [direction="bottom" | "top" | "left" | "right"]
+  DrawerTrigger (asChild)
+  DrawerContent
+    DrawerHeader
+      DrawerTitle
+      DrawerDescription
+    {body}
+    DrawerFooter
+      DrawerClose (asChild)
+```
+
+## Best practices
+
+- **Default to bottom direction on mobile.** That is where the gesture
+  affordance lives. Use side directions sparingly.
+- **Pair with Dialog/Sheet for desktop.** Drawer on mobile, Dialog or
+  Sheet on `md+` - composes well with a media-query branch.
+- **Include the drag handle.** The `Content` includes one automatically
+  when direction is `bottom`.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/drawer/drawer.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-drawer.json`.

@@ -380,6 +380,58 @@
       ]
     },
     {
+      "name": "rx-alert-dialog",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Alert Dialog (React)",
+      "description": "Modal-blocking confirmation dialog built on Radix AlertDialog. Use for destructive confirmations and irreversible actions - the user must choose, no close-on-overlay or close-on-escape.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-context-menu",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Context Menu (React)",
+      "description": "Secondary action menu invoked via right-click, built on Radix ContextMenu. Power-user accelerator with the same shape as DropdownMenu (items, groups, separators, sub-menus, checkbox/radio variants).",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-drawer",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Drawer (React)",
+      "description": "Bottom-up sheet for mobile contexts, built on vaul. Slides up from the bottom by default with native gesture support (drag-to-dismiss, momentum). Best for mobile confirmations, quick actions, simple forms.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-sonner",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sonner (React)",
+      "description": "Toast notification root, wraps `sonner` with Gremorie tokens. Mount once at the app root - any descendant can fire `toast()` without an additional provider. For transient feedback only - for persistent in-flow messages use Alert; for critical confirmations use AlertDialog.",
+      "categories": [
+        "overlays",
+        "feedback"
+      ],
+      "registryDependencies": []
+    },
+    {
       "name": "rx-prompt-input",
       "type": "registry:block",
       "framework": "rx",

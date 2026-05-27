@@ -5,3 +5,7 @@ export * from "./lib/tooltip";
 export * from "./lib/dropdown-menu";
 export * from "./lib/hover-card";
 export * from "./lib/command";
+export * from "./lib/alert-dialog";
+export * from "./lib/context-menu";
+export * from "./lib/drawer";
+export * from "./lib/sonner";

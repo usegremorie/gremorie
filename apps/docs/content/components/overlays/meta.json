@@ -1,6 +1,6 @@
 {
   "title": "Overlays",
-  "description": "Overlay primitives - Dialog, Sheet, Popover, Tooltip, DropdownMenu, HoverCard, Command",
+  "description": "Overlay primitives - Dialog, Sheet, Popover, Tooltip, DropdownMenu, HoverCard, Command, AlertDialog, ContextMenu, Drawer, Sonner",
   "icon": "Layers",
   "pages": [
     "dialog",
@@ -9,6 +9,10 @@
     "tooltip",
     "dropdown-menu",
     "hover-card",
-    "command"
+    "command",
+    "alert-dialog",
+    "context-menu",
+    "drawer",
+    "sonner"
   ]
 }

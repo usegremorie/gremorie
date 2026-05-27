@@ -1,0 +1,111 @@
+---
+title: Sonner
+description: Toast notification root - mount once, fire toast() anywhere.
+---
+
+`Sonner` (re-exported as `Toaster`) wraps `sonner` by emil kowalski
+with Gremorie tokens. Mount the `<Toaster />` component once at the
+root of your app (typically in `app/layout.tsx` or the route root).
+Any descendant can then call `toast()` without an additional provider.
+
+Sonner is for **transient feedback**: "Saved", "Invite sent", "Failed -
+try again". For persistent in-flow messages use `Alert`. For critical
+errors that need acknowledgment, use `AlertDialog`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular toaster lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-sonner
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+// app/layout.tsx (mount once)
+import { Toaster } from "@gremorie/rx-overlays";
+
+export default function RootLayout({ children }) {
+  return (
+    <>
+      {children}
+      <Toaster />
+    </>
+  );
+}
+
+// anywhere
+import { Button } from "@gremorie/rx-forms";
+import { toast } from "@gremorie/rx-overlays";
+
+export function SaveButton() {
+  return (
+    <Button
+      onClick={() =>
+        toast.success("Saved", {
+          description: "Your changes are now live.",
+        })
+      }
+    >
+      Save
+    </Button>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## API
+
+```
+<Toaster theme?="light" | "dark" | "system" position?="..." />
+
+toast(message, options?)
+toast.success(message, options?)
+toast.error(message, options?)
+toast.warning(message, options?)
+toast.info(message, options?)
+toast.loading(message, options?)
+toast.promise(promise, { loading, success, error })
+toast.dismiss(id?)
+```
+
+## Best practices
+
+- **Mount once.** A second `<Toaster />` will render duplicate toasts.
+- **Theme follows `.dark` class by default.** Override with the `theme`
+  prop when mounting outside a themed context.
+- **Use the right variant.** `toast.success` for confirmations,
+  `toast.error` for failures, `toast.promise` for async flows.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/sonner/sonner.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-sonner.json`.

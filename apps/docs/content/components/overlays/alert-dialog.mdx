@@ -1,0 +1,118 @@
+---
+title: Alert Dialog
+description: Modal-blocking confirmation dialog - the user must choose.
+---
+
+`AlertDialog` is the modal-blocking sibling of `Dialog`. Where `Dialog`
+lets the user dismiss with a click outside or `Escape`, `AlertDialog`
+holds the user in place until they pick `AlertDialogAction` or
+`AlertDialogCancel`. Use it only for moments where doing nothing would
+be wrong - destructive confirmations, irreversible actions, account
+deletion.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular AlertDialog lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-alert-dialog
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@gremorie/rx-overlays";
+
+export function DeleteAccount() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">Delete account</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. Your account and all data
+            will be permanently removed.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction variant="destructive">
+            Delete account
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+AlertDialog
+  AlertDialogTrigger (asChild)
+  AlertDialogContent [size]
+    AlertDialogHeader
+      AlertDialogMedia
+      AlertDialogTitle
+      AlertDialogDescription
+    AlertDialogFooter
+      AlertDialogCancel [variant, size]
+      AlertDialogAction [variant, size]
+```
+
+## Best practices
+
+- **Use only when stakes are high.** AlertDialog interrupts the user.
+  For non-destructive confirmations, prefer Dialog.
+- **Pair Action and Cancel.** Both are required - never ship an
+  AlertDialog with only one choice.
+- **Use `variant="destructive"` on Action for irreversible moves.**
+  Cancel stays `outline` by default.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/alert-dialog/alert-dialog.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-alert-dialog.json`.

@@ -126,8 +126,10 @@
     "postcss": "^8.5.3",
     "prismjs": "^1.29.0",
     "rxjs": "~7.8.0",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
-    "tailwindcss": "^4.1.4"
+    "tailwindcss": "^4.1.4",
+    "vaul": "^1.1.2"
   },
   "nx": {
     "includedScripts": [],
