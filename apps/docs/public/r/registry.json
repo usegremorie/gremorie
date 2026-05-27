@@ -1188,6 +1188,99 @@
         "rx-input",
         "rx-tooltip"
       ]
+    },
+    {
+      "name": "rx-canvas",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Canvas (React)",
+      "description": "ReactFlow canvas surface for visual workflows / agent graphs. Pre-configured for pan-on-scroll, drag-selection, and deletable nodes via Backspace/Delete. Wraps @xyflow/react ReactFlow + Background.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-connection",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Connection (React)",
+      "description": "Animated bezier-curve connection line component for @xyflow/react. Renders a smoothly curved path with a circle terminator while the user is dragging a new edge. Pass as the connectionLineComponent prop on Canvas.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-controls",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Controls (React)",
+      "description": "Styled wrapper around @xyflow/react Controls (zoom in/out, fit view, lock). Pre-themed to match Gremorie - rounded, bordered, secondary-tinted buttons. Drop inside a Canvas as a child for floating zoom controls.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-edge",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Edge (React)",
+      "description": "Edge variants for @xyflow/react: Temporary (simple-bezier curve for in-progress connections) and Animated (gradient-flowing bezier for active flows). Register via edgeTypes={{ temporary: Temporary, animated: Animated }} on Canvas.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-node",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Node (React)",
+      "description": "Card-based node for @xyflow/react graphs. Wraps Gremorie Card + CardHeader/Title/Description/Content/Footer/Action to give each node consistent chrome. Accepts handles { target, source } booleans to declare which sides expose connection Handles.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card"
+      ]
+    },
+    {
+      "name": "rx-panel",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Panel (React)",
+      "description": "Floating positioned panel inside a @xyflow/react Canvas. Pre-themed - bordered, rounded, card-tinted, padded - for stacking minimap, layers, or context controls in a corner of the workflow.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-toolbar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Toolbar (React)",
+      "description": "Per-node floating toolbar (NodeToolbar from @xyflow/react). Anchored below the node by default - use for context actions on selection (delete, duplicate, configure).",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
     }
   ]
 }

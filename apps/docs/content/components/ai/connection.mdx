@@ -1,0 +1,65 @@
+---
+title: Connection
+description: Animated bezier-curve connection line for @xyflow/react. Used as connectionLineComponent on Canvas while the user drags a new edge.
+---
+
+`Connection` is part of the **AI workflow family** brought from Bridge into Gremorie in Fase 5j. Built on top of `@xyflow/react` for graph-style canvases.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-connection
+```
+
+Requires `@xyflow/react` as a dependency (already a transitive dep of the workflow family).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Connection,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <Canvas
+      nodes={nodes}
+      edges={edges}
+      connectionLineComponent={Connection}
+    />
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j workflow batch (Bridge parity for the AI category).
+- The workflow family wraps `@xyflow/react` with Gremorie theming - keep `@xyflow/react/dist/style.css` imported once at the app level.

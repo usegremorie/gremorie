@@ -23,3 +23,12 @@ export * from "./lib/tool";
 export * from "./lib/artifact";
 export * from "./lib/code-block";
 export * from "./lib/web-preview";
+
+// Workflow family (Fase 5j - Batch 3)
+export * from "./lib/canvas";
+export * from "./lib/connection";
+export * from "./lib/controls";
+export * from "./lib/edge";
+export * from "./lib/node";
+export * from "./lib/panel";
+export * from "./lib/toolbar";
