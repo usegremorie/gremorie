@@ -1,6 +1,13 @@
 {
   "title": "Forms",
-  "description": "Form primitives - Button, Input, Label, Select",
+  "description": "Form primitives - Button, Input, InputGroup, Label, Select, Textarea",
   "icon": "Square",
-  "pages": ["button", "input", "label", "select"]
+  "pages": [
+    "button",
+    "input",
+    "input-group",
+    "label",
+    "select",
+    "textarea"
+  ]
 }

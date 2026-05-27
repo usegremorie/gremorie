@@ -1,0 +1,31 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-textarea",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Textarea (React)",
+  "description": "Multi-line text field that auto-grows via `field-sizing: content`. Use for free-form input where rows are unknown ahead of time.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/textarea/textarea.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { cn } from \"@gremorie/rx-core\";\n\n/**\n * Textarea - multi-line text field.\n *\n * Uses `field-sizing: content` so the field grows automatically as\n * the user types - no manual rows or JS measurement needed in modern\n * browsers. Pair with descriptive labels and validation messages.\n */\nexport type TextareaProps = React.ComponentProps<\"textarea\">;\n\nfunction Textarea({ className, ...props }: TextareaProps) {\n  return (\n    <textarea\n      data-slot=\"textarea\"\n      className={cn(\n        \"flex field-sizing-content min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:ring-destructive/40\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Textarea };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/forms/textarea/textarea.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-textarea.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

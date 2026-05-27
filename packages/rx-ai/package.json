@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/rx-ai",
   "version": "0.0.1",
-  "description": "React AI primitives for Gremorie - PromptInput, Attachments. Pilot edition.",
+  "description": "React AI primitives for Gremorie - PromptInput family with full Bridge parity (InputGroup composition, Cmd+K palette via CommandDialog, Tabs panels, Attachments).",
   "license": "MIT",
   "repository": {
     "type": "git",

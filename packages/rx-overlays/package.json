@@ -1,14 +1,26 @@
 {
   "name": "@gremorie/rx-overlays",
   "version": "0.0.1",
-  "description": "React overlay primitives for Gremorie - DropdownMenu, HoverCard, Command.",
+  "description": "React overlay primitives for Gremorie - Dialog, Sheet, Popover, Tooltip, DropdownMenu, HoverCard, Command.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/rx-overlays"
   },
-  "keywords": ["react", "ui", "shadcn", "overlays", "dropdown", "hover-card", "command"],
+  "keywords": [
+    "react",
+    "ui",
+    "shadcn",
+    "overlays",
+    "dialog",
+    "sheet",
+    "popover",
+    "tooltip",
+    "dropdown",
+    "hover-card",
+    "command"
+  ],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -22,6 +34,7 @@
   "files": ["dist", "README.md"],
   "peerDependencies": {
     "@gremorie/rx-core": "^0.0.1",
+    "@gremorie/rx-forms": "^0.0.1",
     "react": "^18 || ^19"
   },
   "dependencies": {

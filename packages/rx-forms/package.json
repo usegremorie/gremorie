@@ -1,14 +1,25 @@
 {
   "name": "@gremorie/rx-forms",
   "version": "0.0.1",
-  "description": "React form primitives for Gremorie - Button, Input, Label, Select.",
+  "description": "React form primitives for Gremorie - Button, Input, InputGroup, Label, Select, Textarea.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/rx-forms"
   },
-  "keywords": ["react", "ui", "shadcn", "forms", "button", "input", "label", "select"],
+  "keywords": [
+    "react",
+    "ui",
+    "shadcn",
+    "forms",
+    "button",
+    "input",
+    "input-group",
+    "label",
+    "select",
+    "textarea"
+  ],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",

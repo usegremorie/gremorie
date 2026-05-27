@@ -3,6 +3,7 @@
 import {
   type ChangeEvent,
   type ChangeEventHandler,
+  Children,
   type ClipboardEventHandler,
   type ComponentProps,
   createContext,
@@ -23,8 +24,12 @@ import {
 } from "react";
 
 import { cn } from "@gremorie/rx-core";
-import { Button } from "@gremorie/rx-forms";
 import {
+  Button,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
   Select,
   SelectContent,
   SelectItem,
@@ -33,6 +38,7 @@ import {
 } from "@gremorie/rx-forms";
 import {
   Command,
+  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -785,9 +791,7 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        <div className="overflow-hidden rounded-md border border-input bg-background shadow-xs">
-          {children}
-        </div>
+        <InputGroup className="overflow-hidden">{children}</InputGroup>
       </form>
     </>
   );
@@ -814,32 +818,34 @@ export const PromptInputBody = ({
   <div className={cn("contents", className)} {...props} />
 );
 
-export type PromptInputHeaderProps = HTMLAttributes<HTMLDivElement>;
+export type PromptInputHeaderProps = Omit<
+  ComponentProps<typeof InputGroupAddon>,
+  "align"
+>;
 
 export const PromptInputHeader = ({
   className,
   ...props
 }: PromptInputHeaderProps) => (
-  <div
-    className={cn(
-      "order-first flex flex-wrap items-center gap-1 border-b border-input px-3 py-2",
-      className,
-    )}
+  <InputGroupAddon
+    align="block-end"
+    className={cn("order-first flex-wrap gap-1", className)}
     {...props}
   />
 );
 
-export type PromptInputFooterProps = HTMLAttributes<HTMLDivElement>;
+export type PromptInputFooterProps = Omit<
+  ComponentProps<typeof InputGroupAddon>,
+  "align"
+>;
 
 export const PromptInputFooter = ({
   className,
   ...props
 }: PromptInputFooterProps) => (
-  <div
-    className={cn(
-      "flex items-center justify-between gap-1 border-t border-input px-2 py-1.5",
-      className,
-    )}
+  <InputGroupAddon
+    align="block-end"
+    className={cn("justify-between gap-1", className)}
     {...props}
   />
 );
@@ -857,7 +863,9 @@ export const PromptInputTools = ({
 // PromptInputTextarea
 // ============================================================================
 
-export type PromptInputTextareaProps = ComponentProps<"textarea">;
+export type PromptInputTextareaProps = ComponentProps<
+  typeof InputGroupTextarea
+>;
 
 export const PromptInputTextarea = ({
   onChange,
@@ -932,11 +940,8 @@ export const PromptInputTextarea = ({
       };
 
   return (
-    <textarea
-      className={cn(
-        "field-sizing-content max-h-48 min-h-16 w-full resize-none border-0 bg-transparent px-3 py-2 text-sm outline-hidden placeholder:text-muted-foreground",
-        className,
-      )}
+    <InputGroupTextarea
+      className={cn("field-sizing-content max-h-48 min-h-16", className)}
       name="message"
       onCompositionEnd={() => setIsComposing(false)}
       onCompositionStart={() => setIsComposing(true)}
@@ -950,32 +955,36 @@ export const PromptInputTextarea = ({
 };
 
 // ============================================================================
-// PromptInputButton - thin wrapper over Button from @gremorie/rx-forms
+// PromptInputButton - InputGroupButton wrapper for in-input actions
 // ============================================================================
 
-export type PromptInputButtonProps = ComponentProps<typeof Button>;
+export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton>;
 
 export const PromptInputButton = ({
   variant = "ghost",
-  size = "icon-sm",
-  type = "button",
   className,
+  size,
   ...props
-}: PromptInputButtonProps) => (
-  <Button
-    className={cn(className)}
-    size={size}
-    type={type}
-    variant={variant}
-    {...props}
-  />
-);
+}: PromptInputButtonProps) => {
+  const newSize =
+    size ?? (Children.count(props.children) > 1 ? "sm" : "icon-sm");
+
+  return (
+    <InputGroupButton
+      className={cn(className)}
+      size={newSize}
+      type="button"
+      variant={variant}
+      {...props}
+    />
+  );
+};
 
 // ============================================================================
-// PromptInputSubmit - status-driven submit Button
+// PromptInputSubmit - status-driven submit InputGroupButton
 // ============================================================================
 
-export type PromptInputSubmitProps = ComponentProps<typeof Button> & {
+export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
   status?: ChatStatus;
 };
 
@@ -998,7 +1007,7 @@ export const PromptInputSubmit = ({
   }
 
   return (
-    <Button
+    <InputGroupButton
       aria-label="Submit"
       className={cn(className)}
       size={size}
@@ -1007,7 +1016,7 @@ export const PromptInputSubmit = ({
       {...props}
     >
       {children ?? Icon}
-    </Button>
+    </InputGroupButton>
   );
 };
 
@@ -1374,4 +1383,71 @@ export const PromptInputCommandSeparator = ({
   ...props
 }: PromptInputCommandSeparatorProps) => (
   <CommandSeparator className={cn(className)} {...props} />
+);
+
+// ============================================================================
+// PromptInputCommandDialog - canonical Cmd+K floating palette
+// ============================================================================
+
+export type PromptInputCommandDialogProps = ComponentProps<typeof CommandDialog>;
+
+export const PromptInputCommandDialog = (
+  props: PromptInputCommandDialogProps,
+) => <CommandDialog {...props} />;
+
+// ============================================================================
+// PromptInputTabs* - lightweight tabbed panels inside dropdowns / menus
+// ============================================================================
+
+export type PromptInputTabsListProps = HTMLAttributes<HTMLDivElement>;
+
+export const PromptInputTabsList = ({
+  className,
+  ...props
+}: PromptInputTabsListProps) => <div className={cn(className)} {...props} />;
+
+export type PromptInputTabProps = HTMLAttributes<HTMLDivElement>;
+
+export const PromptInputTab = ({
+  className,
+  ...props
+}: PromptInputTabProps) => <div className={cn(className)} {...props} />;
+
+export type PromptInputTabLabelProps = HTMLAttributes<HTMLHeadingElement>;
+
+export const PromptInputTabLabel = ({
+  className,
+  ...props
+}: PromptInputTabLabelProps) => (
+  <h3
+    className={cn(
+      "mb-2 px-3 font-medium text-muted-foreground text-xs",
+      className,
+    )}
+    {...props}
+  />
+);
+
+export type PromptInputTabBodyProps = HTMLAttributes<HTMLDivElement>;
+
+export const PromptInputTabBody = ({
+  className,
+  ...props
+}: PromptInputTabBodyProps) => (
+  <div className={cn("space-y-1", className)} {...props} />
+);
+
+export type PromptInputTabItemProps = HTMLAttributes<HTMLDivElement>;
+
+export const PromptInputTabItem = ({
+  className,
+  ...props
+}: PromptInputTabItemProps) => (
+  <div
+    className={cn(
+      "flex items-center gap-2 px-3 py-2 text-xs hover:bg-accent",
+      className,
+    )}
+    {...props}
+  />
 );

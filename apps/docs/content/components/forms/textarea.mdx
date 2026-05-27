@@ -1,0 +1,86 @@
+---
+title: Textarea
+description: "Multi-line text field that auto-grows via `field-sizing: content`."
+---
+
+`Textarea` is the multi-line companion to `Input`. It uses the
+modern `field-sizing: content` CSS property to grow with its content
+automatically - no manual `rows` count and no JS measurement.
+
+For very long-form text (rich text, markdown editor, code), prefer a
+dedicated editor over `Textarea`. For composers with toolbars or
+inline addons, compose with `InputGroup` + `InputGroupTextarea`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Textarea lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-textarea
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Label, Textarea } from "@gremorie/rx-forms";
+
+export function BioField() {
+  return (
+    <div className="grid w-full max-w-sm items-center gap-1.5">
+      <Label htmlFor="bio">Short bio</Label>
+      <Textarea id="bio" placeholder="Tell us about yourself..." />
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## States
+
+| State    | Trigger              | Visual                            |
+| -------- | -------------------- | --------------------------------- |
+| Default  | -                    | `border-input` border.            |
+| Focus    | `focus-visible`      | `ring-ring/50` ring + border.     |
+| Invalid  | `aria-invalid="true"`| `border-destructive` border.      |
+| Disabled | `disabled`           | 50% opacity, no pointer events.   |
+
+## Best practices
+
+- **Always pair with `Label`.** Use `htmlFor` matching the textarea `id`.
+- **Skip `rows`.** Auto-sizing is enabled by default; specify
+  `min-h-*` / `max-h-*` Tailwind classes if you want hard bounds.
+- **For composer toolbars (Submit, Attachments, Send), wrap in
+  `InputGroup`.** That gives you the multi-line `InputGroupTextarea`
+  variant with addon slots.
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/textarea/textarea.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-textarea.json`.

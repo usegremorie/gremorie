@@ -1,0 +1,126 @@
+---
+title: Sheet
+description: Side-anchored panel for longer flows - built on Radix Dialog with a directional slide.
+---
+
+`Sheet` is the right primitive for **filters, settings panels, and
+multi-section edit forms** - content that does not deserve full focus
+the way a `Dialog` does, but is too rich for a `Popover`.
+
+The `right` side is the default and most common (filter / detail
+panels). `left` is conventional for navigation; `bottom` works well
+at mobile breakpoints; `top` is reserved for global notifications.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Sheet lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-sheet
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@gremorie/rx-overlays";
+
+export function FiltersSheet() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Filters</Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Filter results</SheetTitle>
+          <SheetDescription>
+            Narrow the list by status, owner, and date range.
+          </SheetDescription>
+        </SheetHeader>
+        {/* filter controls here */}
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button>Apply filters</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Sides
+
+| Side       | Slide direction      | Common use                            |
+| ---------- | -------------------- | ------------------------------------- |
+| `right`    | In from the right    | Filters, detail panels (default).     |
+| `left`     | In from the left     | Navigation menus.                     |
+| `bottom`   | Up from the bottom   | Mobile-first action sheets.           |
+| `top`      | Down from the top    | Global notifications, search bars.    |
+
+## Anatomy
+
+```
+Sheet
+  SheetTrigger (asChild = wraps a Button)
+  SheetContent [side, showCloseButton]
+    SheetHeader
+      SheetTitle
+      SheetDescription
+    {your body}
+    SheetFooter
+      SheetClose
+```
+
+## Best practices
+
+- **Include `SheetTitle` for accessibility.** Use `className="sr-only"`
+  if you don't want it visible.
+- **Choose the side that matches the mental model.** Filters slide
+  from the right because they refine the list to its left. Navigation
+  slides from the left.
+- **Use `Dialog` for binary decisions, `Sheet` for richer flows.**
+  Sheets shine when there are 3+ controls inside.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/sheet/sheet.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-sheet.json`.

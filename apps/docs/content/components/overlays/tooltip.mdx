@@ -1,0 +1,101 @@
+---
+title: Tooltip
+description: Short non-essential context on hover/focus - built on Radix Tooltip.
+---
+
+`Tooltip` is for **non-critical supporting information** - keyboard
+shortcuts, icon labels, "what does this control do" hints. Touch
+users may not be able to trigger a tooltip; keyboard users only see
+one when the trigger holds focus. Critical info belongs visibly in
+the layout, not behind a hover.
+
+Always wrap your application root in `<TooltipProvider>` so all
+tooltips share a single delay timer and don't pop in/out of sync.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Tooltip lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-tooltip
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { CopyIcon } from "lucide-react";
+import { Button } from "@gremorie/rx-forms";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@gremorie/rx-overlays";
+
+export function CopyButton() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="ghost" size="icon-sm" aria-label="Copy">
+            <CopyIcon />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Copy to clipboard</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+TooltipProvider (wrap at app root)
+  Tooltip
+    TooltipTrigger (asChild = wraps an interactive element)
+    TooltipContent [sideOffset]
+```
+
+## Best practices
+
+- **Wrap the app once.** Render a single `<TooltipProvider>` near
+  the app root so all tooltips share the same delay timer.
+- **Pair with `aria-label` on icon-only triggers.** Tooltip is a
+  visual hint; the accessible name lives on the trigger itself.
+- **Don't put interactive content in a Tooltip.** If users need to
+  click inside the popup, reach for `Popover` or `HoverCard`.
+- **Keep the content short.** A tooltip is a hint, not a paragraph.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/tooltip/tooltip.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-tooltip.json`.

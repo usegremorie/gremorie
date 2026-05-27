@@ -13,11 +13,17 @@ Both editions ship the full family today:
 
 - **Angular**: `@gremorie/ng-ai` - full family including action menus,
   model selector, attachment hover-card previews.
-- **React**: `@gremorie/rx-ai` - full family including ActionMenu
-  (DropdownMenu), ModelSelector (Select), attachment HoverCard previews,
-  Speech button (Web Speech API), and Command palette wrappers. Pulls in
-  `rx-button`, `rx-select`, `rx-dropdown-menu`, `rx-hover-card`, and
-  `rx-command` as registry dependencies.
+- **React**: `@gremorie/rx-ai` - full Bridge parity. Composes on top
+  of `InputGroup` + `InputGroupButton` + `InputGroupTextarea` from
+  `@gremorie/rx-forms`, so the textarea + addon toolbar render as one
+  cohesive surface. Includes ActionMenu (DropdownMenu), ModelSelector
+  (Select), attachment HoverCard previews, Speech button (Web Speech
+  API), Command palette wrappers, the Cmd+K floating palette via
+  `PromptInputCommandDialog`, and lightweight Tabs panels
+  (`PromptInputTab*`) for grouping options inside menus. Pulls in
+  `rx-button`, `rx-input-group`, `rx-select`, `rx-dialog`,
+  `rx-dropdown-menu`, `rx-hover-card`, and `rx-command` as registry
+  dependencies.
 
 ## Install
 
@@ -43,9 +49,10 @@ npx gremorie add ng-attachments
 npx gremorie add rx-prompt-input
 ```
 
-Pulls in `rx-utils`, `rx-button`, `rx-select`, `rx-dropdown-menu`,
-`rx-hover-card`, and `rx-command` as registry dependencies. Install
-individual primitives if you only need a subset:
+Pulls in `rx-utils`, `rx-button`, `rx-input-group`, `rx-select`,
+`rx-dialog`, `rx-dropdown-menu`, `rx-hover-card`, and `rx-command` as
+registry dependencies. Install individual primitives if you only
+need a subset:
 
 ```bash
 npx gremorie add rx-button rx-hover-card
@@ -265,6 +272,73 @@ PromptInput (root form, owns state machine)
         PromptInputButton (web search, custom actions)
         PromptInputSelect (model selector)
       PromptInputSubmit (right, status-driven)
+```
+
+## InputGroup composition (React)
+
+The React edition wraps `<form>` children in an `InputGroup` and
+implements `PromptInputButton`, `PromptInputSubmit`, and
+`PromptInputTextarea` on top of `InputGroupButton` /
+`InputGroupTextarea`. That gives you:
+
+- A single rounded surface with shared focus / invalid / disabled
+  states across the textarea and its addons.
+- Block-aligned header / footer toolbars via `InputGroupAddon`
+  underneath the hood, so the composer reads as one unit instead of
+  three stacked rectangles.
+- Sizing variants on every toolbar button (`xs`, `sm`, `icon-xs`,
+  `icon-sm`) that line up with the group height automatically.
+
+`PromptInputButton` auto-picks `sm` when the button has both an icon
+and a label, and `icon-sm` when it's icon-only. Override `size` to
+pin it.
+
+## Command palette (React)
+
+`PromptInputCommandDialog` exposes the canonical Cmd+K floating
+palette wrapping the same `Command` primitive the inline picker
+uses. Use it for quick-action launchers, model switchers, or
+chat-history search:
+
+```tsx
+import { useEffect, useState } from "react";
+import {
+  PromptInputCommand,
+  PromptInputCommandDialog,
+  PromptInputCommandEmpty,
+  PromptInputCommandGroup,
+  PromptInputCommandInput,
+  PromptInputCommandItem,
+  PromptInputCommandList,
+} from "@gremorie/rx-ai";
+
+export function QuickActionsPalette() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((v) => !v);
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  return (
+    <PromptInputCommandDialog open={open} onOpenChange={setOpen}>
+      <PromptInputCommandInput placeholder="Type a command..." />
+      <PromptInputCommandList>
+        <PromptInputCommandEmpty>No results.</PromptInputCommandEmpty>
+        <PromptInputCommandGroup heading="Actions">
+          <PromptInputCommandItem>New chat</PromptInputCommandItem>
+          <PromptInputCommandItem>Clear history</PromptInputCommandItem>
+        </PromptInputCommandGroup>
+      </PromptInputCommandList>
+    </PromptInputCommandDialog>
+  );
+}
 ```
 
 ## States

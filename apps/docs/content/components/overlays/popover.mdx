@@ -1,0 +1,119 @@
+---
+title: Popover
+description: Anchored interactive content overlay - built on Radix Popover.
+---
+
+`Popover` triggers on click (intentional) and hosts **interactive
+content** - date pickers, color pickers, mini forms, command
+palettes, share menus.
+
+It is distinct from `Tooltip` (hover-only, simple text label, never
+interactive) and `HoverCard` (hover-only previews of non-critical
+content). When the content is too long for a popover or warrants
+blocking the page, escalate to `Dialog` or `Sheet`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Popover lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-popover
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button, Input, Label } from "@gremorie/rx-forms";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@gremorie/rx-overlays";
+
+export function DimensionsPopover() {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Dimensions</Button>
+      </PopoverTrigger>
+      <PopoverContent align="start">
+        <PopoverHeader>
+          <PopoverTitle>Dimensions</PopoverTitle>
+          <PopoverDescription>
+            Resize the artboard. Units are in pixels.
+          </PopoverDescription>
+        </PopoverHeader>
+        <div className="grid gap-2 pt-3">
+          <div className="grid grid-cols-3 items-center gap-2">
+            <Label htmlFor="w">Width</Label>
+            <Input id="w" className="col-span-2 h-8" />
+          </div>
+          <div className="grid grid-cols-3 items-center gap-2">
+            <Label htmlFor="h">Height</Label>
+            <Input id="h" className="col-span-2 h-8" />
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Popover
+  PopoverTrigger (asChild = wraps a Button)
+  PopoverAnchor                          (optional, separate anchor element)
+  PopoverContent [align, sideOffset]
+    PopoverHeader
+      PopoverTitle
+      PopoverDescription
+    {your body}
+```
+
+## Best practices
+
+- **Reserve Popover for interactive content.** A short label is a
+  `Tooltip`. A non-interactive preview is a `HoverCard`.
+- **Use `PopoverAnchor` for detached anchors.** When the trigger and
+  the anchor are different elements (e.g. icon button triggers, but
+  popover should attach to the field).
+- **Pick `align` based on the layout.** `start` anchors the popover
+  edge with the trigger edge; `center` is the Radix default.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/popover/popover.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-popover.json`.

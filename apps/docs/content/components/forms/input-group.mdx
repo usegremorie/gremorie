@@ -1,0 +1,115 @@
+---
+title: Input Group
+description: Composable input layout - wraps Input or Textarea with inline / block addons (icons, buttons, kbd hints).
+---
+
+`InputGroup` is the layout primitive that lets you decorate an
+`Input` or `Textarea` with inline or block addons - icons, action
+buttons, keyboard hints, units. The group drives focus, invalid, and
+disabled visual states from the inner control, so addons follow along
+automatically.
+
+This is the foundation the `PromptInput` family composes on. Outside
+AI surfaces, reach for `InputGroup` whenever a field needs a leading
+icon, a clear button, an action affordance, or a multi-line composer
+with a footer toolbar.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular InputGroup lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-input-group
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { SearchIcon, XIcon } from "lucide-react";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@gremorie/rx-forms";
+
+export function SearchField() {
+  return (
+    <InputGroup>
+      <InputGroupAddon align="inline-start">
+        <SearchIcon />
+      </InputGroupAddon>
+      <InputGroupInput placeholder="Search..." />
+      <InputGroupAddon align="inline-end">
+        <InputGroupButton aria-label="Clear" size="icon-xs">
+          <XIcon />
+        </InputGroupButton>
+      </InputGroupAddon>
+    </InputGroup>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+InputGroup
+  InputGroupAddon [align="inline-start" | "inline-end" | "block-start" | "block-end"]
+    InputGroupButton [size="xs" | "sm" | "icon-xs" | "icon-sm"]
+    InputGroupText
+  InputGroupInput        (replaces a raw Input)
+  InputGroupTextarea     (replaces a raw Textarea)
+```
+
+## Alignments
+
+| Align            | Position                          | Common use                            |
+| ---------------- | --------------------------------- | ------------------------------------- |
+| `inline-start`   | Left side of the control          | Search icon, currency / unit symbol.  |
+| `inline-end`     | Right side of the control         | Clear, submit, password reveal.       |
+| `block-start`    | Above the control (group is wide) | Toolbar above a textarea composer.    |
+| `block-end`      | Below the control                 | Submit toolbar, footer hints.         |
+
+## Best practices
+
+- **Use `InputGroupInput` / `InputGroupTextarea`.** Never put a raw
+  `Input` or `Textarea` inside `InputGroup` - the slot styling depends
+  on `data-slot="input-group-control"`.
+- **Buttons inside the group use `InputGroupButton`.** Sizing variants
+  (`xs`, `sm`, `icon-xs`, `icon-sm`) match the group height so the
+  button never overflows.
+- **Mark icon-only buttons with `aria-label`.** Without text, the
+  button has no accessible name.
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/input-group/input-group.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-input-group.json`.
