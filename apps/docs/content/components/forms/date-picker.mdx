@@ -1,0 +1,71 @@
+---
+title: Date Picker
+description: Composite of Popover + Calendar.
+---
+
+`DatePicker` is the canonical composite pattern from shadcn: a
+`Button` that opens a `Popover` containing a `Calendar`. Single mode
+by default. Lives in `@gremorie/rx-overlays` because it composes
+across the forms / overlays boundary.
+
+For mobile UX, prefer `Drawer` + `Calendar` directly - Popover does
+not work well on small screens.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular DatePicker lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-date-picker
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import * as React from "react";
+import { DatePicker } from "@gremorie/rx-overlays";
+
+export function DueDateField() {
+  const [date, setDate] = React.useState<Date | undefined>();
+  return (
+    <DatePicker
+      value={date}
+      onValueChange={setDate}
+      placeholder="Pick a due date"
+    />
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/date-picker/date-picker.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-date-picker.json`.

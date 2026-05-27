@@ -432,6 +432,23 @@
       "registryDependencies": []
     },
     {
+      "name": "rx-date-picker",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Date Picker (React)",
+      "description": "Composite of Popover + Calendar wired with shadcn defaults. Single-mode by default. Lives in rx-overlays because it composes Popover (rx-overlays) with Button + Calendar (rx-forms).",
+      "categories": [
+        "forms",
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-calendar",
+        "rx-popover"
+      ]
+    },
+    {
       "name": "rx-accordion",
       "type": "registry:block",
       "framework": "rx",
@@ -656,6 +673,139 @@
       ],
       "registryDependencies": [
         "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-button-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Button Group (React)",
+      "description": "Cluster of related buttons that share a stroke. Composable ButtonGroup, ButtonGroupText, ButtonGroupSeparator. Horizontal or vertical, with optional inner Separator.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-calendar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Calendar (React)",
+      "description": "Date grid built on react-day-picker - single or range selection, multi-month layout, weekday header, keyboard navigation. Pair with Popover for the canonical DatePicker pattern.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-checkbox",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Checkbox (React)",
+      "description": "Binary or tri-state checkbox built on Radix Checkbox. Use for multi-select lists, terms acceptance, settings toggles. For mutually exclusive choices use RadioGroup; for on/off use Switch.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-form",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Form (React)",
+      "description": "React Hook Form integration - Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage. Wires field state, validation errors, and accessibility attributes.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-label"
+      ]
+    },
+    {
+      "name": "rx-input-otp",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Input OTP (React)",
+      "description": "One-time password input built on input-otp - keyboard-driven, paste-friendly, slot-based. Use for 2FA codes, magic links, SMS verification.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-radio-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Radio Group (React)",
+      "description": "Mutually exclusive choice group built on Radix RadioGroup. Use for 2-7 distinct options. For binary on/off use Switch; for many options use Select.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-slider",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Slider (React)",
+      "description": "Range slider built on Radix Slider - single value or range (two thumbs), with step + min/max. Use for continuous values (volume, opacity, price range).",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-switch",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Switch (React)",
+      "description": "Binary on/off toggle built on Radix Switch. Use for instant-effect settings (dark mode, notifications). For form fields that need explicit \"save\", prefer Checkbox.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-toggle",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Toggle (React)",
+      "description": "Two-state press-button built on Radix Toggle. Use for inline formatting controls (bold, italic) or visibility toggles. For multi-option clusters use ToggleGroup.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-toggle-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Toggle Group (React)",
+      "description": "Mutually exclusive or multi-select cluster of Toggle items, built on Radix ToggleGroup. Use for inline option pickers (text alignment, view mode, filter chips).",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-toggle"
       ]
     },
     {

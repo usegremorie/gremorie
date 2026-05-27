@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/rx-forms",
   "version": "0.0.1",
-  "description": "React form primitives for Gremorie - Button, Input, InputGroup, Label, Select, Textarea.",
+  "description": "React form primitives for Gremorie - Button, Input, InputGroup, Label, Select, Textarea, ButtonGroup, Calendar, Checkbox, Form, InputOTP, RadioGroup, Slider, Switch, Toggle, ToggleGroup.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,7 +18,17 @@
     "input-group",
     "label",
     "select",
-    "textarea"
+    "textarea",
+    "button-group",
+    "calendar",
+    "checkbox",
+    "form",
+    "input-otp",
+    "radio-group",
+    "slider",
+    "switch",
+    "toggle",
+    "toggle-group"
   ],
   "type": "module",
   "main": "dist/index.js",
@@ -37,8 +47,11 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
-    "lucide-react": "^0.468.0",
+    "input-otp": "^1.4.2",
+    "lucide-react": "^0.547.0",
     "radix-ui": "^1.4.3",
+    "react-day-picker": "^10.0.0",
+    "react-hook-form": "^7.76.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false

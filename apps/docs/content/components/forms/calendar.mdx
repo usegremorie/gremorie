@@ -1,0 +1,63 @@
+---
+title: Calendar
+description: Date grid built on react-day-picker.
+---
+
+`Calendar` wraps `react-day-picker` with Gremorie styling. Single
+date, multiple dates, or range selection; multi-month layout;
+keyboard navigation; weekday header. Pair with `Popover` for the
+canonical DatePicker pattern, or use standalone in a dashboard
+sidebar.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Calendar lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-calendar
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import * as React from "react";
+import { Calendar } from "@gremorie/rx-forms";
+
+export function SingleDatePicker() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  return <Calendar mode="single" selected={date} onSelect={setDate} />;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/calendar/calendar.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-calendar.json`.

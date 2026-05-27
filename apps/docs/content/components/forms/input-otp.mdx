@@ -1,0 +1,78 @@
+---
+title: Input OTP
+description: One-time password input with slot-based UX.
+---
+
+`InputOTP` wraps `input-otp` with Gremorie styling - keyboard-driven,
+paste-friendly, slot-based. Each digit gets its own slot via
+`InputOTPSlot`. Use for 2FA codes, magic links, SMS verification.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular InputOTP lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-input-otp
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@gremorie/rx-forms";
+
+export function TwoFactorCode() {
+  return (
+    <InputOTP maxLength={6}>
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+      </InputOTPGroup>
+      <InputOTPSeparator />
+      <InputOTPGroup>
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/input-otp/input-otp.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-input-otp.json`.

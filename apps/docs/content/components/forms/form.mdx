@@ -1,0 +1,93 @@
+---
+title: Form
+description: React Hook Form integration with accessible wiring.
+---
+
+`Form` is the React Hook Form integration layer. Composable parts
+that wire field state, validation errors, and accessibility
+attributes automatically: `Form`, `FormField`, `FormItem`,
+`FormLabel`, `FormControl`, `FormDescription`, `FormMessage`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Form integration lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-form
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { useForm } from "react-hook-form";
+import {
+  Button,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+} from "@gremorie/rx-forms";
+
+export function ProfileForm() {
+  const form = useForm<{ name: string }>({ defaultValues: { name: "" } });
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(console.log)} className="grid gap-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Your name" {...field} />
+              </FormControl>
+              <FormDescription>How you appear to teammates.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Save</Button>
+      </form>
+    </Form>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/form/form.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-form.json`.

@@ -1,0 +1,66 @@
+---
+title: Toggle
+description: Two-state press-button.
+---
+
+`Toggle` is built on Radix Toggle - a press-button that can be on
+or off. Use for inline formatting controls (bold, italic, underline)
+or visibility toggles (show/hide details). For multi-option clusters
+use `ToggleGroup`; for binary settings outside an editor surface use
+`Switch`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Toggle lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-toggle
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Bold } from "lucide-react";
+import { Toggle } from "@gremorie/rx-forms";
+
+export function BoldToggle() {
+  return (
+    <Toggle aria-label="Toggle bold">
+      <Bold className="size-4" />
+    </Toggle>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/toggle/toggle.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-toggle.json`.

@@ -1,0 +1,65 @@
+---
+title: Slider
+description: Continuous-value range control.
+---
+
+`Slider` is built on Radix Slider - single value or range (two
+thumbs), with `step`, `min`, `max`. Use for continuous values:
+volume, opacity, price range, brightness.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Slider lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-slider
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Slider } from "@gremorie/rx-forms";
+
+export function VolumeSlider() {
+  return <Slider defaultValue={[50]} max={100} step={1} />;
+}
+
+export function PriceRange() {
+  return (
+    <Slider defaultValue={[20, 80]} min={0} max={100} step={5} />
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/slider/slider.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-slider.json`.

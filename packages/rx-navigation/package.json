@@ -30,7 +30,10 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "peerDependencies": {
     "@gremorie/rx-core": "^0.0.1",
     "@gremorie/rx-display": "^0.0.1",

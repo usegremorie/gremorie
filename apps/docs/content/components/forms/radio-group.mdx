@@ -1,0 +1,74 @@
+---
+title: Radio Group
+description: Mutually exclusive choice group.
+---
+
+`RadioGroup` is built on Radix RadioGroup - one of N exclusive
+options. Use for 2-7 choices. For binary on/off use `Switch`; for
+many options use `Select`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular RadioGroup lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-radio-group
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Label, RadioGroup, RadioGroupItem } from "@gremorie/rx-forms";
+
+export function PlanPicker() {
+  return (
+    <RadioGroup defaultValue="pro" className="grid gap-2">
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="free" id="r-free" />
+        <Label htmlFor="r-free">Free</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="pro" id="r-pro" />
+        <Label htmlFor="r-pro">Pro</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="enterprise" id="r-enterprise" />
+        <Label htmlFor="r-enterprise">Enterprise</Label>
+      </div>
+    </RadioGroup>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/radio-group/radio-group.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-radio-group.json`.

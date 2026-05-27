@@ -1,0 +1,73 @@
+---
+title: Button Group
+description: Cluster of related buttons that share a stroke.
+---
+
+`ButtonGroup` packs related buttons into a single visual cluster.
+Horizontal by default; can run vertical. `ButtonGroupSeparator`
+inserts a thin divider between sub-clusters. `ButtonGroupText`
+renders a static label slot inside the group.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular ButtonGroup lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-button-group
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { ChevronDownIcon } from "lucide-react";
+import {
+  Button,
+  ButtonGroup,
+  ButtonGroupSeparator,
+} from "@gremorie/rx-forms";
+
+export function SaveOptions() {
+  return (
+    <ButtonGroup>
+      <Button>Save</Button>
+      <ButtonGroupSeparator />
+      <Button variant="outline" size="icon" aria-label="More save options">
+        <ChevronDownIcon />
+      </Button>
+    </ButtonGroup>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/button-group/button-group.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-button-group.json`.

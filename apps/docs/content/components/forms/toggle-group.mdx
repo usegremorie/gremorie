@@ -1,0 +1,73 @@
+---
+title: Toggle Group
+description: Cluster of Toggle items for option picking.
+---
+
+`ToggleGroup` is built on Radix ToggleGroup - a cluster of `Toggle`
+items, either single-select (`type="single"`) or multi-select
+(`type="multiple"`). Use for inline option pickers: text alignment,
+view mode, filter chips.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular ToggleGroup lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-toggle-group
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Bold, Italic, Underline } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@gremorie/rx-forms";
+
+export function FormattingBar() {
+  return (
+    <ToggleGroup type="multiple">
+      <ToggleGroupItem value="bold" aria-label="Toggle bold">
+        <Bold className="size-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="italic" aria-label="Toggle italic">
+        <Italic className="size-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="underline" aria-label="Toggle underline">
+        <Underline className="size-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/toggle-group/toggle-group.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-toggle-group.json`.

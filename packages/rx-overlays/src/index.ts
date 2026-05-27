@@ -9,3 +9,4 @@ export * from "./lib/alert-dialog";
 export * from "./lib/context-menu";
 export * from "./lib/drawer";
 export * from "./lib/sonner";
+export * from "./lib/date-picker";

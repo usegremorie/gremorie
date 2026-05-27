@@ -1,0 +1,65 @@
+---
+title: Switch
+description: Binary on/off toggle.
+---
+
+`Switch` is built on Radix Switch - binary on/off. Use for
+instant-effect settings (dark mode, notifications, autoplay). For
+form fields that need explicit "Save", prefer `Checkbox` - the
+visual conveys "this is part of a form".
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Switch lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-switch
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Label, Switch } from "@gremorie/rx-forms";
+
+export function NotificationToggle() {
+  return (
+    <div className="flex items-center gap-2">
+      <Switch id="notifications" />
+      <Label htmlFor="notifications">Enable notifications</Label>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/switch/switch.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-switch.json`.

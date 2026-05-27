@@ -1,0 +1,65 @@
+---
+title: Checkbox
+description: Binary or tri-state checkbox.
+---
+
+`Checkbox` is built on Radix Checkbox - binary or tri-state
+(`indeterminate`). Use for multi-select lists, terms acceptance,
+settings toggles. For mutually exclusive choices use `RadioGroup`;
+for instant on/off use `Switch`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Checkbox lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-checkbox
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Checkbox, Label } from "@gremorie/rx-forms";
+
+export function Terms() {
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox id="terms" />
+      <Label htmlFor="terms">Accept terms and conditions</Label>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/checkbox/checkbox.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-checkbox.json`.

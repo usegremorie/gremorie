@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/rx-overlays",
   "version": "0.0.1",
-  "description": "React overlay primitives for Gremorie - Dialog, Sheet, Popover, Tooltip, DropdownMenu, HoverCard, Command, AlertDialog, ContextMenu, Drawer, Sonner.",
+  "description": "React overlay primitives for Gremorie - Dialog, Sheet, Popover, Tooltip, DropdownMenu, HoverCard, Command, AlertDialog, ContextMenu, Drawer, Sonner, DatePicker.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,7 +23,8 @@
     "alert-dialog",
     "context-menu",
     "drawer",
-    "sonner"
+    "sonner",
+    "date-picker"
   ],
   "type": "module",
   "main": "dist/index.js",
@@ -43,7 +44,8 @@
   },
   "dependencies": {
     "cmdk": "^1.1.1",
-    "lucide-react": "^0.468.0",
+    "date-fns": "^4.3.0",
+    "lucide-react": "^0.547.0",
     "radix-ui": "^1.4.3",
     "sonner": "^2.0.0",
     "tslib": "^2.3.0",
