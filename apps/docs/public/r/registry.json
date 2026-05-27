@@ -432,6 +432,109 @@
       "registryDependencies": []
     },
     {
+      "name": "rx-accordion",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Accordion (React)",
+      "description": "Vertically stacked, coordinated expandable sections built on Radix Accordion. Use when multiple sections share a common rhythm (FAQ, settings groups). For a single expandable region, use Collapsible.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-avatar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Avatar (React)",
+      "description": "User identity glyph built on Radix Avatar - image with graceful fallback to initials or icon. Use for user surfaces (header, comments, mention chips, settings).",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-badge",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Badge (React)",
+      "description": "Compact label for status, count, or category. Variants: default, secondary, destructive, outline. Supports `asChild` via Radix Slot for composition with links/buttons.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-card",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Card (React)",
+      "description": "Surface container for grouped content - composes CardHeader, CardTitle, CardDescription, CardContent, CardFooter. The base building block for dashboards, lists, and modal-less detail views.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-carousel",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Carousel (React)",
+      "description": "Horizontal slider built on embla-carousel-react - touch / drag, keyboard navigation, pagination dots, prev/next controls. Best for hero rotators, image galleries, onboarding tours.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-collapsible",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Collapsible (React)",
+      "description": "Single-section expandable region built on Radix Collapsible. Minimal building block for \"show more\" toggles, sidebar group expand/collapse, inline disclosures.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-separator",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Separator (React)",
+      "description": "Horizontal or vertical visual divider built on Radix Separator. Use sparingly - prefer spacing for visual grouping; reach for Separator only when a hard line carries semantic meaning.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-table",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Table (React)",
+      "description": "Styled wrapper over native HTML `<table>` - composable Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption. Use for tabular data; pair with a data-grid library for sorting, filtering, virtualization.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
       "name": "rx-prompt-input",
       "type": "registry:block",
       "framework": "rx",

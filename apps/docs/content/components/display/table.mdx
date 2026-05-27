@@ -1,0 +1,124 @@
+---
+title: Table
+description: Styled wrapper over native HTML table.
+---
+
+`Table` is a styled wrapper around the native HTML `<table>` element.
+Composable parts: `Table`, `TableHeader`, `TableBody`, `TableFooter`,
+`TableRow`, `TableHead`, `TableCell`, `TableCaption`. Best for tabular
+data presentation. For sorting, filtering, virtualization, pair with a
+data-grid library (TanStack Table) and pass the resulting markup
+through this primitive.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Table lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-table
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@gremorie/rx-display";
+
+const invoices = [
+  { id: "INV001", status: "Paid", method: "Card", amount: "R$ 250" },
+  { id: "INV002", status: "Pending", method: "Pix", amount: "R$ 180" },
+];
+
+export function InvoiceTable() {
+  return (
+    <Table>
+      <TableCaption>Recent invoices.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Invoice</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Method</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {invoices.map((i) => (
+          <TableRow key={i.id}>
+            <TableCell>{i.id}</TableCell>
+            <TableCell>{i.status}</TableCell>
+            <TableCell>{i.method}</TableCell>
+            <TableCell className="text-right">{i.amount}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Table
+  TableCaption
+  TableHeader
+    TableRow
+      TableHead
+  TableBody
+    TableRow
+      TableCell
+  TableFooter
+    TableRow
+      TableCell
+```
+
+## Best practices
+
+- **Always wrap rows in `TableHeader`/`TableBody`.** Browsers handle
+  table sectioning semantics from these wrappers - dropping them
+  breaks screen-reader navigation.
+- **Right-align numeric columns.** Numbers compare faster when their
+  decimals line up.
+- **For large datasets, use a data-grid library.** TanStack Table or
+  AG Grid can render rows through this primitive while handling
+  sorting, filtering, virtualization.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/table/table.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-table.json`.

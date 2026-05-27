@@ -1,0 +1,87 @@
+---
+title: Avatar
+description: User identity glyph with graceful image fallback.
+---
+
+`Avatar` displays a user-facing identity glyph: image first, with
+`AvatarFallback` for initials or icon when the image fails to load.
+Built on Radix Avatar - the fallback only renders after the image
+has tried and failed (no flash of fallback during the initial load).
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Avatar lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-avatar
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@gremorie/rx-display";
+
+export function UserChip() {
+  return (
+    <Avatar>
+      <AvatarImage src="/avatars/jane.jpg" alt="Jane" />
+      <AvatarFallback>JN</AvatarFallback>
+    </Avatar>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Avatar
+  AvatarImage [src] [alt]
+  AvatarFallback
+```
+
+## Best practices
+
+- **Always provide a fallback.** Without `AvatarFallback`, broken
+  images leave a blank space.
+- **Use 2-character initials.** First initial of first and last name -
+  "JN" for Jane Nguyen. Avoid single initials (too cryptic) or full
+  names (overflow).
+- **Pair with a Tooltip when only the glyph is visible.** A hover hint
+  surfaces the user name for non-visual readers.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/avatar/avatar.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-avatar.json`.

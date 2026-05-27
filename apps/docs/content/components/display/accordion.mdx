@@ -1,0 +1,98 @@
+---
+title: Accordion
+description: Vertically stacked, coordinated expandable sections.
+---
+
+`Accordion` is the canonical pattern for FAQs, settings groups, and any
+list where multiple sections share a common rhythm. Built on Radix
+Accordion - single or multiple sections can be open at once via the
+`type` prop. For a single isolated expandable region, prefer
+`Collapsible`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Accordion lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-accordion
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@gremorie/rx-display";
+
+export function FAQ() {
+  return (
+    <Accordion type="single" collapsible>
+      <AccordionItem value="item-1">
+        <AccordionTrigger>What does Gremorie ship?</AccordionTrigger>
+        <AccordionContent>
+          A registry of source-level primitives for Angular and React.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>How do I install one?</AccordionTrigger>
+        <AccordionContent>
+          Run `npx gremorie add rx-accordion` from your project root.
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Accordion [type="single" | "multiple"] [collapsible]
+  AccordionItem [value]
+    AccordionTrigger
+    AccordionContent
+```
+
+## Best practices
+
+- **Pick `type="single"` by default.** Most accordions read better when
+  only one section is open at a time. Use `multiple` when sections are
+  independent settings.
+- **Avoid more than 7 sections.** Above that, a Tabs or Sidebar layout
+  is usually clearer.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/accordion/accordion.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-accordion.json`.

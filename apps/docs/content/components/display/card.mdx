@@ -1,0 +1,109 @@
+---
+title: Card
+description: Surface container for grouped content.
+---
+
+`Card` is the base building block for dashboards, lists, and detail
+views. It composes a fixed header / content / footer rhythm with
+explicit slots: `CardHeader`, `CardTitle`, `CardDescription`,
+`CardContent`, `CardFooter`. Use the full composition rather than
+stuffing everything into `CardContent`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Card lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-card
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
+
+export function AccountCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Account</CardTitle>
+        <CardDescription>Manage your profile and billing.</CardDescription>
+        <CardAction>
+          <Button variant="outline" size="sm">
+            Edit
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        <p>Pro plan - renews on Jan 14.</p>
+      </CardContent>
+      <CardFooter>
+        <Button variant="ghost">Sign out</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Card
+  CardHeader
+    CardTitle
+    CardDescription
+    CardAction (top-right trailing slot)
+  CardContent
+  CardFooter
+```
+
+## Best practices
+
+- **Use the full composition.** Skip `CardHeader` only when the card
+  is a single content block (e.g. a chart).
+- **Reserve `CardAction` for a single trailing control.** A small
+  Button or DropdownMenu trigger. Avoid stacking actions there.
+- **One card per concern.** When in doubt, split into multiple cards
+  rather than building a single card with internal dividers.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/card/card.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-card.json`.

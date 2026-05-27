@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "noEmitOnError": false,
+    "composite": true,
+    "isolatedModules": true,
+    "types": []
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/**/*.stories.ts", "src/**/*.stories.tsx"],
+  "references": [
+    {
+      "path": "../rx-core/tsconfig.lib.json"
+    },
+    {
+      "path": "../rx-forms/tsconfig.lib.json"
+    }
+  ]
+}

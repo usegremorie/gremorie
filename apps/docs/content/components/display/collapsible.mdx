@@ -1,0 +1,91 @@
+---
+title: Collapsible
+description: Single-section expandable region.
+---
+
+`Collapsible` is the minimal building block for "show more" toggles -
+a card's "more details", a sidebar group's expand / collapse, an
+inline disclosure in long copy. Three parts: `Collapsible` (root),
+`CollapsibleTrigger`, `CollapsibleContent`. For multiple coordinated
+sections, use `Accordion` instead.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Collapsible lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-collapsible
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@gremorie/rx-display";
+
+export function MoreOptions() {
+  return (
+    <Collapsible>
+      <CollapsibleTrigger asChild>
+        <Button variant="ghost">Advanced settings</Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="mt-2 grid gap-2">
+        <p>Hidden details appear here.</p>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Collapsible [open] [defaultOpen]
+  CollapsibleTrigger (asChild)
+  CollapsibleContent
+```
+
+## Best practices
+
+- **Default closed.** A Collapsible that defaults open defeats its
+  purpose - if it should always be visible, just render the content.
+- **Reach for Accordion when sections coordinate.** Collapsible is a
+  single switch; Accordion enforces "one at a time" or "many open"
+  semantics.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/collapsible/collapsible.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-collapsible.json`.

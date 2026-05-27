@@ -1,0 +1,100 @@
+---
+title: Carousel
+description: Horizontal slider with touch, drag, keyboard.
+---
+
+`Carousel` wraps `embla-carousel-react` with Gremorie styling. Native
+support for touch, drag, and keyboard. Renders `CarouselPrevious` and
+`CarouselNext` controls that wire into Embla's API automatically. Best
+for hero rotators, image galleries, onboarding tours.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Carousel lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-carousel
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@gremorie/rx-display";
+
+export function HeroRotator() {
+  return (
+    <Carousel className="w-full max-w-xl">
+      <CarouselContent>
+        {[1, 2, 3].map((n) => (
+          <CarouselItem key={n}>
+            <div className="grid aspect-video place-items-center rounded bg-muted">
+              Slide {n}
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Carousel [orientation="horizontal" | "vertical"] [opts]
+  CarouselContent
+    CarouselItem
+  CarouselPrevious
+  CarouselNext
+```
+
+## Best practices
+
+- **Pause autoplay on hover.** If you wire autoplay via Embla plugins,
+  pause when the user hovers - autoplay that ignores the user is
+  disorienting.
+- **Always render Previous/Next controls.** They are the keyboard /
+  pointer fallback when drag is not obvious.
+- **Cap slide count.** Above 8-10 slides users lose track of position.
+  Pair with pagination dots or a list view above that.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/carousel/carousel.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-carousel.json`.

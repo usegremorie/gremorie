@@ -1,0 +1,85 @@
+---
+title: Badge
+description: Compact label for status, count, or category.
+---
+
+`Badge` is the small, all-caps label that lives next to titles, on
+top of cards, and inside lists - status tags, counts, categories.
+Variants: `default`, `secondary`, `destructive`, `outline`. Supports
+`asChild` via Radix Slot for composition with anchors or buttons.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Badge lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-badge
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Badge } from "@gremorie/rx-display";
+
+export function TaskRow() {
+  return (
+    <div className="flex items-center gap-2">
+      <span>Refactor invoice page</span>
+      <Badge variant="secondary">In review</Badge>
+    </div>
+  );
+}
+
+export function CountBadge({ count }: { count: number }) {
+  return <Badge>{count}</Badge>;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Variants
+
+- `default` - solid, primary tone. Use for high-signal status.
+- `secondary` - softer surface. Use for neutral status.
+- `destructive` - red tone. Reserve for errors and dangerous state.
+- `outline` - outlined only. Use for less prominent metadata.
+
+## Best practices
+
+- **Keep the text short.** One or two words. If you need more, use a
+  Card or a list cell.
+- **Avoid `destructive` for non-errors.** It carries a hazard
+  semantic - using it for "Premium" is a tone mismatch.
+- **Compose with `asChild` for interactive badges.** Wrap an anchor or
+  button to inherit Badge styling while keeping link/button semantics.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/badge/badge.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-badge.json`.

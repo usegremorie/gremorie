@@ -1,0 +1,88 @@
+---
+title: Separator
+description: Horizontal or vertical visual divider.
+---
+
+`Separator` is the styled `<hr>` of the design system. Use sparingly -
+prefer spacing for visual grouping. Reach for `Separator` only when a
+hard line carries semantic meaning: between logically distinct groups
+of items, between a menu's commands and shortcuts, between a card's
+content and its footer.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Separator lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-separator
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Separator } from "@gremorie/rx-display";
+
+export function SettingsSection() {
+  return (
+    <div>
+      <h2>Profile</h2>
+      <p>Manage your name, email, and avatar.</p>
+      <Separator className="my-4" />
+      <h2>Notifications</h2>
+      <p>Pick which emails you want to receive.</p>
+    </div>
+  );
+}
+
+export function HorizontalRule() {
+  return (
+    <div className="flex h-10 items-center gap-2 text-sm">
+      <span>Blog</span>
+      <Separator orientation="vertical" />
+      <span>Docs</span>
+      <Separator orientation="vertical" />
+      <span>Pricing</span>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Spacing first, separator second.** A clear gap usually does the job
+  without ink. Add a Separator only when grouping is ambiguous.
+- **Use `orientation="vertical"` for inline groups.** Common in nav
+  bars, breadcrumbs, and toolbar clusters.
+
+## Reference
+
+- React source: `packages/rx-display/src/lib/separator/separator.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-separator.json`.
