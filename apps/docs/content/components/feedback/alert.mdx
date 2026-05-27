@@ -1,0 +1,105 @@
+---
+title: Alert
+description: Persistent in-flow feedback message.
+---
+
+`Alert` is a message anchored inside page flow - distinct from
+`Sonner` (transient, floating) and `AlertDialog` (modal). Two
+variants: `default` (neutral surface) and `destructive` (error tone).
+Convey informational, success, and warning intent through a leading
+icon rather than expanding variants - keeps the surface consistent
+and the API minimal.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Alert lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-alert
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { CircleAlertIcon, InfoIcon } from "lucide-react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@gremorie/rx-feedback";
+
+export function Examples() {
+  return (
+    <div className="grid gap-3">
+      <Alert>
+        <InfoIcon />
+        <AlertTitle>Heads up</AlertTitle>
+        <AlertDescription>
+          You can change this in Settings later.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="destructive">
+        <CircleAlertIcon />
+        <AlertTitle>Save failed</AlertTitle>
+        <AlertDescription>
+          Check your connection and try again.
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Alert [variant="default" | "destructive"]
+  <Icon />            (optional leading icon)
+  AlertTitle
+  AlertDescription
+```
+
+## Best practices
+
+- **Use a leading icon to convey intent.** `Info`, `CheckCircle2`,
+  `AlertTriangle`, `XCircle` from `lucide-react` are the conventional
+  set.
+- **Reserve `destructive` for errors.** Warnings get a yellow icon
+  inside the default surface - they are informational, not failed
+  state.
+- **Pair with Sonner, not replace it.** Alert is for messages that
+  should remain visible (form errors, system status); Sonner is for
+  ephemeral feedback.
+
+## Reference
+
+- React source: `packages/rx-feedback/src/lib/alert/alert.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-alert.json`.

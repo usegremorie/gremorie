@@ -1,0 +1,79 @@
+---
+title: Progress
+description: Determinate progress indicator (0-100).
+---
+
+`Progress` shows progress against a known total - uploads, multi-step
+forms, batch jobs. For unknown duration, prefer `Skeleton` or a
+spinner. Always pair the bar with a numeric value or label; silent
+bars confuse users about the actual state.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Progress lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-progress
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Progress } from "@gremorie/rx-feedback";
+
+export function UploadProgress({ percent }: { percent: number }) {
+  return (
+    <div className="grid gap-2">
+      <div className="flex items-baseline justify-between text-sm">
+        <span>Uploading</span>
+        <span>{percent}%</span>
+      </div>
+      <Progress value={percent} />
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## API
+
+- `value` (0-100) - the current progress. Required for determinate.
+
+## Best practices
+
+- **Always show the numeric value.** A bare bar leaves users guessing -
+  pair it with a label like `42%` or `3 of 8`.
+- **Use Skeleton for unknown duration.** Progress should only appear
+  when you can compute percent complete.
+
+## Reference
+
+- React source: `packages/rx-feedback/src/lib/progress/progress.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-progress.json`.

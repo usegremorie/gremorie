@@ -1,0 +1,33 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-progress",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Progress (React)",
+  "description": "Determinate progress indicator (0-100) built on Radix Progress. Use when percent complete is known (uploads, multi-step forms, batch jobs); for unknown duration prefer Skeleton or a spinner.",
+  "categories": [
+    "feedback"
+  ],
+  "dependencies": [
+    "radix-ui"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/progress/progress.tsx",
+      "content": "\"use client\";\n\nimport { Progress as ProgressPrimitive } from \"radix-ui\";\nimport * as React from \"react\";\n\nimport { cn } from \"@gremorie/rx-core\";\n\n/**\n * Progress - determinate progress indicator (0-100).\n *\n * Imported from shadcn/ui (MIT). Wraps Radix Progress. Pass `value`\n * (0-100) for determinate; pass `value={null}` plus a custom\n * indicator class for indeterminate (animated stripe pattern).\n *\n * Use Progress when **percent complete is known** - uploads, multi-\n * step forms, batch jobs. For unknown duration, use Skeleton or a\n * spinner. Always pair the bar with a numeric value or label;\n * silent bars confuse users about the actual state.\n */\nfunction Progress({\n  className,\n  value,\n  ...props\n}: React.ComponentProps<typeof ProgressPrimitive.Root>) {\n  return (\n    <ProgressPrimitive.Root\n      data-slot=\"progress\"\n      className={cn(\n        \"relative h-2 w-full overflow-hidden rounded-full bg-primary/20\",\n        className\n      )}\n      {...props}\n    >\n      <ProgressPrimitive.Indicator\n        data-slot=\"progress-indicator\"\n        className=\"h-full w-full flex-1 bg-primary transition-all\"\n        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}\n      />\n    </ProgressPrimitive.Root>\n  );\n}\n\nexport { Progress };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/feedback/progress/progress.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-progress.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

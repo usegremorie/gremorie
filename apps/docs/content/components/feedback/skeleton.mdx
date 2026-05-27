@@ -1,0 +1,85 @@
+---
+title: Skeleton
+description: Placeholder block for loading states.
+---
+
+`Skeleton` is the pulsing rectangle that stands in for content while
+it loads. Shape it with `className` width/height so the placeholder
+matches the geometry of the real content - that is the whole point:
+skeletons reserve layout so there is no shift when the data arrives.
+
+The default animation is `animate-pulse`. Users with
+`prefers-reduced-motion` see the static state - no extra config
+needed.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Skeleton lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-skeleton
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Skeleton } from "@gremorie/rx-feedback";
+
+export function CardSkeleton() {
+  return (
+    <div
+      aria-busy="true"
+      aria-live="polite"
+      className="flex items-center gap-3"
+    >
+      <Skeleton className="size-10 rounded-full" />
+      <div className="grid gap-2">
+        <Skeleton className="h-3 w-32" />
+        <Skeleton className="h-3 w-48" />
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Match real geometry.** Same width, same height. Otherwise the page
+  shifts when content arrives.
+- **Pair with `aria-busy` and `aria-live` on the container.** Screen
+  readers announce the loading state to non-visual users.
+- **Use sparingly.** Sketches of every nested element create visual
+  noise; skeleton 2-3 key shapes and skip the rest.
+
+## Reference
+
+- React source: `packages/rx-feedback/src/lib/skeleton/skeleton.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-skeleton.json`.

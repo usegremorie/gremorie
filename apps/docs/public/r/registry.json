@@ -535,6 +535,45 @@
       ]
     },
     {
+      "name": "rx-alert",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Alert (React)",
+      "description": "Persistent in-flow feedback message - distinct from Sonner (transient) and AlertDialog (modal). Two variants (default, destructive); convey informational/success/warning via a leading icon rather than expanding variants.",
+      "categories": [
+        "feedback"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-progress",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Progress (React)",
+      "description": "Determinate progress indicator (0-100) built on Radix Progress. Use when percent complete is known (uploads, multi-step forms, batch jobs); for unknown duration prefer Skeleton or a spinner.",
+      "categories": [
+        "feedback"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-skeleton",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Skeleton (React)",
+      "description": "Placeholder block for loading states - a pulsing rectangle that reserves layout space so there is no shift when data arrives. Honors `prefers-reduced-motion` automatically.",
+      "categories": [
+        "feedback"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
       "name": "rx-prompt-input",
       "type": "registry:block",
       "framework": "rx",

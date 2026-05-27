@@ -650,6 +650,52 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['rx-utils'],
   },
 
+  // ---------------------------------------------------------------------------
+  // React (rx-*): feedback primitives
+  // ---------------------------------------------------------------------------
+  {
+    name: 'rx-alert',
+    framework: 'rx',
+    title: 'Alert (React)',
+    description:
+      'Persistent in-flow feedback message - distinct from Sonner (transient) and AlertDialog (modal). Two variants (default, destructive); convey informational/success/warning via a leading icon rather than expanding variants.',
+    categories: ['feedback'],
+    packageRoot: 'packages/rx-feedback',
+    sourceFiles: ['src/lib/alert/alert.tsx'],
+    targetPrefix: 'src/components/gremorie/feedback/alert',
+    srcStrip: 'src/lib/alert/',
+    dependencies: ['class-variance-authority'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-progress',
+    framework: 'rx',
+    title: 'Progress (React)',
+    description:
+      'Determinate progress indicator (0-100) built on Radix Progress. Use when percent complete is known (uploads, multi-step forms, batch jobs); for unknown duration prefer Skeleton or a spinner.',
+    categories: ['feedback'],
+    packageRoot: 'packages/rx-feedback',
+    sourceFiles: ['src/lib/progress/progress.tsx'],
+    targetPrefix: 'src/components/gremorie/feedback/progress',
+    srcStrip: 'src/lib/progress/',
+    dependencies: ['radix-ui'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-skeleton',
+    framework: 'rx',
+    title: 'Skeleton (React)',
+    description:
+      'Placeholder block for loading states - a pulsing rectangle that reserves layout space so there is no shift when data arrives. Honors `prefers-reduced-motion` automatically.',
+    categories: ['feedback'],
+    packageRoot: 'packages/rx-feedback',
+    sourceFiles: ['src/lib/skeleton/skeleton.tsx'],
+    targetPrefix: 'src/components/gremorie/feedback/skeleton',
+    srcStrip: 'src/lib/skeleton/',
+    dependencies: [],
+    registryDependencies: ['rx-utils'],
+  },
+
   {
     name: 'rx-prompt-input',
     framework: 'rx',
