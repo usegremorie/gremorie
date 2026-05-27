@@ -1,0 +1,35 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-pie-chart",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Pie Chart (React)",
+  "description": "Styled pie / donut chart - parts of a whole, one slice per data row. Uses the rx-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/pie-chart/pie-chart.tsx",
+      "content": "import { cn } from \"@gremorie/rx-core\";\nimport { ChartFrame } from \"../headless/chart-frame\";\nimport { Pie } from \"../headless/pie\";\nimport type { Datum } from \"../headless/types\";\n\nexport interface PieChartProps {\n  data: readonly Datum[];\n  nameKey: string;\n  valueKey: string;\n  donut?: boolean;\n  className?: string;\n}\n\nconst colorAt = (i: number) => `var(--chart-${(i % 5) + 1})`;\n\n/**\n * Styled pie / donut chart. `nameKey` is the slice label field, `valueKey` the\n * numeric value field. Slice colors cycle through the `--chart-1..5` tokens.\n * Set `donut` for a donut.\n *\n * @example\n * ```tsx\n * <PieChart data={data} nameKey=\"browser\" valueKey=\"visitors\" donut />\n * ```\n */\nexport function PieChart({\n  data,\n  nameKey,\n  valueKey,\n  donut = false,\n  className,\n}: PieChartProps) {\n  const ariaLabel = `${\n    donut ? \"Donut\" : \"Pie\"\n  } chart of ${valueKey} by ${nameKey}`;\n\n  const legend = data.map((row, i) => ({\n    name: String(row[nameKey]),\n    color: colorAt(i),\n  }));\n\n  return (\n    <figure\n      role=\"img\"\n      aria-label={ariaLabel}\n      data-slot=\"pie-chart\"\n      className={cn(\n        \"flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground\",\n        className\n      )}\n    >\n      <ChartFrame\n        data={data}\n        xKey={nameKey}\n        className=\"mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground\"\n      >\n        <Pie valueKey={valueKey} innerRadiusRatio={donut ? 0.6 : 0}>\n          {({ slices }) =>\n            slices.map((s) => (\n              <path\n                key={s.name}\n                d={s.d}\n                fill={colorAt(s.index)}\n                stroke=\"var(--background)\"\n                strokeWidth={2}\n              />\n            ))\n          }\n        </Pie>\n      </ChartFrame>\n\n      <ul className=\"flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground\">\n        {legend.map((item) => (\n          <li key={item.name} className=\"flex items-center gap-1.5\">\n            <span\n              className=\"size-2.5 rounded-[2px]\"\n              style={{ background: item.color }}\n            />\n            {item.name}\n          </li>\n        ))}\n      </ul>\n\n      <table className=\"sr-only\">\n        <caption>{ariaLabel}</caption>\n        <thead>\n          <tr>\n            <th>{nameKey}</th>\n            <th>{valueKey}</th>\n          </tr>\n        </thead>\n        <tbody>\n          {data.map((row, i) => (\n            <tr key={i}>\n              <td>{row[nameKey]}</td>\n              <td>{row[valueKey]}</td>\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </figure>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/data/pie-chart/pie-chart.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-pie-chart.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

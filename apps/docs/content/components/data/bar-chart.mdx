@@ -1,0 +1,118 @@
+---
+title: Bar Chart
+description: "Compare values across categories with grouped bars."
+---
+
+`BarChart` plots one or more series as side-by-side bars within each
+category band. Pass tabular `data`, a JSON-serializable `config` mapping
+each value field to a `{ label, color }`, and the `xKey` that names the
+category field. Built on the shared chart engine (`chart-context`,
+`chart-frame`, `axis`, `cartesian-grid`, `bar`).
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+npx gremorie add ng-bar-chart
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-bar-chart
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+import { Component } from "@angular/core";
+import { BarChart } from "@gremorie/ng-data";
+import type { ChartConfig, Datum } from "@gremorie/ng-data";
+
+@Component({
+  selector: "platform-bar",
+  imports: [BarChart],
+  template: `
+    <bar-chart [data]="data" [config]="config" xKey="month" />
+  `,
+})
+export class PlatformBar {
+  readonly data: Datum[] = [
+    { month: "Jan", desktop: 186, mobile: 80 },
+    { month: "Feb", desktop: 305, mobile: 200 },
+    { month: "Mar", desktop: 237, mobile: 120 },
+  ];
+  readonly config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
+}
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { BarChart } from "@gremorie/rx-data";
+import type { ChartConfig, Datum } from "@gremorie/rx-data";
+
+const data: Datum[] = [
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+];
+
+const config: ChartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+export function PlatformBar() {
+  return <BarChart data={data} config={config} xKey="month" />;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+BarChart (figure)
+  ChartFrame (svg)
+    CartesianGrid (horizontal gridlines)
+    Bar (one per series, rects within each category band)
+    XAxis (category ticks)
+    YAxis (value ticks)
+  Table (sr-only data table)
+```
+
+## Best practices
+
+- **Keep series tight.** Two to four series read well; beyond that the
+  bands get crowded.
+- **Sort meaningfully.** Sort `data` by the dimension that aids
+  comparison (chronological, ranked) - the chart does not sort for you.
+- **Stick to tokens.** `var(--chart-1..5)` keeps the bars in theme.
+
+## Reference
+
+- Angular source: `packages/ng-data/src/lib/charts/styled/bar-chart.ts`.
+- React source: `packages/rx-data/src/lib/bar-chart/bar-chart.tsx`.
+- Registry items: `https://gremorie.com/r/ng/ng-bar-chart.json` and
+  `https://gremorie.com/r/rx/rx-bar-chart.json`.

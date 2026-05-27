@@ -1,0 +1,35 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-radar-chart",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Radar Chart (React)",
+  "description": "Styled radar chart - compare series across multiple axes that share a radial domain. Uses the rx-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/radar-chart/radar-chart.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@gremorie/rx-core\";\nimport { ChartFrame } from \"../headless/chart-frame\";\nimport { Radar } from \"../headless/radar\";\nimport type { ChartConfig, Datum } from \"../headless/types\";\n\nexport interface RadarChartProps {\n  data: readonly Datum[];\n  config: ChartConfig;\n  xKey: string;\n  className?: string;\n}\n\n/**\n * Styled radar chart. Each data row (`xKey`) becomes a spoke; each entry in\n * `config` becomes a closed series polygon sharing one radial max.\n *\n * @example\n * ```tsx\n * <RadarChart data={data} config={config} xKey=\"metric\" />\n * ```\n */\nexport function RadarChart({\n  data,\n  config,\n  xKey,\n  className,\n}: RadarChartProps) {\n  const series = Object.entries(config).map(([key, entry]) => ({\n    key,\n    label: entry.label,\n    color: entry.color,\n  }));\n\n  const ariaLabel = `Radar chart of ${series\n    .map((s) => s.label)\n    .join(\", \")} by ${xKey}`;\n\n  return (\n    <figure\n      role=\"img\"\n      aria-label={ariaLabel}\n      data-slot=\"radar-chart\"\n      className={cn(\n        \"flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground\",\n        className\n      )}\n    >\n      <ChartFrame\n        data={data}\n        xKey={xKey}\n        className=\"mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground\"\n      >\n        {series.map((s, i) => (\n          <Radar key={s.key} dataKey={s.key} color={s.color}>\n            {({ d, axes, rings, center }) => (\n              <>\n                {i === 0 && (\n                  <>\n                    {rings.map((ring, idx) => (\n                      <path\n                        key={idx}\n                        d={ring}\n                        fill=\"none\"\n                        stroke=\"currentColor\"\n                        strokeOpacity={0.12}\n                      />\n                    ))}\n                    {axes.map((ax) => (\n                      <React.Fragment key={ax.label}>\n                        <line\n                          x1={center.cx}\n                          y1={center.cy}\n                          x2={ax.x2}\n                          y2={ax.y2}\n                          stroke=\"currentColor\"\n                          strokeOpacity={0.12}\n                        />\n                        <text\n                          x={ax.lx}\n                          y={ax.ly}\n                          textAnchor=\"middle\"\n                          dominantBaseline=\"middle\"\n                          className=\"fill-muted-foreground text-[10px]\"\n                        >\n                          {ax.label}\n                        </text>\n                      </React.Fragment>\n                    ))}\n                  </>\n                )}\n                <path\n                  d={d}\n                  fill={s.color}\n                  fillOpacity={0.2}\n                  stroke={s.color}\n                  strokeWidth={2}\n                />\n              </>\n            )}\n          </Radar>\n        ))}\n      </ChartFrame>\n\n      <ul className=\"flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground\">\n        {series.map((s) => (\n          <li key={s.key} className=\"flex items-center gap-1.5\">\n            <span\n              className=\"size-2.5 rounded-[2px]\"\n              style={{ background: s.color }}\n            />\n            {s.label}\n          </li>\n        ))}\n      </ul>\n\n      <table className=\"sr-only\">\n        <caption>{ariaLabel}</caption>\n        <thead>\n          <tr>\n            <th>{xKey}</th>\n            {series.map((s) => (\n              <th key={s.key}>{s.label}</th>\n            ))}\n          </tr>\n        </thead>\n        <tbody>\n          {data.map((row, i) => (\n            <tr key={i}>\n              <td>{row[xKey]}</td>\n              {series.map((s) => (\n                <td key={s.key}>{row[s.key]}</td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </figure>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/data/radar-chart/radar-chart.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-radar-chart.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

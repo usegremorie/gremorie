@@ -1311,6 +1311,125 @@
         "rx-button",
         "rx-dropdown-menu"
       ]
+    },
+    {
+      "name": "rx-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chart (React)",
+      "description": "Headless chart engine for the React edition - chart-context (React Context + hooks), scales, axis, cartesian-grid, chart-frame, plus shape helpers (area, line, bar, scatter, pie, polar, radar, radial-bar). Shared base for every styled chart.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-area-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Area Chart (React)",
+      "description": "Styled area chart - cumulative quantity over a continuous domain. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-line-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Line Chart (React)",
+      "description": "Styled line chart - trends over a continuous domain. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-bar-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Bar Chart (React)",
+      "description": "Styled grouped bar chart - compare values across categories with one bar per series in each band. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-scatter-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Scatter Chart (React)",
+      "description": "Styled scatter chart - show correlation between a numeric X field and one or more Y series. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-pie-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Pie Chart (React)",
+      "description": "Styled pie / donut chart - parts of a whole, one slice per data row. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-radar-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Radar Chart (React)",
+      "description": "Styled radar chart - compare series across multiple axes that share a radial domain. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-radial-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Radial Chart (React)",
+      "description": "Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
     }
   ]
 }

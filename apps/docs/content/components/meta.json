@@ -2,5 +2,5 @@
   "title": "Components",
   "description": "Registry items organised by functional category - install via gremorie add",
   "icon": "LayoutGrid",
-  "pages": ["ai", "forms", "overlays", "display", "containers", "feedback", "navigation"]
+  "pages": ["ai", "forms", "overlays", "display", "containers", "feedback", "navigation", "data"]
 }

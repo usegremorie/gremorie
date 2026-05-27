@@ -1,0 +1,114 @@
+---
+title: Pie Chart
+description: "Parts of a whole - one slice per data row."
+---
+
+`PieChart` plots one slice per data row using `valueKey` for sweep and
+`nameKey` for label. Set `donut` to draw a donut. Slice colors cycle
+through `--chart-1..5`. Built on the shared chart engine
+(`chart-context`, `chart-frame`, `pie`).
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+npx gremorie add ng-pie-chart
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-pie-chart
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+import { Component } from "@angular/core";
+import { PieChart } from "@gremorie/ng-data";
+import type { Datum } from "@gremorie/ng-data";
+
+@Component({
+  selector: "browsers-pie",
+  imports: [PieChart],
+  template: `
+    <pie-chart
+      [data]="data"
+      nameKey="browser"
+      valueKey="visitors"
+      [donut]="true"
+    />
+  `,
+})
+export class BrowsersPie {
+  readonly data: Datum[] = [
+    { browser: "Chrome", visitors: 275 },
+    { browser: "Safari", visitors: 200 },
+    { browser: "Firefox", visitors: 187 },
+  ];
+}
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { PieChart } from "@gremorie/rx-data";
+import type { Datum } from "@gremorie/rx-data";
+
+const data: Datum[] = [
+  { browser: "Chrome", visitors: 275 },
+  { browser: "Safari", visitors: 200 },
+  { browser: "Firefox", visitors: 187 },
+];
+
+export function BrowsersPie() {
+  return (
+    <PieChart data={data} nameKey="browser" valueKey="visitors" donut />
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+PieChart (figure)
+  ChartFrame (svg, aspect-square)
+    Pie (slices, optional inner radius for donut)
+  Legend (ul)
+  Table (sr-only data table)
+```
+
+## Best practices
+
+- **Five slices or fewer.** Beyond that a pie hides ordering; use a Bar
+  chart instead.
+- **Pre-sort by value.** The component does not sort - sort `data`
+  descending so the biggest slice anchors the eye.
+- **Donut for a focal number.** Use `donut` when you plan to overlay a
+  total in the hole; full pie otherwise.
+
+## Reference
+
+- Angular source: `packages/ng-data/src/lib/charts/styled/pie-chart.ts`.
+- React source: `packages/rx-data/src/lib/pie-chart/pie-chart.tsx`.
+- Registry items: `https://gremorie.com/r/ng/ng-pie-chart.json` and
+  `https://gremorie.com/r/rx/rx-pie-chart.json`.

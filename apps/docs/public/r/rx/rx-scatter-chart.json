@@ -1,0 +1,35 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-scatter-chart",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Scatter Chart (React)",
+  "description": "Styled scatter chart - show correlation between a numeric X field and one or more Y series. Uses the rx-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/scatter-chart/scatter-chart.tsx",
+      "content": "import { cn } from \"@gremorie/rx-core\";\nimport { CartesianGrid } from \"../headless/cartesian-grid\";\nimport { ChartFrame } from \"../headless/chart-frame\";\nimport { Scatter } from \"../headless/scatter\";\nimport { YAxis } from \"../headless/axis\";\nimport type { ChartConfig, Datum } from \"../headless/types\";\n\nexport interface ScatterChartProps {\n  data: readonly Datum[];\n  config: ChartConfig;\n  xKey: string;\n  className?: string;\n}\n\n/**\n * Styled scatter chart. `xKey` is a numeric field (linear X axis); each entry\n * in `config` is a numeric Y series. Pass tabular `data`.\n *\n * @example\n * ```tsx\n * <ScatterChart data={data} config={config} xKey=\"weight\" />\n * ```\n */\nexport function ScatterChart({\n  data,\n  config,\n  xKey,\n  className,\n}: ScatterChartProps) {\n  const series = Object.entries(config).map(([key, entry]) => ({\n    key,\n    label: entry.label,\n    color: entry.color,\n  }));\n\n  const ariaLabel = `Scatter chart of ${series\n    .map((s) => s.label)\n    .join(\", \")} against ${xKey}`;\n\n  return (\n    <figure\n      role=\"img\"\n      aria-label={ariaLabel}\n      data-slot=\"scatter-chart\"\n      className={cn(\n        \"flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground\",\n        className\n      )}\n    >\n      <ChartFrame\n        data={data}\n        xKey={xKey}\n        className=\"aspect-video w-full overflow-visible text-muted-foreground\"\n      >\n        <CartesianGrid>\n          {(lines) =>\n            lines.map((l, i) => (\n              <line\n                key={i}\n                x1={l.x1}\n                x2={l.x2}\n                y1={l.y}\n                y2={l.y}\n                stroke=\"currentColor\"\n                strokeOpacity={0.15}\n              />\n            ))\n          }\n        </CartesianGrid>\n\n        {series.map((s, i) => (\n          <Scatter key={s.key} dataKey={s.key}>\n            {({ points, xTicks, labelY }) => (\n              <>\n                {points.map((p, idx) => (\n                  <circle\n                    key={idx}\n                    cx={p.cx}\n                    cy={p.cy}\n                    r={4}\n                    fill={s.color}\n                    fillOpacity={0.7}\n                  />\n                ))}\n                {i === 0 &&\n                  xTicks.map((t) => (\n                    <text\n                      key={t.label}\n                      x={t.x}\n                      y={labelY}\n                      textAnchor=\"middle\"\n                      className=\"fill-muted-foreground text-[10px]\"\n                    >\n                      {t.label}\n                    </text>\n                  ))}\n              </>\n            )}\n          </Scatter>\n        ))}\n\n        <YAxis>\n          {({ ticks, labelX }) =>\n            ticks.map((t) => (\n              <text\n                key={t.value}\n                x={labelX}\n                y={t.y}\n                textAnchor=\"end\"\n                dominantBaseline=\"middle\"\n                className=\"fill-muted-foreground text-[10px]\"\n              >\n                {t.label}\n              </text>\n            ))\n          }\n        </YAxis>\n      </ChartFrame>\n\n      <table className=\"sr-only\">\n        <caption>{ariaLabel}</caption>\n        <thead>\n          <tr>\n            <th>{xKey}</th>\n            {series.map((s) => (\n              <th key={s.key}>{s.label}</th>\n            ))}\n          </tr>\n        </thead>\n        <tbody>\n          {data.map((row, i) => (\n            <tr key={i}>\n              <td>{row[xKey]}</td>\n              {series.map((s) => (\n                <td key={s.key}>{row[s.key]}</td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </figure>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/data/scatter-chart/scatter-chart.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-scatter-chart.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

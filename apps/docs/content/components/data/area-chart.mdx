@@ -1,0 +1,119 @@
+---
+title: Area Chart
+description: "Cumulative quantity over a continuous domain."
+---
+
+`AreaChart` plots one or more series as filled areas over a categorical
+X axis. Pass tabular `data`, a JSON-serializable `config` mapping each
+value field to a `{ label, color }`, and the `xKey` that names the
+category field. Built on the shared chart engine (`chart-context`,
+`chart-frame`, `axis`, `cartesian-grid`, `area`).
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+npx gremorie add ng-area-chart
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-area-chart
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+import { Component } from "@angular/core";
+import { AreaChart } from "@gremorie/ng-data";
+import type { ChartConfig, Datum } from "@gremorie/ng-data";
+
+@Component({
+  selector: "sales-area",
+  imports: [AreaChart],
+  template: `
+    <area-chart [data]="data" [config]="config" xKey="month" />
+  `,
+})
+export class SalesArea {
+  readonly data: Datum[] = [
+    { month: "Jan", desktop: 186, mobile: 80 },
+    { month: "Feb", desktop: 305, mobile: 200 },
+    { month: "Mar", desktop: 237, mobile: 120 },
+  ];
+  readonly config: ChartConfig = {
+    desktop: { label: "Desktop", color: "var(--chart-1)" },
+    mobile: { label: "Mobile", color: "var(--chart-2)" },
+  };
+}
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { AreaChart } from "@gremorie/rx-data";
+import type { ChartConfig, Datum } from "@gremorie/rx-data";
+
+const data: Datum[] = [
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+];
+
+const config: ChartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+export function SalesArea() {
+  return <AreaChart data={data} config={config} xKey="month" />;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+AreaChart (figure)
+  ChartFrame (svg)
+    CartesianGrid (horizontal gridlines)
+    Area (one per series)
+    XAxis (category ticks)
+    YAxis (value ticks)
+  Table (sr-only data table)
+```
+
+## Best practices
+
+- **Tokens for color.** Use `var(--chart-1..5)` instead of hex so the
+  chart inherits the theme.
+- **Two to three series.** Beyond that, prefer a line chart - overlapping
+  filled areas become hard to read.
+- **Provide a sr-only table.** The component already renders one from
+  `data` and `config`; do not hide it.
+
+## Reference
+
+- Angular source: `packages/ng-data/src/lib/charts/styled/area-chart.ts`.
+- React source: `packages/rx-data/src/lib/area-chart/area-chart.tsx`.
+- Registry items: `https://gremorie.com/r/ng/ng-area-chart.json` and
+  `https://gremorie.com/r/rx/rx-area-chart.json`.
