@@ -1,0 +1,72 @@
+---
+title: Open in Chat
+description: Dropdown that opens the current page in an external chat (ChatGPT, Claude, Gemini, T3 Chat, ...).
+---
+
+`Open in Chat` is part of the **AI utilities family** brought from Bridge into Gremorie in Fase 5j.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-open-in-chat
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  OpenInChat,
+  OpenInChatTrigger,
+  OpenInChatContent,
+  OpenInChatLabel,
+  OpenInChatSeparator,
+  OpenInChatItem,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <OpenInChat url={pageUrl}>
+      <OpenInChatTrigger />
+      <OpenInChatContent>
+        <OpenInChatLabel>Open in...</OpenInChatLabel>
+        <OpenInChatSeparator />
+        <OpenInChatItem provider="chatgpt" />
+        <OpenInChatItem provider="claude" />
+      </OpenInChatContent>
+    </OpenInChat>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j utilities batch.
+- Closes the AI category parity with Bridge (28 of 29 primitives shipped, PromptInput first in Fase 5).

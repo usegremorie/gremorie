@@ -1454,4 +1454,36 @@ export const ITEMS: ItemConfig[] = [
     dependencies: ['@xyflow/react'],
     registryDependencies: ['rx-utils'],
   },
+
+  // ============================================================
+  // Fase 5j - Batch 4: Utilities family (2 primitives)
+  // ============================================================
+  {
+    name: 'rx-image',
+    framework: 'rx',
+    title: 'Image (React)',
+    description:
+      'Tiny wrapper that renders an Experimental_GeneratedImage (Vercel AI SDK) as a data-URI <img>. Use to display model-generated images returned from generateImage() / experimental tool output.',
+    categories: ['ai', 'utilities'],
+    packageRoot: 'packages/rx-ai',
+    sourceFiles: ['src/lib/image/image.tsx'],
+    targetPrefix: 'src/components/gremorie/ai/image',
+    srcStrip: 'src/lib/image/',
+    dependencies: ['ai'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-open-in-chat',
+    framework: 'rx',
+    title: 'Open in Chat (React)',
+    description:
+      'Dropdown that opens the current page in an external chat (ChatGPT, Claude, Gemini, T3 Chat, ...). Provides preset providers (github, chatgpt, claude, gemini, t3) and accepts custom OpenInChatItem entries.',
+    categories: ['ai', 'utilities'],
+    packageRoot: 'packages/rx-ai',
+    sourceFiles: ['src/lib/open-in-chat/open-in-chat.tsx'],
+    targetPrefix: 'src/components/gremorie/ai/open-in-chat',
+    srcStrip: 'src/lib/open-in-chat/',
+    dependencies: [],
+    registryDependencies: ['rx-utils', 'rx-button', 'rx-dropdown-menu'],
+  },
 ];

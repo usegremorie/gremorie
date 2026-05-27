@@ -1,0 +1,64 @@
+---
+title: Image
+description: Renders an Experimental_GeneratedImage (Vercel AI SDK) as a data-URI img. Use to display model-generated images.
+---
+
+`Image` is part of the **AI utilities family** brought from Bridge into Gremorie in Fase 5j.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-image
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Image,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <Image
+      base64={image.base64}
+      uint8Array={image.uint8Array}
+      mediaType={image.mediaType}
+      alt="Generated chart"
+    />
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j utilities batch.
+- Closes the AI category parity with Bridge (28 of 29 primitives shipped, PromptInput first in Fase 5).

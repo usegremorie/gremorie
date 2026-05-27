@@ -32,3 +32,7 @@ export * from "./lib/edge";
 export * from "./lib/node";
 export * from "./lib/panel";
 export * from "./lib/toolbar";
+
+// Utilities family (Fase 5j - Batch 4)
+export * from "./lib/image";
+export * from "./lib/open-in-chat";

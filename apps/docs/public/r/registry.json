@@ -1281,6 +1281,36 @@
       "registryDependencies": [
         "rx-utils"
       ]
+    },
+    {
+      "name": "rx-image",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Image (React)",
+      "description": "Tiny wrapper that renders an Experimental_GeneratedImage (Vercel AI SDK) as a data-URI <img>. Use to display model-generated images returned from generateImage() / experimental tool output.",
+      "categories": [
+        "ai",
+        "utilities"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-open-in-chat",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Open in Chat (React)",
+      "description": "Dropdown that opens the current page in an external chat (ChatGPT, Claude, Gemini, T3 Chat, ...). Provides preset providers (github, chatgpt, claude, gemini, t3) and accepts custom OpenInChatItem entries.",
+      "categories": [
+        "ai",
+        "utilities"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-dropdown-menu"
+      ]
     }
   ]
 }

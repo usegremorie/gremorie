@@ -32,6 +32,9 @@
     "edge",
     "node",
     "panel",
-    "toolbar"
+    "toolbar",
+    "---Utilities---",
+    "image",
+    "open-in-chat"
   ]
 }
