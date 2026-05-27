@@ -665,6 +665,66 @@ export const ITEMS: ItemConfig[] = [
   },
 
   // ---------------------------------------------------------------------------
+  // React (rx-*): container primitives
+  // ---------------------------------------------------------------------------
+  {
+    name: 'rx-aspect-ratio',
+    framework: 'rx',
+    title: 'Aspect Ratio (React)',
+    description:
+      'Reserves vertical space for media before content loads - thin wrapper over Radix AspectRatio. Use on responsive images, iframes, video embeds, and skeleton placeholders to prevent cumulative layout shift.',
+    categories: ['containers'],
+    packageRoot: 'packages/rx-containers',
+    sourceFiles: ['src/lib/aspect-ratio/aspect-ratio.tsx'],
+    targetPrefix: 'src/components/gremorie/containers/aspect-ratio',
+    srcStrip: 'src/lib/aspect-ratio/',
+    dependencies: ['radix-ui'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-resizable',
+    framework: 'rx',
+    title: 'Resizable (React)',
+    description:
+      'Split panes with draggable handles - ResizablePanelGroup + ResizablePanel + ResizableHandle on top of react-resizable-panels. Use for dev tools and pro apps (editors, email clients, file managers); consumer surfaces almost always read better with fixed proportions.',
+    categories: ['containers'],
+    packageRoot: 'packages/rx-containers',
+    sourceFiles: ['src/lib/resizable/resizable.tsx'],
+    targetPrefix: 'src/components/gremorie/containers/resizable',
+    srcStrip: 'src/lib/resizable/',
+    dependencies: ['react-resizable-panels', 'lucide-react'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-scroll-area',
+    framework: 'rx',
+    title: 'Scroll Area (React)',
+    description:
+      'Themeable scroll container built on Radix ScrollArea - ScrollArea + ScrollBar. Reach for it when you need consistent scrollbar styling across OSs, or when the scrollbar lives inside a rounded card and the native bar would bleed outside the radius. Otherwise native scroll is fine.',
+    categories: ['containers'],
+    packageRoot: 'packages/rx-containers',
+    sourceFiles: ['src/lib/scroll-area/scroll-area.tsx'],
+    targetPrefix: 'src/components/gremorie/containers/scroll-area',
+    srcStrip: 'src/lib/scroll-area/',
+    dependencies: ['radix-ui'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-stack',
+    framework: 'rx',
+    title: 'Stack (React)',
+    description:
+      'Vertical layout primitive - a `<div>` configured as flex column with consistent gap, align, and justify props. The right choice for any list flowing top-to-bottom (card contents, form sections, settings rows, vertical menus).',
+    categories: ['containers'],
+    packageRoot: 'packages/rx-containers',
+    sourceFiles: ['src/lib/stack/stack.tsx'],
+    targetPrefix: 'src/components/gremorie/containers/stack',
+    srcStrip: 'src/lib/stack/',
+    dependencies: ['class-variance-authority'],
+    registryDependencies: ['rx-utils'],
+  },
+
+  // ---------------------------------------------------------------------------
   // React (rx-*): feedback primitives
   // ---------------------------------------------------------------------------
   {

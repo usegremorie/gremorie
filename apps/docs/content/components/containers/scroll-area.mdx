@@ -1,0 +1,122 @@
+---
+title: Scroll Area
+description: Themeable scroll container.
+---
+
+`ScrollArea` is a themed scroll container. The Angular edition wraps
+`ngx-scrollbar`; the React edition wraps Radix ScrollArea. Both expose
+overlay scrollbars styled with Gremorie tokens.
+
+Native scroll is fine 99% of the time. Reach for `ScrollArea` when (a)
+you want consistent scrollbar styling across OSs, or (b) the scrollbar
+lives inside a card with rounded corners and the native bar would bleed
+outside the radius.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+npx gremorie add ng-scroll-area
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-scroll-area
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+import { Component } from "@angular/core";
+import { ScrollArea } from "@gremorie/ng-containers";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [ScrollArea],
+  template: `
+    <kds-scroll-area class="h-72 w-48 rounded-md border">
+      <div class="p-4">
+        <h4 class="mb-4 text-sm font-medium leading-none">Tags</h4>
+        <div *ngFor="let tag of tags" class="text-sm">{{ tag }}</div>
+      </div>
+    </kds-scroll-area>
+  `,
+})
+export class ExampleComponent {
+  tags = Array.from({ length: 50 }, (_, i) => `v1.2.0-beta.${50 - i}`);
+}
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { ScrollArea } from "@gremorie/rx-containers";
+
+const tags = Array.from({ length: 50 }, (_, i) => `v1.2.0-beta.${50 - i}`);
+
+export function Example() {
+  return (
+    <ScrollArea className="h-72 w-48 rounded-md border">
+      <div className="p-4">
+        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+        {tags.map((tag) => (
+          <div key={tag} className="text-sm">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+ScrollArea
+  <child />            (any scrollable content)
+
+(React only)
+ScrollBar [orientation="vertical" | "horizontal"]
+```
+
+In the React edition the vertical `ScrollBar` is rendered by default;
+mount a horizontal one explicitly when the content scrolls sideways.
+
+## Best practices
+
+- **Default to native scroll.** Use `ScrollArea` only when you need the
+  themed scrollbar or the corner clip; native bars are more familiar
+  and accessible by default.
+- **Set an explicit height.** A `ScrollArea` without a constrained
+  height does not scroll - the inner viewport stretches with the
+  content.
+- **Pair with `Separator` inside the scroller.** Common pattern: list of
+  items with dividers between groups, all inside one `ScrollArea`.
+
+## Reference
+
+- Angular source: `packages/ng-containers/src/lib/scroll-area/scroll-area.ts`.
+- React source: `packages/rx-containers/src/lib/scroll-area/scroll-area.tsx`.
+- Registry items: `https://gremorie.com/r/ng/ng-scroll-area.json`, `https://gremorie.com/r/rx/rx-scroll-area.json`.

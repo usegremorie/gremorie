@@ -1,0 +1,45 @@
+{
+  "name": "@gremorie/rx-containers",
+  "version": "0.0.1",
+  "description": "React container primitives for Gremorie - AspectRatio, Resizable, ScrollArea, Stack.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-containers"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "shadcn",
+    "containers",
+    "layout",
+    "aspect-ratio",
+    "resizable",
+    "scroll-area",
+    "stack"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "peerDependencies": {
+    "@gremorie/rx-core": "^0.0.1",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.547.0",
+    "radix-ui": "^1.4.3",
+    "react-resizable-panels": "^4.0.0",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

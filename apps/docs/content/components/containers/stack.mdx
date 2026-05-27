@@ -1,0 +1,90 @@
+---
+title: Stack
+description: Vertical layout primitive.
+---
+
+`Stack` is a `<div>` configured as `flex flex-col` with consistent
+`gap`, `align`, and `justify` props. It is the right primitive any time
+you have a list of items flowing top-to-bottom: card contents, form
+sections, settings rows, vertical menus.
+
+For row layouts use `Flex`. For two-axis grids use `Grid`. For one-off
+styled divs without layout intent use `Box`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Stack lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-stack
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Stack } from "@gremorie/rx-containers";
+
+export function Example() {
+  return (
+    <Stack gap="md" align="stretch">
+      <div className="rounded-md border p-3">First</div>
+      <div className="rounded-md border p-3">Second</div>
+      <div className="rounded-md border p-3">Third</div>
+    </Stack>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Stack
+  gap?     "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"   (default "md")
+  align?   "start" | "center" | "end" | "stretch" | "baseline"  (default "stretch")
+  justify? "start" | "center" | "end" | "between" | "around" | "evenly" (default "start")
+```
+
+## Best practices
+
+- **Pick a gap token, not a pixel.** Stack's `gap` prop maps to the
+  design-system spacing scale (`gap-1` through `gap-12`). Free-form
+  spacing belongs in a one-off styled div, not in a layout primitive.
+- **Default `align="stretch"`.** Children fill the cross-axis - good
+  for cards and form sections. Switch to `start` when items have
+  varying widths and you want left alignment.
+- **Reach for `justify` only when distributing space.** `between`,
+  `around`, `evenly` matter for vertical menus and pricing rows;
+  otherwise the default `start` is what you want.
+
+## Reference
+
+- React source: `packages/rx-containers/src/lib/stack/stack.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-stack.json`.

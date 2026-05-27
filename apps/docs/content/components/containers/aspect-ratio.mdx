@@ -1,0 +1,85 @@
+---
+title: Aspect Ratio
+description: Reserve vertical space for media before content loads.
+---
+
+`AspectRatio` is a thin wrapper over Radix AspectRatio with a single
+`ratio` prop. Use it on every responsive image, iframe, video embed, or
+skeleton placeholder so the layout does not jump when the asset
+settles - prevents cumulative layout shift (CLS) hits.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular AspectRatio lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-aspect-ratio
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { AspectRatio } from "@gremorie/rx-containers";
+
+export function Example() {
+  return (
+    <AspectRatio ratio={16 / 9} className="bg-muted">
+      <img
+        src="/cover.jpg"
+        alt="Cover"
+        className="size-full rounded-md object-cover"
+      />
+    </AspectRatio>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+AspectRatio [ratio={number}]
+  <child />            (image, iframe, video, skeleton)
+```
+
+## Best practices
+
+- **Always set `ratio` explicitly.** Common values: `16 / 9` for video,
+  `4 / 3` for landscape, `1` for square, `3 / 4` for portrait posters.
+- **Pair with `object-cover` on `<img>`.** Without it the image will not
+  fill the reserved box on assets whose intrinsic ratio differs.
+- **Use for skeletons too.** A `Skeleton` inside an `AspectRatio`
+  reserves the same space the image will occupy, preventing the shift
+  when the real asset loads.
+
+## Reference
+
+- React source: `packages/rx-containers/src/lib/aspect-ratio/aspect-ratio.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-aspect-ratio.json`.
