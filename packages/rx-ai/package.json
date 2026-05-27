@@ -27,7 +27,7 @@
     "react": "^18 || ^19"
   },
   "dependencies": {
-    "lucide-react": "^0.547.0",
+    "lucide-react": "^0.468.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false

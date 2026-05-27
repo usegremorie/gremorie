@@ -574,6 +574,91 @@
       ]
     },
     {
+      "name": "rx-breadcrumb",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Breadcrumb (React)",
+      "description": "Hierarchical trail - composable Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis. Use to show the current location within a nested structure.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-menubar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Menubar (React)",
+      "description": "Horizontal multi-menu bar built on Radix Menubar - desktop-style File/Edit/View menus with full keyboard navigation, sub-menus, checkbox and radio items.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-navigation-menu",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Navigation Menu (React)",
+      "description": "Top-level mega-menu built on Radix NavigationMenu - reveals secondary content panels on hover/focus. Use for site headers with grouped link clusters and feature highlights.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-pagination",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Pagination (React)",
+      "description": "Page navigation surface - composable Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis. Anchor tags by default; pass a custom component via PaginationLink for client-side routers.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-sidebar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sidebar (React)",
+      "description": "Composable app-shell sidebar - SidebarProvider, Sidebar, SidebarTrigger, SidebarMenu plus mobile drawer integration. Cookie-persisted collapsed state, keyboard shortcut, full keyboard navigation. The largest navigation primitive in the registry.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-input",
+        "rx-separator",
+        "rx-skeleton",
+        "rx-sheet",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-tabs",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tabs (React)",
+      "description": "Tabbed content switcher built on Radix Tabs - Tabs, TabsList, TabsTrigger, TabsContent. Use for sibling content panels that share a context (settings sections, profile pages).",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
       "name": "rx-prompt-input",
       "type": "registry:block",
       "framework": "rx",

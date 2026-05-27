@@ -696,6 +696,102 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['rx-utils'],
   },
 
+  // ---------------------------------------------------------------------------
+  // React (rx-*): navigation primitives
+  // ---------------------------------------------------------------------------
+  {
+    name: 'rx-breadcrumb',
+    framework: 'rx',
+    title: 'Breadcrumb (React)',
+    description:
+      'Hierarchical trail - composable Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis. Use to show the current location within a nested structure.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/breadcrumb/breadcrumb.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/breadcrumb',
+    srcStrip: 'src/lib/breadcrumb/',
+    dependencies: ['radix-ui', 'lucide-react'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-menubar',
+    framework: 'rx',
+    title: 'Menubar (React)',
+    description:
+      'Horizontal multi-menu bar built on Radix Menubar - desktop-style File/Edit/View menus with full keyboard navigation, sub-menus, checkbox and radio items.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/menubar/menubar.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/menubar',
+    srcStrip: 'src/lib/menubar/',
+    dependencies: ['radix-ui', 'lucide-react'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-navigation-menu',
+    framework: 'rx',
+    title: 'Navigation Menu (React)',
+    description:
+      'Top-level mega-menu built on Radix NavigationMenu - reveals secondary content panels on hover/focus. Use for site headers with grouped link clusters and feature highlights.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/navigation-menu/navigation-menu.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/navigation-menu',
+    srcStrip: 'src/lib/navigation-menu/',
+    dependencies: ['radix-ui', 'lucide-react', 'class-variance-authority'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-pagination',
+    framework: 'rx',
+    title: 'Pagination (React)',
+    description:
+      'Page navigation surface - composable Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis. Anchor tags by default; pass a custom component via PaginationLink for client-side routers.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/pagination/pagination.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/pagination',
+    srcStrip: 'src/lib/pagination/',
+    dependencies: ['lucide-react'],
+    registryDependencies: ['rx-utils', 'rx-button'],
+  },
+  {
+    name: 'rx-sidebar',
+    framework: 'rx',
+    title: 'Sidebar (React)',
+    description:
+      'Composable app-shell sidebar - SidebarProvider, Sidebar, SidebarTrigger, SidebarMenu plus mobile drawer integration. Cookie-persisted collapsed state, keyboard shortcut, full keyboard navigation. The largest navigation primitive in the registry.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/sidebar/sidebar.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/sidebar',
+    srcStrip: 'src/lib/sidebar/',
+    dependencies: ['radix-ui', 'lucide-react', 'class-variance-authority'],
+    registryDependencies: [
+      'rx-utils',
+      'rx-button',
+      'rx-input',
+      'rx-separator',
+      'rx-skeleton',
+      'rx-sheet',
+      'rx-tooltip',
+    ],
+  },
+  {
+    name: 'rx-tabs',
+    framework: 'rx',
+    title: 'Tabs (React)',
+    description:
+      'Tabbed content switcher built on Radix Tabs - Tabs, TabsList, TabsTrigger, TabsContent. Use for sibling content panels that share a context (settings sections, profile pages).',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/tabs/tabs.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/tabs',
+    srcStrip: 'src/lib/tabs/',
+    dependencies: ['radix-ui'],
+    registryDependencies: ['rx-utils'],
+  },
+
   {
     name: 'rx-prompt-input',
     framework: 'rx',

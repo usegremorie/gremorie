@@ -1,0 +1,105 @@
+---
+title: Navigation Menu
+description: Top-level mega-menu with grouped link panels.
+---
+
+`NavigationMenu` is the site-header mega-menu. Hover or focus a
+trigger to reveal a secondary panel of grouped links with feature
+highlights. Built on Radix NavigationMenu - full keyboard navigation
+and ARIA semantics out of the box.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular NavigationMenu lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-navigation-menu
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@gremorie/rx-navigation";
+
+export function SiteNav() {
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4">
+              <li>
+                <NavigationMenuLink href="/products/charts">
+                  Charts
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="/products/forms">
+                  Forms
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/pricing">
+            Pricing
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Reserve for site headers.** For in-app navigation, use Sidebar or
+  Tabs.
+- **Group related items inside a panel.** Random clusters defeat the
+  mega-menu pattern - lump items by feature, audience, or workflow.
+- **Provide a flat link for items without sub-content.** Render a
+  `NavigationMenuLink` directly without `NavigationMenuTrigger` for
+  pages like "Pricing" or "About".
+
+## Reference
+
+- React source: `packages/rx-navigation/src/lib/navigation-menu/navigation-menu.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-navigation-menu.json`.

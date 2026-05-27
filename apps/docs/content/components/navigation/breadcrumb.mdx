@@ -1,0 +1,92 @@
+---
+title: Breadcrumb
+description: Hierarchical trail of the user's location.
+---
+
+`Breadcrumb` shows the path to the current page within a nested
+structure. Composable parts: `Breadcrumb`, `BreadcrumbList`,
+`BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`,
+`BreadcrumbSeparator`, `BreadcrumbEllipsis`.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Breadcrumb lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-breadcrumb
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@gremorie/rx-navigation";
+
+export function Crumbs() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Mark the current page with `BreadcrumbPage`.** Renders as a span,
+  not a link, with `aria-current="page"`.
+- **Use `BreadcrumbEllipsis` for long trails.** Collapse mid-trail
+  items into an ellipsis with a popover when there are 5+ levels.
+- **Pass a custom `asChild` link.** When using Next/Remix router,
+  wrap `BreadcrumbLink` with `asChild` and your `<Link>`.
+
+## Reference
+
+- React source: `packages/rx-navigation/src/lib/breadcrumb/breadcrumb.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-breadcrumb.json`.

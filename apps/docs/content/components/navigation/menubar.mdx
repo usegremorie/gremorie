@@ -1,0 +1,95 @@
+---
+title: Menubar
+description: Desktop-style horizontal multi-menu bar.
+---
+
+`Menubar` is the canonical desktop-app "File / Edit / View / Help"
+bar. Built on Radix Menubar - full keyboard navigation (arrow keys
+switch between menus), sub-menus, checkbox and radio items.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Menubar lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-menubar
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@gremorie/rx-navigation";
+
+export function AppMenubar() {
+  return (
+    <Menubar>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            New <MenubarShortcut>Cmd+N</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>Open...</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Save</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Undo</MenubarItem>
+          <MenubarItem>Redo</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Use only for desktop-style apps.** On web pages, prefer Navigation
+  Menu or Dropdown Menu - Menubar's affordance is unusual on the web.
+- **Keep top-level labels short.** Single words read fastest at a
+  glance ("File", "Edit", "View").
+
+## Reference
+
+- React source: `packages/rx-navigation/src/lib/menubar/menubar.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-menubar.json`.

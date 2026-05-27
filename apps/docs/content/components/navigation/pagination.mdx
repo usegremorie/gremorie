@@ -1,0 +1,104 @@
+---
+title: Pagination
+description: Page navigation surface for long lists.
+---
+
+`Pagination` is the canonical "1 2 3 ... 9 next" surface. Composable
+parts: `Pagination`, `PaginationContent`, `PaginationItem`,
+`PaginationLink`, `PaginationPrevious`, `PaginationNext`,
+`PaginationEllipsis`. Renders anchor tags by default; pass a custom
+component via `PaginationLink` when wiring a client-side router.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Pagination lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-pagination
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@gremorie/rx-navigation";
+
+export function Pager() {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive>
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Mark the active page with `isActive`.** Renders `aria-current="page"`
+  and a visual outline.
+- **Use `PaginationEllipsis` for long ranges.** Show first / current /
+  last with ellipses between, not all 50 pages.
+- **Consider infinite scroll for feeds.** Pagination works for results
+  with stable order (search, archives). For social feeds, infinite
+  scroll is the convention.
+
+## Reference
+
+- React source: `packages/rx-navigation/src/lib/pagination/pagination.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-pagination.json`.

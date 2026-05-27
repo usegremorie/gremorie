@@ -1,0 +1,137 @@
+---
+title: Sidebar
+description: Composable app-shell sidebar with persisted state.
+---
+
+`Sidebar` is the app-shell navigation surface. Cookie-persisted
+collapsed state, keyboard shortcut (Cmd/Ctrl+B), full keyboard
+navigation, mobile drawer integration via `Sheet`. The largest
+navigation primitive in the registry - composes many sub-parts:
+`SidebarProvider`, `Sidebar`, `SidebarTrigger`, `SidebarHeader`,
+`SidebarContent`, `SidebarFooter`, `SidebarMenu`, `SidebarMenuItem`,
+`SidebarMenuButton`, `SidebarMenuSub`, and more.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Sidebar lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-sidebar
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { HomeIcon, InboxIcon } from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@gremorie/rx-navigation";
+
+export function AppShell() {
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>Workspace</SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <HomeIcon /> Home
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <InboxIcon /> Inbox
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-6">
+        <SidebarTrigger />
+        ...
+      </main>
+    </SidebarProvider>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy (high level)
+
+```
+SidebarProvider
+  Sidebar [side="left" | "right"] [variant] [collapsible]
+    SidebarHeader
+    SidebarContent
+      SidebarGroup
+        SidebarGroupLabel
+        SidebarGroupContent
+          SidebarMenu
+            SidebarMenuItem
+              SidebarMenuButton
+              SidebarMenuAction
+              SidebarMenuSub
+                SidebarMenuSubItem
+                  SidebarMenuSubButton
+    SidebarFooter
+    SidebarRail
+  SidebarTrigger
+  SidebarInset (main content slot)
+```
+
+## Best practices
+
+- **Always wrap in `SidebarProvider`.** Manages the cookie-persisted
+  state and the `useSidebar()` hook.
+- **Use the mobile drawer pattern.** On `md` and below, the Sidebar
+  swaps into a `Sheet` automatically.
+- **Group items semantically.** A "Recent" group at the top followed
+  by "All projects" reads cleaner than one flat list.
+
+## Reference
+
+- React source: `packages/rx-navigation/src/lib/sidebar/sidebar.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-sidebar.json`.

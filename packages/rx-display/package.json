@@ -41,7 +41,7 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "embla-carousel-react": "^8.6.0",
-    "lucide-react": "^0.547.0",
+    "lucide-react": "^0.468.0",
     "radix-ui": "^1.4.3",
     "tslib": "^2.3.0"
   },
