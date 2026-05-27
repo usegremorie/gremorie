@@ -1,0 +1,89 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-confirmation",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Confirmation (React)",
+  "description": "Approval prompt for tool calls. Wraps an Alert with ConfirmationRequest, ConfirmationDescription, and ConfirmationActions (Approve / Reject Buttons). Designed for human-in-the-loop tool gates - exposes approved/rejected callbacks with optional reason.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [
+    "ai"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-alert",
+    "rx-button"
+  ],
+  "files": [
+    {
+      "path": "src/lib/confirmation/confirmation.tsx",
+      "content": "\"use client\";\n\nimport { Alert, AlertDescription } from \"@gremorie/rx-feedback\";\nimport { Button } from \"@gremorie/rx-forms\";\nimport { cn } from \"@gremorie/rx-core\";\nimport type { ToolUIPart } from \"ai\";\nimport {\n  type ComponentProps,\n  createContext,\n  type ReactNode,\n  useContext,\n} from \"react\";\n\ntype ToolUIPartApproval =\n  | {\n      id: string;\n      approved?: never;\n      reason?: never;\n    }\n  | {\n      id: string;\n      approved: true;\n      reason?: string;\n    }\n  | {\n      id: string;\n      approved: false;\n      reason?: string;\n    }\n  | undefined;\n\ntype ConfirmationContextValue = {\n  approval: ToolUIPartApproval;\n  state: ToolUIPart[\"state\"];\n};\n\nconst ConfirmationContext = createContext<ConfirmationContextValue | null>(\n  null\n);\n\nconst useConfirmation = () => {\n  const context = useContext(ConfirmationContext);\n\n  if (!context) {\n    throw new Error(\"Confirmation components must be used within Confirmation\");\n  }\n\n  return context;\n};\n\nexport type ConfirmationProps = ComponentProps<typeof Alert> & {\n  approval?: ToolUIPartApproval;\n  state: ToolUIPart[\"state\"];\n};\n\nexport const Confirmation = ({\n  className,\n  approval,\n  state,\n  ...props\n}: ConfirmationProps) => {\n  if (!approval || state === \"input-streaming\" || state === \"input-available\") {\n    return null;\n  }\n\n  return (\n    <ConfirmationContext.Provider value={{ approval, state }}>\n      <Alert className={cn(\"flex flex-col gap-2\", className)} {...props} />\n    </ConfirmationContext.Provider>\n  );\n};\n\nexport type ConfirmationTitleProps = ComponentProps<typeof AlertDescription>;\n\nexport const ConfirmationTitle = ({\n  className,\n  ...props\n}: ConfirmationTitleProps) => (\n  <AlertDescription className={cn(\"inline\", className)} {...props} />\n);\n\nexport type ConfirmationRequestProps = {\n  children?: ReactNode;\n};\n\nexport const ConfirmationRequest = ({ children }: ConfirmationRequestProps) => {\n  const { state } = useConfirmation();\n\n  // Only show when approval is requested\n  if (state !== \"approval-requested\") {\n    return null;\n  }\n\n  return children;\n};\n\nexport type ConfirmationAcceptedProps = {\n  children?: ReactNode;\n};\n\nexport const ConfirmationAccepted = ({\n  children,\n}: ConfirmationAcceptedProps) => {\n  const { approval, state } = useConfirmation();\n\n  // Only show when approved and in response states\n  if (\n    !approval?.approved ||\n    (state !== \"approval-responded\" &&\n      state !== \"output-denied\" &&\n      state !== \"output-available\")\n  ) {\n    return null;\n  }\n\n  return children;\n};\n\nexport type ConfirmationRejectedProps = {\n  children?: ReactNode;\n};\n\nexport const ConfirmationRejected = ({\n  children,\n}: ConfirmationRejectedProps) => {\n  const { approval, state } = useConfirmation();\n\n  // Only show when rejected and in response states\n  if (\n    approval?.approved !== false ||\n    (state !== \"approval-responded\" &&\n      state !== \"output-denied\" &&\n      state !== \"output-available\")\n  ) {\n    return null;\n  }\n\n  return children;\n};\n\nexport type ConfirmationActionsProps = ComponentProps<\"div\">;\n\nexport const ConfirmationActions = ({\n  className,\n  ...props\n}: ConfirmationActionsProps) => {\n  const { state } = useConfirmation();\n\n  // Only show when approval is requested\n  if (state !== \"approval-requested\") {\n    return null;\n  }\n\n  return (\n    <div\n      className={cn(\"flex items-center justify-end gap-2 self-end\", className)}\n      {...props}\n    />\n  );\n};\n\nexport type ConfirmationActionProps = ComponentProps<typeof Button>;\n\nexport const ConfirmationAction = (props: ConfirmationActionProps) => (\n  <Button className=\"h-8 px-3 text-sm\" type=\"button\" {...props} />\n);\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/ai/confirmation/confirmation.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any React-based AI chat surface - the input area where the user composes their prompt, optionally attaches files, and submits.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use a native textarea + button instead.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up status automatically (ready / submitted / streaming / error).",
+      "Use PromptInputFooter for sticky bottom controls (tools on the left, submit on the right).",
+      "Wrap the tree in PromptInputProvider only when you need to control attachments or text input from outside the form (eg. drag-to-drop across the whole page)."
+    ],
+    "antipatterns": [
+      "Listening to onSubmit on the textarea directly - listen to the parent PromptInput onSubmit to receive the full payload.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the Enter / Cmd+Enter keyboard contract.",
+      "Re-implementing attachment state in the host component - drive it via the controller hook usePromptInputAttachments() or the provider."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "onSubmit",
+          "type": "(message: PromptInputMessage, e: FormEvent) => void | Promise<void>",
+          "required": true,
+          "description": "Fired when the user submits via Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "status",
+          "type": "ChatStatus ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'",
+          "description": "Drives the PromptInputSubmit icon (arrow / spinner / stop / X)."
+        },
+        {
+          "name": "maxFiles",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "maxFileSize",
+          "type": "number",
+          "required": false,
+          "description": "Bytes."
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "description": "MIME pattern list like 'image/*,application/pdf'."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<PromptInput onSubmit={(message) => sendMessage(message.text, message.files)}>\n  <PromptInputBody>\n    <PromptInputTextarea placeholder=\"Ask anything\" />\n    <PromptInputFooter>\n      <span />\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      },
+      {
+        "title": "With toolbar",
+        "code": "<PromptInput onSubmit={onSubmit}>\n  <PromptInputBody>\n    <PromptInputTextarea />\n    <PromptInputFooter>\n      <PromptInputTools>\n        <PromptInputButton aria-label=\"Attach\"><Paperclip /></PromptInputButton>\n        <PromptInputButton aria-label=\"Web\"><Globe /></PromptInputButton>\n      </PromptInputTools>\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      }
+    ]
+  }
+}

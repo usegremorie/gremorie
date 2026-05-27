@@ -1,0 +1,71 @@
+---
+title: Checkpoint
+description: Conversation savepoint marker - labeled bookmark with Separators and a Tooltip explaining the state.
+---
+
+`Checkpoint` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-checkpoint
+```
+
+Pulls in the registry dependencies declared for `rx-checkpoint` (cross-primitive Gremorie components - see `registry.json`).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Checkpoint,
+  CheckpointIcon,
+  CheckpointLabel,
+  CheckpointActions,
+  CheckpointAction,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <Checkpoint>
+      <CheckpointIcon />
+      <CheckpointLabel>Saved at 14:32</CheckpointLabel>
+      <CheckpointActions>
+        <CheckpointAction tooltip="Revert" onClick={revert}>Revert</CheckpointAction>
+      </CheckpointActions>
+    </Checkpoint>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
+- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-checkpoint` without pulling unrelated AI components.

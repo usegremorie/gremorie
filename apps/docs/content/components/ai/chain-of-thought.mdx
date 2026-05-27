@@ -1,0 +1,74 @@
+---
+title: Chain of Thought
+description: Step-by-step reasoning visualizer with status-aware icons and nested search results.
+---
+
+`Chain of Thought` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-chain-of-thought
+```
+
+Pulls in the registry dependencies declared for `rx-chain-of-thought` (cross-primitive Gremorie components - see `registry.json`).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  ChainOfThought,
+  ChainOfThoughtHeader,
+  ChainOfThoughtContent,
+  ChainOfThoughtStep,
+  ChainOfThoughtStepBody,
+  ChainOfThoughtSearch,
+  ChainOfThoughtSearchResult,
+  ChainOfThoughtImage,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <ChainOfThought>
+      <ChainOfThoughtHeader />
+      <ChainOfThoughtContent>
+        <ChainOfThoughtStep status="complete" label="Inspected files" />
+        <ChainOfThoughtStep status="active" label="Running tests" />
+      </ChainOfThoughtContent>
+    </ChainOfThought>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
+- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-chain-of-thought` without pulling unrelated AI components.

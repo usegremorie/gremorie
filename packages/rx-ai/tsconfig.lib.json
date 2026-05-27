@@ -22,6 +22,15 @@
     },
     {
       "path": "../rx-overlays/tsconfig.lib.json"
+    },
+    {
+      "path": "../rx-display/tsconfig.lib.json"
+    },
+    {
+      "path": "../rx-feedback/tsconfig.lib.json"
+    },
+    {
+      "path": "../rx-containers/tsconfig.lib.json"
     }
   ]
 }

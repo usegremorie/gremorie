@@ -1,6 +1,25 @@
 {
   "title": "AI",
-  "description": "AI chat primitives - PromptInput, Attachments, and friends",
+  "description": "AI primitives - PromptInput, Chatbot (Message, Conversation, Reasoning, ...), Code, Workflow, Utilities",
   "icon": "Sparkles",
-  "pages": ["prompt-input"]
+  "pages": [
+    "prompt-input",
+    "---Chatbot---",
+    "message",
+    "conversation",
+    "reasoning",
+    "chain-of-thought",
+    "task",
+    "tool",
+    "sources",
+    "inline-citation",
+    "plan",
+    "checkpoint",
+    "confirmation",
+    "context",
+    "queue",
+    "suggestion",
+    "shimmer",
+    "model-selector"
+  ]
 }

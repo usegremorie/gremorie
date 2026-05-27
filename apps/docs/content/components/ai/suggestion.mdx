@@ -1,0 +1,65 @@
+---
+title: Suggestion
+description: Horizontal scrollable pills of prompt suggestions. Each Suggestion is a rounded Button.
+---
+
+`Suggestion` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-suggestion
+```
+
+Pulls in the registry dependencies declared for `rx-suggestion` (cross-primitive Gremorie components - see `registry.json`).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Suggestion,
+  Suggestions,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <Suggestions>
+      <Suggestion suggestion="Summarize this PDF" onClick={send} />
+      <Suggestion suggestion="What changed last week?" onClick={send} />
+    </Suggestions>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
+- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-suggestion` without pulling unrelated AI components.

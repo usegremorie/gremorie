@@ -880,6 +880,265 @@
         "rx-hover-card",
         "rx-command"
       ]
+    },
+    {
+      "name": "rx-shimmer",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Shimmer (React)",
+      "description": "Animated text shimmer for streaming/loading hints. Uses motion (Framer Motion v12) to slide a gradient across text. Tiny dependency-free primitive used by Reasoning and Plan to mark \"thinking\" steps.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-suggestion",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Suggestion (React)",
+      "description": "Horizontal scrollable pills of prompt suggestions. Each Suggestion is a rounded Button - the Suggestions wrapper handles overflow with a hidden ScrollArea scrollbar. Use above the prompt input for starter prompts.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-scroll-area"
+      ]
+    },
+    {
+      "name": "rx-message",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Message (React)",
+      "description": "Atomic chat message with role-aware layout (user right-aligned, assistant left). Composable surface: MessageContent + MessageResponse (Streamdown markdown), MessageAttachments + MessageAttachment, MessageToolbar with MessageActions, and MessageBranch + MessageBranchSelector + MessageBranchPrevious/Next for regeneration alternatives.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-button-group",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-conversation",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Conversation (React)",
+      "description": "Scroll-to-bottom container for chat messages. Uses use-stick-to-bottom under the hood: ConversationContent stays anchored to the bottom while new messages stream in. ConversationScrollButton appears when the user scrolls up and snaps back when clicked. ConversationEmptyState renders centered placeholder content.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-reasoning",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Reasoning (React)",
+      "description": "Collapsible \"thinking\" block for visible chain-of-thought. Auto-opens while isStreaming, tracks duration, auto-closes after streaming ends. ReasoningContent renders Streamdown markdown; ReasoningTrigger uses Shimmer to mark live thought.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-collapsible",
+        "rx-shimmer"
+      ]
+    },
+    {
+      "name": "rx-chain-of-thought",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chain of Thought (React)",
+      "description": "Step-by-step reasoning visualizer. ChainOfThoughtStep renders each thought with status (pending/active/complete), icon, and optional ChainOfThoughtStepBody. Supports nested ChainOfThoughtSearch with Badge result chips. Wraps a Collapsible for show/hide.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-badge",
+        "rx-collapsible"
+      ]
+    },
+    {
+      "name": "rx-task",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Task (React)",
+      "description": "Collapsible item list for an agent task. TaskTrigger shows status + summary, TaskContent holds TaskItem children. TaskItemFile renders inline file badges (e.g. \"edited app.tsx\"). Use for multi-step tool-use traces in the conversation.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-collapsible"
+      ]
+    },
+    {
+      "name": "rx-tool",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tool (React)",
+      "description": "Tool-use trace block. ToolHeader shows the tool name + state Badge (input-streaming, input-available, output-available, output-error). ToolContent reveals ToolInput (JSON params), ToolOutput (formatted result), and ToolErrors. Built on Collapsible + CodeBlock.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-badge",
+        "rx-collapsible",
+        "rx-code-block"
+      ]
+    },
+    {
+      "name": "rx-sources",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sources (React)",
+      "description": "Citations cluster for RAG responses. SourcesTrigger shows \"N sources\" toggle, SourcesContent reveals the list. Each Source is a hyperlink with optional favicon. Use to attribute model output to retrieved documents.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-collapsible"
+      ]
+    },
+    {
+      "name": "rx-inline-citation",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Inline Citation (React)",
+      "description": "Footnote-style inline citation marker. Hovers reveal a HoverCard with a Carousel of source cards (InlineCitationCard, InlineCitationCardTrigger, InlineCitationCardBody, InlineCitationSource, InlineCitationQuote). Use inside MessageResponse to cite passages mid-sentence.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-badge",
+        "rx-carousel",
+        "rx-hover-card"
+      ]
+    },
+    {
+      "name": "rx-plan",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Plan (React)",
+      "description": "Multi-step plan card with Shimmer-marked active step. PlanHeader + PlanTitle + PlanDescription describe the goal; PlanContent lists PlanStep items, each with status. PlanFooter holds CTA Buttons (approve / regenerate). Built on Card + Collapsible.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-card",
+        "rx-collapsible",
+        "rx-shimmer"
+      ]
+    },
+    {
+      "name": "rx-checkpoint",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Checkpoint (React)",
+      "description": "Conversation savepoint marker. Renders a labeled bookmark with Separator on each side, plus a Tooltip explaining the state. Use to indicate revertable points in long agent runs.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-separator",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-confirmation",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Confirmation (React)",
+      "description": "Approval prompt for tool calls. Wraps an Alert with ConfirmationRequest, ConfirmationDescription, and ConfirmationActions (Approve / Reject Buttons). Designed for human-in-the-loop tool gates - exposes approved/rejected callbacks with optional reason.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-alert",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-context",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Context (React)",
+      "description": "Token usage display for AI conversations. ContextTrigger shows a circular progress glyph; on hover, ContextContent reveals input/output/total tokens, model max, and cost via tokenlens. Uses Progress + HoverCard.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-hover-card",
+        "rx-progress"
+      ]
+    },
+    {
+      "name": "rx-queue",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Queue (React)",
+      "description": "Pending message queue list shown above the prompt input. Each QueueMessage previews text + attachments; the user can dismiss or reorder. Built on Collapsible + ScrollArea.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-collapsible",
+        "rx-scroll-area"
+      ]
+    },
+    {
+      "name": "rx-model-selector",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Model Selector (React)",
+      "description": "Floating model picker dialog. ModelSelectorTrigger opens a Dialog containing a full Command palette - CommandInput, CommandGroup, CommandItem, CommandShortcut, CommandSeparator. Use as a Cmd+K-style model switcher above the chat composer.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-command",
+        "rx-dialog"
+      ]
     }
   ]
 }

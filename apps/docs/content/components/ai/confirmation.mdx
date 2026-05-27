@@ -1,0 +1,72 @@
+---
+title: Confirmation
+description: Approval prompt for human-in-the-loop tool calls. Wraps an Alert with Approve/Reject Buttons and exposes approved/rejected callbacks.
+---
+
+`Confirmation` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-confirmation
+```
+
+Pulls in the registry dependencies declared for `rx-confirmation` (cross-primitive Gremorie components - see `registry.json`).
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+Em breve.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Confirmation,
+  ConfirmationRequest,
+  ConfirmationDescription,
+  ConfirmationActions,
+  ConfirmationApprove,
+  ConfirmationReject,
+} from '@gremorie/rx-ai';
+
+export function Demo() {
+  return (
+    <Confirmation toolCall={pendingCall} onResolve={resolve}>
+      <ConfirmationRequest>Run delete_records on production?</ConfirmationRequest>
+      <ConfirmationActions>
+        <ConfirmationApprove>Approve</ConfirmationApprove>
+        <ConfirmationReject>Reject</ConfirmationReject>
+      </ConfirmationActions>
+    </Confirmation>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Notes
+
+- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
+- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-confirmation` without pulling unrelated AI components.

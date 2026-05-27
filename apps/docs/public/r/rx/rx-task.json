@@ -1,0 +1,86 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-task",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Task (React)",
+  "description": "Collapsible item list for an agent task. TaskTrigger shows status + summary, TaskContent holds TaskItem children. TaskItemFile renders inline file badges (e.g. \"edited app.tsx\"). Use for multi-step tool-use traces in the conversation.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-collapsible"
+  ],
+  "files": [
+    {
+      "path": "src/lib/task/task.tsx",
+      "content": "\"use client\";\n\nimport {\n  Collapsible,\n  CollapsibleContent,\n  CollapsibleTrigger,\n} from \"@gremorie/rx-display\";\nimport { cn } from \"@gremorie/rx-core\";\nimport { ChevronDownIcon, SearchIcon } from \"lucide-react\";\nimport type { ComponentProps } from \"react\";\n\nexport type TaskItemFileProps = ComponentProps<\"div\">;\n\nexport const TaskItemFile = ({\n  children,\n  className,\n  ...props\n}: TaskItemFileProps) => (\n  <div\n    className={cn(\n      \"inline-flex items-center gap-1 rounded-md border bg-secondary px-1.5 py-0.5 text-foreground text-xs\",\n      className\n    )}\n    {...props}\n  >\n    {children}\n  </div>\n);\n\nexport type TaskItemProps = ComponentProps<\"div\">;\n\nexport const TaskItem = ({ children, className, ...props }: TaskItemProps) => (\n  <div className={cn(\"text-muted-foreground text-sm\", className)} {...props}>\n    {children}\n  </div>\n);\n\nexport type TaskProps = ComponentProps<typeof Collapsible>;\n\nexport const Task = ({\n  defaultOpen = true,\n  className,\n  ...props\n}: TaskProps) => (\n  <Collapsible className={cn(className)} defaultOpen={defaultOpen} {...props} />\n);\n\nexport type TaskTriggerProps = ComponentProps<typeof CollapsibleTrigger> & {\n  title: string;\n};\n\nexport const TaskTrigger = ({\n  children,\n  className,\n  title,\n  ...props\n}: TaskTriggerProps) => (\n  <CollapsibleTrigger asChild className={cn(\"group\", className)} {...props}>\n    {children ?? (\n      <div className=\"flex w-full cursor-pointer items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground\">\n        <SearchIcon className=\"size-4\" />\n        <p className=\"text-sm\">{title}</p>\n        <ChevronDownIcon className=\"size-4 transition-transform group-data-[state=open]:rotate-180\" />\n      </div>\n    )}\n  </CollapsibleTrigger>\n);\n\nexport type TaskContentProps = ComponentProps<typeof CollapsibleContent>;\n\nexport const TaskContent = ({\n  children,\n  className,\n  ...props\n}: TaskContentProps) => (\n  <CollapsibleContent\n    className={cn(\n      \"data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-popover-foreground outline-none data-[state=closed]:animate-out data-[state=open]:animate-in\",\n      className\n    )}\n    {...props}\n  >\n    <div className=\"mt-4 space-y-2 border-muted border-l-2 pl-4\">\n      {children}\n    </div>\n  </CollapsibleContent>\n);\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/ai/task/task.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any React-based AI chat surface - the input area where the user composes their prompt, optionally attaches files, and submits.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use a native textarea + button instead.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up status automatically (ready / submitted / streaming / error).",
+      "Use PromptInputFooter for sticky bottom controls (tools on the left, submit on the right).",
+      "Wrap the tree in PromptInputProvider only when you need to control attachments or text input from outside the form (eg. drag-to-drop across the whole page)."
+    ],
+    "antipatterns": [
+      "Listening to onSubmit on the textarea directly - listen to the parent PromptInput onSubmit to receive the full payload.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the Enter / Cmd+Enter keyboard contract.",
+      "Re-implementing attachment state in the host component - drive it via the controller hook usePromptInputAttachments() or the provider."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "onSubmit",
+          "type": "(message: PromptInputMessage, e: FormEvent) => void | Promise<void>",
+          "required": true,
+          "description": "Fired when the user submits via Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "status",
+          "type": "ChatStatus ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'",
+          "description": "Drives the PromptInputSubmit icon (arrow / spinner / stop / X)."
+        },
+        {
+          "name": "maxFiles",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "maxFileSize",
+          "type": "number",
+          "required": false,
+          "description": "Bytes."
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "description": "MIME pattern list like 'image/*,application/pdf'."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<PromptInput onSubmit={(message) => sendMessage(message.text, message.files)}>\n  <PromptInputBody>\n    <PromptInputTextarea placeholder=\"Ask anything\" />\n    <PromptInputFooter>\n      <span />\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      },
+      {
+        "title": "With toolbar",
+        "code": "<PromptInput onSubmit={onSubmit}>\n  <PromptInputBody>\n    <PromptInputTextarea />\n    <PromptInputFooter>\n      <PromptInputTools>\n        <PromptInputButton aria-label=\"Attach\"><Paperclip /></PromptInputButton>\n        <PromptInputButton aria-label=\"Web\"><Globe /></PromptInputButton>\n      </PromptInputTools>\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      }
+    ]
+  }
+}
