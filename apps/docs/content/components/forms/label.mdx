@@ -1,0 +1,75 @@
+---
+title: Label
+description: Accessible label primitive built on Radix Label.
+---
+
+`Label` is the static label sitting above any input control. When
+`htmlFor` matches a control's `id`, clicking the label focuses (or
+activates) the control - it doubles as a click target.
+
+The default styling dims the label automatically when the related input
+is disabled, via `peer-disabled` and `group-data-[disabled=true]`
+selectors.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Label lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-label
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Input, Label } from "@gremorie/rx-forms";
+
+export function NameField() {
+  return (
+    <div className="grid w-full max-w-sm items-center gap-1.5">
+      <Label htmlFor="name">Full name</Label>
+      <Input id="name" type="text" />
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Always set `htmlFor`.** Without it the label is non-functional and
+  screen readers cannot announce the associated control.
+- **Don't replace with raw `<span>` or `<p>`.** Form controls need the
+  accessibility wiring Radix Label provides.
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/label/label.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-label.json`.

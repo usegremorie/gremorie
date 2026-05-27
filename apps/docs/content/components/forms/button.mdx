@@ -1,0 +1,118 @@
+---
+title: Button
+description: Primary click target - six variants, eight sizes (including icon-only), and `asChild` escape hatch.
+---
+
+`Button` is the canonical click target. It exposes six visual variants
+(`default`, `destructive`, `outline`, `secondary`, `ghost`, `link`) and
+eight size presets (default, `xs`, `sm`, `lg`, plus icon-only `icon`,
+`icon-xs`, `icon-sm`, `icon-lg`). Pass `asChild` to render through Radix
+`Slot.Root` and inherit the trigger from a child element (e.g. a Next.js
+`<Link>`).
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+npx gremorie add ng-button
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-button
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```ts
+import { Button } from "@gremorie/ng-core";
+
+@Component({
+  selector: "app-toolbar",
+  standalone: true,
+  imports: [Button],
+  template: `
+    <button gremorie-button variant="default">Save</button>
+    <button gremorie-button variant="outline" size="sm">Cancel</button>
+  `,
+})
+export class ToolbarComponent {}
+```
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+
+export function Toolbar() {
+  return (
+    <div className="flex gap-2">
+      <Button variant="default">Save</Button>
+      <Button variant="outline" size="sm">
+        Cancel
+      </Button>
+      <Button variant="ghost" size="icon-sm" aria-label="More">
+        ...
+      </Button>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Variants
+
+| Variant       | Use                                     |
+| ------------- | --------------------------------------- |
+| `default`     | Primary action - the recommended path.  |
+| `destructive` | Irreversible actions (delete, revoke).  |
+| `outline`     | Secondary action with visual weight.    |
+| `secondary`   | Quiet secondary action.                 |
+| `ghost`       | Tertiary action - toolbar buttons.      |
+| `link`        | Inline action that reads like text.     |
+
+## Sizes
+
+| Size       | Height | Notes                              |
+| ---------- | ------ | ---------------------------------- |
+| `xs`       | 24px   | Compact toolbar buttons.           |
+| `sm`       | 32px   | Form controls, inline actions.     |
+| `default`  | 36px   | Standard size.                     |
+| `lg`       | 40px   | Hero CTAs.                         |
+| `icon-xs`  | 24px   | Icon-only, square.                 |
+| `icon-sm`  | 32px   | Icon-only, square.                 |
+| `icon`     | 36px   | Icon-only, square.                 |
+| `icon-lg`  | 40px   | Icon-only, square.                 |
+
+## Best practices
+
+- **Use variants, not className overrides.** Reach for `variant="ghost"`
+  before painting a button with one-off Tailwind classes.
+- **Always pair icon-only buttons with `aria-label`.** Without text,
+  screen readers and tooltips both need the label.
+- **`asChild` swaps the root.** When wrapping a `<Link>`, the link
+  inherits the button styles. Don't nest a button inside a button.
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/button/button.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-button.json`.

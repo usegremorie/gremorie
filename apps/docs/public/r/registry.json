@@ -202,17 +202,117 @@
       "registryDependencies": []
     },
     {
+      "name": "rx-button",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Button (React)",
+      "description": "Button primitive for the React edition - 6 variants x 8 sizes (including icon-only), `asChild` via Radix Slot. Mirrors the shadcn/ui Button surface.",
+      "categories": [
+        "core",
+        "primitives",
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-input",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Input (React)",
+      "description": "Input primitive for the React edition - single-line text field that adopts every native HTML `type`. Token-driven visual states.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-label",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Label (React)",
+      "description": "Label primitive built on `@radix-ui/react-label` (via `radix-ui` namespace). Pair with Input / form controls.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-select",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Select (React)",
+      "description": "Select primitive built on Radix Select - portalled, animated listbox, grouped items, scroll buttons. For short fixed lists (5-30 options).",
+      "categories": [
+        "forms",
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-dropdown-menu",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Dropdown Menu (React)",
+      "description": "DropdownMenu family built on Radix DropdownMenu - actions menu with checkbox / radio items, separators, nested submenus, destructive variant.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-hover-card",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Hover Card (React)",
+      "description": "HoverCard primitive built on Radix HoverCard - non-interactive preview pane shown on hover. Use for link previews, profile cards, image teasers.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-command",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Command (React)",
+      "description": "Command palette primitive built on cmdk - inline picker (Combobox pattern) for keyboard-first navigation. The Cmd+K dialog variant lands when rx-overlays ships Dialog.",
+      "categories": [
+        "overlays",
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
       "name": "rx-prompt-input",
       "type": "registry:block",
       "framework": "rx",
       "title": "Prompt Input (React)",
-      "description": "PromptInput pilot for the React edition - state machine, drag-drop, paste-to-attach, status-driven Submit. Single-file primitive that composes header, body, footer, tools, and attachments via a shared context.",
+      "description": "PromptInput family for AI chat surfaces - state machine, drag-drop, paste-to-attach, status-driven Submit. Includes ActionMenu (dropdown), ModelSelector (select), attachment HoverCard previews, Speech button (Web Speech API), and Command palette wrappers.",
       "categories": [
         "ai",
         "forms"
       ],
       "registryDependencies": [
-        "rx-utils"
+        "rx-utils",
+        "rx-button",
+        "rx-select",
+        "rx-dropdown-menu",
+        "rx-hover-card",
+        "rx-command"
       ]
     }
   ]

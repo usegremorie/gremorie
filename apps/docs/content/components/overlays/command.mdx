@@ -1,0 +1,124 @@
+---
+title: Command
+description: Keyboard-first command palette - built on cmdk.
+---
+
+`Command` is the keyboard-first command palette primitive. Built on
+`cmdk` (the [pacocoursey/cmdk](https://github.com/pacocoursey/cmdk)
+library). Use it for inline pickers (e.g. inside a Popover for the
+Combobox pattern); the canonical `Cmd+K` floating palette pattern
+(GitHub, Linear, Vercel, Notion) lands once `rx-overlays` ships a Dialog
+primitive to host it.
+
+Always include a keyboard hint in the input placeholder (`"Type a
+command or search..."`), close on `Escape`, focus the input on open.
+Group items by intent (Navigation, Actions, Recent). Don't overload the
+palette with unrelated entries - its value is fast keyboard targeting,
+not discoverability.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Command lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-command
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@gremorie/rx-overlays";
+
+export function NavigationPicker() {
+  return (
+    <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Navigation">
+          <CommandItem>
+            Calendar
+            <CommandShortcut>Cmd+1</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            Inbox
+            <CommandShortcut>Cmd+2</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Actions">
+          <CommandItem>Create new note</CommandItem>
+          <CommandItem>Open settings</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Command
+  CommandInput
+  CommandList
+    CommandEmpty
+    CommandGroup [heading]
+      CommandItem
+        CommandShortcut
+    CommandSeparator
+```
+
+## Best practices
+
+- **Hint the keyboard contract in the placeholder.** "Type a command or
+  search..." beats "Search".
+- **Group by intent.** Navigation, Actions, Recent - in that order.
+- **Use `Escape` to close.** Wire your host (Dialog, Popover) to listen
+  for the escape key when the palette is open.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/command/command.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-command.json`.
+
+> The `CommandDialog` variant (floating Cmd+K palette) lands once
+> `rx-overlays` ships a Dialog primitive. Until then, host the palette
+> inside your app's existing Dialog or Popover.

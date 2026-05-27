@@ -9,14 +9,15 @@ model select), and renders a Submit button whose icon flips by status -
 `ready` shows an arrow, `submitted` shows a spinner, `streaming` shows
 a stop control.
 
-Two editions ship today:
+Both editions ship the full family today:
 
 - **Angular**: `@gremorie/ng-ai` - full family including action menus,
   model selector, attachment hover-card previews.
-- **React**: `@gremorie/rx-ai` (pilot) - state machine, drag-drop,
-  paste-to-attach, status-driven Submit. Action menus, hover-card
-  previews, model selector, and command palette land in the next
-  iteration once rx-forms and rx-overlays ship.
+- **React**: `@gremorie/rx-ai` - full family including ActionMenu
+  (DropdownMenu), ModelSelector (Select), attachment HoverCard previews,
+  Speech button (Web Speech API), and Command palette wrappers. Pulls in
+  `rx-button`, `rx-select`, `rx-dropdown-menu`, `rx-hover-card`, and
+  `rx-command` as registry dependencies.
 
 ## Install
 
@@ -42,7 +43,13 @@ npx gremorie add ng-attachments
 npx gremorie add rx-prompt-input
 ```
 
-Pulls in `rx-utils` (the `cn()` helper). The React edition is a single-file pilot - attachments, action menu, model select, and hover-card previews land in a later iteration.
+Pulls in `rx-utils`, `rx-button`, `rx-select`, `rx-dropdown-menu`,
+`rx-hover-card`, and `rx-command` as registry dependencies. Install
+individual primitives if you only need a subset:
+
+```bash
+npx gremorie add rx-button rx-hover-card
+```
 
 </Tab>
 
@@ -123,21 +130,10 @@ export function ChatBox() {
 
 </Tabs>
 
-## Anatomy
+## Full-featured composition
 
-```
-PromptInput (root form, owns state machine)
-  PromptInputBody
-    PromptInputAttachments (optional, lists attached files)
-    PromptInputHeader (optional, model selector slot)
-    PromptInputTextarea (auto-resize, Enter submits, Shift+Enter newline)
-    PromptInputFooter
-      PromptInputTools (left, action buttons)
-        PromptInputButton (attach, mic, web search, ...)
-      PromptInputSubmit (right, status-driven)
-```
-
-## Composition with toolbar
+The React edition exposes the same family as Angular - action menu,
+model selector, attachment HoverCard previews, and voice input.
 
 <Tabs items={["Angular", "React"]}>
 
@@ -165,35 +161,111 @@ template: `
 <Tab value="React">
 
 ```tsx
-import { Globe, Mic, Paperclip } from "lucide-react";
+"use client";
+
+import { useRef, useState } from "react";
 import {
   PromptInput,
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuTrigger,
+  PromptInputAttachment,
+  PromptInputAttachments,
   PromptInputBody,
   PromptInputButton,
   PromptInputFooter,
+  PromptInputSelect,
+  PromptInputSelectContent,
+  PromptInputSelectItem,
+  PromptInputSelectTrigger,
+  PromptInputSelectValue,
+  PromptInputSpeechButton,
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
+  type ChatStatus,
 } from "@gremorie/rx-ai";
+import { Globe } from "lucide-react";
 
-<PromptInput onSubmit={handle}>
-  <PromptInputBody>
-    <PromptInputTextarea />
-    <PromptInputFooter>
-      <PromptInputTools>
-        <PromptInputButton aria-label="Attach"><Paperclip /></PromptInputButton>
-        <PromptInputButton aria-label="Mic"><Mic /></PromptInputButton>
-        <PromptInputButton aria-label="Web"><Globe /> Web</PromptInputButton>
-      </PromptInputTools>
-      <PromptInputSubmit status={status} />
-    </PromptInputFooter>
-  </PromptInputBody>
-</PromptInput>
+const models = [
+  { id: "gpt-4o", label: "GPT-4o" },
+  { id: "claude-4.5", label: "Claude 4.5" },
+  { id: "gemini-pro", label: "Gemini Pro" },
+];
+
+export function ChatBox() {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [status, setStatus] = useState<ChatStatus>("ready");
+  const [model, setModel] = useState("gpt-4o");
+
+  return (
+    <PromptInput
+      accept="image/*"
+      multiple
+      maxFileSize={5_000_000}
+      onSubmit={(message) => sendMessage(message.text, message.files)}
+    >
+      <PromptInputBody>
+        <PromptInputAttachments>
+          {(file) => <PromptInputAttachment data={file} />}
+        </PromptInputAttachments>
+        <PromptInputTextarea ref={textareaRef} placeholder="Ask anything" />
+        <PromptInputFooter>
+          <PromptInputTools>
+            <PromptInputActionMenu>
+              <PromptInputActionMenuTrigger aria-label="Add attachment" />
+              <PromptInputActionMenuContent>
+                <PromptInputActionAddAttachments />
+              </PromptInputActionMenuContent>
+            </PromptInputActionMenu>
+            <PromptInputSpeechButton textareaRef={textareaRef} />
+            <PromptInputButton aria-label="Search the web">
+              <Globe />
+              Web
+            </PromptInputButton>
+            <PromptInputSelect value={model} onValueChange={setModel}>
+              <PromptInputSelectTrigger>
+                <PromptInputSelectValue placeholder="Model" />
+              </PromptInputSelectTrigger>
+              <PromptInputSelectContent>
+                {models.map((m) => (
+                  <PromptInputSelectItem key={m.id} value={m.id}>
+                    {m.label}
+                  </PromptInputSelectItem>
+                ))}
+              </PromptInputSelectContent>
+            </PromptInputSelect>
+          </PromptInputTools>
+          <PromptInputSubmit status={status} />
+        </PromptInputFooter>
+      </PromptInputBody>
+    </PromptInput>
+  );
+}
 ```
 
 </Tab>
 
 </Tabs>
+
+## Anatomy
+
+```
+PromptInput (root form, owns state machine)
+  PromptInputBody
+    PromptInputAttachments (lists attached files via render-prop)
+      PromptInputAttachment (one chip + HoverCard preview)
+    PromptInputHeader (optional, model selector slot)
+    PromptInputTextarea (auto-resize, Enter submits, Shift+Enter newline)
+    PromptInputFooter
+      PromptInputTools (left, action buttons)
+        PromptInputActionMenu (dropdown with attachments / actions)
+        PromptInputSpeechButton (Web Speech API toggle)
+        PromptInputButton (web search, custom actions)
+        PromptInputSelect (model selector)
+      PromptInputSubmit (right, status-driven)
+```
 
 ## States
 
@@ -266,6 +338,8 @@ template: `
 - **Use a meaningful placeholder.** "Ask anything..." beats "Message".
 - **Constrain attachments** with `accept` and `maxFileSize` - never
   trust the client.
+- **Pass `textareaRef`** to `PromptInputSpeechButton` so dictation
+  appends to the live textarea value.
 
 ## Accessibility
 
@@ -274,6 +348,9 @@ template: `
   attachment.
 - Submit carries `aria-label` based on `status` ("Submit message",
   "Stop generation").
+- Speech button uses the Web Speech API and degrades gracefully when the
+  browser does not support it - the button is disabled instead of hidden,
+  with `aria-label="Toggle voice input"`.
 - Drag-drop zones are focusable and announce file additions to assistive
   tech via standard `<input type="file">` semantics.
 

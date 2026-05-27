@@ -1,0 +1,33 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-label",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Label (React)",
+  "description": "Label primitive built on `@radix-ui/react-label` (via `radix-ui` namespace). Pair with Input / form controls.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "radix-ui"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/label/label.tsx",
+      "content": "\"use client\";\n\nimport { Label as LabelPrimitive } from \"radix-ui\";\nimport * as React from \"react\";\n\nimport { cn } from \"@gremorie/rx-core\";\n\n/**\n * Label - accessible label primitive (Radix `Label.Root`).\n *\n * Imported from shadcn/ui (MIT). Use it as the static label above\n * any input control. When `htmlFor` matches a control's `id`,\n * clicking the label focuses (or activates) the control.\n */\nexport type LabelProps = React.ComponentProps<typeof LabelPrimitive.Root>;\n\nfunction Label({ className, ...props }: LabelProps) {\n  return (\n    <LabelPrimitive.Root\n      data-slot=\"label\"\n      className={cn(\n        \"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Label };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/forms/label/label.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-label.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

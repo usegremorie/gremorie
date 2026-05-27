@@ -1,0 +1,93 @@
+---
+title: Hover Card
+description: Non-interactive preview pane shown on hover - built on Radix HoverCard.
+---
+
+`HoverCard` is the preview pane shown on hover. Use it to **preview**
+content the user can fully open with a click - user profile cards on
+`@mentions`, link previews, image teasers, attachment previews.
+
+Hover is discoverable but optional; touch users will not trigger it.
+Never put critical info or interactive controls inside a HoverCard -
+those belong in a Popover (click-driven, intentional).
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular HoverCard lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-hover-card
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@gremorie/rx-overlays";
+
+export function UserMention({ username }: { username: string }) {
+  return (
+    <HoverCard openDelay={150}>
+      <HoverCardTrigger className="font-medium underline">
+        @{username}
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div className="flex justify-between space-x-4">
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">{username}</h4>
+            <p className="text-sm text-muted-foreground">
+              Designer at Acme Corp.
+            </p>
+          </div>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Best practices
+
+- **Preview-only.** Don't put buttons or links inside `HoverCardContent`
+  - touch users cannot reach them. Use `Popover` instead.
+- **Tune `openDelay`.** Defaults are 700ms (open) and 300ms (close);
+  override per use case. For PromptInput attachment previews, 0ms feels
+  immediate.
+- **Always provide a click path.** The HoverCard previews; clicking the
+  trigger should open the full content.
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/hover-card/hover-card.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-hover-card.json`.

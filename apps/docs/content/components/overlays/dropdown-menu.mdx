@@ -1,0 +1,118 @@
+---
+title: Dropdown Menu
+description: Verb-led action menu attached to a trigger - built on Radix DropdownMenu.
+---
+
+`DropdownMenu` is the action menu attached to a trigger. Use it for
+**actions** - Edit, Delete, Duplicate, Open in new tab. When the items
+in the menu read like verbs, this is the right primitive. For values
+(USA, Brazil, Japan), reach for `Select` instead.
+
+It supports nested submenus (`DropdownMenuSub`), keyboard shortcuts
+(`DropdownMenuShortcut`), checkbox and radio items, and a destructive
+variant via `variant="destructive"` on individual items.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular DropdownMenu lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-dropdown-menu
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@gremorie/rx-overlays";
+
+export function RowActions() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Open row actions">
+          ...
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem>
+          Edit
+          <DropdownMenuShortcut>Cmd+E</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+DropdownMenu
+  DropdownMenuTrigger (asChild = wraps a Button)
+  DropdownMenuContent
+    DropdownMenuLabel
+    DropdownMenuItem [variant="destructive"]
+    DropdownMenuCheckboxItem
+    DropdownMenuRadioGroup
+      DropdownMenuRadioItem
+    DropdownMenuSeparator
+    DropdownMenuSub
+      DropdownMenuSubTrigger
+      DropdownMenuSubContent
+    DropdownMenuShortcut
+```
+
+## Best practices
+
+- **Always trigger via a button.** Anchor tags break menu semantics.
+- **Use `asChild` on the trigger.** Lets you wrap the project's `Button`
+  primitive and inherit its styles.
+- **Use `variant="destructive"` for irreversible items.** It paints the
+  item with destructive tokens automatically.
+- **Reach for `Select` when items hold values, not actions.**
+
+## Reference
+
+- React source: `packages/rx-overlays/src/lib/dropdown-menu/dropdown-menu.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-dropdown-menu.json`.

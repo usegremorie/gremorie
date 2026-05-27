@@ -16,12 +16,6 @@
   "references": [
     {
       "path": "../rx-core/tsconfig.lib.json"
-    },
-    {
-      "path": "../rx-forms/tsconfig.lib.json"
-    },
-    {
-      "path": "../rx-overlays/tsconfig.lib.json"
     }
   ]
 }

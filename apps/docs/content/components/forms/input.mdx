@@ -1,0 +1,83 @@
+---
+title: Input
+description: Single-line text field that adopts every native HTML `type`.
+---
+
+`Input` is the canonical single-line text field. It accepts every native
+HTML `type` (`text`, `email`, `password`, `number`, `search`, `tel`,
+`url`, `file`...) and renders the same token-driven visual states:
+default border, `focus-visible` ring, and `aria-invalid` destructive
+border.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Input lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-input
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import { Input, Label } from "@gremorie/rx-forms";
+
+export function EmailField() {
+  return (
+    <div className="grid w-full max-w-sm items-center gap-1.5">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" type="email" placeholder="you@example.com" />
+    </div>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## States
+
+| State            | Trigger                              | Visual                          |
+| ---------------- | ------------------------------------ | ------------------------------- |
+| Default          | -                                    | `border-input` border.          |
+| Focus            | `focus-visible`                      | `ring-ring/50` ring + border.   |
+| Invalid          | `aria-invalid="true"`                | `border-destructive` border.    |
+| Disabled         | `disabled`                           | 50% opacity, no pointer events. |
+
+## Best practices
+
+- **Always pair with `Label`.** Use `htmlFor` matching the input `id`.
+- **Set `aria-invalid` via your form library.** The styling responds
+  automatically. Don't apply `border-red-500` manually.
+- **Use the native `type`.** `type="email"` triggers the right keyboard
+  on mobile and primes browser validation.
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/input/input.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-input.json`.

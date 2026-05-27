@@ -1,0 +1,6 @@
+{
+  "title": "Overlays",
+  "description": "Overlay primitives - DropdownMenu, HoverCard, Command",
+  "icon": "Layers",
+  "pages": ["dropdown-menu", "hover-card", "command"]
+}

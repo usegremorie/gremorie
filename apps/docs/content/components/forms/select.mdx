@@ -1,0 +1,110 @@
+---
+title: Select
+description: Dropdown chooser for short fixed lists - built on Radix Select.
+---
+
+`Select` is the canonical dropdown picker. Use it when you have a fixed
+list of 5-30 options and the user should not need to search. Beyond
+that, reach for a Combobox.
+
+The visible trigger and value live in the page flow; the listbox is
+portalled and animated by Radix.
+
+## Install
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+```bash
+# Angular Select lands in a follow-up rev.
+```
+
+</Tab>
+
+<Tab value="React">
+
+```bash
+npx gremorie add rx-select
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+<Tabs items={["Angular", "React"]}>
+
+<Tab value="Angular">
+
+> Em breve. The Angular edition will ship in a follow-up release.
+
+</Tab>
+
+<Tab value="React">
+
+```tsx
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@gremorie/rx-forms";
+
+export function ModelPicker() {
+  return (
+    <Select defaultValue="gpt-4o">
+      <SelectTrigger className="w-48">
+        <SelectValue placeholder="Model" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>OpenAI</SelectLabel>
+          <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+          <SelectItem value="gpt-4o-mini">GPT-4o mini</SelectItem>
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+          <SelectLabel>Anthropic</SelectLabel>
+          <SelectItem value="claude-4.5">Claude 4.5</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Anatomy
+
+```
+Select
+  SelectTrigger
+    SelectValue
+  SelectContent
+    SelectGroup
+      SelectLabel
+      SelectItem
+    SelectSeparator
+```
+
+## Best practices
+
+- **Always nest items in `SelectGroup`.** Loose `SelectItem` instances
+  break grouping for screen readers.
+- **Use Combobox beyond ~30 options.** Select is for fixed short lists.
+- **For actions, use `DropdownMenu` instead.** Select holds values
+  (USA, Brazil, Japan); DropdownMenu holds verbs (Edit, Delete).
+
+## Reference
+
+- React source: `packages/rx-forms/src/lib/select/select.tsx`.
+- Registry item: `https://gremorie.com/r/rx/rx-select.json`.

@@ -1,14 +1,14 @@
 {
-  "name": "@gremorie/rx-ai",
+  "name": "@gremorie/rx-overlays",
   "version": "0.0.1",
-  "description": "React AI primitives for Gremorie - PromptInput, Attachments. Pilot edition.",
+  "description": "React overlay primitives for Gremorie - DropdownMenu, HoverCard, Command.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/usegremorie/gremorie.git",
-    "directory": "packages/rx-ai"
+    "directory": "packages/rx-overlays"
   },
-  "keywords": ["react", "ai", "ui", "shadcn", "prompt", "chat"],
+  "keywords": ["react", "ui", "shadcn", "overlays", "dropdown", "hover-card", "command"],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -22,12 +22,12 @@
   "files": ["dist", "README.md"],
   "peerDependencies": {
     "@gremorie/rx-core": "^0.0.1",
-    "@gremorie/rx-forms": "^0.0.1",
-    "@gremorie/rx-overlays": "^0.0.1",
     "react": "^18 || ^19"
   },
   "dependencies": {
+    "cmdk": "^1.1.1",
     "lucide-react": "^0.547.0",
+    "radix-ui": "^1.4.3",
     "tslib": "^2.3.0"
   },
   "sideEffects": false

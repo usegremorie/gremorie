@@ -1,0 +1,6 @@
+{
+  "title": "Forms",
+  "description": "Form primitives - Button, Input, Label, Select",
+  "icon": "Square",
+  "pages": ["button", "input", "label", "select"]
+}
