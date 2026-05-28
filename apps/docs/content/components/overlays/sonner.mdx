@@ -3,6 +3,15 @@ title: Sonner
 description: Toast notification root - mount once, fire toast() anywhere.
 ---
 
+import { SonnerPreview } from "@/components/preview/overlays/overlays";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <SonnerPreview />
+</div>
+
+
 `Sonner` (re-exported as `Toaster`) wraps `sonner` by emil kowalski
 with Gremorie tokens. Mount the `<Toaster />` component once at the
 root of your app (typically in `app/layout.tsx` or the route root).

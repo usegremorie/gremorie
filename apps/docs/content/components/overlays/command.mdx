@@ -3,6 +3,15 @@ title: Command
 description: Keyboard-first command palette - built on cmdk.
 ---
 
+import { CommandPreview } from "@/components/preview/overlays/overlays";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <CommandPreview />
+</div>
+
+
 `Command` is the keyboard-first command palette primitive. Built on
 `cmdk` (the [pacocoursey/cmdk](https://github.com/pacocoursey/cmdk)
 library). Use it for inline pickers (e.g. inside a Popover for the

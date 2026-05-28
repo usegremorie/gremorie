@@ -3,6 +3,15 @@ title: Context Menu
 description: Secondary action menu invoked via right-click.
 ---
 
+import { ContextMenuPreview } from "@/components/preview/overlays/overlays";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <ContextMenuPreview />
+</div>
+
+
 `ContextMenu` is the right-click sibling of `DropdownMenu`. It anchors
 to a region rather than a trigger button - wrap the region in
 `<ContextMenuTrigger>`. Right-click is invisible to most users, so
