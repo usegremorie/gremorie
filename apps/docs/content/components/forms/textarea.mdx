@@ -3,6 +3,15 @@ title: Textarea
 description: "Multi-line text field that auto-grows via `field-sizing: content`."
 ---
 
+import { TextareaPreview } from "@/components/preview/forms/forms";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <TextareaPreview />
+</div>
+
+
 `Textarea` is the multi-line companion to `Input`. It uses the
 modern `field-sizing: content` CSS property to grow with its content
 automatically - no manual `rows` count and no JS measurement.
