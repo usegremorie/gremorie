@@ -73,8 +73,14 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column: live demo (decorative, hidden from assistive tech) */}
-          <div className="relative" aria-hidden="true">
+          {/* Right column: live demo (decorative, hidden from assistive tech).
+              Use `inert` (not just aria-hidden) so descendant buttons/textarea
+              are removed from the tab order entirely. WCAG 4.1.2 fix. */}
+          <div
+            className="relative"
+            aria-hidden="true"
+            {...({ inert: "" } as Record<string, string>)}
+          >
             <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/10 via-transparent to-transparent blur-2xl" />
             <HeroDemo />
           </div>

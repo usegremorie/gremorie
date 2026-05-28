@@ -102,7 +102,7 @@ export function ThemePlayground() {
                 max={24}
                 step={1}
                 onValueChange={(v) => setRadius(v[0] ?? 0)}
-                aria-label="Border radius"
+                thumbAriaLabel="Border radius"
               />
             </div>
 
@@ -119,7 +119,7 @@ export function ThemePlayground() {
                 max={1.1}
                 step={0.01}
                 onValueChange={(v) => setFontScale(v[0] ?? 1)}
-                aria-label="Font scale"
+                thumbAriaLabel="Font scale"
               />
             </div>
           </Card>

@@ -19,14 +19,28 @@ import { cn } from "@gremorie/rx-core";
  * Select. Always show the current value next to the slider -
  * silent sliders confuse users.
  */
+type SliderProps = React.ComponentProps<typeof SliderPrimitive.Root> & {
+  /**
+   * Accessible name for each thumb. Defaults to the prop `aria-label` of
+   * the Root, then a generic "Slider thumb {index + 1}". Pass an array
+   * when the slider has multiple thumbs (e.g. a range slider with low
+   * and high handles): `thumbAriaLabel={["Minimum price", "Maximum price"]}`.
+   *
+   * Required for WCAG SC 4.1.2 (Name, Role, Value) when the slider is
+   * not visually labelled by an adjacent <Label>.
+   */
+  thumbAriaLabel?: string | string[];
+};
+
 function Slider({
   className,
   defaultValue,
   value,
   min = 0,
   max = 100,
+  thumbAriaLabel,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: SliderProps) {
   const _values = React.useMemo(
     () =>
       Array.isArray(value)
@@ -36,6 +50,21 @@ function Slider({
           : [min, max],
     [value, defaultValue, min, max]
   );
+
+  const rootAriaLabel = props["aria-label"];
+
+  function thumbLabel(index: number): string {
+    if (Array.isArray(thumbAriaLabel)) {
+      return thumbAriaLabel[index] ?? `Slider thumb ${index + 1}`;
+    }
+    if (typeof thumbAriaLabel === "string") {
+      return thumbAriaLabel;
+    }
+    if (typeof rootAriaLabel === "string") {
+      return rootAriaLabel;
+    }
+    return `Slider thumb ${index + 1}`;
+  }
 
   return (
     <SliderPrimitive.Root
@@ -67,6 +96,7 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
+          aria-label={thumbLabel(index)}
           className="block size-4 shrink-0 rounded-full border border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
         />
       ))}

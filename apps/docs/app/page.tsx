@@ -28,7 +28,7 @@ import { ThemePlayground } from "@/components/landing/theme-playground";
  *   9. Footer
  */
 export const metadata: Metadata = {
-  title: "Gremorie — the AI-native design system",
+  title: "Gremorie - the AI-native design system",
   description:
     "Registry + MCP for AI-driven generation. Angular and React, copy-paste components."
 };
@@ -37,7 +37,7 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
-      <main className="flex-1">
+      <main id="main" className="flex-1">
         <Hero />
         <FeaturesGrid />
         <ComponentsShowcase />

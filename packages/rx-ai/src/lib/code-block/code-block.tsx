@@ -58,15 +58,21 @@ export async function highlightCode(
     ? [lineNumberTransformer]
     : [];
 
+  // Theme choice rationale:
+  //   - `github-light` keeps the muted, neutral feel Gremorie uses but
+  //     ships foreground tokens that hit WCAG 1.4.3 AA contrast against
+  //     the light background (one-light fails: comment fg #a0a1a7 over
+  //     #fafafa is 2.46:1, well below 4.5:1).
+  //   - `github-dark` mirrors that on the dark side for symmetry.
   return await Promise.all([
     codeToHtml(code, {
       lang: language,
-      theme: "one-light",
+      theme: "github-light",
       transformers,
     }),
     codeToHtml(code, {
       lang: language,
-      theme: "one-dark-pro",
+      theme: "github-dark",
       transformers,
     }),
   ]);
