@@ -8,7 +8,10 @@
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/.next"],
-      "dependsOn": [{ "projects": ["registry"], "target": "generate" }],
+      "dependsOn": [
+        "^build",
+        { "projects": ["registry"], "target": "generate" }
+      ],
       "options": {
         "cwd": "apps/docs",
         "command": "next build"
@@ -17,7 +20,10 @@
     "serve": {
       "executor": "nx:run-commands",
       "continuous": true,
-      "dependsOn": [{ "projects": ["registry"], "target": "generate" }],
+      "dependsOn": [
+        "^build",
+        { "projects": ["registry"], "target": "generate" }
+      ],
       "options": {
         "cwd": "apps/docs",
         "command": "next dev -p 5020"
