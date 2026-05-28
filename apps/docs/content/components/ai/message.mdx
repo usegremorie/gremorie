@@ -3,7 +3,36 @@ title: Message
 description: Atomic chat message with role-aware layout. Composable surface with MessageContent + MessageResponse (markdown), attachments, toolbar, and branch navigation.
 ---
 
+import { MessageAssistantPreview, MessageUserPreview, MessageMarkdownPreview, MessagePairPreview } from "@/components/preview/ai/message";
+
 `Message` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+
+## Preview
+
+### Assistant with toolbar
+
+<div className="rounded-lg border p-6">
+  <MessageAssistantPreview />
+</div>
+
+### User message
+
+<div className="rounded-lg border p-6">
+  <MessageUserPreview />
+</div>
+
+### Rich markdown response
+
+<div className="rounded-lg border p-6">
+  <MessageMarkdownPreview />
+</div>
+
+### User and assistant pair
+
+<div className="rounded-lg border p-6">
+  <MessagePairPreview />
+</div>
+
 
 ## Install
 
