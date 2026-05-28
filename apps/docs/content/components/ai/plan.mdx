@@ -3,6 +3,28 @@ title: Plan
 description: Multi-step plan card with Shimmer-marked active step, status icons, and approve/regenerate footer.
 ---
 
+import { PlanCollapsedPreview, PlanExpandedPreview, PlanStreamingPreview } from "@/components/preview/ai/chatbot";
+
+## Preview
+
+### Collapsed
+
+<div className="rounded-lg border p-6">
+  <PlanCollapsedPreview />
+</div>
+
+### Expanded
+
+<div className="rounded-lg border p-6">
+  <PlanExpandedPreview />
+</div>
+
+### Streaming
+
+<div className="rounded-lg border p-6">
+  <PlanStreamingPreview />
+</div>
+
 `Plan` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install

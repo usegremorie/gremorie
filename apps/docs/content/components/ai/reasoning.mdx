@@ -3,6 +3,28 @@ title: Reasoning
 description: Collapsible "thinking" block for visible chain-of-thought. Auto-opens while streaming, tracks duration, auto-closes after streaming ends.
 ---
 
+import { ReasoningPreview, ReasoningStreamingPreview, ReasoningExpandedPreview } from "@/components/preview/ai/chatbot";
+
+## Preview
+
+### Idle
+
+<div className="rounded-lg border p-6">
+  <ReasoningPreview />
+</div>
+
+### Streaming
+
+<div className="rounded-lg border p-6">
+  <ReasoningStreamingPreview />
+</div>
+
+### Expanded
+
+<div className="rounded-lg border p-6">
+  <ReasoningExpandedPreview />
+</div>
+
 `Reasoning` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install

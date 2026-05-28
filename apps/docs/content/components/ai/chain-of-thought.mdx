@@ -3,6 +3,22 @@ title: Chain of Thought
 description: Step-by-step reasoning visualizer with status-aware icons and nested search results.
 ---
 
+import { ChainOfThoughtPreview, ChainOfThoughtSearchPreview } from "@/components/preview/ai/chatbot";
+
+## Preview
+
+### Default
+
+<div className="rounded-lg border p-6">
+  <ChainOfThoughtPreview />
+</div>
+
+### With search context
+
+<div className="rounded-lg border p-6">
+  <ChainOfThoughtSearchPreview />
+</div>
+
 `Chain of Thought` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install

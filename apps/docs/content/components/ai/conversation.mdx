@@ -3,6 +3,22 @@ title: Conversation
 description: Scroll-to-bottom container for chat messages. Stays anchored to the bottom while messages stream; ConversationScrollButton appears when the user scrolls up.
 ---
 
+import { ConversationPreview, ConversationEmptyPreview } from "@/components/preview/ai/chatbot";
+
+## Preview
+
+### Standard
+
+<div className="rounded-lg border p-6">
+  <ConversationPreview />
+</div>
+
+### Empty state
+
+<div className="rounded-lg border p-6">
+  <ConversationEmptyPreview />
+</div>
+
 `Conversation` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install

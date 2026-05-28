@@ -3,6 +3,22 @@ title: Task
 description: Collapsible item list for an agent task. TaskTrigger shows status + summary, TaskContent holds TaskItem children with inline file badges.
 ---
 
+import { TaskCollapsedPreview, TaskExpandedPreview } from "@/components/preview/ai/chatbot";
+
+## Preview
+
+### Collapsed
+
+<div className="rounded-lg border p-6">
+  <TaskCollapsedPreview />
+</div>
+
+### Expanded
+
+<div className="rounded-lg border p-6">
+  <TaskExpandedPreview />
+</div>
+
 `Task` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install
