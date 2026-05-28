@@ -44,7 +44,7 @@ export function Header() {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
-          className="text-base font-semibold tracking-tight text-foreground"
+          className="rounded-sm text-base font-semibold tracking-tight text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           Gremorie
         </Link>
@@ -57,7 +57,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-foreground"
+              className="inline-flex min-h-6 items-center rounded-sm px-1 py-1 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {link.label}
             </Link>

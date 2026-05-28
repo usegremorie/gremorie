@@ -1,10 +1,18 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/solar.css";
 @import "fumadocs-ui/css/preset.css";
-/* Phase 5: re-enable when @gremorie/react-core ships token globals */
-/* @import "@gremorie/react-core/styles/globals.css"; */
+@import "../../../packages/ng-core/styles/theme.css";
 
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
+@source "../../../packages/rx-ai/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-forms/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-overlays/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-display/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-feedback/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-navigation/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-containers/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-data/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-core/src/**/*.{ts,tsx}";
 
 /* ---------------------------------------------------------------- *\
  * Customizations (intentionally minimal).

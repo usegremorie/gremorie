@@ -57,7 +57,7 @@ export function Hero() {
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-4 text-xs text-muted-foreground">
               <span>
-                <span className="font-medium text-foreground">100</span>{" "}
+                <span className="font-medium text-foreground">85</span>{" "}
                 primitives
               </span>
               <span>
@@ -73,8 +73,8 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column: live demo */}
-          <div className="relative">
+          {/* Right column: live demo (decorative, hidden from assistive tech) */}
+          <div className="relative" aria-hidden="true">
             <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/10 via-transparent to-transparent blur-2xl" />
             <HeroDemo />
           </div>
