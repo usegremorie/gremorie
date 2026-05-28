@@ -8,8 +8,16 @@ import {
   Eye,
   LayoutGrid,
   Layers,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
+import { Button } from "@gremorie/rx-forms";
+import {
+  Badge,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
 
 const categories = [
   {
@@ -18,49 +26,49 @@ const categories = [
     icon: Sparkles,
     slug: "ai",
     description:
-      "Conversation, Message, PromptInput, Reasoning, Artifact, Canvas."
+      "Conversation, Message, PromptInput, Reasoning, Artifact, Canvas.",
   },
   {
     name: "Forms",
     count: 17,
     icon: Edit,
     slug: "forms",
-    description: "Button, Input, Select, Checkbox, Switch, Form, Calendar."
+    description: "Button, Input, Select, Checkbox, Switch, Form, Calendar.",
   },
   {
     name: "Overlays",
     count: 11,
     icon: Layers,
     slug: "overlays",
-    description: "Dialog, Drawer, Sheet, Popover, Tooltip, Command."
+    description: "Dialog, Drawer, Sheet, Popover, Tooltip, Command.",
   },
   {
     name: "Display",
     count: 8,
     icon: Eye,
     slug: "display",
-    description: "Card, Badge, Avatar, Accordion, Carousel, Table."
+    description: "Card, Badge, Avatar, Accordion, Carousel, Table.",
   },
   {
     name: "Navigation",
     count: 6,
     icon: Compass,
     slug: "navigation",
-    description: "Tabs, Sidebar, Breadcrumb, Pagination, NavigationMenu."
+    description: "Tabs, Sidebar, Breadcrumb, Pagination, NavigationMenu.",
   },
   {
     name: "Containers",
     count: 4,
     icon: LayoutGrid,
     slug: "containers",
-    description: "ScrollArea, Stack, AspectRatio, Resizable."
+    description: "ScrollArea, Stack, AspectRatio, Resizable.",
   },
   {
     name: "Feedback",
     count: 3,
     icon: Bell,
     slug: "feedback",
-    description: "Alert, Progress, Skeleton."
+    description: "Alert, Progress, Skeleton.",
   },
   {
     name: "Data",
@@ -68,10 +76,14 @@ const categories = [
     icon: BarChart3,
     slug: "data",
     description:
-      "AreaChart, LineChart, BarChart, ScatterChart, PieChart, RadarChart."
-  }
+      "AreaChart, LineChart, BarChart, ScatterChart, PieChart, RadarChart.",
+  },
 ];
 
+/**
+ * Dogfood: category tiles composed with rx-display Card + Badge,
+ * "View all components" CTA uses rx-forms Button (ghost).
+ */
 export function ComponentsShowcase() {
   return (
     <section className="py-20">
@@ -86,13 +98,12 @@ export function ComponentsShowcase() {
               source, customize with your tokens.
             </p>
           </div>
-          <Link
-            href="/components/overview"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-primary"
-          >
-            View all components
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
+          <Button variant="ghost" asChild>
+            <Link href="/components/overview">
+              View all components
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -100,24 +111,22 @@ export function ComponentsShowcase() {
             <Link
               key={cat.slug}
               href="/components/overview"
-              className="group flex flex-col gap-3 rounded-lg border border-border bg-background p-5 transition-all hover:border-primary/40 hover:shadow-sm"
+              className="group block"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex size-9 items-center justify-center rounded-md bg-muted text-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
-                  <cat.icon className="size-4.5" aria-hidden="true" />
-                </div>
-                <span className="text-xs font-medium text-muted-foreground">
-                  {cat.count}
-                </span>
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">
-                  {cat.name}
-                </h3>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  {cat.description}
-                </p>
-              </div>
+              <Card className="h-full gap-3 py-5 transition-all group-hover:border-primary/40 group-hover:shadow-sm">
+                <CardHeader className="gap-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex size-9 items-center justify-center rounded-md bg-muted text-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+                      <cat.icon className="size-4.5" aria-hidden="true" />
+                    </div>
+                    <Badge variant="secondary">{cat.count}</Badge>
+                  </div>
+                  <CardTitle className="text-sm">{cat.name}</CardTitle>
+                  <CardDescription className="text-xs leading-relaxed">
+                    {cat.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
             </Link>
           ))}
         </div>

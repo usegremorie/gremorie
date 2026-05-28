@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { Github } from "lucide-react";
+import { Button } from "@gremorie/rx-forms";
 
 /**
  * Landing-only header. Lives outside the DocsLayout. Sticky, blurred
  * background, minimal navigation. The DocsLayout has its own Fumadocs
  * header with the sidebar trigger; this one is just for the standalone
  * landing at `/`.
+ *
+ * Dogfood: GitHub link uses rx-forms Button (variant=ghost, asChild).
+ * Nav links stay as plain Next Link for routing simplicity.
  */
 export function Header() {
   return (
@@ -46,16 +50,17 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
-            href="https://github.com/usegremorie/gremorie"
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label="View Gremorie on GitHub"
-            className="inline-flex h-9 items-center justify-center rounded-md px-3 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-          >
-            <Github className="size-4" aria-hidden="true" />
-            <span className="sr-only md:not-sr-only md:ml-2">GitHub</span>
-          </a>
+          <Button variant="ghost" size="sm" asChild>
+            <a
+              href="https://github.com/usegremorie/gremorie"
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="View Gremorie on GitHub"
+            >
+              <Github aria-hidden="true" />
+              <span className="sr-only md:not-sr-only">GitHub</span>
+            </a>
+          </Button>
         </div>
       </div>
     </header>

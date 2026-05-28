@@ -1,17 +1,34 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Send, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import {
+  Conversation,
+  ConversationContent,
+  Message,
+  MessageContent,
+  PromptInput,
+  PromptInputBody,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputTools,
+  Reasoning,
+  ReasoningContent,
+  ReasoningTrigger,
+} from "@gremorie/rx-ai";
+import { Card } from "@gremorie/rx-display";
 
 /**
  * Live demo card for the hero. Loops through a fake AI conversation so
  * visitors see streaming reasoning + assistant response without needing
  * a real AI SDK / backend running on the docs deploy.
  *
- * Why typing animation instead of real AI:
- *   - Zero runtime cost (no key, no network, no streaming infra)
- *   - Deterministic visual demo for screenshots / Core Web Vitals
- *   - Real chat surface lives at /components/ai/* with full code
+ * Dogfood: composed with rx-display Card + rx-ai Conversation, Message,
+ * Reasoning, PromptInput primitives. Typing animation is preserved via
+ * a small useTypewriter hook that feeds the actual rx-ai primitives -
+ * the primitives are streaming-aware (Reasoning has isStreaming prop;
+ * Message renders streamed text natively).
  *
  * Cycle: idle -> reasoning -> assistant typing -> done -> reset.
  */
@@ -75,8 +92,18 @@ export function HeroDemo() {
     18
   );
 
+  const showReasoning =
+    phase === "reasoning" || phase === "assistant" || phase === "done";
+  const isReasoningStreaming = phase === "reasoning";
+  const showAssistant = phase === "assistant" || phase === "done";
+
+  // Cosmetic no-op handler. The submit button is permanently disabled.
+  const handleSubmit = () => {
+    // demo only, no real submission
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+    <Card className="relative gap-0 overflow-hidden py-0 shadow-sm">
       <div className="flex items-center justify-between border-b border-border/60 px-4 py-2.5">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Sparkles className="size-3.5" aria-hidden="true" />
@@ -90,76 +117,51 @@ export function HeroDemo() {
       </div>
 
       <div className="flex h-[360px] flex-col">
-        <div className="flex-1 space-y-4 overflow-hidden p-4">
-          {/* User message */}
-          <div className="flex justify-end">
-            <div className="max-w-[80%] rounded-lg bg-secondary px-3.5 py-2 text-sm text-secondary-foreground">
-              {USER_MESSAGE}
-            </div>
-          </div>
+        <Conversation className="flex-1">
+          <ConversationContent className="space-y-4 p-4">
+            {/* User message */}
+            <Message from="user">
+              <MessageContent>{USER_MESSAGE}</MessageContent>
+            </Message>
 
-          {/* Reasoning */}
-          {(phase === "reasoning" ||
-            phase === "assistant" ||
-            phase === "done") && (
-            <div className="max-w-[90%]">
-              <div className="mb-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span
-                  className={`size-1.5 rounded-full ${
-                    phase === "reasoning"
-                      ? "animate-pulse bg-primary"
-                      : "bg-muted-foreground/50"
-                  }`}
-                  aria-hidden="true"
-                />
-                <span>
-                  {phase === "reasoning" ? "Thinking…" : "Thought for 2.6s"}
-                </span>
-              </div>
-              {phase === "reasoning" && (
-                <div className="rounded-md border border-dashed border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
-                  {reasoningOut}
-                  <span className="ml-0.5 inline-block h-3 w-0.5 animate-pulse bg-muted-foreground/60 align-middle" />
-                </div>
-              )}
-            </div>
-          )}
+            {/* Reasoning block (streaming-aware via isStreaming prop) */}
+            {showReasoning && (
+              <Reasoning
+                isStreaming={isReasoningStreaming}
+                defaultOpen
+                duration={2}
+              >
+                <ReasoningTrigger />
+                <ReasoningContent>{reasoningOut}</ReasoningContent>
+              </Reasoning>
+            )}
 
-          {/* Assistant response */}
-          {(phase === "assistant" || phase === "done") && (
-            <div className="max-w-[90%]">
-              <div className="text-sm leading-relaxed text-foreground">
-                {assistantOut}
-                {phase === "assistant" &&
-                  assistantOut.length < ASSISTANT_TEXT.length && (
-                    <span className="ml-0.5 inline-block h-3.5 w-0.5 animate-pulse bg-foreground/70 align-middle" />
-                  )}
-              </div>
-            </div>
-          )}
-        </div>
+            {/* Assistant response */}
+            {showAssistant && (
+              <Message from="assistant">
+                <MessageContent>{assistantOut}</MessageContent>
+              </Message>
+            )}
+          </ConversationContent>
+        </Conversation>
 
-        {/* Prompt input (cosmetic) */}
+        {/* Prompt input (cosmetic, disabled submit) */}
         <div className="border-t border-border/60 p-3">
-          <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2">
-            <input
-              type="text"
-              placeholder="Ask anything…"
-              disabled
-              aria-label="Demo prompt input (disabled)"
-              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-            />
-            <button
-              type="button"
-              disabled
-              aria-label="Send (demo)"
-              className="inline-flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground opacity-70"
-            >
-              <Send className="size-3.5" aria-hidden="true" />
-            </button>
-          </div>
+          <PromptInput onSubmit={handleSubmit}>
+            <PromptInputBody>
+              <PromptInputTextarea
+                placeholder="Ask anything…"
+                disabled
+                aria-label="Demo prompt input (disabled)"
+              />
+              <PromptInputFooter>
+                <PromptInputTools />
+                <PromptInputSubmit disabled status="ready" />
+              </PromptInputFooter>
+            </PromptInputBody>
+          </PromptInput>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

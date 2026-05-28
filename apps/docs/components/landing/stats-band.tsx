@@ -1,15 +1,23 @@
+import { Separator } from "@gremorie/rx-display";
+
 const stats = [
   { value: "85", label: "primitives" },
   { value: "8", label: "categories" },
   { value: "25+", label: "corpus articles" },
   { value: "MCP", label: "server included" },
-  { value: "MIT", label: "open source" }
+  { value: "MIT", label: "open source" },
 ];
 
+/**
+ * Dogfood: top + bottom rules use rx-display Separator instead of CSS borders.
+ * Numbers stay native text - no equivalent "Stat" primitive yet, and the
+ * layout (5 inline metrics) doesn't map to Card cleanly here.
+ */
 export function StatsBand() {
   return (
-    <section className="border-y border-border bg-muted/30 py-12">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-muted/30 py-12">
+      <Separator />
+      <div className="mx-auto max-w-7xl px-6 py-12">
         <dl className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
@@ -24,6 +32,7 @@ export function StatsBand() {
           ))}
         </dl>
       </div>
+      <Separator />
     </section>
   );
 }

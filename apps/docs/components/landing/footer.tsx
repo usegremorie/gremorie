@@ -1,16 +1,22 @@
 import Link from "next/link";
+import { Separator } from "@gremorie/rx-display";
 
 const links = [
   { label: "Docs", href: "/get-started/installation" },
   { label: "Components", href: "/components/overview" },
   { label: "Blocks", href: "/blocks/overview" },
-  { label: "Corpus", href: "/corpus" }
+  { label: "Corpus", href: "/corpus" },
 ];
 
+/**
+ * Dogfood: top rule uses rx-display Separator instead of CSS border.
+ * Links remain as plain Next Link / anchor for routing.
+ */
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-background py-8">
-      <div className="mx-auto max-w-7xl px-6">
+    <footer className="bg-background">
+      <Separator />
+      <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
           <p>
             <span className="font-medium text-foreground">Gremorie</span> ·{" "}

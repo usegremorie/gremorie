@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, Github } from "lucide-react";
+import { Button } from "@gremorie/rx-forms";
+import { Badge } from "@gremorie/rx-display";
 import { HeroDemo } from "./hero-demo";
 
+/**
+ * Landing hero. Dogfood: status pill is rx-display Badge;
+ * CTAs are rx-forms Button (asChild wraps Next Link / anchor).
+ */
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
@@ -9,10 +15,13 @@ export function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left column: copy + CTAs */}
           <div className="flex flex-col gap-6">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-emerald-500" />
+            <Badge variant="secondary" className="w-fit gap-2 py-1">
+              <span
+                className="size-1.5 rounded-full bg-emerald-500"
+                aria-hidden="true"
+              />
               AI-native design system, in development
-            </div>
+            </Badge>
 
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               The AI-native design system
@@ -25,28 +34,25 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Link
-                href="/get-started/installation"
-                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
-              >
-                Get Started
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/components/overview"
-                className="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-              >
-                View Components
-              </Link>
-              <a
-                href="https://github.com/usegremorie/gremorie"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-              >
-                <Github className="size-4" aria-hidden="true" />
-                Star on GitHub
-              </a>
+              <Button size="lg" asChild>
+                <Link href="/get-started/installation">
+                  Get Started
+                  <ArrowRight aria-hidden="true" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/components/overview">View Components</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a
+                  href="https://github.com/usegremorie/gremorie"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <Github aria-hidden="true" />
+                  Star on GitHub
+                </a>
+              </Button>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-4 text-xs text-muted-foreground">
@@ -55,7 +61,9 @@ export function Hero() {
                 primitives
               </span>
               <span>
-                <span className="font-medium text-foreground">React + Angular</span>{" "}
+                <span className="font-medium text-foreground">
+                  React + Angular
+                </span>{" "}
                 editions
               </span>
               <span>

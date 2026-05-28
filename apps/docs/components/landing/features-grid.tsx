@@ -1,32 +1,41 @@
 import { Brain, Copy, GitBranch, Sparkles } from "lucide-react";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
 
 const features = [
   {
     icon: Sparkles,
     title: "AI-native",
     description:
-      "Knowledge layer + MCP serves the corpus to LLMs. Your design system is legible to language models, not just designers."
+      "Knowledge layer + MCP serves the corpus to LLMs. Your design system is legible to language models, not just designers.",
   },
   {
     icon: GitBranch,
     title: "Two editions",
     description:
-      "Angular and React from the same registry. Same primitives, same semantics, same tokens. Shared corpus across stacks."
+      "Angular and React from the same registry. Same primitives, same semantics, same tokens. Shared corpus across stacks.",
   },
   {
     icon: Copy,
     title: "Copy-paste",
     description:
-      "Run gremorie add <item> and the code is yours. No black-box dependency. Own every line, refactor without asking."
+      "Run gremorie add <item> and the code is yours. No black-box dependency. Own every line, refactor without asking.",
   },
   {
     icon: Brain,
     title: "MCP-ready",
     description:
-      "Claude, Cursor, and Codex generate idiomatic UI by reading the MCP server. They build with your DS, not against it."
-  }
+      "Claude, Cursor, and Codex generate idiomatic UI by reading the MCP server. They build with your DS, not against it.",
+  },
 ];
 
+/**
+ * Dogfood: each feature is composed with rx-display Card primitives.
+ */
 export function FeaturesGrid() {
   return (
     <section className="border-t border-border/60 bg-muted/20 py-20">
@@ -43,20 +52,20 @@ export function FeaturesGrid() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => (
-            <div
+            <Card
               key={feature.title}
-              className="flex flex-col gap-3 rounded-lg border border-border bg-background p-6 transition-colors hover:border-foreground/20"
+              className="transition-colors hover:border-foreground/20"
             >
-              <div className="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <feature.icon className="size-4.5" aria-hidden="true" />
-              </div>
-              <h3 className="text-base font-semibold text-foreground">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {feature.description}
-              </p>
-            </div>
+              <CardHeader className="gap-3">
+                <div className="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <feature.icon className="size-4.5" aria-hidden="true" />
+                </div>
+                <CardTitle className="text-base">{feature.title}</CardTitle>
+                <CardDescription className="leading-relaxed">
+                  {feature.description}
+                </CardDescription>
+              </CardHeader>
+            </Card>
           ))}
         </div>
       </div>

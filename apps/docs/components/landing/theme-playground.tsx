@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Button, Slider } from "@gremorie/rx-forms";
+import { Card } from "@gremorie/rx-display";
 
 type Hue = {
   name: string;
@@ -18,7 +20,7 @@ const hues: Hue[] = [
   { name: "Emerald", value: "emerald", hsl: "160 84% 39%" },
   { name: "Rose", value: "rose", hsl: "346 84% 57%" },
   { name: "Amber", value: "amber", hsl: "38 92% 50%" },
-  { name: "Sky", value: "sky", hsl: "199 89% 48%" }
+  { name: "Sky", value: "sky", hsl: "199 89% 48%" },
 ];
 
 /**
@@ -27,10 +29,9 @@ const hues: Hue[] = [
  * tied to localStorage, just a self-contained demo so visitors get the
  * shape of how Gremorie tokens flow.
  *
- * Three controls:
- *   - Primary hue (preset swatches)
- *   - Border radius (px slider)
- *   - Font scale (rem multiplier)
+ * Dogfood: controls use rx-forms Slider + Button, preview uses
+ * rx-display Card + rx-forms Button (with inline tokens applied via
+ * style to keep theme changes scoped to the preview).
  */
 export function ThemePlayground() {
   const [hue, setHue] = useState<Hue>(HUE_VIOLET);
@@ -50,18 +51,17 @@ export function ThemePlayground() {
               layer to retheme your entire app. Try a few changes below.
             </p>
           </div>
-          <Link
-            href="/tokens"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-primary"
-          >
-            Customize tokens
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
+          <Button variant="outline" asChild>
+            <Link href="/tokens">
+              Customize tokens
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
           {/* Controls */}
-          <div className="space-y-6 rounded-xl border border-border bg-background p-6">
+          <Card className="gap-6 px-6 py-6">
             <div>
               <label
                 htmlFor="hue-buttons"
@@ -90,64 +90,55 @@ export function ThemePlayground() {
             </div>
 
             <div>
-              <label
-                htmlFor="radius-slider"
-                className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-              >
+              <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <span>Border radius</span>
                 <span className="font-mono normal-case tracking-normal text-foreground">
                   {radius}px
                 </span>
-              </label>
-              <input
-                id="radius-slider"
-                type="range"
+              </div>
+              <Slider
+                value={[radius]}
                 min={0}
                 max={24}
                 step={1}
-                value={radius}
-                onChange={(e) => setRadius(Number(e.target.value))}
-                className="w-full accent-primary"
+                onValueChange={(v) => setRadius(v[0] ?? 0)}
+                aria-label="Border radius"
               />
             </div>
 
             <div>
-              <label
-                htmlFor="font-scale-slider"
-                className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-              >
+              <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <span>Font scale</span>
                 <span className="font-mono normal-case tracking-normal text-foreground">
                   {fontScale.toFixed(2)}x
                 </span>
-              </label>
-              <input
-                id="font-scale-slider"
-                type="range"
+              </div>
+              <Slider
+                value={[fontScale]}
                 min={0.9}
                 max={1.1}
                 step={0.01}
-                value={fontScale}
-                onChange={(e) => setFontScale(Number(e.target.value))}
-                className="w-full accent-primary"
+                onValueChange={(v) => setFontScale(v[0] ?? 1)}
+                aria-label="Font scale"
               />
             </div>
-          </div>
+          </Card>
 
-          {/* Preview */}
-          <div
-            className="rounded-xl border border-border bg-background p-8"
+          {/* Preview: scoped via inline CSS variables. Plain divs inside
+              so token changes stay local to the preview. */}
+          <Card
+            className="px-8 py-8"
             style={
               {
                 ["--demo-primary" as string]: `hsl(${hue.hsl})`,
                 ["--demo-radius" as string]: `${radius}px`,
                 ["--demo-font-scale" as string]: fontScale,
-                fontSize: `calc(1rem * var(--demo-font-scale))`
+                fontSize: `calc(1rem * var(--demo-font-scale))`,
               } as React.CSSProperties
             }
           >
             <div
-              className="rounded-[var(--demo-radius)] border border-border p-6"
+              className="border border-border p-6"
               style={{ borderRadius: "var(--demo-radius)" }}
             >
               <div className="mb-2 flex items-center gap-2">
@@ -155,7 +146,7 @@ export function ThemePlayground() {
                   className="inline-flex size-6 items-center justify-center text-white"
                   style={{
                     background: "var(--demo-primary)",
-                    borderRadius: "calc(var(--demo-radius) * 0.6)"
+                    borderRadius: "calc(var(--demo-radius) * 0.6)",
                   }}
                 >
                   <Sparkles className="size-3.5" aria-hidden="true" />
@@ -174,7 +165,7 @@ export function ThemePlayground() {
                   className="inline-flex h-9 items-center justify-center px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
                   style={{
                     background: "var(--demo-primary)",
-                    borderRadius: "var(--demo-radius)"
+                    borderRadius: "var(--demo-radius)",
                   }}
                 >
                   Primary action
@@ -190,7 +181,7 @@ export function ThemePlayground() {
                   className="inline-flex h-9 items-center justify-center px-3 text-xs font-medium text-white"
                   style={{
                     background: "var(--demo-primary)",
-                    borderRadius: "calc(var(--demo-radius) * 0.7)"
+                    borderRadius: "calc(var(--demo-radius) * 0.7)",
                   }}
                 >
                   Badge
@@ -201,7 +192,7 @@ export function ThemePlayground() {
             <div className="mt-4 text-xs text-muted-foreground">
               Scoped preview. Try the sliders above.
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </section>
