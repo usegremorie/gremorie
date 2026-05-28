@@ -3,6 +3,14 @@ title: Area Chart
 description: "Cumulative quantity over a continuous domain."
 ---
 
+import { AreaChartPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <AreaChartPreview />
+</div>
+
 `AreaChart` plots one or more series as filled areas over a categorical
 X axis. Pass tabular `data`, a JSON-serializable `config` mapping each
 value field to a `{ label, color }`, and the `xKey` that names the

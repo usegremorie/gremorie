@@ -3,6 +3,14 @@ title: Radar Chart
 description: "Compare series across multiple axes that share a radial domain."
 ---
 
+import { RadarChartPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <RadarChartPreview />
+</div>
+
 `RadarChart` plots one closed polygon per series, with each data row
 becoming a spoke. Pass tabular `data`, a JSON-serializable `config`
 mapping each value field to a `{ label, color }`, and the `xKey` that

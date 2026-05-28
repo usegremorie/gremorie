@@ -3,6 +3,14 @@ title: Scatter Chart
 description: "Correlation between a numeric X field and one or more Y series."
 ---
 
+import { ScatterChartPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <ScatterChartPreview />
+</div>
+
 `ScatterChart` plots points against a linear numeric X axis and one or
 more Y series. Unlike Area / Line / Bar, `xKey` here is a numeric field
 (not a category). Built on the shared chart engine (`chart-context`,

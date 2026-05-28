@@ -3,6 +3,14 @@ title: Line Chart
 description: "Trends over a continuous domain."
 ---
 
+import { LineChartPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <LineChartPreview />
+</div>
+
 `LineChart` plots one or more series as stroked lines over a categorical
 X axis. Pass tabular `data`, a JSON-serializable `config` mapping each
 value field to a `{ label, color }`, and the `xKey` that names the

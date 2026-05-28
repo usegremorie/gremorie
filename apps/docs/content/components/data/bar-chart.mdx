@@ -3,6 +3,14 @@ title: Bar Chart
 description: "Compare values across categories with grouped bars."
 ---
 
+import { BarChartPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <BarChartPreview />
+</div>
+
 `BarChart` plots one or more series as side-by-side bars within each
 category band. Pass tabular `data`, a JSON-serializable `config` mapping
 each value field to a `{ label, color }`, and the `xKey` that names the

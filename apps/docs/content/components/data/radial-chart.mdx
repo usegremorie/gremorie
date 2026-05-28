@@ -3,6 +3,14 @@ title: Radial Chart
 description: "Concentric radial bars - one ring per data row."
 ---
 
+import { RadialChartPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <RadialChartPreview />
+</div>
+
 `RadialChart` plots one concentric ring per data row, each sweep
 proportional to its `valueKey` value. Use `nameKey` to label each ring.
 Colors cycle through `--chart-1..5`. Built on the shared chart engine

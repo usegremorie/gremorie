@@ -3,6 +3,22 @@ title: Pie Chart
 description: "Parts of a whole - one slice per data row."
 ---
 
+import { PieChartPreview, PieChartDonutPreview } from "@/components/preview/data/charts";
+
+## Preview
+
+### Default
+
+<div className="rounded-lg border p-6">
+  <PieChartPreview />
+</div>
+
+### Donut
+
+<div className="rounded-lg border p-6">
+  <PieChartDonutPreview />
+</div>
+
 `PieChart` plots one slice per data row using `valueKey` for sweep and
 `nameKey` for label. Set `donut` to draw a donut. Slice colors cycle
 through `--chart-1..5`. Built on the shared chart engine
