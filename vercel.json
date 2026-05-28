@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && npx nx build docs",
-  "installCommand": "cd ../.. && npm install --legacy-peer-deps",
-  "outputDirectory": ".next",
+  "buildCommand": "npx nx build docs",
+  "installCommand": "npm install --legacy-peer-deps",
+  "outputDirectory": "apps/docs/.next",
   "headers": [
     {
       "source": "/(.*)",
