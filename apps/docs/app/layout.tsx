@@ -2,6 +2,7 @@ import "./global.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 const geistSans = Geist({
@@ -13,6 +14,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono"
 });
+
+/**
+ * Site-wide noindex (layer 1 of 3).
+ *
+ * The Gremorie docs site is deployed publicly on Vercel but must NOT be
+ * indexed by search engines until the domain (gremorie.com) is owned and
+ * the content is ready for launch.
+ *
+ * Noindex enforcement happens at three layers:
+ *   1. `metadata.robots` here -> emits `<meta name="robots">` in every page.
+ *   2. `app/robots.ts`        -> blocks crawlers via /robots.txt.
+ *   3. `vercel.json` headers  -> emits `X-Robots-Tag: noindex, nofollow`
+ *      for every response (including JSON, MCP, /r/*).
+ */
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true
+    }
+  }
+};
 
 /**
  * Root layout for the Gremorie docs site.
