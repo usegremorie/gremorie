@@ -10,7 +10,7 @@ import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
 interface PageProps {
-  params: Promise<{ slug?: string[] }>;
+  params: Promise<{ slug: string[] }>;
 }
 
 export default async function Page({ params }: PageProps) {

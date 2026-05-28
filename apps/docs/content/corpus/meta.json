@@ -1,6 +1,8 @@
 {
-  "title": "UX Corpus",
+  "root": true,
+  "title": "Corpus",
   "description": "Framework-agnostic UX knowledge",
+  "icon": "BookOpen",
   "pages": [
     "index",
     "heuristics",
