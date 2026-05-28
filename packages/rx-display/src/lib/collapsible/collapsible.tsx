@@ -6,7 +6,7 @@ import * as React from "react";
 /**
  * Collapsible - single-section expandable region.
  *
- * Imported from shadcn/ui (MIT). The minimal building block for
+ * The minimal building block for
  * any "show more" toggle. Three parts: `Collapsible` (Root),
  * `CollapsibleTrigger`, `CollapsibleContent`.
  *

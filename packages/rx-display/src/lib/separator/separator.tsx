@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Separator - visual divider between groups of content.
  *
- * Imported from shadcn/ui (MIT). Wraps `@radix-ui/react-separator` so
+ * Wraps `@radix-ui/react-separator` so
  * the `decorative` flag controls whether the separator is exposed to
  * AT (`role="separator"` with `aria-orientation`) or hidden as
  * presentational (`role="none"`).

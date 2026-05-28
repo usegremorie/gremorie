@@ -3,7 +3,7 @@ import type { ItemConfig } from './types.js';
 /**
  * The list of registry items to generate.
  *
- * Granularity rule (shadcn-style): 1 item = 1 primitive (or a tight family of
+ * Granularity rule: 1 item = 1 primitive (or a tight family of
  * sub-components that ALWAYS ship together). The npm packages stay as bundle
  * dist outputs (`@gremorie/ng-ai`, `@gremorie/ng-data`); the registry exposes
  * the same source per-primitive so consumers can `gremorie add ng-button`
@@ -43,7 +43,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Button (Angular)',
     description:
-      'Button primitive for the Angular edition - 6 variants x 4 sizes, mirrors the shadcn/ui Button surface.',
+      'Button primitive for the Angular edition - 6 variants x 4 sizes.',
     categories: ['core', 'primitives', 'forms'],
     packageRoot: 'packages/ng-core',
     sourceFiles: ['src/lib/button.ts'],
@@ -295,7 +295,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Button (React)',
     description:
-      'Button primitive for the React edition - 6 variants x 8 sizes (including icon-only), `asChild` via Radix Slot. Mirrors the shadcn/ui Button surface.',
+      'Button primitive for the React edition - 6 variants x 8 sizes (including icon-only), `asChild` via Radix Slot.',
     categories: ['core', 'primitives', 'forms'],
     packageRoot: 'packages/rx-forms',
     sourceFiles: ['src/lib/button/button.tsx'],
@@ -538,7 +538,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Date Picker (React)',
     description:
-      'Composite of Popover + Calendar wired with shadcn defaults. Single-mode by default. Lives in rx-overlays because it composes Popover (rx-overlays) with Button + Calendar (rx-forms).',
+      'Composite of Popover + Calendar with Gremorie defaults. Single-mode by default. Lives in rx-overlays because it composes Popover (rx-overlays) with Button + Calendar (rx-forms).',
     categories: ['forms', 'overlays'],
     packageRoot: 'packages/rx-overlays',
     sourceFiles: ['src/lib/date-picker/date-picker.tsx'],

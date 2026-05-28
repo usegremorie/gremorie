@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * HoverCard - preview pane shown on hover (non-interactive).
  *
- * Imported from shadcn/ui (MIT). Use to **preview** content the
+ * Use to **preview** content the
  * user can fully open with a click - user profile cards on
  * `@mentions`, link previews, image teasers. Never put critical
  * info or interactive controls inside a HoverCard - those belong

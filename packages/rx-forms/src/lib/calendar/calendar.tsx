@@ -10,7 +10,7 @@ import { buttonVariants } from "../button/button";
 /**
  * Calendar - date picker grid built on react-day-picker v10.
  *
- * Imported from shadcn/ui (MIT). Three modes via `mode`:
+ * Three modes via `mode`:
  *   - `single`   → one date
  *   - `range`    → start + end (faixa de datas)
  *   - `multiple` → várias datas independentes

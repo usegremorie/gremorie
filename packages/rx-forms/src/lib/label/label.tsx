@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Label - accessible label primitive (Radix `Label.Root`).
  *
- * Imported from shadcn/ui (MIT). Use it as the static label above
+ * Use it as the static label above
  * any input control. When `htmlFor` matches a control's `id`,
  * clicking the label focuses (or activates) the control.
  */

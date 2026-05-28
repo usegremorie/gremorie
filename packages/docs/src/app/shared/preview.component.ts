@@ -10,9 +10,9 @@ import {
 type Tab = 'preview' | 'code';
 
 /**
- * Tabbed preview surface — "Preview" tab projects the live component,
- * "Code" tab renders the source snippet. Mirrors the docs convention
- * used by shadcn/ui, AI Elements, and Radix.
+ * Tabbed preview surface - "Preview" tab projects the live component,
+ * "Code" tab renders the source snippet. A common docs convention for
+ * showing live components side by side with their source.
  */
 @Component({
   selector: 'docs-preview',

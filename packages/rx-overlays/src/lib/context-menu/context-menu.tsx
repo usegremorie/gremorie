@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * ContextMenu - secondary action menu invoked via right-click.
  *
- * Imported from shadcn/ui (MIT). Right-click is invisible to users
+ * Right-click is invisible to users
  * who haven't been taught about it (most touch users; many web
  * users today). Treat ContextMenu as a **power-user accelerator** -
  * never the only path to an action. Every option shown here should

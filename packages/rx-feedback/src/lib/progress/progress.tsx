@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Progress - determinate progress indicator (0-100).
  *
- * Imported from shadcn/ui (MIT). Wraps Radix Progress. Pass `value`
+ * Wraps Radix Progress. Pass `value`
  * (0-100) for determinate; pass `value={null}` plus a custom
  * indicator class for indeterminate (animated stripe pattern).
  *

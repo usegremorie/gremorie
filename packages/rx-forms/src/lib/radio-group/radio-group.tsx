@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * RadioGroup - single-select group of mutually-exclusive options.
  *
- * Imported from shadcn/ui (MIT) over Radix. The `Root` owns the
+ * Built over Radix. The `Root` owns the
  * selected value; each `Item` represents a single option. Visible
  * options are best capped at five - beyond that, prefer `Select`
  * for vertical-space efficiency.

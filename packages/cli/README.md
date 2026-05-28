@@ -54,5 +54,5 @@ Gremorie NG ls
 ## Roadmap
 
 - v0.1 — install pre-built packages from npm (current)
-- v0.2 — copy source files into your project (shadcn-style) so you own the code
+- v0.2 - copy source files into your project so you own the code
 - v0.3 — hosted registry at gremorie.com so new components ship without a CLI release

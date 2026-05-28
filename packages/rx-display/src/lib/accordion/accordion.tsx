@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Accordion - vertical stack of expandable sections.
  *
- * Imported from shadcn/ui (MIT). Wraps Radix Accordion. Use
+ * Wraps Radix Accordion. Use
  * `type="single"` for one-open-at-a-time (FAQ, settings groups);
  * `type="multiple"` when readers may want several sections open
  * simultaneously (release notes, feature breakdowns).

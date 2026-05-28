@@ -7,9 +7,9 @@
 
 ## Problema
 
-O shadng ("shadcn para Angular, focado em AI") precisa de componentes de **charts** para dashboards e, depois, para **generative UI** (gráficos emitidos por IA). O shadcn usa **Recharts**, que é React-only e não tem porte Angular.
+O Gremorie (DS AI-native, edições Angular e React) precisa de componentes de **charts** para dashboards e, depois, para **generative UI** (gráficos emitidos por IA). A referência de charts no ecossistema React é o **Recharts**, que é React-only e não tem porte Angular.
 
-**Insight central:** o valor dos charts do shadcn não é o Recharts em si — é a fina camada de theming por cima (`ChartContainer`/`ChartTooltip`/`ChartLegend` mapeando séries → CSS vars). O Recharts é só o motor de SVG embaixo, e ele usa **D3** (`d3-scale`, `d3-shape`) para a matemática. Essa matemática é **agnóstica de framework**: roda em Angular idêntica. Logo, "Recharts não tem versão Angular" **não é bloqueio** — reescrevemos só a casquinha de renderização (React → Angular), reaproveitando o mesmo motor matemático.
+**Insight central:** o valor da camada de charts da referência (ver NOTICE.md) não é o Recharts em si — é a fina camada de theming por cima (`ChartContainer`/`ChartTooltip`/`ChartLegend` mapeando séries → CSS vars). O Recharts é só o motor de SVG embaixo, e ele usa **D3** (`d3-scale`, `d3-shape`) para a matemática. Essa matemática é **agnóstica de framework**: roda em Angular idêntica. Logo, "Recharts não tem versão Angular" **não é bloqueio** — reescrevemos só a casquinha de renderização (React → Angular), reaproveitando o mesmo motor matemático.
 
 ## Decisão de fundação
 
@@ -20,7 +20,7 @@ Unovis entra **depois e opcional** (`@gremorie/ng-charts-advanced`) só para viz
 ### Por que não as alternativas
 - **ngx-charts (Swimlane):** em `24.x` suporta Angular 18/19, **não Angular 21**; histórico de atraso a cada versão. Acoplaria a compatibilidade da lib pública ao release deles. Theming SCSS próprio, atrito com tokens Tailwind. Não é "own the code".
 - **Unovis (F5):** ótimo motor (CSS vars, tree-shakable, breadth enorme), mas é runtime dependency e API própria — vira "wrapper estilizado", não componente que o usuário possui. Reservado para o pacote `-advanced`.
-- **Chart.js/ng2-charts, ECharts, ApexCharts:** canvas-based — theming por CSS var difícil, SSR ruim, não-composáveis. Contra a filosofia shadcn.
+- **Chart.js/ng2-charts, ECharts, ApexCharts:** canvas-based — theming por CSS var difícil, SSR ruim, não-composáveis. Contra a filosofia Gremorie de own-the-code via SVG componível.
 
 ## Arquitetura
 
@@ -63,7 +63,7 @@ presets           AreaChart, BarChart, LineChart, PieChart, RadarChart, RadialCh
 ```
 
 ### Conjunto de charts da Fase 1
-Area, Line, Bar (stacked/grouped), Pie/Donut, Radar, RadialBar, **Scatter/Bubble**. (Paridade com o set do shadcn + Scatter.)
+Area, Line, Bar (stacked/grouped), Pie/Donut, Radar, RadialBar, **Scatter/Bubble**. (Paridade com o set canônico de charts da referência + Scatter.)
 
 ## Composição (API)
 
@@ -114,9 +114,9 @@ A ordem de registro é irrelevante porque tudo é signal/`computed`.
 
 ## Theming
 
-- Adicionar tokens `--chart-1 … --chart-5` ao tema do shadng (convenção shadcn). Dark mode automático (CSS vars trocam sem re-render).
+- Adicionar tokens `--chart-1 … --chart-5` ao tema Gremorie. Dark mode automático (CSS vars trocam sem re-render).
 - **Camada headless é cega a cor:** recebe cor como input (`currentColor` ou nome de var). Zero paleta hardcoded.
-- **Camada styled** mapeia `config.color` → tokens. É onde o visual shadng vive.
+- **Camada styled** mapeia `config.color` → tokens. É onde o visual Gremorie vive.
 
 ## Formatação & i18n
 
@@ -183,7 +183,7 @@ A ordem de registro é irrelevante porque tudo é signal/`computed`.
 
 ## Critérios de sucesso
 
-1. Os 7 tipos de chart renderam corretamente (headless + styled), com paridade visual com o shadcn.
+1. Os 7 tipos de chart renderam corretamente (headless + styled), com paridade visual com a referência canônica.
 2. Theming por token + dark mode automático funcionando.
 3. Responsivo (ResizeObserver) e SSR-safe (render antes do hydrate).
 4. `config` da Camada 2 é 100% JSON-serializável (pré-requisito de generative UI).

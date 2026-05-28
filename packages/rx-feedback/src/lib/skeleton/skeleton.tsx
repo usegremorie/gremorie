@@ -5,7 +5,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Skeleton - placeholder block for loading states.
  *
- * Imported from shadcn/ui (MIT). A pulsing rectangle that stands in
+ * A pulsing rectangle that stands in
  * for content that is still being fetched. Shape it with className
  * width/height to match the geometry of the real content - this is
  * the whole point: skeletons reserve layout so there is no shift

@@ -1,12 +1,17 @@
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
-export interface ShadcnProject {
+export interface RegistryProject {
   root: string;
   globalsCss: string;
 }
 
-export function detectShadcnProject(root: string): ShadcnProject | null {
+/**
+ * Detect a project compatible with the registry-distribution model by
+ * locating a `components.json` config and resolving its global CSS path.
+ * Returns `null` when the project does not match this shape.
+ */
+export function detectRegistryProject(root: string): RegistryProject | null {
   const componentsJsonPath = join(root, "components.json");
   if (!existsSync(componentsJsonPath)) return null;
   try {

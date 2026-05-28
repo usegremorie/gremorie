@@ -7,7 +7,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Badge - compact label for status, counts and tags.
  *
- * Imported from shadcn/ui (MIT). Renders a `<span>` (or any element
+ * Renders a `<span>` (or any element
  * via `asChild`) styled by `class-variance-authority`. KDS treats
  * Badge as a static label primitive - interactive selection-style
  * chips belong to `ToggleGroup` (Phase 4).

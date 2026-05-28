@@ -3,7 +3,7 @@ whenToUse: "Foundational utilities and the Button primitive. Install before any 
 whenNotToUse: "Standalone primitive usage outside an Angular app - this package depends on @angular/core."
 bestPractices:
   - "Import `cn` from @gremorie/ng-core to merge Tailwind classes; do not pull in clsx or tailwind-merge directly."
-  - "Use the Button primitive as-is. Variants and sizes mirror shadcn/ui so muscle memory carries over."
+  - "Use the Button primitive as-is. Variants and sizes are consistent with the React edition."
   - "Apply the theme.css once at the root of the app (`@import '@gremorie/ng-core/theme.css';`)."
 antipatterns:
   - "Re-implementing a Button via raw `<button>` plus Tailwind classes - the primitive already covers variants, sizes, icons, disabled states."

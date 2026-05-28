@@ -104,7 +104,7 @@ Expected: packages added to root `package.json`, no errors.
     "url": "https://github.com/kalvner/shadng.git",
     "directory": "packages/shadng-charts"
   },
-  "keywords": ["angular", "ai", "ui", "shadcn", "charts", "dataviz", "d3"],
+  "keywords": ["angular", "ai", "ui", "charts", "dataviz", "d3"],
   "peerDependencies": {
     "@angular/core": "^21.2.0",
     "@angular/common": "^21.2.0",

@@ -10,7 +10,7 @@ import { toggleVariants } from "../toggle/toggle";
 /**
  * ToggleGroup - coordinated set of Toggles.
  *
- * Imported from shadcn/ui (MIT). Use `type="single"` for radio-like
+ * Use `type="single"` for radio-like
  * (one pressed at a time) or `type="multiple"` for checkbox-like
  * (any number pressed). Sizes and variants propagate from the Root
  * to children via context.

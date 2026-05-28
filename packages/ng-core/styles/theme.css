@@ -1,5 +1,5 @@
 /*
- * Gremorie NG — Two-tier token system (shadcn-compatible)
+ * Gremorie NG - Two-tier token system
  *
  * Layer 1 (Primitives): raw palette, base radii
  * Layer 2 (Semantics):  what components consume
@@ -35,7 +35,7 @@
 }
 
 :root {
-  /* ─── 2. SEMANTICS (shadcn-compatible) ─────────────── */
+  /* ─── 2. SEMANTICS ─────────────── */
   --background: var(--color-gray-50);
   --foreground: var(--color-gray-950);
 

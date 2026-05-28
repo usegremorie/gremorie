@@ -8,7 +8,7 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/ng-data"
   },
-  "keywords": ["angular", "ai", "ui", "shadcn", "charts", "dataviz", "d3"],
+  "keywords": ["angular", "ai", "ui", "charts", "dataviz", "d3"],
   "peerDependencies": {
     "@analogjs/vite-plugin-angular": "^2.5.1",
     "@analogjs/vitest-angular": "^2.5.1",

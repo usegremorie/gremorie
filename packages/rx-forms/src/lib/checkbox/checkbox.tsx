@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Checkbox - binary or indeterminate selection control.
  *
- * Imported from shadcn/ui (MIT) over Radix. Supports the three
+ * Built over Radix. Supports the three
  * canonical states - unchecked, checked, indeterminate - via the
  * Radix `checked` prop (`true | false | "indeterminate"`). The
  * indicator renders a `CheckIcon` from lucide.

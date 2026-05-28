@@ -1,32 +1,35 @@
-# ShadNG
+# Gremorie
 
-> Angular AI-native component library — shadcn for Angular, focused on AI.
+> AI-native design system distributed via registry and MCP server. Two editions: Angular and React.
 
-ShadNG is the Angular library of AI-native components that should exist but doesn't. Built on [spartan-ng](https://www.spartan.ng) primitives, designed to integrate cleanly with [Hashbrown](https://hashbrown.dev) for LLM logic. Tribute to [shadcn/ui](https://ui.shadcn.com), following the precedent established by shadcn-svelte, shadcn-vue, and shadcn-solid.
+Gremorie is the design system of AI-native components that should exist but doesn't. Built on [spartan-ng](https://www.spartan.ng) primitives (Angular edition) and [Radix](https://www.radix-ui.com) primitives (React edition), designed to integrate cleanly with [Hashbrown](https://hashbrown.dev) for LLM logic. Built on the registry-distribution pattern pioneered by shadcn/ui (MIT, see `NOTICE.md`).
 
-**Status:** Phase 0 (bootstrap) + Phase 1 (core PromptInput) — pre-release.
+**Status:** pre-release. Two editions in active development.
 
 ## Why
 
-Angular teams adding AI features hit four frictions:
+Teams adding AI features hit four frictions:
 
-1. **No AI component library.** AI Elements (Vercel), shadcn.io/ai, assistant-ui — all React.
-2. **Streaming and tool calls are complex.** SSE, chunk parsing, tool dispatch — risky to write from scratch.
-3. **Fragmented design.** spartan-ng has primitives but nothing AI-specific.
+1. **No AI component library.** AI Elements (Vercel), assistant-ui - all React-only or scattered.
+2. **Streaming and tool calls are complex.** SSE, chunk parsing, tool dispatch - risky to write from scratch.
+3. **Fragmented design.** spartan-ng has primitives but nothing AI-specific. shadcn/ui covers a lot but doesn't ship AI primitives.
 4. **Docs scattered.** Medium tutorials, no curation, no standard.
 
-ShadNG fills the visual layer. Logic stays in Hashbrown.
+Gremorie fills the visual layer. Logic stays in Hashbrown.
 
 ## Stack
 
 - **Angular 21 LTS** (minimum and target until Angular 22 reaches GA)
+- **React 19**
 - **TypeScript 5.9**
-- **Tailwind CSS v4** (OKLCH-based, two-tier tokens — shadcn-compatible)
-- **@spartan-ng/brain** for headless primitives (peer dep, used as needed)
+- **Tailwind CSS v4** (OKLCH-based, two-tier tokens)
+- **@spartan-ng/brain** for Angular headless primitives (peer dep)
+- **Radix UI** for React headless primitives (peer dep)
 - **Nx 22** monorepo
-- **Analog.js v2** for the docs site (SSR + file-based routing)
+- **Next.js 16 + Fumadocs** for the docs site
+- **Analog.js v2** for the Angular preview host
 - **Vitest** for unit tests, **Playwright** for E2E
-- **Storybook 10** for the internal workshop *(deferred — see TODO below)*
+- **Storybook 10** for the internal workshop
 
 ## Founding principle
 
@@ -37,28 +40,42 @@ Every component must pass the full documentation checklist before being released
 ## Repo structure (Nx flat layout)
 
 ```
-shadng/
-├── packages/
-│   ├── docs/                       # Analog.js SSR site (shadng.dev)
-│   ├── docs-e2e/                   # Playwright E2E
-│   ├── playground/                 # Angular demo app (visual smoke tests)
-│   ├── ng-core/                    # @gremorie/ng-core (cross-category utilities, Button)
-│   ├── ng-ai/                      # @gremorie/ng-ai (PromptInput, Attachments)
-│   ├── ng-containers/              # @gremorie/ng-containers (ScrollArea, ...)
-│   ├── ng-data/                    # @gremorie/ng-data (Charts on D3)
-│   ├── rx-core/                    # @gremorie/rx-core (React cross-category utilities)
-│   ├── rx-ai/                      # @gremorie/rx-ai (React AI, starting with PromptInput)
-│   └── cli/                        # @gremorie/cli (`npx gremorie init/add/list`)
-├── .github/workflows/
-│   └── ci.yml                      # lint • test • build (Nx affected)
-└── tsconfig.base.json              # path mappings
+gremorie/
++-- apps/
+|   +-- docs/                       # Next.js + Fumadocs site (gremorie.com)
+|   +-- tokens/                     # Tokens visual editor
++-- packages/
+|   +-- docs/                       # Analog.js Angular preview host
+|   +-- docs-e2e/                   # Playwright E2E
+|   +-- playground/                 # Angular demo app (visual smoke tests)
+|   +-- ng-core/                    # @gremorie/ng-core (Angular cross-category utilities, Button)
+|   +-- ng-ai/                      # @gremorie/ng-ai (PromptInput, Attachments)
+|   +-- ng-containers/              # @gremorie/ng-containers (ScrollArea, ...)
+|   +-- ng-data/                    # @gremorie/ng-data (Charts on D3)
+|   +-- rx-core/                    # @gremorie/rx-core (React utilities, cn)
+|   +-- rx-ai/                      # @gremorie/rx-ai (React AI primitives)
+|   +-- rx-forms/                   # @gremorie/rx-forms (Button, Input, Select, ...)
+|   +-- rx-display/                 # @gremorie/rx-display (Card, Table, Avatar, ...)
+|   +-- rx-feedback/                # @gremorie/rx-feedback (Alert, Progress, Skeleton)
+|   +-- rx-navigation/              # @gremorie/rx-navigation (Sidebar, Tabs, ...)
+|   +-- rx-overlays/                # @gremorie/rx-overlays (Dialog, Popover, ...)
+|   +-- rx-containers/              # @gremorie/rx-containers (ScrollArea, Resizable)
+|   +-- rx-data/                    # @gremorie/rx-data (Charts)
+|   +-- registry/                   # @gremorie/registry (registry items + schema)
+|   +-- token-engine/               # @gremorie/token-engine
+|   +-- cli/                        # @gremorie/cli (`npx gremorie init/add/list`)
++-- .github/workflows/
+|   +-- ci.yml                      # lint, test, build (Nx affected)
++-- NOTICE.md                       # third-party attribution
++-- LICENSE                         # MIT
++-- tsconfig.base.json              # path mappings
 ```
 
 ## Branches
 
-- `main` — production / latest release
-- `staging` — pre-release validation
-- `develop` — active integration (default branch on GitHub)
+- `main` - production / latest release
+- `staging` - pre-release validation
+- `develop` - active integration (default branch on GitHub)
 
 ## Quickstart (dev)
 
@@ -66,18 +83,15 @@ shadng/
 npm install
 
 # Apps
-npm run serve:playground            # localhost:4200 — visual smoke test
-npm run serve:docs                  # localhost:4200 — Analog docs (SSR)
+npm run serve:playground            # Angular playground - visual smoke test
+npm run serve:docs                  # Fumadocs site (gremorie.com)
 
-# Library
-npm run build:core                  # build @gremorie/ng-core
-npm run build:ai                    # build @gremorie/ng-ai (PromptInput + Attachments)
-npm run build:containers            # build @gremorie/ng-containers (ScrollArea)
-npm run build:data                  # build @gremorie/ng-data (Charts)
-npm run build:rx-core               # build @gremorie/rx-core
-npm run build:rx-ai                 # build @gremorie/rx-ai (React PromptInput)
-npx nx build cli                    # build @gremorie/cli
-npm run storybook                   # localhost:4400 — Storybook 10
+# Library builds
+npx nx build ng-core
+npx nx build ng-ai
+npx nx build rx-forms
+npx nx build registry               # regenerate registry JSONs
+npx nx run-many -t build            # all packages
 
 # Quality
 npm run lint                        # ESLint affected
@@ -90,39 +104,11 @@ npm run changeset:version           # bump versions and update changelogs
 npm run release                     # build lib + publish to npm
 ```
 
-## Roadmap
-
-| Phase | Scope |
-|---|---|
-| **v0.1.0** | PromptInput + 10 subcomponents |
-| v0.2.0 | Response + MessageContent + CodeBlock |
-| v0.3.0 | Conversation + Message |
-| v0.4.0 | Reasoning + ToolCall + Suggestions |
-| v0.5.0 | Artifact + Citation + Sandbox |
-| v1.0.0 | Stable |
-
-## Status
-
-| Phase | Scope | Status |
-|---|---|---|
-| 0 | Bootstrap (Nx + Angular 21 + Tailwind v4 + Analog + Storybook + Changesets + CI) | ✅ |
-| 1 | Core (`PromptInput` + `Textarea` + `Submit`) | ✅ |
-| 2 | Toolbar (`Toolbar` + `Tools` + `Button`) | ✅ |
-| 3 | Attachments (`Attachments` + `Attachment` + drag/drop + paste) | ✅ |
-| 4 | Action menu + Model select | ✅ |
-| 5 | Polish (a11y, reduced-motion, animations, mobile, aria-live) | ✅ |
-| 6 | Documentation (component pages on `packages/docs`) | pending |
-| 7 | CLI (`npx shadng add prompt-input`) | pending |
-| 8 | Site (landing, search, dark toggle, OG images) | pending |
-| 9 | Launch (v0.1.0 tag, npm publish, posts) | pending |
-
-## TODOs
-
-- [ ] **Real Home page in `packages/docs`** — Analog generated a placeholder home. Replace with a real landing presenting the project (hero, value props, install command, GitHub link). Phase 8 in the original plan; can be anticipated.
-- [ ] **Vercel deploy of `packages/docs`** — configure preview deploys per branch once Vercel CLI is installed locally (`npm i -g vercel`).
-- [ ] **spartan-ng theme init** — we ship our own two-tier tokens in `packages/shadng-core/styles/theme.css` instead of the spartan default. Decision documented in vault as ADR-013.
-- [ ] **Authoring stories** for the remaining 9 subcomponents in Storybook (Phase 6 work — the container has a starter story shipping today).
-
 ## License
 
-MIT © Kalvner
+MIT (c) Kalvner. See `LICENSE`.
+
+## Attribution
+
+Parts of the React edition adapt source from shadcn/ui under the MIT License.
+See `NOTICE.md` for full third-party attribution.

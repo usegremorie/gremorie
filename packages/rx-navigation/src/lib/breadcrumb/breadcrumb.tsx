@@ -7,7 +7,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Breadcrumb - hierarchical trail.
  *
- * Imported from shadcn/ui (MIT). Plain semantic markup - `<nav>`
+ * Plain semantic markup - `<nav>`
  * wrapping `<ol>` of `<li>` items - kept dependency-free for SSR
  * and accessibility. Use only on **deep hierarchies** (≥3 levels);
  * flat sites pay the noise cost without a payoff.

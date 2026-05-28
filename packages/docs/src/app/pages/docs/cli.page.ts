@@ -68,7 +68,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
               <li><strong>v0.1 (current)</strong> — installs pre-built packages from npm.</li>
-              <li><strong>v0.2</strong> — copies source files into your project (shadcn-style). You own the code.</li>
+              <li><strong>v0.2</strong> - copies source files into your project. You own the code.</li>
               <li><strong>v0.3</strong> — hosted registry at <code>gremorie.com/registry</code> so new components don't need a CLI release.</li>
             </ul>
           </docs-prose>

@@ -18,7 +18,7 @@ import { Label } from "../label/label";
 /**
  * Form - `react-hook-form` + Radix-aware form primitives.
  *
- * Imported from shadcn/ui (MIT). Provides a typed wrapper around
+ * Provides a typed wrapper around
  * `react-hook-form` with field-aware subcomponents that wire ARIA
  * relationships (`htmlFor`, `aria-describedby`, `aria-invalid`)
  * automatically.

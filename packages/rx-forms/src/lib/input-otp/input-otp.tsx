@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * InputOTP - segmented one-time-passcode input.
  *
- * Imported from shadcn/ui (MIT). Built on `input-otp` para gerenciar
+ * Built on `input-otp` para gerenciar
  * paste, autocomplete (`one-time-code`) e foco entre slots. Use para
  * 2FA, verificação de e-mail/SMS, autenticação por código.
  *

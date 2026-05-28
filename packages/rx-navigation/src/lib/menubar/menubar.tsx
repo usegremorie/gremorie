@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Menubar - desktop-app-style menu bar.
  *
- * Imported from shadcn/ui (MIT) on top of Radix Menubar. Use for
+ * Built on top of Radix Menubar. Use for
  * **classic File / Edit / View / Help bars** at the top of a
  * window in desktop-style web apps (code editors, spreadsheets,
  * image editors). For everything else - nav menus, action menus,

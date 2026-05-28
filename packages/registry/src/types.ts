@@ -1,10 +1,11 @@
 /**
- * Gremorie registry item schema. Compatible with shadcn-registry-item, extended
- * with a `usage` block carrying the design knowledge (when to use, antipatterns,
- * API, examples) that the MCP server feeds to the AI client.
+ * Gremorie registry item schema. Compatible with the shadcn-registry-item shape
+ * (see NOTICE.md), extended with a `usage` block carrying the design knowledge
+ * (when to use, antipatterns, API, examples) that the MCP server feeds to the
+ * AI client.
  *
- * The shadcn-compatible fields keep the door open for the Gremorie CLI to consume
- * shadcn registries (and vice-versa) without translation.
+ * The shared field shape keeps the door open for cross-registry consumption
+ * without translation.
  */
 export type RegistryItemType =
   | 'registry:component'
@@ -78,7 +79,7 @@ export interface RegistryItem {
   $schema: string;
   /** Stable id used by `gremorie add <name>`. Kebab-case. */
   name: string;
-  /** shadcn-compatible type. */
+  /** Registry item type (uses the same vocabulary as the shadcn registry-item, see NOTICE.md). */
   type: RegistryItemType;
   /** Which UI framework this item targets. */
   framework: RegistryFramework;

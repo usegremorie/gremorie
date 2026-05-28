@@ -16,7 +16,7 @@ import {
 /**
  * Command - keyboard-first command palette.
  *
- * Imported from shadcn/ui (MIT). Built on `cmdk`. Use `Command`
+ * Built on `cmdk`. Use `Command`
  * directly for inline pickers (e.g. inside a Popover for the
  * Combobox pattern); use `CommandDialog` for the canonical `Cmd+K`
  * floating palette pattern (GitHub, Linear, Vercel, Notion).

@@ -279,7 +279,7 @@ export const COLOR_PALETTES: ColorPalette[] = [
   {
     "id": "neutral",
     "name": "Neutral",
-    "description": "Cinzas puros — chroma zero. É o neutro do shadcn baseColor, e o ponto de partida quando tema e marca ainda não foram definidos.",
+    "description": "Cinzas puros - chroma zero. Neutro padrão (baseColor neutral) e ponto de partida quando tema e marca ainda não foram definidos.",
     "rows": [
       {
         "step": "50",

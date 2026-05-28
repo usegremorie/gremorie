@@ -10,8 +10,8 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
  * The Button primitive — used across Gremorie NG components and freely composable
- * by consumers. Mirrors the shadcn/ui Button surface (6 variants × 4 sizes)
- * so muscle memory from shadcn-react translates 1:1.
+ * by consumers. Exposes 6 visual variants and 4 size presets to keep parity
+ * between Gremorie's Angular and React editions. (See NOTICE.md for attribution.)
  */
 const buttonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-4',

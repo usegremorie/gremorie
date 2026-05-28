@@ -20,7 +20,7 @@
       "type": "registry:block",
       "framework": "ng",
       "title": "Button (Angular)",
-      "description": "Button primitive for the Angular edition - 6 variants x 4 sizes, mirrors the shadcn/ui Button surface.",
+      "description": "Button primitive for the Angular edition - 6 variants x 4 sizes.",
       "categories": [
         "core",
         "primitives",
@@ -206,7 +206,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Button (React)",
-      "description": "Button primitive for the React edition - 6 variants x 8 sizes (including icon-only), `asChild` via Radix Slot. Mirrors the shadcn/ui Button surface.",
+      "description": "Button primitive for the React edition - 6 variants x 8 sizes (including icon-only), `asChild` via Radix Slot.",
       "categories": [
         "core",
         "primitives",
@@ -436,7 +436,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Date Picker (React)",
-      "description": "Composite of Popover + Calendar wired with shadcn defaults. Single-mode by default. Lives in rx-overlays because it composes Popover (rx-overlays) with Button + Calendar (rx-forms).",
+      "description": "Composite of Popover + Calendar with Gremorie defaults. Single-mode by default. Lives in rx-overlays because it composes Popover (rx-overlays) with Button + Calendar (rx-forms).",
       "categories": [
         "forms",
         "overlays"

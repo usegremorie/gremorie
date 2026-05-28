@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Select - dropdown chooser for short fixed lists.
  *
- * Imported from shadcn/ui (MIT) over Radix. The component is a
+ * Built over Radix. The component is a
  * compound primitive - the visible trigger and value live in the
  * page flow, while the listbox is portalled and animated by Radix.
  */

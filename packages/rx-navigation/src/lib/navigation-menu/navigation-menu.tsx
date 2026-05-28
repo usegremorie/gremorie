@@ -10,7 +10,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * NavigationMenu - marketing-site primary nav with rich panels.
  *
- * Imported from shadcn/ui (MIT) on top of Radix NavigationMenu.
+ * Built on top of Radix NavigationMenu.
  * Designed for **header-level navigation with rich content
  * panels** - the Vercel/Stripe/Tailwind pattern of "Products /
  * Solutions / Pricing" with multi-column dropdowns under each

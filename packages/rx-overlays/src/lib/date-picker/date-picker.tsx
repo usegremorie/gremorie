@@ -9,11 +9,10 @@ import { Button, Calendar } from "@gremorie/rx-forms";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 
 /**
- * DatePicker - composite of Popover + Calendar wired with shadcn defaults.
+ * DatePicker - composite of Popover + Calendar with Gremorie defaults.
  *
- * Não é um primitivo do shadcn - é o **padrão composto canônico** que a
- * documentação shadcn ensina a montar à mão. KDS exporta um wrapper
- * pronto pra economizar boilerplate.
+ * Not a single primitive but the canonical composition that the registry
+ * exposes as a ready-to-use wrapper, saving boilerplate.
  *
  * Single-mode por padrão. Para range, use `<DatePickerRange />`. Pra UX
  * mobile, prefira [Drawer](../../overlays/drawer) + Calendar - popover

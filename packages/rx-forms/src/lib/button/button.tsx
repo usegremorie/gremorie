@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Button - primary click target.
  *
- * Imported from shadcn/ui (MIT). Wires class-variance-authority to a
+ * Wires class-variance-authority to a
  * single CVA factory exposing six visual variants and four size
  * presets - including icon-only sizes - plus an `asChild` escape
  * hatch via Radix Slot.

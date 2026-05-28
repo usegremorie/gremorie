@@ -27,7 +27,7 @@ import {
 /**
  * Sidebar - composable app-shell sidebar.
  *
- * Imported from shadcn/ui (MIT). The heaviest primitive in the
+ * The heaviest primitive in the
  * KDS, exposing 20+ subcomponents that compose into header /
  * content / footer regions with collapsible state, icon-only mode,
  * mobile sheet, badge slots, sub-menus, and skeleton loaders.

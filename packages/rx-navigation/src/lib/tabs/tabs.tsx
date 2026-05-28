@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Tabs - content switcher within a single view.
  *
- * Imported from shadcn/ui (MIT). Wraps Radix Tabs with two list
+ * Wraps Radix Tabs with two list
  * variants: a pill-style `default` (rounded background) and a
  * minimal `line` indicator. Honors `orientation` so vertical tabs
  * just work for sidebar-like menus inside a single panel.

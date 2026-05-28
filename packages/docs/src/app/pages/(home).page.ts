@@ -22,7 +22,7 @@ import { DocsLayout } from '../shared/doc-layout.component';
             Gremorie NG is the Angular library of AI-native components that should exist but doesn't.
             Built on <a href="https://www.spartan.ng" target="_blank" rel="noopener" class="underline decoration-muted-foreground hover:decoration-foreground">spartan-ng</a>
             primitives, integrates cleanly with <a href="https://hashbrown.dev" target="_blank" rel="noopener" class="underline decoration-muted-foreground hover:decoration-foreground">Hashbrown</a>
-            for LLM logic. Tribute to <a href="https://ui.shadcn.com" target="_blank" rel="noopener" class="underline decoration-muted-foreground hover:decoration-foreground">shadcn/ui</a>.
+            for LLM logic.
           </p>
           <div class="flex flex-wrap items-center gap-2">
             <a

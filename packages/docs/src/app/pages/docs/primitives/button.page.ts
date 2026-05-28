@@ -25,7 +25,7 @@ import { DocsPreview } from '../../../shared/preview.component';
       <docs-page
         eyebrow="Primitive"
         title="Button"
-        lede="The Button primitive — 6 variants × 4 sizes. Mirrors the shadcn/ui Button surface so muscle memory translates 1:1. Used inside Gremorie NG components and freely composable in your own UI."
+        lede="The Button primitive - 6 variants x 4 sizes. Used inside Gremorie NG components and freely composable in your own UI."
       >
         <docs-section title="Preview — variants" anchor="preview-variants">
           <docs-preview [code]="variantsCode" lang="html">

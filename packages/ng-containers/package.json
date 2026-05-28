@@ -8,7 +8,7 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/ng-containers"
   },
-  "keywords": ["angular", "ai", "ui", "shadcn", "scroll-area", "scrollbar", "container"],
+  "keywords": ["angular", "ai", "ui", "scroll-area", "scrollbar", "container"],
   "peerDependencies": {
     "@angular/core": "^21.2.0",
     "ngx-scrollbar": "^19.0.0"

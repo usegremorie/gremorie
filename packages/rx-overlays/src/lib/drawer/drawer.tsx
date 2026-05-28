@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Drawer - bottom-up sheet for mobile contexts (vaul-based).
  *
- * Imported from shadcn/ui (MIT). Built on `vaul` by emil kowalski.
+ * Built on `vaul` by emil kowalski.
  * Slides up from the bottom by default, with native gesture support
  * (drag-to-dismiss, momentum). Best for mobile contexts:
  * confirmations, quick actions, simple forms.

@@ -16,10 +16,9 @@ and the contract with any backend the component depends on.
 Aligned with the Gremorie [principles](/foundations/principles) and the
 [architecture](/foundations/architecture):
 
-- **Imported and editable.** Distribution via **shadcn-style registry** (not
-  closed npm): the CLI copies the **source into the consumer's repo**, who
-  becomes the owner and edits as needed. Same mechanism as AI Elements and
-  shadcn.
+- **Imported and editable.** Distribution via **registry** (not closed npm):
+  the CLI copies the **source into the consumer's repo**, who becomes the
+  owner and edits as needed.
 - **Zero lock-in.** The dev takes the component away. No runtime dep on us.
 - **Decoupled tokens.** Client branding applies through tokens (colours,
   radius, typography) without touching component code.
@@ -49,7 +48,7 @@ for the binary checklist.
 
 Two ways, combinable.
 
-**Composition (compound — preferred, shadcn-style):** turn off by not
+**Composition (compound - preferred):** turn off by not
 including the part.
 
 ```tsx
@@ -116,9 +115,8 @@ Chat composer in the Claude / Cursor style.
 
 - `registry.json` + per-item JSON -> served by the Gremorie docs site at
   `/r/...`.
-- Consumption (CLI): `npx gremorie add ng-chart-artifact` (or the shadcn
-  CLI: `npx shadcn@latest add https://gremorie.com/r/ng/ng-chart-artifact.json`)
-  -> source lands in the dev's repo.
+- Consumption (CLI): `npx gremorie add ng-chart-artifact` -> source lands
+  in the dev's repo.
 - Consumption (AI agent): MCP server reads the same registry and exposes
   `get_component(name)` / `get_block(name)` / `get_guidelines(topic)` to
   Claude or Cursor.

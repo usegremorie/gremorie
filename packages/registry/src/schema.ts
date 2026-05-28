@@ -8,7 +8,7 @@ export const REGISTRY_ITEM_SCHEMA = {
   $id: 'https://gremorie.com/schema/registry-item.json',
   title: 'Gremorie Registry Item',
   description:
-    'A single registry item served by gremorie.com/r/<framework>/<name>.json. Compatible with shadcn-registry-item with an additional `usage` block that the MCP server feeds to AI clients.',
+    'A single registry item served by gremorie.com/r/<framework>/<name>.json. Compatible with the shadcn-registry-item shape (see NOTICE.md) with an additional `usage` block that the MCP server feeds to AI clients.',
   type: 'object',
   required: [
     '$schema',

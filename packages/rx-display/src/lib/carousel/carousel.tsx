@@ -12,7 +12,7 @@ import { Button } from "@gremorie/rx-forms";
 /**
  * Carousel - horizontally (or vertically) scrollable slide region.
  *
- * Imported from shadcn/ui (MIT). Built on Embla. Five parts:
+ * Built on Embla. Five parts:
  * `Carousel` (Root), `CarouselContent`, `CarouselItem`,
  * `CarouselPrevious`, `CarouselNext`. Pass plugins like
  * `embla-carousel-autoplay` via the `plugins` prop.

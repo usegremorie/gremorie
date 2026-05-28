@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * DropdownMenu - verb-led action menu attached to a trigger.
  *
- * Imported from shadcn/ui (MIT). Use for **actions** - Edit,
+ * Use for **actions** - Edit,
  * Delete, Duplicate, Open in new tab. Distinct from Select, which
  * holds **values** (USA, Brazil, Japan). When the items in the menu
  * read like verbs, this is the right primitive.

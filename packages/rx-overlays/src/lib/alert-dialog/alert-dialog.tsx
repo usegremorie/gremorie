@@ -9,7 +9,7 @@ import { Button } from "@gremorie/rx-forms";
 /**
  * AlertDialog - modal-blocking confirmation dialog.
  *
- * Imported from shadcn/ui (MIT). Differs from Dialog in two
+ * Differs from Dialog in two
  * important ways: it is **modal+blocking** (no close-on-overlay,
  * no close-on-escape by default) and the user **must choose**.
  * Use only for moments where doing nothing would be wrong -

@@ -9,7 +9,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Toggle - single button with on/off state.
  *
- * Imported from shadcn/ui (MIT). A two-state button (`aria-pressed`)
+ * A two-state button (`aria-pressed`)
  * for stateful actions outside of form submission - bold/italic in
  * a text editor, view-mode switches, filter chips.
  *

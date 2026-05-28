@@ -7,7 +7,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Input - single-line text field.
  *
- * Imported from shadcn/ui (MIT). Renders a styled `<input>` that
+ * Renders a styled `<input>` that
  * adopts every native HTML `type` (text, email, password, number,
  * search, tel, url, file...). Visual states are token-driven:
  * `border-input` for default, `focus-visible:ring-ring/50` for

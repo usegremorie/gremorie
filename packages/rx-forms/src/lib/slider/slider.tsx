@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Slider - continuous numeric input via draggable thumb.
  *
- * Imported from shadcn/ui (MIT). Wraps Radix Slider. Single thumb
+ * Wraps Radix Slider. Single thumb
  * by default; pass `defaultValue={[low, high]}` (or `value`) for a
  * range slider. Honors `step`, `min`, `max`, and
  * `orientation="vertical"`.

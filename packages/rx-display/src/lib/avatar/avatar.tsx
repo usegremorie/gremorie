@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Avatar - user / entity portrait with image + fallback.
  *
- * Imported from shadcn/ui (MIT). Wraps `@radix-ui/react-avatar`
+ * Wraps `@radix-ui/react-avatar`
  * which handles the image-load lifecycle: while the source loads,
  * the fallback renders; if the load errors or `src` is missing,
  * the fallback stays. This guarantees an Avatar never renders as

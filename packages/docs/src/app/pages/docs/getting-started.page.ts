@@ -46,9 +46,9 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Add the theme" anchor="theme">
           <docs-prose>
             <p>
-              Gremorie NG ships a two-tier token system (primitives → semantics), fully
-              shadcn-compatible. Import it once in your global stylesheet, then customize
-              the variables for rebrand.
+              Gremorie NG ships a two-tier token system (primitives -> semantics).
+              Import it once in your global stylesheet, then customize the variables
+              for rebrand.
             </p>
           </docs-prose>
           <docs-code-block

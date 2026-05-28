@@ -8,7 +8,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Switch - immediate-effect toggle.
  *
- * Imported from shadcn/ui (MIT) over Radix. Use Switch when toggling
+ * Built over Radix. Use Switch when toggling
  * the control changes state right away (notifications on/off, dark
  * mode). For checked state inside a form that will be submitted,
  * reach for `Checkbox` instead - Switch is for "now", Checkbox for

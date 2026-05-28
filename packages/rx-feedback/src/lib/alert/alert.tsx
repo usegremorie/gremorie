@@ -6,7 +6,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Alert - in-flow feedback message.
  *
- * Imported from shadcn/ui (MIT). A persistent message anchored
+ * A persistent message anchored
  * inside page flow - distinct from `Toast` (transient, floating)
  * and `Banner` (page-spanning). KDS recommends conveying
  * informational, success, and warning intent through a leading

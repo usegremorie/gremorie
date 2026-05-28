@@ -5,7 +5,7 @@ import { cn } from "@gremorie/rx-core";
 /**
  * Table - styled wrapper around the native `<table>` element.
  *
- * Imported from shadcn/ui (MIT). Não traz comportamento - é só o
+ * Não traz comportamento - é só o
  * skin (rules, hover, padding, typography) sobre `<table>` semântico.
  *
  * Para sorting, filtering, paginação ou seleção, suba para o **DataTable

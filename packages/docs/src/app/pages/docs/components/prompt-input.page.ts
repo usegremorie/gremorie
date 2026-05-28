@@ -140,7 +140,7 @@ import { DocsPreview } from '../../../shared/preview.component';
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
               <li>
-                <strong>Monolithic components</strong> (no Brain/Helm split) — follow shadcn original;
+                <strong>Monolithic components</strong> (no Brain/Helm split);
                 spartan-ng/brain supplies headless primitives when needed (<a routerLink="/docs/getting-started">ADR-011</a>).
               </li>
               <li>
@@ -148,7 +148,7 @@ import { DocsPreview } from '../../../shared/preview.component';
                 (<a routerLink="/docs/getting-started">ADR-012</a>).
               </li>
               <li>
-                <strong>Two-tier tokens</strong> (primitives → semantics, shadcn-compatible) — rebrand
+                <strong>Two-tier tokens</strong> (primitives -> semantics) - rebrand
                 in one edit (<a routerLink="/docs/getting-started">ADR-013</a>).
               </li>
               <li>

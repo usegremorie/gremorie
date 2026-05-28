@@ -65,7 +65,7 @@ export const SEMANTIC_THEMES: SemanticTheme[] = [
     id: "default",
     name: "Default (Neutral)",
     description:
-      "Tema base, espelha o `npx shadcn init` com `baseColor: neutral`. Ponto de partida quando o produto ainda não tem voz cromática.",
+      "Tema base com `baseColor: neutral`. Ponto de partida quando o produto ainda não tem voz cromática.",
     radius: "0.625rem",
     rows: [
       row("background", "white", "neutral-950"),

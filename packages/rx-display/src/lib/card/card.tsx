@@ -5,7 +5,7 @@ import type { ComponentPropsWithoutRef } from "react";
 /**
  * Card - surface primitive for grouping related content.
  *
- * The shadcn-style Card composition: a rounded surface with a
+ * Composed Card surface: a rounded surface with a
  * structured `Header → Content → Footer` rhythm. Each sub-component
  * is a thin styled `<div>`; the API is composable, not configurative -
  * you opt in to the parts you need.

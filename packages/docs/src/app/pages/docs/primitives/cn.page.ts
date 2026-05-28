@@ -13,7 +13,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
       <docs-page
         eyebrow="Primitive · Utility"
         title="cn() — class name composer"
-        lede="A 3-line helper combining clsx (conditional class names) and tailwind-merge (deterministic resolution of conflicting Tailwind utilities). Same primitive shadcn ships."
+        lede="A 3-line helper combining clsx (conditional class names) and tailwind-merge (deterministic resolution of conflicting Tailwind utilities)."
       >
         <docs-section title="Why" anchor="why">
           <docs-prose>

@@ -8,7 +8,7 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/cli"
   },
-  "keywords": ["angular", "ai", "ui", "shadcn", "cli"],
+  "keywords": ["angular", "ai", "ui", "cli"],
   "type": "module",
   "bin": {
     "gremorie": "./bin/gremorie.js"

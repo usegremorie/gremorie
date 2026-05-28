@@ -11,7 +11,7 @@ import { buttonVariants, type Button } from "@gremorie/rx-forms";
 /**
  * Pagination - bookmarkable page-by-page navigation.
  *
- * Imported from shadcn/ui (MIT). Plain semantic markup - `<nav>`
+ * Plain semantic markup - `<nav>`
  * wrapping a list of `<a>` links styled as buttons. Use Pagination
  * (vs infinite scroll or load-more) when URLs need to be
  * shareable, when stable order matters, and when users need to

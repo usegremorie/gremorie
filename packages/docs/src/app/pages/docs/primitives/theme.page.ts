@@ -14,7 +14,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
       <docs-page
         eyebrow="Primitive · Tokens"
         title="Theme tokens"
-        lede="Gremorie NG uses a two-tier token system — primitives → semantics — fully shadcn-compatible. Rebrand the whole library by editing the primitive palette, or remap dark mode by overriding semantics inside .dark."
+        lede="Gremorie NG uses a two-tier token system - primitives -> semantics. Rebrand the whole library by editing the primitive palette, or remap dark mode by overriding semantics inside .dark."
       >
         <docs-section title="Why two tiers" anchor="why">
           <docs-prose>
@@ -24,9 +24,8 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
               They never change between light and dark mode.
             </p>
             <p>
-              <strong>Semantics</strong> are what components consume — <code>--background</code>,
+              <strong>Semantics</strong> are what components consume - <code>--background</code>,
               <code>--foreground</code>, <code>--primary</code>, etc. Dark mode just remaps these.
-              Names match shadcn 1:1, so existing shadcn themes work as-is.
             </p>
             <p>
               Gremorie NG does <strong>not</strong> ship component-specific tokens. If a future AI

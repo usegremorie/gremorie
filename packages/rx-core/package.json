@@ -8,7 +8,7 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/rx-core"
   },
-  "keywords": ["react", "ai", "ui", "shadcn", "utilities"],
+  "keywords": ["react", "ai", "ui", "utilities"],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
