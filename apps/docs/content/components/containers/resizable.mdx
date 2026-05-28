@@ -3,6 +3,15 @@ title: Resizable
 description: Split panes with draggable handles.
 ---
 
+import { ResizablePreview } from "@/components/preview/containers/containers";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <ResizablePreview />
+</div>
+
+
 `Resizable` composes three pieces on top of `react-resizable-panels`:
 `ResizablePanelGroup` is the frame, `ResizablePanel` claims a flex
 region, `ResizableHandle` is the drag-and-drop divider between two

@@ -3,6 +3,15 @@ title: Progress
 description: Determinate progress indicator (0-100).
 ---
 
+import { ProgressPreview } from "@/components/preview/feedback/feedback";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <ProgressPreview />
+</div>
+
+
 `Progress` shows progress against a known total - uploads, multi-step
 forms, batch jobs. For unknown duration, prefer `Skeleton` or a
 spinner. Always pair the bar with a numeric value or label; silent

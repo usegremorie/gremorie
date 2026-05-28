@@ -3,6 +3,15 @@ title: Avatar
 description: User identity glyph with graceful image fallback.
 ---
 
+import { AvatarPreview } from "@/components/preview/display/display";
+
+## Preview
+
+<div className="rounded-lg border p-6">
+  <AvatarPreview />
+</div>
+
+
 `Avatar` displays a user-facing identity glyph: image first, with
 `AvatarFallback` for initials or icon when the image fails to load.
 Built on Radix Avatar - the fallback only renders after the image
