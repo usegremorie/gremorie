@@ -1,4 +1,4 @@
 {
   "title": "Docs",
-  "pages": ["index", "foundations", "components", "tokens"]
+  "pages": ["index", "get-started", "corpus", "tokens", "components", "blocks", "artifacts", "platform"]
 }

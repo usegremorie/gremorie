@@ -1,19 +1,25 @@
 /**
- * MCP helpers: reads the foundation MDX corpus from content/foundations/.
+ * MCP helpers: reads the UX corpus MDX from content/corpus/.
  * The MCP `get_guidelines` tool returns these so an LLM can apply the rules
  * when generating code with the Gremorie registry.
  *
  * No MDX parsing — we return the raw MDX so the consumer can render or
  * extract whatever it needs. Frontmatter remains as the first block.
+ *
+ * As of Phase 1 of the proposta v4 information architecture, the corpus
+ * lives at the top level (content/corpus/) rather than nested under
+ * foundations/. The MCP serves only the corpus — the rest of the docs
+ * (platform/internal/*, get-started/*, etc.) are author-facing and aren't
+ * meant to be injected into LLM context.
  */
 
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-const FOUNDATIONS_DIR = path.join(process.cwd(), "content", "foundations");
+const CORPUS_DIR = path.join(process.cwd(), "content", "corpus");
 
 export interface GuidelineDoc {
-  /** Filename without extension (also the URL slug under /docs/foundations/). */
+  /** Filename without extension (also the URL slug under /corpus/). */
   slug: string;
   /** Path relative to content/ for traceability. */
   path: string;
@@ -52,8 +58,9 @@ function stripQuotes(s: string): string {
 }
 
 /**
- * Walk content/foundations/ recursively and return every MDX file.
- * Sub-folders (e.g. corpus/) are flattened with slash slugs.
+ * Walk content/corpus/ recursively and return every MDX file.
+ * Sub-folders (heuristics/, components/, patterns/, etc.) are flattened
+ * with slash slugs.
  */
 async function walkMdx(dir: string, relBase = ""): Promise<GuidelineDoc[]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -71,7 +78,7 @@ async function walkMdx(dir: string, relBase = ""): Promise<GuidelineDoc[]> {
     const slug = rel.replace(/\.mdx$/, "");
     docs.push({
       slug,
-      path: `content/foundations/${rel}`,
+      path: `content/corpus/${rel}`,
       title,
       description,
       content: raw,
@@ -84,7 +91,7 @@ async function walkMdx(dir: string, relBase = ""): Promise<GuidelineDoc[]> {
 export async function listGuidelines(): Promise<
   Array<Omit<GuidelineDoc, "content">>
 > {
-  const docs = await walkMdx(FOUNDATIONS_DIR);
+  const docs = await walkMdx(CORPUS_DIR);
   return docs.map(({ content: _, ...meta }) => meta);
 }
 
@@ -94,7 +101,7 @@ export async function listGuidelines(): Promise<
  * topic is given, returns the index (all docs, headers only).
  */
 export async function getGuidelines(topic?: string): Promise<GuidelineDoc[]> {
-  const docs = await walkMdx(FOUNDATIONS_DIR);
+  const docs = await walkMdx(CORPUS_DIR);
   if (!topic) return docs;
   const q = topic.toLowerCase().trim();
   // Direct slug match first (most precise).

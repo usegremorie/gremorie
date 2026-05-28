@@ -110,7 +110,7 @@ export function TabsPreview() {
       </TabsContent>
       <TabsContent value="tokens">
         <p className="mt-4 text-sm text-muted-foreground">
-          Tokens are framework-agnostic - see the foundations docs.
+          Tokens are framework-agnostic - see the Tokens tab.
         </p>
       </TabsContent>
     </Tabs>

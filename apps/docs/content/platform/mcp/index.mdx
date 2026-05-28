@@ -1,0 +1,18 @@
+---
+title: MCP server
+description: "The AI-native diferencial. Tools that let LLMs query the registry and corpus when generating UI."
+---
+
+## Coming soon
+
+The MCP server exposes Gremorie's catalogo and corpus to LLMs (Claude, Cursor, Codex) via the Model Context Protocol. Tools planned:
+
+- `list_components(category?)` - enumerate available primitives
+- `search_components(query)` - substring + categorical search
+- `get_component(name)` - full source + usage doc
+- `get_block(name)` - composition with wiring
+- `get_guidelines(topic?)` - serve corpus articles
+
+Endpoint: [/api/mcp](/api/mcp) (POST/SSE).
+
+The MCP route lives in [apps/docs/app/api/[transport]/route.ts](https://github.com/usegremorie/gremorie/tree/develop/apps/docs/app/api).

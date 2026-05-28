@@ -12,7 +12,7 @@
  *   - get_block(name)
  *   - get_guidelines(topic?)
  *
- * The MCP is fine: it only serves what the registry and the foundations
+ * The MCP is fine: it only serves what the registry and the UX corpus
  * MDX already contain. No domain logic, no DB.
  */
 
@@ -272,9 +272,9 @@ const handler = createMcpHandler(
 
     /*
      * ─── get_guidelines ─────────────────────────────────────────────
-     * Returns foundation MDX from content/foundations/. The MCP's
-     * "explanation layer": when to use button vs link, the doc
-     * standard, the storybook structure, etc.
+     * Returns UX corpus MDX from content/corpus/. The MCP's
+     * "explanation layer": when to use button vs link, label rules,
+     * hierarchy, feedback patterns, etc.
      *
      * With a topic, returns matching docs (exact slug or substring).
      * Without a topic, returns the index (all docs, header only).
@@ -284,9 +284,10 @@ const handler = createMcpHandler(
       {
         title: "Get guidelines",
         description:
-          "Return Gremorie foundation guidelines (MDX) from content/foundations/. Covers principles, architecture, " +
-          "storybook structure, documentation standard, component catalog, accessibility, layout stability, contributing, " +
-          "and the UX corpus. Pass a topic (slug or substring) to narrow; omit to get the index of all guidelines.",
+          "Return Gremorie UX corpus guidelines (MDX) from content/corpus/. Covers Nielsen heuristics, component " +
+          "patterns (button, dialog, form), interaction patterns (confirmation, navigation), state patterns " +
+          "(loading/empty/error), UX writing, feedback system (toast vs modal vs banner), and visual hierarchy. " +
+          "Pass a topic (slug or substring) to narrow; omit to get the index of all guidelines.",
         inputSchema: {
           topic: z
             .string()

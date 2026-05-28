@@ -1,6 +1,7 @@
 {
+  "root": true,
   "title": "Components",
-  "description": "Registry items organised by functional category - install via gremorie add",
-  "icon": "LayoutGrid",
-  "pages": ["ai", "forms", "overlays", "display", "containers", "feedback", "navigation", "data"]
+  "description": "Primitivos do registry — install via gremorie add",
+  "icon": "Component",
+  "pages": ["overview", "ai", "forms", "overlays", "display", "containers", "feedback", "navigation", "data"]
 }

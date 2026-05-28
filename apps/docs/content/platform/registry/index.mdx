@@ -1,0 +1,14 @@
+---
+title: Registry
+description: "Copy-paste distribution model. Each item is a self-contained JSON with source files embedded."
+---
+
+## Coming soon
+
+The Gremorie registry follows the copy-paste model: each item is a JSON document containing the source files of one primitive, the dependencies, and the registry deps (cross-item).
+
+- Index: [/r/registry.json](/r/registry.json) (100 items)
+- Schema: [/schema/registry-item.json](/schema/registry-item.json)
+- Items: `/r/<framework>/<item>.json` (e.g., `/r/rx/rx-button.json`)
+
+The registry generator lives in [packages/registry](https://github.com/usegremorie/gremorie/tree/develop/packages/registry) on GitHub.

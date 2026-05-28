@@ -15,7 +15,7 @@ import type { MDXComponents } from "mdx/types";
  * Global MDX components for the KDS docs site.
  *
  * Extends Fumadocs' default MDX components with the rich-content
- * primitives we use across foundations and UI pages — tabs, steps,
+ * primitives we use across corpus, platform and UI pages — tabs, steps,
  * accordion, callouts, files, type tables, banner, and image zoom.
  *
  * Per ADR-017, custom MDX components are registered globally here
