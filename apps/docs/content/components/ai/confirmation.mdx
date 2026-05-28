@@ -3,6 +3,28 @@ title: Confirmation
 description: Approval prompt for human-in-the-loop tool calls. Wraps an Alert with Approve/Reject Buttons and exposes approved/rejected callbacks.
 ---
 
+import { ConfirmationRequestPreview, ConfirmationApprovedPreview, ConfirmationRejectedPreview } from "@/components/preview/ai/chatbot-rest";
+
+## Preview
+
+### Requesting approval
+
+<div className="rounded-lg border p-6">
+  <ConfirmationRequestPreview />
+</div>
+
+### Approved
+
+<div className="rounded-lg border p-6">
+  <ConfirmationApprovedPreview />
+</div>
+
+### Rejected
+
+<div className="rounded-lg border p-6">
+  <ConfirmationRejectedPreview />
+</div>
+
 `Confirmation` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install

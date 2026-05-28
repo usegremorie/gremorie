@@ -3,6 +3,34 @@ title: Tool
 description: Tool-use trace block with state-aware Badge. Reveals tool input (JSON), output (formatted), and errors in CodeBlock children.
 ---
 
+import { ToolRunningPreview, ToolCompletedPreview, ToolErrorPreview, ToolApprovalPreview } from "@/components/preview/ai/chatbot-rest";
+
+## Preview
+
+### Running
+
+<div className="rounded-lg border p-6">
+  <ToolRunningPreview />
+</div>
+
+### Completed
+
+<div className="rounded-lg border p-6">
+  <ToolCompletedPreview />
+</div>
+
+### Error
+
+<div className="rounded-lg border p-6">
+  <ToolErrorPreview />
+</div>
+
+### Approval requested
+
+<div className="rounded-lg border p-6">
+  <ToolApprovalPreview />
+</div>
+
 `Tool` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
 
 ## Install
