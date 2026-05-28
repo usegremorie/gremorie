@@ -31,6 +31,12 @@ import { Card } from "@gremorie/rx-display";
  * Message renders streamed text natively).
  *
  * Cycle: idle -> reasoning -> assistant typing -> done -> reset.
+ *
+ * Accessibility (Bug 3 fix from Odo audit):
+ * - Respects prefers-reduced-motion: reduce via usePrefersReducedMotion
+ * - When reduced motion is on, the animation cycle is skipped entirely
+ *   and the final "done" state is rendered statically (full user message,
+ *   collapsed-ish reasoning, full assistant message), no typing.
  */
 const USER_MESSAGE = "Show me a sales dashboard";
 const REASONING_TEXT =
@@ -39,6 +45,19 @@ const ASSISTANT_TEXT =
   "Here is a dashboard with 4 KPI cards and a 12-month revenue chart. Each card uses the Card primitive with semantic color tokens. The chart is a Chart artifact bound to your data schema.";
 
 type Phase = "idle" | "reasoning" | "assistant" | "done";
+
+function usePrefersReducedMotion() {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduce(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setReduce(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+  return reduce;
+}
 
 function useTypewriter(text: string, active: boolean, speed = 22) {
   const [out, setOut] = useState("");
@@ -60,10 +79,21 @@ function useTypewriter(text: string, active: boolean, speed = 22) {
 }
 
 export function HeroDemo() {
+  const reducedMotion = usePrefersReducedMotion();
+  // When reducedMotion is true, lock the phase to "done" so all final
+  // content renders statically with no animation cycle.
   const [phase, setPhase] = useState<Phase>("idle");
   const timers = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
   useEffect(() => {
+    // Reduced motion: skip animation cycle, render done state directly.
+    if (reducedMotion) {
+      timers.current.forEach((t) => clearTimeout(t));
+      timers.current = [];
+      setPhase("done");
+      return;
+    }
+
     function run() {
       // Clear any pending timers from a previous cycle.
       timers.current.forEach((t) => clearTimeout(t));
@@ -79,23 +109,31 @@ export function HeroDemo() {
     return () => {
       timers.current.forEach((t) => clearTimeout(t));
     };
-  }, []);
+  }, [reducedMotion]);
 
-  const reasoningOut = useTypewriter(
+  const animatedReasoning = useTypewriter(
     REASONING_TEXT,
-    phase === "reasoning",
-    14
+    !reducedMotion && phase === "reasoning",
+    14,
   );
-  const assistantOut = useTypewriter(
+  const animatedAssistant = useTypewriter(
     ASSISTANT_TEXT,
-    phase === "assistant" || phase === "done",
-    18
+    !reducedMotion && (phase === "assistant" || phase === "done"),
+    18,
   );
+
+  // When reducedMotion is true, show full text instantly with no streaming.
+  const reasoningOut = reducedMotion ? REASONING_TEXT : animatedReasoning;
+  const assistantOut = reducedMotion ? ASSISTANT_TEXT : animatedAssistant;
 
   const showReasoning =
-    phase === "reasoning" || phase === "assistant" || phase === "done";
-  const isReasoningStreaming = phase === "reasoning";
-  const showAssistant = phase === "assistant" || phase === "done";
+    reducedMotion ||
+    phase === "reasoning" ||
+    phase === "assistant" ||
+    phase === "done";
+  const isReasoningStreaming = !reducedMotion && phase === "reasoning";
+  const showAssistant =
+    reducedMotion || phase === "assistant" || phase === "done";
 
   // Cosmetic no-op handler. The submit button is permanently disabled.
   const handleSubmit = () => {

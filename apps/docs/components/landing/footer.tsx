@@ -22,7 +22,10 @@ export function Footer() {
             <span className="font-medium text-foreground">Gremorie</span> ·{" "}
             <span>© 2026 Kalvner</span>
           </p>
-          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          <nav
+            aria-label="Footer"
+            className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+          >
             {links.map((l) => (
               <Link
                 key={l.href}

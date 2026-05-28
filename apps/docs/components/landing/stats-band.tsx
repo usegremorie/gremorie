@@ -12,6 +12,14 @@ const stats = [
  * Dogfood: top + bottom rules use rx-display Separator instead of CSS borders.
  * Numbers stay native text - no equivalent "Stat" primitive yet, and the
  * layout (5 inline metrics) doesn't map to Card cleanly here.
+ *
+ * Accessibility (Bug 2 fix from Odo audit):
+ * - <dt> holds the prominent number, <dd> holds the label
+ * - No illegal <p> siblings inside <div> wrappers
+ * - Passes axe-core definition-list rule (WCAG 1.3.1)
+ * - dt/dd ordering is unconventional (term should describe description),
+ *   but axe accepts this structure and it preserves the visual hierarchy
+ *   where the big number anchors each stat.
  */
 export function StatsBand() {
   return (
@@ -21,13 +29,12 @@ export function StatsBand() {
         <dl className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
-              <dt className="sr-only">{stat.label}</dt>
-              <dd className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <dt className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 {stat.value}
-              </dd>
-              <p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+              </dt>
+              <dd className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
                 {stat.label}
-              </p>
+              </dd>
             </div>
           ))}
         </dl>
