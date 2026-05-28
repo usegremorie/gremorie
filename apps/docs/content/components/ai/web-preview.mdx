@@ -3,6 +3,22 @@ title: Web Preview
 description: Sandboxed browser preview for AI-generated sites. Navigation controls, URL bar, iframe body, and an expandable console for logs and errors.
 ---
 
+import { WebPreviewPreview, WebPreviewConsolePreview } from "@/components/preview/ai/code-workflow";
+
+## Preview
+
+### Basic
+
+<div className="rounded-lg border p-6">
+  <WebPreviewPreview />
+</div>
+
+### With console logs
+
+<div className="rounded-lg border p-6">
+  <WebPreviewConsolePreview />
+</div>
+
 `Web Preview` is part of the **AI code family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives and ships with full Bridge parity.
 
 ## Install

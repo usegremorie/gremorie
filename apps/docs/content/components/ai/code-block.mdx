@@ -3,6 +3,22 @@ title: Code Block
 description: Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; ships dark + light themes; exposes a copy button with copy/copied state.
 ---
 
+import { CodeBlockPreview, CodeBlockCopyPreview } from "@/components/preview/ai/code-workflow";
+
+## Preview
+
+### Default
+
+<div className="rounded-lg border p-6">
+  <CodeBlockPreview />
+</div>
+
+### With copy button
+
+<div className="rounded-lg border p-6">
+  <CodeBlockCopyPreview />
+</div>
+
 `Code Block` is part of the **AI code family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives and ships with full Bridge parity.
 
 ## Install
