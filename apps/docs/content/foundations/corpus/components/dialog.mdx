@@ -1,0 +1,110 @@
+---
+title: Dialog, Drawer, Popover, Tooltip
+description: "Four overlays, four jobs: focused decisions, long flows, contextual content, brief hints. Pick by job, not by aesthetics."
+related: rx-dialog, rx-sheet, rx-popover, rx-tooltip, rx-hover-card
+tags: [components, overlays, modal, popover, tooltip]
+---
+
+## TL;DR
+
+Overlays differ by **stakes** and **scope**. Dialog interrupts for a decision. Drawer (sheet) hosts a longer side flow. Popover surfaces contextual content. Tooltip offers a brief label or hint. Pick by job, never by aesthetic preference.
+
+## The rule
+
+| Component | Job | Modal? | Focus trapped? | Triggered by |
+|-----------|-----|--------|----------------|--------------|
+| **Dialog** | Focused decision or short form. Blocks the underlying UI. | Yes | Yes | Click |
+| **Drawer / Sheet** | Longer flow, detail panel, multi-step form. Side-anchored. | Often yes | Yes | Click |
+| **Popover** | Contextual interactive content (date picker, color picker, mini-form). | No | No | Click |
+| **Tooltip** | Brief identifying label or hint, plain text. | No | No | Hover / focus |
+| **HoverCard** | Rich preview of a referenced entity (user card, link preview). | No | No | Hover / focus |
+
+Decision steps:
+
+1. **Does it interrupt the user's task?** Yes -> Dialog or Sheet. No -> Popover, Tooltip, or HoverCard.
+2. **How much content?** A single question or 1-3 fields -> Dialog. A form, a panel, a flow -> Sheet.
+3. **Triggered by hover or focus?** Brief text -> Tooltip. Rich preview -> HoverCard. Never put interactive controls in either.
+4. **Click reveals contextual UI?** Popover.
+
+## Why
+
+Each overlay sets expectations about whether the user must respond. A modal dialog tells the user "decide before continuing"; a popover tells them "this is contextual and easy to dismiss"; a tooltip tells them "this is auxiliary". Mixing them violates Nielsen #4 (consistency) and #7 (flexibility): users learn to predict overlay behavior and feel trapped or interrupted when expectations break.
+
+Tooltips on touch devices have no hover state, so anything actionable inside them is unreachable. Popovers on small viewports often need to become Sheets to stay usable. Dialogs that host a 12-field form should be Sheets so the page is still partially visible.
+
+## How to apply
+
+### Do: Dialog for a focused decision
+
+```tsx
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Invite member</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Invite a member</DialogTitle>
+      <DialogDescription>They will receive an email with a sign-in link.</DialogDescription>
+    </DialogHeader>
+    <form>
+      <Input name="email" placeholder="email@example.com" />
+    </form>
+    <DialogFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button type="submit">Send invitation</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+Single decision, two fields max, two actions. Title states the job; description gives the consequence.
+
+### Do: Sheet for longer flows
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Edit profile</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Profile settings</SheetTitle>
+    </SheetHeader>
+    {/* multi-field form, sections, scrolling */}
+  </SheetContent>
+</Sheet>
+```
+
+A profile editor is too long for a dialog. The side panel preserves spatial context (the user knows they came from the profile page).
+
+### Don't: a tooltip with interactive content
+
+```tsx
+<Tooltip>
+  <TooltipTrigger>Edit</TooltipTrigger>
+  <TooltipContent>
+    <button>Confirm</button>
+    <button>Cancel</button>
+  </TooltipContent>
+</Tooltip>
+```
+
+The tooltip vanishes when the cursor leaves the trigger. Touch users never see it. Use a Popover for interactive content.
+
+### Don't: a dialog for navigation
+
+A dialog should not contain a full settings page or a multi-tab interface. That is a route, not an overlay. Route the user instead.
+
+## Counter-cases
+
+- **Confirmation dialogs without a question** (a save toast that doubles as "Continue / Cancel") should be replaced by an inline confirmation pattern or a destructive-action dialog with a clear title. Modal popups for trivial confirmations are an anti-pattern (Nielsen #5 - error prevention by design, not by extra modal).
+- **Mobile drawers triggered by bottom-sheet patterns** are often the right choice for actions that would be a Popover on desktop. Pick by viewport.
+- **Combobox and select** are popover-like but are their own components (`Combobox`, `Select`); do not roll a popover from scratch.
+- **Toast** is not in this table because it is not an overlay; it does not block, capture focus, or wait for user response. See the toast vs modal vs banner article.
+
+## Sources
+
+- Nielsen Norman Group: "Modal & Nonmodal Dialogs: When (& When Not) to Use Them" (https://www.nngroup.com/articles/modal-nonmodal-dialog/)
+- Norman, "The Design of Everyday Things" (2013): on affordances and signifiers.
+- WAI-ARIA Authoring Practices: dialog, tooltip, and popover patterns.
+- W3C WAI: focus management requirements for modal dialogs.

@@ -1,0 +1,154 @@
+---
+title: Toast vs modal vs banner
+description: "Three feedback surfaces, three stakes. Pick by severity and how blocking the message must be."
+related: rx-sonner, rx-alert-dialog, rx-dialog, rx-alert
+tags: [feedback, toast, modal, banner, severity]
+---
+
+## TL;DR
+
+Choose by **stakes** (low / medium / high) and how **blocking** the message must be.
+
+- **Toast** = low stakes, transient, non-blocking. Acknowledges an action.
+- **Banner** = medium stakes, persistent, non-blocking. Communicates a condition that needs awareness, not a decision.
+- **Modal dialog** = high stakes, blocking, requires response. Confirms or asks.
+
+Get this wrong and you either interrupt the user for nothing (modal for a save toast) or fail to surface something important (toast for a billing failure).
+
+## The rule
+
+### Toast
+
+For **transient acknowledgements** of an action the user just initiated.
+
+- **Trigger**: a successful or failed action the user just performed.
+- **Visibility**: 3-5 seconds, dismissible.
+- **Position**: typically bottom-right or top-right; consistent across the app.
+- **Content**: 1-2 sentences max. Optionally an undo or detail link.
+- **Severity**: success, info, warning. **Not** for fatal errors (the user needs more than a 4-second pop-up).
+- **Stacking**: 3-5 max visible at once; older ones queue or auto-dismiss.
+
+### Banner
+
+For **persistent conditions** the user needs to know about but does not need to act on immediately.
+
+- **Trigger**: a state of the system (subscription expiring, account in trial, feature unavailable, environment is staging).
+- **Visibility**: stays until the condition resolves or the user dismisses.
+- **Position**: top of the surface (above the header), or scoped to a section (above a table).
+- **Content**: a sentence, optionally a link to act ("Renew subscription").
+- **Severity**: info, warning, sometimes destructive (a permanent account warning).
+- **Dismissible**: yes, usually; some banners (security warnings, suspended account) should not be dismissible.
+
+### Modal dialog
+
+For **blocking events that need a decision**.
+
+- **Trigger**: a destructive confirm, a required setup step, a hard error that prevents continuing.
+- **Visibility**: blocks until the user responds.
+- **Content**: title (the question), description (the consequence), 1-3 actions.
+- **Severity**: medium-to-high. Use only when the user must respond before continuing.
+
+## Why
+
+Each surface trains users to expect a different kind of attention. Toasts are background noise the user glances at; modals are interrupts that demand action; banners are environmental conditions ("I am in staging", "my trial expires in 3 days").
+
+If a billing failure pops up as a 4-second toast, the user misses it - the system has not communicated a high-stakes state. If a successful save triggers a modal, the user dismisses it without reading - the system has trained them to ignore modals.
+
+Severity is not just about color or icon: it is about how persistent and blocking the surface is. A "warning" toast that disappears in 4 seconds is functionally different from a "warning" banner that stays for two weeks.
+
+## How to apply
+
+### Do: toast for confirmation of action
+
+```tsx
+function handleSave() {
+  saveSettings();
+  toast.success("Settings saved");
+}
+```
+
+The user did the thing; the toast acknowledges. No decision needed.
+
+### Do: banner for an account-level condition
+
+```tsx
+<Banner variant="warning">
+  Your trial expires in 3 days.
+  <Button variant="link">Upgrade now</Button>
+</Banner>
+```
+
+Persistent, awareness-level. Stays until the trial is upgraded or expires.
+
+### Do: modal for destructive confirm
+
+```tsx
+<AlertDialog>
+  <AlertDialogContent>
+    <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
+    <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete workspace</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+Decision required, irreversible. Blocking is justified.
+
+### Don't: toast for a billing failure
+
+```tsx
+toast.error("Payment failed");
+```
+
+The user blinks and misses it. Payment failures need a banner ("Your last payment failed. Update your card") or a route to a billing page.
+
+### Don't: modal for a save acknowledgement
+
+```tsx
+<Dialog>
+  <DialogContent>
+    <DialogTitle>Settings saved</DialogTitle>
+    <Button>OK</Button>
+  </DialogContent>
+</Dialog>
+```
+
+The user clicked save; they expect it to be saved. A toast is enough.
+
+### Don't: banner for a transient event
+
+```tsx
+<Banner>You uploaded 1 file successfully.</Banner>
+```
+
+This is toast material. A banner suggests permanence.
+
+## A quick severity table
+
+| Severity | Stakes | Persistent? | Blocking? | Surface |
+|----------|--------|-------------|-----------|---------|
+| Info, low | Acknowledge an action | No | No | Toast |
+| Success | Confirm an action succeeded | No | No | Toast |
+| Warning, transient | Action partially succeeded or has a caveat | No | No | Toast |
+| Warning, persistent | Condition the user should know about | Yes | No | Banner |
+| Error, transient | Action failed but recoverable | No | No | Toast (with retry) |
+| Error, persistent | System is in a broken state | Yes | No | Banner |
+| Error, blocking | Action is impossible until resolved | Yes | Yes | Modal |
+| Decision required | Destructive or irreversible action | Yes | Yes | Modal |
+
+## Counter-cases
+
+- **Inline feedback near the action** (form-level error message, button-level loading state) is often better than any of these three. Prefer inline over toast when the feedback is tied to a specific control.
+- **System-level notifications** (browser notifications, email) are out of scope here; this article is about in-product surfaces.
+- **Critical security alerts** (account compromised) may warrant a non-dismissible modal even though that violates the "do not interrupt unnecessarily" rule. The stakes justify it.
+- **Onboarding banners** ("Welcome! Here is a quick tour.") are a banner-with-modal-content variant; consider a guided tour pattern instead.
+
+## Sources
+
+- Nielsen Norman Group: "Notifications and Toasts" (https://www.nngroup.com/articles/toast-notifications/)
+- Nielsen Norman Group: "Modal & Nonmodal Dialogs" (https://www.nngroup.com/articles/modal-nonmodal-dialog/)
+- Material Design: snackbars and dialogs.
+- Apple Human Interface Guidelines: alerts and banners.

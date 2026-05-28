@@ -1,5 +1,14 @@
 {
   "title": "UX Corpus",
   "description": "Framework-agnostic UX knowledge",
-  "pages": ["index"]
+  "pages": [
+    "index",
+    "heuristics",
+    "components",
+    "patterns",
+    "states",
+    "feedback-system",
+    "ux-writing",
+    "visual-hierarchy"
+  ]
 }

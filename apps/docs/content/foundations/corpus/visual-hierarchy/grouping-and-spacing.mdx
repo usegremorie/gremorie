@@ -1,0 +1,135 @@
+---
+title: Grouping and spacing
+description: "Gestalt principles applied to product UI. Proximity, similarity, and white space tell the eye what belongs together."
+related: rx-card, rx-separator, rx-stack, rx-field-group
+tags: [visual-hierarchy, gestalt, spacing, layout]
+---
+
+## TL;DR
+
+The eye groups elements by **proximity** and **similarity** before it reads any text. White space is a structural tool, not decoration. Related items go close; unrelated items go apart; visual treatment (size, weight, color) communicates priority. Get spacing right and the rest of the design becomes 80% easier.
+
+## The rule
+
+### Proximity
+
+Items that belong together are visually close; items that do not are visually far apart.
+
+- **Related fields stay within 8-16px** of each other (label-to-input, input-to-helper-text).
+- **Sections of a form stay 32-48px apart**. The gap signals "different topic".
+- **Different surfaces (cards) sit 16-24px apart**. The gap signals "different object".
+- **Page margins are larger still** (48-96px on desktop) so the content has breathing room.
+
+### Similarity
+
+Items with the same visual treatment are read as belonging to the same category.
+
+- **Same type, same shape.** All primary buttons look identical across the app. All secondary actions look identical.
+- **Same role, same styling.** All errors are red and use the same icon. All success messages share treatment.
+- **Hierarchy via consistent steps.** If h1 is 32px / 600, h2 is 24px / 600 - not 26px / 500 in one place and 28px / 700 in another.
+
+### Closure and continuity
+
+The eye fills in shapes that are suggested but not drawn. A card with a subtle background defines a region without needing a hard border. A row of avatars with consistent vertical alignment reads as a group even without a wrapper.
+
+### White space is structural
+
+White space (empty area between elements) is the strongest grouping tool. It does not need to be filled. A page with generous white space scans faster than a page packed with content because the eye can find the next thing it cares about.
+
+- **Section gaps are 2-3x larger than within-section gaps.** If items inside a section are 12px apart, sections themselves are 24-36px apart.
+- **Above-the-fold elements get more space.** Each unit of attention costs more there.
+- **Tight clusters communicate density** (data tables, dashboards). Loose clusters communicate calm (settings, onboarding). Pick by surface intent.
+
+## Why
+
+Gestalt psychology (Wertheimer, Koffka, Kohler, 1920s) established that humans perceive groups before individual elements. Proximity, similarity, closure, and continuity are pre-cognitive: they happen before conscious reading. A designer who fights these principles makes the user work harder.
+
+A common failure: a settings page with every section 16px apart. The user cannot tell where one section ends and the next begins. The fix is not a separator line - it is doubling the gap between sections. The eye does the work.
+
+The opposite failure: every item in a list 48px apart with no relationship. The user perceives a list of isolated objects, not a list of one type. Tightening to 12-16px reveals the structure.
+
+White space is unintuitive to beginners because it looks like wasted real estate. But the user's attention is the scarce resource; white space buys it back.
+
+## How to apply
+
+### Do: proximity in a form
+
+```tsx
+<form className="space-y-8">
+  <section className="space-y-4">
+    <h3>Personal information</h3>
+    <div className="space-y-2">
+      <Label>Full name</Label>
+      <Input />
+      <FieldDescription>As it appears on your ID.</FieldDescription>
+    </div>
+    <div className="space-y-2">
+      <Label>Email</Label>
+      <Input type="email" />
+    </div>
+  </section>
+
+  <section className="space-y-4">
+    <h3>Billing address</h3>
+    {/* fields */}
+  </section>
+</form>
+```
+
+Within a field: 8px (label, input, helper). Within a section: 16px (between fields). Between sections: 32px. The eye finds the section boundaries without help.
+
+### Do: similarity through consistent treatment
+
+All section headings share the same size, weight, and color. All inputs are the same height. All primary actions are the same variant. A user scanning the page reads the structure in milliseconds.
+
+### Don't: equal spacing across boundaries
+
+```tsx
+<div className="space-y-4">
+  <Label>Name</Label>
+  <Input />
+  <h3>Address</h3>
+  <Label>Street</Label>
+  <Input />
+</div>
+```
+
+Equal gaps everywhere mean the user has no visual cue where the "Personal" section ends and the "Address" section begins. The h3 has to do the work alone; it should not have to.
+
+### Don't: too many borders
+
+```tsx
+<div className="border rounded-md p-4">
+  <h3 className="border-b pb-2 mb-2">Section</h3>
+  <div className="border rounded-md p-2">
+    {/* ... */}
+  </div>
+</div>
+```
+
+Borders inside borders create visual noise. White space alone (larger gap between section h3 and content) does the same job with less ink. Reserve borders for cases where contrast and grouping cannot do it.
+
+## Density modes
+
+Different surfaces want different density:
+
+- **Dashboards, data tables**: high density. Reduce vertical spacing to 4-8px. The user is scanning many items.
+- **Settings, forms**: medium density. 12-16px within sections, 32px between sections.
+- **Onboarding, marketing**: low density. Generous white space, large headings. The user is reading carefully.
+
+Adjust uniformly within a surface. Switching density mid-page is jarring.
+
+## Counter-cases
+
+- **Dense data UIs** (financial terminals, log viewers) violate "generous white space" intentionally. Pros expect density and value it. Acceptable for expert tools.
+- **Mobile** has less room and must compress spacing proportionally. The ratios (within vs between) should hold; the absolute values shrink.
+- **Cards in a grid** can have small gaps (8-12px) because the card itself provides the grouping boundary. The cards are the groups; the grid gap separates them.
+- **Information that is genuinely flat** (a 20-item list of contacts, all at the same level) does not benefit from artificial grouping. Keep the spacing uniform.
+
+## Sources
+
+- Wertheimer, M. (1923). "Laws of organization in perceptual forms" - Gestalt psychology founding text.
+- Norman, "The Design of Everyday Things" (2013): on visual perception and grouping.
+- Nielsen Norman Group: "The Importance of Visual Hierarchy" (https://www.nngroup.com/articles/visual-hierarchy-ux-definition/)
+- Tufte, "The Visual Display of Quantitative Information" (1983): on data ink ratio and white space.
+- Material Design: spacing and layout guidelines.

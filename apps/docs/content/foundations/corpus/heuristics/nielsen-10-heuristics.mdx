@@ -1,0 +1,107 @@
+---
+title: Nielsen's 10 Usability Heuristics
+description: "The ten general principles for interaction design. Apply as a checklist when reviewing flows."
+related: rx-button, rx-dialog, rx-form, rx-toast, rx-progress, rx-skeleton
+tags: [heuristics, usability, review, principles]
+---
+
+## TL;DR
+
+Ten heuristics, formulated by Jakob Nielsen in 1994 and refined since. They are review criteria, not laws: when something feels off in an interface, check it against these and you usually find the violation. Use them in design reviews and when explaining tradeoffs.
+
+## The rule
+
+Apply each heuristic as a question during review.
+
+### 1. Visibility of system status
+
+The system tells the user what is happening through appropriate feedback within reasonable time.
+
+**Check:** Is there a loading indicator? Does the form acknowledge submission? Does a destructive action confirm before and after? Does the URL reflect the current state so a refresh restores it?
+
+### 2. Match between system and the real world
+
+Speak the user's language. Words, phrases, concepts familiar to the user; not system-oriented terms.
+
+**Check:** Is "Member" called "Member" everywhere, or is it "User" in one place and "Account" in another? Are dates in the user's locale? Are technical errors translated ("Network connection lost", not "ETIMEDOUT")?
+
+### 3. User control and freedom
+
+Users often pick functions by mistake. Provide a clearly marked "emergency exit" to leave the unwanted state.
+
+**Check:** Can the user undo? Cancel? Close a dialog with Escape or a visible close button? Navigate back?
+
+### 4. Consistency and standards
+
+Users should not have to wonder whether different words, situations, or actions mean the same thing. Follow platform and industry conventions.
+
+**Check:** Are primary actions always positioned the same way (right in footers, on the right in forms)? Do similar things use the same component (modal for decisions, sheet for flows)? Are icons used consistently (trash for delete, never for archive)?
+
+### 5. Error prevention
+
+Better than good error messages is a careful design that prevents problems from occurring.
+
+**Check:** Are destructive actions confirmed? Are dependent fields validated together (so the user does not commit a date range that ends before it starts)? Are dangerous defaults avoided?
+
+### 6. Recognition rather than recall
+
+Minimize the user's memory load by making objects, actions, and options visible.
+
+**Check:** Are recently used items surfaced? Is the current filter visible (chips, summary line) so the user does not have to remember it? Are field labels visible (not just placeholders)?
+
+### 7. Flexibility and efficiency of use
+
+Accelerators may speed up interaction for the expert user. Allow users to tailor frequent actions.
+
+**Check:** Are there keyboard shortcuts for the most common actions? Can a user save a view, filter, or set of preferences? Does the system get out of the way for power users while staying discoverable for new ones?
+
+### 8. Aesthetic and minimalist design
+
+Dialogues should not contain information which is irrelevant or rarely needed. Every extra unit of information competes with the relevant.
+
+**Check:** Is there explanatory copy that nobody reads? Are there metrics on the dashboard that nobody uses? Could three sections be one?
+
+### 9. Help users recognize, diagnose, and recover from errors
+
+Error messages should be expressed in plain language, indicate the problem precisely, and constructively suggest a solution.
+
+**Check:** Does the error message name the field? State what is wrong? Suggest a fix? Is it next to where the problem is (not at the top, far from the field)?
+
+### 10. Help and documentation
+
+Even though it is better if the system can be used without documentation, it may be necessary to provide help and documentation. Such information should be easy to search, focused on the user's task, and concise.
+
+**Check:** Is help in the context where it is needed (a `(?)` tooltip next to a confusing field), or only in a separate help center? Are examples shown ("e.g. 2024-12-31") on date inputs?
+
+## Why
+
+The heuristics are descriptive of how humans interact with systems, not prescriptive aesthetic preferences. They predict where users will fail before testing finds out. Nielsen and Molich derived them from a meta-analysis of usability studies in 1990; thirty-plus years of follow-up testing has not invalidated any of the ten.
+
+In design review, the heuristics give a vocabulary: "this violates #5 - the destructive action is one click away with no confirmation" is more actionable than "I feel uneasy about this delete button".
+
+## How to apply
+
+### Do: use as a review checklist
+
+When reviewing a new flow, walk through each heuristic. Ask "where is the system status?" before assuming there is one. "What is the emergency exit?" Most violations are found by asking, not by inspecting.
+
+### Do: pair with the affordance review
+
+Combine heuristics with a control inventory. For each interactive element on the screen, check it against #4 (consistent), #6 (recognizable), and #9 (clear error path).
+
+### Don't: treat them as rules to enforce blindly
+
+Rule #8 (minimalist) sometimes conflicts with rule #6 (recognition). A dashboard might need extra metric chips to satisfy #6 even though they could be hidden under #8. The heuristics are review prompts; tradeoffs are conscious.
+
+## Counter-cases
+
+- **Specialized professional tools** (CAD, terminal, IDE) deliberately violate #6 (recognition over recall) because their users have invested in recall as a speed advantage. Keyboard shortcuts in vim are unrecognizable; that is the point.
+- **Marketing pages** sometimes violate #1 (visibility of status) for aesthetic loading effects. Acceptable where stakes are low (the page is informational), unacceptable in a product UI.
+- **Onboarding flows** often violate #3 (user control) by guiding the user through a forced path. Acceptable as long as a "skip" exists and the user can return.
+
+## Sources
+
+- Nielsen, J. (1994). "Enhancing the explanatory power of usability heuristics." Proceedings of CHI'94.
+- Nielsen Norman Group: "10 Usability Heuristics for User Interface Design" (https://www.nngroup.com/articles/ten-usability-heuristics/)
+- Molich & Nielsen (1990). "Improving a human-computer dialogue."
+- Norman, "The Design of Everyday Things" (2013): on signifiers and feedback.
