@@ -63,3 +63,4 @@ __screenshots__/
 # Local tool artifacts (Claude Code, Playwright MCP)
 .claude/
 .playwright-mcp/
+.nog-screenshots/
