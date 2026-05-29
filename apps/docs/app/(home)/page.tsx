@@ -1,20 +1,23 @@
-import type { Metadata } from "next";
-
 import { ArtifactsSpotlight } from "@/components/landing/artifacts-spotlight";
 import { BlocksGallery } from "@/components/landing/blocks-gallery";
 import { ComponentsShowcase } from "@/components/landing/components-showcase";
 import { FeaturesGrid } from "@/components/landing/features-grid";
 import { FinalCta } from "@/components/landing/final-cta";
 import { Footer } from "@/components/landing/footer";
-import { Header } from "@/components/landing/header";
 import { Hero } from "@/components/landing/hero";
 import { StatsBand } from "@/components/landing/stats-band";
 import { ThemePlayground } from "@/components/landing/theme-playground";
 
+import type { Metadata } from "next";
+
 /**
- * Standalone landing at `/`. Lives outside the (docs) route group, so
- * it does NOT render the DocsLayout sidebar. Has its own light header
- * and minimal footer.
+ * Public landing at `/`. Lives in the `(home)` route group, wrapped by
+ * Fumadocs HomeLayout (see ./layout.tsx). The HomeLayout owns the navbar
+ * (logo, primary links, search dialog, theme toggle); this page only
+ * renders the landing content sections.
+ *
+ * The rich 3-column Footer stays inline because HomeLayout does not
+ * provide a footer slot by default.
  *
  * Sections, top to bottom:
  *   1. Hero (tagline + CTAs + live chat demo)
@@ -25,7 +28,7 @@ import { ThemePlayground } from "@/components/landing/theme-playground";
  *   6. Theme playground (Tweakcn-style sliders)
  *   7. Stats band (primitives, categories, corpus, MCP, MIT)
  *   8. Final CTA (Get Started + docs + GitHub)
- *   9. Footer
+ *   9. Footer (3 columns: brand / resources / community + legal)
  */
 export const metadata: Metadata = {
   title: "Gremorie - the AI-native design system",
@@ -35,9 +38,8 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Header />
-      <main id="main" className="flex-1">
+    <>
+      <main id="main">
         <Hero />
         <FeaturesGrid />
         <ComponentsShowcase />
@@ -48,6 +50,6 @@ export default function LandingPage() {
         <FinalCta />
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
