@@ -1,65 +1,151 @@
 ---
 title: Connection
-description: Animated bezier-curve connection line for @xyflow/react. Used as connectionLineComponent on Canvas while the user drags a new edge.
+description: Bezier-curve connection line for in-progress edge drags. Pass to ReactFlow's connectionLineComponent prop for Gremorie-themed previews.
 ---
 
-`Connection` is part of the **AI workflow family** brought from Bridge into Gremorie in Fase 5j. Built on top of `@xyflow/react` for graph-style canvases.
+## Overview
 
-## Install
+`Connection` is the live preview line that follows the cursor while the user drags from a source `Handle` to a target. It is a `ConnectionLineComponent` from `@xyflow/react`, rendered as a bezier curve with a small target circle so users can see exactly where the edge will land.
 
-<Tabs items={["Angular", "React"]}>
+The path uses `var(--color-ring)` for the stroke and a white-filled circle at the cursor tip, so the connection visually matches Gremorie focus states. The `animated` class on the path enables xyflow's flowing dashes (override or remove via CSS if you want a static line).
 
-<Tab value="Angular">
+Use it by passing the component itself (not an instance) to `Canvas` through ReactFlow's `connectionLineComponent` prop.
 
-Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+## Installation
 
-</Tab>
-
-<Tab value="React">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add rx-connection
+npx gremorie@latest add rx-connection
 ```
-
-Requires `@xyflow/react` as a dependency (already a transitive dep of the workflow family).
-
 </Tab>
-
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-connection
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-connection
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-connection
+```
+</Tab>
 </Tabs>
+
+Requires `@xyflow/react`.
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import {
-  Connection,
-} from '@gremorie/rx-ai';
+import { Canvas, Connection } from "@gremorie/rx-ai";
 
-export function Demo() {
+export function Workflow() {
   return (
     <Canvas
       nodes={nodes}
       edges={edges}
       connectionLineComponent={Connection}
-    />
+      onConnect={onConnect}
+    >
+      {/* ... */}
+    </Canvas>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. The workflow family is React-only for now. Use the React edition or open an issue to prioritize this primitive.
+</Callout>
+</Tab>
 </Tabs>
 
-## Notes
+## API
 
-- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j workflow batch (Bridge parity for the AI category).
-- The workflow family wraps `@xyflow/react` with Gremorie theming - keep `@xyflow/react/dist/style.css` imported once at the app level.
+### `<Connection>`
+
+A `ConnectionLineComponent` from `@xyflow/react`. xyflow passes the props automatically when the user starts dragging from a handle.
+
+| Prop | Type | Description |
+|---|---|---|
+| `fromX` | `number` | Source X coordinate (the handle position). |
+| `fromY` | `number` | Source Y coordinate. |
+| `toX` | `number` | Cursor X coordinate. |
+| `toY` | `number` | Cursor Y coordinate. |
+
+Renders:
+- A `<path>` with `class="animated"`, `stroke="var(--color-ring)"` and a bezier curve whose control points sit at the midpoint between source and target.
+- A `<circle>` at the cursor (`fill="#fff"`, `stroke="var(--color-ring)"`, `r={3}`) so the tip is visible against any background.
+
+Internal constant: `HALF = 0.5` (the control-point ratio along the X axis).
+
+## Composition
+
+1. **`<Canvas>`** declares the surface and accepts `connectionLineComponent` as a prop. Pass `Connection` itself (not JSX) - xyflow instantiates it during a drag.
+2. **`<Handle>`** components on each `Node` define the connection points. xyflow renders `Connection` automatically whenever a drag starts from one of them.
+3. The drag commits via `onConnect`, at which point you typically dispatch an action that pushes a new edge into the `edges` state.
+
+## Variations
+
+### Default animated line
+
+The out-of-the-box look: animated stroke, white circle tip.
+
+```tsx
+<Canvas connectionLineComponent={Connection} />
+```
+
+### Static line via CSS override
+
+Remove the dash animation if you prefer a calmer visual.
+
+```css
+.react-flow__connectionline .animated {
+  animation: none;
+  stroke-dasharray: none;
+}
+```
+
+### Custom themed line
+
+If you need a different stroke color (e.g. destructive while hovering a "delete edge" zone), wrap `Connection` in your own component.
+
+```tsx
+import type { ConnectionLineComponent } from "@xyflow/react";
+
+const DestructiveConnection: ConnectionLineComponent = (props) => (
+  <g style={{ filter: "drop-shadow(0 0 4px var(--color-destructive))" }}>
+    <Connection {...props} />
+  </g>
+);
+
+<Canvas connectionLineComponent={DestructiveConnection} />
+```
+
+## Accessibility
+
+- **Pointer-only by design**: Connection rendering is bound to a mouse / touch drag. xyflow does not currently expose a keyboard-driven edge-creation mode.
+- **Reduced motion**: The `animated` class adds a marching-ants effect via CSS. Honor user prefs by disabling the animation:
+
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    .react-flow__connectionline .animated {
+      animation: none;
+    }
+  }
+  ```
+
+- **Color contrast**: `var(--color-ring)` against the canvas background must clear 3:1 for non-text UI components. The Gremorie token already meets that, but verify if you swap themes.
+- **Drop target announcement**: To help screen reader users understand where a connection would land, add `aria-label` to each target `Handle` describing what kind of connection it accepts.
+
+## Related
+
+- [Canvas](/components/ai/canvas) - the surface that consumes `connectionLineComponent`
+- [Edge](/components/ai/edge) - the persisted edge that replaces the in-progress connection on drop
+- [Node](/components/ai/node) - hosts the handles where connections start and end
