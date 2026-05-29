@@ -1,15 +1,157 @@
 ---
 title: Installation
-description: "How to add Gremorie to your Angular or React project."
+description: "Add Gremorie to your Angular or React project in four steps."
 ---
 
-## Coming soon
+Gremorie is distributed as **source via a registry**, not as a versioned
+npm package. You install the CLI once, then pull primitives into your
+project on demand. Each primitive becomes a file you own and can edit.
 
-This guide will walk you through:
+## Prerequisites
 
-- Installing the Gremorie CLI globally or via npx
-- Adding your first primitive with `gremorie add <item>`
-- Configuring your project (Tailwind, tokens, tsconfig paths)
-- Verifying the install with a quick render
+- **Node.js 20+** for the CLI runtime
+- **Tailwind CSS v4** (Gremorie tokens are declared as `@theme`)
+- An **Angular 18+** project (Spartan-NG compatible) or a **React 19** project (Next.js, Vite, Remix)
 
-For now, see the [Components catalog](/components/overview) and the [Get Started philosophy](/get-started/philosophy).
+<Callout type="info">
+  Gremorie ships an Angular edition first; the React edition is in
+  progress. Both editions share the same registry schema, tokens, and
+  corpus, so anything you learn here carries across.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+
+### Run the CLI in your project
+
+The CLI reads your project's framework from `package.json` and writes
+primitives to a sensible default path. No global install needed.
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+```bash tab="npm"
+npx gremorie@latest init
+```
+
+```bash tab="pnpm"
+pnpm dlx gremorie@latest init
+```
+
+```bash tab="yarn"
+yarn dlx gremorie@latest init
+```
+
+```bash tab="bun"
+bunx gremorie@latest init
+```
+
+</Tabs>
+
+`init` creates a `gremorie.config.json` at the repo root, registers the
+default output directory, and prints the detected framework.
+
+</Step>
+
+<Step>
+
+### Import the tokens
+
+Gremorie tokens cascade through three layers (primitive, semantic, chart).
+The semantic layer is the only one components reference directly, so it
+must load before anything else.
+
+<Tabs items={["Angular", "React"]}>
+
+```css tab="Angular"
+/* src/styles.css */
+@import "tailwindcss";
+@import "@gremorie/ng-core/styles/theme.css";
+```
+
+```css tab="React"
+/* app/globals.css */
+@import "tailwindcss";
+@import "@gremorie/rx-core/styles/globals.css";
+```
+
+</Tabs>
+
+The import declares `--primary`, `--foreground`, `--background`, and the
+chart palette as CSS variables. Switching `data-theme` on `<html>`
+updates every component in place.
+
+</Step>
+
+<Step>
+
+### Add your first primitive
+
+Pick anything from the [Components catalog](/components/overview).
+`Button` is the smallest useful example.
+
+<Tabs items={["Angular", "React"]}>
+
+```bash tab="Angular"
+npx gremorie@latest add ng-button
+```
+
+```bash tab="React"
+npx gremorie@latest add rx-button
+```
+
+</Tabs>
+
+The CLI writes the source to your output directory (default:
+`src/components/gremorie/`), installs any peer deps, and prints the
+import path.
+
+</Step>
+
+<Step>
+
+### Use it
+
+<Tabs items={["Angular", "React"]}>
+
+```ts tab="Angular"
+import { Component } from "@angular/core";
+import { NgButton } from "@/components/gremorie/ng-button";
+
+@Component({
+  standalone: true,
+  imports: [NgButton],
+  template: `<ng-button (clicked)="onClick()">Ship it</ng-button>`
+})
+export class MyComponent {
+  onClick() {
+    console.log("Hello, Gremorie.");
+  }
+}
+```
+
+```tsx tab="React"
+import { Button } from "@/components/gremorie/rx-button";
+
+export function MyComponent() {
+  return <Button onClick={() => console.log("Hello, Gremorie.")}>Ship it</Button>;
+}
+```
+
+</Tabs>
+
+</Step>
+
+</Steps>
+
+## Verification
+
+If the button renders styled (rounded, has the brand primary color in
+default variant), the install is working end to end: CLI -> source ->
+tokens -> render.
+
+For the next step, see [Your first component](/get-started/first-component)
+for a full five-minute tutorial that wires three primitives into a chat
+surface.

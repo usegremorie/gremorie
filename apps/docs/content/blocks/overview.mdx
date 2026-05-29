@@ -1,59 +1,105 @@
 ---
 title: Blocks
-description: "Production-ready compositions of primitives. Shells, auth flows, dashboards, marketing sections, chat surfaces, empty states."
+description: "Production-ready compositions of primitives. Shells, auth, dashboards, chat surfaces, marketing, empty states."
 ---
 
-## Coming soon
+A **block** is a working composition of multiple primitives, shipped
+with wiring, variations, and an install command. Where a primitive is a
+button, a block is the full sign-in card, or the chat surface, or the
+KPI grid.
 
-Blocks are reusable compositions of N primitives, shipped with wiring specs and variations. Each block will ship with: anatomy diagram, install command, full code, variations, customization points.
+Blocks consume primitives -- they never reinvent them. Adding a block
+to your project installs every required primitive at the right
+version through `registryDependencies`.
 
-### Categories
+## Blocks vs Components vs Artifacts
 
-- **Shells** - app-shell, dashboard-shell, settings-shell, docs-shell, marketing-shell, auth-shell
-- **Auth** - sign-in, sign-up, reset-password, otp-verification, two-factor
-- **Dashboard** - stats-cards, chart-grid, recent-activity, user-table, kanban
-- **Forms** - settings-form, profile-form, multi-step, search-filters
-- **Chat** - chat-surface (Gremorie diferencial), inline-chat, command-palette, ai-input-bar
-- **Marketing** - hero, feature-grid, pricing, testimonials, faq, cta-section
-- **Empty states** - no-results, no-data, error-state, permission-denied, coming-soon
-- **Shared** - page-header, data-table, confirmation-dialog, command-menu, theme-toggle, user-menu
+| | Components | Blocks | Artifacts |
+|---|---|---|---|
+| **Scope** | One primitive | N primitives composed | One primitive that consumes an LLM schema |
+| **Example** | `Button` | `sign-in` card | `chart` artifact rendering Recharts from JSON |
+| **Wiring** | None | Layout + state + handlers | Schema parser + streaming renderer |
+| **Install** | `gremorie add rx-button` | `gremorie add sign-in` | `gremorie add rx-chart-artifact` |
+| **Status** | Shipping (100 primitives) | Planned | Planned |
 
-### Featured blocks
+## Categories
+
+<Cards>
+  <Card title="Shells" description="app-shell, dashboard-shell, settings-shell, docs-shell, marketing-shell, auth-shell" />
+  <Card title="Auth" description="sign-in, sign-up, reset-password, otp-verification, two-factor" />
+  <Card title="Dashboard" description="stats-cards, chart-grid, recent-activity, user-table, kanban" />
+  <Card title="Forms" description="settings-form, profile-form, multi-step, search-filters" />
+  <Card title="Chat" description="chat-surface (flagship), inline-chat, command-palette, ai-input-bar" />
+  <Card title="Marketing" description="hero, feature-grid, pricing, testimonials, faq, cta-section" />
+  <Card title="Empty states" description="no-results, no-data, error-state, permission-denied, coming-soon" />
+  <Card title="Shared" description="page-header, data-table, confirmation-dialog, command-menu, theme-toggle, user-menu" />
+</Cards>
+
+## Featured blocks
+
+The first wave of blocks lands in Phase 5. Each carries an anchor below
+so the [CLI](/platform/cli) and MCP server can deep-link to it.
 
 <div id="sign-in" />
 
-#### Sign-in
+### Sign-in
 
-Email and password card with OAuth slot. Status: planned.
+Email and password card with an OAuth slot for social providers.
+Includes inline validation, error states, and a "remember me" toggle.
+
+<Callout type="info">Status: planned.</Callout>
 
 <div id="dashboard" />
 
-#### Dashboard
+### Dashboard
 
-Sidebar plus KPI grid plus chart plus recent activity. Status: planned.
+Sidebar plus KPI grid plus chart strip plus recent-activity table.
+Wired to TanStack Query for data; works in App Router and Pages
+Router.
+
+<Callout type="info">Status: planned.</Callout>
 
 <div id="chat-surface" />
 
-#### Chat surface
+### Chat surface
 
-Conversation plus Message plus PromptInput, fully wired. Status: planned. Flagship Gremorie block.
+`Conversation` + `Message` + `PromptInput`, fully wired to the AI SDK.
+Streaming responses, tool-call rendering, attachments, model picker.
+This is the flagship Gremorie block.
+
+<Callout type="info">Status: planned.</Callout>
 
 <div id="settings" />
 
-#### Settings form
+### Settings form
 
-Multi-section form with save bar and validation. Status: planned.
+Multi-section settings form with a sticky save bar, validation, and
+optimistic updates. Sections are slot-based so consumers add their own
+fields.
+
+<Callout type="info">Status: planned.</Callout>
 
 <div id="marketing" />
 
-#### Marketing hero
+### Marketing hero
 
-Hero with CTA, feature grid, social proof. Status: planned.
+Hero with CTA, feature grid, social proof. Pure layout block; consumes
+only `Button`, `Card`, `Badge`, and tokens.
+
+<Callout type="info">Status: planned.</Callout>
 
 <div id="empty-state" />
 
-#### Empty state
+### Empty state
 
-No data, no results, error, permission denied. Status: planned.
+No data, no results, error, permission denied. One block, four
+variants. Each ships with a sensible default icon and an action slot.
 
-For the underlying primitives, see [Components](/components/overview).
+<Callout type="info">Status: planned.</Callout>
+
+## Next
+
+- Browse the [Components catalog](/components/overview) for the
+  primitives blocks compose
+- See the [Architecture doc](/platform/architecture) for how the
+  registry tags items as `block` vs `ui`

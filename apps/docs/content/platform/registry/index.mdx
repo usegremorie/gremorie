@@ -1,14 +1,86 @@
 ---
 title: Registry
-description: "Copy-paste distribution model. Each item is a self-contained JSON with source files embedded."
+description: "Copy-paste distribution. Each item is a self-contained JSON with embedded source."
 ---
 
-## Coming soon
+The Gremorie registry is the source of truth for every primitive,
+block, and artifact. It is a flat directory of JSON files served from
+this site, indexed by [`/r/registry.json`](/r/registry.json).
 
-The Gremorie registry follows the copy-paste model: each item is a JSON document containing the source files of one primitive, the dependencies, and the registry deps (cross-item).
+## The model
 
-- Index: [/r/registry.json](/r/registry.json) (100 items)
-- Schema: [/schema/registry-item.json](/schema/registry-item.json)
-- Items: `/r/<framework>/<item>.json` (e.g., `/r/rx/rx-button.json`)
+Gremorie follows the same shape pioneered by `shadcn/ui`: you do not
+install a versioned package. You copy the source into your project, and
+the code becomes yours.
 
-The registry generator lives in [packages/registry](https://github.com/usegremorie/gremorie/tree/develop/packages/registry) on GitHub.
+The benefits compound:
+
+- No black-box upgrade path -- you control every file
+- LLMs can read the registry directly and emit valid usage
+- The same source ships to Angular and React via separate registries
+
+## Layout
+
+| Path | Purpose |
+|---|---|
+| [`/r/registry.json`](/r/registry.json) | Index of every item (id, framework, category) |
+| [`/r/<framework>/<item>.json`](/r/rx/rx-button.json) | Full item: source files, deps, registry deps |
+| [`/schema/registry-item.json`](/schema/registry-item.json) | JSON Schema for a single item |
+
+## Item shape
+
+Each item is a single JSON document with embedded source files:
+
+```json
+{
+  "name": "rx-button",
+  "type": "registry:ui",
+  "framework": "react",
+  "dependencies": ["@radix-ui/react-slot"],
+  "registryDependencies": ["rx-core"],
+  "files": [
+    {
+      "path": "rx-button/button.tsx",
+      "content": "// component source here",
+      "type": "registry:ui"
+    }
+  ]
+}
+```
+
+- **`dependencies`** -- npm packages the consumer must install
+- **`registryDependencies`** -- other registry items the CLI must pull in
+- **`files`** -- embedded source written verbatim to the project
+
+## Consuming the registry yourself
+
+The CLI is the recommended way. But the registry is a flat HTTP API; any
+tool can read it.
+
+```bash
+# Get the index
+curl https://gremorie.com/r/registry.json | jq '.items[0:5]'
+
+# Fetch a single item
+curl https://gremorie.com/r/rx/rx-button.json | jq '.files[0].content'
+```
+
+This is the same path an MCP client takes when an LLM queries the
+registry through the [MCP server](/platform/mcp).
+
+## Editions
+
+Two editions are published from the same monorepo:
+
+- **`/r/rx/*`** -- React primitives
+- **`/r/ng/*`** -- Angular primitives
+
+The Angular edition is the active workstream. The React edition is in
+progress; see the [Architecture doc](/platform/architecture) for the
+roadmap.
+
+## Source
+
+The registry generator lives in [packages/registry](https://github.com/usegremorie/gremorie/tree/develop/packages/registry)
+on GitHub. It walks the workspace, builds an item JSON per primitive,
+and writes the index. Generation runs on every push to `develop`.
