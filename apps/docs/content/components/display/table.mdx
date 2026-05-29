@@ -1,133 +1,279 @@
 ---
 title: Table
-description: Styled wrapper over native HTML table.
+description: "Styled wrapper around native HTML table. Skin only - bring TanStack Table for sorting, filtering, and pagination."
 ---
 
 import { TablePreview } from "@/components/preview/display/display";
+import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "@gremorie/rx-display";
+
+## Overview
+
+`Table` is intentionally a skin, not a behavior. Eight pieces - `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption` - render as native `table`, `thead`, `tbody`, `tfoot`, `tr`, `th`, `td`, and `caption` with consistent padding, borders, and hover. The native semantics stay intact, so screen readers and assistive tech treat the markup as a real data table.
+
+For sorting, filtering, pagination, row selection, or virtualization, compose Table with `@tanstack/react-table` (the **DataTable pattern** in the Patterns layer). The primitive itself never tries to be a data grid - that lock-in lives at the pattern layer.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <TablePreview />
 </div>
 
+## Installation
 
-`Table` is a styled wrapper around the native HTML `<table>` element.
-Composable parts: `Table`, `TableHeader`, `TableBody`, `TableFooter`,
-`TableRow`, `TableHead`, `TableCell`, `TableCaption`. Best for tabular
-data presentation. For sorting, filtering, virtualization, pair with a
-data-grid library (TanStack Table) and pass the resulting markup
-through this primitive.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Table lands in a follow-up rev.
+npx gremorie@latest add rx-table
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-table
+pnpm dlx gremorie@latest add rx-table
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-table
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-table
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
   TableHeader,
+  TableBody,
   TableRow,
+  TableHead,
+  TableCell,
 } from "@gremorie/rx-display";
 
-const invoices = [
-  { id: "INV001", status: "Paid", method: "Card", amount: "R$ 250" },
-  { id: "INV002", status: "Pending", method: "Pix", amount: "R$ 180" },
-];
-
-export function InvoiceTable() {
+export function Example() {
   return (
     <Table>
-      <TableCaption>Recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead>Item</TableHead>
+          <TableHead>Category</TableHead>
+          <TableHead className="text-right">Deps</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((i) => (
-          <TableRow key={i.id}>
-            <TableCell>{i.id}</TableCell>
-            <TableCell>{i.status}</TableCell>
-            <TableCell>{i.method}</TableCell>
-            <TableCell className="text-right">{i.amount}</TableCell>
-          </TableRow>
-        ))}
+        <TableRow>
+          <TableCell className="font-mono">rx-card</TableCell>
+          <TableCell>Display</TableCell>
+          <TableCell className="text-right">0</TableCell>
+        </TableRow>
       </TableBody>
     </Table>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Table>`
+
+Wraps the native `<table>` in a `div.relative.w-full.overflow-x-auto` container for horizontal scroll on narrow viewports. The table itself is `w-full caption-bottom text-sm`.
+
+All `<table>` props are forwarded.
+
+### `<TableHeader>`
+
+Renders as `<thead>`. Adds `[&_tr]:border-b` so the row underneath the header always shows the divider.
+
+### `<TableBody>`
+
+Renders as `<tbody>`. Strips the trailing border on the last row via `[&_tr:last-child]:border-0`.
+
+### `<TableFooter>`
+
+Renders as `<tfoot>`. Styled with `bg-muted/50 border-t font-medium` for sum rows or summary lines.
+
+### `<TableRow>`
+
+Renders as `<tr>` with `hover:bg-muted/50` (interactive feel without claiming interactivity), `data-[state=selected]:bg-muted` (works with TanStack Table's selection state), and `border-b transition-colors`.
+
+### `<TableHead>`
+
+Renders as `<th>`. Defaults: `h-10 px-2 text-left align-middle font-medium whitespace-nowrap`. Pairs with `[role=checkbox]` for selection columns.
+
+### `<TableCell>`
+
+Renders as `<td>`. Defaults: `p-2 align-middle whitespace-nowrap`. Same checkbox accommodations as `TableHead`.
+
+### `<TableCaption>`
+
+Renders as `<caption>`. Defaults: `text-muted-foreground mt-4 text-sm`. The parent table is `caption-bottom`, so the caption appears below the table by default.
+
+## Composition
+
+1. **`<Table>`** wraps everything. Always include this - the overflow container is what keeps narrow viewports from breaking.
+2. **`<TableCaption>`** (optional) describes the table content. Place as the **first child** of `Table` - native HTML rule, even though it renders visually at the bottom.
+3. **`<TableHeader>`** holds one `<TableRow>` of `<TableHead>` cells.
+4. **`<TableBody>`** holds the data rows.
+5. **`<TableFooter>`** (optional) holds totals, sums, or summary rows.
+
+Every cell should be a `TableCell` or `TableHead` - mixing in raw `<td>` or `<th>` works but skips the consistent padding and border treatment.
+
+## Variations
+
+### Data table with caption
+
+<div className="rounded-lg border p-6 not-prose">
+  <Table>
+    <TableCaption>Registry inventory by category.</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Item</TableHead>
+        <TableHead>Category</TableHead>
+        <TableHead className="text-right">Deps</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell className="font-mono">rx-message</TableCell>
+        <TableCell>AI</TableCell>
+        <TableCell className="text-right">4</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell className="font-mono">rx-card</TableCell>
+        <TableCell>Display</TableCell>
+        <TableCell className="text-right">0</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell className="font-mono">rx-button</TableCell>
+        <TableCell>Forms</TableCell>
+        <TableCell className="text-right">1</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>
+
+```tsx
+<Table>
+  <TableCaption>Registry inventory by category.</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Item</TableHead>
+      <TableHead>Category</TableHead>
+      <TableHead className="text-right">Deps</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell className="font-mono">rx-message</TableCell>
+      <TableCell>AI</TableCell>
+      <TableCell className="text-right">4</TableCell>
+    </TableRow>
+    {/* ... */}
+  </TableBody>
+</Table>
 ```
-Table
-  TableCaption
-  TableHeader
-    TableRow
-      TableHead
-  TableBody
-    TableRow
-      TableCell
-  TableFooter
-    TableRow
-      TableCell
+
+### With footer summary
+
+<div className="rounded-lg border p-6 not-prose">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Invoice</TableHead>
+        <TableHead>Status</TableHead>
+        <TableHead className="text-right">Amount</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>INV-001</TableCell>
+        <TableCell>Paid</TableCell>
+        <TableCell className="text-right">$250.00</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>INV-002</TableCell>
+        <TableCell>Pending</TableCell>
+        <TableCell className="text-right">$180.00</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>INV-003</TableCell>
+        <TableCell>Paid</TableCell>
+        <TableCell className="text-right">$420.00</TableCell>
+      </TableRow>
+    </TableBody>
+    <TableFooter>
+      <TableRow>
+        <TableCell colSpan={2}>Total</TableCell>
+        <TableCell className="text-right">$850.00</TableCell>
+      </TableRow>
+    </TableFooter>
+  </Table>
+</div>
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Invoice</TableHead>
+      <TableHead>Status</TableHead>
+      <TableHead className="text-right">Amount</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {invoices.map((inv) => (
+      <TableRow key={inv.id}>
+        <TableCell>{inv.id}</TableCell>
+        <TableCell>{inv.status}</TableCell>
+        <TableCell className="text-right">{inv.amount}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+  <TableFooter>
+    <TableRow>
+      <TableCell colSpan={2}>Total</TableCell>
+      <TableCell className="text-right">$850.00</TableCell>
+    </TableRow>
+  </TableFooter>
+</Table>
 ```
 
-## Best practices
+### Selected row state
 
-- **Always wrap rows in `TableHeader`/`TableBody`.** Browsers handle
-  table sectioning semantics from these wrappers - dropping them
-  breaks screen-reader navigation.
-- **Right-align numeric columns.** Numbers compare faster when their
-  decimals line up.
-- **For large datasets, use a data-grid library.** TanStack Table or
-  AG Grid can render rows through this primitive while handling
-  sorting, filtering, virtualization.
+```tsx
+<TableRow data-state={selected ? "selected" : undefined}>
+  <TableCell>...</TableCell>
+</TableRow>
+```
 
-## Reference
+The `data-[state=selected]:bg-muted` styling picks up automatically. TanStack Table sets this attribute for free when you use its row-selection model.
 
-- React source: `packages/rx-display/src/lib/table/table.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-table.json`.
+## Accessibility
+
+- **Native semantics**: every part renders as a real HTML element (`table`, `thead`, `tbody`, `th`, `td`, `caption`), so screen readers announce row and column relationships correctly. No ARIA needed for static tables.
+- **Captions**: use `TableCaption` to summarize the table content in one line ("Registry inventory by category"). Place it as the first child of `Table` - native HTML requirement.
+- **Column scope**: for tables with row headers, add `scope="row"` on the leftmost cell and `scope="col"` on header cells. Both are native attributes you pass through to `TableHead` / `TableCell`.
+- **Selection columns**: when a row has a checkbox, the inline `[&:has([role=checkbox])]:pr-0` and `[&>[role=checkbox]]:translate-y-[2px]` styles align the checkbox correctly. Use a real `role="checkbox"` or a `Checkbox` primitive.
+- **Sortable columns**: ARIA sorting (`aria-sort="ascending" \| "descending" \| "none"`) belongs on `TableHead`. Wire it up at the DataTable pattern layer.
+- **Sticky headers**: native CSS `position: sticky` works on `<th>` inside `<thead>`. Add `className="sticky top-0 bg-background"` for scroll-locked headers.
+- **Overflow scroll**: the wrapper `div.overflow-x-auto` allows horizontal scrolling on narrow viewports - add `tabIndex={0}` and `role="region"` on the wrapper if you need keyboard scrolling.
+
+## Related
+
+- [Card](/components/display/card) - common host for a Table inside a dashboard tile.
+- [Pagination](/components/navigation/pagination) - pairs with Table for paginated views.
+- [Checkbox](/components/forms/checkbox) - drop into selection columns.
+- **DataTable pattern** (Patterns layer) - composes Table with TanStack Table for sorting, filtering, pagination, and selection.

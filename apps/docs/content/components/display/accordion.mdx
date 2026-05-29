@@ -1,107 +1,230 @@
 ---
 title: Accordion
-description: Vertically stacked, coordinated expandable sections.
+description: "Vertical stack of expandable sections. Single or multiple open at once, with built-in keyboard navigation."
 ---
 
 import { AccordionPreview } from "@/components/preview/display/display";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@gremorie/rx-display";
+
+## Overview
+
+`Accordion` is the coordinated-disclosure primitive: a vertical stack of sections where readers expand and collapse to reveal content in place. Built on Radix Accordion, it ships two modes via `type`: `"single"` (one open at a time, optionally with `collapsible` so the open item can also close) and `"multiple"` (any number open simultaneously).
+
+Reach for Accordion when **siblings should remain visible** - the vertical context is preserved, so readers can scan headings without losing their place. When you want full context swaps, use Tabs instead. Don't nest more than two levels deep; depth past that becomes a scavenger hunt.
+
+For a single, isolated "show more" toggle, prefer [Collapsible](/components/display/collapsible) - it's the building block Accordion is composed on.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <AccordionPreview />
 </div>
 
+## Installation
 
-`Accordion` is the canonical pattern for FAQs, settings groups, and any
-list where multiple sections share a common rhythm. Built on Radix
-Accordion - single or multiple sections can be open at once via the
-`type` prop. For a single isolated expandable region, prefer
-`Collapsible`.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Accordion lands in a follow-up rev.
+npx gremorie@latest add rx-accordion
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-accordion
+pnpm dlx gremorie@latest add rx-accordion
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-accordion
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-accordion
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   Accordion,
-  AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AccordionContent,
 } from "@gremorie/rx-display";
 
-export function FAQ() {
+export function Example() {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible defaultValue="item-1">
       <AccordionItem value="item-1">
-        <AccordionTrigger>What does Gremorie ship?</AccordionTrigger>
+        <AccordionTrigger>What is the registry?</AccordionTrigger>
         <AccordionContent>
-          A registry of source-level primitives for Angular and React.
+          The single source of truth for Gremorie primitives.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
-        <AccordionTrigger>How do I install one?</AccordionTrigger>
+        <AccordionTrigger>What does the MCP server do?</AccordionTrigger>
         <AccordionContent>
-          Run `npx gremorie add rx-accordion` from your project root.
+          Exposes the registry as MCP tools.
         </AccordionContent>
       </AccordionItem>
     </Accordion>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Accordion>`
+
+Wraps Radix `Accordion.Root`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `type` | `"single" \| "multiple"` | - | Required. `"single"` lets one item open at a time; `"multiple"` lets any number open. |
+| `collapsible` | `boolean` | `false` | Only with `type="single"`. When `true`, clicking the open item closes it. |
+| `value` | `string \| string[]` | - | Controlled value(s) of the open item(s). `string` for single, `string[]` for multiple. |
+| `defaultValue` | `string \| string[]` | - | Uncontrolled default. |
+| `onValueChange` | `(value: string \| string[]) => void` | - | Fires when an item opens or closes. |
+| `disabled` | `boolean` | `false` | Disables all items. |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Affects keyboard navigation (Arrow keys). |
+| `dir` | `"ltr" \| "rtl"` | `"ltr"` | Reading direction. |
+
+### `<AccordionItem>`
+
+A single section. Wraps Radix `Accordion.Item`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | - | Required. Unique identifier - this is what `value` / `defaultValue` on Root references. |
+| `disabled` | `boolean` | `false` | Disables this specific item. |
+
+Renders with `border-b last:border-b-0` for clean stacking.
+
+### `<AccordionTrigger>`
+
+The clickable header. Wraps Radix `Accordion.Trigger` inside an `Accordion.Header` for proper semantics. Includes a `ChevronDown` icon that rotates 180 degrees when the item opens (`[&[data-state=open]>svg]:rotate-180`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Extra classes merged via `cn`. |
+
+### `<AccordionContent>`
+
+The collapsible content panel. Animates open and closed using `data-[state=closed]:animate-accordion-up` and `data-[state=open]:animate-accordion-down`. Wraps content in an inner `div` with `pt-0 pb-4`.
+
+## Composition
+
+1. **`<Accordion>`** owns the state (`type`, controlled `value` or uncontrolled `defaultValue`).
+2. **One or more `<AccordionItem>`** with unique `value` props.
+3. **Inside each item**: an `<AccordionTrigger>` (the header) followed by `<AccordionContent>` (the body).
+
+The Trigger renders inside an internal `Accordion.Header` so the heading semantics are correct - you do not need to wrap the trigger in your own `<h3>`.
+
+## Variations
+
+### Single-open FAQ
+
+<div className="rounded-lg border p-6 not-prose">
+  <Accordion type="single" collapsible className="w-full">
+    <AccordionItem value="q1">
+      <AccordionTrigger>Is it accessible?</AccordionTrigger>
+      <AccordionContent>Yes. Built on Radix Accordion with full WAI-ARIA support.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="q2">
+      <AccordionTrigger>Is it animated?</AccordionTrigger>
+      <AccordionContent>Yes, height-aware open and close animations. Honors prefers-reduced-motion.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="q3">
+      <AccordionTrigger>Is it themeable?</AccordionTrigger>
+      <AccordionContent>Yes. All colors come from Gremorie design tokens.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</div>
+
+```tsx
+<Accordion type="single" collapsible>
+  <AccordionItem value="q1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>Yes. Built on Radix Accordion with full WAI-ARIA support.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="q2">
+    <AccordionTrigger>Is it animated?</AccordionTrigger>
+    <AccordionContent>Yes, height-aware open and close animations.</AccordionContent>
+  </AccordionItem>
+</Accordion>
 ```
-Accordion [type="single" | "multiple"] [collapsible]
-  AccordionItem [value]
-    AccordionTrigger
-    AccordionContent
+
+### Multiple sections open
+
+<div className="rounded-lg border p-6 not-prose">
+  <Accordion type="multiple" defaultValue={["release-1", "release-2"]} className="w-full">
+    <AccordionItem value="release-1">
+      <AccordionTrigger>v1.0 - Initial release</AccordionTrigger>
+      <AccordionContent>57 primitives across 8 packages.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="release-2">
+      <AccordionTrigger>v1.1 - AI primitives</AccordionTrigger>
+      <AccordionContent>Added Message, Prompt, Response.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="release-3">
+      <AccordionTrigger>v1.2 - Patterns layer</AccordionTrigger>
+      <AccordionContent>Composed patterns: DataTable, FormBuilder.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</div>
+
+```tsx
+<Accordion type="multiple" defaultValue={["release-1", "release-2"]}>
+  <AccordionItem value="release-1">
+    <AccordionTrigger>v1.0 - Initial release</AccordionTrigger>
+    <AccordionContent>57 primitives across 8 packages.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="release-2">
+    <AccordionTrigger>v1.1 - AI primitives</AccordionTrigger>
+    <AccordionContent>Added Message, Prompt, Response.</AccordionContent>
+  </AccordionItem>
+</Accordion>
 ```
 
-## Best practices
+### Controlled value
 
-- **Pick `type="single"` by default.** Most accordions read better when
-  only one section is open at a time. Use `multiple` when sections are
-  independent settings.
-- **Avoid more than 7 sections.** Above that, a Tabs or Sidebar layout
-  is usually clearer.
+```tsx
+const [open, setOpen] = useState<string>("billing");
 
-## Reference
+<Accordion type="single" collapsible value={open} onValueChange={setOpen}>
+  <AccordionItem value="account">
+    <AccordionTrigger>Account</AccordionTrigger>
+    <AccordionContent>...</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="billing">
+    <AccordionTrigger>Billing</AccordionTrigger>
+    <AccordionContent>...</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
 
-- React source: `packages/rx-display/src/lib/accordion/accordion.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-accordion.json`.
+## Accessibility
+
+- **WAI-ARIA Accordion pattern**: Radix sets `role="region"` on each content panel with `aria-labelledby` pointing at its trigger; the trigger gets `aria-expanded` and `aria-controls`.
+- **Keyboard**: `Tab` moves between triggers; `Space` or `Enter` toggles the focused trigger; `ArrowDown` / `ArrowUp` navigate between triggers (loops at the ends). `Home` and `End` jump to first and last.
+- **Headings**: each trigger is wrapped in an internal `Accordion.Header` (renders as a `<h3>` by default) so screen readers announce the section as a heading.
+- **Disabled items**: render with `aria-disabled="true"` and are skipped during arrow-key navigation.
+- **Reduced motion**: animations use `data-[state]` selectors with `prefers-reduced-motion` queries inherited from the keyframes config.
+
+## Related
+
+- [Collapsible](/components/display/collapsible) - the single-section building block Accordion is composed on.
+- [Tabs](/components/navigation/tabs) - use when readers should context-swap rather than browse siblings.
+- [Card](/components/display/card) - common host for an Accordion inside a settings panel.

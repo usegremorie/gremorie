@@ -1,100 +1,210 @@
 ---
 title: Collapsible
-description: Single-section expandable region.
+description: "Single-section expandable region. The minimal building block for show-more toggles and inline disclosures."
 ---
 
 import { CollapsiblePreview } from "@/components/preview/display/display";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
+import { ChevronDown } from "lucide-react";
+
+## Overview
+
+`Collapsible` is the simplest disclosure primitive: one trigger, one panel, one open/closed state. Three parts - `Collapsible` (Root), `CollapsibleTrigger`, `CollapsibleContent` - wrap Radix Collapsible.
+
+Reach for Collapsible when you have **one** thing that expands: a card's "more details" toggle, a sidebar group's expand/collapse, an inline disclosure inside long copy. When you have multiple coordinated sections that share keyboard navigation and a single-open invariant, use [Accordion](/components/display/accordion) instead - Accordion is built on the same primitives but coordinates a group.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <CollapsiblePreview />
 </div>
 
+## Installation
 
-`Collapsible` is the minimal building block for "show more" toggles -
-a card's "more details", a sidebar group's expand / collapse, an
-inline disclosure in long copy. Three parts: `Collapsible` (root),
-`CollapsibleTrigger`, `CollapsibleContent`. For multiple coordinated
-sections, use `Accordion` instead.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Collapsible lands in a follow-up rev.
+npx gremorie@latest add rx-collapsible
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-collapsible
+pnpm dlx gremorie@latest add rx-collapsible
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-collapsible
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-collapsible
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import { Button } from "@gremorie/rx-forms";
 import {
   Collapsible,
-  CollapsibleContent,
   CollapsibleTrigger,
+  CollapsibleContent,
 } from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
 
-export function MoreOptions() {
+export function Example() {
   return (
     <Collapsible>
       <CollapsibleTrigger asChild>
-        <Button variant="ghost">Advanced settings</Button>
+        <Button variant="outline">Toggle details</Button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="mt-2 grid gap-2">
-        <p>Hidden details appear here.</p>
+      <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm">
+        Hidden content revealed when the trigger fires.
       </CollapsibleContent>
     </Collapsible>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Collapsible>`
+
+Wraps Radix `Collapsible.Root`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Uncontrolled default. |
+| `onOpenChange` | `(open: boolean) => void` | - | Fires when the open state changes. |
+| `disabled` | `boolean` | `false` | Prevents the trigger from firing. |
+
+### `<CollapsibleTrigger>`
+
+The clickable element that toggles the panel. Wraps Radix `Collapsible.Trigger`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `asChild` | `boolean` | `false` | When `true`, renders the immediate child as the trigger (typical pattern: wrap a `Button`). |
+
+When `asChild` is used, the child receives `aria-expanded`, `aria-controls`, and the click handler.
+
+### `<CollapsibleContent>`
+
+The panel that opens and closes. Wraps Radix `Collapsible.Content`. Exposes the `data-state="open" \| "closed"` attribute so you can animate via your own CSS or Tailwind keyframes.
+
+The Gremorie `CollapsibleContent` does not ship default animations - drop in `animate-collapsible-down` / `animate-collapsible-up` if you want the standard reveal, or compose your own with `data-[state]` selectors.
+
+## Composition
+
+1. **`<Collapsible>`** owns the open/closed state.
+2. **`<CollapsibleTrigger>`** sits inside - typically wrapped around a `Button` via `asChild`.
+3. **`<CollapsibleContent>`** holds the hidden content. Style it however you like; Radix sets `hidden` when closed and `data-state="open"` when open.
+
+The trigger and content can sit at any depth inside the root - Radix Collapsible coordinates via context, not DOM order.
+
+## Variations
+
+### Show more toggle
+
+<div className="rounded-lg border p-6 not-prose">
+  <Collapsible className="w-full max-w-md">
+    <CollapsibleTrigger asChild>
+      <Button variant="outline" className="w-full justify-between">
+        Show full bio
+        <ChevronDown className="size-4 transition-transform data-[state=open]:rotate-180" />
+      </Button>
+    </CollapsibleTrigger>
+    <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm text-muted-foreground">
+      Nog is the chief engineer of the Kalvner crew. Implements code, infra, and ships.
+      Backs up before destructive changes. Never commits secrets.
+    </CollapsibleContent>
+  </Collapsible>
+</div>
+
+```tsx
+<Collapsible>
+  <CollapsibleTrigger asChild>
+    <Button variant="outline" className="w-full justify-between">
+      Show full bio
+      <ChevronDown className="size-4 transition-transform data-[state=open]:rotate-180" />
+    </Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm">
+    Hidden bio content.
+  </CollapsibleContent>
+</Collapsible>
 ```
-Collapsible [open] [defaultOpen]
-  CollapsibleTrigger (asChild)
-  CollapsibleContent
+
+### Controlled open
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Collapsible open={open} onOpenChange={setOpen}>
+  <CollapsibleTrigger asChild>
+    <Button>{open ? "Hide" : "Show"} advanced settings</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <SettingsPanel />
+  </CollapsibleContent>
+</Collapsible>
 ```
 
-## Best practices
+### Inline disclosure
 
-- **Default closed.** A Collapsible that defaults open defeats its
-  purpose - if it should always be visible, just render the content.
-- **Reach for Accordion when sections coordinate.** Collapsible is a
-  single switch; Accordion enforces "one at a time" or "many open"
-  semantics.
+<div className="rounded-lg border p-6 not-prose">
+  <p className="text-sm">
+    Gremorie ships 100 primitives across 9 React packages.{" "}
+    <Collapsible className="inline">
+      <CollapsibleTrigger className="text-primary underline">
+        Show breakdown
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <ul className="ml-4 mt-2 list-disc text-xs text-muted-foreground">
+          <li>rx-ai: 12</li>
+          <li>rx-display: 8</li>
+          <li>rx-forms: 14</li>
+        </ul>
+      </CollapsibleContent>
+    </Collapsible>
+  </p>
+</div>
 
-## Reference
+```tsx
+<p>
+  Gremorie ships 100 primitives.{" "}
+  <Collapsible className="inline">
+    <CollapsibleTrigger>Show breakdown</CollapsibleTrigger>
+    <CollapsibleContent>
+      <ul>...</ul>
+    </CollapsibleContent>
+  </Collapsible>
+</p>
+```
 
-- React source: `packages/rx-display/src/lib/collapsible/collapsible.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-collapsible.json`.
+## Accessibility
+
+- **ARIA**: the trigger receives `aria-expanded` (true/false) and `aria-controls` pointing at the content panel; the content panel is `hidden` when closed.
+- **Keyboard**: `Space` or `Enter` on the trigger toggles the panel. Standard `<button>` semantics when using `asChild` with a `Button`.
+- **Focus**: focus stays on the trigger across toggles. The content is not focus-trapped - readers can Tab through it once open.
+- **Animation**: use `data-[state=open]` and `data-[state=closed]` selectors so reveals honor `prefers-reduced-motion` via your own keyframes.
+- **Disabled state**: `disabled={true}` on the root disables the trigger and removes it from the tab order.
+
+## Related
+
+- [Accordion](/components/display/accordion) - coordinated multiple disclosures with shared state.
+- [Card](/components/display/card) - typical host for a Collapsible "show more" toggle.
+- [Sidebar](/components/navigation/sidebar) - uses Collapsible for group expand/collapse.

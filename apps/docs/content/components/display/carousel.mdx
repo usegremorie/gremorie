@@ -1,74 +1,68 @@
 ---
 title: Carousel
-description: Horizontal slider with touch, drag, keyboard.
+description: "Horizontal or vertical scrollable slide region built on Embla. Touch, drag, keyboard, plugins."
 ---
 
 import { CarouselPreview } from "@/components/preview/display/display";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, Card, CardContent } from "@gremorie/rx-display";
+
+## Overview
+
+`Carousel` is the sliding-content primitive: a region of slides that scrolls horizontally (default) or vertically, with drag, touch, keyboard arrows, and optional plugins (autoplay, wheel, fade). Built on [Embla Carousel](https://www.embla-carousel.com/), it exposes a controlled API via `setApi` so you can read state (current slide, can-scroll-prev/next) and call methods (`scrollTo`, `scrollNext`) from outside.
+
+Carousels hide content past the first slide - use only when order matters less than presence (galleries, testimonials, partner logos). For prioritized content, prefer a vertical list. Always pair arrow controls with keyboard navigation; any auto-rotation must be pausable.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <CarouselPreview />
 </div>
 
+## Installation
 
-`Carousel` wraps `embla-carousel-react` with Gremorie styling. Native
-support for touch, drag, and keyboard. Renders `CarouselPrevious` and
-`CarouselNext` controls that wire into Embla's API automatically. Best
-for hero rotators, image galleries, onboarding tours.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Carousel lands in a follow-up rev.
+npx gremorie@latest add rx-carousel
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-carousel
+pnpm dlx gremorie@latest add rx-carousel
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-carousel
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-carousel
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
+  CarouselNext,
 } from "@gremorie/rx-display";
 
-export function HeroRotator() {
+export function Example() {
   return (
-    <Carousel className="w-full max-w-xl">
+    <Carousel className="w-full max-w-sm">
       <CarouselContent>
-        {[1, 2, 3].map((n) => (
-          <CarouselItem key={n}>
-            <div className="grid aspect-video place-items-center rounded bg-muted">
-              Slide {n}
-            </div>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <CarouselItem key={i}>
+            <div className="p-1">Slide {i + 1}</div>
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -78,32 +72,157 @@ export function HeroRotator() {
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Carousel>`
+
+Root container. Sets up Embla, exposes context for `CarouselContent`, `CarouselItem`, `CarouselPrevious`, and `CarouselNext`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `opts` | `EmblaOptionsType` | - | Embla options. Common keys: `align: "start" \| "center" \| "end"`, `loop: boolean`, `dragFree: boolean`. See [Embla docs](https://www.embla-carousel.com/api/options/). |
+| `plugins` | `EmblaPluginType[]` | - | Embla plugins. Common: `Autoplay`, `WheelGestures`, `ClassNames`, `Fade`. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Sets the Embla `axis` and styles `CarouselContent` and arrow positions accordingly. |
+| `setApi` | `(api: CarouselApi) => void` | - | Receives the Embla API instance once initialized. Use to control the carousel from outside (call `api.scrollTo(2)`, read `api.selectedScrollSnap()`). |
+| `className` | `string` | - | Extra classes on the root `div`. |
+
+The root renders with `role="region"` and `aria-roledescription="carousel"` so AT announces it correctly.
+
+### `<CarouselContent>`
+
+The viewport's scrolling track. Internal structure: an outer `div.overflow-hidden` (the viewport) plus an inner flex track. Uses `-ml-4` (horizontal) or `-mt-4 flex-col` (vertical) to compensate for the per-item left/top padding.
+
+### `<CarouselItem>`
+
+A single slide. Renders with `role="group"` and `aria-roledescription="slide"`. By default each slide takes `basis-full` (one slide per view); change `basis-1/2`, `basis-1/3`, etc. on `className` to show multiple slides at once.
+
+### `<CarouselPrevious>` and `<CarouselNext>`
+
+Pre-styled arrow buttons (built on `Button` from `@gremorie/rx-forms` with `variant="outline"` and `size="icon"`). Auto-disable when there is no previous/next slide. Position absolutely outside the carousel (`-left-12` / `-right-12`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | inherited from `Button` | `"outline"` | Visual style. |
+| `size` | inherited from `Button` | `"icon"` | Size token. |
+| `className` | `string` | - | Extra classes - useful when the default `-left-12` position clips. |
+
+All other `Button` props are forwarded.
+
+### `CarouselApi`
+
+Type alias for the Embla API. Use with `setApi`:
+
+```tsx
+const [api, setApi] = useState<CarouselApi | null>(null);
+
+useEffect(() => {
+  if (!api) return;
+  api.on("select", () => {
+    console.log("Current slide:", api.selectedScrollSnap());
+  });
+}, [api]);
+
+<Carousel setApi={setApi}>...</Carousel>
 ```
-Carousel [orientation="horizontal" | "vertical"] [opts]
-  CarouselContent
-    CarouselItem
-  CarouselPrevious
-  CarouselNext
+
+## Composition
+
+1. **`<Carousel>`** owns Embla and provides context.
+2. **`<CarouselContent>`** is the scrolling track. Required wrapper around items.
+3. **`<CarouselItem>`** is each slide. Customize `basis-*` for multi-slide views.
+4. **`<CarouselPrevious>` / `<CarouselNext>`** are optional but recommended for keyboard and mouse users.
+
+The Carousel registers a `keydown` handler on the root that scrolls on `ArrowLeft` / `ArrowRight` regardless of where focus is inside.
+
+## Variations
+
+### Multi-slide view
+
+<div className="rounded-lg border p-6 not-prose">
+  <Carousel className="w-full max-w-sm" opts={{ align: "start" }}>
+    <CarouselContent className="-ml-2">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <CarouselItem key={i} className="pl-2 basis-1/3">
+          <Card>
+            <CardContent className="flex aspect-square items-center justify-center p-3">
+              <span className="text-xl font-semibold">{i + 1}</span>
+            </CardContent>
+          </Card>
+        </CarouselItem>
+      ))}
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+  </Carousel>
+</div>
+
+```tsx
+<Carousel opts={{ align: "start" }}>
+  <CarouselContent className="-ml-2">
+    {items.map((item) => (
+      <CarouselItem key={item.id} className="pl-2 basis-1/3">
+        ...
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
 ```
 
-## Best practices
+### Vertical carousel
 
-- **Pause autoplay on hover.** If you wire autoplay via Embla plugins,
-  pause when the user hovers - autoplay that ignores the user is
-  disorienting.
-- **Always render Previous/Next controls.** They are the keyboard /
-  pointer fallback when drag is not obvious.
-- **Cap slide count.** Above 8-10 slides users lose track of position.
-  Pair with pagination dots or a list view above that.
+```tsx
+<Carousel orientation="vertical" className="h-[420px]">
+  <CarouselContent className="-mt-2 h-[420px]">
+    {items.map((item) => (
+      <CarouselItem key={item.id} className="pt-2 basis-1/3">
+        ...
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
 
-## Reference
+When `orientation="vertical"`, set an explicit height on the Carousel and the inner content - Embla needs bounded dimensions on the scroll axis.
 
-- React source: `packages/rx-display/src/lib/carousel/carousel.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-carousel.json`.
+### With Embla plugin (autoplay)
+
+```tsx
+import Autoplay from "embla-carousel-autoplay";
+
+<Carousel
+  plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
+  opts={{ loop: true }}
+>
+  <CarouselContent>...</CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
+
+`stopOnInteraction: true` is non-negotiable - users who interact with the carousel should not have it keep moving under them.
+
+## Accessibility
+
+- **Roles**: root is `role="region"` with `aria-roledescription="carousel"`; each slide is `role="group"` with `aria-roledescription="slide"`. Add an `aria-label` on the root identifying what the carousel shows ("Customer testimonials", "Product gallery").
+- **Keyboard**: `ArrowLeft` and `ArrowRight` scroll between slides (handled by the root `keydown` capture). `Tab` moves focus through the arrow controls and any focusable content inside slides.
+- **Arrow controls**: `CarouselPrevious` and `CarouselNext` ship with visually hidden text ("Previous slide", "Next slide") so AT users know what each button does. They auto-disable when no more slides are available.
+- **Auto-rotation**: if you use `Autoplay`, always pass `stopOnInteraction: true` and ensure `prefers-reduced-motion` users get a static experience (skip the plugin entirely or set `delay: 0`).
+- **Live announcements**: for galleries where the active slide changes meaning, wrap a sibling `aria-live="polite"` region that announces the current slide's title.
+
+## Related
+
+- [Card](/components/display/card) - frequent slide content.
+- [Tabs](/components/navigation/tabs) - use when slides represent distinct contexts that users navigate to deliberately rather than browse.
+- [Embla Carousel docs](https://www.embla-carousel.com/) - full plugin and options reference.
