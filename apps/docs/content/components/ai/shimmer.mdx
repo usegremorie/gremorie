@@ -1,69 +1,136 @@
 ---
 title: Shimmer
-description: Animated text shimmer for streaming/loading hints. Slides a gradient across text via motion (Framer Motion v12).
+description: Animated text shimmer effect that slides a gradient across the characters - the universal "the model is working" cue.
 ---
 
 import { ShimmerPreview } from "@/components/preview/ai/chatbot";
 
-`Shimmer` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+## Overview
+
+`Shimmer` is the streaming text affordance. It wraps a string in a `motion` element that animates a horizontal gradient across the characters, giving the model's output a subtle "loading" wash without spinners. It is the same primitive used internally by `Reasoning`, `Plan`, and `Suggestion` when they need to indicate streaming.
+
+Use it for ephemeral status text - "Thinking...", "Generating response...", "Loading..." - in spots where a spinner would feel clunky.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <ShimmerPreview />
 </div>
 
-## Install
+## Installation
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
-
-</Tab>
-
-<Tab value="React">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add rx-shimmer
+npx gremorie@latest add rx-shimmer
 ```
-
-Pulls in the registry dependencies declared for `rx-shimmer` (cross-primitive Gremorie components - see `registry.json`).
-
 </Tab>
-
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-shimmer
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-shimmer
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-shimmer
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import {
-  Shimmer,
-} from '@gremorie/rx-ai';
+import { Shimmer } from "@gremorie/rx-ai";
 
-export function Demo() {
-  return (
-    <Shimmer duration={2} spread={2}>Thinking...</Shimmer>
-  );
+export function Example() {
+  return <Shimmer>Thinking...</Shimmer>;
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Notes
+## API
 
-- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
-- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-shimmer` without pulling unrelated AI components.
+### `<Shimmer>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `string` | - | Required. The text to shimmer. String is required so the spread can scale with character count. |
+| `as` | `ElementType` | `"p"` | Override the rendered element (e.g. `"span"` to inline inside a sentence). |
+| `className` | `string` | - | Extra classes. |
+| `duration` | `number` | `2` | Seconds per cycle. Lower = faster shimmer. |
+| `spread` | `number` | `2` | Multiplier on the gradient spread (per character). Lower = tighter wash. |
+
+Memoized with `React.memo`.
+
+## Composition
+
+`Shimmer` is a single primitive. Drop it anywhere a string would go; it picks up the surrounding font and color automatically.
+
+## Variations
+
+### Loading hint
+
+The 90% case: a short status string.
+
+```tsx
+<Shimmer>Generating response...</Shimmer>
+```
+
+### Inline inside a sentence
+
+Render as `span` to shimmer a single word inside a normal paragraph.
+
+```tsx
+<p>
+  The assistant is <Shimmer as="span">thinking</Shimmer> about your request.
+</p>
+```
+
+### Faster, tighter shimmer
+
+For shorter labels where the default 2s feels slow.
+
+```tsx
+<Shimmer duration={1} spread={1}>Reasoning</Shimmer>
+```
+
+### Reasoning trigger override
+
+A common use - inject Shimmer into `ReasoningTrigger` via `getThinkingMessage` to localize or rebrand the label.
+
+```tsx
+<Reasoning isStreaming>
+  <ReasoningTrigger
+    getThinkingMessage={(streaming) =>
+      streaming ? <Shimmer>Pensando...</Shimmer> : null
+    }
+  />
+  <ReasoningContent>{thinking}</ReasoningContent>
+</Reasoning>
+```
+
+## Accessibility
+
+- **Keyboard**: no interaction - `Shimmer` is a static text element.
+- **ARIA**: the text content is preserved in the DOM (no obfuscation), so screen readers announce it normally.
+- **Screen readers**: keep the label semantically meaningful ("Thinking", "Loading", "Generating response"). Avoid decorative-only strings.
+- **Reduced motion**: the animation uses Framer Motion. Honour `prefers-reduced-motion: reduce` by either swapping the shimmer for a static label at the call site, or wrapping with a media-query check.
+
+## Related
+
+- [Reasoning](/components/ai/reasoning) - uses `Shimmer` internally while streaming
+- [Plan](/components/ai/plan) - uses `Shimmer` on title and description while streaming
+- [Suggestion](/components/ai/suggestion) - quick-replies that often pair with a shimmering label

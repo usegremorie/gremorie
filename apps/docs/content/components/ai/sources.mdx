@@ -1,78 +1,165 @@
 ---
 title: Sources
-description: Citations cluster for RAG responses. SourcesTrigger toggles, SourcesContent lists Source hyperlinks with optional favicons.
+description: Collapsible "sources used" panel for RAG responses, with a trigger showing the count and a list of Source links.
 ---
 
 import { SourcesPreview } from "@/components/preview/ai/chatbot";
 
+## Overview
+
+`Sources` is the global citations panel for an assistant turn. Where [InlineCitation](/components/ai/inline-citation) attaches a citation to a specific phrase, `Sources` lists every document the answer relied on, collapsed by default with a count summary ("Used 4 sources").
+
+Use it under the assistant response (typically inside `MessageContent` after `MessageResponse`) for RAG, web search, and document grounding flows.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <SourcesPreview />
 </div>
 
-`Sources` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+## Installation
 
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
-
-</Tab>
-
-<Tab value="React">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add rx-sources
+npx gremorie@latest add rx-sources
 ```
-
-Pulls in the registry dependencies declared for `rx-sources` (cross-primitive Gremorie components - see `registry.json`).
-
 </Tab>
-
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-sources
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-sources
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-sources
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import {
-  Sources,
-  SourcesTrigger,
-  SourcesContent,
-  Source,
-} from '@gremorie/rx-ai';
+import { Sources, SourcesTrigger, SourcesContent, Source } from "@gremorie/rx-ai";
 
-export function Demo() {
+export function Example({ sources }) {
   return (
     <Sources>
-      <SourcesTrigger count={3} />
+      <SourcesTrigger count={sources.length} />
       <SourcesContent>
-        <Source href="https://docs.example.com" title="Docs" />
-        <Source href="https://blog.example.com" title="Blog" />
+        {sources.map((s) => (
+          <Source key={s.url} href={s.url} title={s.title} />
+        ))}
       </SourcesContent>
     </Sources>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Notes
+## API
 
-- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
-- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-sources` without pulling unrelated AI components.
+### `<Sources>`
+
+Wraps `Collapsible`. Extends `ComponentProps<"div">`. Applies `not-prose`, accent color, smaller text.
+
+### `<SourcesTrigger>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `count` | `number` | - | Required. Used in the default label ("Used N sources"). |
+| `children` | `ReactNode` | - | Optional. Fully replaces the default label + chevron. |
+
+Extends `ComponentProps<typeof CollapsibleTrigger>`.
+
+### `<SourcesContent>`
+
+Collapsible body with slide-in / fade-in animation.
+
+Extends `ComponentProps<typeof CollapsibleContent>`.
+
+### `<Source>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | - | Required. Source URL. Opens in a new tab with `rel="noreferrer"`. |
+| `title` | `string` | - | Source title (rendered next to the book icon by default). |
+| `children` | `ReactNode` | - | Optional. Fully replaces the default icon + title (use for custom favicons, snippets, etc). |
+
+Renders as `<a>`.
+
+## Composition
+
+1. **`<Sources>`** owns the collapsible state.
+2. **`<SourcesTrigger>`** is the toggle ("Used 4 sources" + chevron).
+3. **`<SourcesContent>`** is the expanded body.
+4. **`<Source>`** is one citation. Stack as many as needed.
+
+## Variations
+
+### Default list
+
+The 90% case: book icon + title, opens externally.
+
+```tsx
+<Sources>
+  <SourcesTrigger count={sources.length} />
+  <SourcesContent>
+    {sources.map((s) => (
+      <Source key={s.url} href={s.url} title={s.title} />
+    ))}
+  </SourcesContent>
+</Sources>
+```
+
+### Custom source with favicon
+
+Replace the default content per `Source` to show the site favicon and hostname.
+
+```tsx
+<Source href={s.url}>
+  <img
+    src={`https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}`}
+    alt=""
+    className="size-4"
+  />
+  <span className="block font-medium">{new URL(s.url).hostname}</span>
+</Source>
+```
+
+### Custom trigger copy
+
+Replace the count label with custom copy (localization, mode badges, etc.).
+
+```tsx
+<SourcesTrigger count={sources.length}>
+  <p className="font-medium">{sources.length} fontes referenciadas</p>
+  <ChevronDownIcon className="h-4 w-4" />
+</SourcesTrigger>
+```
+
+## Accessibility
+
+- **Keyboard**: the trigger is a `CollapsibleTrigger`, toggling on Enter / Space.
+- **ARIA**: Radix Collapsible wires `aria-expanded` / `aria-controls`. `Source` is a real `<a>`, so it announces as a link.
+- **Screen readers**: external links open with `target="_blank" rel="noreferrer"`. Keep `title` populated so the link text is meaningful (not just "click here").
+- **Reduced motion**: open / close animations are data-state driven and respect `prefers-reduced-motion`.
+
+## Related
+
+- [InlineCitation](/components/ai/inline-citation) - phrase-level citations inside the response
+- [Message](/components/ai/message) - assistant turn that typically hosts the sources panel
+- [Chain of Thought](/components/ai/chain-of-thought) - per-step search hits during reasoning

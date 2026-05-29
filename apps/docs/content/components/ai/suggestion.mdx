@@ -1,73 +1,167 @@
 ---
 title: Suggestion
-description: Horizontal scrollable pills of prompt suggestions. Each Suggestion is a rounded Button.
+description: Horizontal scrollable row of prompt suggestion pills - the canonical "quick replies" pattern for chat.
 ---
 
 import { SuggestionPreview } from "@/components/preview/ai/chatbot";
 
-`Suggestion` is part of the **AI chatbot family** brought from Bridge into Gremorie in Fase 5j. It composes on top of other Gremorie primitives (`@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-forms`, ...) and ships with full Bridge parity.
+## Overview
+
+`Suggestion` is the pill button users tap to send a pre-written prompt without typing. `Suggestions` is the horizontally scrollable row that hosts them. Together they form the standard "quick replies" pattern used after the assistant proposes options or at the start of an empty thread.
+
+Use them in the empty state of `Conversation`, after a clarifying question from the assistant, or as a persistent toolbar of common prompts.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <SuggestionPreview />
 </div>
 
-## Install
+## Installation
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto, ou abra uma issue para priorizar este primitivo.
-
-</Tab>
-
-<Tab value="React">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add rx-suggestion
+npx gremorie@latest add rx-suggestion
 ```
-
-Pulls in the registry dependencies declared for `rx-suggestion` (cross-primitive Gremorie components - see `registry.json`).
-
 </Tab>
-
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-suggestion
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-suggestion
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-suggestion
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import {
-  Suggestion,
-  Suggestions,
-} from '@gremorie/rx-ai';
+import { Suggestions, Suggestion } from "@gremorie/rx-ai";
 
-export function Demo() {
+export function Example({ onPick }) {
   return (
     <Suggestions>
-      <Suggestion suggestion="Summarize this PDF" onClick={send} />
-      <Suggestion suggestion="What changed last week?" onClick={send} />
+      <Suggestion suggestion="Summarize this PDF" onClick={onPick} />
+      <Suggestion suggestion="What changed last week?" onClick={onPick} />
+      <Suggestion suggestion="Draft a reply to this email" onClick={onPick} />
     </Suggestions>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Notes
+## API
 
-- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j chatbot batch (Bridge parity for the AI category).
-- All cross-Gremorie imports use the published `@gremorie/rx-*` packages; the registry mirrors that into per-primitive source so consumers can `npx gremorie add rx-suggestion` without pulling unrelated AI components.
+### `<Suggestions>`
+
+Horizontally scrollable row built on `ScrollArea`. Children stay on a single line and overflow scrolls horizontally; the scrollbar is hidden by default.
+
+Extends `ComponentProps<typeof ScrollArea>`.
+
+### `<Suggestion>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `suggestion` | `string` | - | Required. The pre-written prompt sent to `onClick` when the pill is tapped. |
+| `onClick` | `(suggestion: string) => void` | - | Click handler. Receives `suggestion` (not the React event). |
+| `variant` | `ButtonVariant` | `"outline"` | Forwarded to the underlying `Button`. |
+| `size` | `ButtonSize` | `"sm"` | Forwarded to the underlying `Button`. |
+| `children` | `ReactNode` | - | Optional. Overrides the visible label (`suggestion` is still what gets sent on click). |
+
+Extends `ComponentProps<typeof Button>` (minus `onClick`).
+
+## Composition
+
+1. **`<Suggestions>`** is the horizontally scrolling row.
+2. **`<Suggestion>`** is one rounded pill - the pre-written prompt.
+
+## Variations
+
+### Quick replies row
+
+The canonical pattern: a horizontal strip of prompts above the prompt input.
+
+```tsx
+<Suggestions>
+  {suggestions.map((s) => (
+    <Suggestion key={s} suggestion={s} onClick={sendPrompt} />
+  ))}
+</Suggestions>
+```
+
+### Empty-state hero
+
+Drop suggestions inside `ConversationEmptyState` to invite the first prompt.
+
+```tsx
+<ConversationEmptyState
+  title="Ask anything"
+  description="Or try one of these:"
+>
+  <Suggestions>
+    <Suggestion suggestion="What's on my calendar today?" onClick={send} />
+    <Suggestion suggestion="Summarize yesterday's standup" onClick={send} />
+    <Suggestion suggestion="Draft a project update" onClick={send} />
+  </Suggestions>
+</ConversationEmptyState>
+```
+
+### Custom label vs sent prompt
+
+Show a short label visually, but send a longer fully-specified prompt on click.
+
+```tsx
+<Suggestion
+  suggestion="Summarize the last 10 PRs merged into main with focus on bug fixes."
+  onClick={send}
+>
+  Summarize PRs
+</Suggestion>
+```
+
+### Disabled while streaming
+
+Disable the row while the assistant is still responding.
+
+```tsx
+<Suggestions>
+  {suggestions.map((s) => (
+    <Suggestion
+      key={s}
+      suggestion={s}
+      onClick={send}
+      disabled={status === "streaming"}
+    />
+  ))}
+</Suggestions>
+```
+
+## Accessibility
+
+- **Keyboard**: each `Suggestion` is a real `Button`, focusable and activated by Enter / Space.
+- **ARIA**: when `children` override the visible label, make sure the visible text is still descriptive (or provide `aria-label` if the pill is icon-only).
+- **Screen readers**: the row is scrollable but reads in document order, so screen readers walk through every option.
+- **Focus management**: the hidden horizontal scrollbar does not steal focus; keyboard users can Tab through pills naturally.
+
+## Related
+
+- [Conversation](/components/ai/conversation) - typical parent of the suggestions row in the empty state
+- [PromptInput](/components/ai/prompt-input) - the input below the suggestions
+- [Message](/components/ai/message) - assistant turns that often end with a clarifying question + suggestion row
