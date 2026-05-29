@@ -48,3 +48,18 @@ export * from './lib/reasoning';
 
 // ChainOfThought (step list)
 export * from './lib/chain-of-thought';
+
+// Sources (citation cards)
+export * from './lib/sources';
+
+// Task (collapsible file list card)
+export * from './lib/task';
+
+// Tool (AI SDK tool invocation card)
+export * from './lib/tool';
+
+// Toolbar (generic action row)
+export * from './lib/toolbar';
+
+// CodeBlock (Shiki syntax highlight)
+export * from './lib/code-block';
