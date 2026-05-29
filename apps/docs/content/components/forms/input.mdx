@@ -1,92 +1,162 @@
 ---
 title: Input
-description: Single-line text field that adopts every native HTML `type`.
+description: Single-line text field that adopts every native HTML `type` and exposes token-driven focus, error, and disabled states.
 ---
 
 import { InputPreview } from "@/components/preview/forms/forms";
 
+## Overview
+
+`Input` is a thin styled wrapper around the native `<input>` element. Pass any HTML `type` (`text`, `email`, `password`, `number`, `search`, `tel`, `url`, `file`, `date`...) and the browser semantics, validation, and virtual keyboard all come along for free.
+
+All visual states are token-driven: `border-input` for default, `focus-visible:ring-ring/50` for keyboard focus, and `aria-invalid:border-destructive` for error. There are no variants - inputs should look the same everywhere so users can predict their behavior.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <InputPreview />
 </div>
 
+## Installation
 
-`Input` is the canonical single-line text field. It accepts every native
-HTML `type` (`text`, `email`, `password`, `number`, `search`, `tel`,
-`url`, `file`...) and renders the same token-driven visual states:
-default border, `focus-visible` ring, and `aria-invalid` destructive
-border.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Input lands in a follow-up rev.
+npx gremorie@latest add rx-input
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-input
+pnpm dlx gremorie@latest add rx-input
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-input
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-input
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { Input, Label } from "@gremorie/rx-forms";
 
-export function EmailField() {
+export function Example() {
   return (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
+    <div className="grid gap-2">
       <Label htmlFor="email">Email</Label>
       <Input id="email" type="email" placeholder="you@example.com" />
     </div>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## States
+## API
 
-| State            | Trigger                              | Visual                          |
-| ---------------- | ------------------------------------ | ------------------------------- |
-| Default          | -                                    | `border-input` border.          |
-| Focus            | `focus-visible`                      | `ring-ring/50` ring + border.   |
-| Invalid          | `aria-invalid="true"`                | `border-destructive` border.    |
-| Disabled         | `disabled`                           | 50% opacity, no pointer events. |
+### `<Input>`
 
-## Best practices
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `type` | `string` | `"text"` | Any native HTML input type. Drives keyboard, validation, and platform UI (e.g. date picker, file dialog). |
+| `disabled` | `boolean` | `false` | Disables interaction. Applies `pointer-events-none` and `opacity-50`. |
+| `aria-invalid` | `boolean` | - | When `true`, switches border and focus ring to the destructive token. |
 
-- **Always pair with `Label`.** Use `htmlFor` matching the input `id`.
-- **Set `aria-invalid` via your form library.** The styling responds
-  automatically. Don't apply `border-red-500` manually.
-- **Use the native `type`.** `type="email"` triggers the right keyboard
-  on mobile and primes browser validation.
+Extends all `React.ComponentProps<"input">`. Renders with `data-slot="input"` so the parent `InputGroup` can drive group-wide focus and error states.
 
-## Reference
+## Composition
 
-- React source: `packages/rx-forms/src/lib/input/input.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-input.json`.
+1. **`<Input>`** is a leaf primitive. Pair it with a `<Label>` (linked via `htmlFor` / `id`) so clicks and screen reader interactions focus the field.
+2. **For prefix/suffix icons or buttons**, wrap it with `<InputGroup>` and use `<InputGroupInput>` instead of `<Input>` so the group can drive shared focus states.
+3. **For form-bound usage**, wrap it in a `<FormField>` + `<FormControl>` so labels, descriptions, and error messages auto-wire ARIA relationships.
+
+## Variations
+
+### Email field with placeholder
+
+The canonical pattern. `type="email"` triggers the email keyboard on mobile and enables built-in browser validation.
+
+```tsx
+<div className="grid gap-2">
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" type="email" placeholder="you@example.com" />
+</div>
+```
+
+### Number input with min/max
+
+`type="number"` shows numeric keyboard on mobile and accepts `min`, `max`, `step` for browser validation.
+
+```tsx
+<div className="grid gap-2">
+  <Label htmlFor="quantity">Quantity</Label>
+  <Input
+    id="quantity"
+    type="number"
+    min={1}
+    max={99}
+    defaultValue={1}
+  />
+</div>
+```
+
+### Error state
+
+Drive `aria-invalid` from your validation library. The destructive ring and border come for free.
+
+```tsx
+<div className="grid gap-2">
+  <Label htmlFor="email-bad">Email</Label>
+  <Input
+    id="email-bad"
+    type="email"
+    aria-invalid
+    aria-describedby="email-error"
+    defaultValue="not-an-email"
+  />
+  <p id="email-error" className="text-sm text-destructive">
+    Please enter a valid email.
+  </p>
+</div>
+```
+
+### File input
+
+`type="file"` renders the native picker. The internal `file:` selectors style the button-like trigger.
+
+```tsx
+<div className="grid gap-2">
+  <Label htmlFor="avatar">Avatar</Label>
+  <Input id="avatar" type="file" accept="image/*" />
+</div>
+```
+
+## Accessibility
+
+- **Labels**: every input needs an associated `<Label>` (via `htmlFor` matching the input `id`) or an explicit `aria-label`.
+- **Focus**: 3px focus-visible ring driven by `focus-visible:ring-ring/50`, so it only appears for keyboard users.
+- **Validation**: combine `aria-invalid="true"` with `aria-describedby` pointing at the error message so screen readers announce the failure when focus enters the field.
+- **Disabled**: `disabled` removes the input from the tab order and prevents activation, including from JavaScript-issued focus.
+- **Autocomplete**: respect platform conventions by setting `autoComplete="email"`, `"current-password"`, `"one-time-code"`, etc.
+
+## Related
+
+- [Label](/components/forms/label) - the accessible label primitive
+- [Input Group](/components/forms/input-group) - wrap Input with icons, buttons, or kbd hints
+- [Textarea](/components/forms/textarea) - multi-line counterpart
+- [Form](/components/forms/form) - wires Input to react-hook-form with ARIA helpers
+- [Input OTP](/components/forms/input-otp) - segmented input for one-time codes

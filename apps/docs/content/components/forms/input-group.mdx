@@ -1,124 +1,213 @@
 ---
 title: Input Group
-description: Composable input layout - wraps Input or Textarea with inline / block addons (icons, buttons, kbd hints).
+description: Composable input layout that wraps Input or Textarea with inline and block addons (icons, buttons, kbd hints) while preserving group-wide focus and error states.
 ---
 
 import { InputGroupPreview } from "@/components/preview/forms/forms";
 
+## Overview
+
+`InputGroup` is a layout primitive that composes an input (or textarea) with leading and trailing addons. The wrapper drives shared visual states - focus, invalid, disabled - from the inner control using CSS `:has()` selectors, so every addon reacts in lockstep.
+
+Four alignment positions are exposed via `data-align` on `InputGroupAddon`: `inline-start` (leading), `inline-end` (trailing), `block-start` (top), and `block-end` (bottom, useful for footers in textareas).
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <InputGroupPreview />
 </div>
 
+## Installation
 
-`InputGroup` is the layout primitive that lets you decorate an
-`Input` or `Textarea` with inline or block addons - icons, action
-buttons, keyboard hints, units. The group drives focus, invalid, and
-disabled visual states from the inner control, so addons follow along
-automatically.
-
-This is the foundation the `PromptInput` family composes on. Outside
-AI surfaces, reach for `InputGroup` whenever a field needs a leading
-icon, a clear button, an action affordance, or a multi-line composer
-with a footer toolbar.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular InputGroup lands in a follow-up rev.
+npx gremorie@latest add rx-input-group
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-input-group
+pnpm dlx gremorie@latest add rx-input-group
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-input-group
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-input-group
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import { SearchIcon, XIcon } from "lucide-react";
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupButton,
   InputGroupInput,
 } from "@gremorie/rx-forms";
+import { Search } from "lucide-react";
 
-export function SearchField() {
+export function Example() {
   return (
     <InputGroup>
-      <InputGroupAddon align="inline-start">
-        <SearchIcon />
+      <InputGroupAddon>
+        <Search />
       </InputGroupAddon>
-      <InputGroupInput placeholder="Search..." />
-      <InputGroupAddon align="inline-end">
-        <InputGroupButton aria-label="Clear" size="icon-xs">
-          <XIcon />
-        </InputGroupButton>
-      </InputGroupAddon>
+      <InputGroupInput placeholder="Search the registry..." />
     </InputGroup>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<InputGroup>`
+
+The wrapper. Always renders with `role="group"` and `data-slot="input-group"`. Drives the visual surface (border, shadow, focus ring, error ring) based on the inner control's state via `:has()`.
+
+Extends all `React.ComponentProps<"div">`.
+
+### `<InputGroupAddon>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `align` | `"inline-start" \| "inline-end" \| "block-start" \| "block-end"` | `"inline-start"` | Where the addon sits relative to the input. `block-*` switches the group to a column layout. |
+
+Extends all `React.ComponentProps<"div">`. Clicking the addon (outside of any nested `<button>`) focuses the input by querying the parent's first child input.
+
+### `<InputGroupInput>`
+
+Use this **instead of** `<Input>` inside an `InputGroup`. It strips the input's own border, shadow, and focus ring so the group can own them. Carries `data-slot="input-group-control"` which is the hook the parent reads to drive group-wide focus state.
+
+Extends all `React.ComponentProps<"input">`.
+
+### `<InputGroupTextarea>`
+
+Use this **instead of** `<Textarea>` inside an `InputGroup`. Same role as `InputGroupInput`, applied to a multiline control. Pairs naturally with `align="block-end"` for a footer toolbar.
+
+Extends all `React.ComponentProps<"textarea">`.
+
+### `<InputGroupButton>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `"xs" \| "sm" \| "icon-xs" \| "icon-sm"` | `"xs"` | Smaller footprint than `Button` to fit inside the input height. |
+| `variant` | inherited from `Button` | `"ghost"` | Forwarded to the underlying `Button`. |
+| `type` | `string` | `"button"` | Defaults to `"button"` so it never accidentally submits a form. |
+
+Extends all `Button` props (except `size`, which is replaced).
+
+### `<InputGroupText>`
+
+Inline label for kbd hints or unit suffixes. Renders a styled `<span>` with muted foreground.
+
+Extends all `React.ComponentProps<"span">`.
+
+## Composition
+
+1. **`<InputGroup>`** owns the surface and reads the inner control's state via `:has()`.
+2. **`<InputGroupAddon>`** sits at one of four positions and clicks-through-to-input.
+3. **`<InputGroupInput>` or `<InputGroupTextarea>`** is the actual editable control - never use plain `<Input>` inside `InputGroup` or focus/invalid wiring will break.
+4. **`<InputGroupButton>`, `<InputGroupText>`, plain icons** are valid children of `<InputGroupAddon>`.
+
+<Callout type="warning">
+**`:has()` selector gotcha.** `InputGroup` looks for a child input via `:has(> textarea)` / `:has(> input)`. If you wrap the input in a component that uses `display: contents` (e.g. some compound primitives), the chain breaks and the group cannot resize itself for the textarea. Render `InputGroupInput` / `InputGroupTextarea` as a **direct child** of `InputGroup` whenever possible.
+</Callout>
+
+## Variations
+
+### Search with submit button
+
+A classic search bar. Leading icon, trailing button.
+
+```tsx
+<InputGroup>
+  <InputGroupAddon>
+    <Search />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="Search the registry..." />
+  <InputGroupAddon align="inline-end">
+    <InputGroupButton size="sm">Go</InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>
 ```
-InputGroup
-  InputGroupAddon [align="inline-start" | "inline-end" | "block-start" | "block-end"]
-    InputGroupButton [size="xs" | "sm" | "icon-xs" | "icon-sm"]
-    InputGroupText
-  InputGroupInput        (replaces a raw Input)
-  InputGroupTextarea     (replaces a raw Textarea)
+
+### URL field with prefix
+
+The leading addon shows a static label that clicks-through to focus the input.
+
+```tsx
+<InputGroup>
+  <InputGroupAddon>
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <InputGroupInput placeholder="example.com" />
+</InputGroup>
 ```
 
-## Alignments
+### Textarea with footer toolbar
 
-| Align            | Position                          | Common use                            |
-| ---------------- | --------------------------------- | ------------------------------------- |
-| `inline-start`   | Left side of the control          | Search icon, currency / unit symbol.  |
-| `inline-end`     | Right side of the control         | Clear, submit, password reveal.       |
-| `block-start`    | Above the control (group is wide) | Toolbar above a textarea composer.    |
-| `block-end`      | Below the control                 | Submit toolbar, footer hints.         |
+`align="block-end"` puts an addon under the textarea. Ideal for chat composers and comment forms.
 
-## Best practices
+```tsx
+import { Paperclip, Send } from "lucide-react";
 
-- **Use `InputGroupInput` / `InputGroupTextarea`.** Never put a raw
-  `Input` or `Textarea` inside `InputGroup` - the slot styling depends
-  on `data-slot="input-group-control"`.
-- **Buttons inside the group use `InputGroupButton`.** Sizing variants
-  (`xs`, `sm`, `icon-xs`, `icon-sm`) match the group height so the
-  button never overflows.
-- **Mark icon-only buttons with `aria-label`.** Without text, the
-  button has no accessible name.
+<InputGroup>
+  <InputGroupTextarea placeholder="Write a message..." rows={3} />
+  <InputGroupAddon align="block-end">
+    <InputGroupButton size="icon-sm" aria-label="Attach file">
+      <Paperclip />
+    </InputGroupButton>
+    <InputGroupButton size="sm" variant="default" className="ml-auto">
+      <Send />
+      Send
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>
+```
 
-## Reference
+### Kbd hint for shortcut
 
-- React source: `packages/rx-forms/src/lib/input-group/input-group.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-input-group.json`.
+Static keyboard hint stays out of the tab order and never steals focus.
+
+```tsx
+<InputGroup>
+  <InputGroupAddon>
+    <Search />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="Search..." />
+  <InputGroupAddon align="inline-end">
+    <kbd className="rounded border bg-muted px-1.5 py-0.5 text-xs">/</kbd>
+  </InputGroupAddon>
+</InputGroup>
+```
+
+## Accessibility
+
+- **Group semantics**: rendered with `role="group"`. Pair with `aria-label` so the addons + input read as one labelled unit when needed.
+- **Click-through**: clicking on an addon (anywhere except a nested button) focuses the inner input, matching the native `<label>` behaviour users expect from prefix icons.
+- **Focus state**: the group reads `:has([data-slot=input-group-control]:focus-visible)` so the entire surface shows the focus ring at once.
+- **Invalid state**: setting `aria-invalid="true"` on the inner control propagates the destructive ring to the whole group.
+- **Disabled state**: setting `data-disabled="true"` on the group dims all addons via `group-data-[disabled=true]/input-group:opacity-50`.
+
+## Related
+
+- [Input](/components/forms/input) - the leaf control without addons
+- [Textarea](/components/forms/textarea) - multi-line counterpart
+- [Button](/components/forms/button) - the base for `InputGroupButton`
+- [Form](/components/forms/form) - wires the whole group to react-hook-form
+- [Field](/components/forms/form) - composes label + group + description + message
