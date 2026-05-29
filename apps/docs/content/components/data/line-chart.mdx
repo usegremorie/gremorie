@@ -1,125 +1,198 @@
 ---
 title: Line Chart
-description: "Trends over a continuous domain."
+description: "Trend over an ordered domain, one stroke per series, color-tokened from chart variables."
 ---
 
-import { LineChartPreview } from "@/components/preview/data/charts";
+import { LineChartPreview, LineChartSinglePreview } from "@/components/preview/data/charts";
+
+## Overview
+
+`LineChart` is the styled wrapper of the headless charting engine for **trend lines over an ordered category**. Pass tabular `data`, a serializable `config` that maps each value field to a `label` plus a `color`, and the `xKey` that names the category field. The chart wires up scales, the cartesian grid, axis ticks, and per-series stroked paths automatically, and ships an `sr-only` HTML table that mirrors the data for assistive tech.
+
+Reach for LineChart when **shape and direction** are the headline - month-over-month conversion, weekly active users, deploys per day. Use [`AreaChart`](/components/data/area-chart) when the filled magnitude is the story; use [`BarChart`](/components/data/bar-chart) for discrete category comparisons; use [`ScatterChart`](/components/data/scatter-chart) when the X axis is itself numeric and continuous.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <LineChartPreview />
 </div>
 
-`LineChart` plots one or more series as stroked lines over a categorical
-X axis. Pass tabular `data`, a JSON-serializable `config` mapping each
-value field to a `{ label, color }`, and the `xKey` that names the
-category field. Built on the shared chart engine (`chart-context`,
-`chart-frame`, `axis`, `cartesian-grid`, `line`).
+## Installation
 
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add ng-line-chart
+npx gremorie@latest add rx-line-chart
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-line-chart
+pnpm dlx gremorie@latest add rx-line-chart
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-line-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-line-chart
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-```ts
-import { Component } from "@angular/core";
-import { LineChart } from "@gremorie/ng-data";
-import type { ChartConfig, Datum } from "@gremorie/ng-data";
-
-@Component({
-  selector: "sessions-line",
-  imports: [LineChart],
-  template: `
-    <line-chart [data]="data" [config]="config" xKey="day" />
-  `,
-})
-export class SessionsLine {
-  readonly data: Datum[] = [
-    { day: "Mon", visitors: 120 },
-    { day: "Tue", visitors: 200 },
-    { day: "Wed", visitors: 160 },
-  ];
-  readonly config: ChartConfig = {
-    visitors: { label: "Visitors", color: "var(--chart-1)" },
-  };
-}
-```
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { LineChart } from "@gremorie/rx-data";
 import type { ChartConfig, Datum } from "@gremorie/rx-data";
 
 const data: Datum[] = [
-  { day: "Mon", visitors: 120 },
-  { day: "Tue", visitors: 200 },
-  { day: "Wed", visitors: 160 },
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+  { month: "Apr", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "Jun", desktop: 214, mobile: 140 },
 ];
 
 const config: ChartConfig = {
-  visitors: { label: "Visitors", color: "var(--chart-1)" },
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
 };
 
-export function SessionsLine() {
-  return <LineChart data={data} config={config} xKey="day" />;
+export function MonthlyTrend() {
+  return <LineChart data={data} config={config} xKey="month" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<LineChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>`, a cartesian grid, X and Y axes, one stroked `<Line>` per series in `config`, and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. Each row maps string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value. |
+| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. |
+| `xKey` | `string` | - | Name of the category field on each `Datum`. Drives the X axis ticks. |
+| `className` | `string` | - | Merged onto the outer figure. Use for sizing escape hatches; the bundled style already supplies a rounded card surface plus aspect ratio. |
+
+### Headless primitives exposed
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides scales and shared Y domain. |
+| `CartesianGrid` | Render-prop primitive yielding horizontal grid lines for the current Y ticks. |
+| `XAxis` / `YAxis` | Render-prop primitives yielding tick positions and labels. |
+| `Line` | Per-series stroked `<path>`. Self-registers with the frame so the shared Y domain covers it. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| `ChartConfig` | `Record<string, { label: string; color: string; format?: string }>` - JSON-serializable series map. |
+
+## Composition
+
+1. **Pick `xKey`** first - the ordered category that runs along the bottom.
+2. **Author `config`** mapping each value field to a label and a token-driven color. Color tokens (`--chart-1` through `--chart-5`) already encode legible contrast across light and dark themes.
+3. **Pass `data`** as an array of records. The headless engine recomputes scales on every render, so stale rows are safe.
+4. **For custom layouts** (different stroke widths, log Y axis, smoothed curves), drop down to `<ChartFrame>` plus `<Line>` and supply your own children.
+
+The chart auto-sizes to its parent via `ResizeObserver`, so the wrapping surface controls the width. The default class on the figure pins the chart to `aspect-video` for a stable card shape.
+
+## Variations
+
+### Single series
+
+<div className="rounded-lg border p-6 not-prose">
+  <LineChartSinglePreview />
+</div>
+
+```tsx
+<LineChart
+  data={data}
+  config={{ signups: { label: "Sign-ups", color: "var(--chart-1)" } }}
+  xKey="week"
+/>
+```
+
+The default shape. Reach for a single line when the story is the trajectory of one metric.
+
+### Multi-series comparison
+
+<div className="rounded-lg border p-6 not-prose">
+  <LineChartPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+<LineChart data={data} config={config} xKey="month" />
+```
+
+For shape-to-shape comparison across cohorts. Keep the count under five lines before a [`ScatterChart`](/components/data/scatter-chart) or small-multiples layout reads better.
+
+### Headless customization
+
+```tsx
+import {
+  ChartFrame,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Line,
+} from "@gremorie/rx-data";
+
+export function ThickLineChart({ data, config, xKey }) {
+  return (
+    <figure role="img" aria-label="Custom line chart">
+      <ChartFrame data={data} xKey={xKey} className="aspect-[2/1] w-full text-muted-foreground">
+        <CartesianGrid>{(lines) => /* custom grid */ null}</CartesianGrid>
+        {Object.entries(config).map(([key, entry]) => (
+          <Line
+            key={key}
+            dataKey={key}
+            color={entry.color}
+            strokeWidth={3}
+          />
+        ))}
+        <XAxis>{({ ticks, labelY }) => /* custom ticks */ null}</XAxis>
+        <YAxis>{({ ticks, labelX }) => /* custom ticks */ null}</YAxis>
+      </ChartFrame>
+    </figure>
+  );
 }
 ```
 
-</Tab>
+Drop down to headless when you need thicker strokes, dashed segments, dot markers, or a log axis. The render-prop primitives hand you the projected positions so the engine still does the math.
 
-</Tabs>
+## Accessibility
 
-## Anatomy
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Line chart of Desktop, Mobile by month"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` carrying the same rows, columns, and labels. Screen readers can navigate the data via native table commands.
+- **Token contrast**: `--chart-1` through `--chart-5` are tuned for WCAG AA contrast against the card background in both light and dark themes.
+- **Static rendering**: no animation by default, so users with `prefers-reduced-motion: reduce` are not penalized.
+- **No streaming UI**: charts do not implement a streaming append affordance. For live data, throttle parent updates or render inside a `useDeferredValue` boundary.
 
-```
-LineChart (figure)
-  ChartFrame (svg)
-    CartesianGrid (horizontal gridlines)
-    Line (one per series)
-    XAxis (category ticks)
-    YAxis (value ticks)
-  Table (sr-only data table)
-```
+## Related
 
-## Best practices
-
-- **Prefer line over area for many series.** Filled areas overlap and
-  occlude; lines stack cleanly.
-- **Match colors to legend tokens.** Stick with `var(--chart-1..5)` so
-  the chart matches the theme.
-- **One Y unit per chart.** Mixing revenue and rate on the same axis
-  hides the smaller of the two - split into two charts.
-
-## Reference
-
-- Angular source: `packages/ng-data/src/lib/charts/styled/line-chart.ts`.
-- React source: `packages/rx-data/src/lib/line-chart/line-chart.tsx`.
-- Registry items: `https://gremorie.com/r/ng/ng-line-chart.json` and
-  `https://gremorie.com/r/rx/rx-line-chart.json`.
+- [AreaChart](/components/data/area-chart) - same axes, filled under the curve, when magnitude is the story.
+- [BarChart](/components/data/bar-chart) - discrete categories instead of an ordered domain.
+- [ScatterChart](/components/data/scatter-chart) - independent X plus Y when the X axis is numeric.

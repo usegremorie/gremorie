@@ -1,79 +1,51 @@
 ---
 title: Bar Chart
-description: "Compare values across categories with grouped bars."
+description: "Grouped bars across categorical buckets, color-tokened by series with shared Y domain."
 ---
 
-import { BarChartPreview } from "@/components/preview/data/charts";
+import { BarChartPreview, BarChartSinglePreview } from "@/components/preview/data/charts";
+
+## Overview
+
+`BarChart` is the styled wrapper of the headless charting engine for **categorical comparison**. Pass tabular `data`, a serializable `config` mapping each value field to a `label` plus a `color`, and the `xKey` for the category field. The chart wires up scales, the cartesian grid, axis ticks, and one set of grouped rectangles per series, plus an `sr-only` HTML table that mirrors the data for assistive tech.
+
+Reach for BarChart when **discrete buckets** matter - revenue by product, errors by service, users by region. For ordered-domain trends prefer [`LineChart`](/components/data/line-chart) or [`AreaChart`](/components/data/area-chart); for two numeric axes prefer [`ScatterChart`](/components/data/scatter-chart).
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <BarChartPreview />
 </div>
 
-`BarChart` plots one or more series as side-by-side bars within each
-category band. Pass tabular `data`, a JSON-serializable `config` mapping
-each value field to a `{ label, color }`, and the `xKey` that names the
-category field. Built on the shared chart engine (`chart-context`,
-`chart-frame`, `axis`, `cartesian-grid`, `bar`).
+## Installation
 
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add ng-bar-chart
+npx gremorie@latest add rx-bar-chart
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-bar-chart
+pnpm dlx gremorie@latest add rx-bar-chart
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-bar-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-bar-chart
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-```ts
-import { Component } from "@angular/core";
-import { BarChart } from "@gremorie/ng-data";
-import type { ChartConfig, Datum } from "@gremorie/ng-data";
-
-@Component({
-  selector: "platform-bar",
-  imports: [BarChart],
-  template: `
-    <bar-chart [data]="data" [config]="config" xKey="month" />
-  `,
-})
-export class PlatformBar {
-  readonly data: Datum[] = [
-    { month: "Jan", desktop: 186, mobile: 80 },
-    { month: "Feb", desktop: 305, mobile: 200 },
-    { month: "Mar", desktop: 237, mobile: 120 },
-  ];
-  readonly config: ChartConfig = {
-    desktop: { label: "Desktop", color: "var(--chart-1)" },
-    mobile: { label: "Mobile", color: "var(--chart-2)" },
-  };
-}
-```
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { BarChart } from "@gremorie/rx-data";
 import type { ChartConfig, Datum } from "@gremorie/rx-data";
@@ -82,6 +54,9 @@ const data: Datum[] = [
   { month: "Jan", desktop: 186, mobile: 80 },
   { month: "Feb", desktop: 305, mobile: 200 },
   { month: "Mar", desktop: 237, mobile: 120 },
+  { month: "Apr", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "Jun", desktop: 214, mobile: 140 },
 ];
 
 const config: ChartConfig = {
@@ -89,38 +64,138 @@ const config: ChartConfig = {
   mobile: { label: "Mobile", color: "var(--chart-2)" },
 };
 
-export function PlatformBar() {
+export function VisitsByMonth() {
   return <BarChart data={data} config={config} xKey="month" />;
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<BarChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>`, a cartesian grid, X and Y axes, one `<Bar>` per series in `config` (rendered as a render-prop yielding the rect positions), and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. Each row is a record from string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value. |
+| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. |
+| `xKey` | `string` | - | Name of the category field on each `Datum`. Drives the X axis ticks. |
+| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus aspect ratio. |
+
+### Headless primitives exposed
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides scales and shared Y domain. |
+| `CartesianGrid` | Render-prop primitive yielding horizontal grid lines for the current Y ticks. |
+| `XAxis` / `YAxis` | Render-prop primitives yielding tick positions and labels. |
+| `Bar` | Per-series render-prop primitive yielding an array of `{ x, y, width, height }` rectangles you draw with your own `<rect>`. Self-registers with the frame so the shared Y domain covers it. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| `ChartConfig` | `Record<string, { label: string; color: string; format?: string }>` - JSON-serializable series map. |
+
+## Composition
+
+1. **Pick `xKey`** - the categorical column that becomes the bottom axis.
+2. **Author `config`** mapping each value field to a label and a token-driven color. The shared Y domain auto-sizes to cover every series.
+3. **Pass `data`** as an array of records. The headless engine recomputes scales on every render.
+4. **For custom rectangles** (rounded corners, gradient fills, sparkline mini-bars), drop down to `<ChartFrame>` plus `<Bar>` with your own render prop.
+
+The chart auto-sizes to its parent via `ResizeObserver`, so the wrapping surface controls the width. The default class on the figure pins the chart to `aspect-video`.
+
+## Variations
+
+### Single series
+
+<div className="rounded-lg border p-6 not-prose">
+  <BarChartSinglePreview />
+</div>
+
+```tsx
+<BarChart
+  data={data}
+  config={{ revenue: { label: "Revenue", color: "var(--chart-1)" } }}
+  xKey="region"
+/>
 ```
-BarChart (figure)
-  ChartFrame (svg)
-    CartesianGrid (horizontal gridlines)
-    Bar (one per series, rects within each category band)
-    XAxis (category ticks)
-    YAxis (value ticks)
-  Table (sr-only data table)
+
+The default shape. Reach for a single bar series when comparing one metric across buckets.
+
+### Multi-series side by side
+
+<div className="rounded-lg border p-6 not-prose">
+  <BarChartPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+<BarChart data={data} config={config} xKey="month" />
 ```
 
-## Best practices
+For comparing two or three series within the same bucket. Bars from different series share the X tick by default; keep the series count short (two or three) before the bars get too thin to read.
 
-- **Keep series tight.** Two to four series read well; beyond that the
-  bands get crowded.
-- **Sort meaningfully.** Sort `data` by the dimension that aids
-  comparison (chronological, ranked) - the chart does not sort for you.
-- **Stick to tokens.** `var(--chart-1..5)` keeps the bars in theme.
+### Custom rectangle render
 
-## Reference
+```tsx
+import { ChartFrame, CartesianGrid, XAxis, YAxis, Bar } from "@gremorie/rx-data";
 
-- Angular source: `packages/ng-data/src/lib/charts/styled/bar-chart.ts`.
-- React source: `packages/rx-data/src/lib/bar-chart/bar-chart.tsx`.
-- Registry items: `https://gremorie.com/r/ng/ng-bar-chart.json` and
-  `https://gremorie.com/r/rx/rx-bar-chart.json`.
+export function RoundedBarChart({ data, config, xKey }) {
+  return (
+    <figure role="img" aria-label="Rounded bar chart">
+      <ChartFrame data={data} xKey={xKey} className="aspect-video w-full text-muted-foreground">
+        <CartesianGrid>{(lines) => /* custom grid */ null}</CartesianGrid>
+        {Object.entries(config).map(([key, entry]) => (
+          <Bar key={key} dataKey={key}>
+            {(rects) =>
+              rects.map((r, i) => (
+                <rect
+                  key={i}
+                  x={r.x}
+                  y={r.y}
+                  width={r.width}
+                  height={r.height}
+                  fill={entry.color}
+                  rx={6}
+                />
+              ))
+            }
+          </Bar>
+        ))}
+        <XAxis>{({ ticks, labelY }) => /* custom ticks */ null}</XAxis>
+        <YAxis>{({ ticks, labelX }) => /* custom ticks */ null}</YAxis>
+      </ChartFrame>
+    </figure>
+  );
+}
+```
+
+Drop down to headless when the surface needs different radii, gradient fills, or per-row coloring. The render prop hands you the rectangle positions so the engine still owns the math.
+
+## Accessibility
+
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Bar chart of Desktop, Mobile by month"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` carrying the same rows, columns, and labels. Screen readers navigate the data via native table commands.
+- **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
+- **Static rendering**: no animation by default, so users with `prefers-reduced-motion: reduce` are not penalized.
+- **No streaming UI**: charts do not implement a streaming append affordance. For live counts, throttle parent updates.
+
+## Related
+
+- [LineChart](/components/data/line-chart) - ordered domain when shape matters more than discrete comparison.
+- [AreaChart](/components/data/area-chart) - filled magnitude over an ordered domain.
+- [ScatterChart](/components/data/scatter-chart) - independent X plus Y when both axes are numeric.
