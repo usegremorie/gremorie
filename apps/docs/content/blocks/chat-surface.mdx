@@ -1,0 +1,162 @@
+---
+title: Chat surface
+description: "Conversation plus Message plus Reasoning plus PromptInput, fully composed. The flagship Gremorie AI surface."
+---
+
+## Overview
+
+A complete AI chat surface: a streaming conversation log with stick-to-bottom
+scrolling, user and assistant messages, an expandable reasoning
+collapsible, and a `PromptInput` composer at the bottom.
+
+This is the flagship Gremorie block. Wire it to the AI SDK or any
+streaming endpoint and you get a production-ready chat surface in a
+single import.
+
+## Preview
+
+<BlockPreview name="chat-surface" />
+
+## Anatomy
+
+The block composes:
+
+1. **Conversation / ConversationContent** - stick-to-bottom scroll log
+2. **Message (from "user")** - user turn with MessageContent
+3. **Reasoning + ReasoningTrigger + ReasoningContent** - collapsible thinking step
+4. **Message (from "assistant")** - assistant turn with markdown-ready MessageContent
+5. **PromptInput + PromptInputBody + PromptInputTextarea** - composer
+6. **PromptInputFooter + PromptInputTools + PromptInputSubmit** - actions row
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-chat-surface
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-chat-surface
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-chat-surface
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-chat-surface
+```
+
+</Tab>
+
+</Tabs>
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import {
+  Conversation,
+  ConversationContent,
+  Message,
+  MessageContent,
+  PromptInput,
+  PromptInputBody,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputTools,
+  Reasoning,
+  ReasoningContent,
+  ReasoningTrigger,
+} from "@gremorie/rx-ai";
+
+export function ChatSurface() {
+  return (
+    <div className="flex h-[560px] w-full flex-col overflow-hidden rounded-lg border bg-card">
+      <Conversation>
+        <ConversationContent className="px-4 py-6">
+          <Message from="user">
+            <MessageContent>What did the team ship this week?</MessageContent>
+          </Message>
+          <Message from="assistant">
+            <Reasoning isStreaming={false} duration={2}>
+              <ReasoningTrigger />
+              <ReasoningContent>
+                The user wants a quick weekly status summary. I'll group the
+                work into 3 buckets: shipped, in-flight, and blockers.
+              </ReasoningContent>
+            </Reasoning>
+            <MessageContent>{`Here is a quick weekly recap:
+
+**Shipped**
+- Auth flow with GitHub provider
+- Dashboard analytics widget
+
+**In flight**
+- Settings form (3 sections)
+- Empty state pattern`}</MessageContent>
+          </Message>
+        </ConversationContent>
+      </Conversation>
+      <div className="border-t bg-background p-3">
+        <PromptInput onSubmit={() => {}}>
+          <PromptInputBody>
+            <PromptInputTextarea placeholder="Ask anything..." />
+            <PromptInputFooter>
+              <PromptInputTools />
+              <PromptInputSubmit disabled />
+            </PromptInputFooter>
+          </PromptInputBody>
+        </PromptInput>
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customization
+
+- Wire `onSubmit` to the AI SDK's `sendMessage` or your streaming endpoint
+- Stream `Reasoning` content while `isStreaming` is true to get auto-collapse on completion
+- Add `PromptInputActionMenu` for slash commands or attachment buttons
+- Swap `MessageContent` for `MessageResponse` (Streamdown) when rendering server-streamed markdown
+
+## Related
+
+- [Conversation](/components/ai/conversation)
+- [Message](/components/ai/message)
+- [Reasoning](/components/ai/reasoning)
+- [Prompt Input](/components/ai/prompt-input)

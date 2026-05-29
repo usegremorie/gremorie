@@ -1,0 +1,177 @@
+---
+title: Sign-in
+description: "Authentication card with GitHub provider plus email and password. Drop into the auth route and wire to your backend."
+---
+
+## Overview
+
+A focused sign-in surface composed from `Card`, `Button`, `Separator`,
+`Label`, and `Input`. The card frames a social-provider button above a
+divider and an email/password field group, with a primary submit and a
+sign-up link in the footer.
+
+Use this block as the starting point for any auth route. Swap the
+GitHub button for any OAuth provider, or stack multiple providers above
+the divider.
+
+## Preview
+
+<BlockPreview name="sign-in" />
+
+## Anatomy
+
+The block composes:
+
+1. **Card** - frame with header, content, and footer
+2. **CardTitle / CardDescription** - welcome line and subtitle
+3. **Button (outline)** - GitHub provider with `lucide-react` icon
+4. **Separator** - horizontal rule with "or" label
+5. **Label + Input** - email and password fields with native autocomplete hints
+6. **Button (default)** - submit action, full width
+7. **Anchor** - "Create one" sign-up link in the footer
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+</Tabs>
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Separator,
+} from "@gremorie/rx-display";
+import { Button, Input, Label } from "@gremorie/rx-forms";
+import { Github } from "lucide-react";
+
+export function SignIn() {
+  return (
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Welcome back</CardTitle>
+        <CardDescription>Sign in to your Gremorie account</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Button variant="outline" className="w-full">
+          <Github aria-hidden="true" />
+          Continue with GitHub
+        </Button>
+        <div className="relative flex items-center">
+          <Separator className="flex-1" />
+          <span className="mx-3 text-xs uppercase tracking-wider text-muted-foreground">
+            or
+          </span>
+          <Separator className="flex-1" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="signin-email">Email</Label>
+          <Input
+            id="signin-email"
+            type="email"
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="signin-password">Password</Label>
+            <a
+              href="#"
+              className="text-xs text-muted-foreground underline-offset-4 hover:underline"
+            >
+              Forgot password?
+            </a>
+          </div>
+          <Input
+            id="signin-password"
+            type="password"
+            autoComplete="current-password"
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-3">
+        <Button className="w-full">Sign in</Button>
+        <p className="text-center text-xs text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <a
+            href="#"
+            className="text-foreground underline-offset-4 hover:underline"
+          >
+            Create one
+          </a>
+        </p>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customization
+
+- Stack additional OAuth providers above the divider (Google, GitLab, SSO)
+- Swap the GitHub button for a passkey button when WebAuthn is wired
+- Add a "Remember me" checkbox between the password field and the submit
+- Replace the anchors with a router link from your framework (Next.js, TanStack)
+
+## Related
+
+- [Button](/components/forms/button)
+- [Card](/components/display/card)
+- [Input](/components/forms/input)

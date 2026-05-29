@@ -3,5 +3,13 @@
   "title": "Blocks",
   "description": "Production-ready compositions",
   "icon": "LayoutGrid",
-  "pages": ["overview"]
+  "pages": [
+    "overview",
+    "sign-in",
+    "dashboard",
+    "chat-surface",
+    "settings-form",
+    "marketing-hero",
+    "empty-state"
+  ]
 }

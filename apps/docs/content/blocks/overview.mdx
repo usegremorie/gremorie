@@ -37,65 +37,18 @@ version through `registryDependencies`.
 
 ## Featured blocks
 
-The first wave of blocks lands in Phase 5. Each carries an anchor below
-so the [CLI](/platform/cli) and MCP server can deep-link to it.
+The first wave of blocks is shipping. Each page below carries a live
+preview, the full source, an install command, and a customization
+guide.
 
-<div id="sign-in" />
-
-### Sign-in
-
-Email and password card with an OAuth slot for social providers.
-Includes inline validation, error states, and a "remember me" toggle.
-
-<Callout type="info">Status: planned.</Callout>
-
-<div id="dashboard" />
-
-### Dashboard
-
-Sidebar plus KPI grid plus chart strip plus recent-activity table.
-Wired to TanStack Query for data; works in App Router and Pages
-Router.
-
-<Callout type="info">Status: planned.</Callout>
-
-<div id="chat-surface" />
-
-### Chat surface
-
-`Conversation` + `Message` + `PromptInput`, fully wired to the AI SDK.
-Streaming responses, tool-call rendering, attachments, model picker.
-This is the flagship Gremorie block.
-
-<Callout type="info">Status: planned.</Callout>
-
-<div id="settings" />
-
-### Settings form
-
-Multi-section settings form with a sticky save bar, validation, and
-optimistic updates. Sections are slot-based so consumers add their own
-fields.
-
-<Callout type="info">Status: planned.</Callout>
-
-<div id="marketing" />
-
-### Marketing hero
-
-Hero with CTA, feature grid, social proof. Pure layout block; consumes
-only `Button`, `Card`, `Badge`, and tokens.
-
-<Callout type="info">Status: planned.</Callout>
-
-<div id="empty-state" />
-
-### Empty state
-
-No data, no results, error, permission denied. One block, four
-variants. Each ships with a sensible default icon and an action slot.
-
-<Callout type="info">Status: planned.</Callout>
+<Cards>
+  <Card href="/blocks/sign-in" title="Sign-in" description="Authentication card with GitHub provider plus email and password." />
+  <Card href="/blocks/dashboard" title="Dashboard" description="KPI grid plus chart strip plus transactions table." />
+  <Card href="/blocks/chat-surface" title="Chat surface" description="Conversation plus Message plus Reasoning plus PromptInput, fully composed." />
+  <Card href="/blocks/settings-form" title="Settings form" description="Profile plus Notifications plus Appearance with a sticky save bar." />
+  <Card href="/blocks/marketing-hero" title="Marketing hero" description="Brand-tinted halo, badge, headline, dual CTA, and a window mockup." />
+  <Card href="/blocks/empty-state" title="Empty state" description="Dashed container, centered icon, headline, description, and dual CTA." />
+</Cards>
 
 ## Next
 
