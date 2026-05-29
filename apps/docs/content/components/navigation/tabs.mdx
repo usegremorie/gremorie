@@ -1,61 +1,58 @@
 ---
 title: Tabs
-description: Sibling content panels that share a context.
+description: "Sibling content panels that share a context. Pill or line variant, horizontal or vertical, with full keyboard navigation."
 ---
 
 import { TabsPreview } from "@/components/preview/navigation/navigation";
+import { Tabs as RxTabs, TabsList, TabsTrigger, TabsContent } from "@gremorie/rx-navigation";
+
+## Overview
+
+`Tabs` is the canonical sibling-content switcher: one container, several mutually exclusive views inside it. Built on Radix Tabs, it ships two list looks via the `variant` prop on `TabsList` - a pill `default` (rounded background) and a minimal `line` (single underline on the active trigger).
+
+Reach for Tabs when **the views live in the same scope** - Profile / Billing / API keys, or Code / Preview for a single example. For cross-section navigation (different pages, different areas of an app), use [NavigationMenu](/components/navigation/navigation-menu) or [Sidebar](/components/navigation/sidebar) instead. For filters that combine, use ToggleGroup.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <TabsPreview />
 </div>
 
+## Installation
 
-`Tabs` is the canonical sibling-content switcher: profile sections,
-settings categories, form steps. Built on Radix Tabs - full keyboard
-navigation (arrow keys), focus management, and ARIA semantics.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Tabs lands in a follow-up rev.
+npx gremorie@latest add rx-tabs
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-tabs
+pnpm dlx gremorie@latest add rx-tabs
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-tabs
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-tabs
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   Tabs,
-  TabsContent,
   TabsList,
   TabsTrigger,
+  TabsContent,
 } from "@gremorie/rx-navigation";
 
 export function AccountTabs() {
@@ -73,29 +70,171 @@ export function AccountTabs() {
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Tabs>`
+
+Root container. Wraps Radix `Tabs.Root`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `defaultValue` | `string` | - | Uncontrolled initial active tab. |
+| `value` | `string` | - | Controlled active tab. |
+| `onValueChange` | `(value: string) => void` | - | Fires when the active tab changes. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Affects keyboard navigation and layout. Vertical lays the list and panel side-by-side. |
+| `dir` | `"ltr" \| "rtl"` | `"ltr"` | Reading direction for arrow-key navigation. |
+| `activationMode` | `"automatic" \| "manual"` | `"automatic"` | `"automatic"` activates a tab on focus; `"manual"` requires Enter or Space. |
+
+### `<TabsList>`
+
+Container for the triggers. Wraps Radix `Tabs.List`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "line"` | `"default"` | `"default"` is a pill list with a rounded muted background. `"line"` is transparent with a single bottom underline on the active trigger. |
+| `loop` | `boolean` | `true` | Whether keyboard focus loops at the ends. |
+
+### `<TabsTrigger>`
+
+The clickable tab. Wraps Radix `Tabs.Trigger`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | - | Required. Matches the corresponding `<TabsContent>` value. |
+| `disabled` | `boolean` | `false` | Disables this trigger. |
+
+### `<TabsContent>`
+
+The panel revealed when its trigger is active. Wraps Radix `Tabs.Content`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | - | Required. Matches a `<TabsTrigger>` value. |
+| `forceMount` | `boolean` | `false` | Force the panel into the DOM even when inactive (useful for animations). |
+
+## Composition
+
+1. **`<Tabs>`** owns the active value (controlled or uncontrolled).
+2. **`<TabsList>`** wraps the triggers. The `variant` prop lives here, not on Root.
+3. **One or more `<TabsTrigger>`** with unique `value` props go inside the list.
+4. **`<TabsContent>` panels** are siblings of the list (not inside it), each with a `value` that matches a trigger.
+
+Render triggers inside `<TabsList>` only - placing them outside breaks the keyboard navigation contract.
+
+## Variations
+
+### Pill list (default)
+
+<div className="rounded-lg border p-6 not-prose">
+  <RxTabs defaultValue="profile">
+    <TabsList>
+      <TabsTrigger value="profile">Profile</TabsTrigger>
+      <TabsTrigger value="billing">Billing</TabsTrigger>
+      <TabsTrigger value="api">API keys</TabsTrigger>
+    </TabsList>
+    <TabsContent value="profile" className="mt-4 text-sm text-muted-foreground">Profile fields...</TabsContent>
+    <TabsContent value="billing" className="mt-4 text-sm text-muted-foreground">Billing details...</TabsContent>
+    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">API keys list...</TabsContent>
+  </RxTabs>
+</div>
+
+```tsx
+<Tabs defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+    <TabsTrigger value="api">API keys</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">Profile fields...</TabsContent>
+  <TabsContent value="billing">Billing details...</TabsContent>
+  <TabsContent value="api">API keys list...</TabsContent>
+</Tabs>
 ```
-Tabs [defaultValue] [value] [onValueChange] [orientation]
-  TabsList
-    TabsTrigger [value]
-  TabsContent [value]
+
+Use when tabs sit inside a card or panel and need a clear, contained look.
+
+### Line list
+
+<div className="rounded-lg border p-6 not-prose">
+  <RxTabs defaultValue="overview">
+    <TabsList variant="line">
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="usage">Usage</TabsTrigger>
+      <TabsTrigger value="api">API</TabsTrigger>
+    </TabsList>
+    <TabsContent value="overview" className="mt-4 text-sm text-muted-foreground">High-level summary.</TabsContent>
+    <TabsContent value="usage" className="mt-4 text-sm text-muted-foreground">Code patterns.</TabsContent>
+    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">Prop tables.</TabsContent>
+  </RxTabs>
+</div>
+
+```tsx
+<Tabs defaultValue="overview">
+  <TabsList variant="line">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="usage">Usage</TabsTrigger>
+    <TabsTrigger value="api">API</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">High-level summary.</TabsContent>
+  <TabsContent value="usage">Code patterns.</TabsContent>
+  <TabsContent value="api">Prop tables.</TabsContent>
+</Tabs>
 ```
 
-## Best practices
+Use for page-level tabs where the surrounding chrome is already heavy and a pill would compete visually.
 
-- **Always render `TabsTrigger` inside `TabsList`.** Triggers placed
-  outside the list lose keyboard navigation semantics.
-- **Use 2-6 tabs.** Above that, consider a Sidebar or a Select.
-- **Match label tone.** All single nouns ("Profile", "Billing") or all
-  short verbs ("View", "Edit") - mixing types reads inconsistent.
+### Vertical orientation
 
-## Reference
+```tsx
+<Tabs defaultValue="account" orientation="vertical" className="flex-row">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="security">Security</TabsTrigger>
+    <TabsTrigger value="notifications">Notifications</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">...</TabsContent>
+  <TabsContent value="security">...</TabsContent>
+  <TabsContent value="notifications">...</TabsContent>
+</Tabs>
+```
 
-- React source: `packages/rx-navigation/src/lib/tabs/tabs.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-tabs.json`.
+Use for in-panel settings menus. Arrow Up / Down navigate between triggers when `orientation="vertical"`.
+
+### Controlled value
+
+```tsx
+const [tab, setTab] = useState("profile");
+
+<Tabs value={tab} onValueChange={setTab}>
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">...</TabsContent>
+  <TabsContent value="billing">...</TabsContent>
+</Tabs>
+```
+
+Use when the active tab must sync with URL state, a router, or a form wizard.
+
+## Accessibility
+
+- **WAI-ARIA Tabs pattern**: the list renders as `role="tablist"`, each trigger as `role="tab"` with `aria-selected` and `aria-controls`, each panel as `role="tabpanel"` with `aria-labelledby`.
+- **Keyboard**: `Tab` enters the list and lands on the active trigger; `ArrowLeft` / `ArrowRight` (or `ArrowUp` / `ArrowDown` when vertical) navigate between triggers; `Home` / `End` jump to first / last; `Tab` again leaves the list and lands on the active panel.
+- **Activation mode**: with `activationMode="automatic"` (default), focusing a trigger activates its panel. Set `activationMode="manual"` when panels carry heavy content and you want users to press `Enter` or `Space` to commit.
+- **Disabled triggers**: render with `aria-disabled="true"` and are skipped by arrow-key navigation.
+- **Focus visible**: the active trigger keeps a visible focus ring; the panel itself uses `outline-none` and relies on its children to manage focus.
+
+## Related
+
+- [NavigationMenu](/components/navigation/navigation-menu) - cross-section navigation with rich panels, not sibling content.
+- [Sidebar](/components/navigation/sidebar) - app-shell navigation across many areas.
+- [ToggleGroup](/components/forms/toggle-group) - mutually exclusive choices that aren't view containers.
