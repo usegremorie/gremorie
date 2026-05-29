@@ -1,18 +1,10 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/solar.css";
 @import "fumadocs-ui/css/preset.css";
-@import "../../../packages/ng-core/styles/theme.css";
+@import "@gremorie/rx-core/styles/globals.css";
 
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
-@source "../../../packages/rx-ai/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-forms/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-overlays/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-display/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-feedback/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-navigation/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-containers/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-data/src/**/*.{ts,tsx}";
-@source "../../../packages/rx-core/src/**/*.{ts,tsx}";
+@source "../../../packages/rx-*/src/**/*.{ts,tsx}";
 
 /* ---------------------------------------------------------------- *\
  * Customizations (intentionally minimal).

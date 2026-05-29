@@ -9,7 +9,7 @@ import {
 import { cn } from "@gremorie/rx-core";
 import { BrainIcon, ChevronDownIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
-import { createContext, memo, useContext, useEffect, useState } from "react";
+import { createContext, memo, useContext, useEffect, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
 import { Shimmer } from "../shimmer";
 
@@ -65,6 +65,21 @@ export const Reasoning = memo(
     const [hasAutoClosed, setHasAutoClosed] = useState(false);
     const [startTime, setStartTime] = useState<number | null>(null);
 
+    /*
+     * useControllableState returns a new `setIsOpen` / `setDuration`
+     * reference on every render. Putting those setters in a useEffect
+     * dependency array causes the effect to re-run every render, which
+     * with the auto-close timer manifests as "Maximum update depth
+     * exceeded". Capture the latest setters in refs and keep the
+     * effects subscribed only to the values that actually drive them.
+     */
+    const setIsOpenRef = useRef(setIsOpen);
+    const setDurationRef = useRef(setDuration);
+    useEffect(() => {
+      setIsOpenRef.current = setIsOpen;
+      setDurationRef.current = setDuration;
+    });
+
     // Track duration when streaming starts and ends
     useEffect(() => {
       if (isStreaming) {
@@ -72,24 +87,26 @@ export const Reasoning = memo(
           setStartTime(Date.now());
         }
       } else if (startTime !== null) {
-        setDuration(Math.ceil((Date.now() - startTime) / MS_IN_S));
+        setDurationRef.current(
+          Math.ceil((Date.now() - startTime) / MS_IN_S)
+        );
         setStartTime(null);
       }
-    }, [isStreaming, startTime, setDuration]);
+    }, [isStreaming, startTime]);
 
     // Auto-open when streaming starts, auto-close when streaming ends (once only)
     useEffect(() => {
       if (defaultOpen && !isStreaming && isOpen && !hasAutoClosed) {
         // Add a small delay before closing to allow user to see the content
         const timer = setTimeout(() => {
-          setIsOpen(false);
+          setIsOpenRef.current(false);
           setHasAutoClosed(true);
         }, AUTO_CLOSE_DELAY);
 
         return () => clearTimeout(timer);
       }
       return undefined;
-    }, [isStreaming, isOpen, defaultOpen, setIsOpen, hasAutoClosed]);
+    }, [isStreaming, isOpen, defaultOpen, hasAutoClosed]);
 
     const handleOpenChange = (newOpen: boolean) => {
       setIsOpen(newOpen);

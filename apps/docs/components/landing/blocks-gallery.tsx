@@ -9,42 +9,53 @@ import {
   CardTitle,
 } from "@gremorie/rx-display";
 
+/**
+ * Each block cycles through chart-1..5 (with chart-1 reused for the 6th).
+ * Accent is rendered inline via color-mix so we stay token-driven and
+ * theme-aware (chart tokens already remap between light and dark).
+ */
 const blocks = [
   {
     name: "Sign-in",
     category: "Auth",
     description: "Email and password card with OAuth slot.",
-    accent: "from-sky-500/15",
+    href: "/blocks/overview#sign-in",
+    chart: "var(--chart-1)",
   },
   {
     name: "Dashboard",
     category: "Shell",
     description: "Sidebar + KPI grid + chart + recent activity.",
-    accent: "from-violet-500/15",
+    href: "/blocks/overview#dashboard",
+    chart: "var(--chart-2)",
   },
   {
     name: "Chat surface",
     category: "AI",
     description: "Conversation + Message + PromptInput, fully wired.",
-    accent: "from-emerald-500/15",
+    href: "/blocks/overview#chat-surface",
+    chart: "var(--chart-3)",
   },
   {
     name: "Settings form",
     category: "Forms",
     description: "Multi-section form with save bar and validation.",
-    accent: "from-amber-500/15",
+    href: "/blocks/overview#settings",
+    chart: "var(--chart-4)",
   },
   {
     name: "Marketing hero",
     category: "Marketing",
     description: "Hero with CTA, feature grid, social proof.",
-    accent: "from-rose-500/15",
+    href: "/blocks/overview#marketing",
+    chart: "var(--chart-5)",
   },
   {
     name: "Empty state",
     category: "Patterns",
     description: "No data, no results, error, permission denied.",
-    accent: "from-fuchsia-500/15",
+    href: "/blocks/overview#empty-state",
+    chart: "var(--chart-1)",
   },
 ];
 
@@ -78,12 +89,15 @@ export function BlocksGallery() {
           {blocks.map((block) => (
             <Link
               key={block.name}
-              href="/blocks/overview"
+              href={block.href}
               className="group block"
             >
               <Card className="relative h-44 justify-between gap-0 overflow-hidden py-5 transition-all group-hover:border-primary/40 group-hover:shadow-sm">
                 <div
-                  className={`absolute inset-0 -z-10 bg-gradient-to-br ${block.accent} to-transparent opacity-60`}
+                  className="absolute inset-0 -z-10 opacity-60"
+                  style={{
+                    background: `linear-gradient(to bottom right, color-mix(in oklch, ${block.chart} 15%, transparent), transparent, transparent)`,
+                  }}
                   aria-hidden="true"
                 />
                 <CardHeader className="flex flex-row items-start justify-between gap-2">

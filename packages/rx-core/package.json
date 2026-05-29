@@ -17,9 +17,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./styles/globals.css": "./src/styles/globals.css"
   },
-  "files": ["dist", "README.md"],
+  "files": ["dist", "src/styles", "README.md"],
   "dependencies": {
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.6.0",

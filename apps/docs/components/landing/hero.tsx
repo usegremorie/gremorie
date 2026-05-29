@@ -17,7 +17,7 @@ export function Hero() {
           <div className="flex flex-col gap-6">
             <Badge variant="secondary" className="w-fit gap-2 py-1">
               <span
-                className="size-1.5 rounded-full bg-emerald-500"
+                className="size-1.5 rounded-full bg-success"
                 aria-hidden="true"
               />
               AI-native design system, in development
@@ -73,13 +73,22 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column: live demo (decorative, hidden from assistive tech).
-              Use `inert` (not just aria-hidden) so descendant buttons/textarea
-              are removed from the tab order entirely. WCAG 4.1.2 fix. */}
+          {/*
+            Right column: live demo (decorative, hidden from assistive tech).
+            Use `inert` (not just aria-hidden) so descendant buttons/textarea
+            are removed from the tab order entirely. WCAG 4.1.2 fix.
+
+            In React 19 `inert` is a first-class boolean prop on HTMLAttributes,
+            so we pass it natively. Previously this was cast as
+            Record<string, string> with `inert: ""`, which made the server
+            render `inert=""` while React 19 normalized the client-side prop
+            to a boolean attribute — the resulting attribute mismatch was the
+            root of the hero hydration warning in production.
+          */}
           <div
             className="relative"
             aria-hidden="true"
-            {...({ inert: "" } as Record<string, string>)}
+            inert
           >
             <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/10 via-transparent to-transparent blur-2xl" />
             <HeroDemo />
