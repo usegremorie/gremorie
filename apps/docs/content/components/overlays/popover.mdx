@@ -1,128 +1,208 @@
 ---
 title: Popover
-description: Anchored interactive content overlay - built on Radix Popover.
+description: "Anchored, click-driven overlay for interactive contextual content. Built on Radix Popover."
 ---
 
 import { PopoverPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`Popover` is the right primitive for anchored content that responds to an intentional click: date pickers, color pickers, mini forms, share menus, share/like inline actions. It is distinct from `Tooltip` (hover-only, text-only, never interactive) and `HoverCard` (hover-only previews of non-critical content). When the content is too long or warrants blocking the page, escalate to `Dialog` or `Sheet`.
+
+The default surface is `w-72`, padded `p-4`, with a Radix-driven transform-origin so the open animation feels anchored to the trigger.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <PopoverPreview />
 </div>
 
+## Installation
 
-`Popover` triggers on click (intentional) and hosts **interactive
-content** - date pickers, color pickers, mini forms, command
-palettes, share menus.
-
-It is distinct from `Tooltip` (hover-only, simple text label, never
-interactive) and `HoverCard` (hover-only previews of non-critical
-content). When the content is too long for a popover or warrants
-blocking the page, escalate to `Dialog` or `Sheet`.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Popover lands in a follow-up rev.
+npx gremorie@latest add rx-popover
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-popover
+pnpm dlx gremorie@latest add rx-popover
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-popover
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-popover
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import { Button, Input, Label } from "@gremorie/rx-forms";
+import { Button } from "@gremorie/rx-forms";
 import {
   Popover,
   PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
   PopoverTrigger,
 } from "@gremorie/rx-overlays";
 
-export function DimensionsPopover() {
+export function Example() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">Dimensions</Button>
+        <Button variant="outline">Open</Button>
       </PopoverTrigger>
-      <PopoverContent align="start">
-        <PopoverHeader>
-          <PopoverTitle>Dimensions</PopoverTitle>
-          <PopoverDescription>
-            Resize the artboard. Units are in pixels.
-          </PopoverDescription>
-        </PopoverHeader>
-        <div className="grid gap-2 pt-3">
-          <div className="grid grid-cols-3 items-center gap-2">
-            <Label htmlFor="w">Width</Label>
-            <Input id="w" className="col-span-2 h-8" />
-          </div>
-          <div className="grid grid-cols-3 items-center gap-2">
-            <Label htmlFor="h">Height</Label>
-            <Input id="h" className="col-span-2 h-8" />
-          </div>
-        </div>
+      <PopoverContent>
+        <p className="text-sm">Anchored interactive content.</p>
       </PopoverContent>
     </Popover>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Popover>`
+
+Extends Radix `Popover.Root`. Notable props:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
+| `modal` | `boolean` | `false` | When `true`, locks body scroll and outside interaction. |
+
+### `<PopoverTrigger>`
+
+Extends Radix `Popover.Trigger`. Pair with `asChild` to forward styles to a `Button` or any custom trigger.
+
+### `<PopoverContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger axis. |
+| `sideOffset` | `number` | `4` | Pixel gap between trigger and content. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side; flips automatically when there is no room. |
+| `alignOffset` | `number` | `0` | Offset along the alignment axis. |
+| `avoidCollisions` | `boolean` | `true` | Auto-reposition to stay in the viewport. |
+| `collisionPadding` | `number \| object` | `0` | Distance from viewport edges to maintain. |
+
+Wrapped in a Radix `Portal`. All other Radix `Popover.Content` props are forwarded.
+
+### `<PopoverAnchor>`
+
+Optional. Anchors the content to an element different from the trigger. Useful when the visual anchor and the click target are not the same element.
+
+```tsx
+<Popover>
+  <PopoverAnchor asChild>
+    <span>Visual anchor</span>
+  </PopoverAnchor>
+  <PopoverTrigger asChild>
+    <Button>Click me</Button>
+  </PopoverTrigger>
+  <PopoverContent>Anchored to the span, not the button.</PopoverContent>
+</Popover>
 ```
-Popover
-  PopoverTrigger (asChild = wraps a Button)
-  PopoverAnchor                          (optional, separate anchor element)
-  PopoverContent [align, sideOffset]
-    PopoverHeader
-      PopoverTitle
-      PopoverDescription
-    {your body}
+
+### `<PopoverHeader>`, `<PopoverTitle>`, `<PopoverDescription>`
+
+Optional layout helpers. Header stacks title and description; title is `font-medium`; description is `text-muted-foreground`.
+
+## Composition
+
+1. **`<Popover>`** owns the open/close state.
+2. **`<PopoverTrigger asChild>`** wraps the focusable element that opens it.
+3. **`<PopoverContent>`** mounts via Portal, anchored to the trigger (or `PopoverAnchor`).
+4. **Inside content**: any interactive UI - forms, command lists, color pickers, sliders.
+5. **Dismissal**: click outside, press `Esc`, or close programmatically.
+
+## Variations
+
+### Settings popover
+
+Mini form with header. Stays open while the user toggles preferences.
+
+```tsx
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Quick settings</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle>Quick settings</PopoverTitle>
+      <PopoverDescription>Tweak preferences for this session.</PopoverDescription>
+    </PopoverHeader>
+    <div className="mt-3 flex flex-col gap-3">
+      <Field>
+        <FieldLabel htmlFor="theme">Theme</FieldLabel>
+        <Select id="theme" defaultValue="system">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System</option>
+        </Select>
+      </Field>
+    </div>
+  </PopoverContent>
+</Popover>
 ```
 
-## Best practices
+### Aligned to trigger end
 
-- **Reserve Popover for interactive content.** A short label is a
-  `Tooltip`. A non-interactive preview is a `HoverCard`.
-- **Use `PopoverAnchor` for detached anchors.** When the trigger and
-  the anchor are different elements (e.g. icon button triggers, but
-  popover should attach to the field).
-- **Pick `align` based on the layout.** `start` anchors the popover
-  edge with the trigger edge; `center` is the Radix default.
+Right-align the popover under a toolbar icon so it doesn't overflow the viewport.
 
-## Reference
+```tsx
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="More">
+      <MoreHorizontalIcon />
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent align="end" sideOffset={8}>
+    {/* menu content */}
+  </PopoverContent>
+</Popover>
+```
 
-- React source: `packages/rx-overlays/src/lib/popover/popover.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-popover.json`.
+### With custom anchor
+
+Use `PopoverAnchor` to decouple the visual anchor from the click target (common in selection-driven UIs where a highlighted range opens the popover).
+
+```tsx
+<Popover open={open} onOpenChange={setOpen}>
+  <PopoverAnchor virtualRef={selectionRef} />
+  <PopoverContent>Formatting toolbar</PopoverContent>
+</Popover>
+```
+
+## Accessibility
+
+- **Role**: `role="dialog"` for the content (Radix default).
+- **Keyboard**: `Esc` closes; `Tab` cycles focus within the content; click outside closes (configurable).
+- **Focus management**: focus moves into the content on open and returns to the trigger on close.
+- **Outside click**: closes by default. Disable via `onInteractOutside` if the popover must persist.
+- **`aria-expanded`**: set on the trigger automatically; `aria-controls` links to the content id.
+- **Reduced motion**: open/close animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Tooltip](/components/overlays/tooltip) - hover-only, non-interactive text label.
+- [Hover Card](/components/overlays/hover-card) - hover-only rich preview, non-interactive.
+- [Dropdown Menu](/components/overlays/dropdown-menu) - menu-semantics popover with arrow navigation.
+- [Dialog](/components/overlays/dialog) - blocking modal when content is too large or critical.

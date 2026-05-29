@@ -1,102 +1,196 @@
 ---
 title: Hover Card
-description: Non-interactive preview pane shown on hover - built on Radix HoverCard.
+description: "Hover-triggered preview pane for non-critical rich content. Built on Radix HoverCard."
 ---
 
 import { HoverCardPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`HoverCard` shows a rich preview when the user hovers an anchor (link, name, abbreviation). Use it for content the user can fully open with a click but might want a glance at first: user profile cards on `@mentions`, link previews, document or image teasers.
+
+Never put critical information or interactive controls inside a `HoverCard`. Hover is unreliable (touch users don't have it; keyboard users only see the card while focus holds) and the preview is supposed to be non-essential. Interactive content belongs in a `Popover`; simple text labels belong in a `Tooltip`.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <HoverCardPreview />
 </div>
 
+## Installation
 
-`HoverCard` is the preview pane shown on hover. Use it to **preview**
-content the user can fully open with a click - user profile cards on
-`@mentions`, link previews, image teasers, attachment previews.
-
-Hover is discoverable but optional; touch users will not trigger it.
-Never put critical info or interactive controls inside a HoverCard -
-those belong in a Popover (click-driven, intentional).
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular HoverCard lands in a follow-up rev.
+npx gremorie@latest add rx-hover-card
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-hover-card
+pnpm dlx gremorie@latest add rx-hover-card
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-hover-card
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-hover-card
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
+import { Button } from "@gremorie/rx-forms";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@gremorie/rx-overlays";
 
-export function UserMention({ username }: { username: string }) {
+export function Example() {
   return (
-    <HoverCard openDelay={150}>
-      <HoverCardTrigger className="font-medium underline">
-        @{username}
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <Button variant="link">@gremorie</Button>
       </HoverCardTrigger>
       <HoverCardContent>
-        <div className="flex justify-between space-x-4">
-          <div className="space-y-1">
-            <h4 className="text-sm font-semibold">{username}</h4>
-            <p className="text-sm text-muted-foreground">
-              Designer at Acme Corp.
-            </p>
-          </div>
+        <div className="text-sm">
+          <strong>Gremorie</strong>
+          <p className="mt-1 text-muted-foreground">
+            AI-native design system. Registry + MCP first.
+          </p>
         </div>
       </HoverCardContent>
     </HoverCard>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Best practices
+## API
 
-- **Preview-only.** Don't put buttons or links inside `HoverCardContent`
-  - touch users cannot reach them. Use `Popover` instead.
-- **Tune `openDelay`.** Defaults are 700ms (open) and 300ms (close);
-  override per use case. For PromptInput attachment previews, 0ms feels
-  immediate.
-- **Always provide a click path.** The HoverCard previews; clicking the
-  trigger should open the full content.
+### `<HoverCard>`
 
-## Reference
+Extends Radix `HoverCard.Root`. Notable props:
 
-- React source: `packages/rx-overlays/src/lib/hover-card/hover-card.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-hover-card.json`.
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
+| `openDelay` | `number` | `700` | Delay in milliseconds before opening on hover. |
+| `closeDelay` | `number` | `300` | Delay in milliseconds before closing after the pointer leaves. |
+
+### `<HoverCardTrigger>`
+
+Extends Radix `HoverCard.Trigger`. Pair with `asChild` to forward styles to a link, button, or any inline anchor.
+
+### `<HoverCardContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger axis. |
+| `sideOffset` | `number` | `4` | Pixel gap between trigger and content. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side; flips automatically when there is no room. |
+
+Default surface is `w-64`, padded `p-4`. Wrapped in a Radix `Portal`. All other Radix `HoverCard.Content` props are forwarded.
+
+## Composition
+
+1. **`<HoverCard>`** owns hover state. Tune timing with `openDelay` / `closeDelay`.
+2. **`<HoverCardTrigger asChild>`** wraps the anchor element (typically an inline link or a name).
+3. **`<HoverCardContent>`** mounts via Portal, anchored to the trigger, fades and zooms in.
+4. **Inside content**: any non-interactive preview - avatar + bio, image teaser, doc snippet.
+
+## Variations
+
+### User profile preview
+
+The classic `@mention` hover card. Triggered by hovering a link to the user's profile.
+
+```tsx
+<HoverCard>
+  <HoverCardTrigger asChild>
+    <a href="/users/kalvner" className="font-medium underline">
+      @kalvner
+    </a>
+  </HoverCardTrigger>
+  <HoverCardContent className="w-72">
+    <div className="flex gap-3">
+      <Avatar>
+        <AvatarImage src="/avatars/kalvner.png" />
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+      <div className="space-y-1">
+        <h4 className="text-sm font-semibold">Bruno Kalvner</h4>
+        <p className="text-xs text-muted-foreground">
+          Designer and engineer. Maintains Gremorie.
+        </p>
+      </div>
+    </div>
+  </HoverCardContent>
+</HoverCard>
+```
+
+### Link preview
+
+Show metadata for an external link before the user clicks through.
+
+```tsx
+<HoverCard openDelay={400}>
+  <HoverCardTrigger asChild>
+    <a href="https://gremorie.com" className="underline">
+      gremorie.com
+    </a>
+  </HoverCardTrigger>
+  <HoverCardContent>
+    <h4 className="text-sm font-semibold">Gremorie</h4>
+    <p className="text-xs text-muted-foreground">
+      Registry-driven, MCP-first design system for React and Angular.
+    </p>
+  </HoverCardContent>
+</HoverCard>
+```
+
+### Quick image teaser
+
+Use to peek media before committing to a full-screen viewer.
+
+```tsx
+<HoverCard openDelay={200} closeDelay={100}>
+  <HoverCardTrigger asChild>
+    <button>Preview thumbnail</button>
+  </HoverCardTrigger>
+  <HoverCardContent className="w-80 p-2">
+    <img src="/teaser.jpg" alt="Teaser" className="rounded-md" />
+  </HoverCardContent>
+</HoverCard>
+```
+
+## Accessibility
+
+- **Trigger**: pointer hover and keyboard focus both open the card.
+- **Keyboard**: focusing the trigger opens it; blurring closes it; `Esc` closes when focus is inside.
+- **Not for critical content**: touch users may never see the card. Keep the content supplementary.
+- **`aria-controls`** is wired automatically between trigger and content.
+- **No focus trap**: pointer can leave naturally; closing returns nothing because the trigger never lost focus by default.
+- **Reduced motion**: open/close animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Popover](/components/overlays/popover) - click-driven, interactive overlay.
+- [Tooltip](/components/overlays/tooltip) - hover-only text label for icons and shortcuts.
+- [Dialog](/components/overlays/dialog) - centered modal for full-focus flows.

@@ -1,62 +1,54 @@
 ---
 title: Tooltip
-description: Short non-essential context on hover/focus - built on Radix Tooltip.
+description: "Short non-essential context shown on hover and keyboard focus. Built on Radix Tooltip with a built-in arrow."
 ---
 
 import { TooltipPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`Tooltip` is for non-critical supporting information: keyboard shortcuts, icon-button labels, "what does this do" hints. Always wrap your application root in a single `TooltipProvider` so every tooltip shares a delay timer and they don't pop in and out of sync.
+
+Tooltips are not for critical information. Touch users may not be able to trigger them; keyboard users only see one while the trigger holds focus. If the user must read it, render it visibly in the layout. For rich previews, use `HoverCard`. For interactive content, use `Popover`.
+
+The `TooltipContent` renders its own arrow automatically.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <TooltipPreview />
 </div>
 
+## Installation
 
-`Tooltip` is for **non-critical supporting information** - keyboard
-shortcuts, icon labels, "what does this control do" hints. Touch
-users may not be able to trigger a tooltip; keyboard users only see
-one when the trigger holds focus. Critical info belongs visibly in
-the layout, not behind a hover.
-
-Always wrap your application root in `<TooltipProvider>` so all
-tooltips share a single delay timer and don't pop in/out of sync.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Tooltip lands in a follow-up rev.
+npx gremorie@latest add rx-tooltip
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-tooltip
+pnpm dlx gremorie@latest add rx-tooltip
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-tooltip
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-tooltip
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import { CopyIcon } from "lucide-react";
 import { Button } from "@gremorie/rx-forms";
 import {
   Tooltip,
@@ -65,46 +57,154 @@ import {
   TooltipTrigger,
 } from "@gremorie/rx-overlays";
 
-export function CopyButton() {
+export function Example() {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Copy">
-            <CopyIcon />
-          </Button>
+          <Button variant="outline">Hover me</Button>
         </TooltipTrigger>
-        <TooltipContent>Copy to clipboard</TooltipContent>
+        <TooltipContent>
+          <p>Adds an item to the registry</p>
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 }
 ```
 
-</Tab>
+Mount a single `TooltipProvider` at your app root so every tooltip shares the same timing:
 
+```tsx
+// app/layout.tsx
+import { TooltipProvider } from "@gremorie/rx-overlays";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+      </body>
+    </html>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<TooltipProvider>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `delayDuration` | `number` | `0` | Default delay in milliseconds before tooltips open. |
+| `skipDelayDuration` | `number` | `300` | Time the user has after closing one tooltip to open another without delay. |
+| `disableHoverableContent` | `boolean` | `false` | When `true`, tooltips close as soon as the pointer leaves the trigger. |
+
+Mount once at the application root. All tooltips share its timers.
+
+### `<Tooltip>`
+
+Extends Radix `Tooltip.Root`. Notable props:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
+| `delayDuration` | `number` | inherits from provider | Per-tooltip override of the delay. |
+
+### `<TooltipTrigger>`
+
+Extends Radix `Tooltip.Trigger`. Pair with `asChild` to forward styles to a `Button` or any focusable element.
+
+### `<TooltipContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `sideOffset` | `number` | `0` | Pixel gap between trigger and content. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred side; flips automatically when there is no room. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger axis. |
+
+Wrapped in a Radix `Portal`. The arrow indicator is included automatically.
+
+## Composition
+
+1. **`<TooltipProvider>`** at the app root sets the global delay.
+2. **`<Tooltip>`** owns the open state for one tooltip instance.
+3. **`<TooltipTrigger asChild>`** wraps a focusable element (button, link, icon button).
+4. **`<TooltipContent>`** mounts via Portal with the arrow and the text.
+
+## Variations
+
+### Icon button label
+
+The most common use. Pairs with the accessibility rule that every icon-only button needs a visible label affordance.
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Copy link">
+      <CopyIcon />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Copy link</TooltipContent>
+</Tooltip>
 ```
-TooltipProvider (wrap at app root)
-  Tooltip
-    TooltipTrigger (asChild = wraps an interactive element)
-    TooltipContent [sideOffset]
+
+### Keyboard shortcut hint
+
+Pair with `Kbd` to surface shortcuts on dense toolbars.
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Save">
+      <SaveIcon />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>
+    Save <Kbd className="ml-1">⌘S</Kbd>
+  </TooltipContent>
+</Tooltip>
 ```
 
-## Best practices
+### Custom side and offset
 
-- **Wrap the app once.** Render a single `<TooltipProvider>` near
-  the app root so all tooltips share the same delay timer.
-- **Pair with `aria-label` on icon-only triggers.** Tooltip is a
-  visual hint; the accessible name lives on the trigger itself.
-- **Don't put interactive content in a Tooltip.** If users need to
-  click inside the popup, reach for `Popover` or `HoverCard`.
-- **Keep the content short.** A tooltip is a hint, not a paragraph.
+Place tooltips above a row to avoid covering the next row.
 
-## Reference
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Delete">
+      <Trash2Icon />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent side="top" sideOffset={6}>
+    Delete row
+  </TooltipContent>
+</Tooltip>
+```
 
-- React source: `packages/rx-overlays/src/lib/tooltip/tooltip.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-tooltip.json`.
+## Accessibility
+
+- **Provider required**: `TooltipProvider` is mandatory at the root; without it Radix throws.
+- **Trigger**: pointer hover and keyboard focus both open the tooltip.
+- **Keyboard**: focusing the trigger opens it; blurring closes; `Esc` closes when open.
+- **Not a substitute for visible labels**: icon-only buttons must also carry an `aria-label`. The tooltip is the visual hint; `aria-label` is the screen-reader name.
+- **`aria-describedby`**: linked automatically between trigger and content.
+- **Touch**: tooltips do not appear on touch by design. Keep their content non-critical.
+- **Reduced motion**: open/close animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Hover Card](/components/overlays/hover-card) - hover-only rich preview for non-critical content.
+- [Popover](/components/overlays/popover) - click-driven, interactive overlay.
+- [Kbd](/components/display/kbd) - keyboard shortcut chip, common inside tooltips.
+- [Button](/components/forms/button) - the most common tooltip trigger.

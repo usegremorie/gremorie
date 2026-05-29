@@ -1,135 +1,200 @@
 ---
 title: Sheet
-description: Side-anchored panel for longer flows - built on Radix Dialog with a directional slide.
+description: "Side-anchored panel for longer flows, built on Radix Dialog with directional slide-in from any edge."
 ---
 
 import { SheetPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`Sheet` is a Radix Dialog stylized as a side panel. Use it for content that doesn't deserve full focus the way a `Dialog` does, but is too rich for a `Popover`: filter trays, detail panels, multi-section settings, navigation menus on mobile. Slide direction is configurable per side (`top`, `right`, `bottom`, `left`).
+
+For desktop ergonomics, prefer `right` (filter and detail panels). `left` is conventional for navigation. On mobile breakpoints, `Drawer` is usually a better fit because it adds native drag-to-dismiss gestures.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <SheetPreview />
 </div>
 
+## Installation
 
-`Sheet` is the right primitive for **filters, settings panels, and
-multi-section edit forms** - content that does not deserve full focus
-the way a `Dialog` does, but is too rich for a `Popover`.
-
-The `right` side is the default and most common (filter / detail
-panels). `left` is conventional for navigation; `bottom` works well
-at mobile breakpoints; `top` is reserved for global notifications.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Sheet lands in a follow-up rev.
+npx gremorie@latest add rx-sheet
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-sheet
+pnpm dlx gremorie@latest add rx-sheet
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-sheet
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-sheet
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { Button } from "@gremorie/rx-forms";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@gremorie/rx-overlays";
 
-export function FiltersSheet() {
+export function Example() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Filters</Button>
+        <Button variant="outline">Open filters</Button>
       </SheetTrigger>
-      <SheetContent side="right">
+      <SheetContent>
         <SheetHeader>
-          <SheetTitle>Filter results</SheetTitle>
+          <SheetTitle>Filters</SheetTitle>
           <SheetDescription>
-            Narrow the list by status, owner, and date range.
+            Narrow down the registry by category and edition.
           </SheetDescription>
         </SheetHeader>
-        {/* filter controls here */}
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button>Apply filters</Button>
-          </SheetClose>
-        </SheetFooter>
+        {/* filter controls */}
       </SheetContent>
     </Sheet>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Sides
+## API
 
-| Side       | Slide direction      | Common use                            |
-| ---------- | -------------------- | ------------------------------------- |
-| `right`    | In from the right    | Filters, detail panels (default).     |
-| `left`     | In from the left     | Navigation menus.                     |
-| `bottom`   | Up from the bottom   | Mobile-first action sheets.           |
-| `top`      | Down from the top    | Global notifications, search bars.    |
+### `<Sheet>`
 
-## Anatomy
+Extends Radix `Dialog.Root`. Same controlled API as `Dialog` (`open`, `defaultOpen`, `onOpenChange`, `modal`).
 
+### `<SheetContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Edge the sheet docks against and slides in from. |
+| `showCloseButton` | `boolean` | `true` | Renders the top-right X close button. |
+
+Wraps Radix `Dialog.Content` in a Portal with the overlay. Width and height adapt to `side`:
+
+- `right` / `left`: full-height, `w-3/4` capped at `sm:max-w-sm`.
+- `top` / `bottom`: full-width, `h-auto`.
+
+### `<SheetHeader>`, `<SheetFooter>`
+
+Layout containers padded `p-4`. Header stacks title and description; footer pushes to the bottom (`mt-auto`) with `gap-2`.
+
+### `<SheetTitle>`, `<SheetDescription>`
+
+Map to Radix `Dialog.Title` and `Dialog.Description`. Both are required by Radix; render with `className="sr-only"` if visually hidden.
+
+### `<SheetTrigger>`, `<SheetClose>`, `<SheetOverlay>`, `<SheetPortal>`
+
+Pass-throughs over the Radix primitives with `data-slot` attributes.
+
+## Composition
+
+1. **`<Sheet>`** owns the open/close state.
+2. **`<SheetTrigger asChild>`** wraps the focusable element that opens it.
+3. **`<SheetContent side="right">`** mounts via Portal, draws the overlay, slides in from the chosen edge.
+4. **Header** carries title and description; body holds the main content; footer pins primary actions at the bottom.
+5. **Dismissal**: click overlay, press `Esc`, click the X (`showCloseButton`), or call `SheetClose`.
+
+## Variations
+
+### Right filter panel
+
+The canonical desktop pattern. Filter form pinned, scrollable body, apply/reset in the footer.
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Filters</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Filters</SheetTitle>
+    </SheetHeader>
+    <div className="flex-1 overflow-auto px-4">
+      {/* filter form */}
+    </div>
+    <SheetFooter>
+      <Button variant="outline">Reset</Button>
+      <Button>Apply</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
 ```
-Sheet
-  SheetTrigger (asChild = wraps a Button)
-  SheetContent [side, showCloseButton]
-    SheetHeader
-      SheetTitle
-      SheetDescription
-    {your body}
-    SheetFooter
-      SheetClose
+
+### Left navigation drawer
+
+Pair with a hamburger trigger on mobile for primary navigation.
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Open menu">
+      <MenuIcon />
+    </Button>
+  </SheetTrigger>
+  <SheetContent side="left">
+    <SheetHeader>
+      <SheetTitle>Navigation</SheetTitle>
+    </SheetHeader>
+    <nav className="px-4">
+      {/* nav links */}
+    </nav>
+  </SheetContent>
+</Sheet>
 ```
 
-## Best practices
+### Bottom notification panel
 
-- **Include `SheetTitle` for accessibility.** Use `className="sr-only"`
-  if you don't want it visible.
-- **Choose the side that matches the mental model.** Filters slide
-  from the right because they refine the list to its left. Navigation
-  slides from the left.
-- **Use `Dialog` for binary decisions, `Sheet` for richer flows.**
-  Sheets shine when there are 3+ controls inside.
+Use `side="bottom"` for transient panels that don't deserve a centered modal (system status, recent activity).
 
-## Reference
+```tsx
+<SheetContent side="bottom">
+  <SheetHeader>
+    <SheetTitle>Recent activity</SheetTitle>
+  </SheetHeader>
+  {/* activity feed */}
+</SheetContent>
+```
 
-- React source: `packages/rx-overlays/src/lib/sheet/sheet.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-sheet.json`.
+## Accessibility
+
+- **Role**: `role="dialog"` with `aria-modal="true"` (default `modal` prop).
+- **Keyboard**: `Esc` closes; `Tab` cycles focus within the content; focus is trapped while open.
+- **Focus management**: focus moves to the first focusable element on open and returns to the trigger on close.
+- **Title**: `SheetTitle` is mandatory; without it Radix logs a warning. Use `sr-only` if you need to hide it visually.
+- **Description**: links to content via `aria-describedby` automatically.
+- **Reduced motion**: slide animations honor `prefers-reduced-motion` via the underlying Tailwind animate utilities.
+
+## Related
+
+- [Drawer](/components/overlays/drawer) - vaul-based bottom sheet with drag-to-dismiss for mobile.
+- [Dialog](/components/overlays/dialog) - centered modal for focused decisions.
+- [Popover](/components/overlays/popover) - inline anchored overlay for small contextual UI.
+- [Navigation Menu](/components/navigation/navigation-menu) - top-level navigation that doesn't overlay.
