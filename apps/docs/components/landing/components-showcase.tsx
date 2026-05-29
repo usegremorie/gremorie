@@ -144,6 +144,12 @@ export function ComponentsShowcase() {
                 style={{
                   ["--cat-accent" as string]: cat.accent,
                   ["--cat-accent-subtle" as string]: cat.accentSubtle,
+                  // Border accent 2px on the left, in the category color.
+                  // Replicates the pattern from the Features grid so the 8
+                  // category tiles are visually distinguishable in a static
+                  // screenshot (Odo final audit - previously the accent only
+                  // appeared on the icon tile, which read as monotone).
+                  borderLeft: `2px solid ${cat.accent}`,
                 }}
               >
                 {/* Faint top-right accent halo per tile - sets it apart

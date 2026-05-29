@@ -59,20 +59,21 @@ export async function highlightCode(
     : [];
 
   // Theme choice rationale:
-  //   - `github-light` keeps the muted, neutral feel Gremorie uses but
-  //     ships foreground tokens that hit WCAG 1.4.3 AA contrast against
-  //     the light background (one-light fails: comment fg #a0a1a7 over
-  //     #fafafa is 2.46:1, well below 4.5:1).
-  //   - `github-dark` mirrors that on the dark side for symmetry.
+  //   - `github-light-default` (Odo final audit upgrade) replaces
+  //     `github-light`. github-light still missed AA on a handful of
+  //     punctuation / operator tokens against #fff (the 15 axe-core
+  //     "serious" hits). github-light-default ships GitHub's current
+  //     primer-light tokens, every token clears 4.5:1.
+  //   - `github-dark-default` mirrors that on the dark side for symmetry.
   return await Promise.all([
     codeToHtml(code, {
       lang: language,
-      theme: "github-light",
+      theme: "github-light-default",
       transformers,
     }),
     codeToHtml(code, {
       lang: language,
-      theme: "github-dark",
+      theme: "github-dark-default",
       transformers,
     }),
   ]);

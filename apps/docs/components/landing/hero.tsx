@@ -103,7 +103,14 @@ export function Hero() {
             a warm violet glow instead of the previous neutral primary tint.
           */}
           <div className="relative" aria-hidden="true" inert>
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-brand/20 via-brand/5 to-transparent blur-2xl" />
+            {/*
+              Halo bumped from brand/20 to brand/30 + blur-3xl per Odo
+              final audit. brand/20 read as subliminal in light mode -
+              users could not tell the violet identity was already there.
+              brand/30 + larger blur radius pushes the violet glow into
+              "visible but ambient" territory without becoming a tint.
+            */}
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-brand/30 via-brand/5 to-transparent blur-3xl" />
             <HeroDemo />
           </div>
         </div>

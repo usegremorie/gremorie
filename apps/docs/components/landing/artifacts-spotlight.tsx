@@ -60,7 +60,24 @@ export function StatsCard({ label, value, delta }) {
 
 export function ArtifactsSpotlight() {
   return (
-    <section className="py-20">
+    <section className="relative py-20">
+      {/*
+        Section-level gradient halo behind both artifact cards.
+        Final-audit fix from Odo: the per-card halos sit IN the cards,
+        so the surrounding space stayed flat and the cards looked like
+        two isolated tiles. This band sits behind the whole pair, ties
+        them into one "artifacts surface", and uses chart-1 -> brand ->
+        chart-3 so it visually echoes the per-card accent colors (chart-1
+        for the chart card, brand-violet for the code card).
+      */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-96 -translate-y-1/2 blur-3xl"
+        style={{
+          background:
+            "linear-gradient(90deg, color-mix(in oklch, var(--chart-1) 12%, transparent) 0%, color-mix(in oklch, var(--brand) 12%, transparent) 50%, color-mix(in oklch, var(--chart-3) 12%, transparent) 100%)",
+        }}
+      />
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

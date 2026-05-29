@@ -7,21 +7,34 @@ const numbers = [
   { value: "25+", label: "corpus articles" },
 ];
 
+/**
+ * Each quality gets its own accent token (Odo final audit). Previously
+ * all 3 used brand-subtle, so the row read as monochrome even though
+ * the 3 items are semantically distinct. Now: AI is brand (the flagship
+ * tone), MCP server is chart-2 (technical / infra), MIT licensed is
+ * chart-4 (warm / human / community).
+ */
 const qualities = [
   {
     icon: Sparkles,
     label: "AI-native",
     description: "Knowledge layer",
+    accent: "var(--brand)",
+    accentSubtle: "var(--brand-subtle)",
   },
   {
     icon: ServerCog,
     label: "MCP server",
     description: "Tool included",
+    accent: "var(--chart-2)",
+    accentSubtle: "color-mix(in oklch, var(--chart-2) 14%, transparent)",
   },
   {
     icon: Award,
     label: "MIT licensed",
     description: "Open source",
+    accent: "var(--chart-4)",
+    accentSubtle: "color-mix(in oklch, var(--chart-4) 14%, transparent)",
   },
 ];
 
@@ -87,7 +100,13 @@ export function StatsBand() {
               key={q.label}
               className="flex items-center gap-3 justify-self-center text-left"
             >
-              <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-brand-subtle text-brand">
+              <span
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-md"
+                style={{
+                  background: q.accentSubtle,
+                  color: q.accent,
+                }}
+              >
                 <q.icon className="size-4" aria-hidden="true" />
               </span>
               <div className="flex flex-col">

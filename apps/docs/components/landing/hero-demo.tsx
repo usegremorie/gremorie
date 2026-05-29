@@ -8,7 +8,6 @@ import {
   Message,
   MessageContent,
   PromptInput,
-  PromptInputBody,
   PromptInputFooter,
   PromptInputSubmit,
   PromptInputTextarea,
@@ -188,20 +187,34 @@ export function HeroDemo() {
           </ConversationContent>
         </Conversation>
 
-        {/* Prompt input (cosmetic, disabled submit) */}
+        {/*
+          Prompt input (cosmetic, disabled submit).
+
+          Bug-1 fix from Odo audit: PromptInputBody renders a wrapper with
+          `display: contents` so its children "disappear" in layout. But
+          the parent InputGroup uses `:has(> [data-align=block-end])` and
+          `:has(> textarea)` direct-child selectors to switch to flex-col
+          + h-auto. `display: contents` does NOT bypass the DOM-level `>`
+          combinator, so those selectors never matched and the textarea
+          was forced into a 36px-tall row-flex slot - placeholder rendered
+          one character per line (24px wide, 192px tall).
+
+          Skipping PromptInputBody here makes PromptInputTextarea and
+          PromptInputFooter real direct children of InputGroup, the
+          selectors match, the placeholder reads "Ask anything..." on
+          one line.
+        */}
         <div className="border-t border-border/60 p-3">
           <PromptInput onSubmit={handleSubmit}>
-            <PromptInputBody>
-              <PromptInputTextarea
-                placeholder="Ask anything…"
-                disabled
-                aria-label="Demo prompt input (disabled)"
-              />
-              <PromptInputFooter>
-                <PromptInputTools />
-                <PromptInputSubmit disabled status="ready" />
-              </PromptInputFooter>
-            </PromptInputBody>
+            <PromptInputTextarea
+              placeholder="Ask anything..."
+              disabled
+              aria-label="Demo prompt input (disabled)"
+            />
+            <PromptInputFooter>
+              <PromptInputTools />
+              <PromptInputSubmit disabled status="ready" />
+            </PromptInputFooter>
           </PromptInput>
         </div>
       </div>
