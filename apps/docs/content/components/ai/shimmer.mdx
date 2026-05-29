@@ -55,9 +55,20 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```ts
+import { Component } from "@angular/core";
+import { Shimmer } from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Shimmer],
+  template: `<span ngShimmer>Thinking...</span>`,
+})
+export class ExampleComponent {}
+```
+
+> The Angular version is a directive (`[ngShimmer]`) rather than a component. Apply it to any element with text content; the spread auto-scales with character count, mirroring the React implementation.
 </Tab>
 </Tabs>
 

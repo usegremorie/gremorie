@@ -75,9 +75,37 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```ts
+import { Component } from "@angular/core";
+import {
+  Task,
+  TaskTrigger,
+  TaskContent,
+  TaskItem,
+  TaskItemFile,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile],
+  template: `
+    <task [open]="true">
+      <task-trigger title="Refactor router" />
+      <task-content>
+        <task-item>
+          Edited <task-item-file>app/router.ts</task-item-file>
+        </task-item>
+        <task-item>
+          Renamed <task-item-file>routes/legacy.ts</task-item-file> to
+          <task-item-file>routes/deprecated.ts</task-item-file>
+        </task-item>
+      </task-content>
+    </task>
+  `,
+})
+export class ExampleComponent {}
+```
 </Tab>
 </Tabs>
 

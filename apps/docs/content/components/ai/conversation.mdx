@@ -78,9 +78,43 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```ts
+import { Component, signal } from "@angular/core";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+  Message,
+  MessageContent,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [
+    Conversation,
+    ConversationContent,
+    ConversationScrollButton,
+    Message,
+    MessageContent,
+  ],
+  template: `
+    <conversation class="h-96 w-full">
+      <conversation-content>
+        @for (m of messages(); track m.id) {
+          <message [from]="m.role">
+            <message-content>{{ m.text }}</message-content>
+          </message>
+        }
+      </conversation-content>
+      <conversation-scroll-button />
+    </conversation>
+  `,
+})
+export class ExampleComponent {
+  readonly messages = signal<Array<{ id: string; role: "user" | "assistant"; text: string }>>([]);
+}
+```
 </Tab>
 </Tabs>
 

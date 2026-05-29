@@ -71,9 +71,37 @@ export function StartNode({ data, ...props }) {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. The AI workflow category in Angular currently only ships PromptInput. Use the React edition for now.
-</Callout>
+```ts
+import { Component } from "@angular/core";
+import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarButton,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Toolbar, ToolbarGroup, ToolbarButton],
+  template: `
+    <toolbar>
+      <toolbar-group ariaLabel="Formatting">
+        <toolbar-button [pressed]="bold" ariaLabel="Bold" (clicked)="bold = !bold">
+          <span class="font-bold">B</span>
+        </toolbar-button>
+        <toolbar-button ariaLabel="Italic">
+          <span class="italic">I</span>
+        </toolbar-button>
+      </toolbar-group>
+    </toolbar>
+  `,
+})
+export class ExampleComponent {
+  bold = false;
+}
+```
+
+> The Angular `<toolbar>` is the generic primitive (a `<div role="toolbar">`). Pair it with `@xyflow/angular` at the app level if you need a canvas-anchored toolbar.
 </Tab>
 </Tabs>
 

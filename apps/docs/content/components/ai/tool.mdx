@@ -91,9 +91,43 @@ export function Example({ part }) {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. The AI category in Angular currently only ships PromptInput. Use the React edition for now, or open an issue to prioritize this primitive.
-</Callout>
+```ts
+import { Component, input } from "@angular/core";
+import {
+  Tool,
+  ToolHeader,
+  ToolContent,
+  ToolInput,
+  ToolOutput,
+  ToolState,
+} from "@gremorie/ng-ai";
+
+interface ToolPart {
+  type: string;
+  state: ToolState;
+  input: unknown;
+  output: unknown;
+  errorText: string | null;
+}
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Tool, ToolHeader, ToolContent, ToolInput, ToolOutput],
+  template: `
+    <tool [open]="true">
+      <tool-header [type]="part().type" [state]="part().state" />
+      <tool-content>
+        <tool-input [input]="part().input" />
+        <tool-output [output]="part().output" [errorText]="part().errorText" />
+      </tool-content>
+    </tool>
+  `,
+})
+export class ExampleComponent {
+  readonly part = input.required<ToolPart>();
+}
+```
 </Tab>
 </Tabs>
 

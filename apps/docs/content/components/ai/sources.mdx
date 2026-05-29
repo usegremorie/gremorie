@@ -64,9 +64,34 @@ export function Example({ sources }) {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```ts
+import { Component, input } from "@angular/core";
+import {
+  Sources,
+  SourcesTrigger,
+  SourcesContent,
+  Source,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Sources, SourcesTrigger, SourcesContent, Source],
+  template: `
+    <sources>
+      <sources-trigger [count]="sources().length" />
+      <sources-content>
+        @for (s of sources(); track s.url) {
+          <source [href]="s.url" [title]="s.title" />
+        }
+      </sources-content>
+    </sources>
+  `,
+})
+export class ExampleComponent {
+  readonly sources = input<Array<{ url: string; title: string }>>([]);
+}
+```
 </Tab>
 </Tabs>
 

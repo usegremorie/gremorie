@@ -78,9 +78,30 @@ export function Example({ status, thinking }) {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```ts
+import { Component, input } from "@angular/core";
+import {
+  Reasoning,
+  ReasoningTrigger,
+  ReasoningContent,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Reasoning, ReasoningTrigger, ReasoningContent],
+  template: `
+    <reasoning [isStreaming]="status() === 'streaming'">
+      <reasoning-trigger />
+      <reasoning-content [text]="thinking()" />
+    </reasoning>
+  `,
+})
+export class ExampleComponent {
+  readonly status = input<"idle" | "streaming" | "done">("idle");
+  readonly thinking = input<string>("");
+}
+```
 </Tab>
 </Tabs>
 
