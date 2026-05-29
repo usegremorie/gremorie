@@ -39,3 +39,12 @@ export * from './lib/conversation';
 
 // Suggestion (clickable chips)
 export * from './lib/suggestion';
+
+// Shimmer (text gradient sweep directive)
+export * from './lib/shimmer';
+
+// Reasoning (collapsible thinking block)
+export * from './lib/reasoning';
+
+// ChainOfThought (step list)
+export * from './lib/chain-of-thought';

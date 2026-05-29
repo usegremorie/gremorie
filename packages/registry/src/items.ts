@@ -201,6 +201,61 @@ export const ITEMS: ItemConfig[] = [
     dependencies: ['@angular/core', 'class-variance-authority'],
     registryDependencies: ['ng-utils'],
   },
+  {
+    name: 'ng-shimmer',
+    framework: 'ng',
+    title: 'Shimmer (Angular)',
+    description:
+      'Standalone directive that applies a sweeping gradient animation to text - used for streaming/loading states. Same visual effect as the rx-ai counterpart (motion/react), implemented natively with CSS keyframes (no runtime motion lib).',
+    categories: ['ai', 'feedback'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: ['src/lib/shimmer/shimmer.ts', 'src/lib/shimmer/index.ts'],
+    targetPrefix: 'src/app/gremorie/ai/shimmer',
+    srcStrip: 'src/lib/shimmer/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-reasoning',
+    framework: 'ng',
+    title: 'Reasoning (Angular)',
+    description:
+      'Collapsible "thinking..." block with auto-open while streaming, auto-close once streaming ends and duration tracking. Composes Reasoning + ReasoningTrigger + ReasoningContent, built on @spartan-ng/brain/collapsible.',
+    categories: ['ai', 'chat'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/reasoning/reasoning.ts',
+      'src/lib/reasoning/reasoning-trigger.ts',
+      'src/lib/reasoning/reasoning-content.ts',
+      'src/lib/reasoning/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/reasoning',
+    srcStrip: 'src/lib/reasoning/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils', 'ng-shimmer'],
+  },
+  {
+    name: 'ng-chain-of-thought',
+    framework: 'ng',
+    title: 'Chain of Thought (Angular)',
+    description:
+      'Step-by-step reasoning trace - root container, clickable header, content panel, individual steps (complete/active/pending status), search-result chips and bounded image previews.',
+    categories: ['ai', 'chat'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/chain-of-thought/chain-of-thought.ts',
+      'src/lib/chain-of-thought/chain-of-thought-header.ts',
+      'src/lib/chain-of-thought/chain-of-thought-content.ts',
+      'src/lib/chain-of-thought/chain-of-thought-step.ts',
+      'src/lib/chain-of-thought/chain-of-thought-search.ts',
+      'src/lib/chain-of-thought/chain-of-thought-image.ts',
+      'src/lib/chain-of-thought/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/chain-of-thought',
+    srcStrip: 'src/lib/chain-of-thought/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
 
   // ---------------------------------------------------------------------------
   // Angular: data viz - shared chart engine
