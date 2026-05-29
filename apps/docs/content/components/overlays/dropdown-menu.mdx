@@ -1,60 +1,51 @@
 ---
 title: Dropdown Menu
-description: Verb-led action menu attached to a trigger - built on Radix DropdownMenu.
+description: "Verb-led action menu attached to a trigger. Items, groups, separators, checkbox or radio items, submenus, and right-aligned shortcut hints."
 ---
 
 import { DropdownMenuPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`DropdownMenu` is the right primitive for actions: Edit, Delete, Duplicate, Open in new tab. It is distinct from `Select`, which holds values (USA, Brazil, Japan). When the items in the menu read like verbs, this is the right primitive.
+
+The compound exposes everything Radix offers: items with destructive variant, checkbox and radio items with auto-rendered indicators, grouped sections, separators, submenus, and a shortcut helper that right-aligns text.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <DropdownMenuPreview />
 </div>
 
+## Installation
 
-`DropdownMenu` is the action menu attached to a trigger. Use it for
-**actions** - Edit, Delete, Duplicate, Open in new tab. When the items
-in the menu read like verbs, this is the right primitive. For values
-(USA, Brazil, Japan), reach for `Select` instead.
-
-It supports nested submenus (`DropdownMenuSub`), keyboard shortcuts
-(`DropdownMenuShortcut`), checkbox and radio items, and a destructive
-variant via `variant="destructive"` on individual items.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular DropdownMenu lands in a follow-up rev.
+npx gremorie@latest add rx-dropdown-menu
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-dropdown-menu
+pnpm dlx gremorie@latest add rx-dropdown-menu
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-dropdown-menu
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-dropdown-menu
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { Button } from "@gremorie/rx-forms";
 import {
@@ -63,65 +54,187 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@gremorie/rx-overlays";
 
-export function RowActions() {
+export function Example() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Open row actions">
-          ...
-        </Button>
+        <Button variant="outline">Actions</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent>
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem>
-          Edit
-          <DropdownMenuShortcut>Cmd+E</DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem>Duplicate</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+        <DropdownMenuItem>Open in chat</DropdownMenuItem>
+        <DropdownMenuItem>Copy URL</DropdownMenuItem>
+        <DropdownMenuItem>Export</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<DropdownMenu>`
+
+Extends Radix `DropdownMenu.Root`. Standard controlled API (`open`, `defaultOpen`, `onOpenChange`, `modal`).
+
+### `<DropdownMenuTrigger>`
+
+Extends Radix `DropdownMenu.Trigger`. Use `asChild` to forward styles to a `Button` or any custom trigger.
+
+### `<DropdownMenuContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `sideOffset` | `number` | `4` | Pixel gap between trigger and content. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side; flips automatically. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger axis. |
+
+Wrapped in a Radix `Portal`. Capped at `--radix-dropdown-menu-content-available-height`, scrollable, `min-w-[8rem]`.
+
+### `<DropdownMenuItem>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `inset` | `boolean` | `false` | Adds `pl-8` so the item lines up with checkbox/radio rows. |
+| `variant` | `"default" \| "destructive"` | `"default"` | `destructive` switches text and icon color to the destructive token. |
+| `disabled` | `boolean` | `false` | Disables interaction; renders at 50% opacity. |
+
+### `<DropdownMenuCheckboxItem>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `checked` | `boolean \| "indeterminate"` | - | Controlled checked state. |
+| `onCheckedChange` | `(checked: boolean) => void` | - | Fired when toggled. |
+
+Renders an absolute-positioned check icon on the left when checked.
+
+### `<DropdownMenuRadioGroup>` + `<DropdownMenuRadioItem>`
+
+Pair a group with one or more radio items. The group owns the `value` and `onValueChange`. Each radio item renders an auto-positioned bullet when selected.
+
+### `<DropdownMenuLabel>`
+
+Non-interactive section heading.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `inset` | `boolean` | `false` | Adds `pl-8` for alignment with check/radio rows. |
+
+### `<DropdownMenuSeparator>`
+
+Thin `bg-border` divider with negative margin so it spans the menu padding.
+
+### `<DropdownMenuShortcut>`
+
+A right-aligned `<span>` for keyboard hints (`⌘C`, `⇧⌫`). Pure layout helper; no Radix logic.
+
+### `<DropdownMenuSub>` + `<DropdownMenuSubTrigger>` + `<DropdownMenuSubContent>`
+
+Nested submenu. Sub-trigger renders an auto-positioned chevron on the right. Sub-content opens to the side of the trigger.
+
+### `<DropdownMenuPortal>`, `<DropdownMenuGroup>`
+
+Pass-throughs over the Radix primitives with `data-slot` attributes.
+
+## Composition
+
+1. **`<DropdownMenu>`** owns the open/close state.
+2. **`<DropdownMenuTrigger asChild>`** wraps a `Button` or icon button.
+3. **`<DropdownMenuContent>`** mounts via Portal anchored to the trigger.
+4. **Inside content**: group items with `DropdownMenuGroup`, label sections with `DropdownMenuLabel`, divide with `DropdownMenuSeparator`.
+5. **Shortcuts** sit at the right edge via `DropdownMenuShortcut`.
+6. **Submenus** wrap nested `DropdownMenuSub` blocks.
+
+## Variations
+
+### Items with shortcuts and destructive action
+
+The canonical row-actions menu. Note the right-aligned shortcuts and the destructive variant for delete.
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Row actions">
+      <MoreHorizontalIcon />
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end">
+    <DropdownMenuItem>
+      <PencilIcon /> Edit
+      <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      <CopyIcon /> Duplicate
+      <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">
+      <Trash2Icon /> Delete
+      <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
 ```
-DropdownMenu
-  DropdownMenuTrigger (asChild = wraps a Button)
-  DropdownMenuContent
-    DropdownMenuLabel
-    DropdownMenuItem [variant="destructive"]
-    DropdownMenuCheckboxItem
-    DropdownMenuRadioGroup
-      DropdownMenuRadioItem
-    DropdownMenuSeparator
-    DropdownMenuSub
-      DropdownMenuSubTrigger
-      DropdownMenuSubContent
-    DropdownMenuShortcut
+
+### Checkbox items
+
+Toggle visible columns or filters without closing the menu.
+
+```tsx
+<DropdownMenuContent>
+  <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+  <DropdownMenuSeparator />
+  <DropdownMenuCheckboxItem checked={cols.name} onCheckedChange={toggle("name")}>
+    Name
+  </DropdownMenuCheckboxItem>
+  <DropdownMenuCheckboxItem checked={cols.email} onCheckedChange={toggle("email")}>
+    Email
+  </DropdownMenuCheckboxItem>
+</DropdownMenuContent>
 ```
 
-## Best practices
+### Submenu
 
-- **Always trigger via a button.** Anchor tags break menu semantics.
-- **Use `asChild` on the trigger.** Lets you wrap the project's `Button`
-  primitive and inherit its styles.
-- **Use `variant="destructive"` for irreversible items.** It paints the
-  item with destructive tokens automatically.
-- **Reach for `Select` when items hold values, not actions.**
+Nest secondary actions inside a sub-trigger.
 
-## Reference
+```tsx
+<DropdownMenuContent>
+  <DropdownMenuItem>Open</DropdownMenuItem>
+  <DropdownMenuSub>
+    <DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>
+    <DropdownMenuSubContent>
+      <DropdownMenuItem>Copy link</DropdownMenuItem>
+      <DropdownMenuItem>Email</DropdownMenuItem>
+      <DropdownMenuItem>Embed</DropdownMenuItem>
+    </DropdownMenuSubContent>
+  </DropdownMenuSub>
+</DropdownMenuContent>
+```
 
-- React source: `packages/rx-overlays/src/lib/dropdown-menu/dropdown-menu.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-dropdown-menu.json`.
+## Accessibility
+
+- **Role**: `role="menu"` on content, `role="menuitem"` on items, `role="menuitemcheckbox"` and `role="menuitemradio"` on stateful variants.
+- **Keyboard**: arrow keys navigate; `Enter` and `Space` activate; type-ahead jumps to items starting with the typed letter; `Esc` closes; `Tab` closes and continues page focus.
+- **Submenus**: `→` opens, `←` closes.
+- **Focus management**: focus moves into the menu on open and returns to the trigger on close.
+- **`aria-expanded`** is set on the trigger automatically; `aria-controls` links to the content id.
+- **Destructive variant**: visual cue only; pair with confirmation (`AlertDialog`) if the action is irreversible.
+- **Reduced motion**: open/close animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Context Menu](/components/overlays/context-menu) - same compound, triggered by right-click on a region.
+- [Select](/components/forms/select) - value-led picker (countries, status), not actions.
+- [Popover](/components/overlays/popover) - generic anchored overlay when items don't follow menu semantics.
+- [Command](/components/overlays/command) - searchable command list for power users.

@@ -1,122 +1,208 @@
 ---
 title: Context Menu
-description: Secondary action menu invoked via right-click.
+description: "Action menu invoked via right-click on a region. Same compound shape as DropdownMenu, anchored to a target area."
 ---
 
 import { ContextMenuPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`ContextMenu` is a power-user accelerator. Right-click is invisible to users who haven't been taught about it (most touch users; many web users today), so treat this menu as an additive shortcut, never the only path to an action. Every option shown here should also be reachable through a button, `DropdownMenu`, or keyboard shortcut elsewhere in the UI.
+
+The compound mirrors `DropdownMenu` exactly: items, groups, separators, submenus, checkbox or radio variants, shortcuts. The only difference is the trigger: `ContextMenuTrigger` wraps a region, and the menu opens at the cursor position on right-click.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <ContextMenuPreview />
 </div>
 
+## Installation
 
-`ContextMenu` is the right-click sibling of `DropdownMenu`. It anchors
-to a region rather than a trigger button - wrap the region in
-`<ContextMenuTrigger>`. Right-click is invisible to most users, so
-treat ContextMenu as a power-user accelerator: every option here
-should also be reachable through a button, DropdownMenu, or keyboard
-shortcut elsewhere.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular ContextMenu lands in a follow-up rev.
+npx gremorie@latest add rx-context-menu
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-context-menu
+pnpm dlx gremorie@latest add rx-context-menu
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-context-menu
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-context-menu
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
-  ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@gremorie/rx-overlays";
 
-export function CanvasArea() {
+export function Example() {
   return (
     <ContextMenu>
-      <ContextMenuTrigger className="grid h-64 place-items-center rounded border border-dashed">
-        Right-click here
+      <ContextMenuTrigger>
+        <div className="flex h-32 w-full items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+          Right-click here
+        </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>
-          Cut <ContextMenuShortcut>Cmd+X</ContextMenuShortcut>
-        </ContextMenuItem>
-        <ContextMenuItem>
-          Copy <ContextMenuShortcut>Cmd+C</ContextMenuShortcut>
-        </ContextMenuItem>
-        <ContextMenuItem>
-          Paste <ContextMenuShortcut>Cmd+V</ContextMenuShortcut>
-        </ContextMenuItem>
+        <ContextMenuItem>Copy</ContextMenuItem>
+        <ContextMenuItem>Paste</ContextMenuItem>
         <ContextMenuSeparator />
-        <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+        <ContextMenuItem>Delete</ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<ContextMenu>`
+
+Extends Radix `ContextMenu.Root`. Standard controlled API (`onOpenChange`, `modal`).
+
+### `<ContextMenuTrigger>`
+
+Wraps the region that should respond to right-click. By default it renders a `<span>`; use `asChild` to forward styles to a target element.
+
+### `<ContextMenuContent>`
+
+Same shape as `DropdownMenuContent`. Wrapped in a Radix `Portal`. Positions itself at the cursor on open.
+
+### `<ContextMenuItem>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `inset` | `boolean` | `false` | Adds `pl-8` so the item lines up with checkbox/radio rows. |
+| `variant` | `"default" \| "destructive"` | `"default"` | Switches text and icon color to the destructive token. |
+| `disabled` | `boolean` | `false` | Disables interaction; renders at 50% opacity. |
+
+### `<ContextMenuCheckboxItem>`, `<ContextMenuRadioGroup>`, `<ContextMenuRadioItem>`
+
+Same semantics as their `DropdownMenu` counterparts. Indicators render automatically in the absolute-positioned left slot.
+
+### `<ContextMenuLabel>`, `<ContextMenuSeparator>`, `<ContextMenuShortcut>`
+
+Non-interactive helpers identical to `DropdownMenu`.
+
+### `<ContextMenuSub>` + `<ContextMenuSubTrigger>` + `<ContextMenuSubContent>`
+
+Nested submenu pattern. Sub-trigger renders an auto-positioned chevron.
+
+### `<ContextMenuPortal>`, `<ContextMenuGroup>`
+
+Pass-throughs over the Radix primitives with `data-slot` attributes.
+
+## Composition
+
+1. **`<ContextMenu>`** owns the open/close state.
+2. **`<ContextMenuTrigger>`** wraps the region; right-click anywhere in it opens the menu.
+3. **`<ContextMenuContent>`** mounts via Portal at the cursor position.
+4. **Inside content**: same layout vocabulary as `DropdownMenu` (items, groups, separators, shortcuts, submenus).
+
+## Variations
+
+### File browser actions
+
+Right-click a file row to expose move, rename, and delete.
+
+```tsx
+<ContextMenu>
+  <ContextMenuTrigger asChild>
+    <tr>
+      <td>Report.pdf</td>
+      <td>2.4 MB</td>
+    </tr>
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Open</ContextMenuItem>
+    <ContextMenuItem>Rename</ContextMenuItem>
+    <ContextMenuSub>
+      <ContextMenuSubTrigger>Move to</ContextMenuSubTrigger>
+      <ContextMenuSubContent>
+        <ContextMenuItem>Reports</ContextMenuItem>
+        <ContextMenuItem>Archive</ContextMenuItem>
+      </ContextMenuSubContent>
+    </ContextMenuSub>
+    <ContextMenuSeparator />
+    <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
 ```
-ContextMenu
-  ContextMenuTrigger (wraps the region)
-  ContextMenuContent
-    ContextMenuLabel
-    ContextMenuItem [variant="destructive"]
-    ContextMenuCheckboxItem
-    ContextMenuRadioGroup
-      ContextMenuRadioItem
-    ContextMenuSeparator
-    ContextMenuSub
-      ContextMenuSubTrigger
-      ContextMenuSubContent
-    ContextMenuShortcut
+
+### Canvas tools with shortcuts
+
+Power-user shortcuts in a creative app. Pair every item with its keyboard equivalent.
+
+```tsx
+<ContextMenuContent>
+  <ContextMenuItem>
+    Copy
+    <ContextMenuShortcut>⌘C</ContextMenuShortcut>
+  </ContextMenuItem>
+  <ContextMenuItem>
+    Paste
+    <ContextMenuShortcut>⌘V</ContextMenuShortcut>
+  </ContextMenuItem>
+  <ContextMenuSeparator />
+  <ContextMenuCheckboxItem checked={snap}>Snap to grid</ContextMenuCheckboxItem>
+</ContextMenuContent>
 ```
 
-## Best practices
+### Per-cell context with radio group
 
-- **Never ship as the only path.** Right-click is invisible to most
-  users. Always provide a visible alternative.
-- **Mirror DropdownMenu API.** Same items, same variants, same sub-menu
-  shape - just a different trigger surface.
+Toggle alignment within a table cell.
 
-## Reference
+```tsx
+<ContextMenuContent>
+  <ContextMenuLabel>Align</ContextMenuLabel>
+  <ContextMenuSeparator />
+  <ContextMenuRadioGroup value={align} onValueChange={setAlign}>
+    <ContextMenuRadioItem value="left">Left</ContextMenuRadioItem>
+    <ContextMenuRadioItem value="center">Center</ContextMenuRadioItem>
+    <ContextMenuRadioItem value="right">Right</ContextMenuRadioItem>
+  </ContextMenuRadioGroup>
+</ContextMenuContent>
+```
 
-- React source: `packages/rx-overlays/src/lib/context-menu/context-menu.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-context-menu.json`.
+## Accessibility
+
+- **Trigger**: opens on right-click and on the `Menu` key (Windows). Long-press is not a standard web gesture, so touch users will not see the menu by default.
+- **Additive only**: never put an action behind a context menu exclusively. Provide a visible button or `DropdownMenu` equivalent.
+- **Role**: `role="menu"` on content, `role="menuitem"` on items, `role="menuitemcheckbox"` and `role="menuitemradio"` on stateful variants.
+- **Keyboard**: arrow keys navigate; `Enter` and `Space` activate; type-ahead jumps to items starting with the typed letter; `Esc` closes.
+- **Submenus**: `→` opens, `←` closes.
+- **Focus management**: focus moves into the menu on open and returns to the trigger region on close.
+- **Reduced motion**: open/close animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Dropdown Menu](/components/overlays/dropdown-menu) - same compound, triggered by a visible button.
+- [Popover](/components/overlays/popover) - non-menu interactive overlay anchored to a trigger.
+- [Tooltip](/components/overlays/tooltip) - hover hint, never a menu.
