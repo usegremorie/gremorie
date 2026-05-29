@@ -5,19 +5,20 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { CodeBlock } from '../code-block/code-block';
 
 /**
  * ToolInput — labelled JSON block showing the tool's parameters. Mirrors
- * React `ToolInput`. Uses a `<pre><code>` JSON snapshot instead of the
- * project-internal CodeBlock to keep this primitive self-contained; if
- * syntax highlighting is desired, consumers can swap in `<code-block>`
- * (also part of ng-ai) externally.
+ * React `ToolInput`, which renders its content via the shared `CodeBlock`
+ * (Shiki-highlighted). This Angular version dogfoods the ng-ai
+ * `<code-block>` primitive directly with `language="json"`.
  */
 @Component({
   selector: 'tool-input',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CodeBlock],
   template: `
     <h4
       class="font-medium text-muted-foreground text-xs uppercase tracking-wide"
@@ -25,7 +26,7 @@ import {
       Parameters
     </h4>
     <div class="rounded-md bg-muted/50 overflow-auto">
-      <pre class="m-0 p-4 text-xs"><code>{{ formatted() }}</code></pre>
+      <code-block [code]="formatted()" language="json" />
     </div>
   `,
   host: {

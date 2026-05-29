@@ -6,11 +6,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
+import { CodeBlock } from '../code-block/code-block';
 
 /**
  * ToolOutput — labelled body showing either the result or an error. Mirrors
  * React `ToolOutput`. Auto-formats object output as JSON; string output is
- * rendered as monospaced text.
+ * rendered via the same code-block highlighter (json language) so the
+ * surface stays consistent with rx-ai which routes both through CodeBlock.
+ *
+ * Errors are rendered as plain text inside a destructive-tinted container
+ * (no highlight) since they are not structured data.
  *
  * When both inputs are empty, renders nothing (matches React behavior).
  */
@@ -19,6 +24,7 @@ import { cn } from '@gremorie/ng-core';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CodeBlock],
   template: `
     @if (visible()) {
       <h4
@@ -31,7 +37,7 @@ import { cn } from '@gremorie/ng-core';
           <div class="p-4 text-xs">{{ errorText() }}</div>
         }
         @if (hasOutput()) {
-          <pre class="m-0 p-4 text-xs"><code>{{ formatted() }}</code></pre>
+          <code-block [code]="formatted()" language="json" />
         }
       </div>
     }
