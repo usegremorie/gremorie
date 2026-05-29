@@ -1,73 +1,65 @@
 ---
 title: Input OTP
-description: One-time password input with slot-based UX.
+description: Segmented one-time-password input built on the `input-otp` library, with paste-to-fill, autocomplete, and inter-slot focus management.
 ---
 
 import { InputOTPPreview } from "@/components/preview/forms/forms";
 
+## Overview
+
+`InputOTP` renders a row of single-character slots that behave as a single underlying `<input>`. Built on top of `input-otp`, it handles inter-slot caret movement, paste-to-fill, and the browser's `autocomplete="one-time-code"` so SMS / email codes auto-populate on supported platforms.
+
+Use it for 2FA, email verification, SMS confirmation - any ephemeral code the user types or pastes. Do not use it for passwords or persistent PINs; those need a regular `Input` with `type="password"`.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <InputOTPPreview />
 </div>
 
+## Installation
 
-`InputOTP` wraps `input-otp` with Gremorie styling - keyboard-driven,
-paste-friendly, slot-based. Each digit gets its own slot via
-`InputOTPSlot`. Use for 2FA codes, magic links, SMS verification.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular InputOTP lands in a follow-up rev.
+npx gremorie@latest add rx-input-otp
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-input-otp
+pnpm dlx gremorie@latest add rx-input-otp
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-input-otp
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-input-otp
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@gremorie/rx-forms";
 
-export function TwoFactorCode() {
+export function Example() {
   return (
     <InputOTP maxLength={6}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
         <InputOTPSlot index={2} />
-      </InputOTPGroup>
-      <InputOTPSeparator />
-      <InputOTPGroup>
         <InputOTPSlot index={3} />
         <InputOTPSlot index={4} />
         <InputOTPSlot index={5} />
@@ -76,12 +68,129 @@ export function TwoFactorCode() {
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Reference
+## API
 
-- React source: `packages/rx-forms/src/lib/input-otp/input-otp.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-input-otp.json`.
+### `<InputOTP>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `maxLength` | `number` | - | Total number of slots. Required. |
+| `value` | `string` | - | Controlled value. |
+| `onChange` | `(value: string) => void` | - | Fires on every keystroke and paste. |
+| `pattern` | `RegExp \| string` | - | Restrict allowed characters (e.g. `^[0-9]+$` for digits only). |
+| `containerClassName` | `string` | - | Classes applied to the wrapper row, not the underlying input. |
+| `className` | `string` | - | Classes applied to the underlying input (kept visually hidden). |
+
+Extends all `React.ComponentProps<typeof OTPInput>` from `input-otp`. Renders with `autocomplete="one-time-code"` by default so the browser offers to autofill SMS codes on supported devices.
+
+### `<InputOTPGroup>`
+
+Visual cluster of `InputOTPSlot`s. Adds `flex items-center` and lets you split codes into chunks (e.g. 3 + 3) by rendering multiple groups separated by `<InputOTPSeparator />`.
+
+Extends all `React.ComponentProps<"div">`.
+
+### `<InputOTPSlot>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `index` | `number` | - | Position in the underlying value (0-based). Required. |
+
+Reads the active char, focus state, and fake caret position from `OTPInputContext` and renders the corresponding visual.
+
+### `<InputOTPSeparator>`
+
+Decorative `<div role="separator">` rendering a minus icon. Use between groups.
+
+## Composition
+
+1. **`<InputOTP>`** is the controlled root - owns `value`, `maxLength`, and the underlying hidden input.
+2. **`<InputOTPGroup>`** is a visual cluster. You can render multiple per `InputOTP` and separate them with `<InputOTPSeparator />`.
+3. **`<InputOTPSlot index={n} />`** is one character cell. Slots read their state from the shared `OTPInputContext` based on their index.
+
+## Variations
+
+### Six-digit code (single group)
+
+The most common pattern for 2FA. `maxLength={6}` and six slots inside one group.
+
+```tsx
+<InputOTP maxLength={6}>
+  <InputOTPGroup>
+    {Array.from({ length: 6 }).map((_, i) => (
+      <InputOTPSlot key={i} index={i} />
+    ))}
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Four-digit PIN
+
+Short PIN code for confirmations. Reduce `maxLength` and the slot count together.
+
+```tsx
+<InputOTP maxLength={4}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+    <InputOTPSlot index={3} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Grouped 3 + 3 with separator
+
+Split a six-digit code with a separator for legibility (mirrors how codes are usually presented in emails: "123 456").
+
+```tsx
+<InputOTP maxLength={6}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Numeric-only pattern
+
+Restrict input to digits via the `pattern` prop. Prevents users from typing letters at all.
+
+```tsx
+<InputOTP maxLength={6} pattern="^[0-9]+$">
+  <InputOTPGroup>
+    {Array.from({ length: 6 }).map((_, i) => (
+      <InputOTPSlot key={i} index={i} />
+    ))}
+  </InputOTPGroup>
+</InputOTP>
+```
+
+## Accessibility
+
+- **Single accessible input**: behind the scenes, `input-otp` renders one `<input>` element that owns the value, type, name, and label association. Screen readers see one field, not six.
+- **Autocomplete**: `autocomplete="one-time-code"` lets iOS, Android, and modern browsers offer SMS auto-fill.
+- **Keyboard navigation**: typing moves the caret forward; `Backspace` clears and moves back; arrow keys move between slots; selection-to-paste spreads characters across slots.
+- **Paste-to-fill**: pasting a full code into any slot distributes characters across all slots in order.
+- **Active slot**: the focused slot renders a blinking caret (`animate-caret-blink`) and a focus ring, so users always see where the next keystroke lands.
+- **Invalid state**: `aria-invalid="true"` on the root switches every slot's border to the destructive token.
+
+## Related
+
+- [Input](/components/forms/input) - the canonical single-line text field
+- [Form](/components/forms/form) - wire OTP into react-hook-form for verification flows
+- [Button](/components/forms/button) - the typical "Verify" trigger underneath the OTP
