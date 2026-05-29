@@ -8,7 +8,7 @@
 ## 1. Contexto e restrições
 
 - Monorepo NX, Angular 21.2, Tailwind v4, signals everywhere.
-- `@shadng/core`, `@shadng/prompt-input`, `@shadng/attachments` são pacotes internos — importar diretamente, não modificar.
+- `@gremorie/ng-core`, `@gremorie/ng-prompt-input`, `@gremorie/ng-attachments` são pacotes internos — importar diretamente, não modificar.
 - `@spartan-ng/brain` instalado — usar primitivos headless `brn-*` e estilizar com Tailwind (padrão HLM do Spartan).
 - `@supabase/supabase-js` **ainda não instalado** — instalar no root do monorepo.
 - Nada de `any` solto; TypeScript estrito; sem modificar componentes compartilhados.

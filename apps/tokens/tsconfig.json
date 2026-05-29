@@ -1,0 +1,10 @@
+{
+  "extends": "@gremorie/tsconfig/react-library.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist", ".turbo"]
+}

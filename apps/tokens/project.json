@@ -1,0 +1,47 @@
+{
+  "name": "tokens",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/tokens/src",
+  "projectType": "application",
+  "tags": ["scope:tokens", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "apps/tokens",
+        "command": "tsc -b && vite build"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "options": {
+        "cwd": "apps/tokens",
+        "command": "vite --port 5023 --strictPort"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "options": {
+        "cwd": "apps/tokens",
+        "command": "vite preview --port 5023 --strictPort"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/tokens",
+        "command": "eslint src"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/tokens",
+        "command": "tsc --noEmit"
+      }
+    }
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-message",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Message (Angular)",
+  "description": "Message family for chat bubbles - root + content, avatar, actions, toolbar, attachments, response. Includes branch sub-family (controllable picker over alternative responses).",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@angular/common"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/message/message.types.ts",
+      "content": "/**\n * Mirrors AI SDK `UIMessage[\"role\"]`.\n *\n * React rx-ai source: packages/rx-ai/src/lib/message/message.tsx\n */\nexport type MessageRole = 'user' | 'assistant' | 'system';\n\n/**\n * Subset of the AI SDK `FileUIPart` shape used by MessageAttachment.\n * Kept local so consumers do not have to install the `ai` package just\n * to render an attachment.\n */\nexport interface MessageAttachmentData {\n  filename?: string;\n  mediaType?: string;\n  url?: string;\n}\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/message/message.types.ts"
+    },
+    {
+      "path": "src/lib/message/message.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\nimport type { MessageRole } from './message.types';\n\n/**\n * Message — root container for a chat bubble.\n *\n * Mirrors React `Message` from rx-ai. The `from` input drives the\n * `is-user` / `is-assistant` group classes that descendants\n * (`MessageContent`) read with `group-[.is-user]:*` Tailwind variants.\n *\n * @example\n * ```html\n * <message from=\"user\">\n *   <message-content>Hello!</message-content>\n * </message>\n * ```\n */\n@Component({\n  selector: 'message',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    '[class]': 'hostClass()',\n  },\n})\nexport class Message {\n  readonly from = input.required<MessageRole>();\n\n  protected readonly hostClass = computed(() =>\n    cn(\n      'group flex w-full max-w-[95%] flex-col gap-2',\n      this.from() === 'user'\n        ? 'is-user ml-auto justify-end'\n        : 'is-assistant',\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message.ts"
+    },
+    {
+      "path": "src/lib/message/message-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * MessageContent — bubble body. Styled differently for user vs assistant via\n * the `is-user` / `is-assistant` group class set by the parent `<message>`.\n */\n@Component({\n  selector: 'message-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class:\n      'is-user:dark flex w-fit max-w-full min-w-0 flex-col gap-2 overflow-hidden text-sm group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-foreground group-[.is-assistant]:text-foreground',\n  },\n})\nexport class MessageContent {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-content.ts"
+    },
+    {
+      "path": "src/lib/message/message-avatar.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * MessageAvatar — circular avatar.\n *\n * Mirrors React `MessageAvatar`. Renders `<img>` when `src` is set, otherwise\n * falls back to projected content (initials, icon, etc.).\n */\n@Component({\n  selector: 'message-avatar',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (src()) {\n      <img\n        [src]=\"src()\"\n        [alt]=\"alt() ?? name() ?? 'avatar'\"\n        class=\"size-full object-cover\"\n      />\n    } @else {\n      <ng-content />\n    }\n  `,\n  host: {\n    '[class]': 'hostClass()',\n  },\n})\nexport class MessageAvatar {\n  readonly src = input<string>();\n  readonly alt = input<string>();\n  readonly name = input<string>();\n\n  protected readonly hostClass = computed(() =>\n    cn(\n      'inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-muted-foreground text-xs font-medium ring-1 ring-border',\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-avatar.ts"
+    },
+    {
+      "path": "src/lib/message/message-actions.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * MessageActions — row of icon buttons (copy, retry, thumbs, etc.).\n */\n@Component({\n  selector: 'message-actions',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'flex items-center gap-1',\n  },\n})\nexport class MessageActions {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-actions.ts"
+    },
+    {
+      "path": "src/lib/message/message-toolbar.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * MessageToolbar — full-width toolbar row under the message body. Holds\n * actions on the left and metadata on the right.\n */\n@Component({\n  selector: 'message-toolbar',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'mt-4 flex w-full items-center justify-between gap-4',\n  },\n})\nexport class MessageToolbar {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-toolbar.ts"
+    },
+    {
+      "path": "src/lib/message/message-attachments.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * MessageAttachments — wrap-flex container for `<message-attachment>` items\n * inside a message bubble.\n */\n@Component({\n  selector: 'message-attachments',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'ml-auto flex w-fit flex-wrap items-start gap-2',\n  },\n})\nexport class MessageAttachments {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-attachments.ts"
+    },
+    {
+      "path": "src/lib/message/message-attachment.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  output,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport type { MessageAttachmentData } from './message.types';\n\n/**\n * MessageAttachment — image preview or file chip. Mirrors React\n * `MessageAttachment`. Emits `(removed)` when the optional remove button is\n * clicked; consumers opt in by setting `[removable]=\"true\"`.\n */\n@Component({\n  selector: 'message-attachment',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (isImage()) {\n      <img\n        [src]=\"data().url\"\n        [alt]=\"label()\"\n        class=\"size-full object-cover\"\n        height=\"100\"\n        width=\"100\"\n      />\n    } @else {\n      <div\n        class=\"flex size-full shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground\"\n        [attr.aria-label]=\"label()\"\n      >\n        <!-- paperclip glyph (no icon-set dep) -->\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n        >\n          <path d=\"m21 11-8.99 9a5.5 5.5 0 0 1-7.78-7.78l8.49-8.49a3.5 3.5 0 1 1 4.95 4.95L8.93 17.07a1.5 1.5 0 0 1-2.12-2.12l8.49-8.49\" />\n        </svg>\n      </div>\n    }\n    @if (removable()) {\n      <button\n        type=\"button\"\n        (click)=\"handleRemove($event)\"\n        class=\"absolute top-2 right-2 inline-flex size-6 items-center justify-center rounded-full bg-background/80 p-0 opacity-0 backdrop-blur-sm transition-opacity hover:bg-background group-hover:opacity-100\"\n        aria-label=\"Remove attachment\"\n      >\n        <svg\n          width=\"12\"\n          height=\"12\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n        >\n          <path d=\"M18 6 6 18M6 6l12 12\" />\n        </svg>\n        <span class=\"sr-only\">Remove</span>\n      </button>\n    }\n  `,\n  host: {\n    class: 'group relative size-24 overflow-hidden rounded-lg',\n  },\n})\nexport class MessageAttachment {\n  readonly data = input.required<MessageAttachmentData>();\n  readonly removable = input<boolean>(false);\n\n  readonly removed = output<void>();\n\n  protected readonly isImage = computed(() => {\n    const d = this.data();\n    return !!d.mediaType?.startsWith('image/') && !!d.url;\n  });\n\n  protected readonly label = computed(() => {\n    const d = this.data();\n    return d.filename || (this.isImage() ? 'Image' : 'Attachment');\n  });\n\n  protected handleRemove(event: MouseEvent): void {\n    event.stopPropagation();\n    this.removed.emit();\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-attachment.ts"
+    },
+    {
+      "path": "src/lib/message/message-response.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { DomSanitizer, type SafeHtml } from '@angular/platform-browser';\nimport { marked, type MarkedOptions } from 'marked';\n\n/**\n * MessageResponse — assistant-side response body with markdown rendering.\n *\n * Mirrors React `MessageResponse` (which wraps `Streamdown` from rx-ai).\n * Streaming-aware: accepts partial markdown each render and re-parses;\n * marked is robust to incomplete input (open code fences, half tables)\n * and degrades gracefully back to plain text on parse failure.\n *\n * Consumers can also project arbitrary children (custom renderer) instead\n * of using the `text` input.\n *\n * `marked` is a hard runtime dep of ng-ai (kept tiny and tree-shakable).\n */\n@Component({\n  selector: 'message-response',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (text(); as t) {\n      <div [innerHTML]=\"renderedHtml()\"></div>\n    } @else {\n      <ng-content />\n    }\n  `,\n  host: {\n    class:\n      'size-full prose prose-sm dark:prose-invert max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0',\n  },\n})\nexport class MessageResponse {\n  private readonly sanitizer = inject(DomSanitizer);\n\n  /**\n   * Markdown source. Re-parsed on every change; streaming-friendly. Leave\n   * unset and project markdown / HTML children when using a custom\n   * renderer.\n   */\n  readonly text = input<string>();\n\n  /**\n   * Optional marked options forwarded to the parser. Defaults to\n   * `{ gfm: true, breaks: false }` matching Streamdown defaults.\n   */\n  readonly markedOptions = input<MarkedOptions | undefined>(undefined);\n\n  protected readonly renderedHtml = computed<SafeHtml>(() => {\n    const source = this.text() ?? '';\n    if (!source) return '';\n\n    const options: MarkedOptions = {\n      gfm: true,\n      breaks: false,\n      ...(this.markedOptions() ?? {}),\n    };\n\n    try {\n      const html = marked.parse(source, { ...options, async: false }) as string;\n      return this.sanitizer.bypassSecurityTrustHtml(html);\n    } catch (err) {\n      console.warn('[ng-ai] MessageResponse markdown parse failed', err);\n      return this.sanitizer.bypassSecurityTrustHtml(escapeHtml(source));\n    }\n  });\n}\n\nfunction escapeHtml(s: string): string {\n  return s\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;')\n    .replace(/\"/g, '&quot;')\n    .replace(/'/g, '&#039;');\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-response.ts"
+    },
+    {
+      "path": "src/lib/message/message-branch.ts",
+      "content": "import {\n  AfterContentInit,\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  Directive,\n  effect,\n  forwardRef,\n  inject,\n  InjectionToken,\n  input,\n  OnDestroy,\n  output,\n  signal,\n  TemplateRef,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Shared state contract for the MessageBranch family. Mirrors the React\n * `MessageBranchContext`. Distributed via DI under `MESSAGE_BRANCH`.\n */\nexport interface MessageBranchState {\n  readonly currentBranch: () => number;\n  readonly totalBranches: () => number;\n  goToPrevious: () => void;\n  goToNext: () => void;\n  registerBranch: (template: TemplateRef<unknown>) => () => void;\n  branches: () => readonly TemplateRef<unknown>[];\n}\n\nexport const MESSAGE_BRANCH = new InjectionToken<MessageBranchState>(\n  'MessageBranchState',\n);\n\n/**\n * Wraps a single branch template. Equivalent to one child of React's\n * `<MessageBranchContent>` array.\n */\n@Directive({\n  selector: '[messageBranchItem]',\n  standalone: true,\n})\nexport class MessageBranchItem implements AfterContentInit, OnDestroy {\n  readonly template = inject(TemplateRef);\n  private readonly parent = inject(MESSAGE_BRANCH);\n  private unregister?: () => void;\n\n  ngAfterContentInit(): void {\n    this.unregister = this.parent.registerBranch(this.template);\n  }\n\n  ngOnDestroy(): void {\n    this.unregister?.();\n  }\n}\n\n/**\n * MessageBranch — controllable branch picker. Mirrors React `MessageBranch`.\n *\n * Self-provides `MESSAGE_BRANCH` so children inject the same instance via\n * Angular's component-hierarchy DI - no shared mutable singleton, fully\n * compatible with multiple concurrent branches on the page.\n */\n@Component({\n  selector: 'message-branch',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'grid w-full gap-2 [&>div]:pb-0',\n  },\n  providers: [\n    {\n      provide: MESSAGE_BRANCH,\n      useExisting: forwardRef(() => MessageBranch),\n    },\n  ],\n})\nexport class MessageBranch implements MessageBranchState {\n  readonly defaultBranch = input<number>(0);\n  readonly branchChange = output<number>();\n\n  private readonly _branches = signal<readonly TemplateRef<unknown>[]>([]);\n  private readonly _current = signal(0);\n\n  readonly branches = () => this._branches();\n  readonly currentBranch = () => this._current();\n  readonly totalBranches = computed(() => this._branches().length);\n\n  constructor() {\n    // Apply defaultBranch when it changes.\n    effect(() => {\n      this._current.set(this.defaultBranch());\n    });\n  }\n\n  registerBranch(template: TemplateRef<unknown>): () => void {\n    this._branches.update((prev) => [...prev, template]);\n    return () => {\n      this._branches.update((prev) => prev.filter((t) => t !== template));\n    };\n  }\n\n  goToPrevious(): void {\n    const total = this.totalBranches();\n    if (total <= 1) return;\n    const cur = this._current();\n    const next = cur > 0 ? cur - 1 : total - 1;\n    this._current.set(next);\n    this.branchChange.emit(next);\n  }\n\n  goToNext(): void {\n    const total = this.totalBranches();\n    if (total <= 1) return;\n    const cur = this._current();\n    const next = cur < total - 1 ? cur + 1 : 0;\n    this._current.set(next);\n    this.branchChange.emit(next);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-branch.ts"
+    },
+    {
+      "path": "src/lib/message/message-branch-content.ts",
+      "content": "import { NgTemplateOutlet } from '@angular/common';\nimport {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  contentChildren,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { MESSAGE_BRANCH } from './message-branch';\nimport { MessageBranchItem } from './message-branch';\n\n/**\n * MessageBranchContent — renders only the currently active branch template.\n *\n * Children are wrapped with `[messageBranchItem]` directives so the parent\n * MessageBranch can index them. Mirrors React `MessageBranchContent`.\n */\n@Component({\n  selector: 'message-branch-content',\n  standalone: true,\n  imports: [NgTemplateOutlet],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @for (item of items(); track $index) {\n      <div\n        class=\"grid gap-2 overflow-hidden [&>div]:pb-0\"\n        [class.hidden]=\"$index !== current()\"\n      >\n        <ng-container *ngTemplateOutlet=\"item.template\" />\n      </div>\n    }\n  `,\n})\nexport class MessageBranchContent {\n  protected readonly state = inject(MESSAGE_BRANCH);\n  protected readonly items = contentChildren(MessageBranchItem, {\n    descendants: true,\n  });\n  protected readonly current = computed(() => this.state.currentBranch());\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-branch-content.ts"
+    },
+    {
+      "path": "src/lib/message/message-branch-selector.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { MESSAGE_BRANCH } from './message-branch';\nimport type { MessageRole } from './message.types';\n\n/**\n * MessageBranchSelector — wrapper for the prev/next/page controls. Hides\n * itself when there is only one branch. Mirrors React `MessageBranchSelector`.\n */\n@Component({\n  selector: 'message-branch-selector',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (visible()) {\n      <div\n        class=\"inline-flex items-center [&>*:not(:first-child)]:rounded-l-md [&>*:not(:last-child)]:rounded-r-md\"\n      >\n        <ng-content />\n      </div>\n    }\n  `,\n})\nexport class MessageBranchSelector {\n  readonly from = input.required<MessageRole>();\n\n  private readonly state = inject(MESSAGE_BRANCH);\n  protected readonly visible = computed(() => this.state.totalBranches() > 1);\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-branch-selector.ts"
+    },
+    {
+      "path": "src/lib/message/message-branch-controls.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { MESSAGE_BRANCH } from './message-branch';\n\n/**\n * MessageBranchPrevious — \"previous branch\" icon button. Disabled when there\n * is only one branch. Mirrors React `MessageBranchPrevious`.\n */\n@Component({\n  selector: 'message-branch-previous',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      class=\"inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50\"\n      aria-label=\"Previous branch\"\n      [disabled]=\"disabled()\"\n      (click)=\"prev()\"\n    >\n      <svg\n        width=\"14\"\n        height=\"14\"\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n      >\n        <path d=\"m15 18-6-6 6-6\" />\n      </svg>\n    </button>\n  `,\n})\nexport class MessageBranchPrevious {\n  private readonly state = inject(MESSAGE_BRANCH);\n  protected readonly disabled = computed(() => this.state.totalBranches() <= 1);\n\n  protected prev(): void {\n    this.state.goToPrevious();\n  }\n}\n\n/**\n * MessageBranchNext — \"next branch\" icon button. Disabled when there is only\n * one branch. Mirrors React `MessageBranchNext`.\n */\n@Component({\n  selector: 'message-branch-next',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      class=\"inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50\"\n      aria-label=\"Next branch\"\n      [disabled]=\"disabled()\"\n      (click)=\"next()\"\n    >\n      <svg\n        width=\"14\"\n        height=\"14\"\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n      >\n        <path d=\"m9 18 6-6-6-6\" />\n      </svg>\n    </button>\n  `,\n})\nexport class MessageBranchNext {\n  private readonly state = inject(MESSAGE_BRANCH);\n  protected readonly disabled = computed(() => this.state.totalBranches() <= 1);\n\n  protected next(): void {\n    this.state.goToNext();\n  }\n}\n\n/**\n * MessageBranchPage — \"X of Y\" pagination label. Mirrors React\n * `MessageBranchPage`.\n */\n@Component({\n  selector: 'message-branch-page',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<span>{{ label() }}</span>`,\n  host: {\n    class:\n      'inline-flex items-center px-2 text-muted-foreground text-xs font-medium',\n  },\n})\nexport class MessageBranchPage {\n  private readonly state = inject(MESSAGE_BRANCH);\n  protected readonly label = computed(\n    () => `${this.state.currentBranch() + 1} of ${this.state.totalBranches()}`,\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/message/message-branch-controls.ts"
+    },
+    {
+      "path": "src/lib/message/index.ts",
+      "content": "export * from './message.types';\nexport { Message } from './message';\nexport { MessageContent } from './message-content';\nexport { MessageAvatar } from './message-avatar';\nexport { MessageActions } from './message-actions';\nexport { MessageAction } from './message-action';\nexport { MessageToolbar } from './message-toolbar';\nexport { MessageAttachments } from './message-attachments';\nexport { MessageAttachment } from './message-attachment';\nexport { MessageResponse } from './message-response';\nexport {\n  MessageBranch,\n  MessageBranchItem,\n  MESSAGE_BRANCH,\n} from './message-branch';\nexport type { MessageBranchState } from './message-branch';\nexport { MessageBranchContent } from './message-branch-content';\nexport { MessageBranchSelector } from './message-branch-selector';\nexport {\n  MessageBranchPrevious,\n  MessageBranchNext,\n  MessageBranchPage,\n} from './message-branch-controls';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/message/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

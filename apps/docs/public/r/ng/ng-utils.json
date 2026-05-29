@@ -1,0 +1,85 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-utils",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Utils (Angular)",
+  "description": "Shared utilities for the Angular edition - cn() helper that merges Tailwind class names with conflict resolution (clsx + tailwind-merge).",
+  "categories": [
+    "core",
+    "utils"
+  ],
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/utils.ts",
+      "content": "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]): string {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/utils/utils.ts"
+    },
+    {
+      "path": "styles/theme.css",
+      "content": "/*\n * Gremorie NG - Two-tier token system\n *\n * Layer 1 (Primitives): raw palette, base radii\n * Layer 2 (Semantics):  what components consume\n *\n * Components NEVER consume primitives directly.\n * Editing primitives = rebrand global.\n * Editing semantics inside .dark = remap dark mode.\n */\n\n@theme {\n  /* ─── 1. PRIMITIVES ───────────────────────────────── */\n  --color-gray-50: oklch(0.985 0 0);\n  --color-gray-100: oklch(0.97 0 0);\n  --color-gray-200: oklch(0.922 0 0);\n  --color-gray-300: oklch(0.87 0 0);\n  --color-gray-400: oklch(0.708 0 0);\n  --color-gray-500: oklch(0.556 0 0);\n  --color-gray-600: oklch(0.45 0 0);\n  --color-gray-700: oklch(0.35 0 0);\n  --color-gray-800: oklch(0.269 0 0);\n  --color-gray-900: oklch(0.205 0 0);\n  --color-gray-950: oklch(0.145 0 0);\n\n  --color-red-400: oklch(0.704 0.191 22.216);\n  --color-red-500: oklch(0.577 0.245 27.325);\n\n  /*\n   * Brand palette (Gremorie - violet).\n   * Gremorie = grimoire + memory + Goetic demon Gremory.\n   * Violet anchors the esoteric/mystic identity without going full fantasy.\n   * Used as ACCENT on the landing and select doc surfaces - NOT as primary,\n   * so the DS keeps gray-900 as neutral primary for dogfood symmetry.\n   * Hue ~270 (violet), moderate chroma. Step values follow Tailwind cadence.\n   */\n  --color-brand-50: oklch(0.97 0.02 295);\n  --color-brand-100: oklch(0.94 0.04 290);\n  --color-brand-200: oklch(0.87 0.08 285);\n  --color-brand-300: oklch(0.78 0.13 280);\n  --color-brand-400: oklch(0.68 0.18 275);\n  --color-brand-500: oklch(0.6 0.22 272);\n  --color-brand-600: oklch(0.52 0.24 270);\n  --color-brand-700: oklch(0.45 0.22 268);\n  --color-brand-800: oklch(0.38 0.18 266);\n  --color-brand-900: oklch(0.3 0.14 264);\n  --color-brand-950: oklch(0.22 0.1 262);\n\n  /* Radii base */\n  --radius-base: 0.625rem;\n  --radius-sm: calc(var(--radius-base) * 0.6);\n  --radius-md: calc(var(--radius-base) * 0.8);\n  --radius-lg: var(--radius-base);\n  --radius-xl: calc(var(--radius-base) * 1.4);\n}\n\n:root {\n  /* ─── 2. SEMANTICS ─────────────── */\n  --background: var(--color-gray-50);\n  --foreground: var(--color-gray-950);\n\n  --card: var(--background);\n  --card-foreground: var(--foreground);\n\n  --popover: var(--background);\n  --popover-foreground: var(--foreground);\n\n  --primary: var(--color-gray-900);\n  --primary-foreground: var(--color-gray-50);\n\n  --secondary: var(--color-gray-100);\n  --secondary-foreground: var(--color-gray-900);\n\n  --muted: var(--color-gray-100);\n  --muted-foreground: var(--color-gray-500);\n\n  --accent: var(--color-gray-100);\n  --accent-foreground: var(--color-gray-900);\n\n  --destructive: var(--color-red-500);\n  --destructive-foreground: var(--color-gray-50);\n\n  --success: oklch(0.65 0.18 145);\n  --success-foreground: var(--color-gray-50);\n\n  /*\n   * Semantic brand tokens. Components and surfaces opt-in via these.\n   * --brand           : main brand surface (filled buttons, hero halo, accents)\n   * --brand-foreground: text on brand surface\n   * --brand-subtle    : tinted background for icon tiles, soft halos (~12% alpha)\n   * --brand-muted     : low-emphasis brand text/border\n   */\n  --brand: var(--color-brand-600);\n  --brand-foreground: var(--color-gray-50);\n  --brand-subtle: color-mix(in oklch, var(--color-brand-500) 12%, transparent);\n  --brand-muted: var(--color-brand-700);\n\n  --border: var(--color-gray-200);\n  --input: var(--color-gray-200);\n  --ring: var(--color-gray-400);\n\n  /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */\n  --chart-1: oklch(0.646 0.222 41.116);\n  --chart-2: oklch(0.6 0.118 184.704);\n  --chart-3: oklch(0.398 0.07 227.392);\n  --chart-4: oklch(0.828 0.189 84.429);\n  --chart-5: oklch(0.769 0.188 70.08);\n}\n\n.dark {\n  /* Only remap semantics. Primitives stay intact. */\n  --background: var(--color-gray-950);\n  --foreground: var(--color-gray-50);\n\n  --card: var(--color-gray-900);\n  --card-foreground: var(--color-gray-50);\n\n  --popover: var(--color-gray-900);\n  --popover-foreground: var(--color-gray-50);\n\n  --primary: var(--color-gray-100);\n  --primary-foreground: var(--color-gray-900);\n\n  --secondary: var(--color-gray-800);\n  --secondary-foreground: var(--color-gray-50);\n\n  --muted: var(--color-gray-800);\n  --muted-foreground: var(--color-gray-400);\n\n  --accent: var(--color-gray-800);\n  --accent-foreground: var(--color-gray-50);\n\n  --destructive: var(--color-red-400);\n  --destructive-foreground: var(--color-gray-50);\n\n  --success: oklch(0.7 0.18 145);\n  --success-foreground: var(--color-gray-950);\n\n  /*\n   * Brand on dark: brighter hue so it pops on dark surfaces, subtle alpha\n   * tunes up because dark backgrounds eat ~30% of perceived chroma.\n   */\n  --brand: var(--color-brand-400);\n  --brand-foreground: var(--color-gray-950);\n  --brand-subtle: color-mix(in oklch, var(--color-brand-400) 18%, transparent);\n  --brand-muted: var(--color-brand-300);\n\n  --border: oklch(1 0 0 / 10%);\n  --input: oklch(1 0 0 / 15%);\n  --ring: var(--color-gray-500);\n\n  /* Chart series (dark) */\n  --chart-1: oklch(0.488 0.243 264.376);\n  --chart-2: oklch(0.696 0.17 162.48);\n  --chart-3: oklch(0.769 0.188 70.08);\n  --chart-4: oklch(0.627 0.265 303.9);\n  --chart-5: oklch(0.645 0.246 16.439);\n}\n\n/*\n * ─── Animations ───────────────────────────────────────\n * Used by dropdowns (action-menu, model-select) and attachments.\n * All applied via motion-safe: utilities — disabled under\n * prefers-reduced-motion (see block below).\n */\n@keyframes gremorie-pop-in {\n  from {\n    opacity: 0;\n    transform: scale(0.96) translateY(-2px);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1) translateY(0);\n  }\n}\n\n@keyframes gremorie-fade-in {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n\n/*\n * Reduced motion — global override.\n * Users who set prefers-reduced-motion get drastically shortened durations\n * for animations, transitions, and scroll. Essential indicators (aria-busy,\n * spinners) still update visually but without the spin animation cost.\n */\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n\n/*\n * Tailwind v4 utility wiring.\n * Exposes the semantics above as Tailwind utilities so you can write\n * `bg-background`, `text-foreground`, `border-input`, etc.\n */\n@theme inline {\n  --color-background: var(--background);\n  --color-foreground: var(--foreground);\n  --color-card: var(--card);\n  --color-card-foreground: var(--card-foreground);\n  --color-popover: var(--popover);\n  --color-popover-foreground: var(--popover-foreground);\n  --color-primary: var(--primary);\n  --color-primary-foreground: var(--primary-foreground);\n  --color-secondary: var(--secondary);\n  --color-secondary-foreground: var(--secondary-foreground);\n  --color-muted: var(--muted);\n  --color-muted-foreground: var(--muted-foreground);\n  --color-accent: var(--accent);\n  --color-accent-foreground: var(--accent-foreground);\n  --color-destructive: var(--destructive);\n  --color-destructive-foreground: var(--destructive-foreground);\n  --color-success: var(--success);\n  --color-success-foreground: var(--success-foreground);\n  --color-border: var(--border);\n  --color-input: var(--input);\n  --color-ring: var(--ring);\n  --color-brand: var(--brand);\n  --color-brand-foreground: var(--brand-foreground);\n  --color-brand-subtle: var(--brand-subtle);\n  --color-brand-muted: var(--brand-muted);\n}\n",
+      "type": "registry:style",
+      "target": "src/app/gremorie/utils/styles/theme.css"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Foundational utilities and the Button primitive. Install before any other Gremorie package.",
+    "whenNotToUse": "Standalone primitive usage outside an Angular app - this package depends on @angular/core.",
+    "bestPractices": [
+      "Import `cn` from @gremorie/ng-core to merge Tailwind classes; do not pull in clsx or tailwind-merge directly.",
+      "Use the Button primitive as-is. Variants and sizes are consistent with the React edition.",
+      "Apply the theme.css once at the root of the app (`@import '@gremorie/ng-core/theme.css';`)."
+    ],
+    "antipatterns": [
+      "Re-implementing a Button via raw `<button>` plus Tailwind classes - the primitive already covers variants, sizes, icons, disabled states.",
+      "Forking the cva calls in button.ts - extend through composition instead so future upstream updates flow in."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "variant",
+          "type": "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+          "required": false,
+          "default": "'default'"
+        },
+        {
+          "name": "size",
+          "type": "'default' | 'sm' | 'lg' | 'icon'",
+          "required": false,
+          "default": "'default'"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremorieClick",
+          "payload": "MouseEvent",
+          "description": "Emitted on click when the button is not disabled."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Default button",
+        "code": "<button gButton>Save</button>\n"
+      },
+      {
+        "title": "Destructive icon button",
+        "code": "<button gButton variant=\"destructive\" size=\"icon\">\n  <trash-icon />\n</button>\n"
+      }
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/solar.css";
+@import "fumadocs-ui/css/preset.css";
+@import "@gremorie/rx-core/styles/globals.css";
+
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
+@source "../../../packages/rx-*/src/**/*.{ts,tsx}";
+
+/* ---------------------------------------------------------------- *\
+ * Customizations (intentionally minimal).
+ *
+ * Rule for this project: stick to Fumadocs defaults for ANY visual
+ * concern (colors, borders, spacing, typography). Only customize
+ * here for things that affect *layout* shape.
+ *
+ * What's customized below — and why each is justified:
+ *
+ *   1. --fd-layout-width: 100vw
+ *      Recommended pattern from the Fumadocs docs themselves
+ *      (https://fumadocs.dev/docs/ui/theme#layout-width). Default
+ *      caps the layout at 97rem (~1552px), which leaves ~600-1000px
+ *      of empty space on each side on monitors ≥1920px. 100vw makes
+ *      the 3-column grid (sidebar / content / TOC) span the entire
+ *      viewport so the side columns pin to the viewport edges.
+ *
+ *   2. scrollbar-gutter: stable
+ *      Pure CSS, not Fumadocs-specific. Reserves space for the
+ *      vertical scrollbar even when no scroll is needed, so the
+ *      page doesn't jitter horizontally when content grows past the
+ *      viewport height. Necessary companion to (1) — without this,
+ *      the browser pulls 16px from the layout when a scrollbar
+ *      appears, causing the right edge (TOC column) to clip
+ *      momentarily on first paint and on route changes.
+ *
+ * Everything else (colors, fd-card/popover/border tones, etc) is
+ * left to Fumadocs' neutral preset on purpose. Their defaults use
+ * translucent hsla() values that blend softly against the
+ * background; opaque overrides make borders look hard.
+\* ---------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------- *\
+ * Section accent colors — consumed by tabs.transform() in
+ * (docs)/[...slug]/layout.tsx to tint each sidebar tab icon by its
+ * section. Pattern from fumadocs.dev (apps/docs/app/global.css).
+ *
+ * Colors are picked to (a) read as distinct from each other at icon
+ * size and (b) stay coherent with the Gremorie brand violet.
+\* ---------------------------------------------------------------- */
+:root {
+  --get-started-color: oklch(0.62 0.18 145); /* emerald */
+  --corpus-color: oklch(0.7 0.16 70); /* amber */
+  --tokens-color: oklch(0.6 0.22 272); /* brand violet */
+  --components-color: oklch(0.58 0.18 250); /* blue */
+  --blocks-color: oklch(0.66 0.18 35); /* orange */
+  --artifacts-color: oklch(0.65 0.22 320); /* fuchsia */
+  --platform-color: oklch(0.55 0.04 240); /* slate */
+}
+
+.dark {
+  --get-started-color: oklch(0.75 0.18 145);
+  --corpus-color: oklch(0.8 0.16 70);
+  --tokens-color: oklch(0.75 0.22 272);
+  --components-color: oklch(0.7 0.18 250);
+  --blocks-color: oklch(0.75 0.18 35);
+  --artifacts-color: oklch(0.75 0.22 320);
+  --platform-color: oklch(0.7 0.04 240);
+}
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+    /* Smooth scroll for in-page anchor links on the landing.
+       Respects prefers-reduced-motion via the global override in
+       ng-core/theme.css (sets scroll-behavior to auto). */
+    scroll-behavior: smooth;
+  }
+  :root {
+    --fd-layout-width: 100vw;
+    /* WCAG 1.4.3 AA fix: Fumadocs default --color-fd-muted-foreground
+       (#737373) on --color-fd-background (#f5f5f5) is 4.34:1 in light
+       mode, just below the 4.5:1 AA threshold. Tightening to oklch
+       0.45 lands at ~7:1 contrast against the same background while
+       still reading as "muted" against the foreground.
+       Affects TOC links, navbar items, search placeholder, kbd, etc. */
+    --color-fd-muted-foreground: oklch(0.45 0 0);
+  }
+
+  /* Restore Fumadocs' translucent default border color. Kept here as
+     a defensive rule in case a future tokens import re-asserts
+     Tailwind v4's preflight `* { border: 0 solid currentColor }`
+     after Fumadocs' preset.css. */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-fd-border, currentColor);
+  }
+}

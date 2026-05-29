@@ -1,0 +1,267 @@
+---
+title: Input
+description: Campo de texto de uma linha — estiliza qualquer tipo HTML nativo (text, email, password, search, file…).
+component: Input
+importPath: "@kalvner/kds/forms/input"
+status: stable
+---
+
+import { Input } from "@kalvner/kds/forms/input";
+import { Label } from "@kalvner/kds/forms/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { Search, X } from "lucide-react";
+
+## Overview
+
+`Input` é um `<input>` HTML nativo estilizado com tokens semânticos do
+KDS. Aceita qualquer `type` válido — `text`, `email`, `password`,
+`number`, `search`, `tel`, `url`, `file` — e adapta o teclado mobile
+quando aplicável (ex: `email` mostra `@` no teclado iOS).
+
+Estados visuais não são controlados por className: focus vem do browser
+(`focus-visible`), erro vem de `aria-invalid` (atributo ARIA), disabled
+do prop nativo. Esse desacoplamento permite que `FormControl`
+(`@kalvner/kds/forms/form`) ligue tudo automaticamente quando o input
+está dentro de um `FormField`.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Input padrão com placeholder.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Input placeholder="Digite seu nome" />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Input
+  type="text"
+  ├─ [data-slot="input"]
+  └─ [aria-invalid] (set by FormControl quando há erro)
+/>
+```
+
+`Input` é um único elemento — não é compound. Ícones laterais e botões
+de limpar são composições externas (wrapper `relative` + `absolute`),
+não props do próprio Input. Esse padrão simplifica a API e mantém o
+componente substituível.
+
+## Usage
+
+```tsx
+import { Input } from "@kalvner/kds/forms/input";
+import { Label } from "@kalvner/kds/forms/label";
+
+export function EmailField() {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" type="email" placeholder="voce@exemplo.com" />
+    </div>
+  );
+}
+```
+
+<Card>
+  <CardHeader>
+    <CardTitle>Form row</CardTitle>
+    <CardDescription>Composição mínima — Label + Input.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="grid gap-2">
+      <Label htmlFor="usage-email">Email</Label>
+      <Input id="usage-email" type="email" placeholder="voce@exemplo.com" />
+    </div>
+  </CardContent>
+</Card>
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `type` | `'text' \| 'email' \| 'password' \| 'number' \| 'search' \| 'tel' \| 'url' \| 'file' \| ...` | `'text'` | Qualquer `type` HTML nativo. |
+| `disabled` | `boolean` | `false` | Bloqueia interação. |
+| `readOnly` | `boolean` | `false` | Permite seleção/cópia mas bloqueia edição. |
+| `placeholder` | `string` | — | Hint dentro do campo (não substitui Label). |
+| `aria-invalid` | `boolean` | — | Aciona ring vermelho — atribuído por `FormControl`. |
+| `...rest` | `React.ComponentProps<'input'>` | — | Tudo de `<input>`: `id`, `value`, `onChange`, `pattern`, `min`, `max`. |
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Email</CardTitle>
+      <CardDescription>Validação nativa + teclado com @ no mobile.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Input type="email" placeholder="voce@exemplo.com" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Password</CardTitle>
+      <CardDescription>Mascara o valor enquanto digita.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Input type="password" placeholder="••••••••" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Number</CardTitle>
+      <CardDescription>Teclado numérico mobile. Ainda chega como string.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Input type="number" placeholder="0" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>File</CardTitle>
+      <CardDescription>Picker nativo. Estilize o botão interno via classes file:.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Input type="file" />
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Sem pointer events, opacidade reduzida.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Input disabled defaultValue="valor fixo" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Readonly</CardTitle>
+      <CardDescription>Selecionável, não editável.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Input readOnly defaultValue="Esse valor é gerado pelo sistema" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Error</CardTitle>
+      <CardDescription>aria-invalid aplica o ring vermelho.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Input
+          type="email"
+          defaultValue="naoeumemail"
+          aria-invalid="true"
+          aria-describedby="error-msg"
+        />
+        <span id="error-msg" className="block text-sm text-destructive">Digite um e-mail válido.</span>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>With leading icon</CardTitle>
+      <CardDescription>Wrapper relative + ícone absolute + pl-9.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="relative">
+        <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input className="pl-9" placeholder="Buscar componentes…" />
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Search field</CardTitle>
+    <CardDescription>Lupa à esquerda, botão de limpar à direita.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="relative">
+      <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        type="search"
+        aria-label="Buscar"
+        className="pl-9 pr-9"
+        defaultValue="design system"
+      />
+      <button
+        type="button"
+        aria-label="Limpar busca"
+        className="absolute top-1/2 right-2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        <X className="size-3.5" />
+      </button>
+    </div>
+  </CardContent>
+</Card>
+
+## When to use
+
+- Qualquer entrada de uma linha — nome, e-mail, busca, slug, número.
+- Em formulários, em filtros, em campos de busca em headers.
+- Quando o valor cabe naturalmente em uma linha. Para textos longos
+  (mais de ~80 caracteres ou múltiplas frases), use [`Textarea`](./textarea).
+
+## When not to use
+
+- Para textos multi-linha — [`Textarea`](./textarea).
+- Para escolha entre opções — [`Select`](./select), [`RadioGroup`](./radio-group),
+  ou Combobox.
+- Para alternar uma flag — [`Switch`](./switch) ou [`Checkbox`](./checkbox).
+- Para upload com preview e drag-and-drop, considere uma composição
+  custom além do `type="file"` nativo.
+
+## Best practices
+
+- **Sempre pareie com Label.** Mesmo quando o desenho usa placeholder
+  como label flutuante, mantenha um `<Label>` visível. Placeholder
+  some quando o usuário começa a digitar — sem Label, ele esquece
+  o que estava preenchendo.
+- **Mensagem de erro abaixo do input, nunca dentro.** Substituir o
+  placeholder por mensagem de erro confunde — o usuário precisa do
+  contexto do que digitou.
+- **Use `inputMode` quando o `type` não cobre o teclado ideal.**
+  Ex: `<Input type="text" inputMode="numeric" pattern="[0-9]*" />`
+  para CEP, código de verificação.
+- **Evite reservar layout só com altura.** O `Input` já tem altura
+  fixa (`h-9`), o que evita CLS. Mensagens de erro devem aparecer
+  em slots reservados via grid `gap-2` no FormItem — ver
+  [[ui/layout/cumulative-layout-shift]].
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Label** | Sempre vincule via `htmlFor` + `id` ou wrap o Input dentro de `<Label>`. |
+| **Erro** | Use `aria-invalid="true"` + `aria-describedby` apontando para a mensagem. `FormControl` faz isso automaticamente. |
+| **Disabled state** | `disabled` é nativo — bloqueia foco e interação. Para apenas indicar visualmente, use `aria-disabled`. |
+| **Autocomplete** | Defina `autoComplete` apropriado (`email`, `current-password`, `cc-number`) para password managers e iOS autofill. |
+| **Required** | Use `required` HTML; combine com asterisco visual no Label. |
+| **Touch target** | Altura padrão é 36px. Para mobile crítico, considere uma classe `h-10` ou maior. |
+
+## Related
+
+- [`Label`](./label) — Label canônico, par obrigatório.
+- [`Form`](./form) — wrappers que ligam ARIA automaticamente.
+- [`Textarea`](./textarea) — entrada multi-linha.
+- [`Select`](./select) — quando a entrada é uma escolha de lista.

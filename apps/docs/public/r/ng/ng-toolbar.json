@@ -1,0 +1,115 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-toolbar",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Toolbar (Angular)",
+  "description": "Generic action toolbar for AI message contexts - Toolbar row, ToolbarGroup (orientation-aware visually-grouped subset), ToolbarButton (with optional pressed toggle state).",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/toolbar/toolbar.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Toolbar — generic row of small actions for AI message/conversation\n * contexts.\n *\n * Anatomy diff vs rx-ai: the React `Toolbar` wraps `@xyflow/react`\n * `NodeToolbar` and is tied to the workflow-canvas world. AI Elements (the\n * upstream blueprint) actually uses a generic `<div role=\"toolbar\">` outside\n * the canvas, so this Angular port is the generic primitive — three\n * components (Toolbar / ToolbarGroup / ToolbarButton) that compose without\n * @xyflow/angular. Workflow-canvas users compose `<toolbar>` inside an\n * `@xyflow/angular` `<node-toolbar>` wrapper at the app level.\n */\n@Component({\n  selector: 'toolbar',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    role: 'toolbar',\n    class:\n      'flex items-center gap-1 rounded-sm border bg-background p-1.5',\n  },\n})\nexport class Toolbar {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/toolbar/toolbar.ts"
+    },
+    {
+      "path": "src/lib/toolbar/toolbar-group.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * ToolbarGroup — visually-grouped subset of toolbar buttons (gap collapsed,\n * shared borders).\n */\n@Component({\n  selector: 'toolbar-group',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    role: 'group',\n    '[class]': 'hostClass()',\n    '[attr.aria-label]': 'ariaLabel()',\n  },\n})\nexport class ToolbarGroup {\n  readonly ariaLabel = input<string>();\n  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');\n\n  protected readonly hostClass = computed(() =>\n    cn(\n      'inline-flex items-center',\n      this.orientation() === 'horizontal' ? 'flex-row gap-0.5' : 'flex-col gap-0.5',\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/toolbar/toolbar-group.ts"
+    },
+    {
+      "path": "src/lib/toolbar/toolbar-button.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  output,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\nexport type ToolbarButtonVariant = 'ghost' | 'outline' | 'default';\n\n/**\n * ToolbarButton — small action button for a toolbar row.\n *\n * Optional `pressed` mirrors a toggle state; emits `(pressedChange)` on\n * click so consumers can drive a controlled toggle group.\n */\n@Component({\n  selector: 'toolbar-button',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      [class]=\"buttonClass()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-pressed]=\"pressed() ? 'true' : null\"\n      [attr.aria-label]=\"ariaLabel()\"\n      (click)=\"handleClick()\"\n    >\n      <ng-content />\n    </button>\n  `,\n  host: {\n    class: 'inline-flex',\n  },\n})\nexport class ToolbarButton {\n  readonly variant = input<ToolbarButtonVariant>('ghost');\n  readonly pressed = input<boolean>(false);\n  readonly disabled = input<boolean>(false);\n  readonly ariaLabel = input<string>();\n\n  readonly clicked = output<void>();\n  readonly pressedChange = output<boolean>();\n\n  protected readonly buttonClass = computed(() => {\n    const variantClass: Record<ToolbarButtonVariant, string> = {\n      ghost: 'hover:bg-accent hover:text-accent-foreground',\n      outline: 'border border-input bg-background hover:bg-accent',\n      default:\n        'bg-primary text-primary-foreground hover:bg-primary/90',\n    };\n    return cn(\n      'inline-flex size-8 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',\n      variantClass[this.variant()],\n      this.pressed() && 'bg-accent text-accent-foreground',\n    );\n  });\n\n  protected handleClick(): void {\n    this.clicked.emit();\n    this.pressedChange.emit(!this.pressed());\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/toolbar/toolbar-button.ts"
+    },
+    {
+      "path": "src/lib/toolbar/index.ts",
+      "content": "export { Toolbar } from './toolbar';\nexport { ToolbarGroup } from './toolbar-group';\nexport {\n  ToolbarButton,\n  type ToolbarButtonVariant,\n} from './toolbar-button';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/toolbar/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

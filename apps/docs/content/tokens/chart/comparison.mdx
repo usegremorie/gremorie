@@ -1,0 +1,86 @@
+---
+title: Comparison
+description: Destaque-um-mute-os-outros — você vs pares, atual vs baseline, A/B test.
+---
+
+import {
+  ChartSchemeSwatchRow,
+  ChartSchemeTable
+} from "@/components/token-tables";
+import { COMPARISON_SCHEME } from "@/lib/chart-tokens";
+
+**Comparison** é o esquema para o pattern
+**destaque-um-mute-os-outros** — quatro neutros muted + um
+highlight colorido. É a paleta canônica para "você vs seus pares",
+"metric atual vs baseline", A/B test, e qualquer caso onde a
+leitura é "esse aqui versus o resto".
+
+<ChartSchemeSwatchRow scheme={COMPARISON_SCHEME} />
+
+## Tokens
+
+<ChartSchemeTable scheme={COMPARISON_SCHEME} />
+
+## Quando usar
+
+- **Bar chart** com uma categoria em destaque + outras em neutro.
+- **Line chart** "sua semana vs todas as outras em cinza".
+- **Before/after comparisons** com a versão atual em cor.
+- **A/B test results** com a variante vencedora em destaque.
+- **Cohort analysis** focando uma cohort específica vs as demais.
+
+## Por que existe um esquema só pra isso
+
+Em DS de produto, esse pattern aparece o tempo inteiro —
+suficientemente para merecer um nome e um conjunto canônico de
+tokens. A literatura clássica (ColorBrewer) não cobre, mas
+qualquer dashboard moderno tem várias instâncias dele.
+
+A intenção dos quatro stops "mute" não é variedade — é
+**hierarquia visual sutil**. Se todas as séries-fundo forem
+exatamente iguais em peso, elas viram ruído. A escala neutral-700
+→ neutral-300 dá uma diferença discreta de ordem (a primeira
+mute é mais escura, a última mais clara), úteis quando você quer
+indicar uma ordem secundária sem competir com o highlight.
+
+## Quando não usar
+
+- Você tem **duas séries com peso semântico igual** — use
+  [Categorical](/tokens/chart/categorical).
+- O dado tem **polos bom/ruim** — use
+  [Status](/tokens/chart/status).
+- Dado contínuo bipolar — use
+  [Divergent](/tokens/chart/divergent).
+
+## Anti-patterns
+
+<Callout type="warn">
+  Tratar Comparison como "Categorical com 5 cores". A intenção
+  é hierarquia visual, não variedade. Se todas as séries forem
+  coloridas, o destaque some — e você acaba com um Categorical
+  mal calibrado.
+</Callout>
+
+<Callout type="warn">
+  Múltiplos highlights no mesmo chart. Comparison é
+  **um-contra-os-outros**. Se você precisa destacar dois, está
+  no território de Categorical (com 2 séries primárias + N de
+  fundo) ou de small multiples.
+</Callout>
+
+## Exemplo de consumo
+
+```tsx
+import { Bar, BarChart } from "recharts";
+
+const data = peers.map((p) => ({
+  ...p,
+  fill: p.id === currentUserId
+    ? "var(--color-chart-cmp-highlight)"
+    : `var(--color-chart-cmp-mute-${Math.min(4, p.tier)})`,
+}));
+
+<BarChart data={data}>
+  <Bar dataKey="performance" />
+</BarChart>
+```

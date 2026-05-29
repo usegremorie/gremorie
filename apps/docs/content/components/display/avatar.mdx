@@ -1,0 +1,235 @@
+---
+title: Avatar
+description: "User or entity portrait with graceful image fallback. Sizes, presence badges, and overlapping groups."
+---
+
+import { AvatarPreview } from "@/components/preview/display/display";
+import { Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount } from "@gremorie/rx-display";
+
+## Overview
+
+`Avatar` is the user or entity portrait primitive. It wraps Radix Avatar, which handles the image-load lifecycle for you: while the source loads, `AvatarFallback` renders; if the load errors or `src` is missing, the fallback stays. The Avatar never renders as a broken image or empty circle.
+
+Three sizes ship on the root (`sm`, `default`, `lg`) and propagate to subcomponents via `data-size`. For richer compositions, drop in `AvatarBadge` for a presence dot or status indicator, and use `AvatarGroup` plus `AvatarGroupCount` for overlapping stacks.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <AvatarPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-avatar
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-avatar
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-avatar
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-avatar
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <Avatar>
+      <AvatarImage src="https://github.com/kalvner.png" alt="@kalvner" />
+      <AvatarFallback>KA</AvatarFallback>
+    </Avatar>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Avatar>`
+
+Root container. Wraps Radix `Avatar.Root`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `"sm" \| "default" \| "lg"` | `"default"` | Sets the root dimensions (`size-6`, `size-8`, `size-10`) and propagates to subcomponents via `data-size`. |
+| `className` | `string` | - | Extra classes. Use to override the default `size-*` when you need an in-between or larger size. |
+
+For sizes beyond `lg`, pass an explicit `size-12` or larger via `className`.
+
+### `<AvatarImage>`
+
+The image. Wraps Radix `Avatar.Image`. Forwards all `img` props including `src`, `alt`, `onLoadingStatusChange`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `src` | `string` | - | Image URL. Required for the image to render. |
+| `alt` | `string` | - | Alt text. Required for accessibility. |
+
+### `<AvatarFallback>`
+
+The fallback content (typically initials). Wraps Radix `Avatar.Fallback`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `delayMs` | `number` | - | Delays the fallback render to avoid a flash while the image loads. |
+
+### `<AvatarBadge>`
+
+Presence dot or status indicator. Positions absolutely in the bottom-right corner of the Avatar with a ring matching the page background.
+
+Sizes adapt automatically to the parent Avatar's `data-size` - the badge stays proportional.
+
+### `<AvatarGroup>`
+
+Container for overlapping Avatars. Applies `-space-x-2` and a 2px ring on each child Avatar so they read as a stack.
+
+### `<AvatarGroupCount>`
+
+Trailing "+N" indicator for hidden Avatars in a group. Inherits the group's size from `group-has-data-[size=*]/avatar-group` selectors.
+
+## Composition
+
+1. **`<Avatar>`** is the container - always renders a circle.
+2. **Inside Avatar**: place `<AvatarImage>` first, then `<AvatarFallback>` as a safety net. Both must be siblings; Radix coordinates the lifecycle.
+3. **`<AvatarBadge>`** is optional and absolute-positioned - drop it as the last child of `Avatar`.
+4. **Groups**: wrap multiple `Avatar`s in `<AvatarGroup>` and end with `<AvatarGroupCount>` if you have overflow.
+
+## Variations
+
+### Image with fallback
+
+<div className="rounded-lg border p-6 not-prose">
+  <Avatar>
+    <AvatarImage src="https://avatars.githubusercontent.com/u/41934312?v=4" alt="@kalvner" />
+    <AvatarFallback>KA</AvatarFallback>
+  </Avatar>
+</div>
+
+```tsx
+<Avatar>
+  <AvatarImage src="https://github.com/kalvner.png" alt="@kalvner" />
+  <AvatarFallback>KA</AvatarFallback>
+</Avatar>
+```
+
+If the image fails to load, the fallback renders automatically.
+
+### Sizes
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex items-center gap-3">
+    <Avatar size="sm">
+      <AvatarFallback>SM</AvatarFallback>
+    </Avatar>
+    <Avatar>
+      <AvatarFallback>MD</AvatarFallback>
+    </Avatar>
+    <Avatar size="lg">
+      <AvatarFallback>LG</AvatarFallback>
+    </Avatar>
+  </div>
+</div>
+
+```tsx
+<Avatar size="sm">
+  <AvatarFallback>SM</AvatarFallback>
+</Avatar>
+<Avatar>
+  <AvatarFallback>MD</AvatarFallback>
+</Avatar>
+<Avatar size="lg">
+  <AvatarFallback>LG</AvatarFallback>
+</Avatar>
+```
+
+### Overlapping group
+
+<div className="rounded-lg border p-6 not-prose">
+  <AvatarGroup>
+    <Avatar>
+      <AvatarFallback>KA</AvatarFallback>
+    </Avatar>
+    <Avatar>
+      <AvatarFallback>NG</AvatarFallback>
+    </Avatar>
+    <Avatar>
+      <AvatarFallback>SP</AvatarFallback>
+    </Avatar>
+    <AvatarGroupCount>+3</AvatarGroupCount>
+  </AvatarGroup>
+</div>
+
+```tsx
+<AvatarGroup>
+  <Avatar>
+    <AvatarFallback>KA</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarFallback>NG</AvatarFallback>
+  </Avatar>
+  <Avatar>
+    <AvatarFallback>SP</AvatarFallback>
+  </Avatar>
+  <AvatarGroupCount>+3</AvatarGroupCount>
+</AvatarGroup>
+```
+
+### With presence badge
+
+<div className="rounded-lg border p-6 not-prose">
+  <Avatar size="lg">
+    <AvatarImage src="https://avatars.githubusercontent.com/u/41934312?v=4" alt="@kalvner" />
+    <AvatarFallback>KA</AvatarFallback>
+    <AvatarBadge className="bg-emerald-500" />
+  </Avatar>
+</div>
+
+```tsx
+<Avatar size="lg">
+  <AvatarImage src="..." alt="@user" />
+  <AvatarFallback>KA</AvatarFallback>
+  <AvatarBadge className="bg-emerald-500" />
+</Avatar>
+```
+
+## Accessibility
+
+- **`AvatarImage` requires `alt`**: pass the user or entity name. Screen readers announce the alt; the fallback is hidden from AT while the image is present.
+- **Fallback content**: when the image fails, the fallback text (typically initials) becomes the announced label. Keep it meaningful - "KA" announces as "K A"; use the full name in `aria-label` on the Avatar root if initials are too cryptic.
+- **Decorative use**: when an Avatar is purely decorative (e.g. in a marketing illustration), pass `alt=""` on `AvatarImage` and add `aria-hidden="true"` on the Avatar root so AT skips it.
+- **Presence badges**: `AvatarBadge` is a `<span>` with no semantics. Convey presence through context (e.g. a sibling tooltip or text), not color alone.
+- **Group counts**: `AvatarGroupCount` announces as "+3" or whatever you put inside - wrap with text like "and 3 more" for clearer screen-reader output.
+
+## Related
+
+- [Badge](/components/display/badge) - inline status pill (separate primitive from `AvatarBadge`).
+- [Tooltip](/components/overlays/tooltip) - pairs with Avatar to reveal the full name on hover.
+- [Card](/components/display/card) - typical host for avatar plus name in profile cards.

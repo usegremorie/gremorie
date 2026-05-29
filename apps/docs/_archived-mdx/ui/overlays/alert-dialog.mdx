@@ -1,0 +1,192 @@
+---
+title: AlertDialog
+description: Modal não-cancelável para confirmações que o usuário precisa decidir.
+component: AlertDialog
+importPath: "@kalvner/kds/overlays/alert-dialog"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  DeleteItemsAlertDialog,
+  DeleteProjectAlertDialog
+} from "@/components/overlay-demos";
+
+## Overview
+
+`AlertDialog` é a versão modal-bloqueante do Dialog. Diferente do
+[`Dialog`](./dialog) — que pode ser fechado clicando fora, ou
+apertando `Esc` — o AlertDialog exige uma **decisão explícita**:
+você só sai por Cancelar ou por Confirmar. Use somente quando
+**fechar acidentalmente seria pior do que confirmar acidentalmente**.
+
+Tier 2 e Tier 3 do [modelo de stakes](./dialog#stakes) costumam
+viver aqui. Para Tier 1 (low stakes), prefira `Dialog` — é menos
+bruto.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>AlertDialog destrutivo padrão.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <DeleteItemsAlertDialog />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<AlertDialog>
+  <AlertDialogTrigger />
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle />          ← pergunta clara
+      <AlertDialogDescription />    ← consequências explícitas
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel />          ← saída segura
+      <AlertDialogAction />          ← decisão (default ou destructive)
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+`AlertDialogAction` e `AlertDialogCancel` delegam estilo para o
+[`Button`](../forms/button) primitive — passe `variant="destructive"`
+no Action quando for um gesto perigoso.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `AlertDialog` | Raiz que controla open/closed. |
+| `AlertDialogTrigger` | Elemento clicável que abre o alert. |
+| `AlertDialogContent` | Container portalado, modal, sem cancel-on-overlay. |
+| `AlertDialogHeader` | Wrapper de título + descrição. |
+| `AlertDialogTitle` | Título obrigatório. |
+| `AlertDialogDescription` | Descrição com consequências explícitas. |
+| `AlertDialogFooter` | Rodapé com ações (Cancel + Action). |
+| `AlertDialogAction` | Botão de confirmação. Aceita `variant` e `size` do Button. |
+| `AlertDialogCancel` | Botão de cancelar (variant `outline` por padrão). |
+| `AlertDialogPortal` / `AlertDialogOverlay` | Expostos para casos avançados. |
+
+## Usage
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction
+} from "@kalvner/kds/overlays/alert-dialog";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function ConfirmDelete() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">Excluir</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Excluir 12 itens?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Os itens não vão para a lixeira. A operação não pode ser desfeita.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction variant="destructive">Excluir</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+
+## Variants
+
+<Card>
+  <CardHeader>
+    <CardTitle>Destructive</CardTitle>
+    <CardDescription>Tier 2 — destrutivo. Botão Action com variante destructive.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <DeleteItemsAlertDialog />
+  </CardContent>
+</Card>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Typed confirmation (Tier 3)</CardTitle>
+    <CardDescription>O botão de confirmação só habilita quando o usuário digita o nome do recurso.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <DeleteProjectAlertDialog />
+  </CardContent>
+</Card>
+
+## When to use
+
+- Tier 2 e Tier 3 — confirmações destrutivas que precisam de decisão
+  explícita.
+- Logout em apps com trabalho não-salvo ("Tem alterações pendentes —
+  sair mesmo assim?").
+- Início de operações longas e irrecuperáveis (export massivo,
+  rebuild de índice em produção).
+
+## When not to use
+
+- Para confirmações leves (Tier 1) — `Dialog` comum é mais natural.
+- Para mostrar dados ou abrir um formulário de edição —
+  use `Dialog` ou `Sheet`.
+- Para feedback após uma operação — use `Sonner` ou `Alert`.
+
+## Best practices
+
+- **Cancelar à esquerda, Action à direita.** Convenção ocidental;
+  segue o padrão do macOS e da web em geral.
+- **Variant destructive só onde apropriada.** Confirmação de salvar
+  ou publicar não é destrutiva — não pinte de vermelho.
+- **Descrição lista consequências.** "24 issues, 8 documentos, 142
+  commits serão removidos" comunica magnitude que "isso vai apagar
+  o projeto" não captura.
+- **Não use AlertDialog para informar.** Se a operação acabou e a
+  mensagem é só "Pronto", use Sonner. AlertDialog é para o **antes**.
+- **Não aninhe AlertDialog dentro de Dialog.** Confunde foco e
+  exigência de decisão.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix `AlertDialog` aplica `role="alertdialog"` + `aria-modal="true"`. |
+| **Foco** | Foco vai para o `AlertDialogCancel` por padrão (recomendação WAI-ARIA — proteger usuário do gesto perigoso). Refoca o trigger ao fechar. |
+| **Keyboard** | `Esc` fecha (= Cancel). `Tab` cicla entre os focáveis. **Não fecha por overlay click** — diferença chave vs Dialog. |
+| **Screen reader** | Anuncia `AlertDialogTitle` como nome e `AlertDialogDescription` como descrição. O `role="alertdialog"` força o SR a interromper a leitura para chamar atenção. |
+| **Touch target** | Footer ações respeitam o `Button` (36px default). Em mobile, considere `size="lg"`. |
+| **Reduced motion** | Mesma abordagem do Dialog — fade + zoom respeitam tokens de tema. |
+
+## Related
+
+- [`Dialog`](./dialog) — versão cancelável; cobre Tier 1 e fluxos
+  não-críticos.
+- [`Sonner`](./sonner) — para fechar o loop com undo após Tier 2.
+- [`Button`](../forms/button) — variant `destructive` usada em
+  `AlertDialogAction`.
+- [`Alert`](../feedback/alert) — feedback in-flow, persistente; não
+  bloqueia.

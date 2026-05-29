@@ -1,0 +1,33 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-alert",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Alert (React)",
+  "description": "Persistent in-flow feedback message - distinct from Sonner (transient) and AlertDialog (modal). Two variants (default, destructive); convey informational/success/warning via a leading icon rather than expanding variants.",
+  "categories": [
+    "feedback"
+  ],
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/alert/alert.tsx",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\";\nimport * as React from \"react\";\n\nimport { cn } from \"@gremorie/rx-core\";\n\n/**\n * Alert - in-flow feedback message.\n *\n * A persistent message anchored\n * inside page flow - distinct from `Toast` (transient, floating)\n * and `Banner` (page-spanning). KDS recommends conveying\n * informational, success, and warning intent through a leading\n * icon (`Info`, `CheckCircle2`, `AlertTriangle`, `XCircle` from\n * `lucide-react`) rather than introducing more variants - keeps\n * the visual surface consistent and the API minimal.\n *\n * Per ADR-012, this primitive ships under\n * `@kalvner/kds/feedback/alert` with `cn` imported by relative\n * path. Variants are token-driven (`bg-card`, `text-destructive`).\n *\n * Use `<AlertTitle>` for the headline and `<AlertDescription>` for\n * the body. The grid layout reserves a column for an SVG sibling -\n * pass an icon as the first child when you want it.\n */\nconst alertVariants = cva(\n  \"relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-lg border px-4 py-3 text-sm has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-card text-card-foreground\",\n        destructive:\n          \"bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 [&>svg]:text-current\"\n      }\n    },\n    defaultVariants: {\n      variant: \"default\"\n    }\n  }\n);\n\nexport type AlertProps = React.ComponentProps<\"div\"> &\n  VariantProps<typeof alertVariants>;\n\nfunction Alert({ className, variant, ...props }: AlertProps) {\n  return (\n    <div\n      data-slot=\"alert\"\n      role=\"alert\"\n      className={cn(alertVariants({ variant }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertTitle({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-title\"\n      className={cn(\n        \"col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight\",\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDescription({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-description\"\n      className={cn(\n        \"col-start-2 grid justify-items-start gap-1 text-sm text-muted-foreground [&_p]:leading-relaxed\",\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Alert, AlertTitle, AlertDescription, alertVariants };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/feedback/alert/alert.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-alert.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

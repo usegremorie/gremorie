@@ -1,0 +1,155 @@
+---
+title: Loading, empty, error states
+description: "The three states designers always forget. Every list, table, and async surface needs all three."
+related: rx-skeleton, rx-spinner, rx-empty, rx-alert, rx-card
+tags: [states, loading, empty, error, async]
+---
+
+## TL;DR
+
+Every async surface (list, table, dashboard widget) needs four states: **loading**, **populated**, **empty**, and **error**. Designers default to populated; the other three are afterthoughts that break the UI when they happen. Design all four together.
+
+## The rule
+
+### Loading
+
+Show a placeholder that conveys the **shape** of what is coming, not just "Loading...".
+
+- **Skeleton over spinner** when you know the shape (rows, cards, columns). The user previews the layout.
+- **Spinner over skeleton** when the shape is unknown or the wait is short and indeterminate.
+- **Loading for less than 200ms**: do not show anything. The flash is more disruptive than the wait.
+- **Loading for 200ms-1s**: show a skeleton or spinner.
+- **Loading for more than 3s**: show progress or an estimated time; the user starts wondering if it crashed.
+- **Subsequent loads** (refresh, page change) can be more subtle (a top bar, a fade) because the previous content is still useful context.
+
+### Empty
+
+The empty state is **never the same as "loading is done with zero results"**. It is a designed surface that explains the absence and proposes a next action.
+
+- **Three parts**: a brief headline ("No projects yet"), one sentence of context ("Create your first project to invite members and start tracking time."), and the action (a primary button: "Create project").
+- **Distinguish "no data yet" from "no results for this filter"**. Different copy, different action ("Clear filters" vs "Create project").
+- **Visual lightness.** An empty state should not feel like an error or a bug; a small illustration or icon helps. Resist the urge to use a sad face or a "404" treatment.
+
+### Error
+
+The error state tells the user **what went wrong, in their terms, and what they can try**.
+
+- **Headline names the failure** without jargon ("Could not load projects", not "Network error 500").
+- **One sentence of context** with the actual cause if useful ("Our servers are slow right now. Try again in a moment.").
+- **Action**: a primary "Try again" button. If the error is permanent, a fallback ("Go to dashboard").
+- **Never strand the user.** Always show a way forward.
+
+### Populated
+
+The default state. Worth listing here because designers usually start and end here. The three other states need equivalent attention.
+
+## Why
+
+Real user flows hit all four states. A new account starts empty. Slow networks linger in loading. Servers fail. Designing only the populated state means three out of four states are improvised at build time, usually badly.
+
+The skeleton-over-spinner rule is about perceived performance: the user sees something resembling the content and feels progress, instead of staring at a generic spinner that gives no information about what is coming. Microsoft and Facebook research from the mid-2010s showed skeleton screens reduce perceived wait time even when actual load time is identical.
+
+The empty state is the most-skipped because it requires real product thinking: what should the user do when there is nothing? "Create your first X" is the most common answer; "Connect a data source" is another. The empty state is often where the user is converted from new to active.
+
+Errors get skipped because they are rare in development. In production, every error path is hit, often by the most frustrated user.
+
+## How to apply
+
+### Do: skeleton matching the populated shape
+
+```tsx
+{isLoading ? (
+  <div className="space-y-2">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <div key={i} className="flex items-center gap-3">
+        <Skeleton className="size-10 rounded-full" />
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-4 w-1/3" />
+          <Skeleton className="h-3 w-2/3" />
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <List items={data} />
+)}
+```
+
+The skeleton mirrors the avatar + two-line row layout the user is about to see.
+
+### Do: empty state with headline + context + action
+
+```tsx
+<Empty>
+  <EmptyIcon><InboxIcon /></EmptyIcon>
+  <EmptyTitle>No projects yet</EmptyTitle>
+  <EmptyDescription>
+    Create your first project to invite members and start tracking time.
+  </EmptyDescription>
+  <Button>Create project</Button>
+</Empty>
+```
+
+Three parts, one action. Friendly, not apologetic.
+
+### Do: error with reason + retry
+
+```tsx
+<Alert variant="destructive">
+  <AlertTriangleIcon />
+  <AlertTitle>Could not load projects</AlertTitle>
+  <AlertDescription>
+    There was a problem reaching the server. Try again in a moment.
+  </AlertDescription>
+  <Button onClick={retry}>Try again</Button>
+</Alert>
+```
+
+The user knows what failed and has a way forward.
+
+### Don't: spinner-only loading
+
+```tsx
+{isLoading && <Spinner />}
+```
+
+Acceptable for very short loads, but for anything user-facing with known structure, skeleton is better.
+
+### Don't: empty-as-populated
+
+```tsx
+{data.length === 0 ? null : <List items={data} />}
+```
+
+Returning `null` for empty is a bug. The user sees a blank area and wonders what is wrong.
+
+### Don't: jargon errors
+
+```
+Error 500: Internal Server Error
+```
+
+The user does not know what 500 means. Translate.
+
+## Distinguishing empty from no-results
+
+A new user with zero data and an existing user who filtered to zero results have different needs:
+
+- **Zero data (empty)**: "No projects yet. Create your first project." Primary action: create.
+- **Zero results (filtered empty)**: "No projects match your filters. Try removing one." Primary action: clear filters.
+
+Use different copy and different actions.
+
+## Counter-cases
+
+- **Optimistic UI** can skip loading entirely: assume success, render the new item immediately, roll back on error. Appropriate for low-stakes operations (toggling a checkbox, archiving a card).
+- **Infinite scroll** does not need a loading state at the top of the page; a small loader at the bottom (the load-more zone) suffices.
+- **Background refresh** (data syncing every 30s) should not show loading state - it would be visual noise. A subtle "Updated 12s ago" indicator suffices.
+- **Errors that are user-correctable** (form validation) belong inline next to the field, not in an error state for the whole surface.
+
+## Sources
+
+- Nielsen Norman Group: "Empty States in UX Design" (https://www.nngroup.com/articles/empty-states-blank-slate-design/)
+- Nielsen Norman Group: "Progress Indicators Make a Slow System Less Insufferable" (https://www.nngroup.com/articles/progress-indicators/)
+- Nielsen Norman Group: "Error-Message Guidelines" (https://www.nngroup.com/articles/error-message-guidelines/)
+- Wroblewski, "Web Form Design": progressive disclosure and absent-state patterns.

@@ -1,0 +1,38 @@
+{
+  "name": "token-engine",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/token-engine/src",
+  "projectType": "library",
+  "tags": ["scope:token-engine", "type:lib"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "packages/token-engine",
+        "command": "tsc -p tsconfig.json"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/token-engine",
+        "command": "eslint src"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/token-engine",
+        "command": "tsc --noEmit"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/token-engine",
+        "command": "vitest run"
+      }
+    }
+  }
+}

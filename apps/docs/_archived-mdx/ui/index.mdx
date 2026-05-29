@@ -1,0 +1,36 @@
+---
+title: UI
+description: Primitivos Gremorie organizados em 9 categorias funcionais.
+---
+
+A camada **UI** reúne os primitivos Gremorie, cada um adaptado pra consumir os tokens semânticos e documentado com props, variantes, estados e composições reais.
+
+## Categorias
+
+Os primitivos são agrupados em **9 categorias funcionais** (per ADR-010 / PRD §4.2):
+
+- **Containers** — Stack, Flex, Grid, Box, Spacer, ScrollArea, AspectRatio
+- **Typography** — Heading, Text, Code, KBD, Blockquote, Link
+- **Forms** — Button, Input, Select, Checkbox, Radio, Switch, Slider, etc
+- **Display** — Avatar, Badge, Card, Item, Tag, Skeleton, etc
+- **Data** — Table, Chart, Stat, Sparkline, Progress, etc
+- **Feedback** — Alert, Spinner, Toast, Tooltip, Banner, etc
+- **Navigation** — Tabs, Breadcrumb, Pagination, Menu, etc
+- **Overlays** — Dialog, Sheet, Popover, HoverCard, Drawer, etc
+
+A categoria **AI** (componentes do `@ai-sdk/react`) tem sua própria tab — veja **AI** na barra lateral.
+
+## Status
+
+Phase 1 (foundation) está completa; Phase 2 popula as 9 categorias incrementalmente. Veja [`docs/PRD.md`](https://github.com/kalvner/bridge/blob/main/docs/PRD.md) §5 pro cronograma.
+
+## Importação
+
+Padrão path-per-component pra garantir tree-shaking (per ADR-012):
+
+```tsx
+import { Stack } from "@kalvner/kds/containers/stack";
+import { Button } from "@kalvner/kds/forms/button";
+```
+
+A barrel root export (`@kalvner/kds`) existe como fallback de compatibilidade, mas o path-per-component é o padrão pra novo código.

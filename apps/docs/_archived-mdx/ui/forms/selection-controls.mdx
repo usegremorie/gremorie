@@ -1,0 +1,299 @@
+---
+title: Selection controls
+description: Quando usar Checkbox, RadioGroup, Switch, Toggle, ToggleGroup ou Select — uma decisão semântica antes da estética.
+status: stable
+---
+
+import { Checkbox } from "@kalvner/kds/forms/checkbox";
+import { RadioGroup, RadioGroupItem } from "@kalvner/kds/forms/radio-group";
+import { Switch } from "@kalvner/kds/forms/switch";
+import { Toggle } from "@kalvner/kds/forms/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@kalvner/kds/forms/toggle-group";
+import { Label } from "@kalvner/kds/forms/label";
+import { Bold, Italic, Underline } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Por que existe esse guia
+
+KDS tem seis componentes que parecem fazer "a mesma coisa": marcar,
+desmarcar, escolher. Visualmente são intercambiáveis — qualquer um
+dos seis serve para representar um booleano ou uma escolha. A
+diferença não é estética, é **semântica e comportamental**. Trocar
+um pelo outro muda o que o usuário espera que aconteça quando ele
+interage com o controle, e isso é a maior fonte de confusão em
+forms e telas de configuração.
+
+Este guia consolida o consenso da indústria (NN/g, Material Design,
+Apple HIG) aplicado ao vocabulário do KDS, com uma árvore de
+decisão e exemplos lado a lado.
+
+## A decisão em uma frase
+
+> **Tem efeito imediato?** Switch ou Toggle.
+> **Faz parte de uma form que termina em Submit?** Checkbox ou RadioGroup.
+> **Múltiplas escolhas independentes?** Checkbox.
+> **Uma escolha entre várias mutuamente exclusivas?** RadioGroup (≤5) ou Select (≥6).
+
+## Árvore de decisão
+
+```
+A interação tem efeito imediato (sem botão Salvar)?
+├── Sim
+│   ├── Configuração persistida (notificações, dark mode, permissões)
+│   │   → Switch
+│   └── Estado de comando ou filtro UI (bold, modo grade, filtro ativo)
+│       ├── Um único botão → Toggle
+│       └── Conjunto coordenado → ToggleGroup
+│
+└── Não — faz parte de uma form com Submit
+    ├── O usuário pode escolher zero, um ou vários
+    │   ├── Múltiplas opções independentes → Checkbox (uma por opção)
+    │   └── Um sim/não único (aceitar termos) → Checkbox isolado
+    │
+    └── O usuário deve escolher exatamente uma opção
+        ├── Até 5 opções, todas visíveis ajudam a comparar
+        │   → RadioGroup
+        └── 6+ opções, lista longa, fuso, país, categoria
+            → Select
+```
+
+## Tabela comparativa
+
+| Componente   | Estado captura | Quantidade | Efeito       | Form-bound? | Visual                |
+|--------------|----------------|------------|--------------|-------------|------------------------|
+| Checkbox     | boolean        | 0…n        | No submit    | Sim         | Quadrado + check       |
+| RadioGroup   | string (1)     | 1 de N     | No submit    | Sim         | Círculo + dot          |
+| Switch       | boolean        | 1          | Imediato     | Não (config)| Trilho + thumb         |
+| Toggle       | boolean        | 1          | Imediato     | Não         | Botão (aria-pressed)   |
+| ToggleGroup  | string \| string[] | 1 ou n de N | Imediato | Não         | Conjunto de botões     |
+| Select       | string (1)     | 1 de N     | No submit    | Sim         | Dropdown               |
+
+## Os componentes lado a lado
+
+### Checkbox — múltiplas escolhas em form
+
+Use quando o usuário pode marcar **zero, uma ou várias** opções
+independentes que serão **enviadas juntas** no submit da form. Cada
+checkbox é independente — marcar um não desmarca outro.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Newsletter — preferências</CardTitle>
+    <CardDescription>Pode marcar todas, nenhuma ou só algumas.</CardDescription>
+  </CardHeader>
+  <CardContent className="flex flex-col gap-3">
+    <div className="flex items-center gap-3">
+      <Checkbox id="sel-news" />
+      <Label htmlFor="sel-news">Novidades de produto</Label>
+    </div>
+    <div className="flex items-center gap-3">
+      <Checkbox id="sel-tips" />
+      <Label htmlFor="sel-tips">Dicas semanais</Label>
+    </div>
+    <div className="flex items-center gap-3">
+      <Checkbox id="sel-events" />
+      <Label htmlFor="sel-events">Eventos e webinars</Label>
+    </div>
+  </CardContent>
+</Card>
+
+**Exceção válida:** um único Checkbox para sim/não em form é
+correto quando a pergunta tem polaridade clara (`Aceito os termos`,
+`Lembrar de mim`). Para sim/não sem polaridade clara, prefira
+RadioGroup com dois itens — ver "Armadilhas comuns" abaixo.
+
+### RadioGroup — escolha exclusiva, todas visíveis
+
+Use quando o usuário precisa escolher **exatamente uma** opção entre
+poucas (até cinco), e ver todas as opções juntas ajuda a comparar.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Plano</CardTitle>
+    <CardDescription>Uma escolha exclusiva entre opções comparáveis.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <RadioGroup defaultValue="month" className="flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="month" id="sel-month" />
+        <Label htmlFor="sel-month">Mensal — R$ 49</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="year" id="sel-year" />
+        <Label htmlFor="sel-year">Anual — R$ 470 (2 meses grátis)</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="lifetime" id="sel-life" />
+        <Label htmlFor="sel-life">Lifetime — R$ 1.490</Label>
+      </div>
+    </RadioGroup>
+  </CardContent>
+</Card>
+
+Acima de cinco opções, prefira [Select](./select) — economiza
+espaço vertical e tem busca por teclado nativa.
+
+### Switch — efeito imediato, configuração persistida
+
+Use em painéis de configuração onde a mudança vale **agora**, sem
+botão Salvar. Notificações, dark mode, permissões de app, feature
+flags. O backend deve persistir a mudança no momento em que o
+switch é tocado.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Notificações</CardTitle>
+    <CardDescription>Cada switch persiste imediatamente.</CardDescription>
+  </CardHeader>
+  <CardContent className="flex flex-col gap-3">
+    <div className="flex items-center justify-between">
+      <Label htmlFor="sel-push">Push notifications</Label>
+      <Switch id="sel-push" defaultChecked />
+    </div>
+    <div className="flex items-center justify-between">
+      <Label htmlFor="sel-email">Email diário</Label>
+      <Switch id="sel-email" />
+    </div>
+  </CardContent>
+</Card>
+
+**Regra de NN/g:** se o efeito não pode ser imediato (precisa de
+confirmação, custa rede, requer revisão), **Switch é o componente
+errado** — use Checkbox dentro de uma form com Submit.
+
+### Toggle — comando ou filtro UI
+
+Visualmente um botão de duas posições (`aria-pressed`). Use para
+**estado de comando** dentro de uma toolbar ou superfície de
+ferramentas: bold/italic em editor, modo grade vs. lista, chip de
+filtro ativável. Não é configuração — é estado de UI agora.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Formatação</CardTitle>
+    <CardDescription>Botão que indica estado ativo via aria-pressed.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Toggle aria-label="Negrito">
+      <Bold />
+    </Toggle>
+  </CardContent>
+</Card>
+
+### ToggleGroup — conjunto coordenado
+
+Toggle único: bold. Conjunto coordenado: bold + italic + underline,
+ou left/center/right. Use `type="single"` para mutex (alinhamento,
+modo) ou `type="multiple"` para combinável (formatações).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Editor — estilo</CardTitle>
+    <CardDescription>Múltiplas formatações combináveis.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ToggleGroup type="multiple" aria-label="Formatação de texto">
+      <ToggleGroupItem value="bold" aria-label="Negrito">
+        <Bold />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="italic" aria-label="Itálico">
+        <Italic />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="underline" aria-label="Sublinhado">
+        <Underline />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  </CardContent>
+</Card>
+
+`RadioGroup` vs. `ToggleGroup type="single"`: ambos são "escolha
+exclusiva entre N". A diferença é **contexto**. RadioGroup é
+form-bound (label-led, captura no submit, semântica de input).
+ToggleGroup é UI stateful (ícone-led, efeito imediato, semântica
+de botão). Quando estiver em dúvida, pergunte: a escolha sai numa
+form para o backend? → RadioGroup. A escolha muda o estado da
+view agora? → ToggleGroup.
+
+## Armadilhas comuns
+
+### "Sim ou Não" — um Checkbox ou dois RadioButtons?
+
+Quando a pergunta tem polaridade clara, um Checkbox basta:
+
+> ✅ `[ ]` Aceito os termos de uso
+
+Quando a pergunta NÃO tem polaridade clara, dois Radios são mais
+honestos — não assumem default e forçam o usuário a escolher
+ativamente. Sara Soueidan e NN/g convergem nesse ponto:
+
+> ❌ `[ ]` Está grávida?
+> ✅ `( )` Sim   `( )` Não   `( )` Prefiro não dizer
+
+Regra: se o item NÃO marcado pode ser interpretado de duas formas
+("não marquei porque é não" vs. "não marquei porque ainda não
+decidi"), use Radio.
+
+### Switch em form com Submit
+
+Switches dão a impressão de que a mudança já foi persistida. Se
+a mudança só vai ao backend depois que o usuário clica `Salvar`,
+o Switch está mentindo. Use Checkbox.
+
+### Mais de 5 Radios
+
+Lista longa em Radio cansa visualmente e ocupa espaço vertical
+desproporcional. Acima de 5–7, migre para [Select](./select).
+Acima de 20, considere combobox com busca.
+
+### Toggle como substituto de Switch
+
+Visualmente parecem trocáveis. Não são. Switch é configuração
+(persistida), Toggle é comando (transiente). Se o estado some
+quando o usuário fecha a aba, é Toggle. Se persiste no perfil
+do usuário, é Switch.
+
+## Acessibilidade (resumo)
+
+Todos os controles aqui têm semântica nativa adequada e estão
+documentados individualmente. Pontos transversais:
+
+- **Sempre com Label associado** via `htmlFor` / `id`. Sem
+  exceções, mesmo quando o label parece óbvio pelo contexto.
+- **Switch** anuncia "on" / "off" em screen readers via
+  `role="switch"` + `aria-checked`.
+- **Toggle** usa `aria-pressed` — diferente do Switch
+  semanticamente, embora visualmente possa parecer igual.
+- **RadioGroup** e **ToggleGroup** suportam navegação por setas
+  do teclado (Radix). Tab entra no grupo, setas movem entre itens.
+- **Checkbox** indeterminate é estado válido — comum em tree
+  selectors e "selecionar todos" parcial.
+
+Detalhes por componente nas páginas individuais.
+
+## Referências
+
+Este guia consolida três fontes canônicas da indústria:
+
+- **Nielsen Norman Group** — [Toggle-Switch Guidelines](https://www.nngroup.com/articles/toggle-switch-guidelines/)
+  e [Checkboxes vs. Radio Buttons](https://www.nngroup.com/articles/checkboxes-vs-radio-buttons/).
+  Fonte da regra "Switch = efeito imediato".
+- **Material Design** — [Switch](https://m3.material.io/components/switch/guidelines),
+  [Checkbox](https://m3.material.io/components/checkbox/guidelines).
+  Fonte do contraste "configuração on/off" vs. "lista de opções".
+- **Sara Soueidan** — [One Checkbox vs Two Radio Buttons](https://www.sarasoueidan.com/blog/one-checkbox-or-two-radio-buttons/).
+  Fonte da regra de polaridade para sim/não.
+
+## Páginas relacionadas
+
+- [Checkbox](./checkbox) — implementação, estados (incluindo indeterminate)
+- [RadioGroup](./radio-group) — implementação, layout
+- [Switch](./switch) — implementação, controlled vs uncontrolled
+- [Toggle](./toggle) — implementação, variantes
+- [ToggleGroup](./toggle-group) — single vs multiple
+- [Select](./select) — alternativa para listas longas

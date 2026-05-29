@@ -1,0 +1,229 @@
+---
+title: Sonner
+description: "Transient toast notifications built on sonner. Mount the Toaster once at the root and fire toast() from anywhere."
+---
+
+import { SonnerPreview } from "@/components/preview/overlays/overlays";
+
+## Overview
+
+`Sonner` is the transient feedback primitive: "Saved", "Invite sent", "Failed - try again". Mount `Toaster` once at the application root (typically in `app/layout.tsx`) and fire `toast()` from anywhere in the tree without an additional provider.
+
+For persistent in-flow messages use `Alert`; for critical errors that need acknowledgment use `AlertDialog`. Toasts should be non-blocking and dismissable.
+
+The Gremorie `Toaster` follows the document's `.dark` class automatically and ships with KDS icons for the `success`, `info`, `warning`, `error`, and `loading` toast types.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <SonnerPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-sonner
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-sonner
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-sonner
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-sonner
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+Mount the `Toaster` once at the root of your application:
+
+```tsx
+// app/layout.tsx
+import { Toaster } from "@gremorie/rx-overlays";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Toaster />
+      </body>
+    </html>
+  );
+}
+```
+
+Then fire toasts from any client component:
+
+```tsx
+"use client";
+import { Button } from "@gremorie/rx-forms";
+import { toast } from "@gremorie/rx-overlays";
+
+export function SaveButton() {
+  return (
+    <Button
+      onClick={() =>
+        toast.success("Saved", {
+          description: "Your changes are live.",
+        })
+      }
+    >
+      Save
+    </Button>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Toaster>`
+
+Wraps sonner's `Toaster` with KDS tokens and icons. Mount once per app.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `theme` | `"light" \| "dark" \| "system"` | auto-detected from `.dark` class | Toast theme. Pass explicitly to override the document-class detection. |
+| `position` | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right" \| "top-center" \| "bottom-center"` | `"bottom-right"` | Where toasts stack. |
+| `richColors` | `boolean` | `false` | Use color-coded backgrounds for `success`, `error`, `warning`, `info`. |
+| `expand` | `boolean` | `false` | Always expand the stack instead of collapsing on hover. |
+| `duration` | `number` | `4000` | Default toast lifetime in milliseconds. |
+| `closeButton` | `boolean` | `false` | Render a close button on every toast. |
+| `gap` | `number` | `14` | Vertical gap between stacked toasts. |
+| `offset` | `string \| number` | `32` | Distance from the viewport edge. |
+| `visibleToasts` | `number` | `3` | Max toasts visible at once. |
+
+All other sonner `ToasterProps` are forwarded.
+
+### `toast(message, options?)`
+
+Default toast. Returns a toast id you can pass to `toast.dismiss()`.
+
+| Option | Type | Description |
+|---|---|---|
+| `description` | `string \| ReactNode` | Secondary line below the message. |
+| `action` | `{ label: string; onClick: () => void }` | Single inline action button. |
+| `cancel` | `{ label: string; onClick?: () => void }` | Secondary cancel/undo button. |
+| `duration` | `number` | Override the default duration. |
+| `id` | `string \| number` | Custom id for later updates or dismissal. |
+| `onDismiss` | `(toast) => void` | Fired when the toast is dismissed. |
+| `onAutoClose` | `(toast) => void` | Fired when the toast auto-closes. |
+
+### Typed shortcuts
+
+| Method | Icon | When to use |
+|---|---|---|
+| `toast.success(message, options)` | `CircleCheck` | Positive confirmation. |
+| `toast.error(message, options)` | `OctagonX` | Failure that the user should know about. |
+| `toast.warning(message, options)` | `TriangleAlert` | Risky state that is not yet a failure. |
+| `toast.info(message, options)` | `Info` | Neutral system message. |
+| `toast.loading(message, options)` | `Loader2` (animated) | Pending operation. Pair with `toast.success` on resolution. |
+| `toast.promise(promise, opts)` | `Loader2` then resolved icon | Auto-transitions loading → success/error from a Promise. |
+| `toast.custom(jsx, options)` | - | Fully custom toast body. |
+| `toast.dismiss(id?)` | - | Dismiss a specific toast or all. |
+
+`toast.promise` signature:
+
+```tsx
+toast.promise(savePost(), {
+  loading: "Saving...",
+  success: (data) => `Saved post #${data.id}`,
+  error: "Save failed",
+});
+```
+
+## Composition
+
+1. **`<Toaster>`** at the app root (`app/layout.tsx` for Next.js).
+2. **`toast()`** fired imperatively from event handlers, async flows, or effects.
+3. **Optional `action`** for undo or follow-up navigation.
+4. **`toast.promise`** for any awaitable flow that should communicate progress.
+
+## Variations
+
+### Success with undo
+
+The canonical "saved with undo" pattern.
+
+```tsx
+toast.success("Item archived", {
+  description: "You can restore it within 30 days.",
+  action: {
+    label: "Undo",
+    onClick: () => restore(item.id),
+  },
+});
+```
+
+### Promise
+
+Drive loading, success, and error states from a single call.
+
+```tsx
+toast.promise(api.publish(post), {
+  loading: "Publishing post...",
+  success: (post) => `${post.title} is live`,
+  error: "Publish failed - retry?",
+});
+```
+
+### Custom position with rich colors
+
+Top-center stack with semantic backgrounds.
+
+```tsx
+<Toaster position="top-center" richColors duration={5000} />
+```
+
+### Persistent error toast
+
+Disable auto-close for failures that require user attention.
+
+```tsx
+toast.error("Connection lost", {
+  description: "Reconnecting...",
+  duration: Infinity,
+  action: {
+    label: "Retry now",
+    onClick: () => reconnect(),
+  },
+});
+```
+
+## Accessibility
+
+- **Live region**: toasts announce via `aria-live="polite"` by default; assistive tech reads them without interrupting.
+- **Errors**: `toast.error` uses `aria-live="assertive"` so failures are read immediately.
+- **Dismiss**: `Esc` dismisses the most recent toast when one is focused.
+- **Hover and focus**: hovering or focusing the stack pauses the auto-dismiss timer.
+- **Keyboard**: action buttons inside toasts are reachable via `Tab` once the stack is focused.
+- **Theme**: the `Toaster` watches the document `.dark` class automatically; pass `theme` explicitly when mounting in a non-themed iframe or sandbox.
+- **Touch**: swipe-to-dismiss is implemented by sonner; keyboard users can dismiss via `Esc`.
+- **Reduced motion**: enter/exit animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Alert](/components/feedback/alert) - persistent in-flow message that lives in the layout.
+- [Alert Dialog](/components/overlays/alert-dialog) - interruptive confirmation for irreversible actions.
+- [Dialog](/components/overlays/dialog) - focused modal for short flows.
+- [Spinner](/components/feedback/spinner) - inline loading indicator for in-place work.

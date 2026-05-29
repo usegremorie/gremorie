@@ -15,35 +15,35 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
       <docs-page
         eyebrow="Tooling"
         title="CLI"
-        lede="The shadng CLI scaffolds the theme + dependencies, installs component families, and shows what is available. Use it once for setup, then once per component you adopt."
+        lede="The Gremorie NG CLI scaffolds the theme + dependencies, installs component families, and shows what is available. Use it once for setup, then once per component you adopt."
       >
         <docs-section title="Install" anchor="install">
           <docs-prose>
             <p>No global install needed — use <code>npx</code>:</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="npx shadng init" />
+          <docs-code-block lang="bash" code="npx gremorie init" />
           <docs-prose>
             <p>Or install globally if you prefer:</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="npm install -g @shadng/cli" />
+          <docs-code-block lang="bash" code="npm install -g @gremorie/ng-cli" />
         </docs-section>
 
-        <docs-section title="shadng init" anchor="init">
+        <docs-section title="gremorie init" anchor="init">
           <docs-prose>
-            <p>Set up the theme + dependencies in an existing Angular project. Detects your package manager (npm / pnpm / yarn / bun), installs <code>&#64;shadng/core</code> with its peer deps, and prepends the theme import to <code>src/styles.css</code>.</p>
+            <p>Set up the theme + dependencies in an existing Angular project. Detects your package manager (npm / pnpm / yarn / bun), installs <code>&#64;Gremorie NG/core</code> with its peer deps, and prepends the theme import to <code>src/styles.css</code>.</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="shadng init" />
+          <docs-code-block lang="bash" code="gremorie init" />
           <docs-prose>
             <p>Preview what it will do before writing anything:</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="shadng init --dry-run" />
+          <docs-code-block lang="bash" code="gremorie init --dry-run" />
         </docs-section>
 
-        <docs-section title="shadng add" anchor="add">
+        <docs-section title="gremorie add" anchor="add">
           <docs-prose>
             <p>Install a component family by friendly name. The CLI runs the install for you and prints an import snippet.</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="shadng add prompt-input" />
+          <docs-code-block lang="bash" code="gremorie add prompt-input" />
           <docs-prose>
             <p>Available today:</p>
             <ul class="ml-5 list-disc space-y-1">
@@ -53,11 +53,11 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
           </docs-prose>
         </docs-section>
 
-        <docs-section title="shadng list" anchor="list">
+        <docs-section title="gremorie list" anchor="list">
           <docs-prose>
             <p>Show what's available and what's scheduled. Useful to scan the roadmap at a glance.</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="shadng list" />
+          <docs-code-block lang="bash" code="gremorie list" />
         </docs-section>
 
         <docs-section title="Flags" anchor="flags">
@@ -68,8 +68,8 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
               <li><strong>v0.1 (current)</strong> — installs pre-built packages from npm.</li>
-              <li><strong>v0.2</strong> — copies source files into your project (shadcn-style). You own the code.</li>
-              <li><strong>v0.3</strong> — hosted registry at <code>shadng.dev/registry</code> so new components don't need a CLI release.</li>
+              <li><strong>v0.2</strong> - copies source files into your project. You own the code.</li>
+              <li><strong>v0.3</strong> — hosted registry at <code>gremorie.com/registry</code> so new components don't need a CLI release.</li>
             </ul>
           </docs-prose>
         </docs-section>

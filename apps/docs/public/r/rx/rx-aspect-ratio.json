@@ -1,0 +1,33 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-aspect-ratio",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Aspect Ratio (React)",
+  "description": "Reserves vertical space for media before content loads - thin wrapper over Radix AspectRatio. Use on responsive images, iframes, video embeds, and skeleton placeholders to prevent cumulative layout shift.",
+  "categories": [
+    "containers"
+  ],
+  "dependencies": [
+    "radix-ui"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/aspect-ratio/aspect-ratio.tsx",
+      "content": "\"use client\";\n\nimport { AspectRatio as AspectRatioPrimitive } from \"radix-ui\";\nimport * as React from \"react\";\n\n/**\n * AspectRatio - reserves vertical space for media before content loads.\n *\n * One-prop component (`ratio`) that wraps Radix AspectRatio. Use it on\n * every responsive image, iframe, video embed, or skeleton placeholder\n * so the layout does not jump when the asset settles - prevents\n * cumulative layout shift (CLS) hits.\n */\nfunction AspectRatio({\n  ...props\n}: React.ComponentProps<typeof AspectRatioPrimitive.Root>) {\n  return <AspectRatioPrimitive.Root data-slot=\"aspect-ratio\" {...props} />;\n}\n\nexport { AspectRatio };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/containers/aspect-ratio/aspect-ratio.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-aspect-ratio.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

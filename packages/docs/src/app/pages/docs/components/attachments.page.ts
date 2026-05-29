@@ -11,7 +11,7 @@ import {
   AttachmentSize,
   AttachmentEmpty,
   type AttachmentData,
-} from '@shadng/attachments';
+} from '@gremorie/ng-ai';
 
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
@@ -128,11 +128,11 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         </docs-section>
 
         <docs-section title="Installation" anchor="install">
-          <docs-code-block lang="bash" code="npm install @shadng/attachments @shadng/core" />
+          <docs-code-block lang="bash" code="npm install @gremorie/ng-ai @gremorie/ng-core" />
           <docs-prose>
             <p>Or via the CLI:</p>
           </docs-prose>
-          <docs-code-block lang="bash" code="npx shadng add attachments" />
+          <docs-code-block lang="bash" code="npx gremorie add attachments" />
         </docs-section>
 
         <docs-section title="Basic usage" anchor="usage">
@@ -193,7 +193,7 @@ const PREVIEW_ITEMS: AttachmentData[] = [
 
         <docs-section title="Utility functions" anchor="utils">
           <docs-prose>
-            <p>Re-exported from <code>&#64;shadng/attachments</code>:</p>
+            <p>Re-exported from <code>&#64;Gremorie NG/attachments</code>:</p>
           </docs-prose>
           <docs-api-table [rows]="utils" [showDefault]="false" />
         </docs-section>
@@ -228,7 +228,7 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         <docs-section title="Known issues" anchor="known-issues">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><strong>Hover cards deferred to v0.2.</strong> AI Elements ships an AttachmentHoverCard for showing a larger preview on hover in inline variant. ShadNG will adopt it once the popover primitive lands (target: v0.2 alongside Conversation).</li>
+              <li><strong>Hover cards deferred to v0.2.</strong> AI Elements ships an AttachmentHoverCard for showing a larger preview on hover in inline variant. Gremorie NG will adopt it once the popover primitive lands (target: v0.2 alongside Conversation).</li>
               <li><strong>id generation.</strong> <code>toAttachmentData()</code> uses an internal counter for ids. If you persist attachments across reloads, generate stable ids yourself.</li>
             </ul>
           </docs-prose>
@@ -306,7 +306,7 @@ import {
   AttachmentRemove,
   toAttachmentData,
   type AttachmentData,
-} from '@shadng/attachments';
+} from '@gremorie/ng-ai';
 
 @Component({
   selector: 'app-uploader',

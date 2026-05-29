@@ -1,0 +1,181 @@
+---
+title: Slider
+description: Input numérico contínuo via thumb arrastável — volume, brilho, faixas.
+component: Slider
+importPath: "@kalvner/kds/forms/slider"
+status: stable
+---
+
+import { Slider } from "@kalvner/kds/forms/slider";
+import { Label } from "@kalvner/kds/forms/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Slider` é um input contínuo: o usuário arrasta um thumb sobre uma
+trilha. Single-thumb por padrão; passe um array de dois valores para
+range (faixa de preço, intervalo de data).
+
+A regra crítica: **nunca renderize um Slider silencioso**. Sempre
+exiba o valor atual ao lado, num número tabular para evitar saltos
+de largura. Slider é "aproximadamente onde", não "exatamente quanto" —
+para precisão, prefira [Input](./input) `type="number"`.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Slider com label e valor numérico.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-2">
+      <div className="flex items-baseline justify-between">
+        <Label htmlFor="prev-vol">Volume</Label>
+        <span className="text-sm tabular-nums text-muted-foreground">45%</span>
+      </div>
+      <Slider id="prev-vol" defaultValue={[45]} max={100} step={1} />
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Slider value={[n]} | {[lo, hi]}>
+  ├─ <SliderTrack>
+  │    └─ <SliderRange />          ← preenchimento bg-primary
+  └─ <SliderThumb /> (×N)          ← uma por valor no array
+</Slider>
+```
+
+## Usage
+
+```tsx
+import { Slider } from "@kalvner/kds/forms/slider";
+
+export function Volume({ value, onChange }) {
+  return (
+    <Slider
+      value={value}
+      onValueChange={onChange}
+      max={100}
+      step={1}
+      aria-label="Volume"
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `value` | `number[]` | — | Controlado. Array (1 ou 2 thumbs). |
+| `defaultValue` | `number[]` | `[min, max]` | Não controlado. |
+| `onValueChange` | `(v: number[]) => void` | — | Disparado em cada movimento. |
+| `onValueCommit` | `(v: number[]) => void` | — | Disparado ao soltar (drag end). |
+| `min` / `max` | `number` | `0` / `100` | Limites. |
+| `step` | `number` | `1` | Granularidade. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direção da trilha. |
+| `disabled` | `boolean` | `false` | Bloqueia thumbs. |
+| `inverted` | `boolean` | `false` | Inverte o sentido. |
+| `aria-label` | `string` | — | Obrigatório se sem Label visível. |
+
+## Subcomponents
+
+`Slider` é exportado como um único componente — track, range e
+thumbs são internos, com `data-slot` para customização avançada.
+
+## Variants
+
+<div className="grid gap-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Range</CardTitle>
+      <CardDescription>Dois thumbs — faixa de preço, intervalo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Slider defaultValue={[20, 80]} max={100} step={1} aria-label="Faixa" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Steps</CardTitle>
+      <CardDescription>step=10 — snap em granularidade grossa.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Slider defaultValue={[40]} max={100} step={10} aria-label="Volume passos" />
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| Default | Thumb com hover ring 4px, focus-visible ring 4px. |
+| `disabled` | Opacidade 50%, ignora pointer/teclado. |
+| `data-orientation=vertical` | Trilha vertical (mín. h-44). |
+
+## Composition
+
+Em painéis de configuração, pareie Label + valor + Slider:
+
+```tsx
+<div className="space-y-2">
+  <div className="flex items-baseline justify-between">
+    <Label htmlFor="brightness">Brilho</Label>
+    <span className="tabular-nums text-muted-foreground">{value[0]}%</span>
+  </div>
+  <Slider id="brightness" value={value} onValueChange={setValue} max={100} />
+</div>
+```
+
+Para faixa de preço com input direto, combine Slider (visual) + dois
+[Input](./input) (preciso) — o slider é exploração, os inputs são
+ajuste fino.
+
+## When to use
+
+- Volume, brilho, opacidade, zoom (controles aproximados).
+- Faixas de filtro (preço, ano, distância).
+- Ajustes contínuos onde 5 ou 10 unidades de diferença não importam.
+
+## When not to use
+
+- Valores precisos que o usuário sabe digitar (idade, quantidade
+  exata) — use [Input](./input) `type="number"`.
+- Escolhas discretas com poucos valores — use [RadioGroup](./radio-group)
+  ou [Select](./select).
+- Datas — use DatePicker (Phase 5) ou Calendar.
+
+## Best practices
+
+- **Mostre sempre o valor.** Slider sem número é "jogue um dardo".
+- Use `tabular-nums` no número exibido — evita saltos de largura.
+- Quando passos importam (faixas de salário em mil), use `step` que
+  faça sentido pro domínio, não 1.
+- Em mobile, aumente o área hit do thumb com `[&_[data-slot=slider-thumb]]:size-6`.
+- Para range slider, valide `[lo, hi]` antes de submeter — Radix permite
+  `lo > hi` se você forçar via state externo.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Cada thumb é `role="slider"` com `aria-valuenow`, `aria-valuemin`, `aria-valuemax`. |
+| **Keyboard** | `←` `→` (`↑` `↓`) movem por step; `Home` / `End` vão ao mín / máx; `PageUp` / `PageDown` saltam 10×. |
+| **Touch** | Hit area do thumb é 16px — combine com label clicável que mostra valor. |
+| **Label** | `aria-label` ou Label vinculado obrigatório. |
+| **Reduced motion** | `transition-[color,box-shadow]` respeita `prefers-reduced-motion`. |
+
+## Related
+
+- [Input](./input) — para precisão numérica.
+- [RadioGroup](./radio-group) — para escolhas discretas.
+- [Switch](./switch) — para boolean simples.

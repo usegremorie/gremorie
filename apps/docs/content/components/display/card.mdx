@@ -1,0 +1,243 @@
+---
+title: Card
+description: "Composable surface for grouping related content. Headers, descriptions, content slots, and footers - opt in to the parts you need."
+---
+
+import { CardPreview } from "@/components/preview/display/display";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
+import { Badge } from "@gremorie/rx-display";
+
+## Overview
+
+`Card` is the cornerstone display primitive: a rounded surface with a structured Header to Content to Footer rhythm. Each sub-component is a thin styled `div` with a `data-slot` attribute, so the API stays composable rather than configurative. You opt in to the parts you need: a marketing card might use only `CardHeader` and `CardContent`; a dashboard tile might add `CardAction` for a top-right control and `CardFooter` for a trend caption.
+
+Card is intentionally surface-only. It doesn't manage focus, hover, or selection - wrap it in a `Button` (via `asChild`) or a `Link` when the whole card should be interactive.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <CardPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-card
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-card
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-card
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-card
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <Card className="max-w-sm">
+      <CardHeader>
+        <CardTitle>Welcome to Gremorie</CardTitle>
+        <CardDescription>AI-native design system, registry first.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">
+          Compose primitives directly. Skip the lock-in.
+        </p>
+      </CardContent>
+      <CardFooter>
+        <Button>Get started</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Card>`
+
+The root surface. Renders a rounded `div` with border, background, and a `flex flex-col gap-6` rhythm.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Extra classes merged via `cn`. Use for layout (width, max-width, margin), not for surface colors. |
+
+All other `div` props are forwarded.
+
+### `<CardHeader>`
+
+Container for the title, description, and optional action. Uses a `grid` so `CardAction` can sit top-right while title and description stack on the left.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Extra classes merged via `cn`. |
+
+### `<CardTitle>`
+
+Section heading. Renders as a `div` with `leading-none font-semibold`.
+
+### `<CardDescription>`
+
+Secondary copy under the title. Renders as a `div` with `text-muted-foreground text-sm`.
+
+### `<CardAction>`
+
+Top-right slot inside `CardHeader` for a control (icon button, menu trigger, badge). Uses CSS grid positioning, so the order in JSX doesn't matter - `CardHeader` detects it via `has-data-[slot=card-action]` and switches to a two-column layout.
+
+### `<CardContent>`
+
+Main body. Horizontal padding only - vertical rhythm comes from the root `gap-6`.
+
+### `<CardFooter>`
+
+Footer row. Defaults to `flex items-center`; add `border-t` on `CardFooter` (or `border-b` on `CardHeader`) and the slot expands its vertical padding via `[.border-t]:pt-6`.
+
+## Composition
+
+1. **`<Card>`** is the surface. Always the outermost element.
+2. **`<CardHeader>`** holds `CardTitle`, `CardDescription`, and optionally `CardAction`.
+3. **`<CardContent>`** is the body. Drop in paragraphs, charts, lists, forms.
+4. **`<CardFooter>`** holds actions or summary text. Optional.
+
+Use the full composition rather than dumping everything into `CardContent` - the named slots give downstream consumers clear hooks to override or theme.
+
+## Variations
+
+### Simple card
+
+<div className="rounded-lg border p-6 not-prose">
+  <Card className="max-w-sm">
+    <CardHeader>
+      <CardTitle>Hello there</CardTitle>
+      <CardDescription>A minimal card with just a header.</CardDescription>
+    </CardHeader>
+  </Card>
+</div>
+
+```tsx
+<Card className="max-w-sm">
+  <CardHeader>
+    <CardTitle>Hello there</CardTitle>
+    <CardDescription>A minimal card with just a header.</CardDescription>
+  </CardHeader>
+</Card>
+```
+
+### Card with action
+
+<div className="rounded-lg border p-6 not-prose">
+  <Card className="max-w-sm">
+    <CardHeader>
+      <CardTitle>Monthly revenue</CardTitle>
+      <CardDescription>Across all active workspaces.</CardDescription>
+      <CardAction>
+        <Badge variant="secondary">+12.4%</Badge>
+      </CardAction>
+    </CardHeader>
+    <CardContent>
+      <p className="text-2xl font-semibold">$48,210</p>
+    </CardContent>
+  </Card>
+</div>
+
+```tsx
+<Card className="max-w-sm">
+  <CardHeader>
+    <CardTitle>Monthly revenue</CardTitle>
+    <CardDescription>Across all active workspaces.</CardDescription>
+    <CardAction>
+      <Badge variant="secondary">+12.4%</Badge>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <p className="text-2xl font-semibold">$48,210</p>
+  </CardContent>
+</Card>
+```
+
+### Card with bordered footer
+
+<div className="rounded-lg border p-6 not-prose">
+  <Card className="max-w-sm">
+    <CardHeader>
+      <CardTitle>Invite teammates</CardTitle>
+      <CardDescription>They will get an email with a join link.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-muted-foreground">
+        Up to 10 seats are included on the Pro plan.
+      </p>
+    </CardContent>
+    <CardFooter className="border-t">
+      <Button variant="outline" className="w-full">Send invites</Button>
+    </CardFooter>
+  </Card>
+</div>
+
+```tsx
+<Card className="max-w-sm">
+  <CardHeader>
+    <CardTitle>Invite teammates</CardTitle>
+    <CardDescription>They will get an email with a join link.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p className="text-sm text-muted-foreground">
+      Up to 10 seats are included on the Pro plan.
+    </p>
+  </CardContent>
+  <CardFooter className="border-t">
+    <Button variant="outline" className="w-full">Send invites</Button>
+  </CardFooter>
+</Card>
+```
+
+The `border-t` on `CardFooter` triggers `[.border-t]:pt-6`, expanding the footer's top padding so the separator reads cleanly.
+
+## Accessibility
+
+- **Structural, not semantic by default**: Card renders as a plain `div`. It is not announced as a region.
+- **Add `role="region"` and `aria-labelledby`** when the card represents a distinct section that should be navigable as a landmark (e.g. a dashboard widget). Point `aria-labelledby` at the `CardTitle`'s `id`.
+- **Make the whole card clickable** by wrapping `CardHeader`'s title in an `<a>` and stretching with `::after`, or by wrapping the entire `Card` in a `Button` via `asChild` patterns. Don't add `onClick` to the bare `Card` - that's a div without keyboard support.
+- **Focus order** follows DOM order; `CardAction` is positioned via grid, so it visually sits top-right but receives focus in the order it appears in JSX (after the title and description, by default).
+
+## Related
+
+- [Badge](/components/display/badge) - common content for `CardAction`.
+- [Button](/components/forms/button) - typical action in `CardFooter`.
+- [Separator](/components/display/separator) - dividers inside dense cards.
+- [Table](/components/display/table) - frequent body content for data cards.

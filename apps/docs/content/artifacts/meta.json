@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "title": "Artifacts",
+  "description": "AI generative outputs",
+  "icon": "Sparkles",
+  "pages": [
+    "index",
+    "chart-bar",
+    "code-block",
+    "markdown-doc",
+    "data-table",
+    "form-schema",
+    "calculator"
+  ]
+}

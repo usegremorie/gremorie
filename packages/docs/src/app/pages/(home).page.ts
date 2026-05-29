@@ -19,10 +19,10 @@ import { DocsLayout } from '../shared/doc-layout.component';
             AI-native components<br />for Angular.
           </h1>
           <p class="max-w-prose text-base text-muted-foreground sm:text-lg">
-            ShadNG is the Angular library of AI-native components that should exist but doesn't.
+            Gremorie NG is the Angular library of AI-native components that should exist but doesn't.
             Built on <a href="https://www.spartan.ng" target="_blank" rel="noopener" class="underline decoration-muted-foreground hover:decoration-foreground">spartan-ng</a>
             primitives, integrates cleanly with <a href="https://hashbrown.dev" target="_blank" rel="noopener" class="underline decoration-muted-foreground hover:decoration-foreground">Hashbrown</a>
-            for LLM logic. Tribute to <a href="https://ui.shadcn.com" target="_blank" rel="noopener" class="underline decoration-muted-foreground hover:decoration-foreground">shadcn/ui</a>.
+            for LLM logic.
           </p>
           <div class="flex flex-wrap items-center gap-2">
             <a
@@ -42,7 +42,7 @@ import { DocsLayout } from '../shared/doc-layout.component';
               Browse components
             </a>
             <a
-              href="https://github.com/kalvner/shadng"
+              href="https://github.com/usegremorie/gremorie"
               target="_blank"
               rel="noopener"
               class="inline-flex h-10 items-center gap-1.5 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
@@ -80,7 +80,7 @@ import { DocsLayout } from '../shared/doc-layout.component';
           <h2 class="text-xl font-semibold tracking-tight text-foreground">Install</h2>
           <docs-code-block
             lang="bash"
-            code="npm install @shadng/prompt-input"
+            code="npm install @gremorie/ng-ai"
           />
           <p class="text-sm text-muted-foreground">
             Then import the components you need:
@@ -100,5 +100,5 @@ export default class HomePage {
   PromptInputTextarea,
   PromptInputSubmit,
   PromptInputToolbar,
-} from '@shadng/prompt-input';`;
+} from '@gremorie/ng-ai';`;
 }

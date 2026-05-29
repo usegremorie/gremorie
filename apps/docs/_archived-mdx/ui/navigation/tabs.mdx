@@ -1,0 +1,188 @@
+---
+title: Tabs
+description: Content switcher para alternar entre views mutuamente exclusivas dentro do mesmo escopo.
+component: Tabs
+importPath: "@kalvner/kds/navigation/tabs"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  TabsDisabled,
+  TabsLineVariant,
+  TabsPreview,
+  TabsVertical,
+  TabsWithIcons
+} from "@/components/navigation-demos";
+
+## Overview
+
+`Tabs` alterna conteúdo dentro de **um único escopo** — visualizações
+mutuamente exclusivas do mesmo objeto. Code/Preview, Overview/Activity,
+Conta/Notificações/Cobrança. É o controle certo quando o usuário só
+precisa ver uma das visões por vez e a navegação não precisa entrar
+na URL.
+
+Para navegação **entre seções** (Home / Pricing / Docs) use
+`NavigationMenu` ou `Sidebar`. Para filtros e formatação (negrito,
+densidade, alinhamento) use `ToggleGroup`. Limite o número de abas a
+~5; passou disso, a hierarquia mudou — provavelmente vira Sidebar ou
+Pagination.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Tabs padrão com indicador pill.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <TabsPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview" />
+    <TabsTrigger value="activity" />
+    <TabsTrigger value="settings" />
+  </TabsList>
+  <TabsContent value="overview" />
+  <TabsContent value="activity" />
+  <TabsContent value="settings" />
+</Tabs>
+```
+
+A relação `TabsTrigger.value === TabsContent.value` é o pareamento.
+`Tabs` controla o estado (`value` / `defaultValue` / `onValueChange`),
+`TabsList` agrupa os triggers e recebe a variante visual, `TabsContent`
+é apresentado quando o trigger correspondente está ativo.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Tabs` | Raiz que controla `value` e `orientation`. |
+| `TabsList` | Wrapper dos triggers; aceita `variant` (`default` ou `line`). |
+| `TabsTrigger` | Botão de aba ligado a um `value`. |
+| `TabsContent` | Painel de conteúdo do `value` correspondente. |
+
+## Usage
+
+```tsx
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from "@kalvner/kds/navigation/tabs";
+
+export function Settings() {
+  return (
+    <Tabs defaultValue="account">
+      <TabsList>
+        <TabsTrigger value="account">Conta</TabsTrigger>
+        <TabsTrigger value="notifications">Notificações</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">…</TabsContent>
+      <TabsContent value="notifications">…</TabsContent>
+    </Tabs>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Line indicator</CardTitle>
+      <CardDescription>Sublinhado discreto, ideal quando o card já tem fundo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <TabsLineVariant />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>With icons</CardTitle>
+      <CardDescription>Ícones reforçam a categoria — não substituem rótulo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <TabsWithIcons />
+    </CardContent>
+  </Card>
+  <Card className="md:col-span-2">
+    <CardHeader>
+      <CardTitle>Vertical orientation</CardTitle>
+      <CardDescription>Colunas finas, lista de seções à esquerda.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <TabsVertical />
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<Card>
+  <CardHeader>
+    <CardTitle>Disabled tab</CardTitle>
+    <CardDescription>Bloquear acesso, mas mantendo o item visível para informar.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <TabsDisabled />
+  </CardContent>
+</Card>
+
+## When to use
+
+- Alternar **views da mesma entidade** — perfil de um usuário visto
+  como overview, activity, settings.
+- Code/Preview ou Source/Result em docs e playgrounds.
+- 2 a 5 opções, com rótulos curtos (1–2 palavras).
+
+## When not to use
+
+- Para navegação entre páginas que precisam de URL — use
+  [`NavigationMenu`](./navigation-menu) ou rotas.
+- Para filtros e seleção múltipla — use Toggle/ToggleGroup.
+- Para mais de 5 abas — vira hierarquia, considere Sidebar ou
+  Pagination.
+- Em mobile com rótulos longos — abas truncam e perdem affordance.
+
+## Best practices
+
+- **Default visível.** Sempre forneça `defaultValue` ou `value`. Sem
+  isso o componente carrega vazio até o primeiro clique.
+- **Ative URL sync quando importar.** Em docs e dashboards, persista
+  a aba na URL (`?tab=settings`) para deep-linking.
+- **Não use Tabs para wizard.** Wizards têm ordem; Tabs não. Use
+  `Stepper` quando há sequência.
+- **Conteúdos lazy.** Para painéis pesados, monte só quando
+  ativo — `forceMount` opt-in para SEO/SR quando precisar.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix aplica `role="tablist"`, `role="tab"`, `role="tabpanel"` automaticamente. |
+| **Keyboard** | Setas navegam entre triggers (horizontal: ←/→; vertical: ↑/↓). `Home` / `End` saltam para os extremos. |
+| **Focus** | Foco passa pelo TabsList como uma única parada (`tabindex=0` na ativa, `-1` nas demais). |
+| **Activation** | Padrão `automatic` — focar muda o painel. Para painéis pesados, mude para `activationMode="manual"` (foca, mas só ativa com Enter/Space). |
+| **Screen reader** | Triggers anunciados como "Tab N de M, selected" quando ativos. |
+
+## Related
+
+- [`NavigationMenu`](./navigation-menu) — para navegação entre
+  seções, com painéis ricos.
+- [`Sidebar`](./sidebar) — para hierarquia profunda em apps.
+- [`Pagination`](./pagination) — quando há muitos itens com URL
+  estável.

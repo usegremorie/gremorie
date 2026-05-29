@@ -1,0 +1,24 @@
+{
+  "title": "Forms",
+  "description": "Form primitives - Button, Input, InputGroup, Label, Select, Textarea, ButtonGroup, Calendar, Checkbox, DatePicker, Form, InputOTP, RadioGroup, Slider, Switch, Toggle, ToggleGroup",
+  "icon": "Square",
+  "pages": [
+    "button",
+    "input",
+    "input-group",
+    "label",
+    "select",
+    "textarea",
+    "button-group",
+    "calendar",
+    "checkbox",
+    "date-picker",
+    "form",
+    "input-otp",
+    "radio-group",
+    "slider",
+    "switch",
+    "toggle",
+    "toggle-group"
+  ]
+}

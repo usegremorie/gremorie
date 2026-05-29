@@ -1,0 +1,159 @@
+---
+title: Popover
+description: Overlay ancorado para conteúdo interativo inline — date pickers, mini formulários, command bars.
+component: Popover
+importPath: "@kalvner/kds/overlays/popover"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  PopoverIconTrigger,
+  PopoverPreview
+} from "@/components/overlay-demos";
+
+## Overview
+
+`Popover` é um overlay **ancorado a um trigger**, aberto por clique
+(intencional) e capaz de hospedar **conteúdo interativo** —
+formulários compactos, date pickers, color pickers, command bars,
+share menus.
+
+Use a tabela mental para escolher entre Popover, Tooltip e HoverCard:
+
+| Primitive | Trigger | Conteúdo | Tipico |
+|---|---|---|---|
+| **Popover** | clique | interativo | mini-form, date picker, settings |
+| **Tooltip** | hover/focus | label curto | "Salvar (⌘S)" |
+| **HoverCard** | hover | preview não-interativo | profile preview |
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Popover com mini formulário.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PopoverPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Popover>
+  <PopoverTrigger />
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle />
+      <PopoverDescription />
+    </PopoverHeader>
+    {/* conteúdo interativo */}
+  </PopoverContent>
+</Popover>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Popover` | Raiz controlando open/closed. |
+| `PopoverTrigger` | Elemento que abre o popover ao clicar. |
+| `PopoverContent` | Container portalado, com smart positioning. |
+| `PopoverAnchor` | Elemento alternativo para ancoragem (raro). |
+| `PopoverHeader` | Wrapper de título + descrição. |
+| `PopoverTitle` | Título da seção (não obrigatório). |
+| `PopoverDescription` | Descrição opcional. |
+
+## Usage
+
+```tsx
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent
+} from "@kalvner/kds/overlays/popover";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function FilterPopover() {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Filtros</Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        {/* form fields */}
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+## Props
+
+### PopoverContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `align` | `'start' \| 'center' \| 'end'` | `'center'` | Alinhamento horizontal em relação ao trigger. |
+| `side` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` | Lado preferido — Radix flipa se não couber. |
+| `sideOffset` | `number` | `4` | Espaço entre trigger e content. |
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Icon trigger</CardTitle>
+    <CardDescription>Popover ancorado a um botão de ícone.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PopoverIconTrigger />
+  </CardContent>
+</Card>
+
+## When to use
+
+- Date pickers, color pickers, mini-formulários (1–3 campos).
+- Settings inline (densidade, ordenação, exibição de colunas).
+- Share menu / convidar membro com email + role.
+- Command bar / quick actions.
+
+## When not to use
+
+- Para fluxos longos — use [`Sheet`](./sheet) ou [`Dialog`](./dialog).
+- Para labels curtos não-interativos — use [`Tooltip`](./tooltip).
+- Para previews não-interativos — use [`HoverCard`](./hover-card).
+- Para listas de ações — use [`DropdownMenu`](./dropdown-menu).
+
+## Best practices
+
+- **Largura controlada.** O default é `w-72`. Para conteúdo mais
+  largo, ajuste via `className`. Não deixe overflow horizontal.
+- **Não aninhe.** Popovers dentro de popovers atrapalham foco; use
+  Sheet ou outra navegação se a hierarquia for funda.
+- **Feche após confirmação.** Em forms dentro de popover, fechar
+  programaticamente após `onSubmit` confirma a operação visualmente.
+- **Ancore ao trigger.** `PopoverAnchor` existe para casos avançados,
+  mas o padrão é deixar o trigger ser o âncora.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix Popover aplica `role="dialog"` (ou `aria-haspopup="dialog"` no trigger). |
+| **Foco** | Foco entra no primeiro elemento focável dentro do content. Volta ao trigger ao fechar. |
+| **Keyboard** | `Esc` fecha. `Tab` cicla. Diferente do AlertDialog, fechar por overlay click é permitido. |
+| **Screen reader** | Quando há `PopoverTitle`, anuncia como nome. Sem título, aria-label do trigger é a referência. |
+| **Reduced motion** | Animações respeitam `prefers-reduced-motion`. |
+
+## Related
+
+- [`Tooltip`](./tooltip) — labels curtos não-interativos.
+- [`HoverCard`](./hover-card) — previews não-interativos via hover.
+- [`DropdownMenu`](./dropdown-menu) — listas de ações.
+- [`Dialog`](./dialog) — para fluxos focados e bloqueantes.

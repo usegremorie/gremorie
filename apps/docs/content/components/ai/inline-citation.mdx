@@ -1,0 +1,235 @@
+---
+title: Inline Citation
+description: Footnote-style inline citation that hovers into a multi-source carousel with title, URL, description and quote.
+---
+
+import { InlineCitationPreview } from "@/components/preview/ai/chatbot-rest";
+
+## Overview
+
+`InlineCitation` is the inline footnote pattern for AI responses. It wraps the cited span with a `Badge` trigger that condenses the source hostname; on hover, a `HoverCard` opens with a `Carousel` of source cards (title, URL, description and an optional pulled quote).
+
+Use it for citations that belong to a specific phrase inside the assistant text. For a global "sources used" list at the end of a turn, use [Sources](/components/ai/sources) instead.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <InlineCitationPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-inline-citation
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-inline-citation
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-inline-citation
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-inline-citation
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  InlineCitation,
+  InlineCitationText,
+  InlineCitationCard,
+  InlineCitationCardTrigger,
+  InlineCitationCardBody,
+  InlineCitationCarousel,
+  InlineCitationCarouselContent,
+  InlineCitationCarouselItem,
+  InlineCitationSource,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <InlineCitation>
+      <InlineCitationText>The OWASP Top 10 lists injection first.</InlineCitationText>
+      <InlineCitationCard>
+        <InlineCitationCardTrigger sources={["https://owasp.org/Top10"]} />
+        <InlineCitationCardBody>
+          <InlineCitationCarousel>
+            <InlineCitationCarouselContent>
+              <InlineCitationCarouselItem>
+                <InlineCitationSource
+                  title="OWASP Top 10"
+                  url="https://owasp.org/Top10"
+                  description="Standard awareness document for developers and security."
+                />
+              </InlineCitationCarouselItem>
+            </InlineCitationCarouselContent>
+          </InlineCitationCarousel>
+        </InlineCitationCardBody>
+      </InlineCitationCard>
+    </InlineCitation>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<InlineCitation>`
+
+Group wrapper. Adds a `group` className so the cited text can pick up hover styling.
+
+Extends `ComponentProps<"span">`.
+
+### `<InlineCitationText>`
+
+Span that wraps the cited phrase. Picks up a subtle `bg-accent` background on group hover so the user can see exactly what is cited.
+
+### `<InlineCitationCard>`
+
+Hover card root with `openDelay={0}` and `closeDelay={0}`.
+
+Extends `ComponentProps<typeof HoverCard>`.
+
+### `<InlineCitationCardTrigger>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `sources` | `string[]` | - | Required. URLs cited. The trigger renders the first hostname plus a `+N` overflow badge. |
+
+Renders a secondary `Badge` (pill).
+
+### `<InlineCitationCardBody>`
+
+Hover card content. Reserved width of 320px, no padding.
+
+Extends `ComponentProps<typeof HoverCardContent>`.
+
+### Carousel sub-components
+
+| Component | Role |
+|---|---|
+| `InlineCitationCarousel` | `Carousel` wrapper that exposes its API via context. |
+| `InlineCitationCarouselContent` | Carousel slides container. |
+| `InlineCitationCarouselItem` | One slide (`p-4 pl-8`). |
+| `InlineCitationCarouselHeader` | Header strip with prev / next + index. |
+| `InlineCitationCarouselIndex` | Current / total label (`1/3`). |
+| `InlineCitationCarouselPrev` | Previous source button with `aria-label="Previous"`. |
+| `InlineCitationCarouselNext` | Next source button with `aria-label="Next"`. |
+
+### `<InlineCitationSource>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | - | Source title (truncated to 1 line). |
+| `url` | `string` | - | Source URL (truncated, muted). |
+| `description` | `string` | - | Snippet (clamped to 3 lines). |
+| `children` | `ReactNode` | - | Optional extra content (e.g. an `InlineCitationQuote`). |
+
+### `<InlineCitationQuote>`
+
+Italic blockquote with a left muted border. Use for pulled quotes inside an `InlineCitationSource`.
+
+## Composition
+
+1. **`<InlineCitation>`** wraps the cited phrase and its trigger as a group.
+2. **`<InlineCitationText>`** is the visible cited text.
+3. **`<InlineCitationCard>` + `<InlineCitationCardTrigger>`** is the badge with a hover preview.
+4. **`<InlineCitationCardBody>`** opens the hover card.
+5. **`<InlineCitationCarousel>` + items** render one source per slide.
+6. **`<InlineCitationSource>` + `<InlineCitationQuote>`** structure each slide.
+
+## Variations
+
+### Single source
+
+The simplest case: one URL behind one badge.
+
+```tsx
+<InlineCitation>
+  <InlineCitationText>Vercel's edge runtime is V8 based.</InlineCitationText>
+  <InlineCitationCard>
+    <InlineCitationCardTrigger sources={["https://vercel.com/docs/edge"]} />
+    <InlineCitationCardBody>
+      <InlineCitationCarousel>
+        <InlineCitationCarouselContent>
+          <InlineCitationCarouselItem>
+            <InlineCitationSource
+              title="Edge Runtime"
+              url="https://vercel.com/docs/edge"
+              description="Run code close to your users with low latency."
+            />
+          </InlineCitationCarouselItem>
+        </InlineCitationCarouselContent>
+      </InlineCitationCarousel>
+    </InlineCitationCardBody>
+  </InlineCitationCard>
+</InlineCitation>
+```
+
+### Multi-source carousel
+
+When several URLs back the same claim, render them as siblings; the trigger shows `+N` for the overflow.
+
+```tsx
+<InlineCitationCardTrigger sources={[urlA, urlB, urlC]} />
+<InlineCitationCardBody>
+  <InlineCitationCarousel>
+    <InlineCitationCarouselHeader>
+      <InlineCitationCarouselPrev />
+      <InlineCitationCarouselIndex />
+      <InlineCitationCarouselNext />
+    </InlineCitationCarouselHeader>
+    <InlineCitationCarouselContent>
+      {sources.map((s) => (
+        <InlineCitationCarouselItem key={s.url}>
+          <InlineCitationSource title={s.title} url={s.url} description={s.snippet} />
+        </InlineCitationCarouselItem>
+      ))}
+    </InlineCitationCarouselContent>
+  </InlineCitationCarousel>
+</InlineCitationCardBody>
+```
+
+### Source with pulled quote
+
+Include the exact passage the model relied on for grounding.
+
+```tsx
+<InlineCitationSource title="WCAG 2.2" url={url} description="...">
+  <InlineCitationQuote>
+    "Authentication processes that rely on cognitive function tests must have an alternative."
+  </InlineCitationQuote>
+</InlineCitationSource>
+```
+
+## Accessibility
+
+- **Keyboard**: the badge is a focusable trigger (via Radix Hover Card), so the card opens on focus. Carousel prev / next are real `<button>`s with `aria-label="Previous"` / `aria-label="Next"`.
+- **ARIA**: hover card wires `aria-haspopup` and focus management automatically; the carousel index reads as text content for screen readers.
+- **Screen readers**: keep `InlineCitationSource` props populated (especially `title` and `url`) so the source is announced even without hover preview.
+- **Focus management**: pressing Esc closes the card and returns focus to the badge; Tab continues from the badge into the next inline element.
+
+## Related
+
+- [Sources](/components/ai/sources) - global "sources used" panel for a turn
+- [Message](/components/ai/message) - the assistant turn that hosts the citation
+- [Chain of Thought](/components/ai/chain-of-thought) - shares the search-results pattern for step-level citations

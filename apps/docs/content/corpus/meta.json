@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "title": "Corpus",
+  "description": "Framework-agnostic UX knowledge",
+  "icon": "BookOpen",
+  "pages": [
+    "index",
+    "heuristics",
+    "components",
+    "patterns",
+    "states",
+    "feedback-system",
+    "ux-writing",
+    "visual-hierarchy"
+  ]
+}

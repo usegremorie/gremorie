@@ -1,0 +1,168 @@
+---
+title: Tooltip
+description: Label curto e não-essencial que aparece em hover/focus.
+component: Tooltip
+importPath: "@kalvner/kds/overlays/tooltip"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  TooltipPreview,
+  TooltipShortcut,
+  TooltipSides
+} from "@/components/overlay-demos";
+
+## Overview
+
+`Tooltip` é o overlay mais leve do KDS — um pequeno balão com texto
+breve, ancorado ao trigger, mostrado em hover e focus. Reserve para
+**informação não-essencial**: rótulos de ícones, atalhos de teclado,
+lembretes do que um controle faz.
+
+A regra de ouro: **se a informação for crítica, não pode estar num
+tooltip**. Touch users não conseguem fazer hover. Keyboard users só
+veem o tooltip quando o foco está no trigger. Conteúdo essencial
+fica visível na layout.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Tooltip em um botão de ícone.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <TooltipPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<TooltipProvider>            ← envolve o app
+  <Tooltip>
+    <TooltipTrigger />
+    <TooltipContent />
+  </Tooltip>
+</TooltipProvider>
+```
+
+`TooltipProvider` deve envolver o app raiz uma única vez. Ele
+compartilha o timer de `delayDuration` entre todos os tooltips —
+quando você passa o mouse de um para outro, eles entram em modo
+"skip delay" para evitar o efeito de pop intermitente.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `TooltipProvider` | Envolve a árvore. Configura `delayDuration` global. |
+| `Tooltip` | Raiz para um tooltip individual. |
+| `TooltipTrigger` | Elemento ao qual o tooltip se ancora. |
+| `TooltipContent` | Bubble com texto. Inclui Arrow automaticamente. |
+
+## Usage
+
+```tsx
+// app/layout.tsx
+import { TooltipProvider } from "@kalvner/kds/overlays/tooltip";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+// in a component
+import { Tooltip, TooltipTrigger, TooltipContent } from "@kalvner/kds/overlays/tooltip";
+
+export function SaveButton() {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button>Salvar</Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        Salvar <kbd className="ml-2">⌘S</kbd>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+```
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>With shortcut</CardTitle>
+      <CardDescription>Inclua o atalho usando `<kbd>` para ergonomia.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <TooltipShortcut />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Side variants</CardTitle>
+      <CardDescription>Top é o default; Radix flipa se não couber.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <TooltipSides />
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Rotular botões icon-only (sempre + `aria-label` no botão).
+- Mostrar atalhos de teclado.
+- Lembretes do que um controle faz quando o ícone for ambíguo.
+
+## When not to use
+
+- Para qualquer informação que o usuário precise ler para concluir
+  uma tarefa — coloque no DOM, não num tooltip.
+- Para conteúdo interativo — use [`Popover`](./popover).
+- Para previews ricos — use [`HoverCard`](./hover-card).
+- Para confirmações ou erros — use [`AlertDialog`](./alert-dialog) ou
+  [`Alert`](../feedback/alert).
+
+## Best practices
+
+- **Sentence-case, sem ponto final.** "Adicionar item", não "Adicionar
+  item." nem "Adicionar Item.". Tooltip é um label, não uma frase.
+- **Curto.** 1–6 palavras. Se não couber, repense — a informação
+  provavelmente não pertence ao tooltip.
+- **Sempre par com `aria-label` no trigger icon-only.** O tooltip não
+  é lido por SR como nome acessível na maioria dos casos.
+- **Não use `delayDuration: 0`** em produção. Cria flicker. 150–300ms
+  é o sweet spot.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix Tooltip aplica `role="tooltip"` no content e `aria-describedby` no trigger. |
+| **Foco** | Tooltip aparece em focus do trigger (não só hover). Some quando o foco sai. |
+| **Keyboard** | `Esc` fecha o tooltip ativo sem mover o foco. |
+| **Screen reader** | O conteúdo do tooltip é anunciado via `aria-describedby` quando o trigger ganha foco. |
+| **Touch** | Touch users não disparam tooltip — por isso conteúdo crítico não pode viver aqui. |
+| **Reduced motion** | Fade respeita `prefers-reduced-motion`. |
+
+## Related
+
+- [`Popover`](./popover) — para conteúdo interativo.
+- [`HoverCard`](./hover-card) — para previews em hover.
+- [`Button`](../forms/button) — combinação típica para botões icon-only.

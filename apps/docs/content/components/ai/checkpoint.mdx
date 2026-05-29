@@ -1,0 +1,170 @@
+---
+title: Checkpoint
+description: Conversation savepoint marker - a labeled bookmark on the timeline with an optional tooltip describing the captured state.
+---
+
+import { CheckpointPreview, CheckpointTooltipPreview } from "@/components/preview/ai/chatbot-rest";
+
+## Overview
+
+`Checkpoint` marks a notable point in a conversation - a saved state, a branch root, a manual snapshot. Visually it lives between two messages as a small icon (and optional label) followed by a horizontal separator, so it reads as a divider in the timeline.
+
+Use it when the user can branch, restore or rewind from this point. Pair the trigger with a tooltip that explains what the savepoint represents.
+
+## Preview
+
+### Icon-only
+
+<div className="rounded-lg border p-6 not-prose">
+  <CheckpointPreview />
+</div>
+
+### With label
+
+<div className="rounded-lg border p-6 not-prose">
+  <CheckpointTooltipPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-checkpoint
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-checkpoint
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-checkpoint
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-checkpoint
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Checkpoint, CheckpointTrigger } from "@gremorie/rx-ai";
+import { TooltipProvider } from "@gremorie/rx-overlays";
+import { GitBranch } from "lucide-react";
+
+export function Example() {
+  return (
+    <TooltipProvider>
+      <Checkpoint>
+        <CheckpointTrigger tooltip="Branch from here">
+          <GitBranch className="size-4" />
+        </CheckpointTrigger>
+      </Checkpoint>
+    </TooltipProvider>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Checkpoint>`
+
+The row container. Renders its children followed by a `Separator`, so the checkpoint visually splits the timeline.
+
+Extends all `HTMLAttributes<HTMLDivElement>`.
+
+### `<CheckpointIcon>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | - | When provided, fully replaces the default `BookmarkIcon`. |
+
+Forwards all `LucideProps` to the default icon (size, stroke, etc.).
+
+### `<CheckpointTrigger>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tooltip` | `string` | - | Tooltip text. When set, the trigger is wrapped in `Tooltip` / `TooltipContent`. |
+| `variant` | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`. |
+| `size` | `ButtonSize` | `"sm"` | Forwarded to the underlying `Button`. |
+| `children` | `ReactNode` | - | Icon, label, or both. |
+
+<Callout type="info">
+`CheckpointTrigger` relies on `TooltipProvider`. Make sure one is present higher in the tree.
+</Callout>
+
+## Composition
+
+1. **`<Checkpoint>`** is the row wrapper that ends in a `Separator`.
+2. **`<CheckpointIcon>`** renders a leading icon (the default `BookmarkIcon` or any Lucide icon).
+3. **`<CheckpointTrigger>`** is the actionable handle (button with optional tooltip and label).
+
+## Variations
+
+### Icon-only branch marker
+
+The minimal form - a single icon between messages, with a tooltip to explain the action.
+
+```tsx
+<Checkpoint>
+  <CheckpointTrigger tooltip="Branch from here">
+    <GitBranch className="size-4" />
+  </CheckpointTrigger>
+</Checkpoint>
+```
+
+### Labelled savepoint
+
+Combine icon and label inside the trigger for a more discoverable marker.
+
+```tsx
+<Checkpoint>
+  <CheckpointTrigger tooltip="Restore this state">
+    <GitBranch className="size-4" />
+    Checkpoint
+  </CheckpointTrigger>
+</Checkpoint>
+```
+
+### Custom icon
+
+Use `CheckpointIcon` for a static marker and pair it with a `CheckpointTrigger` for the action.
+
+```tsx
+<Checkpoint>
+  <CheckpointIcon>
+    <FlagIcon className="size-4" />
+  </CheckpointIcon>
+  <CheckpointTrigger tooltip="Restart from this point">
+    Reset
+  </CheckpointTrigger>
+</Checkpoint>
+```
+
+## Accessibility
+
+- **Keyboard**: `CheckpointTrigger` is a real `Button`, focusable in the timeline and activated by Enter / Space.
+- **ARIA**: when `tooltip` is set, Radix Tooltip wires `aria-describedby` from the trigger to the tooltip content automatically.
+- **Screen readers**: keep the trigger label or tooltip explicit ("Branch from here", "Restore this state") so icon-only checkpoints still announce their purpose.
+- **Focus management**: the trailing `Separator` is decorative and not focusable, so Tab order moves cleanly from one checkpoint to the next.
+
+## Related
+
+- [Conversation](/components/ai/conversation) - the timeline that hosts checkpoints between messages
+- [Message](/components/ai/message) - the turns delimited by checkpoints
+- [Confirmation](/components/ai/confirmation) - actionable confirmation pattern for irreversible operations

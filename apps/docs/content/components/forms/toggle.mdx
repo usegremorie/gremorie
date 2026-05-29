@@ -1,0 +1,174 @@
+---
+title: Toggle
+description: Two-state press-button (`aria-pressed`) built on Radix Toggle, for stateful actions like text formatting and view modes.
+---
+
+import { TogglePreview } from "@/components/preview/forms/forms";
+
+## Overview
+
+`Toggle` is built on `@radix-ui/react-toggle`. A two-state press-button (`aria-pressed`) for stateful actions **outside** of form submission - bold / italic in a text editor, view-mode switches, filter chips.
+
+For form-bound boolean values use `Checkbox` or `Switch`. Don't use Toggle as navigation - that's `Tab` or `Link`. `ToggleGroup` is the coordinated multi-button equivalent when you have several related toggles.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <TogglePreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-toggle
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-toggle
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-toggle
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-toggle
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Toggle } from "@gremorie/rx-forms";
+import { Bold } from "lucide-react";
+
+export function Example() {
+  return (
+    <Toggle aria-label="Bold">
+      <Bold />
+    </Toggle>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Toggle>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `pressed` | `boolean` | - | Controlled pressed state. |
+| `defaultPressed` | `boolean` | - | Uncontrolled initial state. |
+| `onPressedChange` | `(pressed: boolean) => void` | - | Fires when the user toggles. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `variant` | `"default" \| "outline"` | `"default"` | `default` is transparent; `outline` adds a border for standalone toolbar use. |
+| `size` | `"default" \| "sm" \| "lg"` | `"default"` | Footprint preset. |
+
+Forwards to `TogglePrimitive.Root`. The pressed state is mirrored via `data-state` (`on` / `off`), which drives the accent background.
+
+### `toggleVariants`
+
+Exported CVA factory. Reused by `ToggleGroupItem` so children inherit the same surface via context.
+
+```tsx
+import { toggleVariants } from "@gremorie/rx-forms";
+
+<div className={toggleVariants({ variant: "outline", size: "sm" })}>
+  Custom host
+</div>
+```
+
+## Composition
+
+1. **`<Toggle>`** is a leaf. Always provide `aria-label` for icon-only toggles.
+2. **Children are typically icons** (formatting, view mode). For text + icon, follow the same pattern as `Button`.
+3. **Use `<ToggleGroup>`** when you have 2-5 related toggles that should behave like a coordinated set.
+
+## Variations
+
+### Icon-only formatting toggle
+
+The canonical text-editor pattern. Always pair with `aria-label`.
+
+```tsx
+import { Bold } from "lucide-react";
+
+<Toggle aria-label="Bold">
+  <Bold />
+</Toggle>
+```
+
+### Default pressed
+
+For toggles whose default state should be "on" (e.g. autosave indicator, an applied filter).
+
+```tsx
+import { Italic } from "lucide-react";
+
+<Toggle aria-label="Italic" defaultPressed>
+  <Italic />
+</Toggle>
+```
+
+### Outline variant
+
+When the toggle stands alone (not inside a `ToggleGroup`), the `outline` variant adds a visible boundary so it reads as an interactive control on flat surfaces.
+
+```tsx
+import { Underline } from "lucide-react";
+
+<Toggle aria-label="Underline" variant="outline">
+  <Underline />
+</Toggle>
+```
+
+### Controlled with effect
+
+Bind the pressed state to your editor / view state.
+
+```tsx
+function BoldToggle({ editor }) {
+  const isBold = editor.isActive("bold");
+  return (
+    <Toggle
+      aria-label="Bold"
+      pressed={isBold}
+      onPressedChange={(pressed) =>
+        editor.chain().focus().toggleBold().run()
+      }
+    >
+      <Bold />
+    </Toggle>
+  );
+}
+```
+
+## Accessibility
+
+- **ARIA**: Radix renders `role="button"` with `aria-pressed` reflecting state (`true` / `false`).
+- **Keyboard**: `Space` and `Enter` toggle the button; `Tab` / `Shift+Tab` move focus.
+- **Focus**: 3px focus-visible ring driven by `focus-visible:ring-ring/50`.
+- **Icon-only**: always provide `aria-label`. Without it, screen readers announce the toggle with no name.
+- **Distinction from Switch / Checkbox**: Toggle is for **stateful actions** (apply a format, change a view). Switch and Checkbox are for **stateful values** (a setting, a form field). The visual treatment differs because the mental model differs.
+
+## Related
+
+- [Toggle Group](/components/forms/toggle-group) - coordinated cluster of toggles
+- [Button](/components/forms/button) - stateless single-action sibling
+- [Switch](/components/forms/switch) - boolean setting (immediate effect)
+- [Checkbox](/components/forms/checkbox) - boolean form value (on submit)

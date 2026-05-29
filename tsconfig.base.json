@@ -16,13 +16,27 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["shadng"],
+    "customConditions": ["gremorie"],
     "paths": {
-      "@shadng/core": ["./packages/shadng-core/src/index.ts"],
-      "@shadng/attachments": ["./packages/shadng-attachments/src/index.ts"],
-      "@shadng/prompt-input": ["./packages/shadng-prompt-input/src/index.ts"],
-      "@shadng/scroll-area": ["./packages/shadng-scroll-area/src/index.ts"],
-      "@shadng/charts": ["./packages/shadng-charts/src/index.ts"]
+      "@gremorie/ng-core": ["./packages/ng-core/src/index.ts"],
+      "@gremorie/ng-ai": ["./packages/ng-ai/src/index.ts"],
+      "@gremorie/ng-containers": ["./packages/ng-containers/src/index.ts"],
+      "@gremorie/ng-data": ["./packages/ng-data/src/index.ts"],
+      "@gremorie/ng-display": ["./packages/ng-display/src/index.ts"],
+      "@gremorie/ng-feedback": ["./packages/ng-feedback/src/index.ts"],
+      "@gremorie/rx-core": ["./packages/rx-core/src/index.ts"],
+      "@gremorie/rx-ai": ["./packages/rx-ai/src/index.ts"],
+      "@gremorie/rx-forms": ["./packages/rx-forms/src/index.ts"],
+      "@gremorie/rx-overlays": ["./packages/rx-overlays/src/index.ts"],
+      "@gremorie/rx-display": ["./packages/rx-display/src/index.ts"],
+      "@gremorie/rx-feedback": ["./packages/rx-feedback/src/index.ts"],
+      "@gremorie/rx-navigation": ["./packages/rx-navigation/src/index.ts"],
+      "@gremorie/rx-containers": ["./packages/rx-containers/src/index.ts"],
+      "@gremorie/rx-data": ["./packages/rx-data/src/index.ts"],
+      "@gremorie/token-engine": ["./packages/token-engine/src/index.ts"],
+      "@gremorie/token-engine/graph/types": ["./packages/token-engine/src/graph/types.ts"],
+      "@gremorie/token-engine/serializer/apply-changes": ["./packages/token-engine/src/serializer/apply-changes.ts"],
+      "@gremorie/token-engine/git/status": ["./packages/token-engine/src/git/status.ts"]
     }
   }
 }

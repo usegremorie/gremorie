@@ -1,0 +1,274 @@
+---
+title: Badge
+description: Label compacto para status, contadores e tags — quatro variantes visuais.
+component: Badge
+importPath: "@kalvner/kds/display/badge"
+status: stable
+---
+
+import { Badge } from "@kalvner/kds/display/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { ArrowUpRight, Check, CircleDot } from "lucide-react";
+
+## Overview
+
+`Badge` é o label compacto de status, contagem e tag do KDS. Renderiza
+como um `<span>` inline pequeno (`text-xs`, `rounded-full`, padding
+mínimo) com quatro variantes visuais — `default`, `secondary`,
+`destructive`, `outline`.
+
+A escolha entre **badge, chip e tag** é uma das fontes mais comuns
+de inconsistência em design systems. KDS resolve assim: Badge é
+**estático** — para labels de status, contadores e tags fixas. Chips
+interativos (selecionáveis) são responsabilidade do `ToggleGroup`
+(Phase 4). Se você está pensando em adicionar `onClick` em um Badge
+para selecioná-lo, provavelmente quer ToggleGroup.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Variante default com texto simples.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Badge>Novo</Badge>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Badge variant="default">
+  ├─ [data-slot="badge"]
+  ├─ [data-variant="default"]
+  └─ children (texto + ícone opcional de 12px)
+</Badge>
+```
+
+A altura é determinada pelo padding (`py-0.5`) + line-height do
+texto, não por `h-*`. Isso permite que Badges fiquem alinhados
+inline com texto sem quebrar baseline. Quando usado standalone em
+listas, costuma medir ~20px de altura.
+
+## Usage
+
+```tsx
+import { Badge } from "@kalvner/kds/display/badge";
+
+export function PostStatus({ status }: { status: "draft" | "published" }) {
+  return status === "draft" ? (
+    <Badge variant="outline">Em rascunho</Badge>
+  ) : (
+    <Badge>Publicado</Badge>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `variant` | `'default' \| 'secondary' \| 'destructive' \| 'outline'` | `'default'` | Variante visual. |
+| `asChild` | `boolean` | `false` | Renderiza o filho em vez de `<span>` (Radix Slot). Útil para `<a>` clicável. |
+| `...rest` | `React.ComponentProps<'span'>` | — | Tudo o que `<span>` aceita (`className`, `aria-*`). |
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Default</CardTitle>
+      <CardDescription>Status feliz, ação completada.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Badge>Publicado</Badge>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Secondary</CardTitle>
+      <CardDescription>Estado neutro com peso visual.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Badge variant="secondary">Em revisão</Badge>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Destructive</CardTitle>
+      <CardDescription>Erros e falhas — não use para "deletado".</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Badge variant="destructive">Falhou</Badge>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Outline</CardTitle>
+      <CardDescription>Discreto — bom para tags em listas longas.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Badge variant="outline">Beta</Badge>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>With leading icon</CardTitle>
+      <CardDescription>Ícone de 12px reforça o status.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex flex-wrap gap-2">
+        <Badge>
+          <CircleDot />
+          Online
+        </Badge>
+        <Badge variant="secondary">
+          <Check />
+          Aprovado
+        </Badge>
+        <Badge variant="outline">
+          <ArrowUpRight />
+          Crescendo
+        </Badge>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Count</CardTitle>
+      <CardDescription>Contador numérico — 99+ para limites.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex flex-wrap items-center gap-3">
+        <Badge variant="secondary">12</Badge>
+        <Badge>99+</Badge>
+        <Badge variant="destructive">3</Badge>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>As link (asChild)</CardTitle>
+      <CardDescription>Vira &lt;a&gt; clicável com hover style.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Badge asChild variant="outline">
+        <a href="#tag">design-system</a>
+      </Badge>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Status in list</CardTitle>
+      <CardDescription>Estados misturados — outline, default, secondary.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="divide-y divide-border rounded-md border bg-card">
+        {[
+          { name: "Atualização sobre o redesign", status: "Em rascunho", variant: "outline" },
+          { name: "Lançamento da versão 2.0", status: "Publicado", variant: "default" },
+          { name: "Migração para Postgres", status: "Em revisão", variant: "secondary" }
+        ].map((item) => (
+          <div key={item.name} className="flex items-center justify-between gap-3 px-3 py-2.5">
+            <span className="text-sm">{item.name}</span>
+            <Badge variant={item.variant}>{item.status}</Badge>
+          </div>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Sidebar nav count</CardTitle>
+      <CardDescription>Badge contador alinhado à direita.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <nav className="space-y-1 rounded-md border bg-card p-2">
+        {[
+          { label: "Inbox", count: 12 },
+          { label: "Mencionados", count: 3 },
+          { label: "Spam", count: 0 }
+        ].map((item) => (
+          <div
+            key={item.label}
+            className="flex items-center justify-between rounded-sm px-3 py-1.5 text-sm hover:bg-accent"
+          >
+            <span>{item.label}</span>
+            {item.count > 0 ? <Badge variant="secondary">{item.count}</Badge> : null}
+          </div>
+        ))}
+      </nav>
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Para indicar status de um item em uma lista (Em rascunho,
+  Publicado, Em revisão, Bloqueado).
+- Como contador inline em itens de navegação ou em ícones (Inbox 12,
+  Mencionados 3).
+- Para tags estáticas — categorias, frameworks, ambientes.
+- Para sinalizar atributos de um item (Beta, Pro, Novo).
+
+## When not to use
+
+- Para chips selecionáveis (filtros toggleáveis em uma busca) — use
+  ToggleGroup (Phase 4).
+- Para botões — Badge não é interativo. Para uma ação clicável,
+  use [`Button`](../forms/button) com `size="xs"`.
+- Para mensagens longas — Badge é para 1-2 palavras. Mensagens
+  estruturadas são [`Alert`](../feedback/alert).
+- Para estados temporais ("Salvando…") — use loading state no
+  componente que dispara a ação, não um Badge separado.
+
+## Best practices
+
+- **Variantes seguem semântica.** `destructive` é para erros e
+  falhas (Falhou, Erro, Bloqueado), não para qualquer status
+  vermelho. "Deletado" é um estado estável — `outline` ou
+  `secondary`.
+- **Texto curto, sempre.** 1-2 palavras é o ideal. Para 3+, considere
+  se o que você quer não é uma frase em texto inline com `text-xs
+  text-muted-foreground` em vez de Badge.
+- **Mantenha consistência por estado em todo o produto.** Se "Em
+  revisão" é `secondary` em uma tela, deve ser `secondary` em todas.
+- **Evite uma Badge ao lado de outra cor de fundo forte.** Badge
+  em um Card colorido vira ruído. Use `outline` se o entorno já é
+  carregado.
+- **Não confie só em cor.** Para usuários com daltonismo, ícone +
+  texto + cor formam o conjunto. Apenas cor não basta.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<span>` por default — sem role implícita. Não confunda Badge com botão; ele não é interativo. Para virar `<a>`, use `asChild`. |
+| **Keyboard** | Não recebe foco no estado padrão. Quando `asChild` com `<a>`, herda foco do link. |
+| **Screen reader** | Lê o texto interno. Para contadores, considere `aria-label="12 mensagens não lidas"` para dar contexto além do número solto. |
+| **Cor + ícone** | Para comunicar status, combine cor + ícone + texto. Não dependa só de cor (daltonismo, low-vision). |
+| **Live region** | Quando um contador muda dinamicamente (mensagens recebidas), wrap o Badge em um container `aria-live="polite"` para anunciar a mudança. |
+
+## Related
+
+- [`Button`](../forms/button) — para Badge clicável que vira ação,
+  use Button com `size="xs"` no lugar.
+- [`Alert`](../feedback/alert) — para mensagens estruturadas com
+  título + descrição, em vez de Badge curto.
+- ToggleGroup (Phase 4) — para chips selecionáveis e filtros
+  toggleáveis.

@@ -1,0 +1,309 @@
+---
+title: Button
+description: Click target primário — seis variantes visuais e quatro presets de tamanho.
+component: Button
+importPath: "@kalvner/kds/forms/button"
+status: stable
+---
+
+import { Button } from "@kalvner/kds/forms/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { ArrowRight, Loader2, Mail, Plus, Trash2 } from "lucide-react";
+
+## Overview
+
+`Button` é o click target mais elementar do KDS. Toda interação que dispara
+uma ação — submit de formulário, abrir um Dialog, confirmar um item da
+lista — passa por ele. Internamente é um `<button>` estilizado por
+`class-variance-authority`, com seis variantes visuais (`default`,
+`destructive`, `outline`, `secondary`, `ghost`, `link`) e oito presets de
+tamanho — quatro textuais (`xs` a `lg`) e quatro icon-only para botões
+quadrados em toolbars e linhas de tabela.
+
+A escolha da variante é uma escolha de hierarquia visual antes de ser
+estética. Cada superfície carrega no máximo **uma** ação primária — o
+`default`. Tudo mais é secundário (`outline`, `secondary`, `ghost`) ou
+intencionalmente cauteloso (`destructive`).
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Variante padrão com tamanho default.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Button>Salvar</Button>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Button variant="default" size="default">
+  ├─ [data-slot="button"]
+  ├─ [data-variant="default"]
+  ├─ [data-size="default"]
+  └─ children (texto + ícones lucide opcionais)
+</Button>
+```
+
+Atributos de dado (`data-variant`, `data-size`) estão expostos para CSS
+custom downstream sem hack de classes. `asChild` permite renderizar como
+um `<a>`, `<Link>` do Next, ou qualquer outro elemento — útil para que um
+link se comporte visualmente como botão sem perder semântica de
+navegação.
+
+## Usage
+
+```tsx
+import { Button } from "@kalvner/kds/forms/button";
+
+export function Example() {
+  return <Button onClick={() => save()}>Salvar</Button>;
+}
+```
+
+<Card>
+  <CardHeader>
+    <CardTitle>Default</CardTitle>
+    <CardDescription>O caminho feliz — texto, click handler.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Button>Salvar alterações</Button>
+  </CardContent>
+</Card>
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `variant` | `'default' \| 'destructive' \| 'outline' \| 'secondary' \| 'ghost' \| 'link'` | `'default'` | Variante visual. |
+| `size` | `'default' \| 'xs' \| 'sm' \| 'lg' \| 'icon' \| 'icon-xs' \| 'icon-sm' \| 'icon-lg'` | `'default'` | Altura + padding. |
+| `asChild` | `boolean` | `false` | Renderiza o único filho em vez de um `<button>` (Radix Slot). |
+| `disabled` | `boolean` | `false` | Estado nativo `disabled` do botão. |
+| `...rest` | `React.ComponentProps<'button'>` | — | Tudo que `<button>` aceita (`type`, `onClick`, `aria-*`). |
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Default</CardTitle>
+      <CardDescription>Ação primária — uma por superfície.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button>Salvar</Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Destructive</CardTitle>
+      <CardDescription>Ações irreversíveis — sempre confirme antes.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button variant="destructive">
+        <Trash2 />
+        Excluir
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Outline</CardTitle>
+      <CardDescription>Secundário com peso visual médio.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button variant="outline">Ver detalhes</Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Secondary</CardTitle>
+      <CardDescription>Suporte sólido — fill suave.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button variant="secondary">Filtrar</Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Ghost</CardTitle>
+      <CardDescription>Terciário — só hover state.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button variant="ghost">Cancelar</Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Link</CardTitle>
+      <CardDescription>Texto sublinhado — semântica de botão.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button variant="link">Saiba mais</Button>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Sem pointer events, opacidade reduzida.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button disabled>Salvar</Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Loading</CardTitle>
+      <CardDescription>Spinner + texto — desabilitado para evitar duplo envio.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button disabled>
+        <Loader2 className="animate-spin" />
+        Salvando…
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Leading icon</CardTitle>
+      <CardDescription>Ícone reforça a ação.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button>
+        <Mail />
+        Enviar e-mail
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Trailing icon</CardTitle>
+      <CardDescription>Indica continuidade — Próximo, Avançar.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button>
+        Próximo
+        <ArrowRight />
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Icon-only</CardTitle>
+      <CardDescription>Toolbar e ações de tabela. Inclua aria-label.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex gap-2">
+      <Button size="icon-sm" variant="ghost" aria-label="Adicionar">
+        <Plus />
+      </Button>
+      <Button size="icon" variant="outline" aria-label="Adicionar">
+        <Plus />
+      </Button>
+      <Button size="icon-lg" aria-label="Adicionar">
+        <Plus />
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Full width</CardTitle>
+      <CardDescription>Útil em mobile e dialogs estreitos.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button className="w-full">Continuar</Button>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Form footer</CardTitle>
+      <CardDescription>Cancelar à esquerda, ação primária à direita — convenção ocidental.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex justify-end gap-3">
+      <Button variant="ghost">Cancelar</Button>
+      <Button>Salvar alterações</Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Destructive confirmation</CardTitle>
+      <CardDescription>Saída segura à esquerda, destrutivo à direita.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex justify-end gap-3">
+      <Button variant="ghost">Cancelar</Button>
+      <Button variant="destructive">
+        <Trash2 />
+        Excluir
+      </Button>
+    </CardContent>
+  </Card>
+</div>
+
+Para ações de alto impacto — `Excluir conta`, `Apagar workspace` — não
+basta um `destructive`: peça que o usuário **digite** o nome do recurso
+em um Dialog antes de habilitar o botão. O Dialog ainda não está no KDS,
+mas o padrão de stakes (low / high) ditará o gating.
+
+## When to use
+
+- Disparar uma ação imediata (submit, salvar, abrir, navegar via JS).
+- Apresentar uma escolha primária + alternativas (form footer, dialog).
+- Comandos em toolbars — use `size="icon"` com `aria-label` claro.
+
+## When not to use
+
+- Para navegação pura entre páginas, prefira `<a>` ou `<Link>` — só
+  troque para `<Button asChild>` se precisar do estilo de botão na navegação.
+- Para alternar uma configuração de efeito imediato (notificações on/off),
+  use [`Switch`](./switch).
+- Para selecionar entre múltiplos valores, use [`RadioGroup`](./radio-group)
+  ou [`Select`](./select).
+
+## Best practices
+
+- **Uma ação primária por superfície.** Se você está com dois botões
+  `default` no mesmo card, um deles deveria ser `outline` ou `ghost`.
+- **Ordem ocidental nos rodapés.** Cancelar à esquerda, confirmar à
+  direita. O olho percorre da esquerda para a direita até o commit.
+- **Destrutivo nunca é a escolha mais fácil.** Posicione longe da ação
+  primária, sempre confirme em um Dialog para itens críticos.
+- **Loading desabilita.** Trocar texto por spinner sem desabilitar abre
+  brecha para duplo envio.
+- **Não use cores fora do token.** Botões coloridos out-of-token quebram
+  a hierarquia. Cite [[ui/colors/pure-white-black-avoid]] — nunca um
+  `bg-white` puro mesmo em contraste.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<button>` nativo. Quando `asChild` é usado, garanta que o componente filho gere semântica equivalente (`<a>` ganha `role="link"` automaticamente). |
+| **Keyboard** | `Tab` navega; `Enter` e `Space` ativam. `disabled` remove do tab order. |
+| **Focus ring** | `focus-visible:ring-[3px] ring-ring/50` — visível só no foco via teclado. |
+| **Screen reader** | Anunciado como "button" + texto interno. Para icon-only, exija `aria-label`. |
+| **Disabled vs aria-disabled** | Use `disabled` (HTML nativo) — bloqueia clique e keyboard. `aria-disabled` apenas anuncia mas não bloqueia. |
+| **Loading state** | Combine `disabled` + spinner. Considere `aria-live="polite"` no container quando o estado mudar dinamicamente. |
+| **Touch target** | `default` é 36px de altura — borderline para mobile. Em telas táteis, prefira `lg` (40px) ou wraps com padding. |
+
+## Related
+
+- [`Form`](./form) — wrappers de `react-hook-form` que combinam Button
+  no rodapé.
+- [`Input`](./input) — frequente companheiro nos formulários.
+- [`Switch`](./switch) — para efeito imediato em vez de submit.

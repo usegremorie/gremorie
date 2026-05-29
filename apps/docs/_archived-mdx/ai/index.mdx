@@ -1,0 +1,84 @@
+---
+title: AI
+description: Componentes vendorados da Vercel AI Elements, organizados pra montar UIs de IA — chat, agentes, fluxos.
+---
+
+A categoria **AI** importa os componentes da
+[Vercel AI Elements](https://elements.ai-sdk.dev/) para a KDS,
+ajustados pros nossos imports relativos e tokens semânticos. São 29
+primitivos pra montar UIs de IA — chat, agentes, paletas de modelo,
+visualização de tool-calls, workflows visuais.
+
+A separação em sub-categorias espelha a organização oficial da AI
+Elements:
+
+<Cards>
+  <Card
+    title="Chatbot"
+    href="/docs/ai/chatbot/conversation"
+    description="17 primitivos pra UI de chat — Conversation, Message, PromptInput, Reasoning, Tool, Sources, Suggestion, Task..."
+  />
+  <Card
+    title="Code"
+    href="/docs/ai/code/code-block"
+    description="3 primitivos pra surface de código gerado — CodeBlock (com Shiki), Artifact, WebPreview."
+  />
+  <Card
+    title="Workflow"
+    href="/docs/ai/workflow/canvas"
+    description="7 primitivos pra agent flows visuais sobre @xyflow/react — Canvas, Node, Edge, Panel..."
+  />
+  <Card
+    title="Utilities"
+    href="/docs/ai/utilities/image"
+    description="2 utilitários — Image (geração) e OpenInChat (deep-links pra outras IAs)."
+  />
+</Cards>
+
+## Por que vendorar
+
+A KDS importa os componentes **diretamente do registry**
+(`https://registry.ai-sdk.dev/<name>.json`) — não depende do CLI
+oficial nem de um pacote npm. As razões:
+
+- **Versionamento próprio.** O fornecimento é via SemVer da KDS, não
+  do upstream — você sabe exatamente o que muda quando atualiza.
+- **Tokens semânticos.** Cada componente foi reescrito pra usar
+  imports relativos (`../../forms/Button` em vez de
+  `@/components/ui/button`) e os tokens semânticos do KDS. Trocar
+  tema funciona automaticamente.
+- **Acessibilidade auditada.** Os componentes passam pela mesma régua
+  WCAG 2.2 AA + axe que o resto da KDS — não saem direto do upstream
+  sem revisão.
+- **Chromatic regressivo.** Cada componente roda nos 4 temas × light/dark
+  no Chromatic. Mudanças visuais quebram o build.
+
+## Stack subjacente
+
+| Layer | Provider |
+|---|---|
+| **Streaming markdown** | [`streamdown`](https://github.com/vercel/streamdown) |
+| **Sticky-bottom scroll** | [`use-stick-to-bottom`](https://github.com/orgs/streetwriters/repositories) |
+| **Code highlighting** | [`shiki`](https://shiki.style/) |
+| **Token usage** | [`tokenlens`](https://github.com/jamesnw/tokenlens) |
+| **Workflow canvas** | [`@xyflow/react`](https://reactflow.dev/) |
+| **Animation** | [`motion`](https://motion.dev/) |
+| **AI SDK** | [`ai`](https://ai-sdk.dev/) + [`@ai-sdk/react`](https://ai-sdk.dev/) |
+
+## O que NÃO está aqui (ainda)
+
+A AI Elements oficial ainda não publicou alguns componentes no registry
+público. Quando estiverem disponíveis, importamos:
+
+- **Voice (6)**: AudioPlayer, MicSelector, Persona, SpeechInput,
+  Transcription, VoiceSelector
+- **Code (12 faltam)**: Agent, Commit, EnvironmentVariables, FileTree,
+  JsxPreview, PackageInfo, Sandbox, SchemaDisplay, Snippet, StackTrace,
+  Terminal, TestResults
+- **Chatbot (1)**: Attachments
+
+## Como vendorar mais
+
+A pipeline é repetível — está em
+[`tools/ai-elements/`](https://github.com/kalvner/bridge/tree/main/tools/ai-elements)
+no monorepo, com README explicando.

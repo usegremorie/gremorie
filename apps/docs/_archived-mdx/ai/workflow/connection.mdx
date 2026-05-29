@@ -1,0 +1,102 @@
+---
+title: Connection
+description: Linha animada que aparece enquanto o user arrasta de um handle pra outro.
+component: Connection
+importPath: "@kalvner/kds/ai/connection"
+status: stable
+---
+
+import { ConnectionPreview } from "@/components/ai-workflow-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Connection` é o **componente transiente** que renderiza durante o
+drag de uma conexão — antes do user soltar no handle de destino.
+Visualmente: curva Bezier animada (`.animated` class) com círculo
+no ponto de mira.
+
+Passa pro Canvas via `connectionLineComponent`.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Drag entre handles dispara a Connection line.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ConnectionPreview />
+  </CardContent>
+</Card>
+
+## Usage
+
+```tsx
+import { Canvas } from "@kalvner/kds/ai/canvas";
+import { Connection } from "@kalvner/kds/ai/connection";
+
+<Canvas
+  nodes={nodes}
+  edges={edges}
+  connectionLineComponent={Connection}
+/>
+```
+
+## Props
+
+Connection é uma `ConnectionLineComponent` do ReactFlow — recebe
+props que ReactFlow injeta automaticamente:
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `fromX` / `fromY` | `number` | Origem (handle clicado). |
+| `toX` / `toY` | `number` | Mira atual do mouse. |
+| `fromPosition` / `toPosition` | `Position` | Lados. |
+| `connectionLineType` | `ConnectionLineType` | Tipo (Bezier, Step, Straight). |
+| `connectionLineStyle` | `CSSProperties` | Override. |
+
+Você não passa props diretamente — só registra o componente no Canvas.
+
+## Subcomponents
+
+Connection é um único componente sem subcomponentes — função de
+renderização.
+
+## States
+
+Renderiza só **durante drag**. Quando user solta sem conectar,
+desaparece. Quando solta em handle válido, desaparece e o ReactFlow
+cria uma nova edge.
+
+## When to use
+
+- Sempre que user pode criar conexões manualmente — UX expects feedback visual.
+
+## When not to use
+
+- Workflow read-only sem criação de edges — sem connection line.
+- Custom drag UI que substitui completamente — não combine.
+
+## Best practices
+
+- **Cor consistente.** KDS usa `var(--color-ring)` — alinha com
+  focus rings do resto do sistema.
+- **Animação sutil.** A class `.animated` faz dash-flow. Não
+  exagere — fluxos longos cansam.
+
+## Accessibility
+
+Connection é puramente visual durante drag — não interfere com
+acessibilidade. Keyboard nav do ReactFlow cria conexões via `Enter`
+sem nunca chamar Connection.
+
+## Related
+
+- [Canvas](./canvas) — registra Connection.
+- [Edge](./edge) — edges finalizadas.
+- [Node](./node) — handles que iniciam/terminam connections.

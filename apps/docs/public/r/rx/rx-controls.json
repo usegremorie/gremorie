@@ -1,0 +1,87 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-controls",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Controls (React)",
+  "description": "Styled wrapper around @xyflow/react Controls (zoom in/out, fit view, lock). Pre-themed to match Gremorie - rounded, bordered, secondary-tinted buttons. Drop inside a Canvas as a child for floating zoom controls.",
+  "categories": [
+    "ai",
+    "workflow"
+  ],
+  "dependencies": [
+    "@xyflow/react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/controls/controls.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@gremorie/rx-core\";\nimport { Controls as ControlsPrimitive } from \"@xyflow/react\";\nimport type { ComponentProps } from \"react\";\n\nexport type ControlsProps = ComponentProps<typeof ControlsPrimitive>;\n\nexport const Controls = ({ className, ...props }: ControlsProps) => (\n  <ControlsPrimitive\n    className={cn(\n      \"gap-px overflow-hidden rounded-md border bg-card p-1 shadow-none!\",\n      \"[&>button]:rounded-md [&>button]:border-none! [&>button]:bg-transparent! [&>button]:hover:bg-secondary!\",\n      className\n    )}\n    {...props}\n  />\n);\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/ai/controls/controls.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any React-based AI chat surface - the input area where the user composes their prompt, optionally attaches files, and submits.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use a native textarea + button instead.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up status automatically (ready / submitted / streaming / error).",
+      "Use PromptInputFooter for sticky bottom controls (tools on the left, submit on the right).",
+      "Wrap the tree in PromptInputProvider only when you need to control attachments or text input from outside the form (eg. drag-to-drop across the whole page)."
+    ],
+    "antipatterns": [
+      "Listening to onSubmit on the textarea directly - listen to the parent PromptInput onSubmit to receive the full payload.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the Enter / Cmd+Enter keyboard contract.",
+      "Re-implementing attachment state in the host component - drive it via the controller hook usePromptInputAttachments() or the provider."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "onSubmit",
+          "type": "(message: PromptInputMessage, e: FormEvent) => void | Promise<void>",
+          "required": true,
+          "description": "Fired when the user submits via Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "status",
+          "type": "ChatStatus ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'",
+          "description": "Drives the PromptInputSubmit icon (arrow / spinner / stop / X)."
+        },
+        {
+          "name": "maxFiles",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "maxFileSize",
+          "type": "number",
+          "required": false,
+          "description": "Bytes."
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "description": "MIME pattern list like 'image/*,application/pdf'."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<PromptInput onSubmit={(message) => sendMessage(message.text, message.files)}>\n  <PromptInputBody>\n    <PromptInputTextarea placeholder=\"Ask anything\" />\n    <PromptInputFooter>\n      <span />\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      },
+      {
+        "title": "With toolbar",
+        "code": "<PromptInput onSubmit={onSubmit}>\n  <PromptInputBody>\n    <PromptInputTextarea />\n    <PromptInputFooter>\n      <PromptInputTools>\n        <PromptInputButton aria-label=\"Attach\"><Paperclip /></PromptInputButton>\n        <PromptInputButton aria-label=\"Web\"><Globe /></PromptInputButton>\n      </PromptInputTools>\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      }
+    ]
+  }
+}

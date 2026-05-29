@@ -1,0 +1,151 @@
+---
+title: Markdown document
+description: "Streamed Markdown rendered with prose typography and a document header."
+---
+
+## Overview
+
+A document artifact for when the model produces longer-form prose.
+The model emits `{ title, body }` where `body` is Markdown; the
+artifact renders it inside a Card with `prose` typography tuned for
+the Gremorie palette, including dark mode via `prose-invert`.
+
+Use this artifact for status reports, summaries, meeting notes, and
+any structured longform output the model generates.
+
+## Preview
+
+<ArtifactPreview name="markdown-doc" />
+
+## Schema
+
+The LLM returns structured output matching this shape:
+
+```ts
+{
+  type: "markdown-doc",
+  title: string,
+  body: string,        // CommonMark markdown
+  filename?: string,
+}
+```
+
+## Anatomy
+
+1. **Card / CardHeader / CardTitle** - document frame and filename
+2. **Badge (outline)** - signals the artifact type
+3. **article.prose** - typography wrapper consuming rendered Markdown
+4. **dark:prose-invert** - automatic dark mode for prose
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+</Tabs>
+
+## Prompt examples
+
+Sample prompts that produce valid output for this artifact:
+
+- "Write a weekly status report for the platform team."
+- "Summarize this transcript as a meeting note with action items."
+- "Draft release notes for v2.1 of the design system."
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
+
+export function MarkdownDoc() {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>weekly-status.md</CardTitle>
+            <CardDescription>
+              Rendered from streamed Markdown returned by the LLM.
+            </CardDescription>
+          </div>
+          <Badge variant="outline">Markdown</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <article className="prose prose-sm max-w-none dark:prose-invert">
+          {/* In production, parse markdown body to HTML/JSX here */}
+        </article>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Streaming behavior
+
+<Callout type="info">
+  This artifact renders streaming. As Markdown tokens arrive, the
+  document grows top-to-bottom. Headings, lists, and blockquotes pop
+  into place as they parse, with no flash between states.
+</Callout>
+
+## Related
+
+- [Card](/components/display/card)
+- [Artifacts overview](/artifacts)

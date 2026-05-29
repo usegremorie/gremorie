@@ -1,0 +1,253 @@
+---
+title: Checkbox
+description: Controle de seleção binária ou indeterminada — usado em formulários a serem submetidos.
+component: Checkbox
+importPath: "@kalvner/kds/forms/checkbox"
+status: stable
+---
+
+import { Checkbox } from "@kalvner/kds/forms/checkbox";
+import { Label } from "@kalvner/kds/forms/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Checkbox` é o `Checkbox.Root` do Radix com a indicator do KDS. Suporta
+três estados — `unchecked`, `checked`, `indeterminate` — via o prop
+`checked` que aceita `boolean | "indeterminate"`. O ícone interno é o
+`CheckIcon` da lucide-react.
+
+A diferença entre Checkbox e [`Switch`](./switch) é semântica, não
+visual: **Checkbox é parte de uma form que será submetida** (o usuário
+marca várias opções e depois clica `Salvar`). **Switch tem efeito
+imediato** (a configuração é persistida assim que o switch muda). Use o
+componente certo — confunde menos o usuário e simplifica o backend.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Checkbox com Label inline.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="flex items-center gap-2">
+      <Checkbox id="prev" />
+      <Label htmlFor="prev">Concordo com os termos</Label>
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Checkbox id="...">
+  ├─ [data-slot="checkbox"]
+  ├─ [data-state="checked" | "unchecked" | "indeterminate"]
+  └─ <CheckIcon /> (renderizado quando checked ou indeterminate)
+</Checkbox>
+```
+
+## Usage
+
+```tsx
+import { Checkbox } from "@kalvner/kds/forms/checkbox";
+import { Label } from "@kalvner/kds/forms/label";
+
+export function TermsField() {
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox id="terms" />
+      <Label htmlFor="terms">Aceito os termos</Label>
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `checked` | `boolean \| 'indeterminate'` | — | Controlado: estado atual. |
+| `defaultChecked` | `boolean \| 'indeterminate'` | — | Não controlado: estado inicial. |
+| `onCheckedChange` | `(c: boolean \| 'indeterminate') => void` | — | Callback de mudança. |
+| `disabled` | `boolean` | `false` | Bloqueia interação. |
+| `required` | `boolean` | `false` | Marca como obrigatório. |
+| `aria-invalid` | `boolean` | — | Aciona ring vermelho. |
+| `id` | `string` | — | Vincula ao Label via htmlFor. |
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Unchecked</CardTitle>
+      <CardDescription>Estado padrão.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Checkbox id="s-unc" />
+        <Label htmlFor="s-unc">Opção</Label>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Checked</CardTitle>
+      <CardDescription>Background primary, ícone branco.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Checkbox id="s-chk" defaultChecked />
+        <Label htmlFor="s-chk">Marcado</Label>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Indeterminate</CardTitle>
+      <CardDescription>Para árvores com filhos parcialmente marcados.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Checkbox id="s-ind" checked="indeterminate" />
+        <Label htmlFor="s-ind">Selecionar todos</Label>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Opacidade reduzida, sem pointer events.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Checkbox id="s-dis" disabled />
+        <Label htmlFor="s-dis">Desabilitado</Label>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Error</CardTitle>
+      <CardDescription>Ring vermelho via aria-invalid.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <div className="flex items-center gap-2">
+          <Checkbox id="s-err" aria-invalid="true" />
+          <Label htmlFor="s-err">
+            Aceito os termos
+            <span aria-label="obrigatório" className="text-destructive">
+              *
+            </span>
+          </Label>
+        </div>
+        <span className="block text-sm text-destructive">Aceite os termos para continuar.</span>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Terms of service</CardTitle>
+      <CardDescription>Checkbox + texto com link inline.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Checkbox id="tos-comp" />
+        <Label htmlFor="tos-comp" className="font-normal">
+          Li e aceito os{" "}
+          <a
+            href="https://example.com/termos"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline-offset-4 hover:underline"
+          >
+            termos
+          </a>
+        </Label>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Multi-select group</CardTitle>
+      <CardDescription>Múltipla seleção em um fieldset.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <fieldset className="grid gap-3">
+        <legend className="text-sm font-medium">Notificações</legend>
+        <div className="flex items-center gap-2">
+          <Checkbox id="n-mentions" defaultChecked />
+          <Label htmlFor="n-mentions" className="font-normal">
+            Menções diretas
+          </Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox id="n-weekly" />
+          <Label htmlFor="n-weekly" className="font-normal">
+            Resumo semanal
+          </Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox id="n-releases" />
+          <Label htmlFor="n-releases" className="font-normal">
+            Novos releases
+          </Label>
+        </div>
+      </fieldset>
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Aceite de termos antes de submeter.
+- Múltipla seleção dentro de um formulário (notificações, permissões).
+- Linhas de tabela selecionáveis em ações em massa.
+- Estado tri-state (parcialmente selecionado) em árvores.
+
+## When not to use
+
+- Para alternar configuração de efeito imediato — use [`Switch`](./switch).
+- Para escolher uma única opção entre várias — use [`RadioGroup`](./radio-group).
+- Para ações de uma vez (ex: botão submeter), Checkbox não substitui Button.
+
+## Best practices
+
+- **Tap target inclui o Label.** Em mobile, o Checkbox em si é apenas
+  16px — clicar só nele é difícil. O `<Label>` aumenta a área hit
+  porque clicar nele dispara o controle.
+- **Marque obrigatório quando crítico.** Asterisco vermelho no Label
+  + `required` no Checkbox. Validação Zod com `.refine(v => v === true)`.
+- **Não use Checkbox para "ligar/desligar" feature flags.** Esse é
+  papel de Switch — tem efeito imediato.
+- **Indeterminate é um estado, não uma ação.** O usuário não clica
+  para "ir pra indeterminate"; ela é setada programaticamente quando
+  só alguns dos children estão marcados.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix expõe `role="checkbox"` + `aria-checked` (`true`, `false`, `mixed`). |
+| **Keyboard** | `Tab` foca; `Space` alterna. |
+| **Label** | Vincule via `htmlFor` + `id`. Clicar no Label alterna o checkbox. |
+| **Group** | Para grupos relacionados, envolva em `<fieldset>` + `<legend>`. |
+| **Erro** | `aria-invalid` aplica ring vermelho. Mensagem associada via `aria-describedby`. |
+| **Touch target** | Container clicável (Label + Checkbox) deve atingir 44×44 CSS px. |
+
+## Related
+
+- [`Switch`](./switch) — efeito imediato.
+- [`RadioGroup`](./radio-group) — escolha mutuamente exclusiva.
+- [`Form`](./form) — wrappers de RHF + Zod.

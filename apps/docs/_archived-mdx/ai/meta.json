@@ -1,0 +1,7 @@
+{
+  "root": true,
+  "title": "AI",
+  "description": "Vercel AI Elements primitives, vendored into KDS.",
+  "icon": "Sparkles",
+  "pages": ["index", "chatbot", "code", "workflow", "utilities"]
+}

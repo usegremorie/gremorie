@@ -1,0 +1,6 @@
+{
+  "title": "Feedback",
+  "description": "Feedback primitives - Alert, Progress, Skeleton",
+  "icon": "MessageCircle",
+  "pages": ["alert", "progress", "skeleton"]
+}

@@ -1,0 +1,162 @@
+---
+title: InlineCitation
+description: Citações inline no texto — número clicável que abre um HoverCard com a fonte.
+component: InlineCitation
+importPath: "@kalvner/kds/ai/inline-citation"
+status: stable
+---
+
+import { InlineCitationPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`InlineCitation` é a **versão inline do [Sources](./sources)** —
+ao invés de listar fontes no fim, embute citations no texto: "tokens
+usam Tailwind v4 [1]". Hover/click no número abre um HoverCard com
+a fonte completa.
+
+Combina muito bem com [Streamdown](https://github.com/vercel/streamdown):
+você pode renderizar citation refs no markdown e converter em
+InlineCitation via custom components.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Citation inline embutida em parágrafo.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <InlineCitationPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<InlineCitation>
+  ├─ <InlineCitationText>texto destacado</InlineCitationText>
+  └─ <InlineCitationCard>
+       ├─ <InlineCitationCardTrigger sources={[urls]} />
+       └─ <InlineCitationCardBody>
+            <InlineCitationCarousel>
+              <InlineCitationCarouselContent>
+                <InlineCitationCarouselItem>
+                  <InlineCitationCarouselHeader>...
+                  <InlineCitationSource>...
+                  <InlineCitationQuote>...
+</InlineCitation>
+```
+
+## Usage
+
+```tsx
+<p>
+  Tokens usam Tailwind v4{" "}
+  <InlineCitation>
+    <InlineCitationText>[1]</InlineCitationText>
+    <InlineCitationCard>
+      <InlineCitationCardTrigger sources={["https://tailwindcss.com/docs/theme"]} />
+      <InlineCitationCardBody>
+        <p>Tailwind docs sobre theme directive.</p>
+      </InlineCitationCardBody>
+    </InlineCitationCard>
+  </InlineCitation>.
+</p>
+```
+
+## Props
+
+### InlineCitation (Root)
+
+Aceita `ComponentProps<"span">`. Wrapper inline.
+
+### InlineCitationText
+
+Aceita `ComponentProps<"span">`. Texto destacado (em geral o número
+da citation entre colchetes).
+
+### InlineCitationCard
+
+Aceita `ComponentProps<typeof HoverCard>`. Wrapper do HoverCard
+trigger + content.
+
+### InlineCitationCardTrigger
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `sources` | `string[]` | `[]` | URLs das fontes — usa o domínio do primeiro como label do badge. |
+
+Herda de [Badge](../../ui/display/badge).
+
+### InlineCitationCardBody
+
+Aceita `ComponentProps<"div">`. Conteúdo do HoverCard — pode incluir
+o Carousel pra múltiplas fontes.
+
+### Carousel components
+
+| Componente | Função |
+|---|---|
+| `InlineCitationCarousel` | Wrapper do [Carousel](../../ui/display/carousel). |
+| `InlineCitationCarouselContent` | Wrapper das slides. |
+| `InlineCitationCarouselItem` | Slide individual (1 fonte). |
+| `InlineCitationCarouselHeader` | Header da slide. |
+| `InlineCitationCarouselIndex` | "1 / 3". |
+| `InlineCitationCarouselPrev` / `Next` | Navegação. |
+| `InlineCitationSource` | Link da fonte (`<a>`). |
+| `InlineCitationQuote` | Bloco de citação textual. |
+
+## Subcomponents
+
+- **`InlineCitation`** — root inline (`<span>`).
+- **`InlineCitationText`** — destaque do texto da citation.
+- **`InlineCitationCard`** — HoverCard que abre on hover.
+- **`InlineCitationCardTrigger`** — Badge clicável com domain do
+  primeiro source (útil pra preview compacto).
+- **`InlineCitationCardBody`** — conteúdo do HoverCard.
+- **`InlineCitationCarousel`** + filhos — quando há múltiplas
+  fontes pra mesma citation, navegação por carrossel.
+- **`InlineCitationSource`** + **`InlineCitationQuote`** — link e
+  trecho citado dentro do carousel item.
+
+## When to use
+
+- Respostas com RAG citando fontes específicas inline.
+- Markdown rendering com refs `[1]`, `[2]` que viram citations.
+- Documentation generation onde claims precisam de evidência inline.
+
+## When not to use
+
+- Lista de fontes no fim — use [Sources](./sources).
+- Tooltip de termo (definição) — use [HoverCard](../../ui/overlays/hover-card)
+  diretamente sem o wrapper InlineCitation.
+
+## Best practices
+
+- **Numeração consistente.** `[1]`, `[2]`, `[3]` na ordem de
+  aparição no texto.
+- **Sources lista no fim.** InlineCitation inline + Sources no fim
+  é o padrão clássico de RAG.
+- **Domain-only no trigger.** O trigger compacto deve mostrar só o
+  domain ("tailwindcss.com"), não a URL inteira.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **HoverCard** | Acessível via teclado (Tab + Enter). |
+| **Visible focus** | Trigger é Badge clicável; herda focus-visible. |
+| **External links** | Source dentro do carousel deve ter `target="_blank"` + `rel="noreferrer"`. |
+
+## Related
+
+- [Sources](./sources) — lista colapsável de fontes no fim.
+- [HoverCard](../../ui/overlays/hover-card) — base subjacente.
+- [Badge](../../ui/display/badge) — base do trigger.
+- [Carousel](../../ui/display/carousel) — base do carousel.

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-conversation",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Conversation (Angular)",
+  "description": "Scrollable chat log with auto-stick-to-bottom behavior, empty state and a scroll-to-bottom pill that appears when the user scrolls up.",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/conversation/conversation.ts",
+      "content": "import {\n  AfterViewInit,\n  ChangeDetectionStrategy,\n  Component,\n  ElementRef,\n  forwardRef,\n  InjectionToken,\n  OnDestroy,\n  signal,\n  viewChild,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Conversation — scrollable container that auto-sticks to the bottom while\n * new messages arrive, matching React `Conversation` (which wraps the\n * `use-stick-to-bottom` library).\n *\n * Implementation notes:\n * - Uses a self-contained scroll-and-resize observer (no JS lib dep).\n * - Exposes `isAtBottom` signal + `scrollToBottom()` via DI so the\n *   `ConversationScrollButton` companion can stay decoupled.\n * - Bottom threshold of 24px matches \"feels stuck\" in chat UIs.\n */\nexport interface ConversationState {\n  readonly isAtBottom: () => boolean;\n  scrollToBottom(behavior?: ScrollBehavior): void;\n}\n\nexport const CONVERSATION = new InjectionToken<ConversationState>(\n  'ConversationState',\n);\n\nconst STICK_THRESHOLD_PX = 24;\n\n@Component({\n  selector: 'conversation',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      #scroller\n      class=\"size-full overflow-y-auto\"\n      (scroll)=\"onScroll()\"\n    >\n      <ng-content />\n    </div>\n  `,\n  host: {\n    role: 'log',\n    class: 'relative flex-1 overflow-y-hidden',\n  },\n  providers: [\n    {\n      provide: CONVERSATION,\n      useExisting: forwardRef(() => Conversation),\n    },\n  ],\n})\nexport class Conversation implements AfterViewInit, OnDestroy, ConversationState {\n  protected readonly scroller =\n    viewChild.required<ElementRef<HTMLDivElement>>('scroller');\n\n  private readonly _isAtBottom = signal(true);\n  readonly isAtBottom = () => this._isAtBottom();\n\n  private resizeObserver?: ResizeObserver;\n  private mutationObserver?: MutationObserver;\n\n  ngAfterViewInit(): void {\n    const el = this.scroller().nativeElement;\n\n    // Initial scroll to bottom.\n    this.scrollToBottom('auto');\n\n    // Auto-stick when content grows.\n    if (typeof ResizeObserver !== 'undefined') {\n      this.resizeObserver = new ResizeObserver(() => {\n        if (this._isAtBottom()) {\n          this.scrollToBottom('smooth');\n        }\n      });\n      // Observe both the scroller and its first child (the projected content).\n      this.resizeObserver.observe(el);\n      const child = el.firstElementChild;\n      if (child) this.resizeObserver.observe(child);\n    }\n\n    // Auto-stick when new nodes are added even without size change (rare).\n    if (typeof MutationObserver !== 'undefined') {\n      this.mutationObserver = new MutationObserver(() => {\n        if (this._isAtBottom()) {\n          this.scrollToBottom('smooth');\n        }\n      });\n      this.mutationObserver.observe(el, {\n        childList: true,\n        subtree: true,\n      });\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.resizeObserver?.disconnect();\n    this.mutationObserver?.disconnect();\n  }\n\n  protected onScroll(): void {\n    const el = this.scroller().nativeElement;\n    const distance = el.scrollHeight - el.scrollTop - el.clientHeight;\n    this._isAtBottom.set(distance <= STICK_THRESHOLD_PX);\n  }\n\n  scrollToBottom(behavior: ScrollBehavior = 'smooth'): void {\n    const el = this.scroller().nativeElement;\n    el.scrollTo({ top: el.scrollHeight, behavior });\n    this._isAtBottom.set(true);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/conversation/conversation.ts"
+    },
+    {
+      "path": "src/lib/conversation/conversation-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * ConversationContent — inner flex column for the message list.\n *\n * Mirrors React `ConversationContent`. Visual sibling of the scroll button.\n */\n@Component({\n  selector: 'conversation-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'flex flex-col gap-8 p-4',\n  },\n})\nexport class ConversationContent {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/conversation/conversation-content.ts"
+    },
+    {
+      "path": "src/lib/conversation/conversation-empty-state.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * ConversationEmptyState — placeholder shown when no messages exist.\n *\n * Mirrors React `ConversationEmptyState`. Projects custom content; falls\n * back to title + description + optional projected icon (via the `[icon]`\n * slot).\n */\n@Component({\n  selector: 'conversation-empty-state',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <ng-content select=\"[icon]\" />\n    <ng-content>\n      <div class=\"space-y-1\">\n        <h3 class=\"font-medium text-sm\">{{ title() }}</h3>\n        @if (description()) {\n          <p class=\"text-muted-foreground text-sm\">{{ description() }}</p>\n        }\n      </div>\n    </ng-content>\n  `,\n  host: {\n    class:\n      'flex size-full flex-col items-center justify-center gap-3 p-8 text-center',\n  },\n})\nexport class ConversationEmptyState {\n  readonly title = input<string>('No messages yet');\n  readonly description = input<string>(\n    'Start a conversation to see messages here',\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/conversation/conversation-empty-state.ts"
+    },
+    {
+      "path": "src/lib/conversation/conversation-scroll-button.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { CONVERSATION } from './conversation';\n\n/**\n * ConversationScrollButton — \"scroll to bottom\" pill that appears only when\n * the user has scrolled up. Mirrors React `ConversationScrollButton`.\n *\n * Reads `isAtBottom` and calls `scrollToBottom()` on the parent\n * Conversation via DI.\n */\n@Component({\n  selector: 'conversation-scroll-button',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (visible()) {\n      <button\n        type=\"button\"\n        (click)=\"scroll()\"\n        class=\"absolute bottom-4 left-[50%] inline-flex size-9 -translate-x-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground\"\n        aria-label=\"Scroll to bottom\"\n      >\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n        >\n          <path d=\"M12 5v14M19 12l-7 7-7-7\" />\n        </svg>\n      </button>\n    }\n  `,\n})\nexport class ConversationScrollButton {\n  private readonly state = inject(CONVERSATION);\n  protected readonly visible = computed(() => !this.state.isAtBottom());\n\n  protected scroll(): void {\n    this.state.scrollToBottom('smooth');\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/conversation/conversation-scroll-button.ts"
+    },
+    {
+      "path": "src/lib/conversation/index.ts",
+      "content": "export { Conversation, CONVERSATION } from './conversation';\nexport type { ConversationState } from './conversation';\nexport { ConversationContent } from './conversation-content';\nexport { ConversationEmptyState } from './conversation-empty-state';\nexport { ConversationScrollButton } from './conversation-scroll-button';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/conversation/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

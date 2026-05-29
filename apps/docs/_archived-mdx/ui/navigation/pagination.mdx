@@ -1,0 +1,210 @@
+---
+title: Pagination
+description: Navegação por páginas com URLs estáveis — para deep linking e bookmarking.
+component: Pagination
+importPath: "@kalvner/kds/navigation/pagination"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  PaginationEllipses,
+  PaginationFirstPage,
+  PaginationLastPage,
+  PaginationPreview,
+  PaginationTableFooter
+} from "@/components/navigation-demos";
+
+## Overview
+
+`Pagination` divide listas longas em páginas navegáveis com URLs
+estáveis. É a escolha certa quando os usuários precisam **voltar
+exatamente** ao mesmo lugar — listas de pesquisa, results de admin,
+artigos de um blog, paginated APIs.
+
+A decisão entre Pagination, infinite scroll e load-more é uma
+escolha de **commitment do usuário**:
+
+| Quando o usuário precisa… | Use |
+|---|---|
+| Bookmarkar e compartilhar uma posição | **Pagination** |
+| Explorar sem fim e sem comprometimento | **Infinite scroll** |
+| Carregar mais sob demanda mas chegar ao footer | **Load-more** |
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Numérica + Previous/Next na primeira posição.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PaginationPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Pagination>
+  <PaginationContent>
+    <PaginationItem><PaginationPrevious /></PaginationItem>
+    <PaginationItem><PaginationLink /></PaginationItem>
+    <PaginationItem><PaginationEllipsis /></PaginationItem>
+    <PaginationItem><PaginationLink isActive /></PaginationItem>
+    <PaginationItem><PaginationNext /></PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+A Pagination do KDS é totalmente **stateless** — não gerencia
+qual é a página atual nem dispara fetches. O consumidor renderiza
+o range correto, marca `isActive` na atual, e desabilita
+`Previous`/`Next` quando aplicável.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Pagination` | `<nav aria-label="pagination">`. |
+| `PaginationContent` | `<ul>` que organiza os itens. |
+| `PaginationItem` | `<li>` — um nó por link/ellipsis. |
+| `PaginationLink` | Link de página numerada; suporta `isActive`. |
+| `PaginationPrevious` | Link "Previous" com chevron à esquerda. |
+| `PaginationNext` | Link "Next" com chevron à direita. |
+| `PaginationEllipsis` | Espaço visual quando há páginas omitidas. |
+
+## Usage
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from "@kalvner/kds/navigation/pagination";
+
+export function ListPager({ page, total }: { page: number; total: number }) {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href={`?page=${page - 1}`} />
+        </PaginationItem>
+        {Array.from({ length: total }).map((_, i) => (
+          <PaginationItem key={i}>
+            <PaginationLink href={`?page=${i + 1}`} isActive={i + 1 === page}>
+              {i + 1}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationNext href={`?page=${page + 1}`} />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card className="md:col-span-2">
+    <CardHeader>
+      <CardTitle>With ellipses</CardTitle>
+      <CardDescription>Para totais grandes — mostra extremos + página atual.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <PaginationEllipses />
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>At first page</CardTitle>
+      <CardDescription>Previous desabilitado via aria + opacity.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <PaginationFirstPage />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>At last page</CardTitle>
+      <CardDescription>Next desabilitado simétrico.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <PaginationLastPage />
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Data table footer</CardTitle>
+    <CardDescription>Range textual à esquerda, paginator à direita.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PaginationTableFooter />
+  </CardContent>
+</Card>
+
+## When to use
+
+- Listas com **ordem estável** que se beneficiam de URLs
+  bookmarkáveis (search results, admin tables, blog index).
+- Quando o usuário precisa pular para o final ou para uma página
+  específica diretamente.
+- Para SEO — cada página deve ter URL própria (`?page=N`).
+
+## When not to use
+
+- Feeds sociais ou exploração descomprometida — use infinite
+  scroll.
+- Quando o total é desconhecido até carregar (use load-more).
+- Em listas curtas (≤25 itens) — não pagine.
+- Para conteúdo extremamente dinâmico onde a posição muda a cada
+  segundo.
+
+## Best practices
+
+- **URLs reais sempre.** Use `href="?page=2"` em vez de `onClick`
+  + state. Garante refresh, share, back/forward, deep-linking.
+- **Desabilite com aria.** Em Previous/Next nos extremos, aplique
+  `aria-disabled="true"` + `tabIndex={-1}` + `pointer-events-none`.
+- **Range textual de apoio.** "Mostrando 21–30 de 142" responde
+  perguntas que numeração não responde.
+- **Page size selector é Forms.** O `<select>` para escolher
+  quantidade por página é um Combobox/Select separado, fora do
+  Pagination.
+- **Mobile compacta.** Em telas estreitas, mostre apenas
+  Previous/Next + indicador de página atual.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<nav aria-label="pagination">`. |
+| **Current page** | Link ativo recebe `aria-current="page"`. |
+| **Disabled state** | Aplique `aria-disabled="true"` + `tabIndex={-1}` + classes que removem pointer events. Não use atributo HTML `disabled` em `<a>`. |
+| **Keyboard** | Tab navega normalmente entre os links visíveis. |
+| **Screen reader** | Anunciado como "navigation, pagination" + número da página atual. |
+
+## Related
+
+- [`Breadcrumb`](./breadcrumb) — orientação hierárquica, não
+  paginação.
+- [`Tabs`](./tabs) — alternar views, não paginar listas.

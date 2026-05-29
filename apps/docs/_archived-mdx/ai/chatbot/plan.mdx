@@ -1,0 +1,206 @@
+---
+title: Plan
+description: Plano formal do agente — Card colapsável com título, descrição streaming e steps.
+component: Plan
+importPath: "@kalvner/kds/ai/plan"
+status: stable
+---
+
+import { PlanCollapsedPreview, PlanExpandedPreview, PlanStreamingPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Plan` é o **plano de execução** do agente — Card colapsável com
+título, descrição, conteúdo (steps numerados) e footer. Quando
+`isStreaming` é true, o título e a descrição são envelopados em
+[Shimmer](./shimmer) — feedback visual de que o modelo ainda está
+formulando o plano.
+
+Diferença de [Task](./task): Plan é o **planejamento** ANTES da
+execução; Task é a execução em si.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Plan collapsado, header + trigger.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <PlanCollapsedPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Plan isStreaming={...}>
+  ├─ <PlanHeader>
+  │    ├─ <PlanTitle>...</PlanTitle>
+  │    ├─ <PlanDescription>...</PlanDescription>
+  │    └─ <PlanAction>
+  │         └─ <PlanTrigger />
+  ├─ <PlanContent>
+  │    [steps numerados]
+  └─ <PlanFooter>...</PlanFooter>
+</Plan>
+```
+
+## Usage
+
+```tsx
+<Plan defaultOpen>
+  <PlanHeader>
+    <div>
+      <PlanTitle>Adicionar autenticação ao app</PlanTitle>
+      <PlanDescription>4 passos · 25 min</PlanDescription>
+    </div>
+    <PlanAction>
+      <PlanTrigger />
+    </PlanAction>
+  </PlanHeader>
+  <PlanContent>
+    <ol className="list-decimal pl-4">
+      <li>Configurar provider Supabase</li>
+      <li>Criar tabela users</li>
+      <li>Configurar magic link</li>
+      <li>Adicionar middleware de session</li>
+    </ol>
+  </PlanContent>
+  <PlanFooter>Estimativa baseada em apps similares.</PlanFooter>
+</Plan>
+```
+
+## Props
+
+### Plan (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `isStreaming` | `boolean` | `false` | Quando `true`, PlanTitle e PlanDescription envelopam texto em Shimmer. |
+| `open` / `defaultOpen` | `boolean` | — | Controle do collapsible. |
+
+Herda de [Collapsible](../../ui/display/collapsible).
+
+### PlanHeader
+
+Wrapper flex (`items-start justify-between`). Aceita
+`ComponentProps<typeof CardHeader>`.
+
+### PlanTitle
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `children` | `string` | — | Título (string requerida — Shimmer só funciona com string). |
+
+### PlanDescription
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `children` | `string` | — | Descrição (string requerida). |
+
+### PlanAction
+
+Wrapper de [CardAction](../../ui/display/card) — encaixa o trigger no
+canto superior direito sem hack de absolute. Aceita
+`ComponentProps<typeof CardAction>`.
+
+### PlanContent
+
+Wrapper de CollapsibleContent + CardContent. Aqui vai a lista de
+steps (formato livre — ol, ul, ChainOfThought, Task...).
+
+### PlanFooter
+
+Wrapper de CardFooter. Aceita `ComponentProps<"div">`.
+
+### PlanTrigger
+
+Botão que toggle Plan. Default visual: ChevronsUpDown size-4. Aceita
+`ComponentProps<typeof CollapsibleTrigger>`.
+
+## Subcomponents
+
+- **`Plan`** — root, é Card + Collapsible combinado.
+- **`PlanHeader`** — slot superior com Title/Description e Action.
+- **`PlanTitle`** + **`PlanDescription`** — texto. **Streamingoaware**:
+  recebem string children e aplicam Shimmer quando `isStreaming=true`.
+- **`PlanAction`** — encaixa o trigger sem hack absolute.
+- **`PlanContent`** — corpo (lista de steps).
+- **`PlanFooter`** — meta footer (estimativa, autor, etc).
+- **`PlanTrigger`** — botão toggle.
+
+## States
+
+| State | Comportamento |
+|---|---|
+| `isStreaming=true` | Title + Description em Shimmer. |
+| `isStreaming=false` | Texto normal. |
+| `open` | Content visível. |
+| `closed` | Só Header + Trigger visíveis. |
+
+## Composition
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Plan isStreaming={status === "planning"}>
+      <PlanHeader>
+        <div>
+          <PlanTitle>{plan.title}</PlanTitle>
+          <PlanDescription>{plan.description}</PlanDescription>
+        </div>
+        <PlanAction><PlanTrigger /></PlanAction>
+      </PlanHeader>
+      <PlanContent>
+        <Task>
+          <TaskTrigger title="Steps" />
+          <TaskContent>
+            {plan.steps.map((s) => <TaskItem key={s.id}>{s.label}</TaskItem>)}
+          </TaskContent>
+        </Task>
+      </PlanContent>
+    </Plan>
+  </MessageContent>
+</Message>
+```
+
+## When to use
+
+- Agente que apresenta plano antes de executar.
+- Surface de "vou fazer X, Y, Z — confirma?"
+- Roadmap apresentado por IA.
+
+## When not to use
+
+- Pensamento livre — use [Reasoning](./reasoning).
+- Lista de execução já em andamento — use [Task](./task).
+- Items numerados sem header rico — use lista markdown direto.
+
+## Best practices
+
+- **isStreaming durante a formulação.** Sem Shimmer, o user não sabe
+  se o plano está finalizado.
+- **defaultOpen=true** quando o Plan precisa de aprovação. Fechado
+  por padrão pra histórico de planos antigos.
+- **Use Plan + Task juntos.** Plan apresenta, Task executa.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Trigger é `<button>` (Collapsible). |
+| **Streaming** | Shimmer não interfere com leitor de tela — texto continua selecionável. |
+| **Focus** | Trigger herda `focus-visible:ring`. |
+
+## Related
+
+- [Task](./task) — execução em si.
+- [ChainOfThought](./chain-of-thought) — raciocínio numerado.
+- [Confirmation](./confirmation) — aprovação do plano (HITL).
+- [Shimmer](./shimmer) — usado internamente pelo PlanTitle/Description.

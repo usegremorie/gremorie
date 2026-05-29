@@ -1,0 +1,180 @@
+---
+title: Your first component
+description: "Five minute tutorial: build a working chat surface from three primitives."
+---
+
+This tutorial wires three Gremorie AI primitives -- `PromptInput`,
+`Conversation`, and `Message` -- into a working chat surface. You will
+end with a UI that accepts a prompt, displays the user message, and
+streams a model response.
+
+<Callout type="info">
+  This is the flagship Gremorie composition. The same three primitives
+  power the chat surface block planned in [Blocks](/blocks/overview).
+</Callout>
+
+## Goal
+
+A chat surface where:
+
+- The user types a prompt and submits it
+- The user message renders in the conversation
+- An AI message streams back in response
+
+End to end, in five minutes.
+
+## Steps
+
+<Steps>
+
+<Step>
+
+### Add the primitives
+
+<Tabs items={["Angular", "React"]}>
+
+```bash tab="Angular"
+npx gremorie@latest add ng-prompt-input ng-conversation ng-message
+```
+
+```bash tab="React"
+npx gremorie@latest add rx-prompt-input rx-conversation rx-message
+```
+
+</Tabs>
+
+The CLI resolves the cross-item dependencies (each primitive depends on
+`*-core` for tokens and `cn` utility), pulls them in too, and writes
+everything to `src/components/gremorie/`.
+
+</Step>
+
+<Step>
+
+### Compose the surface
+
+<Tabs items={["Angular", "React"]}>
+
+```ts tab="Angular"
+import { Component, signal } from "@angular/core";
+import { NgConversation } from "@/components/gremorie/ng-conversation";
+import { NgMessage } from "@/components/gremorie/ng-message";
+import { NgPromptInput } from "@/components/gremorie/ng-prompt-input";
+
+interface Msg { role: "user" | "assistant"; content: string }
+
+@Component({
+  standalone: true,
+  imports: [NgConversation, NgMessage, NgPromptInput],
+  template: `
+    <ng-conversation>
+      @for (m of messages(); track $index) {
+        <ng-message [role]="m.role">{{ m.content }}</ng-message>
+      }
+    </ng-conversation>
+    <ng-prompt-input (submit)="onSubmit($event)" />
+  `
+})
+export class ChatComponent {
+  messages = signal<Msg[]>([]);
+  onSubmit(text: string) {
+    this.messages.update((m) => [...m, { role: "user", content: text }]);
+    // wire your backend here
+  }
+}
+```
+
+```tsx tab="React"
+"use client";
+import { useState } from "react";
+import { Conversation } from "@/components/gremorie/rx-conversation";
+import { Message } from "@/components/gremorie/rx-message";
+import { PromptInput } from "@/components/gremorie/rx-prompt-input";
+
+type Msg = { role: "user" | "assistant"; content: string };
+
+export function Chat() {
+  const [messages, setMessages] = useState<Msg[]>([]);
+  return (
+    <>
+      <Conversation>
+        {messages.map((m, i) => (
+          <Message key={i} role={m.role}>{m.content}</Message>
+        ))}
+      </Conversation>
+      <PromptInput onSubmit={(text) => {
+        setMessages((prev) => [...prev, { role: "user", content: text }]);
+        // wire your backend here
+      }} />
+    </>
+  );
+}
+```
+
+</Tabs>
+
+</Step>
+
+<Step>
+
+### Wire a backend
+
+The primitives are transport agnostic. Hook them up to whatever you use:
+the AI SDK, a Server Action, a streaming endpoint of your own.
+
+```ts
+// Minimal handler -- replace with your real model call
+async function handleSubmit(text: string) {
+  setMessages((prev) => [...prev, { role: "user", content: text }]);
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    body: JSON.stringify({ message: text })
+  });
+  const data = await response.json();
+  setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+}
+```
+
+For streaming responses, swap the `fetch` for a streaming reader and
+append tokens to the assistant message as they arrive.
+
+</Step>
+
+<Step>
+
+### Run it
+
+<Tabs items={["Angular", "React"]}>
+
+```bash tab="Angular"
+nx serve my-app
+```
+
+```bash tab="React"
+pnpm dev
+```
+
+</Tabs>
+
+Open the page, type a prompt, hit Enter. The user bubble lands in the
+conversation, your backend responds, the assistant bubble joins it.
+
+</Step>
+
+</Steps>
+
+<Callout type="tip">
+  See the full wiring in the planned [chat-surface
+  block](/blocks/overview#chat-surface) -- it bundles a streaming SDK,
+  attachments, and tool-call rendering.
+</Callout>
+
+## What you learned
+
+- Primitives install as source via the CLI
+- Composition over configuration: three small components form a surface
+- The same shape works in Angular and React because the registry is the
+  source of truth
+
+Next, see [Project setup](/get-started/project-setup) for advanced
+config (path aliases, theme switching, custom token overrides).

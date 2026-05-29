@@ -1,0 +1,215 @@
+---
+title: Dialog
+description: "Modal overlay anchored at viewport center, built on Radix Dialog with header, footer, and built-in close button."
+---
+
+import { DialogPreview } from "@/components/preview/overlays/overlays";
+
+## Overview
+
+`Dialog` is the right primitive for focused decisions or short flows that need to interrupt the user's context: confirmations, single-step forms, detail cards. It ships with overlay, content, header, footer, title, description, and a built-in close button. For longer flows that don't need full focus use `Sheet`; for inline contextual content use `Popover`.
+
+The close button is on by default. Set `showCloseButton={false}` when the dialog renders its own dismiss affordance, or pass `showCloseButton` on `DialogFooter` to inject a styled "Close" button there instead.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <DialogPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-dialog
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-dialog
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-dialog
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-dialog
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Open dialog</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Dialog>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
+| `modal` | `boolean` | `true` | Disable outside interaction while open. |
+
+Extends Radix `Dialog.Root`. Renders no DOM by itself.
+
+### `<DialogTrigger>`
+
+Extends Radix `Dialog.Trigger`. Pair with `asChild` to forward styles to a `Button` or any custom trigger.
+
+### `<DialogContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `showCloseButton` | `boolean` | `true` | Renders the top-right X close button. Disable when supplying a custom dismiss. |
+
+Wraps Radix `Dialog.Content` inside a Portal with the overlay. Centered at 50/50, capped at `sm:max-w-lg`, animated open/close.
+
+### `<DialogHeader>`, `<DialogFooter>`
+
+Plain layout containers (`div`). Header stacks title and description; footer is `flex-col-reverse` on mobile, `flex-row` justify-end on `sm+`.
+
+`DialogFooter` accepts `showCloseButton` (`boolean`, default `false`) which appends a styled outline "Close" button wired to `DialogClose`.
+
+### `<DialogTitle>`, `<DialogDescription>`
+
+Map to Radix `Dialog.Title` and `Dialog.Description`. Both are required by Radix; render with `className="sr-only"` if you need to hide them visually.
+
+### `<DialogClose>`, `<DialogOverlay>`, `<DialogPortal>`
+
+Pass-through wrappers over their Radix counterparts with `data-slot` attributes. Use `DialogClose asChild` to dismiss from any custom button inside the content.
+
+## Composition
+
+1. **`<Dialog>`** owns the open/close state.
+2. **`<DialogTrigger asChild>`** wraps any focusable element (typically a `Button`).
+3. **`<DialogContent>`** mounts via Portal, draws the overlay, and renders the centered card.
+4. **Inside content**: header (title + description), body, footer (cancel + primary action).
+5. **Dismissal**: the built-in X covers the common case; supplement with explicit `DialogClose` buttons for destructive or stateful flows.
+
+## Variations
+
+### Confirmation with explicit Cancel
+
+For destructive but reversible actions, pair the X close with an explicit `Cancel` next to the primary `Delete`.
+
+```tsx
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="destructive">Delete project</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Delete project?</DialogTitle>
+      <DialogDescription>
+        All tasks, comments and attachments will be removed.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DialogClose>
+      <Button variant="destructive">Delete</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+### Form dialog
+
+Embed form fields directly in the body. The dialog handles focus trap; submit closes via state.
+
+```tsx
+<DialogContent>
+  <form onSubmit={handleSubmit}>
+    <DialogHeader>
+      <DialogTitle>Invite teammate</DialogTitle>
+      <DialogDescription>They'll get an email invite.</DialogDescription>
+    </DialogHeader>
+    <Field className="my-4">
+      <FieldLabel htmlFor="email">Email</FieldLabel>
+      <Input id="email" type="email" required />
+    </Field>
+    <DialogFooter>
+      <Button type="submit">Send invite</Button>
+    </DialogFooter>
+  </form>
+</DialogContent>
+```
+
+### Without close button
+
+Hide the X when the dialog is fully driven by the footer (e.g. multi-step wizard where back/next manage progression).
+
+```tsx
+<DialogContent showCloseButton={false}>
+  {/* Custom step header here */}
+</DialogContent>
+```
+
+## Accessibility
+
+- **Role**: `role="dialog"` with `aria-modal="true"` (default `modal` prop).
+- **Keyboard**: `Esc` closes; `Tab` cycles focus within the content; `Shift+Tab` cycles backwards; focus is trapped while open.
+- **Focus management**: focus moves to the first focusable element on open and returns to the trigger on close.
+- **Title**: `DialogTitle` is mandatory; without it Radix logs a warning. Use `sr-only` to hide visually.
+- **Description**: links to content via `aria-describedby` automatically.
+- **Reduced motion**: open/close animations honor `prefers-reduced-motion` via the underlying Tailwind animate utilities.
+
+## Related
+
+- [Alert Dialog](/components/overlays/alert-dialog) - interruptive confirmation that requires an explicit action.
+- [Sheet](/components/overlays/sheet) - lateral panel for longer flows.
+- [Drawer](/components/overlays/drawer) - mobile bottom sheet with gesture dismiss.
+- [Popover](/components/overlays/popover) - inline anchored overlay for contextual UI.

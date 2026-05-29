@@ -1,0 +1,45 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-scroll-area",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Scroll Area (Angular)",
+  "description": "Thin design-system styling layer over ngx-scrollbar - overlay scrollbars with Gremorie tokens (thin, rounded, --border-colored thumb).",
+  "categories": [
+    "containers",
+    "layout"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "ngx-scrollbar"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/scroll-area/scroll-area.ts",
+      "content": "import { Directive } from '@angular/core';\n\n/**\n * Gremorie NG ScrollArea — a thin design-system styling layer over ngx-scrollbar's\n * `<ng-scrollbar>`. It applies the Gremorie NG scrollbar look (thin, rounded,\n * `--border`-colored thumb) through ngx-scrollbar's own CSS custom properties,\n * so the heavy lifting (cross-browser overlay scrollbar, smooth scrolling) is\n * delegated to ngx-scrollbar while Gremorie NG owns the visual tokens.\n *\n * Override any token per-instance with a plain `style` binding, e.g.\n * `[style.--scrollbar-thickness]=\"10\"`.\n *\n * @example\n * ```html\n * <ng-scrollbar gremorie class=\"h-72 rounded-md border border-border\">\n *   <div class=\"p-4\">…long content…</div>\n * </ng-scrollbar>\n * ```\n */\n@Directive({\n  selector: 'ng-scrollbar[gremorie], ng-scrollbar[gremorieScrollbar]',\n  host: {\n    'data-slot': 'scroll-area',\n    class: 'block',\n    '[style.--scrollbar-border-radius]': '\"100px\"',\n    '[style.--scrollbar-offset]': '3',\n    '[style.--scrollbar-thumb-color]': '\"var(--border)\"',\n    '[style.--scrollbar-thumb-hover-color]': '\"var(--border)\"',\n    '[style.--scrollbar-thickness]': '7',\n  },\n})\nexport class ScrollArea {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/scroll-area/scroll-area.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any scrollable region that should match the Gremorie look and feel - long chat threads, code blocks, virtualised lists.",
+    "whenNotToUse": "Document-level scroll (the browser handles that natively). Or short regions where the native scrollbar is fine.",
+    "bestPractices": [
+      "Wrap the scrollable content in gremorie-scroll-area and set an explicit height on the host.",
+      "Use ScrollAreaImports instead of importing the directive and ngx-scrollbar module separately."
+    ],
+    "antipatterns": [
+      "Setting overflow: scroll on the host and nesting gremorie-scroll-area - they fight each other.",
+      "Using the scroll area for the whole app shell - body scroll is usually the right answer."
+    ],
+    "examples": [
+      {
+        "title": "Chat thread",
+        "code": "<gremorie-scroll-area class=\"h-96\">\n  <gremorie-message *ngFor=\"let m of messages\" [data]=\"m\"></gremorie-message>\n</gremorie-scroll-area>\n"
+      }
+    ]
+  }
+}

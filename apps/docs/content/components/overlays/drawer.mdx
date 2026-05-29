@@ -1,0 +1,213 @@
+---
+title: Drawer
+description: "Direction-aware sheet (top, bottom, left, right) built on vaul with native drag-to-dismiss gestures."
+---
+
+import { DrawerPreview } from "@/components/preview/overlays/overlays";
+
+## Overview
+
+`Drawer` is a vaul-backed overlay that slides in from any edge and supports native drag-to-dismiss with momentum. It is the right primitive for mobile contexts: quick actions, simple forms, action sheets. On `md+` viewports prefer `Dialog` (focused decision) or `Sheet` (longer lateral flow), since desktop ergonomics don't reward bottom sheets.
+
+The recommended pattern is responsive: `Drawer` below `md`, `Dialog` or `Sheet` above. Configure with the `direction` prop on `Drawer` itself.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <DrawerPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-drawer
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-drawer
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-drawer
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-drawer
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Open drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Move to archive</DrawerTitle>
+          <DrawerDescription>
+            Archived items can be restored within 30 days.
+          </DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button>Archive</Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Drawer>`
+
+Extends vaul `Drawer.Root`. Notable props:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `direction` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Edge from which the drawer slides in. |
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
+| `shouldScaleBackground` | `boolean` | - | Applies a subtle scale to siblings of the drawer (iOS look). Requires `[vaul-drawer-wrapper]` on a parent. |
+| `snapPoints` | `(string \| number)[]` | - | Resting positions (e.g. `[0.4, 0.8, 1]`). |
+| `activeSnapPoint` | `string \| number \| null` | - | Controlled snap point. |
+| `onAnimationEnd` | `(open: boolean) => void` | - | Fired after drag/animation settles. |
+| `modal` | `boolean` | `true` | Disable outside interaction while open. |
+
+All other props from vaul `Drawer.Root` are forwarded.
+
+### `<DrawerContent>`
+
+Wraps vaul `Drawer.Content` with the overlay and a Portal. Layout adapts to `direction`:
+
+- `bottom` (default): docks to the bottom, top-rounded, shows the gripper handle.
+- `top`: docks to the top, bottom-rounded.
+- `right` / `left`: full-height side panel, `w-3/4` capped at `sm:max-w-sm`.
+
+The horizontal gripper handle is rendered automatically for `direction="bottom"`.
+
+### `<DrawerHeader>`, `<DrawerFooter>`, `<DrawerTitle>`, `<DrawerDescription>`
+
+Layout containers with vaul-friendly defaults: header is centered for `top`/`bottom` directions and left-aligned at `md+`; footer pins to the bottom of the content.
+
+### `<DrawerTrigger>`, `<DrawerClose>`, `<DrawerOverlay>`, `<DrawerPortal>`
+
+Pass-throughs over the vaul primitives with `data-slot` attributes.
+
+## Composition
+
+1. **`<Drawer>`** owns open/close state and gesture handling. Set `direction` here.
+2. **`<DrawerTrigger asChild>`** wraps the focusable element that opens it.
+3. **`<DrawerContent>`** mounts via Portal, draws the overlay, animates from the chosen edge.
+4. **Header** holds the title and description; footer holds primary actions.
+5. **Dismissal**: drag past the threshold, click overlay, press `Esc`, or call `DrawerClose`.
+
+## Variations
+
+### Bottom drawer with form
+
+The canonical mobile pattern. Quick form, primary action in the footer.
+
+```tsx
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button>New note</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>New note</DrawerTitle>
+      <DrawerDescription>Add a quick note to this project.</DrawerDescription>
+    </DrawerHeader>
+    <div className="px-4">
+      <Textarea placeholder="Type something..." />
+    </div>
+    <DrawerFooter>
+      <Button>Save note</Button>
+      <DrawerClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+### Right side drawer
+
+Switch to a side panel for desktop secondary navigation or filter trays.
+
+```tsx
+<Drawer direction="right">
+  <DrawerTrigger asChild>
+    <Button variant="outline">Filters</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Filters</DrawerTitle>
+    </DrawerHeader>
+    {/* Filter controls */}
+  </DrawerContent>
+</Drawer>
+```
+
+### Snap points
+
+Resting positions let the drawer settle at 40% then expand to full height. Useful for previews that can be expanded.
+
+```tsx
+const [snap, setSnap] = useState<number | string | null>(0.4);
+
+<Drawer snapPoints={[0.4, 1]} activeSnapPoint={snap} setActiveSnapPoint={setSnap}>
+  <DrawerTrigger asChild>
+    <Button>Preview</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    {/* content scales between 40% and 100% */}
+  </DrawerContent>
+</Drawer>
+```
+
+## Accessibility
+
+- **Role**: `role="dialog"` with `aria-modal="true"`.
+- **Keyboard**: `Esc` closes; `Tab` cycles focus within the content; focus is trapped while open.
+- **Focus management**: focus moves into the drawer on open and returns to the trigger on close.
+- **Title**: `DrawerTitle` is required for screen-reader announcement (use `sr-only` if you need to hide it visually).
+- **Gesture dismiss**: drag-to-dismiss is keyboard-equivalent to `Esc`. Users on assistive tech are not penalized.
+- **Reduced motion**: drag animations honor `prefers-reduced-motion`; vaul falls back to instant transitions.
+
+## Related
+
+- [Sheet](/components/overlays/sheet) - Radix-based side panel without drag gestures (desktop-friendly).
+- [Dialog](/components/overlays/dialog) - centered modal for focused decisions.
+- [Popover](/components/overlays/popover) - inline anchored overlay for small contextual UI.

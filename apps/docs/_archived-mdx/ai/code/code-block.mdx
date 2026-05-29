@@ -1,0 +1,183 @@
+---
+title: CodeBlock
+description: Bloco de código com syntax highlighting via Shiki — themes light/dark, copy button.
+component: CodeBlock
+importPath: "@kalvner/kds/ai/code-block"
+status: stable
+---
+
+import { CodeBlockPreview, CodeBlockCopyPreview } from "@/components/ai-code-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`CodeBlock` é um wrapper de **syntax highlighting** sobre
+[Shiki](https://shiki.style/) — engine baseado em TextMate grammars.
+Renderiza código com cores precisas (mesmas do VS Code), suporta
+~200 linguagens, e tem light/dark themes seguindo o tema do KDS.
+
+Use sempre que o modelo retornar código (Tool output, Artifact,
+Message com markdown). Streamdown usa CodeBlock internamente pra
+fenced code blocks de markdown.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>TypeScript com Shiki highlighting.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <CodeBlockPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<CodeBlock code language>
+  └─ <CodeBlockCopyButton />  ← opcional, posicionado absolute top-right
+</CodeBlock>
+```
+
+## Usage
+
+```tsx
+import { CodeBlock, CodeBlockCopyButton } from "@kalvner/kds/ai/code-block";
+
+const code = `import { Button } from "@kalvner/kds/forms/button";
+
+export function MyButton() {
+  return <Button variant="default">Salvar</Button>;
+}`;
+
+<CodeBlock code={code} language="typescript">
+  <CodeBlockCopyButton />
+</CodeBlock>
+```
+
+## Props
+
+### CodeBlock (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `code` | `string` | — | Source code. Aceita string com newlines. |
+| `language` | `string` | — | ID Shiki (`typescript`, `tsx`, `python`, `bash`, ...). |
+| `themes` | `{ light?: string; dark?: string }` | `github-light/github-dark` | Themes Shiki. |
+| `className` | `string` | — | Override do wrapper. |
+
+### CodeBlockCopyButton
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `timeout` | `number` | `2000` | ms até voltar pro ícone Copy após cliclar (mostra Check). |
+| `onCopy` | `() => void` | — | Callback opcional. |
+
+Herda de [Button](../../ui/forms/button) — `variant`, `size`, etc.
+Default `variant="ghost"` `size="icon"`.
+
+### `highlightCode` helper
+
+Função async exportada que retorna HTML highlighted (use server-side
+ou em fluxos onde você quer o resultado pré-renderizado):
+
+```ts
+import { highlightCode } from "@kalvner/kds/ai/code-block";
+
+const html = await highlightCode(code, "tsx", { light: "github-light" });
+```
+
+## Subcomponents
+
+- **`CodeBlock`** — root. Renderiza o código highlighted via Shiki.
+  Posicionamento `relative` pra acomodar o copy button absolute.
+- **`CodeBlockCopyButton`** — botão flutuante top-right. Usa
+  `navigator.clipboard.writeText` + Toast feedback (interno).
+
+## Variants
+
+Pas há variantes — variação é via `language` e `themes`.
+
+### Languages comuns
+
+`typescript`, `tsx`, `javascript`, `jsx`, `python`, `bash`, `shell`,
+`json`, `yaml`, `markdown`, `mdx`, `html`, `css`, `sql`, `rust`, `go`.
+
+Lista completa: [shiki.style/languages](https://shiki.style/languages).
+
+## States
+
+Loading state durante o async highlight (Shiki é lazy-loaded).
+Streamdown lida bem com isso — mostra texto plain enquanto highlight
+não chegou.
+
+## Composition
+
+### Streamdown markdown blocks
+
+Streamdown auto-converte fenced code blocks em CodeBlock — você não
+precisa fazer nada manualmente:
+
+````markdown
+```typescript
+const x: number = 42;
+```
+````
+
+### Tool input pretty-print
+
+[ToolInput](../chatbot/tool) usa CodeBlock por baixo pra JSON
+pretty-printing.
+
+### Artifact body
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>landing.tsx</ArtifactTitle>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <CodeBlock code={artifactCode} language="tsx">
+      <CodeBlockCopyButton />
+    </CodeBlock>
+  </ArtifactContent>
+</Artifact>
+```
+
+## When to use
+
+- Sempre que mostrar código no chat ou em tool outputs.
+- Snippets em docs gerados por IA.
+- JSON/YAML pretty-printing (use language="json").
+
+## When not to use
+
+- Inline code (palavras curtas) — use `<code>` direto.
+- Diffs — pra colorir adições/remoções, use uma library de diff
+  ou wrappa o language como `diff` (Shiki suporta).
+
+## Best practices
+
+- **Sempre passe `language`** — sem ele, Shiki não highlights.
+- **Themes opcionais.** Default segue light/dark do KDS — só
+  override quando precisa contraste alternativo.
+- **CodeBlockCopyButton sempre.** Código sem copy frustra o user.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<pre><code>` semântico — leitor de tela navega corretamente. |
+| **Copy button** | `aria-label="Copy code"`; ao copiar, anuncia "Copied". |
+| **Contrast** | Themes Shiki passam WCAG AA por default; teste com axe se customizar. |
+
+## Related
+
+- [Streamdown](https://github.com/vercel/streamdown) — usa CodeBlock pra fenced blocks.
+- [Tool](../chatbot/tool) — ToolInput usa CodeBlock.
+- [Artifact](./artifact) — surface de código gerado.

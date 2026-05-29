@@ -1,0 +1,192 @@
+---
+title: Collapsible
+description: Disclosure de uma única seção — o bloco mínimo de show / hide.
+component: Collapsible
+importPath: "@kalvner/kds/display/collapsible"
+status: stable
+---
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@kalvner/kds/display/collapsible";
+import { Button } from "@kalvner/kds/forms/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Collapsible` é o disclosure mínimo: **um trigger, um conteúdo,
+um toggle**. Use para "mostrar mais" inline, grupos da sidebar,
+detalhes opcionais de uma linha de tabela.
+
+Para múltiplas seções coordenadas, suba para
+[Accordion](./accordion) — que é construído sobre este primitivo
+e adiciona estado roving entre os itens.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Show more inline.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Collapsible className="space-y-2">
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        O KDS é um conjunto de tokens, primitivos e padrões para Kalvner Studio.
+      </p>
+      <CollapsibleContent>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          Tokens são divididos em três camadas: primitivo, semântico e chart.
+        </p>
+      </CollapsibleContent>
+      <CollapsibleTrigger asChild>
+        <Button variant="link" className="px-0">
+          Mostrar mais
+        </Button>
+      </CollapsibleTrigger>
+    </Collapsible>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Collapsible>
+  ├─ <CollapsibleTrigger />   ← qualquer botão (use asChild)
+  └─ <CollapsibleContent />   ← região revelada
+</Collapsible>
+```
+
+## Usage
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@kalvner/kds/display/collapsible";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function Details() {
+  return (
+    <Collapsible>
+      <CollapsibleTrigger asChild>
+        <Button variant="ghost">Ver detalhes</Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        Conteúdo opcional.
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+```
+
+## Props
+
+### Collapsible (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `open` / `defaultOpen` | `boolean` | `false` | Estado controlado / inicial. |
+| `onOpenChange` | `(v) => void` | — | Callback. |
+| `disabled` | `boolean` | `false` | Bloqueia trigger. |
+
+### CollapsibleTrigger · CollapsibleContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `asChild` (Trigger) | `boolean` | `false` | Compose com Slot — usa o filho como trigger. |
+| `forceMount` (Content) | `boolean` | — | Mantém montado no DOM mesmo fechado. |
+
+## Subcomponents
+
+- `CollapsibleTrigger` — qualquer elemento clicável. Use `asChild`
+  para evitar wrapper extra.
+- `CollapsibleContent` — região com `data-state=open|closed` para
+  você animar via Tailwind.
+
+## Variants
+
+Não há variantes visuais embutidas — Collapsible é estrutural.
+A aparência vem do que você renderiza dentro do trigger e do
+content.
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| `data-state=closed` | Content escondido (`display: none` ou animação fechada). |
+| `data-state=open` | Content visível. |
+| `disabled` | Trigger não responde a cliques nem teclas. |
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Sidebar group</CardTitle>
+    <CardDescription>Grupo colapsável de navegação lateral.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Collapsible defaultOpen>
+      <CollapsibleTrigger asChild>
+        <Button variant="ghost" className="w-full justify-between">
+          Settings
+          <span className="text-muted-foreground">▾</span>
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="ml-4 mt-1 space-y-1 border-l pl-3">
+        <Button variant="ghost" className="w-full justify-start" size="sm">
+          Conta
+        </Button>
+        <Button variant="ghost" className="w-full justify-start" size="sm">
+          Faturamento
+        </Button>
+      </CollapsibleContent>
+    </Collapsible>
+  </CardContent>
+</Card>
+
+## When to use
+
+- "Mostrar mais" no fim de um trecho longo.
+- Grupos colapsáveis na sidebar.
+- Detalhes opcionais inline (linha de tabela expansível).
+- Card que mostra resumo + detalhes sob demanda.
+
+## When not to use
+
+- Múltiplas seções coordenadas — use [Accordion](./accordion).
+- Painéis trocáveis — use [Tabs](../navigation/tabs).
+- Conteúdo flutuante (sai do fluxo) — use
+  [Popover](../overlays/popover) ou [HoverCard](../overlays/hover-card).
+
+## Best practices
+
+- O trigger deve **dizer o que será revelado**, não "expandir" /
+  "mostrar". "Ver detalhes do pedido" > "Expandir".
+- Anime via classes `data-[state=open]:animate-collapsible-down` para
+  evitar layout shift abrupto. (Disponível no preset KDS.)
+- Para grupos persistentes, controle `open` em estado externo e
+  serialize (localStorage) — o usuário não quer reabrir tudo a cada
+  visita.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Trigger é `button` com `aria-expanded` e `aria-controls`. |
+| **Keyboard** | `Space`/`Enter` alterna. |
+| **Focus** | Herda do elemento usado em `asChild` — Button traz `focus-visible:ring`. |
+| **Screen reader** | Anuncia "expandido" / "recolhido". |
+
+## Related
+
+- [Accordion](./accordion) — múltiplas seções coordenadas.
+- [Sidebar](../navigation/sidebar) — usa Collapsible em grupos.
+- [Popover](../overlays/popover) — disclosure flutuante (fora do fluxo).

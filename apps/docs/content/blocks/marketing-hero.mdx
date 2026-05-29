@@ -1,0 +1,148 @@
+---
+title: Marketing hero
+description: "Brand-tinted halo, badge, headline with brand highlight, dual CTA, and a window mockup. Drop-in landing hero."
+---
+
+## Overview
+
+A self-contained marketing hero: a brand-tinted radial halo behind a
+badge, a large headline with a brand-highlighted span, a supporting
+paragraph, two CTAs, and a window-chrome mockup card on the right.
+
+Pure layout composition over `Badge`, `Card`, and `Button` primitives.
+No data fetching, no state - drop into your landing route and edit the
+copy.
+
+## Preview
+
+<BlockPreview name="marketing-hero" />
+
+## Anatomy
+
+The block composes:
+
+1. **Radial halo** - `bg-gradient-to-br from-brand/30` decorative background
+2. **Badge** - eyebrow indicator with `lucide-react` Sparkles icon
+3. **h1** - 4xl / 5xl headline with a `text-brand` span
+4. **p** - supporting subhead
+5. **Button (default lg)** - primary CTA with arrow icon
+6. **Button (outline lg)** - secondary CTA
+7. **Card mockup** - window chrome with placeholder content blocks tinted by `bg-brand/20`, `bg-chart-1/20`, `bg-chart-2/20`
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-marketing-hero
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-marketing-hero
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-marketing-hero
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-marketing-hero
+```
+
+</Tab>
+
+</Tabs>
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import { Badge, Card } from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
+import { ArrowRight, Sparkles } from "lucide-react";
+
+export function MarketingHero() {
+  return (
+    <section className="relative w-full overflow-hidden rounded-2xl border bg-background px-6 py-14 lg:px-12 lg:py-20">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-32 left-1/2 -z-10 size-[640px] -translate-x-1/2 rounded-full bg-gradient-to-br from-brand/30 via-brand/5 to-transparent blur-3xl"
+      />
+      <div className="relative grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="flex flex-col gap-6">
+          <Badge variant="secondary" className="w-fit gap-2">
+            <Sparkles className="size-3" aria-hidden="true" />
+            v1.0 just shipped
+          </Badge>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            Build faster with{" "}
+            <span className="text-brand">design systems</span> that LLMs
+            understand.
+          </h1>
+          <p className="max-w-xl text-lg text-muted-foreground">
+            Registry plus MCP, 85 primitives, two editions.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button size="lg">
+              Start free
+              <ArrowRight aria-hidden="true" />
+            </Button>
+            <Button size="lg" variant="outline">
+              Book a demo
+            </Button>
+          </div>
+        </div>
+        <div className="relative">
+          <Card className="overflow-hidden border-2 p-0">
+            {/* window chrome + placeholder content */}
+          </Card>
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customization
+
+- Swap the window mockup for a real product screenshot or a Storybook iframe
+- Replace the halo gradient with a noise texture or animated mesh
+- Tint the badge with `variant="default"` for a stronger eyebrow
+- Stack additional trust indicators (logos, ratings, install counts) below the CTAs
+
+## Related
+
+- [Badge](/components/display/badge)
+- [Card](/components/display/card)
+- [Button](/components/forms/button)

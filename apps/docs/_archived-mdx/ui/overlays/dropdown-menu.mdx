@@ -1,0 +1,189 @@
+---
+title: DropdownMenu
+description: Menu de ações ancorado a um trigger — verbos, atalhos, submenus.
+component: DropdownMenu
+importPath: "@kalvner/kds/overlays/dropdown-menu"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  DropdownMenuAccount,
+  DropdownMenuCheckboxes,
+  DropdownMenuRadios
+} from "@/components/overlay-demos";
+
+## Overview
+
+`DropdownMenu` é um menu **verb-led** ancorado a um trigger. Use para
+**ações** (Editar, Duplicar, Excluir) — não para valores. A regra
+mental que evita confusão:
+
+| Os itens são… | Use |
+|---|---|
+| verbos ("Editar", "Excluir") | **DropdownMenu** |
+| substantivos ("USA", "Brasil") | [`Select`](../forms/select) |
+
+Suporta atalhos de teclado, submenus, checkbox / radio items, e item
+destrutivo. Evite misturar — um menu com 4 ações + 3 valores
+geralmente esconde dois componentes diferentes.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Menu de conta com submenus e shortcut.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <DropdownMenuAccount />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<DropdownMenu>
+  <DropdownMenuTrigger />
+  <DropdownMenuContent>
+    <DropdownMenuLabel />              ← título da seção
+    <DropdownMenuSeparator />
+    <DropdownMenuGroup>
+      <DropdownMenuItem>               ← ação simples
+        Editar
+        <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger />     ← abre submenu
+        <DropdownMenuSubContent />
+      </DropdownMenuSub>
+      <DropdownMenuCheckboxItem />     ← toggle on/off
+      <DropdownMenuRadioGroup>
+        <DropdownMenuRadioItem />      ← exclusivo
+      </DropdownMenuRadioGroup>
+    </DropdownMenuGroup>
+    <DropdownMenuItem variant="destructive" />  ← ação perigosa
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `DropdownMenu` | Raiz. |
+| `DropdownMenuTrigger` | Elemento que abre o menu. |
+| `DropdownMenuContent` | Container portalado. |
+| `DropdownMenuItem` | Item de ação. Aceita `variant: 'default' \| 'destructive'`. |
+| `DropdownMenuCheckboxItem` | Toggle on/off com indicador. |
+| `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` | Seleção exclusiva entre N opções. |
+| `DropdownMenuLabel` | Cabeçalho de seção. |
+| `DropdownMenuSeparator` | Linha divisória entre grupos. |
+| `DropdownMenuShortcut` | Texto à direita com keyboard shortcut. |
+| `DropdownMenuSub` + `SubTrigger` + `SubContent` | Submenu nested. |
+| `DropdownMenuGroup` | Agrupa items relacionados (semantic). |
+| `DropdownMenuPortal` | Necessário para `SubContent` em alguns casos. |
+
+## Usage
+
+```tsx
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator
+} from "@kalvner/kds/overlays/dropdown-menu";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function RowActions() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Ações">…</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>Editar</DropdownMenuItem>
+        <DropdownMenuItem>Duplicar</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">Excluir</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+```
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Checkbox items</CardTitle>
+      <CardDescription>Toggle de exibição de paineis.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <DropdownMenuCheckboxes />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Radio group</CardTitle>
+      <CardDescription>Densidade da view (1 ativo).</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <DropdownMenuRadios />
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Menu de ações em row de tabela (Editar, Duplicar, Excluir).
+- Avatar menu (Perfil, Configurações, Sair).
+- "Mais opções" em toolbars onde nem tudo cabe na linha.
+- Toggle de configurações de view (densidade, mostrar concluídos).
+
+## When not to use
+
+- Para selecionar entre valores — use [`Select`](../forms/select).
+- Para ação primária na superfície — use [`Button`](../forms/button)
+  direto.
+- Para menus baseados em right-click — use [`ContextMenu`](./context-menu).
+- Para previews em hover — use [`HoverCard`](./hover-card).
+
+## Best practices
+
+- **Verbos curtos.** "Editar", "Duplicar", "Excluir". Sem
+  "Edição completa" ou "Excluir esta linha".
+- **Destructive last + separator.** Ação destrutiva por último,
+  separada por `Separator` para não ser clicada por reflexo.
+- **Atalhos quando existirem.** Mostre o keyboard shortcut com
+  `DropdownMenuShortcut` — ensina o atalho enquanto o usuário usa o
+  menu.
+- **Submenus com moderação.** Mais que 1 nível de submenu fica
+  difícil de navegar com teclado. Se você precisar de mais, use
+  Sheet ou Dialog para a configuração.
+- **Disabled vs hidden.** Items inalcançáveis na situação atual
+  (ex.: "API requer login") ficam disabled, não escondidos. Mantém
+  consistência espacial.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix aplica `role="menu"` + `role="menuitem"` (e variantes). |
+| **Foco** | Foco entra no primeiro item ao abrir. Volta ao trigger ao fechar. |
+| **Keyboard** | `↑/↓` navega items. `→` abre submenu. `Enter` ativa. `Esc` fecha. Tipear letra pula para item começando com aquela letra. |
+| **Screen reader** | Itens são anunciados como "menuitem"; checkboxes como "menuitemcheckbox" + estado; radios como "menuitemradio" + estado. |
+| **Destructive variant** | Não é anunciada por SR (é estilo). Inclua a palavra "Excluir" no label. |
+
+## Related
+
+- [`ContextMenu`](./context-menu) — menu equivalente via right-click.
+- [`Select`](../forms/select) — para escolher entre valores.
+- [`Popover`](./popover) — quando o menu precisa hospedar form ou
+  conteúdo rico.

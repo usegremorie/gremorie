@@ -8,10 +8,10 @@ import {
   RadarChart,
   RadialChart,
   ScatterChart,
-} from '@shadng/charts';
-import type { ChartConfig, Datum } from '@shadng/charts';
+} from '@gremorie/ng-data';
+import type { ChartConfig, Datum } from '@gremorie/ng-data';
 
-/** Visual smoke test of the full @shadng/charts set in a responsive grid. */
+/** Visual smoke test of the full @gremorie/ng-data charts set in a responsive grid. */
 @Component({
   selector: 'app-charts-demo',
   imports: [
@@ -26,7 +26,7 @@ import type { ChartConfig, Datum } from '@shadng/charts';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="flex flex-col gap-4">
-      <h2 class="text-lg font-medium text-foreground">@shadng/charts — all charts</h2>
+      <h2 class="text-lg font-medium text-foreground">@gremorie/ng-data - all charts</h2>
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <area-chart [data]="monthly()" [config]="duo()" xKey="month" />
         <line-chart [data]="monthly()" [config]="duo()" xKey="month" />

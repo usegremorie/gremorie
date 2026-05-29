@@ -1,0 +1,75 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-line-chart",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Line Chart (Angular)",
+  "description": "Styled line chart - trends over a continuous domain. Uses the ng-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/charts/styled/line-chart.ts",
+      "content": "import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\nimport { CartesianGrid } from '../headless/cartesian-grid';\nimport { ChartFrame } from '../headless/chart-frame';\nimport { Line } from '../headless/line';\nimport { XAxis, YAxis } from '../headless/axis';\nimport type { ChartConfig, Datum } from '../headless/types';\n\ninterface SeriesView {\n  key: string;\n  label: string;\n  color: string;\n}\n\n/**\n * Styled line chart. Pass tabular `data`, a serializable `config` mapping each\n * value field to a label + token color, and the `xKey` category field.\n *\n * @example\n * ```html\n * <line-chart [data]=\"data\" [config]=\"config\" xKey=\"month\" />\n * ```\n */\n@Component({\n  selector: 'line-chart',\n  imports: [ChartFrame, Line, CartesianGrid, XAxis, YAxis],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { 'data-slot': 'line-chart' },\n  template: `\n    <figure role=\"img\" [attr.aria-label]=\"ariaLabel()\" [class]=\"cardClass\">\n      <svg\n        chartFrame\n        [data]=\"data()\"\n        [xKey]=\"xKey()\"\n        class=\"aspect-video w-full overflow-visible text-muted-foreground\"\n      >\n        <svg:g cartesianGrid #grid=\"cartesianGrid\">\n          @for (gline of grid.lines(); track $index) {\n            <svg:line\n              [attr.x1]=\"gline.x1\"\n              [attr.x2]=\"gline.x2\"\n              [attr.y1]=\"gline.y\"\n              [attr.y2]=\"gline.y\"\n              stroke=\"currentColor\"\n              stroke-opacity=\"0.15\"\n            />\n          }\n        </svg:g>\n\n        @for (s of series(); track s.key) {\n          <svg:path [line]=\"s.key\" [color]=\"s.color\" stroke-width=\"2\" />\n        }\n\n        <svg:g xAxis #x=\"xAxis\">\n          @for (t of x.ticks(); track t.label) {\n            <svg:text\n              [attr.x]=\"t.x\"\n              [attr.y]=\"x.labelY()\"\n              text-anchor=\"middle\"\n              class=\"fill-muted-foreground text-[10px]\"\n            >{{ t.label }}</svg:text>\n          }\n        </svg:g>\n\n        <svg:g yAxis #y=\"yAxis\">\n          @for (t of y.ticks(); track t.value) {\n            <svg:text\n              [attr.x]=\"y.labelX()\"\n              [attr.y]=\"t.y\"\n              text-anchor=\"end\"\n              dominant-baseline=\"middle\"\n              class=\"fill-muted-foreground text-[10px]\"\n            >{{ t.label }}</svg:text>\n          }\n        </svg:g>\n      </svg>\n\n      <table class=\"sr-only\">\n        <caption>{{ ariaLabel() }}</caption>\n        <thead>\n          <tr>\n            <th>{{ xKey() }}</th>\n            @for (s of series(); track s.key) {\n              <th>{{ s.label }}</th>\n            }\n          </tr>\n        </thead>\n        <tbody>\n          @for (row of data(); track $index) {\n            <tr>\n              <td>{{ row[xKey()] }}</td>\n              @for (s of series(); track s.key) {\n                <td>{{ row[s.key] }}</td>\n              }\n            </tr>\n          }\n        </tbody>\n      </table>\n    </figure>\n  `,\n})\nexport class LineChart {\n  readonly data = input.required<readonly Datum[]>();\n  readonly config = input.required<ChartConfig>();\n  readonly xKey = input.required<string>();\n\n  readonly series = computed<SeriesView[]>(() =>\n    Object.entries(this.config()).map(([key, entry]) => ({\n      key,\n      label: entry.label,\n      color: entry.color,\n    })),\n  );\n\n  readonly ariaLabel = computed(\n    () => `Line chart of ${this.series().map((s) => s.label).join(', ')} by ${this.xKey()}`,\n  );\n\n  readonly cardClass = cn(\n    'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/data/line-chart/line-chart.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Dashboards, analytics surfaces, and AI-generated visualisations. Use the styled presets for quick wins; drop down to the headless primitives when you need a bespoke chart.",
+    "whenNotToUse": "A single sparkline inside a metric card - the styled presets carry a chart frame and axes which would be visual noise. Reach for the headless primitives or a plain SVG.",
+    "bestPractices": [
+      "Pick the chart type based on the nature of the data: time series -> area or line; categorical -> bar; composition (<= 5 slices) -> pie; correlation -> scatter.",
+      "Stick to the Gremorie sequential palette for ordinal data and the categorical palette for nominal data.",
+      "When generating charts via AI, always pass tabular data plus a label - never inline arrays."
+    ],
+    "antipatterns": [
+      "Pie chart with more than 5 slices - use a bar chart instead.",
+      "Sequential palette on categorical data - it implies ordering that isn't there.",
+      "Stacked bar to compare both totals and parts - readers can do one or the other, not both."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "data",
+          "type": "ChartData",
+          "required": true,
+          "description": "The dataset, in the shape expected by the chosen chart type."
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "required": false,
+          "description": "Width override. Defaults to the host element width."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "description": "Height override. Defaults to 240."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Area chart with monthly data",
+        "code": "<gremorie-area-chart [data]=\"revenueByMonth\"></gremorie-area-chart>\n"
+      },
+      {
+        "title": "Bar chart, categorical",
+        "code": "<gremorie-bar-chart [data]=\"usersByPlan\"></gremorie-bar-chart>\n"
+      }
+    ]
+  }
+}

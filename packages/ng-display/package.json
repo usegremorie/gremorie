@@ -1,0 +1,24 @@
+{
+  "name": "@gremorie/ng-display",
+  "version": "0.0.1",
+  "description": "Display primitives for Angular - Card and Badge. Companion to Spartan-ng (fills the gap for Card and Badge). Part of Gremorie.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/ng-display"
+  },
+  "keywords": ["angular", "ui", "card", "badge", "display"],
+  "peerDependencies": {
+    "@angular/common": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "class-variance-authority": "^0.7.1"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./fesm2022/ng-display.mjs"
+    }
+  }
+}

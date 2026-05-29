@@ -1,0 +1,209 @@
+---
+title: Reasoning
+description: Collapsible thinking block that opens during streaming, tracks duration and quietly closes when done.
+---
+
+import { ReasoningPreview, ReasoningStreamingPreview, ReasoningExpandedPreview } from "@/components/preview/ai/chatbot";
+
+## Overview
+
+`Reasoning` exposes the model's chain-of-thought without dominating the response. It opens automatically while `isStreaming` is true, measures elapsed seconds, then auto-collapses one second after streaming ends. The trigger swaps between a `Shimmer` ("Thinking...") and the recorded duration ("Thought for N seconds").
+
+Use it inside `MessageContent` for assistant turns whose model exposes a reasoning trace (`o-series`, `Claude extended thinking`, DeepSeek R1, etc.).
+
+## Preview
+
+### Idle
+
+<div className="rounded-lg border p-6 not-prose">
+  <ReasoningPreview />
+</div>
+
+### Streaming
+
+<div className="rounded-lg border p-6 not-prose">
+  <ReasoningStreamingPreview />
+</div>
+
+### Expanded
+
+<div className="rounded-lg border p-6 not-prose">
+  <ReasoningExpandedPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-reasoning
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-reasoning
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-reasoning
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-reasoning
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Reasoning,
+  ReasoningTrigger,
+  ReasoningContent,
+} from "@gremorie/rx-ai";
+
+export function Example({ status, thinking }) {
+  return (
+    <Reasoning isStreaming={status === "streaming"}>
+      <ReasoningTrigger />
+      <ReasoningContent>{thinking}</ReasoningContent>
+    </Reasoning>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component, input } from "@angular/core";
+import {
+  Reasoning,
+  ReasoningTrigger,
+  ReasoningContent,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Reasoning, ReasoningTrigger, ReasoningContent],
+  template: `
+    <reasoning [isStreaming]="status() === 'streaming'">
+      <reasoning-trigger />
+      <reasoning-content [text]="thinking()" />
+    </reasoning>
+  `,
+})
+export class ExampleComponent {
+  readonly status = input<"idle" | "streaming" | "done">("idle");
+  readonly thinking = input<string>("");
+}
+```
+</Tab>
+</Tabs>
+
+## API
+
+### `<Reasoning>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `isStreaming` | `boolean` | `false` | While true, the block opens, the trigger shows a shimmering "Thinking..." and the duration timer runs. |
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | `true` | Uncontrolled initial open state. Auto-close only fires when this is true. |
+| `onOpenChange` | `(open: boolean) => void` | - | Notification when the user toggles the trigger. |
+| `duration` | `number` | - | External duration override (seconds). If omitted, `Reasoning` measures it from `isStreaming` transitions. |
+
+Extends `ComponentProps<typeof Collapsible>`.
+
+### `<ReasoningTrigger>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `getThinkingMessage` | `(isStreaming: boolean, duration?: number) => ReactNode` | builtin | Customize the trigger label. The default renders the `Shimmer` while streaming and "Thought for N seconds" once done. |
+| `children` | `ReactNode` | - | Fully replace the trigger contents (icon + label + chevron). |
+
+### `<ReasoningContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `string` | - | Markdown rendered via `Streamdown`. |
+
+### `useReasoning()`
+
+Returns `{ isStreaming, isOpen, setIsOpen, duration }`. Throws when called outside a `<Reasoning>` boundary.
+
+## Composition
+
+1. **`<Reasoning>`** owns the open / streaming / duration state and wraps a `Collapsible`.
+2. **`<ReasoningTrigger>`** renders the brain icon + label + chevron and toggles the collapsible.
+3. **`<ReasoningContent>`** lazy-renders the streaming markdown.
+
+## Variations
+
+### Inside an assistant message
+
+The typical pairing - reasoning above the answer.
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Reasoning isStreaming={status === "streaming"}>
+      <ReasoningTrigger />
+      <ReasoningContent>{thinking}</ReasoningContent>
+    </Reasoning>
+    <MessageResponse>{answer}</MessageResponse>
+  </MessageContent>
+</Message>
+```
+
+### Custom trigger label
+
+Override `getThinkingMessage` to localize the copy or surface model metadata.
+
+```tsx
+<Reasoning isStreaming={isStreaming}>
+  <ReasoningTrigger
+    getThinkingMessage={(streaming, duration) =>
+      streaming
+        ? <Shimmer>Reasoning with o4-mini...</Shimmer>
+        : <span>Reasoning took {duration ?? "?"}s</span>
+    }
+  />
+  <ReasoningContent>{thinking}</ReasoningContent>
+</Reasoning>
+```
+
+### Controlled open state
+
+When the surrounding shell decides when the reasoning is visible (e.g. a "Hide reasoning" toggle in settings).
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Reasoning
+  open={open}
+  onOpenChange={setOpen}
+  isStreaming={false}
+  duration={12}
+>
+  <ReasoningTrigger />
+  <ReasoningContent>{archivedThinking}</ReasoningContent>
+</Reasoning>
+```
+
+## Accessibility
+
+- **Keyboard**: `ReasoningTrigger` is a `CollapsibleTrigger`, so it toggles on Enter / Space and participates in Tab order.
+- **ARIA**: the underlying Radix collapsible wires up `aria-expanded` and `aria-controls` on the trigger and `data-state` on the content, so screen readers announce open / closed states correctly.
+- **Screen readers**: the label uses live text ("Thinking..." -> "Thought for N seconds") so assistive tech narrates the transition without needing a separate live region.
+- **Reduced motion**: collapse / expand animations come from Tailwind data-state animations; they degrade to instant transitions when `prefers-reduced-motion: reduce` is set.
+
+## Related
+
+- [Message](/components/ai/message) - the typical parent for `Reasoning`
+- [Chain of Thought](/components/ai/chain-of-thought) - step-by-step reasoning when you have discrete actions to surface
+- [Shimmer](/components/ai/shimmer) - the loading affordance used inside the default trigger

@@ -1,0 +1,169 @@
+---
+title: Skeleton
+description: "Pulsing placeholder block that reserves layout space while content fetches."
+---
+
+import { SkeletonPreview } from "@/components/preview/feedback/feedback";
+import { Skeleton } from "@gremorie/rx-feedback";
+
+## Overview
+
+`Skeleton` is the **loading-placeholder primitive**: a pulsing block you shape with width and height to match the geometry of the real content underneath. The point is not the animation - it is reserving the layout slot so there is **no shift** when the data arrives.
+
+Reach for Skeleton on every async surface where the layout depends on the response: avatar plus name plus secondary text, a card cover, a row in a list, a chart. Skip it for in-flow operations with known duration - use `Progress` there - and for short button-press pending states - use a Spinner inside the button.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <SkeletonPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-skeleton
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-skeleton
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-skeleton
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-skeleton
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Skeleton } from "@gremorie/rx-feedback";
+
+export function ProfileSkeleton() {
+  return (
+    <div className="flex items-center gap-4" aria-busy="true" aria-live="polite">
+      <Skeleton className="size-12 rounded-full" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-[200px]" />
+        <Skeleton className="h-4 w-[160px]" />
+      </div>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The same shape-by-class contract will be exposed as an attribute directive.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Skeleton>`
+
+Renders a `<div>` styled with `animate-pulse rounded-md bg-accent`. Shape the element with width and height utility classes that match the content underneath.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | The whole API. Set width and height (`size-12`, `h-4 w-[200px]`), override the radius (`rounded-full` for avatars), or change the surface (`bg-muted`) when the default accent surface clashes with the parent. |
+| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes. The component itself adds no role; semantics belong to the surrounding region. |
+
+<Callout type="info">
+The default animation uses Tailwind's `animate-pulse`. Users with `prefers-reduced-motion: reduce` automatically get the static state - the project ships a global motion override, no per-component config required.
+</Callout>
+
+## Composition
+
+1. **`<Skeleton>`** is a single element with no children. Shape it with `className`; nest multiple for compound placeholders (avatar plus name plus secondary line).
+2. **Match the real geometry**: a 12 px circle, a 16 px text line, a 200 px column. The closer the placeholder shape is to the final content, the less the user notices when it swaps in.
+3. **Inside an `AspectRatio`**: pair Skeleton with an `AspectRatio` to reserve cover-image space without computing dimensions by hand. See [AspectRatio](/components/containers/aspect-ratio).
+4. **Per-list-row vs whole-card**: render one Skeleton row per expected item count rather than a single big block - row-grain placeholders look more honest and stop flickering when the data lands progressively.
+
+## Variations
+
+### Single avatar plus two lines
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex items-center gap-4">
+    <Skeleton className="size-12 rounded-full" />
+    <div className="flex flex-col gap-2">
+      <Skeleton className="h-4 w-[200px]" />
+      <Skeleton className="h-4 w-[160px]" />
+    </div>
+  </div>
+</div>
+
+```tsx
+<div className="flex items-center gap-4" aria-busy="true" aria-live="polite">
+  <Skeleton className="size-12 rounded-full" />
+  <div className="flex flex-col gap-2">
+    <Skeleton className="h-4 w-[200px]" />
+    <Skeleton className="h-4 w-[160px]" />
+  </div>
+</div>
+```
+
+The standard user-profile placeholder. Two short lines feel honest; three is the upper bound before the placeholder starts to flicker on real data.
+
+### Cover plus text card
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-sm space-y-3 rounded-md border p-4">
+    <Skeleton className="aspect-video w-full rounded-md" />
+    <Skeleton className="h-4 w-3/4" />
+    <Skeleton className="h-4 w-1/2" />
+  </div>
+</div>
+
+```tsx
+<Card aria-busy="true" aria-live="polite">
+  <CardContent className="flex flex-col gap-3">
+    <Skeleton className="aspect-video w-full rounded-md" />
+    <Skeleton className="h-4 w-3/4" />
+    <Skeleton className="h-4 w-1/2" />
+  </CardContent>
+</Card>
+```
+
+For card-grid layouts. Use `aspect-video` on the cover Skeleton so the placeholder height matches what the real `<img>` will reserve.
+
+### List row repetition
+
+```tsx
+<ul aria-busy="true" aria-live="polite" className="flex flex-col gap-3">
+  {Array.from({ length: 5 }).map((_, i) => (
+    <li key={i} className="flex items-center gap-3">
+      <Skeleton className="size-8 rounded-full" />
+      <Skeleton className="h-3 flex-1" />
+    </li>
+  ))}
+</ul>
+```
+
+Use a fixed count that matches the typical page size (5-10 rows). Overshooting feels like a fake throughput; undershooting causes a jump when more rows arrive.
+
+## Accessibility
+
+- **Presentation only**: Skeleton itself renders no role and no label. It is a visual placeholder.
+- **Mark the loading region**: wrap the placeholders in a container with `aria-busy="true"` (the region is loading) and `aria-live="polite"` (announce the swap when content arrives) so screen readers get a single announcement instead of repeated chatter on each pulsing element.
+- **Reduced motion**: `animate-pulse` respects `prefers-reduced-motion` via the global project override - users who opt out see a static state, not a flashing one.
+- **Token-driven surface**: `bg-accent` adapts to light and dark themes automatically. Override to `bg-muted` when the placeholder needs to sit on a darker card surface.
+
+## Related
+
+- [Progress](/components/feedback/progress) - reach for Progress when percent complete is known.
+- [Alert](/components/feedback/alert) - reach for Alert when the surface needs to explain *why* the user is waiting.
+- [AspectRatio](/components/containers/aspect-ratio) - pair with Skeleton to reserve cover-image space without computing dimensions by hand.

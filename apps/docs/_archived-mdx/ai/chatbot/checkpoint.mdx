@@ -1,0 +1,119 @@
+---
+title: Checkpoint
+description: Marcador de snapshot conversacional — botão pra restaurar a conversa em um ponto.
+component: Checkpoint
+importPath: "@kalvner/kds/ai/checkpoint"
+status: stable
+---
+
+import { CheckpointPreview, CheckpointTooltipPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Checkpoint` é um **marcador entre mensagens** — uma horizontal rule
+sutil com ícone e botão pra restaurar o estado da conversa naquele
+ponto. Útil em fluxos onde o user pode "voltar" e re-fazer a
+conversa a partir de uma mensagem específica.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Checkpoint inline com Bookmark icon.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <CheckpointPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Checkpoint>
+  ├─ <CheckpointIcon />
+  └─ <CheckpointTrigger>{label}</CheckpointTrigger>
+</Checkpoint>
+```
+
+## Usage
+
+```tsx
+<Checkpoint>
+  <CheckpointIcon />
+  <CheckpointTrigger onClick={handleRestore}>
+    Voltar pra este ponto
+  </CheckpointTrigger>
+</Checkpoint>
+```
+
+## Props
+
+### Checkpoint (Root)
+
+Aceita `HTMLAttributes<HTMLDivElement>`. Container flex com Separator.
+
+### CheckpointIcon
+
+Aceita `LucideProps`. Default é `BookmarkIcon` size-4. Você pode
+substituir passando `children`:
+
+```tsx
+<CheckpointIcon><Save className="size-4" /></CheckpointIcon>
+```
+
+### CheckpointTrigger
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `tooltip` | `string` | — | Texto do tooltip (envolve em [Tooltip](../../ui/overlays/tooltip)). |
+| `children` | `ReactNode` | — | Label do botão. |
+
+Herda de [Button](../../ui/forms/button) — `variant`, `size`, `onClick`, etc. Default `variant="ghost"` `size="sm"`.
+
+## Subcomponents
+
+- **`Checkpoint`** — flex wrapper com Separator visual sutil.
+- **`CheckpointIcon`** — ícone à esquerda. Aceita override via
+  `children` ou customização via `LucideProps`.
+- **`CheckpointTrigger`** — botão clicável com optional tooltip.
+
+## When to use
+
+- Conversas longas onde rebobinar é útil (debug, exploração).
+- Editor de prompts iterativo — checkpoint a cada versão.
+- Replay de conversas com IA pra revisão.
+
+## When not to use
+
+- Confirmação destrutiva — use [AlertDialog](../../ui/overlays/alert-dialog).
+- Restore de versões persistidas em backend — use [DropdownMenu](../../ui/overlays/dropdown-menu)
+  com lista de timestamps em vez de markers inline.
+
+## Best practices
+
+- **Inline entre messages.** Posicione entre `<Message>`s pra
+  marcar o boundary visual.
+- **Tooltip explica.** "Restaurar checkpoint" é vago — use tooltip
+  pra dizer "Volta pra antes de você pedir refactor".
+- **Confirmation se destrutivo.** Restaurar checkpoint apaga
+  mensagens posteriores — combine com AlertDialog.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Trigger é `<button>` (Button). |
+| **Tooltip** | Quando passado, é Radix Tooltip (acessível). |
+| **Icon** | Decorativo — pareie com texto/tooltip. |
+
+## Related
+
+- [AlertDialog](../../ui/overlays/alert-dialog) — confirmação destrutiva.
+- [Conversation](./conversation) — onde checkpoints aparecem.
+- [Tooltip](../../ui/overlays/tooltip) — usado internamente.

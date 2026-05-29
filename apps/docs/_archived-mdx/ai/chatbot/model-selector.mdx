@@ -1,0 +1,197 @@
+---
+title: ModelSelector
+description: Paleta ⌘K de modelos de IA — Command dialog estendido com grupos por provider.
+component: ModelSelector
+importPath: "@kalvner/kds/ai/model-selector"
+status: stable
+---
+
+import { ModelSelectorPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`ModelSelector` é o **switcher de modelos** — paleta tipo ⌘K
+(Command palette) com lista filtrada de modelos disponíveis,
+agrupados por provider. Construído sobre [Command](../../ui/overlays/command)
++ [Dialog](../../ui/overlays/dialog).
+
+Use na header do chat ou em settings — sempre que o user precisa
+trocar de modelo no meio do fluxo.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Botão que abre o ModelSelector (⇧⌘K também funciona).</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ModelSelectorPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<ModelSelectorDialog>
+  ├─ <ModelSelectorInput placeholder="..." />
+  └─ <ModelSelectorList>
+       ├─ <ModelSelectorEmpty />
+       └─ <ModelSelectorGroup heading="Anthropic">
+            └─ <ModelSelectorItem onSelect={...}>
+                 Claude Opus 4.7
+                 <ModelSelectorShortcut>O</ModelSelectorShortcut>
+</ModelSelectorDialog>
+```
+
+## Usage
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  ModelSelectorDialog,
+  ModelSelectorEmpty,
+  ModelSelectorGroup,
+  ModelSelectorInput,
+  ModelSelectorItem,
+  ModelSelectorList
+} from "@kalvner/kds/ai/model-selector";
+
+export function ModelPalette() {
+  const [open, setOpen] = useState(false);
+  return (
+    <ModelSelectorDialog open={open} onOpenChange={setOpen}>
+      <ModelSelectorInput placeholder="Buscar modelo..." />
+      <ModelSelectorList>
+        <ModelSelectorEmpty>Nenhum modelo encontrado.</ModelSelectorEmpty>
+        <ModelSelectorGroup heading="Anthropic">
+          <ModelSelectorItem onSelect={() => setOpen(false)}>
+            Claude Opus 4.7
+          </ModelSelectorItem>
+        </ModelSelectorGroup>
+      </ModelSelectorList>
+    </ModelSelectorDialog>
+  );
+}
+```
+
+## Props
+
+### ModelSelector / ModelSelectorTrigger / ModelSelectorContent
+
+Renderizam Dialog standalone (sem ⌘K). Use raramente — preferia
+sempre o Dialog flutuante.
+
+### ModelSelectorDialog (canonical)
+
+Aceita `ComponentProps<typeof CommandDialog>` — `open`, `onOpenChange`.
+Renderiza um Dialog com Command embedded. Esse é o padrão recomendado.
+
+### ModelSelectorInput
+
+Herda de [CommandInput](../../ui/overlays/command). Aceita
+`placeholder`, `value`, `onValueChange`.
+
+### ModelSelectorList · Empty · Group · Item
+
+Wrappers fininhos sobre [Command](../../ui/overlays/command) primitives:
+
+| Componente | Wrapper de | Notas |
+|---|---|---|
+| `ModelSelectorList` | `CommandList` | Container scrolável. |
+| `ModelSelectorEmpty` | `CommandEmpty` | Mostrado quando o filter retorna 0. |
+| `ModelSelectorGroup` | `CommandGroup` | Aceita `heading` (string) — provider. |
+| `ModelSelectorItem` | `CommandItem` | Aceita `onSelect`, `disabled`, `value`. |
+| `ModelSelectorShortcut` | `CommandShortcut` | Atalho de teclado à direita. |
+
+## Subcomponents
+
+- **`ModelSelectorDialog`** — wrapper recomendado. Inclui Dialog
+  flutuante + Command interno.
+- **`ModelSelectorInput`** — campo de busca com SearchIcon.
+- **`ModelSelectorList`** — wrapper rolável.
+- **`ModelSelectorEmpty`** — placeholder zero results.
+- **`ModelSelectorGroup`** — agrupa modelos do mesmo provider.
+- **`ModelSelectorItem`** — entrada selecionável.
+- **`ModelSelectorShortcut`** — atalho de teclado (chip à direita).
+
+## States
+
+Herda do Command:
+- Item `data-selected=true` (highlighted via teclado/hover)
+- Item `data-disabled=true` (greyed)
+- Empty (filter=0)
+
+## Composition
+
+### Atalho global ⇧⌘K
+
+```tsx
+const [open, setOpen] = useState(false);
+useEffect(() => {
+  const onKey = (e) => {
+    if (e.key === "k" && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+      e.preventDefault();
+      setOpen(v => !v);
+    }
+  };
+  document.addEventListener("keydown", onKey);
+  return () => document.removeEventListener("keydown", onKey);
+}, []);
+
+<ModelSelectorDialog open={open} onOpenChange={setOpen}>...
+```
+
+### No PromptInputHeader
+
+```tsx
+<PromptInput onSubmit={handle}>
+  <PromptInputBody>
+    <PromptInputHeader>
+      <Button onClick={() => setOpen(true)}>
+        {currentModel}
+      </Button>
+    </PromptInputHeader>
+    ...
+```
+
+## When to use
+
+- App com ≥3 modelos pra escolher.
+- Power user UI onde teclado é canal primário.
+- Dev tools de IA com switcher rápido.
+
+## When not to use
+
+- Único modelo — sem switcher necessário.
+- ≤3 modelos — use [Select](../../ui/forms/select) inline em vez de paleta.
+
+## Best practices
+
+- **Atalho consistente.** ⇧⌘K é o padrão do AI Elements; siga.
+- **Recent grupo no topo.** Mostre os modelos usados recentemente
+  primeiro — economiza scroll.
+- **Shortcut letter.** Atalho de uma letra (`O` pra Opus, `S` pra
+  Sonnet) acelera switching.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Combobox** | Herda do Command — `role="combobox"` no input. |
+| **Listbox** | List é `role="listbox"`, items são `role="option"`. |
+| **Keyboard** | ↑↓ navegam, Enter seleciona, Esc fecha. |
+| **Focus restore** | Dialog devolve foco ao trigger ao fechar. |
+
+## Related
+
+- [Command](../../ui/overlays/command) — base subjacente.
+- [Dialog](../../ui/overlays/dialog) — wrapper.
+- [PromptInput](./prompt-input) — header onde o trigger pode encaixar.

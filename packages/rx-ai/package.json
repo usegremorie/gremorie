@@ -1,0 +1,56 @@
+{
+  "name": "@gremorie/rx-ai",
+  "version": "0.0.1",
+  "description": "React AI primitives for Gremorie - full Bridge parity. PromptInput family, Chatbot (Message, Conversation, Reasoning, Task, Tool, ...), Code (Artifact, CodeBlock, WebPreview), Workflow (Canvas, Node, Edge, ...), Utilities (Image, OpenInChat).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-ai"
+  },
+  "keywords": [
+    "react",
+    "ai",
+    "ui",
+    "prompt",
+    "chat",
+    "workflow",
+    "canvas"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@gremorie/rx-containers": "^0.0.1",
+    "@gremorie/rx-core": "^0.0.1",
+    "@gremorie/rx-display": "^0.0.1",
+    "@gremorie/rx-feedback": "^0.0.1",
+    "@gremorie/rx-forms": "^0.0.1",
+    "@gremorie/rx-overlays": "^0.0.1",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "@radix-ui/react-use-controllable-state": "^1.2.2",
+    "@xyflow/react": "^12.10.2",
+    "ai": "^6.0.191",
+    "lucide-react": "^0.547.0",
+    "motion": "^12.40.0",
+    "shiki": "^4.1.0",
+    "streamdown": "^2.5.0",
+    "tokenlens": "^1.3.1",
+    "tslib": "^2.3.0",
+    "use-stick-to-bottom": "^1.1.4"
+  },
+  "sideEffects": false
+}

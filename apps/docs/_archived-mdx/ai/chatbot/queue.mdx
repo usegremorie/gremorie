@@ -1,0 +1,199 @@
+---
+title: Queue
+description: Lista de mensagens / tarefas pendentes — sidebar de inbox para agentes assíncronos.
+component: Queue
+importPath: "@kalvner/kds/ai/queue"
+status: stable
+---
+
+import { QueuePreview, QueueSectionedPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Queue` é a **sidebar de tarefas pendentes** — lista vertical com
+indicators de status, descrições, attachments. Suporta seções
+colapsáveis (Concluído / Em andamento / A fazer) pra organizar
+listas longas.
+
+Use em assistentes assíncronos: usuário enfileira pedidos, o agente
+executa em background, Queue mostra o estado de cada um.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Queue com 3 items, dois em pending.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <QueuePreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Queue>
+  └─ <QueueList>            ← ScrollArea wrapper
+       ├─ <QueueItem>
+       │    ├─ <QueueItemIndicator completed />
+       │    ├─ <QueueItemContent>...
+       │    └─ <QueueItemDescription>...
+       └─ <QueueSection>          ← agrupamento opcional
+            ├─ <QueueSectionTrigger>
+            │    └─ <QueueSectionLabel label count icon />
+            └─ <QueueSectionContent>
+                 └─ <QueueItem>...
+</Queue>
+```
+
+## Usage
+
+```tsx
+<Queue>
+  <QueueList>
+    <QueueItem>
+      <QueueItemIndicator completed />
+      <QueueItemContent>Buscar tokens</QueueItemContent>
+    </QueueItem>
+    <QueueItem>
+      <QueueItemIndicator />
+      <QueueItemContent>Mapear semânticos</QueueItemContent>
+      <QueueItemDescription>Em progresso...</QueueItemDescription>
+    </QueueItem>
+  </QueueList>
+</Queue>
+```
+
+## Props
+
+### Queue (Root)
+
+Aceita `ComponentProps<"div">`. Container neutro com `flex-col`.
+
+### QueueList
+
+Aceita `ComponentProps<typeof ScrollArea>`. Wrapper rolável vertical.
+
+### QueueItem
+
+Aceita `ComponentProps<"li">`. É um `<li>` real — preserve semântica.
+
+### QueueItemIndicator
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `completed` | `boolean` | `false` | Quando `true`, dot é preenchido (concluído). |
+
+Aceita `ComponentProps<"span">` (extras passam pro span).
+
+### QueueItemContent
+
+Texto principal do item. Aceita `ComponentProps<"span">`.
+
+### QueueItemDescription
+
+Sub-texto (muted). Aceita `ComponentProps<"div">`.
+
+### QueueItemActions · QueueItemAction
+
+| Componente | Função |
+|---|---|
+| `QueueItemActions` | Wrapper flex (gap-1). |
+| `QueueItemAction` | Botão individual. Herda de [Button](../../ui/forms/button) com size default `icon-sm`. Aceita `tooltip` opcional. |
+
+### QueueItemAttachment · Image · File
+
+Slots pra mostrar arquivos enviados pelo user na entry da queue.
+- `QueueItemAttachment` — wrapper.
+- `QueueItemImage` — `<img>` com `rounded` + size fixo.
+- `QueueItemFile` — chip com filename.
+
+### QueueSection · trigger / label / content
+
+| Prop (Label) | Tipo | Default | Descrição |
+|---|---|---|---|
+| `label` | `string` | — | Texto da seção ("Em andamento"). |
+| `count` | `number` | — | Contador opcional ("5"). |
+| `icon` | `ReactNode` | — | Ícone à esquerda do label. |
+
+`QueueSection` é um Collapsible. `QueueSectionTrigger` é um botão
+que mostra/esconde o `QueueSectionContent`.
+
+## Subcomponents
+
+- **`Queue`** — wrapper raiz.
+- **`QueueList`** — scroll-area que segura items + sections.
+- **`QueueItem`** — `<li>` individual.
+- **`QueueItemIndicator`** — dot left-side com state via `completed`.
+- **`QueueItemContent`** + **`QueueItemDescription`** — text slots.
+- **`QueueItemActions`** + **`QueueItemAction`** — botões hover.
+- **`QueueItemAttachment`** + Image / File — attachments visíveis.
+- **`QueueSection`** + Trigger / Label / Content — agrupamento
+  colapsável.
+
+## States
+
+| Item | Comportamento |
+|---|---|
+| Default (pending) | Indicator vazio (border). |
+| `completed` | Indicator preenchido. |
+| Hover | Actions aparecem (opacity-0 → 100 group-hover). |
+
+## Composition
+
+```tsx
+<Queue>
+  <QueueList>
+    <QueueSection defaultOpen>
+      <QueueSectionTrigger>
+        <QueueSectionLabel label="Concluído" count={2} />
+      </QueueSectionTrigger>
+      <QueueSectionContent>
+        <QueueItem>
+          <QueueItemIndicator completed />
+          <QueueItemContent>Sincronizar tokens</QueueItemContent>
+        </QueueItem>
+      </QueueSectionContent>
+    </QueueSection>
+  </QueueList>
+</Queue>
+```
+
+## When to use
+
+- Inbox de tarefas em assistente assíncrono.
+- Lista de jobs sendo processados em background.
+- Sidebar de pedidos pendentes em agente coletivo.
+
+## When not to use
+
+- Lista plana sem status — use Card list ou [Table](../../ui/display/table).
+- Tasks executadas dentro de uma resposta — use [Task](./task).
+- Histórico de mensagens — use [Conversation](./conversation).
+
+## Best practices
+
+- **QueueSection só com 5+ items.** Listas curtas viram só seção
+  colapsada — desnecessário.
+- **QueueItemDescription** quando ajuda — não duplique o content.
+- **Hover actions** discretos — copy/dismiss/expand.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Semantic** | `<li>` real preserva navegação por leitor de tela. |
+| **Sections** | Collapsible interno tem `aria-expanded`. |
+| **Indicator** | Cor + texto descritivo via aria-label custom (recomendado). |
+
+## Related
+
+- [Task](./task) — tasks dentro de uma resposta.
+- [Plan](./plan) — plano formal.
+- [Conversation](./conversation) — chat thread.

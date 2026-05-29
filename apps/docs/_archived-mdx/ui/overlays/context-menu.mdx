@@ -1,0 +1,152 @@
+---
+title: ContextMenu
+description: Menu de ações secundário invocado por right-click — sempre como acelerador, nunca como único caminho.
+component: ContextMenu
+importPath: "@kalvner/kds/overlays/context-menu"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { ContextMenuPreview } from "@/components/overlay-demos";
+
+## Overview
+
+`ContextMenu` é o menu invocado por **right-click** em uma região da
+página. Mesma estrutura interna do [`DropdownMenu`](./dropdown-menu)
+— items, checkboxes, radios, submenus — mas a invocação é
+contextual ao local do clique.
+
+A regra crítica: ContextMenu é um **acelerador para power users**,
+nunca a única via para uma ação. A maioria dos usuários nunca
+clicou com o botão direito num app web em todas as suas vidas. Toda
+ação que vive aqui deve **também** ter um botão, um item de
+DropdownMenu, um atalho de teclado ou navegação visível em outro
+lugar.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Clique com o botão direito na área pontilhada.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ContextMenuPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<ContextMenu>
+  <ContextMenuTrigger>            ← região clicável (não um botão)
+    {/* área onde o right-click captura */}
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem />
+    <ContextMenuSub>
+      <ContextMenuSubTrigger />
+      <ContextMenuSubContent />
+    </ContextMenuSub>
+    <ContextMenuCheckboxItem />
+    <ContextMenuRadioGroup>
+      <ContextMenuRadioItem />
+    </ContextMenuRadioGroup>
+    <ContextMenuItem variant="destructive" />
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+## Subcomponents
+
+Mesma estrutura do `DropdownMenu` — apenas o `Trigger` muda de
+botão para uma região:
+
+| Componente | Descrição |
+|---|---|
+| `ContextMenu` | Raiz. |
+| `ContextMenuTrigger` | Região que captura right-click. |
+| `ContextMenuContent` | Container portalado. |
+| `ContextMenuItem` | Item de ação. Aceita `variant: 'default' \| 'destructive'`. |
+| `ContextMenuCheckboxItem` | Toggle on/off. |
+| `ContextMenuRadioGroup` + `ContextMenuRadioItem` | Seleção exclusiva. |
+| `ContextMenuLabel` | Cabeçalho de seção. |
+| `ContextMenuSeparator` | Linha divisória. |
+| `ContextMenuShortcut` | Texto à direita com keyboard shortcut. |
+| `ContextMenuSub` + `SubTrigger` + `SubContent` | Submenu nested. |
+
+## Usage
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem
+} from "@kalvner/kds/overlays/context-menu";
+
+export function FileTile({ file }) {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <button className="…">{file.name}</button>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem>Renomear</ContextMenuItem>
+        <ContextMenuItem>Duplicar</ContextMenuItem>
+        <ContextMenuItem variant="destructive">Excluir</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+
+## When to use
+
+- Apps "tipo desktop" — file managers, editores de imagem,
+  ferramentas de design — onde right-click é convenção do domínio.
+- Acelerar gestos comuns em listas longas (renomear, duplicar) sem
+  ter que aproximar o cursor de um botão de actions na coluna.
+
+## When not to use
+
+- Como **único** acesso a uma ação. Espelhe sempre em outro lugar
+  (button, DropdownMenu, atalho).
+- Em mobile / touch — não há equivalente direto a right-click.
+- Em apps consumer-grade onde a maioria dos usuários nunca abriu o
+  menu de contexto.
+
+## Best practices
+
+- **Mirror everywhere.** Toda ação aqui deve aparecer também num
+  DropdownMenu (`…` na linha) ou num botão visível.
+- **Não sobrecarregue.** ContextMenu fica um pop-up grande perto do
+  cursor — limite a 7–10 items diretos. Use Sub para o resto.
+- **Discoverability via tooltip.** Considere um Tooltip discreto na
+  primeira interação com a região, lembrando o usuário que
+  right-click existe.
+- **Não compete com o menu nativo do navegador.** Em browsers, o
+  right-click do navegador fica desabilitado dentro do trigger.
+  Para áreas com texto selecionável, isso pode atrapalhar — pondere
+  com o usuário em mente.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix aplica `role="menu"` no content e `role="menuitem"` (e variantes) nos items. |
+| **Foco** | Foco entra no primeiro item ao abrir. Volta para o trigger (ou para o body) ao fechar. |
+| **Keyboard** | `Shift+F10` ou `Menu key` abrem o ContextMenu (convenção do SO). `↑/↓` navegam. `Esc` fecha. |
+| **Screen reader** | Mesma semântica do DropdownMenu. SR usuários precisam saber que a região é "context-menu enabled" — anuncie via texto na vizinhança ou `aria-haspopup`. |
+| **Touch** | Sem equivalente padronizado. **Espelhe ações em DropdownMenu visível** para tocar. |
+
+## Related
+
+- [`DropdownMenu`](./dropdown-menu) — menu por clique padrão. **Toda
+  ContextMenu deve ter um DropdownMenu equivalente.**
+- [`Tooltip`](./tooltip) — para ensinar o gesto de right-click na
+  primeira visita.

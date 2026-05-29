@@ -1,0 +1,75 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-radar-chart",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Radar Chart (Angular)",
+  "description": "Styled radar chart - multi-axis comparison. Uses the ng-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/charts/styled/radar-chart.ts",
+      "content": "import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\nimport { ChartFrame } from '../headless/chart-frame';\nimport { Radar } from '../headless/radar';\nimport type { ChartConfig, Datum } from '../headless/types';\n\ninterface SeriesView {\n  key: string;\n  label: string;\n  color: string;\n}\n\n/**\n * Styled radar chart. Each data row (`xKey`) becomes a spoke; each entry in\n * `config` becomes a closed series polygon sharing one radial max.\n *\n * @example\n * ```html\n * <radar-chart [data]=\"data\" [config]=\"config\" xKey=\"metric\" />\n * ```\n */\n@Component({\n  selector: 'radar-chart',\n  imports: [ChartFrame, Radar],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: { 'data-slot': 'radar-chart' },\n  template: `\n    <figure role=\"img\" [attr.aria-label]=\"ariaLabel()\" [class]=\"cardClass\">\n      <svg\n        chartFrame\n        [data]=\"data()\"\n        [xKey]=\"xKey()\"\n        class=\"mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground\"\n      >\n        @for (s of series(); track s.key; let i = $index) {\n          <svg:g [radar]=\"s.key\" [color]=\"s.color\" #r=\"radar\">\n            @if (i === 0) {\n              @for (ring of r.rings(); track $index) {\n                <svg:path [attr.d]=\"ring\" fill=\"none\" stroke=\"currentColor\" stroke-opacity=\"0.12\" />\n              }\n              @for (ax of r.axes(); track ax.label) {\n                <svg:line\n                  [attr.x1]=\"r.center().cx\"\n                  [attr.y1]=\"r.center().cy\"\n                  [attr.x2]=\"ax.x2\"\n                  [attr.y2]=\"ax.y2\"\n                  stroke=\"currentColor\"\n                  stroke-opacity=\"0.12\"\n                />\n                <svg:text\n                  [attr.x]=\"ax.lx\"\n                  [attr.y]=\"ax.ly\"\n                  text-anchor=\"middle\"\n                  dominant-baseline=\"middle\"\n                  class=\"fill-muted-foreground text-[10px]\"\n                >{{ ax.label }}</svg:text>\n              }\n            }\n            <svg:path\n              [attr.d]=\"r.d()\"\n              [attr.fill]=\"s.color\"\n              fill-opacity=\"0.2\"\n              [attr.stroke]=\"s.color\"\n              stroke-width=\"2\"\n            />\n          </svg:g>\n        }\n      </svg>\n\n      <ul class=\"flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground\">\n        @for (s of series(); track s.key) {\n          <li class=\"flex items-center gap-1.5\">\n            <span class=\"size-2.5 rounded-[2px]\" [style.background]=\"s.color\"></span>\n            {{ s.label }}\n          </li>\n        }\n      </ul>\n\n      <table class=\"sr-only\">\n        <caption>{{ ariaLabel() }}</caption>\n        <thead>\n          <tr>\n            <th>{{ xKey() }}</th>\n            @for (s of series(); track s.key) {\n              <th>{{ s.label }}</th>\n            }\n          </tr>\n        </thead>\n        <tbody>\n          @for (row of data(); track $index) {\n            <tr>\n              <td>{{ row[xKey()] }}</td>\n              @for (s of series(); track s.key) {\n                <td>{{ row[s.key] }}</td>\n              }\n            </tr>\n          }\n        </tbody>\n      </table>\n    </figure>\n  `,\n})\nexport class RadarChart {\n  readonly data = input.required<readonly Datum[]>();\n  readonly config = input.required<ChartConfig>();\n  readonly xKey = input.required<string>();\n\n  readonly series = computed<SeriesView[]>(() =>\n    Object.entries(this.config()).map(([key, entry]) => ({\n      key,\n      label: entry.label,\n      color: entry.color,\n    })),\n  );\n\n  readonly ariaLabel = computed(\n    () => `Radar chart of ${this.series().map((s) => s.label).join(', ')} by ${this.xKey()}`,\n  );\n\n  readonly cardClass = cn(\n    'flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground',\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/data/radar-chart/radar-chart.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Dashboards, analytics surfaces, and AI-generated visualisations. Use the styled presets for quick wins; drop down to the headless primitives when you need a bespoke chart.",
+    "whenNotToUse": "A single sparkline inside a metric card - the styled presets carry a chart frame and axes which would be visual noise. Reach for the headless primitives or a plain SVG.",
+    "bestPractices": [
+      "Pick the chart type based on the nature of the data: time series -> area or line; categorical -> bar; composition (<= 5 slices) -> pie; correlation -> scatter.",
+      "Stick to the Gremorie sequential palette for ordinal data and the categorical palette for nominal data.",
+      "When generating charts via AI, always pass tabular data plus a label - never inline arrays."
+    ],
+    "antipatterns": [
+      "Pie chart with more than 5 slices - use a bar chart instead.",
+      "Sequential palette on categorical data - it implies ordering that isn't there.",
+      "Stacked bar to compare both totals and parts - readers can do one or the other, not both."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "data",
+          "type": "ChartData",
+          "required": true,
+          "description": "The dataset, in the shape expected by the chosen chart type."
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "required": false,
+          "description": "Width override. Defaults to the host element width."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "description": "Height override. Defaults to 240."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Area chart with monthly data",
+        "code": "<gremorie-area-chart [data]=\"revenueByMonth\"></gremorie-area-chart>\n"
+      },
+      {
+        "title": "Bar chart, categorical",
+        "code": "<gremorie-bar-chart [data]=\"usersByPlan\"></gremorie-bar-chart>\n"
+      }
+    ]
+  }
+}

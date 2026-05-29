@@ -1,0 +1,40 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "artifact-form-schema",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Form (schema) artifact",
+  "description": "Form artifact generated from a JSON field schema with submit. Composes Input, Checkbox, Label, Button (rx-forms) with Card + Badge.",
+  "categories": [
+    "artifacts",
+    "form"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-card",
+    "rx-badge",
+    "rx-input",
+    "rx-checkbox",
+    "rx-label",
+    "rx-button"
+  ],
+  "files": [
+    {
+      "path": "form-schema.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport {\n  Badge,\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@gremorie/rx-display\";\nimport { Button, Checkbox, Input, Label } from \"@gremorie/rx-forms\";\n\nconst SCHEMA = `{\n  fields: [\n    { type: \"text\", name: \"company\", label: \"Company name\", required: true },\n    { type: \"email\", name: \"email\", label: \"Work email\", required: true },\n    { type: \"checkbox\", name: \"newsletter\", label: \"Subscribe to monthly updates\" },\n  ],\n}`;\n\nexport function FormSchema() {\n  const [submitted, setSubmitted] = useState(false);\n  return (\n    <Card>\n      <CardHeader>\n        <div className=\"flex items-center justify-between gap-3\">\n          <div>\n            <CardTitle>Generated form</CardTitle>\n            <CardDescription>\n              Built from a 3-field schema returned by the LLM.\n            </CardDescription>\n          </div>\n          <Badge variant=\"outline\">Field schema</Badge>\n        </div>\n      </CardHeader>\n      <CardContent>\n        <form\n          className=\"flex flex-col gap-4\"\n          onSubmit={(e) => {\n            e.preventDefault();\n            setSubmitted(true);\n            setTimeout(() => setSubmitted(false), 2000);\n          }}\n        >\n          <div className=\"flex flex-col gap-2\">\n            <Label htmlFor=\"fs-company\">Company name</Label>\n            <Input id=\"fs-company\" required />\n          </div>\n          <div className=\"flex flex-col gap-2\">\n            <Label htmlFor=\"fs-email\">Work email</Label>\n            <Input id=\"fs-email\" type=\"email\" required />\n          </div>\n          <div className=\"flex items-center gap-2\">\n            <Checkbox id=\"fs-newsletter\" />\n            <Label htmlFor=\"fs-newsletter\" className=\"text-sm font-normal\">\n              Subscribe to monthly updates\n            </Label>\n          </div>\n          <Button type=\"submit\" className=\"w-full\">\n            {submitted ? \"Sent!\" : \"Submit\"}\n          </Button>\n          <pre className=\"mt-2 overflow-x-auto rounded bg-muted/40 p-3 text-xs font-mono text-muted-foreground\">\n            {SCHEMA}\n          </pre>\n        </form>\n      </CardContent>\n    </Card>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/artifacts/form-schema/form-schema.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use artifact-form-schema.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

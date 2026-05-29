@@ -1,0 +1,130 @@
+---
+title: HoverCard
+description: Preview rico em hover — sem interatividade dentro, sem informação crítica.
+component: HoverCard
+importPath: "@kalvner/kds/overlays/hover-card"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { HoverCardPreview } from "@/components/overlay-demos";
+
+## Overview
+
+`HoverCard` mostra um **preview rico** ao pairar o mouse — perfil de
+usuário em `@mentions`, preview de link, teaser de imagem. É o que
+acontece quando você passa o cursor sobre um username no Twitter ou
+um link no Notion.
+
+Hover é **discoverable mas opcional**. Touch users não conseguem
+disparar; keyboard users abrem só quando o foco passa pelo trigger.
+Isso significa: nada crítico aqui dentro. Conteúdo do HoverCard deve
+ser sempre acessível por outro caminho — clicar no link abre a
+página inteira, etc.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>HoverCard com profile preview.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <HoverCardPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<HoverCard>
+  <HoverCardTrigger />
+  <HoverCardContent>
+    {/* preview content */}
+  </HoverCardContent>
+</HoverCard>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `HoverCard` | Raiz que controla open via hover. |
+| `HoverCardTrigger` | Elemento que dispara o preview ao pairar. |
+| `HoverCardContent` | Container portalado com o preview. |
+
+## Usage
+
+```tsx
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent
+} from "@kalvner/kds/overlays/hover-card";
+
+export function UserMention({ user }) {
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <a href={`/u/${user.handle}`}>@{user.handle}</a>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-72">
+        {/* user info preview */}
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+```
+
+## When to use
+
+- Profile previews em menções, listas de membros.
+- Link previews — small image + title + description, estilo Notion /
+  Slack.
+- Detalhes complementares de uma imagem ou documento sem precisar
+  abrir a página.
+
+## When not to use
+
+- Para informação crítica — se o usuário **precisa** ler para
+  agir, não pode estar num hover. Use [`Popover`](./popover) (clique
+  intencional) ou imprima na própria página.
+- Para conteúdo interativo — botões / inputs dentro de HoverCard
+  ficam difíceis de alcançar (o hover dispara/some). Use Popover.
+- Em mobile / touch — touch users não disparam HoverCard.
+
+## Best practices
+
+- **Delay padrão.** Open delay de ~700ms evita flicker quando o
+  cursor só passa por cima. Fechar com leve atraso evita que o
+  preview suma quando o usuário tenta clicar dentro.
+- **Largura modesta.** Default 256px (`w-64`). Previews são teaser,
+  não páginas — se a content estiver pedindo 500px de largura, o
+  caso pertence ao Popover ou a uma página dedicada.
+- **Sem botões dentro.** O comportamento de hover faz com que botões
+  apareçam/sumam de forma frágil. Se você precisa de "Ver perfil",
+  o trigger inteiro já é o link.
+- **Não auto-foque.** Ao contrário do Dialog, HoverCard não rouba
+  foco — ele complementa, não interrompe.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix aplica `role="dialog"` (com `aria-haspopup`) embora seja efêmero. |
+| **Foco** | Foco no trigger dispara abrir; sair do trigger fecha. Foco não entra no content. |
+| **Keyboard** | `Tab` para o trigger abre. `Esc` fecha. Não há navegação para dentro do content. |
+| **Screen reader** | O content é anunciado quando aberto via foco. Para conteúdo verdadeiramente crítico, prefira mostrar inline ou em Popover. |
+| **Touch** | Sem trigger natural — design para que touch users tenham acesso ao mesmo conteúdo via clique. |
+| **Reduced motion** | Fade respeita `prefers-reduced-motion`. |
+
+## Related
+
+- [`Popover`](./popover) — para conteúdo interativo (clique).
+- [`Tooltip`](./tooltip) — para labels curtos e simples.
+- [`Avatar`](../display/avatar) — frequente companheiro em profile
+  previews.

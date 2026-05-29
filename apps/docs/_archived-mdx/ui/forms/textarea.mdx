@@ -1,0 +1,224 @@
+---
+title: Textarea
+description: Campo de texto multi-linha com auto-resize via field-sizing CSS.
+component: Textarea
+importPath: "@kalvner/kds/forms/textarea"
+status: stable
+---
+
+import { Textarea } from "@kalvner/kds/forms/textarea";
+import { Label } from "@kalvner/kds/forms/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Textarea` é a versão multi-linha do Input. Internamente usa
+`field-sizing: content` (CSS moderno) — o campo cresce e diminui
+conforme o conteúdo, sem JavaScript de medição. `min-h-16` reserva
+altura inicial e previne layout shift quando a página carrega
+(ver [[ui/layout/cumulative-layout-shift]]).
+
+Para entradas de uma linha, prefira [`Input`](./input). Para edição
+rica (markdown, código, formatação), considere um editor dedicado —
+Textarea trata só texto plano.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Textarea com auto-resize.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Textarea placeholder="Conte mais sobre o que aconteceu…" />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Textarea
+  ├─ [data-slot="textarea"]
+  ├─ field-sizing: content (auto-grow)
+  └─ min-h-16 (altura inicial estável)
+/>
+```
+
+## Usage
+
+```tsx
+import { Textarea } from "@kalvner/kds/forms/textarea";
+import { Label } from "@kalvner/kds/forms/label";
+
+export function BioField() {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="bio">Bio</Label>
+      <Textarea id="bio" placeholder="Conte um pouco sobre você" />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `disabled` | `boolean` | `false` | Bloqueia interação. |
+| `readOnly` | `boolean` | `false` | Permite seleção/cópia mas bloqueia edição. |
+| `placeholder` | `string` | — | Hint dentro do campo. |
+| `rows` | `number` | — | Linhas iniciais. Compete com `min-h-16` — prefira não setar. |
+| `aria-invalid` | `boolean` | — | Aciona ring vermelho. |
+| `...rest` | `React.ComponentProps<'textarea'>` | — | Tudo de `<textarea>`. |
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Default</CardTitle>
+      <CardDescription>Altura mínima preservada.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Textarea placeholder="Escreva aqui" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Sem pointer events, opacidade reduzida.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Textarea disabled defaultValue="Texto bloqueado" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Readonly</CardTitle>
+      <CardDescription>Selecionável, não editável.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Textarea readOnly defaultValue="Selecionável mas não editável" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Auto-resize</CardTitle>
+      <CardDescription>field-sizing: content cresce com o conteúdo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Textarea
+        defaultValue={"Linha 1\nLinha 2\nLinha 3\nA cada linha o textarea expande."}
+      />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Error</CardTitle>
+      <CardDescription>aria-invalid + mensagem abaixo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Label htmlFor="bio-err">Bio</Label>
+        <Textarea
+          id="bio-err"
+          defaultValue=""
+          aria-invalid="true"
+          aria-describedby="bio-err-msg"
+          placeholder="Mínimo 20 caracteres"
+        />
+        <span id="bio-err-msg" className="block text-sm text-destructive">Bio precisa ter pelo menos 20 caracteres.</span>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Character count</CardTitle>
+      <CardDescription>Contador à direita, em texto pequeno.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Label htmlFor="bio-cc">Bio</Label>
+        <Textarea
+          id="bio-cc"
+          defaultValue="Comecei a escrever um pouco para o contador animar."
+        />
+        <div className="flex justify-end text-xs text-muted-foreground">
+          51 / 280
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Comment box</CardTitle>
+    <CardDescription>Caixa de comentário com helper, contador e submit.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="grid gap-2">
+      <Label htmlFor="comment-comp">Comentário</Label>
+      <Textarea
+        id="comment-comp"
+        placeholder="Escreva seu comentário"
+      />
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>Markdown habilitado</span>
+        <span>0 / 500</span>
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+## When to use
+
+- Mensagens de erro, comentários, descrições, biografias, qualquer
+  texto livre de mais de uma linha.
+- Conteúdo curto-a-médio — algumas frases, talvez um parágrafo.
+- Onde Markdown puro é aceitável e edição rica não agrega.
+
+## When not to use
+
+- Para edição rica (formatação, links, embeds), use um editor
+  dedicado (TipTap, Slate, ProseMirror).
+- Para entrada de uma linha, sempre [`Input`](./input) — Textarea de
+  uma linha desperdiça espaço vertical e quebra layout.
+- Para listas estruturadas (tags, checklists), prefira componentes
+  específicos.
+
+## Best practices
+
+- **Não set `rows`.** A altura mínima vem do CSS (`min-h-16`); o
+  crescimento vem do `field-sizing`. Setar `rows` força altura
+  fixa e perde o benefício do auto-resize.
+- **Contador de caracteres à direita, em `text-xs`.** Informativo,
+  não competitivo com o input. Atualize só após primeiro `onInput`
+  para evitar flash de "0/500" inicial.
+- **Helper e contador na mesma linha quando possível** — cabem em
+  `flex justify-between`, otimizando espaço vertical.
+- **Não anime height na transição idle → focused.** Causa CLS. Use
+  `border-color` e `box-shadow` em vez disso —
+  [[ui/layout/cumulative-layout-shift]].
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Label** | Sempre vincule via `htmlFor` + `id`. |
+| **Erro** | `aria-invalid` + `aria-describedby` apontando para a mensagem. |
+| **Contador como descrição** | Use `aria-describedby` apontando para o contador para que leitores de tela informem o limite. |
+| **Resize manual** | Por padrão, `<textarea>` permite resize via canto inferior direito. `field-sizing: content` desabilita esse comportamento — ok para a maioria. |
+| **Touch target** | Min-height 64px é confortável para mobile. |
+
+## Related
+
+- [`Input`](./input) — entrada de uma linha.
+- [`Form`](./form) — wrappers de RHF + Zod com Textarea.
+- [`Label`](./label) — par obrigatório.

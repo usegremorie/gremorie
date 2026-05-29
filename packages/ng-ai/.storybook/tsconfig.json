@@ -1,0 +1,31 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "outDir": "",
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "composite": false
+  },
+  "files": [],
+  "exclude": ["../**/*.spec.ts"],
+  "include": [
+    "../src/**/*.stories.ts",
+    "../src/**/*.stories.js",
+    "../src/**/*.stories.jsx",
+    "../src/**/*.stories.tsx",
+    "../src/**/*.stories.mdx",
+    "../../ng-display/src/**/*.stories.ts",
+    "../../ng-display/src/**/*.stories.js",
+    "../../ng-display/src/**/*.stories.jsx",
+    "../../ng-display/src/**/*.stories.tsx",
+    "../../ng-display/src/**/*.stories.mdx",
+    "../../ng-feedback/src/**/*.stories.ts",
+    "../../ng-feedback/src/**/*.stories.js",
+    "../../ng-feedback/src/**/*.stories.jsx",
+    "../../ng-feedback/src/**/*.stories.tsx",
+    "../../ng-feedback/src/**/*.stories.mdx",
+    "*.ts",
+    "*.js"
+  ]
+}

@@ -1,0 +1,161 @@
+---
+title: ChainOfThought
+description: Steps numerados de pensamento — versão estruturada do Reasoning, com search results inline.
+component: ChainOfThought
+importPath: "@kalvner/kds/ai/chain-of-thought"
+status: stable
+---
+
+import { ChainOfThoughtPreview, ChainOfThoughtSearchPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`ChainOfThought` é a versão **estruturada** de [Reasoning](./reasoning):
+em vez de markdown contínuo, mostra **passos discretos** com status
+(complete / active / pending) e suporte a search results inline.
+
+Use pra agentes que reportam progresso por etapas — Plan → Search →
+Synthesize → Answer — onde cada step pode ter referências.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Steps com complete / active / pending.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ChainOfThoughtPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<ChainOfThought>
+  ├─ <ChainOfThoughtHeader />
+  └─ <ChainOfThoughtContent>
+       └─ <ChainOfThoughtStep status label description>
+            └─ <ChainOfThoughtSearchResults>
+                 └─ <ChainOfThoughtSearchResult />
+</ChainOfThought>
+```
+
+## Usage
+
+```tsx
+<ChainOfThought defaultOpen>
+  <ChainOfThoughtHeader />
+  <ChainOfThoughtContent>
+    <ChainOfThoughtStep status="complete" label="Identifico tokens" />
+    <ChainOfThoughtStep status="active" label="Mapear semânticos" />
+    <ChainOfThoughtStep status="pending" label="Documentar" />
+  </ChainOfThoughtContent>
+</ChainOfThought>
+```
+
+## Props
+
+### ChainOfThought (Root)
+
+Aceita `ComponentProps<"div">`. Não há props além do `className`/`children`.
+
+### ChainOfThoughtHeader
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `title` | `string` | `'Reasoning'` | Título mostrado no header. |
+
+### ChainOfThoughtStep
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `status` | `'complete' \| 'active' \| 'pending'` | `'pending'` | Define o ícone e a opacidade. |
+| `label` | `string` | — | Texto do step. |
+| `description` | `string` | — | Subtexto (opcional). |
+| `icon` | `ReactNode` | — | Override do ícone (default depende do status). |
+| `children` | `ReactNode` | — | Conteúdo expandido (ex.: SearchResults). |
+
+### ChainOfThoughtSearchResults
+
+Wrapper flex que distribui `<ChainOfThoughtSearchResult>` chips abaixo
+de um Step. Aceita `ComponentProps<"div">`.
+
+### ChainOfThoughtSearchResult
+
+Chip clicável (Badge interno). Aceita `ComponentProps<"div">` —
+adicione `onClick` ou wrapping `<a>` pra navegação.
+
+## Subcomponents
+
+- **`ChainOfThought`** — container raiz.
+- **`ChainOfThoughtHeader`** — título do bloco.
+- **`ChainOfThoughtContent`** — wrapper dos steps.
+- **`ChainOfThoughtStep`** — passo individual com indicator visual
+  por status. `complete` é check verde, `active` é dot animado,
+  `pending` é dot vazio.
+- **`ChainOfThoughtSearchResults`** + `Result` — referências
+  encontradas durante o step (ex.: docs achadas numa busca).
+
+## States
+
+| Step status | Visual |
+|---|---|
+| `complete` | CheckIcon verde, opacidade total. |
+| `active` | Dot pulsante, opacidade total. |
+| `pending` | Dot vazio, opacidade reduzida. |
+
+## Composition
+
+Combine com Sources pra mostrar referências fora do step (no fim
+da resposta):
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <ChainOfThought>...</ChainOfThought>
+    <MessageResponse>{response}</MessageResponse>
+    <Sources>...</Sources>
+  </MessageContent>
+</Message>
+```
+
+## When to use
+
+- Agentes que reportam plano + execução em etapas.
+- Workflows com search → synthesize → answer.
+- Debug UI pra fluxos multi-step.
+
+## When not to use
+
+- Pensamento contínuo / não-estruturado — use [Reasoning](./reasoning).
+- Plano formal antes da execução — use [Plan](./plan).
+- Tool calls — use [Tool](./tool).
+
+## Best practices
+
+- Limite a 5-7 steps. Mais que isso vira ruído visual.
+- `description` só quando agrega — `label` claro raramente precisa
+  de explicação.
+- Use `SearchResults` pra surface de fontes inline; pra lista geral
+  no fim da mensagem use [Sources](./sources).
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Steps** | Lista semântica pode ser explicitada via `role="list"` no Content. |
+| **Status icons** | Acompanhados de texto; cor não é canal único. |
+| **Search results** | Chips clicáveis precisam ser `<a>` com `href` pra acessibilidade. |
+
+## Related
+
+- [Reasoning](./reasoning) — versão markdown contínua.
+- [Plan](./plan) — plano formal numerado.
+- [Sources](./sources) — lista de referências externas.
+- [Task](./task) — tasks executáveis vs. raciocínio.

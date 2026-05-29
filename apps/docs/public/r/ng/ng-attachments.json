@@ -1,0 +1,152 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-attachments",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Attachments (Angular)",
+  "description": "Composable Attachment* family - List, Item, Preview, Info, Name, Size, Remove, Empty - plus type and util files. Lays out file attachments for chat surfaces.",
+  "categories": [
+    "ai",
+    "forms",
+    "media"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@angular/common",
+    "class-variance-authority"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/attachments/attachment.types.ts",
+      "content": "/**\n * Shape consumed by the Attachments family.\n *\n * Mirrors the AI SDK's FileUIPart surface but without depending on the\n * `ai` package. Consumers can pass FileUIPart directly (structurally\n * compatible) or use {@link toAttachmentData} when starting from a\n * native File.\n */\nexport interface AttachmentData {\n  /** Stable identifier — required for tracking in *ngFor / @for */\n  id: string;\n  /** Filename or display label. Falls back to mediaType-derived label. */\n  filename?: string;\n  /** MIME type — used to pick the preview surface (image/video/audio/document/source/unknown). */\n  mediaType?: string;\n  /** Already-uploaded URL — used as <img>/<video> src in the preview. */\n  url?: string;\n  /** Native File object — used to derive a blob URL preview client-side. */\n  file?: File;\n  /** Byte size — when omitted, derived from `file.size` if present. */\n  size?: number;\n}\n\nexport type AttachmentVariant = 'grid' | 'inline' | 'list';\n\nexport type AttachmentMediaCategory =\n  | 'image'\n  | 'video'\n  | 'audio'\n  | 'document'\n  | 'source'\n  | 'unknown';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/attachments/attachment.types.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment.utils.ts",
+      "content": "import {\n  AttachmentData,\n  AttachmentMediaCategory,\n} from './attachment.types';\n\nlet idCounter = 0;\nfunction nextId(): string {\n  idCounter += 1;\n  return `attachment-${Date.now().toString(36)}-${idCounter}`;\n}\n\n/**\n * Convert a native File into an AttachmentData shape that the components\n * consume. Generates a stable id if you don't provide one.\n */\nexport function toAttachmentData(\n  file: File,\n  overrides?: Partial<AttachmentData>,\n): AttachmentData {\n  return {\n    id: overrides?.id ?? nextId(),\n    filename: overrides?.filename ?? file.name,\n    mediaType: overrides?.mediaType ?? file.type,\n    size: overrides?.size ?? file.size,\n    file,\n    ...overrides,\n  };\n}\n\n/**\n * Classify an attachment into a coarse media category — drives the\n * preview surface (image vs video vs audio vs generic document icon).\n */\nexport function getMediaCategory(\n  data: Pick<AttachmentData, 'mediaType'>,\n): AttachmentMediaCategory {\n  const mime = data.mediaType?.toLowerCase() ?? '';\n  if (mime.startsWith('image/')) return 'image';\n  if (mime.startsWith('video/')) return 'video';\n  if (mime.startsWith('audio/')) return 'audio';\n  if (\n    mime === 'application/pdf' ||\n    mime.startsWith('text/') ||\n    mime.includes('document') ||\n    mime.includes('spreadsheet') ||\n    mime.includes('presentation')\n  ) {\n    return 'document';\n  }\n  if (mime.startsWith('text/uri-list') || mime === 'application/url') {\n    return 'source';\n  }\n  return 'unknown';\n}\n\n/**\n * Pick the best human-readable label for an attachment. Filename wins;\n * fallback hierarchy lets even a typeless blob show something useful.\n */\nexport function getAttachmentLabel(\n  data: Pick<AttachmentData, 'filename' | 'mediaType'>,\n): string {\n  if (data.filename) return data.filename;\n  const category = getMediaCategory(data);\n  switch (category) {\n    case 'image':\n      return 'Image';\n    case 'video':\n      return 'Video';\n    case 'audio':\n      return 'Audio';\n    case 'document':\n      return 'Document';\n    case 'source':\n      return 'Source';\n    default:\n      return 'Attachment';\n  }\n}\n\n/** Format byte count as a short string like \"240 KB\" or \"12.4 MB\". */\nexport function formatFileSize(bytes: number | undefined): string {\n  if (bytes === undefined || bytes < 0) return '';\n  if (bytes < 1024) return `${bytes} B`;\n  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;\n  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;\n}\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/attachments/attachment.utils.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-empty.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Empty-state placeholder. Render inside an {@link AttachmentList}\n * (typically gated by `@if (items.length === 0)`) to communicate\n * \"no files yet\" — useful in upload-first UIs.\n */\n@Component({\n  selector: 'attachment-empty',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <svg\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      stroke-width=\"1.5\"\n      stroke-linecap=\"round\"\n      stroke-linejoin=\"round\"\n      aria-hidden=\"true\"\n      class=\"size-6 opacity-60\"\n    >\n      <path d=\"m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 17.93 8.8l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48\" />\n    </svg>\n    <ng-content>\n      <p class=\"text-sm\">No attachments yet.</p>\n    </ng-content>\n  `,\n  host: {\n    class:\n      'flex w-full flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-muted/30 px-4 py-6 text-center text-muted-foreground',\n  },\n})\nexport class AttachmentEmpty {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-empty.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-info.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { AttachmentItem } from './attachment-item';\nimport { formatFileSize } from './attachment.utils';\n\n/**\n * Filename + optional secondary line (media type or size). Auto-truncates\n * long names with ellipsis. Tooltip exposes the full filename.\n *\n * Host display adapts to the parent variant — in row-flex parents\n * (`inline`, `list`) it claims remaining space; in column-flex (`grid`)\n * it spans full width.\n */\n@Component({\n  selector: 'attachment-info',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <span class=\"truncate text-sm leading-tight text-foreground\" [attr.title]=\"label()\">\n      {{ label() }}\n    </span>\n    @if (secondary(); as line) {\n      <span class=\"truncate text-xs leading-tight text-muted-foreground\">{{ line }}</span>\n    }\n  `,\n  host: {\n    '[class]': 'hostClass()',\n  },\n})\nexport class AttachmentInfo {\n  protected readonly parent = inject(AttachmentItem);\n\n  readonly showMediaType = input<boolean>(false);\n  readonly showSize = input<boolean>(true);\n\n  protected readonly label = computed(() => this.parent.label());\n\n  protected readonly hostClass = computed(() => {\n    const variant = this.parent.resolvedVariant();\n    const base = 'flex min-w-0 flex-col gap-0.5';\n    if (variant === 'grid') {\n      // Column-flex parent — span the card width, don't stretch vertically.\n      return `${base} w-full pt-1`;\n    }\n    // Row-flex parent — fill remaining horizontal space.\n    return `${base} flex-1`;\n  });\n\n  protected readonly secondary = computed<string | null>(() => {\n    const data = this.parent.data();\n    const parts: string[] = [];\n    if (this.showMediaType() && data.mediaType) {\n      parts.push(data.mediaType);\n    }\n    if (this.showSize() && data.size !== undefined) {\n      parts.push(formatFileSize(data.size));\n    }\n    if (parts.length === 0) return null;\n    return parts.join(' · ');\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-info.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-item.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  inject,\n  input,\n  output,\n  signal,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cva } from 'class-variance-authority';\n\nimport { AttachmentList } from './attachment-list';\nimport {\n  AttachmentData,\n  AttachmentMediaCategory,\n} from './attachment.types';\nimport {\n  getAttachmentLabel,\n  getMediaCategory,\n} from './attachment.utils';\n\nconst itemVariants = cva(\n  'group/attachment relative rounded-md border border-border bg-card text-card-foreground transition-colors motion-safe:animate-[gremorie-fade-in_120ms_ease-out]',\n  {\n    variants: {\n      variant: {\n        // Column-flex card with thumbnail on top, info below.\n        grid: 'flex w-[220px] flex-col items-stretch gap-2 p-2',\n        // Compact badge — row-flex, small icon + text + remove.\n        inline: 'inline-flex h-9 max-w-[220px] items-center gap-1.5 px-2 py-1',\n        // Wide row — square thumbnail, info, remove.\n        list: 'flex w-full items-center gap-3 p-2',\n      },\n      errored: {\n        true: 'border-destructive',\n        false: '',\n      },\n    },\n    defaultVariants: {\n      variant: 'grid',\n      errored: false,\n    },\n  },\n);\n\n/**\n * Individual attachment wrapper. Provides its data + state to children\n * (preview, info, remove, etc) via DI so they can be composed in any\n * order without prop-drilling.\n */\n@Component({\n  selector: 'attachment-item',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    role: 'listitem',\n    '[attr.data-id]': 'data().id',\n    '[attr.data-media-category]': 'mediaCategory()',\n    '[attr.data-loading]': 'loading() ? \"\" : null',\n    '[attr.data-error]': 'errored() ? \"\" : null',\n    '[class]': 'hostClass()',\n  },\n})\nexport class AttachmentItem {\n  /**\n   * Parent list is optional — the item still works standalone outside\n   * of an AttachmentList (read variant directly from input).\n   */\n  private readonly list = inject(AttachmentList, { optional: true });\n\n  readonly data = input.required<AttachmentData>();\n  readonly loading = input<boolean>(false);\n  readonly errored = input<boolean>(false);\n  readonly variant = input<'grid' | 'inline' | 'list' | undefined>(undefined);\n\n  readonly removed = output<AttachmentData>();\n\n  private readonly previewUrl = signal<string | null>(null);\n\n  readonly resolvedVariant = computed(\n    () => this.variant() ?? this.list?.variant() ?? 'grid',\n  );\n\n  readonly mediaCategory = computed<AttachmentMediaCategory>(() =>\n    getMediaCategory(this.data()),\n  );\n\n  readonly label = computed(() => getAttachmentLabel(this.data()));\n\n  protected readonly hostClass = computed(() =>\n    itemVariants({\n      variant: this.resolvedVariant(),\n      errored: this.errored(),\n    }),\n  );\n\n  constructor() {\n    effect((onCleanup) => {\n      const current = this.data();\n      // Only generate blob URL when we have a File and no explicit URL.\n      if (current.url) {\n        this.previewUrl.set(current.url);\n        return;\n      }\n      if (current.file && getMediaCategory(current) === 'image') {\n        const url = URL.createObjectURL(current.file);\n        this.previewUrl.set(url);\n        onCleanup(() => URL.revokeObjectURL(url));\n        return;\n      }\n      this.previewUrl.set(null);\n    });\n  }\n\n  /** Called by `<attachment-remove>` via DI. */\n  emitRemove(): void {\n    this.removed.emit(this.data());\n  }\n\n  /** Current preview URL — resolved from `data.url` or generated from `data.file`. */\n  getPreviewUrl(): string | null {\n    return this.previewUrl();\n  }\n}\n\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-item.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-list.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cva, type VariantProps } from 'class-variance-authority';\n\nimport { AttachmentVariant } from './attachment.types';\n\n/**\n * Layout for the attachment list.\n *\n * - **grid** — wraps cards, best for message bubbles or rich preview.\n * - **inline** — compact badge row, best for input toolbars.\n * - **list** — vertical stack with full metadata, best for upload UIs.\n */\nconst listVariants = cva('flex w-full', {\n  variants: {\n    variant: {\n      grid: 'flex-wrap items-start gap-3',\n      inline: 'flex-wrap items-center gap-2',\n      list: 'flex-col gap-2',\n    },\n  },\n  defaultVariants: {\n    variant: 'grid',\n  },\n});\n\nexport type AttachmentListVariantProps = VariantProps<typeof listVariants>;\n\n@Component({\n  selector: 'attachment-list',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    role: 'list',\n    '[attr.aria-label]': 'ariaLabel()',\n    '[attr.data-variant]': 'variant()',\n    '[class]': 'hostClass()',\n  },\n})\nexport class AttachmentList {\n  readonly variant = input<AttachmentVariant>('grid');\n  readonly ariaLabel = input<string>('Attachments');\n\n  protected readonly hostClass = computed(() =>\n    listVariants({ variant: this.variant() }),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-list.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-name.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { AttachmentItem } from './attachment-item';\n\n/**\n * Filename only — finer-grained than {@link AttachmentInfo}. Use when\n * you want full control over layout (e.g. wrap with a custom badge).\n *\n * Host display adapts to the parent variant: `flex-1` in row-flex\n * (`inline`/`list`), `w-full` in column-flex (`grid`).\n */\n@Component({\n  selector: 'attachment-name',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `{{ label() }}`,\n  host: {\n    '[class]': 'hostClass()',\n    '[attr.title]': 'label()',\n  },\n})\nexport class AttachmentName {\n  protected readonly parent = inject(AttachmentItem);\n\n  protected readonly label = computed(() => this.parent.label());\n\n  protected readonly hostClass = computed(() => {\n    const variant = this.parent.resolvedVariant();\n    const base = 'block min-w-0 truncate text-sm text-foreground';\n    return variant === 'grid' ? `${base} w-full` : `${base} flex-1`;\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-name.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-preview.ts",
+      "content": "import { NgTemplateOutlet } from '@angular/common';\nimport {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  TemplateRef,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cva } from 'class-variance-authority';\n\nimport { AttachmentItem } from './attachment-item';\nimport { AttachmentMediaCategory } from './attachment.types';\n\nconst previewVariants = cva(\n  'relative flex shrink-0 items-center justify-center overflow-hidden bg-muted text-muted-foreground',\n  {\n    variants: {\n      variant: {\n        grid: 'h-32 w-full rounded-md',\n        inline: 'size-5 rounded-sm',\n        list: 'size-10 rounded-md',\n      },\n    },\n    defaultVariants: { variant: 'grid' },\n  },\n);\n\nconst ICON_BY_CATEGORY: Record<\n  Exclude<AttachmentMediaCategory, 'image'>,\n  string\n> = {\n  video:\n    'M23 7l-7 5 7 5V7z M14 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z',\n  audio:\n    'M9 18V5l12-2v13 M6 18a3 3 0 1 0 3 3v-3 M18 16a3 3 0 1 0 3 3v-3',\n  document:\n    'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8',\n  source:\n    'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71 M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71',\n  unknown:\n    'M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z M13 2v7h7',\n};\n\n/**\n * Visual preview surface. Renders an <img> for image data when a blob\n * URL or static URL is available, otherwise a media-type icon.\n *\n * Override entirely via the optional `fallback` TemplateRef input —\n * useful when you have your own icon system (lucide / heroicons / etc).\n *\n * Classes are applied to the host so the element behaves as the styled\n * box itself (no extra wrapper layer between item and image/icon).\n */\n@Component({\n  selector: 'attachment-preview',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  imports: [NgTemplateOutlet],\n  template: `\n    @if (mediaCategory() === 'image' && imageSrc(); as src) {\n      <img [src]=\"src\" [alt]=\"alt()\" class=\"size-full object-cover\" />\n    } @else if (fallback(); as tmpl) {\n      <ng-container *ngTemplateOutlet=\"tmpl\"></ng-container>\n    } @else {\n      <svg\n        [class]=\"iconClass()\"\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"1.75\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n      >\n        <path [attr.d]=\"iconPath()\"></path>\n      </svg>\n    }\n    @if (parent.loading()) {\n      <span class=\"absolute inset-0 animate-pulse bg-muted/60\"></span>\n    }\n    @if (parent.errored()) {\n      <span class=\"absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-[10px] font-medium text-destructive-foreground\">\n        Error\n      </span>\n    }\n  `,\n  host: {\n    '[class]': 'hostClass()',\n    '[attr.data-variant]': 'parent.resolvedVariant()',\n  },\n})\nexport class AttachmentPreview {\n  protected readonly parent = inject(AttachmentItem);\n\n  readonly fallback = input<TemplateRef<unknown> | null>(null);\n\n  protected readonly mediaCategory = computed(() =>\n    this.parent.mediaCategory(),\n  );\n\n  protected readonly imageSrc = computed(() => this.parent.getPreviewUrl());\n\n  protected readonly alt = computed(\n    () => this.parent.data().filename ?? 'Attachment preview',\n  );\n\n  protected readonly hostClass = computed(() =>\n    previewVariants({ variant: this.parent.resolvedVariant() }),\n  );\n\n  protected readonly iconClass = computed(() => {\n    const variant = this.parent.resolvedVariant();\n    return variant === 'inline' ? 'size-3.5' : 'size-5';\n  });\n\n  protected readonly iconPath = computed(() => {\n    const category = this.mediaCategory();\n    if (category === 'image') return '';\n    return ICON_BY_CATEGORY[category];\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-preview.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-remove.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { AttachmentItem } from './attachment-item';\n\n/**\n * Remove button. Calls the parent {@link AttachmentItem}'s `removed`\n * output via DI — consumers can put it anywhere inside the item.\n *\n * Position-aware: absolute top-right for the `grid` variant (revealed\n * on hover), inline for `list` and `inline` variants.\n */\n@Component({\n  selector: 'attachment-remove',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      [class]=\"buttonClass()\"\n      [attr.aria-label]=\"label()\"\n      (click)=\"handleClick($event)\"\n    >\n      <svg\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n        class=\"size-3.5\"\n      >\n        <line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\" />\n        <line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\" />\n      </svg>\n    </button>\n  `,\n  host: {\n    '[class]': 'hostClass()',\n  },\n})\nexport class AttachmentRemove {\n  protected readonly parent = inject(AttachmentItem);\n\n  readonly label = input<string>('Remove attachment');\n\n  protected readonly hostClass = computed(() => {\n    const variant = this.parent.resolvedVariant();\n    // For grid variant the host floats absolutely; for others it sits inline.\n    if (variant === 'grid') {\n      return 'absolute right-1.5 top-1.5 z-10 inline-flex';\n    }\n    return 'inline-flex shrink-0';\n  });\n\n  protected readonly buttonClass = computed(() => {\n    const variant = this.parent.resolvedVariant();\n    const base =\n      'inline-flex size-6 shrink-0 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';\n    if (variant === 'grid') {\n      return `${base} bg-background/80 opacity-0 backdrop-blur-sm group-hover/attachment:opacity-100 focus-visible:opacity-100`;\n    }\n    return base;\n  });\n\n  protected handleClick(event: Event): void {\n    event.stopPropagation();\n    this.parent.emitRemove();\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-remove.ts"
+    },
+    {
+      "path": "src/lib/attachments/attachment-size.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { AttachmentItem } from './attachment-item';\nimport { formatFileSize } from './attachment.utils';\n\n/**\n * Formatted byte size. Hidden when the data has no `size` field.\n */\n@Component({\n  selector: 'attachment-size',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `@if (formatted(); as size) {{{ size }}}`,\n  host: {\n    class: 'text-xs text-muted-foreground',\n    '[hidden]': '!formatted()',\n  },\n})\nexport class AttachmentSize {\n  protected readonly parent = inject(AttachmentItem);\n\n  protected readonly formatted = computed(() => {\n    const size = this.parent.data().size;\n    if (size === undefined) return null;\n    return formatFileSize(size);\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/attachments/attachment-size.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

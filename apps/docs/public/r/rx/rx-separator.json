@@ -1,0 +1,33 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-separator",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Separator (React)",
+  "description": "Horizontal or vertical visual divider built on Radix Separator. Use sparingly - prefer spacing for visual grouping; reach for Separator only when a hard line carries semantic meaning.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "radix-ui"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/separator/separator.tsx",
+      "content": "\"use client\";\n\nimport { Separator as SeparatorPrimitive } from \"radix-ui\";\nimport * as React from \"react\";\n\nimport { cn } from \"@gremorie/rx-core\";\n\n/**\n * Separator - visual divider between groups of content.\n *\n * Wraps `@radix-ui/react-separator` so\n * the `decorative` flag controls whether the separator is exposed to\n * AT (`role=\"separator\"` with `aria-orientation`) or hidden as\n * presentational (`role=\"none\"`).\n *\n * Per ADR-012, this primitive ships under\n * `@kalvner/kds/display/separator` with the `cn` helper imported\n * by relative path. Visual is token-driven (`bg-border`) - the\n * separator picks up the active KDS theme automatically.\n *\n * The default `decorative={true}` is the right choice in the vast\n * majority of cases. Only set `decorative={false}` when the\n * separator carries semantic meaning (e.g. between two list-like\n * sections that you want screen readers to announce).\n */\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  decorative = true,\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {\n  return (\n    <SeparatorPrimitive.Root\n      data-slot=\"separator\"\n      decorative={decorative}\n      orientation={orientation}\n      className={cn(\n        \"shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px\",\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Separator };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/display/separator/separator.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-separator.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

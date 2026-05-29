@@ -1,0 +1,101 @@
+---
+title: Shimmer
+description: Texto com gradiente animado — feedback de "pensando" mais expressivo que spinner.
+component: Shimmer
+importPath: "@kalvner/kds/ai/shimmer"
+status: stable
+---
+
+import { ShimmerPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Shimmer` é texto com **gradiente animado** percorrendo a letra —
+feedback expressivo enquanto o modelo "pensa" antes de começar a
+streamar. Usado internamente pelo [Plan](./plan), [Reasoning](./reasoning)
+e outros componentes pra indicar fase pré-streaming.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Texto com gradiente animado — feedback de pensando.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ShimmerPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Shimmer>{texto}</Shimmer>
+```
+
+## Usage
+
+```tsx
+<Shimmer>Buscando referências nos docs...</Shimmer>
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Conteúdo do shimmer (texto). |
+| `duration` | `number` | `2` | Duração em segundos do ciclo do gradient. |
+| `spread` | `number` | `2` | Largura do "brilho" relativa ao texto. |
+| `className` | `string` | — | Override (em geral pra mudar o tamanho/peso). |
+
+## Subcomponents
+
+`Shimmer` é monolítico — um único componente.
+
+## States
+
+Sempre animado (não há estado off/on). Para parar a animação, use
+condicional no parent:
+
+```tsx
+{isLoading ? <Shimmer>Carregando...</Shimmer> : "Pronto"}
+```
+
+## When to use
+
+- Phases pré-streaming (model "thinking" antes do primeiro token).
+- Estados intermediários ("Compondo plano...", "Buscando docs...").
+- Substitute de spinner em fluxos de IA — mais alinhado ao tom.
+
+## When not to use
+
+- Loading determinado (com porcentagem) — use [Progress](../../ui/feedback/progress).
+- Loading de placeholder de UI — use [Skeleton](../../ui/feedback/skeleton).
+- Texto que precisa ser lido em alto contraste — Shimmer reduz o
+  contraste durante o ciclo.
+
+## Best practices
+
+- **Curto e específico.** "Compondo resposta" > "Carregando".
+- **Não anime indefinidamente.** Após 5-10s sem movimento, troque
+  pra Skeleton ou erro.
+- **Combine com Skeleton.** Shimmer no header / Skeleton no corpo.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Reduced motion** | Respeita `prefers-reduced-motion` — remove a animação. |
+| **Contrast** | Pareie com texto em outro lugar pra screen readers (ex.: `aria-label="loading"`). |
+
+## Related
+
+- [Skeleton](../../ui/feedback/skeleton) — placeholder de UI.
+- [Progress](../../ui/feedback/progress) — barra determinada.
+- [Reasoning](./reasoning) — usa Shimmer no trigger durante streaming.
+- [Plan](./plan) — usa Shimmer em PlanTitle/Description.

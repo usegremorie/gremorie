@@ -1,0 +1,211 @@
+---
+title: Sheet
+description: Painel lateral para fluxos longos — filtros, settings, edições multi-seção.
+component: Sheet
+importPath: "@kalvner/kds/overlays/sheet"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { SheetPreview, SheetSide } from "@/components/overlay-demos";
+
+## Overview
+
+`Sheet` é um painel ancorado a uma das bordas da viewport — direita
+por padrão. Use para **conteúdo que é longo demais para Dialog** mas
+não merece página inteira: filtros, painéis de configuração,
+edições multi-seção, painéis de detalhe.
+
+A diferença mental versus Dialog: Dialog é **uma decisão**; Sheet é
+**uma sessão de trabalho** que o usuário pode salvar e fechar quando
+quiser. Use a borda certa para o conteúdo:
+
+| Borda | Uso típico |
+|---|---|
+| `right` | Filtros, painéis de detalhe, edição contextual (default) |
+| `left` | Navegação principal em mobile |
+| `bottom` | Ações rápidas em mobile |
+| `top` | Notificações globais (raro) |
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Sheet com formulário de edição.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <SheetPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Sheet>
+  <SheetTrigger />
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle />
+      <SheetDescription />
+    </SheetHeader>
+    {/* conteúdo do sheet */}
+    <SheetFooter>
+      <Button>Salvar</Button>
+      <SheetClose>Cancelar</SheetClose>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Sheet` | Raiz. |
+| `SheetTrigger` | Elemento que abre o sheet. |
+| `SheetContent` | Container portalado e ancorado à borda. Aceita `side`. |
+| `SheetHeader` | Wrapper do título + descrição. |
+| `SheetTitle` | Título obrigatório. |
+| `SheetDescription` | Descrição opcional. |
+| `SheetFooter` | Rodapé com ações. |
+| `SheetClose` | Wrapper que fecha o sheet ao clicar. |
+
+## Usage
+
+```tsx
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose
+} from "@kalvner/kds/overlays/sheet";
+import { Button } from "@kalvner/kds/forms/button";
+
+export function FilterPanel() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Filtros</Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Filtros</SheetTitle>
+          <SheetDescription>
+            Refine os resultados pelos critérios abaixo.
+          </SheetDescription>
+        </SheetHeader>
+        {/* form */}
+        <SheetFooter>
+          <Button>Aplicar</Button>
+          <SheetClose asChild>
+            <Button variant="outline">Limpar</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+
+## Props
+
+### SheetContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `side` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` | Borda de ancoragem. |
+| `showCloseButton` | `boolean` | `true` | Mostra o `X` no canto. |
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Right (default)</CardTitle>
+      <CardDescription>Filtros, detalhes.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <SheetSide side="right" label="Direita" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Left</CardTitle>
+      <CardDescription>Navegação mobile.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <SheetSide side="left" label="Esquerda" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Top</CardTitle>
+      <CardDescription>Notificação global.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <SheetSide side="top" label="Topo" />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Bottom</CardTitle>
+      <CardDescription>Ações rápidas mobile.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <SheetSide side="bottom" label="Base" />
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Filtros que vão evoluir (10+ campos, condicionais).
+- Edição de um item com múltiplas seções.
+- Painel de detalhe que coexiste com a lista (master-detail).
+- Configurações secundárias (preferências de view, atalhos).
+
+## When not to use
+
+- Para uma única decisão curta — use [`Dialog`](./dialog).
+- Para ações inline contextuais — use [`Popover`](./popover).
+- Para confirmação destrutiva crítica — use [`AlertDialog`](./alert-dialog).
+- Para mobile com gesto natural de arrastar — use [`Drawer`](./drawer).
+
+## Best practices
+
+- **Header sticky em fluxos longos.** Quando o conteúdo rola, mantenha
+  Title e Description visíveis para que o usuário não perca o
+  contexto.
+- **Footer sticky para ações primárias.** Salvar / Aplicar / Cancelar
+  devem ficar sempre visíveis. Use `mt-auto` no SheetFooter.
+- **Largura responsiva.** Default `w-3/4` em mobile e `sm:max-w-sm`
+  em desktop. Ajuste para conteúdo mais largo (`sm:max-w-lg`) se
+  precisar.
+- **Não substitua navegação.** Sheet é overlay — perder estado é
+  esperado. Para fluxos que precisam ser bookmarkable, use rota.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix Dialog aplica `role="dialog"` + `aria-modal="true"`. |
+| **Foco** | Focus trap ativo. Escape fecha. Foco volta ao trigger. |
+| **Keyboard** | `Tab`/`Shift+Tab` cicla. `Esc` fecha. |
+| **Screen reader** | `SheetTitle` é o nome; `SheetDescription` é a descrição. |
+| **Touch target** | Botão de close (X) tem 24px de área visível mas hit-area maior por padding. |
+| **Reduced motion** | Slide animation respeita `prefers-reduced-motion`. |
+
+## Related
+
+- [`Dialog`](./dialog) — para decisões curtas e centradas.
+- [`Drawer`](./drawer) — bottom sheet mobile-first.
+- [`Popover`](./popover) — para conteúdo inline contextual.

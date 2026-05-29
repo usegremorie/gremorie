@@ -1,0 +1,187 @@
+---
+title: Radar Chart
+description: "Compare series across multiple axes that share a single radial domain."
+---
+
+import { RadarChartPreview } from "@/components/preview/data/charts";
+
+## Overview
+
+`RadarChart` is the styled wrapper of the headless charting engine for **multi-axis polar comparison**. Each data row (`xKey`) becomes a spoke on the polar grid; each entry in `config` becomes a closed polygon that shares one radial maximum. Use it when you have **three to seven dimensions** that should be evaluated together - skill profiles, satisfaction scores, capability gap analysis.
+
+Reach for RadarChart when no single dimension is the headline and the **shape of the polygon** carries meaning across the whole set. For comparing one ordered dimension, [`LineChart`](/components/data/line-chart) reads faster. For ranking categories on a single metric, [`BarChart`](/components/data/bar-chart) is more legible.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <RadarChartPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-radar-chart
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-radar-chart
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-radar-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-radar-chart
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { RadarChart } from "@gremorie/rx-data";
+
+const data = [
+  { skill: "Speed", a: 90, b: 60 },
+  { skill: "Power", a: 70, b: 80 },
+  { skill: "Stamina", a: 85, b: 70 },
+  { skill: "Agility", a: 75, b: 90 },
+  { skill: "Skill", a: 95, b: 65 },
+];
+
+const config = {
+  a: { label: "Player A", color: "var(--chart-1)" },
+  b: { label: "Player B", color: "var(--chart-2)" },
+};
+
+export function PlayerComparison() {
+  return <RadarChart data={data} config={config} xKey="skill" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<RadarChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>`, the polar grid with axis lines and concentric rings, one closed polygon per series in `config`, a wrapping series legend, and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. One row per spoke. Must include the spoke label at `xKey` and one numeric value per `config` key. |
+| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. |
+| `xKey` | `string` | - | Name of the spoke label field on each `Datum`. Drives the axis labels around the perimeter. |
+| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus a square aspect. |
+
+### Headless primitives exposed
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides the polar projection context. |
+| `Radar` | Per-series render-prop primitive yielding `{ d, axes, rings, center }`. `d` is the closed polygon path, `axes` are the spoke endpoints with labels, `rings` are the concentric grid rings. The first series typically renders the grid via `i === 0`. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| `ChartConfig` | `Record<string, { label: string; color: string; format?: string }>` - JSON-serializable series map. |
+
+## Composition
+
+1. **Pick `xKey`** - the spoke label column. Three to seven spokes is the sweet spot; fewer and you get a triangle that hides shape, more and the axes crowd.
+2. **Author `config`** with at most three series. Polygons overlap with `fillOpacity` at 0.2 so each series stays visible, but four or more become hard to read.
+3. **Order spokes consistently** across charts in the same surface so users can compare shapes by muscle memory.
+4. **For custom polygons** (dashed strokes, dot markers at spoke intersections, gradient fills), drop down to `<ChartFrame>` plus `<Radar>` and supply your own render prop.
+
+The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspect-square` so the polygons stay symmetric.
+
+## Variations
+
+### Two-series comparison
+
+<div className="rounded-lg border p-6 not-prose">
+  <RadarChartPreview />
+</div>
+
+```tsx
+const config = {
+  a: { label: "Player A", color: "var(--chart-1)" },
+  b: { label: "Player B", color: "var(--chart-2)" },
+};
+
+<RadarChart data={data} config={config} xKey="skill" />
+```
+
+The most common shape. Two series let the user compare polygon footprints at a glance.
+
+### Single series profile
+
+```tsx
+<RadarChart
+  data={data}
+  config={{ score: { label: "Score", color: "var(--chart-1)" } }}
+  xKey="dimension"
+/>
+```
+
+For single-subject profiles - one player, one product, one team. A single polygon reads cleanly even with five or six spokes.
+
+### Headless customization
+
+```tsx
+import { ChartFrame, Radar } from "@gremorie/rx-data";
+
+export function DottedRadar({ data, config, xKey }) {
+  return (
+    <figure role="img" aria-label="Radar with dotted spokes">
+      <ChartFrame data={data} xKey={xKey} className="mx-auto aspect-square max-h-[280px] w-full">
+        {Object.entries(config).map(([key, entry], i) => (
+          <Radar key={key} dataKey={key} color={entry.color}>
+            {({ d, axes, rings, center }) => (
+              <>
+                {i === 0 &&
+                  rings.map((ring, idx) => (
+                    <path key={idx} d={ring} fill="none" stroke="currentColor" strokeOpacity={0.15} strokeDasharray="2 2" />
+                  ))}
+                <path d={d} fill={entry.color} fillOpacity={0.25} stroke={entry.color} strokeWidth={2} />
+              </>
+            )}
+          </Radar>
+        ))}
+      </ChartFrame>
+    </figure>
+  );
+}
+```
+
+Drop down to headless for dashed grid rings, gradient fills, or marker dots at the spoke intersections.
+
+## Accessibility
+
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Radar chart of Player A, Player B by skill"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` listing every spoke and series value. Screen readers navigate the data via native table commands.
+- **Visible legend**: a wrapping `<ul>` of swatch plus label sits below the chart, providing the color-to-series mapping for sighted users.
+- **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
+- **Spoke labels**: each axis label is rendered as SVG `<text>` and sits in the document order around the polygon, so screen reader walks remain coherent.
+- **Limit series**: keep the count at two or three. Four or more overlapping polygons defeat the visual goal of shape comparison.
+
+## Related
+
+- [LineChart](/components/data/line-chart) - reach for a line when one ordered dimension is the headline.
+- [BarChart](/components/data/bar-chart) - reach for bars when ranking categories on a single metric.
+- [RadialChart](/components/data/radial-chart) - sibling polar layout when categories should be shown as concentric arcs.

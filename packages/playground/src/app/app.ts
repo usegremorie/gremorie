@@ -14,7 +14,7 @@ import { ChartsDemo } from './charts-demo';
           {{ title }}
         </h1>
         <p class="text-muted-foreground">
-          Visual smoke test of <code class="font-mono">@kalvner/shadng-prompt-input</code> —
+          Visual smoke test of <code class="font-mono">@gremorie/ng-ai</code> -
           the four states of <code class="font-mono">PromptInput</code>.
         </p>
       </header>
@@ -55,7 +55,7 @@ import { ChartsDemo } from './charts-demo';
   `,
 })
 export class App {
-  protected readonly title = 'ShadNG — Playground';
+  protected readonly title = 'Gremorie NG — Playground';
 
   // Placeholder reactive state to keep change detection lively.
   protected readonly hash = signal(Date.now());

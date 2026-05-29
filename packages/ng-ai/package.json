@@ -1,0 +1,40 @@
+{
+  "name": "@gremorie/ng-ai",
+  "version": "0.0.1",
+  "description": "AI primitives for Angular - chat surfaces (Message, Conversation, Suggestion, Reasoning, ChainOfThought, Shimmer, Sources, Task, Tool, Toolbar, CodeBlock) + PromptInput + Attachments. Part of Gremorie.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/ng-ai"
+  },
+  "keywords": ["angular", "ai", "ui", "prompt", "chat", "attachments"],
+  "peerDependencies": {
+    "@analogjs/vitest-angular": "^2.5.1",
+    "@angular/cdk": "^21.0.0",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@gremorie/ng-core": "^0.0.1",
+    "@gremorie/ng-display": "^0.0.1",
+    "@spartan-ng/brain": "^0.0.1-alpha.694",
+    "class-variance-authority": "^0.7.1",
+    "marked": "^15.0.0",
+    "shiki": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@spartan-ng/brain": {
+      "optional": false
+    },
+    "@angular/cdk": {
+      "optional": false
+    },
+    "marked": {
+      "optional": false
+    },
+    "shiki": {
+      "optional": true
+    }
+  },
+  "sideEffects": false
+}

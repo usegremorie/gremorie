@@ -1,0 +1,216 @@
+---
+title: InputOTP
+description: Input segmentado para códigos de uso único (2FA, verificação SMS).
+component: InputOTP
+importPath: "@kalvner/kds/forms/input-otp"
+status: stable
+---
+
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot
+} from "@kalvner/kds/forms/input-otp";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`InputOTP` é um input **segmentado** para códigos efêmeros — cada
+dígito num slot visualmente separado, mas comportamento de input
+único: paste de "123456" preenche tudo, autocomplete `one-time-code`
+funciona, foco salta entre slots.
+
+Construído sobre [`input-otp`](https://github.com/guilhermerodz/input-otp).
+Use em **2FA, verificação por SMS, confirmação de e-mail**, qualquer
+código curto e descartável. Para senhas/PINs persistentes, use
+[Input](./input) com `type="password"`.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>6 dígitos com separador 3-3.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <InputOTP maxLength={6}>
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+      </InputOTPGroup>
+      <InputOTPSeparator />
+      <InputOTPGroup>
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<InputOTP maxLength>
+  ├─ <InputOTPGroup>
+  │    └─ <InputOTPSlot index={n} />
+  └─ <InputOTPSeparator /> (opcional, decorativo)
+</InputOTP>
+```
+
+`InputOTP` sob o capô é **um único `<input type="text">` invisível**
+que captura digitação, paste e autocomplete; os slots são puramente
+visuais e refletem o estado via context.
+
+## Usage
+
+```tsx
+"use client";
+
+import * as React from "react";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot
+} from "@kalvner/kds/forms/input-otp";
+
+export function VerifyForm() {
+  const [code, setCode] = React.useState("");
+  return (
+    <InputOTP maxLength={6} value={code} onChange={setCode}>
+      <InputOTPGroup>
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <InputOTPSlot key={i} index={i} />
+        ))}
+      </InputOTPGroup>
+    </InputOTP>
+  );
+}
+```
+
+## Props
+
+### InputOTP (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `maxLength` | `number` | — | Quantidade total de slots. |
+| `value` | `string` | — | Controlado. |
+| `onChange` | `(v: string) => void` | — | Callback. |
+| `pattern` | `string` (regex) | `'^[0-9]+$'` opcional | Restringe caracteres. |
+| `containerClassName` | `string` | — | Classe no container externo. |
+| `disabled` | `boolean` | `false` | Bloqueia. |
+
+### InputOTPSlot
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `index` | `number` | — | Posição (0..maxLength-1). |
+
+## Subcomponents
+
+- `InputOTPGroup` — agrupa slots; um group por bloco visual.
+- `InputOTPSlot` — slot individual; mostra char + caret animado.
+- `InputOTPSeparator` — separador decorativo (`<MinusIcon />`); não
+  afeta paste/autocomplete.
+
+## Variants
+
+<div className="grid gap-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>4 dígitos</CardTitle>
+      <CardDescription>PIN curto, sem separador.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <InputOTP maxLength={4}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+          <InputOTPSlot index={3} />
+        </InputOTPGroup>
+      </InputOTP>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| Slot ativo | Border `ring`, ring 3px, caret animado pulsando. |
+| Slot preenchido | Char visível em texto. |
+| `aria-invalid` | Border destrutiva, ring destrutivo no slot ativo. |
+| `disabled` | Container com opacity 50%. |
+
+## Composition
+
+Padrão típico — formulário de verificação 2FA:
+
+```tsx
+<form onSubmit={handleVerify}>
+  <Label htmlFor="otp">Código de verificação</Label>
+  <InputOTP id="otp" maxLength={6} value={code} onChange={setCode}>
+    <InputOTPGroup>
+      {[0, 1, 2].map((i) => <InputOTPSlot key={i} index={i} />)}
+    </InputOTPGroup>
+    <InputOTPSeparator />
+    <InputOTPGroup>
+      {[3, 4, 5].map((i) => <InputOTPSlot key={i} index={i} />)}
+    </InputOTPGroup>
+  </InputOTP>
+  <Button type="submit" disabled={code.length !== 6}>Verificar</Button>
+</form>
+```
+
+Auto-submeta quando o código completar (`code.length === maxLength`)
+em fluxos rápidos — economiza um clique.
+
+## When to use
+
+- 2FA (TOTP do authenticator).
+- Verificação de e-mail por código.
+- Verificação por SMS.
+- PIN curto efêmero (recuperação de conta).
+
+## When not to use
+
+- Senhas / PINs persistentes — use [Input](./input) `type="password"`.
+- Códigos longos (>8 dígitos) — vira sopa visual; use Input normal.
+- Qualquer dado que precisa ser editado depois — InputOTP é
+  digitação contínua.
+
+## Best practices
+
+- Bloco 3-3 (com `InputOTPSeparator`) para 6 dígitos é mais legível
+  que 6 contínuos.
+- **Auto-submita** quando completar — usuário não precisa apertar
+  Enter num código.
+- Use `inputMode="numeric"` (passe via prop) para teclado numérico
+  no mobile.
+- Aria-label no Root descreva ("Código de verificação"); slots
+  individuais não precisam.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Autocomplete** | Suporta `one-time-code` automático no iOS Safari. |
+| **Paste** | "Colar" preenche todos os slots de uma vez. |
+| **Keyboard** | Backspace volta ao slot anterior; setas navegam. |
+| **Mobile** | Use `inputMode="numeric"` para teclado numérico. |
+| **Caret** | Slot ativo mostra caret animado (visual feedback além do ring). |
+| **Live region** | Para feedback de erro ("Código inválido"), use Alert ou Toast. |
+
+## Related
+
+- [Input](./input) — input de texto regular.
+- [Form](./form) — wrapper RHF + zod para validação.
+- [Alert](../feedback/alert) — feedback de erro de verificação.

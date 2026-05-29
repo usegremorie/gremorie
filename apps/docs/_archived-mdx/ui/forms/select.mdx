@@ -1,0 +1,299 @@
+---
+title: Select
+description: Dropdown de seleção única — listbox portalada com keyboard navigation completa.
+component: Select
+importPath: "@kalvner/kds/forms/select"
+status: stable
+---
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue
+} from "@kalvner/kds/forms/select";
+import { Label } from "@kalvner/kds/forms/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Select` é o componente compound do Radix Select com tokens KDS. O
+trigger fica no fluxo da página; o listbox é portalado e animado
+(slide / fade) quando aberto. Suporta agrupamento (`SelectGroup` +
+`SelectLabel`) e separação (`SelectSeparator`) — use isso para listas
+longas que se beneficiam de seções nomeadas (Américas, Europa, Ásia).
+
+Para listas curtas onde ver todas as opções facilita a decisão (≤5
+opções), [`RadioGroup`](./radio-group) é melhor — Radio mostra tudo
+visualmente. Select esconde até abrir, o que penaliza decisões rápidas
+mas economiza espaço vertical.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Select básico com placeholder.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Select>
+      <SelectTrigger className="w-60">
+        <SelectValue placeholder="Selecione um framework" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="next">Next.js</SelectItem>
+        <SelectItem value="remix">Remix</SelectItem>
+        <SelectItem value="astro">Astro</SelectItem>
+      </SelectContent>
+    </Select>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Select>
+  <SelectTrigger>           ← visível, no fluxo
+    <SelectValue />          ← mostra valor ou placeholder
+  </SelectTrigger>
+  <SelectContent>            ← portalado, animado
+    <SelectGroup>            ← opcional
+      <SelectLabel />
+      <SelectItem value="a">A</SelectItem>
+      ...
+    </SelectGroup>
+    <SelectSeparator />      ← opcional, entre grupos
+  </SelectContent>
+</Select>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Select` | Raiz que controla open/closed e value. |
+| `SelectTrigger` | Botão visível que abre o listbox. |
+| `SelectValue` | Renderiza o valor atual ou placeholder. |
+| `SelectContent` | Container portalado com a lista. |
+| `SelectGroup` | Agrupa items relacionados. |
+| `SelectLabel` | Título de um SelectGroup. |
+| `SelectItem` | Cada opção individual. |
+| `SelectSeparator` | Linha divisória entre grupos. |
+| `SelectScrollUpButton` / `ScrollDownButton` | Botões de scroll quando a lista é maior que o popover. |
+
+## Usage
+
+```tsx
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem
+} from "@kalvner/kds/forms/select";
+
+export function FrameworkPicker() {
+  return (
+    <Select>
+      <SelectTrigger className="w-60">
+        <SelectValue placeholder="Selecione" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="next">Next.js</SelectItem>
+        <SelectItem value="remix">Remix</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+```
+
+## Props
+
+### Select (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `value` | `string` | — | Valor selecionado (controlado). |
+| `defaultValue` | `string` | — | Não controlado. |
+| `onValueChange` | `(v: string) => void` | — | Callback. |
+| `disabled` | `boolean` | `false` | Bloqueia trigger. |
+| `name` | `string` | — | Nome do form, para FormData. |
+
+### SelectTrigger
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `size` | `'sm' \| 'default'` | `'default'` | Altura. |
+| `aria-invalid` | `boolean` | — | Aciona ring vermelho. |
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>With placeholder</CardTitle>
+      <CardDescription>Texto muted enquanto vazio.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Select>
+        <SelectTrigger className="w-60">
+          <SelectValue placeholder="Escolha um país" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="br">Brasil</SelectItem>
+          <SelectItem value="pt">Portugal</SelectItem>
+        </SelectContent>
+      </Select>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Trigger sem pointer events.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Select disabled>
+        <SelectTrigger className="w-60">
+          <SelectValue placeholder="—" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="a">A</SelectItem>
+        </SelectContent>
+      </Select>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Sizes</CardTitle>
+      <CardDescription>sm vs default.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Select>
+          <SelectTrigger size="sm">
+            <SelectValue placeholder="sm" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select>
+          <SelectTrigger size="default">
+            <SelectValue placeholder="default" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">A</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Error</CardTitle>
+      <CardDescription>aria-invalid no trigger + mensagem abaixo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Label>País</Label>
+        <Select>
+          <SelectTrigger aria-invalid="true">
+            <SelectValue placeholder="Selecione" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="br">Brasil</SelectItem>
+          </SelectContent>
+        </Select>
+        <span className="block text-sm text-destructive">Selecione um país.</span>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Grouped countries</CardTitle>
+    <CardDescription>Listas longas se beneficiam de SelectGroup + SelectLabel + SelectSeparator.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Select>
+      <SelectTrigger className="w-72">
+        <SelectValue placeholder="Selecione um país" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Américas</SelectLabel>
+          <SelectItem value="br">Brasil</SelectItem>
+          <SelectItem value="ar">Argentina</SelectItem>
+          <SelectItem value="us">Estados Unidos</SelectItem>
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+          <SelectLabel>Europa</SelectLabel>
+          <SelectItem value="pt">Portugal</SelectItem>
+          <SelectItem value="es">Espanha</SelectItem>
+          <SelectItem value="de">Alemanha</SelectItem>
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+          <SelectLabel>Ásia</SelectLabel>
+          <SelectItem value="jp">Japão</SelectItem>
+          <SelectItem value="kr">Coreia do Sul</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  </CardContent>
+</Card>
+
+## When to use
+
+- Escolha única entre 5–~30 opções fixas.
+- Quando o espaço vertical importa (forms longos, sidebars).
+- Para listas onde agrupamento facilita (continentes, categorias).
+
+## When not to use
+
+- ≤5 opções — [`RadioGroup`](./radio-group) deixa visíveis e acelera escolha.
+- Listas com >50 opções ou onde o usuário sabe o que digitar — use
+  Combobox (Cmdk) com busca.
+- Múltipla seleção — Select aqui é single. Use uma lista de Checkboxes
+  ou um MultiSelect dedicado.
+- Ações (Salvar, Excluir) — use [`Button`](./button), não Select.
+
+## Best practices
+
+- **Sempre tenha placeholder ou defaultValue.** Trigger vazio sem
+  texto fica confuso.
+- **Itens devem ser short, single-line.** Se o texto vai quebrar,
+  o Select não é o componente certo.
+- **Agrupe quando há >10 opções.** SelectGroup + SelectLabel reduz
+  carga cognitiva.
+- **Não use ícones decorativos sem affordance.** Ícones devem
+  diferenciar items, não decorar.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix expõe `role="combobox"` no trigger, `role="listbox"` no content, `role="option"` em cada item. |
+| **Keyboard** | `Tab` foca trigger; `Space` ou `Enter` ou `↓` abre; `↑↓` navega; `Enter` seleciona; `Esc` fecha; type-ahead funciona (digite "B" para pular pra Brasil). |
+| **Focus management** | Foco volta ao trigger ao fechar. |
+| **Anúncio** | "Combobox, [valor atual], collapsed/expanded, [N de M]". |
+| **Erro** | `aria-invalid` no trigger; mensagem com `aria-describedby`. |
+| **Touch target** | Trigger 36px default — borderline mobile. Para mobile crítico, considere `h-10`. |
+
+## Related
+
+- [`RadioGroup`](./radio-group) — listas curtas visíveis.
+- [`Form`](./form) — wrappers de RHF + Zod.
+- Combobox (próxima fase) — quando busca ajuda.

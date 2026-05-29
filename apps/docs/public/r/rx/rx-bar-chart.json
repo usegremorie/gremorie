@@ -1,0 +1,35 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-bar-chart",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Bar Chart (React)",
+  "description": "Styled grouped bar chart - compare values across categories with one bar per series in each band. Uses the rx-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/bar-chart/bar-chart.tsx",
+      "content": "import { cn } from \"@gremorie/rx-core\";\nimport { Bar } from \"../headless/bar\";\nimport { CartesianGrid } from \"../headless/cartesian-grid\";\nimport { ChartFrame } from \"../headless/chart-frame\";\nimport { XAxis, YAxis } from \"../headless/axis\";\nimport type { ChartConfig, Datum } from \"../headless/types\";\n\nexport interface BarChartProps {\n  data: readonly Datum[];\n  config: ChartConfig;\n  xKey: string;\n  className?: string;\n}\n\n/**\n * Styled grouped bar chart. Pass tabular `data`, a serializable `config`\n * mapping each value field to a label + token color, and the `xKey` category.\n *\n * @example\n * ```tsx\n * <BarChart data={data} config={config} xKey=\"month\" />\n * ```\n */\nexport function BarChart({\n  data,\n  config,\n  xKey,\n  className,\n}: BarChartProps) {\n  const series = Object.entries(config).map(([key, entry]) => ({\n    key,\n    label: entry.label,\n    color: entry.color,\n  }));\n\n  const ariaLabel = `Bar chart of ${series\n    .map((s) => s.label)\n    .join(\", \")} by ${xKey}`;\n\n  return (\n    <figure\n      role=\"img\"\n      aria-label={ariaLabel}\n      data-slot=\"bar-chart\"\n      className={cn(\n        \"flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground\",\n        className\n      )}\n    >\n      <ChartFrame\n        data={data}\n        xKey={xKey}\n        className=\"aspect-video w-full overflow-visible text-muted-foreground\"\n      >\n        <CartesianGrid>\n          {(lines) =>\n            lines.map((l, i) => (\n              <line\n                key={i}\n                x1={l.x1}\n                x2={l.x2}\n                y1={l.y}\n                y2={l.y}\n                stroke=\"currentColor\"\n                strokeOpacity={0.15}\n              />\n            ))\n          }\n        </CartesianGrid>\n\n        {series.map((s) => (\n          <Bar key={s.key} dataKey={s.key}>\n            {(rects) =>\n              rects.map((r, i) => (\n                <rect\n                  key={i}\n                  x={r.x}\n                  y={r.y}\n                  width={r.width}\n                  height={r.height}\n                  fill={s.color}\n                  rx={2}\n                />\n              ))\n            }\n          </Bar>\n        ))}\n\n        <XAxis>\n          {({ ticks, labelY }) =>\n            ticks.map((t) => (\n              <text\n                key={t.label}\n                x={t.x}\n                y={labelY}\n                textAnchor=\"middle\"\n                className=\"fill-muted-foreground text-[10px]\"\n              >\n                {t.label}\n              </text>\n            ))\n          }\n        </XAxis>\n\n        <YAxis>\n          {({ ticks, labelX }) =>\n            ticks.map((t) => (\n              <text\n                key={t.value}\n                x={labelX}\n                y={t.y}\n                textAnchor=\"end\"\n                dominantBaseline=\"middle\"\n                className=\"fill-muted-foreground text-[10px]\"\n              >\n                {t.label}\n              </text>\n            ))\n          }\n        </YAxis>\n      </ChartFrame>\n\n      <table className=\"sr-only\">\n        <caption>{ariaLabel}</caption>\n        <thead>\n          <tr>\n            <th>{xKey}</th>\n            {series.map((s) => (\n              <th key={s.key}>{s.label}</th>\n            ))}\n          </tr>\n        </thead>\n        <tbody>\n          {data.map((row, i) => (\n            <tr key={i}>\n              <td>{row[xKey]}</td>\n              {series.map((s) => (\n                <td key={s.key}>{row[s.key]}</td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </figure>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/data/bar-chart/bar-chart.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-bar-chart.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

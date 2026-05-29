@@ -1,0 +1,65 @@
+---
+title: Philosophy
+description: The non-negotiable decisions every component, pattern, and page in Gremorie is held against.
+---
+
+The decisions below are non-negotiable. Every component, pattern,
+and page in Gremorie is held against these principles.
+
+## Tokens over values
+
+If you find yourself typing a hex code or an oklch literal in a
+component file, stop. Use a semantic token (`--primary`,
+`--foreground`, etc.) — those resolve to the active theme, in light
+or dark, automatically. Components that hardcode values look fine
+in one theme and broken in three.
+
+## Composition over configuration
+
+A `<Button variant="primary" size="lg" leftIcon={...} loading>` API
+gets bloated fast. Prefer compound components and slotted children
+where they're a natural fit:
+
+```tsx
+<Button>
+  <Button.Icon><Spinner /></Button.Icon>
+  <Button.Label>Saving</Button.Label>
+</Button>
+```
+
+The composition pattern keeps the API small and lets consumers
+break out of the prescribed shape when they need to. See the
+`composition-patterns` skill for the full toolkit.
+
+## Accessibility is mandatory, not optional
+
+Every component ships with documented keyboard navigation, ARIA
+attributes, and screen-reader behaviour — see each MDX page's
+"Accessibility" section. Target is **WCAG 2.2 AA** minimum. AI
+components additionally require live regions and explicit focus
+management.
+
+## Server-friendly by default (React edition)
+
+When the React edition lands, components default to working in React Server
+Components. Anything that needs `"use client"` is documented as such. State,
+refs, and effects are opt-in via subcomponents, not the default.
+
+## Registry-distributed, AI-readable
+
+Gremorie is distributed via a registry (read by the `gremorie` CLI and an MCP
+server), not a classical npm package. Components ship as installable source so
+consumers own the code they install — and so a language model can read the
+registry to generate output that matches the system instead of hallucinating.
+
+## The reference site is the spec
+
+If a behaviour isn't documented in the component's MDX or shown in
+its stories, it doesn't exist. PRs that add behaviour without
+updating docs are rejected.
+
+## Accept boring choices
+
+Where Radix, Tailwind, or the upstream ecosystem has a sensible default,
+take it. Custom-built primitives are reserved for genuine product needs.
+Inventing the wheel is a tax on every future contributor.

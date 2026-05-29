@@ -1,0 +1,34 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-toggle",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Toggle (React)",
+  "description": "Two-state press-button built on Radix Toggle. Use for inline formatting controls (bold, italic) or visibility toggles. For multi-option clusters use ToggleGroup.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/toggle/toggle.tsx",
+      "content": "\"use client\";\n\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { Toggle as TogglePrimitive } from \"radix-ui\";\nimport * as React from \"react\";\n\nimport { cn } from \"@gremorie/rx-core\";\n\n/**\n * Toggle - single button with on/off state.\n *\n * A two-state button (`aria-pressed`)\n * for stateful actions outside of form submission - bold/italic in\n * a text editor, view-mode switches, filter chips.\n *\n * For form-bound boolean values, use Checkbox or Switch. Don't use\n * Toggle as navigation - that's Tab or Link. ToggleGroup is the\n * coordinated multi-button equivalent.\n */\nconst toggleVariants = cva(\n  \"inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,box-shadow] outline-none hover:bg-muted hover:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-transparent\",\n        outline:\n          \"border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground\"\n      },\n      size: {\n        default: \"h-9 min-w-9 px-2\",\n        sm: \"h-8 min-w-8 px-1.5\",\n        lg: \"h-10 min-w-10 px-2.5\"\n      }\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\"\n    }\n  }\n);\n\nfunction Toggle({\n  className,\n  variant,\n  size,\n  ...props\n}: React.ComponentProps<typeof TogglePrimitive.Root> &\n  VariantProps<typeof toggleVariants>) {\n  return (\n    <TogglePrimitive.Root\n      data-slot=\"toggle\"\n      className={cn(toggleVariants({ variant, size, className }))}\n      {...props}\n    />\n  );\n}\n\nexport { Toggle, toggleVariants };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/forms/toggle/toggle.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-toggle.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

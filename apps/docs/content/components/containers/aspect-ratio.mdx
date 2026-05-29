@@ -1,0 +1,166 @@
+---
+title: Aspect Ratio
+description: "Reserve responsive vertical space so media never causes layout shift."
+---
+
+import { AspectRatioPreview } from "@/components/preview/containers/containers";
+import { AspectRatio } from "@gremorie/rx-containers";
+
+## Overview
+
+`AspectRatio` is a one-prop layout primitive that locks a box to a numeric ratio at every viewport width. Drop it around any image, iframe, video embed, or skeleton and the surrounding layout reserves the right slot before the asset paints, eliminating Cumulative Layout Shift hits.
+
+Reach for AspectRatio whenever the **height of a child is derived from its width**: hero covers, card thumbnails, oEmbed-style video, map iframes, OG image previews. For fixed-pixel media or short-lived skeletons where you already know both dimensions, plain CSS is enough.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <AspectRatioPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-aspect-ratio
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-aspect-ratio
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-aspect-ratio
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-aspect-ratio
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { AspectRatio } from "@gremorie/rx-containers";
+
+export function Cover() {
+  return (
+    <AspectRatio ratio={16 / 9} className="bg-muted">
+      <img
+        src="/cover.jpg"
+        alt="Cover artwork"
+        className="size-full rounded-md object-cover"
+      />
+    </AspectRatio>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The React API will translate one-to-one to a structural directive.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<AspectRatio>`
+
+Renders a `<div>` styled by Radix to maintain `width / height = ratio` at every breakpoint. The child element should size itself with `size-full` (or `width: 100%; height: 100%`) so it fills the reserved box.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `ratio` | `number` | `1` | Aspect ratio expressed as width divided by height. Use `16 / 9` for landscape video, `4 / 3` for legacy video, `1` for square, `3 / 4` for portrait posters. |
+| `asChild` | `boolean` | `false` | When `true`, merges props onto the single child element via Radix `Slot` instead of rendering an extra `div`. |
+| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes including `className` and `style`. |
+
+## Composition
+
+1. **`<AspectRatio>`** wraps a single child and reserves the ratio.
+2. **The child** (image, iframe, video, skeleton) should fill the reserved box: `className="size-full object-cover"` on `<img>`, `className="size-full"` on iframes and videos.
+3. **Inside a Card**, place AspectRatio at the top of `<CardContent>` so the cover stays flush with the card border.
+
+The wrapper handles the math via padding-bottom plus absolute positioning. Children render inside a stacked context, so absolute overlays (badges, gradients) compose naturally without extra wrappers.
+
+## Variations
+
+### Video cover with object-fit
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-sm">
+    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-md bg-muted">
+      <div className="flex size-full items-center justify-center text-sm text-muted-foreground">
+        16 : 9 video slot
+      </div>
+    </AspectRatio>
+  </div>
+</div>
+
+```tsx
+<AspectRatio ratio={16 / 9} className="overflow-hidden rounded-md bg-muted">
+  <img
+    src="/poster.jpg"
+    alt="Episode 12 poster"
+    className="size-full object-cover"
+  />
+</AspectRatio>
+```
+
+Use `object-cover` on `<img>` to crop edges that exceed the reserved ratio. Use `object-contain` instead when the image must be visible in full, even if it leaves whitespace inside the box.
+
+### Square avatar tile
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-[120px]">
+    <AspectRatio ratio={1} className="rounded-full bg-muted">
+      <div className="flex size-full items-center justify-center text-xs font-medium text-muted-foreground">
+        1 : 1
+      </div>
+    </AspectRatio>
+  </div>
+</div>
+
+```tsx
+<AspectRatio ratio={1} className="rounded-full bg-muted">
+  <img src="/avatar.jpg" alt="Mila Tasic" className="size-full object-cover" />
+</AspectRatio>
+```
+
+Use `ratio={1}` plus `rounded-full` for avatar tiles that scale fluidly inside grid cells.
+
+### Skeleton placeholder
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-md">
+    <AspectRatio ratio={16 / 9} className="animate-pulse rounded-md bg-accent" />
+  </div>
+</div>
+
+```tsx
+<AspectRatio ratio={16 / 9} className="rounded-md">
+  <Skeleton className="size-full" />
+</AspectRatio>
+```
+
+Use the same `ratio` on the loading skeleton and the final asset so there is zero layout shift when the asset paints. See [Skeleton](/components/feedback/skeleton).
+
+## Accessibility
+
+- **Presentation only**: `AspectRatio` is a layout primitive and renders no role of its own. Any semantics belong to the child (`<img>`, `<iframe>`, `<video>`).
+- **Always label media**: pass a real `alt` to images, a `title` to iframes, and `aria-label` to videos. Empty `alt=""` is fine only for decorative covers that pair with adjacent text.
+- **No keyboard surface**: the wrapper is not focusable. Focusable children (links, video controls) keep their native tab order.
+- **No motion injected**: the primitive adds no animation, so users with `prefers-reduced-motion` see whatever the child renders.
+
+## Related
+
+- [Card](/components/display/card) - the most common host for an AspectRatio cover.
+- [Skeleton](/components/feedback/skeleton) - pair with AspectRatio to reserve space during fetch.
+- [ScrollArea](/components/containers/scroll-area) - sibling primitive for horizontally scrolling media strips.

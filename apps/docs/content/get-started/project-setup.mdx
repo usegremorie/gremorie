@@ -1,0 +1,167 @@
+---
+title: Project setup
+description: "Tailwind v4 config, theme cascade, path aliases, dark mode, and per-framework integration."
+---
+
+This page covers project-level configuration: Tailwind v4 setup, where to
+import the theme CSS, the token cascade, and tsconfig path aliases.
+
+## Tailwind v4
+
+Gremorie targets Tailwind CSS v4. Tokens are declared via `@theme` blocks
+in the package CSS, so there is no `tailwind.config.js`.
+
+If your project still uses Tailwind v3, upgrade before adding Gremorie --
+v4 is required for the `@theme` syntax the registry items emit.
+
+## Theme CSS import
+
+A single import wires every primitive token. Drop it into your global
+stylesheet, **after** the Tailwind import:
+
+<Tabs items={["Angular", "React (Next.js)", "React (Vite)"]}>
+
+```css tab="Angular"
+/* src/styles.css */
+@import "tailwindcss";
+@import "@gremorie/ng-core/styles/theme.css";
+```
+
+```css tab="React (Next.js)"
+/* app/globals.css */
+@import "tailwindcss";
+@import "@gremorie/rx-core/styles/globals.css";
+```
+
+```css tab="React (Vite)"
+/* src/index.css */
+@import "tailwindcss";
+@import "@gremorie/rx-core/styles/globals.css";
+```
+
+</Tabs>
+
+The import sets the semantic tokens (`--primary`, `--foreground`,
+`--background`, etc.) on `:root` and overrides them under `.dark`.
+
+## Token cascade
+
+Three layers, in priority order:
+
+| Layer | Lives in | Naming | Edits |
+|---|---|---|---|
+| **Primitive** | `@theme {}` blocks | `--color-<palette>-<stop>` | Almost never (follows Tailwind) |
+| **Semantic** | `:root` / `[data-theme]` selectors | `--<role>` (no prefix) | Per theme switch |
+| **Chart** | `@theme inline {}` blocks | `--color-chart-<group>-<n>` | Per chart-data context |
+
+Components only reference semantic tokens. Editing a primitive cascades
+through every theme that consumes it. See [Tokens](/tokens) for the full
+catalog.
+
+## Path aliases
+
+Configure your `tsconfig.json` so the CLI's default output path is
+importable as `@/components/gremorie/...`:
+
+<Tabs items={["Angular", "React (Next.js)", "React (Vite)"]}>
+
+```json tab="Angular"
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+
+```json tab="React (Next.js)"
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
+```
+
+```json tab="React (Vite)"
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+</Tabs>
+
+For Vite, you also need to mirror the alias in `vite.config.ts`:
+
+```ts
+import path from "node:path";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src")
+    }
+  }
+});
+```
+
+## Dark mode
+
+The theme CSS ships dark variants under the `.dark` selector. Wire any
+theme switcher you like; the simplest is `next-themes` for Next.js or a
+manual class toggle on `<html>`.
+
+<Callout type="info">
+  Components never reference `light:` or `dark:` Tailwind variants.
+  Switching the active theme is a one-line class swap, and every primitive
+  follows because they only reference semantic tokens.
+</Callout>
+
+## Custom output path
+
+If `src/components/gremorie/` is not where you want the primitives, edit
+`gremorie.config.json`:
+
+```json
+{
+  "aliases": {
+    "components": "src/ui/gremorie"
+  }
+}
+```
+
+Future `gremorie add` calls write to the new path. Already-installed
+primitives are not moved -- migrate them manually if you change the
+alias.
+
+## Verification
+
+Run a quick sanity check after setup:
+
+<Steps>
+
+<Step>
+Add a primitive: `npx gremorie@latest add ng-button` (or `rx-button`).
+</Step>
+
+<Step>
+Import it and render `<ng-button>Hello</ng-button>` (or `<Button>Hello</Button>`).
+</Step>
+
+<Step>
+The button should render with the brand primary color in default
+variant. If it looks unstyled, the theme CSS is not being loaded --
+check the import order in your global stylesheet.
+</Step>
+
+</Steps>

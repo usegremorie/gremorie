@@ -1,0 +1,134 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-chain-of-thought",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Chain of Thought (Angular)",
+  "description": "Step-by-step reasoning trace - root container, clickable header, content panel, individual steps (complete/active/pending status), search-result chips and bounded image previews.",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-badge"
+  ],
+  "files": [
+    {
+      "path": "src/lib/chain-of-thought/chain-of-thought.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  forwardRef,\n  InjectionToken,\n  model,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * ChainOfThought — root container for a list of reasoning steps. Mirrors\n * React `ChainOfThought`.\n *\n * Owns the open/close state shared between `<chain-of-thought-header>` and\n * `<chain-of-thought-content>`. Two-way bindable `[(open)]` plus\n * uncontrolled mode.\n */\nexport interface ChainOfThoughtState {\n  isOpen: () => boolean;\n  setOpen(open: boolean): void;\n  toggle(): void;\n}\n\nexport const CHAIN_OF_THOUGHT = new InjectionToken<ChainOfThoughtState>(\n  'ChainOfThoughtState',\n);\n\n@Component({\n  selector: 'chain-of-thought',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'not-prose block max-w-prose space-y-4',\n  },\n  providers: [\n    {\n      provide: CHAIN_OF_THOUGHT,\n      useExisting: forwardRef(() => ChainOfThought),\n    },\n  ],\n})\nexport class ChainOfThought implements ChainOfThoughtState {\n  readonly open = model<boolean>(false);\n\n  readonly isOpen = () => this.open();\n\n  setOpen(open: boolean): void {\n    this.open.set(open);\n  }\n\n  toggle(): void {\n    this.open.update((v) => !v);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/chain-of-thought/chain-of-thought.ts"
+    },
+    {
+      "path": "src/lib/chain-of-thought/chain-of-thought-header.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { CHAIN_OF_THOUGHT } from './chain-of-thought';\n\n/**\n * ChainOfThoughtHeader — clickable header that toggles the chain.\n *\n * Mirrors React `ChainOfThoughtHeader`. Renders BrainIcon + label +\n * rotating chevron.\n */\n@Component({\n  selector: 'chain-of-thought-header',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"toggle()\"\n      class=\"flex w-full items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground\"\n      [attr.aria-expanded]=\"isOpen()\"\n    >\n      <svg\n        width=\"16\"\n        height=\"16\"\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n      >\n        <path d=\"M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z\" />\n        <path d=\"M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z\" />\n      </svg>\n      <span class=\"flex-1 text-left\">\n        <ng-content>Chain of Thought</ng-content>\n      </span>\n      <svg\n        width=\"16\"\n        height=\"16\"\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n        class=\"transition-transform\"\n        [class.rotate-180]=\"isOpen()\"\n      >\n        <path d=\"m6 9 6 6 6-6\" />\n      </svg>\n    </button>\n  `,\n})\nexport class ChainOfThoughtHeader {\n  private readonly state = inject(CHAIN_OF_THOUGHT);\n  protected readonly isOpen = computed(() => this.state.isOpen());\n\n  protected toggle(): void {\n    this.state.toggle();\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/chain-of-thought/chain-of-thought-header.ts"
+    },
+    {
+      "path": "src/lib/chain-of-thought/chain-of-thought-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { CHAIN_OF_THOUGHT } from './chain-of-thought';\n\n/**\n * ChainOfThoughtContent — collapsible body that holds the step list.\n *\n * Renders only when the chain is open. Mirrors React\n * `ChainOfThoughtContent`. Lightweight (no JS collapse animation — relies\n * on Tailwind's `animate-in/out` utilities + visibility toggle).\n */\n@Component({\n  selector: 'chain-of-thought-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (open()) {\n      <div\n        class=\"mt-2 space-y-3 text-popover-foreground outline-none animate-in slide-in-from-top-2\"\n      >\n        <ng-content />\n      </div>\n    }\n  `,\n})\nexport class ChainOfThoughtContent {\n  private readonly state = inject(CHAIN_OF_THOUGHT);\n  protected readonly open = computed(() => this.state.isOpen());\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/chain-of-thought/chain-of-thought-content.ts"
+    },
+    {
+      "path": "src/lib/chain-of-thought/chain-of-thought-step.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\nexport type ChainOfThoughtStepStatus = 'complete' | 'active' | 'pending';\n\n/**\n * ChainOfThoughtStep — one row in the chain. Mirrors React\n * `ChainOfThoughtStep`.\n *\n * Status drives muted/foreground color treatment. Label + optional\n * description are inputs; deeper content (e.g. search results) can be\n * projected after them.\n */\n@Component({\n  selector: 'chain-of-thought-step',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div class=\"relative mt-0.5\">\n      <!-- dot icon -->\n      <svg\n        width=\"16\"\n        height=\"16\"\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        aria-hidden=\"true\"\n      >\n        <circle cx=\"12.1\" cy=\"12.1\" r=\"1\" />\n      </svg>\n      <div class=\"-mx-px absolute top-7 bottom-0 left-1/2 w-px bg-border\"></div>\n    </div>\n    <div class=\"flex-1 space-y-2 overflow-hidden\">\n      <div>{{ label() }}</div>\n      @if (description()) {\n        <div class=\"text-muted-foreground text-xs\">{{ description() }}</div>\n      }\n      <ng-content />\n    </div>\n  `,\n  host: {\n    '[class]': 'hostClass()',\n  },\n})\nexport class ChainOfThoughtStep {\n  readonly label = input.required<string>();\n  readonly description = input<string>();\n  readonly status = input<ChainOfThoughtStepStatus>('complete');\n\n  protected readonly hostClass = computed(() => {\n    const statusStyles: Record<ChainOfThoughtStepStatus, string> = {\n      complete: 'text-muted-foreground',\n      active: 'text-foreground',\n      pending: 'text-muted-foreground/50',\n    };\n    return cn(\n      'flex gap-2 text-sm animate-in fade-in-0 slide-in-from-top-2',\n      statusStyles[this.status()],\n    );\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/chain-of-thought/chain-of-thought-step.ts"
+    },
+    {
+      "path": "src/lib/chain-of-thought/chain-of-thought-search.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { Badge } from '@gremorie/ng-display';\n\n/**\n * ChainOfThoughtSearchResults — flex-wrap container for search-result chips.\n *\n * Mirrors React `ChainOfThoughtSearchResults`.\n */\n@Component({\n  selector: 'chain-of-thought-search-results',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'flex flex-wrap items-center gap-2',\n  },\n})\nexport class ChainOfThoughtSearchResults {}\n\n/**\n * ChainOfThoughtSearchResult — small badge for one search result. Mirrors\n * React `ChainOfThoughtSearchResult` (which renders a `Badge` variant).\n *\n * Dogfoods `gn-badge` (variant `secondary`) from `@gremorie/ng-display`\n * with a tighter corner radius and lighter weight to match the React\n * blueprint (which passes `gap-1 px-2 py-0.5 font-normal` to Badge).\n */\n@Component({\n  selector: 'chain-of-thought-search-result',\n  standalone: true,\n  imports: [Badge],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <gn-badge variant=\"secondary\" class=\"rounded-md font-normal\">\n      <ng-content />\n    </gn-badge>\n  `,\n  host: {\n    class: 'inline-flex',\n  },\n})\nexport class ChainOfThoughtSearchResult {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/chain-of-thought/chain-of-thought-search.ts"
+    },
+    {
+      "path": "src/lib/chain-of-thought/chain-of-thought-image.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * ChainOfThoughtImage — bounded image preview with optional caption inside a\n * chain step. Mirrors React `ChainOfThoughtImage`.\n */\n@Component({\n  selector: 'chain-of-thought-image',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      class=\"relative flex max-h-[22rem] items-center justify-center overflow-hidden rounded-lg bg-muted p-3\"\n    >\n      <ng-content />\n    </div>\n    @if (caption(); as c) {\n      <p class=\"text-muted-foreground text-xs\">{{ c }}</p>\n    }\n  `,\n  host: {\n    class: 'mt-2 space-y-2 block',\n  },\n})\nexport class ChainOfThoughtImage {\n  readonly caption = input<string>();\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/chain-of-thought/chain-of-thought-image.ts"
+    },
+    {
+      "path": "src/lib/chain-of-thought/index.ts",
+      "content": "export { ChainOfThought, CHAIN_OF_THOUGHT } from './chain-of-thought';\nexport type { ChainOfThoughtState } from './chain-of-thought';\nexport { ChainOfThoughtHeader } from './chain-of-thought-header';\nexport { ChainOfThoughtContent } from './chain-of-thought-content';\nexport {\n  ChainOfThoughtStep,\n  type ChainOfThoughtStepStatus,\n} from './chain-of-thought-step';\nexport {\n  ChainOfThoughtSearchResults,\n  ChainOfThoughtSearchResult,\n} from './chain-of-thought-search';\nexport { ChainOfThoughtImage } from './chain-of-thought-image';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/chain-of-thought/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

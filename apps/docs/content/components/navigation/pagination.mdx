@@ -1,0 +1,286 @@
+---
+title: Pagination
+description: "Bookmarkable page-by-page navigation. Semantic nav with previous, next, page links, and ellipsis."
+---
+
+import {
+  PaginationPreview,
+  PaginationSimpleRangePreview,
+  PaginationWithEllipsisPreview,
+} from "@/components/preview/navigation/navigation";
+
+## Overview
+
+`Pagination` is the bookmarkable page-by-page navigation primitive: a `<nav>` wrapping an unordered list of `<a>` links styled as buttons. Each page has a stable URL, the active page is marked with `aria-current="page"`, and the surrounding controls (`Previous`, `Next`, `Ellipsis`) compose into the classic 1...4 5 6 ...20 pattern.
+
+Reach for Pagination when **URLs must be shareable, stable order matters, and users need to return to a specific position** - search results, archives, audit logs. For feeds with no notion of "page 7" use infinite scroll or load-more instead. The primitive is intentionally headless about the page math: it does not auto-detect first or last; callers wire `aria-disabled` and click handlers on the prev / next links.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <PaginationPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-pagination
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-pagination
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-pagination
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-pagination
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from "@gremorie/rx-navigation";
+
+export function SearchPagination() {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="?page=1" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="?page=1">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="?page=2" isActive>
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="?page=3">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="?page=3" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Pagination>`
+
+Renders a `<nav role="navigation" aria-label="pagination">` centered on the page axis.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"nav">` | - | Standard nav attributes. Label and role are set automatically. |
+
+### `<PaginationContent>`
+
+Renders a `<ul>` with `flex flex-row items-center gap-1`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"ul">` | - | Standard ul attributes. |
+
+### `<PaginationItem>`
+
+Renders a plain `<li>`. The list wrapping is essential for semantics; do not skip it.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"li">` | - | Standard li attributes. |
+
+### `<PaginationLink>`
+
+The clickable page link. Renders an `<a>` styled with `buttonVariants` from `@gremorie/rx-forms`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `isActive` | `boolean` | `false` | When `true`, sets `aria-current="page"` and switches the button variant to `outline`. Otherwise renders as `ghost`. |
+| `size` | `"default" \| "sm" \| "lg" \| "icon"` | `"icon"` | Forwarded to the underlying `buttonVariants`. Page numbers default to `"icon"` so they sit on a square grid. |
+| `...props` | `React.ComponentProps<"a">` | - | Standard anchor attributes, including `href`. |
+
+### `<PaginationPrevious>`
+
+Convenience wrapper around `<PaginationLink>` that renders a `ChevronLeft` plus a "Previous" label (the label is hidden below `sm` breakpoint to keep the control compact on mobile). Sets `aria-label="Go to previous page"` and `size="default"`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<typeof PaginationLink>` | - | Same shape as `PaginationLink`. Pass `href` and any other anchor attrs. |
+
+### `<PaginationNext>`
+
+Mirror of `PaginationPrevious`: "Next" label plus `ChevronRight`. Sets `aria-label="Go to next page"` and `size="default"`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<typeof PaginationLink>` | - | Same shape as `PaginationLink`. |
+
+### `<PaginationEllipsis>`
+
+Renders a `<span aria-hidden>` square containing a `MoreHorizontal` icon and a visually hidden "More pages" label.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+
+## Composition
+
+1. **`<Pagination>`** is the nav landmark with the pagination label.
+2. **`<PaginationContent>`** is the list of controls.
+3. **`<PaginationItem>`** wraps each control so the list reads as items.
+4. **Page numbers** use `<PaginationLink>`, with the current page passing `isActive`.
+5. **Edges** use `<PaginationPrevious>` and `<PaginationNext>`.
+6. **Gaps** are visualised with `<PaginationEllipsis>` between non-adjacent pages.
+
+The primitive does not own the page math. Callers compute which page numbers, ellipses, and disabled states to render based on `currentPage`, `totalPages`, and the desired window size.
+
+## Variations
+
+### Simple range
+
+<div className="rounded-lg border p-6 not-prose">
+  <PaginationSimpleRangePreview />
+</div>
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="?page=1" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=1">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=2" isActive>2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=3">3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="?page=3" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Use when the total page count fits comfortably without truncation (under ten).
+
+### With ellipsis
+
+<div className="rounded-lg border p-6 not-prose">
+  <PaginationWithEllipsisPreview />
+</div>
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="?page=4" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=1">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=4">4</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=5" isActive>5</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=6">6</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=20">20</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="?page=6" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Use for long ranges. Keep first and last anchored, show a window around the current page, and elide the gaps.
+
+### Disabled edges at boundaries
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious
+        href="#"
+        aria-disabled
+        tabIndex={-1}
+        className="pointer-events-none opacity-50"
+      />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=1" isActive>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=2">2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="?page=2" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Use on page 1 (previous) or the last page (next). The primitive does not auto-detect boundaries - apply `aria-disabled`, `tabIndex={-1}`, and a passive class on the affected edge.
+
+## Accessibility
+
+- **Landmark**: the outer `<nav>` carries `role="navigation"` and `aria-label="pagination"`, exposing the control set as a discoverable landmark.
+- **Current page**: `<PaginationLink isActive>` sets `aria-current="page"` so screen readers announce the user's position. Pair `isActive` with the `outline` variant (default) for a visible cue.
+- **Edge controls**: `<PaginationPrevious>` and `<PaginationNext>` ship with `aria-label="Go to previous page"` / `"Go to next page"`. The visible "Previous" / "Next" label is hidden below the `sm` breakpoint, but the aria-label keeps assistive tech informed.
+- **Ellipsis**: `<PaginationEllipsis>` is `aria-hidden` and exposes a visually hidden "More pages" label.
+- **Boundary states**: callers are responsible for `aria-disabled="true"` and `tabIndex={-1}` on prev / next at the first and last pages, plus a `pointer-events-none opacity-50` class (or equivalent) so the control is visibly inert.
+
+## Related
+
+- [Breadcrumb](/components/navigation/breadcrumb) - hierarchical trail, not page-by-page navigation.
+- [Tabs](/components/navigation/tabs) - sibling content within one container.
+- [Button](/components/forms/button) - the underlying styling source via `buttonVariants`.

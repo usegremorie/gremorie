@@ -1,0 +1,51 @@
+{
+  "name": "@gremorie/token-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Framework-agnostic core for the Tokens visual editor — CSS parsing, cva extraction, token graph, comment-preserving serializer, and Hono CLI runner.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "gremorie-tokens": "./bin/cli.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./graph/types": {
+      "types": "./src/graph/types.ts",
+      "default": "./src/graph/types.ts"
+    },
+    "./serializer/apply-changes": {
+      "types": "./src/serializer/apply-changes.ts",
+      "default": "./src/serializer/apply-changes.ts"
+    },
+    "./git/status": {
+      "types": "./src/git/status.ts",
+      "default": "./src/git/status.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist node_modules/.cache .turbo"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.0",
+    "hono": "^4.7.0",
+    "postcss": "^8.5.0",
+    "ts-morph": "^25.0.0",
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "@gremorie/eslint-config": "*",
+    "@gremorie/tsconfig": "*",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.0"
+  }
+}

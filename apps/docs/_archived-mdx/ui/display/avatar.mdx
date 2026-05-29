@@ -1,0 +1,308 @@
+---
+title: Avatar
+description: Retrato circular de pessoa ou entidade com fallback automático.
+component: Avatar
+importPath: "@kalvner/kds/display/avatar"
+status: stable
+---
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage
+} from "@kalvner/kds/display/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { User } from "lucide-react";
+
+## Overview
+
+`Avatar` é o retrato circular de uma pessoa ou entidade no KDS.
+Constrói em cima de [`@radix-ui/react-avatar`](https://www.radix-ui.com/primitives/docs/components/avatar),
+que cuida de uma sutileza importante: a **estratégia de fallback**.
+Enquanto a imagem carrega, o `AvatarFallback` ocupa o espaço; se a
+imagem errar, o fallback permanece. Avatar nunca renderiza como
+imagem quebrada nem como círculo vazio.
+
+A política de fallback do KDS é uma cascata: imagem real → iniciais
+do nome → ícone genérico (`User` do lucide). O calculador de iniciais
+deve respeitar Unicode (acentos, ç, nomes não-latinos). Para nomes
+asiáticos / árabes / cirílicos, prefira a primeira letra do nome
+inteiro em vez de tentar separar primeiro/último nome.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Avatar com imagem carregada e fallback de iniciais pronto.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Avatar size="lg">
+      <AvatarImage
+        src="https://avatars.githubusercontent.com/u/1840340?v=4"
+        alt="Bruno Kalvner"
+      />
+      <AvatarFallback>BK</AvatarFallback>
+    </Avatar>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Avatar size="default">
+  ├─ [data-slot="avatar"]
+  ├─ [data-size="sm" | "default" | "lg"]
+  ├─ <AvatarImage src alt />        ← renderiza só após load com sucesso
+  └─ <AvatarFallback>BK</AvatarFallback>  ← renderiza durante load e em erro
+</Avatar>
+```
+
+A propagação do `data-size` permite que `AvatarBadge` e
+`AvatarGroupCount` ajustem-se automaticamente sem props redundantes.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Avatar` | Container circular com `size` e `data-slot`. |
+| `AvatarImage` | `<img>` que renderiza só após load com sucesso. |
+| `AvatarFallback` | Renderiza enquanto carrega e quando há erro. Recebe iniciais ou ícone. |
+| `AvatarBadge` | Pequeno indicador (online, presence) sobreposto no canto. |
+| `AvatarGroup` | Wrapper que sobrepõe múltiplos Avatars com `ring`. |
+| `AvatarGroupCount` | "+N" rollup dentro de AvatarGroup. |
+
+## Usage
+
+```tsx
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from "@kalvner/kds/display/avatar";
+
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+export function UserAvatar({ name, photoUrl }: { name: string; photoUrl?: string }) {
+  return (
+    <Avatar>
+      {photoUrl ? <AvatarImage src={photoUrl} alt={name} /> : null}
+      <AvatarFallback>{getInitials(name)}</AvatarFallback>
+    </Avatar>
+  );
+}
+```
+
+## Props
+
+### Avatar
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `size` | `'sm' \| 'default' \| 'lg'` | `'default'` | Tamanho — 24px / 32px / 40px. Para XL, passe `size-12+` via className. |
+| `...rest` | `React.ComponentProps<typeof Root>` | — | Tudo que o root do Radix Avatar aceita. |
+
+### AvatarImage
+
+Aceita props nativas de `<img>` — `src`, `alt`, `loading`, `referrerPolicy`.
+**Sempre** passe `alt` real (nome da pessoa); o Radix injeta o atributo
+no DOM mesmo durante o fallback para manter a semântica.
+
+### AvatarFallback
+
+Aceita `delayMs` (default `0`) e qualquer prop de `<div>`. O `delayMs`
+adia a renderização do fallback — útil em conexões rápidas para evitar
+flash de iniciais antes da imagem carregar.
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Image</CardTitle>
+      <CardDescription>Imagem real carregada.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Avatar>
+        <AvatarImage
+          src="https://avatars.githubusercontent.com/u/1840340?v=4"
+          alt="Bruno Kalvner"
+        />
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Initials</CardTitle>
+      <CardDescription>Sem imagem — iniciais derivadas do nome.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Avatar>
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Icon</CardTitle>
+      <CardDescription>Sem nome — ícone genérico de pessoa.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Avatar>
+        <AvatarFallback>
+          <User className="size-4" />
+        </AvatarFallback>
+      </Avatar>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Image error</CardTitle>
+      <CardDescription>Src quebrado → fallback permanece.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Avatar>
+        <AvatarImage src="https://example.invalid/x.png" alt="?" />
+        <AvatarFallback>JS</AvatarFallback>
+      </Avatar>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<Card>
+  <CardHeader>
+    <CardTitle>Sizes</CardTitle>
+    <CardDescription>sm 24px · default 32px · lg 40px · custom xl via size-12.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="flex items-end gap-4">
+      <Avatar size="sm">
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+      <Avatar size="default">
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+      <Avatar size="lg">
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+      <Avatar className="size-12">
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+    </div>
+  </CardContent>
+</Card>
+
+## Composition
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>AvatarGroup</CardTitle>
+      <CardDescription>Sobreposição com +N rollup para grupos grandes.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <AvatarGroup>
+        <Avatar>
+          <AvatarFallback>BK</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarFallback>JS</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarFallback>MN</AvatarFallback>
+        </Avatar>
+        <AvatarGroupCount>+12</AvatarGroupCount>
+      </AvatarGroup>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>User row</CardTitle>
+      <CardDescription>Avatar + nome + cargo — padrão recorrente.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-3 rounded-md border bg-card p-3">
+        <Avatar size="lg">
+          <AvatarImage
+            src="https://avatars.githubusercontent.com/u/1840340?v=4"
+            alt="Bruno Kalvner"
+          />
+          <AvatarFallback>BK</AvatarFallback>
+        </Avatar>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium leading-tight">Bruno Kalvner</p>
+          <p className="text-xs text-muted-foreground">Design System Engineer</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## When to use
+
+- Em listas de pessoas — membros, comentários, threads, autores.
+- Em headers de cards de perfil ou de cards de comunicação.
+- Como avatar do usuário logado em headers e menus de navegação.
+- Em pickers de assignees (atribuir a alguém em uma task).
+
+## When not to use
+
+- Para logos de empresa em headers — use um `<img>` direto ou um
+  componente `Logo` dedicado. Avatar é circular por design e nem
+  todo logo se traduz bem para um círculo.
+- Para ícones decorativos de seção — use ícone do lucide direto.
+  Avatar carrega a expectativa de "pessoa".
+- Para imagens grandes (banners, capas) — use `<img>` com `aspect-*`.
+
+## Best practices
+
+- **Sempre tenha um fallback.** Mesmo quando a imagem é virtualmente
+  garantida, deixe `AvatarFallback` no markup. Network falha; cache
+  expira; usuário sem perfil aparece.
+- **Calcule iniciais com Unicode em mente.** `name.split(' ')` falha
+  para nomes como "周樹人" ou "محمد". Para esses, use o primeiro
+  caractere; nunca tente "primeiro + último". Bibliotecas como
+  `initials` lidam com isso, ou faça a função simples e teste com
+  ASCII + acentos.
+- **Limite AvatarGroup a 5 visíveis.** Acima disso, sobreposição
+  vira mancha. Use `AvatarGroupCount` para o rollup ("+12 outros").
+- **alt obrigatório, mesmo no fallback.** O Radix Avatar mantém o
+  `alt` no DOM mesmo durante o fallback. Sem alt, leitores de tela
+  ignoram o avatar — perda de contexto em listas de pessoas.
+- **Não use o avatar como botão de menu sem aria-label.** Em headers,
+  o avatar costuma abrir um menu — wrap em `<button aria-label="Menu
+  da conta">` para que leitores de tela saibam o que vai acontecer.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **alt** | Sempre presente no `AvatarImage`. Use o nome real da pessoa, não "Avatar". |
+| **Fallback semântico** | Quando o fallback é iniciais, leitores de tela leem as letras como acrônimo — geralmente OK. Para fallback de ícone, garanta que o entorno (texto ao lado) carrega o nome. |
+| **Roles** | Sem role específica. O `<img>` interno tem role `img` natural. |
+| **Decorativo vs informativo** | Em listas de pessoas, avatar é informativo — `alt` é obrigatório. Em compositions onde o nome aparece logo ao lado, considere `aria-hidden="true"` no Avatar para evitar redundância. |
+| **Touch target** | Sizes default (32px) e sm (24px) são pequenos para alvos clicáveis. Quando o Avatar é interativo, wrap em um `<button>` com padding mínimo de 44px (WCAG 2.5.5). |
+| **Status badge** | Quando combinar com `AvatarBadge` para indicar presença, comunique também via texto adjacent — daltonismo afeta a leitura de cor (verde vs cinza). |
+
+## Related
+
+- [`Skeleton`](../feedback/skeleton) — placeholder circular para
+  Avatar em loading.
+- [`Card`](./card) — frequente container de Avatar em headers.
+- [`Badge`](./badge) — para metadados ao lado do nome (Pro, Beta,
+  contagem).
+- [Radix Avatar docs](https://www.radix-ui.com/primitives/docs/components/avatar)
+  — referência do primitivo subjacente.

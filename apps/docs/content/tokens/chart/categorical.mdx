@@ -1,0 +1,86 @@
+---
+title: Categorical
+description: Oito hues perceptualmente distintos para categorias nominais — regiões, departamentos, tipos.
+---
+
+import {
+  ChartSchemeSwatchRow,
+  ChartSchemeTable
+} from "@/components/token-tables";
+import { CATEGORICAL_SCHEME } from "@/lib/chart-tokens";
+
+**Categorical** é o esquema para **dados nominais sem ordem** —
+quando você compara magnitudes entre categorias que não têm
+relação de "maior/menor". Oito hues perceptualmente distintos,
+mid-stops das paletas Tailwind, escolhidos para se diferenciar
+sob simulação de protanopia, deuteranopia e tritanopia.
+
+<ChartSchemeSwatchRow scheme={CATEGORICAL_SCHEME} />
+
+## Tokens
+
+<ChartSchemeTable scheme={CATEGORICAL_SCHEME} />
+
+## Quando usar
+
+- **Bar charts comparando regiões / produtos / canais** — a
+  comparação é "qual é maior", não "qual vem antes".
+- **Line charts multi-série** — diferentes métricas sobre o
+  mesmo eixo X.
+- **Pie ou donut com até 5 fatias** — acima disso, a leitura
+  desmorona; troque para bar.
+- **Scatter plots** com cor codificando categoria.
+
+## Por que oito é o teto
+
+Acima de 8 hues distintos, mesmo paletas bem construídas começam
+a confundir séries. A pesquisa (Brewer, 2003) mostra que humanos
+têm dificuldade crescente em diferenciar cores além desse limite,
+especialmente em pequenas áreas (linhas finas, pontos).
+
+Se você precisa de mais de 8 séries, considere:
+
+1. **Agrupar** o resto em "Outros".
+2. **Small multiples** — uma série por mini-gráfico.
+3. **Visualização diferente** — heatmap, parallel coordinates.
+
+## Quando não usar
+
+- O dado tem **ordem inerente** (intensidade, gravidade) — use
+  [Sequential](/tokens/chart/sequential).
+- O dado tem **semântica de estado** (bom/ruim/neutro) — use
+  [Status](/tokens/chart/status).
+- Você tem **uma série em destaque + outras de fundo** — use
+  [Comparison](/tokens/chart/comparison).
+
+## Anti-patterns
+
+<Callout type="warn">
+  Usar Categorical para mais de 8 séries. As cores começam a se
+  confundir e a leitura desmorona. Refatore para uma das três
+  alternativas acima.
+</Callout>
+
+<Callout type="warn">
+  Misturar Categorical com Status no mesmo gráfico ("uma das
+  séries é vermelha porque é a métrica de erro"). Isso polui a
+  leitura — o usuário vai inferir significado em todas as cores.
+</Callout>
+
+## Exemplo de consumo
+
+```tsx
+import { Line, LineChart } from "recharts";
+
+const config = {
+  receita:    { label: "Receita",    color: "var(--color-chart-cat-1)" },
+  custo:      { label: "Custo",      color: "var(--color-chart-cat-2)" },
+  lucro:      { label: "Lucro",      color: "var(--color-chart-cat-3)" },
+} satisfies ChartConfig;
+
+<LineChart data={data}>
+  <Line dataKey="receita" stroke="var(--color-chart-cat-1)" />
+  <Line dataKey="custo"   stroke="var(--color-chart-cat-2)" />
+  <Line dataKey="lucro"   stroke="var(--color-chart-cat-3)" />
+</LineChart>
+```

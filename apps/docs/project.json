@@ -1,0 +1,55 @@
+{
+  "name": "docs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/docs",
+  "projectType": "application",
+  "tags": ["scope:docs", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/.next"],
+      "dependsOn": [
+        "^build",
+        { "projects": ["registry"], "target": "generate" }
+      ],
+      "options": {
+        "cwd": "apps/docs",
+        "command": "next build"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "dependsOn": [
+        "^build",
+        { "projects": ["registry"], "target": "generate" }
+      ],
+      "options": {
+        "cwd": "apps/docs",
+        "command": "next dev -p 5020"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "options": {
+        "cwd": "apps/docs",
+        "command": "next start -p 5020"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/docs",
+        "command": "eslint ."
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/docs",
+        "command": "tsc --noEmit"
+      }
+    }
+  }
+}

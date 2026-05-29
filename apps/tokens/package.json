@@ -1,0 +1,38 @@
+{
+  "name": "@gremorie/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tokens - visual editor SPA for Gremorie token refinement. Note: rendering depends on @gremorie/react-* (Phase 5).",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5023 --strictPort",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 5023 --strictPort",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules/.cache .turbo"
+  },
+  "dependencies": {
+    "@gremorie/token-engine": "*",
+    "culori": "^4.0.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-colorful": "^5.6.1",
+    "react-dom": "^19.0.0",
+    "react-hotkeys-hook": "^4.6.1",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@gremorie/eslint-config": "*",
+    "@gremorie/tsconfig": "*",
+    "@types/culori": "^2.1.1",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.0.0"
+  }
+}

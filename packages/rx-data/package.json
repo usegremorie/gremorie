@@ -1,0 +1,41 @@
+{
+  "name": "@gremorie/rx-data",
+  "version": "0.0.1",
+  "description": "React data viz primitives for Gremorie - headless chart engine and styled charts (area, line, bar, scatter, pie, radar, radial).",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-data"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "data",
+    "charts",
+    "visualization",
+    "d3"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "peerDependencies": {
+    "@gremorie/rx-core": "^0.0.1",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "d3-format": "^3.1.2",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-radial-chart",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Radial Chart (React)",
+  "description": "Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Uses the rx-chart headless primitives.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/radial-chart/radial-chart.tsx",
+      "content": "import * as React from \"react\";\nimport { cn } from \"@gremorie/rx-core\";\nimport { ChartFrame } from \"../headless/chart-frame\";\nimport { RadialBar } from \"../headless/radial-bar\";\nimport type { Datum } from \"../headless/types\";\n\nexport interface RadialChartProps {\n  data: readonly Datum[];\n  nameKey: string;\n  valueKey: string;\n  className?: string;\n}\n\nconst colorAt = (i: number) => `var(--chart-${(i % 5) + 1})`;\n\n/**\n * Styled radial bar chart - one concentric ring per data row (`nameKey`), each\n * sweep proportional to its `valueKey` value. Colors cycle `--chart-1..5`.\n *\n * @example\n * ```tsx\n * <RadialChart data={data} nameKey=\"browser\" valueKey=\"visitors\" />\n * ```\n */\nexport function RadialChart({\n  data,\n  nameKey,\n  valueKey,\n  className,\n}: RadialChartProps) {\n  const ariaLabel = `Radial bar chart of ${valueKey} by ${nameKey}`;\n\n  const legend = data.map((row, i) => ({\n    name: String(row[nameKey]),\n    color: colorAt(i),\n  }));\n\n  return (\n    <figure\n      role=\"img\"\n      aria-label={ariaLabel}\n      data-slot=\"radial-chart\"\n      className={cn(\n        \"flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground\",\n        className\n      )}\n    >\n      <ChartFrame\n        data={data}\n        xKey={nameKey}\n        className=\"mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground\"\n      >\n        <RadialBar valueKey={valueKey}>\n          {({ arcs }) =>\n            arcs.map((a) => (\n              <React.Fragment key={a.name}>\n                <path d={a.track} fill=\"currentColor\" fillOpacity={0.08} />\n                <path d={a.d} fill={colorAt(a.index)} />\n              </React.Fragment>\n            ))\n          }\n        </RadialBar>\n      </ChartFrame>\n\n      <ul className=\"flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground\">\n        {legend.map((item) => (\n          <li key={item.name} className=\"flex items-center gap-1.5\">\n            <span\n              className=\"size-2.5 rounded-[2px]\"\n              style={{ background: item.color }}\n            />\n            {item.name}\n          </li>\n        ))}\n      </ul>\n\n      <table className=\"sr-only\">\n        <caption>{ariaLabel}</caption>\n        <thead>\n          <tr>\n            <th>{nameKey}</th>\n            <th>{valueKey}</th>\n          </tr>\n        </thead>\n        <tbody>\n          {data.map((row, i) => (\n            <tr key={i}>\n              <td>{row[nameKey]}</td>\n              <td>{row[valueKey]}</td>\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </figure>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/data/radial-chart/radial-chart.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-radial-chart.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

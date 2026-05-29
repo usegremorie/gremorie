@@ -1,0 +1,180 @@
+---
+title: Scroll Area
+description: "Themeable scroll container with consistent scrollbars across browsers and OSes."
+---
+
+import { ScrollAreaPreview } from "@/components/preview/containers/containers";
+import { ScrollArea, ScrollBar } from "@gremorie/rx-containers";
+
+## Overview
+
+`ScrollArea` is a Radix-backed wrapper that swaps the native scrollbar for a styled overlay you control via tokens. Use it when the default OS scrollbar would clash with the surface around it: a card with rounded corners, a dark theme on macOS where the native bar bleaches, a sidebar that needs the bar to stay flush with brand chrome.
+
+For everyday overflow inside the body or a generic panel, **native scroll is still the right answer**. ScrollArea costs an extra wrapper and an event handler, so reach for it only when the default look-and-feel would break the surface.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScrollAreaPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-scroll-area
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-scroll-area
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-scroll-area
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-scroll-area
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { ScrollArea } from "@gremorie/rx-containers";
+
+export function TagList({ tags }) {
+  return (
+    <ScrollArea className="h-72 w-48 rounded-md border">
+      <div className="p-4">
+        {tags.map((tag) => (
+          <div key={tag} className="py-2 text-sm">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The React API will translate to a structural directive plus content projection slots.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ScrollArea>`
+
+The root and the most common entry point. Composes a Radix `Root` with a `Viewport` for the scrollable content, an auto-mounted vertical `ScrollBar`, and a `Corner` for the bottom-right intersection. Pass children directly - they end up inside the viewport.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Applied to the root. The root must declare a fixed `height` (and optionally a `width`) for scrolling to engage. |
+| `type` | `"auto" \| "always" \| "scroll" \| "hover"` | `"hover"` | Visibility behaviour of the scrollbar. `hover` shows on hover, `scroll` shows during scroll then fades, `always` keeps it visible, `auto` matches the platform. |
+| `scrollHideDelay` | `number` | `600` | Milliseconds before the scrollbar fades when `type="scroll"` or `type="hover"`. |
+| `dir` | `"ltr" \| "rtl"` | inherited | Reading direction. Flips scrollbar placement when set to `rtl`. |
+| `...props` | `React.ComponentProps<typeof ScrollAreaPrimitive.Root>` | - | All Radix Root attributes. |
+
+### `<ScrollBar>`
+
+The styled track plus thumb. The root mounts a vertical bar automatically. Mount a second `ScrollBar` with `orientation="horizontal"` whenever the content scrolls sideways.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Which axis the bar controls. Mount one per axis. |
+| `className` | `string` | - | Applied to the scrollbar element. Touch-target sizing comes from the primitive; override carefully. |
+| `...props` | `React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>` | - | All Radix Scrollbar attributes. |
+
+## Composition
+
+1. **`<ScrollArea>`** is the container. Give it a height (`h-72`, `max-h-96`, etc.) and an optional rounded border to match the surrounding card.
+2. **Children** sit inside an automatic viewport that fills the root and rounds with `rounded-[inherit]` so the scrolling content cannot bleed past the border.
+3. **`<ScrollBar orientation="horizontal" />`** is added as a sibling whenever the content scrolls horizontally.
+4. The **corner** between two scrollbars is rendered automatically.
+
+The root scopes focus styling: when the viewport receives keyboard focus, the focus ring uses `focus-visible:ring-ring/50` so the scroll surface is itself a discoverable target.
+
+## Variations
+
+### Vertical scroll inside a card
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScrollArea className="h-40 w-full max-w-sm rounded-md border p-4">
+    <div className="flex flex-col gap-2 text-sm">
+      <div>Engineering</div>
+      <div>Design</div>
+      <div>Product</div>
+      <div>Marketing</div>
+      <div>Operations</div>
+      <div>Finance</div>
+      <div>Legal</div>
+      <div>People</div>
+      <div>Security</div>
+      <div>Data</div>
+    </div>
+  </ScrollArea>
+</div>
+
+```tsx
+<ScrollArea className="h-72 w-full rounded-md border p-4">
+  <div className="flex flex-col gap-2 text-sm">
+    {teams.map((team) => (
+      <div key={team.id}>{team.name}</div>
+    ))}
+  </div>
+</ScrollArea>
+```
+
+The most common shape. Default `type="hover"` keeps the scrollbar quiet until the user reaches in.
+
+### Horizontal strip
+
+```tsx
+<ScrollArea className="w-full whitespace-nowrap rounded-md border">
+  <div className="flex w-max gap-3 p-4">
+    {covers.map((cover) => (
+      <figure key={cover.id} className="shrink-0">
+        <img src={cover.src} alt={cover.alt} className="h-32 w-48 rounded-md object-cover" />
+      </figure>
+    ))}
+  </div>
+  <ScrollBar orientation="horizontal" />
+</ScrollArea>
+```
+
+For carousel-style strips. Mount the horizontal bar explicitly and wrap the row in `w-max` so it can overflow the container.
+
+### Always-visible scrollbar for code blocks
+
+```tsx
+<ScrollArea type="always" className="h-72 w-full rounded-md border bg-muted">
+  <pre className="p-4 text-sm">{snippet}</pre>
+</ScrollArea>
+```
+
+Use `type="always"` when the absence of a scrollbar would imply the content fits, even when it does not - common with code blocks and long log output.
+
+## Accessibility
+
+- **Native semantics preserved**: the viewport keeps `overflow` scrolling, so keyboard scroll (PageUp/PageDown, Arrow keys, Home/End) works without extra wiring.
+- **Focusable surface**: the viewport sets `outline-none` plus `focus-visible:ring-[3px] focus-visible:ring-ring/50` so users navigating by `Tab` get a clear ring when the scroll region receives focus.
+- **Pointer dragging**: the thumb is draggable with the pointer. Touch users get native momentum scrolling on the viewport itself.
+- **Screen readers**: Radix exposes the scrollbar with proper roles. Provide a meaningful `aria-label` on the root if the scroll surface needs an announcement of its own (e.g. `"Team list"`).
+- **Reduced motion**: scroll behaviour respects `prefers-reduced-motion` via the underlying browser scroll, including smooth-scroll cues.
+
+## Related
+
+- [Resizable](/components/containers/resizable) - sibling layout primitive when the user should control the panel size, not just scroll it.
+- [Card](/components/display/card) - the canonical host for a constrained ScrollArea.
+- [Table](/components/display/table) - large tables often live inside a ScrollArea with a horizontal bar.

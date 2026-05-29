@@ -1,0 +1,104 @@
+---
+title: Form
+description: "Labels, validation, error messages, and submission flow. The rules that make forms recoverable."
+related: rx-form, rx-input, rx-label, rx-input-group, rx-field-group
+tags: [components, forms, validation, accessibility]
+---
+
+## TL;DR
+
+Every input has a visible label. Validate at the right moment (on blur, not on every keystroke). Error messages name the field, the problem, and the fix. The submit button stays enabled; if there are errors, focus the first invalid field on submit.
+
+## The rule
+
+1. **Always a visible label.** Placeholder is not a label. Use a `Label` associated with the input (`htmlFor` or wrapped). Hidden labels (`sr-only`) are for cases where the surrounding context makes the field obvious - rare.
+2. **Validate when the user finishes a field, not while they are typing.** On blur for the first interaction; on every change after that field has already errored (so the user sees their fix succeed). Never validate on every keystroke from scratch.
+3. **Error messages have a structure.** Field name + what is wrong + what to do. Not "Invalid input"; "Email must include a domain (e.g. you@example.com)".
+4. **Submit is always available.** Do not disable submit based on missing or invalid fields. Let the user click; on submit, scroll to and focus the first invalid field. Disabled submit is opaque ("why can I not click?") and breaks keyboard flows.
+5. **Required vs optional.** Mark whichever is rarer. If most fields are required, mark the optional ones with "(optional)". If most are optional, mark the required ones with an asterisk and an explanation. Do not mark both.
+6. **One column.** Single-column layouts are faster to complete and easier on the eye. Multi-column is acceptable only for related short fields (city / state / zip).
+7. **Group related fields.** Use `FieldSet` with a `FieldLegend` for sets of checkboxes, radios, or address blocks. The group has an accessible name.
+
+## Why
+
+Forms are where users carry the highest cognitive load. They are typing, deciding, recalling, and verifying simultaneously. Every extra rule the form imposes costs attention.
+
+Hidden labels (placeholder-as-label) fail twice: once when the user starts typing and the label disappears, once when the user returns to review what they entered (NN/g, "Placeholders in Form Fields Are Harmful"). Real-time validation on every keystroke creates a flicker of errors before the user has finished thinking ("Email must include @" - the user knows; they are still typing). Disabled submit forces the user to find which field is wrong before they can ask the form to tell them.
+
+The "name + problem + fix" structure on errors comes from Nielsen #9 (help users recognize, diagnose, recover from errors).
+
+## How to apply
+
+### Do: labelled inputs with field-group structure
+
+```tsx
+<form onSubmit={handleSubmit}>
+  <FieldGroup>
+    <Field>
+      <FieldLabel htmlFor="email">Email</FieldLabel>
+      <Input
+        id="email"
+        name="email"
+        type="email"
+        aria-invalid={errors.email ? "true" : undefined}
+        aria-describedby={errors.email ? "email-error" : undefined}
+      />
+      {errors.email && (
+        <FieldDescription id="email-error" role="alert">
+          {errors.email}
+        </FieldDescription>
+      )}
+    </Field>
+  </FieldGroup>
+
+  <Button type="submit">Create account</Button>
+</form>
+```
+
+Label is visible. The input is described by its error (when present). `role="alert"` announces the error to screen readers.
+
+### Do: an error message that names, diagnoses, and fixes
+
+```
+Password must be at least 8 characters and include one number.
+```
+
+Name (Password), problem (too short / missing number), fix (the rules to satisfy).
+
+### Don't: placeholder as label
+
+```tsx
+<Input placeholder="Email" />
+```
+
+Once the user types, the label disappears. Returning to verify is harder. Screen readers may or may not announce it.
+
+### Don't: vague errors
+
+```
+Invalid input. Please correct and try again.
+```
+
+The user does not know which field is wrong or what "correct" means.
+
+### Don't: disabled submit on incomplete form
+
+```tsx
+<Button disabled={!isValid}>Create</Button>
+```
+
+Replaced by: always enabled; on submit, focus the first error.
+
+## Counter-cases
+
+- **Search forms** with a single field can put the label in `sr-only` because the magnifying glass icon and the input shape are universally recognized. Still mark up the label.
+- **Inline edits** in tables (a small input replacing a cell) can drop the label if the column header serves as one - but the column header must be programmatically associated (`aria-labelledby`).
+- **Password creation** is one case where progressive validation is welcome: showing "8 characters", "one number", "one uppercase" as the user types lets them feel the requirements being satisfied. This is not the same as throwing errors mid-type.
+- **Step-based wizards** can disable "Next" until the current step is valid because the disabled reason is the step itself ("Complete this step to continue") - but show the missing fields, do not just gray out the button.
+
+## Sources
+
+- Nielsen Norman Group: "Placeholders in Form Fields Are Harmful" (https://www.nngroup.com/articles/form-design-placeholders/)
+- Nielsen Norman Group: "Error-Message Guidelines" (https://www.nngroup.com/articles/error-message-guidelines/)
+- Wroblewski, "Web Form Design: Filling in the Blanks" (2008).
+- WCAG 2.1 SC 3.3.1 (Error Identification), 3.3.2 (Labels or Instructions), 3.3.3 (Error Suggestion).

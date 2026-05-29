@@ -1,0 +1,463 @@
+---
+title: Documentation standard
+description: The binary checklist and template every Gremorie component must satisfy before going public. No exceptions.
+---
+
+This document is the founding rule of Gremorie's component docs. Past
+projects ended up with half-written documentation — variants undocumented,
+accessibility ignored, theming opaque. Not here.
+
+**Binary rule:** a component is not "released" until it passes every item in
+the checklist below. A component without complete docs stays in the internal
+Storybook. **It does not go on the public site. It is not advertised through
+the registry or MCP.** No exceptions.
+
+## Why this matters
+
+1. **Adoption depends on docs.** The difference between a well-documented
+   library and a poorly-documented one is the difference between 10k stars
+   and 100.
+2. **Solo maintainer plus community.** Complete docs let contributors help
+   without pinging the maintainer for every question.
+3. **Professional positioning.** Gremorie is a portfolio surface. Weak docs
+   means weak portfolio.
+4. **Anti-burnout.** Documenting while you build is cheaper than documenting
+   three months later when the context is gone.
+
+## The binary checklist
+
+Paste this into every component PR. Cannot merge until **every box** is
+checked.
+
+```markdown
+## Documentation completeness checklist
+
+### Required sections
+- [ ] 1. Frontmatter complete (status, version, deps, category)
+- [ ] 2. Overview (1 paragraph: what + when to use + when NOT to use)
+- [ ] 3. Interactive preview at the top
+- [ ] 4. Anatomy (subcomponent diagram)
+- [ ] 5. Installation (complete CLI command)
+- [ ] 6. Basic usage (minimal runnable example)
+- [ ] 7. API Reference — inputs (all, with type, default, description)
+- [ ] 8. API Reference — outputs (all, with payload type, when fired)
+- [ ] 9. API Reference — slots / content projection / children
+- [ ] 10. API Reference — imperative API (if any)
+- [ ] 11. API Reference — exported types / interfaces
+- [ ] 12. All variants with interactive preview
+- [ ] 13. All visual states with preview
+- [ ] 14. Composition with AI SDK (end-to-end)
+- [ ] 15. Composition with a second AI integration (alternative)
+- [ ] 16. Composition with framework-native primitives (no AI framework)
+- [ ] 17. Keyboard shortcuts (table)
+- [ ] 18. ARIA roles and labels documented
+- [ ] 19. Screen reader notes (NVDA + VoiceOver tested)
+- [ ] 20. WCAG level stated (AA minimum)
+- [ ] 21. CSS variables — ALL listed per layer (semantic + AI-specific) with defaults
+- [ ] 22. Tailwind classes consumed (which utilities)
+- [ ] 23. Design decisions — at least 1 ADR linked
+- [ ] 24. Component changelog
+- [ ] 25. Known issues / limitations
+
+### Quality bar
+- [ ] Every code example IS runnable (copy + paste works)
+- [ ] Every interactive preview lets you edit inputs
+- [ ] No "TODO", "TBD", or "coming soon" in the public text
+- [ ] Consistent language across the page (one of PT-BR or EN-US)
+- [ ] Obscure technical terms have a glossary
+```
+
+## File structure
+
+Each component lives in `apps/docs/content/components/<name>.mdx`. The page
+renders at `/components/<name>`.
+
+```
+apps/docs/content/components/
++-- prompt-input.mdx                    container
++-- prompt-input-textarea.mdx           each subcomponent gets its own page
++-- prompt-input-toolbar.mdx
++-- prompt-input-tools.mdx
++-- prompt-input-button.mdx
++-- prompt-input-submit.mdx
++-- prompt-input-attachments.mdx
++-- prompt-input-attachment.mdx
++-- prompt-input-action-menu.mdx
++-- prompt-input-model-select.mdx
+```
+
+**Each subcomponent has its own page.** No giant single page. Even short
+subcomponent pages (Toolbar is structural) still pass the checklist.
+
+## Template
+
+Copy this for every component. Sections in the order shown.
+
+```markdown
+---
+title: PromptInput
+description: Prompt input container with state machine and form behaviour.
+component: prompt-input
+status: stable                  # stable | preview | deprecated
+version: 0.1.0
+since: 0.1.0
+category: AI / Chatbot
+dependencies:
+  - "@gremorie/ng-core"
+related:
+  - prompt-input-textarea
+  - prompt-input-toolbar
+  - prompt-input-submit
+---
+
+# PromptInput
+
+## Overview
+
+> **What it is.** Container for prompt entry in AI interfaces. Manages the
+> state machine (ready / submitted / streaming / error), keyboard shortcuts,
+> attachments, and subcomponent coordination.
+>
+> **When to use.** Any conversational interface where the user types prompts.
+>
+> **When NOT to use.** Structured inputs (traditional forms, search bars).
+> For existing conversation messages, use Message instead.
+
+## Preview
+
+<PromptInputPreview />
+
+## Anatomy
+
+[Rendered diagram of subcomponents]
+
+\`\`\`
+<prompt-input>
++-- <prompt-input-attachments>     (optional)
+|   +-- <prompt-input-attachment>
++-- <prompt-input-textarea>        (required)
++-- <prompt-input-toolbar>         (optional, recommended)
+    +-- <prompt-input-tools>
+    |   +-- <prompt-input-button>
+    +-- <prompt-input-submit>
+\`\`\`
+
+## Installation
+
+\`\`\`bash
+npx gremorie add prompt-input
+\`\`\`
+
+Installs all subcomponents of the PromptInput family.
+
+Prerequisites:
+
+- Tailwind CSS v4
+- @gremorie/ng-core installed
+- Framework-specific peer deps (Angular 21+ for NG edition; React 19+ for RX)
+
+The CLI verifies prerequisites and offers to install what's missing.
+
+## Basic usage
+
+[Minimal runnable example — imports complete, props minimal]
+
+## API Reference
+
+### Inputs / Props
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `value` | `Signal<string>` | `signal('')` | Two-way binding via `[(value)]` |
+| `state` | `PromptInputState` | `'ready'` | State machine value |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Visual size |
+| ... | ... | ... | ... |
+
+### Outputs / Events
+
+| Name | Payload | Fires when |
+|---|---|---|
+| `valueChange` | `string` | Every textarea change |
+| `submit` | `PromptInputSubmitEvent` | User submits |
+| ... | ... | ... |
+
+### Slots / Children
+
+| Slot | Accepts | Required |
+|---|---|---|
+| Default | Textarea, Toolbar, Attachments in any order | At least textarea |
+
+### Imperative API
+
+| Method | Returns | Description |
+|---|---|---|
+| `focus()` | `void` | Focus the textarea |
+| `clear()` | `void` | Clear textarea and attachments |
+
+### Exported types
+
+\`\`\`ts
+export type PromptInputState = 'ready' | 'submitted' | 'streaming' | 'error';
+
+export interface PromptInputSubmitEvent {
+  value: string;
+  attachments: File[];
+  preventDefault: () => void;
+}
+\`\`\`
+
+## Variants
+
+### Size
+
+[Preview grid: sm / md / lg]
+
+### Variant
+
+[Preview grid: default / ghost / bordered]
+
+### Position
+
+[Demo: static vs sticky-bottom in scrollable container]
+
+### Disabled
+
+[Preview disabled state]
+
+## States
+
+### Ready
+
+Initial state. User can type and submit.
+
+### Submitted
+
+Message sent, waiting for LLM response.
+
+### Streaming
+
+Receiving LLM chunks. Submit becomes a cancel button.
+
+### Error
+
+Last submission failed. Submit becomes a retry button.
+
+## Compositions
+
+### With AI SDK
+
+[Full 30-50 line example with useChat]
+
+### With framework-native primitives
+
+[Example with fetch + ReadableStream]
+
+### Edge cases
+
+- Toolbar-less (textarea + inline submit)
+- Sticky bottom in scrollable container
+- Forced multi-line (textarea always expanded)
+- Read-only during streaming (controlled disabled)
+
+## Accessibility
+
+### Keyboard shortcuts
+
+| Key | Action | Configurable |
+|---|---|---|
+| `Enter` | Submit (if `submitOnEnter=true`) | Yes |
+| `Shift + Enter` | Newline in textarea | No |
+| `Mod + Enter` | Force submit | No |
+| `Esc` | Clear OR cancel streaming (state-dependent) | No |
+| `Mod + K` | Global focus | Yes |
+| `Tab` | Navigation through textarea -> toolbar -> submit | No |
+
+### ARIA
+
+| Element | Role / Attribute | Value |
+|---|---|---|
+| Container | `role` | `"form"` |
+| Container | `aria-label` | `"AI prompt input"` (configurable) |
+| Submit button | `aria-label` | varies by state: "Send", "Submitting", "Stop", "Retry" |
+| Live region | `aria-live` | `"polite"` for state changes |
+
+### Screen reader
+
+Tested in NVDA + Firefox, NVDA + Chrome, VoiceOver + Safari, VoiceOver iOS +
+Safari Mobile.
+
+Announcements:
+
+- Submit fires: "Message submitted"
+- Streaming starts: "AI is responding"
+- Streaming ends: "Response complete"
+- Error: "Submission failed. Press to retry."
+
+### WCAG
+
+**Level AA guaranteed.**
+
+- Contrast: AA in every state (verified with axe-core)
+- Touch targets: 44x44px minimum on mobile
+- Focus visible: always, via `:focus-visible`
+- Reduced motion: respected in all animations
+- Zoom 200%: layout intact
+
+## Theming
+
+### CSS variables consumed
+
+All colours and radii come from variables. Zero hardcoded values. Gremorie
+uses a two-tier system (primitives -> semantics). Components consume
+**semantics only**.
+
+[Table listing every CSS variable this component consumes]
+
+### Tailwind classes consumed
+
+To change behaviour without editing CSS vars, edit the classes in the
+component file:
+
+| Subcomponent | Key classes |
+|---|---|
+| Container | `flex flex-col gap-2 rounded-md border bg-background p-3` |
+| Textarea | `min-h-[2.5rem] max-h-[12rem] resize-none bg-transparent` |
+| Submit (ready) | `bg-primary text-primary-foreground` |
+| ... | ... |
+
+### Customisation
+
+Registry model: you own the code. Edit the files in
+`src/app/gremorie/prompt-input/` (NG) or `src/components/gremorie/prompt-input/`
+(RX) directly. No theme API. More power, but requires care during future
+upstream updates (use the registry diff workflow).
+
+## Design decisions
+
+- [ADR-006 — State machine vs reactive state](/adr/006-state-machine)
+- [ADR-007 — Slot-based vs prop-driven](/adr/007-slots-vs-props)
+- [ADR-011 — Monolithic component (no Brain/Helm split)](/adr/011-monolithic)
+- [ADR-013 — CSS variables two-tier](/adr/013-two-tier-tokens)
+
+## Changelog
+
+### 0.1.0 — initial release
+
+- Container with state machine
+- States: `ready | submitted | streaming | error`
+- Two-way binding via signal / state
+- Drag-and-drop attachments
+- Image paste
+- Global `Mod + K` shortcut
+- WCAG AA
+
+## Known issues
+
+- `field-sizing: content` not supported in Firefox < 124. Falls back to
+  `ResizeObserver` automatically; minimal flicker on rapid typing.
+- Image paste doesn't work in Safari < 16.4 (Clipboard API limitation).
+- In SSR mode (Analog for NG, RSC for RX), the focus shortcut activates
+  only after full hydration.
+
+## See also
+
+- [`<prompt-input-textarea>`](./prompt-input-textarea) — auto-expand textarea
+- [`<prompt-input-submit>`](./prompt-input-submit) — submit with states
+- [AI SDK integration guide](/integrations/ai-sdk)
+```
+
+## Documentation principles
+
+### 1. Show, don't tell
+
+Every concept gets a code example plus an interactive preview. Text
+explains, example demonstrates. Never just one of the two.
+
+### 2. Code blocks are runnable
+
+Copy + paste works. Imports complete. No `...` hiding things. If it's a
+fragment, make that explicit.
+
+### 3. Types first, prose later
+
+API Reference starts with the typed table. Explanatory text follows. Devs
+look at the table first.
+
+### 4. Variants are exhaustive, not exemplary
+
+If a variant exists, it appears. No "etc." or "more examples in Storybook".
+If it's worth shipping, it's worth documenting.
+
+### 5. Accessibility is first-class
+
+Not a footnote. Same weight as API Reference. Includes shortcuts, ARIA,
+screen reader notes, WCAG level.
+
+### 6. Theming is full transparency
+
+Every CSS variable consumed is listed with default. Every important Tailwind
+class is listed. Zero magic.
+
+### 7. ADRs linked, not hidden
+
+Every non-obvious design decision has an ADR. The component doc links to
+relevant ADRs. A decision without an ADR is a decision that wasn't
+deliberate.
+
+### 8. Changelog lives with the component
+
+Not only in the global CHANGELOG.md. Each doc has its own changelog
+section.
+
+### 9. Known issues are honest
+
+Limitations documented. Known bugs with workarounds. Trusting adult devs
+beats hiding problems.
+
+### 10. Cross-references are explicit
+
+Each doc ends with "See also" linking related components, integrations, and
+guides. Docs are a graph, not a tree.
+
+## Workflow per component
+
+1. **Before writing code:** copy the template into
+   `apps/docs/content/components/<name>.mdx` and fill in the frontmatter,
+   Overview, and Anatomy. This forces scope clarity before implementation.
+
+2. **During dev:** fill in API Reference as you implement. Never defer.
+
+3. **Before release PR:** fill in the remaining sections (variants, states,
+   compositions, a11y, theming, ADRs).
+
+4. **In the PR:** paste the binary checklist. Without every check, no merge.
+
+5. **After merge:** update the component changelog.
+
+## Anti-patterns to avoid
+
+- Docs written 100% at the end ("I'll do the code first")
+- "Here's the component, see Storybook for details"
+- Variants mentioned in prose but no interactive preview
+- A11y "implemented but not documented"
+- "Configurable" CSS vars without listing which ones
+- "Coming soon" / "TODO" / "TBD" in public docs
+- Mixed PT/EN on the same page
+- Examples copy-pasted from Storybook without adapting
+- Incomplete imports in snippets
+- Empty changelog because "it's the first release"
+
+## Quality metrics
+
+Per component, measure each release:
+
+| Metric | Target |
+|---|---|
+| Checklist items filled | 100% (binary) |
+| Broken links | 0 |
+| `TODO` / `TBD` / `...` | 0 occurrences |
+| Code examples tested | 100% (CI validates) |
+| Lighthouse score on page | >= 95 |
+| a11y issues (axe) | 0 critical |
+
+CI blocks the merge if any metric fails.

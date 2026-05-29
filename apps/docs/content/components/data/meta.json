@@ -1,0 +1,14 @@
+{
+  "title": "Data",
+  "description": "Data viz primitives - Area, Line, Bar, Scatter, Pie, Radar, Radial charts",
+  "icon": "BarChart3",
+  "pages": [
+    "area-chart",
+    "line-chart",
+    "bar-chart",
+    "scatter-chart",
+    "pie-chart",
+    "radar-chart",
+    "radial-chart"
+  ]
+}

@@ -1,0 +1,231 @@
+---
+title: Plan
+description: Collapsible plan card with shimmer-marked title while streaming and an expandable body for steps and actions.
+---
+
+import { PlanCollapsedPreview, PlanExpandedPreview, PlanStreamingPreview } from "@/components/preview/ai/chatbot";
+
+## Overview
+
+`Plan` is a collapsible `Card` that surfaces the assistant's plan before it executes. The title and description run through `Shimmer` while `isStreaming` is true, then settle into static text once the plan is final. A toggle in the header expands or collapses the body so users can skim or audit.
+
+Use it for any flow where the model proposes a plan before acting (multi-step agents, deploy bots, codegen). For granular per-step status icons and search citations, layer [Chain of Thought](/components/ai/chain-of-thought) or [Task](/components/ai/task) inside `PlanContent`.
+
+## Preview
+
+### Collapsed
+
+<div className="rounded-lg border p-6 not-prose">
+  <PlanCollapsedPreview />
+</div>
+
+### Expanded
+
+<div className="rounded-lg border p-6 not-prose">
+  <PlanExpandedPreview />
+</div>
+
+### Streaming
+
+<div className="rounded-lg border p-6 not-prose">
+  <PlanStreamingPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-plan
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-plan
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-plan
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-plan
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Plan,
+  PlanHeader,
+  PlanTitle,
+  PlanDescription,
+  PlanContent,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <Plan defaultOpen>
+      <PlanHeader>
+        <PlanTitle>Generate landing page</PlanTitle>
+        <PlanDescription>3 steps - 12s estimated</PlanDescription>
+      </PlanHeader>
+      <PlanContent>
+        Hero, features, CTA section composed from rx-display and rx-forms.
+      </PlanContent>
+    </Plan>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Plan>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `isStreaming` | `boolean` | `false` | While true, `PlanTitle` and `PlanDescription` are rendered through `Shimmer`. |
+| `open` | `boolean` | - | Controlled open state. |
+| `defaultOpen` | `boolean` | - | Uncontrolled initial open state. |
+| `onOpenChange` | `(open: boolean) => void` | - | Notification when the user toggles. |
+
+Extends `ComponentProps<typeof Collapsible>`. Wraps a `Card` internally and removes its shadow.
+
+### `<PlanHeader>`
+
+`CardHeader` with horizontal layout (`items-start justify-between`). Drop `PlanTitle`, `PlanDescription` and (optionally) `PlanAction` inside.
+
+### `<PlanTitle>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `string` | - | Required string (so `Shimmer` can apply per-character). |
+
+Wraps `CardTitle`.
+
+### `<PlanDescription>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `string` | - | Required string for the shimmer effect. |
+
+Wraps `CardDescription`.
+
+### `<PlanAction>`
+
+`CardAction` slot for a custom action button in the header (e.g. "Regenerate plan").
+
+### `<PlanTrigger>`
+
+Toggle button. Default renders a ghost icon button with `ChevronsUpDownIcon` and an sr-only "Toggle plan" label.
+
+Forwards `CollapsibleTrigger` props via `asChild`.
+
+### `<PlanContent>`
+
+The collapsible body. Wraps `CardContent` inside `CollapsibleContent`.
+
+### `<PlanFooter>`
+
+`CardFooter`. Use for "Approve", "Regenerate", "Cancel" rows.
+
+## Composition
+
+1. **`<Plan>`** wraps the whole thing as a card + collapsible.
+2. **`<PlanHeader>`** carries title, description and (optionally) action / trigger.
+3. **`<PlanTitle>` + `<PlanDescription>`** are the streaming-aware text fields.
+4. **`<PlanTrigger>`** is the optional toggle handle (use `PlanAction` for other buttons).
+5. **`<PlanContent>`** is the expandable body. Compose `ChainOfThought`, `Task`, plain markdown or sub-components in here.
+6. **`<PlanFooter>`** is the action row at the bottom.
+
+## Variations
+
+### Plan with collapsible body and footer
+
+The standard pattern: title up top, expandable detail, approve / regenerate at the bottom.
+
+```tsx
+<Plan defaultOpen>
+  <PlanHeader>
+    <PlanTitle>Migrate database to Postgres 16</PlanTitle>
+    <PlanDescription>4 steps - 8 min estimated</PlanDescription>
+    <PlanTrigger />
+  </PlanHeader>
+  <PlanContent>
+    <ChainOfThought defaultOpen>
+      <ChainOfThoughtHeader>Plan</ChainOfThoughtHeader>
+      <ChainOfThoughtContent>
+        <ChainOfThoughtStep status="complete" label="Snapshot current DB" />
+        <ChainOfThoughtStep status="active" label="Run pg_upgrade" />
+        <ChainOfThoughtStep status="pending" label="Switch DNS" />
+        <ChainOfThoughtStep status="pending" label="Verify replication" />
+      </ChainOfThoughtContent>
+    </ChainOfThought>
+  </PlanContent>
+  <PlanFooter>
+    <Button variant="outline">Regenerate</Button>
+    <Button>Run plan</Button>
+  </PlanFooter>
+</Plan>
+```
+
+### Streaming plan
+
+Use while the plan itself is being generated. Title and description shimmer until `isStreaming` flips back.
+
+```tsx
+<Plan defaultOpen isStreaming>
+  <PlanHeader>
+    <PlanTitle>Composing the layout</PlanTitle>
+    <PlanDescription>Streaming response from the model...</PlanDescription>
+  </PlanHeader>
+  <PlanContent>Resolving primitives required for this composition.</PlanContent>
+</Plan>
+```
+
+### Plan with custom action
+
+Replace the default trigger with a regenerate button via `PlanAction`.
+
+```tsx
+<Plan defaultOpen>
+  <PlanHeader>
+    <PlanTitle>Outline the talk</PlanTitle>
+    <PlanDescription>5 sections - 30 min</PlanDescription>
+    <PlanAction>
+      <Button size="sm" variant="ghost" onClick={regenerate}>
+        <RefreshIcon className="size-4" />
+        Regenerate
+      </Button>
+    </PlanAction>
+  </PlanHeader>
+  <PlanContent>...</PlanContent>
+</Plan>
+```
+
+## Accessibility
+
+- **Keyboard**: `PlanTrigger` is a `CollapsibleTrigger`, toggling on Enter / Space and participating in Tab order.
+- **ARIA**: Radix Collapsible wires `aria-expanded` and `aria-controls` automatically. The default `PlanTrigger` ships an sr-only "Toggle plan" label so the icon-only button still announces.
+- **Screen readers**: title and description live in semantic Card slots, so a plan announces as a single block with heading + supporting text.
+- **Reduced motion**: collapse / expand uses Tailwind data-state animations and respects `prefers-reduced-motion`.
+
+## Related
+
+- [Chain of Thought](/components/ai/chain-of-thought) - per-step status inside the plan body
+- [Task](/components/ai/task) - file-level breakdown for a single step
+- [Confirmation](/components/ai/confirmation) - approval prompt before running the plan
+- [Shimmer](/components/ai/shimmer) - the streaming text effect used by `PlanTitle` / `PlanDescription`

@@ -1,0 +1,43 @@
+---
+title: Radius
+description: Oito stops de border-radius do quase reto ao blob-style. O radius é uma decisão de marca tanto quanto de UI.
+---
+
+import { RadiusTable } from "@/components/token-tables";
+
+Border-radius é uma das decisões mais subestimadas em UI. **Quanto
+mais reto, mais institucional**; quanto mais arredondado, mais
+amigável. Um banco escolhe `rounded-md`. Um app de meditação
+escolhe `rounded-2xl`. A tonalidade da marca está nessa escolha.
+
+## Como funciona
+
+O Tailwind v4 declara oito stops, de `xs` (0.125rem / 2px) a `4xl`
+(2rem / 32px). Esses primitivos geram utilitários `rounded-xs`,
+`rounded-sm`, ..., `rounded-4xl` automaticamente.
+
+**Nota importante:** o token `--radius` (sem stop) que os componentes
+Gremorie consomem **não vive aqui**. Ele é definido em
+cada arquivo de tema - `colors-default.css` usa `0.625rem`,
+`amber-minimal.css` usa `0.375rem`, e por aí vai. Cada tema
+escolhe o radius que combina com sua personalidade.
+
+## Tokens
+
+<RadiusTable />
+
+## Boas práticas
+
+- **Decida cedo.** Trocar o radius do sistema na metade do
+  projeto é caro — quase tudo precisa ser re-revisitado.
+- **Mantenha hierarquia.** Cards externos com radius maior, pills
+  e badges com radius menor. Inputs e botões geralmente caem no
+  mesmo stop (consistência de form).
+- **`rounded-full`** existe e é útil — mas cuidado com pílulas
+  finas demais (radius proporcional ao height pode ficar
+  estranho).
+- **Não misture mais de 3 stops** numa mesma tela. Mais que isso,
+  o radius vira ruído visual em vez de hierarquia.
+- **Tema importa.** Se o tema do produto usa `--radius: 0.5rem`,
+  pense duas vezes antes de hardcodar `rounded-2xl` num
+  componente — você está sobrepondo a personalidade do tema.

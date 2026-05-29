@@ -1,0 +1,68 @@
+---
+title: Spacing
+description: Uma única base (4px) gera toda a escala de espaçamento via calc() do Tailwind v4.
+---
+
+import { SpacingTable } from "@/components/token-tables";
+
+Espaçamento é o ritmo da interface. É o que diz "esses dois
+elementos andam juntos" e "esse outro é parte de outro grupo" sem
+escrever uma palavra. Em UI, **70% das decisões visuais são
+decisões de spacing** — e fazer isso bem significa parar de
+inventar valores e começar a usar uma escala.
+
+## Como a escala funciona
+
+A KDS herda a estratégia do Tailwind v4: **uma única variável**
+(`--spacing: 0.25rem`, ou seja, 4px) que gera toda a família de
+utilitários via `calc()`.
+
+```css
+/* Tailwind v4 deriva tudo disso: */
+.p-1  { padding: calc(var(--spacing) * 1); }   /* 4px */
+.p-2  { padding: calc(var(--spacing) * 2); }   /* 8px */
+.p-4  { padding: calc(var(--spacing) * 4); }   /* 16px */
+.gap-6 { gap: calc(var(--spacing) * 6); }       /* 24px */
+.h-32 { height: calc(var(--spacing) * 32); }   /* 128px */
+```
+
+A consequência prática: **não há lista de stops** como em radius
+ou shadow. Qualquer multiplicador funciona — `p-7`, `p-13`, `p-50`.
+Em geral seguimos os incrementos `0.5, 1, 1.5, 2, 3, 4, 5, 6, 8,
+10, 12, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 96` que cobrem
+99% dos casos.
+
+## Por que 4px
+
+A base de 4px (`0.25rem`) é o **menor incremento útil** em UI:
+
+- Múltiplo de 2 e 4 — encaixa em densidade de pixel comum.
+- Combina bem com line-heights de 16px (default body), 20px
+  (`text-sm`) e 24px (`text-base`).
+- Stops finos (`p-0.5` = 2px) cobrem casos hairline (separadores,
+  bordas).
+
+Se você precisa rescale o sistema todo para mais denso ou mais
+espaçoso, edite `--spacing` num CSS layer maior — todos os
+utilitários cascateiam.
+
+## Escala de referência
+
+A tabela abaixo mostra um subset representativo. **Qualquer
+multiplicador inteiro** ou fracionário (até a quarto) funciona.
+
+<SpacingTable />
+
+## Boas práticas
+
+- **4 e 6 são os defaults seguros** para padding interno de UI
+  (`p-4` em cards, `p-6` em containers maiores).
+- **8, 12, 16** para gaps entre elementos relacionados.
+- **20, 24** para gaps entre seções de conteúdo dentro da mesma
+  surface.
+- **64, 80, 96** para gaps entre seções macro em landings.
+- **Não invente**: se você está prestes a usar `padding: 18px`,
+  pergunte se `p-4` (16px) ou `p-5` (20px) não resolveria. A
+  consistência da escala é mais valiosa que o pixel exato.
+- **Use `gap-*` em vez de margens** quando possível — flex/grid
+  com gap é mais previsível que margens cascateando.

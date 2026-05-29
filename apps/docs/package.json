@@ -1,0 +1,53 @@
+{
+  "name": "@gremorie/docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Gremorie public docs (Fumadocs) — deploys to gremorie.com.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 5020",
+    "build": "next build",
+    "start": "next start -p 5020",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .source .turbo node_modules/.cache",
+    "postinstall": "fumadocs-mdx"
+  },
+  "dependencies": {
+    "@gremorie/rx-ai": "*",
+    "@gremorie/rx-containers": "*",
+    "@gremorie/rx-core": "*",
+    "@gremorie/rx-data": "*",
+    "@gremorie/rx-display": "*",
+    "@gremorie/rx-feedback": "*",
+    "@gremorie/rx-forms": "*",
+    "@gremorie/rx-navigation": "*",
+    "@gremorie/rx-overlays": "*",
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@xyflow/react": "^12.10.2",
+    "ai": "^6.0.177",
+    "fumadocs-core": "^16.0.0",
+    "fumadocs-mdx": "^14.0.0",
+    "fumadocs-ui": "^16.0.0",
+    "lucide-react": "^0.468.0",
+    "mcp-handler": "^1.1.0",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "3.8.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@gremorie/eslint-config": "*",
+    "@gremorie/tsconfig": "*",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.8.3"
+  }
+}

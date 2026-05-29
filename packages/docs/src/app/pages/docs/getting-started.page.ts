@@ -14,7 +14,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
       <docs-page
         eyebrow="Introduction"
         title="Getting started"
-        lede="ShadNG is a registry-style component library for Angular focused on AI interfaces. Install the components you need, own the code, integrate with whichever LLM stack you prefer."
+        lede="Gremorie NG is a registry-style component library for Angular focused on AI interfaces. Install the components you need, own the code, integrate with whichever LLM stack you prefer."
       >
         <docs-section title="Requirements" anchor="requirements">
           <docs-prose>
@@ -29,10 +29,10 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         </docs-section>
 
         <docs-section title="Install the library" anchor="install">
-          <docs-code-block lang="bash" code="npm install @shadng/prompt-input" />
+          <docs-code-block lang="bash" code="npm install @gremorie/ng-ai" />
           <docs-prose>
             <p>
-              <code>&#64;kalvner/shadng-prompt-input</code> ships the full PromptInput family
+              <code>&#64;usegremorie/gremorie-prompt-input</code> ships the full PromptInput family
               (10 components). Each component is standalone and tree-shakeable — import only
               what you use.
             </p>
@@ -46,9 +46,9 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Add the theme" anchor="theme">
           <docs-prose>
             <p>
-              ShadNG ships a two-tier token system (primitives → semantics), fully
-              shadcn-compatible. Import it once in your global stylesheet, then customize
-              the variables for rebrand.
+              Gremorie NG ships a two-tier token system (primitives -> semantics).
+              Import it once in your global stylesheet, then customize the variables
+              for rebrand.
             </p>
           </docs-prose>
           <docs-code-block
@@ -79,9 +79,9 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Editor support (Angular ESLint)" anchor="eslint">
           <docs-prose>
             <p>
-              ShadNG ships components with selectors like <code>prompt-input</code> (no library
+              Gremorie NG ships components with selectors like <code>prompt-input</code> (no library
               prefix). If your project uses <code>&#64;angular-eslint</code> with the default
-              <code>app</code> prefix, add the ShadNG-allowed prefixes to your rule config.
+              <code>app</code> prefix, add the Gremorie NG-allowed prefixes to your rule config.
             </p>
           </docs-prose>
           <docs-code-block
@@ -96,7 +96,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
             <ul class="ml-5 list-disc space-y-1">
               <li><a routerLink="/docs/components/prompt-input">Browse the PromptInput container</a> — start here</li>
               <li><a routerLink="/docs/integrations/signals">Plain signals integration</a> — wire it to anything</li>
-              <li><a href="https://github.com/kalvner/shadng" target="_blank" rel="noopener">GitHub repository</a> — source, issues, discussions</li>
+              <li><a href="https://github.com/usegremorie/gremorie" target="_blank" rel="noopener">GitHub repository</a> — source, issues, discussions</li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -106,7 +106,7 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
 })
 export default class GettingStartedPage {
   protected readonly themeImport = `@import 'tailwindcss';
-@import '@shadng/prompt-input/theme.css';
+@import '@gremorie/ng-ai/theme.css';
 
 /* Optional: override primitives or semantics here */
 :root {
@@ -120,7 +120,7 @@ import {
   PromptInputSubmitEvent,
   PromptInputTextarea,
   PromptInputToolbar,
-} from '@shadng/prompt-input';
+} from '@gremorie/ng-ai';
 
 @Component({
   selector: 'app-chat',
@@ -148,7 +148,7 @@ export class ChatComponent {
     {
       type: 'element',
       style: 'kebab-case',
-      // 'app' for your code, 'ai' + multi-word names for ShadNG components.
+      // 'app' for your code, 'ai' + multi-word names for Gremorie NG components.
       prefix: ['app', 'ai', 'prompt-input', 'message', 'tool-call', 'code-block'],
     },
   ],

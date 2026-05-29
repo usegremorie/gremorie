@@ -1,0 +1,195 @@
+---
+title: WebPreview
+description: iframe-based preview de site/app gerado pelo modelo — barra de URL, console, navigation.
+component: WebPreview
+importPath: "@kalvner/kds/ai/web-preview"
+status: stable
+---
+
+import { WebPreviewPreview, WebPreviewConsolePreview } from "@/components/ai-code-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`WebPreview` renderiza um **site/app dentro de iframe** com chrome
+de browser — URL bar, navigation buttons, optional console output.
+Usado pra preview live de UI gerada por IA (v0, lovable-style),
+ou pra mostrar referências externas em surface controlada.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Preview de site dentro de iframe com URL bar.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <WebPreviewPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<WebPreview defaultUrl onUrlChange>
+  ├─ <WebPreviewNavigation>
+  │    ├─ <WebPreviewNavigationButton tooltip>...
+  │    └─ <WebPreviewUrl />
+  ├─ <WebPreviewBody />              ← iframe
+  └─ <WebPreviewConsole logs />       ← opcional
+</WebPreview>
+```
+
+## Usage
+
+```tsx
+<WebPreview defaultUrl="https://ds.kalvner.com">
+  <WebPreviewNavigation>
+    <WebPreviewUrl />
+  </WebPreviewNavigation>
+  <WebPreviewBody />
+</WebPreview>
+```
+
+## Props
+
+### WebPreview (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `defaultUrl` | `string` | — | URL inicial (uncontrolled). |
+| `onUrlChange` | `(url: string) => void` | — | Callback ao mudar URL no input. |
+
+Aceita `ComponentProps<"div">`. Provider interno que segura a URL atual.
+
+### WebPreviewNavigation
+
+Aceita `ComponentProps<"div">`. Wrapper flex pros buttons + URL bar.
+
+### WebPreviewNavigationButton
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `tooltip` | `string` | — | Tooltip do botão (envolve em [Tooltip](../../ui/overlays/tooltip)). |
+
+Herda de [Button](../../ui/forms/button). Default `variant="ghost"`
+`size="icon"`.
+
+### WebPreviewUrl
+
+Herda de [Input](../../ui/forms/input). Lê do contexto e atualiza
+ao Enter.
+
+### WebPreviewBody
+
+Herda de `iframe`. Aceita `src` (override do contexto), `sandbox`,
+`loading`, etc.
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `src` | `string` | — | Override (lê do contexto se não passado). |
+| `loading` | `'eager' \| 'lazy'` | — | Loading hint. |
+| `sandbox` | `string` | `'allow-scripts allow-same-origin'` | Iframe sandbox. |
+
+### WebPreviewConsole
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `logs` | `Array<{ level, message, timestamp }>` | `[]` | Logs do console capturados. |
+
+Aceita `ComponentProps<"div">`. Mostra logs com cores baseadas em level.
+
+## Subcomponents
+
+- **`WebPreview`** — root + provider de URL atual.
+- **`WebPreviewNavigation`** — barra de navegação flex.
+- **`WebPreviewNavigationButton`** — botão genérico (Refresh, Open in new tab).
+- **`WebPreviewUrl`** — Input de URL (Enter dispara navigate).
+- **`WebPreviewBody`** — iframe.
+- **`WebPreviewConsole`** — terminal de logs.
+
+## States
+
+| Estado | Visual |
+|---|---|
+| Loading | iframe mostra fallback browser. |
+| Console open | WebPreviewConsole renderiza abaixo do body. |
+| Console closed | Body ocupa todo o espaço. |
+
+## Composition
+
+### v0-style — preview + chat
+
+```tsx
+<div className="grid grid-cols-[1fr_440px]">
+  <WebPreview defaultUrl={generatedUrl}>
+    <WebPreviewNavigation>
+      <WebPreviewNavigationButton tooltip="Refresh">
+        <RefreshCw />
+      </WebPreviewNavigationButton>
+      <WebPreviewUrl />
+      <WebPreviewNavigationButton tooltip="Open">
+        <ExternalLink />
+      </WebPreviewNavigationButton>
+    </WebPreviewNavigation>
+    <WebPreviewBody />
+  </WebPreview>
+  <Conversation>...</Conversation>
+</div>
+```
+
+### Com console capturado
+
+```tsx
+<WebPreview defaultUrl="https://app.example/preview">
+  <WebPreviewNavigation>
+    <WebPreviewUrl />
+  </WebPreviewNavigation>
+  <WebPreviewBody className="flex-1" />
+  <WebPreviewConsole
+    logs={[
+      { level: "log", message: "Hot reload connected", timestamp: new Date() },
+      { level: "warn", message: "Deprecated API", timestamp: new Date() },
+      { level: "error", message: "Failed to fetch", timestamp: new Date() }
+    ]}
+  />
+</WebPreview>
+```
+
+## When to use
+
+- Preview de site gerado por IA (v0, lovable, bolt).
+- Sandbox de testes (codesandbox-style).
+- Preview de URL externa em context controlado.
+
+## When not to use
+
+- Snippet de código sem run — use [CodeBlock](./code-block).
+- Imagem renderizada — use [Image](../utilities/image).
+- Conteúdo same-origin que pode ir inline — sem iframe.
+
+## Best practices
+
+- **Sandbox restritivo.** `sandbox="allow-scripts allow-same-origin"`
+  é o mínimo. Evite `allow-top-navigation` em iframes não confiáveis.
+- **CSP friendly.** Verifique se o iframe target permite ser
+  embedado (X-Frame-Options).
+- **Console opcional.** Só mostre console quando ajuda debug —
+  sem isso, polui o preview.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **iframe** | Adicione `title` no `<WebPreviewBody>` — leitor de tela usa pra contexto. |
+| **URL input** | Acessível via Tab + Enter. |
+| **Console** | Logs precisam de `<time>` semântico pra timestamps lerem corretamente. |
+
+## Related
+
+- [Artifact](./artifact) — output estático (sem iframe).
+- [CodeBlock](./code-block) — código fonte sem run.

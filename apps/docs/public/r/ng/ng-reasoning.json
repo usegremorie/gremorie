@@ -1,0 +1,117 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-reasoning",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Reasoning (Angular)",
+  "description": "Collapsible \"thinking...\" block with auto-open while streaming, auto-close once streaming ends and duration tracking. Composes Reasoning + ReasoningTrigger + ReasoningContent, built on @spartan-ng/brain/collapsible.",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-shimmer"
+  ],
+  "files": [
+    {
+      "path": "src/lib/reasoning/reasoning.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  InjectionToken,\n  input,\n  model,\n  output,\n  signal,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnCollapsible } from '@spartan-ng/brain/collapsible';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Reasoning — collapsible \"thinking...\" block. Mirrors React `Reasoning`.\n *\n * Behavior parity:\n * - Auto-opens when streaming starts (if `defaultOpen`).\n * - Auto-closes 1s after streaming ends (once only).\n * - Tracks duration in seconds from streaming start to end.\n * - `[(open)]` two-way binding (model signal) plus uncontrolled\n *   `defaultOpen`.\n *\n * Anti-pattern note (from rx-ai source): React useEffect deps array caused\n * \"Maximum update depth exceeded\" because useControllableState returned\n * fresh setters every render. Angular signals don't have that problem\n * because effect() tracks signal reads, not the identity of the setter.\n */\nexport interface ReasoningState {\n  isStreaming: () => boolean;\n  isOpen: () => boolean;\n  duration: () => number | undefined;\n}\n\nexport const REASONING = new InjectionToken<ReasoningState>('ReasoningState');\n\nconst AUTO_CLOSE_DELAY = 1000;\nconst MS_IN_S = 1000;\n\n@Component({\n  selector: 'reasoning',\n  standalone: true,\n  imports: [BrnCollapsible],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div brnCollapsible [(expanded)]=\"open\">\n      <ng-content />\n    </div>\n  `,\n  host: {\n    '[class]': 'hostClass()',\n  },\n  providers: [\n    { provide: REASONING, useExisting: forwardRef(() => Reasoning) },\n  ],\n})\nexport class Reasoning implements ReasoningState {\n  readonly isStreaming = input<boolean>(false);\n  readonly defaultOpen = input<boolean>(true);\n  readonly open = model<boolean>(true);\n  readonly durationInput = input<number | undefined>(undefined, {\n    alias: 'duration',\n  });\n\n  readonly openChange = output<boolean>();\n\n  private readonly _duration = signal<number | undefined>(undefined);\n  private readonly _hasAutoClosed = signal(false);\n  private readonly _startTime = signal<number | null>(null);\n  private autoCloseTimer?: ReturnType<typeof setTimeout>;\n\n  readonly duration = () => this.durationInput() ?? this._duration();\n  readonly isOpen = () => this.open();\n\n  protected readonly hostClass = computed(() => cn('not-prose mb-4 block'));\n\n  constructor() {\n    // Apply defaultOpen on init.\n    effect(() => {\n      this.open.set(this.defaultOpen());\n    });\n\n    // Emit openChange when open flips.\n    effect(() => {\n      this.openChange.emit(this.open());\n    });\n\n    // Track duration from streaming start to end.\n    effect(() => {\n      const streaming = this.isStreaming();\n      if (streaming) {\n        if (this._startTime() === null) {\n          this._startTime.set(Date.now());\n        }\n      } else {\n        const start = this._startTime();\n        if (start !== null) {\n          this._duration.set(Math.ceil((Date.now() - start) / MS_IN_S));\n          this._startTime.set(null);\n        }\n      }\n    });\n\n    // Auto-close when streaming ends (once only).\n    effect((onCleanup) => {\n      const streaming = this.isStreaming();\n      const open = this.open();\n      const defaultO = this.defaultOpen();\n      const auto = this._hasAutoClosed();\n      if (defaultO && !streaming && open && !auto) {\n        this.autoCloseTimer = setTimeout(() => {\n          this.open.set(false);\n          this._hasAutoClosed.set(true);\n        }, AUTO_CLOSE_DELAY);\n        onCleanup(() => {\n          if (this.autoCloseTimer) clearTimeout(this.autoCloseTimer);\n        });\n      }\n    });\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/reasoning/reasoning.ts"
+    },
+    {
+      "path": "src/lib/reasoning/reasoning-trigger.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnCollapsibleTrigger } from '@spartan-ng/brain/collapsible';\n\nimport { Shimmer } from '../shimmer/shimmer';\nimport { REASONING } from './reasoning';\n\n/**\n * ReasoningTrigger — clickable header for the Reasoning collapsible.\n *\n * Default text follows React `defaultGetThinkingMessage`:\n * - \"Thinking…\" (shimmered) while streaming or duration is 0\n * - \"Thought for a few seconds\" when duration is undefined\n * - \"Thought for {duration} seconds\" otherwise\n *\n * Project custom children to fully override.\n */\n@Component({\n  selector: 'reasoning-trigger',\n  standalone: true,\n  imports: [BrnCollapsibleTrigger, Shimmer],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      brnCollapsibleTrigger\n      class=\"flex w-full items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground\"\n    >\n      <ng-content>\n        <!-- brain icon -->\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n        >\n          <path d=\"M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z\" />\n          <path d=\"M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z\" />\n          <path d=\"M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4\" />\n          <path d=\"M17.599 6.5a3 3 0 0 0 .399-1.375\" />\n          <path d=\"M6.003 5.125A3 3 0 0 0 6.401 6.5\" />\n        </svg>\n        @if (showShimmer()) {\n          <span ngShimmer [shimmerDuration]=\"1\">Thinking…</span>\n        } @else {\n          <p>{{ label() }}</p>\n        }\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n          class=\"transition-transform\"\n          [class.rotate-180]=\"open()\"\n        >\n          <path d=\"m6 9 6 6 6-6\" />\n        </svg>\n      </ng-content>\n    </button>\n  `,\n})\nexport class ReasoningTrigger {\n  private readonly state = inject(REASONING);\n\n  protected readonly open = computed(() => this.state.isOpen());\n  protected readonly showShimmer = computed(() => {\n    const d = this.state.duration();\n    return this.state.isStreaming() || d === 0;\n  });\n\n  protected readonly label = computed(() => {\n    const d = this.state.duration();\n    if (d === undefined) return 'Thought for a few seconds';\n    return `Thought for ${d} seconds`;\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/reasoning/reasoning-trigger.ts"
+    },
+    {
+      "path": "src/lib/reasoning/reasoning-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnCollapsibleContent } from '@spartan-ng/brain/collapsible';\n\n/**\n * ReasoningContent — collapsible body that holds the reasoning text.\n *\n * React `ReasoningContent` wraps Streamdown; without that Angular peer this\n * component accepts a plain-text `text` input rendered as preserved\n * whitespace, or any projected children for custom renderers.\n */\n@Component({\n  selector: 'reasoning-content',\n  standalone: true,\n  imports: [BrnCollapsibleContent],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      brnCollapsibleContent\n      class=\"mt-4 text-sm text-muted-foreground outline-none transition-all data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-2\"\n    >\n      @if (text(); as t) {\n        <p class=\"whitespace-pre-wrap\">{{ t }}</p>\n      } @else {\n        <ng-content />\n      }\n    </div>\n  `,\n})\nexport class ReasoningContent {\n  readonly text = input<string>();\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/reasoning/reasoning-content.ts"
+    },
+    {
+      "path": "src/lib/reasoning/index.ts",
+      "content": "export { Reasoning, REASONING } from './reasoning';\nexport type { ReasoningState } from './reasoning';\nexport { ReasoningTrigger } from './reasoning-trigger';\nexport { ReasoningContent } from './reasoning-content';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/reasoning/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

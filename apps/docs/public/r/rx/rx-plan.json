@@ -1,0 +1,89 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-plan",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Plan (React)",
+  "description": "Multi-step plan card with Shimmer-marked active step. PlanHeader + PlanTitle + PlanDescription describe the goal; PlanContent lists PlanStep items, each with status. PlanFooter holds CTA Buttons (approve / regenerate). Built on Card + Collapsible.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-button",
+    "rx-card",
+    "rx-collapsible",
+    "rx-shimmer"
+  ],
+  "files": [
+    {
+      "path": "src/lib/plan/plan.tsx",
+      "content": "\"use client\";\n\nimport { Button } from \"@gremorie/rx-forms\";\nimport {\n  Card,\n  CardAction,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@gremorie/rx-display\";\nimport {\n  Collapsible,\n  CollapsibleContent,\n  CollapsibleTrigger,\n} from \"@gremorie/rx-display\";\nimport { cn } from \"@gremorie/rx-core\";\nimport { ChevronsUpDownIcon } from \"lucide-react\";\nimport type { ComponentProps } from \"react\";\nimport { createContext, useContext } from \"react\";\nimport { Shimmer } from \"../shimmer\";\n\ntype PlanContextValue = {\n  isStreaming: boolean;\n};\n\nconst PlanContext = createContext<PlanContextValue | null>(null);\n\nconst usePlan = () => {\n  const context = useContext(PlanContext);\n  if (!context) {\n    throw new Error(\"Plan components must be used within Plan\");\n  }\n  return context;\n};\n\nexport type PlanProps = ComponentProps<typeof Collapsible> & {\n  isStreaming?: boolean;\n};\n\nexport const Plan = ({\n  className,\n  isStreaming = false,\n  children,\n  ...props\n}: PlanProps) => (\n  <PlanContext.Provider value={{ isStreaming }}>\n    <Collapsible asChild data-slot=\"plan\" {...props}>\n      <Card className={cn(\"shadow-none\", className)}>{children}</Card>\n    </Collapsible>\n  </PlanContext.Provider>\n);\n\nexport type PlanHeaderProps = ComponentProps<typeof CardHeader>;\n\nexport const PlanHeader = ({ className, ...props }: PlanHeaderProps) => (\n  <CardHeader\n    className={cn(\"flex items-start justify-between\", className)}\n    data-slot=\"plan-header\"\n    {...props}\n  />\n);\n\nexport type PlanTitleProps = Omit<\n  ComponentProps<typeof CardTitle>,\n  \"children\"\n> & {\n  children: string;\n};\n\nexport const PlanTitle = ({ children, ...props }: PlanTitleProps) => {\n  const { isStreaming } = usePlan();\n\n  return (\n    <CardTitle data-slot=\"plan-title\" {...props}>\n      {isStreaming ? <Shimmer>{children}</Shimmer> : children}\n    </CardTitle>\n  );\n};\n\nexport type PlanDescriptionProps = Omit<\n  ComponentProps<typeof CardDescription>,\n  \"children\"\n> & {\n  children: string;\n};\n\nexport const PlanDescription = ({\n  className,\n  children,\n  ...props\n}: PlanDescriptionProps) => {\n  const { isStreaming } = usePlan();\n\n  return (\n    <CardDescription\n      className={cn(\"text-balance\", className)}\n      data-slot=\"plan-description\"\n      {...props}\n    >\n      {isStreaming ? <Shimmer>{children}</Shimmer> : children}\n    </CardDescription>\n  );\n};\n\nexport type PlanActionProps = ComponentProps<typeof CardAction>;\n\nexport const PlanAction = (props: PlanActionProps) => (\n  <CardAction data-slot=\"plan-action\" {...props} />\n);\n\nexport type PlanContentProps = ComponentProps<typeof CardContent>;\n\nexport const PlanContent = (props: PlanContentProps) => (\n  <CollapsibleContent asChild>\n    <CardContent data-slot=\"plan-content\" {...props} />\n  </CollapsibleContent>\n);\n\nexport type PlanFooterProps = ComponentProps<\"div\">;\n\nexport const PlanFooter = (props: PlanFooterProps) => (\n  <CardFooter data-slot=\"plan-footer\" {...props} />\n);\n\nexport type PlanTriggerProps = ComponentProps<typeof CollapsibleTrigger>;\n\nexport const PlanTrigger = ({ className, ...props }: PlanTriggerProps) => (\n  <CollapsibleTrigger asChild>\n    <Button\n      className={cn(\"size-8\", className)}\n      data-slot=\"plan-trigger\"\n      size=\"icon\"\n      variant=\"ghost\"\n      {...props}\n    >\n      <ChevronsUpDownIcon className=\"size-4\" />\n      <span className=\"sr-only\">Toggle plan</span>\n    </Button>\n  </CollapsibleTrigger>\n);\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/ai/plan/plan.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any React-based AI chat surface - the input area where the user composes their prompt, optionally attaches files, and submits.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use a native textarea + button instead.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up status automatically (ready / submitted / streaming / error).",
+      "Use PromptInputFooter for sticky bottom controls (tools on the left, submit on the right).",
+      "Wrap the tree in PromptInputProvider only when you need to control attachments or text input from outside the form (eg. drag-to-drop across the whole page)."
+    ],
+    "antipatterns": [
+      "Listening to onSubmit on the textarea directly - listen to the parent PromptInput onSubmit to receive the full payload.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the Enter / Cmd+Enter keyboard contract.",
+      "Re-implementing attachment state in the host component - drive it via the controller hook usePromptInputAttachments() or the provider."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "onSubmit",
+          "type": "(message: PromptInputMessage, e: FormEvent) => void | Promise<void>",
+          "required": true,
+          "description": "Fired when the user submits via Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "status",
+          "type": "ChatStatus ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'",
+          "description": "Drives the PromptInputSubmit icon (arrow / spinner / stop / X)."
+        },
+        {
+          "name": "maxFiles",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "maxFileSize",
+          "type": "number",
+          "required": false,
+          "description": "Bytes."
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "description": "MIME pattern list like 'image/*,application/pdf'."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<PromptInput onSubmit={(message) => sendMessage(message.text, message.files)}>\n  <PromptInputBody>\n    <PromptInputTextarea placeholder=\"Ask anything\" />\n    <PromptInputFooter>\n      <span />\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      },
+      {
+        "title": "With toolbar",
+        "code": "<PromptInput onSubmit={onSubmit}>\n  <PromptInputBody>\n    <PromptInputTextarea />\n    <PromptInputFooter>\n      <PromptInputTools>\n        <PromptInputButton aria-label=\"Attach\"><Paperclip /></PromptInputButton>\n        <PromptInputButton aria-label=\"Web\"><Globe /></PromptInputButton>\n      </PromptInputTools>\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      }
+    ]
+  }
+}

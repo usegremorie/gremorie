@@ -1,0 +1,286 @@
+---
+title: Breadcrumb
+description: "Hierarchical trail showing the user's path. Semantic nav with explicit terminal page and optional collapse."
+---
+
+import { BreadcrumbPreview } from "@/components/preview/navigation/navigation";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from "@gremorie/rx-navigation";
+
+## Overview
+
+`Breadcrumb` is the hierarchical-trail primitive: a `<nav>` wrapping an ordered list that shows where the user is in the site or app, one segment per ancestor. The trail terminates explicitly with `<BreadcrumbPage>` (a non-link span carrying `aria-current="page"`), making the current location unambiguous to readers and screen readers alike.
+
+Reach for Breadcrumb only on **deep hierarchies (three levels or more)**. Flat sites pay the visual noise cost without a payoff. When the middle of a long trail crowds the layout, collapse it with `<BreadcrumbEllipsis>` paired with a [Popover](/components/overlays/popover) or [DropdownMenu](/components/overlays/dropdown-menu) listing the hidden segments.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <BreadcrumbPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-breadcrumb
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-breadcrumb
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-breadcrumb
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-breadcrumb
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@gremorie/rx-navigation";
+
+export function DocsCrumbs() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/docs/components">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Breadcrumb>`
+
+Renders a `<nav aria-label="breadcrumb">`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"nav">` | - | Standard nav attributes. The `aria-label="breadcrumb"` is set automatically. |
+
+### `<BreadcrumbList>`
+
+Renders an `<ol>` with flex-wrap and subtle gap.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"ol">` | - | Standard ol attributes. |
+
+### `<BreadcrumbItem>`
+
+Renders an `<li>` with `inline-flex items-center gap-1.5`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"li">` | - | Standard li attributes. |
+
+### `<BreadcrumbLink>`
+
+The clickable ancestor segment. Renders an `<a>` by default; pass `asChild` to delegate rendering to a routing component (Next.js `Link`, React Router `Link`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `asChild` | `boolean` | `false` | When `true`, renders into the single child element via Radix `Slot`. Use with framework `Link` components. |
+| `...props` | `React.ComponentProps<"a">` | - | Standard anchor attributes, including `href`. |
+
+### `<BreadcrumbPage>`
+
+The terminal segment - the current page. Renders a `<span>` with `role="link"`, `aria-disabled="true"`, and `aria-current="page"`. Not interactive.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+
+### `<BreadcrumbSeparator>`
+
+The visual divider between segments. Renders an `<li role="presentation" aria-hidden="true">` containing a `ChevronRight` by default. Override by passing children.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `React.ReactNode` | `<ChevronRight />` | Custom separator content (e.g. a slash, a different icon). |
+| `...props` | `React.ComponentProps<"li">` | - | Standard li attributes. |
+
+### `<BreadcrumbEllipsis>`
+
+Placeholder for collapsed middle segments. Renders a 36 by 36 px square containing a `MoreHorizontal` icon and a visually hidden "More" label. Wrap inside a `Popover` or `DropdownMenu` trigger to reveal the hidden segments.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+
+## Composition
+
+1. **`<Breadcrumb>`** is the semantic nav landmark.
+2. **`<BreadcrumbList>`** is the ordered list of segments.
+3. **Each segment** is a `<BreadcrumbItem>`, alternating with `<BreadcrumbSeparator>`.
+4. **Ancestors** use `<BreadcrumbLink>`; the **current page** uses `<BreadcrumbPage>` (never a link).
+5. **Collapsed middle** segments become `<BreadcrumbEllipsis>`, optionally as the trigger of an overlay listing the hidden items.
+
+Separators are siblings of items inside the list, not children of items, so screen readers walk the trail cleanly.
+
+## Variations
+
+### Simple chain
+
+<div className="rounded-lg border p-6 not-prose">
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Home</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Settings</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>Account</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</div>
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/settings">Settings</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Account</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+Use for shallow hierarchies (three to four levels) where every ancestor fits on a single line.
+
+### With ellipsis collapse
+
+<div className="rounded-lg border p-6 not-prose">
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Docs</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbEllipsis />
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Components</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</div>
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbEllipsis />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/docs/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+Use when the chain is long enough to wrap awkwardly. The ellipsis announces "More" to assistive tech and signals truncation to sighted users.
+
+### With custom separator
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator>/</BreadcrumbSeparator>
+    <BreadcrumbItem>
+      <BreadcrumbPage>Settings</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+Use to match a brand voice. Keep separators short (a single character or icon) so the trail stays scannable.
+
+## Accessibility
+
+- **Landmark**: the outer `<nav>` carries `aria-label="breadcrumb"`, making the trail a discoverable landmark for screen reader users.
+- **Current page**: `<BreadcrumbPage>` sets `aria-current="page"` so assistive tech announces the user's location explicitly. Never wrap the current page in `<BreadcrumbLink>`.
+- **Separators**: `<BreadcrumbSeparator>` is `aria-hidden="true"` and `role="presentation"` - the trail reads as "Docs, Components, Breadcrumb" without the chevrons.
+- **Ellipsis**: `<BreadcrumbEllipsis>` exposes a visually hidden "More" label so screen readers announce the collapsed segment. Wrap it in a `Popover` or `DropdownMenu` trigger to make it operable.
+- **Keyboard**: links are reachable in order with `Tab`. The current page is not focusable.
+
+## Related
+
+- [NavigationMenu](/components/navigation/navigation-menu) - primary site navigation with rich panels, not a back-trace.
+- [Tabs](/components/navigation/tabs) - sibling content panels within one page.
+- [Popover](/components/overlays/popover) - common host for an ellipsis collapse menu.

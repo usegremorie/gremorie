@@ -1,0 +1,203 @@
+---
+title: Settings form
+description: "Profile plus Notifications plus Appearance card stack with a sticky save bar. The canonical settings surface."
+---
+
+## Overview
+
+A complete settings page: a profile card with avatar and name/email,
+a notifications card with three Switch rows, and an appearance card
+with two Slider controls. A sticky save bar pins to the bottom with
+cancel and primary actions.
+
+Use this block as the starting point for any settings route. Each Card
+is a self-contained section: add, remove, or reorder them without
+breaking the others.
+
+## Preview
+
+<BlockPreview name="settings-form" />
+
+## Anatomy
+
+The block composes:
+
+1. **Profile Card** - Avatar + AvatarFallback + Input fields for name and email
+2. **Notifications Card** - Label + Switch rows
+3. **Appearance Card** - Slider controls for border radius and font scale
+4. **Sticky save bar** - Button (ghost) Cancel + Button Save changes
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-settings-form
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-settings-form
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-settings-form
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-settings-form
+```
+
+</Tab>
+
+</Tabs>
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  Avatar,
+  AvatarFallback,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
+import { Button, Input, Label, Slider, Switch } from "@gremorie/rx-forms";
+
+export function SettingsForm() {
+  const [radius, setRadius] = useState(8);
+  const [fontScale, setFontScale] = useState(1);
+
+  const notifications = [
+    { id: "n-product", label: "Product updates", on: true },
+    { id: "n-billing", label: "Billing alerts", on: true },
+    { id: "n-newsletter", label: "Weekly newsletter", on: false },
+  ];
+
+  return (
+    <div className="flex w-full flex-col gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Profile</CardTitle>
+          <CardDescription>Your public information.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex items-center gap-4">
+            <Avatar className="size-16">
+              <AvatarFallback>KN</AvatarFallback>
+            </Avatar>
+            <Button variant="outline" size="sm">
+              Change avatar
+            </Button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="settings-name">Name</Label>
+              <Input id="settings-name" defaultValue="Kira Nerys" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="settings-email">Email</Label>
+              <Input id="settings-email" type="email" defaultValue="kira@gremorie.com" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Notifications</CardTitle>
+          <CardDescription>Pick what reaches your inbox.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          {notifications.map((row) => (
+            <div key={row.id} className="flex items-center justify-between gap-4">
+              <Label htmlFor={row.id} className="text-sm font-normal">
+                {row.label}
+              </Label>
+              <Switch id={row.id} defaultChecked={row.on} />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Appearance</CardTitle>
+          <CardDescription>Tune the visual feel.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          <Slider
+            value={[radius]}
+            min={0}
+            max={24}
+            step={1}
+            onValueChange={(v) => setRadius(v[0] ?? 0)}
+            thumbAriaLabel="Border radius"
+          />
+          <Slider
+            value={[fontScale]}
+            min={0.9}
+            max={1.1}
+            step={0.01}
+            onValueChange={(v) => setFontScale(v[0] ?? 1)}
+            thumbAriaLabel="Font scale"
+          />
+        </CardContent>
+      </Card>
+
+      <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t bg-background/90 px-2 py-3 backdrop-blur">
+        <Button variant="ghost">Cancel</Button>
+        <Button>Save changes</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customization
+
+- Add a section card per domain (Security, Billing, API tokens)
+- Wire each section to a TanStack `useMutation` for optimistic updates
+- Replace `defaultChecked` with controlled `checked` + `onCheckedChange` for state lifted to a form library
+- Drop in `Form` (`@gremorie/rx-forms`) for validation and submission
+
+## Related
+
+- [Card](/components/display/card)
+- [Switch](/components/forms/switch)
+- [Slider](/components/forms/slider)
+- [Avatar](/components/display/avatar)

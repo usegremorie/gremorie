@@ -1,0 +1,232 @@
+---
+title: Dashboard
+description: "KPI grid plus chart strip plus transactions table. The canonical analytics surface for SaaS and storefront dashboards."
+---
+
+## Overview
+
+A complete dashboard surface: page header with an export action, a
+four-column KPI grid, a revenue bar chart, and a recent-transactions
+table. Composes `Card`, `Badge`, `Table`, `BarChart`, and `Button`.
+
+This block is the starting point for any analytics route. Replace the
+mock data with your TanStack Query hooks and the layout, chart, and
+table will keep working without changes.
+
+## Preview
+
+<BlockPreview name="dashboard" />
+
+## Anatomy
+
+The block composes:
+
+1. **Page header** - title, subtitle, and "Export" Button with icon
+2. **KPI grid** - four Cards with label, value, delta, and trend icon
+3. **Revenue card** - `BarChart` from `@gremorie/rx-data` with monthly series
+4. **Transactions card** - `Table` with invoice, customer, status Badge, amount
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-dashboard
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-dashboard
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-dashboard
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-dashboard
+```
+
+</Tab>
+
+</Tabs>
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@gremorie/rx-display";
+import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
+import { Button } from "@gremorie/rx-forms";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  CreditCard,
+  DollarSign,
+  Download,
+  ShoppingCart,
+  Users,
+} from "lucide-react";
+
+const KPIs = [
+  { label: "Revenue", value: "$48,920", delta: "+12.4%", trend: "up", icon: DollarSign },
+  { label: "Customers", value: "2,318", delta: "+4.1%", trend: "up", icon: Users },
+  { label: "Orders", value: "1,204", delta: "+18.3%", trend: "up", icon: ShoppingCart },
+  { label: "Refunds", value: "$1,420", delta: "-3.2%", trend: "down", icon: CreditCard },
+] as const;
+
+const REVENUE_DATA: Datum[] = [
+  { month: "Jan", revenue: 4200 },
+  { month: "Feb", revenue: 5100 },
+  { month: "Mar", revenue: 4800 },
+  { month: "Apr", revenue: 6200 },
+  { month: "May", revenue: 7400 },
+  { month: "Jun", revenue: 6900 },
+  { month: "Jul", revenue: 8100 },
+  { month: "Aug", revenue: 8900 },
+];
+
+const REVENUE_CONFIG: ChartConfig = {
+  revenue: { label: "Revenue", color: "var(--chart-1)" },
+};
+
+export function Dashboard() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-xl font-semibold">Dashboard</h2>
+          <p className="text-sm text-muted-foreground">
+            Snapshot of the last 30 days.
+          </p>
+        </div>
+        <Button variant="outline" size="sm">
+          <Download aria-hidden="true" />
+          Export
+        </Button>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {KPIs.map(({ label, value, delta, trend, icon: Icon }) => (
+          <Card key={label}>
+            <CardHeader>
+              <CardDescription className="flex items-center justify-between">
+                <span>{label}</span>
+                <Icon className="size-4 text-muted-foreground" aria-hidden />
+              </CardDescription>
+              <CardTitle className="text-2xl">{value}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p
+                className={
+                  trend === "up"
+                    ? "flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400"
+                    : "flex items-center gap-1 text-xs text-destructive"
+                }
+              >
+                {trend === "up" ? (
+                  <ArrowUpRight className="size-3" aria-hidden />
+                ) : (
+                  <ArrowDownRight className="size-3" aria-hidden />
+                )}
+                {delta} from last month
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Revenue</CardTitle>
+          <CardDescription>Monthly recurring revenue</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <BarChart data={REVENUE_DATA} config={REVENUE_CONFIG} xKey="month" />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent transactions</CardTitle>
+          <CardDescription>
+            Latest activity from your storefront.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Invoice</TableHead>
+                <TableHead>Customer</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {/* rows */}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customization
+
+- Swap mock data for TanStack Query / SWR hooks
+- Replace `BarChart` with `LineChart` or `AreaChart` from `@gremorie/rx-data`
+- Add filters (date range, segment) to the header row
+- Wire the "Export" button to a CSV download endpoint
+
+## Related
+
+- [Card](/components/display/card)
+- [Bar Chart](/components/data/bar-chart)
+- [Table](/components/display/table)
+- [Badge](/components/display/badge)

@@ -1,0 +1,107 @@
+---
+title: Suggestion
+description: Chips horizontais de prompts sugeridos — onboarding e quick actions.
+component: Suggestion
+importPath: "@kalvner/kds/ai/suggestion"
+status: stable
+---
+
+import { SuggestionPreview } from "@/components/ai-chatbot-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Suggestion` são **chips clicáveis** com prompts pré-feitos. Sintetiza
+o "o que eu pergunto?" do empty state. `Suggestions` é o wrapper
+horizontal scrollável (ScrollArea por baixo).
+
+Use no empty state da Conversation, ou abaixo do PromptInput pra
+"follow-ups" sugeridos pelo modelo.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>5 chips horizontais — empty state padrão.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <SuggestionPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Suggestions>
+  └─ <Suggestion suggestion="..." onClick={(v) => ...} />
+</Suggestions>
+```
+
+## Usage
+
+```tsx
+<Suggestions>
+  <Suggestion suggestion="Como configuro multi-tema?" onClick={send} />
+  <Suggestion suggestion="Quais tokens chart estão disponíveis?" onClick={send} />
+  <Suggestion suggestion="Como integro Form com zod?" onClick={send} />
+</Suggestions>
+```
+
+## Props
+
+### Suggestions (wrapper)
+
+Aceita `ComponentProps<typeof ScrollArea>`. Adiciona scroll horizontal
+oculto + flex layout.
+
+### Suggestion
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `suggestion` | `string` | — | Texto exibido E enviado. |
+| `onClick` | `(suggestion: string) => void` | — | Callback no click; recebe a string. |
+
+Herda de [Button](../../ui/forms/button) — `variant`, `size`, etc.
+Default é `variant="outline"` `size="sm"`.
+
+## Subcomponents
+
+- **`Suggestions`** — wrapper horizontal (ScrollArea). Em telas
+  estreitas, rolam sem quebrar pra próxima linha.
+- **`Suggestion`** — chip individual. Recebe a string como prop
+  `suggestion` (não como children) pra o onClick poder repassar.
+
+## When to use
+
+- Empty state da primeira conversa.
+- Follow-up suggestions geradas pelo modelo após uma resposta.
+- "Quick actions" em painéis de IA (resumir, traduzir, formalizar).
+
+## When not to use
+
+- Mais de ~5 sugestões — vira sopa visual; troque por categorias.
+- Acompanhamento longo de uma resposta complexa — use Plan ou Task.
+
+## Best practices
+
+- **Limite a 3-5.** Mais que isso o user não lê.
+- **Diversifique.** Não 5 variações da mesma pergunta.
+- **Estilo conversacional**. "Como X?" > "X" — soa mais natural.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<button>` para cada Suggestion (herda de Button). |
+| **Scroll** | ScrollArea com keyboard nav (Tab). |
+| **Focus** | `focus-visible:ring` herdado. |
+
+## Related
+
+- [Conversation](./conversation) — onde Suggestions aparecem (empty state).
+- [PromptInput](./prompt-input) — campo onde o suggestion vai parar.

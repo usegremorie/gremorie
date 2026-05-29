@@ -1,0 +1,187 @@
+---
+title: Node
+description: Card visual de um nó de workflow — handles configuráveis, header, content, footer.
+component: Node
+importPath: "@kalvner/kds/ai/node"
+status: stable
+---
+
+import { NodeToolPreview, NodeInputPreview, NodeOutputPreview } from "@/components/ai-workflow-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Node` é o **card visual de um nó** dentro de [Canvas](./canvas).
+Renderiza handles (target / source) configuráveis e mantém composição
+similar a [Card](../../ui/display/card) — Header com Title +
+Description + Action, Content, Footer.
+
+Use como `nodeTypes.<key>` no Canvas. Cada Node aceita `handles:
+{ target, source }` pra controlar conexões direcionais.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Tool node com handles target + source.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <NodeToolPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Node handles={{ target, source }}>
+  ├─ <NodeHeader>
+  │    ├─ <NodeTitle>...</NodeTitle>
+  │    ├─ <NodeDescription>...</NodeDescription>
+  │    └─ <NodeAction>...</NodeAction>
+  ├─ <NodeContent>...</NodeContent>
+  └─ <NodeFooter>...</NodeFooter>
+</Node>
+```
+
+## Usage
+
+Defina como custom node type:
+
+```tsx
+import { Node, NodeContent, NodeDescription, NodeHeader, NodeTitle } from "@kalvner/kds/ai/node";
+
+function ToolNode({ data }) {
+  return (
+    <Node handles={{ target: true, source: true }}>
+      <NodeHeader>
+        <NodeTitle>{data.label}</NodeTitle>
+        <NodeDescription>{data.toolType}</NodeDescription>
+      </NodeHeader>
+      <NodeContent>
+        <p className="text-sm text-muted-foreground">{data.description}</p>
+      </NodeContent>
+    </Node>
+  );
+}
+
+<Canvas nodes={nodes} edges={edges} nodeTypes={{ tool: ToolNode }} />
+```
+
+## Props
+
+### Node (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `handles` | `{ target: boolean; source: boolean }` | — | Controla quais handles aparecem. `target` na esquerda (input), `source` na direita (output). |
+| `className` | `string` | — | Override (default tem `gap-0 rounded-md p-0`). |
+
+Herda de [Card](../../ui/display/card).
+
+### NodeHeader
+
+Aceita `ComponentProps<typeof CardHeader>`. Default tem
+`bg-secondary` + border-bottom.
+
+### NodeTitle / NodeDescription
+
+Aceitam mesmos props de [CardTitle](../../ui/display/card) /
+[CardDescription](../../ui/display/card).
+
+### NodeAction
+
+Aceita `ComponentProps<typeof CardAction>`. Encaixa botão no canto
+direito do header.
+
+### NodeContent
+
+Aceita `ComponentProps<typeof CardContent>`. Default tem `p-3`.
+
+### NodeFooter
+
+Aceita `ComponentProps<typeof CardFooter>`. Default tem `border-t` + `p-3`.
+
+## Subcomponents
+
+- **`Node`** — root. `handles` define direção das conexões.
+  Sem ambos `target` e `source` true, o node fica sem handles
+  (visual decorativo).
+- **`NodeHeader`** — slot superior com cor `secondary`.
+- **`NodeTitle`** + **`NodeDescription`** — texto do header.
+- **`NodeAction`** — slot pra botão (toolbar trigger, dropdown).
+- **`NodeContent`** — corpo do node.
+- **`NodeFooter`** — meta footer (custo, latência, status).
+
+## States
+
+`handles` define o comportamento de conexão:
+- `{ target: true, source: false }` — node terminal (output, sem
+  saída). Padrão de "answer".
+- `{ target: false, source: true }` — node de entrada (input, sem
+  entrada). Padrão de "user prompt".
+- `{ target: true, source: true }` — node intermediário.
+- `{ target: false, source: false }` — decorativo (sem conexões).
+
+## Composition
+
+### Tool node com toolbar contextual
+
+```tsx
+function ToolNode({ data, selected }) {
+  return (
+    <Node handles={{ target: true, source: true }} selected={selected}>
+      <Toolbar isVisible={selected} nodeId={data.id}>
+        <Button variant="ghost" size="icon"><Copy /></Button>
+        <Button variant="ghost" size="icon"><Trash /></Button>
+      </Toolbar>
+      <NodeHeader>
+        <NodeTitle>{data.label}</NodeTitle>
+        <NodeDescription>tool · {data.toolName}</NodeDescription>
+      </NodeHeader>
+      <NodeContent>{data.summary}</NodeContent>
+      <NodeFooter>
+        <span className="text-xs text-muted-foreground">${data.cost}</span>
+      </NodeFooter>
+    </Node>
+  );
+}
+```
+
+## When to use
+
+- Custom node types em workflows visuais.
+- Cards com handles direcionais (input/output).
+
+## When not to use
+
+- Card sem conexões — use [Card](../../ui/display/card) direto.
+- Lista linear — use Plan ou Task.
+
+## Best practices
+
+- **handles direcional.** Decida claramente se o node é input,
+  output ou intermediate antes de configurar.
+- **NodeFooter pra meta.** Custo, latência, status — tudo que ajuda
+  observabilidade.
+- **Selected state visual** — combine com `Toolbar` que aparece só
+  quando selected.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Card é `<div>` neutro; embrulhe em `<article>` se hierarquia importa. |
+| **Handles** | Renderizados via Radix internals do ReactFlow. |
+| **Keyboard** | ReactFlow lida com nav (Tab + Arrow). |
+
+## Related
+
+- [Card](../../ui/display/card) — base.
+- [Canvas](./canvas) — container.
+- [Toolbar](./toolbar) — toolbar contextual.
+- [Edge](./edge) / [Connection](./connection) — conexões entre nodes.

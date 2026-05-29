@@ -1,0 +1,164 @@
+---
+title: Stack
+description: "Vertical flex layout with consistent gap, alignment, and justification tokens."
+---
+
+import { StackPreview } from "@/components/preview/containers/containers";
+import { Stack } from "@gremorie/rx-containers";
+
+## Overview
+
+`Stack` is a vertical layout primitive: a `<div>` preconfigured as `flex flex-col` with three token-driven variants - `gap`, `align`, `justify`. Use it any time you have a list of items flowing top-to-bottom: card contents, form sections, settings rows, vertical menus, list pages, footer columns.
+
+Stack exists to **kill ad-hoc `flex flex-col gap-X items-Y` strings**. Once gap, alignment, and justification belong to enums tied to design tokens, the whole codebase stays consistent through token rewrites instead of regex sweeps. Reach for plain `<div>` only when none of the three axes need configuration.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <StackPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-stack
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-stack
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-stack
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-stack
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Stack } from "@gremorie/rx-containers";
+
+export function SettingsRow({ children }) {
+  return (
+    <Stack gap="sm" align="stretch">
+      {children}
+    </Stack>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The token enums will map one-to-one to a structural directive plus host bindings.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Stack>`
+
+Renders a `<div>` with `flex flex-col` plus the gap, alignment, and justification classes derived from the variant enums.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `gap` | `"none" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` | Vertical spacing between children. Maps to `gap-0`, `gap-1`, `gap-2`, `gap-4`, `gap-6`, `gap-8`, `gap-12` so values match the project spacing scale. |
+| `align` | `"start" \| "center" \| "end" \| "stretch" \| "baseline"` | `"stretch"` | Cross-axis alignment, applied as `items-*`. Most card and form contexts want `stretch`; vertical menus and modal columns want `start`. |
+| `justify` | `"start" \| "center" \| "end" \| "between" \| "around" \| "evenly"` | `"start"` | Main-axis alignment, applied as `justify-*`. Use `between` when the last child should pin to the bottom of a height-bounded Stack. |
+| `className` | `string` | - | Extra classes merged after the variant classes. Use for layout escape hatches (`min-h-0`, `flex-1`, `mx-auto`); avoid overriding the variant classes themselves. |
+| `ref` | `Ref<HTMLDivElement>` | - | Forwarded ref to the underlying `<div>`. |
+| `...props` | `React.ComponentPropsWithoutRef<"div">` | - | Standard div attributes. |
+
+<Callout type="info">
+**Vertical only.** Stack has no `direction` prop. For horizontal flow, pair it with a row helper (or plain `flex flex-row gap-*`). For two-axis grids, reach for a dedicated `Grid` primitive.
+</Callout>
+
+## Composition
+
+1. **`<Stack>`** is the column. Pick `gap` to match the rhythm of the surface (cards usually want `md`, dense settings lists want `sm`, vertical menus want `xs`).
+2. **Children** can be any element. Stack does not wrap them - it only configures the parent flex container.
+3. **Inside a Stack**, nested Stacks compose naturally: each one chooses its own `gap` while inheriting the cross-axis alignment from the parent.
+4. **Footer pinning** is the canonical `justify="between"` use case: header at top, content in the middle, footer at the bottom of a fixed-height Stack.
+
+## Variations
+
+### Default rhythm
+
+<div className="rounded-lg border p-6 not-prose">
+  <Stack gap="md" className="max-w-sm">
+    <div className="rounded-md border p-3 text-sm">Profile</div>
+    <div className="rounded-md border p-3 text-sm">Notifications</div>
+    <div className="rounded-md border p-3 text-sm">Billing</div>
+  </Stack>
+</div>
+
+```tsx
+<Stack gap="md">
+  <SettingsRow label="Profile" />
+  <SettingsRow label="Notifications" />
+  <SettingsRow label="Billing" />
+</Stack>
+```
+
+The default. `gap="md"` matches the body text rhythm used elsewhere in the surface.
+
+### Centered column
+
+<div className="rounded-lg border p-6 not-prose">
+  <Stack gap="sm" align="center" className="text-sm">
+    <div className="rounded-full bg-muted px-3 py-1">Tag</div>
+    <div className="text-muted-foreground">Five matching results</div>
+  </Stack>
+</div>
+
+```tsx
+<Stack gap="sm" align="center">
+  <Badge variant="secondary">{tag}</Badge>
+  <p className="text-sm text-muted-foreground">
+    {results.length} matching results
+  </p>
+</Stack>
+```
+
+Use `align="center"` for empty states, callouts, and any column where children should hug the centerline.
+
+### Pinned footer
+
+```tsx
+<Stack gap="md" justify="between" className="h-full">
+  <Stack gap="sm">
+    <h2 className="text-lg font-semibold">Invite teammates</h2>
+    <p className="text-sm text-muted-foreground">
+      Send a magic link or copy the workspace URL.
+    </p>
+  </Stack>
+  <Button>Send invite</Button>
+</Stack>
+```
+
+Use `justify="between"` plus a height constraint to keep the CTA stuck to the bottom regardless of the body length.
+
+## Accessibility
+
+- **Presentation only**: Stack is a layout primitive. It adds no ARIA role and no live-region behaviour.
+- **Semantic children**: wrap Stack contents in the right element for the context - `<section>` for a landmark, `<ul>` plus `<li>` for an actual list, `<nav>` for vertical menus.
+- **Reading order matches DOM order**: Stack is `flex-col`, never reversed. Tab order and screen-reader order follow source order.
+- **No injected motion**: no transitions, no autofocus, no scroll behaviour. Compose with `Skeleton`, `Progress`, or motion primitives where needed.
+
+## Related
+
+- [Card](/components/display/card) - the most common host for a vertical Stack of content.
+- [Separator](/components/display/separator) - drop between Stack children for explicit dividers.
+- [ScrollArea](/components/containers/scroll-area) - wrap a Stack when the column outgrows its container.

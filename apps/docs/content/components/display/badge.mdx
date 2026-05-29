@@ -1,0 +1,180 @@
+---
+title: Badge
+description: "Compact label for status, counts, and tags. Six variants, optional asChild for link-style badges."
+---
+
+import { BadgePreview } from "@/components/preview/display/display";
+import { Badge } from "@gremorie/rx-display";
+import { CheckIcon, AlertCircleIcon } from "lucide-react";
+
+## Overview
+
+`Badge` is the static label primitive: a small, rounded pill for statuses ("Active", "Pending"), counts ("12", "99+"), tags ("AI", "Beta"), or category markers. It renders as a `<span>` by default - or any element via `asChild` - and is intentionally non-interactive. For selectable chips, reach for `ToggleGroup`; for clickable badges that link somewhere, use `asChild` to compose with an `<a>` or `Link` component.
+
+Six variants ship by default: `default` (filled primary), `secondary`, `destructive`, `outline`, `ghost`, and `link`. Hover states only apply when Badge is rendered as an anchor (via the `[a&]:hover:...` selector pattern), so the static variants stay truly static.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <BadgePreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-badge
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-badge
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-badge
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-badge
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Badge } from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="outline">Outline</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Badge>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. `default` is filled primary; `outline` shows only a border; `ghost` is invisible until rendered as an anchor; `link` styles as inline text. |
+| `asChild` | `boolean` | `false` | When `true`, renders the immediate child via Radix `Slot` and merges all classes onto it. Use to wrap an `<a>` or framework `Link`. |
+| `className` | `string` | - | Extra classes merged via `cn`. |
+
+All other `span` props are forwarded.
+
+The `badgeVariants` CVA function is also exported, so you can compose Badge styles onto a custom element without using Badge itself:
+
+```tsx
+import { badgeVariants } from "@gremorie/rx-display";
+
+<a href="/docs" className={badgeVariants({ variant: "outline" })}>
+  Docs
+</a>
+```
+
+## Composition
+
+Badge is a leaf component - it has no sub-parts. The two composition levers are:
+
+1. **`variant`** to switch the visual treatment.
+2. **`asChild`** to render Badge styles onto a different element (typically an anchor or framework link).
+
+Icons compose naturally: drop an SVG inside Badge and the variant CSS handles sizing (`[&>svg]:size-3`).
+
+## Variations
+
+### Status indicator
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex flex-wrap items-center gap-2">
+    <Badge variant="secondary">
+      <CheckIcon />
+      Active
+    </Badge>
+    <Badge variant="destructive">
+      <AlertCircleIcon />
+      Failed
+    </Badge>
+    <Badge variant="outline">Draft</Badge>
+  </div>
+</div>
+
+```tsx
+<Badge variant="secondary">
+  <CheckIcon />
+  Active
+</Badge>
+<Badge variant="destructive">
+  <AlertCircleIcon />
+  Failed
+</Badge>
+<Badge variant="outline">Draft</Badge>
+```
+
+### Badge as a link (asChild)
+
+<div className="rounded-lg border p-6 not-prose">
+  <Badge asChild variant="outline">
+    <a href="#docs">Read the docs</a>
+  </Badge>
+</div>
+
+```tsx
+<Badge asChild variant="outline">
+  <a href="/docs">Read the docs</a>
+</Badge>
+```
+
+Hover styles activate automatically when Badge renders as an anchor - that is what the `[a&]:hover:...` selectors do internally.
+
+### Count badge
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex items-center gap-2">
+    <span className="text-sm">Inbox</span>
+    <Badge>12</Badge>
+    <span className="text-sm">Notifications</span>
+    <Badge variant="destructive">99+</Badge>
+  </div>
+</div>
+
+```tsx
+<span className="text-sm">Inbox</span>
+<Badge>12</Badge>
+<span className="text-sm">Notifications</span>
+<Badge variant="destructive">99+</Badge>
+```
+
+## Accessibility
+
+- **Static by default**: Badge renders a `<span>` and has no role. Screen readers announce its text content as inline text.
+- **Status updates**: when a Badge's content changes dynamically (e.g. a count that updates live), wrap a parent in an `aria-live="polite"` region so assistive tech announces the change.
+- **Color-only meaning is not enough**: use icons or text in addition to the variant color so users who can't perceive color still get the message ("Active" plus a check icon, not just a green pill).
+- **Interactive badges**: when rendering as an anchor via `asChild`, the anchor's native semantics apply - focus, Enter to activate, screen reader announcement as a link.
+- **`aria-invalid`**: Badge styles `aria-invalid={true}` automatically with destructive border and ring - useful when Badge is part of a form field.
+
+## Related
+
+- [Card](/components/display/card) - frequent host for Badge via `CardAction`.
+- [Avatar](/components/display/avatar) - pairs with `AvatarBadge` for presence dots.
+- [Alert](/components/feedback/alert) - for non-inline status that needs more room.

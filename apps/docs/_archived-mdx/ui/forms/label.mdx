@@ -1,0 +1,229 @@
+---
+title: Label
+description: Rótulo acessível para controles de formulário — par obrigatório de Input, Select, Checkbox.
+component: Label
+importPath: "@kalvner/kds/forms/label"
+status: stable
+---
+
+import { Label } from "@kalvner/kds/forms/label";
+import { Input } from "@kalvner/kds/forms/input";
+import { Checkbox } from "@kalvner/kds/forms/checkbox";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Label` é o `LabelPrimitive.Root` do Radix com estilo do KDS. Ele faz
+três coisas que um `<label>` HTML solto não faz com a mesma robustez:
+
+1. Vincula corretamente ao controle via `htmlFor` + `id`, ou ao envolver
+   o controle inline.
+2. Captura cliques e dispara o foco/seleção do controle vinculado, mesmo
+   quando há children intermediários.
+3. Dim automaticamente quando o controle vinculado está `disabled`,
+   via seletores `peer-disabled` e `group-data-[disabled=true]`.
+
+Em formulários, Label é obrigatório — ele é o que torna o campo
+acessível para leitores de tela, navegação por teclado e
+ferramentas de preenchimento automático.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Label canônico vinculado a um Input.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="grid gap-2">
+      <Label htmlFor="preview-name">Nome completo</Label>
+      <Input id="preview-name" placeholder="Bruno Kalvner" />
+    </div>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Label htmlFor="control-id">
+  Texto do label
+  ├─ Asterisco se obrigatório (com aria-label)
+  └─ Helper inline opcional (com peer ou children)
+</Label>
+<Input id="control-id" />
+```
+
+A `id` do Input deve bater com o `htmlFor` do Label. `react-hook-form`
++ `FormItem` resolvem isso para você — geram um id único via
+`React.useId()` e propagam.
+
+## Usage
+
+```tsx
+import { Label } from "@kalvner/kds/forms/label";
+import { Input } from "@kalvner/kds/forms/input";
+
+export function NameField() {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="name">Nome</Label>
+      <Input id="name" />
+    </div>
+  );
+}
+```
+
+<Card>
+  <CardHeader>
+    <CardTitle>Default</CardTitle>
+    <CardDescription>Label + Input — o par mínimo.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="grid gap-2">
+      <Label htmlFor="usage-name">Nome</Label>
+      <Input id="usage-name" />
+    </div>
+  </CardContent>
+</Card>
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `htmlFor` | `string` | — | ID do controle vinculado. |
+| `className` | `string` | — | Classes Tailwind extras. |
+| `...rest` | `React.ComponentProps<typeof LabelPrimitive.Root>` | — | Tudo do Radix Label.Root. |
+
+## States
+
+<div className="grid gap-4 md:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Required</CardTitle>
+      <CardDescription>Asterisco vermelho — anuncie como `obrigatório`.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Label htmlFor="req">
+          Email
+          <span aria-label="obrigatório" className="text-destructive">
+            *
+          </span>
+        </Label>
+        <Input id="req" type="email" />
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Disabled</CardTitle>
+      <CardDescription>Dim automático via peer-disabled.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Label htmlFor="dis">Email</Label>
+        <Input id="dis" type="email" disabled />
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>With helper text</CardTitle>
+      <CardDescription>Helper abaixo, em muted-foreground.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="grid gap-2">
+        <Label htmlFor="help">Email</Label>
+        <Input id="help" type="email" placeholder="voce@exemplo.com" />
+        <span className="block text-sm text-muted-foreground">Usaremos para confirmar a conta.</span>
+      </div>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Inline (Checkbox)</CardTitle>
+      <CardDescription>Label inline ao lado do controle.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center gap-2">
+        <Checkbox id="terms-lbl" />
+        <Label htmlFor="terms-lbl" className="font-normal">
+          Aceito os termos
+        </Label>
+      </div>
+    </CardContent>
+  </Card>
+</div>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Canonical form row</CardTitle>
+    <CardDescription>Label + Input + helper — a unidade mínima de qualquer form.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="grid gap-2">
+      <Label htmlFor="comp-name">
+        Nome completo
+        <span aria-label="obrigatório" className="text-destructive">
+          *
+        </span>
+      </Label>
+      <Input id="comp-name" placeholder="Bruno Kalvner" />
+      <span className="block text-sm text-muted-foreground">Como aparece no documento de identificação.</span>
+    </div>
+  </CardContent>
+</Card>
+
+## When to use
+
+- **Sempre** que houver um Input, Textarea, Select, Checkbox, Switch ou
+  Radio. Não há exceção razoável.
+- Para agrupar visualmente um label de uma legenda de fieldset
+  (`<fieldset><legend>...`) em grupos de controles relacionados.
+
+## When not to use
+
+- Para títulos de seções dentro do formulário — use `<h2>` / `<h3>`,
+  não Label.
+- Para placeholder-only "labels" — sem Label visível, leitores de tela
+  perdem contexto e o usuário esquece o campo ao começar a digitar.
+- Para texto descritivo entre Label e Input — esse é o
+  [`FormDescription`](./form#description), não outro Label.
+
+## Best practices
+
+- **Label sempre acima do controle no web.** Floating labels (label
+  que vira placeholder quando vazio) podem ser estéticos mas reduzem
+  affordance — um label estático ainda funciona melhor para a maioria.
+- **Asterisco com `aria-label="obrigatório"`.** Sem o aria-label, o
+  leitor de tela soletra "asterisco". Marque o asterisco como
+  decorativo e atribua o significado correto.
+- **Não duplique a label como placeholder.** Placeholder é um exemplo
+  ou hint de formato (`voce@exemplo.com`), não a repetição do label.
+- **Cliques na label devem focar o controle.** Não envolva texto
+  arbitrário no Label esperando que o usuário descubra que ele é
+  clicável — só o que é semanticamente "o label".
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | `<label>` HTML nativo via Radix. Anuncia o controle vinculado. |
+| **Vinculação** | `htmlFor` + `id` (preferido) ou wrap do controle como child. |
+| **Click target** | Clicar no Label foca o controle. Para Checkbox/Radio, marca/desmarca. |
+| **Disabled** | Dim automático via `peer-disabled` quando o controle vinculado está disabled. |
+| **Required** | Asterisco precisa de `aria-label="obrigatório"`. Combine com `required` no Input. |
+
+## Related
+
+- [`Input`](./input), [`Textarea`](./textarea), [`Select`](./select),
+  [`Checkbox`](./checkbox), [`RadioGroup`](./radio-group),
+  [`Switch`](./switch) — todos usam Label.
+- [`Form`](./form) — `FormLabel` é uma versão do Label que se vincula
+  automaticamente via `FormField`.

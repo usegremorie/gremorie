@@ -1,0 +1,39 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "block-chat-surface",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Chat surface block",
+  "description": "AI chat surface: Conversation log with stick-to-bottom scrolling, user and assistant Messages, Reasoning collapsible, and a PromptInput composer.",
+  "categories": [
+    "blocks",
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-conversation",
+    "rx-message",
+    "rx-reasoning",
+    "rx-prompt-input"
+  ],
+  "files": [
+    {
+      "path": "chat-surface.tsx",
+      "content": "\"use client\";\n\nimport {\n  Conversation,\n  ConversationContent,\n  Message,\n  MessageContent,\n  PromptInput,\n  PromptInputBody,\n  PromptInputFooter,\n  PromptInputSubmit,\n  PromptInputTextarea,\n  PromptInputTools,\n  Reasoning,\n  ReasoningContent,\n  ReasoningTrigger,\n} from \"@gremorie/rx-ai\";\n\nconst REASONING_TEXT =\n  \"The user wants a quick weekly status summary. I'll group the work into 3 buckets: shipped, in-flight, and blockers. Each row stays short for skimmability.\";\n\nconst ASSISTANT_TEXT = `Here is a quick weekly recap:\n\n**Shipped**\n- Auth flow with GitHub provider\n- Dashboard analytics widget\n\n**In flight**\n- Settings form (3 sections)\n- Empty state pattern\n\n**Blockers**\n- Waiting on API key for analytics provider`;\n\n/**\n * Chat surface block: streaming conversation surface with reasoning\n * collapsible and a PromptInput composer. Demonstrates how rx-ai\n * primitives compose into a full AI surface.\n */\nexport function ChatSurface() {\n  return (\n    <div className=\"flex h-[560px] w-full flex-col overflow-hidden rounded-lg border bg-card\">\n      <Conversation>\n        <ConversationContent className=\"px-4 py-6\">\n          <Message from=\"user\">\n            <MessageContent>What did the team ship this week?</MessageContent>\n          </Message>\n          <Message from=\"assistant\">\n            <Reasoning isStreaming={false} duration={2}>\n              <ReasoningTrigger />\n              <ReasoningContent>{REASONING_TEXT}</ReasoningContent>\n            </Reasoning>\n            <MessageContent>{ASSISTANT_TEXT}</MessageContent>\n          </Message>\n          <Message from=\"user\">\n            <MessageContent>\n              Can you draft a Slack post from this?\n            </MessageContent>\n          </Message>\n        </ConversationContent>\n      </Conversation>\n      <div className=\"border-t bg-background p-3\">\n        <PromptInput onSubmit={() => {}}>\n          <PromptInputBody>\n            <PromptInputTextarea placeholder=\"Ask anything...\" />\n            <PromptInputFooter>\n              <PromptInputTools />\n              <PromptInputSubmit disabled />\n            </PromptInputFooter>\n          </PromptInputBody>\n        </PromptInput>\n      </div>\n    </div>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/blocks/chat-surface/chat-surface.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use block-chat-surface.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

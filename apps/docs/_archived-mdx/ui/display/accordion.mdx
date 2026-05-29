@@ -1,0 +1,213 @@
+---
+title: Accordion
+description: Pilha vertical de seções expansíveis, ancorada em Radix Accordion.
+component: Accordion
+importPath: "@kalvner/kds/display/accordion"
+status: stable
+---
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from "@kalvner/kds/display/accordion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Accordion` é uma pilha vertical de seções expansíveis. Use quando há
+**várias perguntas/blocos relacionados** e o leitor quer pular entre
+eles sem trocar de página — FAQs, configurações em grupos,
+breakdowns de release notes.
+
+A diferença em relação a [Tabs](../navigation/tabs) é estrutural:
+Accordion preserva contexto vertical (todas as seções continuam
+visíveis no scroll), Tabs trocam o painel inteiro. Quando os irmãos
+**precisam continuar visíveis**, Accordion vence.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>FAQ com type="single" + collapsible.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>O que é o KDS?</AccordionTrigger>
+        <AccordionContent>
+          Um sistema multi-tema construído sobre Radix primitives e Tailwind v4.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>Posso usar em produção?</AccordionTrigger>
+        <AccordionContent>
+          Sim — versionado, com testes de regressão visual em todos os temas.
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Accordion type="single" | "multiple">
+  └─ <AccordionItem value="x">
+       ├─ <AccordionTrigger>  ← header clicável + chevron rotativo
+       └─ <AccordionContent>  ← seção animada (open/close)
+</Accordion>
+```
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from "@kalvner/kds/display/accordion";
+
+export function Faq() {
+  return (
+    <Accordion type="single" collapsible>
+      <AccordionItem value="q1">
+        <AccordionTrigger>Pergunta?</AccordionTrigger>
+        <AccordionContent>Resposta.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+
+## Props
+
+### Accordion (Root)
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `type` | `'single' \| 'multiple'` | — | Único ou múltiplos itens abertos. |
+| `collapsible` | `boolean` | `false` | (single) permite fechar tudo. |
+| `value` / `defaultValue` | `string \| string[]` | — | Item(s) aberto(s). |
+| `onValueChange` | `(v) => void` | — | Callback de mudança. |
+| `disabled` | `boolean` | `false` | Bloqueia toda a árvore. |
+
+### AccordionItem · AccordionTrigger · AccordionContent
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `value` (Item) | `string` | — | Identificador único. |
+| `disabled` (Item) | `boolean` | `false` | Bloqueia este item. |
+| `className` | `string` | — | Tailwind / overrides. |
+
+## Subcomponents
+
+- `AccordionItem` — wrapper de um par trigger + content; carrega
+  o `value` que identifica o item.
+- `AccordionTrigger` — header clicável; o chevron embutido rotaciona
+  no `data-state=open`.
+- `AccordionContent` — região revelada; animada via
+  `data-[state=closed]:animate-accordion-up` e `accordion-down`.
+
+## Variants
+
+<div className="grid gap-4">
+  <Card>
+    <CardHeader>
+      <CardTitle>Type · Single + collapsible</CardTitle>
+      <CardDescription>FAQ — uma pergunta de cada vez, todas podem fechar.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="a">
+          <AccordionTrigger>Item A</AccordionTrigger>
+          <AccordionContent>Conteúdo A.</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="b">
+          <AccordionTrigger>Item B</AccordionTrigger>
+          <AccordionContent>Conteúdo B.</AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Type · Multiple</CardTitle>
+      <CardDescription>Release notes — várias seções abertas em paralelo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Accordion type="multiple" defaultValue={["v1"]}>
+        <AccordionItem value="v1">
+          <AccordionTrigger>v1.2 · Performance</AccordionTrigger>
+          <AccordionContent>Hidratação 30% mais rápida.</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="v2">
+          <AccordionTrigger>v1.2 · Acessibilidade</AccordionTrigger>
+          <AccordionContent>WCAG 2.2 AA em todos os primitivos.</AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+| Estado | Comportamento |
+|---|---|
+| `data-state=closed` | Trigger sem fundo ativo, content `display: none`. |
+| `data-state=open` | Trigger com fundo accent, content animado para baixo. |
+| `disabled` | Item ignora cliques e foco; opacidade 50%. |
+
+## Composition
+
+Accordion combina bem com **Card** (cada item dentro de um cartão para
+hierarquia visual mais forte) ou **Sidebar Section** (grupos
+colapsáveis na navegação lateral). Não aninhe além de 2 níveis — vira
+caça ao tesouro.
+
+## When to use
+
+- FAQ com 5+ perguntas relacionadas.
+- Configurações agrupadas (Conta, Faturamento, Notificações).
+- Release notes ou changelogs por versão.
+- Filtros laterais com seções colapsáveis.
+
+## When not to use
+
+- Quando há **um único** bloco que expande — use [Collapsible](./collapsible).
+- Quando trocar a seção significa trocar **todo o painel** — use [Tabs](../navigation/tabs).
+- Para conteúdo crítico que precisa estar sempre visível — Accordion
+  esconde por padrão.
+
+## Best practices
+
+- Headers descrevem o conteúdo, não a ação ("O que é o KDS?",
+  não "Clique para expandir").
+- Em FAQ, prefira `type="single" collapsible` — só uma resposta visível
+  evita parede de texto.
+- O primeiro item pode vir aberto (`defaultValue="item-1"`) quando há
+  uma resposta dominante.
+- Não esconda CTAs primários atrás de Accordion. Se o usuário precisa
+  vê-lo, mostre fora.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix gera `region` por content + `button` no trigger com `aria-expanded`. |
+| **Keyboard** | `Space`/`Enter` alterna; `↑`/`↓` navegam entre triggers. |
+| **Focus** | Trigger tem `focus-visible:ring-[3px]` (3px ring). |
+| **Screen reader** | Anuncia "expandido" / "recolhido" no toggle. |
+
+## Related
+
+- [Collapsible](./collapsible) — primitivo subjacente, uma única seção.
+- [Tabs](../navigation/tabs) — quando trocar implica painel inteiro.
+- [Sidebar](../navigation/sidebar) — usa Collapsible para grupos navegáveis.

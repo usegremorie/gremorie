@@ -1,0 +1,177 @@
+---
+title: Radial Chart
+description: "Concentric radial bars - one ring per data row with sweep proportional to value."
+---
+
+import { RadialChartPreview } from "@/components/preview/data/charts";
+
+## Overview
+
+`RadialChart` is the styled wrapper of the headless charting engine for **concentric polar bars**. Each data row produces one ring around the chart center; each ring sweeps proportionally to its `valueKey` value. Ring colors cycle through the `--chart-1` through `--chart-5` tokens automatically.
+
+Reach for RadialChart when you want a **compact, decorative ranking** of three to five items - top categories, leading drivers, ranked metrics in a hero card. For exact comparison [`BarChart`](/components/data/bar-chart) reads faster; for share-of-whole at a glance [`PieChart`](/components/data/pie-chart) is more familiar.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <RadialChartPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-radial-chart
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-radial-chart
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-radial-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-radial-chart
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { RadialChart } from "@gremorie/rx-data";
+
+const data = [
+  { category: "Chrome", visitors: 275 },
+  { category: "Safari", visitors: 200 },
+  { category: "Firefox", visitors: 187 },
+  { category: "Edge", visitors: 173 },
+];
+
+export function TopBrowsers() {
+  return <RadialChart data={data} nameKey="category" valueKey="visitors" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<RadialChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>` with one filled arc per ring (plus a faint track behind it), a wrapping legend of name plus swatch, and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. One row per ring. Must include a string field at `nameKey` and a numeric field at `valueKey`. |
+| `nameKey` | `string` | - | Name of the ring label field. Drives the legend and the `sr-only` table headers. |
+| `valueKey` | `string` | - | Name of the numeric value field. The sweep of each ring is proportional to this value relative to the max across rows. |
+| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus a square aspect. |
+
+### Headless primitives exposed
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides the polar projection context. |
+| `RadialBar` | Render-prop primitive yielding `{ arcs }`. Each arc carries `{ d, track, name, index, value }` so you draw both the filled arc and the faint track yourself. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+
+<Callout type="info">
+Like `PieChart`, `RadialChart` does **not** take a `config` prop. Ring colors are auto-assigned from the `--chart-1` through `--chart-5` tokens in row order. For explicit per-ring colors, drop down to the headless `<RadialBar>` and supply your own `fill`.
+</Callout>
+
+## Composition
+
+1. **Pick `nameKey` and `valueKey`** - the label column and the numeric column. Both must exist on every row.
+2. **Order rows by magnitude**. The largest value should sit on the outer ring; the smallest on the innermost. The decreasing radius reinforces ranking visually.
+3. **Cap the row count** at three to five. Six or more rings get visually noisy and lose the ranking signal.
+4. **For custom arcs** (per-row color, gradient fills, segmented tracks), drop down to `<ChartFrame>` plus `<RadialBar>` and supply your own render prop.
+
+The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspect-square` so the rings stay circular.
+
+## Variations
+
+### Default ranking
+
+<div className="rounded-lg border p-6 not-prose">
+  <RadialChartPreview />
+</div>
+
+```tsx
+<RadialChart data={data} nameKey="category" valueKey="visitors" />
+```
+
+The default. Four rings provide a comfortable visual rhythm without crowding.
+
+### Top-three highlight
+
+```tsx
+<RadialChart
+  data={topThree}
+  nameKey="product"
+  valueKey="revenue"
+  className="max-w-xs"
+/>
+```
+
+For top-three callouts in a hero card. Constrain the surface width so the rings stay readable in a tight column.
+
+### Headless customization
+
+```tsx
+import { ChartFrame, RadialBar } from "@gremorie/rx-data";
+
+export function ExplicitColorRadial({ data, nameKey, valueKey, colorByName }) {
+  return (
+    <figure role="img" aria-label="Custom radial chart">
+      <ChartFrame data={data} xKey={nameKey} className="mx-auto aspect-square max-h-[260px] w-full">
+        <RadialBar valueKey={valueKey}>
+          {({ arcs }) =>
+            arcs.map((a) => (
+              <g key={a.name}>
+                <path d={a.track} fill="currentColor" fillOpacity={0.06} />
+                <path d={a.d} fill={colorByName[a.name]} />
+              </g>
+            ))
+          }
+        </RadialBar>
+      </ChartFrame>
+    </figure>
+  );
+}
+```
+
+Drop down to headless for explicit color mapping by name, gradient fills, or a different track treatment.
+
+## Accessibility
+
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Radial bar chart of visitors by category"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` listing every ring name and value. Screen readers navigate the data via native table commands.
+- **Visible legend**: a wrapping `<ul>` of swatch plus label sits below the chart, providing the color-to-ring mapping for sighted users.
+- **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
+- **Track contrast**: the faint track behind each filled arc sits at 8 percent opacity of `currentColor`, providing enough contrast to define the ring without competing with the fill.
+- **Limit ring count**: more than five rings becomes hard to scan even with the legend. Reach for [`BarChart`](/components/data/bar-chart) when more rows are needed.
+
+## Related
+
+- [PieChart](/components/data/pie-chart) - sibling polar layout for share-of-whole rather than ranking.
+- [BarChart](/components/data/bar-chart) - reach for bars when you have more than five items or need exact comparison.
+- [RadarChart](/components/data/radar-chart) - sibling polar layout for multi-axis profile comparison.

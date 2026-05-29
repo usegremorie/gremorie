@@ -13,7 +13,7 @@
 ## Scope
 
 **In scope (this plan):**
-- New package `@shadng/charts` (single entry point for now).
+- New package `@gremorie/ng-charts` (single entry point for now).
 - Pure helpers: formatter registry, scale helpers, shape helpers, domain computation.
 - Reactive `ChartContext` (signals + series registration → shared domains + scales).
 - Headless directives: `chartFrame`, `cartesianGrid`, `xAxis`, `yAxis`, `area`.
@@ -25,7 +25,7 @@
 - The other 6 charts (Line, Bar, Pie/Donut, Radar, RadialBar, Scatter) — each reuses this foundation.
 - Interactive tooltip (pointer→bisector→active datum) + CDK Overlay styled tooltip.
 - Animation (`AnimationService` + `d3-interpolate`) and keyboard navigation.
-- `@shadng/charts/headless` **secondary entry point** — source is already split into `headless/` and `styled/` folders, so introducing the secondary entry point later is mechanical. Until then, both layers export from the main entry.
+- `@gremorie/ng-charts/headless` **secondary entry point** — source is already split into `headless/` and `styled/` folders, so introducing the secondary entry point later is mechanical. Until then, both layers export from the main entry.
 - Visual-regression infra (Chromatic / Playwright screenshots) — its own setup plan. This plan ships the Storybook story that those screenshots will target.
 
 > **Naming note:** Per project decision **D-14** (no lib prefix). The repo's eslint enforces **camelCase** directive selectors, so headless selectors are `chartFrame`, `cartesianGrid`, `xAxis`, `yAxis`, `area` (the docs show illustrative kebab — the code is camelCase). The styled element selector is `area-chart` (kebab, no prefix).
@@ -34,7 +34,7 @@
 
 ```
 packages/shadng-charts/
-├── package.json                         # @shadng/charts, deps on d3 math + peer @shadng/core
+├── package.json                         # @gremorie/ng-charts, deps on d3 math + peer @gremorie/ng-core
 ├── ng-package.json
 ├── project.json                         # build/test/lint targets (mirror scroll-area)
 ├── tsconfig.json / .lib.json / .lib.prod.json / .spec.json
@@ -58,14 +58,14 @@ packages/shadng-charts/
             └── area-chart.stories.ts
 
 Modified:
-├── tsconfig.base.json                          # add "@shadng/charts" path alias
+├── tsconfig.base.json                          # add "@gremorie/ng-charts" path alias
 ├── packages/shadng-core/styles/theme.css       # add --chart-1..5 (:root + .dark)
 └── packages/shadng-cli/src/registry.ts         # add "charts" entry
 ```
 
 ---
 
-### Task 1: Scaffold the `@shadng/charts` package
+### Task 1: Scaffold the `@gremorie/ng-charts` package
 
 **Files:**
 - Create: `packages/shadng-charts/package.json`
@@ -95,7 +95,7 @@ Expected: packages added to root `package.json`, no errors.
 
 ```json
 {
-  "name": "@shadng/charts",
+  "name": "@gremorie/ng-charts",
   "version": "0.0.1",
   "description": "Charts for dashboards and generative UI — own-the-code on D3, part of ShadNG.",
   "license": "MIT",
@@ -104,11 +104,11 @@ Expected: packages added to root `package.json`, no errors.
     "url": "https://github.com/kalvner/shadng.git",
     "directory": "packages/shadng-charts"
   },
-  "keywords": ["angular", "ai", "ui", "shadcn", "charts", "dataviz", "d3"],
+  "keywords": ["angular", "ai", "ui", "charts", "dataviz", "d3"],
   "peerDependencies": {
     "@angular/core": "^21.2.0",
     "@angular/common": "^21.2.0",
-    "@shadng/core": "^0.0.1"
+    "@gremorie/ng-core": "^0.0.1"
   },
   "dependencies": {
     "d3-scale": "^4.0.2",
@@ -309,9 +309,9 @@ export default [
 
 - [ ] **Step 7: Add the path alias to `tsconfig.base.json`**
 
-Add to the `"paths"` object (after the `@shadng/scroll-area` line):
+Add to the `"paths"` object (after the `@gremorie/ng-scroll-area` line):
 ```json
-"@shadng/charts": ["./packages/shadng-charts/src/index.ts"]
+"@gremorie/ng-charts": ["./packages/shadng-charts/src/index.ts"]
 ```
 
 - [ ] **Step 8: Create `src/lib/headless/types.ts`**
@@ -374,7 +374,7 @@ Expected: build succeeds, output in `dist/packages/shadng-charts`.
 
 ```bash
 git add packages/shadng-charts tsconfig.base.json package.json package-lock.json
-git commit -m "feat(charts): scaffold @shadng/charts package"
+git commit -m "feat(charts): scaffold @gremorie/ng-charts package"
 ```
 
 ---
@@ -1360,7 +1360,7 @@ Expected: FAIL — `AreaChart` not found.
 
 ```ts
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { cn } from '@shadng/core';
+import { cn } from '@gremorie/ng-core';
 import { Area } from '../headless/area';
 import { CartesianGrid } from '../headless/cartesian-grid';
 import { ChartFrame } from '../headless/chart-frame';
@@ -1526,7 +1526,7 @@ git commit -m "feat(charts): styled <area-chart> with token colors + a11y table"
 
 Find the `:root {` block (semantics). After the `--ring:` line, add:
 ```css
-  /* ─── Chart series (consumed by @shadng/charts) ───── */
+  /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -1565,9 +1565,9 @@ In the `REGISTRY` array, after the `scroll-area` entry and before the `// Future
 ```ts
   {
     name: 'charts',
-    pkg: '@shadng/charts',
+    pkg: '@gremorie/ng-charts',
     description: 'Dashboard charts on D3 — headless primitives + styled presets (Area first).',
-    depends: ['@shadng/core'],
+    depends: ['@gremorie/ng-core'],
     phase: 1,
     available: true,
   },
@@ -1703,7 +1703,7 @@ git commit -m "chore(charts): verification pass — tests, lint, build green"
 
 **Placeholder scan:** One intentional placeholder line in Task 8 Step 3 is immediately corrected within the same step (the full corrected `YAxis` class is given). No "TBD"/"implement later" remain.
 
-**Type consistency:** `Datum`, `Margin`, `ChartConfig`, `SeriesConfigEntry`, `DEFAULT_MARGIN` defined in Task 1 and used consistently. `SeriesReg` defined in Task 5, consumed by Task 6/7. `ChartContext` public API (`width`, `height`, `margin`, `data`, `xKey`, `register`, `unregister`, `innerWidth`, `innerHeight`, `yDomain`, `yScale`, `xScale`) defined in Task 6 and used identically in Tasks 7-10. `computeAreaPath` signature matches between Task 7 test and impl. `cn` imported from `@shadng/core` (verified to exist at `packages/shadng-core/src/lib/utils.ts`).
+**Type consistency:** `Datum`, `Margin`, `ChartConfig`, `SeriesConfigEntry`, `DEFAULT_MARGIN` defined in Task 1 and used consistently. `SeriesReg` defined in Task 5, consumed by Task 6/7. `ChartContext` public API (`width`, `height`, `margin`, `data`, `xKey`, `register`, `unregister`, `innerWidth`, `innerHeight`, `yDomain`, `yScale`, `xScale`) defined in Task 6 and used identically in Tasks 7-10. `computeAreaPath` signature matches between Task 7 test and impl. `cn` imported from `@gremorie/ng-core` (verified to exist at `packages/shadng-core/src/lib/utils.ts`).
 
 ---
 

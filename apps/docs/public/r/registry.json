@@ -1,0 +1,1877 @@
+{
+  "$schema": "https://gremorie.com/schema/registry.json",
+  "name": "gremorie",
+  "homepage": "https://gremorie.com",
+  "items": [
+    {
+      "name": "ng-utils",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Utils (Angular)",
+      "description": "Shared utilities for the Angular edition - cn() helper that merges Tailwind class names with conflict resolution (clsx + tailwind-merge).",
+      "categories": [
+        "core",
+        "utils"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-button",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Button (Angular)",
+      "description": "Button primitive for the Angular edition - 6 variants x 4 sizes.",
+      "categories": [
+        "core",
+        "primitives",
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-scroll-area",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Scroll Area (Angular)",
+      "description": "Thin design-system styling layer over ngx-scrollbar - overlay scrollbars with Gremorie tokens (thin, rounded, --border-colored thumb).",
+      "categories": [
+        "containers",
+        "layout"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-card",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Card (Angular)",
+      "description": "Compound surface for grouping related content - Card root with Header, Title, Description, Action, Content and Footer slots. Mirrors React Card from @gremorie/rx-display. Companion to Spartan-ng (fills the Card gap).",
+      "categories": [
+        "display",
+        "primitives",
+        "layout"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-badge",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Badge (Angular)",
+      "description": "Compact label for status, counts and tags - 6 variants (default, secondary, destructive, outline, ghost, link). Token-driven so theme changes propagate automatically. Mirrors React Badge from @gremorie/rx-display. Companion to Spartan-ng (fills the Badge gap).",
+      "categories": [
+        "display",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-spinner",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Spinner (Angular)",
+      "description": "Indeterminate loading indicator - rotating SVG glyph in three sizes (sm, default, lg). Use when duration is unknown; use Progress when percent is known. Companion to Spartan-ng (fills the Spinner gap).",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-alert",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Alert (Angular)",
+      "description": "In-flow feedback message - Alert root with AlertTitle and AlertDescription sub-components. Two variants (default, destructive). Convey intent through a leading SVG icon as the first child. Mirrors React Alert from @gremorie/rx-feedback.",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-progress",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Progress (Angular)",
+      "description": "Determinate progress bar (0-100) wrapping Spartan-ng brain Progress with the Gremorie visual surface. Pass value=null for indeterminate. Mirrors React Progress from @gremorie/rx-feedback.",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-skeleton",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Skeleton (Angular)",
+      "description": "Placeholder block for loading states - a pulsing rectangle that reserves layout while data is fetched. Shape with width/height utility classes. Mirrors React Skeleton from @gremorie/rx-feedback.",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-attachments",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Attachments (Angular)",
+      "description": "Composable Attachment* family - List, Item, Preview, Info, Name, Size, Remove, Empty - plus type and util files. Lays out file attachments for chat surfaces.",
+      "categories": [
+        "ai",
+        "forms",
+        "media"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-prompt-input",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Prompt Input (Angular)",
+      "description": "PromptInput family for AI chat surfaces - state machine (ready -> submitted -> streaming -> error), drag-drop, paste-to-attach. Ships textarea, submit, toolbar, tools, action-menu, model-select sub-components that compose together.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-attachments"
+      ]
+    },
+    {
+      "name": "ng-message",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Message (Angular)",
+      "description": "Message family for chat bubbles - root + content, avatar, actions, toolbar, attachments, response. Includes branch sub-family (controllable picker over alternative responses).",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-conversation",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Conversation (Angular)",
+      "description": "Scrollable chat log with auto-stick-to-bottom behavior, empty state and a scroll-to-bottom pill that appears when the user scrolls up.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-suggestion",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Suggestion (Angular)",
+      "description": "Suggestion chips for AI prompts - horizontal scrollable Suggestions container with rounded-full Suggestion buttons that emit `(select)` carrying the value.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-shimmer",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Shimmer (Angular)",
+      "description": "Standalone directive that applies a sweeping gradient animation to text - used for streaming/loading states. Same visual effect as the rx-ai counterpart (motion/react), implemented natively with CSS keyframes (no runtime motion lib).",
+      "categories": [
+        "ai",
+        "feedback"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-reasoning",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Reasoning (Angular)",
+      "description": "Collapsible \"thinking...\" block with auto-open while streaming, auto-close once streaming ends and duration tracking. Composes Reasoning + ReasoningTrigger + ReasoningContent, built on @spartan-ng/brain/collapsible.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-shimmer"
+      ]
+    },
+    {
+      "name": "ng-chain-of-thought",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Chain of Thought (Angular)",
+      "description": "Step-by-step reasoning trace - root container, clickable header, content panel, individual steps (complete/active/pending status), search-result chips and bounded image previews.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-badge"
+      ]
+    },
+    {
+      "name": "ng-sources",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Sources (Angular)",
+      "description": "Citation list for AI responses - collapsible container, header trigger (\"Used {count} sources\"), content panel and Source link items.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-task",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Task (Angular)",
+      "description": "Collapsible task card with file attachments - Task container, TaskTrigger header (search icon + title + chevron), TaskContent body with left-border list, TaskItem rows and TaskItemFile chips.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-badge"
+      ]
+    },
+    {
+      "name": "ng-tool",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Tool (Angular)",
+      "description": "State-machine card for AI SDK tool invocations - Tool container, ToolHeader with state badge (Pending/Running/Awaiting Approval/Responded/Completed/Error/Denied), ToolContent body, ToolInput (parameters JSON), ToolOutput (result or error).",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-badge"
+      ]
+    },
+    {
+      "name": "ng-toolbar",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Toolbar (Angular)",
+      "description": "Generic action toolbar for AI message contexts - Toolbar row, ToolbarGroup (orientation-aware visually-grouped subset), ToolbarButton (with optional pressed toggle state).",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-code-block",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Code Block (Angular)",
+      "description": "Shiki-highlighted code container with light/dark theme snapshots and an optional copy button. Mirrors the rx-ai implementation (github-light-default / github-dark-default).",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Chart (Angular)",
+      "description": "Headless chart engine for the Angular edition - chart-context, scales, axis, cartesian-grid, chart-frame, plus shape helpers (area, line, bar, scatter, pie, polar, radar, radial-bar). Shared base for every styled chart.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-area-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Area Chart (Angular)",
+      "description": "Styled area chart - cumulative quantity over a continuous domain. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "ng-line-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Line Chart (Angular)",
+      "description": "Styled line chart - trends over a continuous domain. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "ng-bar-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Bar Chart (Angular)",
+      "description": "Styled bar chart - categorical comparison. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "ng-scatter-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Scatter Chart (Angular)",
+      "description": "Styled scatter chart - x/y distribution. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "ng-pie-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Pie Chart (Angular)",
+      "description": "Styled pie chart - part-to-whole. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "ng-radar-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Radar Chart (Angular)",
+      "description": "Styled radar chart - multi-axis comparison. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "ng-radial-chart",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Radial Chart (Angular)",
+      "description": "Styled radial-bar chart - progress / gauge metaphor. Uses the ng-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-chart"
+      ]
+    },
+    {
+      "name": "rx-utils",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Utils (React)",
+      "description": "Shared utilities for the React edition - cn() helper that merges Tailwind class names with conflict resolution (clsx + tailwind-merge).",
+      "categories": [
+        "core",
+        "utils"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-button",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Button (React)",
+      "description": "Button primitive for the React edition - 6 variants x 8 sizes (including icon-only), `asChild` via Radix Slot.",
+      "categories": [
+        "core",
+        "primitives",
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-input",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Input (React)",
+      "description": "Input primitive for the React edition - single-line text field that adopts every native HTML `type`. Token-driven visual states.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-label",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Label (React)",
+      "description": "Label primitive built on `@radix-ui/react-label` (via `radix-ui` namespace). Pair with Input / form controls.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-select",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Select (React)",
+      "description": "Select primitive built on Radix Select - portalled, animated listbox, grouped items, scroll buttons. For short fixed lists (5-30 options).",
+      "categories": [
+        "forms",
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-textarea",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Textarea (React)",
+      "description": "Multi-line text field that auto-grows via `field-sizing: content`. Use for free-form input where rows are unknown ahead of time.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-input-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Input Group (React)",
+      "description": "Composable input layout - wraps Input or Textarea with inline / block addons (icons, buttons, kbd hints). Drives focus + invalid + disabled states from the inner control. Enables the InputGroupButton composition that powers PromptInput.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-input",
+        "rx-textarea"
+      ]
+    },
+    {
+      "name": "rx-dropdown-menu",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Dropdown Menu (React)",
+      "description": "DropdownMenu family built on Radix DropdownMenu - actions menu with checkbox / radio items, separators, nested submenus, destructive variant.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-hover-card",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Hover Card (React)",
+      "description": "HoverCard primitive built on Radix HoverCard - non-interactive preview pane shown on hover. Use for link previews, profile cards, image teasers.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-dialog",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Dialog (React)",
+      "description": "Modal overlay anchored at viewport center, built on Radix Dialog. Use for focused decisions or short flows that need to interrupt the user context - confirmations, single-step forms, detail cards.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-sheet",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sheet (React)",
+      "description": "Side-anchored panel for longer flows, built on Radix Dialog with a directional slide animation. Use for filters, settings panels, multi-section edit forms.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-popover",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Popover (React)",
+      "description": "Anchored interactive content overlay built on Radix Popover. Triggers on click and hosts interactive content - date pickers, mini forms, share menus. Distinct from Tooltip (hover-only) and HoverCard (hover previews).",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-tooltip",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tooltip (React)",
+      "description": "Short non-essential context on hover/focus, built on Radix Tooltip. Reserve for non-critical supporting information - keyboard shortcuts, icon labels, \"what does this do\" hints. Wrap your app root in `<TooltipProvider>` so all tooltips share a delay timer.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-command",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Command (React)",
+      "description": "Command palette primitive built on cmdk - inline picker (Combobox pattern) for keyboard-first navigation, plus CommandDialog for the canonical Cmd+K floating palette.",
+      "categories": [
+        "overlays",
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-dialog"
+      ]
+    },
+    {
+      "name": "rx-alert-dialog",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Alert Dialog (React)",
+      "description": "Modal-blocking confirmation dialog built on Radix AlertDialog. Use for destructive confirmations and irreversible actions - the user must choose, no close-on-overlay or close-on-escape.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-context-menu",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Context Menu (React)",
+      "description": "Secondary action menu invoked via right-click, built on Radix ContextMenu. Power-user accelerator with the same shape as DropdownMenu (items, groups, separators, sub-menus, checkbox/radio variants).",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-drawer",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Drawer (React)",
+      "description": "Bottom-up sheet for mobile contexts, built on vaul. Slides up from the bottom by default with native gesture support (drag-to-dismiss, momentum). Best for mobile confirmations, quick actions, simple forms.",
+      "categories": [
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-sonner",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sonner (React)",
+      "description": "Toast notification root, wraps `sonner` with Gremorie tokens. Mount once at the app root - any descendant can fire `toast()` without an additional provider. For transient feedback only - for persistent in-flow messages use Alert; for critical confirmations use AlertDialog.",
+      "categories": [
+        "overlays",
+        "feedback"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-date-picker",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Date Picker (React)",
+      "description": "Composite of Popover + Calendar with Gremorie defaults. Single-mode by default. Lives in rx-overlays because it composes Popover (rx-overlays) with Button + Calendar (rx-forms).",
+      "categories": [
+        "forms",
+        "overlays"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-calendar",
+        "rx-popover"
+      ]
+    },
+    {
+      "name": "rx-accordion",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Accordion (React)",
+      "description": "Vertically stacked, coordinated expandable sections built on Radix Accordion. Use when multiple sections share a common rhythm (FAQ, settings groups). For a single expandable region, use Collapsible.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-avatar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Avatar (React)",
+      "description": "User identity glyph built on Radix Avatar - image with graceful fallback to initials or icon. Use for user surfaces (header, comments, mention chips, settings).",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-badge",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Badge (React)",
+      "description": "Compact label for status, count, or category. Variants: default, secondary, destructive, outline. Supports `asChild` via Radix Slot for composition with links/buttons.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-card",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Card (React)",
+      "description": "Surface container for grouped content - composes CardHeader, CardTitle, CardDescription, CardContent, CardFooter. The base building block for dashboards, lists, and modal-less detail views.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-carousel",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Carousel (React)",
+      "description": "Horizontal slider built on embla-carousel-react - touch / drag, keyboard navigation, pagination dots, prev/next controls. Best for hero rotators, image galleries, onboarding tours.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-collapsible",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Collapsible (React)",
+      "description": "Single-section expandable region built on Radix Collapsible. Minimal building block for \"show more\" toggles, sidebar group expand/collapse, inline disclosures.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-separator",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Separator (React)",
+      "description": "Horizontal or vertical visual divider built on Radix Separator. Use sparingly - prefer spacing for visual grouping; reach for Separator only when a hard line carries semantic meaning.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-table",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Table (React)",
+      "description": "Styled wrapper over native HTML `<table>` - composable Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption. Use for tabular data; pair with a data-grid library for sorting, filtering, virtualization.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-aspect-ratio",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Aspect Ratio (React)",
+      "description": "Reserves vertical space for media before content loads - thin wrapper over Radix AspectRatio. Use on responsive images, iframes, video embeds, and skeleton placeholders to prevent cumulative layout shift.",
+      "categories": [
+        "containers"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-resizable",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Resizable (React)",
+      "description": "Split panes with draggable handles - ResizablePanelGroup + ResizablePanel + ResizableHandle on top of react-resizable-panels. Use for dev tools and pro apps (editors, email clients, file managers); consumer surfaces almost always read better with fixed proportions.",
+      "categories": [
+        "containers"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-scroll-area",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Scroll Area (React)",
+      "description": "Themeable scroll container built on Radix ScrollArea - ScrollArea + ScrollBar. Reach for it when you need consistent scrollbar styling across OSs, or when the scrollbar lives inside a rounded card and the native bar would bleed outside the radius. Otherwise native scroll is fine.",
+      "categories": [
+        "containers"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-stack",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Stack (React)",
+      "description": "Vertical layout primitive - a `<div>` configured as flex column with consistent gap, align, and justify props. The right choice for any list flowing top-to-bottom (card contents, form sections, settings rows, vertical menus).",
+      "categories": [
+        "containers"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-alert",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Alert (React)",
+      "description": "Persistent in-flow feedback message - distinct from Sonner (transient) and AlertDialog (modal). Two variants (default, destructive); convey informational/success/warning via a leading icon rather than expanding variants.",
+      "categories": [
+        "feedback"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-progress",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Progress (React)",
+      "description": "Determinate progress indicator (0-100) built on Radix Progress. Use when percent complete is known (uploads, multi-step forms, batch jobs); for unknown duration prefer Skeleton or a spinner.",
+      "categories": [
+        "feedback"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-skeleton",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Skeleton (React)",
+      "description": "Placeholder block for loading states - a pulsing rectangle that reserves layout space so there is no shift when data arrives. Honors `prefers-reduced-motion` automatically.",
+      "categories": [
+        "feedback"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-breadcrumb",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Breadcrumb (React)",
+      "description": "Hierarchical trail - composable Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis. Use to show the current location within a nested structure.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-menubar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Menubar (React)",
+      "description": "Horizontal multi-menu bar built on Radix Menubar - desktop-style File/Edit/View menus with full keyboard navigation, sub-menus, checkbox and radio items.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-navigation-menu",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Navigation Menu (React)",
+      "description": "Top-level mega-menu built on Radix NavigationMenu - reveals secondary content panels on hover/focus. Use for site headers with grouped link clusters and feature highlights.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-pagination",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Pagination (React)",
+      "description": "Page navigation surface - composable Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis. Anchor tags by default; pass a custom component via PaginationLink for client-side routers.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-sidebar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sidebar (React)",
+      "description": "Composable app-shell sidebar - SidebarProvider, Sidebar, SidebarTrigger, SidebarMenu plus mobile drawer integration. Cookie-persisted collapsed state, keyboard shortcut, full keyboard navigation. The largest navigation primitive in the registry.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-input",
+        "rx-separator",
+        "rx-skeleton",
+        "rx-sheet",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-tabs",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tabs (React)",
+      "description": "Tabbed content switcher built on Radix Tabs - Tabs, TabsList, TabsTrigger, TabsContent. Use for sibling content panels that share a context (settings sections, profile pages).",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-button-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Button Group (React)",
+      "description": "Cluster of related buttons that share a stroke. Composable ButtonGroup, ButtonGroupText, ButtonGroupSeparator. Horizontal or vertical, with optional inner Separator.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-calendar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Calendar (React)",
+      "description": "Date grid built on react-day-picker - single or range selection, multi-month layout, weekday header, keyboard navigation. Pair with Popover for the canonical DatePicker pattern.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-checkbox",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Checkbox (React)",
+      "description": "Binary or tri-state checkbox built on Radix Checkbox. Use for multi-select lists, terms acceptance, settings toggles. For mutually exclusive choices use RadioGroup; for on/off use Switch.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-form",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Form (React)",
+      "description": "React Hook Form integration - Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage. Wires field state, validation errors, and accessibility attributes.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-label"
+      ]
+    },
+    {
+      "name": "rx-input-otp",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Input OTP (React)",
+      "description": "One-time password input built on input-otp - keyboard-driven, paste-friendly, slot-based. Use for 2FA codes, magic links, SMS verification.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-radio-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Radio Group (React)",
+      "description": "Mutually exclusive choice group built on Radix RadioGroup. Use for 2-7 distinct options. For binary on/off use Switch; for many options use Select.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-slider",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Slider (React)",
+      "description": "Range slider built on Radix Slider - single value or range (two thumbs), with step + min/max. Use for continuous values (volume, opacity, price range).",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-switch",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Switch (React)",
+      "description": "Binary on/off toggle built on Radix Switch. Use for instant-effect settings (dark mode, notifications). For form fields that need explicit \"save\", prefer Checkbox.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-toggle",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Toggle (React)",
+      "description": "Two-state press-button built on Radix Toggle. Use for inline formatting controls (bold, italic) or visibility toggles. For multi-option clusters use ToggleGroup.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-toggle-group",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Toggle Group (React)",
+      "description": "Mutually exclusive or multi-select cluster of Toggle items, built on Radix ToggleGroup. Use for inline option pickers (text alignment, view mode, filter chips).",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-toggle"
+      ]
+    },
+    {
+      "name": "rx-prompt-input",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Prompt Input (React)",
+      "description": "PromptInput family for AI chat surfaces - state machine, drag-drop, paste-to-attach, status-driven Submit. Full Bridge parity: InputGroup composition (InputGroupButton + InputGroupTextarea), ActionMenu (dropdown), ModelSelector (select), attachment HoverCard previews, Speech button (Web Speech API), Command palette wrappers, Cmd+K floating palette via CommandDialog, and Tabs panels.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-input-group",
+        "rx-select",
+        "rx-dialog",
+        "rx-dropdown-menu",
+        "rx-hover-card",
+        "rx-command"
+      ]
+    },
+    {
+      "name": "rx-shimmer",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Shimmer (React)",
+      "description": "Animated text shimmer for streaming/loading hints. Uses motion (Framer Motion v12) to slide a gradient across text. Tiny dependency-free primitive used by Reasoning and Plan to mark \"thinking\" steps.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-suggestion",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Suggestion (React)",
+      "description": "Horizontal scrollable pills of prompt suggestions. Each Suggestion is a rounded Button - the Suggestions wrapper handles overflow with a hidden ScrollArea scrollbar. Use above the prompt input for starter prompts.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-scroll-area"
+      ]
+    },
+    {
+      "name": "rx-message",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Message (React)",
+      "description": "Atomic chat message with role-aware layout (user right-aligned, assistant left). Composable surface: MessageContent + MessageResponse (Streamdown markdown), MessageAttachments + MessageAttachment, MessageToolbar with MessageActions, and MessageBranch + MessageBranchSelector + MessageBranchPrevious/Next for regeneration alternatives.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-button-group",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-conversation",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Conversation (React)",
+      "description": "Scroll-to-bottom container for chat messages. Uses use-stick-to-bottom under the hood: ConversationContent stays anchored to the bottom while new messages stream in. ConversationScrollButton appears when the user scrolls up and snaps back when clicked. ConversationEmptyState renders centered placeholder content.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-reasoning",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Reasoning (React)",
+      "description": "Collapsible \"thinking\" block for visible chain-of-thought. Auto-opens while isStreaming, tracks duration, auto-closes after streaming ends. ReasoningContent renders Streamdown markdown; ReasoningTrigger uses Shimmer to mark live thought.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-collapsible",
+        "rx-shimmer"
+      ]
+    },
+    {
+      "name": "rx-chain-of-thought",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chain of Thought (React)",
+      "description": "Step-by-step reasoning visualizer. ChainOfThoughtStep renders each thought with status (pending/active/complete), icon, and optional ChainOfThoughtStepBody. Supports nested ChainOfThoughtSearch with Badge result chips. Wraps a Collapsible for show/hide.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-badge",
+        "rx-collapsible"
+      ]
+    },
+    {
+      "name": "rx-task",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Task (React)",
+      "description": "Collapsible item list for an agent task. TaskTrigger shows status + summary, TaskContent holds TaskItem children. TaskItemFile renders inline file badges (e.g. \"edited app.tsx\"). Use for multi-step tool-use traces in the conversation.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-collapsible"
+      ]
+    },
+    {
+      "name": "rx-tool",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tool (React)",
+      "description": "Tool-use trace block. ToolHeader shows the tool name + state Badge (input-streaming, input-available, output-available, output-error). ToolContent reveals ToolInput (JSON params), ToolOutput (formatted result), and ToolErrors. Built on Collapsible + CodeBlock.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-badge",
+        "rx-collapsible",
+        "rx-code-block"
+      ]
+    },
+    {
+      "name": "rx-sources",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sources (React)",
+      "description": "Citations cluster for RAG responses. SourcesTrigger shows \"N sources\" toggle, SourcesContent reveals the list. Each Source is a hyperlink with optional favicon. Use to attribute model output to retrieved documents.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-collapsible"
+      ]
+    },
+    {
+      "name": "rx-inline-citation",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Inline Citation (React)",
+      "description": "Footnote-style inline citation marker. Hovers reveal a HoverCard with a Carousel of source cards (InlineCitationCard, InlineCitationCardTrigger, InlineCitationCardBody, InlineCitationSource, InlineCitationQuote). Use inside MessageResponse to cite passages mid-sentence.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-badge",
+        "rx-carousel",
+        "rx-hover-card"
+      ]
+    },
+    {
+      "name": "rx-plan",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Plan (React)",
+      "description": "Multi-step plan card with Shimmer-marked active step. PlanHeader + PlanTitle + PlanDescription describe the goal; PlanContent lists PlanStep items, each with status. PlanFooter holds CTA Buttons (approve / regenerate). Built on Card + Collapsible.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-card",
+        "rx-collapsible",
+        "rx-shimmer"
+      ]
+    },
+    {
+      "name": "rx-checkpoint",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Checkpoint (React)",
+      "description": "Conversation savepoint marker. Renders a labeled bookmark with Separator on each side, plus a Tooltip explaining the state. Use to indicate revertable points in long agent runs.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-separator",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-confirmation",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Confirmation (React)",
+      "description": "Approval prompt for tool calls. Wraps an Alert with ConfirmationRequest, ConfirmationDescription, and ConfirmationActions (Approve / Reject Buttons). Designed for human-in-the-loop tool gates - exposes approved/rejected callbacks with optional reason.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-alert",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-context",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Context (React)",
+      "description": "Token usage display for AI conversations. ContextTrigger shows a circular progress glyph; on hover, ContextContent reveals input/output/total tokens, model max, and cost via tokenlens. Uses Progress + HoverCard.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-hover-card",
+        "rx-progress"
+      ]
+    },
+    {
+      "name": "rx-queue",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Queue (React)",
+      "description": "Pending message queue list shown above the prompt input. Each QueueMessage previews text + attachments; the user can dismiss or reorder. Built on Collapsible + ScrollArea.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-collapsible",
+        "rx-scroll-area"
+      ]
+    },
+    {
+      "name": "rx-model-selector",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Model Selector (React)",
+      "description": "Floating model picker dialog. ModelSelectorTrigger opens a Dialog containing a full Command palette - CommandInput, CommandGroup, CommandItem, CommandShortcut, CommandSeparator. Use as a Cmd+K-style model switcher above the chat composer.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-command",
+        "rx-dialog"
+      ]
+    },
+    {
+      "name": "rx-artifact",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Artifact (React)",
+      "description": "Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-code-block",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Code Block (React)",
+      "description": "Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; exposes CodeBlockCopyButton with copy/copied state. Pass code + language, optional showLineNumbers; ships dark + light themes by default.",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "rx-web-preview",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Web Preview (React)",
+      "description": "Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable Input, WebPreviewBody renders an iframe with the current URL, and WebPreviewConsole (Collapsible) shows console logs and errors below.",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-collapsible",
+        "rx-input",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-canvas",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Canvas (React)",
+      "description": "ReactFlow canvas surface for visual workflows / agent graphs. Pre-configured for pan-on-scroll, drag-selection, and deletable nodes via Backspace/Delete. Wraps @xyflow/react ReactFlow + Background.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-connection",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Connection (React)",
+      "description": "Animated bezier-curve connection line component for @xyflow/react. Renders a smoothly curved path with a circle terminator while the user is dragging a new edge. Pass as the connectionLineComponent prop on Canvas.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-controls",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Controls (React)",
+      "description": "Styled wrapper around @xyflow/react Controls (zoom in/out, fit view, lock). Pre-themed to match Gremorie - rounded, bordered, secondary-tinted buttons. Drop inside a Canvas as a child for floating zoom controls.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-edge",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Edge (React)",
+      "description": "Edge variants for @xyflow/react: Temporary (simple-bezier curve for in-progress connections) and Animated (gradient-flowing bezier for active flows). Register via edgeTypes={{ temporary: Temporary, animated: Animated }} on Canvas.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rx-node",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Node (React)",
+      "description": "Card-based node for @xyflow/react graphs. Wraps Gremorie Card + CardHeader/Title/Description/Content/Footer/Action to give each node consistent chrome. Accepts handles { target, source } booleans to declare which sides expose connection Handles.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card"
+      ]
+    },
+    {
+      "name": "rx-panel",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Panel (React)",
+      "description": "Floating positioned panel inside a @xyflow/react Canvas. Pre-themed - bordered, rounded, card-tinted, padded - for stacking minimap, layers, or context controls in a corner of the workflow.",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-toolbar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Toolbar (React)",
+      "description": "Per-node floating toolbar (NodeToolbar from @xyflow/react). Anchored below the node by default - use for context actions on selection (delete, duplicate, configure).",
+      "categories": [
+        "ai",
+        "workflow"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-image",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Image (React)",
+      "description": "Tiny wrapper that renders an Experimental_GeneratedImage (Vercel AI SDK) as a data-URI <img>. Use to display model-generated images returned from generateImage() / experimental tool output.",
+      "categories": [
+        "ai",
+        "utilities"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-open-in-chat",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Open in Chat (React)",
+      "description": "Dropdown that opens the current page in an external chat (ChatGPT, Claude, Gemini, T3 Chat, ...). Provides preset providers (github, chatgpt, claude, gemini, t3) and accepts custom OpenInChatItem entries.",
+      "categories": [
+        "ai",
+        "utilities"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-dropdown-menu"
+      ]
+    },
+    {
+      "name": "rx-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chart (React)",
+      "description": "Headless chart engine for the React edition - chart-context (React Context + hooks), scales, axis, cartesian-grid, chart-frame, plus shape helpers (area, line, bar, scatter, pie, polar, radar, radial-bar). Shared base for every styled chart.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-area-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Area Chart (React)",
+      "description": "Styled area chart - cumulative quantity over a continuous domain. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-line-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Line Chart (React)",
+      "description": "Styled line chart - trends over a continuous domain. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-bar-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Bar Chart (React)",
+      "description": "Styled grouped bar chart - compare values across categories with one bar per series in each band. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-scatter-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Scatter Chart (React)",
+      "description": "Styled scatter chart - show correlation between a numeric X field and one or more Y series. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-pie-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Pie Chart (React)",
+      "description": "Styled pie / donut chart - parts of a whole, one slice per data row. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-radar-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Radar Chart (React)",
+      "description": "Styled radar chart - compare series across multiple axes that share a radial domain. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "rx-radial-chart",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Radial Chart (React)",
+      "description": "Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Uses the rx-chart headless primitives.",
+      "categories": [
+        "data",
+        "charts"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-chart"
+      ]
+    },
+    {
+      "name": "block-sign-in",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Sign-in block",
+      "description": "Authentication card with a GitHub provider above an email/password field group. Composes Card, Button, Separator, Label, and Input.",
+      "categories": [
+        "blocks",
+        "auth"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-card",
+        "rx-input",
+        "rx-label",
+        "rx-separator"
+      ]
+    },
+    {
+      "name": "block-dashboard",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Dashboard block",
+      "description": "Analytics surface: four KPI cards, a revenue bar chart, and a recent-transactions table. Composes Card, Badge, Table, BarChart, and Button.",
+      "categories": [
+        "blocks",
+        "dashboard"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-card",
+        "rx-badge",
+        "rx-table",
+        "rx-bar-chart"
+      ]
+    },
+    {
+      "name": "block-chat-surface",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chat surface block",
+      "description": "AI chat surface: Conversation log with stick-to-bottom scrolling, user and assistant Messages, Reasoning collapsible, and a PromptInput composer.",
+      "categories": [
+        "blocks",
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-conversation",
+        "rx-message",
+        "rx-reasoning",
+        "rx-prompt-input"
+      ]
+    },
+    {
+      "name": "block-settings-form",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Settings form block",
+      "description": "Settings page: Profile, Notifications, and Appearance cards with a sticky save bar. Composes Card, Avatar, Input, Label, Switch, Slider, and Button.",
+      "categories": [
+        "blocks",
+        "forms",
+        "settings"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-card",
+        "rx-avatar",
+        "rx-input",
+        "rx-label",
+        "rx-switch",
+        "rx-slider"
+      ]
+    },
+    {
+      "name": "block-marketing-hero",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Marketing hero block",
+      "description": "Landing hero: brand-tinted halo, eyebrow Badge, headline with brand-highlighted span, dual CTA, and a window mockup Card.",
+      "categories": [
+        "blocks",
+        "marketing"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-card",
+        "rx-badge"
+      ]
+    },
+    {
+      "name": "block-empty-state",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Empty state block",
+      "description": "Empty-state pattern: dashed-border container, centered icon medallion, headline, description, and dual CTA. Composes Button + lucide icons.",
+      "categories": [
+        "blocks",
+        "empty-state"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "artifact-chart-bar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chart (bar) artifact",
+      "description": "Bar chart artifact rendering a schema-driven dataset emitted by the model. Composes BarChart (rx-data) with Card + Badge for framing.",
+      "categories": [
+        "artifacts",
+        "chart"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-bar-chart"
+      ]
+    },
+    {
+      "name": "artifact-code-block",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Code block artifact",
+      "description": "Syntax-highlighted code artifact with copy-to-clipboard. Composes CodeBlock (rx-ai) with Card + Badge for framing.",
+      "categories": [
+        "artifacts",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-code-block"
+      ]
+    },
+    {
+      "name": "artifact-markdown-doc",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Markdown document artifact",
+      "description": "Document artifact rendering streamed Markdown with prose typography. Composes Card + Badge with a prose article wrapper.",
+      "categories": [
+        "artifacts",
+        "document"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge"
+      ]
+    },
+    {
+      "name": "artifact-data-table",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Data table artifact",
+      "description": "Filterable table artifact rendering JSON rows. Composes Table (rx-display) with Input filter, Badge status, and lucide Search icon.",
+      "categories": [
+        "artifacts",
+        "data"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-table",
+        "rx-input"
+      ]
+    },
+    {
+      "name": "artifact-form-schema",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Form (schema) artifact",
+      "description": "Form artifact generated from a JSON field schema with submit. Composes Input, Checkbox, Label, Button (rx-forms) with Card + Badge.",
+      "categories": [
+        "artifacts",
+        "form"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-input",
+        "rx-checkbox",
+        "rx-label",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "artifact-calculator",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Calculator artifact",
+      "description": "Interactive tool-call artifact with editable inputs, operator toggle, and live result. Composes Input, Label, Button (rx-forms) with Card + Badge.",
+      "categories": [
+        "artifacts",
+        "interactive"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-input",
+        "rx-label",
+        "rx-button"
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import {
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 type Theme = 'light' | 'dark';
-const STORAGE_KEY = 'shadng-theme';
+const STORAGE_KEY = 'gremorie-theme';
 
 @Component({
   selector: 'docs-theme-toggle',

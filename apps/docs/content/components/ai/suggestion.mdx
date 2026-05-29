@@ -1,0 +1,188 @@
+---
+title: Suggestion
+description: Horizontal scrollable row of prompt suggestion pills - the canonical "quick replies" pattern for chat.
+---
+
+import { SuggestionPreview } from "@/components/preview/ai/chatbot";
+
+## Overview
+
+`Suggestion` is the pill button users tap to send a pre-written prompt without typing. `Suggestions` is the horizontally scrollable row that hosts them. Together they form the standard "quick replies" pattern used after the assistant proposes options or at the start of an empty thread.
+
+Use them in the empty state of `Conversation`, after a clarifying question from the assistant, or as a persistent toolbar of common prompts.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <SuggestionPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-suggestion
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-suggestion
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-suggestion
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-suggestion
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Suggestions, Suggestion } from "@gremorie/rx-ai";
+
+export function Example({ onPick }) {
+  return (
+    <Suggestions>
+      <Suggestion suggestion="Summarize this PDF" onClick={onPick} />
+      <Suggestion suggestion="What changed last week?" onClick={onPick} />
+      <Suggestion suggestion="Draft a reply to this email" onClick={onPick} />
+    </Suggestions>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import { Suggestion, Suggestions } from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-example",
+  standalone: true,
+  imports: [Suggestions, Suggestion],
+  template: `
+    <suggestions>
+      @for (s of items; track s) {
+        <suggestion [value]="s" (select)="onSelect($event)">{{ s }}</suggestion>
+      }
+    </suggestions>
+  `,
+})
+export class ExampleComponent {
+  readonly items = ["Tell me a joke", "Summarize this", "Translate to French"];
+
+  onSelect(value: string): void {
+    console.log("picked", value);
+  }
+}
+```
+</Tab>
+</Tabs>
+
+## API
+
+### `<Suggestions>`
+
+Horizontally scrollable row built on `ScrollArea`. Children stay on a single line and overflow scrolls horizontally; the scrollbar is hidden by default.
+
+Extends `ComponentProps<typeof ScrollArea>`.
+
+### `<Suggestion>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `suggestion` | `string` | - | Required. The pre-written prompt sent to `onClick` when the pill is tapped. |
+| `onClick` | `(suggestion: string) => void` | - | Click handler. Receives `suggestion` (not the React event). |
+| `variant` | `ButtonVariant` | `"outline"` | Forwarded to the underlying `Button`. |
+| `size` | `ButtonSize` | `"sm"` | Forwarded to the underlying `Button`. |
+| `children` | `ReactNode` | - | Optional. Overrides the visible label (`suggestion` is still what gets sent on click). |
+
+Extends `ComponentProps<typeof Button>` (minus `onClick`).
+
+## Composition
+
+1. **`<Suggestions>`** is the horizontally scrolling row.
+2. **`<Suggestion>`** is one rounded pill - the pre-written prompt.
+
+## Variations
+
+### Quick replies row
+
+The canonical pattern: a horizontal strip of prompts above the prompt input.
+
+```tsx
+<Suggestions>
+  {suggestions.map((s) => (
+    <Suggestion key={s} suggestion={s} onClick={sendPrompt} />
+  ))}
+</Suggestions>
+```
+
+### Empty-state hero
+
+Drop suggestions inside `ConversationEmptyState` to invite the first prompt.
+
+```tsx
+<ConversationEmptyState
+  title="Ask anything"
+  description="Or try one of these:"
+>
+  <Suggestions>
+    <Suggestion suggestion="What's on my calendar today?" onClick={send} />
+    <Suggestion suggestion="Summarize yesterday's standup" onClick={send} />
+    <Suggestion suggestion="Draft a project update" onClick={send} />
+  </Suggestions>
+</ConversationEmptyState>
+```
+
+### Custom label vs sent prompt
+
+Show a short label visually, but send a longer fully-specified prompt on click.
+
+```tsx
+<Suggestion
+  suggestion="Summarize the last 10 PRs merged into main with focus on bug fixes."
+  onClick={send}
+>
+  Summarize PRs
+</Suggestion>
+```
+
+### Disabled while streaming
+
+Disable the row while the assistant is still responding.
+
+```tsx
+<Suggestions>
+  {suggestions.map((s) => (
+    <Suggestion
+      key={s}
+      suggestion={s}
+      onClick={send}
+      disabled={status === "streaming"}
+    />
+  ))}
+</Suggestions>
+```
+
+## Accessibility
+
+- **Keyboard**: each `Suggestion` is a real `Button`, focusable and activated by Enter / Space.
+- **ARIA**: when `children` override the visible label, make sure the visible text is still descriptive (or provide `aria-label` if the pill is icon-only).
+- **Screen readers**: the row is scrollable but reads in document order, so screen readers walk through every option.
+- **Focus management**: the hidden horizontal scrollbar does not steal focus; keyboard users can Tab through pills naturally.
+
+## Related
+
+- [Conversation](/components/ai/conversation) - typical parent of the suggestions row in the empty state
+- [PromptInput](/components/ai/prompt-input) - the input below the suggestions
+- [Message](/components/ai/message) - assistant turns that often end with a clarifying question + suggestion row

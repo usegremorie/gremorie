@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "title": "UI",
+  "description": "Primitivos UI do Gremorie",
+  "icon": "LayoutGrid",
+  "pages": [
+    "index",
+    "containers",
+    "forms",
+    "display",
+    "feedback",
+    "overlays",
+    "navigation",
+    "data"
+  ]
+}

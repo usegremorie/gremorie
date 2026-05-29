@@ -1,0 +1,313 @@
+---
+title: Form
+description: Wrappers de react-hook-form + zod com ARIA wiring automático.
+component: Form
+importPath: "@kalvner/kds/forms/form"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Form` agrupa os primitivos do KDS (Input, Textarea, Select, Checkbox,
+RadioGroup, Switch) com [`react-hook-form`](https://react-hook-form.com)
++ [`zod`](https://zod.dev) e ARIA wiring automático. O resultado:
+formulários acessíveis com validação tipada e mensagens em PT-BR, sem
+ter que ligar `htmlFor` / `aria-describedby` / `aria-invalid`
+manualmente em cada campo.
+
+A anatomia segue o template canônico de form row:
+
+1. **Label** — descreve o campo
+2. **Input/Control** — o controle em si
+3. **Description** — helper text opcional
+4. **Message** — mensagem de erro (só renderiza se houver)
+
+Quando o erro aparece, `FormLabel` ganha cor destructive,
+`FormControl` recebe `aria-invalid="true"`, e `FormMessage` aparece
+no slot já reservado pelo grid `gap-2` do `FormItem` — sem layout shift.
+Esse desacoplamento é importante para evitar CLS — ver
+[[ui/layout/cumulative-layout-shift]].
+
+```tsx
+<Form {...form}>
+  <FormField
+    control={form.control}
+    name="email"
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>Email</FormLabel>
+        <FormControl>
+          <Input type="email" {...field} />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+</Form>
+```
+
+## Anatomy
+
+```
+<Form {...methods}>            ← FormProvider de react-hook-form
+  <FormField                    ← Controller + name context
+    control={methods.control}
+    name="email"
+    render={({ field }) => (
+      <FormItem>                ← Wrapper grid com id único
+        <FormLabel />            ← Label vinculado via htmlFor=formItemId
+        <FormControl>            ← Slot que injeta id + aria-* no filho
+          <Input />
+        </FormControl>
+        <FormDescription />      ← Helper text com id formDescriptionId
+        <FormMessage />          ← Mensagem de erro com id formMessageId
+      </FormItem>
+    )}
+  />
+</Form>
+```
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Form` | Alias para `FormProvider` do RHF. Aceita o objeto de `useForm()`. |
+| `FormField` | Wrapper de `Controller`. Provê o `name` para os filhos. |
+| `FormItem` | Grid `gap-2` com id único. Contexto pra subcomponents. |
+| `FormLabel` | Label vinculado via id automático. Vermelho em erro. |
+| `FormControl` | Slot que injeta `id`, `aria-describedby`, `aria-invalid`. |
+| `FormDescription` | Helper text com id rastreável por screen readers. |
+| `FormMessage` | Mensagem de erro (só renderiza quando há erro). |
+| `useFormField` | Hook que expõe os ids, name, e fieldState do contexto. |
+
+## Usage
+
+Instale as peer deps no projeto consumidor:
+
+```bash
+pnpm add react-hook-form zod @hookform/resolvers
+```
+
+```tsx
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@kalvner/kds/forms/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@kalvner/kds/forms/form";
+import { Input } from "@kalvner/kds/forms/input";
+
+const schema = z.object({
+  email: z.string().email("Digite um e-mail válido"),
+  password: z.string().min(8, "Mínimo 8 caracteres")
+});
+
+export function LoginForm() {
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: { email: "", password: "" }
+  });
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit((data) => {
+          console.log(data);
+        })}
+        className="grid gap-4"
+      >
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" {...field} />
+              </FormControl>
+              <FormDescription>
+                Usaremos para confirmar a conta.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Senha</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Entrar</Button>
+      </form>
+    </Form>
+  );
+}
+```
+
+## Props
+
+### Form
+
+`Form` é alias direto para `FormProvider` do RHF — aceita todas as
+métodos retornadas por `useForm()`. Use o spread:
+
+```tsx
+const form = useForm({...});
+return <Form {...form}>...</Form>;
+```
+
+### FormField
+
+| Prop | Tipo | Descrição |
+|---|---|---|
+| `control` | `Control` | `form.control` do `useForm`. |
+| `name` | `string` (paths do schema) | Caminho do campo. |
+| `render` | `({ field, fieldState }) => ReactNode` | Render prop. |
+
+### FormItem / FormLabel / FormControl / FormDescription / FormMessage
+
+Aceitam todos os props do elemento subjacente (`<div>`, `<label>`,
+`<p>`). `FormControl` é um `Slot` — clona o filho injetando `id`,
+`aria-describedby`, `aria-invalid`.
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Submit (default)</CardTitle>
+      <CardDescription>useForm sem `mode` valida apenas no submit.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <span className="text-sm text-muted-foreground">
+        Ideal para login, signup. Erros aparecem ao clicar Submit.
+      </span>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>onChange</CardTitle>
+      <CardDescription>Valida a cada keystroke.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <span className="text-sm text-muted-foreground">
+        Útil em campos com requisitos visíveis (senha forte, slug disponível).
+      </span>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>onBlur</CardTitle>
+      <CardDescription>Valida ao sair do campo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <span className="text-sm text-muted-foreground">
+        Sweet spot — não interrompe quem digita, avisa antes do submit.
+      </span>
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+| Estado | Como ativar | Comportamento visual |
+|---|---|---|
+| Idle | Estado inicial. | Label normal, controle com border padrão. |
+| Focused | Tab/click no controle. | Ring `ring-ring/50`. |
+| Validating | Em modes onChange/onBlur, durante a validação async. | Geralmente imperceptível — Zod sync é instantâneo. |
+| Error | Schema falha. | `FormLabel` vermelho, `FormControl` com `aria-invalid="true"`, `FormMessage` aparece. |
+| Submitting | `form.formState.isSubmitting` — desabilite o Button + spinner. | Button com `disabled` + spinner. |
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Profile form</CardTitle>
+    <CardDescription>Form completo combinando todos os primitivos.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <span className="text-sm text-muted-foreground">
+      Veja a story <code>Composed · Profile form</code> em Storybook →
+      Primitives → Forms → Form para um exemplo end-to-end com Input,
+      Textarea, Select, RadioGroup, Switch e Checkbox dentro de um único
+      Form.
+    </span>
+  </CardContent>
+</Card>
+
+## When to use
+
+- Qualquer formulário multi-campo com validação.
+- Login, signup, profile, configurações estruturadas.
+- Quando você precisa de mensagens de erro tipadas (Zod) e ARIA
+  automático.
+
+## When not to use
+
+- Forms triviais (1-2 campos sem validação) — `useState` + `<form>`
+  HTML cru é mais leve.
+- Buscas que disparam em onChange — RHF é overkill; um `Input`
+  controlado basta.
+- Server Actions com validação no servidor — Zod via `zod-form-data`
+  + `useFormStatus` pode ser mais simples.
+
+## Best practices
+
+- **Use `mode: "onBlur"` ou `"onTouched"` por padrão.** Validar em
+  `onChange` cansa; validar só em submit demora a dar feedback.
+- **Erros em PT-BR no schema.** Zod aceita strings nas validações
+  (`z.string().email("Digite um e-mail válido")`). Mantém todo o
+  texto de erro em um lugar.
+- **Disable o Submit durante isSubmitting.** Spinner no botão para
+  evitar duplo envio. Cite [[ui/layout/cumulative-layout-shift]] —
+  o spinner não deve mudar a altura do botão.
+- **Reservar espaço pra mensagem de erro.** O grid `gap-2` do
+  `FormItem` já reserva — não animar height na transição idle → error.
+- **Toast em erros de servidor (não validação).** Validação é
+  inline; falha de rede ou backend é um Toast (Sonner) — quando
+  Sonner estiver no KDS.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Label** | `FormLabel` recebe `htmlFor={formItemId}` automaticamente. |
+| **Description** | `FormDescription` ganha id; `FormControl` aponta `aria-describedby` para ele. |
+| **Erro** | Quando há erro, `FormMessage` ganha id e é incluído em `aria-describedby`; `FormControl` ganha `aria-invalid="true"`. |
+| **Roving focus** | Não aplicável — formulários são linear tab order. |
+| **Submit failure** | Use `form.setFocus("campo")` para focar o primeiro campo com erro após Submit. |
+| **Live regions** | Para feedback assíncrono (ex: "Salvando…" → "Salvo"), considere `aria-live="polite"` em um container de status. |
+
+## Related
+
+- [`Input`](./input), [`Textarea`](./textarea), [`Select`](./select),
+  [`Checkbox`](./checkbox), [`RadioGroup`](./radio-group),
+  [`Switch`](./switch) — todos compõem dentro de `FormControl`.
+- [`Button`](./button) — o submit do form.
+- [react-hook-form docs](https://react-hook-form.com/docs) —
+  documentação do framework de form.
+- [zod docs](https://zod.dev) — schema validation.

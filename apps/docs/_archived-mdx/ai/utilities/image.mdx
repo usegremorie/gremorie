@@ -1,0 +1,143 @@
+---
+title: Image
+description: Render de imagem gerada pelo modelo — base64 + mediaType, sem mais.
+component: Image
+importPath: "@kalvner/kds/ai/image"
+status: stable
+---
+
+import { ImagePreview, ImageTinyPreview } from "@/components/ai-utilities-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Image` é um **wrapper minimalista** sobre `<img>` que aceita o
+formato `Experimental_GeneratedImage` da AI SDK — base64 +
+mediaType + uint8Array. Renderiza inline com radius e
+`object-cover` por default.
+
+Use quando o modelo (DALL-E, Stable Diffusion, Gemini Image, etc)
+retorna uma imagem como parte da resposta.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Imagem 10×10 base64 renderizada.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ImagePreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Image base64 mediaType uint8Array alt />
+```
+
+## Usage
+
+```tsx
+import { Image } from "@kalvner/kds/ai/image";
+
+const generatedImage = await generateImage({ prompt: "..." });
+// generatedImage: { base64, mediaType, uint8Array }
+
+<Image
+  base64={generatedImage.base64}
+  mediaType={generatedImage.mediaType}
+  uint8Array={generatedImage.uint8Array}
+  alt="Imagem gerada do prompt"
+/>
+```
+
+## Props
+
+| Prop | Tipo | Default | Descrição |
+|---|---|---|---|
+| `base64` | `string` | — | Base64 da imagem (sem `data:` prefix). |
+| `mediaType` | `string` | — | MIME type (`image/png`, `image/jpeg`, ...). |
+| `uint8Array` | `Uint8Array` | — | Bytes (não usado no render — está no tipo da AI SDK). |
+| `alt` | `string` | — | Alt text — sempre forneça. |
+| `className` | `string` | `'h-auto max-w-full overflow-hidden rounded-md'` | Override. |
+
+Aceita `ComponentProps<"img">` (todos os atributos HTML válidos).
+
+## Subcomponents
+
+Componente único — sem subcomponentes.
+
+## States
+
+Sem estados próprios. Loading/error states do `<img>` HTML são
+herdados — você pode adicionar via CSS:
+
+```tsx
+<Image
+  base64={data}
+  mediaType="image/png"
+  className="aspect-square bg-muted [&[loading]]:opacity-50"
+  alt="..."
+/>
+```
+
+## Composition
+
+### Em Message
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Image base64={img.base64} mediaType={img.mediaType} alt="Logo gerada" />
+  </MessageContent>
+</Message>
+```
+
+### Em Artifact
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>logo.png</ArtifactTitle>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <Image base64={img.base64} mediaType={img.mediaType} alt="Logo" />
+  </ArtifactContent>
+</Artifact>
+```
+
+## When to use
+
+- Imagem gerada por modelo (DALL-E, etc).
+- Imagem retornada como base64 de qualquer fonte.
+
+## When not to use
+
+- Imagem por URL — use `<img>` direto ou `<Image>` do Next.js.
+- Avatar de user — use [Avatar](../../ui/display/avatar).
+
+## Best practices
+
+- **Sempre forneça alt.** Imagens geradas têm contexto que o user
+  precisa entender mesmo sem ver.
+- **Prefira PNG/WebP.** JPEG perde qualidade em imagens com texto.
+- **Lazy load se em lista.** Adicione `loading="lazy"` no className/props.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Alt text** | Obrigatório — passe sempre. |
+| **Decorative** | Use `alt=""` se decorativa (raro pra gen images). |
+
+## Related
+
+- [Avatar](../../ui/display/avatar) — pra avatars.
+- [Artifact](../code/artifact) — surface dedicada.
+- AI SDK [generateImage](https://ai-sdk.dev/docs/ai-sdk-core/generating-images) — fonte do tipo.

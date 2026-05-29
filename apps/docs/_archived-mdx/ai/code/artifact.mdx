@@ -1,0 +1,198 @@
+---
+title: Artifact
+description: Surface dedicada pra código / documento gerado — header com title + actions, content scrollável.
+component: Artifact
+importPath: "@kalvner/kds/ai/artifact"
+status: stable
+---
+
+import { ArtifactPreview } from "@/components/ai-code-demos";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+
+## Overview
+
+`Artifact` é a **surface dedicada** pra um output gerado pelo modelo
+— código, markdown, dados estruturados. Consiste em header (title,
+description, actions toolbar, close) + content scrollável.
+
+Padrão Claude / GPT artifacts: o output sai do flow do chat e vai
+pra um painel lateral persistente que o user pode editar, baixar,
+re-gerar.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Artifact de código com header + actions toolbar.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <ArtifactPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Artifact>
+  ├─ <ArtifactHeader>
+  │    ├─ <ArtifactTitle />
+  │    ├─ <ArtifactDescription />
+  │    ├─ <ArtifactActions>
+  │    │    └─ <ArtifactAction tooltip>...</ArtifactAction>
+  │    └─ <ArtifactClose />
+  └─ <ArtifactContent>
+       [code, markdown, JSON, etc]
+</Artifact>
+```
+
+## Usage
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>landing-page.tsx</ArtifactTitle>
+    <ArtifactDescription>React component · 124 linhas</ArtifactDescription>
+    <ArtifactActions>
+      <ArtifactAction tooltip="Copiar"><Copy /></ArtifactAction>
+      <ArtifactAction tooltip="Re-gerar"><RefreshCw /></ArtifactAction>
+      <ArtifactAction tooltip="Baixar"><Download /></ArtifactAction>
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <CodeBlock code={code} language="tsx" />
+  </ArtifactContent>
+</Artifact>
+```
+
+## Props
+
+### Artifact (Root)
+
+Aceita `HTMLAttributes<HTMLDivElement>`. Container neutro com border,
+rounded.
+
+### ArtifactHeader
+
+Aceita `HTMLAttributes<HTMLDivElement>`. Wrapper flex com layout
+title-left / actions-right.
+
+### ArtifactTitle / ArtifactDescription
+
+| Componente | Aceita |
+|---|---|
+| `ArtifactTitle` | `HTMLAttributes<HTMLParagraphElement>`. |
+| `ArtifactDescription` | `HTMLAttributes<HTMLParagraphElement>`. |
+
+Title é semibold; Description é muted text-sm.
+
+### ArtifactActions · ArtifactAction · ArtifactClose
+
+| Componente | Função |
+|---|---|
+| `ArtifactActions` | Wrapper flex (gap-1). |
+| `ArtifactAction` | Botão da toolbar. Aceita `tooltip` opcional. Herda Button props. |
+| `ArtifactClose` | Botão X — fecha/dismiss o artifact. Herda Button props. |
+
+### ArtifactContent
+
+Aceita `HTMLAttributes<HTMLDivElement>`. Container scrollável do
+corpo do artifact.
+
+## Subcomponents
+
+- **`Artifact`** — root container.
+- **`ArtifactHeader`** — slot superior.
+- **`ArtifactTitle`** — nome do artifact (filename, título).
+- **`ArtifactDescription`** — meta (linguagem, tamanho, etc).
+- **`ArtifactActions`** — wrapper de actions.
+- **`ArtifactAction`** — botão individual com tooltip.
+- **`ArtifactClose`** — botão X com `aria-label="Close"`.
+- **`ArtifactContent`** — corpo scrollável.
+
+## Composition
+
+### Code artifact (caso comum)
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>Component.tsx</ArtifactTitle>
+    <ArtifactDescription>React · 84 linhas</ArtifactDescription>
+    <ArtifactActions>
+      <ArtifactAction tooltip="Copy"><Copy /></ArtifactAction>
+      <ArtifactAction tooltip="Download"><Download /></ArtifactAction>
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <CodeBlock code={code} language="tsx" />
+  </ArtifactContent>
+</Artifact>
+```
+
+### Markdown document
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>requirements.md</ArtifactTitle>
+    <ArtifactDescription>Markdown · 2 páginas</ArtifactDescription>
+    <ArtifactActions>
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <Streamdown>{markdown}</Streamdown>
+  </ArtifactContent>
+</Artifact>
+```
+
+### Layout em painel lateral
+
+```tsx
+<div className="grid grid-cols-[1fr_400px]">
+  <Conversation>...</Conversation>
+  {currentArtifact && (
+    <Artifact>...</Artifact>
+  )}
+</div>
+```
+
+## When to use
+
+- Output longo que merece surface dedicada — código, doc, JSON.
+- Artifacts editáveis — user pode iterar fora do chat.
+- Outputs visualizáveis (preview) que precisam de mais espaço.
+
+## When not to use
+
+- Snippets curtos — embed no chat com [CodeBlock](./code-block).
+- Tool outputs efêmeros — use [Tool](../chatbot/tool) com
+  ToolOutput; artifact é pra "saída final".
+
+## Best practices
+
+- **Title = filename quando possível.** "Component.tsx" > "Generated".
+- **Always include Close.** User precisa dispensar.
+- **Actions ordenadas por uso.** Copy primeiro, depois Download,
+  depois destructive/regenerate.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Heading** | ArtifactTitle é `<p>` por padrão. Para a11y melhor, embrulhe em `<h2>` quando o artifact ocupar surface dedicada. |
+| **Close** | `aria-label="Close artifact"`. |
+| **Actions** | `tooltip` injeta `aria-label` automático. |
+
+## Related
+
+- [CodeBlock](./code-block) — usado dentro do ArtifactContent.
+- [WebPreview](./web-preview) — preview de site renderizado.
+- [Tool](../chatbot/tool) — alternativa pra outputs efêmeros.

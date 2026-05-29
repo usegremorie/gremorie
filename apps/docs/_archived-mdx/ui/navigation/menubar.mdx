@@ -1,0 +1,160 @@
+---
+title: Menubar
+description: Menu bar de aplicação desktop-style — File / Edit / View / Help.
+component: Menubar
+importPath: "@kalvner/kds/navigation/menubar"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import { MenubarPreview } from "@/components/navigation-demos";
+
+## Overview
+
+`Menubar` é o menu horizontal estilo desktop — File, Edit, View,
+Help. Use quando estiver portando um padrão de aplicativo desktop
+para web (editores de código, planilhas, ferramentas de design,
+DAWs). Para a maioria dos produtos web, `DropdownMenu` resolve
+melhor o mesmo conjunto de ações.
+
+Suporta **submenus aninhados**, **checkbox items** (toggles),
+**radio groups** (seleção única) e **shortcuts** alinhados à
+direita — toda a anatomia clássica de menu bar.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>File / Edit / View / Help — clique nos triggers.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <MenubarPreview />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+      <MenubarSub>
+        <MenubarSubTrigger>Open Recent</MenubarSubTrigger>
+        <MenubarSubContent>
+          <MenubarItem>file.tsx</MenubarItem>
+        </MenubarSubContent>
+      </MenubarSub>
+      <MenubarSeparator />
+      <MenubarItem>Save</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+
+A barra é uma sequência de `MenubarMenu`, cada um com seu trigger
++ content. Items podem ser ações simples, submenus, checkboxes
+ou radio groups.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `Menubar` | Container horizontal. |
+| `MenubarMenu` | Wrapper de um menu (trigger + content). |
+| `MenubarTrigger` | Botão que abre o menu. |
+| `MenubarContent` | Painel dropdown de itens. |
+| `MenubarItem` | Linha clicável; aceita `variant="destructive"`. |
+| `MenubarSeparator` | Divisor horizontal entre grupos. |
+| `MenubarLabel` | Cabeçalho não interativo. |
+| `MenubarShortcut` | Span alinhado à direita para atalho de teclado. |
+| `MenubarCheckboxItem` | Item com indicador de check. |
+| `MenubarRadioGroup` / `MenubarRadioItem` | Radio única dentro de um grupo. |
+| `MenubarSub` / `MenubarSubTrigger` / `MenubarSubContent` | Submenu aninhado. |
+
+## Usage
+
+```tsx
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarShortcut,
+  MenubarTrigger
+} from "@kalvner/kds/navigation/menubar";
+
+export function EditorMenubar() {
+  return (
+    <Menubar>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            New <MenubarShortcut>⌘N</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            Open <MenubarShortcut>⌘O</MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}
+```
+
+## When to use
+
+- **Editores de código web** (CodeMirror-based, Monaco-based).
+- **Planilhas/spreadsheets** com File/Edit/Format/Data/Tools.
+- **Apps de design** (canvas tools com modes File/Edit/Object/View).
+- **DAWs e tools profissionais** que esperam o padrão desktop.
+
+## When not to use
+
+- Sites de marketing — use [`NavigationMenu`](./navigation-menu).
+- Apps web mainstream (CRUD apps, dashboards) — use
+  [`DropdownMenu`](../overlays/dropdown-menu).
+- Mobile — Menubar não tem fallback gracioso; em mobile transforme
+  em DropdownMenu único ou Sheet.
+- Apps com poucas ações (≤3 grupos de comandos) — DropdownMenu
+  resolve com menos peso.
+
+## Best practices
+
+- **Grupos canônicos.** File para arquivos, Edit para mudanças
+  no documento, View para apresentação, Help para meta. Não
+  invente nomes "criativos".
+- **Shortcuts à direita.** `<MenubarShortcut>` alinha à direita
+  com `text-muted-foreground` — convenção universal de menu bar.
+- **Separadores agrupam.** Use `MenubarSeparator` para separar
+  grupos lógicos (ex.: Open / Save / Save As… / Export…).
+- **Disabled items aparecem.** Em vez de esconder um comando que
+  não está disponível agora (`Redo` quando não há nada para refazer),
+  use `disabled` — o usuário aprende que o comando existe.
+- **Não aninhe demais.** Submenus de 2 níveis são o limite; 3+
+  fica labiríntico.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Roles** | Radix aplica `role="menubar"`, `role="menuitem"`, `role="menuitemcheckbox"`, `role="menuitemradio"`. |
+| **Keyboard** | Setas movem; `Enter` abre/seleciona; `Esc` fecha; `Alt` ativa atalhos das letras (em alguns browsers). |
+| **Focus** | Foco volta ao trigger ao fechar. |
+| **Screen reader** | Anuncia tipo do item, estado (checked/unchecked) e disabled. |
+| **Shortcuts** | Texto do shortcut é visualmente apresentado mas o handler precisa estar no app — Menubar não captura shortcuts globalmente. |
+
+## Related
+
+- [`DropdownMenu`](../overlays/dropdown-menu) — escolha padrão para
+  menus de ação na web.
+- [`NavigationMenu`](./navigation-menu) — para nav primária de
+  marketing.
+- [`ContextMenu`](../overlays/context-menu) — menu de right-click.

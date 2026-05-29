@@ -1,0 +1,21 @@
+{
+  "name": "rx-overlays",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/rx-overlays/src",
+  "projectType": "library",
+  "tags": ["scope:lib", "type:component", "category:overlays", "framework:react"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "packages/rx-overlays",
+        "command": "tsc -p tsconfig.lib.json"
+      },
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

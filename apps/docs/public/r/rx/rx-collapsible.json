@@ -1,0 +1,31 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-collapsible",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Collapsible (React)",
+  "description": "Single-section expandable region built on Radix Collapsible. Minimal building block for \"show more\" toggles, sidebar group expand/collapse, inline disclosures.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "radix-ui"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/collapsible/collapsible.tsx",
+      "content": "\"use client\";\n\nimport { Collapsible as CollapsiblePrimitive } from \"radix-ui\";\nimport * as React from \"react\";\n\n/**\n * Collapsible - single-section expandable region.\n *\n * The minimal building block for\n * any \"show more\" toggle. Three parts: `Collapsible` (Root),\n * `CollapsibleTrigger`, `CollapsibleContent`.\n *\n * Use Collapsible when you have **one** thing that expands -\n * a card's \"more details\" toggle, a sidebar group's expand /\n * collapse, an inline disclosure inside long copy. When you have\n * multiple coordinated sections, use Accordion instead (Accordion\n * is built on top of this primitive).\n */\nfunction Collapsible({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {\n  return <CollapsiblePrimitive.Root data-slot=\"collapsible\" {...props} />;\n}\n\nfunction CollapsibleTrigger({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {\n  return (\n    <CollapsiblePrimitive.CollapsibleTrigger\n      data-slot=\"collapsible-trigger\"\n      {...props}\n    />\n  );\n}\n\nfunction CollapsibleContent({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {\n  return (\n    <CollapsiblePrimitive.CollapsibleContent\n      data-slot=\"collapsible-content\"\n      {...props}\n    />\n  );\n}\n\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/display/collapsible/collapsible.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-collapsible.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

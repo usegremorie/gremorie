@@ -1,0 +1,21 @@
+/*
+ * @gremorie/rx-core - canonical styles entry point.
+ *
+ * Re-exports the Gremorie token theme from @gremorie/ng-core so React
+ * consumers (apps/docs, future apps, downstream consumers) get the same
+ * two-tier token system (primitives + semantics) as Angular consumers.
+ *
+ * Single source of truth lives in ng-core/styles/theme.css.
+ * Importing this file gives you:
+ *   - Primitive palette (--color-gray-*, --color-red-*)
+ *   - Semantic tokens (--background, --foreground, --primary, ...)
+ *   - Status tokens (--destructive, --success)
+ *   - Chart tokens (--chart-1..5)
+ *   - Light/dark mode mapping via .dark class
+ *   - Tailwind v4 @theme inline wiring (bg-background, text-foreground, etc)
+ *   - Reduced-motion override and shared keyframes
+ *
+ * Usage in a Next.js app:
+ *   @import "@gremorie/rx-core/styles/globals.css";
+ */
+@import "../../../ng-core/styles/theme.css";

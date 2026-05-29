@@ -1,0 +1,124 @@
+---
+title: Empty state
+description: "Dashed-border container with centered icon, headline, description, and dual CTA. The canonical empty-state pattern."
+---
+
+## Overview
+
+A focused empty-state component: a soft muted background framed with
+a dashed border, a circular icon medallion, a headline, a short
+description, and a primary plus secondary action.
+
+Use this block whenever a list, table, or board has no items yet.
+Replace the icon, copy, and actions to match the surface.
+
+## Preview
+
+<BlockPreview name="empty-state" />
+
+## Anatomy
+
+The block composes:
+
+1. **Container** - `border-dashed` rounded panel with muted background
+2. **Icon medallion** - `size-14` muted circle with a `lucide-react` icon
+3. **Headline + description** - h2 + paragraph stack
+4. **Action row** - Button (default) with icon + Button (ghost) secondary
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-empty-state
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-empty-state
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-empty-state
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-empty-state
+```
+
+</Tab>
+
+</Tabs>
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import { Button } from "@gremorie/rx-forms";
+import { Inbox, Plus } from "lucide-react";
+
+export function EmptyState() {
+  return (
+    <div className="flex w-full flex-col items-center justify-center gap-5 rounded-lg border border-dashed bg-muted/20 px-6 py-20 text-center">
+      <div className="flex size-14 items-center justify-center rounded-full bg-muted">
+        <Inbox className="size-7 text-muted-foreground" aria-hidden="true" />
+      </div>
+      <div className="flex max-w-md flex-col gap-2">
+        <h2 className="text-xl font-semibold">No items yet</h2>
+        <p className="text-sm text-muted-foreground">
+          You haven&apos;t created any items. Once you do, they will show up here.
+        </p>
+      </div>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <Button>
+          <Plus aria-hidden="true" />
+          Create item
+        </Button>
+        <Button variant="ghost">Browse templates</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customization
+
+- Swap the icon and copy to fit context: no results (Search), no data (Database), permission denied (Lock), coming soon (Clock)
+- Drop one of the buttons for a single-CTA variant
+- Wrap in `Card` when the empty state needs to read as a contained section
+- Add an inline illustration above the medallion for higher-fidelity surfaces
+
+## Related
+
+- [Button](/components/forms/button)
+- [Card](/components/display/card)

@@ -1,0 +1,48 @@
+{
+  "name": "@gremorie/rx-display",
+  "version": "0.0.1",
+  "description": "React display primitives for Gremorie - Accordion, Avatar, Badge, Card, Carousel, Collapsible, Separator, Table.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-display"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "display",
+    "accordion",
+    "avatar",
+    "badge",
+    "card",
+    "carousel",
+    "collapsible",
+    "separator",
+    "table"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "peerDependencies": {
+    "@gremorie/rx-core": "^0.0.1",
+    "@gremorie/rx-forms": "^0.0.1",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "embla-carousel-react": "^8.6.0",
+    "lucide-react": "^0.547.0",
+    "radix-ui": "^1.4.3",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

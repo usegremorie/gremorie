@@ -1,0 +1,88 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-checkpoint",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Checkpoint (React)",
+  "description": "Conversation savepoint marker. Renders a labeled bookmark with Separator on each side, plus a Tooltip explaining the state. Use to indicate revertable points in long agent runs.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-button",
+    "rx-separator",
+    "rx-tooltip"
+  ],
+  "files": [
+    {
+      "path": "src/lib/checkpoint/checkpoint.tsx",
+      "content": "\"use client\";\n\nimport { Button } from \"@gremorie/rx-forms\";\nimport { Separator } from \"@gremorie/rx-display\";\nimport {\n  Tooltip,\n  TooltipContent,\n  TooltipTrigger,\n} from \"@gremorie/rx-overlays\";\nimport { cn } from \"@gremorie/rx-core\";\nimport { BookmarkIcon, type LucideProps } from \"lucide-react\";\nimport type { ComponentProps, HTMLAttributes } from \"react\";\n\nexport type CheckpointProps = HTMLAttributes<HTMLDivElement>;\n\nexport const Checkpoint = ({\n  className,\n  children,\n  ...props\n}: CheckpointProps) => (\n  <div\n    className={cn(\"flex items-center gap-0.5 text-muted-foreground overflow-hidden\", className)}\n    {...props}\n  >\n    {children}\n    <Separator />\n  </div>\n);\n\nexport type CheckpointIconProps = LucideProps;\n\nexport const CheckpointIcon = ({\n  className,\n  children,\n  ...props\n}: CheckpointIconProps) =>\n  children ?? (\n    <BookmarkIcon className={cn(\"size-4 shrink-0\", className)} {...props} />\n  );\n\nexport type CheckpointTriggerProps = ComponentProps<typeof Button> & {\n  tooltip?: string;\n};\n\nexport const CheckpointTrigger = ({\n  children,\n  className,\n  variant = \"ghost\",\n  size = \"sm\",\n  tooltip,\n  ...props\n}: CheckpointTriggerProps) =>\n  tooltip ? (\n    <Tooltip>\n      <TooltipTrigger asChild>\n        <Button size={size} type=\"button\" variant={variant} {...props}>\n          {children}\n        </Button>\n      </TooltipTrigger>\n      <TooltipContent align=\"start\" side=\"bottom\">\n        {tooltip}\n      </TooltipContent>\n    </Tooltip>\n  ) : (\n    <Button size={size} type=\"button\" variant={variant} {...props}>\n      {children}\n    </Button>\n  );\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/ai/checkpoint/checkpoint.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any React-based AI chat surface - the input area where the user composes their prompt, optionally attaches files, and submits.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use a native textarea + button instead.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up status automatically (ready / submitted / streaming / error).",
+      "Use PromptInputFooter for sticky bottom controls (tools on the left, submit on the right).",
+      "Wrap the tree in PromptInputProvider only when you need to control attachments or text input from outside the form (eg. drag-to-drop across the whole page)."
+    ],
+    "antipatterns": [
+      "Listening to onSubmit on the textarea directly - listen to the parent PromptInput onSubmit to receive the full payload.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the Enter / Cmd+Enter keyboard contract.",
+      "Re-implementing attachment state in the host component - drive it via the controller hook usePromptInputAttachments() or the provider."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "onSubmit",
+          "type": "(message: PromptInputMessage, e: FormEvent) => void | Promise<void>",
+          "required": true,
+          "description": "Fired when the user submits via Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "status",
+          "type": "ChatStatus ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'",
+          "description": "Drives the PromptInputSubmit icon (arrow / spinner / stop / X)."
+        },
+        {
+          "name": "maxFiles",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "maxFileSize",
+          "type": "number",
+          "required": false,
+          "description": "Bytes."
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "description": "MIME pattern list like 'image/*,application/pdf'."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<PromptInput onSubmit={(message) => sendMessage(message.text, message.files)}>\n  <PromptInputBody>\n    <PromptInputTextarea placeholder=\"Ask anything\" />\n    <PromptInputFooter>\n      <span />\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      },
+      {
+        "title": "With toolbar",
+        "code": "<PromptInput onSubmit={onSubmit}>\n  <PromptInputBody>\n    <PromptInputTextarea />\n    <PromptInputFooter>\n      <PromptInputTools>\n        <PromptInputButton aria-label=\"Attach\"><Paperclip /></PromptInputButton>\n        <PromptInputButton aria-label=\"Web\"><Globe /></PromptInputButton>\n      </PromptInputTools>\n      <PromptInputSubmit status={status} />\n    </PromptInputFooter>\n  </PromptInputBody>\n</PromptInput>\n"
+      }
+    ]
+  }
+}

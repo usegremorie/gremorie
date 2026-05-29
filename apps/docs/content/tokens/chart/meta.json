@@ -1,0 +1,12 @@
+{
+  "title": "Chart",
+  "icon": "ChartLine",
+  "pages": [
+    "index",
+    "sequential",
+    "categorical",
+    "divergent",
+    "status",
+    "comparison"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Navigation",
+  "description": "Navigation primitives - Breadcrumb, Menubar, NavigationMenu, Pagination, Sidebar, Tabs",
+  "icon": "Navigation",
+  "pages": [
+    "breadcrumb",
+    "menubar",
+    "navigation-menu",
+    "pagination",
+    "sidebar",
+    "tabs"
+  ]
+}

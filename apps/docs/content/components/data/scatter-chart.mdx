@@ -1,0 +1,196 @@
+---
+title: Scatter Chart
+description: "Correlation between a numeric X field and one or more Y series, plotted as colored dots."
+---
+
+import { ScatterChartPreview, ScatterChartMultiPreview } from "@/components/preview/data/charts";
+
+## Overview
+
+`ScatterChart` is the styled wrapper of the headless charting engine for **two numeric axes**. `xKey` is a numeric field (linear X axis); each entry in `config` is a numeric Y series. The chart wires up scales, the cartesian grid, the Y axis, one set of dots per series, plus an `sr-only` HTML table that mirrors the data for assistive tech.
+
+Reach for ScatterChart when you need to surface **correlation, density, or outliers** - response time vs payload size, conversion rate vs traffic, runtime vs input. For ordered category trends use [`LineChart`](/components/data/line-chart) or [`AreaChart`](/components/data/area-chart); for discrete category comparison use [`BarChart`](/components/data/bar-chart).
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScatterChartPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-scatter-chart
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-scatter-chart
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-scatter-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-scatter-chart
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { ScatterChart } from "@gremorie/rx-data";
+import type { ChartConfig, Datum } from "@gremorie/rx-data";
+
+const data: Datum[] = [
+  { x: 30, y: 100 },
+  { x: 50, y: 200 },
+  { x: 70, y: 150 },
+  { x: 90, y: 250 },
+  { x: 110, y: 175 },
+  { x: 130, y: 300 },
+];
+
+const config: ChartConfig = {
+  y: { label: "Value", color: "var(--chart-1)" },
+};
+
+export function CorrelationChart() {
+  return <ScatterChart data={data} config={config} xKey="x" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ScatterChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>`, a cartesian grid, the Y axis (the X axis is implicit and labeled by the first series via the headless render prop), one `<Scatter>` per series in `config`, and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. Each row carries the numeric `xKey` value plus one numeric value per `config` key. |
+| `config` | `ChartConfig` | - | Maps each Y series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. |
+| `xKey` | `string` | - | Name of the **numeric** field on each `Datum` used as the X axis. Linear, not categorical. |
+| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus aspect ratio. |
+
+### Headless primitives exposed
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides scales and shared Y domain. |
+| `CartesianGrid` | Render-prop primitive yielding horizontal grid lines for the current Y ticks. |
+| `YAxis` | Render-prop primitive yielding Y tick positions and labels. |
+| `Scatter` | Per-series render-prop primitive yielding `{ points, xTicks, labelY }`. Each point has `{ cx, cy }` projected screen coordinates. The first series typically also renders the X tick labels via `xTicks`. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| `ChartConfig` | `Record<string, { label: string; color: string; format?: string }>` - JSON-serializable series map. |
+
+## Composition
+
+1. **`xKey` must be numeric**. The X scale is linear, not band - the X axis projects values against the numeric domain.
+2. **Each `config` entry** becomes one set of dots. The shared Y domain auto-includes every series.
+3. **The first series** is responsible for rendering the X tick labels via the `xTicks` slot of the `Scatter` render prop - the wrapper handles this internally so callers do not have to think about it.
+4. **For custom dots** (different radii by value, colored per-point, jittered to reduce overlap), drop down to `<ChartFrame>` plus `<Scatter>` and supply your own render prop.
+
+The chart auto-sizes to its parent via `ResizeObserver`. The default class on the figure pins the chart to `aspect-video`.
+
+## Variations
+
+### Single series
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScatterChartPreview />
+</div>
+
+```tsx
+<ScatterChart
+  data={data}
+  config={{ y: { label: "Value", color: "var(--chart-1)" } }}
+  xKey="x"
+/>
+```
+
+The default shape. Reach for a single series when surfacing correlation or density across one numeric axis pair.
+
+### Multi-series
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScatterChartMultiPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  height: { label: "Median", color: "var(--chart-1)" },
+  max: { label: "Max", color: "var(--chart-2)" },
+};
+
+<ScatterChart data={data} config={config} xKey="weight" />
+```
+
+For comparing two distributions against the same X axis. Color tokens carry the series distinction; keep the count at two or three before the dots get too dense to read.
+
+### Headless customization
+
+```tsx
+import { ChartFrame, CartesianGrid, YAxis, Scatter } from "@gremorie/rx-data";
+
+export function VariableRadiusScatter({ data, xKey, yKey, sizeKey, color }) {
+  return (
+    <figure role="img" aria-label="Scatter chart sized by population">
+      <ChartFrame data={data} xKey={xKey} className="aspect-video w-full text-muted-foreground">
+        <CartesianGrid>{(lines) => /* custom grid */ null}</CartesianGrid>
+        <Scatter dataKey={yKey}>
+          {({ points }) =>
+            points.map((p, i) => (
+              <circle
+                key={i}
+                cx={p.cx}
+                cy={p.cy}
+                r={Math.sqrt(Number(data[i][sizeKey])) * 0.5}
+                fill={color}
+                fillOpacity={0.6}
+              />
+            ))
+          }
+        </Scatter>
+        <YAxis>{({ ticks, labelX }) => /* custom ticks */ null}</YAxis>
+      </ChartFrame>
+    </figure>
+  );
+}
+```
+
+Drop down to headless for bubble charts (size encoded by a third field), per-point coloring, or jitter overlays. The render prop hands you the projected positions so the engine still owns the math.
+
+## Accessibility
+
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Scatter chart of Value against x"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` carrying every row and column. Screen readers navigate the data via native table commands.
+- **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
+- **Static rendering**: no animation by default, so users with `prefers-reduced-motion: reduce` are not penalized.
+- **Density caveat**: dense scatter plots can hide outliers behind clusters. Lower `fillOpacity` (the default is 0.7) or jitter slightly to keep individual points legible.
+
+## Related
+
+- [LineChart](/components/data/line-chart) - reach for LineChart when the X axis is ordered categories, not numeric.
+- [BarChart](/components/data/bar-chart) - discrete category comparison.
+- [AreaChart](/components/data/area-chart) - filled magnitude over an ordered domain.

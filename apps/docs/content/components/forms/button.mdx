@@ -1,0 +1,162 @@
+---
+title: Button
+description: Primary click target with six visual variants, eight size presets (including icon-only), and an `asChild` escape hatch for polymorphic rendering.
+---
+
+import { ButtonPreview } from "@/components/preview/forms/forms";
+
+## Overview
+
+`Button` is the cornerstone interactive primitive. A single CVA factory drives its visual surface (`variant`) and footprint (`size`), so any combination is a one-prop change. Use it for any direct user action: submit, confirm, navigate, dismiss, trigger.
+
+When the action needs to render as a link, list item, or any non-button host, set `asChild` and the Radix Slot will forward all button styles and props onto the first child.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ButtonPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-button
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-button
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-button
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-button
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+
+export function Example() {
+  return <Button onClick={handleClick}>Save changes</Button>;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Button>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"default"` | Visual treatment. |
+| `size` | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Footprint preset. Icon sizes are square (`size-*`) with no horizontal padding. |
+| `asChild` | `boolean` | `false` | When `true`, renders via Radix `Slot.Root`; the first child receives all button styles, props and events. |
+| `disabled` | `boolean` | `false` | Standard HTML attribute. Adds `pointer-events-none` and `opacity-50`. |
+
+Extends all `React.ComponentProps<"button">`. Forwards a `data-slot="button"`, `data-variant`, and `data-size` for downstream composition (e.g. `ButtonGroup`, `InputGroup`).
+
+### `buttonVariants`
+
+Exported CVA factory so other primitives can reuse the button surface without rendering an actual `<button>`. `Calendar` nav arrows and `InputGroupButton` consume it directly.
+
+```tsx
+import { buttonVariants } from "@gremorie/rx-forms";
+
+<a className={buttonVariants({ variant: "outline", size: "sm" })} href="/docs">
+  Read more
+</a>
+```
+
+## Composition
+
+1. **`<Button>`** is the leaf. It owns its visual surface and accessibility (`disabled`, focus ring, `aria-invalid`).
+2. **Icons inside** are auto-sized via CSS (`[&_svg:not([class*='size-'])]:size-4`) and given `pointer-events-none` so the button stays the click target.
+3. **`asChild`** lets you keep the visual treatment while rendering as `<a>`, `<Link>`, `<NavLink>`, or any other host element.
+
+## Variations
+
+### All variants
+
+Showcase every variant for visual reference. `default` for primary actions, `destructive` for irreversible ones, `outline` and `secondary` for de-emphasized siblings, `ghost` for toolbar-style hosts, `link` for inline navigation that should look like prose.
+
+```tsx
+<div className="flex flex-wrap gap-3">
+  <Button>Default</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="link">Link</Button>
+  <Button variant="destructive">Destructive</Button>
+</div>
+```
+
+### Button with leading icon
+
+Drop an icon as a child. CSS auto-sizes it and tightens the horizontal padding via `has-[>svg]:px-3`.
+
+```tsx
+import { Download } from "lucide-react";
+
+<Button>
+  <Download />
+  Download report
+</Button>
+```
+
+### Icon-only button
+
+Use `size="icon"` (or `icon-xs`, `icon-sm`, `icon-lg`) for square buttons. Always pair with an `aria-label` so screen readers announce the action.
+
+```tsx
+import { Trash2 } from "lucide-react";
+
+<Button size="icon" variant="ghost" aria-label="Delete row">
+  <Trash2 />
+</Button>
+```
+
+### `asChild` for navigation
+
+Render the button styles onto a `<Link>` or `<a>` so the element semantics match the destination (`router.push` on click, working middle-click, SEO-friendly href).
+
+```tsx
+import Link from "next/link";
+
+<Button asChild>
+  <Link href="/dashboard">Open dashboard</Link>
+</Button>
+```
+
+## Accessibility
+
+- **Keyboard**: native `<button>` accepts `Enter` and `Space`. `asChild` preserves whatever semantics the host element provides.
+- **Focus**: 3px ring driven by `focus-visible:ring-ring/50`, so it appears only for keyboard navigation, never on click.
+- **Disabled**: `disabled` removes the element from the tab order, drops opacity to 50%, and applies `pointer-events-none` so the button can't be activated by mouse either.
+- **Invalid**: `aria-invalid="true"` switches the focus ring to the destructive token.
+- **Icon-only**: always provide `aria-label`. Without it, screen readers announce the button with no name.
+
+## Related
+
+- [Button Group](/components/forms/button-group) - join several buttons into a single border-shared cluster
+- [Input Group](/components/forms/input-group) - embed `InputGroupButton` inside an input
+- [Toggle](/components/forms/toggle) - two-state button (`aria-pressed`) for stateful actions
+- [Field](/components/forms/form) - composes Button with `FormControl` for submit affordances

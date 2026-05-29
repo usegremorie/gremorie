@@ -1,0 +1,222 @@
+---
+title: Resizable
+description: "Split panes with draggable handles, persistable layouts, and a single-pointer grip."
+---
+
+import { ResizablePreview } from "@/components/preview/containers/containers";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@gremorie/rx-containers";
+
+## Overview
+
+`Resizable` ships three components - `ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle` - built on `react-resizable-panels`. The group is the frame, panels claim flex regions inside it, handles are the drag-and-drop dividers between two panels. Pass `withHandle` to surface a visible grip the user can grab.
+
+Reach for Resizable on **dev tools and pro apps**: code editors, email clients, file managers, dashboards where the layout is itself a workspace control. Consumer-facing surfaces almost always read better with fixed proportions plus responsive breakpoints - a draggable handle is a high-affordance, high-cost element that should pay off in productivity.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ResizablePreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-resizable
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-resizable
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-resizable
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-resizable
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@gremorie/rx-containers";
+
+export function EditorLayout({ sidebar, editor }) {
+  return (
+    <ResizablePanelGroup orientation="horizontal" autoSaveId="editor-layout">
+      <ResizablePanel defaultSize={25} minSize={15}>
+        {sidebar}
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={75}>{editor}</ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The React API maps to a panel group directive plus content projection slots for panels and handles.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ResizablePanelGroup>`
+
+The frame. Sets `flex h-full w-full` and flips to a column layout when `orientation="vertical"`. Wrap two or more panels separated by handles.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Axis the panels lay out along. Horizontal groups need a parent with a defined `width`; vertical groups need a defined `height`. |
+| `autoSaveId` | `string` | - | When set, the group persists its layout to `localStorage` under this key, so the user's resize choice survives reloads. |
+| `id` | `string` | auto | Unique id for the group. Falls back to a generated id. |
+| `onLayout` | `(sizes: number[]) => void` | - | Fired with the current panel sizes (in percent) whenever the user releases a handle. Useful for syncing layout to a server. |
+| `className` | `string` | - | Merged onto the underlying div. |
+| `...props` | `ResizablePrimitive.GroupProps` | - | All `react-resizable-panels` Group props (e.g. `disableCursor`, `style`). |
+
+### `<ResizablePanel>`
+
+A flex region. At least one panel in the group should declare `defaultSize`; the others auto-distribute.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `defaultSize` | `number` | auto | Starting size as a percentage of the group (0-100). Must add up to 100 across all panels. |
+| `minSize` | `number` | `0` | Lower bound while resizing. Useful to keep a sidebar above its collapse threshold. |
+| `maxSize` | `number` | `100` | Upper bound while resizing. |
+| `collapsible` | `boolean` | `false` | When `true`, the panel can drop below `minSize` to collapsed state. |
+| `collapsedSize` | `number` | `0` | Size to snap to when collapsed. |
+| `onCollapse` | `() => void` | - | Fires when the panel collapses. |
+| `onExpand` | `() => void` | - | Fires when the panel re-expands. |
+| `order` | `number` | DOM order | Reorders panels independently of source order, useful for persisted layouts. |
+| `id` | `string` | auto | Unique id within the group. Required when using `order`. |
+| `...props` | `ResizablePrimitive.PanelProps` | - | All `react-resizable-panels` Panel props. |
+
+### `<ResizableHandle>`
+
+The divider between two panels. By default, renders a thin bar with the right aria attributes and focus styling; pass `withHandle` to add a visible vertical grip.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `withHandle` | `boolean` | `false` | When `true`, mounts a centered grip badge with a `GripVertical` icon. The badge rotates 90 degrees for horizontal handles inside a vertical group. |
+| `disabled` | `boolean` | `false` | Disables resize. The divider stays visible but does not respond to drag or keyboard input. |
+| `className` | `string` | - | Merged onto the divider. |
+| `...props` | `ResizablePrimitive.SeparatorProps` | - | All `react-resizable-panels` Separator props. |
+
+## Composition
+
+1. **`<ResizablePanelGroup>`** is the frame. Pick `orientation` first because it sets the axis the panels and handles align on.
+2. **Each `<ResizablePanel>`** declares its `defaultSize`, optional `minSize` / `maxSize`, and any collapse behaviour.
+3. **Between every pair of panels**, drop a `<ResizableHandle>`. There is no implicit handle - the count of handles is always panels minus one.
+4. **Persist** the layout by setting `autoSaveId` on the group (or wire it up manually with `onLayout`).
+5. **Nest** groups for grid-like layouts: a horizontal group whose right panel is itself a vertical group lets the user resize an editor plus a stacked terminal at the bottom.
+
+The dividers are keyboard-operable separators with `aria-orientation` set automatically, so screen reader users discover them as resize affordances out of the box.
+
+## Variations
+
+### Two-pane editor
+
+<div className="rounded-lg border p-6 not-prose">
+  <ResizablePanelGroup
+    orientation="horizontal"
+    className="min-h-[180px] max-w-md rounded-lg border"
+  >
+    <ResizablePanel defaultSize={30}>
+      <div className="flex h-full items-center justify-center p-4 text-sm">Files</div>
+    </ResizablePanel>
+    <ResizableHandle withHandle />
+    <ResizablePanel defaultSize={70}>
+      <div className="flex h-full items-center justify-center p-4 text-sm">Editor</div>
+    </ResizablePanel>
+  </ResizablePanelGroup>
+</div>
+
+```tsx
+<ResizablePanelGroup orientation="horizontal" autoSaveId="files-editor">
+  <ResizablePanel defaultSize={30} minSize={15}>
+    <FileTree />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={70}>
+    <Editor />
+  </ResizablePanel>
+</ResizablePanelGroup>
+```
+
+The classic IDE shape. `minSize={15}` keeps the file tree from disappearing accidentally; `autoSaveId` makes the split survive reloads.
+
+### Vertical split with bottom panel
+
+```tsx
+<ResizablePanelGroup orientation="vertical" className="h-screen">
+  <ResizablePanel defaultSize={70}>
+    <Editor />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={30} minSize={10}>
+    <Terminal />
+  </ResizablePanel>
+</ResizablePanelGroup>
+```
+
+For terminal-on-bottom or log drawers. The handle rotates automatically because the group orientation flips to vertical.
+
+### Three panes with a collapsible sidebar
+
+```tsx
+<ResizablePanelGroup orientation="horizontal" autoSaveId="three-pane">
+  <ResizablePanel
+    defaultSize={20}
+    minSize={10}
+    collapsible
+    collapsedSize={4}
+    onCollapse={() => setNavCollapsed(true)}
+    onExpand={() => setNavCollapsed(false)}
+  >
+    <Sidebar />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={50}>
+    <List />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={30}>
+    <Detail />
+  </ResizablePanel>
+</ResizablePanelGroup>
+```
+
+Mail-client layout: collapsible sidebar plus a list plus a detail pane. The two handles add up to three panels.
+
+## Accessibility
+
+- **Keyboard resize**: handles are focusable with `Tab` and resize with `ArrowLeft` / `ArrowRight` (horizontal groups) or `ArrowUp` / `ArrowDown` (vertical groups). `Home` and `End` jump to the min / max bounds. Provided by `react-resizable-panels`.
+- **Aria semantics**: handles render as `role="separator"` with `aria-orientation` matching the group, so screen readers announce them as resize controls. Pass `aria-label` (e.g. `"Resize file tree"`) for an explicit announcement.
+- **Visible focus**: handles use `focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1` so keyboard focus is unmistakable, even when the divider itself is a single pixel wide.
+- **Target size**: the underlying handle is augmented with an `::after` zone that expands the hit area to a comfortable 4 px on the dragging axis, satisfying WCAG 2.2 SC 2.5.8 once the visible grip is mounted.
+- **Single-pointer alternative**: WCAG 2.2 SC 2.5.7 - keyboard arrows fulfill this for sighted-keyboard users; for collapse / expand, expose explicit buttons in the surrounding chrome rather than relying on drag.
+
+## Related
+
+- [ScrollArea](/components/containers/scroll-area) - reach for ScrollArea when the user only needs to scroll inside a fixed region.
+- [Stack](/components/containers/stack) - vertical layout when the children do not need to be user-resizable.
+- [Sidebar](/components/navigation/sidebar) - opinionated sidebar that already handles collapse semantics for app shells.

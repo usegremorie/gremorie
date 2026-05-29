@@ -1,0 +1,142 @@
+---
+title: Navigation patterns
+description: "Tabs, accordion, sidebar, breadcrumb. Each solves a different navigation problem; pick by context, not by visual preference."
+related: rx-tabs, rx-accordion, rx-sidebar, rx-breadcrumb, rx-navigation-menu
+tags: [patterns, navigation, information-architecture]
+---
+
+## TL;DR
+
+**Tabs** for switching between peer views of the same object (3-7 options, visible at once). **Accordion** for hiding content that is occasionally needed (FAQs, advanced settings). **Sidebar** for primary navigation across the app. **Breadcrumb** for showing where the user is in a hierarchy. Each has a different job; do not swap them for aesthetic reasons.
+
+## The rule
+
+### Tabs
+
+Use tabs when the user is switching between **alternative views of the same object**: a profile page with "About / Activity / Settings" tabs, a dashboard with "Daily / Weekly / Monthly" tabs.
+
+- **3-7 tabs.** Fewer than 3 is overkill; more than 7 is a navigation menu in disguise.
+- **All tabs visible at once.** If they overflow on mobile, switch to horizontal scroll or a select, not a hamburger.
+- **Persist tab in URL.** A refresh restores the same tab. Sharing a link lands on the same tab.
+- **One tab is always active.** Never zero-state a tab group; the default tab is the most-used one.
+- **Tabs are peers, not steps.** If the user must complete tab 1 before tab 2, that is a wizard, not tabs.
+
+### Accordion
+
+Use accordion when content is **occasionally needed and can be hidden by default**: FAQs, advanced settings, sections of a long form.
+
+- **Each section has a clear label** that lets the user predict the content. No "More details" or "Learn more".
+- **One section open at a time** is the safe default. Allow multiple-open only when the user benefits from comparing across sections.
+- **Do not nest accordions.** Two levels deep becomes a maze.
+- **Do not put primary content in an accordion.** If the user always needs to see it, do not hide it.
+
+### Sidebar
+
+Use sidebar for **primary app navigation** across major sections: Dashboard, Members, Settings, Billing.
+
+- **Collapsible on small viewports.** A fixed sidebar steals horizontal space on mobile; collapse to a hamburger or a bottom nav.
+- **One level deep is ideal; two levels is the limit.** A nested sidebar with 4 levels is a navigation tree the user cannot keep in their head.
+- **Active item is visibly marked.** Highlight + `aria-current="page"`.
+- **Reserve the bottom of the sidebar** for account / user controls (avatar, settings, log out).
+
+### Breadcrumb
+
+Use breadcrumb when the user is **in a hierarchy and benefits from knowing where**: documents inside folders, products inside categories, pages inside a docs site.
+
+- **Show every level above the current one.** Skipping levels makes the breadcrumb a navigation menu, not a location indicator.
+- **Last item is the current page, not a link.** It indicates location.
+- **Truncate the middle when too long.** `Home / ... / Folder / Subfolder / Current`.
+- **Do not use as primary navigation.** It is a location indicator, not a way to move forward.
+
+## Why
+
+These four patterns map to different navigation problems:
+
+| Problem | Pattern |
+|---------|---------|
+| Switch between views of the same object | Tabs |
+| Hide content that is occasionally needed | Accordion |
+| Move between major sections of the app | Sidebar |
+| Show position in a hierarchy | Breadcrumb |
+
+When designers swap them - tabs used as a wizard, accordion hiding primary content, sidebar with breadcrumb-like behavior - users get lost because the visual pattern no longer matches their mental model of "where am I and where can I go".
+
+Tabs work as alternative views because all options are visible (Nielsen #6: recognition over recall). Accordion is acceptable for secondary content because the user does not need to see it most of the time. Sidebar makes major sections one click away. Breadcrumb answers "how did I get here?" and "what is above this?".
+
+## How to apply
+
+### Do: tabs for peer views
+
+```tsx
+<Tabs defaultValue="about">
+  <TabsList>
+    <TabsTrigger value="about">About</TabsTrigger>
+    <TabsTrigger value="activity">Activity</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="about">{/* ... */}</TabsContent>
+  <TabsContent value="activity">{/* ... */}</TabsContent>
+  <TabsContent value="settings">{/* ... */}</TabsContent>
+</Tabs>
+```
+
+Three peer views of the same user profile. Always one active.
+
+### Do: accordion for advanced settings
+
+```tsx
+<Accordion type="single" collapsible>
+  <AccordionItem value="advanced">
+    <AccordionTrigger>Advanced settings</AccordionTrigger>
+    <AccordionContent>
+      {/* Rarely-changed options */}
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+The advanced settings are hidden by default; visible when needed.
+
+### Don't: tabs as a wizard
+
+```tsx
+<Tabs>
+  <TabsList>
+    <TabsTrigger value="step1">1. Basic info</TabsTrigger>
+    <TabsTrigger value="step2">2. Address</TabsTrigger>
+    <TabsTrigger value="step3">3. Confirm</TabsTrigger>
+  </TabsList>
+</Tabs>
+```
+
+If the user must complete step 1 before step 2, this is a stepper. Tabs suggest free navigation; the user expects to jump around.
+
+### Don't: accordion hiding primary content
+
+If the user needs the content on every visit, an accordion adds a click for nothing. Show it.
+
+### Don't: deep sidebar trees
+
+```
+Settings
+  Account
+    Profile
+      Personal info
+        Name
+```
+
+Four levels deep is unnavigable. Restructure: flatten into a sidebar of 5-7 top-level items, each leading to a settings page with its own tabs or sections.
+
+## Counter-cases
+
+- **Tabs with 2 options** are sometimes the right call (a Code / Preview toggle). Two-tab "Tabs" is fine when both options are equally weighted.
+- **Mobile** often collapses sidebar to bottom navigation (3-5 items) and uses tabs less because of horizontal space. Adapt to the viewport.
+- **Wizard with progress indicator** sometimes looks like tabs but is not: the difference is whether the user can jump forward. Wizards do not let you skip step 2.
+- **Tree views** (file explorers) are a sidebar variant for hierarchical content. Acceptable when the hierarchy is genuine and the user benefits from seeing depth.
+
+## Sources
+
+- Nielsen Norman Group: "Tabs Used Right" (https://www.nngroup.com/articles/tabs-used-right/)
+- Nielsen Norman Group: "Accordions on Desktop" (https://www.nngroup.com/articles/accordions-on-desktop/)
+- Nielsen Norman Group: "Breadcrumbs: 11 Design Guidelines for Desktop and Mobile" (https://www.nngroup.com/articles/breadcrumbs/)
+- Cooper, "About Face" (2014): on navigation models.

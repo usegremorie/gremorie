@@ -75,6 +75,36 @@
         "staticFilePath": "dist/packages/playground/browser",
         "spa": true
       }
+    },
+    "build-storybook-target": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/packages/playground-storybook-target",
+        "index": "packages/playground/src/index.html",
+        "main": "packages/playground/src/main.ts",
+        "tsConfig": "packages/playground/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "packages/playground/public"
+          }
+        ],
+        "styles": ["packages/playground/src/styles.css"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "development"
     }
   }
 }

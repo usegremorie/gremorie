@@ -1,0 +1,195 @@
+---
+title: AspectRatio
+description: Reserva proporção para imagens, embeds e placeholders — antídoto para CLS.
+component: AspectRatio
+importPath: "@kalvner/kds/containers/aspect-ratio"
+status: stable
+---
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@kalvner/kds/display/card";
+import {
+  AspectRatio16x9,
+  AspectRatio1x1,
+  AspectRatio3x4,
+  AspectRatio4x3,
+  AspectRatioHero,
+  AspectRatioSkeleton
+} from "@/components/navigation-demos";
+
+## Overview
+
+`AspectRatio` reserva uma proporção fixa em pixels antes do
+conteúdo carregar. É o antídoto contra **Cumulative Layout Shift**
+(CLS) em imagens responsivas, embeds (YouTube/Vimeo), e
+placeholders de skeleton — quando o asset chega, ele entra no
+espaço já reservado, sem empurrar o restante da página.
+
+A escolha do ratio é semântica:
+
+| Ratio | Uso típico |
+|---|---|
+| `16/9` | Hero de blog, embed de vídeo, OG image. |
+| `4/3` | Foto clássica, screenshot mais alto. |
+| `1/1` | Avatar grande, OG quadrado, NFT-style cards. |
+| `3/4` | Pôster de filme, vertical photography. |
+
+Veja [[ui/layout/cumulative-layout-shift]] para a fundamentação
+do CLS e como AspectRatio fecha esse buraco.
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preview</CardTitle>
+    <CardDescription>Hero 16/9 — proporção reservada antes do conteúdo.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <AspectRatio16x9 />
+  </CardContent>
+</Card>
+
+## Anatomy
+
+```
+<AspectRatio ratio={16 / 9}>
+  <img src="..." className="h-full w-full object-cover" />
+</AspectRatio>
+```
+
+A criança ocupa 100% do container — use `object-cover` em
+imagens para preservar a proporção sem distorcer.
+
+## Subcomponents
+
+| Componente | Descrição |
+|---|---|
+| `AspectRatio` | Wrapper único. Prop `ratio` (number, ex.: `16 / 9`). |
+
+## Usage
+
+```tsx
+import { AspectRatio } from "@kalvner/kds/containers/aspect-ratio";
+import Image from "next/image";
+
+export function PostHero() {
+  return (
+    <AspectRatio ratio={16 / 9}>
+      <Image
+        src="/hero.jpg"
+        alt="Capa do post"
+        fill
+        className="rounded-md object-cover"
+      />
+    </AspectRatio>
+  );
+}
+```
+
+## Variants
+
+<div className="grid gap-4 md:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>4 / 3</CardTitle>
+      <CardDescription>Clássico fotográfico.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <AspectRatio4x3 />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>1 / 1</CardTitle>
+      <CardDescription>Avatar grande, OG image.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <AspectRatio1x1 />
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>3 / 4</CardTitle>
+      <CardDescription>Pôster, vertical photo.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <AspectRatio3x4 />
+    </CardContent>
+  </Card>
+</div>
+
+## States
+
+<Card>
+  <CardHeader>
+    <CardTitle>Skeleton placeholder</CardTitle>
+    <CardDescription>Espaço reservado durante o carregamento.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <AspectRatioSkeleton />
+  </CardContent>
+</Card>
+
+## Composition
+
+<Card>
+  <CardHeader>
+    <CardTitle>Blog hero</CardTitle>
+    <CardDescription>Hero 16/9 acima da headline e do meta.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <AspectRatioHero />
+  </CardContent>
+</Card>
+
+## When to use
+
+- **Imagens responsivas** com largura variável e altura derivada
+  (heroes, thumbnails, OG previews).
+- **Embeds de iframe** — YouTube, Vimeo, Loom, Stripe checkout.
+- **Skeleton placeholders** para espaços que vão receber mídia.
+- Em qualquer card com média que carregam tarde (lazy / on-scroll).
+
+## When not to use
+
+- Quando o elemento **já tem dimensões fixas em pixels** (`w-32 h-32`).
+- Para layouts onde a altura é determinada pelo conteúdo textual
+  (Stack, Grid).
+- Em SVGs inline com `viewBox` — eles já são intrinsecamente
+  proporcionais.
+- Para charts com altura fixa (ex.: `h-64`) — Charts já reservam
+  espaço.
+
+## Best practices
+
+- **`object-cover` ou `object-contain`.** Sem isso, imagens
+  esticam para preencher e distorcem.
+- **`fill` no Next Image.** Combine `<AspectRatio ratio={...}>` com
+  `<Image fill ...>` para Next/Image responsivo.
+- **`sizes` no Next Image.** Quando usar `fill`, sempre forneça
+  `sizes` ("100vw" ou breakpoint-based) para o browser pré-carregar
+  a versão certa.
+- **Skeleton + AspectRatio.** Para carregamento de mídia, mostre
+  um Skeleton no slot — não deixe vazio. Vazio pisca ao virar
+  imagem.
+- **Aprovado para iframes.** YouTube embeds funcionam dentro de
+  AspectRatio sem o hack do `padding-top: 56.25%`.
+
+## Accessibility
+
+| Concern | Comportamento |
+|---|---|
+| **Semântica** | É um `<div>` puro; herda semântica do conteúdo (img, iframe, video). |
+| **Alt text** | Sempre forneça `alt` na imagem ou `title`+`aria-label` no iframe. AspectRatio não substitui isso. |
+| **Reduced motion** | Embeds com auto-play devem respeitar `prefers-reduced-motion` no nível do player. |
+
+## Related
+
+- [[ui/layout/cumulative-layout-shift]] — fundamentação do CLS.
+- [`ScrollArea`](./scroll-area) — quando o conteúdo extrapola e
+  precisa scrollar.
+- [`Card`](../display/card) — frequente container ao redor de
+  hero + texto.

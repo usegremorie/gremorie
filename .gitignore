@@ -8,6 +8,7 @@ dist/
 build/
 out/
 .next/
+.source/
 .angular/
 .nx/cache
 .nx/workspace-data
@@ -58,3 +59,8 @@ storybook-static/
 test-output
 
 __screenshots__/
+
+# Local tool artifacts (Claude Code, Playwright MCP)
+.claude/
+.playwright-mcp/
+.nog-screenshots/

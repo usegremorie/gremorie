@@ -1,0 +1,206 @@
+---
+title: Area Chart
+description: "Cumulative quantity over an ordered domain, filled under the curve and color-tokened by series."
+---
+
+import { AreaChartPreview, AreaChartSinglePreview } from "@/components/preview/data/charts";
+
+## Overview
+
+`AreaChart` is the styled wrapper of the headless charting engine for **filled-area over an ordered category**. Pass tabular `data`, a serializable `config` that maps each value field to a `label` plus a `color`, and the `xKey` that names the category field. The chart wires up scales, the cartesian grid, axis ticks, and per-series filled paths automatically, and ships an `sr-only` HTML table that mirrors the data for assistive tech.
+
+Reach for AreaChart when the **magnitude** of a series matters as much as its trend - traffic by month, revenue by week, error count by day. For pure shape comparison without magnitude emphasis, prefer [`LineChart`](/components/data/line-chart); for discrete category-vs-category comparisons, prefer [`BarChart`](/components/data/bar-chart).
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <AreaChartPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-area-chart
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-area-chart
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-area-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-area-chart
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { AreaChart } from "@gremorie/rx-data";
+import type { ChartConfig, Datum } from "@gremorie/rx-data";
+
+const data: Datum[] = [
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+  { month: "Apr", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "Jun", desktop: 214, mobile: 140 },
+];
+
+const config: ChartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+export function MonthlyVisitors() {
+  return <AreaChart data={data} config={config} xKey="month" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<AreaChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>`, a cartesian grid, X and Y axes, one filled `<Area>` per series in `config`, and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. Each row is a record from string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value. |
+| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. |
+| `xKey` | `string` | - | Name of the category field on each `Datum`. Drives the X axis ticks. |
+| `className` | `string` | - | Merged onto the outer figure. Use for sizing escape hatches; the bundled style already supplies a rounded card surface plus aspect ratio. |
+
+### Headless primitives exposed
+
+The `@gremorie/rx-data` package also exports the headless primitives the wrapper composes, so you can drop them into a custom `<ChartFrame>` for non-default layouts.
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides scales and shared Y domain via `ChartProvider`. |
+| `CartesianGrid` | Render-prop primitive yielding the set of horizontal grid lines for the current Y ticks. |
+| `XAxis` / `YAxis` | Render-prop primitives yielding the tick positions and labels for each axis. |
+| `Area` | Per-series filled `<path>`. Self-registers with the frame so the shared Y domain includes its values. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| `ChartConfig` | `Record<string, { label: string; color: string; format?: string }>` - JSON-serializable series map. |
+
+## Composition
+
+1. **Pick `xKey`** first - the category that runs along the bottom (months, weeks, version numbers).
+2. **Author `config`** mapping each value field to a label and a token-driven color. The `--chart-1` through `--chart-5` tokens already encode legible contrast across light and dark themes.
+3. **Pass `data`** as an array of records. Stale rows are fine; the headless engine recomputes scales on every render.
+4. **For custom layouts** (different grid density, log Y axis, a custom legend), drop down to `<ChartFrame>` plus `<Area>` and supply your own children.
+
+The chart auto-sizes to its parent via `ResizeObserver`, so the wrapping surface controls the width. The default class on the figure pins the chart to `aspect-video` for a stable card shape.
+
+## Variations
+
+### Single series
+
+<div className="rounded-lg border p-6 not-prose">
+  <AreaChartSinglePreview />
+</div>
+
+```tsx
+<AreaChart
+  data={data}
+  config={{ visits: { label: "Visits", color: "var(--chart-1)" } }}
+  xKey="month"
+/>
+```
+
+The default shape. Reach for a single area when one metric is the headline.
+
+### Multi-series
+
+<div className="rounded-lg border p-6 not-prose">
+  <AreaChartPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+<AreaChart data={data} config={config} xKey="month" />
+```
+
+For side-by-side comparison. Areas overlap with `fillOpacity` at 0.2 so the lower series stays visible behind the higher one. Limit to three series before reaching for [`LineChart`](/components/data/line-chart) instead.
+
+### Headless customization
+
+```tsx
+import {
+  ChartFrame,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Area,
+} from "@gremorie/rx-data";
+
+export function CustomArea({ data, config, xKey }) {
+  return (
+    <figure role="img" aria-label="Custom area chart">
+      <ChartFrame
+        data={data}
+        xKey={xKey}
+        className="aspect-[2/1] w-full text-muted-foreground"
+      >
+        <CartesianGrid>{(lines) => /* custom grid */ null}</CartesianGrid>
+        {Object.entries(config).map(([key, entry]) => (
+          <Area
+            key={key}
+            dataKey={key}
+            color={entry.color}
+            fillOpacity={0.35}
+            stroke={entry.color}
+            strokeWidth={1.5}
+          />
+        ))}
+        <XAxis>{({ ticks, labelY }) => /* custom ticks */ null}</XAxis>
+        <YAxis>{({ ticks, labelX }) => /* custom ticks */ null}</YAxis>
+      </ChartFrame>
+    </figure>
+  );
+}
+```
+
+Drop down to headless when the surface needs a different aspect, a log scale, or a custom legend. Each primitive accepts a render prop that hands you the projected positions so the heavy math stays inside the engine.
+
+## Accessibility
+
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` summarizing the series and category (`"Area chart of Desktop, Mobile by month"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` carrying the same rows, columns, and labels. Screen readers can navigate the data with native table commands without the SVG getting in the way.
+- **Token contrast**: the `--chart-1` through `--chart-5` tokens are tuned for WCAG AA contrast against the card background in both light and dark themes.
+- **Static rendering**: AreaChart renders no animation by default, so users with `prefers-reduced-motion: reduce` are not penalized.
+- **No streaming UI**: charts do not implement a streaming append affordance. For live data, render the chart inside a `useDeferredValue` boundary or throttle parent updates to a sustainable frame budget.
+
+## Related
+
+- [LineChart](/components/data/line-chart) - same axes, no fill, when shape matters more than magnitude.
+- [BarChart](/components/data/bar-chart) - discrete categories instead of an ordered domain.
+- [ScatterChart](/components/data/scatter-chart) - independent X plus Y when the X axis is itself numeric.

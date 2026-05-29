@@ -1,0 +1,40 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "block-sign-in",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Sign-in block",
+  "description": "Authentication card with a GitHub provider above an email/password field group. Composes Card, Button, Separator, Label, and Input.",
+  "categories": [
+    "blocks",
+    "auth"
+  ],
+  "dependencies": [
+    "react",
+    "lucide-react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-button",
+    "rx-card",
+    "rx-input",
+    "rx-label",
+    "rx-separator"
+  ],
+  "files": [
+    {
+      "path": "sign-in.tsx",
+      "content": "\"use client\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n  Separator,\n} from \"@gremorie/rx-display\";\nimport { Button, Input, Label } from \"@gremorie/rx-forms\";\nimport { Github } from \"lucide-react\";\n\n/**\n * Sign-in block: authentication card composing Card + Label + Input +\n * Button + Separator with a GitHub provider above the email/password\n * field group.\n */\nexport function SignIn() {\n  return (\n    <Card className=\"w-full max-w-sm\">\n      <CardHeader>\n        <CardTitle>Welcome back</CardTitle>\n        <CardDescription>Sign in to your Gremorie account</CardDescription>\n      </CardHeader>\n      <CardContent className=\"flex flex-col gap-4\">\n        <Button variant=\"outline\" className=\"w-full\">\n          <Github aria-hidden=\"true\" />\n          Continue with GitHub\n        </Button>\n        <div className=\"relative flex items-center\">\n          <Separator className=\"flex-1\" />\n          <span className=\"mx-3 text-xs uppercase tracking-wider text-muted-foreground\">\n            or\n          </span>\n          <Separator className=\"flex-1\" />\n        </div>\n        <div className=\"flex flex-col gap-2\">\n          <Label htmlFor=\"signin-email\">Email</Label>\n          <Input\n            id=\"signin-email\"\n            type=\"email\"\n            placeholder=\"you@example.com\"\n            autoComplete=\"email\"\n          />\n        </div>\n        <div className=\"flex flex-col gap-2\">\n          <div className=\"flex items-center justify-between\">\n            <Label htmlFor=\"signin-password\">Password</Label>\n            <a\n              href=\"#\"\n              className=\"text-xs text-muted-foreground underline-offset-4 hover:underline\"\n            >\n              Forgot password?\n            </a>\n          </div>\n          <Input\n            id=\"signin-password\"\n            type=\"password\"\n            autoComplete=\"current-password\"\n          />\n        </div>\n      </CardContent>\n      <CardFooter className=\"flex flex-col gap-3\">\n        <Button className=\"w-full\">Sign in</Button>\n        <p className=\"text-center text-xs text-muted-foreground\">\n          Don&apos;t have an account?{\" \"}\n          <a\n            href=\"#\"\n            className=\"text-foreground underline-offset-4 hover:underline\"\n          >\n            Create one\n          </a>\n        </p>\n      </CardFooter>\n    </Card>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/blocks/sign-in/sign-in.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use block-sign-in.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

@@ -1,0 +1,45 @@
+---
+title: About Gremorie
+description: What Gremorie is, why it exists, and what it ships.
+---
+
+**Gremorie** is an AI-native design system. The thesis: a design system is
+most valuable when it is a **shared memory** — legible to humans, AI agents,
+and tooling alike.
+
+## What ships
+
+- **Angular edition** (`@gremorie/ng-*`) — built on Spartan-NG primitives,
+  delivered as installable source via the `gremorie add` CLI rather than a
+  pre-built npm package.
+- **Registry + MCP server** — the distribution channel and the AI interface.
+  Components, blocks, tokens, and guidelines are exposed as registry items
+  that an MCP server reads, so language models can generate code that
+  matches the system instead of hallucinating.
+- **React edition** (`@gremorie/react-*`) — coming in Phase 5. Will be
+  generated into the same registry the Angular edition uses.
+- **Documentation site** — this Fumadocs app. Public reference for tokens,
+  primitives, patterns, and the guidelines an MCP exposes.
+
+## Why "Gremorie"
+
+A grimoire is a reference book of formulas. A design system is the same: a
+reference for the formulas that make a product feel coherent. Spelling the
+name with an `e` gives the engine a memorable handle that maps cleanly onto
+the org (`usegremorie`) and the future domain (`gremorie.com`).
+
+## Repos and history
+
+- `usegremorie/gremorie` — this monorepo (transferred from `kalvner/shadng`
+  during Phase 0; rebranded `shadng` → `gremorie` in Phase 1).
+- `kalvner/bridge` — the legacy Kalvner Design System (React + KDS). The
+  Fumadocs site, token-engine, and tokens editor were migrated here during
+  Phase 2; the React component package (`@kalvner/kds`) stays in Bridge
+  until Phase 5 re-authors it as `@gremorie/react-*`.
+
+## Reading order
+
+1. **Foundations** — principles, architecture, accessibility, contribution rules.
+2. **Tokens** — the three-layer token system (primitive, semantic, chart).
+3. **Migration plan** — see `missions/kal/gremorie/architecture/` in the
+   Kalvnor vault for the full Phase 0-5 roadmap.

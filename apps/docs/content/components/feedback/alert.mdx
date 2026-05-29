@@ -1,0 +1,196 @@
+---
+title: Alert
+description: "Persistent in-flow message anchored to page content with an icon, title, and description."
+---
+
+import { AlertPreview } from "@/components/preview/feedback/feedback";
+import { Alert, AlertTitle, AlertDescription } from "@gremorie/rx-feedback";
+import { Info, AlertTriangle, CheckCircle2 } from "lucide-react";
+
+## Overview
+
+`Alert` is the **in-flow feedback primitive**: a persistent message anchored inside page flow, distinct from `Toast` (transient, floating) and a page-spanning banner. Use it to surface information that the user needs to read in context before acting on the surrounding UI - a form-wide error summary, a tip about a configuration, a confirmation that an async write has just completed.
+
+The Alert API stays deliberately small. Variants ship as `default` and `destructive` only - convey intent (info, success, warning, danger) through a leading icon from `lucide-react` rather than introducing more variants. This keeps the visual surface consistent and the API minimal.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <AlertPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
+```bash
+npx gremorie@latest add rx-alert
+```
+</Tab>
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-alert
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-alert
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-alert
+```
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Alert, AlertTitle, AlertDescription } from "@gremorie/rx-feedback";
+import { Info } from "lucide-react";
+
+export function RegistryNotice() {
+  return (
+    <Alert>
+      <Info className="size-4" />
+      <AlertTitle>Heads up</AlertTitle>
+      <AlertDescription>
+        The registry rebuilds on every commit to the main branch.
+      </AlertDescription>
+    </Alert>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The variant API will map directly to a structural directive plus content projection slots for the icon, title, and description.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Alert>`
+
+The root. Renders a `<div role="alert">` styled as a two-column grid: an optional 16 px icon slot on the left and a stack of title plus description on the right. The icon column collapses when no `<svg>` child is present.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "destructive"` | `"default"` | Visual intent. `default` uses card surface tokens; `destructive` uses the destructive text color and tints the description. |
+| `className` | `string` | - | Extra classes merged after the variant classes. Use for spacing escape hatches, not for changing the surface treatment. |
+| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes. The `role="alert"` is set automatically; do not override it. |
+
+### `<AlertTitle>`
+
+Renders a `<div>` for the headline. Sits in the second column of the grid, line-clamped to one line by default so a long title cannot push the icon out of alignment.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Extra classes merged after the title classes. |
+| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes. |
+
+### `<AlertDescription>`
+
+Renders a `<div>` for the body. Inherits muted foreground on the default variant, switches to a tinted destructive color on the destructive variant via the `data-slot` selector.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Extra classes merged after the description classes. |
+| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes including nested `<p>` (which receives a relaxed leading by default). |
+
+## Composition
+
+1. **`<Alert>`** is the root grid. Pick the variant first - destructive only when an action failed or a safety boundary is being crossed.
+2. **An icon** (any `lucide-react` glyph at `className="size-4"`) is the first child. The grid auto-detects the SVG and reserves the icon column.
+3. **`<AlertTitle>`** is the headline. Keep it short (one line); the line-clamp prevents accidental wraps.
+4. **`<AlertDescription>`** is the body. One sentence is ideal; two paragraphs is the upper limit before the message belongs in a Dialog instead.
+
+The grid auto-collapses to a single column when no icon is provided, so a stripped-down alert (title plus description only) still renders cleanly.
+
+## Variations
+
+### Informational
+
+<div className="rounded-lg border p-6 not-prose">
+  <Alert>
+    <Info className="size-4" />
+    <AlertTitle>Heads up</AlertTitle>
+    <AlertDescription>
+      The registry rebuilds on every commit to the main branch.
+    </AlertDescription>
+  </Alert>
+</div>
+
+```tsx
+<Alert>
+  <Info className="size-4" />
+  <AlertTitle>Heads up</AlertTitle>
+  <AlertDescription>
+    The registry rebuilds on every commit to the main branch.
+  </AlertDescription>
+</Alert>
+```
+
+The default intent. Use for context-setting messages that do not need to interrupt the user.
+
+### Destructive
+
+<div className="rounded-lg border p-6 not-prose">
+  <Alert variant="destructive">
+    <AlertTriangle className="size-4" />
+    <AlertTitle>Something went wrong</AlertTitle>
+    <AlertDescription>
+      Could not reach the upstream registry. Retry shortly.
+    </AlertDescription>
+  </Alert>
+</div>
+
+```tsx
+<Alert variant="destructive">
+  <AlertTriangle className="size-4" />
+  <AlertTitle>Something went wrong</AlertTitle>
+  <AlertDescription>
+    Could not reach the upstream registry. Retry shortly.
+  </AlertDescription>
+</Alert>
+```
+
+Use for failed writes, broken integrations, and safety boundaries. The tinted description keeps the body readable while still signalling severity.
+
+### Success via icon
+
+<div className="rounded-lg border p-6 not-prose">
+  <Alert>
+    <CheckCircle2 className="size-4" />
+    <AlertTitle>Success</AlertTitle>
+    <AlertDescription>Primitive added to your project.</AlertDescription>
+  </Alert>
+</div>
+
+```tsx
+<Alert>
+  <CheckCircle2 className="size-4" />
+  <AlertTitle>Success</AlertTitle>
+  <AlertDescription>Primitive added to your project.</AlertDescription>
+</Alert>
+```
+
+Success messages do not need a dedicated variant - the `CheckCircle2` icon plus the default surface carry the intent. The same pattern applies to warnings: lean on `AlertTriangle` plus the default variant rather than a yellow surface.
+
+## Accessibility
+
+- **Role and announcement**: the root carries `role="alert"`, so assistive tech announces the message as it appears in the DOM. Mount alerts conditionally on the event that produced them, not eagerly at page load.
+- **Title and description coupling**: title and description live in the same grid cell so they announce as one chunk; no need to wire `aria-describedby` by hand.
+- **Icons are decorative**: the leading icon carries no semantic load. The intent is conveyed by the variant and the title - the icon merely reinforces it for sighted users. Leaf it as plain SVG (no `aria-label`).
+- **Color is never the only channel**: destructive intent ships with a dedicated title surface plus a recognizable icon, satisfying WCAG 1.4.1 Use of Color.
+- **No motion injected**: the primitive has no enter or exit animation. Pair with a motion wrapper if you want a fade or slide on mount.
+
+## Related
+
+- [Toast](/components/overlays/sonner) - reach for Toast for transient, floating confirmations that do not need to persist in flow.
+- [Dialog](/components/overlays/dialog) - reach for Dialog when the user must respond before proceeding.
+- [Skeleton](/components/feedback/skeleton) - sibling feedback primitive for loading states.

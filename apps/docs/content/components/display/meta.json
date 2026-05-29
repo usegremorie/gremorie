@@ -1,0 +1,15 @@
+{
+  "title": "Display",
+  "description": "Display primitives - Accordion, Avatar, Badge, Card, Carousel, Collapsible, Separator, Table",
+  "icon": "LayoutGrid",
+  "pages": [
+    "accordion",
+    "avatar",
+    "badge",
+    "card",
+    "carousel",
+    "collapsible",
+    "separator",
+    "table"
+  ]
+}
