@@ -1,64 +1,51 @@
 ---
 title: Command
-description: Keyboard-first command palette - built on cmdk.
+description: "Keyboard-first command palette built on cmdk. Inline picker for Combobox patterns or floating Cmd+K dialog for global navigation."
 ---
 
 import { CommandPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`Command` is the right primitive for keyboard-first pickers and command palettes: inline searchable selects (Combobox), action launchers, file or doc finders. Use `Command` directly when the palette lives in place (typically inside a `Popover` for the Combobox pattern); use `CommandDialog` for the canonical floating Cmd+K palette pattern used by GitHub, Linear, Vercel, and Notion.
+
+Always include a keyboard hint in the input placeholder ("Type a command or search..."), close on `Escape`, focus the input on open, and group items by intent (Navigation, Actions, Recent).
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <CommandPreview />
 </div>
 
+## Installation
 
-`Command` is the keyboard-first command palette primitive. Built on
-`cmdk` (the [pacocoursey/cmdk](https://github.com/pacocoursey/cmdk)
-library). Use it for inline pickers (e.g. inside a Popover for the
-Combobox pattern); the canonical `Cmd+K` floating palette pattern
-(GitHub, Linear, Vercel, Notion) lands once `rx-overlays` ships a Dialog
-primitive to host it.
-
-Always include a keyboard hint in the input placeholder (`"Type a
-command or search..."`), close on `Escape`, focus the input on open.
-Group items by intent (Navigation, Actions, Recent). Don't overload the
-palette with unrelated entries - its value is fast keyboard targeting,
-not discoverability.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Command lands in a follow-up rev.
+npx gremorie@latest add rx-command
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-command
+pnpm dlx gremorie@latest add rx-command
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-command
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-command
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   Command,
@@ -68,66 +55,229 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@gremorie/rx-overlays";
 
-export function NavigationPicker() {
+export function Example() {
   return (
-    <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+    <Command className="rounded-lg border max-w-md">
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Navigation">
-          <CommandItem>
-            Calendar
-            <CommandShortcut>Cmd+1</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            Inbox
-            <CommandShortcut>Cmd+2</CommandShortcut>
-          </CommandItem>
+        <CommandGroup heading="Suggestions">
+          <CommandItem>Calendar</CommandItem>
+          <CommandItem>Search emoji</CommandItem>
+          <CommandItem>Calculator</CommandItem>
         </CommandGroup>
         <CommandSeparator />
-        <CommandGroup heading="Actions">
-          <CommandItem>Create new note</CommandItem>
-          <CommandItem>Open settings</CommandItem>
+        <CommandGroup heading="Settings">
+          <CommandItem>Profile</CommandItem>
+          <CommandItem>Billing</CommandItem>
+          <CommandItem>Settings</CommandItem>
         </CommandGroup>
       </CommandList>
     </Command>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Anatomy
+## API
 
+### `<Command>`
+
+Extends `cmdk`'s `Command` root. Notable props:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | - | Controlled selected item value. |
+| `onValueChange` | `(value: string) => void` | - | Fired when selection changes via arrow keys or input. |
+| `shouldFilter` | `boolean` | `true` | Disable to control filtering yourself (e.g. server-side search). |
+| `filter` | `(value: string, search: string, keywords?: string[]) => number` | default fuzzy match | Custom filter scoring (return `0` to hide). |
+| `loop` | `boolean` | `false` | Wrap arrow-key navigation from last to first item. |
+
+All other props from cmdk's `Command` are forwarded.
+
+### `<CommandInput>`
+
+Search input that drives filtering. Wrapped in a flex row with a leading search icon.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | - | Controlled input value. |
+| `onValueChange` | `(value: string) => void` | - | Fired when the input changes. |
+
+Extends `cmdk`'s `Command.Input`.
+
+### `<CommandList>`
+
+Scrollable container for results. Caps at `max-h-[300px]` with `scroll-py-1`. Extends `cmdk`'s `Command.List`.
+
+### `<CommandEmpty>`
+
+Rendered when no item matches the current search. Place inside `CommandList` before any groups.
+
+### `<CommandGroup>`
+
+Group of items with an optional heading.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `heading` | `string \| ReactNode` | - | Section title above the items. |
+
+Extends `cmdk`'s `Command.Group`.
+
+### `<CommandItem>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | text content | Internal value used for filtering and selection. |
+| `onSelect` | `(value: string) => void` | - | Fired when the item is activated (`Enter` or click). |
+| `disabled` | `boolean` | `false` | Disables interaction; renders at 50% opacity. |
+| `keywords` | `string[]` | `[]` | Extra terms that match this item during filtering. |
+
+### `<CommandSeparator>`
+
+Thin `bg-border` divider between groups. Hidden automatically when filtering removes neighboring groups.
+
+### `<CommandShortcut>`
+
+Right-aligned `<span>` for keyboard hints inside items (e.g. `⌘N`). Pure layout helper.
+
+### `<CommandDialog>`
+
+Wraps `Command` in a `Dialog` for the canonical Cmd+K palette pattern.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | `"Command Palette"` | Screen-reader title (visually hidden). |
+| `description` | `string` | `"Search for a command to run..."` | Screen-reader description (visually hidden). |
+| `showCloseButton` | `boolean` | `true` | Renders the X close button on the dialog. |
+
+All other `Dialog` props (`open`, `onOpenChange`, etc.) are forwarded.
+
+## Composition
+
+1. **`<Command>`** owns the search state and filtering logic.
+2. **`<CommandInput>`** sits at the top as the controlled search.
+3. **`<CommandList>`** holds the results.
+4. **Inside the list**: `CommandEmpty` (no-results state) followed by one or more `CommandGroup` blocks. `CommandSeparator` divides groups.
+5. **Items**: each `CommandItem` exposes `onSelect`; add `CommandShortcut` for keyboard hints.
+
+For the floating palette pattern, wrap everything in `CommandDialog` and toggle its `open` prop on `Cmd+K`.
+
+## Variations
+
+### Cmd+K palette
+
+The canonical global launcher. Listen for `Cmd+K` and toggle the dialog.
+
+```tsx
+import { useEffect, useState } from "react";
+
+export function CommandPalette() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((v) => !v);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  return (
+    <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandInput placeholder="Search docs, run commands..." />
+      <CommandList>
+        <CommandEmpty>No results.</CommandEmpty>
+        <CommandGroup heading="Navigate">
+          <CommandItem onSelect={() => goto("/inbox")}>
+            Inbox
+            <CommandShortcut>G I</CommandShortcut>
+          </CommandItem>
+          <CommandItem onSelect={() => goto("/projects")}>
+            Projects
+            <CommandShortcut>G P</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
+  );
+}
 ```
-Command
-  CommandInput
-  CommandList
-    CommandEmpty
-    CommandGroup [heading]
-      CommandItem
-        CommandShortcut
-    CommandSeparator
+
+### Combobox pattern
+
+Combine `Command` with `Popover` for an inline searchable picker.
+
+```tsx
+<Popover open={open} onOpenChange={setOpen}>
+  <PopoverTrigger asChild>
+    <Button variant="outline" role="combobox" aria-expanded={open}>
+      {value || "Select framework..."}
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-[240px] p-0">
+    <Command>
+      <CommandInput placeholder="Search framework..." />
+      <CommandList>
+        <CommandEmpty>No framework found.</CommandEmpty>
+        <CommandGroup>
+          {frameworks.map((f) => (
+            <CommandItem key={f.value} value={f.value} onSelect={onSelect}>
+              {f.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  </PopoverContent>
+</Popover>
 ```
 
-## Best practices
+### Server-side search
 
-- **Hint the keyboard contract in the placeholder.** "Type a command or
-  search..." beats "Search".
-- **Group by intent.** Navigation, Actions, Recent - in that order.
-- **Use `Escape` to close.** Wire your host (Dialog, Popover) to listen
-  for the escape key when the palette is open.
+Disable client filtering and drive the list from a query.
 
-## Reference
+```tsx
+<Command shouldFilter={false}>
+  <CommandInput value={query} onValueChange={setQuery} placeholder="Search..." />
+  <CommandList>
+    {loading && <CommandEmpty>Loading...</CommandEmpty>}
+    {!loading && results.length === 0 && <CommandEmpty>No results.</CommandEmpty>}
+    <CommandGroup>
+      {results.map((r) => (
+        <CommandItem key={r.id} onSelect={() => open(r.id)}>
+          {r.title}
+        </CommandItem>
+      ))}
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
 
-- React source: `packages/rx-overlays/src/lib/command/command.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-command.json`.
+## Accessibility
 
-> The `CommandDialog` variant (floating Cmd+K palette) lands once
-> `rx-overlays` ships a Dialog primitive. Until then, host the palette
-> inside your app's existing Dialog or Popover.
+- **Role**: ARIA combobox pattern - input is `role="combobox"`, list is `role="listbox"`, items are `role="option"`.
+- **Keyboard**: `↑`/`↓` move between items; `Enter` activates the selected item; type to filter; `Esc` closes when inside `CommandDialog`.
+- **Focus management**: focus is held in the input; list selection is announced via `aria-selected` (not by moving focus).
+- **`CommandDialog`** inherits all `Dialog` accessibility (focus trap, modal, return-focus-on-close).
+- **Title and description**: for `CommandDialog`, both are visually hidden but available to screen readers via Radix `Dialog`.
+- **Empty state**: `CommandEmpty` announces "No results" politely so users on assistive tech know the search returned nothing.
+- **Reduced motion**: dialog animations honor `prefers-reduced-motion`.
+
+## Related
+
+- [Dialog](/components/overlays/dialog) - the base modal that `CommandDialog` wraps.
+- [Popover](/components/overlays/popover) - host for the Combobox pattern.
+- [Combobox](/components/forms/combobox) - searchable single-select built on `Command` + `Popover`.
+- [Dropdown Menu](/components/overlays/dropdown-menu) - simpler action menu without search.
