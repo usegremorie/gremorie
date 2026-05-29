@@ -3,6 +3,7 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
+import { Badge } from '@gremorie/ng-display';
 
 /**
  * TaskItem — single line in a Task body. Mirrors React `TaskItem`.
@@ -22,16 +23,22 @@ export class TaskItem {}
 /**
  * TaskItemFile — file chip used inside a TaskItem. Mirrors React
  * `TaskItemFile`.
+ *
+ * Dogfoods `gn-badge` (variant `secondary`) from `@gremorie/ng-display`.
  */
 @Component({
   selector: 'task-item-file',
   standalone: true,
+  imports: [Badge],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content />`,
+  template: `
+    <gn-badge variant="secondary" class="rounded-md font-normal">
+      <ng-content />
+    </gn-badge>
+  `,
   host: {
-    class:
-      'inline-flex items-center gap-1 rounded-md border bg-secondary px-1.5 py-0.5 text-foreground text-xs',
+    class: 'inline-flex',
   },
 })
 export class TaskItemFile {}

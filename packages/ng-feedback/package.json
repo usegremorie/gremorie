@@ -15,5 +15,11 @@
     "@spartan-ng/brain": "^0.0.1-alpha.694",
     "class-variance-authority": "^0.7.1"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./fesm2022/ng-feedback.mjs"
+    }
+  }
 }

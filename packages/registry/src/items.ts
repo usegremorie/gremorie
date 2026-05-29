@@ -346,7 +346,7 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/app/gremorie/ai/chain-of-thought',
     srcStrip: 'src/lib/chain-of-thought/',
     dependencies: ['@angular/core'],
-    registryDependencies: ['ng-utils'],
+    registryDependencies: ['ng-utils', 'ng-badge'],
   },
   {
     name: 'ng-sources',
@@ -386,7 +386,7 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/app/gremorie/ai/task',
     srcStrip: 'src/lib/task/',
     dependencies: ['@angular/core'],
-    registryDependencies: [],
+    registryDependencies: ['ng-badge'],
   },
   {
     name: 'ng-tool',
@@ -408,7 +408,7 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/app/gremorie/ai/tool',
     srcStrip: 'src/lib/tool/',
     dependencies: ['@angular/core'],
-    registryDependencies: ['ng-utils'],
+    registryDependencies: ['ng-utils', 'ng-badge'],
   },
   {
     name: 'ng-toolbar',

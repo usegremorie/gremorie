@@ -6,6 +6,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { Badge } from '@gremorie/ng-display';
 
 import { TOOL } from './tool';
 import type { ToolState } from './tool.types';
@@ -36,10 +37,16 @@ const STATE_BADGE_COLORS: Record<ToolState, string> = {
  * Mirrors React `ToolHeader`. The `type` input mirrors the React `type`
  * prop (the AI SDK tool name, e.g. `"tool-readFile"`); the default title is
  * derived by stripping the `"tool-"` prefix.
+ *
+ * The state badge dogfoods `gn-badge` from `@gremorie/ng-display`
+ * (variant `secondary`) instead of an inline-styled span — matches the
+ * React blueprint which also wraps the state in a `Badge` with
+ * `variant="secondary"`.
  */
 @Component({
   selector: 'tool-header',
   standalone: true,
+  imports: [Badge],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -68,9 +75,7 @@ const STATE_BADGE_COLORS: Record<ToolState, string> = {
           />
         </svg>
         <span class="font-medium text-sm">{{ resolvedTitle() }}</span>
-        <span
-          class="inline-flex items-center gap-1.5 rounded-full border-transparent bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
-        >
+        <gn-badge variant="secondary" class="gap-1.5">
           <span [class]="badgeColor()">
             @switch (state()) {
               @case ('input-streaming') {
@@ -171,7 +176,7 @@ const STATE_BADGE_COLORS: Record<ToolState, string> = {
             }
           </span>
           {{ stateLabel() }}
-        </span>
+        </gn-badge>
       </div>
       <svg
         width="16"

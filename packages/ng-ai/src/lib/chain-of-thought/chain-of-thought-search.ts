@@ -3,6 +3,7 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
+import { Badge } from '@gremorie/ng-display';
 
 /**
  * ChainOfThoughtSearchResults — flex-wrap container for search-result chips.
@@ -24,16 +25,24 @@ export class ChainOfThoughtSearchResults {}
 /**
  * ChainOfThoughtSearchResult — small badge for one search result. Mirrors
  * React `ChainOfThoughtSearchResult` (which renders a `Badge` variant).
+ *
+ * Dogfoods `gn-badge` (variant `secondary`) from `@gremorie/ng-display`
+ * with a tighter corner radius and lighter weight to match the React
+ * blueprint (which passes `gap-1 px-2 py-0.5 font-normal` to Badge).
  */
 @Component({
   selector: 'chain-of-thought-search-result',
   standalone: true,
+  imports: [Badge],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content />`,
+  template: `
+    <gn-badge variant="secondary" class="rounded-md font-normal">
+      <ng-content />
+    </gn-badge>
+  `,
   host: {
-    class:
-      'inline-flex items-center gap-1 rounded-md border border-transparent bg-secondary px-2 py-0.5 font-normal text-secondary-foreground text-xs',
+    class: 'inline-flex',
   },
 })
 export class ChainOfThoughtSearchResult {}

@@ -1,0 +1,110 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-suggestion",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Suggestion (Angular)",
+  "description": "Suggestion chips for AI prompts - horizontal scrollable Suggestions container with rounded-full Suggestion buttons that emit `(select)` carrying the value.",
+  "categories": [
+    "ai",
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "class-variance-authority"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/suggestion/suggestion.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  output,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\nexport type SuggestionVariant =\n  | 'default'\n  | 'outline'\n  | 'ghost'\n  | 'secondary';\n\nexport type SuggestionSize = 'sm' | 'md' | 'lg';\n\n/**\n * Suggestion — clickable chip. Mirrors React `Suggestion`.\n *\n * Emits `(select)` carrying the `value` (which equals the React\n * `suggestion` prop). Visual = rounded-full button with outline variant by\n * default.\n */\n@Component({\n  selector: 'suggestion',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      [class]=\"buttonClass()\"\n      (click)=\"handleClick()\"\n    >\n      <ng-content>{{ value() }}</ng-content>\n    </button>\n  `,\n  host: {\n    class: 'inline-flex',\n  },\n})\nexport class Suggestion {\n  /** The suggestion value emitted on click. Mirrors React `suggestion`. */\n  readonly value = input.required<string>();\n  readonly variant = input<SuggestionVariant>('outline');\n  readonly size = input<SuggestionSize>('sm');\n\n  readonly select = output<string>();\n\n  protected readonly buttonClass = computed(() => {\n    const sizeClass: Record<SuggestionSize, string> = {\n      sm: 'h-8 px-4 text-xs',\n      md: 'h-9 px-4 text-sm',\n      lg: 'h-10 px-5 text-sm',\n    };\n    const variantClass: Record<SuggestionVariant, string> = {\n      default:\n        'bg-primary text-primary-foreground hover:bg-primary/90',\n      outline:\n        'border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground',\n      ghost:\n        'text-foreground hover:bg-accent hover:text-accent-foreground',\n      secondary:\n        'bg-secondary text-secondary-foreground hover:bg-secondary/80',\n    };\n    return cn(\n      'inline-flex cursor-pointer items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',\n      sizeClass[this.size()],\n      variantClass[this.variant()],\n    );\n  });\n\n  protected handleClick(): void {\n    this.select.emit(this.value());\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/suggestion/suggestion.ts"
+    },
+    {
+      "path": "src/lib/suggestion/suggestions.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Suggestions — horizontal scrollable row of `<suggestion>` chips. Mirrors\n * React `Suggestions`. Hides its scrollbar visually.\n */\n@Component({\n  selector: 'suggestions',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div class=\"flex w-max flex-nowrap items-center gap-2\">\n      <ng-content />\n    </div>\n  `,\n  host: {\n    class:\n      'w-full overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',\n  },\n})\nexport class Suggestions {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/suggestion/suggestions.ts"
+    },
+    {
+      "path": "src/lib/suggestion/index.ts",
+      "content": "export { Suggestions } from './suggestions';\nexport { Suggestion } from './suggestion';\nexport type { SuggestionVariant, SuggestionSize } from './suggestion';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/suggestion/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

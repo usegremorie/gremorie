@@ -14,5 +14,11 @@
     "@angular/core": "^21.2.0",
     "class-variance-authority": "^0.7.1"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./fesm2022/ng-display.mjs"
+    }
+  }
 }

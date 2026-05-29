@@ -1,0 +1,134 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-tool",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Tool (Angular)",
+  "description": "State-machine card for AI SDK tool invocations - Tool container, ToolHeader with state badge (Pending/Running/Awaiting Approval/Responded/Completed/Error/Denied), ToolContent body, ToolInput (parameters JSON), ToolOutput (result or error).",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-badge"
+  ],
+  "files": [
+    {
+      "path": "src/lib/tool/tool.types.ts",
+      "content": "/**\n * Mirrors the AI SDK `ToolUIPart[\"state\"]` values. Inlined so consumers do\n * not need to install `ai` just to render a tool card.\n */\nexport type ToolState =\n  | 'input-streaming'\n  | 'input-available'\n  | 'approval-requested'\n  | 'approval-responded'\n  | 'output-available'\n  | 'output-error'\n  | 'output-denied';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/tool/tool.types.ts"
+    },
+    {
+      "path": "src/lib/tool/tool.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  forwardRef,\n  InjectionToken,\n  model,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Tool — collapsible card for an AI SDK tool invocation. Mirrors React\n * `Tool`. Owns open/close state shared with `ToolHeader` and `ToolContent`.\n *\n * The host surface mirrors React `Tool` (`not-prose mb-4 w-full\n * rounded-md border`) — not `gn-card`, because the React blueprint uses\n * a tighter border + radius than Card. The header badge dogfoods\n * `gn-badge` from `@gremorie/ng-display`.\n */\nexport interface ToolHostState {\n  isOpen: () => boolean;\n  setOpen(open: boolean): void;\n  toggle(): void;\n}\n\nexport const TOOL = new InjectionToken<ToolHostState>('ToolHostState');\n\n@Component({\n  selector: 'tool',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'not-prose mb-4 block w-full rounded-md border',\n    '[attr.data-state]': 'open() ? \"open\" : \"closed\"',\n  },\n  providers: [{ provide: TOOL, useExisting: forwardRef(() => Tool) }],\n})\nexport class Tool implements ToolHostState {\n  readonly open = model<boolean>(false);\n\n  readonly isOpen = () => this.open();\n\n  setOpen(open: boolean): void {\n    this.open.set(open);\n  }\n\n  toggle(): void {\n    this.open.update((v) => !v);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/tool/tool.ts"
+    },
+    {
+      "path": "src/lib/tool/tool-header.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { Badge } from '@gremorie/ng-display';\n\nimport { TOOL } from './tool';\nimport type { ToolState } from './tool.types';\n\nconst STATE_LABELS: Record<ToolState, string> = {\n  'input-streaming': 'Pending',\n  'input-available': 'Running',\n  'approval-requested': 'Awaiting Approval',\n  'approval-responded': 'Responded',\n  'output-available': 'Completed',\n  'output-error': 'Error',\n  'output-denied': 'Denied',\n};\n\nconst STATE_BADGE_COLORS: Record<ToolState, string> = {\n  'input-streaming': 'text-muted-foreground',\n  'input-available': 'text-muted-foreground animate-pulse',\n  'approval-requested': 'text-yellow-600',\n  'approval-responded': 'text-blue-600',\n  'output-available': 'text-green-600',\n  'output-error': 'text-red-600',\n  'output-denied': 'text-orange-600',\n};\n\n/**\n * ToolHeader — wrench icon + title + state badge + collapse chevron.\n *\n * Mirrors React `ToolHeader`. The `type` input mirrors the React `type`\n * prop (the AI SDK tool name, e.g. `\"tool-readFile\"`); the default title is\n * derived by stripping the `\"tool-\"` prefix.\n *\n * The state badge dogfoods `gn-badge` from `@gremorie/ng-display`\n * (variant `secondary`) instead of an inline-styled span — matches the\n * React blueprint which also wraps the state in a `Badge` with\n * `variant=\"secondary\"`.\n */\n@Component({\n  selector: 'tool-header',\n  standalone: true,\n  imports: [Badge],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"toggle()\"\n      [attr.aria-expanded]=\"open()\"\n      class=\"group flex w-full items-center justify-between gap-4 p-3\"\n    >\n      <div class=\"flex items-center gap-2\">\n        <!-- wrench -->\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n          class=\"text-muted-foreground\"\n        >\n          <path\n            d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\"\n          />\n        </svg>\n        <span class=\"font-medium text-sm\">{{ resolvedTitle() }}</span>\n        <gn-badge variant=\"secondary\" class=\"gap-1.5\">\n          <span [class]=\"badgeColor()\">\n            @switch (state()) {\n              @case ('input-streaming') {\n                <svg\n                  width=\"14\"\n                  height=\"14\"\n                  viewBox=\"0 0 24 24\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2\"\n                  stroke-linecap=\"round\"\n                  stroke-linejoin=\"round\"\n                  aria-hidden=\"true\"\n                >\n                  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                </svg>\n              }\n              @case ('input-available') {\n                <svg\n                  width=\"14\"\n                  height=\"14\"\n                  viewBox=\"0 0 24 24\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2\"\n                  stroke-linecap=\"round\"\n                  stroke-linejoin=\"round\"\n                  aria-hidden=\"true\"\n                >\n                  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                  <path d=\"M12 6v6l4 2\" />\n                </svg>\n              }\n              @case ('approval-requested') {\n                <svg\n                  width=\"14\"\n                  height=\"14\"\n                  viewBox=\"0 0 24 24\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2\"\n                  stroke-linecap=\"round\"\n                  stroke-linejoin=\"round\"\n                  aria-hidden=\"true\"\n                >\n                  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                  <path d=\"M12 6v6l4 2\" />\n                </svg>\n              }\n              @case ('approval-responded') {\n                <svg\n                  width=\"14\"\n                  height=\"14\"\n                  viewBox=\"0 0 24 24\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2\"\n                  stroke-linecap=\"round\"\n                  stroke-linejoin=\"round\"\n                  aria-hidden=\"true\"\n                >\n                  <path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\" />\n                  <path d=\"m9 11 3 3L22 4\" />\n                </svg>\n              }\n              @case ('output-available') {\n                <svg\n                  width=\"14\"\n                  height=\"14\"\n                  viewBox=\"0 0 24 24\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2\"\n                  stroke-linecap=\"round\"\n                  stroke-linejoin=\"round\"\n                  aria-hidden=\"true\"\n                >\n                  <path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\" />\n                  <path d=\"m9 11 3 3L22 4\" />\n                </svg>\n              }\n              @default {\n                <svg\n                  width=\"14\"\n                  height=\"14\"\n                  viewBox=\"0 0 24 24\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2\"\n                  stroke-linecap=\"round\"\n                  stroke-linejoin=\"round\"\n                  aria-hidden=\"true\"\n                >\n                  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n                  <path d=\"m15 9-6 6M9 9l6 6\" />\n                </svg>\n              }\n            }\n          </span>\n          {{ stateLabel() }}\n        </gn-badge>\n      </div>\n      <svg\n        width=\"16\"\n        height=\"16\"\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n        class=\"size-4 text-muted-foreground transition-transform\"\n        [class.rotate-180]=\"open()\"\n      >\n        <path d=\"m6 9 6 6 6-6\" />\n      </svg>\n    </button>\n  `,\n})\nexport class ToolHeader {\n  /** Tool name (mirrors React `type`), e.g. `\"tool-readFile\"`. */\n  readonly type = input.required<string>();\n  readonly state = input.required<ToolState>();\n  readonly title = input<string>();\n\n  private readonly host = inject(TOOL);\n  protected readonly open = computed(() => this.host.isOpen());\n\n  protected readonly resolvedTitle = computed(() => {\n    const t = this.title();\n    if (t) return t;\n    return this.type().split('-').slice(1).join('-');\n  });\n\n  protected readonly stateLabel = computed(() => STATE_LABELS[this.state()]);\n  protected readonly badgeColor = computed(\n    () => STATE_BADGE_COLORS[this.state()],\n  );\n\n  protected toggle(): void {\n    this.host.toggle();\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/tool/tool-header.ts"
+    },
+    {
+      "path": "src/lib/tool/tool-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { TOOL } from './tool';\n\n/**\n * ToolContent — collapsible body. Mirrors React `ToolContent`.\n */\n@Component({\n  selector: 'tool-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (open()) {\n      <div\n        class=\"text-popover-foreground outline-none animate-in slide-in-from-top-2\"\n      >\n        <ng-content />\n      </div>\n    }\n  `,\n})\nexport class ToolContent {\n  private readonly host = inject(TOOL);\n  protected readonly open = computed(() => this.host.isOpen());\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/tool/tool-content.ts"
+    },
+    {
+      "path": "src/lib/tool/tool-input.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * ToolInput — labelled JSON block showing the tool's parameters. Mirrors\n * React `ToolInput`. Uses a `<pre><code>` JSON snapshot instead of the\n * project-internal CodeBlock to keep this primitive self-contained; if\n * syntax highlighting is desired, consumers can swap in `<code-block>`\n * (also part of ng-ai) externally.\n */\n@Component({\n  selector: 'tool-input',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <h4\n      class=\"font-medium text-muted-foreground text-xs uppercase tracking-wide\"\n    >\n      Parameters\n    </h4>\n    <div class=\"rounded-md bg-muted/50 overflow-auto\">\n      <pre class=\"m-0 p-4 text-xs\"><code>{{ formatted() }}</code></pre>\n    </div>\n  `,\n  host: {\n    class: 'space-y-2 overflow-hidden p-4 block',\n  },\n})\nexport class ToolInput {\n  readonly value = input<unknown>(null, { alias: 'input' });\n\n  protected readonly formatted = computed(() => {\n    try {\n      return JSON.stringify(this.value(), null, 2);\n    } catch {\n      return String(this.value());\n    }\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/tool/tool-input.ts"
+    },
+    {
+      "path": "src/lib/tool/tool-output.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * ToolOutput — labelled body showing either the result or an error. Mirrors\n * React `ToolOutput`. Auto-formats object output as JSON; string output is\n * rendered as monospaced text.\n *\n * When both inputs are empty, renders nothing (matches React behavior).\n */\n@Component({\n  selector: 'tool-output',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (visible()) {\n      <h4\n        class=\"font-medium text-muted-foreground text-xs uppercase tracking-wide\"\n      >\n        {{ heading() }}\n      </h4>\n      <div [class]=\"bodyClass()\">\n        @if (errorText()) {\n          <div class=\"p-4 text-xs\">{{ errorText() }}</div>\n        }\n        @if (hasOutput()) {\n          <pre class=\"m-0 p-4 text-xs\"><code>{{ formatted() }}</code></pre>\n        }\n      </div>\n    }\n  `,\n  host: {\n    '[class]': 'hostClass()',\n  },\n})\nexport class ToolOutput {\n  readonly output = input<unknown>(null);\n  readonly errorText = input<string | null | undefined>(null);\n\n  protected readonly hasOutput = computed(() => {\n    const o = this.output();\n    return o !== null && o !== undefined && o !== '';\n  });\n\n  protected readonly visible = computed(\n    () => this.hasOutput() || !!this.errorText(),\n  );\n\n  protected readonly heading = computed(() =>\n    this.errorText() ? 'Error' : 'Result',\n  );\n\n  protected readonly hostClass = computed(() =>\n    cn('space-y-2 p-4', !this.visible() && 'hidden'),\n  );\n\n  protected readonly bodyClass = computed(() =>\n    cn(\n      'overflow-x-auto rounded-md text-xs [&_table]:w-full',\n      this.errorText()\n        ? 'bg-destructive/10 text-destructive'\n        : 'bg-muted/50 text-foreground',\n    ),\n  );\n\n  protected readonly formatted = computed(() => {\n    const o = this.output();\n    if (o === null || o === undefined) return '';\n    if (typeof o === 'string') return o;\n    try {\n      return JSON.stringify(o, null, 2);\n    } catch {\n      return String(o);\n    }\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/tool/tool-output.ts"
+    },
+    {
+      "path": "src/lib/tool/index.ts",
+      "content": "export { Tool, TOOL } from './tool';\nexport type { ToolHostState } from './tool';\nexport { ToolHeader } from './tool-header';\nexport { ToolContent } from './tool-content';\nexport { ToolInput } from './tool-input';\nexport { ToolOutput } from './tool-output';\nexport type { ToolState } from './tool.types';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/tool/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

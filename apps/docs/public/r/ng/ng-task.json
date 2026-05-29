@@ -1,0 +1,121 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-task",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Task (Angular)",
+  "description": "Collapsible task card with file attachments - Task container, TaskTrigger header (search icon + title + chevron), TaskContent body with left-border list, TaskItem rows and TaskItemFile chips.",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-badge"
+  ],
+  "files": [
+    {
+      "path": "src/lib/task/task.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  forwardRef,\n  InjectionToken,\n  model,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Task — collapsible card with file attachments. Mirrors React `Task`.\n *\n * Owns its open/close state; opens by default like the React version\n * (`defaultOpen=true`).\n */\nexport interface TaskState {\n  isOpen: () => boolean;\n  setOpen(open: boolean): void;\n  toggle(): void;\n}\n\nexport const TASK = new InjectionToken<TaskState>('TaskState');\n\n@Component({\n  selector: 'task',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'block',\n  },\n  providers: [{ provide: TASK, useExisting: forwardRef(() => Task) }],\n})\nexport class Task implements TaskState {\n  readonly open = model<boolean>(true);\n\n  readonly isOpen = () => this.open();\n\n  setOpen(open: boolean): void {\n    this.open.set(open);\n  }\n\n  toggle(): void {\n    this.open.update((v) => !v);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/task/task.ts"
+    },
+    {
+      "path": "src/lib/task/task-trigger.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { TASK } from './task';\n\n/**\n * TaskTrigger — clickable header. Mirrors React `TaskTrigger`. Default\n * visual: search icon + title + rotating chevron.\n */\n@Component({\n  selector: 'task-trigger',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"toggle()\"\n      [attr.aria-expanded]=\"open()\"\n      class=\"group flex w-full cursor-pointer items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground\"\n    >\n      <ng-content>\n        <!-- SearchIcon -->\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n        >\n          <circle cx=\"11\" cy=\"11\" r=\"8\" />\n          <path d=\"m21 21-4.3-4.3\" />\n        </svg>\n        <p class=\"text-sm\">{{ title() }}</p>\n        <svg\n          width=\"16\"\n          height=\"16\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n          class=\"size-4 transition-transform\"\n          [class.rotate-180]=\"open()\"\n        >\n          <path d=\"m6 9 6 6 6-6\" />\n        </svg>\n      </ng-content>\n    </button>\n  `,\n})\nexport class TaskTrigger {\n  readonly title = input.required<string>();\n\n  private readonly state = inject(TASK);\n  protected readonly open = computed(() => this.state.isOpen());\n\n  protected toggle(): void {\n    this.state.toggle();\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/task/task-trigger.ts"
+    },
+    {
+      "path": "src/lib/task/task-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { TASK } from './task';\n\n/**\n * TaskContent — collapsible body for a Task. Mirrors React `TaskContent`.\n */\n@Component({\n  selector: 'task-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (open()) {\n      <div\n        class=\"mt-4 space-y-2 border-muted border-l-2 pl-4 text-popover-foreground outline-none animate-in slide-in-from-top-2\"\n      >\n        <ng-content />\n      </div>\n    }\n  `,\n})\nexport class TaskContent {\n  private readonly state = inject(TASK);\n  protected readonly open = computed(() => this.state.isOpen());\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/task/task-content.ts"
+    },
+    {
+      "path": "src/lib/task/task-item.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { Badge } from '@gremorie/ng-display';\n\n/**\n * TaskItem — single line in a Task body. Mirrors React `TaskItem`.\n */\n@Component({\n  selector: 'task-item',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    class: 'text-muted-foreground text-sm block',\n  },\n})\nexport class TaskItem {}\n\n/**\n * TaskItemFile — file chip used inside a TaskItem. Mirrors React\n * `TaskItemFile`.\n *\n * Dogfoods `gn-badge` (variant `secondary`) from `@gremorie/ng-display`.\n */\n@Component({\n  selector: 'task-item-file',\n  standalone: true,\n  imports: [Badge],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <gn-badge variant=\"secondary\" class=\"rounded-md font-normal\">\n      <ng-content />\n    </gn-badge>\n  `,\n  host: {\n    class: 'inline-flex',\n  },\n})\nexport class TaskItemFile {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/task/task-item.ts"
+    },
+    {
+      "path": "src/lib/task/index.ts",
+      "content": "export { Task, TASK } from './task';\nexport type { TaskState } from './task';\nexport { TaskTrigger } from './task-trigger';\nexport { TaskContent } from './task-content';\nexport { TaskItem, TaskItemFile } from './task-item';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/task/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

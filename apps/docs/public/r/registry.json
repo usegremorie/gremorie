@@ -43,6 +43,79 @@
       "registryDependencies": []
     },
     {
+      "name": "ng-card",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Card (Angular)",
+      "description": "Compound surface for grouping related content - Card root with Header, Title, Description, Action, Content and Footer slots. Mirrors React Card from @gremorie/rx-display. Companion to Spartan-ng (fills the Card gap).",
+      "categories": [
+        "display",
+        "primitives",
+        "layout"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-badge",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Badge (Angular)",
+      "description": "Compact label for status, counts and tags - 6 variants (default, secondary, destructive, outline, ghost, link). Token-driven so theme changes propagate automatically. Mirrors React Badge from @gremorie/rx-display. Companion to Spartan-ng (fills the Badge gap).",
+      "categories": [
+        "display",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-spinner",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Spinner (Angular)",
+      "description": "Indeterminate loading indicator - rotating SVG glyph in three sizes (sm, default, lg). Use when duration is unknown; use Progress when percent is known. Companion to Spartan-ng (fills the Spinner gap).",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-alert",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Alert (Angular)",
+      "description": "In-flow feedback message - Alert root with AlertTitle and AlertDescription sub-components. Two variants (default, destructive). Convey intent through a leading SVG icon as the first child. Mirrors React Alert from @gremorie/rx-feedback.",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-progress",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Progress (Angular)",
+      "description": "Determinate progress bar (0-100) wrapping Spartan-ng brain Progress with the Gremorie visual surface. Pass value=null for indeterminate. Mirrors React Progress from @gremorie/rx-feedback.",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-skeleton",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Skeleton (Angular)",
+      "description": "Placeholder block for loading states - a pulsing rectangle that reserves layout while data is fetched. Shape with width/height utility classes. Mirrors React Skeleton from @gremorie/rx-feedback.",
+      "categories": [
+        "feedback",
+        "primitives"
+      ],
+      "registryDependencies": []
+    },
+    {
       "name": "ng-attachments",
       "type": "registry:block",
       "framework": "ng",
@@ -68,6 +141,157 @@
       "registryDependencies": [
         "ng-utils",
         "ng-attachments"
+      ]
+    },
+    {
+      "name": "ng-message",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Message (Angular)",
+      "description": "Message family for chat bubbles - root + content, avatar, actions, toolbar, attachments, response. Includes branch sub-family (controllable picker over alternative responses).",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-conversation",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Conversation (Angular)",
+      "description": "Scrollable chat log with auto-stick-to-bottom behavior, empty state and a scroll-to-bottom pill that appears when the user scrolls up.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-suggestion",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Suggestion (Angular)",
+      "description": "Suggestion chips for AI prompts - horizontal scrollable Suggestions container with rounded-full Suggestion buttons that emit `(select)` carrying the value.",
+      "categories": [
+        "ai",
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-shimmer",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Shimmer (Angular)",
+      "description": "Standalone directive that applies a sweeping gradient animation to text - used for streaming/loading states. Same visual effect as the rx-ai counterpart (motion/react), implemented natively with CSS keyframes (no runtime motion lib).",
+      "categories": [
+        "ai",
+        "feedback"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-reasoning",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Reasoning (Angular)",
+      "description": "Collapsible \"thinking...\" block with auto-open while streaming, auto-close once streaming ends and duration tracking. Composes Reasoning + ReasoningTrigger + ReasoningContent, built on @spartan-ng/brain/collapsible.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-shimmer"
+      ]
+    },
+    {
+      "name": "ng-chain-of-thought",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Chain of Thought (Angular)",
+      "description": "Step-by-step reasoning trace - root container, clickable header, content panel, individual steps (complete/active/pending status), search-result chips and bounded image previews.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-badge"
+      ]
+    },
+    {
+      "name": "ng-sources",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Sources (Angular)",
+      "description": "Citation list for AI responses - collapsible container, header trigger (\"Used {count} sources\"), content panel and Source link items.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ng-task",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Task (Angular)",
+      "description": "Collapsible task card with file attachments - Task container, TaskTrigger header (search icon + title + chevron), TaskContent body with left-border list, TaskItem rows and TaskItemFile chips.",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-badge"
+      ]
+    },
+    {
+      "name": "ng-tool",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Tool (Angular)",
+      "description": "State-machine card for AI SDK tool invocations - Tool container, ToolHeader with state badge (Pending/Running/Awaiting Approval/Responded/Completed/Error/Denied), ToolContent body, ToolInput (parameters JSON), ToolOutput (result or error).",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-badge"
+      ]
+    },
+    {
+      "name": "ng-toolbar",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Toolbar (Angular)",
+      "description": "Generic action toolbar for AI message contexts - Toolbar row, ToolbarGroup (orientation-aware visually-grouped subset), ToolbarButton (with optional pressed toggle state).",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
+      "name": "ng-code-block",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Code Block (Angular)",
+      "description": "Shiki-highlighted code container with light/dark theme snapshots and an optional copy button. Mirrors the rx-ai implementation (github-light-default / github-dark-default).",
+      "categories": [
+        "ai",
+        "code"
+      ],
+      "registryDependencies": [
+        "ng-utils"
       ]
     },
     {

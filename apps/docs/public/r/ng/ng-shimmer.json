@@ -1,0 +1,101 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-shimmer",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Shimmer (Angular)",
+  "description": "Standalone directive that applies a sweeping gradient animation to text - used for streaming/loading states. Same visual effect as the rx-ai counterpart (motion/react), implemented natively with CSS keyframes (no runtime motion lib).",
+  "categories": [
+    "ai",
+    "feedback"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/shimmer/shimmer.ts",
+      "content": "import {\n  Directive,\n  computed,\n  effect,\n  ElementRef,\n  inject,\n  input,\n} from '@angular/core';\n\n/**\n * Shimmer — animated gradient sweep on a text node. Mirrors React\n * `Shimmer` (which uses motion/react).\n *\n * Attach as a directive:\n *\n * ```html\n * <span ngShimmer [shimmerDuration]=\"1.5\">Thinking…</span>\n * ```\n *\n * Or with the boolean disabled flag (useful when reused inside a streaming\n * primitive such as Reasoning):\n *\n * ```html\n * <span ngShimmer [shimmerDisabled]=\"!isStreaming()\">…</span>\n * ```\n *\n * Style is applied via inline CSS variables + a global keyframe rule\n * injected once per document so the directive stays standalone (no need\n * for a global stylesheet import).\n */\n@Directive({\n  selector: '[ngShimmer]',\n  standalone: true,\n  host: {\n    '[class]': 'hostClass()',\n    '[style.background-image]': 'backgroundImage()',\n    '[style.--ng-shimmer-spread]': 'spreadPx()',\n    '[style.--ng-shimmer-duration]': 'durationSec()',\n    '[style.animation-play-state]': 'shimmerDisabled() ? \"paused\" : \"running\"',\n  },\n})\nexport class Shimmer {\n  /** Seconds for one full sweep. Default 2 (matches rx-ai). */\n  readonly shimmerDuration = input<number>(2);\n\n  /**\n   * Spread coefficient. Final spread = (text length) * spread, like rx-ai.\n   */\n  readonly shimmerSpread = input<number>(2);\n\n  /** When `true`, animation pauses. */\n  readonly shimmerDisabled = input<boolean>(false);\n\n  private readonly el = inject(ElementRef<HTMLElement>);\n\n  protected readonly hostClass = computed(\n    () =>\n      'ng-shimmer relative inline-block bg-clip-text text-transparent [background-repeat:no-repeat,padding-box]',\n  );\n\n  protected readonly backgroundImage = computed(\n    () =>\n      'linear-gradient(90deg, transparent calc(50% - var(--ng-shimmer-spread)), var(--background, #ffffff), transparent calc(50% + var(--ng-shimmer-spread))), linear-gradient(var(--muted-foreground, #71717a), var(--muted-foreground, #71717a))',\n  );\n\n  protected readonly spreadPx = computed(() => {\n    const text = this.el.nativeElement.textContent ?? '';\n    return `${text.length * this.shimmerSpread()}px`;\n  });\n\n  protected readonly durationSec = computed(() => `${this.shimmerDuration()}s`);\n\n  constructor() {\n    ensureKeyframesInjected();\n    // Re-evaluate spreadPx when content changes (textContent is not reactive).\n    effect(() => {\n      // Touch inputs so effect runs on prop change.\n      this.shimmerSpread();\n      this.shimmerDuration();\n    });\n  }\n}\n\nlet keyframesInjected = false;\n\nfunction ensureKeyframesInjected(): void {\n  if (keyframesInjected || typeof document === 'undefined') return;\n  keyframesInjected = true;\n  const style = document.createElement('style');\n  style.setAttribute('data-ng-shimmer', '');\n  style.textContent = `\n    .ng-shimmer {\n      background-size: 250% 100%, auto;\n      animation: ng-shimmer-sweep var(--ng-shimmer-duration, 2s) linear infinite;\n    }\n    @keyframes ng-shimmer-sweep {\n      0%   { background-position: 100% center; }\n      100% { background-position: 0% center; }\n    }\n    @media (prefers-reduced-motion: reduce) {\n      .ng-shimmer { animation: none; }\n    }\n  `;\n  document.head.appendChild(style);\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/shimmer/shimmer.ts"
+    },
+    {
+      "path": "src/lib/shimmer/index.ts",
+      "content": "export { Shimmer } from './shimmer';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/shimmer/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}
