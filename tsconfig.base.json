@@ -22,6 +22,8 @@
       "@gremorie/ng-ai": ["./packages/ng-ai/src/index.ts"],
       "@gremorie/ng-containers": ["./packages/ng-containers/src/index.ts"],
       "@gremorie/ng-data": ["./packages/ng-data/src/index.ts"],
+      "@gremorie/ng-display": ["./packages/ng-display/src/index.ts"],
+      "@gremorie/ng-feedback": ["./packages/ng-feedback/src/index.ts"],
       "@gremorie/rx-core": ["./packages/rx-core/src/index.ts"],
       "@gremorie/rx-ai": ["./packages/rx-ai/src/index.ts"],
       "@gremorie/rx-forms": ["./packages/rx-forms/src/index.ts"],

@@ -72,6 +72,38 @@ export const ITEMS: ItemConfig[] = [
   },
 
   // ---------------------------------------------------------------------------
+  // Angular: display
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-card',
+    framework: 'ng',
+    title: 'Card (Angular)',
+    description:
+      'Compound surface for grouping related content - Card root with Header, Title, Description, Action, Content and Footer slots. Mirrors React Card from @gremorie/rx-display. Companion to Spartan-ng (fills the Card gap).',
+    categories: ['display', 'primitives', 'layout'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/card/card.ts', 'src/lib/card/index.ts'],
+    targetPrefix: 'src/app/gremorie/card',
+    srcStrip: 'src/lib/card/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-badge',
+    framework: 'ng',
+    title: 'Badge (Angular)',
+    description:
+      'Compact label for status, counts and tags - 6 variants (default, secondary, destructive, outline, ghost, link). Token-driven so theme changes propagate automatically. Mirrors React Badge from @gremorie/rx-display. Companion to Spartan-ng (fills the Badge gap).',
+    categories: ['display', 'primitives'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/badge/badge.ts', 'src/lib/badge/index.ts'],
+    targetPrefix: 'src/app/gremorie/badge',
+    srcStrip: 'src/lib/badge/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: [],
+  },
+
+  // ---------------------------------------------------------------------------
   // Angular: AI primitives
   // ---------------------------------------------------------------------------
   {
