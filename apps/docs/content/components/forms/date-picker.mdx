@@ -1,80 +1,193 @@
 ---
 title: Date Picker
-description: Composite of Popover + Calendar.
+description: Composite of Popover + Calendar - the canonical ready-to-use date input distributed by the Gremorie registry.
 ---
 
 import { DatePickerPreview } from "@/components/preview/overlays/overlays";
 
+## Overview
+
+`DatePicker` is not a new primitive; it's the canonical composition of `Popover` + `Calendar` that the registry exposes as a ready-to-use wrapper. Use it for compact forms where you want a date input that opens a calendar grid on click.
+
+Single-mode by default. For ranges, use `<DatePickerRange />` (separate registry item). For mobile UX, prefer `Drawer` + `Calendar` - popovers don't behave well on small screens.
+
+<Callout type="info">
+DatePicker lives in `@gremorie/rx-overlays` because it composes a `Popover` (overlays) with a `Calendar` (forms). The dependency chain runs overlays -> forms, so the wrapper has to sit on the overlays side.
+</Callout>
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <DatePickerPreview />
 </div>
 
+## Installation
 
-`DatePicker` is the canonical composite pattern in Gremorie: a
-`Button` that opens a `Popover` containing a `Calendar`. Single mode
-by default. Lives in `@gremorie/rx-overlays` because it composes
-across the forms / overlays boundary.
-
-For mobile UX, prefer `Drawer` + `Calendar` directly - Popover does
-not work well on small screens.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular DatePicker lands in a follow-up rev.
+npx gremorie@latest add rx-date-picker
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-date-picker
+pnpm dlx gremorie@latest add rx-date-picker
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-date-picker
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-date-picker
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import * as React from "react";
 import { DatePicker } from "@gremorie/rx-overlays";
 
-export function DueDateField() {
-  const [date, setDate] = React.useState<Date | undefined>();
+export function Example() {
+  const [date, setDate] = React.useState<Date>();
   return (
-    <DatePicker
-      value={date}
-      onValueChange={setDate}
-      placeholder="Pick a due date"
-    />
+    <DatePicker value={date} onValueChange={setDate} placeholder="Pick a date" />
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<DatePicker>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `Date` | - | Controlled selected date. |
+| `onValueChange` | `(date: Date \| undefined) => void` | - | Fires when the user picks a date in the calendar. |
+| `placeholder` | `string` | `"Selecione uma data"` | Shown in the trigger when `value` is empty. |
+| `disabled` | `boolean` | `false` | Disables the trigger. |
+| `className` | `string` | - | Classes on the trigger Button. Default trigger width is `w-[240px]`. |
+
+This is the canonical composition. If you need different behaviour (multiple, range, custom trigger, different format), assemble your own `Popover` + `Calendar` instead - this wrapper intentionally stays narrow.
+
+Internally:
+
+- `<PopoverTrigger asChild>` + `<Button variant="outline">` - the trigger
+- `format(value, "PP")` from `date-fns` - the formatted value ("Apr 29, 2026")
+- `<PopoverContent align="start" className="w-auto p-0">` - the floating surface
+- `<Calendar mode="single" selected={value} onSelect={onValueChange} autoFocus />` - the picker
+
+## Composition
+
+1. **`<DatePicker>`** is the canonical compact pattern.
+2. **When you outgrow it**, assemble your own `Popover` + `Calendar` (see the snippet below) - this is what `DatePicker` does internally and is the default starting point for variants.
+3. **For mobile**, swap `Popover` for `Drawer` so the calendar takes the full bottom sheet instead of a tiny popover above the keyboard.
+
+## Variations
+
+### Controlled single date (default)
+
+```tsx
+function ScheduledFor() {
+  const [date, setDate] = React.useState<Date>();
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="scheduled-for">Scheduled for</Label>
+      <DatePicker
+        value={date}
+        onValueChange={setDate}
+        placeholder="Pick a date"
+      />
+    </div>
   );
 }
 ```
 
-</Tab>
+### Custom trigger (assemble your own)
 
-</Tabs>
+When you need a different trigger - inline text, a tag, an icon button - skip the wrapper and compose directly. This is what `DatePicker` does internally.
 
-## Reference
+```tsx
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
-- React source: `packages/rx-overlays/src/lib/date-picker/date-picker.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-date-picker.json`.
+import { Button, Calendar } from "@gremorie/rx-forms";
+import { Popover, PopoverContent, PopoverTrigger } from "@gremorie/rx-overlays";
+
+function CustomTriggerDatePicker() {
+  const [date, setDate] = React.useState<Date>();
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="sm">
+          <CalendarIcon />
+          {date ? format(date, "PP") : "Pick a date"}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar mode="single" selected={date} onSelect={setDate} autoFocus />
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Date range (assemble your own)
+
+For range pickers, build the composition with `mode="range"` and `numberOfMonths={2}`.
+
+```tsx
+import type { DateRange } from "react-day-picker";
+
+function DateRangePicker() {
+  const [range, setRange] = React.useState<DateRange>();
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="w-[280px] justify-start">
+          <CalendarIcon className="mr-2 size-4" />
+          {range?.from && range?.to
+            ? `${format(range.from, "PP")} - ${format(range.to, "PP")}`
+            : "Pick a range"}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="range"
+          selected={range}
+          onSelect={setRange}
+          numberOfMonths={2}
+          autoFocus
+        />
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+## Accessibility
+
+- **Inherits `Popover` behaviour**: `Esc` closes the popover; focus returns to the trigger on close.
+- **`autoFocus` on the Calendar**: focuses the active (or today's) cell as soon as the popover opens.
+- **Calendar keyboard**: full grid navigation via arrow keys, `Home`, `End`, `PageUp`, `PageDown`. See [Calendar accessibility](/components/forms/calendar#accessibility) for the full list.
+- **Trigger label**: provide a `<Label>` linked to the trigger via the field wrapper (e.g. `<FormItem>`) so the date picker has an accessible name.
+- **Disabled**: the trigger surfaces `disabled` so the button removes itself from the tab order and dims to 50% opacity.
+
+## Related
+
+- [Calendar](/components/forms/calendar) - the underlying grid primitive
+- [Popover](/components/overlays/popover) - the wrapping floating surface
+- [Drawer](/components/overlays/drawer) - mobile alternative to Popover
+- [Form](/components/forms/form) - wire DatePicker into react-hook-form

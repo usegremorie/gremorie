@@ -1,72 +1,178 @@
 ---
 title: Calendar
-description: Date grid built on react-day-picker.
+description: Date picker grid built on react-day-picker v10 - single date, multiple dates, or a date range, with token-driven theming and lucide chevrons.
 ---
 
 import { CalendarPreview } from "@/components/preview/forms/forms";
 
+## Overview
+
+`Calendar` wraps `react-day-picker` v10. Three modes via `mode`:
+
+- `single` - one date
+- `range` - start + end (date range)
+- `multiple` - several independent dates
+
+Use `Calendar` standalone in pages with plenty of space (scheduling, planners). For compact forms, wrap it in `Popover` - that composed pattern is `DatePicker`. In v10 of react-day-picker the `classNames` keys were migrated to the `UI` enum; we call `getDefaultClassNames()` and merge our semantic tokens on top.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <CalendarPreview />
 </div>
 
+## Installation
 
-`Calendar` wraps `react-day-picker` with Gremorie styling. Single
-date, multiple dates, or range selection; multi-month layout;
-keyboard navigation; weekday header. Pair with `Popover` for the
-canonical DatePicker pattern, or use standalone in a dashboard
-sidebar.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Calendar lands in a follow-up rev.
+npx gremorie@latest add rx-calendar
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-calendar
+pnpm dlx gremorie@latest add rx-calendar
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-calendar
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-calendar
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import * as React from "react";
 import { Calendar } from "@gremorie/rx-forms";
 
-export function SingleDatePicker() {
+export function Example() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  return <Calendar mode="single" selected={date} onSelect={setDate} />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Calendar>`
+
+Forwards every prop to `DayPicker` from `react-day-picker`. The most relevant ones:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `mode` | `"single" \| "multiple" \| "range"` | `"single"` | Selection model. |
+| `selected` | `Date \| Date[] \| DateRange` | - | Controlled selection. Shape depends on `mode`. |
+| `onSelect` | depends on `mode` | - | Fires when the user picks a date. |
+| `disabled` | `Matcher \| Matcher[]` | - | Disable specific dates (past dates, weekends, custom predicates). |
+| `showOutsideDays` | `boolean` | `true` | Show greyed-out days from neighbouring months. |
+| `numberOfMonths` | `number` | `1` | Show multiple months side by side (useful for range pickers). |
+| `defaultMonth` | `Date` | current month | Initial month displayed when uncontrolled. |
+| `locale` | `Locale` | en-US | `date-fns` locale for month / weekday labels. |
+| `autoFocus` | `boolean` | `false` | Focus the first selected (or today's) cell on mount. Used by `DatePicker` inside `Popover`. |
+| `className` | `string` | - | Classes on the wrapper `<div>`. Defaults to `p-3`. |
+| `classNames` | `Partial<ClassNames>` | - | Override any internal class. Merged onto the Gremorie defaults via `cn`. |
+
+For the full list of props, see the [react-day-picker docs](https://daypicker.dev/api/interfaces/DayPickerProps).
+
+The Gremorie wrapper customizes:
+
+- `button_previous` / `button_next` - use `buttonVariants({ variant: "outline" })` so the arrows match the rest of the design system
+- `Chevron` - swaps the default react-day-picker chevrons for lucide's `ChevronLeftIcon` / `ChevronRightIcon`
+- `selected` - uses `bg-primary text-primary-foreground` semantic tokens
+- `today` - uses `bg-accent text-accent-foreground`
+- `outside`, `disabled`, `hidden` - all token-driven
+
+## Composition
+
+1. **`<Calendar>`** is a self-contained widget. Drop it wherever you need a date grid.
+2. **For compact UI**, wrap it in a `Popover` + `PopoverTrigger` - that composition is exported as `DatePicker` in the overlays bundle.
+3. **For range pickers**, set `mode="range"` and `numberOfMonths={2}` so users see start + end month at once.
+
+## Variations
+
+### Single date
+
+The default mode. State is `Date | undefined`.
+
+```tsx
+function SingleDate() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   return <Calendar mode="single" selected={date} onSelect={setDate} />;
 }
 ```
 
-</Tab>
+### Date range
 
-</Tabs>
+State is `{ from?: Date; to?: Date }`. Pair with `numberOfMonths={2}` for the classic side-by-side calendar UX.
 
-## Reference
+```tsx
+import type { DateRange } from "react-day-picker";
 
-- React source: `packages/rx-forms/src/lib/calendar/calendar.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-calendar.json`.
+function DateRangeExample() {
+  const [range, setRange] = React.useState<DateRange | undefined>();
+  return (
+    <Calendar
+      mode="range"
+      selected={range}
+      onSelect={setRange}
+      numberOfMonths={2}
+    />
+  );
+}
+```
+
+### Disable past dates
+
+The `disabled` prop accepts a matcher. Use `{ before: today }` to block historical dates.
+
+```tsx
+<Calendar
+  mode="single"
+  selected={date}
+  onSelect={setDate}
+  disabled={{ before: new Date() }}
+/>
+```
+
+### Multiple independent dates
+
+`mode="multiple"` lets users select any number of non-contiguous dates. State is `Date[]`.
+
+```tsx
+function MultipleDates() {
+  const [dates, setDates] = React.useState<Date[] | undefined>();
+  return <Calendar mode="multiple" selected={dates} onSelect={setDates} />;
+}
+```
+
+## Accessibility
+
+- **Grid semantics**: react-day-picker renders a `role="grid"` with rows of cells. Each cell is a button.
+- **Keyboard**:
+  - `ArrowLeft` / `ArrowRight` move one day at a time.
+  - `ArrowUp` / `ArrowDown` move one week at a time.
+  - `Home` / `End` jump to first / last day of the row.
+  - `PageUp` / `PageDown` move one month; `Shift+PageUp` / `Shift+PageDown` move one year.
+- **Screen reader announcements**: the focused date announces day of week, day number, and month. Disabled and outside days are announced as such.
+- **Focus**: when wrapped in `Popover` (the `DatePicker` pattern), set `autoFocus` so the active date receives focus on open.
+- **Reduced motion**: react-day-picker has no motion of its own; the calendar respects user motion preferences automatically.
+
+## Related
+
+- [Date Picker](/components/forms/date-picker) - the canonical Popover + Calendar composition
+- [Popover](/components/overlays/popover) - the recommended wrapper for compact UIs
+- [Form](/components/forms/form) - wire Calendar into react-hook-form

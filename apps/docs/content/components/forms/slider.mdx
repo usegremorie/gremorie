@@ -1,74 +1,184 @@
 ---
 title: Slider
-description: Continuous-value range control.
+description: Continuous numeric input via draggable thumb - single or range, horizontal or vertical, with a `thumbAriaLabel` extension for multi-thumb accessibility.
 ---
 
 import { SliderPreview } from "@/components/preview/forms/forms";
 
+## Overview
+
+`Slider` wraps `@radix-ui/react-slider`. Single thumb by default; pass `defaultValue={[low, high]}` (or `value`) for a range slider. Honors `step`, `min`, `max`, and `orientation="vertical"`.
+
+Use Slider when **approximate position is more useful than exact precision** - volume, brightness, price filters. For exact values use a number `Input`. For discrete choices, prefer `RadioGroup` or `Select`. Always show the current value next to the slider; silent sliders confuse users.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <SliderPreview />
 </div>
 
+## Installation
 
-`Slider` is built on Radix Slider - single value or range (two
-thumbs), with `step`, `min`, `max`. Use for continuous values:
-volume, opacity, price range, brightness.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Slider lands in a follow-up rev.
+npx gremorie@latest add rx-slider
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-slider
+pnpm dlx gremorie@latest add rx-slider
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-slider
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-slider
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { Slider } from "@gremorie/rx-forms";
 
-export function VolumeSlider() {
-  return <Slider defaultValue={[50]} max={100} step={1} />;
+export function Example() {
+  return <Slider defaultValue={[40]} max={100} step={1} />;
 }
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
 
-export function PriceRange() {
+## API
+
+### `<Slider>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number[]` | - | Controlled value(s). One number for single thumb; two for range. |
+| `defaultValue` | `number[]` | `[min, max]` | Uncontrolled initial value(s). |
+| `onValueChange` | `(value: number[]) => void` | - | Fires on every drag step. |
+| `onValueCommit` | `(value: number[]) => void` | - | Fires when the user releases the thumb (useful for network commits). |
+| `min` | `number` | `0` | Minimum value. |
+| `max` | `number` | `100` | Maximum value. |
+| `step` | `number` | `1` | Increment between allowed values. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Vertical sliders default to `min-h-44` so they have something to drag along. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `name` | `string` | - | Form field name. |
+| `thumbAriaLabel` | `string \| string[]` | - | **Gremorie extension** (not in shadcn default). Accessible name for each thumb. Pass an array for range sliders, e.g. `["Minimum price", "Maximum price"]`. Required for WCAG 4.1.2 when the slider lacks an adjacent `<Label>`. |
+| `aria-label` | `string` | - | Falls back to this for thumb labels when `thumbAriaLabel` is not set. |
+
+Forwards to `SliderPrimitive.Root`. Renders `SliderPrimitive.Track`, `SliderPrimitive.Range`, and one `SliderPrimitive.Thumb` per value.
+
+<Callout type="info">
+**`thumbAriaLabel` is a Gremorie addition** to the standard shadcn Slider. Without it, range sliders announce two unnamed thumbs and fail WCAG 4.1.2 (Name, Role, Value). Always set it for range / multi-thumb sliders.
+</Callout>
+
+## Composition
+
+1. **`<Slider>`** is a leaf primitive that renders track + range + one thumb per value.
+2. **Pair with a `<Label>`** (associated via `aria-labelledby` if no `htmlFor` target exists) or set `aria-label` directly on the root.
+3. **Show the current value** next to the slider - users expect a numeric readout to confirm where they are.
+4. **For form-bound usage**, wrap with `<FormField>` + `<FormControl>` and convert the array value back to a number (or array) for your form schema.
+
+## Variations
+
+### Single thumb
+
+The canonical pattern. Show the value alongside.
+
+```tsx
+function Volume() {
+  const [value, setValue] = React.useState([40]);
   return (
-    <Slider defaultValue={[20, 80]} min={0} max={100} step={5} />
+    <div className="grid gap-2">
+      <div className="flex items-center justify-between">
+        <Label>Volume</Label>
+        <span className="text-sm tabular-nums text-muted-foreground">
+          {value[0]}%
+        </span>
+      </div>
+      <Slider
+        value={value}
+        onValueChange={setValue}
+        max={100}
+        step={1}
+        aria-label="Volume"
+      />
+    </div>
   );
 }
 ```
 
-</Tab>
+### Range slider
 
-</Tabs>
+Pass two values for `defaultValue` (or `value`). Always set `thumbAriaLabel` as an array so each thumb has a unique name.
 
-## Reference
+```tsx
+<Slider
+  defaultValue={[20, 80]}
+  min={0}
+  max={100}
+  step={1}
+  thumbAriaLabel={["Minimum price", "Maximum price"]}
+/>
+```
 
-- React source: `packages/rx-forms/src/lib/slider/slider.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-slider.json`.
+### Stepped slider
+
+Use a larger `step` for discrete values like rating or font size.
+
+```tsx
+<Slider
+  defaultValue={[3]}
+  min={1}
+  max={5}
+  step={1}
+  aria-label="Rating"
+/>
+```
+
+### Vertical orientation
+
+Useful for media controls, color pickers, or any UI where horizontal space is precious.
+
+```tsx
+<div className="h-44">
+  <Slider
+    defaultValue={[60]}
+    orientation="vertical"
+    aria-label="Brightness"
+  />
+</div>
+```
+
+## Accessibility
+
+- **ARIA**: each thumb is a `role="slider"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, and `aria-orientation` set by Radix.
+- **Keyboard**:
+  - `ArrowLeft` / `ArrowDown` decrement by `step`.
+  - `ArrowRight` / `ArrowUp` increment by `step`.
+  - `PageDown` / `PageUp` change by larger increments (typically 10x step).
+  - `Home` jumps to `min`; `End` jumps to `max`.
+- **Multi-thumb**: each thumb is independently focusable; Radix prevents thumbs from crossing each other.
+- **`thumbAriaLabel`**: set it for any range / multi-thumb slider so each thumb announces a specific name. Without it, screen readers fall back to `aria-label` of the root, then to a generic "Slider thumb 1".
+- **Disabled**: `data-disabled` removes the thumbs from the tab order and drops opacity to 50%.
+- **Always show the value**: visually display the current value so all users (not only screen reader users) get the same feedback.
+
+## Related
+
+- [Input](/components/forms/input) - use for exact numeric values
+- [Form](/components/forms/form) - wire Slider into react-hook-form
+- [Label](/components/forms/label) - the canonical companion
