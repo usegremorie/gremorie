@@ -104,6 +104,66 @@ export const ITEMS: ItemConfig[] = [
   },
 
   // ---------------------------------------------------------------------------
+  // Angular: feedback
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-spinner',
+    framework: 'ng',
+    title: 'Spinner (Angular)',
+    description:
+      'Indeterminate loading indicator - rotating SVG glyph in three sizes (sm, default, lg). Use when duration is unknown; use Progress when percent is known. Companion to Spartan-ng (fills the Spinner gap).',
+    categories: ['feedback', 'primitives'],
+    packageRoot: 'packages/ng-feedback',
+    sourceFiles: ['src/lib/spinner/spinner.ts', 'src/lib/spinner/index.ts'],
+    targetPrefix: 'src/app/gremorie/spinner',
+    srcStrip: 'src/lib/spinner/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-alert',
+    framework: 'ng',
+    title: 'Alert (Angular)',
+    description:
+      'In-flow feedback message - Alert root with AlertTitle and AlertDescription sub-components. Two variants (default, destructive). Convey intent through a leading SVG icon as the first child. Mirrors React Alert from @gremorie/rx-feedback.',
+    categories: ['feedback', 'primitives'],
+    packageRoot: 'packages/ng-feedback',
+    sourceFiles: ['src/lib/alert/alert.ts', 'src/lib/alert/index.ts'],
+    targetPrefix: 'src/app/gremorie/alert',
+    srcStrip: 'src/lib/alert/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-progress',
+    framework: 'ng',
+    title: 'Progress (Angular)',
+    description:
+      'Determinate progress bar (0-100) wrapping Spartan-ng brain Progress with the Gremorie visual surface. Pass value=null for indeterminate. Mirrors React Progress from @gremorie/rx-feedback.',
+    categories: ['feedback', 'primitives'],
+    packageRoot: 'packages/ng-feedback',
+    sourceFiles: ['src/lib/progress/progress.ts', 'src/lib/progress/index.ts'],
+    targetPrefix: 'src/app/gremorie/progress',
+    srcStrip: 'src/lib/progress/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-skeleton',
+    framework: 'ng',
+    title: 'Skeleton (Angular)',
+    description:
+      'Placeholder block for loading states - a pulsing rectangle that reserves layout while data is fetched. Shape with width/height utility classes. Mirrors React Skeleton from @gremorie/rx-feedback.',
+    categories: ['feedback', 'primitives'],
+    packageRoot: 'packages/ng-feedback',
+    sourceFiles: ['src/lib/skeleton/skeleton.ts', 'src/lib/skeleton/index.ts'],
+    targetPrefix: 'src/app/gremorie/skeleton',
+    srcStrip: 'src/lib/skeleton/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+
+  // ---------------------------------------------------------------------------
   // Angular: AI primitives
   // ---------------------------------------------------------------------------
   {
