@@ -1,0 +1,181 @@
+---
+title: Chart (bar)
+description: "Bar chart artifact rendering a schema-driven dataset emitted by the model."
+---
+
+## Overview
+
+A chart artifact that turns a small JSON payload into a real bar chart.
+The model emits an array of `{ category, value }` rows plus a config
+that names the series and binds it to a chart token color. The artifact
+validates the payload, renders a `BarChart` from `@gremorie/rx-data`,
+and exposes an accessible data table for screen readers.
+
+This is the canonical example of "schema in, UI out" — the model
+designs the dataset, the artifact handles axes, ticks, layout, and
+accessibility.
+
+## Preview
+
+<ArtifactPreview name="chart-bar" />
+
+## Schema
+
+The LLM returns structured output matching this shape:
+
+```ts
+{
+  type: "chart-bar",
+  data: Array<{ category: string; value: number }>,
+  config: { xKey: string; yKey: string; label: string },
+}
+```
+
+## Anatomy
+
+1. **Card / CardHeader / CardTitle** - frame and metadata
+2. **Badge (outline)** - signals the artifact type
+3. **BarChart** - the rx-data primitive rendering the dataset
+4. **ChartConfig** - serializable map from value key to label + color token
+5. **Schema preview card** - exposes the contract for inspection
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+</Tabs>
+
+## Prompt examples
+
+Sample prompts that produce valid output for this artifact:
+
+- "Show me Q3 revenue by region as a bar chart."
+- "Compare monthly active users for the last 6 months."
+- "Plot ticket counts by priority bucket."
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
+import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
+
+const SCHEMA = `{
+  type: "chart-bar",
+  data: Array<{ category: string; value: number }>,
+  config: { xKey: string; yKey: string; label: string },
+}`;
+
+const DATA: Datum[] = [
+  { category: "Q1", value: 42000 },
+  { category: "Q2", value: 51000 },
+  { category: "Q3", value: 48000 },
+  { category: "Q4", value: 62000 },
+];
+
+const CONFIG: ChartConfig = {
+  value: { label: "Revenue", color: "var(--chart-1)" },
+};
+
+export function ChartBar() {
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <CardTitle>Quarterly revenue</CardTitle>
+              <CardDescription>
+                Generated from a chart schema returned by the LLM.
+              </CardDescription>
+            </div>
+            <Badge variant="outline">JSON Schema</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <BarChart data={DATA} config={CONFIG} xKey="category" />
+        </CardContent>
+      </Card>
+      <Card className="bg-muted/30">
+        <CardHeader>
+          <CardTitle className="text-sm">Schema</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <pre className="overflow-x-auto text-xs font-mono text-muted-foreground">
+            {SCHEMA}
+          </pre>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Streaming behavior
+
+<Callout type="info">
+  This artifact renders after the JSON payload parses. Partial payloads
+  are deferred until `data` is a valid array — the chart never renders
+  half a dataset.
+</Callout>
+
+## Related
+
+- [BarChart](/components/data/bar-chart)
+- [Artifacts overview](/artifacts)

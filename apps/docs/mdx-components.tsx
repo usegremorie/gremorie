@@ -9,6 +9,7 @@ import * as TabsComponents from "fumadocs-ui/components/tabs";
 import { TypeTable } from "fumadocs-ui/components/type-table";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
+import { ArtifactPreview } from "@/components/preview/artifacts";
 import { BlockPreview } from "@/components/preview/blocks";
 
 import type { MDXComponents } from "mdx/types";
@@ -40,6 +41,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Step,
     Steps,
     TypeTable,
+    ArtifactPreview,
     BlockPreview,
     ...components
   };

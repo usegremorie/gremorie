@@ -1,0 +1,36 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "artifact-markdown-doc",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Markdown document artifact",
+  "description": "Document artifact rendering streamed Markdown with prose typography. Composes Card + Badge with a prose article wrapper.",
+  "categories": [
+    "artifacts",
+    "document"
+  ],
+  "dependencies": [
+    "react"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-card",
+    "rx-badge"
+  ],
+  "files": [
+    {
+      "path": "markdown-doc.tsx",
+      "content": "\"use client\";\n\nimport {\n  Badge,\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@gremorie/rx-display\";\n\nexport function MarkdownDoc() {\n  return (\n    <Card>\n      <CardHeader>\n        <div className=\"flex items-center justify-between gap-3\">\n          <div>\n            <CardTitle>weekly-status.md</CardTitle>\n            <CardDescription>\n              Rendered from streamed Markdown returned by the LLM.\n            </CardDescription>\n          </div>\n          <Badge variant=\"outline\">Markdown</Badge>\n        </div>\n      </CardHeader>\n      <CardContent>\n        <article className=\"prose prose-sm max-w-none dark:prose-invert\">\n          <h2>Weekly status</h2>\n          <p>\n            The team shipped 2 major surfaces this week and unblocked 3\n            long-standing issues. Velocity is steady and the team feels\n            unblocked heading into next sprint.\n          </p>\n          <h3>Shipped</h3>\n          <ul>\n            <li>Auth flow with GitHub provider</li>\n            <li>Dashboard analytics widget</li>\n            <li>Settings page with sticky save bar</li>\n          </ul>\n          <h3>Blockers</h3>\n          <p>\n            Waiting on an API key for the analytics provider. ETA Monday.\n          </p>\n          <blockquote>\n            Note: the empty-state pattern is now reusable across all\n            zero-data surfaces.\n          </blockquote>\n        </article>\n      </CardContent>\n    </Card>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/artifacts/markdown-doc/markdown-doc.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use artifact-markdown-doc.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

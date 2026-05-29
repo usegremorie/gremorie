@@ -1,0 +1,185 @@
+---
+title: Form (schema)
+description: "Form artifact generated from a JSON Schema of fields, with validation and submit."
+---
+
+## Overview
+
+A form artifact for when the model designs the form on the fly. Emits
+a JSON schema of fields (`text`, `email`, `checkbox`, etc.); the
+artifact maps each field to the right `rx-forms` primitive (`Input`,
+`Checkbox`, `Label`) and wires submit.
+
+This is the artifact for adaptive intake — onboarding flows, surveys,
+or any case where the questions depend on what the model just learned
+about the user.
+
+## Preview
+
+<ArtifactPreview name="form-schema" />
+
+## Schema
+
+The LLM returns structured output matching this shape:
+
+```ts
+{
+  type: "form-schema",
+  fields: Array<{
+    type: "text" | "email" | "checkbox" | "number";
+    name: string;
+    label: string;
+    required?: boolean;
+    placeholder?: string;
+  }>,
+  submitLabel?: string,
+}
+```
+
+## Anatomy
+
+1. **Card / CardHeader / CardTitle** - frame and badge
+2. **Field row** (`Label` + control) - rendered per field
+3. **Input / Checkbox** - rx-forms primitives mapped from `type`
+4. **Button (submit)** - full-width submit with transient confirmation
+5. **Schema preview** - exposes the JSON contract for inspection
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+</Tabs>
+
+## Prompt examples
+
+Sample prompts that produce valid output for this artifact:
+
+- "Ask the user for their company, work email, and newsletter opt-in."
+- "Build a 3-question signup form for the beta program."
+- "Generate a feedback form with rating, comment, and contact opt-in."
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@gremorie/rx-display";
+import { Button, Checkbox, Input, Label } from "@gremorie/rx-forms";
+
+export function FormSchema() {
+  const [submitted, setSubmitted] = useState(false);
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>Generated form</CardTitle>
+            <CardDescription>
+              Built from a 3-field schema returned by the LLM.
+            </CardDescription>
+          </div>
+          <Badge variant="outline">Field schema</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSubmitted(true);
+            setTimeout(() => setSubmitted(false), 2000);
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="fs-company">Company name</Label>
+            <Input id="fs-company" required />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="fs-email">Work email</Label>
+            <Input id="fs-email" type="email" required />
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="fs-newsletter" />
+            <Label htmlFor="fs-newsletter" className="text-sm font-normal">
+              Subscribe to monthly updates
+            </Label>
+          </div>
+          <Button type="submit" className="w-full">
+            {submitted ? "Sent!" : "Submit"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Streaming behavior
+
+<Callout type="info">
+  This artifact renders after the field schema parses. Fields appear
+  all at once to preserve form layout; partial parses are buffered.
+</Callout>
+
+## Related
+
+- [Input](/components/forms/input)
+- [Checkbox](/components/forms/checkbox)
+- [Label](/components/forms/label)
+- [Artifacts overview](/artifacts)

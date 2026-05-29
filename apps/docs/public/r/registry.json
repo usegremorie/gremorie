@@ -1541,6 +1541,113 @@
         "rx-utils",
         "rx-button"
       ]
+    },
+    {
+      "name": "artifact-chart-bar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Chart (bar) artifact",
+      "description": "Bar chart artifact rendering a schema-driven dataset emitted by the model. Composes BarChart (rx-data) with Card + Badge for framing.",
+      "categories": [
+        "artifacts",
+        "chart"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-bar-chart"
+      ]
+    },
+    {
+      "name": "artifact-code-block",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Code block artifact",
+      "description": "Syntax-highlighted code artifact with copy-to-clipboard. Composes CodeBlock (rx-ai) with Card + Badge for framing.",
+      "categories": [
+        "artifacts",
+        "code"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-code-block"
+      ]
+    },
+    {
+      "name": "artifact-markdown-doc",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Markdown document artifact",
+      "description": "Document artifact rendering streamed Markdown with prose typography. Composes Card + Badge with a prose article wrapper.",
+      "categories": [
+        "artifacts",
+        "document"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge"
+      ]
+    },
+    {
+      "name": "artifact-data-table",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Data table artifact",
+      "description": "Filterable table artifact rendering JSON rows. Composes Table (rx-display) with Input filter, Badge status, and lucide Search icon.",
+      "categories": [
+        "artifacts",
+        "data"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-table",
+        "rx-input"
+      ]
+    },
+    {
+      "name": "artifact-form-schema",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Form (schema) artifact",
+      "description": "Form artifact generated from a JSON field schema with submit. Composes Input, Checkbox, Label, Button (rx-forms) with Card + Badge.",
+      "categories": [
+        "artifacts",
+        "form"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-input",
+        "rx-checkbox",
+        "rx-label",
+        "rx-button"
+      ]
+    },
+    {
+      "name": "artifact-calculator",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Calculator artifact",
+      "description": "Interactive tool-call artifact with editable inputs, operator toggle, and live result. Composes Input, Label, Button (rx-forms) with Card + Badge.",
+      "categories": [
+        "artifacts",
+        "interactive"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-card",
+        "rx-badge",
+        "rx-input",
+        "rx-label",
+        "rx-button"
+      ]
     }
   ]
 }

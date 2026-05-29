@@ -3,5 +3,13 @@
   "title": "Artifacts",
   "description": "AI generative outputs",
   "icon": "Sparkles",
-  "pages": ["index"]
+  "pages": [
+    "index",
+    "chart-bar",
+    "code-block",
+    "markdown-doc",
+    "data-table",
+    "form-schema",
+    "calculator"
+  ]
 }
