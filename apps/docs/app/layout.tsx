@@ -63,7 +63,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Skip to main content
         </a>
-        <RootProvider>{children}</RootProvider>
+        <RootProvider
+          search={{
+            enabled: true,
+            options: {
+              type: "fetch",
+              api: "/api/search"
+            }
+          }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );
