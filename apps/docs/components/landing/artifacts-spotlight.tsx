@@ -74,10 +74,27 @@ export function ArtifactsSpotlight() {
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Chart artifact - real BarChart from rx-data */}
-          <Card className="gap-0 overflow-hidden py-0">
+          <Card className="relative gap-0 overflow-hidden py-0">
+            {/* Subtle accent halo behind the chart - chart-1 tone so it ties
+                back to the bars themselves. Decorative. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 opacity-50"
+              style={{
+                background:
+                  "radial-gradient(ellipse at top, color-mix(in oklch, var(--chart-1) 14%, transparent), transparent 70%)",
+              }}
+            />
             <CardHeader className="flex-row items-center justify-between border-b border-border/60 py-3">
               <div className="flex items-center gap-2">
-                <span className="inline-flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <span
+                  className="inline-flex size-7 items-center justify-center rounded-md"
+                  style={{
+                    background:
+                      "color-mix(in oklch, var(--chart-1) 14%, transparent)",
+                    color: "var(--chart-1)",
+                  }}
+                >
                   <BarChart3 className="size-3.5" aria-hidden="true" />
                 </span>
                 <div className="flex flex-col gap-0.5">
@@ -87,9 +104,14 @@ export function ArtifactsSpotlight() {
                   </CardDescription>
                 </div>
               </div>
-              <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
-                Streaming
-              </Badge>
+              <div className="flex items-center gap-1.5">
+                <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
+                  JSON Schema
+                </Badge>
+                <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
+                  Streaming
+                </Badge>
+              </div>
             </CardHeader>
 
             <CardContent className="p-6">
@@ -116,10 +138,20 @@ export function ArtifactsSpotlight() {
           </Card>
 
           {/* Code artifact - real CodeBlock from rx-ai (shiki highlighting) */}
-          <Card className="gap-0 overflow-hidden py-0">
+          <Card className="relative gap-0 overflow-hidden py-0">
+            {/* Brand-tinted halo - code artifacts are the AI-native specialty,
+                so the violet brand color ties them to the AI value prop. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 opacity-50"
+              style={{
+                background:
+                  "radial-gradient(ellipse at top, var(--brand-subtle), transparent 70%)",
+              }}
+            />
             <CardHeader className="flex-row items-center justify-between border-b border-border/60 py-3">
               <div className="flex items-center gap-2">
-                <span className="inline-flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+                <span className="inline-flex size-7 items-center justify-center rounded-md bg-brand-subtle text-brand">
                   <Code2 className="size-3.5" aria-hidden="true" />
                 </span>
                 <div className="flex flex-col gap-0.5">
@@ -129,9 +161,14 @@ export function ArtifactsSpotlight() {
                   </CardDescription>
                 </div>
               </div>
-              <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
-                Runtime
-              </Badge>
+              <div className="flex items-center gap-1.5">
+                <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
+                  TSX
+                </Badge>
+                <Badge variant="outline" className="text-[10px] uppercase tracking-wider">
+                  Runtime
+                </Badge>
+              </div>
             </CardHeader>
 
             <CardContent className="p-0">

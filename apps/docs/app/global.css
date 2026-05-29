@@ -41,6 +41,10 @@
 @layer base {
   html {
     scrollbar-gutter: stable;
+    /* Smooth scroll for in-page anchor links on the landing.
+       Respects prefers-reduced-motion via the global override in
+       ng-core/theme.css (sets scroll-behavior to auto). */
+    scroll-behavior: smooth;
   }
   :root {
     --fd-layout-width: 100vw;

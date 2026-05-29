@@ -19,6 +19,11 @@ import {
   CardTitle,
 } from "@gremorie/rx-display";
 
+/**
+ * Each category gets its own accent. AI gets the brand violet (it is the
+ * flagship category). The rest rotate through chart-1..5 so the 2x4 grid
+ * has visible rhythm without becoming a rainbow.
+ */
 const categories = [
   {
     name: "AI",
@@ -27,6 +32,8 @@ const categories = [
     slug: "ai",
     description:
       "Conversation, Message, PromptInput, Reasoning, Artifact, Canvas.",
+    accent: "var(--brand)",
+    accentSubtle: "var(--brand-subtle)",
   },
   {
     name: "Forms",
@@ -34,6 +41,8 @@ const categories = [
     icon: Edit,
     slug: "forms",
     description: "Button, Input, Select, Checkbox, Switch, Form, Calendar.",
+    accent: "var(--chart-2)",
+    accentSubtle: "color-mix(in oklch, var(--chart-2) 12%, transparent)",
   },
   {
     name: "Overlays",
@@ -41,6 +50,8 @@ const categories = [
     icon: Layers,
     slug: "overlays",
     description: "Dialog, Drawer, Sheet, Popover, Tooltip, Command.",
+    accent: "var(--chart-3)",
+    accentSubtle: "color-mix(in oklch, var(--chart-3) 12%, transparent)",
   },
   {
     name: "Display",
@@ -48,6 +59,8 @@ const categories = [
     icon: Eye,
     slug: "display",
     description: "Card, Badge, Avatar, Accordion, Carousel, Table.",
+    accent: "var(--chart-4)",
+    accentSubtle: "color-mix(in oklch, var(--chart-4) 12%, transparent)",
   },
   {
     name: "Navigation",
@@ -55,6 +68,8 @@ const categories = [
     icon: Compass,
     slug: "navigation",
     description: "Tabs, Sidebar, Breadcrumb, Pagination, NavigationMenu.",
+    accent: "var(--chart-5)",
+    accentSubtle: "color-mix(in oklch, var(--chart-5) 12%, transparent)",
   },
   {
     name: "Containers",
@@ -62,6 +77,8 @@ const categories = [
     icon: LayoutGrid,
     slug: "containers",
     description: "ScrollArea, Stack, AspectRatio, Resizable.",
+    accent: "var(--chart-1)",
+    accentSubtle: "color-mix(in oklch, var(--chart-1) 12%, transparent)",
   },
   {
     name: "Feedback",
@@ -69,6 +86,8 @@ const categories = [
     icon: Bell,
     slug: "feedback",
     description: "Alert, Progress, Skeleton.",
+    accent: "var(--chart-2)",
+    accentSubtle: "color-mix(in oklch, var(--chart-2) 12%, transparent)",
   },
   {
     name: "Data",
@@ -77,12 +96,19 @@ const categories = [
     slug: "data",
     description:
       "AreaChart, LineChart, BarChart, ScatterChart, PieChart, RadarChart.",
+    accent: "var(--chart-3)",
+    accentSubtle: "color-mix(in oklch, var(--chart-3) 12%, transparent)",
   },
 ];
 
 /**
  * Dogfood: category tiles composed with rx-display Card + Badge,
  * "View all components" CTA uses rx-forms Button (ghost).
+ *
+ * Visual rhythm: each tile has its own accent (icon tile bg + hover border).
+ * Aspect-square keeps the grid uniform and gives the cards a "tile" feel
+ * vs. the previous compressed rectangle. Hover lift + the icon tile scaling
+ * adds tactile feedback without being noisy.
  */
 export function ComponentsShowcase() {
   return (
@@ -111,17 +137,37 @@ export function ComponentsShowcase() {
             <Link
               key={cat.slug}
               href="/components/overview"
-              className="group block"
+              className="group block focus-visible:outline-none"
             >
-              <Card className="h-full gap-3 py-5 transition-all group-hover:border-primary/40 group-hover:shadow-sm">
+              <Card
+                className="relative h-full gap-3 overflow-hidden py-5 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:shadow-md group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring"
+                style={{
+                  ["--cat-accent" as string]: cat.accent,
+                  ["--cat-accent-subtle" as string]: cat.accentSubtle,
+                }}
+              >
+                {/* Faint top-right accent halo per tile - sets it apart
+                    without overpowering the description. */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-60"
+                  style={{ background: "var(--cat-accent-subtle)" }}
+                />
+
                 <CardHeader className="gap-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex size-9 items-center justify-center rounded-md bg-muted text-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
-                      <cat.icon className="size-4.5" aria-hidden="true" />
+                    <div
+                      className="flex size-10 items-center justify-center rounded-md transition-transform duration-200 group-hover:scale-110"
+                      style={{
+                        background: "var(--cat-accent-subtle)",
+                        color: "var(--cat-accent)",
+                      }}
+                    >
+                      <cat.icon className="size-5" aria-hidden="true" />
                     </div>
                     <Badge variant="secondary">{cat.count}</Badge>
                   </div>
-                  <CardTitle className="text-sm">{cat.name}</CardTitle>
+                  <CardTitle className="text-base">{cat.name}</CardTitle>
                   <CardDescription className="text-xs leading-relaxed">
                     {cat.description}
                   </CardDescription>

@@ -99,11 +99,16 @@ export function HeroDemo() {
       timers.current.forEach((t) => clearTimeout(t));
       timers.current = [];
 
+      // Phase timings tuned so the FIRST visible moment is "reasoning"
+      // text streaming, not a long "Thinking..." idle. idle -> reasoning
+      // shortened from 600ms to 250ms, and reasoning -> assistant from
+      // 3200ms to 2100ms so the cycle reaches assistant copy faster on
+      // first paint - casual visitors no longer see a stuck idle.
       setPhase("idle");
-      timers.current.push(setTimeout(() => setPhase("reasoning"), 600));
-      timers.current.push(setTimeout(() => setPhase("assistant"), 3200));
-      timers.current.push(setTimeout(() => setPhase("done"), 7800));
-      timers.current.push(setTimeout(run, 11000));
+      timers.current.push(setTimeout(() => setPhase("reasoning"), 250));
+      timers.current.push(setTimeout(() => setPhase("assistant"), 2100));
+      timers.current.push(setTimeout(() => setPhase("done"), 6800));
+      timers.current.push(setTimeout(run, 10500));
     }
     run();
     return () => {
