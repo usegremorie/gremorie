@@ -1,88 +1,168 @@
 ---
 title: Progress
-description: Determinate progress indicator (0-100).
+description: "Determinate horizontal progress bar with token-driven track and indicator."
 ---
 
 import { ProgressPreview } from "@/components/preview/feedback/feedback";
+import { Progress } from "@gremorie/rx-feedback";
+
+## Overview
+
+`Progress` is the **determinate progress primitive**: a horizontal bar that fills from 0 to 100 percent as a long-running task advances. Wraps Radix Progress so the underlying `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and `role="progressbar"` semantics are handled for you.
+
+Use Progress when **percent complete is known**: uploads with byte counts, multi-step forms with explicit steps, batch jobs reporting from the server. For unknown durations, reach for `Skeleton` or a spinner instead - showing a determinate bar that does not actually correlate with progress feels worse than no bar at all.
 
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <ProgressPreview />
 </div>
 
+## Installation
 
-`Progress` shows progress against a known total - uploads, multi-step
-forms, batch jobs. For unknown duration, prefer `Skeleton` or a
-spinner. Always pair the bar with a numeric value or label; silent
-bars confuse users about the actual state.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular Progress lands in a follow-up rev.
+npx gremorie@latest add rx-progress
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-progress
+pnpm dlx gremorie@latest add rx-progress
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-progress
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-progress
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { Progress } from "@gremorie/rx-feedback";
 
-export function UploadProgress({ percent }: { percent: number }) {
+export function UploadProgress({ value }) {
   return (
-    <div className="grid gap-2">
-      <div className="flex items-baseline justify-between text-sm">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between text-sm text-muted-foreground">
         <span>Uploading</span>
-        <span>{percent}%</span>
+        <span>{value}%</span>
       </div>
-      <Progress value={percent} />
+      <Progress value={value} />
     </div>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The value contract will map directly to a one-way input on a structural directive.
+</Callout>
+</Tab>
 </Tabs>
 
 ## API
 
-- `value` (0-100) - the current progress. Required for determinate.
+### `<Progress>`
 
-## Best practices
+The root and indicator together. Renders a Radix `Root` styled as a 8 px track plus an `Indicator` that translates horizontally based on `value`. The track and indicator slots are exposed via `data-slot="progress"` and `data-slot="progress-indicator"`.
 
-- **Always show the numeric value.** A bare bar leaves users guessing -
-  pair it with a label like `42%` or `3 of 8`.
-- **Use Skeleton for unknown duration.** Progress should only appear
-  when you can compute percent complete.
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number \| null` | - | Current value, 0 to 100. Drives the indicator translation. Set to `null` to enter the indeterminate state (the indicator stops responding to value and you take over via a custom class). |
+| `max` | `number` | `100` | Upper bound. Most callers leave this at 100 and pass a percentage; pass a different `max` (e.g. file bytes) only when the source value is naturally in that range. |
+| `getValueLabel` | `(value: number, max: number) => string` | percentage | Custom label generator for `aria-valuetext`. Override to localize ("42 percent") or to expose units ("3 of 8 steps"). |
+| `className` | `string` | - | Applied to the root track. Override height with care - 8 px (`h-2`) matches the rest of the surface. |
+| `...props` | `React.ComponentProps<typeof ProgressPrimitive.Root>` | - | All Radix Root attributes. |
 
-## Reference
+<Callout type="warn">
+The bundled indicator is determinate. To build an indeterminate variant, pass `value={null}` and add a custom class on the indicator (or fork the component) to animate a moving stripe. Showing an indeterminate bar with a fake animated value is a tracking-by-illusion anti-pattern.
+</Callout>
 
-- React source: `packages/rx-feedback/src/lib/progress/progress.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-progress.json`.
+## Composition
+
+1. **`<Progress value={n} />`** is the whole component - there is no separate `<ProgressIndicator>` slot to compose at the call site.
+2. **Pair with a label**: a silent bar leaves the user guessing. Mount a small `<span>` above or beside it with the percent, the step count, or the byte progress.
+3. **Inside an `Alert` or a `Card`**: progress that explains *what* is loading reads better than progress that floats alone. Wrap with a context line so users know why they are waiting.
+
+## Variations
+
+### With label
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex max-w-md flex-col gap-2">
+    <div className="flex justify-between text-sm">
+      <span>Uploading invoice.pdf</span>
+      <span className="text-muted-foreground">66%</span>
+    </div>
+    <Progress value={66} />
+  </div>
+</div>
+
+```tsx
+<div className="flex flex-col gap-2">
+  <div className="flex justify-between text-sm">
+    <span>Uploading {file.name}</span>
+    <span className="text-muted-foreground">{value}%</span>
+  </div>
+  <Progress value={value} />
+</div>
+```
+
+The default shape for any long-running task with a known total. Keep the value text close to the bar so the two read as one widget.
+
+### Stacked steps
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex max-w-md flex-col gap-3">
+    <Progress value={25} />
+    <Progress value={50} />
+    <Progress value={75} />
+    <Progress value={100} />
+  </div>
+</div>
+
+```tsx
+{steps.map((step) => (
+  <Progress key={step.id} value={step.percent} />
+))}
+```
+
+For multi-stream tasks (parallel uploads, batch jobs reporting per-item progress). Pair each row with a per-row label outside the bar.
+
+### Thin bar inside a card header
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Sync</CardTitle>
+    <Progress value={value} className="h-1" />
+  </CardHeader>
+  <CardContent>{content}</CardContent>
+</Card>
+```
+
+Drop the height to `h-1` when the bar sits at the top of a card as a subtle progress sliver rather than a primary surface.
+
+## Accessibility
+
+- **Role and value**: Radix sets `role="progressbar"`, `aria-valuemin="0"`, `aria-valuemax="{max}"`, and `aria-valuenow="{value}"` automatically. Screen readers announce the percentage on every change.
+- **Value label**: override `getValueLabel` for localized announcements or non-percentage units. Default is `"{value}/{max}"`-style.
+- **No keyboard interaction**: Progress is non-interactive. If you need a draggable scrubber, reach for `Slider` instead.
+- **Indeterminate state**: pass `value={null}` to drop `aria-valuenow` so assistive tech announces the task as in progress without a misleading number.
+- **Reduced motion**: the indicator uses `transition-all` for smooth fills. Users with `prefers-reduced-motion: reduce` automatically get the global motion override - no extra config needed.
+
+## Related
+
+- [Skeleton](/components/feedback/skeleton) - reach for Skeleton for unknown-duration fetches with no determinate value.
+- [Alert](/components/feedback/alert) - sibling feedback primitive for context-setting messages while progress runs.
+- [Slider](/components/forms/slider) - sibling primitive with a draggable thumb when the user controls the value.
