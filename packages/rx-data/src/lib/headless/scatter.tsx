@@ -27,14 +27,21 @@ export interface ScatterGeometry {
  */
 export function useScatter(dataKey: string): ScatterGeometry {
   const ctx = useChart();
+  const { register, unregister, data: ctxData } = ctx;
+
+  // See bar.tsx: ctx in deps causes infinite register/unregister loop.
+  const dataRef = React.useRef(ctxData);
+  React.useEffect(() => {
+    dataRef.current = ctxData;
+  });
 
   React.useEffect(() => {
-    ctx.register({
+    register({
       key: dataKey,
-      values: () => ctx.data.map((row) => Number(row[dataKey])),
+      values: () => dataRef.current.map((row) => Number(row[dataKey])),
     });
-    return () => ctx.unregister(dataKey);
-  }, [dataKey, ctx.register, ctx.unregister, ctx]);
+    return () => unregister(dataKey);
+  }, [dataKey, register, unregister]);
 
   const xs = ctx.data.map((d) => Number(d[ctx.xKey]));
   const lo = xs.length ? Math.min(...xs) : 0;

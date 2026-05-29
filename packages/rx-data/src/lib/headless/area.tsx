@@ -41,16 +41,23 @@ export function Area({
   ...pathProps
 }: AreaProps) {
   const ctx = useChart();
+  const { register, unregister, data: ctxData } = ctx;
 
   // Self-register values for the shared Y domain. We register before paint
-  // so the domain is correct on first render.
+  // so the domain is correct on first render. See bar.tsx for why ctx must
+  // NOT be in the effect deps - it causes register/unregister to loop.
+  const dataRef = React.useRef(ctxData);
   React.useEffect(() => {
-    ctx.register({
+    dataRef.current = ctxData;
+  });
+
+  React.useEffect(() => {
+    register({
       key: dataKey,
-      values: () => ctx.data.map((row) => Number(row[dataKey])),
+      values: () => dataRef.current.map((row) => Number(row[dataKey])),
     });
-    return () => ctx.unregister(dataKey);
-  }, [dataKey, ctx.register, ctx.unregister, ctx]);
+    return () => unregister(dataKey);
+  }, [dataKey, register, unregister]);
 
   const d = computeAreaPath(
     ctx.data,

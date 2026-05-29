@@ -38,14 +38,24 @@ export function Line({
   ...pathProps
 }: LineProps) {
   const ctx = useChart();
+  const { register, unregister, data: ctxData } = ctx;
+
+  // See bar.tsx for the full explanation: depending on `ctx` here loops
+  // forever (register -> bump -> new ctx -> effect re-runs -> unregister
+  // -> bump -> ...). Capture data in a ref and depend only on the stable
+  // register/unregister callbacks plus dataKey.
+  const dataRef = React.useRef(ctxData);
+  React.useEffect(() => {
+    dataRef.current = ctxData;
+  });
 
   React.useEffect(() => {
-    ctx.register({
+    register({
       key: dataKey,
-      values: () => ctx.data.map((row) => Number(row[dataKey])),
+      values: () => dataRef.current.map((row) => Number(row[dataKey])),
     });
-    return () => ctx.unregister(dataKey);
-  }, [dataKey, ctx.register, ctx.unregister, ctx]);
+    return () => unregister(dataKey);
+  }, [dataKey, register, unregister]);
 
   const d = computeLinePath(ctx.data, ctx.xKey, dataKey, ctx.xScale, ctx.yScale);
 

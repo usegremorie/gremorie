@@ -17,14 +17,26 @@ export interface BarRect {
  */
 export function useBar(dataKey: string): BarRect[] {
   const ctx = useChart();
+  const { register, unregister, data: ctxData } = ctx;
+
+  // Capture latest data in a ref so the registered `values` callback always
+  // reads fresh data without forcing the effect to re-run on every render.
+  // ctx is a fresh object identity each render (useMemo deps include
+  // scales/domain), so depending on it here caused register/unregister to
+  // loop: register -> bump() in provider -> new ctx -> effect runs again ->
+  // cleanup unregister -> bump() -> infinite "Maximum update depth" loop.
+  const dataRef = React.useRef(ctxData);
+  React.useEffect(() => {
+    dataRef.current = ctxData;
+  });
 
   React.useEffect(() => {
-    ctx.register({
+    register({
       key: dataKey,
-      values: () => ctx.data.map((row) => Number(row[dataKey])),
+      values: () => dataRef.current.map((row) => Number(row[dataKey])),
     });
-    return () => ctx.unregister(dataKey);
-  }, [dataKey, ctx.register, ctx.unregister, ctx]);
+    return () => unregister(dataKey);
+  }, [dataKey, register, unregister]);
 
   const data = ctx.data;
   const xKey = ctx.xKey;
