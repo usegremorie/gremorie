@@ -1,64 +1,164 @@
 ---
 title: Image
-description: Renders an Experimental_GeneratedImage (Vercel AI SDK) as a data-URI img. Use to display model-generated images.
+description: Render a base64 Experimental_GeneratedImage from the Vercel AI SDK as an inline data-URI img with sensible chrome defaults.
 ---
 
-`Image` is part of the **AI utilities family** brought from Bridge into Gremorie in Fase 5j.
+## Overview
 
-## Install
+`Image` is the surface for model-generated images. It accepts an `Experimental_GeneratedImage` from the Vercel `ai` package (base64 string + media type) and renders it as a single `<img>` with a data URI src, a default `rounded-md` border and `max-w-full` to keep layouts safe.
 
-<Tabs items={["Angular", "React"]}>
+There is no fetch, no signed URL flow and no client-side decoding logic - by the time the AI SDK hands you the part, the base64 is ready. This primitive's only job is to render it consistently across artifacts, chat messages and dashboards.
 
-<Tab value="Angular">
+Use it inside `Artifact` for image-only artifacts, inside `MessageContent` for inline replies, or standalone wherever a generated image appears in your UI.
 
-Em breve. A categoria AI no Angular ainda so cobre PromptInput. Use a edicao React por enquanto.
+## Installation
 
-</Tab>
-
-<Tab value="React">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add rx-image
+npx gremorie@latest add rx-image
 ```
-
 </Tab>
-
+<Tab value="pnpm">
+```bash
+pnpm dlx gremorie@latest add rx-image
+```
+</Tab>
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-image
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-image
+```
+</Tab>
 </Tabs>
+
+Brings in the `ai` package types as a peer dependency.
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-Em breve.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
-import {
-  Image,
-} from '@gremorie/rx-ai';
+import { Image } from "@gremorie/rx-ai";
 
-export function Demo() {
+export function Example({ image }) {
   return (
     <Image
       base64={image.base64}
-      uint8Array={image.uint8Array}
       mediaType={image.mediaType}
-      alt="Generated chart"
+      alt="Bar chart of weekly conversions"
     />
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Use the React edition for now, or open an issue to prioritize this primitive.
+</Callout>
+</Tab>
 </Tabs>
 
-## Notes
+## API
 
-- This primitive was migrated from Bridge into `@gremorie/rx-ai` as part of the Fase 5j utilities batch.
-- Closes the AI category parity with Bridge (28 of 29 primitives shipped, PromptInput first in Fase 5).
+### `<Image>`
+
+Extends `Experimental_GeneratedImage` from the `ai` package.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `base64` | `string` | - | **Required.** The base64-encoded image data. Used to build the `data:` URI. |
+| `mediaType` | `string` | - | **Required.** Mime type (`"image/png"`, `"image/jpeg"`, `"image/webp"`, ...). Used in the `data:` URI prefix. |
+| `uint8Array` | `Uint8Array` | - | Forwarded from `Experimental_GeneratedImage` but ignored by the renderer. The data URI is built from `base64`. |
+| `alt` | `string` | - | **Required for a11y.** Description of the image content. Pass a short factual description, not `"AI generated image"`. |
+| `className` | `string` | - | Extra classes on the `<img>`. Merged with the default `h-auto max-w-full overflow-hidden rounded-md`. |
+
+All other `<img>` attributes flow through (e.g. `width`, `height`, `loading`, `decoding`, `style`).
+
+## Composition
+
+1. **Render with the part from the AI SDK**. The `Experimental_GeneratedImage` shape is what the SDK hands you in `image-part` messages.
+2. **Inside `Artifact`** when the image is the artifact itself.
+3. **Inside `MessageContent`** when the image is inline content in a chat reply.
+4. **With sizing** via `className` (`size-32`, `max-w-md`) or explicit `width` / `height` props for layout stability.
+
+## Variations
+
+### Inline generated chart inside a message
+
+Drop the image inside `MessageContent` alongside text and citations.
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <MessageResponse>Here is the weekly conversion trend:</MessageResponse>
+    <Image
+      base64={chart.base64}
+      mediaType={chart.mediaType}
+      alt="Weekly conversion bar chart, 23% up vs. previous week"
+    />
+  </MessageContent>
+</Message>
+```
+
+### Image-only artifact with download action
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>logo.png</ArtifactTitle>
+    <ArtifactActions>
+      <ArtifactAction tooltip="Download" icon={DownloadIcon} onClick={download} />
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <Image base64={logo.base64} mediaType={logo.mediaType} alt="Generated logo" />
+  </ArtifactContent>
+</Artifact>
+```
+
+### Constrained dimensions
+
+When the layout needs a fixed image size, pass explicit dimensions.
+
+```tsx
+<Image
+  base64={image.base64}
+  mediaType={image.mediaType}
+  alt="Thumbnail preview"
+  width={120}
+  height={120}
+  className="size-30 object-cover"
+/>
+```
+
+### Lazy load below the fold
+
+```tsx
+<Image
+  base64={image.base64}
+  mediaType={image.mediaType}
+  alt="..."
+  loading="lazy"
+  decoding="async"
+/>
+```
+
+## Accessibility
+
+- **Always supply `alt`**: There is no built-in fallback. Pass a factual description of what the image contains - for a chart, summarize the trend in words; for a logo, name the brand.
+- **Decorative images**: If the image is purely decorative, pass `alt=""` (not omit) so screen readers skip it cleanly.
+- **No loading state by default**: Base64 images render synchronously, so the typical "loading shimmer" pattern does not apply. If you stream the image (rare for AI SDK output), render a `Skeleton` next to a deferred `Image`.
+- **Reduced motion**: There is no animation. Honor user prefs only if you wrap the image in your own transition.
+- **Color contrast**: When the image carries text (e.g. a generated chart), independently verify that the rendered text passes contrast for embedded content - the primitive cannot inspect the bytes.
+
+## Related
+
+- [Artifact](/components/ai/artifact) - the card chrome around image artifacts
+- [Message](/components/ai/message) - the chat turn that may inline an image
+- [Open in Chat](/components/ai/open-in-chat) - send a generated image back into the conversation
