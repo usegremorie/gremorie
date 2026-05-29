@@ -1,56 +1,51 @@
 ---
 title: Navigation Menu
-description: Top-level mega-menu with grouped link panels.
+description: "Marketing-site primary nav with rich panels. Hover or focus a trigger to open multi-column content under the bar."
 ---
 
 import { NavigationMenuPreview } from "@/components/preview/navigation/navigation";
 
+## Overview
+
+`NavigationMenu` is the marketing-site primary navigation primitive: a horizontal bar of triggers, each opening a rich content panel under the bar. Built on Radix NavigationMenu, it implements the Vercel / Stripe / Tailwind pattern - "Products", "Solutions", "Pricing" with multi-column grids of links and feature blocks under each trigger.
+
+Reach for NavigationMenu when **the header doubles as a discovery surface** - the panels show categorisation and let users browse without clicking through. For app-internal cross-section navigation use [Sidebar](/components/navigation/sidebar); for sibling views inside one page use [Tabs](/components/navigation/tabs); for action menus inside a single screen use [DropdownMenu](/components/overlays/dropdown-menu). Avoid nesting interactive overlays (Dialog, Popover) inside a panel - focus management gets fragile fast.
+
 ## Preview
 
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <NavigationMenuPreview />
 </div>
 
+## Installation
 
-`NavigationMenu` is the site-header mega-menu. Hover or focus a
-trigger to reveal a secondary panel of grouped links with feature
-highlights. Built on Radix NavigationMenu - full keyboard navigation
-and ARIA semantics out of the box.
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-# Angular NavigationMenu lands in a follow-up rev.
+npx gremorie@latest add rx-navigation-menu
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-navigation-menu
+pnpm dlx gremorie@latest add rx-navigation-menu
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-navigation-menu
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-navigation-menu
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-> Em breve. The Angular edition will ship in a follow-up release.
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import {
   NavigationMenu,
@@ -59,7 +54,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@gremorie/rx-navigation";
 
 export function SiteNav() {
@@ -69,46 +63,238 @@ export function SiteNav() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Products</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4">
+            <ul className="grid w-[400px] gap-2 p-4">
               <li>
-                <NavigationMenuLink href="/products/charts">
-                  Charts
-                </NavigationMenuLink>
+                <NavigationMenuLink href="/ai">AI primitives</NavigationMenuLink>
               </li>
               <li>
-                <NavigationMenuLink href="/products/forms">
-                  Forms
-                </NavigationMenuLink>
+                <NavigationMenuLink href="/forms">Forms</NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="/charts">Charts</NavigationMenuLink>
               </li>
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/pricing">
-            Pricing
-          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
 }
 ```
-
 </Tab>
-
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
 </Tabs>
 
-## Best practices
+## API
 
-- **Reserve for site headers.** For in-app navigation, use Sidebar or
-  Tabs.
-- **Group related items inside a panel.** Random clusters defeat the
-  mega-menu pattern - lump items by feature, audience, or workflow.
-- **Provide a flat link for items without sub-content.** Render a
-  `NavigationMenuLink` directly without `NavigationMenuTrigger` for
-  pages like "Pricing" or "About".
+### `<NavigationMenu>`
 
-## Reference
+Root container. Wraps Radix `NavigationMenu.Root`.
 
-- React source: `packages/rx-navigation/src/lib/navigation-menu/navigation-menu.tsx`.
-- Registry item: `https://gremorie.com/r/rx/rx-navigation-menu.json`.
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `viewport` | `boolean` | `true` | When `true`, mounts `<NavigationMenuViewport>` automatically so panels share a single sliding container. Set `false` to render each panel inline under its trigger. |
+| `defaultValue` | `string` | - | Uncontrolled initial open menu. |
+| `value` | `string` | - | Controlled open menu. |
+| `onValueChange` | `(value: string) => void` | - | Fires when the open menu changes. |
+| `delayDuration` | `number` | `200` | Hover-open delay in milliseconds. |
+| `skipDelayDuration` | `number` | `300` | Window in which hovering between triggers skips the delay. |
+| `dir` | `"ltr" \| "rtl"` | `"ltr"` | Reading direction. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout axis. |
+
+### `<NavigationMenuList>`
+
+Container for the triggers. Wraps Radix `NavigationMenu.List`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `...props` | `React.ComponentProps<typeof NavigationMenu.List>` | - | Standard list props. |
+
+### `<NavigationMenuItem>`
+
+A single menu (trigger plus content) inside the list. Wraps Radix `NavigationMenu.Item`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | - | Identifier used by Root's controlled `value` / `onValueChange`. |
+
+### `<NavigationMenuTrigger>`
+
+The bar button. Wraps Radix `NavigationMenu.Trigger`. Automatically appends a `ChevronDown` that rotates 180 degrees when the menu is open.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `disabled` | `boolean` | `false` | Disables this trigger. |
+
+### `<NavigationMenuContent>`
+
+The rich panel revealed below the trigger. Wraps Radix `NavigationMenu.Content`. Ships motion-aware animation classes for the four enter / exit directions (`from-start`, `from-end`, `to-start`, `to-end`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `forceMount` | `boolean` | `false` | Force the panel into the DOM even when inactive. |
+
+### `<NavigationMenuLink>`
+
+A link inside the content panel. Wraps Radix `NavigationMenu.Link`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `active` | `boolean` | `false` | Marks the link as the current location; styles via `data-[active=true]`. |
+| `onSelect` | `(event: Event) => void` | - | Fires when the link is activated. Call `event.preventDefault()` to keep the menu open. |
+| `asChild` | `boolean` | `false` | Forward props to the single child (use with framework `Link`). |
+| `href` | `string` | - | Anchor target. |
+
+### `<NavigationMenuViewport>`
+
+The shared sliding container that hosts whichever content panel is active. Mounted automatically by Root when `viewport={true}`. Render manually only when you need precise control over its position.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `forceMount` | `boolean` | `false` | Force the viewport into the DOM even when no menu is open. |
+
+### `<NavigationMenuIndicator>`
+
+Optional pointer arrow that tracks the active trigger. Render as a sibling of the list when you want the visual cue.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `forceMount` | `boolean` | `false` | Force the indicator into the DOM when no menu is active. |
+
+### `navigationMenuTriggerStyle`
+
+Exported `cva` function. Use to style standalone bar links (links without a content panel) so they match the trigger look.
+
+```tsx
+<NavigationMenuItem>
+  <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
+    Pricing
+  </NavigationMenuLink>
+</NavigationMenuItem>
+```
+
+## Composition
+
+1. **`<NavigationMenu>`** owns the open state and (with `viewport={true}`) mounts the shared viewport.
+2. **`<NavigationMenuList>`** holds the triggers horizontally.
+3. **Each `<NavigationMenuItem>`** wraps a `<NavigationMenuTrigger>` plus a `<NavigationMenuContent>`. For standalone bar links (no panel) wrap a `<NavigationMenuLink>` with `navigationMenuTriggerStyle()` instead.
+4. **Inside content**, use a `<ul>` / `<li>` grid with `<NavigationMenuLink>` elements - the panel layout is yours to compose.
+
+When `viewport={true}` (default), all content panels share a single sliding container that resizes between menus. When `viewport={false}`, each `<NavigationMenuContent>` renders inline under its own trigger - useful when the panels live inside a card with a fixed width.
+
+## Variations
+
+### Simple links
+
+```tsx
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/products" className={navigationMenuTriggerStyle()}>
+        Products
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
+        Pricing
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/docs" className={navigationMenuTriggerStyle()}>
+        Docs
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Use as a header bar when every entry is a direct link and no panel is needed.
+
+### Mega menu with content grid
+
+```tsx
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid w-[500px] grid-cols-2 gap-2 p-4">
+          <li>
+            <NavigationMenuLink href="/ai" className="space-y-1">
+              <div className="font-medium">AI primitives</div>
+              <p className="text-sm text-muted-foreground">
+                Chat, prompt, response, tool.
+              </p>
+            </NavigationMenuLink>
+          </li>
+          <li>
+            <NavigationMenuLink href="/forms" className="space-y-1">
+              <div className="font-medium">Forms</div>
+              <p className="text-sm text-muted-foreground">
+                Inputs, selects, validation.
+              </p>
+            </NavigationMenuLink>
+          </li>
+          <li>
+            <NavigationMenuLink href="/charts" className="space-y-1">
+              <div className="font-medium">Charts</div>
+              <p className="text-sm text-muted-foreground">
+                Sequential, categorical, divergent palettes.
+              </p>
+            </NavigationMenuLink>
+          </li>
+          <li>
+            <NavigationMenuLink href="/navigation" className="space-y-1">
+              <div className="font-medium">Navigation</div>
+              <p className="text-sm text-muted-foreground">
+                Tabs, sidebar, breadcrumb.
+              </p>
+            </NavigationMenuLink>
+          </li>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Use as the discovery surface of a marketing site. The two-column grid handles category landings with short descriptions.
+
+### Inline panels (without viewport)
+
+```tsx
+<NavigationMenu viewport={false}>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid w-[280px] gap-1 p-3">
+          <li><NavigationMenuLink href="/blog">Blog</NavigationMenuLink></li>
+          <li><NavigationMenuLink href="/guides">Guides</NavigationMenuLink></li>
+          <li><NavigationMenuLink href="/changelog">Changelog</NavigationMenuLink></li>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Use when each panel has its own width and should drop down right under its trigger without the shared sliding viewport.
+
+## Accessibility
+
+- **WAI-ARIA Menubar pattern**: triggers carry `aria-expanded` and `aria-controls`; content panels carry `aria-labelledby` pointing at their trigger.
+- **Keyboard**: `Tab` enters the bar; `ArrowLeft` / `ArrowRight` move between triggers; `ArrowDown` or `Enter` opens the active trigger's panel; `Escape` closes the open panel and returns focus to the trigger; `Tab` from inside a panel moves into the panel content and eventually out of the menu.
+- **Focus management**: opening a panel does not steal focus from the trigger; users decide when to step into the panel. Inside the panel, `Tab` walks links in DOM order.
+- **Disabled triggers**: render with `aria-disabled="true"` and are skipped during arrow-key navigation.
+- **Active link**: pass `active` on `<NavigationMenuLink>` to set `data-active="true"` for current-location styling.
+
+## Related
+
+- [Sidebar](/components/navigation/sidebar) - app-internal cross-section navigation.
+- [DropdownMenu](/components/overlays/dropdown-menu) - single-trigger action menus.
+- [Menubar](/components/navigation/menubar) - desktop-app File / Edit / View pattern.
