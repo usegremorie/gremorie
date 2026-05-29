@@ -1,7 +1,7 @@
 {
   "root": true,
   "title": "Get Started",
-  "description": "Setup e primeiros passos",
+  "description": "Setup and first steps with Gremorie",
   "icon": "Rocket",
   "pages": ["installation", "first-component", "project-setup", "philosophy", "contributing"]
 }

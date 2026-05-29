@@ -1,7 +1,7 @@
 {
   "root": true,
   "title": "Tokens",
-  "description": "Tokens primitivos, semânticos e de gráficos.",
+  "description": "Design tokens: primitives, semantics, charts",
   "icon": "Palette",
   "pages": ["index", "primitive", "semantic", "chart"]
 }

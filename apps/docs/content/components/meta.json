@@ -1,7 +1,7 @@
 {
   "root": true,
   "title": "Components",
-  "description": "Primitivos do registry — install via gremorie add",
+  "description": "Primitives from the registry, installable via gremorie add",
   "icon": "Component",
   "pages": ["overview", "ai", "forms", "overlays", "display", "containers", "feedback", "navigation", "data"]
 }

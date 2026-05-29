@@ -38,6 +38,34 @@
  * background; opaque overrides make borders look hard.
 \* ---------------------------------------------------------------- */
 
+/* ---------------------------------------------------------------- *\
+ * Section accent colors — consumed by tabs.transform() in
+ * (docs)/[...slug]/layout.tsx to tint each sidebar tab icon by its
+ * section. Pattern from fumadocs.dev (apps/docs/app/global.css).
+ *
+ * Colors are picked to (a) read as distinct from each other at icon
+ * size and (b) stay coherent with the Gremorie brand violet.
+\* ---------------------------------------------------------------- */
+:root {
+  --get-started-color: oklch(0.62 0.18 145); /* emerald */
+  --corpus-color: oklch(0.7 0.16 70); /* amber */
+  --tokens-color: oklch(0.6 0.22 272); /* brand violet */
+  --components-color: oklch(0.58 0.18 250); /* blue */
+  --blocks-color: oklch(0.66 0.18 35); /* orange */
+  --artifacts-color: oklch(0.65 0.22 320); /* fuchsia */
+  --platform-color: oklch(0.55 0.04 240); /* slate */
+}
+
+.dark {
+  --get-started-color: oklch(0.75 0.18 145);
+  --corpus-color: oklch(0.8 0.16 70);
+  --tokens-color: oklch(0.75 0.22 272);
+  --components-color: oklch(0.7 0.18 250);
+  --blocks-color: oklch(0.75 0.18 35);
+  --artifacts-color: oklch(0.75 0.22 320);
+  --platform-color: oklch(0.7 0.04 240);
+}
+
 @layer base {
   html {
     scrollbar-gutter: stable;
