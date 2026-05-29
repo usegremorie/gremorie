@@ -95,6 +95,7 @@
   "dependencies": {
     "@analogjs/content": "^2.5.1",
     "@analogjs/router": "^2.5.1",
+    "@angular/cdk": "^21.2.13",
     "@angular/common": "~21.2.0",
     "@angular/compiler": "~21.2.0",
     "@angular/core": "~21.2.0",

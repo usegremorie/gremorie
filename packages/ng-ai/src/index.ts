@@ -30,3 +30,12 @@ export {
   getMediaCategory,
   toAttachmentData,
 } from './lib/attachments/attachment.utils';
+
+// Message (chatbot bubble)
+export * from './lib/message';
+
+// Conversation (auto-stick scroll log)
+export * from './lib/conversation';
+
+// Suggestion (clickable chips)
+export * from './lib/suggestion';

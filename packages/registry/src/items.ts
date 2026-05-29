@@ -134,6 +134,73 @@ export const ITEMS: ItemConfig[] = [
     // src/app/gremorie/ai/.
     registryDependencies: ['ng-utils', 'ng-attachments'],
   },
+  {
+    name: 'ng-message',
+    framework: 'ng',
+    title: 'Message (Angular)',
+    description:
+      'Message family for chat bubbles - root + content, avatar, actions, toolbar, attachments, response. Includes branch sub-family (controllable picker over alternative responses).',
+    categories: ['ai', 'chat'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/message/message.types.ts',
+      'src/lib/message/message.ts',
+      'src/lib/message/message-content.ts',
+      'src/lib/message/message-avatar.ts',
+      'src/lib/message/message-actions.ts',
+      'src/lib/message/message-toolbar.ts',
+      'src/lib/message/message-attachments.ts',
+      'src/lib/message/message-attachment.ts',
+      'src/lib/message/message-response.ts',
+      'src/lib/message/message-branch.ts',
+      'src/lib/message/message-branch-content.ts',
+      'src/lib/message/message-branch-selector.ts',
+      'src/lib/message/message-branch-controls.ts',
+      'src/lib/message/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/message',
+    srcStrip: 'src/lib/message/',
+    dependencies: ['@angular/core', '@angular/common'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-conversation',
+    framework: 'ng',
+    title: 'Conversation (Angular)',
+    description:
+      'Scrollable chat log with auto-stick-to-bottom behavior, empty state and a scroll-to-bottom pill that appears when the user scrolls up.',
+    categories: ['ai', 'chat'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/conversation/conversation.ts',
+      'src/lib/conversation/conversation-content.ts',
+      'src/lib/conversation/conversation-empty-state.ts',
+      'src/lib/conversation/conversation-scroll-button.ts',
+      'src/lib/conversation/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/conversation',
+    srcStrip: 'src/lib/conversation/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-suggestion',
+    framework: 'ng',
+    title: 'Suggestion (Angular)',
+    description:
+      'Suggestion chips for AI prompts - horizontal scrollable Suggestions container with rounded-full Suggestion buttons that emit `(select)` carrying the value.',
+    categories: ['ai', 'forms'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/suggestion/suggestion.ts',
+      'src/lib/suggestion/suggestions.ts',
+      'src/lib/suggestion/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/suggestion',
+    srcStrip: 'src/lib/suggestion/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: ['ng-utils'],
+  },
 
   // ---------------------------------------------------------------------------
   // Angular: data viz - shared chart engine
