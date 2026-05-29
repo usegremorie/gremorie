@@ -3,6 +3,7 @@ export { Message } from './message';
 export { MessageContent } from './message-content';
 export { MessageAvatar } from './message-avatar';
 export { MessageActions } from './message-actions';
+export { MessageAction } from './message-action';
 export { MessageToolbar } from './message-toolbar';
 export { MessageAttachments } from './message-attachments';
 export { MessageAttachment } from './message-attachment';
