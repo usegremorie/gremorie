@@ -1,130 +1,181 @@
 ---
 title: Pie Chart
-description: "Parts of a whole - one slice per data row."
+description: "Parts of a whole, one slice per data row, with optional donut hole and token-driven colors."
 ---
 
 import { PieChartPreview, PieChartDonutPreview } from "@/components/preview/data/charts";
 
+## Overview
+
+`PieChart` is the styled wrapper of the headless charting engine for **parts of a whole**. Pass tabular `data`, the `nameKey` (the slice label field), and the `valueKey` (the numeric value field). Slice colors cycle through the `--chart-1` through `--chart-5` tokens automatically. Pass `donut` for a donut variant with a centered hole.
+
+Reach for PieChart when **proportions matter** and you have **two to six categories** that sum to a meaningful total - traffic share by browser, revenue by tier, allocations by team. For seven or more categories, a [`BarChart`](/components/data/bar-chart) reads faster; for time-series proportions, a stacked [`AreaChart`](/components/data/area-chart) carries more information.
+
 ## Preview
 
-### Default
-
-<div className="rounded-lg border p-6">
+<div className="rounded-lg border p-6 not-prose">
   <PieChartPreview />
 </div>
 
-### Donut
+## Installation
 
-<div className="rounded-lg border p-6">
-  <PieChartDonutPreview />
-</div>
-
-`PieChart` plots one slice per data row using `valueKey` for sweep and
-`nameKey` for label. Set `donut` to draw a donut. Slice colors cycle
-through `--chart-1..5`. Built on the shared chart engine
-(`chart-context`, `chart-frame`, `pie`).
-
-## Install
-
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+<Tab value="npm">
 ```bash
-npx gremorie add ng-pie-chart
+npx gremorie@latest add rx-pie-chart
 ```
-
 </Tab>
-
-<Tab value="React">
-
+<Tab value="pnpm">
 ```bash
-npx gremorie add rx-pie-chart
+pnpm dlx gremorie@latest add rx-pie-chart
 ```
-
 </Tab>
-
+<Tab value="yarn">
+```bash
+yarn dlx gremorie@latest add rx-pie-chart
+```
+</Tab>
+<Tab value="bun">
+```bash
+bunx --bun gremorie@latest add rx-pie-chart
+```
+</Tab>
 </Tabs>
 
 ## Usage
 
-<Tabs items={["Angular", "React"]}>
-
-<Tab value="Angular">
-
-```ts
-import { Component } from "@angular/core";
-import { PieChart } from "@gremorie/ng-data";
-import type { Datum } from "@gremorie/ng-data";
-
-@Component({
-  selector: "browsers-pie",
-  imports: [PieChart],
-  template: `
-    <pie-chart
-      [data]="data"
-      nameKey="browser"
-      valueKey="visitors"
-      [donut]="true"
-    />
-  `,
-})
-export class BrowsersPie {
-  readonly data: Datum[] = [
-    { browser: "Chrome", visitors: 275 },
-    { browser: "Safari", visitors: 200 },
-    { browser: "Firefox", visitors: 187 },
-  ];
-}
-```
-
-</Tab>
-
+<Tabs items={['React', 'Angular']}>
 <Tab value="React">
-
 ```tsx
 import { PieChart } from "@gremorie/rx-data";
-import type { Datum } from "@gremorie/rx-data";
 
-const data: Datum[] = [
+const data = [
   { browser: "Chrome", visitors: 275 },
   { browser: "Safari", visitors: 200 },
   { browser: "Firefox", visitors: 187 },
+  { browser: "Edge", visitors: 173 },
+  { browser: "Other", visitors: 90 },
 ];
 
-export function BrowsersPie() {
+export function BrowserShare() {
+  return <PieChart data={data} nameKey="browser" valueKey="visitors" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<PieChart>`
+
+The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>` with one `<path>` per slice, a wrapping legend of slice swatches plus labels, and an `sr-only` data table for assistive tech.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `readonly Datum[]` | - | Tabular data. One row per slice. Must include a string field at `nameKey` and a numeric field at `valueKey`. |
+| `nameKey` | `string` | - | Name of the slice label field. Drives the legend and the `sr-only` table headers. |
+| `valueKey` | `string` | - | Name of the numeric value field. Slices are sized proportionally to its sum. |
+| `donut` | `boolean` | `false` | When `true`, carves out a centered hole, producing a donut chart with `innerRadiusRatio` of 0.6. |
+| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus a square aspect. |
+
+### Headless primitives exposed
+
+| Export | Role |
+|---|---|
+| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides the polar projection context. |
+| `Pie` | Render-prop primitive yielding `{ slices }`. Each slice carries `{ d, name, index, value, fraction }` so you draw the `<path>` and pick the color yourself. |
+
+### Types
+
+| Type | Shape |
+|---|---|
+| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+
+<Callout type="info">
+`PieChart` does **not** take a `config` prop - slice colors are auto-assigned from the `--chart-1` through `--chart-5` tokens in row order. For explicit per-slice colors, drop down to the headless `<Pie>` and supply your own `fill`.
+</Callout>
+
+## Composition
+
+1. **Pick `nameKey` and `valueKey`** - the label column and the numeric column. Both must exist on every row.
+2. **Order rows by magnitude** before passing them in. The biggest slice should sit at the 12-o'clock anchor so the eye reads it first.
+3. **Toggle `donut`** when you want to embed a total or label at the center, or when the surrounding card is large enough that a solid pie feels too heavy.
+4. **For more than five colors**, drop down to `<Pie>` and supply a longer color list. The bundled wrapper cycles `--chart-1` through `--chart-5`.
+
+The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspect-square` so the slices stay circular.
+
+## Variations
+
+### Solid pie
+
+<div className="rounded-lg border p-6 not-prose">
+  <PieChartPreview />
+</div>
+
+```tsx
+<PieChart data={data} nameKey="browser" valueKey="visitors" />
+```
+
+The default. Use when the surrounding surface is small (card, side panel) or when no centered label is needed.
+
+### Donut variant
+
+<div className="rounded-lg border p-6 not-prose">
+  <PieChartDonutPreview />
+</div>
+
+```tsx
+<PieChart data={data} nameKey="browser" valueKey="visitors" donut />
+```
+
+Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses `innerRadiusRatio` of 0.6.
+
+### Headless customization
+
+```tsx
+import { ChartFrame, Pie } from "@gremorie/rx-data";
+
+export function ExplicitColorPie({ data, nameKey, valueKey, colorByName }) {
   return (
-    <PieChart data={data} nameKey="browser" valueKey="visitors" donut />
+    <figure role="img" aria-label="Custom pie">
+      <ChartFrame data={data} xKey={nameKey} className="mx-auto aspect-square max-h-[260px] w-full">
+        <Pie valueKey={valueKey}>
+          {({ slices }) =>
+            slices.map((s) => (
+              <path
+                key={s.name}
+                d={s.d}
+                fill={colorByName[s.name]}
+                stroke="var(--background)"
+                strokeWidth={2}
+              />
+            ))
+          }
+        </Pie>
+      </ChartFrame>
+    </figure>
   );
 }
 ```
 
-</Tab>
+Drop down to headless when you need explicit colors keyed by slice name, gradient fills, or a custom legend layout.
 
-</Tabs>
+## Accessibility
 
-## Anatomy
+- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Pie chart of visitors by browser"` or `"Donut chart of visitors by browser"`).
+- **Mirror table**: the chart appends a visually hidden `<table>` listing every slice name and value. Screen readers navigate the data via native table commands.
+- **Visible legend**: a wrapping `<ul>` of swatch plus label sits below the chart, providing the color-to-name mapping for sighted users without depending on tooltips.
+- **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
+- **Slice separation**: slices are stroked with the background color at 2 px, so adjacent slices stay distinguishable for users with color-vision deficiencies even when the colors are close.
+- **Limit slice count**: above six slices, a pie becomes hard to read even with the legend. Reach for [`BarChart`](/components/data/bar-chart) instead.
 
-```
-PieChart (figure)
-  ChartFrame (svg, aspect-square)
-    Pie (slices, optional inner radius for donut)
-  Legend (ul)
-  Table (sr-only data table)
-```
+## Related
 
-## Best practices
-
-- **Five slices or fewer.** Beyond that a pie hides ordering; use a Bar
-  chart instead.
-- **Pre-sort by value.** The component does not sort - sort `data`
-  descending so the biggest slice anchors the eye.
-- **Donut for a focal number.** Use `donut` when you plan to overlay a
-  total in the hole; full pie otherwise.
-
-## Reference
-
-- Angular source: `packages/ng-data/src/lib/charts/styled/pie-chart.ts`.
-- React source: `packages/rx-data/src/lib/pie-chart/pie-chart.tsx`.
-- Registry items: `https://gremorie.com/r/ng/ng-pie-chart.json` and
-  `https://gremorie.com/r/rx/rx-pie-chart.json`.
+- [BarChart](/components/data/bar-chart) - reach for BarChart when you have more than six categories or want exact value comparison.
+- [RadialChart](/components/data/radial-chart) - sibling polar layout when categories should be shown as concentric arcs instead of slices.
+- [AreaChart](/components/data/area-chart) - reach for a stacked AreaChart when proportions also need to vary over time.
