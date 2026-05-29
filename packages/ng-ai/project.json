@@ -47,7 +47,7 @@
       "options": {
         "port": 4400,
         "configDir": "packages/ng-ai/.storybook",
-        "browserTarget": "playground:build",
+        "browserTarget": "playground:build-storybook-target",
         "compodoc": false
       },
       "configurations": {
@@ -62,7 +62,7 @@
       "options": {
         "outputDir": "dist/storybook/ng-ai",
         "configDir": "packages/ng-ai/.storybook",
-        "browserTarget": "playground:build",
+        "browserTarget": "playground:build-storybook-target",
         "compodoc": false
       },
       "configurations": {
