@@ -24,7 +24,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist",
@@ -45,5 +46,7 @@
     "@gremorie/rx-ai": ">=0.1.0",
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": [
+    "**/*.css"
+  ]
 }

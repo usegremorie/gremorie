@@ -10,7 +10,11 @@
       "outputs": ["{projectRoot}/dist"],
       "options": {
         "cwd": "packages/rx-core",
-        "command": "tsc -p tsconfig.lib.json"
+        "parallel": false,
+        "commands": [
+          "tsc -p tsconfig.lib.json",
+          "tailwindcss -i styles/globals.src.css -o dist/styles/globals.css --minify"
+        ]
       }
     },
     "lint": {

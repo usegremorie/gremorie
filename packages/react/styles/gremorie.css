@@ -1,0 +1,43 @@
+/*
+ * Build input for @gremorie/react/styles.css — the pre-compiled,
+ * self-contained stylesheet shipped to consumers.
+ *
+ * WHY THIS EXISTS
+ * ---------------
+ * The token theme is authored as Tailwind v4 `@theme` (single source of truth
+ * in ng-core). A consumer app's bundler (Next 16 / Turbopack, Vite, etc.) does
+ * NOT reliably process `@theme` coming from an imported node_modules CSS, so
+ * importing the raw tokens left components unstyled (no brand color, no radius).
+ *
+ * This file is compiled AHEAD OF TIME by `@tailwindcss/cli` (see the `build`
+ * target in project.json) into `dist/styles.css`: a flat stylesheet with the
+ * tokens emitted as plain `:root` custom properties + every utility class any
+ * @gremorie/react component uses. Consumers import the OUTPUT, never this file:
+ *
+ *   import "@gremorie/react/styles.css";
+ *
+ * That single import = fully styled, with or without Tailwind in the host app.
+ * No `@theme`, no `@source`, no Tailwind config required on the consumer side.
+ */
+
+@import "tailwindcss";
+
+/* Tokens — primitives + semantics + light/dark + keyframes (source of truth). */
+@import "../../ng-core/styles/theme.css";
+
+/*
+ * Generate every utility used by any component in @gremorie/react so the
+ * shipped CSS is self-contained. Paths are relative to this file and resolve
+ * to each category package's source at build time (in the monorepo).
+ * Artifacts (@gremorie/rx-artifacts) are intentionally excluded — they are an
+ * optional package and ship their own styles.
+ */
+@source "../../rx-core/src/**/*.{ts,tsx}";
+@source "../../rx-forms/src/**/*.{ts,tsx}";
+@source "../../rx-display/src/**/*.{ts,tsx}";
+@source "../../rx-overlays/src/**/*.{ts,tsx}";
+@source "../../rx-feedback/src/**/*.{ts,tsx}";
+@source "../../rx-navigation/src/**/*.{ts,tsx}";
+@source "../../rx-containers/src/**/*.{ts,tsx}";
+@source "../../rx-data/src/**/*.{ts,tsx}";
+@source "../../rx-ai/src/**/*.{ts,tsx}";

@@ -1,0 +1,34 @@
+/*
+ * Build input for @gremorie/rx-core/styles/globals.css.
+ *
+ * Compiled ahead of time (see project.json `build`) into
+ * `dist/styles/globals.css` — a flat, self-contained stylesheet. This is the
+ * tokens entry point for category installs (e.g. `@gremorie/rx-forms` alone).
+ *
+ * It used to be a raw `@import "../../../ng-core/styles/theme.css"` — a
+ * monorepo-relative path that 404'd in a consumer's node_modules AND, even
+ * when resolved, left components unstyled because the host bundler doesn't
+ * process `@theme` from node_modules. Pre-compiling fixes both:
+ *
+ *   @import "@gremorie/rx-core/styles/globals.css";
+ *
+ * ships the tokens as plain `:root` vars + every DS utility class, so the
+ * import works with or without Tailwind in the host app.
+ *
+ * Prefer the complete edition? `@gremorie/react/styles.css` is the same idea.
+ */
+
+@import "tailwindcss";
+@import "../../ng-core/styles/theme.css";
+
+/* Every utility used by any React-edition component, so a category install is
+   styled out of the box without the consumer configuring Tailwind @source. */
+@source "../../rx-core/src/**/*.{ts,tsx}";
+@source "../../rx-forms/src/**/*.{ts,tsx}";
+@source "../../rx-display/src/**/*.{ts,tsx}";
+@source "../../rx-overlays/src/**/*.{ts,tsx}";
+@source "../../rx-feedback/src/**/*.{ts,tsx}";
+@source "../../rx-navigation/src/**/*.{ts,tsx}";
+@source "../../rx-containers/src/**/*.{ts,tsx}";
+@source "../../rx-data/src/**/*.{ts,tsx}";
+@source "../../rx-ai/src/**/*.{ts,tsx}";

@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/solar.css";
 @import "fumadocs-ui/css/preset.css";
-@import "@gremorie/rx-core/styles/globals.css";
+/* Raw @theme tokens (source of truth) so THIS app's Tailwind processes them.
+   External consumers import the pre-compiled @gremorie/rx-core/styles/globals.css
+   instead — see packages/rx-core/styles/globals.src.css. */
+@import "../../../packages/ng-core/styles/theme.css";
 
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
 @source "../../../packages/rx-*/src/**/*.{ts,tsx}";

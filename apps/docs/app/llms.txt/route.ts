@@ -31,20 +31,26 @@ export function GET() {
   );
   lines.push("   - React, complete edition: `npm i @gremorie/react`");
   lines.push("     ```tsx");
+  lines.push('     // 1. Import the pre-compiled stylesheet ONCE, in your app entry');
+  lines.push('     //    (app/layout.tsx or src/main.tsx). It ships tokens + all');
+  lines.push('     //    component styles — no Tailwind/@theme/@source needed.');
+  lines.push('     import "@gremorie/react/styles.css";');
+  lines.push('     // 2. Import components (Next.js App Router: file needs "use client").');
   lines.push('     import { Button, Card, CardHeader, CardTitle, Message } from "@gremorie/react";');
   lines.push("     ```");
   lines.push("   - Angular, complete edition: `npm i @gremorie/angular`");
   lines.push('     ```ts');
+  lines.push('     // In src/styles.css: @import "tailwindcss"; @import "@gremorie/ng-core/styles/theme.css";');
   lines.push('     import { Badge, Carousel } from "@gremorie/angular";');
   lines.push("     ```");
   lines.push(
     "   - Optional artifacts (Artifact, CodeBlock, WebPreview): `npm i @gremorie/rx-artifacts`",
   );
   lines.push(
-    "   - Or a single category: `@gremorie/rx-forms`, `@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-ai`, `@gremorie/rx-data` (React) / `@gremorie/ng-display`, `@gremorie/ng-ai` (Angular).",
+    "   - Or a single category: `@gremorie/rx-forms`, `@gremorie/rx-display`, `@gremorie/rx-overlays`, `@gremorie/rx-ai`, `@gremorie/rx-data` (React) / `@gremorie/ng-display`, `@gremorie/ng-ai` (Angular). React categories share the same pre-compiled `@gremorie/rx-core/styles/globals.css` stylesheet.",
   );
   lines.push(
-    "   - Import tokens once: `@import \"@gremorie/rx-core/styles/globals.css\";` (React) or `@import \"@gremorie/ng-core/styles/theme.css\";` (Angular).",
+    "   - React: components are interactive — in Next.js App Router add `\"use client\"` to files that render them.",
   );
   lines.push(
     "2. Copy-paste source via the registry (you own the code): `npx gremorie add <name>` (e.g. `rx-button`, `ng-carousel`, `ng-inline-citation`).",
