@@ -225,6 +225,27 @@ for (const r of rows) {
   r.mcpCall = m.call;
 }
 
+// agrega React/Angular nas Categorias e Tabs = completude dos itens-folha de
+// framework abaixo. Publicado (todos) · Em dev (alguns) · Planejado (nenhum).
+// Seções agnósticas (Corpus/Tokens/Platform/Get-Started) ficam em branco.
+{
+  const byTab = {}, byParent = {};
+  for (const r of rows) if (r.kind === "item") {
+    (byTab[r.tab] ??= []).push(r);
+    (byParent[r.parentKey] ??= []).push(r);
+  }
+  const agg = (items, fw) => {
+    const f = (items ?? []).filter((i) => i[fw] != null);
+    if (!f.length) return null;
+    const pub = f.filter((i) => i[fw] === "Publicado").length;
+    return pub === 0 ? "Planejado" : pub === f.length ? "Publicado" : "Em dev";
+  };
+  for (const r of rows) {
+    const src = r.kind === "category" ? byParent[r.key] : r.kind === "tab" ? byTab[r.tab] : null;
+    if (src) { r.react = agg(src, "react"); r.angular = agg(src, "angular"); }
+  }
+}
+
 console.log(`Árvore desejada: ${rows.length} linhas (` +
   `${rows.filter(r => r.kind === "tab").length} tabs, ` +
   `${rows.filter(r => r.kind === "category").length} categorias, ` +
