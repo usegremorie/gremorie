@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Command line interface for Gremorie. Scaffolds AI components into your Angular app.",
   "license": "MIT",
   "repository": {
@@ -8,12 +8,21 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/cli"
   },
-  "keywords": ["angular", "ai", "ui", "cli"],
+  "keywords": [
+    "angular",
+    "ai",
+    "ui",
+    "cli"
+  ],
   "type": "module",
   "bin": {
     "gremorie": "./bin/gremorie.js"
   },
-  "files": ["bin", "dist", "README.md"],
+  "files": [
+    "bin",
+    "dist",
+    "README.md"
+  ],
   "dependencies": {
     "commander": "^14.0.0",
     "kleur": "^4.1.5",

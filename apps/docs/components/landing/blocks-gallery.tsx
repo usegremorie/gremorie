@@ -181,7 +181,7 @@ export function BlocksGallery() {
               Production-ready blocks
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Compositions of N primitives. Install one block, get a
+              Compositions of multiple primitives. Install one block, get a
               wired-up screen. Variations included.
             </p>
           </div>

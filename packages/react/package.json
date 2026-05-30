@@ -1,0 +1,49 @@
+{
+  "name": "@gremorie/react",
+  "version": "0.1.0",
+  "description": "The complete React edition of Gremorie — every component category in one package. The per-category packages remain available for granular installs and the registry.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/react"
+  },
+  "keywords": [
+    "react",
+    "design-system",
+    "ui",
+    "ai",
+    "components",
+    "gremorie"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "@gremorie/rx-core": ">=0.1.0",
+    "@gremorie/rx-forms": ">=0.1.0",
+    "@gremorie/rx-display": ">=0.1.0",
+    "@gremorie/rx-overlays": ">=0.1.0",
+    "@gremorie/rx-feedback": ">=0.1.0",
+    "@gremorie/rx-navigation": ">=0.1.0",
+    "@gremorie/rx-containers": ">=0.1.0",
+    "@gremorie/rx-data": ">=0.1.0",
+    "@gremorie/rx-ai": ">=0.1.0",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

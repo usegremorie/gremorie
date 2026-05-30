@@ -36,21 +36,26 @@ export function Hero() {
                 className="size-1.5 rounded-full bg-success"
                 aria-hidden="true"
               />
-              AI-native design system, in development
+              In active development
             </Badge>
 
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              The AI-native{" "}
-              <span className="text-brand">design system</span>
+              The AI-native design system for{" "}
+              <span className="text-cyan-600 dark:text-cyan-500">React</span>{" "}
+              and{" "}
+              <span className="text-rose-500 dark:text-rose-400">Angular</span>
             </h1>
 
             <div className="flex max-w-xl flex-col gap-3 text-lg leading-relaxed text-muted-foreground">
               <p>
-                Registry plus MCP for AI-driven generation. Angular and React,
-                copy-paste components.
+                AI-native components and blocks, available through an MCP
+                server and a registry. Its documentation runs as a chain —
+                design principles into components, components into the blocks
+                built from them — so an LLM reads the whole system.
               </p>
               <p className="text-base">
-                Your design system becomes a memory the LLM can read.
+                Designers prototype with the real components through MCP;
+                developers ship the same ones to production.
               </p>
             </div>
 

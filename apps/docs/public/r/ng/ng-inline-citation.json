@@ -1,0 +1,106 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-inline-citation",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Inline Citation (Angular)",
+  "description": "Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gn-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-badge",
+    "ng-carousel"
+  ],
+  "files": [
+    {
+      "path": "src/lib/inline-citation/inline-citation.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnHoverCard, BrnHoverCardTrigger } from '@spartan-ng/brain/hover-card';\nimport { Badge } from '@gremorie/ng-display';\n\n/**\n * InlineCitation — footnote-style citation that hovers into a source card\n * (Angular edition). Mirrors React `InlineCitation` from `@gremorie/rx-ai`.\n *\n * Subcomponents (spartan-ng primitives where possible):\n * - `inline-citation`        — inline wrapper span\n * - `inline-citation-text`   — the cited text span\n * - `inline-citation-card`   — host of `@spartan-ng/brain` BrnHoverCard\n * - `inline-citation-card-trigger` — `gn-badge` (ng-display) + BrnHoverCardTrigger\n * - `inline-citation-card-body`    — styled popover surface (brain is headless)\n * - `inline-citation-source` / `inline-citation-quote` — presentational\n *\n * Brain idiom (deviation from React): the hover-card content must live in a\n * `<ng-template brnHoverCardContent>`, so the consumer wraps the body in that\n * template. For multiple sources, compose `gn-carousel` (from ng-display)\n * inside the body — React used a Carousel here too.\n *\n * @example\n * ```html\n * <inline-citation>\n *   <inline-citation-text> [1]</inline-citation-text>\n *   <inline-citation-card>\n *     <inline-citation-card-trigger [sources]=\"['https://gremorie.com']\" />\n *     <ng-template brnHoverCardContent>\n *       <inline-citation-card-body>\n *         <inline-citation-source\n *           title=\"Gremorie docs\"\n *           url=\"https://gremorie.com/docs\"\n *           description=\"The AI-native design system.\"\n *         />\n *       </inline-citation-card-body>\n *     </ng-template>\n *   </inline-citation-card>\n * </inline-citation>\n * ```\n */\n@Component({\n  selector: 'inline-citation',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'inline-citation',\n    class: 'group inline items-center gap-1',\n  },\n})\nexport class InlineCitation {}\n\n@Component({\n  selector: 'inline-citation-text',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'inline-citation-text',\n    class: 'transition-colors group-hover:bg-accent',\n  },\n})\nexport class InlineCitationText {}\n\n@Component({\n  selector: 'inline-citation-card',\n  standalone: true,\n  hostDirectives: [BrnHoverCard],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'inline-citation-card',\n    class: 'contents',\n  },\n})\nexport class InlineCitationCard {}\n\n@Component({\n  selector: 'inline-citation-card-trigger',\n  standalone: true,\n  hostDirectives: [BrnHoverCardTrigger],\n  imports: [Badge],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<gn-badge variant=\"secondary\" class=\"ml-1 cursor-default rounded-full\">{{\n    label()\n  }}</gn-badge>`,\n  host: {\n    'data-slot': 'inline-citation-card-trigger',\n    class: 'inline-flex align-baseline',\n  },\n})\nexport class InlineCitationCardTrigger {\n  readonly sources = input<string[]>([]);\n\n  protected readonly label = computed(() => {\n    const sources = this.sources();\n    const first = sources[0];\n    if (!first) {\n      return 'unknown';\n    }\n    let host: string;\n    try {\n      host = new URL(first).hostname;\n    } catch {\n      host = first;\n    }\n    return sources.length > 1 ? `${host} +${sources.length - 1}` : host;\n  });\n}\n\n@Component({\n  selector: 'inline-citation-card-body',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'inline-citation-card-body',\n    class:\n      'relative block w-80 overflow-hidden rounded-md border bg-popover p-0 text-popover-foreground shadow-md',\n  },\n})\nexport class InlineCitationCardBody {}\n\n@Component({\n  selector: 'inline-citation-source',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (title()) {\n      <h4 class=\"truncate text-sm font-medium leading-tight\">{{ title() }}</h4>\n    }\n    @if (url()) {\n      <p class=\"truncate break-all text-xs text-muted-foreground\">{{ url() }}</p>\n    }\n    @if (description()) {\n      <p class=\"line-clamp-3 text-sm leading-relaxed text-muted-foreground\">\n        {{ description() }}\n      </p>\n    }\n    <ng-content />\n  `,\n  host: {\n    'data-slot': 'inline-citation-source',\n    class: 'block space-y-1',\n  },\n})\nexport class InlineCitationSource {\n  readonly title = input<string>();\n  readonly url = input<string>();\n  readonly description = input<string>();\n}\n\n@Component({\n  selector: 'inline-citation-quote',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'inline-citation-quote',\n    class:\n      'block border-l-2 border-muted pl-3 text-sm italic text-muted-foreground',\n  },\n})\nexport class InlineCitationQuote {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/inline-citation/inline-citation.ts"
+    },
+    {
+      "path": "src/lib/inline-citation/index.ts",
+      "content": "export {\n  InlineCitation,\n  InlineCitationCard,\n  InlineCitationCardBody,\n  InlineCitationCardTrigger,\n  InlineCitationQuote,\n  InlineCitationSource,\n  InlineCitationText,\n} from './inline-citation';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/inline-citation/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gremoriePromptSubmit",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "gremoriePromptAttachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+      }
+    ]
+  }
+}

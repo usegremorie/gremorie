@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "../../rx-core/src/styles/globals.css";
+
+/* Tailwind v4 class scanning across every rx-* package so utilities used
+   inside the primitives are generated for the Storybook bundle. */
+@source "../src/**/*.{ts,tsx}";
+@source "../../rx-artifacts/src/**/*.{ts,tsx}";
+@source "../../rx-forms/src/**/*.{ts,tsx}";
+@source "../../rx-display/src/**/*.{ts,tsx}";
+@source "../../rx-overlays/src/**/*.{ts,tsx}";
+@source "../../rx-feedback/src/**/*.{ts,tsx}";
+@source "../../rx-navigation/src/**/*.{ts,tsx}";
+@source "../../rx-containers/src/**/*.{ts,tsx}";
+@source "../../rx-data/src/**/*.{ts,tsx}";

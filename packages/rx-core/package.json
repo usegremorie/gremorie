@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "React core utilities for Gremorie - cn() helper for class name merging.",
   "license": "MIT",
   "repository": {
@@ -8,7 +8,12 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/rx-core"
   },
-  "keywords": ["react", "ai", "ui", "utilities"],
+  "keywords": [
+    "react",
+    "ai",
+    "ui",
+    "utilities"
+  ],
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -20,7 +25,11 @@
     },
     "./styles/globals.css": "./src/styles/globals.css"
   },
-  "files": ["dist", "src/styles", "README.md"],
+  "files": [
+    "dist",
+    "src/styles",
+    "README.md"
+  ],
   "dependencies": {
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.6.0",

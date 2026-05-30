@@ -1,0 +1,46 @@
+{
+  "name": "@gremorie/rx-artifacts",
+  "version": "0.1.0",
+  "description": "Generative-UI artifacts (Artifact, CodeBlock, WebPreview) for the React edition of Gremorie. Optional add-on — not bundled in @gremorie/react.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-artifacts"
+  },
+  "keywords": [
+    "react",
+    "ai",
+    "artifact",
+    "code-block",
+    "generative-ui",
+    "gremorie"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@gremorie/rx-core": ">=0.0.1",
+    "@gremorie/rx-display": ">=0.0.1",
+    "@gremorie/rx-forms": ">=0.0.1",
+    "@gremorie/rx-overlays": ">=0.0.1",
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "lucide-react": "^0.547.0",
+    "shiki": "^4.1.0",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

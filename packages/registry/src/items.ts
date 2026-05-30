@@ -102,6 +102,20 @@ export const ITEMS: ItemConfig[] = [
     dependencies: ['@angular/core', 'class-variance-authority'],
     registryDependencies: [],
   },
+  {
+    name: 'ng-carousel',
+    framework: 'ng',
+    title: 'Carousel (Angular)',
+    description:
+      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gn-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/carousel/carousel.ts', 'src/lib/carousel/index.ts'],
+    targetPrefix: 'src/app/gremorie/carousel',
+    srcStrip: 'src/lib/carousel/',
+    dependencies: ['@angular/core', 'embla-carousel'],
+    registryDependencies: ['ng-utils'],
+  },
 
   // ---------------------------------------------------------------------------
   // Angular: feedback
@@ -325,6 +339,23 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/reasoning/',
     dependencies: ['@angular/core', '@spartan-ng/brain'],
     registryDependencies: ['ng-utils', 'ng-shimmer'],
+  },
+  {
+    name: 'ng-inline-citation',
+    framework: 'ng',
+    title: 'Inline Citation (Angular)',
+    description:
+      'Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gn-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/inline-citation/inline-citation.ts',
+      'src/lib/inline-citation/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/inline-citation',
+    srcStrip: 'src/lib/inline-citation/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils', 'ng-badge', 'ng-carousel'],
   },
   {
     name: 'ng-chain-of-thought',
@@ -1624,7 +1655,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/rx-ai',
+    packageRoot: 'packages/rx-artifacts',
     sourceFiles: ['src/lib/artifact/artifact.tsx'],
     targetPrefix: 'src/components/gremorie/ai/artifact',
     srcStrip: 'src/lib/artifact/',
@@ -1638,7 +1669,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; exposes CodeBlockCopyButton with copy/copied state. Pass code + language, optional showLineNumbers; ships dark + light themes by default.',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/rx-ai',
+    packageRoot: 'packages/rx-artifacts',
     sourceFiles: ['src/lib/code-block/code-block.tsx'],
     targetPrefix: 'src/components/gremorie/ai/code-block',
     srcStrip: 'src/lib/code-block/',
@@ -1652,7 +1683,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable Input, WebPreviewBody renders an iframe with the current URL, and WebPreviewConsole (Collapsible) shows console logs and errors below.',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/rx-ai',
+    packageRoot: 'packages/rx-artifacts',
     sourceFiles: ['src/lib/web-preview/web-preview.tsx'],
     targetPrefix: 'src/components/gremorie/ai/web-preview',
     srcStrip: 'src/lib/web-preview/',

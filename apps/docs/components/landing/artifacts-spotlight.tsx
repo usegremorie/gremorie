@@ -14,7 +14,7 @@ import {
 } from "@gremorie/rx-display";
 import { BarChart } from "@gremorie/rx-data";
 import type { ChartConfig, Datum } from "@gremorie/rx-data";
-import { CodeBlock } from "@gremorie/rx-ai";
+import { CodeBlock } from "@gremorie/rx-artifacts";
 
 /**
  * Spotlights two artifact types: Chart (data viz schema -> bar chart)

@@ -15,7 +15,7 @@ import {
   WebPreviewConsole,
   WebPreviewNavigation,
   WebPreviewUrl,
-} from "@gremorie/rx-ai";
+} from "@gremorie/rx-artifacts";
 
 // ---------- CodeBlock ----------
 

@@ -1,0 +1,36 @@
+{
+  "name": "@gremorie/angular",
+  "version": "0.1.0",
+  "description": "The complete Angular edition of Gremorie — every component category in one package. The per-category packages remain available for granular installs and the registry.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/angular"
+  },
+  "keywords": [
+    "angular",
+    "design-system",
+    "ui",
+    "ai",
+    "components",
+    "gremorie"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@gremorie/ng-core": ">=0.0.1",
+    "@gremorie/ng-ai": ">=0.0.1",
+    "@gremorie/ng-display": ">=0.0.1",
+    "@gremorie/ng-containers": ">=0.0.1",
+    "@gremorie/ng-data": ">=0.0.1",
+    "@gremorie/ng-feedback": ">=0.0.1"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./fesm2022/angular.mjs"
+    }
+  }
+}

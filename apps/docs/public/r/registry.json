@@ -68,6 +68,19 @@
       "registryDependencies": []
     },
     {
+      "name": "ng-carousel",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Carousel (Angular)",
+      "description": "Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gn-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
       "name": "ng-spinner",
       "type": "registry:block",
       "framework": "ng",
@@ -208,6 +221,22 @@
       "registryDependencies": [
         "ng-utils",
         "ng-shimmer"
+      ]
+    },
+    {
+      "name": "ng-inline-citation",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Inline Citation (Angular)",
+      "description": "Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gn-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-badge",
+        "ng-carousel"
       ]
     },
     {
