@@ -3,9 +3,82 @@ title: Installation
 description: "Add Gremorie to your Angular or React project in four steps."
 ---
 
-Gremorie is distributed as **source via a registry**, not as a versioned
-npm package. You install the CLI once, then pull primitives into your
-project on demand. Each primitive becomes a file you own and can edit.
+Gremorie ships **two ways** — pick whichever fits your project:
+
+1. **As npm packages** (versioned) — `npm i @gremorie/react`. The code lives
+   in `node_modules` and you get updates with `npm update`. Best when you want
+   one source of truth shared across projects.
+2. **As source via the registry** (copy-paste) — `npx gremorie add <name>`.
+   Each primitive becomes a file you own and can edit. Best when you want full
+   control over the code.
+
+## Install as a package (npm)
+
+The fastest start: install the complete edition in one package and import any
+primitive. Tree-shaking keeps only what you use in the final bundle.
+
+<Tabs items={["React", "Angular"]}>
+
+```bash tab="React"
+npm i @gremorie/react
+```
+
+```bash tab="Angular"
+npm i @gremorie/angular
+```
+
+</Tabs>
+
+Then import components directly from the package:
+
+<Tabs items={["React", "Angular"]}>
+
+```tsx tab="React"
+import { Button, Card, CardHeader, CardTitle } from "@gremorie/react";
+
+export function Example() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Hello, Gremorie</CardTitle>
+      </CardHeader>
+      <Button>Ship it</Button>
+    </Card>
+  );
+}
+```
+
+```ts tab="Angular"
+import { Component } from "@angular/core";
+import { Badge } from "@gremorie/angular";
+
+@Component({
+  standalone: true,
+  imports: [Badge],
+  template: `<gn-badge>New</gn-badge>`,
+})
+export class Example {}
+```
+
+</Tabs>
+
+<Callout type="info">
+  `@gremorie/react` and `@gremorie/angular` bundle **every component
+  category** (forms, display, overlays, feedback, navigation, containers,
+  data, AI). **Artifacts** (Artifact, CodeBlock, WebPreview) are an optional
+  add-on — install `@gremorie/rx-artifacts` when you need them. Prefer a
+  smaller install? Add a single category instead: `@gremorie/rx-forms`,
+  `@gremorie/rx-display`, `@gremorie/rx-ai`, and so on.
+</Callout>
+
+You still need to import the design tokens once — see
+[Import the tokens](#import-the-tokens) below. Everything else (the CLI flow)
+is the copy-paste alternative.
+
+## Copy-paste via the CLI (registry)
+
+Prefer to own the source instead? Install the CLI and pull primitives into your
+project on demand — each one becomes a file you can edit freely.
 
 ## Prerequisites
 
@@ -14,9 +87,10 @@ project on demand. Each primitive becomes a file you own and can edit.
 - An **Angular 18+** project (Spartan-NG compatible) or a **React 19** project (Next.js, Vite, Remix)
 
 <Callout type="info">
-  Gremorie ships an Angular edition first; the React edition is in
-  progress. Both editions share the same registry schema, tokens, and
-  corpus, so anything you learn here carries across.
+  Both editions are published: **React** (`@gremorie/react`, `@gremorie/rx-*`)
+  and **Angular** (`@gremorie/angular`, `@gremorie/ng-*`). They share the same
+  registry schema, tokens, and corpus, so anything you learn here carries
+  across.
 </Callout>
 
 ## Steps
