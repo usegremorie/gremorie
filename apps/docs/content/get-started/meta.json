@@ -3,5 +3,12 @@
   "title": "Get Started",
   "description": "Setup and first steps with Gremorie",
   "icon": "Rocket",
-  "pages": ["installation", "first-component", "project-setup", "philosophy", "contributing"]
+  "pages": [
+    "index",
+    "installation",
+    "first-component",
+    "project-setup",
+    "philosophy",
+    "contributing"
+  ]
 }

@@ -33,27 +33,13 @@ export const logo = (
  * `aria-hidden` Lucide icon expose the link as a labeled action with a
  * decorative graphic.
  */
+// Section navigation lives in the sidebar tab switcher (auto-generated from the
+// `root: true` folders — Get Started, Corpus, Tokens, Components, Blocks,
+// Artifacts, Platform). We intentionally do NOT duplicate those sections as
+// navbar/sidebar links here: that hardcoded subset was incomplete (4 of 7) and
+// rendered inside every tab's sidebar, which read as "Blocks mixed into Corpus".
+// The navbar keeps brand + search + GitHub only.
 export const linkItems: LinkItemType[] = [
-  {
-    text: "Components",
-    url: "/components/overview",
-    active: "nested-url"
-  },
-  {
-    text: "Blocks",
-    url: "/blocks/overview",
-    active: "nested-url"
-  },
-  {
-    text: "Corpus",
-    url: "/corpus",
-    active: "nested-url"
-  },
-  {
-    text: "Tokens",
-    url: "/tokens",
-    active: "nested-url"
-  },
   {
     type: "icon",
     label: "GitHub",

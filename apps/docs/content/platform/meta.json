@@ -3,5 +3,12 @@
   "title": "Platform",
   "description": "CLI, registry, MCP",
   "icon": "Wrench",
-  "pages": ["architecture", "cli", "registry", "mcp", "internal"]
+  "pages": [
+    "index",
+    "architecture",
+    "cli",
+    "registry",
+    "mcp",
+    "internal"
+  ]
 }

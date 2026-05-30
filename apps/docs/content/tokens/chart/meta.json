@@ -2,7 +2,7 @@
   "title": "Chart",
   "icon": "ChartLine",
   "pages": [
-    "index",
+    "visao-geral",
     "sequential",
     "categorical",
     "divergent",
