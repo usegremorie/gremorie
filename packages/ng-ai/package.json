@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI primitives for Angular - chat surfaces (Message, Conversation, Suggestion, Reasoning, ChainOfThought, Shimmer, Sources, Task, Tool, Toolbar, CodeBlock) + PromptInput + Attachments. Part of Gremorie.",
   "license": "MIT",
   "repository": {
