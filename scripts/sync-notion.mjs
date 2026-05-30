@@ -12,8 +12,9 @@
  *      npm, Registry, e Sub-items/Item pai).
  *   4. Status React/Angular: só semeia quando vazio; "Planejado" vira "Publicado"
  *      sozinho se o registry passou a ter; qualquer outro valor manual é mantido.
- *   5. (opcional, --mcp) cria/preenche as colunas "MCP tool" e "MCP" com a
- *      chamada MCP pronta de cada nó.
+ *   5. (opcional, --mcp)   cria/preenche o select "MCP tool" (qual tool busca a linha).
+ *   6. (opcional, --pages) (re)escreve o CORPO de cada página com Doc + a chamada
+ *      MCP pronta de copiar + comandos CLI + npm.
  *
  * USO (na raiz do repo):
  *   1. npm i -D @notionhq/client
@@ -21,9 +22,9 @@
  *      compartilhe a página/base "Gremorie — Componentes" com ela, copie o token.
  *   3. export NOTION_TOKEN=secret_xxx
  *      export NOTION_DB_ID=5c900540bf034382b61a70725727bbf6
- *   4. node scripts/sync-notion.mjs           # DRY-RUN (só imprime o plano)
- *      node scripts/sync-notion.mjs --apply    # escreve no Notion
- *      node scripts/sync-notion.mjs --apply --mcp   # também cria/preenche colunas MCP
+ *   4. node scripts/sync-notion.mjs                       # DRY-RUN (só o plano)
+ *      node scripts/sync-notion.mjs --apply               # estrutura + status
+ *      node scripts/sync-notion.mjs --apply --mcp --pages # + select MCP + corpo das páginas
  *
  * Notas:
  *   - Default é DRY-RUN. Nada é escrito sem --apply.
@@ -40,7 +41,8 @@ const REG = path.join(ROOT, "apps/docs/public/r");
 const ORIGIN = "https://gremorie.com";
 
 const APPLY = process.argv.includes("--apply");
-const WITH_MCP = process.argv.includes("--mcp");
+const WITH_MCP = process.argv.includes("--mcp");   // cria/preenche o select "MCP tool"
+const PAGES = process.argv.includes("--pages");    // (re)escreve o corpo de cada página
 
 // ── helpers ────────────────────────────────────────────────────────────────
 const readMeta = (rel) => {
@@ -91,6 +93,44 @@ function mcpFor(node) {
   }
   // tokens / platform / get-started: não expostos via MCP
   return { tool: "—", call: "—" };
+}
+
+// ── corpo da página (Notion blocks) ──────────────────────────────────────────
+const pascal = (s) => s.replace(/\s+/g, "");
+const rt = (...parts) =>
+  parts.filter((p) => p !== "" && p != null).map((p) => {
+    if (typeof p === "string") return { type: "text", text: { content: p } };
+    if (p.code != null) return { type: "text", text: { content: p.code }, annotations: { code: true } };
+    if (p.link != null) return { type: "text", text: { content: p.label, link: { url: p.link } } };
+    return { type: "text", text: { content: String(p) } };
+  });
+const code = (s) => ({ code: s });
+const link = (label, url) => ({ label, link: url });
+const h3 = (s) => ({ object: "block", type: "heading_3", heading_3: { rich_text: rt(s) } });
+const li = (...parts) => ({ object: "block", type: "bulleted_list_item", bulleted_list_item: { rich_text: rt(...parts) } });
+
+/** Blocos do corpo de uma linha: Doc + chamada MCP pronta + CLI + npm. */
+function pageBlocks(r) {
+  const b = [h3("Como acessar"), li("Doc — ", link(r.doc, r.doc))];
+  const ngPub = r.angular === "Publicado";
+  if (r.kind === "item" && r.tab === "components") {
+    b.push(li("MCP — ", code(`get_component("rx-${r.slug}")`), ...(ngPub ? [" · Angular ", code(`get_component("ng-${r.slug}")`)] : [])));
+    b.push(li("Registry / CLI — ", code(`npx gremorie add rx-${r.slug}`), ...(ngPub ? [" · ", code(`ng-${r.slug}`)] : [])));
+    b.push(li("npm — ", code("@gremorie/react"), " → ", code(`import { ${pascal(r.title)} }`), ...(ngPub ? [" · ", code("@gremorie/angular")] : [])));
+  } else if (r.kind === "item" && r.tab === "artifacts") {
+    b.push(li("MCP — ", code(`get_component("artifact-${r.slug}")`)));
+    b.push(li("Registry / CLI — ", code(`npx gremorie add artifact-${r.slug}`)));
+    b.push(li("npm — ", code("@gremorie/rx-artifacts")));
+  } else if (r.kind === "item" && r.tab === "blocks") {
+    b.push(li("MCP — ", code(`get_block("block-${r.slug}")`)));
+    b.push(li("Registry / CLI — ", code(`npx gremorie add block-${r.slug}`)));
+  } else if (r.mcpTool && r.mcpTool !== "—") {
+    // tabs, categorias, e corpus (todos os níveis)
+    b.push(li("MCP — ", code(r.mcpCall)));
+  } else {
+    b.push(li("MCP — não exposto (doc apenas)."));
+  }
+  return b;
 }
 
 // ── derivar a árvore desejada ─────────────────────────────────────────────────
@@ -212,7 +252,7 @@ async function main() {
 
   // 1. garante o schema (Key + opcional MCP)
   const props = { Key: { rich_text: {} } };
-  if (WITH_MCP) { props["MCP tool"] = { select: {} }; props["MCP"] = { rich_text: {} }; }
+  if (WITH_MCP) { props["MCP tool"] = { select: {} }; }
   if (APPLY) { await throttle(); await notion.databases.update({ database_id: DB_ID, properties: props }); }
   console.log(WITH_MCP ? "Schema: Key + MCP garantidos." : "Schema: Key garantido (use --mcp p/ colunas MCP).");
 
@@ -272,7 +312,7 @@ async function main() {
     if (r.angular !== null && r.angular !== undefined) properties.Angular = { select: { name: resolveStatus(r.angular, cur?.angular) ?? r.angular } };
     if (r.npm !== null && r.npm !== undefined) properties.npm = { checkbox: !!r.npm };
     if (r.registry !== null && r.registry !== undefined) properties.Registry = { checkbox: !!r.registry };
-    if (WITH_MCP) { properties["MCP tool"] = sel(r.mcpTool); properties["MCP"] = text(r.mcpCall); }
+    if (WITH_MCP) { properties["MCP tool"] = sel(r.mcpTool); }
 
     if (cur) {
       keyToId.set(r.key, cur.id);
@@ -304,6 +344,25 @@ async function main() {
     rel++;
   }
   console.log(`Relações pai a ajustar: ${rel}.`);
+
+  // 4b. corpo das páginas (Doc + chamada MCP pronta + CLI + npm) — só com --pages.
+  //     Idempotente: apaga os blocos existentes e reescreve (o corpo é gerenciado).
+  if (PAGES) {
+    let pcount = 0;
+    for (const r of rows) {
+      const id = keyToId.get(r.key);
+      if (!id || String(id).startsWith("(novo")) continue;
+      if (APPLY) {
+        await throttle();
+        const kids = await notion.blocks.children.list({ block_id: id, page_size: 100 });
+        for (const k of kids.results) { await throttle(); await notion.blocks.delete({ block_id: k.id }); }
+        await throttle();
+        await notion.blocks.children.append({ block_id: id, children: pageBlocks(r) });
+      }
+      pcount++;
+    }
+    console.log(`Corpo de página (re)escrito em ${pcount} linhas.`);
+  }
 
   // 5. órfãos (linhas no Notion sem correspondente no código)
   const wantKeys = new Set(rows.map((r) => r.key));
