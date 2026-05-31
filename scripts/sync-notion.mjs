@@ -53,6 +53,10 @@ const isFolder = (rel) => existsSync(path.join(CONTENT, rel, "meta.json"));
 const titleCase = (s) =>
   s.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 
+/** Slug estável de uma seção (nome EN do separator ---X---). "Layout & display" → "layout-display". */
+const slugifySection = (name) =>
+  name.toLowerCase().replace(/&/g, " ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
 /** Lê o `title:` do frontmatter de um .mdx (fallback: title-case do slug). */
 const pageTitle = (rel, slug) => {
   for (const f of [`${rel}/${slug}.mdx`, `${rel}/${slug}/index.mdx`]) {
@@ -72,7 +76,8 @@ const ngSet = new Set(readdirSync(path.join(REG, "ng")).map((f) => f.replace(/\.
 // ── MCP mapping ──────────────────────────────────────────────────────────────
 // Retorna { tool, call } pra um nó, segundo o que o MCP do Gremorie expõe.
 function mcpFor(node) {
-  const { kind, tab, slug } = node; // kind: tab|category|item
+  const { kind, tab, slug } = node; // kind: tab|section|category|item
+  if (kind === "section") return { tool: "—", call: "—" }; // seção = só agrupamento
   const q = (s) => `"${s}"`;
   if (tab === "components") {
     if (kind === "tab") return { tool: "list_components", call: "list_components()" };
@@ -111,6 +116,8 @@ const li = (...parts) => ({ object: "block", type: "bulleted_list_item", bullete
 
 /** Blocos do corpo de uma linha: Doc + chamada MCP pronta + CLI + npm. */
 function pageBlocks(r) {
+  if (r.kind === "section")
+    return [h3("Seção"), li("Agrupamento de navegação — sem página própria.")];
   const b = [h3("Como acessar"), li("Doc — ", link(r.doc, r.doc))];
   const ngPub = r.angular === "Publicado";
   if (r.kind === "item" && r.tab === "components") {
@@ -163,9 +170,23 @@ for (const tab of TABS) {
 
   const [rxp, ngp] = REG_PREFIX[tab] ?? [null, null];
 
+  let sectionKey = null; // seção atual sob a tab (null = filho direto da tab)
   for (const page of meta.pages) {
+    // separator no nível da tab (---Section---) → linha de Seção
+    const ssep = page.match(/^---(.+)---$/);
+    if (ssep) {
+      const name = ssep[1].trim();
+      const sslug = slugifySection(name);
+      sectionKey = `${tab}#${sslug}`;
+      rows.push({
+        key: sectionKey, parentKey: tabKey, kind: "section", tab,
+        title: name, slug: sslug, tipo: "Seção", doc: null,
+      });
+      continue;
+    }
     if (page === "index" || page === "overview") continue;
     const rel = `${tab}/${page}`;
+    const parentForThis = sectionKey ?? tabKey; // seção se houver, senão a própria tab
 
     const cmeta = isFolder(rel) ? readMeta(rel) : null;
     const childPages = (cmeta?.pages ?? []).filter(
@@ -176,7 +197,7 @@ for (const tab of TABS) {
       // CATEGORIA (pasta com filhos reais)
       const cKey = `${tab}/${page}`;
       rows.push({
-        key: cKey, parentKey: tabKey, kind: "category", tab, slug: page,
+        key: cKey, parentKey: parentForThis, kind: "category", tab, slug: page,
         title: cmeta?.title ?? titleCase(page), tipo: "Categoria",
         doc: `${ORIGIN}/${rel}`,
       });
@@ -204,7 +225,7 @@ for (const tab of TABS) {
       const inRx = rxp ? rxSet.has(rxp + page) : false;
       const inNg = ngp ? ngSet.has(ngp + page) : false;
       rows.push({
-        key: rel, parentKey: tabKey, kind: "item", tab, slug: page,
+        key: rel, parentKey: parentForThis, kind: "item", tab, slug: page,
         title: pageTitle(tab, page),
         tipo: (tab === "blocks" || tab === "artifacts") ? "Componente" : "Item",
         categoria: tab === "artifacts" ? "Artifacts" : tab === "blocks" ? "Blocks" : null,
@@ -229,27 +250,61 @@ for (const r of rows) {
 // framework abaixo. Publicado (todos) · Em dev (alguns) · Planejado (nenhum).
 // Seções agnósticas (Corpus/Tokens/Platform/Get-Started) ficam em branco.
 {
-  const byTab = {}, byParent = {};
-  for (const r of rows) if (r.kind === "item") {
-    (byTab[r.tab] ??= []).push(r);
-    (byParent[r.parentKey] ??= []).push(r);
-  }
-  const agg = (items, fw) => {
-    const f = (items ?? []).filter((i) => i[fw] != null);
-    if (!f.length) return null;
-    const pub = f.filter((i) => i[fw] === "Publicado").length;
-    return pub === 0 ? "Planejado" : pub === f.length ? "Publicado" : "Em dev";
+  // mapa pai→filhos sobre TODAS as linhas (tab→seção→categoria→item)
+  const childrenOf = {};
+  for (const r of rows) if (r.parentKey) (childrenOf[r.parentKey] ??= []).push(r);
+  // coleta os status dos itens-folha descendentes de uma chave
+  const leafStatuses = (key, fw, acc = []) => {
+    for (const k of childrenOf[key] ?? []) {
+      if (k.kind === "item") { if (k[fw] != null) acc.push(k[fw]); }
+      else leafStatuses(k.key, fw, acc);
+    }
+    return acc;
   };
+  const agg = (arr) => {
+    if (!arr.length) return null;
+    const pub = arr.filter((s) => s === "Publicado").length;
+    return pub === 0 ? "Planejado" : pub === arr.length ? "Publicado" : "Em dev";
+  };
+  // Tab/Seção/Categoria agregam a completude dos itens-folha abaixo.
+  // Níveis agnósticos de framework (Corpus/Tokens/Platform/Get-Started) → null (branco).
   for (const r of rows) {
-    const src = r.kind === "category" ? byParent[r.key] : r.kind === "tab" ? byTab[r.tab] : null;
-    if (src) { r.react = agg(src, "react"); r.angular = agg(src, "angular"); }
+    if (r.kind === "item") continue;
+    r.react = agg(leafStatuses(r.key, "react"));
+    r.angular = agg(leafStatuses(r.key, "angular"));
   }
 }
 
 console.log(`Árvore desejada: ${rows.length} linhas (` +
   `${rows.filter(r => r.kind === "tab").length} tabs, ` +
+  `${rows.filter(r => r.kind === "section").length} seções, ` +
   `${rows.filter(r => r.kind === "category").length} categorias, ` +
   `${rows.filter(r => r.kind === "item").length} itens).`);
+
+// Print compacto da árvore (Tab → Seção → Categoria; itens viram contagem) p/ conferência.
+{
+  const kids = {};
+  for (const r of rows) if (r.parentKey) (kids[r.parentKey] ??= []).push(r);
+  const leaves = (key, n = 0) => {
+    for (const k of kids[key] ?? []) n += k.kind === "item" ? 1 : leaves(k.key);
+    return n;
+  };
+  const tag = { section: "▸", category: "•" };
+  const walk = (key, depth) => {
+    for (const r of kids[key] ?? []) {
+      if (r.kind === "item") continue;
+      const cnt = leaves(r.key);
+      console.log("  ".repeat(depth) + `${tag[r.kind] ?? "·"} ${r.title}` +
+        (cnt ? ` (${cnt} itens)` : ""));
+      walk(r.key, depth + 1);
+    }
+  };
+  for (const t of rows.filter((r) => r.kind === "tab")) {
+    console.log(`\n▣ ${t.title}`);
+    walk(t.key, 1);
+  }
+  console.log("");
+}
 
 // ── Notion ───────────────────────────────────────────────────────────────────
 const TOKEN = process.env.NOTION_TOKEN;
@@ -324,7 +379,7 @@ async function main() {
       Componente: { title: [{ text: { content: r.title } }] },
       Tipo: { select: { name: r.tipo } },
       Slug: text(r.slug).rich_text.length ? text(r.slug) : { rich_text: [] },
-      Doc: { url: r.doc },
+      Doc: r.doc ? { url: r.doc } : { url: null }, // seções não têm página
       Key: { rich_text: [{ text: { content: r.key } }] },
     };
     if (r.categoria !== undefined && r.categoria) properties.Categoria = { select: { name: r.categoria } };
