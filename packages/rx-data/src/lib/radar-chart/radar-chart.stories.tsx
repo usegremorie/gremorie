@@ -8,7 +8,7 @@ import { RadarChart } from "./radar-chart";
  * each `config` entry is a polygon series with a label + token color.
  */
 const meta = {
-  title: "Charts/Radar",
+  title: "Layout & display/Data/Radar",
   component: RadarChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

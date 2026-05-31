@@ -8,7 +8,7 @@ import { ScatterChart } from "./scatter-chart";
  * axis); each `config` entry is a numeric Y series with a label + token color.
  */
 const meta = {
-  title: "Charts/Scatter",
+  title: "Layout & display/Data/Scatter",
   component: ScatterChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

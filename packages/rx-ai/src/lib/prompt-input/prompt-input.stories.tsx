@@ -19,7 +19,7 @@ import {
  * and PromptInputSubmit.
  */
 const meta = {
-  title: "PromptInput/Container",
+  title: "AI/PromptInput/Container",
   component: PromptInput,
   tags: ["autodocs"],
   args: { onSubmit: () => {} },

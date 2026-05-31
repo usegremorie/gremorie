@@ -18,7 +18,7 @@ const STATES: ChatStatus[] = ["ready", "submitted", "streaming", "error"];
  * error (cross). Pass the current `status` to keep it in sync.
  */
 const meta = {
-  title: "PromptInput/Submit",
+  title: "AI/PromptInput/Submit",
   component: PromptInputSubmit,
   tags: ["autodocs"],
   argTypes: {

@@ -14,7 +14,7 @@ import {
  * supports paste-to-attach. It must live inside a PromptInput.
  */
 const meta = {
-  title: "PromptInput/Textarea",
+  title: "AI/PromptInput/Textarea",
   component: PromptInputTextarea,
   tags: ["autodocs"],
   argTypes: {

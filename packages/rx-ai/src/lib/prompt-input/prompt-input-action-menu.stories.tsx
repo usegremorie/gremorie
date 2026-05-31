@@ -16,7 +16,7 @@ import {
  * voice, connect a tool, and so on.
  */
 const meta = {
-  title: "PromptInput/ActionMenu",
+  title: "AI/PromptInput/ActionMenu",
   component: PromptInputActionMenu,
   tags: ["autodocs"],
   parameters: { layout: "padded" },

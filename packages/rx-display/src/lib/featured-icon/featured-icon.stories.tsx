@@ -35,7 +35,7 @@ import { FeaturedIcon } from "./featured-icon";
  * | `--border` | `theme="outline"` border |
  */
 const meta = {
-  title: "Display/FeaturedIcon",
+  title: "Layout & display/Display/FeaturedIcon",
   component: FeaturedIcon,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

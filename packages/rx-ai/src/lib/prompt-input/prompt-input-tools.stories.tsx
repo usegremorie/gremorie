@@ -16,7 +16,7 @@ import {
  * side of the footer.
  */
 const meta = {
-  title: "PromptInput/Tools",
+  title: "AI/PromptInput/Tools",
   component: PromptInputTools,
   tags: ["autodocs"],
   parameters: { layout: "padded" },

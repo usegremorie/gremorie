@@ -19,7 +19,7 @@ import {
  * lays out leading tools and a trailing submit button with space-between.
  */
 const meta = {
-  title: "PromptInput/Toolbar",
+  title: "AI/PromptInput/Toolbar",
   component: PromptInputFooter,
   tags: ["autodocs"],
   parameters: { layout: "padded" },

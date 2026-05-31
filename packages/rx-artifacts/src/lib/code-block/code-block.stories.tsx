@@ -13,7 +13,7 @@ import { CodeBlock, CodeBlockCopyButton } from "./code-block";
  * text before the highlighter resolves.
  */
 const meta = {
-  title: "AI/CodeBlock",
+  title: "Artifacts/CodeBlock",
   component: CodeBlock,
   tags: ["autodocs"],
   argTypes: {

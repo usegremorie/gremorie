@@ -9,7 +9,7 @@ import { PieChart } from "./pie-chart";
  * automatically (categorical). Set `donut` for a donut.
  */
 const meta = {
-  title: "Charts/Pie",
+  title: "Layout & display/Data/Pie",
   component: PieChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

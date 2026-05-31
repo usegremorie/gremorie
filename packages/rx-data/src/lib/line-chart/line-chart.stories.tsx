@@ -9,7 +9,7 @@ import { LineChart } from "./line-chart";
  * category. One line per `config` entry.
  */
 const meta = {
-  title: "Charts/Line",
+  title: "Layout & display/Data/Line",
   component: LineChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

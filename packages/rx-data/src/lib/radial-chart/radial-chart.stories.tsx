@@ -9,7 +9,7 @@ import { RadialChart } from "./radial-chart";
  * the `--chart-1…5` tokens (categorical).
  */
 const meta = {
-  title: "Charts/Radial",
+  title: "Layout & display/Data/Radial",
   component: RadialChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },

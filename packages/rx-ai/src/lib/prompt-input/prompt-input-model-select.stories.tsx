@@ -30,7 +30,7 @@ const MODELS: readonly ModelOption[] = [
  * family (a styled Select), driven by a list of model options.
  */
 const meta = {
-  title: "PromptInput/ModelSelect",
+  title: "AI/PromptInput/ModelSelect",
   component: PromptInputSelect,
   tags: ["autodocs"],
   parameters: { layout: "padded" },

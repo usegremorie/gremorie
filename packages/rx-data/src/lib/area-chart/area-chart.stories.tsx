@@ -10,7 +10,7 @@ import { AreaChart } from "./area-chart";
  * areas.
  */
 const meta = {
-  title: "Charts/Area",
+  title: "Layout & display/Data/Area",
   component: AreaChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },
