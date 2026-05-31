@@ -6,5 +6,6 @@
  * Intentionally NOT re-exported by the @gremorie/react meta-package.
  */
 export * from "./lib/artifact";
+export * from "./lib/chart-artifact";
 export * from "./lib/code-block";
 export * from "./lib/web-preview";

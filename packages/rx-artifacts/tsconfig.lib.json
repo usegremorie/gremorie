@@ -15,6 +15,7 @@
   "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/**/*.stories.ts", "src/**/*.stories.tsx"],
   "references": [
     { "path": "../rx-core/tsconfig.lib.json" },
+    { "path": "../rx-data/tsconfig.lib.json" },
     { "path": "../rx-forms/tsconfig.lib.json" },
     { "path": "../rx-display/tsconfig.lib.json" },
     { "path": "../rx-overlays/tsconfig.lib.json" }

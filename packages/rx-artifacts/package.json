@@ -32,6 +32,7 @@
   ],
   "peerDependencies": {
     "@gremorie/rx-core": ">=0.0.1",
+    "@gremorie/rx-data": ">=0.0.1",
     "@gremorie/rx-display": ">=0.0.1",
     "@gremorie/rx-forms": ">=0.0.1",
     "@gremorie/rx-overlays": ">=0.0.1",
