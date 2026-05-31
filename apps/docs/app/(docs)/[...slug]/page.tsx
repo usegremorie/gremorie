@@ -6,6 +6,7 @@ import {
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 
+import { DocsIndex } from "@/lib/docs-index";
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
@@ -29,6 +30,7 @@ export default async function Page({ params }: PageProps) {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
+        <DocsIndex url={page.url} />
         <MDX components={getMDXComponents()} />
       </DocsBody>
     </DocsPage>

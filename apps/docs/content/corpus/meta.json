@@ -5,12 +5,16 @@
   "icon": "BookOpen",
   "pages": [
     "index",
+    "---Princípios---",
     "heuristics",
+    "visual-hierarchy",
+    "---Padrões---",
     "components",
     "patterns",
+    "---Estados & feedback---",
     "states",
     "feedback-system",
-    "ux-writing",
-    "visual-hierarchy"
+    "---Escrita---",
+    "ux-writing"
   ]
 }

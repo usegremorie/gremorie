@@ -1,7 +1,7 @@
 {
   "title": "Forms",
-  "description": "Form primitives - Button, Input, InputGroup, Label, Select, Textarea, ButtonGroup, Calendar, Checkbox, DatePicker, Form, InputOTP, RadioGroup, Slider, Switch, Toggle, ToggleGroup",
   "icon": "Square",
+  "description": "Inputs and controls — button, input, select, checkbox, switch — with validation-ready anatomy.",
   "pages": [
     "button",
     "input",

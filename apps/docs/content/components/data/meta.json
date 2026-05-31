@@ -1,7 +1,7 @@
 {
   "title": "Data",
-  "description": "Data viz primitives - Area, Line, Bar, Scatter, Pie, Radar, Radial charts",
-  "icon": "BarChart3",
+  "icon": "ChartColumn",
+  "description": "Charts for data viz — area, line, bar, scatter, pie, radar, radial.",
   "pages": [
     "area-chart",
     "line-chart",

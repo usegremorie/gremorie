@@ -40,7 +40,7 @@ const blocks: ReadonlyArray<{
     name: "Sign-in",
     category: "Auth",
     description: "Email and password card with OAuth slot.",
-    href: "/blocks/overview#sign-in",
+    href: "/blocks#sign-in",
     chart: "var(--chart-1)",
     shape: "sign-in",
   },
@@ -48,7 +48,7 @@ const blocks: ReadonlyArray<{
     name: "Dashboard",
     category: "Shell",
     description: "Sidebar plus KPI grid plus chart plus recent activity.",
-    href: "/blocks/overview#dashboard",
+    href: "/blocks#dashboard",
     chart: "var(--chart-2)",
     shape: "dashboard",
   },
@@ -56,7 +56,7 @@ const blocks: ReadonlyArray<{
     name: "Chat surface",
     category: "AI",
     description: "Conversation, Message, PromptInput - fully wired.",
-    href: "/blocks/overview#chat-surface",
+    href: "/blocks#chat-surface",
     chart: "var(--brand)",
     shape: "chat",
   },
@@ -64,7 +64,7 @@ const blocks: ReadonlyArray<{
     name: "Settings form",
     category: "Forms",
     description: "Multi-section form with save bar and validation.",
-    href: "/blocks/overview#settings",
+    href: "/blocks#settings",
     chart: "var(--chart-4)",
     shape: "settings",
   },
@@ -72,7 +72,7 @@ const blocks: ReadonlyArray<{
     name: "Marketing hero",
     category: "Marketing",
     description: "Hero with CTA, feature grid, social proof.",
-    href: "/blocks/overview#marketing",
+    href: "/blocks#marketing",
     chart: "var(--chart-5)",
     shape: "marketing",
   },
@@ -80,7 +80,7 @@ const blocks: ReadonlyArray<{
     name: "Empty state",
     category: "Patterns",
     description: "No data, no results, error, permission denied.",
-    href: "/blocks/overview#empty-state",
+    href: "/blocks#empty-state",
     chart: "var(--chart-3)",
     shape: "empty",
   },
@@ -186,7 +186,7 @@ export function BlocksGallery() {
             </p>
           </div>
           <Button variant="ghost" asChild>
-            <Link href="/blocks/overview">
+            <Link href="/blocks">
               See all blocks
               <ArrowRight aria-hidden="true" />
             </Link>

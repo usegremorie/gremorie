@@ -67,7 +67,7 @@ export function Hero() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/components/overview">View Components</Link>
+                <Link href="/components">View Components</Link>
               </Button>
               <Button size="lg" variant="ghost" asChild>
                 <a

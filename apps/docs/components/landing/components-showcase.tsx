@@ -125,7 +125,7 @@ export function ComponentsShowcase() {
             </p>
           </div>
           <Button variant="ghost" asChild>
-            <Link href="/components/overview">
+            <Link href="/components">
               View all components
               <ArrowRight aria-hidden="true" />
             </Link>
@@ -136,7 +136,7 @@ export function ComponentsShowcase() {
           {categories.map((cat) => (
             <Link
               key={cat.slug}
-              href="/components/overview"
+              href="/components"
               className="group block focus-visible:outline-none"
             >
               <Card

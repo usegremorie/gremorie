@@ -1,4 +1,8 @@
 {
   "title": "Feedback system",
-  "pages": ["toast-vs-modal-vs-banner"]
+  "icon": "Bell",
+  "description": "Toast vs modal vs banner — choosing the right feedback surface by the stakes of the message.",
+  "pages": [
+    "toast-vs-modal-vs-banner"
+  ]
 }

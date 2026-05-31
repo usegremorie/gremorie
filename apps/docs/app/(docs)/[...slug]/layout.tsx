@@ -26,7 +26,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       tree={source.pageTree}
       sidebar={{
         collapsible: true,
-        defaultOpenLevel: 1,
+        // 0 = categorias (folders) fechadas por padrão; só a categoria da
+        // página atual abre. Visão geral primeiro, depois as seções/categorias.
+        defaultOpenLevel: 0,
         tabs: {
           transform(option, node) {
             const meta = source.getNodeMeta(node);

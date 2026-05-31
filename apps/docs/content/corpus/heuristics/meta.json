@@ -1,4 +1,8 @@
 {
   "title": "Heuristics",
-  "pages": ["nielsen-10-heuristics"]
+  "icon": "ListChecks",
+  "description": "Nielsen’s usability heuristics as a review checklist — the foundational rules behind every interface decision.",
+  "pages": [
+    "nielsen-10-heuristics"
+  ]
 }

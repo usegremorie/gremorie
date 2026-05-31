@@ -1,4 +1,8 @@
 {
   "title": "UX writing",
-  "pages": ["button-labels"]
+  "icon": "PenLine",
+  "description": "Microcopy rules — button labels, error messages — so the words match the action.",
+  "pages": [
+    "button-labels"
+  ]
 }

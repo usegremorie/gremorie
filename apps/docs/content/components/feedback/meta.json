@@ -1,6 +1,10 @@
 {
   "title": "Feedback",
-  "description": "Feedback primitives - Alert, Progress, Skeleton",
   "icon": "MessageCircle",
-  "pages": ["alert", "progress", "skeleton"]
+  "description": "Status and progress — alert, progress bar, skeleton loaders.",
+  "pages": [
+    "alert",
+    "progress",
+    "skeleton"
+  ]
 }

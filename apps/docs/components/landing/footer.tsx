@@ -4,8 +4,8 @@ import { Separator } from "@gremorie/rx-display";
 
 const resourceLinks = [
   { label: "Get started", href: "/get-started/installation" },
-  { label: "Components", href: "/components/overview" },
-  { label: "Blocks", href: "/blocks/overview" },
+  { label: "Components", href: "/components" },
+  { label: "Blocks", href: "/blocks" },
   { label: "Corpus", href: "/corpus" },
   { label: "Tokens", href: "/tokens" },
 ];

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "fumadocs-ui/css/solar.css";
+@import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 /* Raw @theme tokens (source of truth) so THIS app's Tailwind processes them.
    External consumers import the pre-compiled @gremorie/rx-core/styles/globals.css
@@ -99,4 +99,19 @@
   ::file-selector-button {
     border-color: var(--color-fd-border, currentColor);
   }
+}
+
+/* Delicate "card" enveloping the page content (#nd-page). The previous theme
+   showed a subtle rounded surface around the article; Fumadocs' #nd-page is
+   plain, so we add it explicitly — theme-independent. A 1px translucent border
+   + rounded corners + a barely-there elevation (3% toward the foreground, so
+   it reads slightly lighter in dark and slightly darker in light). */
+#nd-page {
+  border: 1px solid var(--color-fd-border);
+  border-radius: 0.75rem;
+  background-color: color-mix(
+    in oklab,
+    var(--color-fd-background),
+    var(--color-fd-foreground) 3%
+  );
 }
