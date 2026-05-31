@@ -180,7 +180,8 @@ for (const tab of TABS) {
       sectionKey = `${tab}#${sslug}`;
       rows.push({
         key: sectionKey, parentKey: tabKey, kind: "section", tab,
-        title: name, slug: sslug, tipo: "Seção", doc: null,
+        title: name, slug: sslug, tipo: "Seção",
+        doc: `${ORIGIN}/${tab}#${sslug}`, // pseudo-doc estável (âncora) p/ casamento idempotente
       });
       continue;
     }
