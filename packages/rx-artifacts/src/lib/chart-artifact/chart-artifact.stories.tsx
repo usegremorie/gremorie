@@ -1,49 +1,42 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import {
-  Artifact,
-  ArtifactActions,
-  ArtifactContent,
-  ArtifactDescription,
-  ArtifactHeader,
-  ArtifactTitle,
-} from "../artifact";
 import { ChartArtifact, type ChartArtifactDatum } from "./chart-artifact";
 
 /**
  * # ChartArtifact
  *
  * A schema-driven bar chart rendered as a Gremorie **artifact** — the shape an
- * LLM returns and the UI renders live. Composes existing primitives only:
- * the `Artifact` shell, the `rx-data` headless chart, `Table`, `ToggleGroup`,
- * `DropdownMenu` and `Button`.
+ * LLM emits and the UI renders live. The anatomy below is framework-agnostic:
+ * it is the **same in both editions**, only the import / tag syntax differs.
+ *
+ * - **React** — `@gremorie/rx-artifacts` → `<ChartArtifact … />`
+ * - **Angular** — `@gremorie/ng-artifacts` → `<gn-chart-artifact … />` (planned)
+ *
+ * It is a thin card composed from existing primitives only — the Artifact
+ * shell, the headless chart engine, Table, ToggleGroup, DropdownMenu and
+ * Button. It does **not** wrap the styled `BarChart`; it draws the bars from
+ * the same headless engine so it can do per-category colors and the tooltip.
  *
  * ## Anatomy
  *
- * ```tsx
- * <Artifact>
- *   <ArtifactHeader>
- *     <ArtifactTitle />          // single line, truncates
- *     <ArtifactDescription />    // single line, truncates
- *     <ArtifactActions>
- *       <ToggleGroup>            // chart ⇄ table (segmented)
- *       <DropdownMenu>           // Download → Image (PNG) · Data (CSV)
- *       <DropdownMenu>           // More → Copy · Save · Regenerate
- *     </ArtifactActions>
- *   </ArtifactHeader>
- *   <ArtifactContent>
- *     <ChartView /> | <TableView />   // toggled; bars use the categorical palette
- *   </ArtifactContent>
- * </Artifact>
- * ```
+ * - **Header**
+ *   - **Title** — single line, truncates.
+ *   - **Description** — optional, single line, truncates.
+ *   - **Actions**
+ *     - **View toggle** — segmented *chart ⇄ table*.
+ *     - **Download** — one button → menu: *Image (PNG)* · *Data (CSV)*.
+ *     - **More** — *Copy values* · *Save* · *Regenerate*.
+ * - **Body** — toggled, both views render from the same `data`:
+ *   - **Chart** — vertical bars in the categorical palette
+ *     (`--chart-1…5`, cycling), faint horizontal grid, no Y axis, hover
+ *     tooltip + cursor band.
+ *   - **Table** — category + value, each row prefixed with its color swatch.
  *
- * - **Categorical colors** — each bar takes the next chart token
- *   (`--chart-1 … --chart-5`, cycling); the table mirrors them with a swatch.
- * - **Chart ⇄ Table** — the segmented toggle swaps the body; both render from
- *   the same `data`.
- * - **Download** — one button, a menu with **Image (PNG)** (rasterized from the
- *   live SVG with resolved styles) and **Data (CSV)**.
- * - **More** — Copy values, Save, Regenerate.
+ * ## Behavior
+ *
+ * - **Download → Image** rasterizes the live SVG (styles resolved) to a PNG;
+ *   **→ Data** writes the rows as CSV.
+ * - Props are JSON-serializable (generative-UI ready) — see the table below.
  */
 const meta = {
   title: "Artifacts/Chart",
@@ -63,8 +56,14 @@ const meta = {
       control: "text",
       description: "Numeric field plotted as bar height.",
     },
-    categoryLabel: { control: "text" },
-    valueLabel: { control: "text" },
+    categoryLabel: {
+      control: "text",
+      description: "Table header for the category column.",
+    },
+    valueLabel: {
+      control: "text",
+      description: "Table header / tooltip label for the value.",
+    },
     defaultView: {
       control: "inline-radio",
       options: ["chart", "table"],
@@ -155,40 +154,4 @@ export const TableFirst: Story = {
     ...Default.args,
     defaultView: "table",
   },
-};
-
-/**
- * The raw primitives behind the artifact, for reference. The real component
- * wires the toggle, the download menu and the categorical chart for you.
- */
-export const AnatomyParts: Story = {
-  args: Default.args,
-  render: () => (
-    <Artifact>
-      <ArtifactHeader>
-        <div className="min-w-0 flex-1">
-          <ArtifactTitle className="truncate">ArtifactTitle</ArtifactTitle>
-          <ArtifactDescription className="truncate">
-            ArtifactDescription — one line, truncates
-          </ArtifactDescription>
-        </div>
-        <ArtifactActions>
-          <span className="rounded-md border px-2 py-1 text-xs text-muted-foreground">
-            ToggleGroup
-          </span>
-          <span className="rounded-md border px-2 py-1 text-xs text-muted-foreground">
-            Download ▾
-          </span>
-          <span className="rounded-md border px-2 py-1 text-xs text-muted-foreground">
-            More ⋯
-          </span>
-        </ArtifactActions>
-      </ArtifactHeader>
-      <ArtifactContent>
-        <div className="grid h-40 place-items-center rounded-md border border-dashed text-sm text-muted-foreground">
-          ArtifactContent — ChartView | TableView
-        </div>
-      </ArtifactContent>
-    </Artifact>
-  ),
 };
