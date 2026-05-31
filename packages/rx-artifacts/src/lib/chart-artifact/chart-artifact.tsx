@@ -2,10 +2,11 @@
 
 import {
   Bar,
+  bandScale,
   CartesianGrid,
   ChartFrame,
+  useChart,
   XAxis,
-  YAxis,
 } from "@gremorie/rx-data";
 import {
   Table,
@@ -206,14 +207,96 @@ interface ViewProps {
   format: (n: number) => string;
 }
 
-function ChartView({ data, categoryKey, valueKey, format }: ViewProps) {
-  const ariaLabel = `Bar chart of ${valueKey} by ${categoryKey}`;
+/** Tight gutters — no Y axis (shadcn-style), small room for X labels. */
+const CHART_MARGIN = { top: 20, right: 8, bottom: 24, left: 8 };
+
+/** A bar with only its TOP corners rounded (clean, not blocky). */
+function barPath(x: number, y: number, w: number, h: number, r: number) {
+  const rr = Math.max(0, Math.min(r, w / 2, h));
+  return `M${x},${y + h}L${x},${y + rr}Q${x},${y} ${x + rr},${y}L${x + w - rr},${y}Q${x + w},${y} ${x + w},${y + rr}L${x + w},${y + h}Z`;
+}
+
+interface HoverState {
+  i: number;
+  cx: number;
+  top: number;
+}
+
+/** Faint band behind the hovered category — the shadcn "cursor". */
+function BandHighlight({ index }: { index: number | null }) {
+  const ctx = useChart();
+  if (index == null) return null;
+  const cats = ctx.data.map((d) => String(d[ctx.xKey]));
+  const band = bandScale(cats, [ctx.plotLeft, ctx.plotRight], 0.2);
+  const bx = band(cats[index]);
   return (
-    <figure role="img" aria-label={ariaLabel} className="m-0">
+    <rect
+      x={bx}
+      y={ctx.plotTop}
+      width={band.bandwidth}
+      height={ctx.plotBottom - ctx.plotTop}
+      rx={6}
+      fill="currentColor"
+      fillOpacity={0.08}
+    />
+  );
+}
+
+/** Transparent per-category hit areas spanning the full plot height. */
+function HoverCapture({
+  valueKey,
+  onHover,
+}: {
+  valueKey: string;
+  onHover: (h: HoverState | null) => void;
+}) {
+  const ctx = useChart();
+  const cats = ctx.data.map((d) => String(d[ctx.xKey]));
+  const band = bandScale(cats, [ctx.plotLeft, ctx.plotRight], 0.2);
+  return (
+    <g onMouseLeave={() => onHover(null)}>
+      {ctx.data.map((d, i) => {
+        const bx = band(cats[i]);
+        return (
+          <rect
+            key={i}
+            x={bx}
+            y={ctx.plotTop}
+            width={band.bandwidth}
+            height={ctx.plotBottom - ctx.plotTop}
+            fill="transparent"
+            onMouseEnter={() =>
+              onHover({
+                i,
+                cx: bx + band.bandwidth / 2,
+                top: ctx.yScale(Number(d[valueKey])),
+              })
+            }
+          />
+        );
+      })}
+    </g>
+  );
+}
+
+function ChartView({
+  data,
+  categoryKey,
+  valueKey,
+  valueLabel,
+  format,
+}: ViewProps) {
+  const [hover, setHover] = useState<HoverState | null>(null);
+  const ariaLabel = `Bar chart of ${valueKey} by ${categoryKey}`;
+  const above = hover ? hover.top >= 60 : true;
+
+  return (
+    <figure role="img" aria-label={ariaLabel} className="relative m-0">
       <ChartFrame
         data={data}
         xKey={categoryKey}
-        className="aspect-[2/1] w-full overflow-visible text-muted-foreground"
+        margin={CHART_MARGIN}
+        className="aspect-[5/3] w-full overflow-visible text-muted-foreground"
       >
         <CartesianGrid>
           {(lines) =>
@@ -225,24 +308,21 @@ function ChartView({ data, categoryKey, valueKey, format }: ViewProps) {
                 y1={l.y}
                 y2={l.y}
                 stroke="currentColor"
-                strokeOpacity={0.15}
-                strokeDasharray="4 4"
+                strokeOpacity={0.1}
               />
             ))
           }
         </CartesianGrid>
 
+        <BandHighlight index={hover?.i ?? null} />
+
         <Bar dataKey={valueKey}>
           {(rects) =>
             rects.map((r, i) => (
-              <rect
+              <path
                 key={i}
-                x={r.x}
-                y={r.y}
-                width={r.width}
-                height={r.height}
+                d={barPath(r.x, r.y, r.width, r.height, 6)}
                 fill={colorAt(i)}
-                rx={4}
               />
             ))
           }
@@ -264,23 +344,35 @@ function ChartView({ data, categoryKey, valueKey, format }: ViewProps) {
           }
         </XAxis>
 
-        <YAxis>
-          {({ ticks, labelX }) =>
-            ticks.map((t) => (
-              <text
-                key={t.value}
-                x={labelX}
-                y={t.y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="fill-muted-foreground text-[11px]"
-              >
-                {t.label}
-              </text>
-            ))
-          }
-        </YAxis>
+        <HoverCapture valueKey={valueKey} onHover={setHover} />
       </ChartFrame>
+
+      {hover ? (
+        <div
+          role="tooltip"
+          className="pointer-events-none absolute z-10 min-w-32 rounded-lg border bg-background px-2.5 py-1.5 text-xs shadow-md"
+          style={{
+            left: hover.cx,
+            top: above ? hover.top - 10 : hover.top + 10,
+            transform: `translate(-50%, ${above ? "-100%" : "0"})`,
+          }}
+        >
+          <div className="mb-1 font-medium text-foreground">
+            {String(data[hover.i][categoryKey])}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span
+              aria-hidden
+              className="size-2.5 shrink-0 rounded-[3px]"
+              style={{ backgroundColor: colorAt(hover.i) }}
+            />
+            <span className="text-muted-foreground">{valueLabel}</span>
+            <span className="ml-3 font-medium tabular-nums text-foreground">
+              {format(Number(data[hover.i][valueKey]))}
+            </span>
+          </div>
+        </div>
+      ) : null}
 
       <figcaption className="sr-only">
         {data

@@ -78,8 +78,15 @@ const meta = {
     data: { control: "object" },
   },
   parameters: {
-    layout: "padded",
+    layout: "centered",
   },
+  decorators: [
+    (Story) => (
+      <div className="w-[26rem] max-w-full">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof ChartArtifact>;
 
 export default meta;
