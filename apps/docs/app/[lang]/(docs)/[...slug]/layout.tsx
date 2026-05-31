@@ -2,6 +2,7 @@ import { DocsLayout } from "fumadocs-ui/layouts/docs";
 
 import type { ReactNode } from "react";
 
+import { FlagLanguageSwitch } from "@/components/flag-language-switch";
 import { getSection } from "@/lib/get-section";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
@@ -29,7 +30,9 @@ export default async function Layout({
   const { lang } = await params;
   return (
     <DocsLayout
-      i18n
+      // false = sem o seletor de idioma padrão (texto); usamos o de bandeiras
+      // no banner. O contexto de locale segue vindo do RootProvider.
+      i18n={false}
       {...baseOptions(lang)}
       tree={source.getPageTree(lang)}
       sidebar={{
@@ -37,6 +40,14 @@ export default async function Layout({
         // 0 = categorias (folders) fechadas por padrão; só a categoria da
         // página atual abre. Visão geral primeiro, depois as seções/categorias.
         defaultOpenLevel: 0,
+        // Seletor de idioma (bandeiras) logo abaixo da busca. Substitui o
+        // toggle de texto padrão do Fumadocs (por isso removemos a prop `i18n`;
+        // o contexto de locale vem do RootProvider).
+        banner: (
+          <div key="lang-banner" className="flex justify-end">
+            <FlagLanguageSwitch />
+          </div>
+        ),
         tabs: {
           transform(option, node) {
             const meta = source.getNodeMeta(node);
