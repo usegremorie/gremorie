@@ -12,18 +12,19 @@ import { ChartArtifact, type ChartArtifactDatum } from "./chart-artifact";
  * - **React** — `@gremorie/rx-artifacts` → `<ChartArtifact … />`
  * - **Angular** — `@gremorie/ng-artifacts` → `<gn-chart-artifact … />` (planned)
  *
- * It is a thin card composed from existing primitives only. It does **not**
- * wrap the styled `BarChart`; it draws the bars from the same headless engine
- * so it can do per-category colors and the hover tooltip.
+ * It is a thin **preset** of the generic `Artifact` shell that **embeds the
+ * styled `BarChart`** (rx-data) and a `Table`, toggling between them. Because
+ * it embeds the chart primitive, any change to `BarChart` reflects here.
  *
  * ## Anatomy
  *
  * - **Header**
+ *   - **FeaturedIcon** — the badge that anchors the card.
  *   - **Title** — single line, truncates.
  *   - **Description** — optional, single line, truncates.
  *   - **Actions** — *view toggle* (chart ⇄ table) · *Download* menu · *More* menu.
  * - **Body** — toggled, both views from the same `data`:
- *   - **Chart** — categorical bars, faint grid, no Y axis, hover tooltip + cursor band.
+ *   - **Chart** — the embedded `BarChart` (categorical · no Y axis · tooltip).
  *   - **Table** — category + value, each row prefixed with its color swatch.
  *
  * ## Props
@@ -50,12 +51,10 @@ import { ChartArtifact, type ChartArtifactDatum } from "./chart-artifact";
  *
  * | Component | Package | Role |
  * | --- | --- | --- |
- * | `Artifact`, `ArtifactHeader`, `ArtifactTitle`, `ArtifactDescription`, `ArtifactActions`, `ArtifactContent` | `@gremorie/rx-artifacts` | Card shell + header / body slots |
- * | `ToggleGroup`, `ToggleGroupItem` | `@gremorie/rx-forms` | Chart ⇄ table segmented toggle |
- * | `Button` | `@gremorie/rx-forms` | Download / More trigger buttons |
- * | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator` | `@gremorie/rx-overlays` | Download + More menus |
+ * | `Artifact`, `ArtifactHeader`, `ArtifactFeaturedIcon`, `ArtifactHeading`, `ArtifactTitle`, `ArtifactDescription`, `ArtifactActions`, `ArtifactViewToggle`, `ArtifactMenu`, `ArtifactContent` | `@gremorie/rx-artifacts` | The generic shell + header / action primitives |
+ * | `BarChart` | `@gremorie/rx-data` | The **embedded** styled chart (categorical · no Y axis · tooltip) |
+ * | `FeaturedIcon` | `@gremorie/rx-display` | Header badge |
  * | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` | `@gremorie/rx-display` | Table view |
- * | `ChartFrame`, `Bar`, `CartesianGrid`, `XAxis`, `useChart`, `bandScale` | `@gremorie/rx-data` | Headless chart engine (bars, grid, axis, hover) |
  * | `ChartColumn`, `Table`, `Download`, `Ellipsis`, `ImageDown`, `Sheet`, `Copy`, `Bookmark`, `RefreshCw` | `lucide-react` | Icons |
  *
  * ## Variables (design tokens)
