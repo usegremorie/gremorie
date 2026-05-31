@@ -5,12 +5,12 @@
   "icon": "LayoutGrid",
   "pages": [
     "index",
-    "---Application---",
+    "---Aplicação---",
     "sign-in",
     "dashboard",
     "chat-surface",
     "settings-form",
-    "---Marketing & states---",
+    "---Marketing e estados---",
     "marketing-hero",
     "empty-state"
   ]

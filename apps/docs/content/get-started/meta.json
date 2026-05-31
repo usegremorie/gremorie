@@ -5,9 +5,11 @@
   "icon": "Rocket",
   "pages": [
     "index",
+    "---Setup---",
     "installation",
     "first-component",
     "project-setup",
+    "---Background---",
     "philosophy",
     "contributing"
   ]

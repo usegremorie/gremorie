@@ -5,13 +5,13 @@
   "icon": "Sparkles",
   "pages": [
     "index",
-    "---Data & visualization---",
+    "---Dados e visualização---",
     "chart-bar",
     "data-table",
-    "---Documents---",
+    "---Documentos---",
     "code-block",
     "markdown-doc",
-    "---Interactive---",
+    "---Interativo---",
     "form-schema",
     "calculator"
   ]

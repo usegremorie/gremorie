@@ -5,11 +5,11 @@
   "icon": "Wrench",
   "pages": [
     "index",
-    "---Tooling---",
+    "---Ferramentas---",
     "cli",
     "registry",
     "mcp",
-    "---Under the hood---",
+    "---Nos bastidores---",
     "architecture",
     "internal"
   ]

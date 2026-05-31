@@ -5,9 +5,9 @@
   "icon": "Palette",
   "pages": [
     "index",
-    "---Foundation---",
+    "---Fundação---",
     "primitive",
-    "---Applied---",
+    "---Aplicado---",
     "semantic",
     "chart"
   ]
