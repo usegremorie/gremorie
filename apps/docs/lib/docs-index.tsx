@@ -1,6 +1,7 @@
 import { Cards, Card } from "fumadocs-ui/components/card";
 import { Fragment, type ReactNode } from "react";
 
+import { i18n } from "@/lib/i18n";
 import { source } from "@/lib/source";
 
 /*
@@ -21,8 +22,8 @@ import { source } from "@/lib/source";
 type Node = any;
 
 /** The top-level tab folder whose landing (first page) is `url`, else null. */
-function findTabFolder(url: string): Node | null {
-  for (const folder of (source.pageTree as Node)?.children ?? []) {
+function findTabFolder(tree: Node, url: string): Node | null {
+  for (const folder of tree?.children ?? []) {
     if (folder.type !== "folder") continue;
     const firstPage = (folder.children ?? []).find((c: Node) => c.type === "page");
     if (firstPage?.url === url) return folder;
@@ -47,8 +48,15 @@ interface Entry {
   description?: ReactNode;
 }
 
-export function DocsIndex({ url }: { url: string }): ReactNode {
-  const folder = findTabFolder(url);
+export function DocsIndex({
+  url,
+  lang
+}: {
+  url: string;
+  lang?: string;
+}): ReactNode {
+  const tree = source.getPageTree(lang ?? i18n.defaultLanguage);
+  const folder = findTabFolder(tree, url);
   if (!folder) return null;
 
   const groups: { section: ReactNode | null; items: Entry[] }[] = [];

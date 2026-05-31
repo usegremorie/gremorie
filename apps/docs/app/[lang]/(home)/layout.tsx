@@ -13,6 +13,17 @@ import { baseOptions } from "@/lib/layout.shared";
  * HomeLayout provides the navbar; it does NOT provide a rich footer, so
  * the landing keeps rendering its custom 3-column footer inside `children`.
  */
-export default function Layout({ children }: { children: ReactNode }) {
-  return <HomeLayout {...baseOptions()}>{children}</HomeLayout>;
+export default async function Layout({
+  params,
+  children
+}: {
+  params: Promise<{ lang: string }>;
+  children: ReactNode;
+}) {
+  const { lang } = await params;
+  return (
+    <HomeLayout i18n {...baseOptions(lang)}>
+      {children}
+    </HomeLayout>
+  );
 }

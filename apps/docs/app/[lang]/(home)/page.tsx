@@ -10,6 +10,8 @@ import { ThemePlayground } from "@/components/landing/theme-playground";
 
 import type { Metadata } from "next";
 
+import { i18n } from "@/lib/i18n";
+
 /**
  * Public landing at `/`. Lives in the `(home)` route group, wrapped by
  * Fumadocs HomeLayout (see ./layout.tsx). The HomeLayout owns the navbar
@@ -35,6 +37,10 @@ export const metadata: Metadata = {
   description:
     "Registry + MCP for AI-driven generation. Angular and React, copy-paste components."
 };
+
+export function generateStaticParams() {
+  return i18n.languages.map((lang) => ({ lang }));
+}
 
 export default function LandingPage() {
   return (

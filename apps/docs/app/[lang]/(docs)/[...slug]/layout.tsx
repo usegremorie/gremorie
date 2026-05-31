@@ -19,11 +19,19 @@ import { source } from "@/lib/source";
  * background on small screens and tinted foreground on the desktop
  * sidebar. Colors live in `app/global.css`.
  */
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({
+  params,
+  children
+}: {
+  params: Promise<{ lang: string }>;
+  children: ReactNode;
+}) {
+  const { lang } = await params;
   return (
     <DocsLayout
-      {...baseOptions()}
-      tree={source.pageTree}
+      i18n
+      {...baseOptions(lang)}
+      tree={source.getPageTree(lang)}
       sidebar={{
         collapsible: true,
         // 0 = categorias (folders) fechadas por padrão; só a categoria da

@@ -1,9 +1,37 @@
+import { defineI18nUI } from "fumadocs-ui/i18n";
 import { Github, Sparkles } from "lucide-react";
 
 import type {
   BaseLayoutProps,
   LinkItemType
 } from "fumadocs-ui/layouts/shared";
+
+import { i18n } from "@/lib/i18n";
+
+/**
+ * UI translations + the per-locale provider for RootProvider.
+ * English uses Fumadocs' built-in strings (only the display name is set);
+ * Portuguese overrides the visible UI labels. Page CONTENT is translated via
+ * `*.pt.mdx` files, not here.
+ */
+export const { provider } = defineI18nUI(i18n, {
+  translations: {
+    en: { displayName: "English" },
+    pt: {
+      displayName: "Português",
+      search: "Buscar",
+      searchNoResult: "Nenhum resultado",
+      toc: "Nesta página",
+      tocNoHeadings: "Sem títulos",
+      lastUpdate: "Última atualização",
+      chooseLanguage: "Idioma",
+      nextPage: "Próximo",
+      previousPage: "Anterior",
+      chooseTheme: "Tema",
+      editOnGithub: "Editar no GitHub"
+    }
+  }
+});
 
 /**
  * Shared layout options consumed by both HomeLayout (route group `(home)`)
@@ -50,11 +78,12 @@ export const linkItems: LinkItemType[] = [
   }
 ];
 
-export function baseOptions(): BaseLayoutProps {
+export function baseOptions(lang?: string): BaseLayoutProps {
+  const home = lang && lang !== i18n.defaultLanguage ? `/${lang}` : "/";
   return {
     nav: {
       title: logo,
-      url: "/"
+      url: home
     },
     links: linkItems,
     searchToggle: {

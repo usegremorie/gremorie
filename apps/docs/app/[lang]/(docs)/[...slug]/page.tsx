@@ -11,12 +11,12 @@ import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
 interface PageProps {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ lang: string; slug: string[] }>;
 }
 
 export default async function Page({ params }: PageProps) {
-  const { slug } = await params;
-  const page = source.getPage(slug);
+  const { lang, slug } = await params;
+  const page = source.getPage(slug, lang);
   if (!page) notFound();
 
   const MDX = page.data.body;
@@ -30,7 +30,7 @@ export default async function Page({ params }: PageProps) {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <DocsIndex url={page.url} />
+        <DocsIndex url={page.url} lang={lang} />
         <MDX components={getMDXComponents()} />
       </DocsBody>
     </DocsPage>
@@ -38,8 +38,8 @@ export default async function Page({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { slug } = await params;
-  const page = source.getPage(slug);
+  const { lang, slug } = await params;
+  const page = source.getPage(slug, lang);
   if (!page) return {};
 
   return {
