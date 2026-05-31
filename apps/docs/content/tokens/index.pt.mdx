@@ -1,0 +1,132 @@
+---
+title: Visão geral
+description: Os três níveis de tokens da KDS — primitivo, semântico e de gráficos — e como cada um deles é consumido.
+---
+
+Tokens são o **vocabulário cromático e dimensional** da KDS. Em vez
+de pintar uma borda como `#E5E5E5` ou definir um padding como
+`16px`, você usa uma palavra do vocabulário — `border` ou `p-4` —
+que aponta para um valor que pode mudar com o tema, com o modo
+escuro, ou simplesmente porque a marca evoluiu.
+
+A KDS organiza esse vocabulário em **três camadas**, cada uma com
+um papel claro.
+
+## O modelo de três camadas
+
+<Cards>
+  <Card
+    title="Primitive"
+    href="/tokens/primitive"
+    description="A fonte da verdade. Paletas Tailwind e escalas crus — o único lugar onde adicionar um novo valor."
+  />
+  <Card
+    title="Semantic"
+    href="/tokens/semantic"
+    description="Tokens de intenção — `primary`, `background`, `border`. Mudam por tema, mas referenciam primitivos."
+  />
+  <Card
+    title="Chart"
+    href="/tokens/chart"
+    description="Cinco esquemas canônicos para visualização de dados. Separados da UI por necessidade técnica, não estética."
+  />
+</Cards>
+
+### 1. Primitive — o que existe
+
+Os primitivos são **valores crus**, sem opinião. Um `--color-blue-600`
+é só "esse azul específico". Um `--radius-lg` é só "8 pixels". Eles
+ficam no namespace nativo do Tailwind v4 (`--color-*`, `--text-*`,
+`--shadow-*`, etc), o que significa que utilitários como
+`bg-blue-600` ou `rounded-lg` aparecem automaticamente — sem código
+de bridge.
+
+Você raramente toca em primitivos diretamente em componentes. O
+papel deles é **alimentar** as outras duas camadas.
+
+### 2. Semantic — o que esses valores significam
+
+Os semânticos traduzem primitivos em **intenção**. Em vez de pedir
+"o cinza-900", o componente pede "o foreground". A diferença é que
+quando o tema muda, o foreground troca de primitivo sozinho — e o
+componente não fica sabendo.
+
+É aqui que a Gremorie suporta **quatro temas**, e os modos light/dark
+de cada um. Toda a chrome dos componentes conversa com essa camada:
+
+- [**Default**](/tokens/semantic/colors#theme-default) — baseColor
+  `neutral`. O ponto de partida sem identidade de marca.
+- [**Amber Minimal**](/tokens/semantic/colors#theme-amber-minimal) —
+  paleta importada de tweakcn, dourado/âmbar discreto.
+- [**Amethyst Haze**](/tokens/semantic/colors#theme-amethyst-haze) —
+  paleta importada de tweakcn, ametista/violeta com leve haze.
+- [**Claude**](/tokens/semantic/colors#theme-claude) — paleta
+  inspirada na identidade Claude, terracota quente.
+
+### 3. Chart — porque dado-viz é diferente
+
+Cores de UI e cores de gráficos seguem regras diferentes. Um botão
+azul existe num contexto. Cinco azuis num heatmap precisam ser
+**ordenados por claridade**, não por marca. Por isso os tokens de
+gráfico vivem numa camada própria, com cinco esquemas canônicos —
+Sequential, Categorical, Divergent, Status, Comparison — cada um
+para uma forma específica de dado.
+
+## Como ler esta seção
+
+- Está estilizando uma **superfície de UI** (botão, card, input)?
+  Vá para [Semantic](/tokens/semantic) e procure o token
+  com a intenção certa.
+- Está construindo um **gráfico**? Vá direto para
+  [Chart](/tokens/chart) — o esquema certo depende da
+  forma do dado, não do gosto.
+- Precisa de um **valor exato** (uma cor de marketing fora do
+  sistema, um spacing específico)? Use [Primitive](/tokens/primitive).
+
+<Callout type="info">
+  **Convenção de naming.** Primitivos usam o prefixo nativo do
+  Tailwind (`--color-*`, `--text-*`, `--shadow-*`). Semânticos
+  usam **sem prefixo** (`--primary`, `--foreground`, `--border`)
+  e ficam em `:root` ou `[data-theme="<id>"]`. Tokens de gráfico
+  usam `--color-chart-<grupo>-<n>` e são bridgeados para
+  utilitários Tailwind via `@theme inline`.
+</Callout>
+
+## Como consumir
+
+Existem três formas equivalentes de usar um token, dependendo do
+contexto:
+
+```tsx
+// 1. Classe utility do Tailwind — preferida em componentes React
+<div className="bg-primary text-primary-foreground rounded-lg p-4 shadow-md">
+  Card com tokens semânticos
+</div>
+
+// 2. CSS variable direto — ideal pra estilos dinâmicos ou bibliotecas
+//    que recebem cor como string (ex: Recharts, motion frames inline)
+<rect fill="var(--color-chart-cat-1)" />
+
+// 3. ChartConfig do KDS — usado pelos helpers de tooltip e legenda
+//    do sistema de gráficos
+const config = {
+  revenue: { label: "Receita", color: "var(--color-chart-cat-1)" }
+} satisfies ChartConfig;
+```
+
+A regra mental é: **se você está pintando um elemento, use classe
+Tailwind**. Se está passando cor como string pra uma API externa
+(SVG, Recharts, animação), use a variável CSS. ChartConfig é caso
+especial — o sistema de gráficos da KDS espera ele.
+
+## A regra de ouro
+
+> **Componentes nunca hardcodam valor — sempre token.** Se você
+> está prestes a digitar `#FF6B6B` ou `padding: 14px`, pare.
+> Provavelmente existe um token. Se não existir, é uma decisão de
+> sistema antes de ser uma decisão de implementação.
+
+A motivação é simples: trocar o tema, ou ajustar a marca, ou
+melhorar acessibilidade — qualquer uma dessas mudanças deveria ser
+**um diff em um único arquivo**. Quando hardcodes vazam para
+componentes, esse "um diff" vira "rever 200 arquivos".
