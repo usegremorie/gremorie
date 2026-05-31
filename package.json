@@ -61,6 +61,7 @@
     "@playwright/test": "^1.36.0",
     "@schematics/angular": "~21.2.0",
     "@spartan-ng/cli": "^0.0.1-alpha.694",
+    "@storybook/addon-docs": "^9.1.20",
     "@storybook/angular": "^9.1.20",
     "@storybook/react-vite": "^9.1.20",
     "@swc-node/register": "1.11.1",

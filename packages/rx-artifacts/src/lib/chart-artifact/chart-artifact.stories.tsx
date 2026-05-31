@@ -12,31 +12,69 @@ import { ChartArtifact, type ChartArtifactDatum } from "./chart-artifact";
  * - **React** — `@gremorie/rx-artifacts` → `<ChartArtifact … />`
  * - **Angular** — `@gremorie/ng-artifacts` → `<gn-chart-artifact … />` (planned)
  *
- * It is a thin card composed from existing primitives only — the Artifact
- * shell, the headless chart engine, Table, ToggleGroup, DropdownMenu and
- * Button. It does **not** wrap the styled `BarChart`; it draws the bars from
- * the same headless engine so it can do per-category colors and the tooltip.
+ * It is a thin card composed from existing primitives only. It does **not**
+ * wrap the styled `BarChart`; it draws the bars from the same headless engine
+ * so it can do per-category colors and the hover tooltip.
  *
  * ## Anatomy
  *
  * - **Header**
  *   - **Title** — single line, truncates.
  *   - **Description** — optional, single line, truncates.
- *   - **Actions**
- *     - **View toggle** — segmented *chart ⇄ table*.
- *     - **Download** — one button → menu: *Image (PNG)* · *Data (CSV)*.
- *     - **More** — *Copy values* · *Save* · *Regenerate*.
- * - **Body** — toggled, both views render from the same `data`:
- *   - **Chart** — vertical bars in the categorical palette
- *     (`--chart-1…5`, cycling), faint horizontal grid, no Y axis, hover
- *     tooltip + cursor band.
+ *   - **Actions** — *view toggle* (chart ⇄ table) · *Download* menu · *More* menu.
+ * - **Body** — toggled, both views from the same `data`:
+ *   - **Chart** — categorical bars, faint grid, no Y axis, hover tooltip + cursor band.
  *   - **Table** — category + value, each row prefixed with its color swatch.
+ *
+ * ## Props
+ *
+ * | Prop | Type | Default | Description |
+ * | --- | --- | --- | --- |
+ * | `title` * | `string` | — | Single-line heading. |
+ * | `description` | `string` | — | One-line supporting text (truncates). |
+ * | `data` * | `ChartArtifactDatum[]` | — | Rows — one object per category. |
+ * | `categoryKey` * | `string` | — | Field for the category (x axis / 1st column). |
+ * | `valueKey` * | `string` | — | Numeric field plotted as the bar height. |
+ * | `categoryLabel` | `string` | title-cased `categoryKey` | Table header for the category column. |
+ * | `valueLabel` | `string` | title-cased `valueKey` | Table header / tooltip label for the value. |
+ * | `defaultView` | `"chart" \| "table"` | `"chart"` | Which view shows first. |
+ * | `numberFormat` | `Intl.NumberFormatOptions` | — | Value formatting (table + tooltip + CSV). |
+ * | `fileName` | `string` | `"chart"` | Base name for downloaded files. |
+ * | `className` | `string` | — | Extra classes on the card root. |
+ * | `onRegenerate` | `() => void` | — | Wired to the *Regenerate* menu item. |
+ * | `onSave` | `() => void` | — | Wired to the *Save* menu item. |
+ *
+ * \* required. Props are JSON-serializable (generative-UI ready).
+ *
+ * ## Subcomponents
+ *
+ * | Component | Package | Role |
+ * | --- | --- | --- |
+ * | `Artifact`, `ArtifactHeader`, `ArtifactTitle`, `ArtifactDescription`, `ArtifactActions`, `ArtifactContent` | `@gremorie/rx-artifacts` | Card shell + header / body slots |
+ * | `ToggleGroup`, `ToggleGroupItem` | `@gremorie/rx-forms` | Chart ⇄ table segmented toggle |
+ * | `Button` | `@gremorie/rx-forms` | Download / More trigger buttons |
+ * | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator` | `@gremorie/rx-overlays` | Download + More menus |
+ * | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` | `@gremorie/rx-display` | Table view |
+ * | `ChartFrame`, `Bar`, `CartesianGrid`, `XAxis`, `useChart`, `bandScale` | `@gremorie/rx-data` | Headless chart engine (bars, grid, axis, hover) |
+ * | `ChartColumn`, `Table`, `Download`, `Ellipsis`, `ImageDown`, `Sheet`, `Copy`, `Bookmark`, `RefreshCw` | `lucide-react` | Icons |
+ *
+ * ## Variables (design tokens)
+ *
+ * | Token | Used for |
+ * | --- | --- |
+ * | `--chart-1` … `--chart-5` | Bar colors, table swatches, tooltip dot (categorical, cycling) |
+ * | `--border` | Card border, header divider, tooltip border |
+ * | `--input` | Toggle (outline) border |
+ * | `--background` | Card surface, tooltip background |
+ * | `--foreground` | Title, value text |
+ * | `--muted-foreground` | Description, axis labels, grid lines, table header |
+ * | `--accent` / `--accent-foreground` | Toggle hover / active state |
+ * | `--ring` | Keyboard focus rings |
  *
  * ## Behavior
  *
- * - **Download → Image** rasterizes the live SVG (styles resolved) to a PNG;
- *   **→ Data** writes the rows as CSV.
- * - Props are JSON-serializable (generative-UI ready) — see the table below.
+ * **Download → Image** rasterizes the live SVG (styles resolved) to a PNG;
+ * **→ Data** writes the rows as CSV.
  */
 const meta = {
   title: "Artifacts/Chart",
@@ -48,6 +86,7 @@ const meta = {
       control: "text",
       description: "One-line supporting text (truncates).",
     },
+    data: { control: "object", description: "Rows — one object per category." },
     categoryKey: {
       control: "text",
       description: "Field for the category (x axis / first column).",
@@ -74,7 +113,9 @@ const meta = {
       control: "object",
       description: "Intl.NumberFormat options for value rendering.",
     },
-    data: { control: "object" },
+    className: { control: false, description: "Extra classes on the card." },
+    onRegenerate: { action: "regenerate", description: "More → Regenerate." },
+    onSave: { action: "save", description: "More → Save." },
   },
   parameters: {
     layout: "centered",

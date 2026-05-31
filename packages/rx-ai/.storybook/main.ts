@@ -39,7 +39,7 @@ const config: StorybookConfig = {
     "../../rx-containers/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../rx-data/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
   ],
-  addons: [],
+  addons: ["@storybook/addon-docs"],
   framework: { name: "@storybook/react-vite", options: {} },
   async viteFinal(cfg) {
     // Repo root: nx runs targets from the workspace root.
