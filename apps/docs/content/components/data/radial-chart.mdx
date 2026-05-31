@@ -7,7 +7,7 @@ import { RadialChartPreview } from "@/components/preview/data/charts";
 
 ## Overview
 
-`RadialChart` is the styled wrapper of the headless charting engine for **concentric polar bars**. Each data row produces one ring around the chart center; each ring sweeps proportionally to its `valueKey` value. Ring colors cycle through the `--chart-1` through `--chart-5` tokens automatically.
+`RadialChart` is a recharts chart built on the shadcn `chart` primitive (`ChartContainer`) for **concentric polar bars**. Each data row produces one bar around the chart center; each bar sweeps proportionally to its `dataKey` value. Bar colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip.
 
 Reach for RadialChart when you want a **compact, decorative ranking** of three to five items - top categories, leading drivers, ranked metrics in a hero card. For exact comparison [`BarChart`](/components/data/bar-chart) reads faster; for share-of-whole at a glance [`PieChart`](/components/data/pie-chart) is more familiar.
 
@@ -47,23 +47,33 @@ bunx --bun gremorie@latest add rx-radial-chart
 <Tabs items={['React', 'Angular']}>
 <Tab value="React">
 ```tsx
-import { RadialChart } from "@gremorie/rx-data";
+import { RadialChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
 
-const data = [
-  { category: "Chrome", visitors: 275 },
-  { category: "Safari", visitors: 200 },
-  { category: "Firefox", visitors: 187 },
-  { category: "Edge", visitors: 173 },
+const data: ChartDatum[] = [
+  { category: "Chrome", visitors: 275, fill: "var(--chart-1)" },
+  { category: "Safari", visitors: 200, fill: "var(--chart-2)" },
+  { category: "Firefox", visitors: 187, fill: "var(--chart-3)" },
+  { category: "Edge", visitors: 173, fill: "var(--chart-4)" },
 ];
 
+const config: ChartConfig = {
+  visitors: { label: "Visitors" },
+  Chrome: { label: "Chrome" },
+  Safari: { label: "Safari" },
+  Firefox: { label: "Firefox" },
+  Edge: { label: "Edge" },
+};
+
 export function TopBrowsers() {
-  return <RadialChart data={data} nameKey="category" valueKey="visitors" />;
+  return (
+    <RadialChart data={data} config={config} nameKey="category" dataKey="visitors" />
+  );
 }
 ```
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
-Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+Angular edition planned for a follow-up release; it mirrors this component's anatomy.
 </Callout>
 </Tab>
 </Tabs>
@@ -72,40 +82,49 @@ Angular edition planned for a follow-up release. The headless engine is framewor
 
 ### `<RadialChart>`
 
-The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>` with one filled arc per ring (plus a faint track behind it), a wrapping legend of name plus swatch, and an `sr-only` data table for assistive tech.
+A recharts radial bar chart composed inside the shadcn `chart` primitive (`ChartContainer`). One concentric bar per row; bar colors come from each row's `fill`, and the optional `config` provides the labels shown in the tooltip.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `data` | `readonly Datum[]` | - | Tabular data. One row per ring. Must include a string field at `nameKey` and a numeric field at `valueKey`. |
-| `nameKey` | `string` | - | Name of the ring label field. Drives the legend and the `sr-only` table headers. |
-| `valueKey` | `string` | - | Name of the numeric value field. The sweep of each ring is proportional to this value relative to the max across rows. |
-| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus a square aspect. |
+| `data` | `readonly ChartDatum[]` | - | Tabular data. One row per bar. Each row needs a string field at `nameKey`, a numeric field at `dataKey`, and a `fill` for its bar color (e.g. `var(--chart-1)`). |
+| `nameKey` | `string` | - | Name of the category label field. Used to resolve the tooltip label. |
+| `dataKey` | `string` | - | Name of the numeric value field. The sweep of each bar is proportional to this value relative to the max across rows. |
+| `config` | `ChartConfig` | `{}` | Optional label/color map keyed by category name (and value key). Powers the tooltip labels. |
+| `tooltip` | `boolean` | `true` | Toggles the hover tooltip (`ChartTooltip` + `ChartTooltipContent`). |
+| `className` | `string` | - | Merged onto the `ChartContainer`. The bundled style supplies a centered, square aspect frame. |
 
-### Headless primitives exposed
+### Chart primitives for custom composition
+
+For full control, compose raw recharts inside `ChartContainer` using the shadcn chart primitives, all re-exported from `@gremorie/rx-data`. This mirrors the official shadcn radial block ([ui.shadcn.com/charts/radial](https://ui.shadcn.com/charts/radial)).
 
 | Export | Role |
 |---|---|
-| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides the polar projection context. |
-| `RadialBar` | Render-prop primitive yielding `{ arcs }`. Each arc carries `{ d, track, name, index, value }` so you draw both the filled arc and the faint track yourself. |
+| `ChartContainer` | Responsive frame; injects per-key CSS color vars (`--color-<key>`) from `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Hover card and its themed content. |
+| `ChartLegend` / `ChartLegendContent` | Optional legend and its themed content. |
+| `useChart` | Hook returning the active `config` from context (use inside custom children). |
+| `RadialBarChart`, `RadialBar`, `PolarGrid`, `Label` | Raw recharts primitives composed inside `ChartContainer`. |
 
 ### Types
 
 | Type | Shape |
 |---|---|
-| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| `ChartDatum` | `Record<string, string \| number> & { fill?: string }` - one row of chart data; `fill` sets the per-bar color. |
+| `ChartConfig` | Map of key → `{ label?, icon?, color? }`; provides tooltip/legend labels (and optional colors). |
 
 <Callout type="info">
-Like `PieChart`, `RadialChart` does **not** take a `config` prop. Ring colors are auto-assigned from the `--chart-1` through `--chart-5` tokens in row order. For explicit per-ring colors, drop down to the headless `<RadialBar>` and supply your own `fill`.
+Bar colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), not from `config`. The optional `config` maps each category name to a `{ label }` and drives the labels shown in the tooltip.
 </Callout>
 
 ## Composition
 
-1. **Pick `nameKey` and `valueKey`** - the label column and the numeric column. Both must exist on every row.
-2. **Order rows by magnitude**. The largest value should sit on the outer ring; the smallest on the innermost. The decreasing radius reinforces ranking visually.
-3. **Cap the row count** at three to five. Six or more rings get visually noisy and lose the ranking signal.
-4. **For custom arcs** (per-row color, gradient fills, segmented tracks), drop down to `<ChartFrame>` plus `<RadialBar>` and supply your own render prop.
+1. **Pick `nameKey` and `dataKey`** - the label column and the numeric column. Both must exist on every row.
+2. **Set a `fill` per row** - point each row at a `--chart-*` token (e.g. `fill: "var(--chart-1)"`). This is where bar colors come from.
+3. **Add a `config`** mapping each category name (and the value key) to a `{ label }` so the tooltip reads cleanly.
+4. **Order rows by magnitude**. The largest value sits on the outer bar; the smallest on the innermost. The decreasing radius reinforces ranking visually.
+5. **Cap the row count** at three to five. Six or more bars get visually noisy and lose the ranking signal.
 
-The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspect-square` so the rings stay circular.
+The chart auto-sizes to its parent through `ChartContainer` (recharts `ResponsiveContainer`). The frame forces `aspect-square` so the bars stay circular.
 
 ## Variations
 
@@ -116,59 +135,70 @@ The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspe
 </div>
 
 ```tsx
-<RadialChart data={data} nameKey="category" valueKey="visitors" />
+<RadialChart data={data} config={config} nameKey="category" dataKey="visitors" />
 ```
 
-The default. Four rings provide a comfortable visual rhythm without crowding.
+The default. Four bars provide a comfortable visual rhythm without crowding.
 
 ### Top-three highlight
 
 ```tsx
 <RadialChart
   data={topThree}
+  config={config}
   nameKey="product"
-  valueKey="revenue"
+  dataKey="revenue"
   className="max-w-xs"
 />
 ```
 
-For top-three callouts in a hero card. Constrain the surface width so the rings stay readable in a tight column.
+For top-three callouts in a hero card. Constrain the surface width so the bars stay readable in a tight column.
 
-### Headless customization
+### Custom composition
+
+When you need a different track treatment, gradient fills, a center label, or a legend, compose raw recharts inside `ChartContainer`. This mirrors the official shadcn radial block.
 
 ```tsx
-import { ChartFrame, RadialBar } from "@gremorie/rx-data";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from "@gremorie/rx-data";
+import { PolarGrid, RadialBar, RadialBarChart } from "recharts";
 
-export function ExplicitColorRadial({ data, nameKey, valueKey, colorByName }) {
+export function ExplicitColorRadial({
+  data,
+  config,
+  nameKey,
+  dataKey,
+}: {
+  data: ChartDatum[];
+  config: ChartConfig;
+  nameKey: string;
+  dataKey: string;
+}) {
   return (
-    <figure role="img" aria-label="Custom radial chart">
-      <ChartFrame data={data} xKey={nameKey} className="mx-auto aspect-square max-h-[260px] w-full">
-        <RadialBar valueKey={valueKey}>
-          {({ arcs }) =>
-            arcs.map((a) => (
-              <g key={a.name}>
-                <path d={a.track} fill="currentColor" fillOpacity={0.06} />
-                <path d={a.d} fill={colorByName[a.name]} />
-              </g>
-            ))
-          }
-        </RadialBar>
-      </ChartFrame>
-    </figure>
+    <ChartContainer config={config} className="mx-auto aspect-square max-h-[260px]">
+      <RadialBarChart data={data} innerRadius={30} outerRadius={110}>
+        <ChartTooltip cursor={false} content={<ChartTooltipContent nameKey={nameKey} hideLabel />} />
+        <PolarGrid gridType="circle" />
+        <RadialBar dataKey={dataKey} background />
+      </RadialBarChart>
+    </ChartContainer>
   );
 }
 ```
 
-Drop down to headless for explicit color mapping by name, gradient fills, or a different track treatment.
+Bar colors come from each row's `fill`; adjust `innerRadius` / `outerRadius` or swap the `PolarGrid` treatment for a different look.
 
 ## Accessibility
 
-- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Radial bar chart of visitors by category"`).
-- **Mirror table**: the chart appends a visually hidden `<table>` listing every ring name and value. Screen readers navigate the data via native table commands.
-- **Visible legend**: a wrapping `<ul>` of swatch plus label sits below the chart, providing the color-to-ring mapping for sighted users.
+- **Accessibility layer**: recharts' `accessibilityLayer` provides keyboard navigation and screen-reader announcements for the chart data.
 - **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
-- **Track contrast**: the faint track behind each filled arc sits at 8 percent opacity of `currentColor`, providing enough contrast to define the ring without competing with the fill.
-- **Limit ring count**: more than five rings becomes hard to scan even with the legend. Reach for [`BarChart`](/components/data/bar-chart) when more rows are needed.
+- **Track contrast**: the faint background track behind each bar (recharts `background`) defines the ring without competing with the fill.
+- **Limit bar count**: more than five bars becomes hard to scan. Reach for [`BarChart`](/components/data/bar-chart) when more rows are needed.
 
 ## Related
 

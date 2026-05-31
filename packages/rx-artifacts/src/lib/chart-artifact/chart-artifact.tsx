@@ -198,9 +198,14 @@ export function ChartArtifact({
   const format = (n: number) =>
     new Intl.NumberFormat(undefined, numberFormat).format(n);
 
+  // Single categorical series: one chart token per bar via each row's `fill`.
   const config: ChartConfig = {
-    [valueKey]: { label: valLabel, color: "var(--chart-1)" },
+    [valueKey]: { label: valLabel },
   };
+  const chartData = data.map((row, i) => ({
+    ...row,
+    fill: `var(--chart-${(i % 5) + 1})`,
+  }));
 
   const exportImage = () => {
     const svg = contentRef.current?.querySelector("svg");
@@ -287,15 +292,7 @@ export function ChartArtifact({
       <ArtifactContent>
         <div ref={contentRef}>
           {view === "chart" ? (
-            <BarChart
-              data={data}
-              config={config}
-              xKey={categoryKey}
-              colorMode="categorical"
-              axis="x"
-              chrome={false}
-              formatValue={format}
-            />
+            <BarChart data={chartData} config={config} xKey={categoryKey} />
           ) : (
             <Table>
               <TableHeader>

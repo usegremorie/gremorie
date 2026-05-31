@@ -1,96 +1,66 @@
-import * as React from "react";
+"use client";
+
 import { cn } from "@gremorie/rx-core";
-import { ChartFrame } from "../headless/chart-frame";
-import { RadialBar } from "../headless/radial-bar";
-import type { Datum } from "../headless/types";
+import {
+  PolarGrid,
+  RadialBar,
+  RadialBarChart as RechartsRadialBarChart,
+} from "recharts";
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "../chart/chart";
+import type { ChartDatum } from "../chart/types";
 
 export interface RadialChartProps {
-  data: readonly Datum[];
+  /** Tabular rows. Give each row a `fill` (e.g. `var(--color-chrome)`) for bar colors. */
+  data: readonly ChartDatum[];
+  /** Category label field. */
   nameKey: string;
-  valueKey: string;
+  /** Numeric value field. */
+  dataKey: string;
+  /** Optional label/color map (powers the tooltip labels). */
+  config?: ChartConfig;
+  /** Hover tooltip. */
+  tooltip?: boolean;
   className?: string;
 }
 
-const colorAt = (i: number) => `var(--chart-${(i % 5) + 1})`;
-
 /**
- * Styled radial bar chart - one concentric ring per data row (`nameKey`), each
- * sweep proportional to its `valueKey` value. Colors cycle `--chart-1..5`.
+ * Radial bar chart — recharts + the shadcn `chart` primitives. One concentric
+ * bar per row; colors come from each row's `fill`.
  *
  * @example
  * ```tsx
- * <RadialChart data={data} nameKey="browser" valueKey="visitors" />
+ * <RadialChart data={data} nameKey="browser" dataKey="visitors" />
  * ```
  */
 export function RadialChart({
   data,
   nameKey,
-  valueKey,
+  dataKey,
+  config = {},
+  tooltip = true,
   className,
 }: RadialChartProps) {
-  const ariaLabel = `Radial bar chart of ${valueKey} by ${nameKey}`;
-
-  const legend = data.map((row, i) => ({
-    name: String(row[nameKey]),
-    color: colorAt(i),
-  }));
-
   return (
-    <figure
-      role="img"
-      aria-label={ariaLabel}
-      data-slot="radial-chart"
-      className={cn(
-        "flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground",
-        className
-      )}
+    <ChartContainer
+      config={config}
+      className={cn("mx-auto aspect-square max-h-[250px]", className)}
     >
-      <ChartFrame
-        data={data}
-        xKey={nameKey}
-        className="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
-      >
-        <RadialBar valueKey={valueKey}>
-          {({ arcs }) =>
-            arcs.map((a) => (
-              <React.Fragment key={a.name}>
-                <path d={a.track} fill="currentColor" fillOpacity={0.08} />
-                <path d={a.d} fill={colorAt(a.index)} />
-              </React.Fragment>
-            ))
-          }
-        </RadialBar>
-      </ChartFrame>
-
-      <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-        {legend.map((item) => (
-          <li key={item.name} className="flex items-center gap-1.5">
-            <span
-              className="size-2.5 rounded-[2px]"
-              style={{ background: item.color }}
-            />
-            {item.name}
-          </li>
-        ))}
-      </ul>
-
-      <table className="sr-only">
-        <caption>{ariaLabel}</caption>
-        <thead>
-          <tr>
-            <th>{nameKey}</th>
-            <th>{valueKey}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              <td>{row[nameKey]}</td>
-              <td>{row[valueKey]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </figure>
+      <RechartsRadialBarChart data={data as ChartDatum[]} innerRadius={30} outerRadius={110}>
+        {tooltip ? (
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel nameKey={nameKey} />}
+          />
+        ) : null}
+        <PolarGrid gridType="circle" />
+        <RadialBar dataKey={dataKey} background />
+      </RechartsRadialBarChart>
+    </ChartContainer>
   );
 }

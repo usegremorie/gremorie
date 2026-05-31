@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@gremorie/rx-display";
 import { BarChart } from "@gremorie/rx-data";
-import type { ChartConfig, Datum } from "@gremorie/rx-data";
+import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
 import { CodeBlock } from "@gremorie/rx-artifacts";
 
 /**
@@ -26,7 +26,7 @@ import { CodeBlock } from "@gremorie/rx-artifacts";
  * same primitives shipped in the registry.
  */
 
-const revenueData: Datum[] = [
+const revenueData: ChartDatum[] = [
   { month: "Jan", revenue: 42 },
   { month: "Feb", revenue: 58 },
   { month: "Mar", revenue: 51 },

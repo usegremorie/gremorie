@@ -1,20 +1,38 @@
+"use client";
+
 import { cn } from "@gremorie/rx-core";
-import { CartesianGrid } from "../headless/cartesian-grid";
-import { ChartFrame } from "../headless/chart-frame";
-import { Scatter } from "../headless/scatter";
-import { YAxis } from "../headless/axis";
-import type { ChartConfig, Datum } from "../headless/types";
+import {
+  CartesianGrid,
+  Scatter,
+  ScatterChart as RechartsScatterChart,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "../chart/chart";
+import type { ChartDatum } from "../chart/types";
 
 export interface ScatterChartProps {
-  data: readonly Datum[];
+  /** Tabular rows. */
+  data: readonly ChartDatum[];
+  /** Maps each Y value field to a label + color. One entry per series. */
   config: ChartConfig;
+  /** Numeric X field (linear axis). */
   xKey: string;
+  /** Hover tooltip. */
+  tooltip?: boolean;
   className?: string;
 }
 
 /**
- * Styled scatter chart. `xKey` is a numeric field (linear X axis); each entry
- * in `config` is a numeric Y series. Pass tabular `data`.
+ * Scatter chart — recharts + the shadcn `chart` primitives. Each `config` entry
+ * is a numeric Y series plotted against the numeric `xKey`. (shadcn ships no
+ * scatter block; this follows the same composition pattern as the others.)
  *
  * @example
  * ```tsx
@@ -25,119 +43,49 @@ export function ScatterChart({
   data,
   config,
   xKey,
+  tooltip = true,
   className,
 }: ScatterChartProps) {
-  const series = Object.entries(config).map(([key, entry]) => ({
-    key,
-    label: entry.label,
-    color: entry.color,
-  }));
-
-  const ariaLabel = `Scatter chart of ${series
-    .map((s) => s.label)
-    .join(", ")} against ${xKey}`;
+  const keys = Object.keys(config).filter((k) => k !== xKey);
 
   return (
-    <figure
-      role="img"
-      aria-label={ariaLabel}
-      data-slot="scatter-chart"
-      className={cn(
-        "flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground",
-        className
-      )}
-    >
-      <ChartFrame
-        data={data}
-        xKey={xKey}
-        className="aspect-video w-full overflow-visible text-muted-foreground"
+    <ChartContainer config={config} className={cn(className)}>
+      <RechartsScatterChart
+        data={data as ChartDatum[]}
+        margin={{ left: 12, right: 12, top: 8, bottom: 8 }}
       >
-        <CartesianGrid>
-          {(lines) =>
-            lines.map((l, i) => (
-              <line
-                key={i}
-                x1={l.x1}
-                x2={l.x2}
-                y1={l.y}
-                y2={l.y}
-                stroke="currentColor"
-                strokeOpacity={0.15}
-              />
-            ))
-          }
-        </CartesianGrid>
-
-        {series.map((s, i) => (
-          <Scatter key={s.key} dataKey={s.key}>
-            {({ points, xTicks, labelY }) => (
-              <>
-                {points.map((p, idx) => (
-                  <circle
-                    key={idx}
-                    cx={p.cx}
-                    cy={p.cy}
-                    r={4}
-                    fill={s.color}
-                    fillOpacity={0.7}
-                  />
-                ))}
-                {i === 0 &&
-                  xTicks.map((t) => (
-                    <text
-                      key={t.label}
-                      x={t.x}
-                      y={labelY}
-                      textAnchor="middle"
-                      className="fill-muted-foreground text-[10px]"
-                    >
-                      {t.label}
-                    </text>
-                  ))}
-              </>
-            )}
-          </Scatter>
+        <CartesianGrid />
+        <XAxis
+          dataKey={xKey}
+          type="number"
+          name={xKey}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
+        <YAxis
+          type="number"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          width={40}
+        />
+        {tooltip ? (
+          <ChartTooltip
+            cursor={{ strokeDasharray: "3 3" }}
+            content={<ChartTooltipContent />}
+          />
+        ) : null}
+        {keys.map((key) => (
+          <Scatter
+            key={key}
+            name={key}
+            data={data as ChartDatum[]}
+            dataKey={key}
+            fill={`var(--color-${key})`}
+          />
         ))}
-
-        <YAxis>
-          {({ ticks, labelX }) =>
-            ticks.map((t) => (
-              <text
-                key={t.value}
-                x={labelX}
-                y={t.y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="fill-muted-foreground text-[10px]"
-              >
-                {t.label}
-              </text>
-            ))
-          }
-        </YAxis>
-      </ChartFrame>
-
-      <table className="sr-only">
-        <caption>{ariaLabel}</caption>
-        <thead>
-          <tr>
-            <th>{xKey}</th>
-            {series.map((s) => (
-              <th key={s.key}>{s.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              <td>{row[xKey]}</td>
-              {series.map((s) => (
-                <td key={s.key}>{row[s.key]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </figure>
+      </RechartsScatterChart>
+    </ChartContainer>
   );
 }

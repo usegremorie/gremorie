@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/rx-data",
   "version": "0.2.0",
-  "description": "React data viz primitives for Gremorie - headless chart engine and styled charts (area, line, bar, scatter, pie, radar, radial).",
+  "description": "React data viz primitives for Gremorie - recharts-based charts (area, line, bar, scatter, pie, radar, radial) on the shadcn chart primitive.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -14,7 +14,8 @@
     "data",
     "charts",
     "visualization",
-    "d3"
+    "recharts",
+    "shadcn"
   ],
   "type": "module",
   "main": "dist/index.js",
@@ -35,9 +36,7 @@
     "react": "^18 || ^19"
   },
   "dependencies": {
-    "d3-format": "^3.1.2",
-    "d3-scale": "^4.0.2",
-    "d3-shape": "^3.2.0",
+    "recharts": "^3.8.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false

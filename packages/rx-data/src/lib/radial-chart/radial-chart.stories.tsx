@@ -1,21 +1,50 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import type { Datum } from "../headless/types";
+import type { ChartConfig } from "../chart/chart";
+import type { ChartDatum } from "../chart/types";
 import { RadialChart } from "./radial-chart";
 
 /**
- * RadialChart — styled radial bar chart. One concentric ring per data row
- * (`nameKey`), each sweep proportional to its `valueKey`. Ring colors cycle
- * the `--chart-1…5` tokens (categorical).
+ * # RadialChart
+ *
+ * A recharts radial bar chart wired to Gremorie's design tokens through the
+ * shadcn `chart` primitive (`ChartContainer`). One concentric bar per row; bar
+ * colors come from each row's `fill`.
+ *
+ * ## Anatomy
+ *
+ * - **ChartContainer** — responsive square frame + tooltip label config.
+ * - **PolarGrid** — circular grid.
+ * - **RadialBar** — one bar per row (`dataKey`), with a faint background track.
+ * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ *
+ * ## Props
+ *
+ * | Prop | Type | Default | Description |
+ * | --- | --- | --- | --- |
+ * | `data` * | `ChartDatum[]` | — | One row per bar. Add `fill` for bar color. |
+ * | `nameKey` * | `string` | — | Category label field. |
+ * | `dataKey` * | `string` | — | Numeric value field. |
+ * | `config` | `ChartConfig` | `{}` | Category name → `{ label }` (tooltip labels). |
+ * | `tooltip` | `boolean` | `true` | Hover tooltip. |
+ *
+ * ## Variables (design tokens)
+ *
+ * | Token | Used for |
+ * | --- | --- |
+ * | `--chart-1` … `--chart-5` | Bar colors (row `fill`) |
+ * | `--muted` | Background track |
+ * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
   title: "Layout & display/Data/Radial",
   component: RadialChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },
+  argTypes: { tooltip: { control: "boolean" } },
   decorators: [
     (Story) => (
-      <div className="w-[24rem] max-w-full">
+      <div className="w-[20rem] max-w-full">
         <Story />
       </div>
     ),
@@ -25,14 +54,29 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const DATA: Datum[] = [
-  { browser: "Chrome", visitors: 275 },
-  { browser: "Safari", visitors: 200 },
-  { browser: "Firefox", visitors: 187 },
-  { browser: "Edge", visitors: 173 },
-  { browser: "Other", visitors: 90 },
+const BROWSERS: ChartDatum[] = [
+  { browser: "Chrome", visitors: 275, fill: "var(--chart-1)" },
+  { browser: "Safari", visitors: 200, fill: "var(--chart-2)" },
+  { browser: "Firefox", visitors: 187, fill: "var(--chart-3)" },
+  { browser: "Edge", visitors: 173, fill: "var(--chart-4)" },
+  { browser: "Other", visitors: 90, fill: "var(--chart-5)" },
 ];
 
+const CONFIG: ChartConfig = {
+  visitors: { label: "Visitors" },
+  Chrome: { label: "Chrome" },
+  Safari: { label: "Safari" },
+  Firefox: { label: "Firefox" },
+  Edge: { label: "Edge" },
+  Other: { label: "Other" },
+};
+
+/** Concentric bars, one per row. */
 export const Default: Story = {
-  args: { data: DATA, nameKey: "browser", valueKey: "visitors" },
+  args: {
+    data: BROWSERS,
+    config: CONFIG,
+    nameKey: "browser",
+    dataKey: "visitors",
+  },
 };

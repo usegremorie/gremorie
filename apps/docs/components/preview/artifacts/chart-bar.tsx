@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
+import { BarChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
 
 const SCHEMA = `{
   type: "chart-bar",
@@ -16,7 +16,7 @@ const SCHEMA = `{
   config: { xKey: string; yKey: string; label: string },
 }`;
 
-const DATA: Datum[] = [
+const DATA: ChartDatum[] = [
   { category: "Q1", value: 42000 },
   { category: "Q2", value: 51000 },
   { category: "Q3", value: 48000 },

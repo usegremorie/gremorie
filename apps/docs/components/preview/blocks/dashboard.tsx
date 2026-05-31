@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
+import { BarChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
 import { Button } from "@gremorie/rx-forms";
 import {
   ArrowDownRight,
@@ -63,7 +63,7 @@ const KPIs: Array<{
   },
 ];
 
-const REVENUE_DATA: Datum[] = [
+const REVENUE_DATA: ChartDatum[] = [
   { month: "Jan", revenue: 4200 },
   { month: "Feb", revenue: 5100 },
   { month: "Mar", revenue: 4800 },

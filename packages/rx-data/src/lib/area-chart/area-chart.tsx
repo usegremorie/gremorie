@@ -1,139 +1,79 @@
+"use client";
+
 import { cn } from "@gremorie/rx-core";
-import { Area } from "../headless/area";
-import { CartesianGrid } from "../headless/cartesian-grid";
-import { ChartFrame } from "../headless/chart-frame";
-import { XAxis, YAxis } from "../headless/axis";
-import type { ChartConfig, Datum } from "../headless/types";
+import { Area, AreaChart as RechartsAreaChart, CartesianGrid, XAxis } from "recharts";
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "../chart/chart";
+import type { ChartDatum } from "../chart/types";
 
 export interface AreaChartProps {
-  data: readonly Datum[];
+  /** Tabular rows. */
+  data: readonly ChartDatum[];
+  /** Maps each value field to a label + color. One entry per series. */
   config: ChartConfig;
+  /** Category field (x axis). */
   xKey: string;
+  /** Stack the series. */
+  stacked?: boolean;
+  /** Curve interpolation (recharts `type`). */
+  type?: "natural" | "monotone" | "linear" | "step";
+  /** Hover tooltip. */
+  tooltip?: boolean;
   className?: string;
 }
 
 /**
- * Styled area chart. Pass tabular `data`, a serializable `config` mapping each
- * value field to a label + token color, and the `xKey` category field.
+ * Area chart — recharts + the shadcn `chart` primitives. One `<Area>` per
+ * `config` entry, filled with `var(--color-<key>)`.
  *
  * @example
  * ```tsx
- * <AreaChart data={data} config={config} xKey="month" />
+ * <AreaChart data={data} config={config} xKey="month" stacked />
  * ```
  */
 export function AreaChart({
   data,
   config,
   xKey,
+  stacked = false,
+  type = "natural",
+  tooltip = true,
   className,
 }: AreaChartProps) {
-  const series = Object.entries(config).map(([key, entry]) => ({
-    key,
-    label: entry.label,
-    color: entry.color,
-  }));
-
-  const ariaLabel = `Area chart of ${series
-    .map((s) => s.label)
-    .join(", ")} by ${xKey}`;
+  const keys = Object.keys(config).filter((k) => k !== xKey);
 
   return (
-    <figure
-      role="img"
-      aria-label={ariaLabel}
-      data-slot="area-chart"
-      className={cn(
-        "flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground",
-        className
-      )}
-    >
-      <ChartFrame
-        data={data}
-        xKey={xKey}
-        className="aspect-video w-full overflow-visible text-muted-foreground"
+    <ChartContainer config={config} className={cn(className)}>
+      <RechartsAreaChart
+        accessibilityLayer
+        data={data as ChartDatum[]}
+        margin={{ left: 12, right: 12 }}
       >
-        <CartesianGrid>
-          {(lines) =>
-            lines.map((l, i) => (
-              <line
-                key={i}
-                x1={l.x1}
-                x2={l.x2}
-                y1={l.y}
-                y2={l.y}
-                stroke="currentColor"
-                strokeOpacity={0.15}
-              />
-            ))
-          }
-        </CartesianGrid>
-
-        {series.map((s) => (
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey={xKey} tickLine={false} axisLine={false} tickMargin={8} />
+        {tooltip ? (
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent indicator={keys.length > 1 ? "dot" : "line"} />}
+          />
+        ) : null}
+        {keys.map((key) => (
           <Area
-            key={s.key}
-            dataKey={s.key}
-            color={s.color}
-            stroke={s.color}
-            strokeWidth={2}
-            fillOpacity={0.2}
+            key={key}
+            dataKey={key}
+            type={type}
+            fill={`var(--color-${key})`}
+            fillOpacity={0.4}
+            stroke={`var(--color-${key})`}
+            stackId={stacked ? "a" : undefined}
           />
         ))}
-
-        <XAxis>
-          {({ ticks, labelY }) =>
-            ticks.map((t) => (
-              <text
-                key={t.label}
-                x={t.x}
-                y={labelY}
-                textAnchor="middle"
-                className="fill-muted-foreground text-[10px]"
-              >
-                {t.label}
-              </text>
-            ))
-          }
-        </XAxis>
-
-        <YAxis>
-          {({ ticks, labelX }) =>
-            ticks.map((t) => (
-              <text
-                key={t.value}
-                x={labelX}
-                y={t.y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="fill-muted-foreground text-[10px]"
-              >
-                {t.label}
-              </text>
-            ))
-          }
-        </YAxis>
-      </ChartFrame>
-
-      <table className="sr-only">
-        <caption>{ariaLabel}</caption>
-        <thead>
-          <tr>
-            <th>{xKey}</th>
-            {series.map((s) => (
-              <th key={s.key}>{s.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              <td>{row[xKey]}</td>
-              {series.map((s) => (
-                <td key={s.key}>{row[s.key]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </figure>
+      </RechartsAreaChart>
+    </ChartContainer>
   );
 }

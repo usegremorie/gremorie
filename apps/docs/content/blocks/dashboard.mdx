@@ -87,7 +87,7 @@ import {
   TableHeader,
   TableRow,
 } from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
+import { BarChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
 import { Button } from "@gremorie/rx-forms";
 import {
   ArrowDownRight,
@@ -106,7 +106,7 @@ const KPIs = [
   { label: "Refunds", value: "$1,420", delta: "-3.2%", trend: "down", icon: CreditCard },
 ] as const;
 
-const REVENUE_DATA: Datum[] = [
+const REVENUE_DATA: ChartDatum[] = [
   { month: "Jan", revenue: 4200 },
   { month: "Feb", revenue: 5100 },
   { month: "Mar", revenue: 4800 },
