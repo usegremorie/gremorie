@@ -1,5 +1,6 @@
 export * from "./types";
 export * from "./format";
+export * from "./palette";
 export * from "./scales";
 export * from "./shape";
 export * from "./domain";
