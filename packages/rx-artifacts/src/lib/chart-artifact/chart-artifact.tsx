@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, colorAt, type ChartConfig } from "@gremorie/rx-data";
+import { BarChart, type ChartConfig } from "@gremorie/rx-data";
 import {
   Table,
   TableBody,
@@ -312,7 +312,7 @@ export function ChartArtifact({
                         <span
                           aria-hidden
                           className="size-2.5 shrink-0 rounded-[3px]"
-                          style={{ backgroundColor: colorAt(i) }}
+                          style={{ backgroundColor: `var(--chart-${(i % 5) + 1})` }}
                         />
                         {row[categoryKey]}
                       </span>
