@@ -6,6 +6,10 @@ import {
   PopoverTrigger
 } from "fumadocs-ui/components/ui/popover";
 import { useI18n } from "fumadocs-ui/contexts/i18n";
+import {
+  ThemeSwitch,
+  type ThemeSwitchProps
+} from "fumadocs-ui/layouts/shared/slots/theme-switch";
 import { useState } from "react";
 
 /**
@@ -111,5 +115,26 @@ export function FlagLanguageSwitch({
         })}
       </PopoverContent>
     </Popover>
+  );
+}
+
+/**
+ * Theme-switch slot that renders the flag language switcher immediately before
+ * the light/dark toggle. Used as `slots.themeSwitch` on both DocsLayout
+ * (sidebar footer) and HomeLayout (navbar), so the language control always sits
+ * right before the color-mode toggle. The incoming `className` (Fumadocs'
+ * positioning, e.g. `ms-auto`) is applied to the wrapper so the whole
+ * [flag][theme] group stays where the theme toggle used to be; the inner
+ * ThemeSwitch keeps its default pill styling.
+ */
+export function ThemeSwitchWithFlag({
+  className,
+  ...props
+}: ThemeSwitchProps): React.ReactElement {
+  return (
+    <div className={cn("flex items-center gap-1.5", className)}>
+      <FlagLanguageSwitch className="size-8" />
+      <ThemeSwitch {...props} />
+    </div>
   );
 }

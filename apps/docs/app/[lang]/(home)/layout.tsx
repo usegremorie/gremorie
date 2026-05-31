@@ -1,9 +1,8 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 
-import type { LinkItemType } from "fumadocs-ui/layouts/shared";
 import type { ReactNode } from "react";
 
-import { FlagLanguageSwitch } from "@/components/flag-language-switch";
+import { ThemeSwitchWithFlag } from "@/components/flag-language-switch";
 import { baseOptions } from "@/lib/layout.shared";
 
 /**
@@ -23,20 +22,14 @@ export default async function Layout({
   children: ReactNode;
 }) {
   const { lang } = await params;
-  const options = baseOptions(lang);
-  // Flag language switch on the right of the navbar, beside search/theme.
-  // (Docs surface gets it via the sidebar banner instead.) We drop the
-  // `i18n` prop so Fumadocs' default text toggle doesn't double up.
-  const languageSwitch: LinkItemType = {
-    type: "custom",
-    secondary: true,
-    children: <FlagLanguageSwitch />
-  };
+  // The flag language switch sits right before the theme toggle (navbar), via
+  // the shared themeSwitch slot. `i18n={false}` hides Fumadocs' default text
+  // toggle; the locale context still comes from RootProvider.
   return (
     <HomeLayout
       i18n={false}
-      {...options}
-      links={[...(options.links ?? []), languageSwitch]}
+      slots={{ themeSwitch: ThemeSwitchWithFlag }}
+      {...baseOptions(lang)}
     >
       {children}
     </HomeLayout>
