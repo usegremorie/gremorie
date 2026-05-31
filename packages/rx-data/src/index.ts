@@ -1,4 +1,5 @@
 export * from "./lib/headless";
+export * from "./lib/chart-tooltip";
 export * from "./lib/area-chart";
 export * from "./lib/line-chart";
 export * from "./lib/bar-chart";

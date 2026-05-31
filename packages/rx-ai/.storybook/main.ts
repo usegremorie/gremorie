@@ -47,6 +47,19 @@ const config: StorybookConfig = {
     cfg.plugins = cfg.plugins ?? [];
     cfg.plugins.push(tailwindcss());
     cfg.resolve = cfg.resolve ?? {};
+    // Resolve TS source BEFORE .js, so a stray compiled file accidentally
+    // emitted next to a .tsx (e.g. a misconfigured tsc run) can never shadow
+    // the real source and serve a stale component.
+    cfg.resolve.extensions = [
+      ".tsx",
+      ".ts",
+      ".jsx",
+      ".mjs",
+      ".js",
+      ".mts",
+      ".cts",
+      ".json",
+    ];
     cfg.resolve.alias = {
       ...(cfg.resolve.alias as Record<string, string> | undefined),
       ...Object.fromEntries(

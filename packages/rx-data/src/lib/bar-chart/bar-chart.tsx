@@ -13,6 +13,7 @@ import { colorAt } from "../headless/palette";
 import { bandScale } from "../headless/scales";
 import { barTopRoundedPath } from "../headless/shape";
 import type { ChartConfig, Datum, Margin } from "../headless/types";
+import { ChartTooltipContent } from "../chart-tooltip/chart-tooltip";
 
 export type BarColorMode = "series" | "categorical";
 export type BarAxis = "xy" | "x" | "none";
@@ -239,32 +240,21 @@ export function BarChart({
 
       {tooltip && hover ? (
         <div
-          role="tooltip"
-          className="pointer-events-none absolute z-10 min-w-32 rounded-lg border bg-background px-2.5 py-1.5 text-xs shadow-md"
+          className="pointer-events-none absolute z-10"
           style={{
             left: hover.cx,
             top: above ? hover.top - 10 : hover.top + 10,
             transform: `translate(-50%, ${above ? "-100%" : "0"})`,
           }}
         >
-          <div className="mb-1 font-medium text-foreground">
-            {String(data[hover.i][xKey])}
-          </div>
-          {valueKeys.map((s) => (
-            <div key={s.key} className="flex items-center gap-1.5">
-              <span
-                aria-hidden
-                className="size-2.5 shrink-0 rounded-[3px]"
-                style={{
-                  backgroundColor: categorical ? colorAt(hover.i) : s.color,
-                }}
-              />
-              <span className="text-muted-foreground">{s.label}</span>
-              <span className="ml-3 font-medium tabular-nums text-foreground">
-                {formatValue(Number(data[hover.i][s.key]))}
-              </span>
-            </div>
-          ))}
+          <ChartTooltipContent
+            label={String(data[hover.i][xKey])}
+            items={valueKeys.map((s) => ({
+              label: s.label,
+              value: formatValue(Number(data[hover.i][s.key])),
+              color: categorical ? colorAt(hover.i) : s.color,
+            }))}
+          />
         </div>
       ) : null}
 
