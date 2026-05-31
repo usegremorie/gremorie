@@ -539,3 +539,22 @@
   --color-brand-subtle: var(--brand-subtle);
   --color-brand-muted: var(--brand-muted);
 }
+
+/*
+ * Default border + outline color.
+ * Tailwind v4's Preflight leaves bare `border` / `outline` at `currentColor`,
+ * which renders DS borders as the (near-black) foreground instead of the
+ * subtle `--border` token. This is the canonical shadcn base layer — without
+ * it, every `border` utility falls back to currentColor (e.g. black card
+ * borders in Storybook). Explicit utilities like `border-input` still win
+ * (utilities layer > base).
+ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border);
+  }
+}
