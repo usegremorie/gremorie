@@ -24,6 +24,8 @@ export interface ScatterChartProps {
   config: ChartConfig;
   /** Numeric X field (linear axis). */
   xKey: string;
+  /** Show the numeric Y axis. */
+  yAxis?: boolean;
   /** Hover tooltip. */
   tooltip?: boolean;
   className?: string;
@@ -43,6 +45,7 @@ export function ScatterChart({
   data,
   config,
   xKey,
+  yAxis = true,
   tooltip = true,
   className,
 }: ScatterChartProps) {
@@ -52,7 +55,7 @@ export function ScatterChart({
     <ChartContainer config={config} className={cn(className)}>
       <RechartsScatterChart
         data={data as ChartDatum[]}
-        margin={{ left: 12, right: 12, top: 8, bottom: 8 }}
+        margin={{ left: yAxis ? 0 : 12, right: 12, top: 8, bottom: 8 }}
       >
         <CartesianGrid />
         <XAxis
@@ -69,6 +72,7 @@ export function ScatterChart({
           axisLine={false}
           tickMargin={8}
           width={40}
+          hide={!yAxis}
         />
         {tooltip ? (
           <ChartTooltip

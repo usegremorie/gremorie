@@ -46,6 +46,7 @@ const meta = {
   parameters: { layout: "centered" },
   argTypes: {
     stacked: { control: "boolean" },
+    yAxis: { control: "boolean" },
     tooltip: { control: "boolean" },
     type: {
       control: "inline-radio",

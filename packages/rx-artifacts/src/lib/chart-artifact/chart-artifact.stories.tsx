@@ -24,7 +24,7 @@ import { ChartArtifact, type ChartArtifactDatum } from "./chart-artifact";
  *   - **Description** — optional, single line, truncates.
  *   - **Actions** — *view toggle* (chart ⇄ table) · *Download* menu · *More* menu.
  * - **Body** — toggled, both views from the same `data`:
- *   - **Chart** — the embedded `BarChart` (categorical · no Y axis · tooltip).
+ *   - **Chart** — the embedded `BarChart` (categorical · `yAxis={false}` · tooltip).
  *   - **Table** — category + value, each row prefixed with its color swatch.
  *
  * ## Props

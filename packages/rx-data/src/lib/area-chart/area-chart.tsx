@@ -1,7 +1,13 @@
 "use client";
 
 import { cn } from "@gremorie/rx-core";
-import { Area, AreaChart as RechartsAreaChart, CartesianGrid, XAxis } from "recharts";
+import {
+  Area,
+  AreaChart as RechartsAreaChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartContainer,
@@ -22,6 +28,8 @@ export interface AreaChartProps {
   stacked?: boolean;
   /** Curve interpolation (recharts `type`). */
   type?: "natural" | "monotone" | "linear" | "step";
+  /** Show the numeric Y axis. */
+  yAxis?: boolean;
   /** Hover tooltip. */
   tooltip?: boolean;
   className?: string;
@@ -42,6 +50,7 @@ export function AreaChart({
   xKey,
   stacked = false,
   type = "natural",
+  yAxis = true,
   tooltip = true,
   className,
 }: AreaChartProps) {
@@ -52,10 +61,13 @@ export function AreaChart({
       <RechartsAreaChart
         accessibilityLayer
         data={data as ChartDatum[]}
-        margin={{ left: 12, right: 12 }}
+        margin={{ left: yAxis ? 0 : 12, right: 12 }}
       >
         <CartesianGrid vertical={false} />
         <XAxis dataKey={xKey} tickLine={false} axisLine={false} tickMargin={8} />
+        {yAxis ? (
+          <YAxis tickLine={false} axisLine={false} tickMargin={8} width={40} />
+        ) : null}
         {tooltip ? (
           <ChartTooltip
             cursor={false}

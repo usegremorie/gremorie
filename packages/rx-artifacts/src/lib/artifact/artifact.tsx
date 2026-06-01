@@ -34,7 +34,7 @@ export type ArtifactProps = HTMLAttributes<HTMLDivElement>;
 export const Artifact = ({ className, ...props }: ArtifactProps) => (
   <div
     className={cn(
-      "flex flex-col overflow-hidden rounded-lg border bg-background shadow-sm",
+      "flex flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
       className
     )}
     {...props}
@@ -49,18 +49,43 @@ export const ArtifactHeader = ({
 }: ArtifactHeaderProps) => (
   <div
     className={cn(
-      "flex items-start gap-3 border-b bg-muted/50 px-4 py-3",
+      // `items-stretch` lets the featured icon match the height of the
+      // title + description block (see ArtifactFeaturedIcon).
+      "flex items-stretch gap-3 border-b bg-muted/50 px-4 py-3",
       className
     )}
     {...props}
   />
 );
 
-/** The featured icon that anchors the header (optional). */
+/**
+ * The featured icon that anchors the header (optional).
+ *
+ * It is **square and sized to the title + description block**, not a fixed
+ * `size` — `self-stretch` + `aspect-square` make it as tall as the heading and
+ * as wide as it is tall, so it tracks the text height (one line of title + one
+ * line of description ≈ 40px; if the description wraps, the icon grows with it).
+ */
 export type ArtifactFeaturedIconProps = ComponentProps<typeof FeaturedIcon>;
 
-export const ArtifactFeaturedIcon = (props: ArtifactFeaturedIconProps) => (
-  <FeaturedIcon size="md" color="brand" {...props} />
+export const ArtifactFeaturedIcon = ({
+  className,
+  ...props
+}: ArtifactFeaturedIconProps) => (
+  // A `self-stretch` wrapper gives the icon a *resolved* height (the title +
+  // description block), so the inner `h-full aspect-square` can derive a real
+  // square width from it. (A bare `aspect-square` on a flex-stretched item is
+  // ignored — its height isn't a "definite" size.)
+  <div className="flex shrink-0 self-stretch">
+    <FeaturedIcon
+      color="brand"
+      className={cn(
+        "h-full w-auto aspect-square [&_svg]:size-5",
+        className
+      )}
+      {...props}
+    />
+  </div>
 );
 
 /** Title + description block; flexes to fill so actions sit on the right. */

@@ -246,7 +246,7 @@ export function ChartArtifact({
   return (
     <Artifact className={className}>
       <ArtifactHeader>
-        <ArtifactFeaturedIcon icon={icon} color={accent} size="sm" />
+        <ArtifactFeaturedIcon icon={icon} color={accent} />
         <ArtifactHeading>
           <ArtifactTitle>{title}</ArtifactTitle>
           {description ? (
@@ -292,7 +292,12 @@ export function ChartArtifact({
       <ArtifactContent>
         <div ref={contentRef}>
           {view === "chart" ? (
-            <BarChart data={chartData} config={config} xKey={categoryKey} />
+            <BarChart
+              data={chartData}
+              config={config}
+              xKey={categoryKey}
+              yAxis={false}
+            />
           ) : (
             <Table>
               <TableHeader>

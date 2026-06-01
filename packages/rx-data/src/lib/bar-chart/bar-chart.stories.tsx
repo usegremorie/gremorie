@@ -50,6 +50,7 @@ const meta = {
   argTypes: {
     stacked: { control: "boolean" },
     horizontal: { control: "boolean" },
+    yAxis: { control: "boolean" },
     showLabels: { control: "boolean" },
     tooltip: { control: "boolean" },
     radius: { control: { type: "range", min: 0, max: 16, step: 1 } },
@@ -102,9 +103,14 @@ export const Multiple: Story = {
   args: { data: MONTHS, config: MULTI, xKey: "month" },
 };
 
-/** Two series stacked. */
+/** Two series stacked — only the outer corners of the stack are rounded. */
 export const Stacked: Story = {
   args: { data: MONTHS, config: MULTI, xKey: "month", stacked: true },
+};
+
+/** Y axis hidden — the compact look the chart artifact embeds. */
+export const NoYAxis: Story = {
+  args: { data: MONTHS, config: SINGLE, xKey: "month", yAxis: false },
 };
 
 /** Per-bar categorical colors (each row has a `fill`). */

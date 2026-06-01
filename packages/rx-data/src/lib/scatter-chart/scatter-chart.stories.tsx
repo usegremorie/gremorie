@@ -42,7 +42,10 @@ const meta = {
   component: ScatterChart,
   tags: ["autodocs"],
   parameters: { layout: "centered" },
-  argTypes: { tooltip: { control: "boolean" } },
+  argTypes: {
+    yAxis: { control: "boolean" },
+    tooltip: { control: "boolean" },
+  },
   decorators: [
     (Story) => (
       <div className="w-[28rem] max-w-full">
