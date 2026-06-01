@@ -37,7 +37,10 @@ jobs:
         uses: nrwl/nx-set-shas@v4
 
       - name: Install dependencies
-        run: npm ci
+        # `--legacy-peer-deps` mirrors local installs: @storybook/angular pins an
+        # older @angular-devkit/architect than the Angular 21 toolchain resolves,
+        # a known peer-range conflict across the Angular/Storybook stack.
+        run: npm ci --legacy-peer-deps
 
       - name: Format check
         run: npx nx format:check
