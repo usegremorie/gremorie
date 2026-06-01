@@ -1,6 +1,15 @@
 "use client";
 
-import { BarChart, type ChartConfig } from "@gremorie/rx-data";
+import {
+  AreaChart,
+  BarChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  RadialChart,
+  ScatterChart,
+  type ChartConfig,
+} from "@gremorie/rx-data";
 import {
   Table,
   TableBody,
@@ -42,24 +51,56 @@ export type ChartArtifactDatum = Record<string, string | number>;
 export type ChartArtifactView = "chart" | "table";
 export type ChartArtifactColor = "brand" | "gray" | "success" | "error";
 
+/** Which chart primitive the artifact embeds. */
+export type ChartArtifactType =
+  | "bar"
+  | "area"
+  | "line"
+  | "pie"
+  | "radar"
+  | "radial"
+  | "scatter";
+
+/** Categorical types render one row → one slice/bar, colored from the palette. */
+const CATEGORICAL: ReadonlySet<ChartArtifactType> = new Set([
+  "bar",
+  "pie",
+  "radial",
+]);
+
+export interface ChartArtifactSeries {
+  /** Data field for this series. */
+  key: string;
+  /** Column / legend label (defaults to a title-cased key). */
+  label?: string;
+  /** Token color, e.g. `var(--chart-1)` (defaults to the cycling palette). */
+  color?: string;
+}
+
 export interface ChartArtifactProps {
   /** Single-line heading. */
   title: string;
   /** Optional one-line supporting text (truncates if it overflows). */
   description?: string;
-  /** Tabular rows: one object per category. */
+  /** Tabular rows: one object per category / point. */
   data: ChartArtifactDatum[];
-  /** Field used for the category (x axis / first table column). */
+  /** Chart primitive to embed. */
+  type?: ChartArtifactType;
+  /** Category / X field (first table column; x axis for cartesian, name for polar). */
   categoryKey: string;
-  /** Numeric field plotted as the bar height. */
-  valueKey: string;
+  /**
+   * Value field(s). A string for a single series (legacy / categorical), or an
+   * array for multi-series (line/area/radar/scatter). Each becomes a table
+   * column.
+   */
+  valueKey: string | ChartArtifactSeries[];
   /** Header label for the category column (defaults to a title-cased key). */
   categoryLabel?: string;
-  /** Header label / tooltip label for the value (defaults to a title-cased key). */
+  /** Label for a single value series (defaults to a title-cased key). Ignored when `valueKey` is an array. */
   valueLabel?: string;
   /** Which view is shown first. */
   defaultView?: ChartArtifactView;
-  /** `Intl.NumberFormat` options for value rendering (chart tooltip + table + CSV). */
+  /** `Intl.NumberFormat` options for value rendering (table + CSV + tooltip). */
   numberFormat?: Intl.NumberFormatOptions;
   /** Base name for downloaded files (no extension). */
   fileName?: string;
@@ -76,6 +117,8 @@ export interface ChartArtifactProps {
 
 const titleCase = (s: string) =>
   s.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+const paletteColor = (i: number) => `var(--chart-${(i % 5) + 1})`;
 
 // ── download helpers (client-only) ───────────────────────────────────────────
 
@@ -171,14 +214,17 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string) {
 /**
  * ChartArtifact — the Chart preset of the artifact shell.
  *
- * Wraps the styled `BarChart` (rx-data) and a `Table` (rx-display) inside the
- * generic `Artifact`, toggling between them. Because it *embeds* `BarChart`,
- * any change to that chart primitive reflects here automatically.
+ * Embeds any of the styled chart primitives (bar, area, line, pie, radar,
+ * radial, scatter) from rx-data inside the generic `Artifact`, with a working
+ * chart ⇄ table toggle and downloads. The table is **wide**: one column per
+ * value series (so multi-series charts like radar/line keep every value).
+ * Because it embeds the chart primitives, any change to them reflects here.
  */
 export function ChartArtifact({
   title,
   description,
   data,
+  type = "bar",
   categoryKey,
   valueKey,
   categoryLabel,
@@ -196,18 +242,78 @@ export function ChartArtifact({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const catLabel = categoryLabel ?? titleCase(categoryKey);
-  const valLabel = valueLabel ?? titleCase(valueKey);
   const format = (n: number) =>
     new Intl.NumberFormat(undefined, numberFormat).format(n);
 
-  // Single categorical series: one chart token per bar via each row's `fill`.
-  const config: ChartConfig = {
-    [valueKey]: { label: valLabel },
-  };
-  const chartData = data.map((row, i) => ({
-    ...row,
-    fill: `var(--chart-${(i % 5) + 1})`,
+  const isCategorical = CATEGORICAL.has(type);
+
+  // Normalize `valueKey` (string | series[]) into a series list.
+  const series: Required<ChartArtifactSeries>[] = (
+    typeof valueKey === "string"
+      ? [{ key: valueKey, label: valueLabel, color: undefined }]
+      : valueKey
+  ).map((s, i) => ({
+    key: s.key,
+    label: s.label ?? titleCase(s.key),
+    color: s.color ?? paletteColor(i),
   }));
+  const singleSeries = series.length === 1;
+
+  // Chart `config` maps each series key → label + color.
+  const config: ChartConfig = Object.fromEntries(
+    series.map((s) => [s.key, { label: s.label, color: s.color }])
+  );
+
+  // Categorical (bar/pie/radial): one palette color per ROW via each row's `fill`.
+  const categoricalData = data.map((row, i) => ({
+    ...row,
+    fill: paletteColor(i),
+  }));
+
+  const renderChart = () => {
+    switch (type) {
+      case "area":
+        return (
+          <AreaChart data={data} config={config} xKey={categoryKey} yAxis={false} />
+        );
+      case "line":
+        return (
+          <LineChart data={data} config={config} xKey={categoryKey} yAxis={false} />
+        );
+      case "scatter":
+        return <ScatterChart data={data} config={config} xKey={categoryKey} />;
+      case "radar":
+        return <RadarChart data={data} config={config} xKey={categoryKey} />;
+      case "pie":
+        return (
+          <PieChart
+            data={categoricalData}
+            config={config}
+            nameKey={categoryKey}
+            dataKey={series[0].key}
+            donut
+          />
+        );
+      case "radial":
+        return (
+          <RadialChart
+            data={categoricalData}
+            config={config}
+            nameKey={categoryKey}
+            dataKey={series[0].key}
+          />
+        );
+      default:
+        return (
+          <BarChart
+            data={isCategorical && singleSeries ? categoricalData : data}
+            config={config}
+            xKey={categoryKey}
+            yAxis={false}
+          />
+        );
+    }
+  };
 
   const exportImage = () => {
     const svg = contentRef.current?.querySelector("svg");
@@ -226,10 +332,11 @@ export function ChartArtifact({
   };
 
   const downloadData = () => {
+    const header = [catLabel, ...series.map((s) => s.label)];
     const rows = [
-      [catLabel, valLabel].map(csvCell).join(","),
+      header.map(csvCell).join(","),
       ...data.map((d) =>
-        [csvCell(d[categoryKey]), csvCell(d[valueKey])].join(",")
+        [csvCell(d[categoryKey]), ...series.map((s) => csvCell(d[s.key]))].join(",")
       ),
     ];
     downloadBlob(
@@ -240,10 +347,16 @@ export function ChartArtifact({
 
   const copyValues = () => {
     const text = data
-      .map((d) => `${d[categoryKey]}\t${format(Number(d[valueKey]))}`)
+      .map((d) =>
+        [d[categoryKey], ...series.map((s) => format(Number(d[s.key])))].join("\t")
+      )
       .join("\n");
     void navigator.clipboard?.writeText(text);
   };
+
+  // A leading color swatch only makes sense when each ROW has its own color
+  // (categorical single-series) — not for multi-series, where color is per column.
+  const rowSwatch = isCategorical && singleSeries;
 
   return (
     <Artifact className={className}>
@@ -319,18 +432,26 @@ export function ChartArtifact({
       <ArtifactContent>
         <div ref={contentRef}>
           {view === "chart" ? (
-            <BarChart
-              data={chartData}
-              config={config}
-              xKey={categoryKey}
-              yAxis={false}
-            />
+            renderChart()
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{catLabel}</TableHead>
-                  <TableHead className="text-right">{valLabel}</TableHead>
+                  {series.map((s) => (
+                    <TableHead key={s.key} className="text-right">
+                      <span className="inline-flex items-center gap-1.5">
+                        {!rowSwatch ? (
+                          <span
+                            aria-hidden
+                            className="size-2.5 shrink-0 rounded-[3px]"
+                            style={{ backgroundColor: s.color }}
+                          />
+                        ) : null}
+                        {s.label}
+                      </span>
+                    </TableHead>
+                  ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -338,17 +459,24 @@ export function ChartArtifact({
                   <TableRow key={i}>
                     <TableCell className="font-medium">
                       <span className="flex items-center gap-2">
-                        <span
-                          aria-hidden
-                          className="size-2.5 shrink-0 rounded-[3px]"
-                          style={{ backgroundColor: `var(--chart-${(i % 5) + 1})` }}
-                        />
+                        {rowSwatch ? (
+                          <span
+                            aria-hidden
+                            className="size-2.5 shrink-0 rounded-[3px]"
+                            style={{ backgroundColor: paletteColor(i) }}
+                          />
+                        ) : null}
                         {row[categoryKey]}
                       </span>
                     </TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      {format(Number(row[valueKey]))}
-                    </TableCell>
+                    {series.map((s) => (
+                      <TableCell
+                        key={s.key}
+                        className="text-right tabular-nums"
+                      >
+                        {format(Number(row[s.key]))}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))}
               </TableBody>

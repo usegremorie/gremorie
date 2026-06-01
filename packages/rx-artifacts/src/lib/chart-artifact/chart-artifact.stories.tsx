@@ -16,9 +16,10 @@ import {
  * - **React** — `@gremorie/rx-artifacts` → `<ChartArtifact … />`
  * - **Angular** — `@gremorie/ng-artifacts` → `<gn-chart-artifact … />` (planned)
  *
- * It is a thin **preset** of the generic `Artifact` shell that **embeds the
- * styled `BarChart`** (rx-data) and a `Table`, toggling between them. Because
- * it embeds the chart primitive, any change to `BarChart` reflects here.
+ * It is a thin **preset** of the generic `Artifact` shell that **embeds any of
+ * the styled chart primitives** (bar, area, line, pie, radar, radial, scatter)
+ * from rx-data and a `Table`, toggling between them. Because it embeds the chart
+ * primitives, any change to them reflects here.
  *
  * ## Anatomy
  *
@@ -26,10 +27,14 @@ import {
  *   - **FeaturedIcon** — the badge that anchors the card.
  *   - **Title** — single line, truncates.
  *   - **Description** — optional, single line, truncates.
- *   - **Actions** — *view toggle* (chart ⇄ table) · *Download* menu · *More* menu.
+ *   - **Actions** — *view toggle* (chart ⇄ table, always visible) · *Download*
+ *     menu · *More* menu. Actions collapse into a single More menu on a narrow
+ *     card (< 448px) and expand on a wide one (container query).
  * - **Body** — toggled, both views from the same `data`:
- *   - **Chart** — the embedded `BarChart` (categorical · `yAxis={false}` · tooltip).
- *   - **Table** — category + value, each row prefixed with its color swatch.
+ *   - **Chart** — the embedded chart for `type` (Y axis off for cartesian).
+ *   - **Table** — **wide**: a category column + one column per value series
+ *     (so multi-series charts keep every value); a color swatch in the series
+ *     header, or per row for categorical single-series.
  *
  * ## Props
  *
@@ -37,11 +42,12 @@ import {
  * | --- | --- | --- | --- |
  * | `title` * | `string` | — | Single-line heading. |
  * | `description` | `string` | — | One-line supporting text (truncates). |
- * | `data` * | `ChartArtifactDatum[]` | — | Rows — one object per category. |
- * | `categoryKey` * | `string` | — | Field for the category (x axis / 1st column). |
- * | `valueKey` * | `string` | — | Numeric field plotted as the bar height. |
+ * | `data` * | `ChartArtifactDatum[]` | — | Rows — one object per category / point. |
+ * | `type` | `"bar" \| "area" \| "line" \| "pie" \| "radar" \| "radial" \| "scatter"` | `"bar"` | Which chart primitive to embed. |
+ * | `categoryKey` * | `string` | — | Category / X field (1st table column). |
+ * | `valueKey` * | `string \| ChartArtifactSeries[]` | — | Value field (single series) or an array of `{ key, label?, color? }` (multi-series). Each becomes a table column. |
  * | `categoryLabel` | `string` | title-cased `categoryKey` | Table header for the category column. |
- * | `valueLabel` | `string` | title-cased `valueKey` | Table header / tooltip label for the value. |
+ * | `valueLabel` | `string` | title-cased `valueKey` | Label for a single value series (ignored for arrays). |
  * | `defaultView` | `"chart" \| "table"` | `"chart"` | Which view shows first. |
  * | `numberFormat` | `Intl.NumberFormatOptions` | — | Value formatting (table + tooltip + CSV). |
  * | `fileName` | `string` | `"chart"` | Base name for downloaded files. |
@@ -56,7 +62,7 @@ import {
  * | Component | Package | Role |
  * | --- | --- | --- |
  * | `Artifact`, `ArtifactHeader`, `ArtifactFeaturedIcon`, `ArtifactHeading`, `ArtifactTitle`, `ArtifactDescription`, `ArtifactActions`, `ArtifactViewToggle`, `ArtifactMenu`, `ArtifactContent` | `@gremorie/rx-artifacts` | The generic shell + header / action primitives |
- * | `BarChart` | `@gremorie/rx-data` | The **embedded** styled chart (categorical · no Y axis · tooltip) |
+ * | `BarChart`, `AreaChart`, `LineChart`, `PieChart`, `RadarChart`, `RadialChart`, `ScatterChart` | `@gremorie/rx-data` | The **embedded** styled chart, picked by `type` |
  * | `FeaturedIcon` | `@gremorie/rx-display` | Header badge |
  * | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` | `@gremorie/rx-display` | Table view |
  * | `ChartColumn`, `Table`, `Download`, `Ellipsis`, `ImageDown`, `Sheet`, `Copy`, `Bookmark`, `RefreshCw` | `lucide-react` | Icons |
