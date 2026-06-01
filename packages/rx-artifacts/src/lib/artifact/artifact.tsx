@@ -63,12 +63,14 @@ export const ArtifactHeader = ({
 );
 
 /**
- * The featured icon that anchors the header (optional).
+ * The featured icon that anchors the header (optional). A fixed 40px square
+ * (`size="md"`), aligned to the top of the title + description block.
  *
- * It is **square and sized to the title + description block**, not a fixed
- * `size` — `self-stretch` + `aspect-square` make it as tall as the heading and
- * as wide as it is tall, so it tracks the text height (one line of title + one
- * line of description ≈ 40px; if the description wraps, the icon grows with it).
+ * (An earlier version tried to stretch the icon to the heading's height via
+ * `self-stretch` + `aspect-square`, but a flex-stretched item's height isn't a
+ * "definite" size, so `aspect-square` couldn't derive a width — the icon
+ * overflowed its zero-width track and overlapped the title. A fixed 40px square
+ * is the title+description height anyway, and avoids that bug.)
  */
 export type ArtifactFeaturedIconProps = ComponentProps<typeof FeaturedIcon>;
 
@@ -76,20 +78,12 @@ export const ArtifactFeaturedIcon = ({
   className,
   ...props
 }: ArtifactFeaturedIconProps) => (
-  // A `self-stretch` wrapper gives the icon a *resolved* height (the title +
-  // description block), so the inner `h-full aspect-square` can derive a real
-  // square width from it. (A bare `aspect-square` on a flex-stretched item is
-  // ignored — its height isn't a "definite" size.)
-  <div className="flex shrink-0 self-stretch">
-    <FeaturedIcon
-      color="brand"
-      className={cn(
-        "h-full w-auto aspect-square [&_svg]:size-5",
-        className
-      )}
-      {...props}
-    />
-  </div>
+  <FeaturedIcon
+    color="brand"
+    size="md"
+    className={cn("shrink-0 self-start", className)}
+    {...props}
+  />
 );
 
 /** Title + description block; flexes to fill so actions sit on the right. */
