@@ -22,7 +22,11 @@ const meta = {
   title: 'AI/PromptInput/Container',
   component: PromptInput,
   tags: ['autodocs'],
-  args: { onSubmit: () => {} },
+  args: {
+    onSubmit: () => {
+      /* noop */
+    },
+  },
   parameters: {
     layout: 'padded',
     docs: {
@@ -44,7 +48,12 @@ type Story = StoryObj<typeof meta>;
 export const Ready: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea placeholder="Ask anything..." />
         <PromptInputFooter>
@@ -59,7 +68,12 @@ export const Ready: Story = {
 export const Submitted: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea placeholder="Ask anything..." />
         <PromptInputFooter>
@@ -74,7 +88,12 @@ export const Submitted: Story = {
 export const Streaming: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea placeholder="Ask anything..." />
         <PromptInputFooter>
@@ -89,7 +108,12 @@ export const Streaming: Story = {
 export const Error: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea placeholder="Ask anything..." />
         <PromptInputFooter>

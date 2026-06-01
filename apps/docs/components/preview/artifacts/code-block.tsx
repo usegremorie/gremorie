@@ -1,5 +1,6 @@
 'use client';
 
+import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
 import {
   Badge,
   Card,
@@ -8,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@gremorie/rx-display';
-import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
 
 const CODE = `import { Button } from "@gremorie/rx-forms";
 

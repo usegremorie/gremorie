@@ -17,8 +17,11 @@ import { source } from '@/lib/source';
  * page of a TOP-LEVEL (tab) folder; on every other page this returns null.
  */
 
-// Page-tree nodes are loosely typed on purpose (the runtime shape is stable).
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Page-tree nodes are loosely typed on purpose. Fumadocs' `PageTree` shape is a
+// deep discriminated union exported only under mangled internal names, so this
+// small index helper reads well-known fields off an `any` node instead. The
+// runtime shape is stable; the unsafe-* family is disabled for this file only.
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-redundant-type-constituents */
 type Node = any;
 
 /** The top-level tab folder whose landing (first page) is `url`, else null. */

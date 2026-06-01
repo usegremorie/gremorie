@@ -1,5 +1,6 @@
 'use client';
 
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
 import {
   Badge,
   Card,
@@ -14,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from '@gremorie/rx-display';
-import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
 import { Button } from '@gremorie/rx-forms';
 import {
   ArrowDownRight,

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import { ArtifactsSpotlight } from '@/components/landing/artifacts-spotlight';
 import { BlocksGallery } from '@/components/landing/blocks-gallery';
 import { ComponentsShowcase } from '@/components/landing/components-showcase';
@@ -7,9 +9,6 @@ import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/landing/hero';
 import { StatsBand } from '@/components/landing/stats-band';
 import { ThemePlayground } from '@/components/landing/theme-playground';
-
-import type { Metadata } from 'next';
-
 import { i18n } from '@/lib/i18n';
 
 /**

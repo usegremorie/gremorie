@@ -44,7 +44,11 @@ export const AllStates: Story = {
           <span className="text-muted-foreground text-xs uppercase tracking-wide">
             {state}
           </span>
-          <PromptInput onSubmit={() => {}}>
+          <PromptInput
+            onSubmit={() => {
+              /* noop */
+            }}
+          >
             <PromptInputBody>
               <PromptInputTextarea className="sr-only" />
               <PromptInputSubmit status={state} />
@@ -69,7 +73,11 @@ export const Disabled: Story = {
           <span className="text-muted-foreground text-xs uppercase tracking-wide">
             {state}
           </span>
-          <PromptInput onSubmit={() => {}}>
+          <PromptInput
+            onSubmit={() => {
+              /* noop */
+            }}
+          >
             <PromptInputBody>
               <PromptInputTextarea className="sr-only" />
               <PromptInputSubmit disabled status={state} />

@@ -65,7 +65,6 @@ export function FlagLanguageSwitch({
           className,
         )}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={active.src}
           alt=""
@@ -101,7 +100,6 @@ export function FlagLanguageSwitch({
                   : 'text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground',
               )}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={flag.src}
                 alt=""

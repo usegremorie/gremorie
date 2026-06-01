@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { ArrowRight, Github } from "lucide-react";
-import { Button } from "@gremorie/rx-forms";
-import { Badge } from "@gremorie/rx-display";
+import { Badge } from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { ArrowRight, Github } from 'lucide-react';
+import Link from 'next/link';
 
 /**
  * Final CTA - reworked per Odo audit.
@@ -33,10 +33,7 @@ export function FinalCta() {
       />
       <div className="mx-auto max-w-3xl px-6 text-center">
         <Badge variant="secondary" className="mb-6 gap-2 py-1">
-          <span
-            className="size-1.5 rounded-full bg-brand"
-            aria-hidden="true"
-          />
+          <span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />
           Built by AI engineers, for AI engineers
         </Badge>
 
@@ -46,8 +43,8 @@ export function FinalCta() {
           <span className="text-brand">Make it AI-legible.</span>
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-          Open source. MCP-ready. Production-grade. Ship a brand-aware UI
-          your LLM can read and your team can own in their next sprint.
+          Open source. MCP-ready. Production-grade. Ship a brand-aware UI your
+          LLM can read and your team can own in their next sprint.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" asChild>

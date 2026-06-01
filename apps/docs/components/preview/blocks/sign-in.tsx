@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -8,9 +8,9 @@ import {
   CardHeader,
   CardTitle,
   Separator,
-} from "@gremorie/rx-display";
-import { Button, Input, Label } from "@gremorie/rx-forms";
-import { Github } from "lucide-react";
+} from '@gremorie/rx-display';
+import { Button, Input, Label } from '@gremorie/rx-forms';
+import { Github } from 'lucide-react';
 
 /**
  * Sign-in block: authentication card composing Card + Label + Input +
@@ -48,12 +48,12 @@ export function SignIn() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="signin-password">Password</Label>
-            <a
-              href="#"
-              className="text-xs text-muted-foreground underline-offset-4 hover:underline"
+            <button
+              type="button"
+              className="cursor-pointer bg-transparent p-0 text-xs text-muted-foreground underline-offset-4 hover:underline"
             >
               Forgot password?
-            </a>
+            </button>
           </div>
           <Input
             id="signin-password"
@@ -65,13 +65,13 @@ export function SignIn() {
       <CardFooter className="flex flex-col gap-3">
         <Button className="w-full">Sign in</Button>
         <p className="text-center text-xs text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <a
-            href="#"
-            className="text-foreground underline-offset-4 hover:underline"
+          Don&apos;t have an account?{' '}
+          <button
+            type="button"
+            className="cursor-pointer bg-transparent p-0 text-foreground underline-offset-4 hover:underline"
           >
             Create one
-          </a>
+          </button>
         </p>
       </CardFooter>
     </Card>

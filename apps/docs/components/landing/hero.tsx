@@ -1,7 +1,8 @@
-import Link from 'next/link';
-import { ArrowRight, Github } from 'lucide-react';
-import { Button } from '@gremorie/rx-forms';
 import { Badge } from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { ArrowRight, Github } from 'lucide-react';
+import Link from 'next/link';
+
 import { HeroDemo } from './hero-demo';
 
 /**

@@ -96,7 +96,6 @@ export const SignupForm: Story = {
       });
 
       const onSubmit = (values: SignupValues) => {
-        // eslint-disable-next-line no-alert
         alert(JSON.stringify(values, null, 2));
       };
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
 import {
   Badge,
   Card,
@@ -8,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@gremorie/rx-display';
-import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
 
 const SCHEMA = `{
   type: "chart-bar",

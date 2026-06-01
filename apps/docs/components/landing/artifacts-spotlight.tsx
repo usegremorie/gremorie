@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { ArrowRight, BarChart3, Code2 } from 'lucide-react';
-import { Button } from '@gremorie/rx-forms';
+import { CodeBlock } from '@gremorie/rx-artifacts';
+import { BarChart } from '@gremorie/rx-data';
 import {
   Badge,
   Card,
@@ -12,9 +11,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@gremorie/rx-display';
-import { BarChart } from '@gremorie/rx-data';
+import { Button } from '@gremorie/rx-forms';
+import { ArrowRight, BarChart3, Code2 } from 'lucide-react';
+import Link from 'next/link';
+
 import type { ChartConfig, ChartDatum } from '@gremorie/rx-data';
-import { CodeBlock } from '@gremorie/rx-artifacts';
 
 /**
  * Spotlights two artifact types: Chart (data viz schema -> bar chart)

@@ -29,7 +29,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: { placeholder: 'Ask anything...' },
   render: (args) => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea {...args} />
       </PromptInputBody>
@@ -44,7 +49,12 @@ export const Default: Story = {
 export const ShortMaxHeight: Story = {
   args: { placeholder: 'Ask anything...' },
   render: (args) => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea className="max-h-20" {...args} />
       </PromptInputBody>
@@ -59,7 +69,12 @@ export const ShortMaxHeight: Story = {
 export const TallStartingRows: Story = {
   args: { placeholder: 'Ask anything...' },
   render: (args) => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea rows={4} {...args} />
       </PromptInputBody>

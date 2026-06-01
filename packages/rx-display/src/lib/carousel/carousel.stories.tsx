@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Card, CardContent } from '@gremorie/rx-display';
+import { Card, CardContent } from '../card/card';
 
 import {
   Carousel,

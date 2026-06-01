@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Checkpoint,
@@ -31,10 +31,10 @@ import {
   ToolHeader,
   ToolInput,
   ToolOutput,
-} from "@gremorie/rx-ai";
-import { TooltipProvider } from "@gremorie/rx-overlays";
-import { Button } from "@gremorie/rx-forms";
-import { GitBranch } from "lucide-react";
+} from '@gremorie/rx-ai';
+import { Button } from '@gremorie/rx-forms';
+import { TooltipProvider } from '@gremorie/rx-overlays';
+import { GitBranch } from 'lucide-react';
 
 // ---------- Tool ----------
 
@@ -43,7 +43,7 @@ export function ToolRunningPreview() {
     <Tool defaultOpen>
       <ToolHeader type="tool-search" state="input-available" />
       <ToolContent>
-        <ToolInput input={{ query: "gremorie registry" }} />
+        <ToolInput input={{ query: 'gremorie registry' }} />
       </ToolContent>
     </Tool>
   );
@@ -54,14 +54,14 @@ export function ToolCompletedPreview() {
     <Tool defaultOpen>
       <ToolHeader type="tool-search" state="output-available" />
       <ToolContent>
-        <ToolInput input={{ query: "gremorie registry" }} />
+        <ToolInput input={{ query: 'gremorie registry' }} />
         <ToolOutput
           output={
             <pre className="text-xs">
               {JSON.stringify(
-                { found: 100, hits: ["rx-message", "rx-conversation"] },
+                { found: 100, hits: ['rx-message', 'rx-conversation'] },
                 null,
-                2
+                2,
               )}
             </pre>
           }
@@ -77,7 +77,7 @@ export function ToolErrorPreview() {
     <Tool defaultOpen>
       <ToolHeader type="tool-search" state="output-error" />
       <ToolContent>
-        <ToolInput input={{ query: "missing-item" }} />
+        <ToolInput input={{ query: 'missing-item' }} />
         <ToolOutput
           output={undefined}
           errorText="Registry returned 404. Item does not exist."
@@ -92,7 +92,7 @@ export function ToolApprovalPreview() {
     <Tool defaultOpen>
       <ToolHeader type="tool-delete-file" state="approval-requested" />
       <ToolContent>
-        <ToolInput input={{ path: "src/old-component.tsx" }} />
+        <ToolInput input={{ path: 'src/old-component.tsx' }} />
       </ToolContent>
     </Tool>
   );
@@ -107,7 +107,7 @@ export function InlineCitationPreview() {
       <InlineCitation>
         <InlineCitationText> [1]</InlineCitationText>
         <InlineCitationCard>
-          <InlineCitationCardTrigger sources={["https://gremorie.com"]} />
+          <InlineCitationCardTrigger sources={['https://gremorie.com']} />
           <InlineCitationCardBody>
             <p className="text-sm font-semibold">Phase 5k release notes</p>
             <p className="text-xs text-muted-foreground">
@@ -197,11 +197,13 @@ export function CheckpointTooltipPreview() {
 export function ConfirmationRequestPreview() {
   return (
     <Confirmation
-      approval={{ id: "1" }}
+      approval={{ id: '1' }}
       state="approval-requested"
       className="border"
     >
-      <ConfirmationTitle>Approve file write to /tmp/output.txt?</ConfirmationTitle>
+      <ConfirmationTitle>
+        Approve file write to /tmp/output.txt?
+      </ConfirmationTitle>
       <ConfirmationRequest>
         <div className="mt-2 flex gap-2">
           <Button size="sm">Approve</Button>
@@ -217,7 +219,7 @@ export function ConfirmationRequestPreview() {
 export function ConfirmationApprovedPreview() {
   return (
     <Confirmation
-      approval={{ id: "1", approved: true }}
+      approval={{ id: '1', approved: true }}
       state="approval-responded"
       className="border"
     >
@@ -230,7 +232,7 @@ export function ConfirmationApprovedPreview() {
 export function ConfirmationRejectedPreview() {
   return (
     <Confirmation
-      approval={{ id: "1", approved: false, reason: "Path outside workspace" }}
+      approval={{ id: '1', approved: false, reason: 'Path outside workspace' }}
       state="approval-responded"
       className="border"
     >

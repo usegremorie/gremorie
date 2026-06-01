@@ -1,4 +1,11 @@
-import Link from 'next/link';
+import {
+  Badge,
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
 import {
   ArrowRight,
   BarChart3,
@@ -10,14 +17,7 @@ import {
   Layers,
   Sparkles,
 } from 'lucide-react';
-import { Button } from '@gremorie/rx-forms';
-import {
-  Badge,
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@gremorie/rx-display';
+import Link from 'next/link';
 
 /**
  * Each category gets its own accent. AI gets the brand violet (it is the

@@ -32,7 +32,12 @@ export const Default: Story = {
   name: 'Tools left, submit right',
   parameters: { controls: { disable: true } },
   render: () => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTextarea placeholder="Ask anything..." />
         <PromptInputFooter>

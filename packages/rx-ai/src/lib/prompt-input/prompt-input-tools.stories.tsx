@@ -28,7 +28,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <PromptInput className="max-w-lg" onSubmit={() => {}}>
+    <PromptInput
+      className="max-w-lg"
+      onSubmit={() => {
+        /* noop */
+      }}
+    >
       <PromptInputBody>
         <PromptInputTools>
           <PromptInputButton aria-label="Attach file">

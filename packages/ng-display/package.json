@@ -17,10 +17,10 @@
     "display"
   ],
   "peerDependencies": {
-    "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0",
     "class-variance-authority": "^0.7.1",
-    "embla-carousel": "^8.6.0"
+    "embla-carousel": "^8.6.0",
+    "@gremorie/ng-core": "0.3.0"
   },
   "sideEffects": false,
   "exports": {

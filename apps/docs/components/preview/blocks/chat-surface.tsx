@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
 import {
   Conversation,
   ConversationContent,
@@ -23,6 +22,7 @@ import {
   type ChatStatus,
   type PromptInputMessage,
 } from '@gremorie/rx-ai';
+import { useRef, useState, type ReactNode } from 'react';
 
 const REASONING_TEXT =
   "The user wants a quick weekly status summary. I'll group the work into 3 buckets: shipped, in-flight, and blockers. Each row stays short for skimmability.";

@@ -1,5 +1,6 @@
-"use client";
+'use client';
 
+import { Button } from '@gremorie/rx-forms';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -61,9 +62,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
   toast,
-} from "@gremorie/rx-overlays";
-import { Button } from "@gremorie/rx-forms";
-import { useState } from "react";
+} from '@gremorie/rx-overlays';
+import { useState } from 'react';
 
 // ---------- AlertDialog ----------
 
@@ -285,8 +285,8 @@ export function SonnerPreview() {
       <Button
         variant="outline"
         onClick={() =>
-          toast("Primitive added", {
-            description: "rx-message is now available in your project.",
+          toast('Primitive added', {
+            description: 'rx-message is now available in your project.',
           })
         }
       >

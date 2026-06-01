@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { Github } from 'lucide-react';
 import { Separator } from '@gremorie/rx-display';
+import { Github } from 'lucide-react';
+import Link from 'next/link';
 
 const resourceLinks = [
   { label: 'Get started', href: '/get-started/installation' },

@@ -34,6 +34,9 @@ import { CodeBlock } from '../code-block/code-block';
   },
 })
 export class ToolInput {
+  // Public binding is `input` (mirrors the AI Elements ToolInput prop); the
+  // internal field keeps `value` to avoid shadowing Angular's `input()`.
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   readonly value = input<unknown>(null, { alias: 'input' });
 
   protected readonly formatted = computed(() => {

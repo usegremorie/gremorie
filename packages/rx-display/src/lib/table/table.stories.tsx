@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Badge } from '@gremorie/rx-display';
+import { Badge } from '../badge/badge';
 
 import {
   Table,

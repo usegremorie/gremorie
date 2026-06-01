@@ -54,17 +54,20 @@ const MS_IN_S = 1000;
   host: {
     '[class]': 'hostClass()',
   },
-  providers: [
-    { provide: REASONING, useExisting: forwardRef(() => Reasoning) },
-  ],
+  providers: [{ provide: REASONING, useExisting: forwardRef(() => Reasoning) }],
 })
 export class Reasoning implements ReasoningState {
   readonly isStreaming = input<boolean>(false);
   readonly defaultOpen = input<boolean>(true);
   readonly open = model<boolean>(true);
+  // Aliased to `duration` on purpose: the public `duration()` method below
+  // (required by ReasoningState) merges this binding with the auto-tracked
+  // value, so the raw input takes the internal `durationInput` name.
+  /* eslint-disable @angular-eslint/no-input-rename */
   readonly durationInput = input<number | undefined>(undefined, {
     alias: 'duration',
   });
+  /* eslint-enable @angular-eslint/no-input-rename */
 
   readonly openChange = output<boolean>();
 
