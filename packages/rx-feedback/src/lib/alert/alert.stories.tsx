@@ -1,7 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CheckCircle2, Info, Terminal, TriangleAlert, XCircle } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import {
+  CheckCircle2,
+  Info,
+  Terminal,
+  TriangleAlert,
+  XCircle,
+} from 'lucide-react';
 
-import { Alert, AlertDescription, AlertTitle } from "./alert";
+import { Alert, AlertDescription, AlertTitle } from './alert';
 
 /**
  * # Alert
@@ -42,12 +48,12 @@ import { Alert, AlertDescription, AlertTitle } from "./alert";
  * | `--border` | Container border |
  */
 const meta = {
-  title: "Interaction/Feedback/Alert",
+  title: 'Interaction/Feedback/Alert',
   component: Alert,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
-    variant: { control: "inline-radio", options: ["default", "destructive"] },
+    variant: { control: 'inline-radio', options: ['default', 'destructive'] },
   },
 } satisfies Meta<typeof Alert>;
 
@@ -69,7 +75,7 @@ export const Default: Story = {
 
 /** The `destructive` variant for errors. */
 export const Destructive: Story = {
-  args: { variant: "destructive" },
+  args: { variant: 'destructive' },
   render: (args) => (
     <Alert {...args} className="max-w-lg">
       <XCircle />
@@ -91,7 +97,9 @@ export const Intents: Story = {
       <Alert>
         <Info />
         <AlertTitle>Information</AlertTitle>
-        <AlertDescription>A new version is available to install.</AlertDescription>
+        <AlertDescription>
+          A new version is available to install.
+        </AlertDescription>
       </Alert>
       <Alert>
         <CheckCircle2 />

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import type { ReactNode } from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import type { ReactNode } from 'react';
 
-import { Stack } from "./stack";
+import { Stack } from './stack';
 
 /**
  * # Stack
@@ -32,22 +32,22 @@ import { Stack } from "./stack";
  * use `--muted` / `--border` only for visibility.
  */
 const meta = {
-  title: "Layout & display/Containers/Stack",
+  title: 'Layout & display/Containers/Stack',
   component: Stack,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
     gap: {
-      control: "inline-radio",
-      options: ["none", "xs", "sm", "md", "lg", "xl", "2xl"],
+      control: 'inline-radio',
+      options: ['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
     },
     align: {
-      control: "inline-radio",
-      options: ["start", "center", "end", "stretch", "baseline"],
+      control: 'inline-radio',
+      options: ['start', 'center', 'end', 'stretch', 'baseline'],
     },
     justify: {
-      control: "inline-radio",
-      options: ["start", "center", "end", "between", "around", "evenly"],
+      control: 'inline-radio',
+      options: ['start', 'center', 'end', 'between', 'around', 'evenly'],
     },
   },
 } satisfies Meta<typeof Stack>;
@@ -76,7 +76,7 @@ export const Default: Story = {
 export const Gaps: Story = {
   render: () => (
     <div className="flex items-start gap-8">
-      {(["none", "sm", "md", "lg", "xl"] as const).map((gap) => (
+      {(['none', 'sm', 'md', 'lg', 'xl'] as const).map((gap) => (
         <div key={gap}>
           <div className="text-muted-foreground mb-2 text-xs">gap={gap}</div>
           <Stack gap={gap} className="w-24">
@@ -94,10 +94,16 @@ export const Gaps: Story = {
 export const Align: Story = {
   render: () => (
     <div className="flex items-start gap-8">
-      {(["start", "center", "end", "stretch"] as const).map((align) => (
+      {(['start', 'center', 'end', 'stretch'] as const).map((align) => (
         <div key={align}>
-          <div className="text-muted-foreground mb-2 text-xs">align={align}</div>
-          <Stack align={align} gap="sm" className="bg-card w-40 rounded-md border p-2">
+          <div className="text-muted-foreground mb-2 text-xs">
+            align={align}
+          </div>
+          <Stack
+            align={align}
+            gap="sm"
+            className="bg-card w-40 rounded-md border p-2"
+          >
             <Box>Short</Box>
             <Box>A longer item</Box>
           </Stack>
@@ -111,7 +117,7 @@ export const Align: Story = {
 export const Justify: Story = {
   render: () => (
     <div className="flex items-start gap-8">
-      {(["start", "center", "end", "between"] as const).map((justify) => (
+      {(['start', 'center', 'end', 'between'] as const).map((justify) => (
         <div key={justify}>
           <div className="text-muted-foreground mb-2 text-xs">
             justify={justify}

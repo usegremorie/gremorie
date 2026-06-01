@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import {
   BookmarkIcon,
   CodeIcon,
@@ -10,7 +10,7 @@ import {
   FileTextIcon,
   RefreshCwIcon,
   TableIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   Artifact,
@@ -25,7 +25,7 @@ import {
   ArtifactMenu,
   ArtifactTitle,
   ArtifactViewToggle,
-} from "./artifact";
+} from './artifact';
 
 /**
  * # Artifact
@@ -88,10 +88,10 @@ import {
  * | `--brand` | `ArtifactFeaturedIcon` default badge color |
  */
 const meta = {
-  title: "Artifacts/Artifact",
+  title: 'Artifacts/Artifact',
   component: Artifact,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <div className="w-[28rem] max-w-full">
@@ -142,7 +142,7 @@ export const Default: Story = {
 export const WithViewToggleAndMenus: Story = {
   render: () => {
     const ShellWithState = () => {
-      const [view, setView] = useState("preview");
+      const [view, setView] = useState('preview');
       return (
         <Artifact>
           <ArtifactHeader>
@@ -158,8 +158,8 @@ export const WithViewToggleAndMenus: Story = {
                 value={view}
                 onValueChange={setView}
                 options={[
-                  { value: "preview", icon: EyeIcon, label: "Preview" },
-                  { value: "code", icon: CodeIcon, label: "Code" },
+                  { value: 'preview', icon: EyeIcon, label: 'Preview' },
+                  { value: 'code', icon: CodeIcon, label: 'Code' },
                 ]}
               />
               <ArtifactMenu
@@ -167,25 +167,25 @@ export const WithViewToggleAndMenus: Story = {
                 label="Download"
                 heading="Download"
                 items={[
-                  { label: "As image", icon: TableIcon },
-                  { label: "As data", icon: FileTextIcon },
+                  { label: 'As image', icon: TableIcon },
+                  { label: 'As data', icon: FileTextIcon },
                 ]}
               />
               <ArtifactMenu
                 icon={EllipsisIcon}
                 label="More"
                 items={[
-                  { label: "Regenerate", icon: RefreshCwIcon },
-                  { label: "Save", icon: BookmarkIcon },
-                  "separator",
-                  { label: "Copy", icon: CopyIcon },
+                  { label: 'Regenerate', icon: RefreshCwIcon },
+                  { label: 'Save', icon: BookmarkIcon },
+                  'separator',
+                  { label: 'Copy', icon: CopyIcon },
                 ]}
               />
             </ArtifactActions>
           </ArtifactHeader>
           <ArtifactContent>
             <div className="flex h-32 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
-              {view === "preview" ? "Preview view" : "Code view"}
+              {view === 'preview' ? 'Preview view' : 'Code view'}
             </div>
           </ArtifactContent>
         </Artifact>

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   PromptInput,
@@ -7,7 +7,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-} from "./prompt-input";
+} from './prompt-input';
 
 /**
  * PromptInput - container for AI prompt entry (React edition).
@@ -19,20 +19,20 @@ import {
  * and PromptInputSubmit.
  */
 const meta = {
-  title: "AI/PromptInput/Container",
+  title: 'AI/PromptInput/Container',
   component: PromptInput,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   args: { onSubmit: () => {} },
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       description: {
         component:
-          "PromptInput is the container for AI prompt entry. It owns the form " +
-          "submission, keyboard shortcuts, and attachment validation. The submit " +
-          "button surfaces the status machine (ready -> submitted -> streaming -> " +
-          "error). Compose with PromptInputTextarea, PromptInputFooter, " +
-          "PromptInputTools and PromptInputSubmit.",
+          'PromptInput is the container for AI prompt entry. It owns the form ' +
+          'submission, keyboard shortcuts, and attachment validation. The submit ' +
+          'button surfaces the status machine (ready -> submitted -> streaming -> ' +
+          'error). Compose with PromptInputTextarea, PromptInputFooter, ' +
+          'PromptInputTools and PromptInputSubmit.',
       },
     },
   },

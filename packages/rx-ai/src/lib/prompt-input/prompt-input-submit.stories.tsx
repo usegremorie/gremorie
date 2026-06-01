@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   type ChatStatus,
@@ -6,9 +6,9 @@ import {
   PromptInputBody,
   PromptInputSubmit,
   PromptInputTextarea,
-} from "./prompt-input";
+} from './prompt-input';
 
-const STATES: ChatStatus[] = ["ready", "submitted", "streaming", "error"];
+const STATES: ChatStatus[] = ['ready', 'submitted', 'streaming', 'error'];
 
 /**
  * PromptInputSubmit - status-driven submit button (React edition).
@@ -18,13 +18,13 @@ const STATES: ChatStatus[] = ["ready", "submitted", "streaming", "error"];
  * error (cross). Pass the current `status` to keep it in sync.
  */
 const meta = {
-  title: "AI/PromptInput/Submit",
+  title: 'AI/PromptInput/Submit',
   component: PromptInputSubmit,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    disabled: { control: "boolean" },
+    disabled: { control: 'boolean' },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof PromptInputSubmit>;
 
 export default meta;
@@ -35,7 +35,7 @@ type Story = StoryObj<typeof meta>;
  * easy to compare at a glance.
  */
 export const AllStates: Story = {
-  name: "All 4 states side-by-side",
+  name: 'All 4 states side-by-side',
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex flex-wrap gap-4">

@@ -20,10 +20,10 @@
  * No `@theme`, no `@source`, no Tailwind config required on the consumer side.
  */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tokens — primitives + semantics + light/dark + keyframes (source of truth). */
-@import "../../ng-core/styles/theme.css";
+@import '../../ng-core/styles/theme.css';
 
 /*
  * Generate every utility used by any component in @gremorie/react so the

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
-import { Input } from "./input";
+import { Label } from '../label/label';
+import { Input } from './input';
 
 /**
  * # Input
@@ -36,17 +36,26 @@ import { Input } from "./input";
  * | `--primary` / `--primary-foreground` | text selection |
  */
 const meta = {
-  title: "Inputs/Input",
+  title: 'Inputs/Input',
   component: Input,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { placeholder: "Type here…" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { placeholder: 'Type here…' },
   argTypes: {
     type: {
-      control: "select",
-      options: ["text", "email", "password", "number", "search", "tel", "url", "file"],
+      control: 'select',
+      options: [
+        'text',
+        'email',
+        'password',
+        'number',
+        'search',
+        'tel',
+        'url',
+        'file',
+      ],
     },
-    disabled: { control: "boolean" },
+    disabled: { control: 'boolean' },
   },
   render: (args) => <Input className="w-72" {...args} />,
 } satisfies Meta<typeof Input>;
@@ -58,24 +67,30 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /** Pre-filled value. */
-export const WithValue: Story = { args: { defaultValue: "ada@example.com" } };
+export const WithValue: Story = { args: { defaultValue: 'ada@example.com' } };
 
 /** Email type. */
-export const Email: Story = { args: { type: "email", placeholder: "ada@example.com" } };
+export const Email: Story = {
+  args: { type: 'email', placeholder: 'ada@example.com' },
+};
 
 /** Password type (masked). */
-export const Password: Story = { args: { type: "password", defaultValue: "secret123" } };
+export const Password: Story = {
+  args: { type: 'password', defaultValue: 'secret123' },
+};
 
 /** Disabled. */
-export const Disabled: Story = { args: { disabled: true, defaultValue: "Can't edit" } };
+export const Disabled: Story = {
+  args: { disabled: true, defaultValue: "Can't edit" },
+};
 
 /** Error state via `aria-invalid`. */
 export const Invalid: Story = {
-  args: { "aria-invalid": true, defaultValue: "not-an-email" },
+  args: { 'aria-invalid': true, defaultValue: 'not-an-email' },
 };
 
 /** File input. */
-export const File: Story = { args: { type: "file", placeholder: undefined } };
+export const File: Story = { args: { type: 'file', placeholder: undefined } };
 
 /** Paired with a Label for an accessible field. */
 export const WithLabel: Story = {

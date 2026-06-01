@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@gremorie/rx-forms";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@gremorie/rx-forms';
 import {
   type Edge as FlowEdge,
   type Node as FlowNode,
   ReactFlowProvider,
-} from "@xyflow/react";
-import { PlusIcon, SparklesIcon } from "lucide-react";
+} from '@xyflow/react';
+import { PlusIcon, SparklesIcon } from 'lucide-react';
 
-import { Canvas } from "../canvas";
-import { Panel } from "./panel";
+import { Canvas } from '../canvas';
+import { Panel } from './panel';
 
 /**
  * # Panel
@@ -41,21 +41,21 @@ import { Panel } from "./panel";
  * | `--border` | Panel border. |
  */
 const meta = {
-  title: "AI/Panel",
+  title: 'AI/Panel',
   component: Panel,
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof Panel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const nodes: FlowNode[] = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "A" } },
-  { id: "2", position: { x: 200, y: 80 }, data: { label: "B" } },
+  { id: '1', position: { x: 0, y: 0 }, data: { label: 'A' } },
+  { id: '2', position: { x: 200, y: 80 }, data: { label: 'B' } },
 ];
 
-const edges: FlowEdge[] = [{ id: "e1-2", source: "1", target: "2" }];
+const edges: FlowEdge[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
 /** A top-right toolbar panel with two actions. */
 export const Default: Story = {

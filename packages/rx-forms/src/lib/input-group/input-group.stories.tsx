@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CreditCard, Mail, Search, Send } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { CreditCard, Mail, Search, Send } from 'lucide-react';
 
 import {
   InputGroup,
@@ -8,7 +8,7 @@ import {
   InputGroupInput,
   InputGroupText,
   InputGroupTextarea,
-} from "./input-group";
+} from './input-group';
 
 /**
  * # InputGroup
@@ -58,10 +58,10 @@ import {
  * | `--radius` | kbd / button corner rounding |
  */
 const meta = {
-  title: "Inputs/InputGroup",
+  title: 'Inputs/InputGroup',
   component: InputGroup,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof InputGroup>;
 
 export default meta;

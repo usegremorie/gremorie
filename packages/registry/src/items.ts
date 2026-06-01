@@ -716,12 +716,7 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/components/gremorie/forms/input-group',
     srcStrip: 'src/lib/input-group/',
     dependencies: ['class-variance-authority'],
-    registryDependencies: [
-      'rx-utils',
-      'rx-button',
-      'rx-input',
-      'rx-textarea',
-    ],
+    registryDependencies: ['rx-utils', 'rx-button', 'rx-input', 'rx-textarea'],
   },
   {
     name: 'rx-dropdown-menu',
@@ -889,7 +884,12 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/components/gremorie/forms/date-picker',
     srcStrip: 'src/lib/date-picker/',
     dependencies: ['date-fns', 'lucide-react'],
-    registryDependencies: ['rx-utils', 'rx-button', 'rx-calendar', 'rx-popover'],
+    registryDependencies: [
+      'rx-utils',
+      'rx-button',
+      'rx-calendar',
+      'rx-popover',
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -1453,10 +1453,7 @@ export const ITEMS: ItemConfig[] = [
     sourceFiles: ['src/lib/reasoning/reasoning.tsx'],
     targetPrefix: 'src/components/gremorie/ai/reasoning',
     srcStrip: 'src/lib/reasoning/',
-    dependencies: [
-      '@radix-ui/react-use-controllable-state',
-      'streamdown',
-    ],
+    dependencies: ['@radix-ui/react-use-controllable-state', 'streamdown'],
     registryDependencies: ['rx-utils', 'rx-collapsible', 'rx-shimmer'],
   },
   {

@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   PromptInput,
   PromptInputBody,
   PromptInputTextarea,
-} from "./prompt-input";
+} from './prompt-input';
 
 /**
  * PromptInputTextarea - the auto-growing prompt field (React edition).
@@ -14,20 +14,20 @@ import {
  * supports paste-to-attach. It must live inside a PromptInput.
  */
 const meta = {
-  title: "AI/PromptInput/Textarea",
+  title: 'AI/PromptInput/Textarea',
   component: PromptInputTextarea,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    placeholder: { control: "text" },
+    placeholder: { control: 'text' },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof PromptInputTextarea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { placeholder: "Ask anything..." },
+  args: { placeholder: 'Ask anything...' },
   render: (args) => (
     <PromptInput className="max-w-lg" onSubmit={() => {}}>
       <PromptInputBody>
@@ -42,7 +42,7 @@ export const Default: Story = {
  * internally instead of pushing the layout.
  */
 export const ShortMaxHeight: Story = {
-  args: { placeholder: "Ask anything..." },
+  args: { placeholder: 'Ask anything...' },
   render: (args) => (
     <PromptInput className="max-w-lg" onSubmit={() => {}}>
       <PromptInputBody>
@@ -57,7 +57,7 @@ export const ShortMaxHeight: Story = {
  * `rows` attribute before the field grows to fit content.
  */
 export const TallStartingRows: Story = {
-  args: { placeholder: "Ask anything..." },
+  args: { placeholder: 'Ask anything...' },
   render: (args) => (
     <PromptInput className="max-w-lg" onSubmit={() => {}}>
       <PromptInputBody>

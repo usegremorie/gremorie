@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { BrainIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { BrainIcon } from 'lucide-react';
 
-import { Shimmer } from "./shimmer";
+import { Shimmer } from './shimmer';
 
 /**
  * Shimmer - animated text-gradient sweep component (React edition).
@@ -15,31 +15,31 @@ import { Shimmer } from "./shimmer";
  * a "Slow" variant here instead.
  */
 const meta = {
-  title: "AI/Shimmer",
+  title: 'AI/Shimmer',
   component: Shimmer,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    duration: { control: { type: "number", min: 0.5, max: 6, step: 0.5 } },
-    spread: { control: { type: "number", min: 0.5, max: 6, step: 0.5 } },
+    duration: { control: { type: 'number', min: 0.5, max: 6, step: 0.5 } },
+    spread: { control: { type: 'number', min: 0.5, max: 6, step: 0.5 } },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Shimmer>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { duration: 2, spread: 2, children: "Thinking..." },
+  args: { duration: 2, spread: 2, children: 'Thinking...' },
   render: (args) => <Shimmer {...args} className="text-base" />,
 };
 
 export const Fast: Story = {
-  args: { duration: 1, spread: 2, children: "Streaming response..." },
+  args: { duration: 1, spread: 2, children: 'Streaming response...' },
   render: (args) => <Shimmer {...args} className="text-base" />,
 };
 
 export const Slow: Story = {
-  args: { duration: 4, spread: 2, children: "Calmly considering options" },
+  args: { duration: 4, spread: 2, children: 'Calmly considering options' },
   render: (args) => <Shimmer {...args} className="text-base" />,
 };
 

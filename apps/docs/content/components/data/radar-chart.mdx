@@ -1,9 +1,9 @@
 ---
 title: Radar Chart
-description: "Compare series across multiple axes that share a single radial domain."
+description: 'Compare series across multiple axes that share a single radial domain.'
 ---
 
-import { RadarChartPreview } from "@/components/preview/data/charts";
+import { RadarChartPreview } from '@/components/preview/data/charts';
 
 ## Overview
 
@@ -20,26 +20,16 @@ Reach for RadarChart when no single dimension is the headline and the **shape of
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-radar-chart
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-radar-chart
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-radar-chart
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-radar-chart
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-radar-chart ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-radar-chart ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-radar-chart ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-radar-chart ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -51,16 +41,16 @@ import { RadarChart } from "@gremorie/rx-data";
 import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
 
 const data: ChartDatum[] = [
-  { skill: "Speed", a: 90, b: 60 },
-  { skill: "Power", a: 70, b: 80 },
-  { skill: "Stamina", a: 85, b: 70 },
-  { skill: "Agility", a: 75, b: 90 },
-  { skill: "Skill", a: 95, b: 65 },
+{ skill: "Speed", a: 90, b: 60 },
+{ skill: "Power", a: 70, b: 80 },
+{ skill: "Stamina", a: 85, b: 70 },
+{ skill: "Agility", a: 75, b: 90 },
+{ skill: "Skill", a: 95, b: 65 },
 ];
 
 const config: ChartConfig = {
-  a: { label: "Player A", color: "var(--chart-1)" },
-  b: { label: "Player B", color: "var(--chart-2)" },
+a: { label: "Player A", color: "var(--chart-1)" },
+b: { label: "Player B", color: "var(--chart-2)" },
 };
 
 export function PlayerComparison() {
@@ -81,33 +71,33 @@ Angular edition planned for a follow-up release; it mirrors this component's ana
 
 The styled wrapper over recharts' `RadarChart`, composed on `ChartContainer`. Renders the responsive frame, a `PolarGrid`, the `PolarAngleAxis` (spoke labels), an optional tooltip, and one `<Radar>` per `config` key colored `var(--color-<key>)`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `ChartDatum[]` | - | Tabular data. One row per spoke. Each row carries the spoke label at `xKey` plus one numeric value per `config` key. |
-| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
-| `xKey` | `string` | - | Name of the spoke (angle) field on each row. Drives the `PolarAngleAxis` labels around the perimeter. |
-| `gridType` | `"polygon" \| "circle"` | `"polygon"` | Shape of the `PolarGrid` rings - straight-edged polygon (default) or concentric circles. |
-| `tooltip` | `boolean` | `true` | Toggles the hover tooltip. |
-| `className` | `string` | - | Merged onto the `ChartContainer`. The bundled style centers the chart with a square aspect. |
+| Prop        | Type                    | Default     | Description                                                                                                                                                                                                       |
+| ----------- | ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `ChartDatum[]`          | -           | Tabular data. One row per spoke. Each row carries the spoke label at `xKey` plus one numeric value per `config` key.                                                                                              |
+| `config`    | `ChartConfig`           | -           | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
+| `xKey`      | `string`                | -           | Name of the spoke (angle) field on each row. Drives the `PolarAngleAxis` labels around the perimeter.                                                                                                             |
+| `gridType`  | `"polygon" \| "circle"` | `"polygon"` | Shape of the `PolarGrid` rings - straight-edged polygon (default) or concentric circles.                                                                                                                          |
+| `tooltip`   | `boolean`               | `true`      | Toggles the hover tooltip.                                                                                                                                                                                        |
+| `className` | `string`                | -           | Merged onto the `ChartContainer`. The bundled style centers the chart with a square aspect.                                                                                                                       |
 
 ### Composing with the chart primitive
 
 For full control, compose recharts directly inside `ChartContainer` using the exported primitives. This mirrors the [official shadcn radar block](https://ui.shadcn.com/charts/radar).
 
-| Export | Role |
-|---|---|
-| `ChartContainer` | Responsive frame; injects per-series `--color-<key>` vars from `config`. |
-| `ChartTooltip` | recharts `Tooltip` re-export; pair with `ChartTooltipContent`. |
-| `ChartTooltipContent` | Styled tooltip body. |
-| `ChartLegend` | recharts `Legend` re-export; pair with `ChartLegendContent`. |
-| `ChartLegendContent` | Styled legend body. |
-| `useChart` | Hook to read the active `config` inside a custom child. |
+| Export                | Role                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| `ChartContainer`      | Responsive frame; injects per-series `--color-<key>` vars from `config`. |
+| `ChartTooltip`        | recharts `Tooltip` re-export; pair with `ChartTooltipContent`.           |
+| `ChartTooltipContent` | Styled tooltip body.                                                     |
+| `ChartLegend`         | recharts `Legend` re-export; pair with `ChartLegendContent`.             |
+| `ChartLegendContent`  | Styled legend body.                                                      |
+| `useChart`            | Hook to read the active `config` inside a custom child.                  |
 
 ### Types
 
-| Type | Shape |
-|---|---|
-| `ChartDatum` | `Record<string, string \| number> & { fill?: string }` - one row of chart data. |
+| Type          | Shape                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - one row of chart data.           |
 | `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map. |
 
 ```tsx
@@ -117,23 +107,38 @@ import {
   ChartTooltipContent,
   type ChartConfig,
   type ChartDatum,
-} from "@gremorie/rx-data";
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
+} from '@gremorie/rx-data';
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 
 const config = {
-  a: { label: "Player A", color: "var(--chart-1)" },
-  b: { label: "Player B", color: "var(--chart-2)" },
+  a: { label: 'Player A', color: 'var(--chart-1)' },
+  b: { label: 'Player B', color: 'var(--chart-2)' },
 } satisfies ChartConfig;
 
 export function Example({ data }: { data: ChartDatum[] }) {
   return (
-    <ChartContainer config={config} className="mx-auto aspect-square max-h-[250px]">
+    <ChartContainer
+      config={config}
+      className="mx-auto aspect-square max-h-[250px]"
+    >
       <RadarChart accessibilityLayer data={data}>
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         <PolarAngleAxis dataKey="skill" />
         <PolarGrid gridType="polygon" />
-        <Radar dataKey="a" fill="var(--color-a)" fillOpacity={0} stroke="var(--color-a)" strokeWidth={2} />
-        <Radar dataKey="b" fill="var(--color-b)" fillOpacity={0} stroke="var(--color-b)" strokeWidth={2} />
+        <Radar
+          dataKey="a"
+          fill="var(--color-a)"
+          fillOpacity={0}
+          stroke="var(--color-a)"
+          strokeWidth={2}
+        />
+        <Radar
+          dataKey="b"
+          fill="var(--color-b)"
+          fillOpacity={0}
+          stroke="var(--color-b)"
+          strokeWidth={2}
+        />
       </RadarChart>
     </ChartContainer>
   );
@@ -161,11 +166,11 @@ The chart auto-sizes to its parent through `ChartContainer`'s responsive frame, 
 
 ```tsx
 const config: ChartConfig = {
-  a: { label: "Player A", color: "var(--chart-1)" },
-  b: { label: "Player B", color: "var(--chart-2)" },
+  a: { label: 'Player A', color: 'var(--chart-1)' },
+  b: { label: 'Player B', color: 'var(--chart-2)' },
 };
 
-<RadarChart data={data} config={config} xKey="skill" />
+<RadarChart data={data} config={config} xKey="skill" />;
 ```
 
 The most common shape. Two stroked series let the user compare polygon footprints at a glance.
@@ -175,7 +180,7 @@ The most common shape. Two stroked series let the user compare polygon footprint
 ```tsx
 <RadarChart
   data={data}
-  config={{ score: { label: "Score", color: "var(--chart-1)" } }}
+  config={{ score: { label: 'Score', color: 'var(--chart-1)' } }}
   xKey="dimension"
 />
 ```

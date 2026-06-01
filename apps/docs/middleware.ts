@@ -1,11 +1,11 @@
-import { createI18nMiddleware } from "fumadocs-core/i18n/middleware";
+import { createI18nMiddleware } from 'fumadocs-core/i18n/middleware';
 import {
   NextResponse,
   type NextFetchEvent,
-  type NextRequest
-} from "next/server";
+  type NextRequest,
+} from 'next/server';
 
-import { i18n } from "@/lib/i18n";
+import { i18n } from '@/lib/i18n';
 
 /**
  * Combined middleware: Fumadocs i18n routing + AI-onboarding telemetry.
@@ -29,43 +29,44 @@ const i18nMiddleware = createI18nMiddleware(i18n);
 /** Routes that are not localized — telemetry only, never i18n-rewritten. */
 function isAgnostic(pathname: string): boolean {
   return (
-    pathname.startsWith("/api/") ||
-    pathname.startsWith("/r/") ||
-    pathname === "/llms.txt" ||
-    pathname === "/robots.txt" ||
-    pathname === "/sitemap.xml"
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/r/') ||
+    pathname === '/llms.txt' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml'
   );
 }
 
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
   const { pathname, search } = req.nextUrl;
-  const ua = req.headers.get("user-agent") ?? "";
+  const ua = req.headers.get('user-agent') ?? '';
 
   // Telemetry on the high-signal paths.
   if (
-    pathname === "/llms.txt" ||
-    pathname.startsWith("/r/") ||
-    pathname.startsWith("/api/") ||
-    pathname.includes("/get-started")
+    pathname === '/llms.txt' ||
+    pathname.startsWith('/r/') ||
+    pathname.startsWith('/api/') ||
+    pathname.includes('/get-started')
   ) {
-    const kind = pathname === "/llms.txt"
-      ? "llms"
-      : pathname.startsWith("/r/")
-        ? "registry"
-        : pathname.startsWith("/api/")
-          ? "api"
-          : "docs";
+    const kind =
+      pathname === '/llms.txt'
+        ? 'llms'
+        : pathname.startsWith('/r/')
+          ? 'registry'
+          : pathname.startsWith('/api/')
+            ? 'api'
+            : 'docs';
     console.log(
       JSON.stringify({
-        evt: "gremorie.telemetry",
+        evt: 'gremorie.telemetry',
         kind,
-        path: pathname + (search ?? ""),
+        path: pathname + (search ?? ''),
         ai: AI_UA.test(ua),
-        ref: req.headers.get("referer"),
-        country: req.headers.get("x-vercel-ip-country"),
+        ref: req.headers.get('referer'),
+        country: req.headers.get('x-vercel-ip-country'),
         ua: ua.slice(0, 180),
-        ts: new Date().toISOString()
-      })
+        ts: new Date().toISOString(),
+      }),
     );
   }
 
@@ -78,6 +79,6 @@ export default function middleware(req: NextRequest, event: NextFetchEvent) {
 export const config = {
   // Run on everything except Next internals and static asset files.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpe?g|gif|svg|ico|webp|avif|woff2?|ttf|otf)$).*)"
-  ]
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpe?g|gif|svg|ico|webp|avif|woff2?|ttf|otf)$).*)',
+  ],
 };

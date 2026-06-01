@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { BadgeCheck, Check, X } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { BadgeCheck, Check, X } from 'lucide-react';
 
-import { Badge } from "./badge";
+import { Badge } from './badge';
 
 /**
  * # Badge
@@ -36,17 +36,24 @@ import { Badge } from "./badge";
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: "Layout & display/Display/Badge",
+  title: 'Layout & display/Display/Badge',
   component: Badge,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { variant: "default", children: "Badge" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { variant: 'default', children: 'Badge' },
   argTypes: {
     variant: {
-      control: "inline-radio",
-      options: ["default", "secondary", "destructive", "outline", "ghost", "link"],
+      control: 'inline-radio',
+      options: [
+        'default',
+        'secondary',
+        'destructive',
+        'outline',
+        'ghost',
+        'link',
+      ],
     },
-    asChild: { control: "boolean" },
+    asChild: { control: 'boolean' },
   },
 } satisfies Meta<typeof Badge>;
 

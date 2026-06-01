@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@gremorie/rx-forms";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@gremorie/rx-forms';
 import {
   type Edge as FlowEdge,
   type Node as FlowNode,
   type NodeProps as FlowNodeProps,
   type NodeTypes,
   ReactFlowProvider,
-} from "@xyflow/react";
-import { MoreHorizontalIcon } from "lucide-react";
+} from '@xyflow/react';
+import { MoreHorizontalIcon } from 'lucide-react';
 
-import { Canvas } from "../canvas";
+import { Canvas } from '../canvas';
 import {
   Node,
   NodeAction,
@@ -18,7 +18,7 @@ import {
   NodeFooter,
   NodeHeader,
   NodeTitle,
-} from "./node";
+} from './node';
 
 /**
  * # Node
@@ -69,10 +69,10 @@ import {
  * | `--sidebar` | Canvas background behind the node. |
  */
 const meta = {
-  title: "AI/Node",
+  title: 'AI/Node',
   component: Node,
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
   args: { handles: { source: false, target: false } },
 } satisfies Meta<typeof Node>;
 
@@ -113,32 +113,32 @@ const nodeTypes: NodeTypes = { agent: AgentNode };
 
 const nodes: FlowNode[] = [
   {
-    id: "1",
-    type: "agent",
+    id: '1',
+    type: 'agent',
     position: { x: 0, y: 0 },
     data: {
-      title: "Plan",
-      description: "Break the task into steps",
-      body: "Decompose the request and outline the actions to take.",
+      title: 'Plan',
+      description: 'Break the task into steps',
+      body: 'Decompose the request and outline the actions to take.',
       source: true,
       target: false,
     },
   },
   {
-    id: "2",
-    type: "agent",
+    id: '2',
+    type: 'agent',
     position: { x: 360, y: 0 },
     data: {
-      title: "Execute",
-      description: "Run the planned tools",
-      body: "Call each tool in order and collect the results.",
+      title: 'Execute',
+      description: 'Run the planned tools',
+      body: 'Call each tool in order and collect the results.',
       source: false,
       target: true,
     },
   },
 ];
 
-const edges: FlowEdge[] = [{ id: "e1-2", source: "1", target: "2" }];
+const edges: FlowEdge[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
 /** Two custom `agent` nodes connected by an edge inside a canvas. */
 export const Default: Story = {
@@ -153,7 +153,7 @@ export const Default: Story = {
 
 /** A single node rendered standalone to inspect the full anatomy. */
 export const Anatomy: Story = {
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
   render: () => (
     <div className="w-sm">
       <Node handles={{ source: false, target: false }}>

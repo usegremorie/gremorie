@@ -1,9 +1,12 @@
 ---
 title: Area Chart
-description: "Cumulative quantity over an ordered domain, filled under the curve and color-tokened by series."
+description: 'Cumulative quantity over an ordered domain, filled under the curve and color-tokened by series.'
 ---
 
-import { AreaChartPreview, AreaChartSinglePreview } from "@/components/preview/data/charts";
+import {
+  AreaChartPreview,
+  AreaChartSinglePreview,
+} from '@/components/preview/data/charts';
 
 ## Overview
 
@@ -20,26 +23,12 @@ Reach for AreaChart when the **magnitude** of a series matters as much as its tr
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-area-chart
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-area-chart
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-area-chart
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-area-chart
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-area-chart ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -51,17 +40,17 @@ import { AreaChart } from "@gremorie/rx-data";
 import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
 
 const data: ChartDatum[] = [
-  { month: "Jan", desktop: 186, mobile: 80 },
-  { month: "Feb", desktop: 305, mobile: 200 },
-  { month: "Mar", desktop: 237, mobile: 120 },
-  { month: "Apr", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "Jun", desktop: 214, mobile: 140 },
+{ month: "Jan", desktop: 186, mobile: 80 },
+{ month: "Feb", desktop: 305, mobile: 200 },
+{ month: "Mar", desktop: 237, mobile: 120 },
+{ month: "Apr", desktop: 73, mobile: 190 },
+{ month: "May", desktop: 209, mobile: 130 },
+{ month: "Jun", desktop: 214, mobile: 140 },
 ];
 
 const config: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+desktop: { label: "Desktop", color: "var(--chart-1)" },
+mobile: { label: "Mobile", color: "var(--chart-2)" },
 };
 
 export function MonthlyVisitors() {
@@ -82,32 +71,32 @@ Angular edition planned for a follow-up release; it mirrors this component's ana
 
 The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<AreaChart>` (with `accessibilityLayer` enabled): a cartesian grid, X axis, and one filled `<Area>` per series in `config`, each filled and stroked with `var(--color-<key>)`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `readonly ChartDatum[]` | - | Tabular data. Each row is a record from string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value. |
-| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`; `ChartContainer` exposes it as `var(--color-<key>)`. |
-| `xKey` | `string` | - | Name of the category field on each row. Drives the X axis ticks. |
-| `stacked` | `boolean` | `false` | Stack the series instead of overlaying them. |
-| `type` | `"natural" \| "monotone" \| "linear" \| "step"` | `"natural"` | Interpolation curve for the areas. |
-| `tooltip` | `boolean` | `true` | Show the hover tooltip. |
-| `className` | `string` | - | Merged onto the `ChartContainer`. Use for sizing escape hatches; the bundled style already supplies a rounded card surface plus aspect ratio. |
+| Prop        | Type                                            | Default     | Description                                                                                                                                                                                      |
+| ----------- | ----------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `data`      | `readonly ChartDatum[]`                         | -           | Tabular data. Each row is a record from string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value.       |
+| `config`    | `ChartConfig`                                   | -           | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`; `ChartContainer` exposes it as `var(--color-<key>)`. |
+| `xKey`      | `string`                                        | -           | Name of the category field on each row. Drives the X axis ticks.                                                                                                                                 |
+| `stacked`   | `boolean`                                       | `false`     | Stack the series instead of overlaying them.                                                                                                                                                     |
+| `type`      | `"natural" \| "monotone" \| "linear" \| "step"` | `"natural"` | Interpolation curve for the areas.                                                                                                                                                               |
+| `tooltip`   | `boolean`                                       | `true`      | Show the hover tooltip.                                                                                                                                                                          |
+| `className` | `string`                                        | -           | Merged onto the `ChartContainer`. Use for sizing escape hatches; the bundled style already supplies a rounded card surface plus aspect ratio.                                                    |
 
 ### Chart primitive exports
 
 `@gremorie/rx-data` re-exports the shadcn `chart` primitive so you can compose custom charts. Wrap raw recharts (`Area`, `Bar`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
 
-| Export | Role |
-|---|---|
-| `ChartContainer` | Provides the chart context, the responsive frame, and injects `--color-<key>` CSS vars from `config`. |
-| `ChartTooltip` / `ChartTooltipContent` | Token-styled hover tooltip. |
-| `ChartLegend` / `ChartLegendContent` | Token-styled legend. |
-| `useChart` | Hook returning the active `ChartConfig` from context. |
+| Export                                 | Role                                                                                                  |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `ChartContainer`                       | Provides the chart context, the responsive frame, and injects `--color-<key>` CSS vars from `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Token-styled hover tooltip.                                                                           |
+| `ChartLegend` / `ChartLegendContent`   | Token-styled legend.                                                                                  |
+| `useChart`                             | Hook returning the active `ChartConfig` from context.                                                 |
 
 ### Types
 
-| Type | Shape |
-|---|---|
-| `ChartDatum` | `Record<string, string \| number> & { fill?: string }` - one row of chart data. |
+| Type          | Shape                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - one row of chart data.           |
 | `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map. |
 
 ## Composition
@@ -130,7 +119,7 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 ```tsx
 <AreaChart
   data={data}
-  config={{ visits: { label: "Visits", color: "var(--chart-1)" } }}
+  config={{ visits: { label: 'Visits', color: 'var(--chart-1)' } }}
   xKey="month"
 />
 ```
@@ -145,11 +134,11 @@ The default shape. Reach for a single area when one metric is the headline.
 
 ```tsx
 const config: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 };
 
-<AreaChart data={data} config={config} xKey="month" />
+<AreaChart data={data} config={config} xKey="month" />;
 ```
 
 For side-by-side comparison. Areas overlap with `fillOpacity` at 0.4 so the lower series stays visible behind the higher one. Limit to three series before reaching for [`LineChart`](/components/data/line-chart) instead.
@@ -168,14 +157,21 @@ Set `stacked` to layer the series, or `type` to pick the interpolation curve (`"
 When you need full control, skip `AreaChart` and compose raw recharts inside `ChartContainer`. The container still injects your token colors and tooltip styling.
 
 ```tsx
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@gremorie/rx-data";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@gremorie/rx-data';
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 <ChartContainer config={config}>
   <AreaChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
     <CartesianGrid vertical={false} />
     <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
-    <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+    <ChartTooltip
+      cursor={false}
+      content={<ChartTooltipContent indicator="dot" />}
+    />
     <Area
       dataKey="desktop"
       type="natural"
@@ -184,7 +180,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
       stroke="var(--color-desktop)"
     />
   </AreaChart>
-</ChartContainer>
+</ChartContainer>;
 ```
 
 Compose raw recharts when the surface needs a different aspect, a reference line, or a custom legend. `ChartContainer` owns the responsive frame and the token color vars.

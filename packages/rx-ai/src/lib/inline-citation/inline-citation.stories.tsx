@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   InlineCitation,
@@ -15,7 +15,7 @@ import {
   InlineCitationQuote,
   InlineCitationSource,
   InlineCitationText,
-} from "./inline-citation";
+} from './inline-citation';
 
 /**
  * InlineCitation - footnote-style citation that hovers into a source card
@@ -28,10 +28,10 @@ import {
  * / InlineCitationQuote / Carousel).
  */
 const meta = {
-  title: "AI/InlineCitation",
+  title: 'AI/InlineCitation',
   component: InlineCitation,
-  tags: ["autodocs"],
-  parameters: { layout: "centered", controls: { disable: true } },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered', controls: { disable: true } },
 } satisfies Meta<typeof InlineCitation>;
 
 export default meta;
@@ -48,7 +48,7 @@ export const SingleSource: Story = {
       <InlineCitation>
         <InlineCitationText> [1]</InlineCitationText>
         <InlineCitationCard>
-          <InlineCitationCardTrigger sources={["https://gremorie.com"]} />
+          <InlineCitationCardTrigger sources={['https://gremorie.com']} />
           <InlineCitationCardBody>
             <InlineCitationSource
               title="Gremorie docs"
@@ -71,19 +71,21 @@ export const MultiSourceCarousel: Story = {
   render: () => {
     const sources = [
       {
-        title: "Registry README",
-        url: "https://gremorie.com/docs/registry",
-        description: "How the registry resolves dependencies and writes source.",
+        title: 'Registry README',
+        url: 'https://gremorie.com/docs/registry',
+        description:
+          'How the registry resolves dependencies and writes source.',
       },
       {
-        title: "MCP server guide",
-        url: "https://gremorie.com/docs/mcp",
-        description: "Serving the corpus to LLMs over the Model Context Protocol.",
+        title: 'MCP server guide',
+        url: 'https://gremorie.com/docs/mcp',
+        description:
+          'Serving the corpus to LLMs over the Model Context Protocol.',
       },
       {
-        title: "Phase 5k release notes",
-        url: "https://gremorie.com/changelog",
-        description: "100 primitives across 9 packages, editions in parity.",
+        title: 'Phase 5k release notes',
+        url: 'https://gremorie.com/changelog',
+        description: '100 primitives across 9 packages, editions in parity.',
       },
     ];
     return (
@@ -92,9 +94,7 @@ export const MultiSourceCarousel: Story = {
         <InlineCitation>
           <InlineCitationText> [1]</InlineCitationText>
           <InlineCitationCard>
-            <InlineCitationCardTrigger
-              sources={sources.map((s) => s.url)}
-            />
+            <InlineCitationCardTrigger sources={sources.map((s) => s.url)} />
             <InlineCitationCardBody>
               <InlineCitationCarousel>
                 <InlineCitationCarouselHeader>
@@ -134,15 +134,15 @@ export const WithPulledQuote: Story = {
       <InlineCitation>
         <InlineCitationText> [1]</InlineCitationText>
         <InlineCitationCard>
-          <InlineCitationCardTrigger sources={["https://gremorie.com"]} />
+          <InlineCitationCardTrigger sources={['https://gremorie.com']} />
           <InlineCitationCardBody>
             <InlineCitationSource
               title="Gremorie docs"
               url="https://gremorie.com/docs"
             />
             <InlineCitationQuote>
-              Run `gremorie add` and the code is yours. No black-box
-              dependency - own every line.
+              Run `gremorie add` and the code is yours. No black-box dependency
+              - own every line.
             </InlineCitationQuote>
           </InlineCitationCardBody>
         </InlineCitationCard>

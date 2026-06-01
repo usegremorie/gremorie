@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { FileText } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { FileText } from 'lucide-react';
 
-import { Suggestion, Suggestions } from "./suggestion";
+import { Suggestion, Suggestions } from './suggestion';
 
 /**
  * Suggestion - clickable chip (React edition).
@@ -12,17 +12,17 @@ import { Suggestion, Suggestions } from "./suggestion";
  * `Button` exposes `sm | default | lg` sizes (no `md`).
  */
 const meta = {
-  title: "AI/Suggestion",
+  title: 'AI/Suggestion',
   component: Suggestion,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["default", "outline", "ghost", "secondary"],
+      control: 'select',
+      options: ['default', 'outline', 'ghost', 'secondary'],
     },
     size: {
-      control: "inline-radio",
-      options: ["sm", "default", "lg"],
+      control: 'inline-radio',
+      options: ['sm', 'default', 'lg'],
     },
   },
 } satisfies Meta<typeof Suggestion>;
@@ -31,24 +31,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { suggestion: "Tell me a joke", variant: "outline", size: "sm" },
+  args: { suggestion: 'Tell me a joke', variant: 'outline', size: 'sm' },
 };
 
 export const Outline: Story = {
-  args: { suggestion: "Outline", variant: "outline", size: "sm" },
+  args: { suggestion: 'Outline', variant: 'outline', size: 'sm' },
 };
 
 export const Secondary: Story = {
-  args: { suggestion: "Secondary", variant: "secondary", size: "sm" },
+  args: { suggestion: 'Secondary', variant: 'secondary', size: 'sm' },
 };
 
 export const Ghost: Story = {
-  args: { suggestion: "Ghost", variant: "ghost", size: "sm" },
+  args: { suggestion: 'Ghost', variant: 'ghost', size: 'sm' },
 };
 
 export const Filled: Story = {
-  name: "Filled (default)",
-  args: { suggestion: "Default", variant: "default", size: "sm" },
+  name: 'Filled (default)',
+  args: { suggestion: 'Default', variant: 'default', size: 'sm' },
 };
 
 /**

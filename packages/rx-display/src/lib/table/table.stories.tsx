@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Badge } from "@gremorie/rx-display";
+import { Badge } from '@gremorie/rx-display';
 
 import {
   Table,
@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
+} from './table';
 
 /**
  * # Table
@@ -57,26 +57,31 @@ import {
  * | `--muted-foreground` | caption text |
  */
 const meta = {
-  title: "Layout & display/Display/Table",
+  title: 'Layout & display/Display/Table',
   component: Table,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Table>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const INVOICES = [
-  { id: "INV-001", status: "Paid", method: "Credit Card", amount: "$250.00" },
-  { id: "INV-002", status: "Pending", method: "PayPal", amount: "$150.00" },
-  { id: "INV-003", status: "Unpaid", method: "Bank Transfer", amount: "$350.00" },
-  { id: "INV-004", status: "Paid", method: "Credit Card", amount: "$450.00" },
+  { id: 'INV-001', status: 'Paid', method: 'Credit Card', amount: '$250.00' },
+  { id: 'INV-002', status: 'Pending', method: 'PayPal', amount: '$150.00' },
+  {
+    id: 'INV-003',
+    status: 'Unpaid',
+    method: 'Bank Transfer',
+    amount: '$350.00',
+  },
+  { id: 'INV-004', status: 'Paid', method: 'Credit Card', amount: '$450.00' },
 ];
 
 const statusVariant = {
-  Paid: "secondary",
-  Pending: "outline",
-  Unpaid: "destructive",
+  Paid: 'secondary',
+  Pending: 'outline',
+  Unpaid: 'destructive',
 } as const;
 
 /** A realistic invoices table with header, body, footer and caption. */
@@ -97,7 +102,11 @@ export const Default: Story = {
           <TableRow key={invoice.id}>
             <TableCell className="font-medium">{invoice.id}</TableCell>
             <TableCell>
-              <Badge variant={statusVariant[invoice.status as keyof typeof statusVariant]}>
+              <Badge
+                variant={
+                  statusVariant[invoice.status as keyof typeof statusVariant]
+                }
+              >
                 {invoice.status}
               </Badge>
             </TableCell>

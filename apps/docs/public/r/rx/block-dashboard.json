@@ -5,14 +5,8 @@
   "framework": "rx",
   "title": "Dashboard block",
   "description": "Analytics surface: four KPI cards, a revenue bar chart, and a recent-transactions table. Composes Card, Badge, Table, BarChart, and Button.",
-  "categories": [
-    "blocks",
-    "dashboard"
-  ],
-  "dependencies": [
-    "react",
-    "lucide-react"
-  ],
+  "categories": ["blocks", "dashboard"],
+  "dependencies": ["react", "lucide-react"],
   "devDependencies": [],
   "registryDependencies": [
     "rx-utils",

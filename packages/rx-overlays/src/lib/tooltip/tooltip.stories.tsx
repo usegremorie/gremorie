@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Plus } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Plus } from 'lucide-react';
 
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./tooltip";
-import { Button } from "@gremorie/rx-forms";
+} from './tooltip';
+import { Button } from '@gremorie/rx-forms';
 
 /**
  * # Tooltip
@@ -51,10 +51,10 @@ import { Button } from "@gremorie/rx-forms";
  * | `--background` | Bubble text color |
  */
 const meta = {
-  title: "Interaction/Overlays/Tooltip",
+  title: 'Interaction/Overlays/Tooltip',
   component: Tooltip,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <TooltipProvider>
@@ -97,7 +97,7 @@ export const IconButton: Story = {
   ),
 };
 
-const SIDES = ["top", "right", "bottom", "left"] as const;
+const SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
 /** All four placement sides. */
 export const Sides: Story = {

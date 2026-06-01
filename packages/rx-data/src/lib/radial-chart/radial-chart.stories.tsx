@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import type { ChartConfig } from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
-import { RadialChart } from "./radial-chart";
+import type { ChartConfig } from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
+import { RadialChart } from './radial-chart';
 
 /**
  * # RadialChart
@@ -37,11 +37,11 @@ import { RadialChart } from "./radial-chart";
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: "Layout & display/Data/Radial",
+  title: 'Layout & display/Data/Radial',
   component: RadialChart,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  argTypes: { tooltip: { control: "boolean" } },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  argTypes: { tooltip: { control: 'boolean' } },
   decorators: [
     (Story) => (
       <div className="w-[20rem] max-w-full">
@@ -55,20 +55,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const BROWSERS: ChartDatum[] = [
-  { browser: "Chrome", visitors: 275, fill: "var(--chart-1)" },
-  { browser: "Safari", visitors: 200, fill: "var(--chart-2)" },
-  { browser: "Firefox", visitors: 187, fill: "var(--chart-3)" },
-  { browser: "Edge", visitors: 173, fill: "var(--chart-4)" },
-  { browser: "Other", visitors: 90, fill: "var(--chart-5)" },
+  { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+  { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+  { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+  { browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+  { browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
 ];
 
 const CONFIG: ChartConfig = {
-  visitors: { label: "Visitors" },
-  Chrome: { label: "Chrome" },
-  Safari: { label: "Safari" },
-  Firefox: { label: "Firefox" },
-  Edge: { label: "Edge" },
-  Other: { label: "Other" },
+  visitors: { label: 'Visitors' },
+  Chrome: { label: 'Chrome' },
+  Safari: { label: 'Safari' },
+  Firefox: { label: 'Firefox' },
+  Edge: { label: 'Edge' },
+  Other: { label: 'Other' },
 };
 
 /** Concentric bars, one per row. */
@@ -76,7 +76,7 @@ export const Default: Story = {
   args: {
     data: BROWSERS,
     config: CONFIG,
-    nameKey: "browser",
-    dataKey: "visitors",
+    nameKey: 'browser',
+    dataKey: 'visitors',
   },
 };

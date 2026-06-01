@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Dialog,
@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog";
-import { Button, Input, Label } from "@gremorie/rx-forms";
+} from './dialog';
+import { Button, Input, Label } from '@gremorie/rx-forms';
 
 /**
  * # Dialog
@@ -64,10 +64,10 @@ import { Button, Input, Label } from "@gremorie/rx-forms";
  * | `--accent` | Close-button open state |
  */
 const meta = {
-  title: "Interaction/Overlays/Dialog",
+  title: 'Interaction/Overlays/Dialog',
   component: Dialog,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Dialog>;
 
 export default meta;

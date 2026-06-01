@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Skeleton } from "./skeleton";
+import { Skeleton } from './skeleton';
 
 /**
  * # Skeleton
@@ -30,10 +30,10 @@ import { Skeleton } from "./skeleton";
  * | `--accent` | Block background |
  */
 const meta = {
-  title: "Interaction/Feedback/Skeleton",
+  title: 'Interaction/Feedback/Skeleton',
   component: Skeleton,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Skeleton>;
 
 export default meta;

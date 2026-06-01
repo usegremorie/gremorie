@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Copy, RefreshCw, ThumbsUp } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Copy, RefreshCw, ThumbsUp } from 'lucide-react';
 
 import {
   Message,
@@ -14,7 +14,7 @@ import {
   MessageContent,
   MessageResponse,
   MessageToolbar,
-} from "./message";
+} from './message';
 
 /**
  * Message - atomic chat bubble (React edition).
@@ -24,24 +24,24 @@ import {
  * (actions toolbar, branch selector, markdown response).
  */
 const meta = {
-  title: "AI/Message",
+  title: 'AI/Message',
   component: Message,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     from: {
-      control: "inline-radio",
-      options: ["user", "assistant", "system"],
-      description: "Author role - drives bubble alignment and tone.",
+      control: 'inline-radio',
+      options: ['user', 'assistant', 'system'],
+      description: 'Author role - drives bubble alignment and tone.',
     },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Message>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const FromUser: Story = {
-  args: { from: "user" },
+  args: { from: 'user' },
   render: (args) => (
     <Message {...args}>
       <MessageContent>
@@ -52,19 +52,19 @@ export const FromUser: Story = {
 };
 
 export const FromAssistant: Story = {
-  args: { from: "assistant" },
+  args: { from: 'assistant' },
   render: (args) => (
     <Message {...args}>
       <MessageContent>
-        Sure - the three decisions were: ship the new dashboard by Friday,
-        delay the migration, and revisit the auth flow next sprint.
+        Sure - the three decisions were: ship the new dashboard by Friday, delay
+        the migration, and revisit the auth flow next sprint.
       </MessageContent>
     </Message>
   ),
 };
 
 export const FromSystem: Story = {
-  args: { from: "system" },
+  args: { from: 'system' },
   render: (args) => (
     <Message {...args}>
       <MessageContent>

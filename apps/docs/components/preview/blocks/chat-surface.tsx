@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from 'react';
 import {
   Conversation,
   ConversationContent,
@@ -22,7 +22,7 @@ import {
   ReasoningTrigger,
   type ChatStatus,
   type PromptInputMessage,
-} from "@gremorie/rx-ai";
+} from '@gremorie/rx-ai';
 
 const REASONING_TEXT =
   "The user wants a quick weekly status summary. I'll group the work into 3 buckets: shipped, in-flight, and blockers. Each row stays short for skimmability.";
@@ -40,7 +40,7 @@ const ASSISTANT_TEXT = `Here is a quick weekly recap:
 **Blockers**
 - Waiting on API key for analytics provider`;
 
-type Turn = { id: number; role: "user" | "assistant"; body: ReactNode };
+type Turn = { id: number; role: 'user' | 'assistant'; body: ReactNode };
 
 /**
  * Interactive demo of the chat-surface block. Unlike the canonical
@@ -53,12 +53,12 @@ type Turn = { id: number; role: "user" | "assistant"; body: ReactNode };
 const SEED: Turn[] = [
   {
     id: 0,
-    role: "user",
+    role: 'user',
     body: <MessageContent>What did the team ship this week?</MessageContent>,
   },
   {
     id: 1,
-    role: "assistant",
+    role: 'assistant',
     body: (
       <>
         <Reasoning isStreaming={false} duration={2}>
@@ -74,27 +74,25 @@ const SEED: Turn[] = [
 function mockReply(userText: string, id: number): Turn {
   return {
     id,
-    role: "assistant",
+    role: 'assistant',
     body: (
       <>
         <Reasoning isStreaming={false} duration={1}>
           <ReasoningTrigger />
           <ReasoningContent>
-            Parsing the request, then pulling the most relevant entry from
-            the corpus before drafting a grounded answer.
+            Parsing the request, then pulling the most relevant entry from the
+            corpus before drafting a grounded answer.
           </ReasoningContent>
         </Reasoning>
         <MessageContent>
           <p className="text-sm leading-relaxed">
-            Mock answer to &ldquo;{userText}&rdquo; — wire{" "}
-            <code>onSubmit</code> to the AI SDK to make this real. Gremorie
-            ships components, a registry, and an MCP server
+            Mock answer to &ldquo;{userText}&rdquo; — wire <code>onSubmit</code>{' '}
+            to the AI SDK to make this real. Gremorie ships components, a
+            registry, and an MCP server
             <InlineCitation>
               <InlineCitationText> [1]</InlineCitationText>
               <InlineCitationCard>
-                <InlineCitationCardTrigger
-                  sources={["https://gremorie.com"]}
-                />
+                <InlineCitationCardTrigger sources={['https://gremorie.com']} />
                 <InlineCitationCardBody>
                   <p className="text-sm font-semibold">Gremorie docs</p>
                   <p className="text-xs text-muted-foreground">
@@ -113,29 +111,33 @@ function mockReply(userText: string, id: number): Turn {
 
 export function ChatSurface() {
   const [turns, setTurns] = useState<Turn[]>(SEED);
-  const [status, setStatus] = useState<ChatStatus>("ready");
+  const [status, setStatus] = useState<ChatStatus>('ready');
   const nextId = useRef(SEED.length);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSubmit = (message: PromptInputMessage) => {
     const text = message.text.trim();
-    if (!text || status !== "ready") return;
+    if (!text || status !== 'ready') return;
 
     const userId = nextId.current++;
     setTurns((prev) => [
       ...prev,
-      { id: userId, role: "user", body: <MessageContent>{text}</MessageContent> },
+      {
+        id: userId,
+        role: 'user',
+        body: <MessageContent>{text}</MessageContent>,
+      },
     ]);
-    setStatus("submitted");
+    setStatus('submitted');
 
     // Fake a short "thinking -> streaming -> done" cycle so the surface is
     // testable without a real endpoint.
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      setStatus("streaming");
+      setStatus('streaming');
       const replyId = nextId.current++;
       setTurns((prev) => [...prev, mockReply(text, replyId)]);
-      timer.current = setTimeout(() => setStatus("ready"), 600);
+      timer.current = setTimeout(() => setStatus('ready'), 600);
     }, 700);
   };
 

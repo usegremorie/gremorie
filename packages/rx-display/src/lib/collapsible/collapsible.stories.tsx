@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@gremorie/rx-forms";
-import { ChevronsUpDown } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@gremorie/rx-forms';
+import { ChevronsUpDown } from 'lucide-react';
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./collapsible";
+} from './collapsible';
 
 /**
  * # Collapsible
@@ -45,13 +45,13 @@ import {
  * `--muted` via composed primitives).
  */
 const meta = {
-  title: "Layout & display/Display/Collapsible",
+  title: 'Layout & display/Display/Collapsible',
   component: Collapsible,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    defaultOpen: { control: "boolean" },
-    disabled: { control: "boolean" },
+    defaultOpen: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Collapsible>;
 

@@ -2,8 +2,5 @@
   "title": "Patterns",
   "icon": "Workflow",
   "description": "Reusable interaction patterns — destructive confirmation, navigation choices — and when each one fits.",
-  "pages": [
-    "confirmation-destructive",
-    "navigation"
-  ]
+  "pages": ["confirmation-destructive", "navigation"]
 }

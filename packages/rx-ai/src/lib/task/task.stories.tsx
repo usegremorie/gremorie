@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger } from "./task";
+import { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger } from './task';
 
 /**
  * Task - collapsible card with file-attachment items (React edition).
@@ -9,16 +9,16 @@ import { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger } from "./task";
  * with mixed item types (plain text + file chip), and a custom trigger.
  */
 const meta = {
-  title: "AI/Task",
+  title: 'AI/Task',
   component: Task,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     defaultOpen: {
-      control: "boolean",
-      description: "Whether the task starts expanded.",
+      control: 'boolean',
+      description: 'Whether the task starts expanded.',
     },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Task>;
 
 export default meta;
@@ -34,7 +34,7 @@ export const Expanded: Story = {
           Searched the workspace for <TaskItemFile>config.ts</TaskItemFile>
         </TaskItem>
         <TaskItem>
-          Also found <TaskItemFile>app.config.ts</TaskItemFile> and{" "}
+          Also found <TaskItemFile>app.config.ts</TaskItemFile> and{' '}
           <TaskItemFile>vite.config.ts</TaskItemFile>
         </TaskItem>
       </TaskContent>
@@ -58,17 +58,17 @@ export const Collapsed: Story = {
  * With many files - chips wrap naturally inside a `TaskItem`.
  */
 export const WithManyFiles: Story = {
-  name: "With many files",
+  name: 'With many files',
   args: { defaultOpen: true },
   render: (args) => (
     <Task {...args}>
       <TaskTrigger title="Reviewed all .ts files in src/lib" />
       <TaskContent>
         <TaskItem>
-          Inspected: <TaskItemFile>message.ts</TaskItemFile>{" "}
-          <TaskItemFile>message-content.ts</TaskItemFile>{" "}
-          <TaskItemFile>message-actions.ts</TaskItemFile>{" "}
-          <TaskItemFile>message-avatar.ts</TaskItemFile>{" "}
+          Inspected: <TaskItemFile>message.ts</TaskItemFile>{' '}
+          <TaskItemFile>message-content.ts</TaskItemFile>{' '}
+          <TaskItemFile>message-actions.ts</TaskItemFile>{' '}
+          <TaskItemFile>message-avatar.ts</TaskItemFile>{' '}
           <TaskItemFile>message-toolbar.ts</TaskItemFile>
         </TaskItem>
       </TaskContent>
@@ -77,7 +77,7 @@ export const WithManyFiles: Story = {
 };
 
 export const MultipleSteps: Story = {
-  name: "Multiple steps",
+  name: 'Multiple steps',
   args: { defaultOpen: true },
   render: (args) => (
     <Task {...args}>
@@ -105,7 +105,7 @@ export const MultipleSteps: Story = {
  * children into `TaskTrigger`.
  */
 export const CustomTrigger: Story = {
-  name: "Custom trigger",
+  name: 'Custom trigger',
   parameters: { controls: { disable: true } },
   render: () => (
     <Task defaultOpen={true}>

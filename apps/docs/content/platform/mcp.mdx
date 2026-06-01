@@ -1,6 +1,6 @@
 ---
 title: MCP server
-description: "The AI-native differentiator: tools that let LLMs query the registry and corpus when generating UI."
+description: 'The AI-native differentiator: tools that let LLMs query the registry and corpus when generating UI.'
 ---
 
 The Gremorie MCP server exposes the registry and corpus to language
@@ -9,9 +9,9 @@ Claude, Cursor, Codex, and any other MCP-compatible client can call its
 tools to list components, fetch source, and read the corpus on demand.
 
 <Callout type="info">
-  This is the Gremorie differentiator. A traditional design system
-  documents itself for humans; Gremorie documents itself for both humans
-  and LLMs, structurally, through the registry and the MCP layer.
+  This is the Gremorie differentiator. A traditional design system documents
+  itself for humans; Gremorie documents itself for both humans and LLMs,
+  structurally, through the registry and the MCP layer.
 </Callout>
 
 ## Endpoint
@@ -21,13 +21,13 @@ standard MCP transport (`POST` for tool calls, `SSE` for streams).
 
 ## Tools
 
-| Tool | Purpose |
-|---|---|
-| `list_components(category?)` | Enumerate primitives, optionally filtered by category |
-| `search_components(query)` | Substring + fuzzy search across the registry |
-| `get_component(name)` | Full source plus usage doc for one primitive |
-| `get_block(name)` | A composition with wiring (e.g. `chat-surface`) |
-| `get_guidelines(topic?)` | Read corpus articles (heuristics, patterns, UX writing) |
+| Tool                         | Purpose                                                 |
+| ---------------------------- | ------------------------------------------------------- |
+| `list_components(category?)` | Enumerate primitives, optionally filtered by category   |
+| `search_components(query)`   | Substring + fuzzy search across the registry            |
+| `get_component(name)`        | Full source plus usage doc for one primitive            |
+| `get_block(name)`            | A composition with wiring (e.g. `chat-surface`)         |
+| `get_guidelines(topic?)`     | Read corpus articles (heuristics, patterns, UX writing) |
 
 The full schema is served by the MCP server itself; any client that
 introspects `tools/list` gets the canonical definition.
@@ -79,28 +79,26 @@ A typical flow:
 
 <Steps>
 
+<Step>The user asks: "Build me a chat surface with streaming."</Step>
+
 <Step>
-The user asks: "Build me a chat surface with streaming."
+  The model calls `search_components("chat")` and gets back `rx-prompt-input`,
+  `rx-conversation`, `rx-message`.
 </Step>
 
 <Step>
-The model calls `search_components("chat")` and gets back
-`rx-prompt-input`, `rx-conversation`, `rx-message`.
+  The model calls `get_component("rx-prompt-input")` and reads the source,
+  props, and accessibility notes from the registry item.
 </Step>
 
 <Step>
-The model calls `get_component("rx-prompt-input")` and reads the source,
-props, and accessibility notes from the registry item.
+  The model calls `get_guidelines("loading-empty-error")` from the corpus and
+  learns Gremorie's loading-state pattern.
 </Step>
 
 <Step>
-The model calls `get_guidelines("loading-empty-error")` from the corpus
-and learns Gremorie's loading-state pattern.
-</Step>
-
-<Step>
-The model writes code that uses the real component APIs and the right
-patterns -- no hallucination, no stale prop names.
+  The model writes code that uses the real component APIs and the right patterns
+  -- no hallucination, no stale prop names.
 </Step>
 
 </Steps>

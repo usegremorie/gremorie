@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { BookOpenIcon, LayersIcon, SparklesIcon, ZapIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { BookOpenIcon, LayersIcon, SparklesIcon, ZapIcon } from 'lucide-react';
 
 import {
   NavigationMenu,
@@ -9,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "./navigation-menu";
+} from './navigation-menu';
 
 /**
  * # NavigationMenu
@@ -58,10 +58,10 @@ import {
  * | `--ring` | Keyboard focus ring |
  */
 const meta = {
-  title: "Interaction/Navigation/NavigationMenu",
+  title: 'Interaction/Navigation/NavigationMenu',
   component: NavigationMenu,
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
       <div className="flex min-h-[22rem] justify-center p-6">
@@ -83,27 +83,27 @@ type FeatureLink = {
 
 const PRODUCTS: FeatureLink[] = [
   {
-    title: "Analytics",
-    href: "#",
-    description: "Real-time insight into product usage and funnels.",
+    title: 'Analytics',
+    href: '#',
+    description: 'Real-time insight into product usage and funnels.',
     icon: ZapIcon,
   },
   {
-    title: "Components",
-    href: "#",
-    description: "A composable, themeable design-system library.",
+    title: 'Components',
+    href: '#',
+    description: 'A composable, themeable design-system library.',
     icon: LayersIcon,
   },
   {
-    title: "AI Elements",
-    href: "#",
-    description: "Generative-UI primitives for LLM-driven surfaces.",
+    title: 'AI Elements',
+    href: '#',
+    description: 'Generative-UI primitives for LLM-driven surfaces.',
     icon: SparklesIcon,
   },
   {
-    title: "Docs",
-    href: "#",
-    description: "Guides, references, and recipes to get started.",
+    title: 'Docs',
+    href: '#',
+    description: 'Guides, references, and recipes to get started.',
     icon: BookOpenIcon,
   },
 ];
@@ -142,13 +142,17 @@ export const Default: Story = {
               <li>
                 <NavigationMenuLink href="#">
                   <div className="font-medium">For startups</div>
-                  <p className="text-muted-foreground">Ship faster from day one.</p>
+                  <p className="text-muted-foreground">
+                    Ship faster from day one.
+                  </p>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink href="#">
                   <div className="font-medium">For enterprise</div>
-                  <p className="text-muted-foreground">Scale with confidence.</p>
+                  <p className="text-muted-foreground">
+                    Scale with confidence.
+                  </p>
                 </NavigationMenuLink>
               </li>
             </ul>

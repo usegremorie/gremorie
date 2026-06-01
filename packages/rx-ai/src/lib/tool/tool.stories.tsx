@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import type { ToolUIPart } from "ai";
+import type { Meta, StoryObj } from '@storybook/react';
+import type { ToolUIPart } from 'ai';
 
-import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "./tool";
+import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from './tool';
 
 /**
  * Tool - collapsible card for an AI SDK tool invocation (React edition).
@@ -12,94 +12,94 @@ import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "./tool";
  * matrix.
  */
 const meta = {
-  title: "AI/Tool",
+  title: 'AI/Tool',
   component: ToolHeader,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    type: { control: "text" },
+    type: { control: 'text' },
     state: {
-      control: "select",
+      control: 'select',
       options: [
-        "input-streaming",
-        "input-available",
-        "approval-requested",
-        "approval-responded",
-        "output-available",
-        "output-error",
-        "output-denied",
-      ] satisfies ToolUIPart["state"][],
+        'input-streaming',
+        'input-available',
+        'approval-requested',
+        'approval-responded',
+        'output-available',
+        'output-error',
+        'output-denied',
+      ] satisfies ToolUIPart['state'][],
     },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof ToolHeader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const InputStreaming: Story = {
-  name: "State: input-streaming",
-  args: { state: "input-streaming", type: "tool-readFile" },
+  name: 'State: input-streaming',
+  args: { state: 'input-streaming', type: 'tool-readFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "pa…" }} />
+        <ToolInput input={{ path: 'pa…' }} />
       </ToolContent>
     </Tool>
   ),
 };
 
 export const InputAvailable: Story = {
-  name: "State: input-available",
-  args: { state: "input-available", type: "tool-readFile" },
+  name: 'State: input-available',
+  args: { state: 'input-available', type: 'tool-readFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "packages/rx-ai/src/lib/tool/tool.tsx" }} />
+        <ToolInput input={{ path: 'packages/rx-ai/src/lib/tool/tool.tsx' }} />
       </ToolContent>
     </Tool>
   ),
 };
 
 export const ApprovalRequested: Story = {
-  name: "State: approval-requested",
-  args: { state: "approval-requested", type: "tool-deleteFile" },
+  name: 'State: approval-requested',
+  args: { state: 'approval-requested', type: 'tool-deleteFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "src/temp.log" }} />
+        <ToolInput input={{ path: 'src/temp.log' }} />
       </ToolContent>
     </Tool>
   ),
 };
 
 export const ApprovalResponded: Story = {
-  name: "State: approval-responded",
-  args: { state: "approval-responded", type: "tool-deleteFile" },
+  name: 'State: approval-responded',
+  args: { state: 'approval-responded', type: 'tool-deleteFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "src/temp.log" }} />
+        <ToolInput input={{ path: 'src/temp.log' }} />
       </ToolContent>
     </Tool>
   ),
 };
 
 export const OutputAvailable: Story = {
-  name: "State: output-available",
-  args: { state: "output-available", type: "tool-readFile" },
+  name: 'State: output-available',
+  args: { state: 'output-available', type: 'tool-readFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "README.md" }} />
+        <ToolInput input={{ path: 'README.md' }} />
         <ToolOutput
           errorText={undefined}
           output={{
-            content: "# Gremorie\n\nAI-native design system.",
+            content: '# Gremorie\n\nAI-native design system.',
             size: 42,
           }}
         />
@@ -109,13 +109,13 @@ export const OutputAvailable: Story = {
 };
 
 export const OutputError: Story = {
-  name: "State: output-error",
-  args: { state: "output-error", type: "tool-readFile" },
+  name: 'State: output-error',
+  args: { state: 'output-error', type: 'tool-readFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "missing.txt" }} />
+        <ToolInput input={{ path: 'missing.txt' }} />
         <ToolOutput
           errorText="ENOENT: file not found at missing.txt"
           output={undefined}
@@ -126,13 +126,13 @@ export const OutputError: Story = {
 };
 
 export const OutputDenied: Story = {
-  name: "State: output-denied",
-  args: { state: "output-denied", type: "tool-deleteFile" },
+  name: 'State: output-denied',
+  args: { state: 'output-denied', type: 'tool-deleteFile' },
   render: (args) => (
     <Tool defaultOpen={true}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "src/temp.log" }} />
+        <ToolInput input={{ path: 'src/temp.log' }} />
         <ToolOutput
           errorText="User denied the destructive action."
           output={undefined}
@@ -147,13 +147,13 @@ export const OutputDenied: Story = {
  * rotation when the tool starts closed.
  */
 export const Collapsed: Story = {
-  args: { state: "output-available", type: "tool-readFile" },
+  args: { state: 'output-available', type: 'tool-readFile' },
   render: (args) => (
     <Tool defaultOpen={false}>
       <ToolHeader {...args} />
       <ToolContent>
-        <ToolInput input={{ path: "README.md" }} />
-        <ToolOutput errorText={undefined} output={{ content: "hidden" }} />
+        <ToolInput input={{ path: 'README.md' }} />
+        <ToolOutput errorText={undefined} output={{ content: 'hidden' }} />
       </ToolContent>
     </Tool>
   ),
@@ -164,7 +164,7 @@ export const Collapsed: Story = {
  * badge palette when it changes.
  */
 export const AllStates: Story = {
-  name: "All states (matrix)",
+  name: 'All states (matrix)',
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex flex-col gap-3">

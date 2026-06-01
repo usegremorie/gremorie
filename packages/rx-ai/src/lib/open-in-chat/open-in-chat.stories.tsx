@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   OpenIn,
@@ -12,7 +12,7 @@ import {
   OpenInT3,
   OpenInTrigger,
   OpenInv0,
-} from "./open-in-chat";
+} from './open-in-chat';
 
 /**
  * # OpenIn
@@ -61,12 +61,12 @@ import {
  * | `--accent` | Item hover background. |
  */
 const meta = {
-  title: "AI/OpenIn",
+  title: 'AI/OpenIn',
   component: OpenIn,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    query: { control: "text" },
+    query: { control: 'text' },
   },
 } satisfies Meta<typeof OpenIn>;
 
@@ -74,7 +74,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const SAMPLE_QUERY =
-  "Explain how React Server Components stream HTML to the client.";
+  'Explain how React Server Components stream HTML to the client.';
 
 /** Every provider in one dropdown. Open the menu to see the deep links. */
 export const Default: Story = {

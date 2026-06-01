@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import type { ChartConfig } from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
-import { RadarChart } from "./radar-chart";
+import type { ChartConfig } from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
+import { RadarChart } from './radar-chart';
 
 /**
  * # RadarChart
@@ -38,13 +38,13 @@ import { RadarChart } from "./radar-chart";
  * | `--muted-foreground` | Spoke labels |
  */
 const meta = {
-  title: "Layout & display/Data/Radar",
+  title: 'Layout & display/Data/Radar',
   component: RadarChart,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    gridType: { control: "inline-radio", options: ["polygon", "circle"] },
-    tooltip: { control: "boolean" },
+    gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
+    tooltip: { control: 'boolean' },
   },
   decorators: [
     (Story) => (
@@ -59,33 +59,33 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const METRICS: ChartDatum[] = [
-  { metric: "Speed", current: 120, target: 110 },
-  { metric: "Power", current: 98, target: 130 },
-  { metric: "Range", current: 86, target: 100 },
-  { metric: "Agility", current: 99, target: 90 },
-  { metric: "Armor", current: 85, target: 120 },
-  { metric: "Stealth", current: 65, target: 85 },
+  { metric: 'Speed', current: 120, target: 110 },
+  { metric: 'Power', current: 98, target: 130 },
+  { metric: 'Range', current: 86, target: 100 },
+  { metric: 'Agility', current: 99, target: 90 },
+  { metric: 'Armor', current: 85, target: 120 },
+  { metric: 'Stealth', current: 65, target: 85 },
 ];
 
 const SINGLE: ChartConfig = {
-  current: { label: "Current", color: "var(--chart-1)" },
+  current: { label: 'Current', color: 'var(--chart-1)' },
 };
 const MULTI: ChartConfig = {
-  current: { label: "Current", color: "var(--chart-1)" },
-  target: { label: "Target", color: "var(--chart-2)" },
+  current: { label: 'Current', color: 'var(--chart-1)' },
+  target: { label: 'Target', color: 'var(--chart-2)' },
 };
 
 /** A single filled polygon. */
 export const Default: Story = {
-  args: { data: METRICS, config: SINGLE, xKey: "metric" },
+  args: { data: METRICS, config: SINGLE, xKey: 'metric' },
 };
 
 /** Two series (outlined). */
 export const Multiple: Story = {
-  args: { data: METRICS, config: MULTI, xKey: "metric" },
+  args: { data: METRICS, config: MULTI, xKey: 'metric' },
 };
 
 /** Circular grid. */
 export const CircleGrid: Story = {
-  args: { data: METRICS, config: SINGLE, xKey: "metric", gridType: "circle" },
+  args: { data: METRICS, config: SINGLE, xKey: 'metric', gridType: 'circle' },
 };

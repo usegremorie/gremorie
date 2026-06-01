@@ -2,7 +2,5 @@
   "title": "Visual hierarchy",
   "icon": "LayoutGrid",
   "description": "Grouping, spacing and emphasis — Gestalt applied so the eye reads the right thing first.",
-  "pages": [
-    "grouping-and-spacing"
-  ]
+  "pages": ["grouping-and-spacing"]
 }

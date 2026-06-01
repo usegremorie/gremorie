@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Pagination,
@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "./pagination";
+} from './pagination';
 
 /**
  * # Pagination
@@ -60,10 +60,10 @@ import {
  * | `--ring` | Keyboard focus ring |
  */
 const meta = {
-  title: "Interaction/Navigation/Pagination",
+  title: 'Interaction/Navigation/Pagination',
   component: Pagination,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Pagination>;
 
 export default meta;

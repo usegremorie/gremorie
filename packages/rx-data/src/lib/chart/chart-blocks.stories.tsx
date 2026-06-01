@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { TrendingUp } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { TrendingUp } from 'lucide-react';
 import {
   Area,
   AreaChart,
@@ -21,7 +21,7 @@ import {
   RadialBarChart,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 
 import {
   Card,
@@ -30,7 +30,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
+} from '@gremorie/rx-display';
 
 import {
   ChartContainer,
@@ -39,7 +39,7 @@ import {
   ChartLegend,
   ChartLegendContent,
   type ChartConfig,
-} from "./chart";
+} from './chart';
 
 /**
  * # Chart blocks (shadcn reference)
@@ -55,8 +55,8 @@ import {
  * parameterized by `data`/`config`.
  */
 const meta = {
-  title: "Layout & display/Data/Blocks (shadcn)",
-  parameters: { layout: "centered" },
+  title: 'Layout & display/Data/Blocks (shadcn)',
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <div className="w-[24rem] max-w-full">
@@ -72,15 +72,15 @@ type Story = StoryObj<typeof meta>;
 // ── Bar ──────────────────────────────────────────────────────────────────────
 
 const barData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: 'January', desktop: 186 },
+  { month: 'February', desktop: 305 },
+  { month: 'March', desktop: 237 },
+  { month: 'April', desktop: 73 },
+  { month: 'May', desktop: 209 },
+  { month: 'June', desktop: 214 },
 ];
 const barConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
 } satisfies ChartConfig;
 
 /** chart-bar-default */
@@ -102,7 +102,10 @@ export const BarDefault: Story = {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
             <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
           </BarChart>
         </ChartContainer>
@@ -120,16 +123,16 @@ export const BarDefault: Story = {
 };
 
 const barMultiData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'June', desktop: 214, mobile: 140 },
 ];
 const barMultiConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 } satisfies ChartConfig;
 
 /** chart-bar-multiple */
@@ -151,7 +154,10 @@ export const BarMultiple: Story = {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dashed" />}
+            />
             <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
             <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
           </BarChart>
@@ -188,9 +194,17 @@ export const BarLabel: Story = {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
             <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
-              <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
             </Bar>
           </BarChart>
         </ChartContainer>
@@ -217,7 +231,12 @@ export const BarHorizontal: Story = {
       </CardHeader>
       <CardContent>
         <ChartContainer config={barConfig}>
-          <BarChart accessibilityLayer data={barData} layout="vertical" margin={{ left: -20 }}>
+          <BarChart
+            accessibilityLayer
+            data={barData}
+            layout="vertical"
+            margin={{ left: -20 }}
+          >
             <XAxis type="number" dataKey="desktop" hide />
             <YAxis
               dataKey="month"
@@ -227,7 +246,10 @@ export const BarHorizontal: Story = {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
             <Bar dataKey="desktop" fill="var(--color-desktop)" radius={5} />
           </BarChart>
         </ChartContainer>
@@ -252,11 +274,17 @@ export const AreaDefault: Story = {
     <Card>
       <CardHeader>
         <CardTitle>Area Chart</CardTitle>
-        <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+        <CardDescription>
+          Showing total visitors for the last 6 months
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={barConfig}>
-          <AreaChart accessibilityLayer data={barData} margin={{ left: 12, right: 12 }}>
+          <AreaChart
+            accessibilityLayer
+            data={barData}
+            margin={{ left: 12, right: 12 }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -265,7 +293,10 @@ export const AreaDefault: Story = {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="line" />}
+            />
             <Area
               dataKey="desktop"
               type="natural"
@@ -298,11 +329,17 @@ export const AreaStacked: Story = {
     <Card>
       <CardHeader>
         <CardTitle>Area Chart - Stacked</CardTitle>
-        <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+        <CardDescription>
+          Showing total visitors for the last 6 months
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={barMultiConfig}>
-          <AreaChart accessibilityLayer data={barMultiData} margin={{ left: 12, right: 12 }}>
+          <AreaChart
+            accessibilityLayer
+            data={barMultiData}
+            margin={{ left: 12, right: 12 }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -311,7 +348,10 @@ export const AreaStacked: Story = {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dot" />}
+            />
             <Area
               dataKey="mobile"
               type="natural"
@@ -359,7 +399,11 @@ export const LineDefault: Story = {
       </CardHeader>
       <CardContent>
         <ChartContainer config={barConfig}>
-          <LineChart accessibilityLayer data={barData} margin={{ left: 12, right: 12 }}>
+          <LineChart
+            accessibilityLayer
+            data={barData}
+            margin={{ left: 12, right: 12 }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -368,8 +412,17 @@ export const LineDefault: Story = {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Line
+              dataKey="desktop"
+              type="natural"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+              dot={false}
+            />
           </LineChart>
         </ChartContainer>
       </CardContent>
@@ -395,7 +448,11 @@ export const LineMultiple: Story = {
       </CardHeader>
       <CardContent>
         <ChartContainer config={barMultiConfig}>
-          <LineChart accessibilityLayer data={barMultiData} margin={{ left: 12, right: 12 }}>
+          <LineChart
+            accessibilityLayer
+            data={barMultiData}
+            margin={{ left: 12, right: 12 }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -405,8 +462,20 @@ export const LineMultiple: Story = {
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Line dataKey="desktop" type="monotone" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
-            <Line dataKey="mobile" type="monotone" stroke="var(--color-mobile)" strokeWidth={2} dot={false} />
+            <Line
+              dataKey="desktop"
+              type="monotone"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              dataKey="mobile"
+              type="monotone"
+              stroke="var(--color-mobile)"
+              strokeWidth={2}
+              dot={false}
+            />
           </LineChart>
         </ChartContainer>
       </CardContent>
@@ -429,19 +498,19 @@ export const LineMultiple: Story = {
 // ── Pie ──────────────────────────────────────────────────────────────────────
 
 const pieData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  { browser: 'chrome', visitors: 275, fill: 'var(--color-chrome)' },
+  { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
+  { browser: 'firefox', visitors: 187, fill: 'var(--color-firefox)' },
+  { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
+  { browser: 'other', visitors: 90, fill: 'var(--color-other)' },
 ];
 const pieConfig = {
-  visitors: { label: "Visitors" },
-  chrome: { label: "Chrome", color: "var(--chart-1)" },
-  safari: { label: "Safari", color: "var(--chart-2)" },
-  firefox: { label: "Firefox", color: "var(--chart-3)" },
-  edge: { label: "Edge", color: "var(--chart-4)" },
-  other: { label: "Other", color: "var(--chart-5)" },
+  visitors: { label: 'Visitors' },
+  chrome: { label: 'Chrome', color: 'var(--chart-1)' },
+  safari: { label: 'Safari', color: 'var(--chart-2)' },
+  firefox: { label: 'Firefox', color: 'var(--chart-3)' },
+  edge: { label: 'Edge', color: 'var(--chart-4)' },
+  other: { label: 'Other', color: 'var(--chart-5)' },
 } satisfies ChartConfig;
 
 /** chart-pie-donut */
@@ -453,10 +522,21 @@ export const PieDonut: Story = {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer config={pieConfig} className="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer
+          config={pieConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
           <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={pieData} dataKey="visitors" nameKey="browser" innerRadius={60} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Pie
+              data={pieData}
+              dataKey="visitors"
+              nameKey="browser"
+              innerRadius={60}
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>
@@ -506,15 +586,24 @@ export const RadarDefault: Story = {
     <Card>
       <CardHeader className="items-center pb-4">
         <CardTitle>Radar Chart</CardTitle>
-        <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+        <CardDescription>
+          Showing total visitors for the last 6 months
+        </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
-        <ChartContainer config={barConfig} className="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer
+          config={barConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
           <RadarChart data={barData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <PolarAngleAxis dataKey="month" />
             <PolarGrid />
-            <Radar dataKey="desktop" fill="var(--color-desktop)" fillOpacity={0.6} />
+            <Radar
+              dataKey="desktop"
+              fill="var(--color-desktop)"
+              fillOpacity={0.6}
+            />
           </RadarChart>
         </ChartContainer>
       </CardContent>
@@ -541,9 +630,15 @@ export const RadialGrid: Story = {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer config={pieConfig} className="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer
+          config={pieConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
           <RadialBarChart data={pieData} innerRadius={30} outerRadius={100}>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel nameKey="browser" />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel nameKey="browser" />}
+            />
             <PolarGrid gridType="circle" />
             <RadialBar dataKey="visitors" />
           </RadialBarChart>
@@ -561,10 +656,12 @@ export const RadialGrid: Story = {
   ),
 };
 
-const radialTextData = [{ browser: "safari", visitors: 1260, fill: "var(--color-safari)" }];
+const radialTextData = [
+  { browser: 'safari', visitors: 1260, fill: 'var(--color-safari)' },
+];
 const radialTextConfig = {
-  visitors: { label: "Visitors" },
-  safari: { label: "Safari", color: "var(--chart-2)" },
+  visitors: { label: 'Visitors' },
+  safari: { label: 'Safari', color: 'var(--chart-2)' },
 } satisfies ChartConfig;
 
 /** chart-radial-text */
@@ -576,7 +673,10 @@ export const RadialText: Story = {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer config={radialTextConfig} className="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer
+          config={radialTextConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
           <RadialBarChart
             data={radialTextData}
             startAngle={0}
@@ -595,13 +695,26 @@ export const RadialText: Story = {
             <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                     return (
-                      <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-4xl font-bold">
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-4xl font-bold"
+                        >
                           {radialTextData[0].visitors.toLocaleString()}
                         </tspan>
-                        <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
                           Visitors
                         </tspan>
                       </text>

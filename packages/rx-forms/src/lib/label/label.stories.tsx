@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Checkbox } from "../checkbox/checkbox";
-import { Input } from "../input/input";
-import { Label } from "./label";
+import { Checkbox } from '../checkbox/checkbox';
+import { Input } from '../input/input';
+import { Label } from './label';
 
 /**
  * # Label
@@ -31,11 +31,11 @@ import { Label } from "./label";
  * | (peer/group `disabled`) | drives the 50% opacity dim |
  */
 const meta = {
-  title: "Inputs/Label",
+  title: 'Inputs/Label',
   component: Label,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { children: "Email address" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { children: 'Email address' },
 } satisfies Meta<typeof Label>;
 
 export default meta;

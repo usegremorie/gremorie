@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
-import { Checkbox } from "./checkbox";
+import { Label } from '../label/label';
+import { Checkbox } from './checkbox';
 
 /**
  * # Checkbox
@@ -39,13 +39,13 @@ import { Checkbox } from "./checkbox";
  * | `--destructive` | `aria-invalid` state |
  */
 const meta = {
-  title: "Inputs/Checkbox",
+  title: 'Inputs/Checkbox',
   component: Checkbox,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    checked: { control: "boolean" },
-    disabled: { control: "boolean" },
+    checked: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Checkbox>;
 
@@ -59,7 +59,7 @@ export const Default: Story = {};
 export const Checked: Story = { args: { defaultChecked: true } };
 
 /** Indeterminate — the "some but not all" parent state. */
-export const Indeterminate: Story = { args: { checked: "indeterminate" } };
+export const Indeterminate: Story = { args: { checked: 'indeterminate' } };
 
 /** Disabled, in both unchecked and checked states. */
 export const Disabled: Story = {

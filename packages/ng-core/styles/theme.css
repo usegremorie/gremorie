@@ -11,7 +11,9 @@
 
 @theme {
   /* ─── 1. PRIMITIVES ───────────────────────────────── */
-  --color-gray-0: oklch(1 0 0); /* pure white — elevated surfaces (card/popover) on light */
+  --color-gray-0: oklch(
+    1 0 0
+  ); /* pure white — elevated surfaces (card/popover) on light */
   --color-gray-50: oklch(0.985 0 0);
   --color-gray-100: oklch(0.97 0 0);
   --color-gray-200: oklch(0.922 0 0);

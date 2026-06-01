@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import type { ChartConfig } from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
-import { ScatterChart } from "./scatter-chart";
+import type { ChartConfig } from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
+import { ScatterChart } from './scatter-chart';
 
 /**
  * # ScatterChart
@@ -38,13 +38,13 @@ import { ScatterChart } from "./scatter-chart";
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: "Layout & display/Data/Scatter",
+  title: 'Layout & display/Data/Scatter',
   component: ScatterChart,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    yAxis: { control: "boolean" },
-    tooltip: { control: "boolean" },
+    yAxis: { control: 'boolean' },
+    tooltip: { control: 'boolean' },
   },
   decorators: [
     (Story) => (
@@ -69,19 +69,19 @@ const BODY: ChartDatum[] = [
 ];
 
 const SINGLE: ChartConfig = {
-  height: { label: "Height (cm)", color: "var(--chart-1)" },
+  height: { label: 'Height (cm)', color: 'var(--chart-1)' },
 };
 const MULTI: ChartConfig = {
-  height: { label: "Median", color: "var(--chart-1)" },
-  max: { label: "Max", color: "var(--chart-2)" },
+  height: { label: 'Median', color: 'var(--chart-1)' },
+  max: { label: 'Max', color: 'var(--chart-2)' },
 };
 
 /** A single series. */
 export const Default: Story = {
-  args: { data: BODY, config: SINGLE, xKey: "weight" },
+  args: { data: BODY, config: SINGLE, xKey: 'weight' },
 };
 
 /** Two series against the same X. */
 export const Multiple: Story = {
-  args: { data: BODY, config: MULTI, xKey: "weight" },
+  args: { data: BODY, config: MULTI, xKey: 'weight' },
 };

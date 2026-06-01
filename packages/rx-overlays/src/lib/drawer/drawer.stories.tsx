@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Drawer,
@@ -9,8 +9,8 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./drawer";
-import { Button } from "@gremorie/rx-forms";
+} from './drawer';
+import { Button } from '@gremorie/rx-forms';
 
 /**
  * # Drawer
@@ -60,10 +60,10 @@ import { Button } from "@gremorie/rx-forms";
  * | `--border` | Directional edge border |
  */
 const meta = {
-  title: "Interaction/Overlays/Drawer",
+  title: 'Interaction/Overlays/Drawer',
   component: Drawer,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Drawer>;
 
 export default meta;

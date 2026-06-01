@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Line Chart (React)",
   "description": "Styled line chart - trends over a continuous domain. Composes the rx-chart primitive with recharts.",
-  "categories": [
-    "data",
-    "charts"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["data", "charts"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-chart"
-  ],
+  "registryDependencies": ["rx-utils", "rx-chart"],
   "files": [
     {
       "path": "src/lib/line-chart/line-chart.tsx",

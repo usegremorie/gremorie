@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   AlignCenter,
   AlignLeft,
@@ -6,9 +6,9 @@ import {
   Bold,
   Italic,
   Underline,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+import { ToggleGroup, ToggleGroupItem } from './toggle-group';
 
 /**
  * # ToggleGroup
@@ -53,14 +53,14 @@ import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: "Inputs/ToggleGroup",
+  title: 'Inputs/ToggleGroup',
   component: ToggleGroup,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { type: "single" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { type: 'single' },
   argTypes: {
-    variant: { control: "inline-radio", options: ["default", "outline"] },
-    size: { control: "inline-radio", options: ["default", "sm", "lg"] },
+    variant: { control: 'inline-radio', options: ['default', 'outline'] },
+    size: { control: 'inline-radio', options: ['default', 'sm', 'lg'] },
   },
 } satisfies Meta<typeof ToggleGroup>;
 
@@ -123,8 +123,14 @@ export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex flex-col items-start gap-3">
-      {(["sm", "default", "lg"] as const).map((size) => (
-        <ToggleGroup key={size} type="single" variant="outline" size={size} defaultValue="b">
+      {(['sm', 'default', 'lg'] as const).map((size) => (
+        <ToggleGroup
+          key={size}
+          type="single"
+          variant="outline"
+          size={size}
+          defaultValue="b"
+        >
           <ToggleGroupItem value="a" aria-label="Bold">
             <Bold />
           </ToggleGroupItem>

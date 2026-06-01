@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   Background,
   type Edge as FlowEdge,
   type Node as FlowNode,
   ReactFlowProvider,
-} from "@xyflow/react";
+} from '@xyflow/react';
 
-import { Canvas } from "./canvas";
-import { Controls } from "../controls";
-import { Panel } from "../panel";
+import { Canvas } from './canvas';
+import { Controls } from '../controls';
+import { Panel } from '../panel';
 
 /**
  * # Canvas
@@ -51,10 +51,10 @@ import { Panel } from "../panel";
  * | `--sidebar` | Canvas background fill (`bgColor` on `Background`). |
  */
 const meta = {
-  title: "AI/Canvas",
+  title: 'AI/Canvas',
   component: Canvas,
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof Canvas>;
 
 export default meta;
@@ -62,27 +62,27 @@ type Story = StoryObj<typeof meta>;
 
 const nodes: FlowNode[] = [
   {
-    id: "1",
+    id: '1',
     position: { x: 0, y: 0 },
-    data: { label: "Prompt" },
-    type: "input",
+    data: { label: 'Prompt' },
+    type: 'input',
   },
   {
-    id: "2",
+    id: '2',
     position: { x: 220, y: -40 },
-    data: { label: "Retrieve context" },
+    data: { label: 'Retrieve context' },
   },
   {
-    id: "3",
+    id: '3',
     position: { x: 220, y: 80 },
-    data: { label: "Generate answer" },
-    type: "output",
+    data: { label: 'Generate answer' },
+    type: 'output',
   },
 ];
 
 const edges: FlowEdge[] = [
-  { id: "e1-2", source: "1", target: "2" },
-  { id: "e1-3", source: "1", target: "3" },
+  { id: 'e1-2', source: '1', target: '2' },
+  { id: 'e1-3', source: '1', target: '3' },
 ];
 
 /** A small three-node agent graph inside a fixed-size container. */

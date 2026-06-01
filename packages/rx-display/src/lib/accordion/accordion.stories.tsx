@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./accordion";
+} from './accordion';
 
 /**
  * # Accordion
@@ -51,13 +51,13 @@ import {
  * | `--muted-foreground` | chevron icon color |
  */
 const meta = {
-  title: "Layout & display/Display/Accordion",
+  title: 'Layout & display/Display/Accordion',
   component: Accordion,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
-    type: { control: "inline-radio", options: ["single", "multiple"] },
-    collapsible: { control: "boolean" },
+    type: { control: 'inline-radio', options: ['single', 'multiple'] },
+    collapsible: { control: 'boolean' },
   },
 } satisfies Meta<typeof Accordion>;
 
@@ -66,26 +66,31 @@ type Story = StoryObj<typeof meta>;
 
 const ITEMS = [
   {
-    value: "shipping",
-    q: "How long does shipping take?",
-    a: "Orders ship within 1–2 business days and arrive in 3–5 days domestically.",
+    value: 'shipping',
+    q: 'How long does shipping take?',
+    a: 'Orders ship within 1–2 business days and arrive in 3–5 days domestically.',
   },
   {
-    value: "returns",
-    q: "What is your return policy?",
-    a: "Returns are accepted within 30 days of delivery, no questions asked.",
+    value: 'returns',
+    q: 'What is your return policy?',
+    a: 'Returns are accepted within 30 days of delivery, no questions asked.',
   },
   {
-    value: "support",
-    q: "How do I contact support?",
-    a: "Email support@example.com or use the in-app chat — we reply within a day.",
+    value: 'support',
+    q: 'How do I contact support?',
+    a: 'Email support@example.com or use the in-app chat — we reply within a day.',
   },
 ];
 
 /** Single open at a time, collapsible — a 3-item FAQ. */
 export const Default: Story = {
   render: () => (
-    <Accordion type="single" collapsible defaultValue="shipping" className="w-96">
+    <Accordion
+      type="single"
+      collapsible
+      defaultValue="shipping"
+      className="w-96"
+    >
       {ITEMS.map((item) => (
         <AccordionItem key={item.value} value={item.value}>
           <AccordionTrigger>{item.q}</AccordionTrigger>
@@ -103,7 +108,7 @@ export const Multiple: Story = {
   render: () => (
     <Accordion
       type="multiple"
-      defaultValue={["shipping", "returns"]}
+      defaultValue={['shipping', 'returns']}
       className="w-96"
     >
       {ITEMS.map((item) => (

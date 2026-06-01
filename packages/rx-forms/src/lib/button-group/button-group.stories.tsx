@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Bold, ChevronDown, Copy, Italic, Plus, Underline } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Bold, ChevronDown, Copy, Italic, Plus, Underline } from 'lucide-react';
 
-import { Button } from "../button/button";
-import { Input } from "../input/input";
+import { Button } from '../button/button';
+import { Input } from '../input/input';
 import {
   ButtonGroup,
   ButtonGroupSeparator,
   ButtonGroupText,
-} from "./button-group";
+} from './button-group';
 
 /**
  * # ButtonGroup
@@ -45,12 +45,15 @@ import {
  * | `--border` | shared segment borders |
  */
 const meta = {
-  title: "Inputs/ButtonGroup",
+  title: 'Inputs/ButtonGroup',
   component: ButtonGroup,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    orientation: {
+      control: 'inline-radio',
+      options: ['horizontal', 'vertical'],
+    },
   },
 } satisfies Meta<typeof ButtonGroup>;
 
@@ -70,7 +73,7 @@ export const Default: Story = {
 
 /** Vertical orientation stacks the segments and merges top/bottom corners. */
 export const Vertical: Story = {
-  args: { orientation: "vertical" },
+  args: { orientation: 'vertical' },
   render: (args) => (
     <ButtonGroup {...args}>
       <Button variant="outline">Top</Button>

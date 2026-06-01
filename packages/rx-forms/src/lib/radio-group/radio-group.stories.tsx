@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
+import { Label } from '../label/label';
+import { RadioGroup, RadioGroupItem } from './radio-group';
 
 /**
  * # RadioGroup
@@ -42,10 +42,10 @@ import { RadioGroup, RadioGroupItem } from "./radio-group";
  * | `--destructive` | `aria-invalid` state |
  */
 const meta = {
-  title: "Inputs/RadioGroup",
+  title: 'Inputs/RadioGroup',
   component: RadioGroup,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;

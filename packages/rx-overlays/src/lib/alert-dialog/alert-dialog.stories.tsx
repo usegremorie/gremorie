@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Trash2 } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Trash2 } from 'lucide-react';
 
 import {
   AlertDialog,
@@ -12,8 +12,8 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./alert-dialog";
-import { Button } from "@gremorie/rx-forms";
+} from './alert-dialog';
+import { Button } from '@gremorie/rx-forms';
 
 /**
  * # AlertDialog
@@ -69,10 +69,10 @@ import { Button } from "@gremorie/rx-forms";
  * | `--destructive` | Destructive action button |
  */
 const meta = {
-  title: "Interaction/Overlays/AlertDialog",
+  title: 'Interaction/Overlays/AlertDialog',
   component: AlertDialog,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof AlertDialog>;
 
 export default meta;
@@ -89,8 +89,8 @@ export const Default: Story = {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This permanently deletes the project and all of its data. This action
-            cannot be undone.
+            This permanently deletes the project and all of its data. This
+            action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

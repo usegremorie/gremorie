@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "./chart";
+} from './chart';
 
 /**
  * # Chart Tooltip
@@ -45,26 +45,26 @@ import {
  * | `--chart-1` … `--chart-5` | Swatch colors |
  */
 const meta = {
-  title: "Layout & display/Data/Tooltip",
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  title: 'Layout & display/Data/Tooltip',
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const DATA = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
 ];
 
 const SINGLE: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
 };
 const MULTI: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 };
 
 function BarDemo({
@@ -78,7 +78,12 @@ function BarDemo({
     <ChartContainer config={config} className="h-[220px] w-[22rem]">
       <BarChart accessibilityLayer data={DATA}>
         <CartesianGrid vertical={false} />
-        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={10} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={10}
+        />
         <ChartTooltip
           defaultIndex={1}
           cursor={false}
@@ -99,7 +104,7 @@ export const Dot: Story = {
 
 /** Line indicator. */
 export const Line_: Story = {
-  name: "Line",
+  name: 'Line',
   render: () => <BarDemo config={MULTI} indicator="line" />,
 };
 
@@ -124,14 +129,31 @@ export const OnLineChart: Story = {
     <ChartContainer config={MULTI} className="h-[220px] w-[22rem]">
       <LineChart accessibilityLayer data={DATA}>
         <CartesianGrid vertical={false} />
-        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={10} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={10}
+        />
         <ChartTooltip
           defaultIndex={1}
           cursor={false}
           content={<ChartTooltipContent />}
         />
-        <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
-        <Line dataKey="mobile" type="natural" stroke="var(--color-mobile)" strokeWidth={2} dot={false} />
+        <Line
+          dataKey="desktop"
+          type="natural"
+          stroke="var(--color-desktop)"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          dataKey="mobile"
+          type="natural"
+          stroke="var(--color-mobile)"
+          strokeWidth={2}
+          dot={false}
+        />
       </LineChart>
     </ChartContainer>
   ),

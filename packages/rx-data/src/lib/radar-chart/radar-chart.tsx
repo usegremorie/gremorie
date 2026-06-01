@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 import {
   PolarAngleAxis,
   PolarGrid,
   Radar,
   RadarChart as RechartsRadarChart,
-} from "recharts";
+} from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface RadarChartProps {
   /** Tabular rows — one spoke per row. */
@@ -24,7 +24,7 @@ export interface RadarChartProps {
   /** Spoke (angle) field. */
   xKey: string;
   /** Grid shape. */
-  gridType?: "polygon" | "circle";
+  gridType?: 'polygon' | 'circle';
   /** Hover tooltip. */
   tooltip?: boolean;
   className?: string;
@@ -43,7 +43,7 @@ export function RadarChart({
   data,
   config,
   xKey,
-  gridType = "polygon",
+  gridType = 'polygon',
   tooltip = true,
   className,
 }: RadarChartProps) {
@@ -53,7 +53,7 @@ export function RadarChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("mx-auto aspect-square max-h-[250px]", className)}
+      className={cn('mx-auto aspect-square max-h-[250px]', className)}
     >
       <RechartsRadarChart data={data as ChartDatum[]}>
         {tooltip ? (

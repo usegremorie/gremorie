@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Sheet,
@@ -9,8 +9,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./sheet";
-import { Button, Input, Label } from "@gremorie/rx-forms";
+} from './sheet';
+import { Button, Input, Label } from '@gremorie/rx-forms';
 
 /**
  * # Sheet
@@ -65,10 +65,10 @@ import { Button, Input, Label } from "@gremorie/rx-forms";
  * | `--secondary` | Close-button open state |
  */
 const meta = {
-  title: "Interaction/Overlays/Sheet",
+  title: 'Interaction/Overlays/Sheet',
   component: Sheet,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Sheet>;
 
 export default meta;
@@ -109,7 +109,7 @@ export const Default: Story = {
   ),
 };
 
-const SIDES = ["top", "right", "bottom", "left"] as const;
+const SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
 /** All four `side` values from a single row of triggers. */
 export const Sides: Story = {

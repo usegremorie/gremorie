@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Conversation,
   ConversationContent,
   ConversationEmptyState,
   ConversationScrollButton,
-} from "./conversation";
-import { Message, MessageContent } from "../message";
+} from './conversation';
+import { Message, MessageContent } from '../message';
 
 /**
  * Conversation - scrollable container that auto-sticks to bottom (React edition).
@@ -16,10 +16,10 @@ import { Message, MessageContent } from "../message";
  * runtime-only; comments call out what to look for.
  */
 const meta = {
-  title: "AI/Conversation",
+  title: 'AI/Conversation',
   component: Conversation,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Conversation>;
 
 export default meta;
@@ -37,7 +37,7 @@ export const Empty: Story = {
 };
 
 export const CustomEmpty: Story = {
-  name: "Empty (custom)",
+  name: 'Empty (custom)',
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="h-72 w-96 rounded-lg border">
@@ -55,7 +55,7 @@ export const CustomEmpty: Story = {
  * Short thread - a handful of messages, all visible without scrolling.
  */
 export const ShortThread: Story = {
-  name: "Short thread",
+  name: 'Short thread',
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="h-80 w-96 rounded-lg border">
@@ -84,14 +84,14 @@ export const ShortThread: Story = {
  * only when user scrolls up. Auto-stick keeps the latest message in view.
  */
 export const LongThread: Story = {
-  name: "Long thread (scrollable)",
+  name: 'Long thread (scrollable)',
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="h-80 w-96 rounded-lg border">
       <Conversation>
         <ConversationContent>
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
-            <Message key={i} from={i % 2 === 0 ? "user" : "assistant"}>
+            <Message key={i} from={i % 2 === 0 ? 'user' : 'assistant'}>
               <MessageContent>
                 Message #{i} - Lorem ipsum dolor sit amet, consectetur
                 adipiscing elit.

@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "./resizable";
+} from './resizable';
 
 /**
  * # Resizable
@@ -45,10 +45,10 @@ import {
  * | `--ring` | focus-visible ring on the handle |
  */
 const meta = {
-  title: "Layout & display/Containers/Resizable",
+  title: 'Layout & display/Containers/Resizable',
   component: ResizablePanelGroup,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof ResizablePanelGroup>;
 
 export default meta;

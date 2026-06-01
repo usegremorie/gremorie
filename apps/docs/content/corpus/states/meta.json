@@ -2,7 +2,5 @@
   "title": "States",
   "icon": "Loader",
   "description": "Loading, empty and error: the three states every screen needs and most forget.",
-  "pages": [
-    "loading-empty-error"
-  ]
+  "pages": ["loading-empty-error"]
 }

@@ -1,4 +1,4 @@
-import { defineI18n } from "fumadocs-core/i18n";
+import { defineI18n } from 'fumadocs-core/i18n';
 
 /**
  * i18n configuration for the docs.
@@ -10,8 +10,8 @@ import { defineI18n } from "fumadocs-core/i18n";
  *   day one and translations can land incrementally.
  */
 export const i18n = defineI18n({
-  defaultLanguage: "en",
-  languages: ["en", "pt"],
-  hideLocale: "default-locale",
-  fallbackLanguage: "en",
+  defaultLanguage: 'en',
+  languages: ['en', 'pt'],
+  hideLocale: 'default-locale',
+  fallbackLanguage: 'en',
 });

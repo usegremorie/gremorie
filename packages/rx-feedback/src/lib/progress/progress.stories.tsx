@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import * as React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
-import { Progress } from "./progress";
+import { Progress } from './progress';
 
 /**
  * # Progress
@@ -31,12 +31,12 @@ import { Progress } from "./progress";
  * | `--primary` (at 20%) | Track background |
  */
 const meta = {
-  title: "Interaction/Feedback/Progress",
+  title: 'Interaction/Feedback/Progress',
   component: Progress,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
-    value: { control: { type: "range", min: 0, max: 100, step: 1 } },
+    value: { control: { type: 'range', min: 0, max: 100, step: 1 } },
   },
 } satisfies Meta<typeof Progress>;
 

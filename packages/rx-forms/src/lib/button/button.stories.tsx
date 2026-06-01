@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { ArrowRight, Loader2, Mail, Plus, Trash2 } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { ArrowRight, Loader2, Mail, Plus, Trash2 } from 'lucide-react';
 
-import { Button } from "./button";
+import { Button } from './button';
 
 /**
  * # Button
@@ -39,22 +39,38 @@ import { Button } from "./button";
  * | `--background` / `--input` | `outline` surface |
  */
 const meta = {
-  title: "Inputs/Button",
+  title: 'Inputs/Button',
   component: Button,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { children: "Button", variant: "default", size: "default" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { children: 'Button', variant: 'default', size: 'default' },
   argTypes: {
     variant: {
-      control: "inline-radio",
-      options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
+      control: 'inline-radio',
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'secondary',
+        'ghost',
+        'link',
+      ],
     },
     size: {
-      control: "select",
-      options: ["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"],
+      control: 'select',
+      options: [
+        'default',
+        'xs',
+        'sm',
+        'lg',
+        'icon',
+        'icon-xs',
+        'icon-sm',
+        'icon-lg',
+      ],
     },
-    asChild: { control: "boolean" },
-    disabled: { control: "boolean" },
+    asChild: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Button>;
 
@@ -65,12 +81,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 const VARIANTS = [
-  "default",
-  "destructive",
-  "outline",
-  "secondary",
-  "ghost",
-  "link",
+  'default',
+  'destructive',
+  'outline',
+  'secondary',
+  'ghost',
+  'link',
 ] as const;
 
 /** Every visual variant. */
@@ -183,7 +199,7 @@ export const AsChildLink: Story = {
 
 /** Full matrix: every variant × every text size. */
 export const Matrix: Story = {
-  parameters: { layout: "padded", controls: { disable: true } },
+  parameters: { layout: 'padded', controls: { disable: true } },
   render: () => (
     <div className="flex flex-col gap-4">
       {VARIANTS.map((variant) => (
@@ -191,7 +207,7 @@ export const Matrix: Story = {
           <span className="w-24 text-xs text-muted-foreground capitalize">
             {variant}
           </span>
-          {(["xs", "sm", "default", "lg"] as const).map((size) => (
+          {(['xs', 'sm', 'default', 'lg'] as const).map((size) => (
             <Button key={size} variant={variant} size={size}>
               {size}
             </Button>

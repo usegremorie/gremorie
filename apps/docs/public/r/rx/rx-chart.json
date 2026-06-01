@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Chart (React)",
   "description": "The chart primitive for the React edition - ChartContainer (responsive frame + per-series CSS color vars), ChartTooltip / ChartTooltipContent, ChartLegend / ChartLegendContent, useChart, and the ChartConfig / ChartDatum types. Built on recharts; the shared base every styled chart composes.",
-  "categories": [
-    "data",
-    "charts"
-  ],
-  "dependencies": [
-    "react",
-    "recharts"
-  ],
+  "categories": ["data", "charts"],
+  "dependencies": ["react", "recharts"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils"
-  ],
+  "registryDependencies": ["rx-utils"],
   "files": [
     {
       "path": "src/lib/chart/chart.tsx",

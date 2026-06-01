@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Separator } from "./separator";
+import { Separator } from './separator';
 
 /**
  * # Separator
@@ -30,13 +30,16 @@ import { Separator } from "./separator";
  * | `--border` | the divider fill color |
  */
 const meta = {
-  title: "Layout & display/Display/Separator",
+  title: 'Layout & display/Display/Separator',
   component: Separator,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
-    decorative: { control: "boolean" },
+    orientation: {
+      control: 'inline-radio',
+      options: ['horizontal', 'vertical'],
+    },
+    decorative: { control: 'boolean' },
   },
 } satisfies Meta<typeof Separator>;
 
@@ -54,7 +57,9 @@ export const Default: Story = {
         </p>
       </div>
       <Separator className="my-4" />
-      <p className="text-muted-foreground text-sm">Open source. MIT licensed.</p>
+      <p className="text-muted-foreground text-sm">
+        Open source. MIT licensed.
+      </p>
     </div>
   ),
 };

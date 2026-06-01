@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import * as React from "react";
-import type { DateRange } from "react-day-picker";
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
+import type { DateRange } from 'react-day-picker';
 
-import { Calendar } from "./calendar";
+import { Calendar } from './calendar';
 
 /**
  * # Calendar
@@ -39,10 +39,10 @@ import { Calendar } from "./calendar";
  * | `--ring` | focus ring on nav buttons |
  */
 const meta = {
-  title: "Inputs/Calendar",
+  title: 'Inputs/Calendar',
   component: Calendar,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;

@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 import {
   CartesianGrid,
   Line,
   LineChart as RechartsLineChart,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface LineChartProps {
   /** Tabular rows. */
@@ -25,7 +25,7 @@ export interface LineChartProps {
   /** Category field (x axis). */
   xKey: string;
   /** Curve interpolation (recharts `type`). */
-  type?: "natural" | "monotone" | "linear" | "step";
+  type?: 'natural' | 'monotone' | 'linear' | 'step';
   /** Show a dot at each point. */
   dots?: boolean;
   /** Show the numeric Y axis. */
@@ -48,7 +48,7 @@ export function LineChart({
   data,
   config,
   xKey,
-  type = "natural",
+  type = 'natural',
   dots = false,
   yAxis = true,
   tooltip = true,
@@ -64,7 +64,12 @@ export function LineChart({
         margin={{ left: yAxis ? 0 : 12, right: 12 }}
       >
         <CartesianGrid vertical={false} />
-        <XAxis dataKey={xKey} tickLine={false} axisLine={false} tickMargin={8} />
+        <XAxis
+          dataKey={xKey}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
         {yAxis ? (
           <YAxis tickLine={false} axisLine={false} tickMargin={8} width={40} />
         ) : null}

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Toaster, toast } from "./sonner";
-import { Button } from "@gremorie/rx-forms";
+import { Toaster, toast } from './sonner';
+import { Button } from '@gremorie/rx-forms';
 
 /**
  * # Toaster (Sonner)
@@ -38,10 +38,10 @@ import { Button } from "@gremorie/rx-forms";
  * | `--radius` | `--border-radius` |
  */
 const meta = {
-  title: "Interaction/Overlays/Toaster",
+  title: 'Interaction/Overlays/Toaster',
   component: Toaster,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <>
@@ -61,31 +61,33 @@ export const Default: Story = {
     <div className="flex flex-wrap gap-2">
       <Button
         variant="outline"
-        onClick={() => toast("Event created", { description: "Monday at 10:00 AM" })}
+        onClick={() =>
+          toast('Event created', { description: 'Monday at 10:00 AM' })
+        }
       >
         Default
       </Button>
       <Button
         variant="outline"
-        onClick={() => toast.success("Changes saved successfully")}
+        onClick={() => toast.success('Changes saved successfully')}
       >
         Success
       </Button>
       <Button
         variant="outline"
-        onClick={() => toast.error("Something went wrong")}
+        onClick={() => toast.error('Something went wrong')}
       >
         Error
       </Button>
       <Button
         variant="outline"
-        onClick={() => toast.warning("Your trial ends in 3 days")}
+        onClick={() => toast.warning('Your trial ends in 3 days')}
       >
         Warning
       </Button>
       <Button
         variant="outline"
-        onClick={() => toast.info("A new version is available")}
+        onClick={() => toast.info('A new version is available')}
       >
         Info
       </Button>
@@ -99,8 +101,8 @@ export const Loading: Story = {
     <Button
       variant="outline"
       onClick={() => {
-        const id = toast.loading("Uploading file...");
-        setTimeout(() => toast.success("Upload complete", { id }), 2000);
+        const id = toast.loading('Uploading file...');
+        setTimeout(() => toast.success('Upload complete', { id }), 2000);
       }}
     >
       Loading → success
@@ -110,7 +112,7 @@ export const Loading: Story = {
 
 /** A promise toast that transitions loading → success / error automatically. */
 export const PromiseToast: Story = {
-  name: "Promise",
+  name: 'Promise',
   render: () => (
     <Button
       variant="outline"
@@ -118,9 +120,9 @@ export const PromiseToast: Story = {
         toast.promise(
           new Promise<void>((resolve) => setTimeout(resolve, 2000)),
           {
-            loading: "Saving...",
-            success: "Settings saved",
-            error: "Could not save",
+            loading: 'Saving...',
+            success: 'Settings saved',
+            error: 'Could not save',
           },
         )
       }
@@ -136,9 +138,9 @@ export const WithAction: Story = {
     <Button
       variant="outline"
       onClick={() =>
-        toast("File deleted", {
-          description: "report.pdf was moved to trash",
-          action: { label: "Undo", onClick: () => toast.success("Restored") },
+        toast('File deleted', {
+          description: 'report.pdf was moved to trash',
+          action: { label: 'Undo', onClick: () => toast.success('Restored') },
         })
       }
     >

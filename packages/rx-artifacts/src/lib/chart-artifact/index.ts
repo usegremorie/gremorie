@@ -1,1 +1,1 @@
-export * from "./chart-artifact";
+export * from './chart-artifact';

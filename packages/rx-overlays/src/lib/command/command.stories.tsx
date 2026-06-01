@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   Calculator,
   Calendar,
@@ -6,7 +6,7 @@ import {
   Settings,
   Smile,
   User,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   Command,
@@ -17,7 +17,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "./command";
+} from './command';
 
 /**
  * # Command
@@ -69,10 +69,10 @@ import {
  * | `--muted-foreground` | Group headings + shortcuts |
  */
 const meta = {
-  title: "Interaction/Overlays/Command",
+  title: 'Interaction/Overlays/Command',
   component: Command,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Command>;
 
 export default meta;

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Card, CardContent } from "@gremorie/rx-display";
+import { Card, CardContent } from '@gremorie/rx-display';
 
 import {
   Carousel,
@@ -8,7 +8,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./carousel";
+} from './carousel';
 
 /**
  * # Carousel
@@ -49,12 +49,15 @@ import {
  * `--accent`, `--ring`); slide content is consumer-styled.
  */
 const meta = {
-  title: "Layout & display/Display/Carousel",
+  title: 'Layout & display/Display/Carousel',
   component: Carousel,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    orientation: {
+      control: 'inline-radio',
+      options: ['horizontal', 'vertical'],
+    },
   },
 } satisfies Meta<typeof Carousel>;
 
@@ -87,7 +90,7 @@ export const Default: Story = {
 /** Multiple items per view via `basis-*` on the items, with `loop`. */
 export const MultipleItems: Story = {
   render: () => (
-    <Carousel opts={{ loop: true, align: "start" }} className="w-72">
+    <Carousel opts={{ loop: true, align: 'start' }} className="w-72">
       <CarouselContent>
         {SLIDES.map((n) => (
           <CarouselItem key={n} className="basis-1/2">

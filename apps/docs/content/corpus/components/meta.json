@@ -2,9 +2,5 @@
   "title": "Components",
   "icon": "Box",
   "description": "When and how to use each primitive — button vs link, dialog vs drawer, form anatomy. The UX rationale, not the code.",
-  "pages": [
-    "button",
-    "form",
-    "dialog"
-  ]
+  "pages": ["button", "form", "dialog"]
 }

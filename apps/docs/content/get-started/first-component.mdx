@@ -1,6 +1,6 @@
 ---
 title: Your first component
-description: "Five minute tutorial: build a working chat surface from three primitives."
+description: 'Five minute tutorial: build a working chat surface from three primitives.'
 ---
 
 This tutorial wires three Gremorie AI primitives -- `PromptInput`,
@@ -9,8 +9,8 @@ end with a UI that accepts a prompt, displays the user message, and
 streams a model response.
 
 <Callout type="info">
-  This is the flagship Gremorie composition. The same three primitives
-  power the chat surface block planned in [Blocks](/blocks).
+  This is the flagship Gremorie composition. The same three primitives power the
+  chat surface block planned in [Blocks](/blocks).
 </Callout>
 
 ## Goal
@@ -56,12 +56,15 @@ everything to `src/components/gremorie/`.
 <Tabs items={["Angular", "React"]}>
 
 ```ts tab="Angular"
-import { Component, signal } from "@angular/core";
-import { NgConversation } from "@/components/gremorie/ng-conversation";
-import { NgMessage } from "@/components/gremorie/ng-message";
-import { NgPromptInput } from "@/components/gremorie/ng-prompt-input";
+import { Component, signal } from '@angular/core';
+import { NgConversation } from '@/components/gremorie/ng-conversation';
+import { NgMessage } from '@/components/gremorie/ng-message';
+import { NgPromptInput } from '@/components/gremorie/ng-prompt-input';
 
-interface Msg { role: "user" | "assistant"; content: string }
+interface Msg {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 @Component({
   standalone: true,
@@ -73,25 +76,25 @@ interface Msg { role: "user" | "assistant"; content: string }
       }
     </ng-conversation>
     <ng-prompt-input (submit)="onSubmit($event)" />
-  `
+  `,
 })
 export class ChatComponent {
   messages = signal<Msg[]>([]);
   onSubmit(text: string) {
-    this.messages.update((m) => [...m, { role: "user", content: text }]);
+    this.messages.update((m) => [...m, { role: 'user', content: text }]);
     // wire your backend here
   }
 }
 ```
 
 ```tsx tab="React"
-"use client";
-import { useState } from "react";
-import { Conversation } from "@/components/gremorie/rx-conversation";
-import { Message } from "@/components/gremorie/rx-message";
-import { PromptInput } from "@/components/gremorie/rx-prompt-input";
+'use client';
+import { useState } from 'react';
+import { Conversation } from '@/components/gremorie/rx-conversation';
+import { Message } from '@/components/gremorie/rx-message';
+import { PromptInput } from '@/components/gremorie/rx-prompt-input';
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = { role: 'user' | 'assistant'; content: string };
 
 export function Chat() {
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -99,13 +102,17 @@ export function Chat() {
     <>
       <Conversation>
         {messages.map((m, i) => (
-          <Message key={i} role={m.role}>{m.content}</Message>
+          <Message key={i} role={m.role}>
+            {m.content}
+          </Message>
         ))}
       </Conversation>
-      <PromptInput onSubmit={(text) => {
-        setMessages((prev) => [...prev, { role: "user", content: text }]);
-        // wire your backend here
-      }} />
+      <PromptInput
+        onSubmit={(text) => {
+          setMessages((prev) => [...prev, { role: 'user', content: text }]);
+          // wire your backend here
+        }}
+      />
     </>
   );
 }
@@ -125,13 +132,13 @@ the AI SDK, a Server Action, a streaming endpoint of your own.
 ```ts
 // Minimal handler -- replace with your real model call
 async function handleSubmit(text: string) {
-  setMessages((prev) => [...prev, { role: "user", content: text }]);
-  const response = await fetch("/api/chat", {
-    method: "POST",
-    body: JSON.stringify({ message: text })
+  setMessages((prev) => [...prev, { role: 'user', content: text }]);
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    body: JSON.stringify({ message: text }),
   });
   const data = await response.json();
-  setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+  setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
 }
 ```
 
@@ -164,9 +171,8 @@ conversation, your backend responds, the assistant bubble joins it.
 </Steps>
 
 <Callout type="tip">
-  See the full wiring in the planned [chat-surface
-  block](/blocks#chat-surface) -- it bundles a streaming SDK,
-  attachments, and tool-call rendering.
+  See the full wiring in the planned [chat-surface block](/blocks#chat-surface)
+  -- it bundles a streaming SDK, attachments, and tool-call rendering.
 </Callout>
 
 ## What you learned

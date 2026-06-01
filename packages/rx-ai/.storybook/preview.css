@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "../../rx-core/src/styles/globals.css";
+@import 'tailwindcss';
+@import '../../rx-core/src/styles/globals.css';
 
 /* Tailwind v4 class scanning across every rx-* package so utilities used
    inside the primitives are generated for the Storybook bundle. */

@@ -1,9 +1,9 @@
-import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { HomeLayout } from 'fumadocs-ui/layouts/home';
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
-import { ThemeSwitchWithFlag } from "@/components/flag-language-switch";
-import { baseOptions } from "@/lib/layout.shared";
+import { ThemeSwitchWithFlag } from '@/components/flag-language-switch';
+import { baseOptions } from '@/lib/layout.shared';
 
 /**
  * Route group `(home)` wraps the public landing in the Fumadocs HomeLayout,
@@ -16,7 +16,7 @@ import { baseOptions } from "@/lib/layout.shared";
  */
 export default async function Layout({
   params,
-  children
+  children,
 }: {
   params: Promise<{ lang: string }>;
   children: ReactNode;

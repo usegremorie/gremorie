@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import type { ChartConfig } from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
-import { AreaChart } from "./area-chart";
+import type { ChartConfig } from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
+import { AreaChart } from './area-chart';
 
 /**
  * # AreaChart
@@ -40,17 +40,17 @@ import { AreaChart } from "./area-chart";
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: "Layout & display/Data/Area",
+  title: 'Layout & display/Data/Area',
   component: AreaChart,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    stacked: { control: "boolean" },
-    yAxis: { control: "boolean" },
-    tooltip: { control: "boolean" },
+    stacked: { control: 'boolean' },
+    yAxis: { control: 'boolean' },
+    tooltip: { control: 'boolean' },
     type: {
-      control: "inline-radio",
-      options: ["natural", "monotone", "linear", "step"],
+      control: 'inline-radio',
+      options: ['natural', 'monotone', 'linear', 'step'],
     },
   },
   decorators: [
@@ -66,38 +66,38 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const MONTHS: ChartDatum[] = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'June', desktop: 214, mobile: 140 },
 ];
 
 const SINGLE: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
 };
 const MULTI: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 };
 
 /** A single filled series. */
 export const Default: Story = {
-  args: { data: MONTHS, config: SINGLE, xKey: "month" },
+  args: { data: MONTHS, config: SINGLE, xKey: 'month' },
 };
 
 /** Two series stacked. */
 export const Stacked: Story = {
-  args: { data: MONTHS, config: MULTI, xKey: "month", stacked: true },
+  args: { data: MONTHS, config: MULTI, xKey: 'month', stacked: true },
 };
 
 /** Linear interpolation. */
 export const Linear: Story = {
-  args: { data: MONTHS, config: SINGLE, xKey: "month", type: "linear" },
+  args: { data: MONTHS, config: SINGLE, xKey: 'month', type: 'linear' },
 };
 
 /** Step interpolation. */
 export const Step: Story = {
-  args: { data: MONTHS, config: SINGLE, xKey: "month", type: "step" },
+  args: { data: MONTHS, config: SINGLE, xKey: 'month', type: 'step' },
 };

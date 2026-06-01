@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Popover,
@@ -7,8 +7,8 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "./popover";
-import { Button, Input, Label } from "@gremorie/rx-forms";
+} from './popover';
+import { Button, Input, Label } from '@gremorie/rx-forms';
 
 /**
  * # Popover
@@ -59,10 +59,10 @@ import { Button, Input, Label } from "@gremorie/rx-forms";
  * | `--muted-foreground` | Description text |
  */
 const meta = {
-  title: "Interaction/Overlays/Popover",
+  title: 'Interaction/Overlays/Popover',
   component: Popover,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Popover>;
 
 export default meta;
@@ -107,9 +107,15 @@ export const AlignStart: Story = {
       <PopoverContent align="start" className="w-72">
         <PopoverHeader>
           <PopoverTitle>Share link</PopoverTitle>
-          <PopoverDescription>Anyone with the link can view.</PopoverDescription>
+          <PopoverDescription>
+            Anyone with the link can view.
+          </PopoverDescription>
         </PopoverHeader>
-        <Input className="mt-3 h-8" readOnly value="https://gremorie.dev/p/42" />
+        <Input
+          className="mt-3 h-8"
+          readOnly
+          value="https://gremorie.dev/p/42"
+        />
       </PopoverContent>
     </Popover>
   ),

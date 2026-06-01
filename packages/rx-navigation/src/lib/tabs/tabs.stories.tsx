@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CodeIcon, EyeIcon, SettingsIcon, UserIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { CodeIcon, EyeIcon, SettingsIcon, UserIcon } from 'lucide-react';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 
 /**
  * # Tabs
@@ -50,10 +50,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
  * | `--ring` | Keyboard focus ring |
  */
 const meta = {
-  title: "Interaction/Navigation/Tabs",
+  title: 'Interaction/Navigation/Tabs',
   component: Tabs,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <div className="w-[26rem] max-w-full">
@@ -66,8 +66,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const PANEL =
-  "mt-2 rounded-md border p-4 text-sm text-muted-foreground";
+const PANEL = 'mt-2 rounded-md border p-4 text-sm text-muted-foreground';
 
 /** The default pill-style list. */
 export const Default: Story = {
@@ -157,10 +156,16 @@ export const Vertical: Story = {
           Settings
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="profile" className="rounded-md border p-4 text-sm text-muted-foreground">
+      <TabsContent
+        value="profile"
+        className="rounded-md border p-4 text-sm text-muted-foreground"
+      >
         Your public profile.
       </TabsContent>
-      <TabsContent value="settings" className="rounded-md border p-4 text-sm text-muted-foreground">
+      <TabsContent
+        value="settings"
+        className="rounded-md border p-4 text-sm text-muted-foreground"
+      >
         Application settings.
       </TabsContent>
     </Tabs>

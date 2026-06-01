@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 import {
   PolarGrid,
   RadialBar,
   RadialBarChart as RechartsRadialBarChart,
-} from "recharts";
+} from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface RadialChartProps {
   /** Tabular rows. Give each row a `fill` (e.g. `var(--color-chrome)`) for bar colors. */
@@ -49,9 +49,13 @@ export function RadialChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("mx-auto aspect-square max-h-[250px]", className)}
+      className={cn('mx-auto aspect-square max-h-[250px]', className)}
     >
-      <RechartsRadialBarChart data={data as ChartDatum[]} innerRadius={30} outerRadius={110}>
+      <RechartsRadialBarChart
+        data={data as ChartDatum[]}
+        innerRadius={30}
+        outerRadius={110}
+      >
         {tooltip ? (
           <ChartTooltip
             cursor={false}

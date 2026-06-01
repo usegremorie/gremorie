@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useForm } from "react-hook-form";
+import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
 
-import { Button } from "../button/button";
-import { Checkbox } from "../checkbox/checkbox";
-import { Input } from "../input/input";
+import { Button } from '../button/button';
+import { Checkbox } from '../checkbox/checkbox';
+import { Input } from '../input/input';
 import {
   Form,
   FormControl,
@@ -12,7 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./form";
+} from './form';
 
 /**
  * # Form
@@ -67,10 +67,10 @@ import {
 // (a plain wrapper) purely so Storybook has a renderable component; every
 // story drives a real `useForm()` instance through `render`.
 const meta = {
-  title: "Inputs/Form",
+  title: 'Inputs/Form',
   component: FormItem,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof FormItem>;
 
 export default meta;
@@ -91,8 +91,8 @@ export const SignupForm: Story = {
   render: () => {
     function Demo() {
       const form = useForm<SignupValues>({
-        defaultValues: { username: "", email: "", acceptTerms: false },
-        mode: "onTouched",
+        defaultValues: { username: '', email: '', acceptTerms: false },
+        mode: 'onTouched',
       });
 
       const onSubmit = (values: SignupValues) => {
@@ -110,8 +110,8 @@ export const SignupForm: Story = {
               control={form.control}
               name="username"
               rules={{
-                required: "Username is required.",
-                minLength: { value: 3, message: "At least 3 characters." },
+                required: 'Username is required.',
+                minLength: { value: 3, message: 'At least 3 characters.' },
               }}
               render={({ field }) => (
                 <FormItem>
@@ -129,17 +129,21 @@ export const SignupForm: Story = {
               control={form.control}
               name="email"
               rules={{
-                required: "Email is required.",
+                required: 'Email is required.',
                 pattern: {
                   value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
-                  message: "Enter a valid email address.",
+                  message: 'Enter a valid email address.',
                 },
               }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="ada@example.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="ada@example.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -149,7 +153,7 @@ export const SignupForm: Story = {
             <FormField
               control={form.control}
               name="acceptTerms"
-              rules={{ required: "You must accept the terms." }}
+              rules={{ required: 'You must accept the terms.' }}
               render={({ field }) => (
                 <FormItem>
                   <div className="flex items-center gap-2">

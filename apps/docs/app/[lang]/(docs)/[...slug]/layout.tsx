@@ -1,11 +1,11 @@
-import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
-import { ThemeSwitchWithFlag } from "@/components/flag-language-switch";
-import { getSection } from "@/lib/get-section";
-import { baseOptions } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
+import { ThemeSwitchWithFlag } from '@/components/flag-language-switch';
+import { getSection } from '@/lib/get-section';
+import { baseOptions } from '@/lib/layout.shared';
+import { source } from '@/lib/source';
 
 /**
  * Catch-all docs layout.
@@ -22,7 +22,7 @@ import { source } from "@/lib/source";
  */
 export default async function Layout({
   params,
-  children
+  children,
 }: {
   params: Promise<{ lang: string }>;
   children: ReactNode;
@@ -54,16 +54,16 @@ export default async function Layout({
                   className="[&_svg]:size-full rounded-lg size-full text-(--tab-color) max-md:bg-(--tab-color)/10 max-md:border max-md:p-1.5"
                   style={
                     {
-                      "--tab-color": color
+                      '--tab-color': color,
                     } as React.CSSProperties
                   }
                 >
                   {node.icon}
                 </div>
-              )
+              ),
             };
-          }
-        }
+          },
+        },
       }}
     >
       {children}

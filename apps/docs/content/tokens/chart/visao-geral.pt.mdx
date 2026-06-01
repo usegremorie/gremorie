@@ -43,8 +43,7 @@ onde não há).
 ## Por que cinco e não três
 
 A fundamentação dos três primeiros vem do **ColorBrewer** (Cynthia
-Brewer, Penn State) — referência canônica em dataviz desde os anos
-90. Os outros dois são contribuições de DS de produto:
+Brewer, Penn State) — referência canônica em dataviz desde os anos 90. Os outros dois são contribuições de DS de produto:
 
 - **Status** vem do **Cloudscape (AWS)** e **Carbon (IBM)** — UI
   systems que precisaram nomear cores de estado para dashboards.
@@ -57,13 +56,13 @@ Brewer, Penn State) — referência canônica em dataviz desde os anos
 Para escolher o esquema certo, comece pela **forma do dado**, não
 pelo gosto:
 
-| Forma do dado | Esquema | Tipo de gráfico recomendado |
-|---|---|---|
-| Ordenado, low → high (densidade, intensidade) | **Sequential** | Heatmap, choropleth, Bar com gradiente |
-| Nominal sem ordem (regiões, departamentos, tipos) | **Categorical** | Bar, Line, Area multi-série, Pie |
-| Bipolar com pivô (acima/abaixo da média, variação) | **Divergent** | Bar com baseline, matriz de correlação |
-| Estado discreto com semântica (sucesso/erro/aviso) | **Status** | KPI tile, dashboard de saúde, alert |
-| Dois grupos sem polos semânticos (atual/anterior, A/B) | **Comparison** | Bar / Line com 1 série em destaque |
+| Forma do dado                                          | Esquema         | Tipo de gráfico recomendado            |
+| ------------------------------------------------------ | --------------- | -------------------------------------- |
+| Ordenado, low → high (densidade, intensidade)          | **Sequential**  | Heatmap, choropleth, Bar com gradiente |
+| Nominal sem ordem (regiões, departamentos, tipos)      | **Categorical** | Bar, Line, Area multi-série, Pie       |
+| Bipolar com pivô (acima/abaixo da média, variação)     | **Divergent**   | Bar com baseline, matriz de correlação |
+| Estado discreto com semântica (sucesso/erro/aviso)     | **Status**      | KPI tile, dashboard de saúde, alert    |
+| Dois grupos sem polos semânticos (atual/anterior, A/B) | **Comparison**  | Bar / Line com 1 série em destaque     |
 
 Veja a página [Chart](/ui/data/chart) na seção de UI para ver
 cada tipo renderizado e a matriz inversa (escolha pela pergunta
@@ -107,9 +106,8 @@ no centro:
   — cor sozinha nunca é o canal único.
 
 <Callout type="warn">
-  **Anti-padrão.** Não use Red-Yellow-Green (RdYlGn) para
-  Divergent. A KDS não fornece esse esquema nem como opt-in.
-  Adapte para Red-Blue (RdBu).
+  **Anti-padrão.** Não use Red-Yellow-Green (RdYlGn) para Divergent. A KDS não
+  fornece esse esquema nem como opt-in. Adapte para Red-Blue (RdBu).
 </Callout>
 
 ## Como referenciar nos componentes

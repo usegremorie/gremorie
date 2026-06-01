@@ -5,20 +5,10 @@
   "framework": "rx",
   "title": "Code block artifact",
   "description": "Syntax-highlighted code artifact with copy-to-clipboard. Composes CodeBlock (rx-ai) with Card + Badge for framing.",
-  "categories": [
-    "artifacts",
-    "code"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["artifacts", "code"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-card",
-    "rx-badge",
-    "rx-code-block"
-  ],
+  "registryDependencies": ["rx-utils", "rx-card", "rx-badge", "rx-code-block"],
   "files": [
     {
       "path": "code-block.tsx",

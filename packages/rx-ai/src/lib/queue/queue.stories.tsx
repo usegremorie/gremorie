@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { ListTodoIcon, TrashIcon, XIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { ListTodoIcon, TrashIcon, XIcon } from 'lucide-react';
 
 import {
   Queue,
@@ -16,7 +16,7 @@ import {
   QueueSectionContent,
   QueueSectionLabel,
   QueueSectionTrigger,
-} from "./queue";
+} from './queue';
 
 /**
  * # Queue
@@ -76,10 +76,10 @@ import {
  * | `--muted-foreground` | Text and status colors. |
  */
 const meta = {
-  title: "AI/Queue",
+  title: 'AI/Queue',
   component: Queue,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Queue>;
 
 export default meta;

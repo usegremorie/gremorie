@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   type Edge as FlowEdge,
   type Node as FlowNode,
   ReactFlowProvider,
-} from "@xyflow/react";
+} from '@xyflow/react';
 
-import { Canvas } from "../canvas";
-import { Connection } from "./connection";
+import { Canvas } from '../canvas';
+import { Connection } from './connection';
 
 /**
  * # Connection
@@ -39,17 +39,17 @@ import { Connection } from "./connection";
  * | `--color-ring` | Stroke of the provisional connection line and dot. |
  */
 const meta = {
-  title: "AI/Connection",
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  title: 'AI/Connection',
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const nodes: FlowNode[] = [
-  { id: "1", position: { x: 0, y: 80 }, data: { label: "Drag from me" } },
-  { id: "2", position: { x: 300, y: 0 }, data: { label: "Drop here" } },
+  { id: '1', position: { x: 0, y: 80 }, data: { label: 'Drag from me' } },
+  { id: '2', position: { x: 300, y: 0 }, data: { label: 'Drop here' } },
 ];
 
 const edges: FlowEdge[] = [];

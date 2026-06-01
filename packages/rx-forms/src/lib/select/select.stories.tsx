@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
+import { Label } from '../label/label';
 import {
   Select,
   SelectContent,
@@ -10,7 +10,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from './select';
 
 /**
  * # Select
@@ -65,10 +65,10 @@ import {
  * | `--muted-foreground` | placeholder + group label |
  */
 const meta = {
-  title: "Inputs/Select",
+  title: 'Inputs/Select',
   component: Select,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Select>;
 
 export default meta;

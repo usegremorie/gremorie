@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
 /**
  * Thin root layout. The real <html>/<body> + providers live in
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: false,
       follow: false,
-      noimageindex: true
-    }
-  }
+      noimageindex: true,
+    },
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

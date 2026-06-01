@@ -1,15 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   type NodeProps,
   type NodeTypes,
   Position,
   ReactFlow,
-} from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
-import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Underline } from "lucide-react";
-import type { ReactNode } from "react";
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Italic,
+  Underline,
+} from 'lucide-react';
+import type { ReactNode } from 'react';
 
-import { Toolbar } from "./toolbar";
+import { Toolbar } from './toolbar';
 
 /**
  * Toolbar - node action row (React edition).
@@ -25,7 +32,7 @@ import { Toolbar } from "./toolbar";
  */
 
 const iconBtn =
-  "inline-flex size-7 items-center justify-center rounded-sm text-sm hover:bg-accent hover:text-accent-foreground";
+  'inline-flex size-7 items-center justify-center rounded-sm text-sm hover:bg-accent hover:text-accent-foreground';
 
 /** Custom node whose body is supplied per-story; the Toolbar pins to it. */
 type ToolbarNodeData = { toolbar: ReactNode };
@@ -50,8 +57,8 @@ const FlowHost = ({ toolbar }: { toolbar: ReactNode }) => (
       nodeTypes={nodeTypes}
       nodes={[
         {
-          id: "1",
-          type: "toolbarNode",
+          id: '1',
+          type: 'toolbarNode',
           position: { x: 110, y: 70 },
           data: { toolbar },
         },
@@ -68,10 +75,10 @@ const FlowHost = ({ toolbar }: { toolbar: ReactNode }) => (
 );
 
 const meta = {
-  title: "AI/Toolbar",
+  title: 'AI/Toolbar',
   component: Toolbar,
-  tags: ["autodocs"],
-  parameters: { layout: "centered", controls: { disable: true } },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered', controls: { disable: true } },
 } satisfies Meta<typeof Toolbar>;
 
 export default meta;
@@ -98,11 +105,15 @@ export const Default: Story = {
 };
 
 export const WithGroup: Story = {
-  name: "With group",
+  name: 'With group',
   render: () => (
     <FlowHost
       toolbar={
-        <div className="flex items-center gap-1" role="group" aria-label="Formatting">
+        <div
+          className="flex items-center gap-1"
+          role="group"
+          aria-label="Formatting"
+        >
           <button type="button" className={iconBtn} aria-label="Bold">
             <span className="font-bold">B</span>
           </button>
@@ -119,7 +130,7 @@ export const WithGroup: Story = {
 };
 
 export const Pressed: Story = {
-  name: "With pressed state",
+  name: 'With pressed state',
   render: () => (
     <FlowHost
       toolbar={
@@ -132,10 +143,20 @@ export const Pressed: Story = {
           >
             <span className="font-bold">B</span>
           </button>
-          <button type="button" aria-pressed={false} className={iconBtn} aria-label="Italic">
+          <button
+            type="button"
+            aria-pressed={false}
+            className={iconBtn}
+            aria-label="Italic"
+          >
             <span className="italic">I</span>
           </button>
-          <button type="button" aria-pressed={false} className={iconBtn} aria-label="Underline">
+          <button
+            type="button"
+            aria-pressed={false}
+            className={iconBtn}
+            aria-label="Underline"
+          >
             <span className="underline">U</span>
           </button>
         </>
@@ -170,11 +191,15 @@ export const Disabled: Story = {
 };
 
 export const VerticalGroup: Story = {
-  name: "Vertical group",
+  name: 'Vertical group',
   render: () => (
     <FlowHost
       toolbar={
-        <div className="flex flex-col items-start gap-1" role="group" aria-label="Alignment">
+        <div
+          className="flex flex-col items-start gap-1"
+          role="group"
+          aria-label="Alignment"
+        >
           <button type="button" className={iconBtn} aria-label="Align left">
             <AlignLeft className="size-4" aria-hidden="true" />
           </button>

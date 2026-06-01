@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Area Chart (React)",
   "description": "Styled area chart - cumulative quantity over a continuous domain. Composes the rx-chart primitive with recharts.",
-  "categories": [
-    "data",
-    "charts"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["data", "charts"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-chart"
-  ],
+  "registryDependencies": ["rx-utils", "rx-chart"],
   "files": [
     {
       "path": "src/lib/area-chart/area-chart.tsx",

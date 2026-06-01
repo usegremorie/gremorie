@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { RotateCwIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { RotateCwIcon } from 'lucide-react';
 
 import {
   WebPreview,
@@ -8,7 +8,7 @@ import {
   WebPreviewNavigation,
   WebPreviewNavigationButton,
   WebPreviewUrl,
-} from "./web-preview";
+} from './web-preview';
 
 /**
  * # WebPreview
@@ -56,10 +56,10 @@ import {
  * | `--destructive` | `error`-level log rows |
  */
 const meta = {
-  title: "Artifacts/WebPreview",
+  title: 'Artifacts/WebPreview',
   component: WebPreview,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <div className="h-[28rem] w-[40rem] max-w-full">
@@ -73,15 +73,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const LOGS = [
-  { level: "log" as const, message: "App mounted", timestamp: new Date() },
+  { level: 'log' as const, message: 'App mounted', timestamp: new Date() },
   {
-    level: "warn" as const,
-    message: "Deprecated prop `legacy` used",
+    level: 'warn' as const,
+    message: 'Deprecated prop `legacy` used',
     timestamp: new Date(),
   },
   {
-    level: "error" as const,
-    message: "Failed to fetch /api/user (404)",
+    level: 'error' as const,
+    message: 'Failed to fetch /api/user (404)',
     timestamp: new Date(),
   },
 ];

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   Cloud,
   CreditCard,
@@ -8,7 +8,7 @@ import {
   Settings,
   User,
   UserPlus,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -25,8 +25,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./dropdown-menu";
-import { Button } from "@gremorie/rx-forms";
+} from './dropdown-menu';
+import { Button } from '@gremorie/rx-forms';
 
 /**
  * # DropdownMenu
@@ -82,10 +82,10 @@ import { Button } from "@gremorie/rx-forms";
  * | `--border` | Separator |
  */
 const meta = {
-  title: "Interaction/Overlays/DropdownMenu",
+  title: 'Interaction/Overlays/DropdownMenu',
   component: DropdownMenu,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof DropdownMenu>;
 
 export default meta;

@@ -1,19 +1,19 @@
-import "../global.css";
-import { RootProvider } from "fumadocs-ui/provider/next";
-import { Geist, Geist_Mono } from "next/font/google";
+import '../global.css';
+import { RootProvider } from 'fumadocs-ui/provider/next';
+import { Geist, Geist_Mono } from 'next/font/google';
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
-import { provider } from "@/lib/layout.shared";
+import { provider } from '@/lib/layout.shared';
 
 const geistSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans"
+  subsets: ['latin'],
+  variable: '--font-geist-sans',
 });
 
 const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono"
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
 });
 
 /**
@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
  */
 export default async function LangLayout({
   params,
-  children
+  children,
 }: {
   params: Promise<{ lang: string }>;
   children: ReactNode;
@@ -49,9 +49,9 @@ export default async function LangLayout({
           search={{
             enabled: true,
             options: {
-              type: "fetch",
-              api: "/api/search"
-            }
+              type: 'fetch',
+              api: '/api/search',
+            },
           }}
         >
           {children}

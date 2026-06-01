@@ -12,9 +12,9 @@
  * Optional add-ons (blocks, artifacts) are NOT meant to live here — install
  * those from their own packages when you need them.
  */
-export * from "@gremorie/ng-core";
-export * from "@gremorie/ng-ai";
-export * from "@gremorie/ng-display";
-export * from "@gremorie/ng-containers";
-export * from "@gremorie/ng-data";
-export * from "@gremorie/ng-feedback";
+export * from '@gremorie/ng-core';
+export * from '@gremorie/ng-ai';
+export * from '@gremorie/ng-display';
+export * from '@gremorie/ng-containers';
+export * from '@gremorie/ng-data';
+export * from '@gremorie/ng-feedback';

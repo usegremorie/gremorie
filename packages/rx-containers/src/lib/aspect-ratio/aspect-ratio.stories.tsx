@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { AspectRatio } from "./aspect-ratio";
+import { AspectRatio } from './aspect-ratio';
 
 /**
  * # AspectRatio
@@ -28,12 +28,12 @@ import { AspectRatio } from "./aspect-ratio";
  * comes from the media or placeholder you nest inside it.
  */
 const meta = {
-  title: "Layout & display/Containers/AspectRatio",
+  title: 'Layout & display/Containers/AspectRatio',
   component: AspectRatio,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    ratio: { control: { type: "number" } },
+    ratio: { control: { type: 'number' } },
   },
 } satisfies Meta<typeof AspectRatio>;
 
@@ -41,7 +41,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const IMG =
-  "https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=800&dpr=2&q=80";
+  'https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=800&dpr=2&q=80';
 
 /** A 16/9 widescreen image frame. */
 export const Widescreen: Story = {

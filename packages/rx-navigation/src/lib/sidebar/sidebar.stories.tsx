@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   CalendarIcon,
   HomeIcon,
   InboxIcon,
   SearchIcon,
   SettingsIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   Sidebar,
@@ -23,7 +23,7 @@ import {
   SidebarMenuSkeleton,
   SidebarProvider,
   SidebarTrigger,
-} from "./sidebar";
+} from './sidebar';
 
 /**
  * # Sidebar
@@ -83,29 +83,29 @@ import {
  * | `--sidebar-width` / `--sidebar-width-icon` | Expanded vs icon widths |
  */
 const meta = {
-  title: "Interaction/Navigation/Sidebar",
+  title: 'Interaction/Navigation/Sidebar',
   component: Sidebar,
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof Sidebar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const NAV = [
-  { title: "Home", icon: HomeIcon, badge: undefined as string | undefined },
-  { title: "Inbox", icon: InboxIcon, badge: "12" },
-  { title: "Calendar", icon: CalendarIcon, badge: undefined },
-  { title: "Search", icon: SearchIcon, badge: undefined },
-  { title: "Settings", icon: SettingsIcon, badge: undefined },
+  { title: 'Home', icon: HomeIcon, badge: undefined as string | undefined },
+  { title: 'Inbox', icon: InboxIcon, badge: '12' },
+  { title: 'Calendar', icon: CalendarIcon, badge: undefined },
+  { title: 'Search', icon: SearchIcon, badge: undefined },
+  { title: 'Settings', icon: SettingsIcon, badge: undefined },
 ];
 
 function AppShell({
-  collapsible = "offcanvas",
-  variant = "sidebar",
+  collapsible = 'offcanvas',
+  variant = 'sidebar',
 }: {
-  collapsible?: "offcanvas" | "icon" | "none";
-  variant?: "sidebar" | "floating" | "inset";
+  collapsible?: 'offcanvas' | 'icon' | 'none';
+  variant?: 'sidebar' | 'floating' | 'inset';
 }) {
   return (
     <SidebarProvider>

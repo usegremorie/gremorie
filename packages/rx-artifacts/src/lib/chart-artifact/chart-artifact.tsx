@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   AreaChart,
@@ -9,7 +9,7 @@ import {
   RadialChart,
   ScatterChart,
   type ChartConfig,
-} from "@gremorie/rx-data";
+} from '@gremorie/rx-data';
 import {
   Table,
   TableBody,
@@ -17,7 +17,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@gremorie/rx-display";
+} from '@gremorie/rx-display';
 import {
   ChartColumn,
   Copy,
@@ -29,8 +29,8 @@ import {
   Sheet,
   Table as TableIcon,
   type LucideIcon,
-} from "lucide-react";
-import { useRef, useState } from "react";
+} from 'lucide-react';
+import { useRef, useState } from 'react';
 
 import {
   Artifact,
@@ -45,27 +45,27 @@ import {
   ArtifactMenu,
   ArtifactTitle,
   ArtifactViewToggle,
-} from "../artifact";
+} from '../artifact';
 
 export type ChartArtifactDatum = Record<string, string | number>;
-export type ChartArtifactView = "chart" | "table";
-export type ChartArtifactColor = "brand" | "gray" | "success" | "error";
+export type ChartArtifactView = 'chart' | 'table';
+export type ChartArtifactColor = 'brand' | 'gray' | 'success' | 'error';
 
 /** Which chart primitive the artifact embeds. */
 export type ChartArtifactType =
-  | "bar"
-  | "area"
-  | "line"
-  | "pie"
-  | "radar"
-  | "radial"
-  | "scatter";
+  | 'bar'
+  | 'area'
+  | 'line'
+  | 'pie'
+  | 'radar'
+  | 'radial'
+  | 'scatter';
 
 /** Categorical types render one row → one slice/bar, colored from the palette. */
 const CATEGORICAL: ReadonlySet<ChartArtifactType> = new Set([
-  "bar",
-  "pie",
-  "radial",
+  'bar',
+  'pie',
+  'radial',
 ]);
 
 export interface ChartArtifactSeries {
@@ -116,7 +116,7 @@ export interface ChartArtifactProps {
 }
 
 const titleCase = (s: string) =>
-  s.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  s.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
 const paletteColor = (i: number) => `var(--chart-${(i % 5) + 1})`;
 
@@ -124,10 +124,10 @@ const paletteColor = (i: number) => `var(--chart-${(i % 5) + 1})`;
 
 function downloadBlob(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
+  const a = document.createElement('a');
   a.href = url;
   a.download = name;
-  a.rel = "noopener";
+  a.rel = 'noopener';
   document.body.append(a);
   a.click();
   a.remove();
@@ -135,39 +135,39 @@ function downloadBlob(blob: Blob, name: string) {
 }
 
 const csvCell = (v: unknown) => {
-  const s = String(v ?? "");
+  const s = String(v ?? '');
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 
 const SVG_STYLE_PROPS = [
-  "fill",
-  "fill-opacity",
-  "stroke",
-  "stroke-width",
-  "stroke-opacity",
-  "opacity",
-  "font-family",
-  "font-size",
-  "font-weight",
-  "text-anchor",
-  "dominant-baseline",
+  'fill',
+  'fill-opacity',
+  'stroke',
+  'stroke-width',
+  'stroke-opacity',
+  'opacity',
+  'font-family',
+  'font-size',
+  'font-weight',
+  'text-anchor',
+  'dominant-baseline',
 ];
 
 /** Inline resolved styles onto a clone so a detached SVG rasterizes faithfully. */
 function inlineComputedStyles(source: SVGSVGElement, clone: SVGSVGElement) {
-  const src = [source, ...Array.from(source.querySelectorAll("*"))];
-  const dst = [clone, ...Array.from(clone.querySelectorAll("*"))];
+  const src = [source, ...Array.from(source.querySelectorAll('*'))];
+  const dst = [clone, ...Array.from(clone.querySelectorAll('*'))];
   src.forEach((el, i) => {
     const target = dst[i] as SVGElement | undefined;
     if (!target) return;
     const cs = getComputedStyle(el);
-    let style = "";
+    let style = '';
     for (const prop of SVG_STYLE_PROPS) {
       const value = cs.getPropertyValue(prop);
       if (value) style += `${prop}:${value};`;
     }
-    target.setAttribute("style", style);
-    target.removeAttribute("class");
+    target.setAttribute('style', style);
+    target.removeAttribute('class');
   });
 }
 
@@ -177,31 +177,31 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string) {
   const height = Math.max(1, Math.ceil(rect.height));
   const clone = svg.cloneNode(true) as SVGSVGElement;
   inlineComputedStyles(svg, clone);
-  clone.setAttribute("width", String(width));
-  clone.setAttribute("height", String(height));
-  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  clone.setAttribute('width', String(width));
+  clone.setAttribute('height', String(height));
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   const xml = new XMLSerializer().serializeToString(clone);
   const url = URL.createObjectURL(
-    new Blob([xml], { type: "image/svg+xml;charset=utf-8" })
+    new Blob([xml], { type: 'image/svg+xml;charset=utf-8' }),
   );
   const img = new Image();
   img.onload = () => {
     const scale = 2;
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas');
     canvas.width = width * scale;
     canvas.height = height * scale;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (ctx) {
       ctx.scale(scale, scale);
       const bg = getComputedStyle(svg).backgroundColor;
-      if (bg && bg.startsWith("rgb") && !bg.includes(", 0)")) {
+      if (bg && bg.startsWith('rgb') && !bg.includes(', 0)')) {
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, width, height);
       }
       ctx.drawImage(img, 0, 0, width, height);
       canvas.toBlob((blob) => {
         if (blob) downloadBlob(blob, `${fileName}.png`);
-      }, "image/png");
+      }, 'image/png');
     }
     URL.revokeObjectURL(url);
   };
@@ -224,16 +224,16 @@ export function ChartArtifact({
   title,
   description,
   data,
-  type = "bar",
+  type = 'bar',
   categoryKey,
   valueKey,
   categoryLabel,
   valueLabel,
-  defaultView = "chart",
+  defaultView = 'chart',
   numberFormat,
-  fileName = "chart",
+  fileName = 'chart',
   icon = ChartColumn,
-  accent = "brand",
+  accent = 'brand',
   className,
   onRegenerate,
   onSave,
@@ -249,7 +249,7 @@ export function ChartArtifact({
 
   // Normalize `valueKey` (string | series[]) into a series list.
   const series: Required<ChartArtifactSeries>[] = (
-    typeof valueKey === "string"
+    typeof valueKey === 'string'
       ? [{ key: valueKey, label: valueLabel, color: undefined }]
       : valueKey
   ).map((s, i) => ({
@@ -261,7 +261,7 @@ export function ChartArtifact({
 
   // Chart `config` maps each series key → label + color.
   const config: ChartConfig = Object.fromEntries(
-    series.map((s) => [s.key, { label: s.label, color: s.color }])
+    series.map((s) => [s.key, { label: s.label, color: s.color }]),
   );
 
   // Categorical (bar/pie/radial): one palette color per ROW via each row's `fill`.
@@ -272,19 +272,29 @@ export function ChartArtifact({
 
   const renderChart = () => {
     switch (type) {
-      case "area":
+      case 'area':
         return (
-          <AreaChart data={data} config={config} xKey={categoryKey} yAxis={false} />
+          <AreaChart
+            data={data}
+            config={config}
+            xKey={categoryKey}
+            yAxis={false}
+          />
         );
-      case "line":
+      case 'line':
         return (
-          <LineChart data={data} config={config} xKey={categoryKey} yAxis={false} />
+          <LineChart
+            data={data}
+            config={config}
+            xKey={categoryKey}
+            yAxis={false}
+          />
         );
-      case "scatter":
+      case 'scatter':
         return <ScatterChart data={data} config={config} xKey={categoryKey} />;
-      case "radar":
+      case 'radar':
         return <RadarChart data={data} config={config} xKey={categoryKey} />;
-      case "pie":
+      case 'pie':
         return (
           <PieChart
             data={categoricalData}
@@ -294,7 +304,7 @@ export function ChartArtifact({
             donut
           />
         );
-      case "radial":
+      case 'radial':
         return (
           <RadialChart
             data={categoricalData}
@@ -316,15 +326,15 @@ export function ChartArtifact({
   };
 
   const exportImage = () => {
-    const svg = contentRef.current?.querySelector("svg");
+    const svg = contentRef.current?.querySelector('svg');
     if (svg && svg.getBoundingClientRect().width > 0) {
       exportSvgToPng(svg, fileName);
     }
   };
 
   const downloadImage = () => {
-    if (view !== "chart") {
-      setView("chart");
+    if (view !== 'chart') {
+      setView('chart');
       setTimeout(exportImage, 140);
     } else {
       exportImage();
@@ -334,23 +344,27 @@ export function ChartArtifact({
   const downloadData = () => {
     const header = [catLabel, ...series.map((s) => s.label)];
     const rows = [
-      header.map(csvCell).join(","),
+      header.map(csvCell).join(','),
       ...data.map((d) =>
-        [csvCell(d[categoryKey]), ...series.map((s) => csvCell(d[s.key]))].join(",")
+        [csvCell(d[categoryKey]), ...series.map((s) => csvCell(d[s.key]))].join(
+          ',',
+        ),
       ),
     ];
     downloadBlob(
-      new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" }),
-      `${fileName}.csv`
+      new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8' }),
+      `${fileName}.csv`,
     );
   };
 
   const copyValues = () => {
     const text = data
       .map((d) =>
-        [d[categoryKey], ...series.map((s) => format(Number(d[s.key])))].join("\t")
+        [d[categoryKey], ...series.map((s) => format(Number(d[s.key])))].join(
+          '\t',
+        ),
       )
-      .join("\n");
+      .join('\n');
     void navigator.clipboard?.writeText(text);
   };
 
@@ -375,8 +389,8 @@ export function ChartArtifact({
             value={view}
             onValueChange={(v) => setView(v as ChartArtifactView)}
             options={[
-              { value: "chart", icon: ChartColumn, label: "Chart view" },
-              { value: "table", icon: TableIcon, label: "Table view" },
+              { value: 'chart', icon: ChartColumn, label: 'Chart view' },
+              { value: 'table', icon: TableIcon, label: 'Table view' },
             ]}
           />
 
@@ -386,19 +400,23 @@ export function ChartArtifact({
               icon={Download}
               label="Download"
               items={[
-                { label: "Image (PNG)", icon: ImageDown, onSelect: downloadImage },
-                { label: "Data (CSV)", icon: Sheet, onSelect: downloadData },
+                {
+                  label: 'Image (PNG)',
+                  icon: ImageDown,
+                  onSelect: downloadImage,
+                },
+                { label: 'Data (CSV)', icon: Sheet, onSelect: downloadData },
               ]}
             />
             <ArtifactMenu
               icon={Ellipsis}
               label="More actions"
               items={[
-                { label: "Copy values", icon: Copy, onSelect: copyValues },
-                { label: "Save", icon: Bookmark, onSelect: () => onSave?.() },
-                "separator",
+                { label: 'Copy values', icon: Copy, onSelect: copyValues },
+                { label: 'Save', icon: Bookmark, onSelect: () => onSave?.() },
+                'separator',
                 {
-                  label: "Regenerate",
+                  label: 'Regenerate',
                   icon: RefreshCw,
                   onSelect: () => onRegenerate?.(),
                 },
@@ -412,14 +430,22 @@ export function ChartArtifact({
               icon={Ellipsis}
               label="Actions"
               items={[
-                { label: "Download image (PNG)", icon: ImageDown, onSelect: downloadImage },
-                { label: "Download data (CSV)", icon: Sheet, onSelect: downloadData },
-                "separator",
-                { label: "Copy values", icon: Copy, onSelect: copyValues },
-                { label: "Save", icon: Bookmark, onSelect: () => onSave?.() },
-                "separator",
                 {
-                  label: "Regenerate",
+                  label: 'Download image (PNG)',
+                  icon: ImageDown,
+                  onSelect: downloadImage,
+                },
+                {
+                  label: 'Download data (CSV)',
+                  icon: Sheet,
+                  onSelect: downloadData,
+                },
+                'separator',
+                { label: 'Copy values', icon: Copy, onSelect: copyValues },
+                { label: 'Save', icon: Bookmark, onSelect: () => onSave?.() },
+                'separator',
+                {
+                  label: 'Regenerate',
                   icon: RefreshCw,
                   onSelect: () => onRegenerate?.(),
                 },
@@ -431,7 +457,7 @@ export function ChartArtifact({
 
       <ArtifactContent>
         <div ref={contentRef}>
-          {view === "chart" ? (
+          {view === 'chart' ? (
             renderChart()
           ) : (
             <Table>

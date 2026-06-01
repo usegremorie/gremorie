@@ -5,17 +5,10 @@
   "framework": "rx",
   "title": "Artifact (React)",
   "description": "Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.",
-  "categories": [
-    "ai",
-    "code"
-  ],
+  "categories": ["ai", "code"],
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-button",
-    "rx-tooltip"
-  ],
+  "registryDependencies": ["rx-utils", "rx-button", "rx-tooltip"],
   "files": [
     {
       "path": "src/lib/artifact/artifact.tsx",

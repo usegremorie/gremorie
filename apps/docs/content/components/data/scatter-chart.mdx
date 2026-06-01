@@ -1,9 +1,12 @@
 ---
 title: Scatter Chart
-description: "Correlation between a numeric X field and one or more Y series, plotted as colored dots."
+description: 'Correlation between a numeric X field and one or more Y series, plotted as colored dots.'
 ---
 
-import { ScatterChartPreview, ScatterChartMultiPreview } from "@/components/preview/data/charts";
+import {
+  ScatterChartPreview,
+  ScatterChartMultiPreview,
+} from '@/components/preview/data/charts';
 
 ## Overview
 
@@ -20,26 +23,16 @@ Reach for ScatterChart when you need to surface **correlation, density, or outli
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-scatter-chart
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-scatter-chart
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-scatter-chart
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-scatter-chart
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-scatter-chart ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-scatter-chart ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-scatter-chart ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-scatter-chart ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -51,16 +44,16 @@ import { ScatterChart } from "@gremorie/rx-data";
 import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
 
 const data: ChartDatum[] = [
-  { x: 30, y: 100 },
-  { x: 50, y: 200 },
-  { x: 70, y: 150 },
-  { x: 90, y: 250 },
-  { x: 110, y: 175 },
-  { x: 130, y: 300 },
+{ x: 30, y: 100 },
+{ x: 50, y: 200 },
+{ x: 70, y: 150 },
+{ x: 90, y: 250 },
+{ x: 110, y: 175 },
+{ x: 130, y: 300 },
 ];
 
 const config: ChartConfig = {
-  y: { label: "Value", color: "var(--chart-1)" },
+y: { label: "Value", color: "var(--chart-1)" },
 };
 
 export function CorrelationChart() {
@@ -81,33 +74,33 @@ Angular edition planned for a follow-up release; it mirrors this component's ana
 
 The styled wrapper over recharts' `ScatterChart`, composed on `ChartContainer`. Renders the responsive frame, a cartesian grid, the numeric X and Y axes, an optional tooltip, and one `<Scatter>` per `config` key colored `var(--color-<key>)`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `ChartDatum[]` | - | Tabular data. Each row carries the numeric `xKey` value plus one numeric value per `config` key. |
-| `config` | `ChartConfig` | - | Maps each Y series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
-| `xKey` | `string` | - | Name of the **numeric** field on each row used as the X axis. Linear, not categorical. |
-| `tooltip` | `boolean` | `true` | Toggles the hover tooltip. |
-| `className` | `string` | - | Merged onto the `ChartContainer`. |
+| Prop        | Type           | Default | Description                                                                                                                                                                                                         |
+| ----------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `ChartDatum[]` | -       | Tabular data. Each row carries the numeric `xKey` value plus one numeric value per `config` key.                                                                                                                    |
+| `config`    | `ChartConfig`  | -       | Maps each Y series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
+| `xKey`      | `string`       | -       | Name of the **numeric** field on each row used as the X axis. Linear, not categorical.                                                                                                                              |
+| `tooltip`   | `boolean`      | `true`  | Toggles the hover tooltip.                                                                                                                                                                                          |
+| `className` | `string`       | -       | Merged onto the `ChartContainer`.                                                                                                                                                                                   |
 
 ### Composing with the chart primitive
 
 For full control, compose recharts directly inside `ChartContainer` using the exported primitives. shadcn ships no scatter block, but the composition follows the same pattern as the [other shadcn chart blocks](https://ui.shadcn.com/charts).
 
-| Export | Role |
-|---|---|
-| `ChartContainer` | Responsive frame; injects per-series `--color-<key>` vars from `config`. |
-| `ChartTooltip` | recharts `Tooltip` re-export; pair with `ChartTooltipContent`. |
-| `ChartTooltipContent` | Styled tooltip body. |
-| `ChartLegend` | recharts `Legend` re-export; pair with `ChartLegendContent`. |
-| `ChartLegendContent` | Styled legend body. |
-| `useChart` | Hook to read the active `config` inside a custom child. |
+| Export                | Role                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| `ChartContainer`      | Responsive frame; injects per-series `--color-<key>` vars from `config`. |
+| `ChartTooltip`        | recharts `Tooltip` re-export; pair with `ChartTooltipContent`.           |
+| `ChartTooltipContent` | Styled tooltip body.                                                     |
+| `ChartLegend`         | recharts `Legend` re-export; pair with `ChartLegendContent`.             |
+| `ChartLegendContent`  | Styled legend body.                                                      |
+| `useChart`            | Hook to read the active `config` inside a custom child.                  |
 
 ### Types
 
-| Type | Shape |
-|---|---|
-| `ChartDatum` | `Record<string, string \| number> & { fill?: string }` - one row of chart data; the optional `fill` sets a per-point color. |
-| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map. |
+| Type          | Shape                                                                                                                       |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - one row of chart data; the optional `fill` sets a per-point color. |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map.                                   |
 
 ```tsx
 import {
@@ -116,21 +109,40 @@ import {
   ChartTooltipContent,
   type ChartConfig,
   type ChartDatum,
-} from "@gremorie/rx-data";
-import { CartesianGrid, Scatter, ScatterChart, XAxis, YAxis } from "recharts";
+} from '@gremorie/rx-data';
+import { CartesianGrid, Scatter, ScatterChart, XAxis, YAxis } from 'recharts';
 
 const config = {
-  y: { label: "Value", color: "var(--chart-1)" },
+  y: { label: 'Value', color: 'var(--chart-1)' },
 } satisfies ChartConfig;
 
 export function Example({ data }: { data: ChartDatum[] }) {
   return (
     <ChartContainer config={config}>
-      <ScatterChart accessibilityLayer margin={{ left: 12, right: 12, top: 8, bottom: 8 }}>
+      <ScatterChart
+        accessibilityLayer
+        margin={{ left: 12, right: 12, top: 8, bottom: 8 }}
+      >
         <CartesianGrid />
-        <XAxis dataKey="x" type="number" name="x" tickLine={false} axisLine={false} tickMargin={8} />
-        <YAxis type="number" tickLine={false} axisLine={false} tickMargin={8} width={40} />
-        <ChartTooltip cursor={{ strokeDasharray: "3 3" }} content={<ChartTooltipContent />} />
+        <XAxis
+          dataKey="x"
+          type="number"
+          name="x"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
+        <YAxis
+          type="number"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          width={40}
+        />
+        <ChartTooltip
+          cursor={{ strokeDasharray: '3 3' }}
+          content={<ChartTooltipContent />}
+        />
         <Scatter name="y" dataKey="y" fill="var(--color-y)" />
       </ScatterChart>
     </ChartContainer>
@@ -160,7 +172,7 @@ The chart auto-sizes to its parent through `ChartContainer`'s responsive frame.
 ```tsx
 <ScatterChart
   data={data}
-  config={{ y: { label: "Value", color: "var(--chart-1)" } }}
+  config={{ y: { label: 'Value', color: 'var(--chart-1)' } }}
   xKey="x"
 />
 ```
@@ -175,11 +187,11 @@ The default shape. Reach for a single series when surfacing correlation or densi
 
 ```tsx
 const config: ChartConfig = {
-  height: { label: "Median", color: "var(--chart-1)" },
-  max: { label: "Max", color: "var(--chart-2)" },
+  height: { label: 'Median', color: 'var(--chart-1)' },
+  max: { label: 'Max', color: 'var(--chart-2)' },
 };
 
-<ScatterChart data={data} config={config} xKey="weight" />
+<ScatterChart data={data} config={config} xKey="weight" />;
 ```
 
 For comparing two distributions against the same X axis. Color tokens carry the series distinction; keep the count at two or three before the dots get too dense to read.

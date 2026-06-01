@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   AreaChart,
@@ -10,38 +10,38 @@ import {
   ScatterChart,
   type ChartConfig,
   type ChartDatum,
-} from "@gremorie/rx-data";
+} from '@gremorie/rx-data';
 
 const monthlyData: ChartDatum[] = [
-  { month: "Jan", desktop: 186, mobile: 80 },
-  { month: "Feb", desktop: 305, mobile: 200 },
-  { month: "Mar", desktop: 237, mobile: 120 },
-  { month: "Apr", desktop: 173, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "Jun", desktop: 214, mobile: 140 },
+  { month: 'Jan', desktop: 186, mobile: 80 },
+  { month: 'Feb', desktop: 305, mobile: 200 },
+  { month: 'Mar', desktop: 237, mobile: 120 },
+  { month: 'Apr', desktop: 173, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'Jun', desktop: 214, mobile: 140 },
 ];
 
 const monthlyConfig: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 };
 
 // Categorical (pie / radial): one chart token per row via `fill`.
 const browserData: ChartDatum[] = [
-  { browser: "Chrome", visitors: 275, fill: "var(--chart-1)" },
-  { browser: "Safari", visitors: 200, fill: "var(--chart-2)" },
-  { browser: "Firefox", visitors: 187, fill: "var(--chart-3)" },
-  { browser: "Edge", visitors: 173, fill: "var(--chart-4)" },
-  { browser: "Other", visitors: 90, fill: "var(--chart-5)" },
+  { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+  { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+  { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+  { browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+  { browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
 ];
 
 const browserConfig: ChartConfig = {
-  visitors: { label: "Visitors" },
-  Chrome: { label: "Chrome" },
-  Safari: { label: "Safari" },
-  Firefox: { label: "Firefox" },
-  Edge: { label: "Edge" },
-  Other: { label: "Other" },
+  visitors: { label: 'Visitors' },
+  Chrome: { label: 'Chrome' },
+  Safari: { label: 'Safari' },
+  Firefox: { label: 'Firefox' },
+  Edge: { label: 'Edge' },
+  Other: { label: 'Other' },
 };
 
 const scatterData: ChartDatum[] = [
@@ -54,12 +54,12 @@ const scatterData: ChartDatum[] = [
 ];
 
 const scatterConfig: ChartConfig = {
-  height: { label: "Height (cm)", color: "var(--chart-1)" },
+  height: { label: 'Height (cm)', color: 'var(--chart-1)' },
 };
 
 // Single-series config (Desktop only) for the "single" preview variants.
 const singleConfig: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
 };
 
 const scatterMultiData: ChartDatum[] = [
@@ -71,12 +71,14 @@ const scatterMultiData: ChartDatum[] = [
   { weight: 80, height: 180, target: 181 },
 ];
 const scatterMultiConfig: ChartConfig = {
-  height: { label: "Height (cm)", color: "var(--chart-1)" },
-  target: { label: "Target (cm)", color: "var(--chart-2)" },
+  height: { label: 'Height (cm)', color: 'var(--chart-1)' },
+  target: { label: 'Target (cm)', color: 'var(--chart-2)' },
 };
 
 export function AreaChartPreview() {
-  return <AreaChart data={monthlyData} config={monthlyConfig} xKey="month" stacked />;
+  return (
+    <AreaChart data={monthlyData} config={monthlyConfig} xKey="month" stacked />
+  );
 }
 
 export function BarChartPreview() {
@@ -88,7 +90,9 @@ export function LineChartPreview() {
 }
 
 export function ScatterChartPreview() {
-  return <ScatterChart data={scatterData} config={scatterConfig} xKey="weight" />;
+  return (
+    <ScatterChart data={scatterData} config={scatterConfig} xKey="weight" />
+  );
 }
 
 export function PieChartPreview() {

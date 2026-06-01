@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { PaperclipIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { PaperclipIcon } from 'lucide-react';
 
 import {
   PromptInput,
@@ -9,7 +9,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-} from "./prompt-input";
+} from './prompt-input';
 
 /**
  * PromptInput toolbar - the footer row that holds tools and submit (React edition).
@@ -19,17 +19,17 @@ import {
  * lays out leading tools and a trailing submit button with space-between.
  */
 const meta = {
-  title: "AI/PromptInput/Toolbar",
+  title: 'AI/PromptInput/Toolbar',
   component: PromptInputFooter,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof PromptInputFooter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "Tools left, submit right",
+  name: 'Tools left, submit right',
   parameters: { controls: { disable: true } },
   render: () => (
     <PromptInput className="max-w-lg" onSubmit={() => {}}>

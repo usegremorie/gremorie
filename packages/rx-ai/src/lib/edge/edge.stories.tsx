@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   type Edge as FlowEdge,
   type EdgeTypes,
   type Node as FlowNode,
   MarkerType,
   ReactFlowProvider,
-} from "@xyflow/react";
+} from '@xyflow/react';
 
-import { Canvas } from "../canvas";
-import { Edge } from "./edge";
+import { Canvas } from '../canvas';
+import { Edge } from './edge';
 
 /**
  * # Edge
@@ -53,9 +53,9 @@ import { Edge } from "./edge";
  * | `--primary` | Fill of the animated traveling dot. |
  */
 const meta = {
-  title: "AI/Edge",
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  title: 'AI/Edge',
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta;
 
 export default meta;
@@ -67,14 +67,14 @@ const edgeTypes: EdgeTypes = {
 };
 
 const nodes: FlowNode[] = [
-  { id: "a", position: { x: 0, y: 60 }, data: { label: "Source" } },
-  { id: "b", position: { x: 280, y: 0 }, data: { label: "Target A" } },
-  { id: "c", position: { x: 280, y: 140 }, data: { label: "Target B" } },
+  { id: 'a', position: { x: 0, y: 60 }, data: { label: 'Source' } },
+  { id: 'b', position: { x: 280, y: 0 }, data: { label: 'Target A' } },
+  { id: 'c', position: { x: 280, y: 140 }, data: { label: 'Target B' } },
 ];
 
 const edges: FlowEdge[] = [
-  { id: "a-b", source: "a", target: "b", type: "animated" },
-  { id: "a-c", source: "a", target: "c", type: "temporary" },
+  { id: 'a-b', source: 'a', target: 'b', type: 'animated' },
+  { id: 'a-c', source: 'a', target: 'c', type: 'temporary' },
 ];
 
 /** Both edge variants in one graph: animated to the top, temporary to the bottom. */
@@ -97,10 +97,10 @@ export const Animated: Story = {
           edgeTypes={edgeTypes}
           edges={[
             {
-              id: "a-b",
-              source: "a",
-              target: "b",
-              type: "animated",
+              id: 'a-b',
+              source: 'a',
+              target: 'b',
+              type: 'animated',
               markerEnd: { type: MarkerType.ArrowClosed },
             },
           ]}
@@ -118,7 +118,7 @@ export const Temporary: Story = {
       <ReactFlowProvider>
         <Canvas
           edgeTypes={edgeTypes}
-          edges={[{ id: "a-c", source: "a", target: "c", type: "temporary" }]}
+          edges={[{ id: 'a-c', source: 'a', target: 'c', type: 'temporary' }]}
           nodes={[nodes[0], nodes[2]]}
         />
       </ReactFlowProvider>

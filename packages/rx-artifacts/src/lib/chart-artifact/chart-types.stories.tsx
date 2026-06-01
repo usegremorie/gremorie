@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   Activity,
   ChartArea,
@@ -7,12 +7,9 @@ import {
   ChartPie,
   ChartScatter,
   Radar as RadarIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
-import {
-  ChartArtifact,
-  type ChartArtifactDatum,
-} from "./chart-artifact";
+import { ChartArtifact, type ChartArtifactDatum } from './chart-artifact';
 
 /**
  * # Chart artifact — every chart type
@@ -27,10 +24,10 @@ import {
  * an array of `{ key, label, color }` (multi-series).
  */
 const meta = {
-  title: "Artifacts/Chart types",
+  title: 'Artifacts/Chart types',
   component: ChartArtifact,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
       <div className="w-[26rem] max-w-full">
@@ -46,32 +43,32 @@ type Story = StoryObj<typeof meta>;
 // ── shared mock data ─────────────────────────────────────────────────────────
 
 const MONTHS: ChartArtifactDatum[] = [
-  { month: "Jan", desktop: 186, mobile: 80 },
-  { month: "Feb", desktop: 305, mobile: 200 },
-  { month: "Mar", desktop: 237, mobile: 120 },
-  { month: "Apr", desktop: 173, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "Jun", desktop: 214, mobile: 140 },
+  { month: 'Jan', desktop: 186, mobile: 80 },
+  { month: 'Feb', desktop: 305, mobile: 200 },
+  { month: 'Mar', desktop: 237, mobile: 120 },
+  { month: 'Apr', desktop: 173, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'Jun', desktop: 214, mobile: 140 },
 ];
 const TWO_SERIES = [
-  { key: "desktop", label: "Desktop", color: "var(--chart-1)" },
-  { key: "mobile", label: "Mobile", color: "var(--chart-2)" },
+  { key: 'desktop', label: 'Desktop', color: 'var(--chart-1)' },
+  { key: 'mobile', label: 'Mobile', color: 'var(--chart-2)' },
 ];
 
 const RATINGS: ChartArtifactDatum[] = [
-  { dept: "Marketing", rating: 4.37 },
-  { dept: "Product", rating: 4.12 },
-  { dept: "Support", rating: 3.94 },
-  { dept: "Sales", rating: 3.76 },
-  { dept: "Finance", rating: 3.58 },
+  { dept: 'Marketing', rating: 4.37 },
+  { dept: 'Product', rating: 4.12 },
+  { dept: 'Support', rating: 3.94 },
+  { dept: 'Sales', rating: 3.76 },
+  { dept: 'Finance', rating: 3.58 },
 ];
 
 const BROWSERS: ChartArtifactDatum[] = [
-  { browser: "Chrome", visitors: 275 },
-  { browser: "Safari", visitors: 200 },
-  { browser: "Firefox", visitors: 187 },
-  { browser: "Edge", visitors: 173 },
-  { browser: "Other", visitors: 90 },
+  { browser: 'Chrome', visitors: 275 },
+  { browser: 'Safari', visitors: 200 },
+  { browser: 'Firefox', visitors: 187 },
+  { browser: 'Edge', visitors: 173 },
+  { browser: 'Other', visitors: 90 },
 ];
 
 const BODY: ChartArtifactDatum[] = [
@@ -89,14 +86,14 @@ const BODY: ChartArtifactDatum[] = [
 /** Bar — categorical single series. Table: category + value with a row swatch. */
 export const Bar: Story = {
   args: {
-    type: "bar",
+    type: 'bar',
     icon: ChartColumn,
-    title: "Average rating by department",
-    description: "Q3 review scores across departments.",
+    title: 'Average rating by department',
+    description: 'Q3 review scores across departments.',
     data: RATINGS,
-    categoryKey: "dept",
-    valueKey: "rating",
-    valueLabel: "Rating",
+    categoryKey: 'dept',
+    valueKey: 'rating',
+    valueLabel: 'Rating',
     numberFormat: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
   },
 };
@@ -104,12 +101,12 @@ export const Bar: Story = {
 /** Area — two stacked series. Table: one column per series. */
 export const Area: Story = {
   args: {
-    type: "area",
+    type: 'area',
     icon: ChartArea,
-    title: "Visitors over time",
-    description: "Sessions by device across six months.",
+    title: 'Visitors over time',
+    description: 'Sessions by device across six months.',
     data: MONTHS,
-    categoryKey: "month",
+    categoryKey: 'month',
     valueKey: TWO_SERIES,
   },
 };
@@ -117,12 +114,12 @@ export const Area: Story = {
 /** Line — two series trend. Table keeps both columns. */
 export const Line: Story = {
   args: {
-    type: "line",
+    type: 'line',
     icon: ChartLine,
-    title: "Engagement trend",
-    description: "Desktop vs. mobile, month over month.",
+    title: 'Engagement trend',
+    description: 'Desktop vs. mobile, month over month.',
     data: MONTHS,
-    categoryKey: "month",
+    categoryKey: 'month',
     valueKey: TWO_SERIES,
   },
 };
@@ -130,26 +127,26 @@ export const Line: Story = {
 /** Pie / donut — share of total. Table: category + value with row swatches. */
 export const Pie: Story = {
   args: {
-    type: "pie",
+    type: 'pie',
     icon: ChartPie,
-    title: "Browser share",
-    description: "Sessions by browser, last 30 days.",
+    title: 'Browser share',
+    description: 'Sessions by browser, last 30 days.',
     data: BROWSERS,
-    categoryKey: "browser",
-    valueKey: "visitors",
-    valueLabel: "Visitors",
+    categoryKey: 'browser',
+    valueKey: 'visitors',
+    valueLabel: 'Visitors',
   },
 };
 
 /** Radar — the case from the bug report: now has the toggle + table. */
 export const Radar: Story = {
   args: {
-    type: "radar",
+    type: 'radar',
     icon: RadarIcon,
-    title: "Capability profile",
-    description: "Desktop vs. mobile across six metrics.",
+    title: 'Capability profile',
+    description: 'Desktop vs. mobile across six metrics.',
     data: MONTHS,
-    categoryKey: "month",
+    categoryKey: 'month',
     valueKey: TWO_SERIES,
   },
 };
@@ -157,32 +154,34 @@ export const Radar: Story = {
 /** Radial — concentric bars. Table: category + value with row swatches. */
 export const Radial: Story = {
   args: {
-    type: "radial",
+    type: 'radial',
     icon: Activity,
-    title: "Browser share (radial)",
-    description: "Concentric bars, one per browser.",
+    title: 'Browser share (radial)',
+    description: 'Concentric bars, one per browser.',
     data: BROWSERS,
-    categoryKey: "browser",
-    valueKey: "visitors",
-    valueLabel: "Visitors",
+    categoryKey: 'browser',
+    valueKey: 'visitors',
+    valueLabel: 'Visitors',
   },
 };
 
 /** Scatter — two numeric axes. Table: X + Y columns. */
 export const Scatter: Story = {
   args: {
-    type: "scatter",
+    type: 'scatter',
     icon: ChartScatter,
-    title: "Height vs. weight",
-    description: "Correlation across a small sample.",
+    title: 'Height vs. weight',
+    description: 'Correlation across a small sample.',
     data: BODY,
-    categoryKey: "weight",
-    valueKey: [{ key: "height", label: "Height (cm)", color: "var(--chart-1)" }],
+    categoryKey: 'weight',
+    valueKey: [
+      { key: 'height', label: 'Height (cm)', color: 'var(--chart-1)' },
+    ],
   },
 };
 
 /** Opens on the table view — flip the toggle to see the radar chart. */
 export const RadarTableFirst: Story = {
-  name: "Radar (table first)",
-  args: { ...Radar.args, defaultView: "table" },
+  name: 'Radar (table first)',
+  args: { ...Radar.args, defaultView: 'table' },
 };

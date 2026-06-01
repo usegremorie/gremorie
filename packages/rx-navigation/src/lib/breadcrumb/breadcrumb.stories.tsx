@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@gremorie/rx-overlays";
-import { SlashIcon } from "lucide-react";
+} from '@gremorie/rx-overlays';
+import { SlashIcon } from 'lucide-react';
 
 import {
   Breadcrumb,
@@ -15,7 +15,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "./breadcrumb";
+} from './breadcrumb';
 
 /**
  * # Breadcrumb
@@ -60,10 +60,10 @@ import {
  * | `--foreground` | Hover + current page color |
  */
 const meta = {
-  title: "Interaction/Navigation/Breadcrumb",
+  title: 'Interaction/Navigation/Breadcrumb',
   component: Breadcrumb,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Breadcrumb>;
 
 export default meta;

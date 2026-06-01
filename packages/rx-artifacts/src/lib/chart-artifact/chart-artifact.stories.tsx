@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   ChartArtifact,
   type ChartArtifactDatum,
   type ChartArtifactProps,
-} from "./chart-artifact";
+} from './chart-artifact';
 
 /**
  * # ChartArtifact
@@ -86,48 +86,48 @@ import {
  * **→ Data** writes the rows as CSV.
  */
 const meta = {
-  title: "Artifacts/Chart",
+  title: 'Artifacts/Chart',
   component: ChartArtifact,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    title: { control: "text", description: "Single-line heading." },
+    title: { control: 'text', description: 'Single-line heading.' },
     description: {
-      control: "text",
-      description: "One-line supporting text (truncates).",
+      control: 'text',
+      description: 'One-line supporting text (truncates).',
     },
-    data: { control: "object", description: "Rows — one object per category." },
+    data: { control: 'object', description: 'Rows — one object per category.' },
     categoryKey: {
-      control: "text",
-      description: "Field for the category (x axis / first column).",
+      control: 'text',
+      description: 'Field for the category (x axis / first column).',
     },
     valueKey: {
-      control: "text",
-      description: "Numeric field plotted as bar height.",
+      control: 'text',
+      description: 'Numeric field plotted as bar height.',
     },
     categoryLabel: {
-      control: "text",
-      description: "Table header for the category column.",
+      control: 'text',
+      description: 'Table header for the category column.',
     },
     valueLabel: {
-      control: "text",
-      description: "Table header / tooltip label for the value.",
+      control: 'text',
+      description: 'Table header / tooltip label for the value.',
     },
     defaultView: {
-      control: "inline-radio",
-      options: ["chart", "table"],
-      description: "Which view shows first.",
+      control: 'inline-radio',
+      options: ['chart', 'table'],
+      description: 'Which view shows first.',
     },
-    fileName: { control: "text", description: "Base name for downloads." },
+    fileName: { control: 'text', description: 'Base name for downloads.' },
     numberFormat: {
-      control: "object",
-      description: "Intl.NumberFormat options for value rendering.",
+      control: 'object',
+      description: 'Intl.NumberFormat options for value rendering.',
     },
-    className: { control: false, description: "Extra classes on the card." },
-    onRegenerate: { action: "regenerate", description: "More → Regenerate." },
-    onSave: { action: "save", description: "More → Save." },
+    className: { control: false, description: 'Extra classes on the card.' },
+    onRegenerate: { action: 'regenerate', description: 'More → Regenerate.' },
+    onSave: { action: 'save', description: 'More → Save.' },
   },
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
@@ -142,21 +142,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const RATINGS: ChartArtifactDatum[] = [
-  { department: "Marketing", rating: 4.37 },
-  { department: "Product", rating: 4.12 },
-  { department: "Support", rating: 3.94 },
-  { department: "Sales", rating: 3.76 },
-  { department: "Finance", rating: 3.72 },
-  { department: "Ops", rating: 3.58 },
+  { department: 'Marketing', rating: 4.37 },
+  { department: 'Product', rating: 4.12 },
+  { department: 'Support', rating: 3.94 },
+  { department: 'Sales', rating: 3.76 },
+  { department: 'Finance', rating: 3.72 },
+  { department: 'Ops', rating: 3.58 },
 ];
 
 const REVENUE: ChartArtifactDatum[] = [
-  { channel: "Organic", revenue: 48200 },
-  { channel: "Paid social", revenue: 39100 },
-  { channel: "Email", revenue: 31500 },
-  { channel: "Referral", revenue: 24800 },
-  { channel: "Direct", revenue: 19300 },
-  { channel: "Affiliate", revenue: 12600 },
+  { channel: 'Organic', revenue: 48200 },
+  { channel: 'Paid social', revenue: 39100 },
+  { channel: 'Email', revenue: 31500 },
+  { channel: 'Referral', revenue: 24800 },
+  { channel: 'Direct', revenue: 19300 },
+  { channel: 'Affiliate', revenue: 12600 },
 ];
 
 /**
@@ -165,14 +165,14 @@ const REVENUE: ChartArtifactDatum[] = [
  */
 export const Default: Story = {
   args: {
-    title: "Average rating by department",
-    description: "Q3 review scores across six departments.",
+    title: 'Average rating by department',
+    description: 'Q3 review scores across six departments.',
     data: RATINGS,
-    categoryKey: "department",
-    valueKey: "rating",
-    valueLabel: "Rating",
-    defaultView: "chart",
-    fileName: "ratings-by-department",
+    categoryKey: 'department',
+    valueKey: 'rating',
+    valueLabel: 'Rating',
+    defaultView: 'chart',
+    fileName: 'ratings-by-department',
     numberFormat: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
   },
 };
@@ -183,16 +183,16 @@ export const Default: Story = {
  */
 export const Currency: Story = {
   args: {
-    title: "Revenue by channel",
-    description: "Last 30 days across acquisition channels.",
+    title: 'Revenue by channel',
+    description: 'Last 30 days across acquisition channels.',
     data: REVENUE,
-    categoryKey: "channel",
-    valueKey: "revenue",
-    valueLabel: "Revenue",
-    fileName: "revenue-by-channel",
+    categoryKey: 'channel',
+    valueKey: 'revenue',
+    valueLabel: 'Revenue',
+    fileName: 'revenue-by-channel',
     numberFormat: {
-      style: "currency",
-      currency: "USD",
+      style: 'currency',
+      currency: 'USD',
       maximumFractionDigits: 0,
     },
   },
@@ -202,7 +202,7 @@ export const Currency: Story = {
 export const TableFirst: Story = {
   args: {
     ...Default.args,
-    defaultView: "table",
+    defaultView: 'table',
   },
 };
 
@@ -213,18 +213,21 @@ export const TableFirst: Story = {
  * single More menu on a narrow one (< 448px). Min card width is 280px.
  */
 export const ResponsiveWidths: Story = {
-  parameters: { layout: "padded", controls: { disable: true } },
+  parameters: { layout: 'padded', controls: { disable: true } },
   decorators: [(Story) => <Story />],
   render: () => (
     <div className="flex flex-col gap-6">
       {[
-        { w: "20rem", label: "Narrow (320px) — actions collapse into More" },
-        { w: "28rem", label: "Threshold (448px) — Download expands into the header" },
-        { w: "48rem", label: "Wide (768px) — AI-chat default" },
+        { w: '20rem', label: 'Narrow (320px) — actions collapse into More' },
+        {
+          w: '28rem',
+          label: 'Threshold (448px) — Download expands into the header',
+        },
+        { w: '48rem', label: 'Wide (768px) — AI-chat default' },
       ].map(({ w, label }) => (
         <div key={w}>
           <p className="mb-2 text-muted-foreground text-xs">{label}</p>
-          <div style={{ width: w, maxWidth: "100%" }}>
+          <div style={{ width: w, maxWidth: '100%' }}>
             <ChartArtifact {...(Default.args as ChartArtifactProps)} />
           </div>
         </div>

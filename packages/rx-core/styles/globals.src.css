@@ -18,8 +18,8 @@
  * Prefer the complete edition? `@gremorie/react/styles.css` is the same idea.
  */
 
-@import "tailwindcss";
-@import "../../ng-core/styles/theme.css";
+@import 'tailwindcss';
+@import '../../ng-core/styles/theme.css';
 
 /* Every utility used by any React-edition component, so a category install is
    styled out of the box without the consumer configuring Tailwind @source. */

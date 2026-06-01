@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CalendarDays } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { CalendarDays } from 'lucide-react';
 
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
-import { Button } from "@gremorie/rx-forms";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from './hover-card';
+import { Button } from '@gremorie/rx-forms';
 
 /**
  * # HoverCard
@@ -45,10 +45,10 @@ import { Button } from "@gremorie/rx-forms";
  * | `--muted-foreground` | Secondary text |
  */
 const meta = {
-  title: "Interaction/Overlays/HoverCard",
+  title: 'Interaction/Overlays/HoverCard',
   component: HoverCard,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof HoverCard>;
 
 export default meta;

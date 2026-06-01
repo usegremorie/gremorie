@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Code Block (React)",
   "description": "Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; exposes CodeBlockCopyButton with copy/copied state. Pass code + language, optional showLineNumbers; ships dark + light themes by default.",
-  "categories": [
-    "ai",
-    "code"
-  ],
-  "dependencies": [
-    "shiki"
-  ],
+  "categories": ["ai", "code"],
+  "dependencies": ["shiki"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-button"
-  ],
+  "registryDependencies": ["rx-utils", "rx-button"],
   "files": [
     {
       "path": "src/lib/code-block/code-block.tsx",

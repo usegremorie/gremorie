@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Badge,
@@ -13,9 +13,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
-import { Button } from "@gremorie/rx-forms";
+} from '@gremorie/rx-display';
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
+import { Button } from '@gremorie/rx-forms';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -24,58 +24,58 @@ import {
   Download,
   ShoppingCart,
   Users,
-} from "lucide-react";
+} from 'lucide-react';
 
 const KPIs: Array<{
   label: string;
   value: string;
   delta: string;
-  trend: "up" | "down";
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  trend: 'up' | 'down';
+  icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
 }> = [
   {
-    label: "Revenue",
-    value: "$48,920",
-    delta: "+12.4%",
-    trend: "up",
+    label: 'Revenue',
+    value: '$48,920',
+    delta: '+12.4%',
+    trend: 'up',
     icon: DollarSign,
   },
   {
-    label: "Customers",
-    value: "2,318",
-    delta: "+4.1%",
-    trend: "up",
+    label: 'Customers',
+    value: '2,318',
+    delta: '+4.1%',
+    trend: 'up',
     icon: Users,
   },
   {
-    label: "Orders",
-    value: "1,204",
-    delta: "+18.3%",
-    trend: "up",
+    label: 'Orders',
+    value: '1,204',
+    delta: '+18.3%',
+    trend: 'up',
     icon: ShoppingCart,
   },
   {
-    label: "Refunds",
-    value: "$1,420",
-    delta: "-3.2%",
-    trend: "down",
+    label: 'Refunds',
+    value: '$1,420',
+    delta: '-3.2%',
+    trend: 'down',
     icon: CreditCard,
   },
 ];
 
 const REVENUE_DATA: ChartDatum[] = [
-  { month: "Jan", revenue: 4200 },
-  { month: "Feb", revenue: 5100 },
-  { month: "Mar", revenue: 4800 },
-  { month: "Apr", revenue: 6200 },
-  { month: "May", revenue: 7400 },
-  { month: "Jun", revenue: 6900 },
-  { month: "Jul", revenue: 8100 },
-  { month: "Aug", revenue: 8900 },
+  { month: 'Jan', revenue: 4200 },
+  { month: 'Feb', revenue: 5100 },
+  { month: 'Mar', revenue: 4800 },
+  { month: 'Apr', revenue: 6200 },
+  { month: 'May', revenue: 7400 },
+  { month: 'Jun', revenue: 6900 },
+  { month: 'Jul', revenue: 8100 },
+  { month: 'Aug', revenue: 8900 },
 ];
 
 const REVENUE_CONFIG: ChartConfig = {
-  revenue: { label: "Revenue", color: "var(--chart-1)" },
+  revenue: { label: 'Revenue', color: 'var(--chart-1)' },
 };
 
 const TRANSACTIONS: Array<{
@@ -83,42 +83,42 @@ const TRANSACTIONS: Array<{
   customer: string;
   email: string;
   amount: string;
-  status: "Paid" | "Pending" | "Refunded";
+  status: 'Paid' | 'Pending' | 'Refunded';
 }> = [
   {
-    id: "INV-001",
-    customer: "Olivia Martin",
-    email: "olivia@example.com",
-    amount: "$1,999",
-    status: "Paid",
+    id: 'INV-001',
+    customer: 'Olivia Martin',
+    email: 'olivia@example.com',
+    amount: '$1,999',
+    status: 'Paid',
   },
   {
-    id: "INV-002",
-    customer: "Jackson Lee",
-    email: "jackson@example.com",
-    amount: "$39",
-    status: "Paid",
+    id: 'INV-002',
+    customer: 'Jackson Lee',
+    email: 'jackson@example.com',
+    amount: '$39',
+    status: 'Paid',
   },
   {
-    id: "INV-003",
-    customer: "Isabella Nguyen",
-    email: "isabella@example.com",
-    amount: "$299",
-    status: "Pending",
+    id: 'INV-003',
+    customer: 'Isabella Nguyen',
+    email: 'isabella@example.com',
+    amount: '$299',
+    status: 'Pending',
   },
   {
-    id: "INV-004",
-    customer: "William Kim",
-    email: "will@example.com",
-    amount: "$99",
-    status: "Refunded",
+    id: 'INV-004',
+    customer: 'William Kim',
+    email: 'will@example.com',
+    amount: '$99',
+    status: 'Refunded',
   },
   {
-    id: "INV-005",
-    customer: "Sofia Davis",
-    email: "sofia@example.com",
-    amount: "$1,499",
-    status: "Paid",
+    id: 'INV-005',
+    customer: 'Sofia Davis',
+    email: 'sofia@example.com',
+    amount: '$1,499',
+    status: 'Paid',
   },
 ];
 
@@ -141,12 +141,12 @@ function StatCard({
       <CardContent>
         <p
           className={
-            trend === "up"
-              ? "flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400"
-              : "flex items-center gap-1 text-xs text-destructive"
+            trend === 'up'
+              ? 'flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400'
+              : 'flex items-center gap-1 text-xs text-destructive'
           }
         >
-          {trend === "up" ? (
+          {trend === 'up' ? (
             <ArrowUpRight className="size-3" aria-hidden="true" />
           ) : (
             <ArrowDownRight className="size-3" aria-hidden="true" />
@@ -158,14 +158,14 @@ function StatCard({
   );
 }
 
-function statusVariant(status: (typeof TRANSACTIONS)[number]["status"]) {
+function statusVariant(status: (typeof TRANSACTIONS)[number]['status']) {
   switch (status) {
-    case "Paid":
-      return "default" as const;
-    case "Pending":
-      return "secondary" as const;
-    case "Refunded":
-      return "outline" as const;
+    case 'Paid':
+      return 'default' as const;
+    case 'Pending':
+      return 'secondary' as const;
+    case 'Refunded':
+      return 'outline' as const;
   }
 }
 
@@ -202,11 +202,7 @@ export function Dashboard() {
           <CardDescription>Monthly recurring revenue</CardDescription>
         </CardHeader>
         <CardContent>
-          <BarChart
-            data={REVENUE_DATA}
-            config={REVENUE_CONFIG}
-            xKey="month"
-          />
+          <BarChart data={REVENUE_DATA} config={REVENUE_CONFIG} xKey="month" />
         </CardContent>
       </Card>
 

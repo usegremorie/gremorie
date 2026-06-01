@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: "Production-ready compositions of primitives. Shells, auth, dashboards, chat surfaces, marketing, empty states."
+description: 'Production-ready compositions of primitives. Shells, auth, dashboards, chat surfaces, marketing, empty states.'
 ---
 
 A **block** is a working composition of multiple primitives, shipped
@@ -14,25 +14,49 @@ version through `registryDependencies`.
 
 ## Blocks vs Components vs Artifacts
 
-| | Components | Blocks | Artifacts |
-|---|---|---|---|
-| **Scope** | One primitive | N primitives composed | One primitive that consumes an LLM schema |
-| **Example** | `Button` | `sign-in` card | `chart` artifact rendering Recharts from JSON |
-| **Wiring** | None | Layout + state + handlers | Schema parser + streaming renderer |
-| **Install** | `gremorie add rx-button` | `gremorie add sign-in` | `gremorie add rx-chart-artifact` |
-| **Status** | Shipping (100 primitives) | Planned | Planned |
+|             | Components                | Blocks                    | Artifacts                                     |
+| ----------- | ------------------------- | ------------------------- | --------------------------------------------- |
+| **Scope**   | One primitive             | N primitives composed     | One primitive that consumes an LLM schema     |
+| **Example** | `Button`                  | `sign-in` card            | `chart` artifact rendering Recharts from JSON |
+| **Wiring**  | None                      | Layout + state + handlers | Schema parser + streaming renderer            |
+| **Install** | `gremorie add rx-button`  | `gremorie add sign-in`    | `gremorie add rx-chart-artifact`              |
+| **Status**  | Shipping (100 primitives) | Planned                   | Planned                                       |
 
 ## Categories
 
 <Cards>
-  <Card title="Shells" description="app-shell, dashboard-shell, settings-shell, docs-shell, marketing-shell, auth-shell" />
-  <Card title="Auth" description="sign-in, sign-up, reset-password, otp-verification, two-factor" />
-  <Card title="Dashboard" description="stats-cards, chart-grid, recent-activity, user-table, kanban" />
-  <Card title="Forms" description="settings-form, profile-form, multi-step, search-filters" />
-  <Card title="Chat" description="chat-surface (flagship), inline-chat, command-palette, ai-input-bar" />
-  <Card title="Marketing" description="hero, feature-grid, pricing, testimonials, faq, cta-section" />
-  <Card title="Empty states" description="no-results, no-data, error-state, permission-denied, coming-soon" />
-  <Card title="Shared" description="page-header, data-table, confirmation-dialog, command-menu, theme-toggle, user-menu" />
+  <Card
+    title="Shells"
+    description="app-shell, dashboard-shell, settings-shell, docs-shell, marketing-shell, auth-shell"
+  />
+  <Card
+    title="Auth"
+    description="sign-in, sign-up, reset-password, otp-verification, two-factor"
+  />
+  <Card
+    title="Dashboard"
+    description="stats-cards, chart-grid, recent-activity, user-table, kanban"
+  />
+  <Card
+    title="Forms"
+    description="settings-form, profile-form, multi-step, search-filters"
+  />
+  <Card
+    title="Chat"
+    description="chat-surface (flagship), inline-chat, command-palette, ai-input-bar"
+  />
+  <Card
+    title="Marketing"
+    description="hero, feature-grid, pricing, testimonials, faq, cta-section"
+  />
+  <Card
+    title="Empty states"
+    description="no-results, no-data, error-state, permission-denied, coming-soon"
+  />
+  <Card
+    title="Shared"
+    description="page-header, data-table, confirmation-dialog, command-menu, theme-toggle, user-menu"
+  />
 </Cards>
 
 ## Featured blocks
@@ -42,12 +66,36 @@ preview, the full source, an install command, and a customization
 guide.
 
 <Cards>
-  <Card href="/blocks/sign-in" title="Sign-in" description="Authentication card with GitHub provider plus email and password." />
-  <Card href="/blocks/dashboard" title="Dashboard" description="KPI grid plus chart strip plus transactions table." />
-  <Card href="/blocks/chat-surface" title="Chat surface" description="Conversation plus Message plus Reasoning plus PromptInput, fully composed." />
-  <Card href="/blocks/settings-form" title="Settings form" description="Profile plus Notifications plus Appearance with a sticky save bar." />
-  <Card href="/blocks/marketing-hero" title="Marketing hero" description="Brand-tinted halo, badge, headline, dual CTA, and a window mockup." />
-  <Card href="/blocks/empty-state" title="Empty state" description="Dashed container, centered icon, headline, description, and dual CTA." />
+  <Card
+    href="/blocks/sign-in"
+    title="Sign-in"
+    description="Authentication card with GitHub provider plus email and password."
+  />
+  <Card
+    href="/blocks/dashboard"
+    title="Dashboard"
+    description="KPI grid plus chart strip plus transactions table."
+  />
+  <Card
+    href="/blocks/chat-surface"
+    title="Chat surface"
+    description="Conversation plus Message plus Reasoning plus PromptInput, fully composed."
+  />
+  <Card
+    href="/blocks/settings-form"
+    title="Settings form"
+    description="Profile plus Notifications plus Appearance with a sticky save bar."
+  />
+  <Card
+    href="/blocks/marketing-hero"
+    title="Marketing hero"
+    description="Brand-tinted halo, badge, headline, dual CTA, and a window mockup."
+  />
+  <Card
+    href="/blocks/empty-state"
+    title="Empty state"
+    description="Dashed container, centered icon, headline, description, and dual CTA."
+  />
 </Cards>
 
 ## Next

@@ -1,12 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { TooltipProvider } from "@gremorie/rx-overlays";
-import { GitBranchIcon, RotateCcwIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { TooltipProvider } from '@gremorie/rx-overlays';
+import { GitBranchIcon, RotateCcwIcon } from 'lucide-react';
 
-import {
-  Checkpoint,
-  CheckpointIcon,
-  CheckpointTrigger,
-} from "./checkpoint";
+import { Checkpoint, CheckpointIcon, CheckpointTrigger } from './checkpoint';
 
 /**
  * # Checkpoint
@@ -46,10 +42,10 @@ import {
  * | `--border` | Trailing separator. |
  */
 const meta = {
-  title: "AI/Checkpoint",
+  title: 'AI/Checkpoint',
   component: Checkpoint,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <TooltipProvider>

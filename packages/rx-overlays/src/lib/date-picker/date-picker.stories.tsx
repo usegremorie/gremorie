@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import * as React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
-import { DatePicker } from "./date-picker";
+import { DatePicker } from './date-picker';
 
 /**
  * # DatePicker
@@ -34,13 +34,13 @@ import { DatePicker } from "./date-picker";
  * | `--border` | Trigger + popover border |
  */
 const meta = {
-  title: "Interaction/Overlays/DatePicker",
+  title: 'Interaction/Overlays/DatePicker',
   component: DatePicker,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    placeholder: { control: "text" },
-    disabled: { control: "boolean" },
+    placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
     value: { control: false },
     onValueChange: { control: false },
   },
@@ -69,7 +69,7 @@ export const WithValue: Story = {
 
 /** Custom placeholder copy. */
 export const CustomPlaceholder: Story = {
-  args: { placeholder: "Pick a delivery date" },
+  args: { placeholder: 'Pick a delivery date' },
   render: (args) => {
     const [date, setDate] = React.useState<Date | undefined>();
     return <DatePicker {...args} value={date} onValueChange={setDate} />;

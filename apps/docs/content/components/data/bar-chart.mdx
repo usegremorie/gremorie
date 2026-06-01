@@ -1,9 +1,12 @@
 ---
 title: Bar Chart
-description: "Grouped bars across categorical buckets, color-tokened by series with shared Y domain."
+description: 'Grouped bars across categorical buckets, color-tokened by series with shared Y domain.'
 ---
 
-import { BarChartPreview, BarChartSinglePreview } from "@/components/preview/data/charts";
+import {
+  BarChartPreview,
+  BarChartSinglePreview,
+} from '@/components/preview/data/charts';
 
 ## Overview
 
@@ -20,26 +23,10 @@ Reach for BarChart when **discrete buckets** matter - revenue by product, errors
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-bar-chart
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-bar-chart
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-bar-chart
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-bar-chart
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-bar-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-bar-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-bar-chart ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-bar-chart ```</Tab>
 </Tabs>
 
 ## Usage
@@ -51,17 +38,17 @@ import { BarChart } from "@gremorie/rx-data";
 import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
 
 const data: ChartDatum[] = [
-  { month: "Jan", desktop: 186, mobile: 80 },
-  { month: "Feb", desktop: 305, mobile: 200 },
-  { month: "Mar", desktop: 237, mobile: 120 },
-  { month: "Apr", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "Jun", desktop: 214, mobile: 140 },
+{ month: "Jan", desktop: 186, mobile: 80 },
+{ month: "Feb", desktop: 305, mobile: 200 },
+{ month: "Mar", desktop: 237, mobile: 120 },
+{ month: "Apr", desktop: 73, mobile: 190 },
+{ month: "May", desktop: 209, mobile: 130 },
+{ month: "Jun", desktop: 214, mobile: 140 },
 ];
 
 const config: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+desktop: { label: "Desktop", color: "var(--chart-1)" },
+mobile: { label: "Mobile", color: "var(--chart-2)" },
 };
 
 export function VisitsByMonth() {
@@ -82,35 +69,35 @@ Angular edition planned for a follow-up release; it mirrors this component's ana
 
 The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<BarChart>` (with `accessibilityLayer` enabled): a cartesian grid, X and Y axes, and one `<Bar>` per series in `config`, each filled with `var(--color-<key>)`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `readonly ChartDatum[]` | - | Tabular data. Each row is a record from string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value. For per-bar colors on a single series, give each row a `fill` (e.g. `var(--chart-1)`). |
-| `config` | `ChartConfig` | - | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`; `ChartContainer` exposes it as `var(--color-<key>)`. |
-| `xKey` | `string` | - | Name of the category field on each row. Drives the category axis ticks (X by default, Y when `horizontal`). |
-| `stacked` | `boolean` | `false` | Stack the series within each category instead of grouping them side by side. |
-| `horizontal` | `boolean` | `false` | Render horizontal bars (recharts `layout="vertical"`). |
-| `showLabels` | `boolean` | `false` | Draw the value as a label on top of (or beside) each bar. |
-| `tooltip` | `boolean` | `true` | Show the hover tooltip. |
-| `radius` | `number` | `8` | Corner radius of the bars. |
-| `className` | `string` | - | Merged onto the `ChartContainer`. The bundled style supplies a rounded card surface plus aspect ratio. |
+| Prop         | Type                    | Default | Description                                                                                                                                                                                                                                                                       |
+| ------------ | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`       | `readonly ChartDatum[]` | -       | Tabular data. Each row is a record from string keys to numeric or category values. The column at `xKey` is the category; every key in `config` must exist on every row as a numeric value. For per-bar colors on a single series, give each row a `fill` (e.g. `var(--chart-1)`). |
+| `config`     | `ChartConfig`           | -       | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`; `ChartContainer` exposes it as `var(--color-<key>)`.                                                                                  |
+| `xKey`       | `string`                | -       | Name of the category field on each row. Drives the category axis ticks (X by default, Y when `horizontal`).                                                                                                                                                                       |
+| `stacked`    | `boolean`               | `false` | Stack the series within each category instead of grouping them side by side.                                                                                                                                                                                                      |
+| `horizontal` | `boolean`               | `false` | Render horizontal bars (recharts `layout="vertical"`).                                                                                                                                                                                                                            |
+| `showLabels` | `boolean`               | `false` | Draw the value as a label on top of (or beside) each bar.                                                                                                                                                                                                                         |
+| `tooltip`    | `boolean`               | `true`  | Show the hover tooltip.                                                                                                                                                                                                                                                           |
+| `radius`     | `number`                | `8`     | Corner radius of the bars.                                                                                                                                                                                                                                                        |
+| `className`  | `string`                | -       | Merged onto the `ChartContainer`. The bundled style supplies a rounded card surface plus aspect ratio.                                                                                                                                                                            |
 
 ### Chart primitive exports
 
 `@gremorie/rx-data` re-exports the shadcn `chart` primitive so you can compose custom charts. Wrap raw recharts (`Bar`, `Area`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
 
-| Export | Role |
-|---|---|
-| `ChartContainer` | Provides the chart context, the responsive frame, and injects `--color-<key>` CSS vars from `config`. |
-| `ChartTooltip` / `ChartTooltipContent` | Token-styled hover tooltip. |
-| `ChartLegend` / `ChartLegendContent` | Token-styled legend. |
-| `useChart` | Hook returning the active `ChartConfig` from context. |
+| Export                                 | Role                                                                                                  |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `ChartContainer`                       | Provides the chart context, the responsive frame, and injects `--color-<key>` CSS vars from `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Token-styled hover tooltip.                                                                           |
+| `ChartLegend` / `ChartLegendContent`   | Token-styled legend.                                                                                  |
+| `useChart`                             | Hook returning the active `ChartConfig` from context.                                                 |
 
 ### Types
 
-| Type | Shape |
-|---|---|
-| `ChartDatum` | `Record<string, string \| number> & { fill?: string }` - one row of chart data; the optional `fill` sets a per-bar color. |
-| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map. |
+| Type          | Shape                                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - one row of chart data; the optional `fill` sets a per-bar color. |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map.                                 |
 
 ## Composition
 
@@ -132,7 +119,7 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 ```tsx
 <BarChart
   data={data}
-  config={{ revenue: { label: "Revenue", color: "var(--chart-1)" } }}
+  config={{ revenue: { label: 'Revenue', color: 'var(--chart-1)' } }}
   xKey="region"
 />
 ```
@@ -147,11 +134,11 @@ The default shape. Reach for a single bar series when comparing one metric acros
 
 ```tsx
 const config: ChartConfig = {
-  desktop: { label: "Desktop", color: "var(--chart-1)" },
-  mobile: { label: "Mobile", color: "var(--chart-2)" },
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 };
 
-<BarChart data={data} config={config} xKey="month" />
+<BarChart data={data} config={config} xKey="month" />;
 ```
 
 For comparing two or three series within the same bucket. Bars from different series share the X tick by default; keep the series count short (two or three) before the bars get too thin to read.
@@ -172,12 +159,16 @@ For a single-series chart, give each row its own `fill` to color bars categorica
 
 ```tsx
 const data: ChartDatum[] = [
-  { browser: "Chrome", visitors: 275, fill: "var(--chart-1)" },
-  { browser: "Safari", visitors: 200, fill: "var(--chart-2)" },
-  { browser: "Firefox", visitors: 187, fill: "var(--chart-3)" },
+  { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+  { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+  { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
 ];
 
-<BarChart data={data} config={{ visitors: { label: "Visitors" } }} xKey="browser" />
+<BarChart
+  data={data}
+  config={{ visitors: { label: 'Visitors' } }}
+  xKey="browser"
+/>;
 ```
 
 ### Composing with the chart primitive
@@ -185,8 +176,12 @@ const data: ChartDatum[] = [
 When you need full control, skip `BarChart` and compose raw recharts inside `ChartContainer`. The container still injects your token colors and renders the tooltip styling, so you only write the recharts you actually need.
 
 ```tsx
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@gremorie/rx-data";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@gremorie/rx-data';
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 <ChartContainer config={config}>
   <BarChart accessibilityLayer data={data}>
@@ -196,7 +191,7 @@ import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
     <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
     <Bar dataKey="mobile" fill="var(--color-mobile)" radius={8} />
   </BarChart>
-</ChartContainer>
+</ChartContainer>;
 ```
 
 Compose raw recharts when the surface needs extra reference lines, a custom legend, or mixed series. `ChartContainer` owns the responsive frame and the token color vars.

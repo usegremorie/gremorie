@@ -1,6 +1,6 @@
-import type { Preview } from "@storybook/react";
+import type { Preview } from '@storybook/react';
 
-import "./preview.css";
+import './preview.css';
 
 /**
  * Shared preview for the rx-* Storybook. Centers primitives by default and
@@ -9,7 +9,7 @@ import "./preview.css";
  */
 const preview: Preview = {
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     controls: {
       matchers: {
         color: /(background|color)$/i,

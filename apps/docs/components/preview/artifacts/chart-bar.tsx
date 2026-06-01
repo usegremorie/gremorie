@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Badge,
@@ -7,8 +7,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
+} from '@gremorie/rx-display';
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
 
 const SCHEMA = `{
   type: "chart-bar",
@@ -17,14 +17,14 @@ const SCHEMA = `{
 }`;
 
 const DATA: ChartDatum[] = [
-  { category: "Q1", value: 42000 },
-  { category: "Q2", value: 51000 },
-  { category: "Q3", value: 48000 },
-  { category: "Q4", value: 62000 },
+  { category: 'Q1', value: 42000 },
+  { category: 'Q2', value: 51000 },
+  { category: 'Q3', value: 48000 },
+  { category: 'Q4', value: 62000 },
 ];
 
 const CONFIG: ChartConfig = {
-  value: { label: "Revenue", color: "var(--chart-1)" },
+  value: { label: 'Revenue', color: 'var(--chart-1)' },
 };
 
 export function ChartBar() {

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Check } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Check } from 'lucide-react';
 
 import {
   Avatar,
@@ -8,7 +8,7 @@ import {
   AvatarGroup,
   AvatarGroupCount,
   AvatarImage,
-} from "./avatar";
+} from './avatar';
 
 /**
  * # Avatar
@@ -55,19 +55,19 @@ import {
  * | `--background` | the ring separating stacked avatars |
  */
 const meta = {
-  title: "Layout & display/Display/Avatar",
+  title: 'Layout & display/Display/Avatar',
   component: Avatar,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    size: { control: "inline-radio", options: ["sm", "default", "lg"] },
+    size: { control: 'inline-radio', options: ['sm', 'default', 'lg'] },
   },
 } satisfies Meta<typeof Avatar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const SRC = "https://github.com/shadcn.png";
+const SRC = 'https://github.com/shadcn.png';
 
 /** Image with an initials fallback (shown if the image fails to load). */
 export const Default: Story = {
@@ -92,7 +92,7 @@ export const Fallback: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-end gap-4">
-      {(["sm", "default", "lg"] as const).map((size) => (
+      {(['sm', 'default', 'lg'] as const).map((size) => (
         <Avatar key={size} size={size}>
           <AvatarImage src={SRC} alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
@@ -119,7 +119,7 @@ export const WithBadge: Story = {
 export const Group: Story = {
   render: () => (
     <AvatarGroup>
-      {["AB", "CD", "EF"].map((initials) => (
+      {['AB', 'CD', 'EF'].map((initials) => (
         <Avatar key={initials}>
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>

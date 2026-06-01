@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 import {
   CartesianGrid,
   Scatter,
   ScatterChart as RechartsScatterChart,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface ScatterChartProps {
   /** Tabular rows. */
@@ -76,7 +76,7 @@ export function ScatterChart({
         />
         {tooltip ? (
           <ChartTooltip
-            cursor={{ strokeDasharray: "3 3" }}
+            cursor={{ strokeDasharray: '3 3' }}
             content={<ChartTooltipContent />}
           />
         ) : null}

@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
-} from "fumadocs-ui/components/ui/popover";
-import { useI18n } from "fumadocs-ui/contexts/i18n";
+  PopoverTrigger,
+} from 'fumadocs-ui/components/ui/popover';
+import { useI18n } from 'fumadocs-ui/contexts/i18n';
 import {
   ThemeSwitch,
-  type ThemeSwitchProps
-} from "fumadocs-ui/layouts/shared/slots/theme-switch";
-import { useState } from "react";
+  type ThemeSwitchProps,
+} from 'fumadocs-ui/layouts/shared/slots/theme-switch';
+import { useState } from 'react';
 
 /**
  * Flag-based language switcher (replaces Fumadocs' default text toggle).
@@ -29,18 +29,18 @@ import { useState } from "react";
 
 type Flag = { src: string; alt: string };
 
-const FALLBACK_FLAG: Flag = { src: "/flags/us.svg", alt: "" };
+const FALLBACK_FLAG: Flag = { src: '/flags/us.svg', alt: '' };
 
 const FLAGS: Record<string, Flag> = {
-  en: { src: "/flags/us.svg", alt: "United States flag" },
-  pt: { src: "/flags/br.svg", alt: "Brazil flag" }
+  en: { src: '/flags/us.svg', alt: 'United States flag' },
+  pt: { src: '/flags/br.svg', alt: 'Brazil flag' },
 };
 
 const cn = (...parts: Array<string | false | undefined>): string =>
-  parts.filter(Boolean).join(" ");
+  parts.filter(Boolean).join(' ');
 
 export function FlagLanguageSwitch({
-  className
+  className,
 }: {
   className?: string;
 }): React.ReactElement | null {
@@ -49,20 +49,20 @@ export function FlagLanguageSwitch({
 
   if (!locales?.length) return null;
 
-  const active = FLAGS[locale ?? "en"] ?? FALLBACK_FLAG;
-  const label = text?.chooseLanguage ?? "Language";
+  const active = FLAGS[locale ?? 'en'] ?? FALLBACK_FLAG;
+  const label = text?.chooseLanguage ?? 'Language';
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         aria-label={label}
         className={cn(
-          "inline-flex size-9 items-center justify-center rounded-full",
-          "text-fd-muted-foreground transition-colors",
-          "hover:bg-fd-accent hover:text-fd-accent-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring",
-          "data-[state=open]:bg-fd-accent",
-          className
+          'inline-flex size-9 items-center justify-center rounded-full',
+          'text-fd-muted-foreground transition-colors',
+          'hover:bg-fd-accent hover:text-fd-accent-foreground',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring',
+          'data-[state=open]:bg-fd-accent',
+          className,
         )}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -89,16 +89,16 @@ export function FlagLanguageSwitch({
             <button
               key={item.locale}
               type="button"
-              aria-current={isActive ? "true" : undefined}
+              aria-current={isActive ? 'true' : undefined}
               onClick={() => {
                 if (!isActive) onChange?.(item.locale);
                 setOpen(false);
               }}
               className={cn(
-                "flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-start text-sm transition-colors",
+                'flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-start text-sm transition-colors',
                 isActive
-                  ? "bg-fd-primary/10 text-fd-primary"
-                  : "text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground"
+                  ? 'bg-fd-primary/10 text-fd-primary'
+                  : 'text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground',
               )}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -132,7 +132,7 @@ export function ThemeSwitchWithFlag({
   ...props
 }: ThemeSwitchProps): React.ReactElement {
   return (
-    <div className={cn("flex items-center gap-1.5", className)}>
+    <div className={cn('flex items-center gap-1.5', className)}>
       <FlagLanguageSwitch className="size-8" />
       <ThemeSwitch {...props} />
     </div>

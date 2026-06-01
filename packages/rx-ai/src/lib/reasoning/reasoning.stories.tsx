@@ -1,10 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import {
-  Reasoning,
-  ReasoningContent,
-  ReasoningTrigger,
-} from "./reasoning";
+import { Reasoning, ReasoningContent, ReasoningTrigger } from './reasoning';
 
 /**
  * Reasoning - collapsible "Thinking..." block (React edition).
@@ -14,16 +10,16 @@ import {
  * and the override of the trigger via projected content.
  */
 const meta = {
-  title: "AI/Reasoning",
+  title: 'AI/Reasoning',
   component: Reasoning,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    isStreaming: { control: "boolean" },
-    defaultOpen: { control: "boolean" },
-    open: { control: "boolean" },
-    duration: { control: { type: "number", min: 0, max: 60, step: 1 } },
+    isStreaming: { control: 'boolean' },
+    defaultOpen: { control: 'boolean' },
+    open: { control: 'boolean' },
+    duration: { control: { type: 'number', min: 0, max: 60, step: 1 } },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Reasoning>;
 
 export default meta;
@@ -58,7 +54,7 @@ export const Done: Story = {
  * Done unknown - `duration` undefined renders the "a few seconds" fallback.
  */
 export const DoneUnknownDuration: Story = {
-  name: "Done (unknown duration)",
+  name: 'Done (unknown duration)',
   args: { isStreaming: false, defaultOpen: true },
   render: (args) => (
     <Reasoning {...args}>
@@ -73,7 +69,7 @@ export const DoneUnknownDuration: Story = {
  * `defaultOpen=false` keeps the auto-open / auto-close logic out of the way.
  */
 export const ManualControl: Story = {
-  name: "Manual control",
+  name: 'Manual control',
   args: { isStreaming: false, defaultOpen: false, open: true, duration: 12 },
   render: (args) => (
     <Reasoning {...args}>
@@ -91,7 +87,7 @@ export const ManualControl: Story = {
  * replace the default brain-icon + shimmer + chevron.
  */
 export const CustomTrigger: Story = {
-  name: "Custom trigger",
+  name: 'Custom trigger',
   parameters: { controls: { disable: true } },
   render: () => (
     <Reasoning isStreaming={false} defaultOpen={true} duration={3}>

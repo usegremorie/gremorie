@@ -1,4 +1,4 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next';
 
 /**
  * Site-wide robots.txt.
@@ -16,10 +16,10 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: "*",
-        allow: "/"
-      }
+        userAgent: '*',
+        allow: '/',
+      },
     ],
-    host: "https://gremorie.com"
+    host: 'https://gremorie.com',
   };
 }

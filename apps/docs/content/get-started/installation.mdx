@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: "Add Gremorie to your Angular or React project in four steps."
+description: 'Add Gremorie to your Angular or React project in four steps.'
 ---
 
 Gremorie ships **two ways** — pick whichever fits your project:
@@ -34,7 +34,7 @@ Then import components directly from the package:
 <Tabs items={["React", "Angular"]}>
 
 ```tsx tab="React"
-import { Button, Card, CardHeader, CardTitle } from "@gremorie/react";
+import { Button, Card, CardHeader, CardTitle } from '@gremorie/react';
 
 export function Example() {
   return (
@@ -49,8 +49,8 @@ export function Example() {
 ```
 
 ```ts tab="Angular"
-import { Component } from "@angular/core";
-import { Badge } from "@gremorie/angular";
+import { Component } from '@angular/core';
+import { Badge } from '@gremorie/angular';
 
 @Component({
   standalone: true,
@@ -66,7 +66,7 @@ export class Example {}
 
 Add the stylesheet **once**, in your app's entry file (root `layout.tsx`,
 `main.tsx`, or wherever you load global CSS). It is **pre-compiled** and ships
-the design tokens *and* every component's styles in one file — so on the npm
+the design tokens _and_ every component's styles in one file — so on the npm
 path you do **not** need Tailwind, a `@theme` import, or any `@source` config.
 One import and components render fully styled (brand color, radius, dark mode).
 
@@ -74,32 +74,32 @@ One import and components render fully styled (brand color, radius, dark mode).
 
 ```tsx tab="React"
 // app/layout.tsx (Next.js) or src/main.tsx (Vite)
-import "@gremorie/react/styles.css";
+import '@gremorie/react/styles.css';
 ```
 
 ```css tab="Angular"
 /* src/styles.css — Angular component styles ship with the package; this
    line adds the design tokens. */
-@import "tailwindcss";
-@import "@gremorie/ng-core/styles/theme.css";
+@import 'tailwindcss';
+@import '@gremorie/ng-core/styles/theme.css';
 ```
 
 </Tabs>
 
 <Callout type="info">
   **Next.js App Router:** Gremorie components are interactive (they use React
-  context and state), so render them from a **Client Component** — add
-  `"use client"` at the top of the file (or a parent) that uses them.
+  context and state), so render them from a **Client Component** — add `"use
+  client"` at the top of the file (or a parent) that uses them.
 </Callout>
 
 <Callout type="info">
-  `@gremorie/react` and `@gremorie/angular` bundle **every component
-  category** (forms, display, overlays, feedback, navigation, containers,
-  data, AI). **Artifacts** (Artifact, CodeBlock, WebPreview) are an optional
-  add-on — install `@gremorie/rx-artifacts` when you need them. Prefer a
-  smaller install? Add a single category instead: `@gremorie/rx-forms`,
-  `@gremorie/rx-display`, `@gremorie/rx-ai`, and so on — each category ships
-  the same pre-compiled `@gremorie/rx-core/styles/globals.css` for its tokens.
+  `@gremorie/react` and `@gremorie/angular` bundle **every component category**
+  (forms, display, overlays, feedback, navigation, containers, data, AI).
+  **Artifacts** (Artifact, CodeBlock, WebPreview) are an optional add-on —
+  install `@gremorie/rx-artifacts` when you need them. Prefer a smaller install?
+  Add a single category instead: `@gremorie/rx-forms`, `@gremorie/rx-display`,
+  `@gremorie/rx-ai`, and so on — each category ships the same pre-compiled
+  `@gremorie/rx-core/styles/globals.css` for its tokens.
 </Callout>
 
 That is the entire npm setup: install, import the stylesheet, use the
@@ -174,14 +174,14 @@ must load before anything else.
 
 ```css tab="Angular"
 /* src/styles.css */
-@import "tailwindcss";
-@import "@gremorie/ng-core/styles/theme.css";
+@import 'tailwindcss';
+@import '@gremorie/ng-core/styles/theme.css';
 ```
 
 ```css tab="React"
 /* app/globals.css */
-@import "tailwindcss";
-@import "@gremorie/rx-core/styles/globals.css";
+@import 'tailwindcss';
+@import '@gremorie/rx-core/styles/globals.css';
 ```
 
 </Tabs>
@@ -224,26 +224,28 @@ import path.
 <Tabs items={["Angular", "React"]}>
 
 ```ts tab="Angular"
-import { Component } from "@angular/core";
-import { NgButton } from "@/components/gremorie/ng-button";
+import { Component } from '@angular/core';
+import { NgButton } from '@/components/gremorie/ng-button';
 
 @Component({
   standalone: true,
   imports: [NgButton],
-  template: `<ng-button (clicked)="onClick()">Ship it</ng-button>`
+  template: `<ng-button (clicked)="onClick()">Ship it</ng-button>`,
 })
 export class MyComponent {
   onClick() {
-    console.log("Hello, Gremorie.");
+    console.log('Hello, Gremorie.');
   }
 }
 ```
 
 ```tsx tab="React"
-import { Button } from "@/components/gremorie/rx-button";
+import { Button } from '@/components/gremorie/rx-button';
 
 export function MyComponent() {
-  return <Button onClick={() => console.log("Hello, Gremorie.")}>Ship it</Button>;
+  return (
+    <Button onClick={() => console.log('Hello, Gremorie.')}>Ship it</Button>
+  );
 }
 ```
 

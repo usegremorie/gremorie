@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 import {
   Area,
   AreaChart as RechartsAreaChart,
   CartesianGrid,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface AreaChartProps {
   /** Tabular rows. */
@@ -27,7 +27,7 @@ export interface AreaChartProps {
   /** Stack the series. */
   stacked?: boolean;
   /** Curve interpolation (recharts `type`). */
-  type?: "natural" | "monotone" | "linear" | "step";
+  type?: 'natural' | 'monotone' | 'linear' | 'step';
   /** Show the numeric Y axis. */
   yAxis?: boolean;
   /** Hover tooltip. */
@@ -49,7 +49,7 @@ export function AreaChart({
   config,
   xKey,
   stacked = false,
-  type = "natural",
+  type = 'natural',
   yAxis = true,
   tooltip = true,
   className,
@@ -64,14 +64,23 @@ export function AreaChart({
         margin={{ left: yAxis ? 0 : 12, right: 12 }}
       >
         <CartesianGrid vertical={false} />
-        <XAxis dataKey={xKey} tickLine={false} axisLine={false} tickMargin={8} />
+        <XAxis
+          dataKey={xKey}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
         {yAxis ? (
           <YAxis tickLine={false} axisLine={false} tickMargin={8} width={40} />
         ) : null}
         {tooltip ? (
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent indicator={keys.length > 1 ? "dot" : "line"} />}
+            content={
+              <ChartTooltipContent
+                indicator={keys.length > 1 ? 'dot' : 'line'}
+              />
+            }
           />
         ) : null}
         {keys.map((key) => (
@@ -82,7 +91,7 @@ export function AreaChart({
             fill={`var(--color-${key})`}
             fillOpacity={0.4}
             stroke={`var(--color-${key})`}
-            stackId={stacked ? "a" : undefined}
+            stackId={stacked ? 'a' : undefined}
           />
         ))}
       </RechartsAreaChart>

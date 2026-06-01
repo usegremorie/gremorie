@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
-import { LabelList, Pie, PieChart as RechartsPieChart } from "recharts";
+import { cn } from '@gremorie/rx-core';
+import { LabelList, Pie, PieChart as RechartsPieChart } from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface PieChartProps {
   /** Tabular rows. Give each row a `fill` (e.g. `var(--color-chrome)`) for slice colors. */
@@ -51,7 +51,7 @@ export function PieChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("mx-auto aspect-square max-h-[250px]", className)}
+      className={cn('mx-auto aspect-square max-h-[250px]', className)}
     >
       <RechartsPieChart>
         {tooltip ? (

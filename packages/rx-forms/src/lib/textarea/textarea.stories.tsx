@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
-import { Textarea } from "./textarea";
+import { Label } from '../label/label';
+import { Textarea } from './textarea';
 
 /**
  * # Textarea
@@ -34,12 +34,12 @@ import { Textarea } from "./textarea";
  * | `--muted-foreground` | placeholder |
  */
 const meta = {
-  title: "Inputs/Textarea",
+  title: 'Inputs/Textarea',
   component: Textarea,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { placeholder: "Type your message…" },
-  argTypes: { disabled: { control: "boolean" } },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { placeholder: 'Type your message…' },
+  argTypes: { disabled: { control: 'boolean' } },
   render: (args) => <Textarea className="w-80" {...args} />,
 } satisfies Meta<typeof Textarea>;
 
@@ -53,18 +53,18 @@ export const Default: Story = {};
 export const WithValue: Story = {
   args: {
     defaultValue:
-      "Gremorie is an AI-native design system. This field grows as you add more lines of text.",
+      'Gremorie is an AI-native design system. This field grows as you add more lines of text.',
   },
 };
 
 /** Disabled. */
 export const Disabled: Story = {
-  args: { disabled: true, defaultValue: "Read only content" },
+  args: { disabled: true, defaultValue: 'Read only content' },
 };
 
 /** Error state via `aria-invalid`. */
 export const Invalid: Story = {
-  args: { "aria-invalid": true, defaultValue: "Too short" },
+  args: { 'aria-invalid': true, defaultValue: 'Too short' },
 };
 
 /** Paired with a Label for an accessible field. */

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "./input-otp";
+} from './input-otp';
 
 /**
  * # InputOTP
@@ -54,10 +54,10 @@ import {
  * | `--foreground` | fake caret |
  */
 const meta = {
-  title: "Inputs/InputOTP",
+  title: 'Inputs/InputOTP',
   component: InputOTP,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   // `maxLength` + `children` are required on `OTPInput`; each story supplies its
   // own through `render`, so these meta-level args are just type satisfiers.
   args: { maxLength: 6, children: null },

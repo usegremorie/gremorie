@@ -1,8 +1,8 @@
-import { Cards, Card } from "fumadocs-ui/components/card";
-import { Fragment, type ReactNode } from "react";
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Fragment, type ReactNode } from 'react';
 
-import { i18n } from "@/lib/i18n";
-import { source } from "@/lib/source";
+import { i18n } from '@/lib/i18n';
+import { source } from '@/lib/source';
 
 /*
  * Auto-generated "Overview" index.
@@ -24,8 +24,10 @@ type Node = any;
 /** The top-level tab folder whose landing (first page) is `url`, else null. */
 function findTabFolder(tree: Node, url: string): Node | null {
   for (const folder of tree?.children ?? []) {
-    if (folder.type !== "folder") continue;
-    const firstPage = (folder.children ?? []).find((c: Node) => c.type === "page");
+    if (folder.type !== 'folder') continue;
+    const firstPage = (folder.children ?? []).find(
+      (c: Node) => c.type === 'page',
+    );
     if (firstPage?.url === url) return folder;
   }
   return null;
@@ -33,7 +35,7 @@ function findTabFolder(tree: Node, url: string): Node | null {
 
 /** First reachable page URL inside a node (for categories without an index). */
 function firstUrl(node: Node): string | undefined {
-  if (node?.type === "page" && node.url) return node.url;
+  if (node?.type === 'page' && node.url) return node.url;
   for (const c of node?.children ?? []) {
     const u = firstUrl(c);
     if (u) return u;
@@ -50,7 +52,7 @@ interface Entry {
 
 export function DocsIndex({
   url,
-  lang
+  lang,
 }: {
   url: string;
   lang?: string;
@@ -66,10 +68,10 @@ export function DocsIndex({
   };
 
   for (const child of folder.children ?? []) {
-    if (child.type === "separator") {
+    if (child.type === 'separator') {
       if (current.items.length) groups.push(current);
       current = { section: child.name, items: [] };
-    } else if (child.type === "folder") {
+    } else if (child.type === 'folder') {
       const href = firstUrl(child);
       if (!href) continue;
       // Category description lives in the folder's meta.json, not on the tree
@@ -82,7 +84,7 @@ export function DocsIndex({
         description:
           child.description ?? meta?.data?.description ?? meta?.description,
       });
-    } else if (child.type === "page" && child.url !== url) {
+    } else if (child.type === 'page' && child.url !== url) {
       current.items.push({
         name: child.name,
         url: child.url,

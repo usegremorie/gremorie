@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   ChainOfThought,
@@ -8,7 +8,7 @@ import {
   ChainOfThoughtSearchResult,
   ChainOfThoughtSearchResults,
   ChainOfThoughtStep,
-} from "./chain-of-thought";
+} from './chain-of-thought';
 
 /**
  * ChainOfThought - reasoning step list with header, optional images and
@@ -18,16 +18,16 @@ import {
  * search results, with image preview, and the step status palette.
  */
 const meta = {
-  title: "AI/ChainOfThought",
+  title: 'AI/ChainOfThought',
   component: ChainOfThought,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     defaultOpen: {
-      control: "boolean",
-      description: "Whether the reasoning list starts expanded.",
+      control: 'boolean',
+      description: 'Whether the reasoning list starts expanded.',
     },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof ChainOfThought>;
 
 export default meta;
@@ -55,7 +55,7 @@ export const Simple: Story = {
 };
 
 export const HeaderOnly: Story = {
-  name: "Header only (collapsed)",
+  name: 'Header only (collapsed)',
   args: { defaultOpen: false },
   render: (args) => (
     <ChainOfThought {...args}>
@@ -68,7 +68,7 @@ export const HeaderOnly: Story = {
 };
 
 export const WithSearchResults: Story = {
-  name: "With search results",
+  name: 'With search results',
   args: { defaultOpen: true },
   render: (args) => (
     <ChainOfThought {...args}>
@@ -102,7 +102,7 @@ export const WithSearchResults: Story = {
  * supports an optional caption.
  */
 export const WithImage: Story = {
-  name: "With image preview",
+  name: 'With image preview',
   args: { defaultOpen: true },
   render: (args) => (
     <ChainOfThought {...args}>
@@ -125,7 +125,7 @@ export const WithImage: Story = {
 };
 
 export const StatusVariants: Story = {
-  name: "Step status variants",
+  name: 'Step status variants',
   parameters: { controls: { disable: true } },
   render: () => (
     <ChainOfThought defaultOpen={true}>

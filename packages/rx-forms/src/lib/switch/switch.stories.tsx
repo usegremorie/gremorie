@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
-import { Switch } from "./switch";
+import { Label } from '../label/label';
+import { Switch } from './switch';
 
 /**
  * # Switch
@@ -36,14 +36,14 @@ import { Switch } from "./switch";
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: "Inputs/Switch",
+  title: 'Inputs/Switch',
   component: Switch,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    size: { control: "inline-radio", options: ["sm", "default"] },
-    checked: { control: "boolean" },
-    disabled: { control: "boolean" },
+    size: { control: 'inline-radio', options: ['sm', 'default'] },
+    checked: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Switch>;
 
@@ -57,7 +57,7 @@ export const Default: Story = {};
 export const Checked: Story = { args: { defaultChecked: true } };
 
 /** Small size. */
-export const Small: Story = { args: { size: "sm", defaultChecked: true } };
+export const Small: Story = { args: { size: 'sm', defaultChecked: true } };
 
 /** Disabled, off and on. */
 export const Disabled: Story = {

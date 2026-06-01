@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { GlobeIcon, MicIcon, PaperclipIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { GlobeIcon, MicIcon, PaperclipIcon } from 'lucide-react';
 
 import {
   PromptInput,
   PromptInputBody,
   PromptInputButton,
   PromptInputTools,
-} from "./prompt-input";
+} from './prompt-input';
 
 /**
  * PromptInputTools - inline cluster for in-input action buttons (React edition).
@@ -16,10 +16,10 @@ import {
  * side of the footer.
  */
 const meta = {
-  title: "AI/PromptInput/Tools",
+  title: 'AI/PromptInput/Tools',
   component: PromptInputTools,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof PromptInputTools>;
 
 export default meta;

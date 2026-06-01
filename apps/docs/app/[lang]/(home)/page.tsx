@@ -1,16 +1,16 @@
-import { ArtifactsSpotlight } from "@/components/landing/artifacts-spotlight";
-import { BlocksGallery } from "@/components/landing/blocks-gallery";
-import { ComponentsShowcase } from "@/components/landing/components-showcase";
-import { FeaturesGrid } from "@/components/landing/features-grid";
-import { FinalCta } from "@/components/landing/final-cta";
-import { Footer } from "@/components/landing/footer";
-import { Hero } from "@/components/landing/hero";
-import { StatsBand } from "@/components/landing/stats-band";
-import { ThemePlayground } from "@/components/landing/theme-playground";
+import { ArtifactsSpotlight } from '@/components/landing/artifacts-spotlight';
+import { BlocksGallery } from '@/components/landing/blocks-gallery';
+import { ComponentsShowcase } from '@/components/landing/components-showcase';
+import { FeaturesGrid } from '@/components/landing/features-grid';
+import { FinalCta } from '@/components/landing/final-cta';
+import { Footer } from '@/components/landing/footer';
+import { Hero } from '@/components/landing/hero';
+import { StatsBand } from '@/components/landing/stats-band';
+import { ThemePlayground } from '@/components/landing/theme-playground';
 
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { i18n } from "@/lib/i18n";
+import { i18n } from '@/lib/i18n';
 
 /**
  * Public landing at `/`. Lives in the `(home)` route group, wrapped by
@@ -33,9 +33,9 @@ import { i18n } from "@/lib/i18n";
  *   9. Footer (3 columns: brand / resources / community + legal)
  */
 export const metadata: Metadata = {
-  title: "Gremorie - the AI-native design system",
+  title: 'Gremorie - the AI-native design system',
   description:
-    "Registry + MCP for AI-driven generation. Angular and React, copy-paste components."
+    'Registry + MCP for AI-driven generation. Angular and React, copy-paste components.',
 };
 
 export function generateStaticParams() {

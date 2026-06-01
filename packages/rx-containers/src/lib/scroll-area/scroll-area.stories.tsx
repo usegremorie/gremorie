@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { ScrollArea, ScrollBar } from "./scroll-area";
+import { ScrollArea, ScrollBar } from './scroll-area';
 
 /**
  * # ScrollArea
@@ -37,10 +37,10 @@ import { ScrollArea, ScrollBar } from "./scroll-area";
  * | `--ring` | focus-visible ring on the viewport |
  */
 const meta = {
-  title: "Layout & display/Containers/ScrollArea",
+  title: 'Layout & display/Containers/ScrollArea',
   component: ScrollArea,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof ScrollArea>;
 
 export default meta;

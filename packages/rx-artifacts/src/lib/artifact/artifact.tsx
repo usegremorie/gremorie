@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
-import { FeaturedIcon } from "@gremorie/rx-display";
-import { Button, ToggleGroup, ToggleGroupItem } from "@gremorie/rx-forms";
+import { cn } from '@gremorie/rx-core';
+import { FeaturedIcon } from '@gremorie/rx-display';
+import { Button, ToggleGroup, ToggleGroupItem } from '@gremorie/rx-forms';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +13,9 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@gremorie/rx-overlays";
-import { type LucideIcon, XIcon } from "lucide-react";
-import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
+} from '@gremorie/rx-overlays';
+import { type LucideIcon, XIcon } from 'lucide-react';
+import type { ComponentProps, HTMLAttributes, ReactNode } from 'react';
 
 /**
  * Artifact — the generic shell that wraps a piece of styled content (a chart,
@@ -37,8 +37,8 @@ export const Artifact = ({ className, ...props }: ArtifactProps) => (
       // (not the viewport), so actions collapse/expand based on how much room
       // the card actually has. `min-w-[280px]` keeps icon + truncated title +
       // a menu button always legible.
-      "@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
+      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
+      className,
     )}
     {...props}
   />
@@ -55,8 +55,8 @@ export const ArtifactHeader = ({
       // Header shares the card surface (white on light); only the bottom
       // border separates it from the content. `items-stretch` lets the
       // featured icon match the height of the title + description block.
-      "flex items-stretch gap-3 border-b px-4 py-3",
-      className
+      'flex items-stretch gap-3 border-b px-4 py-3',
+      className,
     )}
     {...props}
   />
@@ -81,7 +81,7 @@ export const ArtifactFeaturedIcon = ({
   <FeaturedIcon
     color="brand"
     size="md"
-    className={cn("shrink-0 self-start", className)}
+    className={cn('shrink-0 self-start', className)}
     {...props}
   />
 );
@@ -93,14 +93,14 @@ export const ArtifactHeading = ({
   className,
   ...props
 }: ArtifactHeadingProps) => (
-  <div className={cn("min-w-0 flex-1", className)} {...props} />
+  <div className={cn('min-w-0 flex-1', className)} {...props} />
 );
 
 export type ArtifactTitleProps = HTMLAttributes<HTMLParagraphElement>;
 
 export const ArtifactTitle = ({ className, ...props }: ArtifactTitleProps) => (
   <p
-    className={cn("truncate font-medium text-foreground text-sm", className)}
+    className={cn('truncate font-medium text-foreground text-sm', className)}
     {...props}
   />
 );
@@ -112,7 +112,7 @@ export const ArtifactDescription = ({
   ...props
 }: ArtifactDescriptionProps) => (
   <p
-    className={cn("truncate text-muted-foreground text-sm", className)}
+    className={cn('truncate text-muted-foreground text-sm', className)}
     {...props}
   />
 );
@@ -123,7 +123,10 @@ export const ArtifactActions = ({
   className,
   ...props
 }: ArtifactActionsProps) => (
-  <div className={cn("flex shrink-0 items-center gap-1", className)} {...props} />
+  <div
+    className={cn('flex shrink-0 items-center gap-1', className)}
+    {...props}
+  />
 );
 
 /**
@@ -141,8 +144,8 @@ export const ArtifactActionsExpanded = ({
 }: ArtifactActionsProps) => (
   <div
     className={cn(
-      "hidden shrink-0 items-center gap-1 @[28rem]/artifact:flex",
-      className
+      'hidden shrink-0 items-center gap-1 @[28rem]/artifact:flex',
+      className,
     )}
     {...props}
   />
@@ -159,8 +162,8 @@ export const ArtifactActionsCollapsed = ({
 }: ArtifactActionsProps) => (
   <div
     className={cn(
-      "flex shrink-0 items-center gap-1 @[28rem]/artifact:hidden",
-      className
+      'flex shrink-0 items-center gap-1 @[28rem]/artifact:hidden',
+      className,
     )}
     {...props}
   />
@@ -178,13 +181,13 @@ export const ArtifactAction = ({
   icon: Icon,
   children,
   className,
-  size = "icon-sm",
-  variant = "ghost",
+  size = 'icon-sm',
+  variant = 'ghost',
   ...props
 }: ArtifactActionProps) => {
   const button = (
     <Button
-      className={cn("text-muted-foreground hover:text-foreground", className)}
+      className={cn('text-muted-foreground hover:text-foreground', className)}
       size={size}
       type="button"
       variant={variant}
@@ -216,12 +219,12 @@ export type ArtifactCloseProps = ComponentProps<typeof Button>;
 export const ArtifactClose = ({
   className,
   children,
-  size = "icon-sm",
-  variant = "ghost",
+  size = 'icon-sm',
+  variant = 'ghost',
   ...props
 }: ArtifactCloseProps) => (
   <Button
-    className={cn("text-muted-foreground hover:text-foreground", className)}
+    className={cn('text-muted-foreground hover:text-foreground', className)}
     size={size}
     type="button"
     variant={variant}
@@ -262,7 +265,7 @@ export const ArtifactViewToggle = ({
     onValueChange={(v) => v && onValueChange(v)}
     variant="outline"
     size="sm"
-    className={cn("mr-1", className)}
+    className={cn('mr-1', className)}
   >
     {options.map((o) => (
       <ToggleGroupItem key={o.value} value={o.value} aria-label={o.label}>
@@ -282,8 +285,8 @@ export interface ArtifactMenuItem {
 export interface ArtifactMenuProps {
   icon: LucideIcon;
   label: string;
-  items: (ArtifactMenuItem | "separator")[];
-  align?: "start" | "end";
+  items: (ArtifactMenuItem | 'separator')[];
+  align?: 'start' | 'end';
   className?: string;
 }
 
@@ -295,7 +298,7 @@ export const ArtifactMenu = ({
   icon: Icon,
   label,
   items,
-  align = "end",
+  align = 'end',
   className,
 }: ArtifactMenuProps) => (
   <DropdownMenu>
@@ -304,7 +307,7 @@ export const ArtifactMenu = ({
         type="button"
         variant="ghost"
         size="icon-sm"
-        className={cn("text-muted-foreground hover:text-foreground", className)}
+        className={cn('text-muted-foreground hover:text-foreground', className)}
         aria-label={label}
       >
         <Icon className="size-4" />
@@ -312,14 +315,14 @@ export const ArtifactMenu = ({
     </DropdownMenuTrigger>
     <DropdownMenuContent align={align} className="w-44">
       {items.map((it, i) =>
-        it === "separator" ? (
+        it === 'separator' ? (
           <DropdownMenuSeparator key={i} />
         ) : (
           <DropdownMenuItem key={i} onSelect={() => it.onSelect?.()}>
             {it.icon ? <it.icon className="size-4" /> : null}
             {it.label}
           </DropdownMenuItem>
-        )
+        ),
       )}
     </DropdownMenuContent>
   </DropdownMenu>
@@ -331,5 +334,5 @@ export const ArtifactContent = ({
   className,
   ...props
 }: ArtifactContentProps) => (
-  <div className={cn("flex-1 overflow-auto p-4", className)} {...props} />
+  <div className={cn('flex-1 overflow-auto p-4', className)} {...props} />
 );

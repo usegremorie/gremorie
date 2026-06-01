@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import type { LanguageModelUsage } from "ai";
+import type { Meta, StoryObj } from '@storybook/react';
+import type { LanguageModelUsage } from 'ai';
 
 import {
   Context,
@@ -12,7 +12,7 @@ import {
   ContextOutputUsage,
   ContextReasoningUsage,
   ContextTrigger,
-} from "./context";
+} from './context';
 
 /**
  * # Context
@@ -67,14 +67,14 @@ import {
  * | `--muted-foreground` | Row labels and meta text. |
  */
 const meta = {
-  title: "AI/Context",
+  title: 'AI/Context',
   component: Context,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    usedTokens: { control: "number" },
-    maxTokens: { control: "number" },
-    modelId: { control: "text" },
+    usedTokens: { control: 'number' },
+    maxTokens: { control: 'number' },
+    modelId: { control: 'text' },
   },
 } satisfies Meta<typeof Context>;
 
@@ -107,7 +107,7 @@ export const Default: Story = {
     usedTokens: 50_975,
     maxTokens: 200_000,
     usage,
-    modelId: "anthropic:claude-3-5-sonnet",
+    modelId: 'anthropic:claude-3-5-sonnet',
   },
   render: (args) => (
     <Context {...args}>
@@ -147,7 +147,7 @@ export const NearLimit: Story = {
         reasoningTokens: 0,
       },
     },
-    modelId: "anthropic:claude-3-5-sonnet",
+    modelId: 'anthropic:claude-3-5-sonnet',
   },
   render: (args) => (
     <Context {...args}>

@@ -55,10 +55,12 @@ export type CarouselOrientation = 'horizontal' | 'vertical';
 export class CarouselService {
   readonly api = signal<EmblaCarouselType | undefined>(undefined);
   readonly orientation = signal<CarouselOrientation>('horizontal');
-  readonly opts: WritableSignal<EmblaOptionsType | undefined> =
-    signal<EmblaOptionsType | undefined>(undefined);
-  readonly plugins: WritableSignal<EmblaPluginType[] | undefined> =
-    signal<EmblaPluginType[] | undefined>(undefined);
+  readonly opts: WritableSignal<EmblaOptionsType | undefined> = signal<
+    EmblaOptionsType | undefined
+  >(undefined);
+  readonly plugins: WritableSignal<EmblaPluginType[] | undefined> = signal<
+    EmblaPluginType[] | undefined
+  >(undefined);
   readonly canScrollPrev = signal(false);
   readonly canScrollNext = signal(false);
 

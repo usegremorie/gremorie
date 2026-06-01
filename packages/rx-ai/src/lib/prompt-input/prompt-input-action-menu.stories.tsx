@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CameraIcon, MicIcon, PlugIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { CameraIcon, MicIcon, PlugIcon } from 'lucide-react';
 
 import {
   PromptInputActionMenu,
   PromptInputActionMenuContent,
   PromptInputActionMenuItem,
   PromptInputActionMenuTrigger,
-} from "./prompt-input";
+} from './prompt-input';
 
 /**
  * PromptInputActionMenu - dropdown of in-input actions (React edition).
@@ -16,17 +16,17 @@ import {
  * voice, connect a tool, and so on.
  */
 const meta = {
-  title: "AI/PromptInput/ActionMenu",
+  title: 'AI/PromptInput/ActionMenu',
   component: PromptInputActionMenu,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof PromptInputActionMenu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "Trigger + 3 items",
+  name: 'Trigger + 3 items',
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="p-16">

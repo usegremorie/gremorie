@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Menubar,
@@ -14,7 +14,7 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "./menubar";
+} from './menubar';
 
 /**
  * # Menubar
@@ -68,10 +68,10 @@ import {
  * | `--muted-foreground` | Shortcut hints + item icons |
  */
 const meta = {
-  title: "Interaction/Navigation/Menubar",
+  title: 'Interaction/Navigation/Menubar',
   component: Menubar,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Menubar>;
 
 export default meta;
@@ -153,9 +153,7 @@ export const Default: Story = {
           <MenubarSeparator />
           <MenubarRadioGroup value="comfortable">
             <MenubarRadioItem value="compact">Compact</MenubarRadioItem>
-            <MenubarRadioItem value="comfortable">
-              Comfortable
-            </MenubarRadioItem>
+            <MenubarRadioItem value="comfortable">Comfortable</MenubarRadioItem>
             <MenubarRadioItem value="spacious">Spacious</MenubarRadioItem>
           </MenubarRadioGroup>
         </MenubarContent>

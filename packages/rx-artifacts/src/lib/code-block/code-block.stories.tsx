@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { CodeBlock, CodeBlockCopyButton } from "./code-block";
+import { CodeBlock, CodeBlockCopyButton } from './code-block';
 
 /**
  * CodeBlock - Shiki-highlighted code container (React edition).
@@ -13,17 +13,17 @@ import { CodeBlock, CodeBlockCopyButton } from "./code-block";
  * text before the highlighter resolves.
  */
 const meta = {
-  title: "Artifacts/CodeBlock",
+  title: 'Artifacts/CodeBlock',
   component: CodeBlock,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     language: {
-      control: "select",
-      options: ["typescript", "tsx", "json", "python", "bash"],
+      control: 'select',
+      options: ['typescript', 'tsx', 'json', 'python', 'bash'],
     },
-    showLineNumbers: { control: "boolean" },
+    showLineNumbers: { control: 'boolean' },
   },
-  parameters: { layout: "padded" },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof CodeBlock>;
 
 export default meta;
@@ -54,18 +54,18 @@ const PYTHON_CODE = `def fib(n: int) -> int:
 print([fib(i) for i in range(10)])`;
 
 export const TypeScript: Story = {
-  args: { code: TS_CODE, language: "typescript", showLineNumbers: false },
+  args: { code: TS_CODE, language: 'typescript', showLineNumbers: false },
   render: (args) => <CodeBlock {...args} />,
 };
 
 export const Json: Story = {
-  name: "JSON",
-  args: { code: JSON_CODE, language: "json", showLineNumbers: false },
+  name: 'JSON',
+  args: { code: JSON_CODE, language: 'json', showLineNumbers: false },
   render: (args) => <CodeBlock {...args} />,
 };
 
 export const Python: Story = {
-  args: { code: PYTHON_CODE, language: "python", showLineNumbers: false },
+  args: { code: PYTHON_CODE, language: 'python', showLineNumbers: false },
   render: (args) => <CodeBlock {...args} />,
 };
 
@@ -74,8 +74,8 @@ export const Python: Story = {
  * line.
  */
 export const WithLineNumbers: Story = {
-  name: "With line numbers",
-  args: { code: TS_CODE, language: "typescript", showLineNumbers: true },
+  name: 'With line numbers',
+  args: { code: TS_CODE, language: 'typescript', showLineNumbers: true },
   render: (args) => <CodeBlock {...args} />,
 };
 
@@ -84,7 +84,7 @@ export const WithLineNumbers: Story = {
  * CodeBlock context and writes it to the clipboard.
  */
 export const WithCopyButton: Story = {
-  name: "With copy button",
+  name: 'With copy button',
   parameters: { controls: { disable: true } },
   render: () => (
     <CodeBlock code={TS_CODE} language="typescript">

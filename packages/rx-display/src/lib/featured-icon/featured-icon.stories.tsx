@@ -1,7 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Bell, ChartColumn, Check, Sparkles, TriangleAlert } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import {
+  Bell,
+  ChartColumn,
+  Check,
+  Sparkles,
+  TriangleAlert,
+} from 'lucide-react';
 
-import { FeaturedIcon } from "./featured-icon";
+import { FeaturedIcon } from './featured-icon';
 
 /**
  * # FeaturedIcon
@@ -35,16 +41,25 @@ import { FeaturedIcon } from "./featured-icon";
  * | `--border` | `theme="outline"` border |
  */
 const meta = {
-  title: "Layout & display/Display/FeaturedIcon",
+  title: 'Layout & display/Display/FeaturedIcon',
   component: FeaturedIcon,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { icon: Sparkles, color: "brand", theme: "light", size: "md", shape: "square" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: {
+    icon: Sparkles,
+    color: 'brand',
+    theme: 'light',
+    size: 'md',
+    shape: 'square',
+  },
   argTypes: {
-    color: { control: "inline-radio", options: ["brand", "gray", "success", "error"] },
-    theme: { control: "inline-radio", options: ["light", "solid", "outline"] },
-    size: { control: "inline-radio", options: ["sm", "md", "lg", "xl"] },
-    shape: { control: "inline-radio", options: ["square", "circle"] },
+    color: {
+      control: 'inline-radio',
+      options: ['brand', 'gray', 'success', 'error'],
+    },
+    theme: { control: 'inline-radio', options: ['light', 'solid', 'outline'] },
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
+    shape: { control: 'inline-radio', options: ['square', 'circle'] },
     icon: { control: false },
   },
 } satisfies Meta<typeof FeaturedIcon>;
@@ -54,8 +69,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-const COLORS = ["brand", "gray", "success", "error"] as const;
-const THEMES = ["light", "solid", "outline"] as const;
+const COLORS = ['brand', 'gray', 'success', 'error'] as const;
+const THEMES = ['light', 'solid', 'outline'] as const;
 
 /** Every color × theme combination. */
 export const Themes: Story = {
@@ -84,7 +99,7 @@ export const Themes: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-end gap-4">
-      {(["sm", "md", "lg", "xl"] as const).map((size) => (
+      {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <FeaturedIcon key={size} icon={ChartColumn} size={size} />
       ))}
     </div>

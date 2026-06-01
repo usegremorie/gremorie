@@ -1,21 +1,21 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@gremorie/rx-forms";
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@gremorie/rx-forms';
 import {
   Badge,
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
+} from '@gremorie/rx-display';
 
 type BlockShape =
-  | "sign-in"
-  | "dashboard"
-  | "chat"
-  | "settings"
-  | "marketing"
-  | "empty";
+  | 'sign-in'
+  | 'dashboard'
+  | 'chat'
+  | 'settings'
+  | 'marketing'
+  | 'empty';
 
 /**
  * Each block cycles through chart-1..5 (with chart-1 reused for the 6th).
@@ -37,52 +37,52 @@ const blocks: ReadonlyArray<{
   shape: BlockShape;
 }> = [
   {
-    name: "Sign-in",
-    category: "Auth",
-    description: "Email and password card with OAuth slot.",
-    href: "/blocks#sign-in",
-    chart: "var(--chart-1)",
-    shape: "sign-in",
+    name: 'Sign-in',
+    category: 'Auth',
+    description: 'Email and password card with OAuth slot.',
+    href: '/blocks#sign-in',
+    chart: 'var(--chart-1)',
+    shape: 'sign-in',
   },
   {
-    name: "Dashboard",
-    category: "Shell",
-    description: "Sidebar plus KPI grid plus chart plus recent activity.",
-    href: "/blocks#dashboard",
-    chart: "var(--chart-2)",
-    shape: "dashboard",
+    name: 'Dashboard',
+    category: 'Shell',
+    description: 'Sidebar plus KPI grid plus chart plus recent activity.',
+    href: '/blocks#dashboard',
+    chart: 'var(--chart-2)',
+    shape: 'dashboard',
   },
   {
-    name: "Chat surface",
-    category: "AI",
-    description: "Conversation, Message, PromptInput - fully wired.",
-    href: "/blocks#chat-surface",
-    chart: "var(--brand)",
-    shape: "chat",
+    name: 'Chat surface',
+    category: 'AI',
+    description: 'Conversation, Message, PromptInput - fully wired.',
+    href: '/blocks#chat-surface',
+    chart: 'var(--brand)',
+    shape: 'chat',
   },
   {
-    name: "Settings form",
-    category: "Forms",
-    description: "Multi-section form with save bar and validation.",
-    href: "/blocks#settings",
-    chart: "var(--chart-4)",
-    shape: "settings",
+    name: 'Settings form',
+    category: 'Forms',
+    description: 'Multi-section form with save bar and validation.',
+    href: '/blocks#settings',
+    chart: 'var(--chart-4)',
+    shape: 'settings',
   },
   {
-    name: "Marketing hero",
-    category: "Marketing",
-    description: "Hero with CTA, feature grid, social proof.",
-    href: "/blocks#marketing",
-    chart: "var(--chart-5)",
-    shape: "marketing",
+    name: 'Marketing hero',
+    category: 'Marketing',
+    description: 'Hero with CTA, feature grid, social proof.',
+    href: '/blocks#marketing',
+    chart: 'var(--chart-5)',
+    shape: 'marketing',
   },
   {
-    name: "Empty state",
-    category: "Patterns",
-    description: "No data, no results, error, permission denied.",
-    href: "/blocks#empty-state",
-    chart: "var(--chart-3)",
-    shape: "empty",
+    name: 'Empty state',
+    category: 'Patterns',
+    description: 'No data, no results, error, permission denied.',
+    href: '/blocks#empty-state',
+    chart: 'var(--chart-3)',
+    shape: 'empty',
   },
 ];
 
@@ -94,69 +94,322 @@ const blocks: ReadonlyArray<{
  *   0.25 = ambient lines / labels - gives the diagram visible hierarchy.
  */
 function BlockMockup({ shape }: { shape: BlockShape }) {
-  const stroke = "currentColor";
+  const stroke = 'currentColor';
   switch (shape) {
-    case "sign-in":
+    case 'sign-in':
       return (
         <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <rect x="20" y="10" width="80" height="6" rx="2" fill={stroke} opacity="0.25" />
-          <rect x="20" y="22" width="80" height="8" rx="2" fill="none" stroke={stroke} strokeOpacity="0.5" />
-          <rect x="20" y="34" width="80" height="8" rx="2" fill="none" stroke={stroke} strokeOpacity="0.5" />
-          <rect x="20" y="46" width="80" height="8" rx="2" fill={stroke} opacity="0.9" />
+          <rect
+            x="20"
+            y="10"
+            width="80"
+            height="6"
+            rx="2"
+            fill={stroke}
+            opacity="0.25"
+          />
+          <rect
+            x="20"
+            y="22"
+            width="80"
+            height="8"
+            rx="2"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.5"
+          />
+          <rect
+            x="20"
+            y="34"
+            width="80"
+            height="8"
+            rx="2"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.5"
+          />
+          <rect
+            x="20"
+            y="46"
+            width="80"
+            height="8"
+            rx="2"
+            fill={stroke}
+            opacity="0.9"
+          />
         </svg>
       );
-    case "dashboard":
+    case 'dashboard':
       return (
         <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <rect x="2" y="2" width="20" height="56" rx="2" fill={stroke} opacity="0.15" />
-          <rect x="28" y="2" width="20" height="18" rx="2" fill={stroke} opacity="0.5" />
-          <rect x="52" y="2" width="20" height="18" rx="2" fill={stroke} opacity="0.5" />
-          <rect x="76" y="2" width="20" height="18" rx="2" fill={stroke} opacity="0.5" />
-          <rect x="100" y="2" width="18" height="18" rx="2" fill={stroke} opacity="0.5" />
-          <rect x="28" y="26" width="90" height="32" rx="2" fill="none" stroke={stroke} strokeOpacity="0.6" />
-          <polyline points="32,52 42,42 52,46 62,36 72,40 82,30 92,34 102,28 112,32"
-            fill="none" stroke={stroke} strokeOpacity="0.9" strokeWidth="1.5" />
+          <rect
+            x="2"
+            y="2"
+            width="20"
+            height="56"
+            rx="2"
+            fill={stroke}
+            opacity="0.15"
+          />
+          <rect
+            x="28"
+            y="2"
+            width="20"
+            height="18"
+            rx="2"
+            fill={stroke}
+            opacity="0.5"
+          />
+          <rect
+            x="52"
+            y="2"
+            width="20"
+            height="18"
+            rx="2"
+            fill={stroke}
+            opacity="0.5"
+          />
+          <rect
+            x="76"
+            y="2"
+            width="20"
+            height="18"
+            rx="2"
+            fill={stroke}
+            opacity="0.5"
+          />
+          <rect
+            x="100"
+            y="2"
+            width="18"
+            height="18"
+            rx="2"
+            fill={stroke}
+            opacity="0.5"
+          />
+          <rect
+            x="28"
+            y="26"
+            width="90"
+            height="32"
+            rx="2"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.6"
+          />
+          <polyline
+            points="32,52 42,42 52,46 62,36 72,40 82,30 92,34 102,28 112,32"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.9"
+            strokeWidth="1.5"
+          />
         </svg>
       );
-    case "chat":
+    case 'chat':
       return (
         <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <rect x="60" y="6" width="50" height="10" rx="5" fill={stroke} opacity="0.7" />
-          <rect x="10" y="22" width="65" height="10" rx="5" fill="none" stroke={stroke} strokeOpacity="0.5" />
-          <rect x="10" y="36" width="45" height="6" rx="3" fill="none" stroke={stroke} strokeOpacity="0.4" />
-          <rect x="10" y="48" width="100" height="8" rx="2" fill={stroke} opacity="0.2" />
+          <rect
+            x="60"
+            y="6"
+            width="50"
+            height="10"
+            rx="5"
+            fill={stroke}
+            opacity="0.7"
+          />
+          <rect
+            x="10"
+            y="22"
+            width="65"
+            height="10"
+            rx="5"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.5"
+          />
+          <rect
+            x="10"
+            y="36"
+            width="45"
+            height="6"
+            rx="3"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.4"
+          />
+          <rect
+            x="10"
+            y="48"
+            width="100"
+            height="8"
+            rx="2"
+            fill={stroke}
+            opacity="0.2"
+          />
           <circle cx="105" cy="52" r="3" fill={stroke} opacity="0.9" />
         </svg>
       );
-    case "settings":
+    case 'settings':
       return (
         <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <rect x="10" y="8" width="40" height="4" rx="2" fill={stroke} opacity="0.7" />
-          <rect x="10" y="16" width="100" height="6" rx="2" fill="none" stroke={stroke} strokeOpacity="0.4" />
-          <rect x="10" y="26" width="40" height="4" rx="2" fill={stroke} opacity="0.7" />
-          <rect x="10" y="34" width="100" height="6" rx="2" fill="none" stroke={stroke} strokeOpacity="0.4" />
-          <rect x="80" y="46" width="30" height="8" rx="2" fill={stroke} opacity="0.9" />
+          <rect
+            x="10"
+            y="8"
+            width="40"
+            height="4"
+            rx="2"
+            fill={stroke}
+            opacity="0.7"
+          />
+          <rect
+            x="10"
+            y="16"
+            width="100"
+            height="6"
+            rx="2"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.4"
+          />
+          <rect
+            x="10"
+            y="26"
+            width="40"
+            height="4"
+            rx="2"
+            fill={stroke}
+            opacity="0.7"
+          />
+          <rect
+            x="10"
+            y="34"
+            width="100"
+            height="6"
+            rx="2"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.4"
+          />
+          <rect
+            x="80"
+            y="46"
+            width="30"
+            height="8"
+            rx="2"
+            fill={stroke}
+            opacity="0.9"
+          />
         </svg>
       );
-    case "marketing":
+    case 'marketing':
       return (
         <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <rect x="20" y="8" width="80" height="6" rx="2" fill={stroke} opacity="0.9" />
-          <rect x="28" y="18" width="64" height="3" rx="1" fill={stroke} opacity="0.3" />
-          <rect x="34" y="26" width="22" height="8" rx="2" fill={stroke} opacity="0.9" />
-          <rect x="62" y="26" width="22" height="8" rx="2" fill="none" stroke={stroke} strokeOpacity="0.5" />
-          <rect x="14" y="44" width="28" height="12" rx="2" fill={stroke} opacity="0.2" />
-          <rect x="46" y="44" width="28" height="12" rx="2" fill={stroke} opacity="0.2" />
-          <rect x="78" y="44" width="28" height="12" rx="2" fill={stroke} opacity="0.2" />
+          <rect
+            x="20"
+            y="8"
+            width="80"
+            height="6"
+            rx="2"
+            fill={stroke}
+            opacity="0.9"
+          />
+          <rect
+            x="28"
+            y="18"
+            width="64"
+            height="3"
+            rx="1"
+            fill={stroke}
+            opacity="0.3"
+          />
+          <rect
+            x="34"
+            y="26"
+            width="22"
+            height="8"
+            rx="2"
+            fill={stroke}
+            opacity="0.9"
+          />
+          <rect
+            x="62"
+            y="26"
+            width="22"
+            height="8"
+            rx="2"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.5"
+          />
+          <rect
+            x="14"
+            y="44"
+            width="28"
+            height="12"
+            rx="2"
+            fill={stroke}
+            opacity="0.2"
+          />
+          <rect
+            x="46"
+            y="44"
+            width="28"
+            height="12"
+            rx="2"
+            fill={stroke}
+            opacity="0.2"
+          />
+          <rect
+            x="78"
+            y="44"
+            width="28"
+            height="12"
+            rx="2"
+            fill={stroke}
+            opacity="0.2"
+          />
         </svg>
       );
-    case "empty":
+    case 'empty':
       return (
         <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <circle cx="60" cy="22" r="10" fill="none" stroke={stroke} strokeOpacity="0.4" strokeDasharray="2 2" />
-          <rect x="40" y="38" width="40" height="4" rx="2" fill={stroke} opacity="0.5" />
-          <rect x="32" y="46" width="56" height="3" rx="1" fill={stroke} opacity="0.25" />
-          <rect x="48" y="54" width="24" height="6" rx="2" fill={stroke} opacity="0.9" />
+          <circle
+            cx="60"
+            cy="22"
+            r="10"
+            fill="none"
+            stroke={stroke}
+            strokeOpacity="0.4"
+            strokeDasharray="2 2"
+          />
+          <rect
+            x="40"
+            y="38"
+            width="40"
+            height="4"
+            rx="2"
+            fill={stroke}
+            opacity="0.5"
+          />
+          <rect
+            x="32"
+            y="46"
+            width="56"
+            height="3"
+            rx="1"
+            fill={stroke}
+            opacity="0.25"
+          />
+          <rect
+            x="48"
+            y="54"
+            width="24"
+            height="6"
+            rx="2"
+            fill={stroke}
+            opacity="0.9"
+          />
         </svg>
       );
   }
@@ -222,7 +475,10 @@ export function BlocksGallery() {
                   <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
                     {block.category}
                   </span>
-                  <Badge variant="outline" className="bg-background/80 text-[10px] backdrop-blur">
+                  <Badge
+                    variant="outline"
+                    className="bg-background/80 text-[10px] backdrop-blur"
+                  >
                     Coming soon
                   </Badge>
                 </CardHeader>

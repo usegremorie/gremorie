@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Scatter Chart (React)",
   "description": "Styled scatter chart - show correlation between a numeric X field and one or more Y series. Composes the rx-chart primitive with recharts.",
-  "categories": [
-    "data",
-    "charts"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["data", "charts"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-chart"
-  ],
+  "registryDependencies": ["rx-utils", "rx-chart"],
   "files": [
     {
       "path": "src/lib/scatter-chart/scatter-chart.tsx",

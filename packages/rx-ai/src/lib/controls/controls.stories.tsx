@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   type Edge as FlowEdge,
   type Node as FlowNode,
   ReactFlowProvider,
-} from "@xyflow/react";
+} from '@xyflow/react';
 
-import { Canvas } from "../canvas";
-import { Controls } from "./controls";
+import { Canvas } from '../canvas';
+import { Controls } from './controls';
 
 /**
  * # Controls
@@ -42,21 +42,21 @@ import { Controls } from "./controls";
  * | `--secondary` | Button hover background. |
  */
 const meta = {
-  title: "AI/Controls",
+  title: 'AI/Controls',
   component: Controls,
-  tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof Controls>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const nodes: FlowNode[] = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "A" } },
-  { id: "2", position: { x: 200, y: 80 }, data: { label: "B" } },
+  { id: '1', position: { x: 0, y: 0 }, data: { label: 'A' } },
+  { id: '2', position: { x: 200, y: 80 }, data: { label: 'B' } },
 ];
 
-const edges: FlowEdge[] = [{ id: "e1-2", source: "1", target: "2" }];
+const edges: FlowEdge[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
 /** Controls docked in the canvas — use the buttons to zoom and fit. */
 export const Default: Story = {

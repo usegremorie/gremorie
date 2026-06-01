@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: "Schema-driven UI for AI output. Components that consume structured LLM responses and render."
+description: 'Schema-driven UI for AI output. Components that consume structured LLM responses and render.'
 ---
 
 An **artifact** is a Gremorie primitive that takes a structured payload
@@ -18,31 +18,49 @@ coherent.
 
 Each artifact ships with:
 
-| Layer | What it provides |
-|---|---|
-| **Schema** | TypeScript + Zod definition for the LLM contract |
-| **Renderer** | Component that consumes a parsed payload and renders primitives |
-| **Streaming behavior** | Partial render rules while the LLM streams |
-| **Prompt examples** | How to ask a model to emit valid output |
+| Layer                  | What it provides                                                |
+| ---------------------- | --------------------------------------------------------------- |
+| **Schema**             | TypeScript + Zod definition for the LLM contract                |
+| **Renderer**           | Component that consumes a parsed payload and renders primitives |
+| **Streaming behavior** | Partial render rules while the LLM streams                      |
+| **Prompt examples**    | How to ask a model to emit valid output                         |
 
 ## Artifacts vs Blocks vs Components
 
-| | Components | Blocks | Artifacts |
-|---|---|---|---|
-| **Source of state** | Caller | Caller | LLM response (schema-validated) |
-| **Streaming** | n/a | Optional | First-class -- partial renders during generation |
-| **AI awareness** | None | None | Schema is exposed via MCP `get_artifact()` |
-| **Example** | `Button` | `chat-surface` | `chart` (LLM emits chart spec, artifact renders Recharts) |
+|                     | Components | Blocks         | Artifacts                                                 |
+| ------------------- | ---------- | -------------- | --------------------------------------------------------- |
+| **Source of state** | Caller     | Caller         | LLM response (schema-validated)                           |
+| **Streaming**       | n/a        | Optional       | First-class -- partial renders during generation          |
+| **AI awareness**    | None       | None           | Schema is exposed via MCP `get_artifact()`                |
+| **Example**         | `Button`   | `chat-surface` | `chart` (LLM emits chart spec, artifact renders Recharts) |
 
 ## Categories
 
 <Cards>
-  <Card title="Chart" description="bar, line, pie, area, multi-series. Model emits a spec, artifact renders Recharts/D3." />
-  <Card title="Code" description="code-block, code-diff, code-runner with sandbox embed." />
-  <Card title="Document" description="markdown, outline, document-canvas with collaborative selections." />
-  <Card title="Data" description="table, list, json-tree with paging, sort, filter." />
-  <Card title="Form" description="dynamic form from JSON Schema, multi-step survey, slot-based custom fields." />
-  <Card title="Interactive" description="calculator, timeline, kanban, gallery." />
+  <Card
+    title="Chart"
+    description="bar, line, pie, area, multi-series. Model emits a spec, artifact renders Recharts/D3."
+  />
+  <Card
+    title="Code"
+    description="code-block, code-diff, code-runner with sandbox embed."
+  />
+  <Card
+    title="Document"
+    description="markdown, outline, document-canvas with collaborative selections."
+  />
+  <Card
+    title="Data"
+    description="table, list, json-tree with paging, sort, filter."
+  />
+  <Card
+    title="Form"
+    description="dynamic form from JSON Schema, multi-step survey, slot-based custom fields."
+  />
+  <Card
+    title="Interactive"
+    description="calculator, timeline, kanban, gallery."
+  />
 </Cards>
 
 ## Featured artifacts
@@ -51,35 +69,57 @@ One artifact per category, each demonstrating the "schema in, UI out"
 pattern with real previews and production-ready code.
 
 <Cards>
-  <Card title="Chart (bar)" href="/artifacts/chart-bar" description="Bar chart from a schema-driven dataset." />
-  <Card title="Code block" href="/artifacts/code-block" description="Syntax-highlighted code with copy button." />
-  <Card title="Markdown document" href="/artifacts/markdown-doc" description="Streaming markdown rendered with prose typography." />
-  <Card title="Data table" href="/artifacts/data-table" description="Filterable table over JSON rows." />
-  <Card title="Form (schema)" href="/artifacts/form-schema" description="Form generated from a JSON field schema." />
-  <Card title="Calculator" href="/artifacts/calculator" description="Stateful tool widget with editable inputs." />
+  <Card
+    title="Chart (bar)"
+    href="/artifacts/chart-bar"
+    description="Bar chart from a schema-driven dataset."
+  />
+  <Card
+    title="Code block"
+    href="/artifacts/code-block"
+    description="Syntax-highlighted code with copy button."
+  />
+  <Card
+    title="Markdown document"
+    href="/artifacts/markdown-doc"
+    description="Streaming markdown rendered with prose typography."
+  />
+  <Card
+    title="Data table"
+    href="/artifacts/data-table"
+    description="Filterable table over JSON rows."
+  />
+  <Card
+    title="Form (schema)"
+    href="/artifacts/form-schema"
+    description="Form generated from a JSON field schema."
+  />
+  <Card
+    title="Calculator"
+    href="/artifacts/calculator"
+    description="Stateful tool widget with editable inputs."
+  />
 </Cards>
 
 ## How a model uses an artifact
 
 <Steps>
 
+<Step>The user asks: "Show me Q3 revenue by region as a bar chart."</Step>
+
 <Step>
-The user asks: "Show me Q3 revenue by region as a bar chart."
+  The model calls the MCP tool `get_artifact("chart")` and reads the schema
+  (categories, series, color group, axis labels).
 </Step>
 
 <Step>
-The model calls the MCP tool `get_artifact("chart")` and reads the
-schema (categories, series, color group, axis labels).
+  The model emits a JSON payload that matches the schema, with the revenue
+  figures wired into `series[0].data`.
 </Step>
 
 <Step>
-The model emits a JSON payload that matches the schema, with the
-revenue figures wired into `series[0].data`.
-</Step>
-
-<Step>
-The artifact validates the payload against the schema and renders a
-real Recharts bar chart with Gremorie tokens and chart palette.
+  The artifact validates the payload against the schema and renders a real
+  Recharts bar chart with Gremorie tokens and chart palette.
 </Step>
 
 </Steps>

@@ -5,10 +5,7 @@
   "framework": "rx",
   "title": "Web Preview (React)",
   "description": "Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable Input, WebPreviewBody renders an iframe with the current URL, and WebPreviewConsole (Collapsible) shows console logs and errors below.",
-  "categories": [
-    "ai",
-    "code"
-  ],
+  "categories": ["ai", "code"],
   "dependencies": [],
   "devDependencies": [],
   "registryDependencies": [

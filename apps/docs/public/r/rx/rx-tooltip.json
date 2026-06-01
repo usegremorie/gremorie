@@ -5,16 +5,10 @@
   "framework": "rx",
   "title": "Tooltip (React)",
   "description": "Short non-essential context on hover/focus, built on Radix Tooltip. Reserve for non-critical supporting information - keyboard shortcuts, icon labels, \"what does this do\" hints. Wrap your app root in `<TooltipProvider>` so all tooltips share a delay timer.",
-  "categories": [
-    "overlays"
-  ],
-  "dependencies": [
-    "radix-ui"
-  ],
+  "categories": ["overlays"],
+  "dependencies": ["radix-ui"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils"
-  ],
+  "registryDependencies": ["rx-utils"],
   "files": [
     {
       "path": "src/lib/tooltip/tooltip.tsx",

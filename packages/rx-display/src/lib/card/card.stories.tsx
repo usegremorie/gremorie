@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@gremorie/rx-forms";
-import { TrendingUp } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@gremorie/rx-forms';
+import { TrendingUp } from 'lucide-react';
 
 import {
   Card,
@@ -10,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./card";
+} from './card';
 
 /**
  * # Card
@@ -56,10 +56,10 @@ import {
  * | `--muted-foreground` | `CardDescription` |
  */
 const meta = {
-  title: "Layout & display/Display/Card",
+  title: 'Layout & display/Display/Card',
   component: Card,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof Card>;
 
 export default meta;

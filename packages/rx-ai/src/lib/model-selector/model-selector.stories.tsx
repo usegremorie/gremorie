@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@gremorie/rx-forms";
-import { Command } from "@gremorie/rx-overlays";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@gremorie/rx-forms';
+import { Command } from '@gremorie/rx-overlays';
 
 import {
   ModelSelector,
@@ -15,7 +15,7 @@ import {
   ModelSelectorSeparator,
   ModelSelectorShortcut,
   ModelSelectorTrigger,
-} from "./model-selector";
+} from './model-selector';
 
 /**
  * # ModelSelector
@@ -73,10 +73,10 @@ import {
  * | `--muted-foreground` | Group labels and shortcuts. |
  */
 const meta = {
-  title: "AI/ModelSelector",
+  title: 'AI/ModelSelector',
   component: ModelSelector,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof ModelSelector>;
 
 export default meta;

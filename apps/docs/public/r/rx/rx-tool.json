@@ -5,13 +5,8 @@
   "framework": "rx",
   "title": "Tool (React)",
   "description": "Tool-use trace block. ToolHeader shows the tool name + state Badge (input-streaming, input-available, output-available, output-error). ToolContent reveals ToolInput (JSON params), ToolOutput (formatted result), and ToolErrors. Built on Collapsible + CodeBlock.",
-  "categories": [
-    "ai",
-    "chatbot"
-  ],
-  "dependencies": [
-    "ai"
-  ],
+  "categories": ["ai", "chatbot"],
+  "dependencies": ["ai"],
   "devDependencies": [],
   "registryDependencies": [
     "rx-utils",

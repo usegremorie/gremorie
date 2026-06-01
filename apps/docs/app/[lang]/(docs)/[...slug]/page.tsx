@@ -2,13 +2,13 @@ import {
   DocsBody,
   DocsDescription,
   DocsPage,
-  DocsTitle
-} from "fumadocs-ui/page";
-import { notFound } from "next/navigation";
+  DocsTitle,
+} from 'fumadocs-ui/page';
+import { notFound } from 'next/navigation';
 
-import { DocsIndex } from "@/lib/docs-index";
-import { source } from "@/lib/source";
-import { getMDXComponents } from "@/mdx-components";
+import { DocsIndex } from '@/lib/docs-index';
+import { source } from '@/lib/source';
+import { getMDXComponents } from '@/mdx-components';
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string[] }>;
@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps) {
     <DocsPage
       toc={page.data.toc}
       full={page.data.full}
-      tableOfContent={{ style: "clerk" }}
+      tableOfContent={{ style: 'clerk' }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: page.data.title,
-    description: page.data.description
+    description: page.data.description,
   };
 }
 

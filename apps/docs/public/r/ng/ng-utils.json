@@ -5,14 +5,8 @@
   "framework": "ng",
   "title": "Utils (Angular)",
   "description": "Shared utilities for the Angular edition - cn() helper that merges Tailwind class names with conflict resolution (clsx + tailwind-merge).",
-  "categories": [
-    "core",
-    "utils"
-  ],
-  "dependencies": [
-    "clsx",
-    "tailwind-merge"
-  ],
+  "categories": ["core", "utils"],
+  "dependencies": ["clsx", "tailwind-merge"],
   "devDependencies": [],
   "registryDependencies": [],
   "files": [

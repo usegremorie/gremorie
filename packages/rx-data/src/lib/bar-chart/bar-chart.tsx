@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 import {
   Bar,
   BarChart as RechartsBarChart,
@@ -9,15 +9,15 @@ import {
   LabelList,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../chart/chart";
-import type { ChartDatum } from "../chart/types";
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface BarChartProps {
   /** Tabular rows. For per-bar colors, give each row a `fill` (e.g. `var(--chart-1)`). */
@@ -70,7 +70,7 @@ export function BarChart({
 }: BarChartProps) {
   const keys = Object.keys(config).filter((k) => k !== xKey);
   const single = keys.length <= 1;
-  const perRowFill = single && data.some((d) => "fill" in d);
+  const perRowFill = single && data.some((d) => 'fill' in d);
 
   /**
    * Round only the OUTER corners of a stack (so segments don't read as
@@ -94,7 +94,7 @@ export function BarChart({
       <RechartsBarChart
         accessibilityLayer
         data={data as ChartDatum[]}
-        layout={horizontal ? "vertical" : "horizontal"}
+        layout={horizontal ? 'vertical' : 'horizontal'}
         margin={{
           top: showLabels && !horizontal ? 20 : 8,
           right: 12,
@@ -151,7 +151,7 @@ export function BarChart({
             dataKey={key}
             fill={`var(--color-${key})`}
             radius={segRadius(i)}
-            stackId={stacked ? "a" : undefined}
+            stackId={stacked ? 'a' : undefined}
           >
             {perRowFill
               ? data.map((d, idx) => (
@@ -163,7 +163,7 @@ export function BarChart({
               : null}
             {showLabels && (single || i === keys.length - 1) ? (
               <LabelList
-                position={horizontal ? "right" : "top"}
+                position={horizontal ? 'right' : 'top'}
                 offset={8}
                 className="fill-foreground"
                 fontSize={12}

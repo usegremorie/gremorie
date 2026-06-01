@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Pie Chart (React)",
   "description": "Styled pie / donut chart - parts of a whole, one slice per data row. Composes the rx-chart primitive with recharts.",
-  "categories": [
-    "data",
-    "charts"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["data", "charts"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-chart"
-  ],
+  "registryDependencies": ["rx-utils", "rx-chart"],
   "files": [
     {
       "path": "src/lib/pie-chart/pie-chart.tsx",

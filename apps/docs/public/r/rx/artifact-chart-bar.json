@@ -5,20 +5,10 @@
   "framework": "rx",
   "title": "Chart (bar) artifact",
   "description": "Bar chart artifact rendering a schema-driven dataset emitted by the model. Composes BarChart (rx-data) with Card + Badge for framing.",
-  "categories": [
-    "artifacts",
-    "chart"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["artifacts", "chart"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-card",
-    "rx-badge",
-    "rx-bar-chart"
-  ],
+  "registryDependencies": ["rx-utils", "rx-card", "rx-badge", "rx-bar-chart"],
   "files": [
     {
       "path": "chart-bar.tsx",

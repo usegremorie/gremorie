@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import * as React from "react";
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 import {
   ContextMenu,
@@ -15,7 +15,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "./context-menu";
+} from './context-menu';
 
 /**
  * # ContextMenu
@@ -70,10 +70,10 @@ import {
  * | `--border` | Separator |
  */
 const meta = {
-  title: "Interaction/Overlays/ContextMenu",
+  title: 'Interaction/Overlays/ContextMenu',
   component: ContextMenu,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 } satisfies Meta<typeof ContextMenu>;
 
 export default meta;

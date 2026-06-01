@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { CheckIcon, CircleDashedIcon, LoaderIcon } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { CheckIcon, CircleDashedIcon, LoaderIcon } from 'lucide-react';
 
 import {
   Plan,
@@ -10,7 +10,7 @@ import {
   PlanHeader,
   PlanTitle,
   PlanTrigger,
-} from "./plan";
+} from './plan';
 
 /**
  * # Plan
@@ -58,12 +58,12 @@ import {
  * | `--muted-foreground` | Description and step text. |
  */
 const meta = {
-  title: "AI/Plan",
+  title: 'AI/Plan',
   component: Plan,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
-    isStreaming: { control: "boolean" },
+    isStreaming: { control: 'boolean' },
   },
 } satisfies Meta<typeof Plan>;
 
@@ -71,9 +71,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const steps = [
-  { label: "Read the relevant source files", status: "done" as const },
-  { label: "Draft the implementation", status: "active" as const },
-  { label: "Run the test suite", status: "todo" as const },
+  { label: 'Read the relevant source files', status: 'done' as const },
+  { label: 'Draft the implementation', status: 'active' as const },
+  { label: 'Run the test suite', status: 'todo' as const },
 ];
 
 const StepList = () => (
@@ -83,13 +83,13 @@ const StepList = () => (
         className="flex items-center gap-2 text-muted-foreground text-sm"
         key={step.label}
       >
-        {step.status === "done" && (
+        {step.status === 'done' && (
           <CheckIcon className="size-4 text-foreground" />
         )}
-        {step.status === "active" && (
+        {step.status === 'active' && (
           <LoaderIcon className="size-4 animate-spin" />
         )}
-        {step.status === "todo" && <CircleDashedIcon className="size-4" />}
+        {step.status === 'todo' && <CircleDashedIcon className="size-4" />}
         <span>{step.label}</span>
       </li>
     ))}

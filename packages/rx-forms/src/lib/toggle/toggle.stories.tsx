@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Bold, Italic, Underline } from "lucide-react";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Bold, Italic, Underline } from 'lucide-react';
 
-import { Toggle } from "./toggle";
+import { Toggle } from './toggle';
 
 /**
  * # Toggle
@@ -38,15 +38,15 @@ import { Toggle } from "./toggle";
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: "Inputs/Toggle",
+  title: 'Inputs/Toggle',
   component: Toggle,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
-  args: { children: <Bold />, "aria-label": "Toggle bold" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
+  args: { children: <Bold />, 'aria-label': 'Toggle bold' },
   argTypes: {
-    variant: { control: "inline-radio", options: ["default", "outline"] },
-    size: { control: "inline-radio", options: ["default", "sm", "lg"] },
-    disabled: { control: "boolean" },
+    variant: { control: 'inline-radio', options: ['default', 'outline'] },
+    size: { control: 'inline-radio', options: ['default', 'sm', 'lg'] },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Toggle>;
 
@@ -60,7 +60,7 @@ export const Default: Story = {};
 export const Pressed: Story = { args: { defaultPressed: true } };
 
 /** Outline variant. */
-export const Outline: Story = { args: { variant: "outline" } };
+export const Outline: Story = { args: { variant: 'outline' } };
 
 /** The three sizes. */
 export const Sizes: Story = {

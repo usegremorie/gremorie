@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from "../label/label";
-import { Slider } from "./slider";
+import { Label } from '../label/label';
+import { Slider } from './slider';
 
 /**
  * # Slider
@@ -39,13 +39,16 @@ import { Slider } from "./slider";
  * | `--ring` | thumb focus/hover ring |
  */
 const meta = {
-  title: "Inputs/Slider",
+  title: 'Inputs/Slider',
   component: Slider,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
   argTypes: {
-    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
-    disabled: { control: "boolean" },
+    orientation: {
+      control: 'inline-radio',
+      options: ['horizontal', 'vertical'],
+    },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Slider>;
 
@@ -54,7 +57,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Single thumb at 50%. */
 export const Single: Story = {
-  args: { defaultValue: [50], thumbAriaLabel: "Value" },
+  args: { defaultValue: [50], thumbAriaLabel: 'Value' },
   render: (args) => <Slider className="w-72" {...args} />,
 };
 
@@ -62,26 +65,30 @@ export const Single: Story = {
 export const Range: Story = {
   args: {
     defaultValue: [25, 75],
-    thumbAriaLabel: ["Minimum", "Maximum"],
+    thumbAriaLabel: ['Minimum', 'Maximum'],
   },
   render: (args) => <Slider className="w-72" {...args} />,
 };
 
 /** Stepped slider (steps of 10). */
 export const Stepped: Story = {
-  args: { defaultValue: [40], step: 10, thumbAriaLabel: "Value" },
+  args: { defaultValue: [40], step: 10, thumbAriaLabel: 'Value' },
   render: (args) => <Slider className="w-72" {...args} />,
 };
 
 /** Disabled. */
 export const Disabled: Story = {
-  args: { defaultValue: [50], disabled: true, thumbAriaLabel: "Value" },
+  args: { defaultValue: [50], disabled: true, thumbAriaLabel: 'Value' },
   render: (args) => <Slider className="w-72" {...args} />,
 };
 
 /** Vertical orientation. */
 export const Vertical: Story = {
-  args: { defaultValue: [60], orientation: "vertical", thumbAriaLabel: "Value" },
+  args: {
+    defaultValue: [60],
+    orientation: 'vertical',
+    thumbAriaLabel: 'Value',
+  },
   render: (args) => (
     <div className="h-44">
       <Slider {...args} />

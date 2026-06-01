@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   Confirmation,
@@ -8,7 +8,7 @@ import {
   ConfirmationRejected,
   ConfirmationRequest,
   ConfirmationTitle,
-} from "./confirmation";
+} from './confirmation';
 
 /**
  * # Confirmation
@@ -61,18 +61,18 @@ import {
  * | `--muted-foreground` | Description text. |
  */
 const meta = {
-  title: "AI/Confirmation",
+  title: 'AI/Confirmation',
   component: Confirmation,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
     state: {
-      control: "select",
+      control: 'select',
       options: [
-        "approval-requested",
-        "approval-responded",
-        "output-available",
-        "output-denied",
+        'approval-requested',
+        'approval-responded',
+        'output-available',
+        'output-denied',
       ],
     },
   },
@@ -83,17 +83,17 @@ type Story = StoryObj<typeof meta>;
 
 /** Pending — the user is asked to approve a destructive action. */
 export const Requested: Story = {
-  name: "State: approval-requested",
+  name: 'State: approval-requested',
   args: {
-    state: "approval-requested",
-    approval: { id: "appr_1" },
+    state: 'approval-requested',
+    approval: { id: 'appr_1' },
   },
   render: (args) => (
     <div className="max-w-md">
       <Confirmation {...args}>
         <ConfirmationRequest>
           <ConfirmationTitle>
-            Allow <strong>deleteFile</strong> to remove{" "}
+            Allow <strong>deleteFile</strong> to remove{' '}
             <code>src/legacy/config.ts</code>?
           </ConfirmationTitle>
         </ConfirmationRequest>
@@ -108,10 +108,10 @@ export const Requested: Story = {
 
 /** Accepted — the user approved; the accepted message is shown. */
 export const Accepted: Story = {
-  name: "State: accepted",
+  name: 'State: accepted',
   args: {
-    state: "approval-responded",
-    approval: { id: "appr_1", approved: true },
+    state: 'approval-responded',
+    approval: { id: 'appr_1', approved: true },
   },
   render: (args) => (
     <div className="max-w-md">
@@ -131,13 +131,13 @@ export const Accepted: Story = {
 
 /** Rejected — the user declined; the rejected message (with reason) is shown. */
 export const Rejected: Story = {
-  name: "State: rejected",
+  name: 'State: rejected',
   args: {
-    state: "output-denied",
+    state: 'output-denied',
     approval: {
-      id: "appr_1",
+      id: 'appr_1',
       approved: false,
-      reason: "Looks risky — keep the file.",
+      reason: 'Looks risky — keep the file.',
     },
   },
   render: (args) => (

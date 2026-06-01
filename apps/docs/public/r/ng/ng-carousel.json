@@ -5,17 +5,10 @@
   "framework": "ng",
   "title": "Carousel (Angular)",
   "description": "Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gn-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).",
-  "categories": [
-    "display"
-  ],
-  "dependencies": [
-    "@angular/core",
-    "embla-carousel"
-  ],
+  "categories": ["display"],
+  "dependencies": ["@angular/core", "embla-carousel"],
   "devDependencies": [],
-  "registryDependencies": [
-    "ng-utils"
-  ],
+  "registryDependencies": ["ng-utils"],
   "files": [
     {
       "path": "src/lib/carousel/carousel.ts",

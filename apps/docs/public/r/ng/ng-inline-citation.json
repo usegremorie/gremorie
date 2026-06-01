@@ -5,20 +5,10 @@
   "framework": "ng",
   "title": "Inline Citation (Angular)",
   "description": "Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gn-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.",
-  "categories": [
-    "ai",
-    "chatbot"
-  ],
-  "dependencies": [
-    "@angular/core",
-    "@spartan-ng/brain"
-  ],
+  "categories": ["ai", "chatbot"],
+  "dependencies": ["@angular/core", "@spartan-ng/brain"],
   "devDependencies": [],
-  "registryDependencies": [
-    "ng-utils",
-    "ng-badge",
-    "ng-carousel"
-  ],
+  "registryDependencies": ["ng-utils", "ng-badge", "ng-carousel"],
   "files": [
     {
       "path": "src/lib/inline-citation/inline-citation.ts",

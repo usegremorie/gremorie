@@ -17,12 +17,12 @@
  * NOTE: "artifacts" currently ship inside @gremorie/rx-ai; once they are
  * extracted into their own package they will be dropped from this meta.
  */
-export * from "@gremorie/rx-core";
-export * from "@gremorie/rx-forms";
-export * from "@gremorie/rx-display";
-export * from "@gremorie/rx-overlays";
-export * from "@gremorie/rx-feedback";
-export * from "@gremorie/rx-navigation";
-export * from "@gremorie/rx-containers";
-export * from "@gremorie/rx-data";
-export * from "@gremorie/rx-ai";
+export * from '@gremorie/rx-core';
+export * from '@gremorie/rx-forms';
+export * from '@gremorie/rx-display';
+export * from '@gremorie/rx-overlays';
+export * from '@gremorie/rx-feedback';
+export * from '@gremorie/rx-navigation';
+export * from '@gremorie/rx-containers';
+export * from '@gremorie/rx-data';
+export * from '@gremorie/rx-ai';

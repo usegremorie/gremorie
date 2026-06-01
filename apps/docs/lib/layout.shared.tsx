@@ -1,12 +1,9 @@
-import { defineI18nUI } from "fumadocs-ui/i18n";
-import { Github, Sparkles } from "lucide-react";
+import { defineI18nUI } from 'fumadocs-ui/i18n';
+import { Github, Sparkles } from 'lucide-react';
 
-import type {
-  BaseLayoutProps,
-  LinkItemType
-} from "fumadocs-ui/layouts/shared";
+import type { BaseLayoutProps, LinkItemType } from 'fumadocs-ui/layouts/shared';
 
-import { i18n } from "@/lib/i18n";
+import { i18n } from '@/lib/i18n';
 
 /**
  * UI translations + the per-locale provider for RootProvider.
@@ -16,21 +13,21 @@ import { i18n } from "@/lib/i18n";
  */
 export const { provider } = defineI18nUI(i18n, {
   translations: {
-    en: { displayName: "English" },
+    en: { displayName: 'English' },
     pt: {
-      displayName: "Português",
-      search: "Buscar",
-      searchNoResult: "Nenhum resultado",
-      toc: "Nesta página",
-      tocNoHeadings: "Sem títulos",
-      lastUpdate: "Última atualização",
-      chooseLanguage: "Idioma",
-      nextPage: "Próximo",
-      previousPage: "Anterior",
-      chooseTheme: "Tema",
-      editOnGithub: "Editar no GitHub"
-    }
-  }
+      displayName: 'Português',
+      search: 'Buscar',
+      searchNoResult: 'Nenhum resultado',
+      toc: 'Nesta página',
+      tocNoHeadings: 'Sem títulos',
+      lastUpdate: 'Última atualização',
+      chooseLanguage: 'Idioma',
+      nextPage: 'Próximo',
+      previousPage: 'Anterior',
+      chooseTheme: 'Tema',
+      editOnGithub: 'Editar no GitHub',
+    },
+  },
 });
 
 /**
@@ -69,25 +66,25 @@ export const logo = (
 // The navbar keeps brand + search + GitHub only.
 export const linkItems: LinkItemType[] = [
   {
-    type: "icon",
-    label: "GitHub",
-    text: "GitHub",
+    type: 'icon',
+    label: 'GitHub',
+    text: 'GitHub',
     icon: <Github aria-hidden="true" />,
-    url: "https://github.com/usegremorie/gremorie",
-    external: true
-  }
+    url: 'https://github.com/usegremorie/gremorie',
+    external: true,
+  },
 ];
 
 export function baseOptions(lang?: string): BaseLayoutProps {
-  const home = lang && lang !== i18n.defaultLanguage ? `/${lang}` : "/";
+  const home = lang && lang !== i18n.defaultLanguage ? `/${lang}` : '/';
   return {
     nav: {
       title: logo,
-      url: home
+      url: home,
     },
     links: linkItems,
     searchToggle: {
-      enabled: true
-    }
+      enabled: true,
+    },
   };
 }

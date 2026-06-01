@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Source, Sources, SourcesContent, SourcesTrigger } from "./sources";
+import { Source, Sources, SourcesContent, SourcesTrigger } from './sources';
 
 /**
  * Sources - citation list with collapsible trigger (React edition).
@@ -9,10 +9,10 @@ import { Source, Sources, SourcesContent, SourcesTrigger } from "./sources";
  * single / many sources, and an override of the trigger label.
  */
 const meta = {
-  title: "AI/Sources",
+  title: 'AI/Sources',
   component: Sources,
-  tags: ["autodocs"],
-  parameters: { layout: "padded" },
+  tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Sources>;
 
 export default meta;
@@ -31,10 +31,7 @@ export const Collapsed: Story = {
           href="https://example.com/article-2"
           title="React patterns deep dive"
         />
-        <Source
-          href="https://example.com/article-3"
-          title="Slot composition"
-        />
+        <Source href="https://example.com/article-3" title="Slot composition" />
       </SourcesContent>
     </Sources>
   ),
@@ -53,17 +50,14 @@ export const Expanded: Story = {
           href="https://example.com/article-2"
           title="React patterns deep dive"
         />
-        <Source
-          href="https://example.com/article-3"
-          title="Slot composition"
-        />
+        <Source href="https://example.com/article-3" title="Slot composition" />
       </SourcesContent>
     </Sources>
   ),
 };
 
 export const SingleSource: Story = {
-  name: "Single source",
+  name: 'Single source',
   render: () => (
     <Sources open={true}>
       <SourcesTrigger count={1} />
@@ -82,17 +76,14 @@ export const SingleSource: Story = {
  * `flex flex-col gap-2 w-fit` so each citation sits on its own line.
  */
 export const ManySources: Story = {
-  name: "Many sources",
+  name: 'Many sources',
   render: () => (
     <Sources open={true}>
       <SourcesTrigger count={6} />
       <SourcesContent>
         <Source href="https://example.com/1" title="React docs - forwardRef" />
         <Source href="https://example.com/2" title="Radix Primitives - Slot" />
-        <Source
-          href="https://example.com/3"
-          title="shadcn registry overview"
-        />
+        <Source href="https://example.com/3" title="shadcn registry overview" />
         <Source href="https://example.com/4" title="Angular signals" />
         <Source href="https://example.com/5" title="AI SDK - UIMessage" />
         <Source href="https://example.com/6" title="Spartan-ng - Brain" />
@@ -106,7 +97,7 @@ export const ManySources: Story = {
  * the default "Used N sources" label.
  */
 export const CustomTrigger: Story = {
-  name: "Custom trigger",
+  name: 'Custom trigger',
   parameters: { controls: { disable: true } },
   render: () => (
     <Sources open={true}>

@@ -5,18 +5,10 @@
   "framework": "rx",
   "title": "Bar Chart (React)",
   "description": "Styled grouped bar chart - compare values across categories with one bar per series in each band. Composes the rx-chart primitive with recharts.",
-  "categories": [
-    "data",
-    "charts"
-  ],
-  "dependencies": [
-    "react"
-  ],
+  "categories": ["data", "charts"],
+  "dependencies": ["react"],
   "devDependencies": [],
-  "registryDependencies": [
-    "rx-utils",
-    "rx-chart"
-  ],
+  "registryDependencies": ["rx-utils", "rx-chart"],
   "files": [
     {
       "path": "src/lib/bar-chart/bar-chart.tsx",

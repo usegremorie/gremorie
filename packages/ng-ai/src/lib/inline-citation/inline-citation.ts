@@ -5,7 +5,10 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnHoverCard, BrnHoverCardTrigger } from '@spartan-ng/brain/hover-card';
+import {
+  BrnHoverCard,
+  BrnHoverCardTrigger,
+} from '@spartan-ng/brain/hover-card';
 import { Badge } from '@gremorie/ng-display';
 
 /**
@@ -91,9 +94,11 @@ export class InlineCitationCard {}
   imports: [Badge],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<gn-badge variant="secondary" class="ml-1 cursor-default rounded-full">{{
-    label()
-  }}</gn-badge>`,
+  template: `<gn-badge
+    variant="secondary"
+    class="ml-1 cursor-default rounded-full"
+    >{{ label() }}</gn-badge
+  >`,
   host: {
     'data-slot': 'inline-citation-card-trigger',
     class: 'inline-flex align-baseline',
@@ -142,7 +147,9 @@ export class InlineCitationCardBody {}
       <h4 class="truncate text-sm font-medium leading-tight">{{ title() }}</h4>
     }
     @if (url()) {
-      <p class="truncate break-all text-xs text-muted-foreground">{{ url() }}</p>
+      <p class="truncate break-all text-xs text-muted-foreground">
+        {{ url() }}
+      </p>
     }
     @if (description()) {
       <p class="line-clamp-3 text-sm leading-relaxed text-muted-foreground">

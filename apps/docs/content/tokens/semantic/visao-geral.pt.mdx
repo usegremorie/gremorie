@@ -15,17 +15,17 @@ camada semântica. Ela define um conjunto fixo de **intenções** —
 `background`, `foreground`, `primary`, `border`, `ring`, etc — que
 qualquer tema precisa preencher.
 
-| Intenção | O que representa |
-|---|---|
-| `background` / `foreground` | Superfície base e texto sobre ela |
-| `card` / `popover` | Variações de superfície com elevação |
-| `primary` | A ação principal — botão protagonista |
-| `secondary` | Ação secundária, baixo contraste |
-| `muted` | Texto e superfícies em segundo plano |
-| `accent` | Hover, seleção, destaque sutil |
-| `destructive` | Ações irreversíveis, erro |
-| `border` / `input` / `ring` | Forms e estado de foco |
-| `sidebar-*` | Variantes para a chrome de navegação |
+| Intenção                    | O que representa                      |
+| --------------------------- | ------------------------------------- |
+| `background` / `foreground` | Superfície base e texto sobre ela     |
+| `card` / `popover`          | Variações de superfície com elevação  |
+| `primary`                   | A ação principal — botão protagonista |
+| `secondary`                 | Ação secundária, baixo contraste      |
+| `muted`                     | Texto e superfícies em segundo plano  |
+| `accent`                    | Hover, seleção, destaque sutil        |
+| `destructive`               | Ações irreversíveis, erro             |
+| `border` / `input` / `ring` | Forms e estado de foco                |
+| `sidebar-*`                 | Variantes para a chrome de navegação  |
 
 ## Quatro temas, dois modos
 
@@ -55,8 +55,12 @@ Cada tema entrega **light e dark** independentemente. O switch é
 uma única troca de atributo:
 
 ```html
-<html data-theme="amber-minimal">      <!-- light -->
-<html data-theme="claude" class="dark"> <!-- dark -->
+<html data-theme="amber-minimal">
+  <!-- light -->
+  <html data-theme="claude" class="dark">
+    <!-- dark -->
+  </html>
+</html>
 ```
 
 Componentes não sabem qual tema está ativo. Eles pedem `bg-primary`,
@@ -69,7 +73,7 @@ Cada tema é um arquivo CSS em
 valores **referenciam primitivos** via `var(--color-<token>)`:
 
 ```css
-[data-theme="amber-minimal"] {
+[data-theme='amber-minimal'] {
   --primary: var(--color-amber-500);
   --foreground: var(--color-neutral-800);
   --border: var(--color-gray-200);
@@ -90,8 +94,8 @@ outro — e para auditar se o seu próprio tema customizado está
 preenchendo as intenções com primitivos consistentes.
 
 <Callout type="info">
-  **A regra crítica:** semânticos sempre referenciam primitivos
-  via `var(...)`. Nunca digite OKLCH ou hex direto num arquivo de
-  tema. Se o primitivo certo não existe, **adicione um primitivo
-  primeiro** e depois referencie. Isso mantém a cascata íntegra.
+  **A regra crítica:** semânticos sempre referenciam primitivos via `var(...)`.
+  Nunca digite OKLCH ou hex direto num arquivo de tema. Se o primitivo certo não
+  existe, **adicione um primitivo primeiro** e depois referencie. Isso mantém a
+  cascata íntegra.
 </Callout>
