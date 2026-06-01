@@ -1570,7 +1570,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Chart (React)",
-      "description": "Headless chart engine for the React edition - chart-context (React Context + hooks), scales, axis, cartesian-grid, chart-frame, plus shape helpers (area, line, bar, scatter, pie, polar, radar, radial-bar). Shared base for every styled chart.",
+      "description": "The chart primitive for the React edition - ChartContainer (responsive frame + per-series CSS color vars), ChartTooltip / ChartTooltipContent, ChartLegend / ChartLegendContent, useChart, and the ChartConfig / ChartDatum types. Built on recharts; the shared base every styled chart composes.",
       "categories": [
         "data",
         "charts"
@@ -1584,7 +1584,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Area Chart (React)",
-      "description": "Styled area chart - cumulative quantity over a continuous domain. Uses the rx-chart headless primitives.",
+      "description": "Styled area chart - cumulative quantity over a continuous domain. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
@@ -1599,7 +1599,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Line Chart (React)",
-      "description": "Styled line chart - trends over a continuous domain. Uses the rx-chart headless primitives.",
+      "description": "Styled line chart - trends over a continuous domain. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
@@ -1614,7 +1614,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Bar Chart (React)",
-      "description": "Styled grouped bar chart - compare values across categories with one bar per series in each band. Uses the rx-chart headless primitives.",
+      "description": "Styled grouped bar chart - compare values across categories with one bar per series in each band. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
@@ -1629,7 +1629,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Scatter Chart (React)",
-      "description": "Styled scatter chart - show correlation between a numeric X field and one or more Y series. Uses the rx-chart headless primitives.",
+      "description": "Styled scatter chart - show correlation between a numeric X field and one or more Y series. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
@@ -1644,7 +1644,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Pie Chart (React)",
-      "description": "Styled pie / donut chart - parts of a whole, one slice per data row. Uses the rx-chart headless primitives.",
+      "description": "Styled pie / donut chart - parts of a whole, one slice per data row. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
@@ -1659,7 +1659,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Radar Chart (React)",
-      "description": "Styled radar chart - compare series across multiple axes that share a radial domain. Uses the rx-chart headless primitives.",
+      "description": "Styled radar chart - compare series across multiple axes that share a radial domain. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
@@ -1674,7 +1674,7 @@
       "type": "registry:block",
       "framework": "rx",
       "title": "Radial Chart (React)",
-      "description": "Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Uses the rx-chart headless primitives.",
+      "description": "Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Composes the rx-chart primitive with recharts.",
       "categories": [
         "data",
         "charts"
