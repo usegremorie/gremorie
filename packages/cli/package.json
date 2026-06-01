@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Command line interface for Gremorie. Scaffolds AI components into your Angular app.",
   "license": "MIT",
   "repository": {

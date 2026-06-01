@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-forms",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React form primitives for Gremorie - Button, Input, InputGroup, Label, Select, Textarea, ButtonGroup, Calendar, Checkbox, Form, InputOTP, RadioGroup, Slider, Switch, Toggle, ToggleGroup.",
   "license": "MIT",
   "repository": {

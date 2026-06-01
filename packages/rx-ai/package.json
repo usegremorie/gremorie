@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-ai",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React AI primitives for Gremorie - full Bridge parity. PromptInput family, Chatbot (Message, Conversation, Reasoning, Task, Tool, ...), Code (Artifact, CodeBlock, WebPreview), Workflow (Canvas, Node, Edge, ...), Utilities (Image, OpenInChat).",
   "license": "MIT",
   "repository": {
