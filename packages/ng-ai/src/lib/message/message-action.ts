@@ -6,10 +6,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  BrnTooltip,
-  type BrnTooltipPosition,
-} from '@spartan-ng/brain/tooltip';
+import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
 
 /**
  * MessageAction — single icon-button slot inside `<message-actions>`.

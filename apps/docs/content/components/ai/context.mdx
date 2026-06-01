@@ -3,7 +3,7 @@ title: Context
 description: Token usage indicator - circular progress trigger with a hover card breakdown of input, output, reasoning, cache and total cost.
 ---
 
-import { ContextPreview } from "@/components/preview/ai/chatbot-rest";
+import { ContextPreview } from '@/components/preview/ai/chatbot-rest';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use it in the chat toolbar next to the prompt input so users can pace longer con
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-context
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-context
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-context
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-context
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-context ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-context ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-context ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-context ```</Tab>
 </Tabs>
 
 ## Usage
@@ -91,12 +75,12 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Context>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `usedTokens` | `number` | - | Required. Total tokens consumed. Drives the percentage and progress bar. |
-| `maxTokens` | `number` | - | Required. Model context window. |
-| `usage` | `LanguageModelUsage` | - | Optional AI SDK usage payload (input, output, reasoning, cached). Drives per-bucket breakdown. |
-| `modelId` | `string` | - | Optional `tokenlens` model id used to compute costs. |
+| Prop         | Type                 | Default | Description                                                                                    |
+| ------------ | -------------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `usedTokens` | `number`             | -       | Required. Total tokens consumed. Drives the percentage and progress bar.                       |
+| `maxTokens`  | `number`             | -       | Required. Model context window.                                                                |
+| `usage`      | `LanguageModelUsage` | -       | Optional AI SDK usage payload (input, output, reasoning, cached). Drives per-bucket breakdown. |
+| `modelId`    | `string`             | -       | Optional `tokenlens` model id used to compute costs.                                           |
 
 Extends `ComponentProps<typeof HoverCard>`.
 
@@ -112,10 +96,10 @@ Hover card body. Adds `min-w-60`, divides children with hairlines, removes defau
 
 Three vertical regions:
 
-| Region | Default content |
-|---|---|
-| Header | Percent + compact `used / total` tokens + `Progress` bar |
-| Body | Container for per-bucket usage rows |
+| Region | Default content                                                 |
+| ------ | --------------------------------------------------------------- |
+| Header | Percent + compact `used / total` tokens + `Progress` bar        |
+| Body   | Container for per-bucket usage rows                             |
 | Footer | Total cost in USD (via `tokenlens`) on a `bg-secondary` surface |
 
 All accept `children` to override the defaults.

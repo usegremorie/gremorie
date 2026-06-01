@@ -5,7 +5,9 @@ export function linearScale(
   domain: readonly [number, number],
   range: readonly [number, number],
 ): (value: number) => number {
-  return scaleLinear().domain([...domain]).range([...range]);
+  return scaleLinear()
+    .domain([...domain])
+    .range([...range]);
 }
 
 /** Categorical position scale; categories land at discrete points across the range. */
@@ -13,7 +15,10 @@ export function pointScale(
   categories: readonly string[],
   range: readonly [number, number],
 ): (value: string) => number {
-  const scale = scalePoint<string>().domain([...categories]).range([...range]).padding(0);
+  const scale = scalePoint<string>()
+    .domain([...categories])
+    .range([...range])
+    .padding(0);
   return (value: string) => scale(value) ?? 0;
 }
 
@@ -32,7 +37,10 @@ export function bandScale(
   range: readonly [number, number],
   padding = 0.2,
 ): BandScale {
-  const scale = scaleBand<string>().domain([...categories]).range([...range]).padding(padding);
+  const scale = scaleBand<string>()
+    .domain([...categories])
+    .range([...range])
+    .padding(padding);
   const fn = ((value: string) => scale(value) ?? 0) as BandScale;
   fn.bandwidth = scale.bandwidth();
   fn.step = scale.step();

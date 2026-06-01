@@ -2,20 +2,20 @@
 title: Input
 description: Campo de texto de uma linha — estiliza qualquer tipo HTML nativo (text, email, password, search, file…).
 component: Input
-importPath: "@kalvner/kds/forms/input"
+importPath: '@kalvner/kds/forms/input'
 status: stable
 ---
 
-import { Input } from "@kalvner/kds/forms/input";
-import { Label } from "@kalvner/kds/forms/label";
+import { Input } from '@kalvner/kds/forms/input';
+import { Label } from '@kalvner/kds/forms/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { Search, X } from "lucide-react";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { Search, X } from 'lucide-react';
 
 ## Overview
 
@@ -58,8 +58,8 @@ componente substituível.
 ## Usage
 
 ```tsx
-import { Input } from "@kalvner/kds/forms/input";
-import { Label } from "@kalvner/kds/forms/label";
+import { Input } from '@kalvner/kds/forms/input';
+import { Label } from '@kalvner/kds/forms/label';
 
 export function EmailField() {
   return (
@@ -86,14 +86,14 @@ export function EmailField() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `type` | `'text' \| 'email' \| 'password' \| 'number' \| 'search' \| 'tel' \| 'url' \| 'file' \| ...` | `'text'` | Qualquer `type` HTML nativo. |
-| `disabled` | `boolean` | `false` | Bloqueia interação. |
-| `readOnly` | `boolean` | `false` | Permite seleção/cópia mas bloqueia edição. |
-| `placeholder` | `string` | — | Hint dentro do campo (não substitui Label). |
-| `aria-invalid` | `boolean` | — | Aciona ring vermelho — atribuído por `FormControl`. |
-| `...rest` | `React.ComponentProps<'input'>` | — | Tudo de `<input>`: `id`, `value`, `onChange`, `pattern`, `min`, `max`. |
+| Prop           | Tipo                                                                                         | Default  | Descrição                                                              |
+| -------------- | -------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------- |
+| `type`         | `'text' \| 'email' \| 'password' \| 'number' \| 'search' \| 'tel' \| 'url' \| 'file' \| ...` | `'text'` | Qualquer `type` HTML nativo.                                           |
+| `disabled`     | `boolean`                                                                                    | `false`  | Bloqueia interação.                                                    |
+| `readOnly`     | `boolean`                                                                                    | `false`  | Permite seleção/cópia mas bloqueia edição.                             |
+| `placeholder`  | `string`                                                                                     | —        | Hint dentro do campo (não substitui Label).                            |
+| `aria-invalid` | `boolean`                                                                                    | —        | Aciona ring vermelho — atribuído por `FormControl`.                    |
+| `...rest`      | `React.ComponentProps<'input'>`                                                              | —        | Tudo de `<input>`: `id`, `value`, `onChange`, `pattern`, `min`, `max`. |
 
 ## Variants
 
@@ -101,7 +101,9 @@ export function EmailField() {
   <Card>
     <CardHeader>
       <CardTitle>Email</CardTitle>
-      <CardDescription>Validação nativa + teclado com @ no mobile.</CardDescription>
+      <CardDescription>
+        Validação nativa + teclado com @ no mobile.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Input type="email" placeholder="voce@exemplo.com" />
@@ -119,7 +121,9 @@ export function EmailField() {
   <Card>
     <CardHeader>
       <CardTitle>Number</CardTitle>
-      <CardDescription>Teclado numérico mobile. Ainda chega como string.</CardDescription>
+      <CardDescription>
+        Teclado numérico mobile. Ainda chega como string.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Input type="number" placeholder="0" />
@@ -128,7 +132,9 @@ export function EmailField() {
   <Card>
     <CardHeader>
       <CardTitle>File</CardTitle>
-      <CardDescription>Picker nativo. Estilize o botão interno via classes file:.</CardDescription>
+      <CardDescription>
+        Picker nativo. Estilize o botão interno via classes file:.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Input type="file" />
@@ -170,14 +176,18 @@ export function EmailField() {
           aria-invalid="true"
           aria-describedby="error-msg"
         />
-        <span id="error-msg" className="block text-sm text-destructive">Digite um e-mail válido.</span>
+        <span id="error-msg" className="block text-sm text-destructive">
+          Digite um e-mail válido.
+        </span>
       </div>
     </CardContent>
   </Card>
   <Card>
     <CardHeader>
       <CardTitle>With leading icon</CardTitle>
-      <CardDescription>Wrapper relative + ícone absolute + pl-9.</CardDescription>
+      <CardDescription>
+        Wrapper relative + ícone absolute + pl-9.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="relative">
@@ -193,7 +203,9 @@ export function EmailField() {
 <Card>
   <CardHeader>
     <CardTitle>Search field</CardTitle>
-    <CardDescription>Lupa à esquerda, botão de limpar à direita.</CardDescription>
+    <CardDescription>
+      Lupa à esquerda, botão de limpar à direita.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="relative">
@@ -250,14 +262,14 @@ export function EmailField() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Label** | Sempre vincule via `htmlFor` + `id` ou wrap o Input dentro de `<Label>`. |
-| **Erro** | Use `aria-invalid="true"` + `aria-describedby` apontando para a mensagem. `FormControl` faz isso automaticamente. |
-| **Disabled state** | `disabled` é nativo — bloqueia foco e interação. Para apenas indicar visualmente, use `aria-disabled`. |
-| **Autocomplete** | Defina `autoComplete` apropriado (`email`, `current-password`, `cc-number`) para password managers e iOS autofill. |
-| **Required** | Use `required` HTML; combine com asterisco visual no Label. |
-| **Touch target** | Altura padrão é 36px. Para mobile crítico, considere uma classe `h-10` ou maior. |
+| Concern            | Comportamento                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| **Label**          | Sempre vincule via `htmlFor` + `id` ou wrap o Input dentro de `<Label>`.                                           |
+| **Erro**           | Use `aria-invalid="true"` + `aria-describedby` apontando para a mensagem. `FormControl` faz isso automaticamente.  |
+| **Disabled state** | `disabled` é nativo — bloqueia foco e interação. Para apenas indicar visualmente, use `aria-disabled`.             |
+| **Autocomplete**   | Defina `autoComplete` apropriado (`email`, `current-password`, `cc-number`) para password managers e iOS autofill. |
+| **Required**       | Use `required` HTML; combine com asterisco visual no Label.                                                        |
+| **Touch target**   | Altura padrão é 36px. Para mobile crítico, considere uma classe `h-10` ou maior.                                   |
 
 ## Related
 

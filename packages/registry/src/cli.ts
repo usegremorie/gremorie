@@ -21,7 +21,9 @@ if (subcommand === 'generate') {
     process.exit(1);
   });
 } else if (subcommand === '--help' || subcommand === '-h') {
-  console.log(`Usage: gremorie-registry generate [--cwd <path>] [--out <path>]`);
+  console.log(
+    `Usage: gremorie-registry generate [--cwd <path>] [--out <path>]`,
+  );
 } else {
   console.error(kleur.red('x'), `Unknown command: ${subcommand}`);
   process.exit(1);

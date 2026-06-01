@@ -1,16 +1,16 @@
-import { Calculator } from "./calculator";
-import { ChartBar } from "./chart-bar";
-import { CodeBlockArtifact } from "./code-block";
-import { DataTable } from "./data-table";
-import { FormSchema } from "./form-schema";
-import { MarkdownDoc } from "./markdown-doc";
+import { Calculator } from './calculator';
+import { ChartBar } from './chart-bar';
+import { CodeBlockArtifact } from './code-block';
+import { DataTable } from './data-table';
+import { FormSchema } from './form-schema';
+import { MarkdownDoc } from './markdown-doc';
 
 const artifacts = {
-  "chart-bar": ChartBar,
-  "code-block": CodeBlockArtifact,
-  "markdown-doc": MarkdownDoc,
-  "data-table": DataTable,
-  "form-schema": FormSchema,
+  'chart-bar': ChartBar,
+  'code-block': CodeBlockArtifact,
+  'markdown-doc': MarkdownDoc,
+  'data-table': DataTable,
+  'form-schema': FormSchema,
   calculator: Calculator,
 } as const;
 

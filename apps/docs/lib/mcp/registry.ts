@@ -9,10 +9,10 @@
  * tiny and the Vercel function runtime caches the bundle's static assets.
  */
 
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
-const REGISTRY_PUBLIC_DIR = path.join(process.cwd(), "public", "r");
+const REGISTRY_PUBLIC_DIR = path.join(process.cwd(), 'public', 'r');
 
 export interface RegistryIndexItem {
   name: string;
@@ -54,8 +54,8 @@ export interface RegistryItem extends RegistryIndexItem {
 
 /** Read and parse the top-level registry index. */
 export async function readRegistryIndex(): Promise<RegistryIndex> {
-  const indexPath = path.join(REGISTRY_PUBLIC_DIR, "registry.json");
-  const raw = await fs.readFile(indexPath, "utf-8");
+  const indexPath = path.join(REGISTRY_PUBLIC_DIR, 'registry.json');
+  const raw = await fs.readFile(indexPath, 'utf-8');
   return JSON.parse(raw) as RegistryIndex;
 }
 
@@ -68,7 +68,7 @@ export async function readRegistryItem(
   if (framework) {
     const file = path.join(REGISTRY_PUBLIC_DIR, framework, `${name}.json`);
     try {
-      const raw = await fs.readFile(file, "utf-8");
+      const raw = await fs.readFile(file, 'utf-8');
       return JSON.parse(raw) as RegistryItem;
     } catch {
       // fall through to the scan
@@ -76,12 +76,14 @@ export async function readRegistryItem(
   }
 
   // Scan every framework subdirectory in public/r/.
-  const entries = await fs.readdir(REGISTRY_PUBLIC_DIR, { withFileTypes: true });
+  const entries = await fs.readdir(REGISTRY_PUBLIC_DIR, {
+    withFileTypes: true,
+  });
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
     const file = path.join(REGISTRY_PUBLIC_DIR, entry.name, `${name}.json`);
     try {
-      const raw = await fs.readFile(file, "utf-8");
+      const raw = await fs.readFile(file, 'utf-8');
       return JSON.parse(raw) as RegistryItem;
     } catch {
       // not in this framework dir, keep scanning
@@ -107,7 +109,8 @@ export function filterRegistry(
     if (opts.framework && item.framework !== opts.framework) return false;
     if (opts.category && !item.categories.includes(opts.category)) return false;
     if (q) {
-      const haystack = `${item.name} ${item.title} ${item.description}`.toLowerCase();
+      const haystack =
+        `${item.name} ${item.title} ${item.description}`.toLowerCase();
       if (!haystack.includes(q)) return false;
     }
     return true;

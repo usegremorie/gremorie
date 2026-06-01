@@ -3,7 +3,10 @@ title: Queue
 description: Pending message queue list, shown above the prompt input, with optional collapsible sections for todos and queued turns.
 ---
 
-import { QueuePreview, QueueSectionedPreview } from "@/components/preview/ai/chatbot-rest";
+import {
+  QueuePreview,
+  QueueSectionedPreview,
+} from '@/components/preview/ai/chatbot-rest';
 
 ## Overview
 
@@ -28,26 +31,10 @@ Use it when the user has fired multiple prompts in a row, when the agent is mid-
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-queue
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-queue
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-queue
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-queue
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-queue ```</Tab>
 </Tabs>
 
 ## Usage
@@ -104,16 +91,16 @@ Outer card surface. Rounded border + light shadow. Extends `ComponentProps<"div"
 
 ### `<QueueItemIndicator>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop        | Type      | Default | Description                                       |
+| ----------- | --------- | ------- | ------------------------------------------------- |
 | `completed` | `boolean` | `false` | When true, the dot fills with a muted background. |
 
 Small status dot.
 
 ### `<QueueItemContent>` / `<QueueItemDescription>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop        | Type      | Default | Description                                     |
+| ----------- | --------- | ------- | ----------------------------------------------- |
 | `completed` | `boolean` | `false` | When true, applies muted color + strikethrough. |
 
 `QueueItemContent` is the primary line (truncated to 1 line). `QueueItemDescription` adds a sub-line.
@@ -130,12 +117,12 @@ Attachment row inside an item. `QueueItemImage` is a 32x32 thumbnail; `QueueItem
 
 For sectioned queues:
 
-| Component | Role |
-|---|---|
-| `QueueSection` | `Collapsible` container, `defaultOpen` true. |
-| `QueueSectionTrigger` | Section header (a `button` that toggles). |
-| `QueueSectionLabel` | Inside the trigger - chevron + icon + count + label. Props: `count`, `label`, `icon`. |
-| `QueueSectionContent` | The expanded body. |
+| Component             | Role                                                                                  |
+| --------------------- | ------------------------------------------------------------------------------------- |
+| `QueueSection`        | `Collapsible` container, `defaultOpen` true.                                          |
+| `QueueSectionTrigger` | Section header (a `button` that toggles).                                             |
+| `QueueSectionLabel`   | Inside the trigger - chevron + icon + count + label. Props: `count`, `label`, `icon`. |
+| `QueueSectionContent` | The expanded body.                                                                    |
 
 ### Types
 
@@ -159,12 +146,12 @@ The most common case: a flat list of pending and completed todos with strikethro
   <QueueList>
     {todos.map((todo) => (
       <QueueItem key={todo.id}>
-        <QueueItemIndicator completed={todo.status === "completed"} />
-        <QueueItemContent completed={todo.status === "completed"}>
+        <QueueItemIndicator completed={todo.status === 'completed'} />
+        <QueueItemContent completed={todo.status === 'completed'}>
           {todo.title}
         </QueueItemContent>
         {todo.description ? (
-          <QueueItemDescription completed={todo.status === "completed"}>
+          <QueueItemDescription completed={todo.status === 'completed'}>
             {todo.description}
           </QueueItemDescription>
         ) : null}

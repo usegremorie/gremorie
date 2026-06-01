@@ -7,7 +7,8 @@ describe('computeAreaPath', () => {
     { month: 'Feb', sales: 50 },
     { month: 'Mar', sales: 100 },
   ];
-  const xScale = (v: string) => ({ Jan: 0, Feb: 100, Mar: 200 } as Record<string, number>)[v] ?? 0;
+  const xScale = (v: string) =>
+    (({ Jan: 0, Feb: 100, Mar: 200 }) as Record<string, number>)[v] ?? 0;
   const yScale = (v: number) => 200 - (v / 100) * 200;
 
   it('builds an area path from data through the scales to the baseline', () => {

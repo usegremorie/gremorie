@@ -5,9 +5,9 @@ description: Estado semântico discreto em charts — sucesso, aviso, erro, info
 
 import {
   ChartSchemeSwatchRow,
-  ChartSchemeTable
-} from "@/components/token-tables";
-import { STATUS_SCHEME } from "@/lib/chart-tokens";
+  ChartSchemeTable,
+} from '@/components/token-tables';
+import { STATUS_SCHEME } from '@/lib/chart-tokens';
 
 **Status** é o esquema para charts que **encodam estado**, não
 quantidade. Cinco tokens com semântica fixa: sucesso, aviso,
@@ -40,11 +40,11 @@ de um contraste maior para legibilidade em pequenas áreas
 chart são levemente diferentes dos usados em chrome de
 componentes.
 
-| Chart token | UI semantic equivalente | Diferença |
-|---|---|---|
-| `chart-status-success` | `accent` (verde) | Chart usa `emerald-600`, UI varia por tema |
-| `chart-status-error` | `destructive` | Chart é canonical `red-600`, `--destructive` varia |
-| `chart-status-warning` | (nenhum) | UI semantic não tem warning explícito |
+| Chart token            | UI semantic equivalente | Diferença                                          |
+| ---------------------- | ----------------------- | -------------------------------------------------- |
+| `chart-status-success` | `accent` (verde)        | Chart usa `emerald-600`, UI varia por tema         |
+| `chart-status-error`   | `destructive`           | Chart é canonical `red-600`, `--destructive` varia |
+| `chart-status-warning` | (nenhum)                | UI semantic não tem warning explícito              |
 
 ## Quando não usar
 
@@ -56,27 +56,28 @@ vai inferir "bom/ruim" onde não há.
 ## Anti-patterns
 
 <Callout type="warn">
-  Usar Status para gradação contínua. Os cinco tokens são
-  **discretos** — boundaries discretas entre estados. Para
-  gradação, use [Sequential](/tokens/chart/sequential) ou
+  Usar Status para gradação contínua. Os cinco tokens são **discretos** —
+  boundaries discretas entre estados. Para gradação, use
+  [Sequential](/tokens/chart/sequential) ou
   [Divergent](/tokens/chart/divergent).
 </Callout>
 
 <Callout type="warn">
-  **Cor sozinha nunca é o canal único.** Para charts com Status,
-  acompanhe **sempre** com label, ícone ou padrão hatch — o ~8%
-  da população com deficiência de visão de cor depende disso.
+  **Cor sozinha nunca é o canal único.** Para charts com Status, acompanhe
+  **sempre** com label, ícone ou padrão hatch — o ~8% da população com
+  deficiência de visão de cor depende disso.
 </Callout>
 
 ## Exemplo de consumo
 
 ```tsx
-const statusToken = (severity: "ok" | "warning" | "error" | "info") => ({
-  ok:      "var(--color-chart-status-success)",
-  warning: "var(--color-chart-status-warning)",
-  error:   "var(--color-chart-status-error)",
-  info:    "var(--color-chart-status-info)",
-}[severity]);
+const statusToken = (severity: 'ok' | 'warning' | 'error' | 'info') =>
+  ({
+    ok: 'var(--color-chart-status-success)',
+    warning: 'var(--color-chart-status-warning)',
+    error: 'var(--color-chart-status-error)',
+    info: 'var(--color-chart-status-info)',
+  })[severity];
 
 <div className="grid grid-cols-3 gap-4">
   {services.map((s) => (
@@ -90,5 +91,5 @@ const statusToken = (severity: "ok" | "warning" | "error" | "info") => ({
       <p>{s.statusLabel}</p>
     </div>
   ))}
-</div>
+</div>;
 ```

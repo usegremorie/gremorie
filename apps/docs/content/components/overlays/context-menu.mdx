@@ -1,9 +1,9 @@
 ---
 title: Context Menu
-description: "Action menu invoked via right-click on a region. Same compound shape as DropdownMenu, anchored to a target area."
+description: 'Action menu invoked via right-click on a region. Same compound shape as DropdownMenu, anchored to a target area.'
 ---
 
-import { ContextMenuPreview } from "@/components/preview/overlays/overlays";
+import { ContextMenuPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -20,26 +20,16 @@ The compound mirrors `DropdownMenu` exactly: items, groups, separators, submenus
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-context-menu
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-context-menu
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-context-menu
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-context-menu
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-context-menu ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-context-menu ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-context-menu ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-context-menu ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -97,11 +87,11 @@ Same shape as `DropdownMenuContent`. Wrapped in a Radix `Portal`. Positions itse
 
 ### `<ContextMenuItem>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `inset` | `boolean` | `false` | Adds `pl-8` so the item lines up with checkbox/radio rows. |
-| `variant` | `"default" \| "destructive"` | `"default"` | Switches text and icon color to the destructive token. |
-| `disabled` | `boolean` | `false` | Disables interaction; renders at 50% opacity. |
+| Prop       | Type                         | Default     | Description                                                |
+| ---------- | ---------------------------- | ----------- | ---------------------------------------------------------- |
+| `inset`    | `boolean`                    | `false`     | Adds `pl-8` so the item lines up with checkbox/radio rows. |
+| `variant`  | `"default" \| "destructive"` | `"default"` | Switches text and icon color to the destructive token.     |
+| `disabled` | `boolean`                    | `false`     | Disables interaction; renders at 50% opacity.              |
 
 ### `<ContextMenuCheckboxItem>`, `<ContextMenuRadioGroup>`, `<ContextMenuRadioItem>`
 

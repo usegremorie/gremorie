@@ -15,6 +15,8 @@ describe('computeYDomain', () => {
   });
 
   it('guards against an all-zero / negative max', () => {
-    expect(computeYDomain([{ key: 'x', values: () => [0, 0] }])).toEqual([0, 1]);
+    expect(computeYDomain([{ key: 'x', values: () => [0, 0] }])).toEqual([
+      0, 1,
+    ]);
   });
 });

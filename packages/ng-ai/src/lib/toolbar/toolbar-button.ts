@@ -50,8 +50,7 @@ export class ToolbarButton {
     const variantClass: Record<ToolbarButtonVariant, string> = {
       ghost: 'hover:bg-accent hover:text-accent-foreground',
       outline: 'border border-input bg-background hover:bg-accent',
-      default:
-        'bg-primary text-primary-foreground hover:bg-primary/90',
+      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
     };
     return cn(
       'inline-flex size-8 items-center justify-center rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',

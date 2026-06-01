@@ -2,19 +2,19 @@
 title: Toggle
 description: Botão único com estado on/off — formatação, modos de visualização, filtros.
 component: Toggle
-importPath: "@kalvner/kds/forms/toggle"
+importPath: '@kalvner/kds/forms/toggle'
 status: stable
 ---
 
-import { Toggle } from "@kalvner/kds/forms/toggle";
-import { Bold, Italic, Underline } from "lucide-react";
+import { Toggle } from '@kalvner/kds/forms/toggle';
+import { Bold, Italic, Underline } from 'lucide-react';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -51,8 +51,8 @@ Para form-bound boolean, use [Checkbox](./checkbox).
 ## Usage
 
 ```tsx
-import { Toggle } from "@kalvner/kds/forms/toggle";
-import { Bold } from "lucide-react";
+import { Toggle } from '@kalvner/kds/forms/toggle';
+import { Bold } from 'lucide-react';
 
 export function BoldToggle({ pressed, onPressedChange }) {
   return (
@@ -69,15 +69,15 @@ export function BoldToggle({ pressed, onPressedChange }) {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `pressed` | `boolean` | — | Controlado. |
-| `defaultPressed` | `boolean` | `false` | Não controlado. |
-| `onPressedChange` | `(v: boolean) => void` | — | Callback. |
-| `variant` | `'default' \| 'outline'` | `'default'` | Aparência. |
-| `size` | `'sm' \| 'default' \| 'lg'` | `'default'` | h-8 / h-9 / h-10. |
-| `disabled` | `boolean` | `false` | Bloqueia interação. |
-| `aria-label` | `string` | — | Obrigatório quando só ícone. |
+| Prop              | Tipo                        | Default     | Descrição                    |
+| ----------------- | --------------------------- | ----------- | ---------------------------- |
+| `pressed`         | `boolean`                   | —           | Controlado.                  |
+| `defaultPressed`  | `boolean`                   | `false`     | Não controlado.              |
+| `onPressedChange` | `(v: boolean) => void`      | —           | Callback.                    |
+| `variant`         | `'default' \| 'outline'`    | `'default'` | Aparência.                   |
+| `size`            | `'sm' \| 'default' \| 'lg'` | `'default'` | h-8 / h-9 / h-10.            |
+| `disabled`        | `boolean`                   | `false`     | Bloqueia interação.          |
+| `aria-label`      | `string`                    | —           | Obrigatório quando só ícone. |
 
 ## Subcomponents
 
@@ -91,25 +91,39 @@ os filhos via context.
   <Card>
     <CardHeader>
       <CardTitle>Default vs. Outline</CardTitle>
-      <CardDescription>Outline aparece com borda, útil em barras de formatação.</CardDescription>
+      <CardDescription>
+        Outline aparece com borda, útil em barras de formatação.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="flex items-center gap-2">
-        <Toggle aria-label="Default"><Bold /></Toggle>
-        <Toggle variant="outline" aria-label="Outline"><Italic /></Toggle>
+        <Toggle aria-label="Default">
+          <Bold />
+        </Toggle>
+        <Toggle variant="outline" aria-label="Outline">
+          <Italic />
+        </Toggle>
       </div>
     </CardContent>
   </Card>
   <Card>
     <CardHeader>
       <CardTitle>Sizes</CardTitle>
-      <CardDescription>sm para toolbar densa, default padrão, lg para destaque.</CardDescription>
+      <CardDescription>
+        sm para toolbar densa, default padrão, lg para destaque.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="flex items-center gap-2">
-        <Toggle size="sm" aria-label="sm"><Bold /></Toggle>
-        <Toggle size="default" aria-label="default"><Bold /></Toggle>
-        <Toggle size="lg" aria-label="lg"><Bold /></Toggle>
+        <Toggle size="sm" aria-label="sm">
+          <Bold />
+        </Toggle>
+        <Toggle size="default" aria-label="default">
+          <Bold />
+        </Toggle>
+        <Toggle size="lg" aria-label="lg">
+          <Bold />
+        </Toggle>
       </div>
     </CardContent>
   </Card>
@@ -117,11 +131,11 @@ os filhos via context.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
+| Estado           | Comportamento                                         |
+| ---------------- | ----------------------------------------------------- |
 | `data-state=off` | Background transparente (variants default + outline). |
-| `data-state=on` | Background `accent`, texto `accent-foreground`. |
-| `disabled` | Pointer-events none, opacity 50%. |
+| `data-state=on`  | Background `accent`, texto `accent-foreground`.       |
+| `disabled`       | Pointer-events none, opacity 50%.                     |
 
 ## Composition
 
@@ -135,9 +149,15 @@ Toggles individuais raramente aparecem sozinhos. Padrões:
 
 ```tsx
 <ToggleGroup type="multiple" aria-label="Formatação">
-  <ToggleGroupItem value="bold"><Bold /></ToggleGroupItem>
-  <ToggleGroupItem value="italic"><Italic /></ToggleGroupItem>
-  <ToggleGroupItem value="underline"><Underline /></ToggleGroupItem>
+  <ToggleGroupItem value="bold">
+    <Bold />
+  </ToggleGroupItem>
+  <ToggleGroupItem value="italic">
+    <Italic />
+  </ToggleGroupItem>
+  <ToggleGroupItem value="underline">
+    <Underline />
+  </ToggleGroupItem>
 </ToggleGroup>
 ```
 
@@ -169,14 +189,14 @@ Toggles individuais raramente aparecem sozinhos. Padrões:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Role** | `button` com `aria-pressed` (não checkbox). |
-| **Keyboard** | `Space`/`Enter` alterna. |
-| **Focus** | `focus-visible:ring-[3px]` (3px ring no token). |
-| **Label** | `aria-label` obrigatório quando só ícone. |
-| **Disabled** | `disabled` remove do tab order; pointer-events none. |
-| **Estado** | Leitor de tela anuncia "pressionado" / "não pressionado". |
+| Concern      | Comportamento                                             |
+| ------------ | --------------------------------------------------------- |
+| **Role**     | `button` com `aria-pressed` (não checkbox).               |
+| **Keyboard** | `Space`/`Enter` alterna.                                  |
+| **Focus**    | `focus-visible:ring-[3px]` (3px ring no token).           |
+| **Label**    | `aria-label` obrigatório quando só ícone.                 |
+| **Disabled** | `disabled` remove do tab order; pointer-events none.      |
+| **Estado**   | Leitor de tela anuncia "pressionado" / "não pressionado". |
 
 ## Related
 

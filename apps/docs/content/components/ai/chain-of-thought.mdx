@@ -3,7 +3,10 @@ title: Chain of Thought
 description: Step-by-step reasoning visualizer with status icons, nested search results and inline image evidence.
 ---
 
-import { ChainOfThoughtPreview, ChainOfThoughtSearchPreview } from "@/components/preview/ai/chatbot";
+import {
+  ChainOfThoughtPreview,
+  ChainOfThoughtSearchPreview,
+} from '@/components/preview/ai/chatbot';
 
 ## Overview
 
@@ -28,26 +31,16 @@ It is collapsible by default so the answer stays the focus, but expanding reveal
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-chain-of-thought
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-chain-of-thought
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-chain-of-thought
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-chain-of-thought
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-chain-of-thought ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-chain-of-thought ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-chain-of-thought ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-chain-of-thought ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -86,16 +79,15 @@ import {
 } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [
-    ChainOfThought,
-    ChainOfThoughtHeader,
-    ChainOfThoughtContent,
-    ChainOfThoughtStep,
-  ],
-  template: `
-    <chain-of-thought [open]="true">
+selector: "app-example",
+standalone: true,
+imports: [
+ChainOfThought,
+ChainOfThoughtHeader,
+ChainOfThoughtContent,
+ChainOfThoughtStep,
+],
+template: `     <chain-of-thought [open]="true">
       <chain-of-thought-header>Searching the docs</chain-of-thought-header>
       <chain-of-thought-content>
         <chain-of-thought-step status="complete" label="Inspected files" />
@@ -105,7 +97,8 @@ import {
   `,
 })
 export class ExampleComponent {}
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -184,14 +177,17 @@ Each step represents an action the agent took. The "active" step lights up in fo
     <ChainOfThoughtStep status="pending" label="Summarising findings" />
   </ChainOfThoughtContent>
 </ChainOfThought>
-```
+````
 
 ### Step with search hits
 
 When a step represents a search, nest the citations as `SearchResult` chips.
 
 ```tsx
-<ChainOfThoughtStep status="complete" label="Searched the web for 'shadcn registry'">
+<ChainOfThoughtStep
+  status="complete"
+  label="Searched the web for 'shadcn registry'"
+>
   <ChainOfThoughtSearchResults>
     <ChainOfThoughtSearchResult>ui.shadcn.com</ChainOfThoughtSearchResult>
     <ChainOfThoughtSearchResult>vercel.com</ChainOfThoughtSearchResult>

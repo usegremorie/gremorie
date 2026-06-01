@@ -19,7 +19,9 @@ const meta: Meta<Shimmer> = {
     }),
   ],
   argTypes: {
-    shimmerDuration: { control: { type: 'number', min: 0.5, max: 6, step: 0.5 } },
+    shimmerDuration: {
+      control: { type: 'number', min: 0.5, max: 6, step: 0.5 },
+    },
     shimmerSpread: { control: { type: 'number', min: 0.5, max: 6, step: 0.5 } },
     shimmerDisabled: { control: 'boolean' },
   },

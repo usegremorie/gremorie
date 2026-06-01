@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { parseCssFile } from "./parse-css-file.js";
+import { describe, it, expect } from 'vitest';
+import { parseCssFile } from './parse-css-file.js';
 
 const css = `
 @theme {
@@ -16,11 +16,11 @@ const css = `
 }
 `;
 
-describe("parseCssFile", () => {
-  it("returns a graph with primitives, semantics, and themes", () => {
-    const graph = parseCssFile(css, "globals.css");
+describe('parseCssFile', () => {
+  it('returns a graph with primitives, semantics, and themes', () => {
+    const graph = parseCssFile(css, 'globals.css');
     expect(Object.keys(graph.primitives)).toHaveLength(2);
     expect(Object.keys(graph.semantics)).toHaveLength(2);
-    expect(graph.themes).toEqual(["default"]);
+    expect(graph.themes).toEqual(['default']);
   });
 });

@@ -60,7 +60,9 @@ const containerVariants = cva(
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content />
-    <span class="sr-only" aria-live="polite" aria-atomic="true">{{ statusAnnouncement() }}</span>
+    <span class="sr-only" aria-live="polite" aria-atomic="true">{{
+      statusAnnouncement()
+    }}</span>
   `,
   host: {
     role: 'form',

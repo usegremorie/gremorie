@@ -2,7 +2,7 @@
 title: Accordion
 description: Pilha vertical de seções expansíveis, ancorada em Radix Accordion.
 component: Accordion
-importPath: "@kalvner/kds/display/accordion"
+importPath: '@kalvner/kds/display/accordion'
 status: stable
 ---
 
@@ -10,15 +10,15 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
-} from "@kalvner/kds/display/accordion";
+  AccordionTrigger,
+} from '@kalvner/kds/display/accordion';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -72,8 +72,8 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
-} from "@kalvner/kds/display/accordion";
+  AccordionTrigger,
+} from '@kalvner/kds/display/accordion';
 
 export function Faq() {
   return (
@@ -91,21 +91,21 @@ export function Faq() {
 
 ### Accordion (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `type` | `'single' \| 'multiple'` | — | Único ou múltiplos itens abertos. |
-| `collapsible` | `boolean` | `false` | (single) permite fechar tudo. |
-| `value` / `defaultValue` | `string \| string[]` | — | Item(s) aberto(s). |
-| `onValueChange` | `(v) => void` | — | Callback de mudança. |
-| `disabled` | `boolean` | `false` | Bloqueia toda a árvore. |
+| Prop                     | Tipo                     | Default | Descrição                         |
+| ------------------------ | ------------------------ | ------- | --------------------------------- |
+| `type`                   | `'single' \| 'multiple'` | —       | Único ou múltiplos itens abertos. |
+| `collapsible`            | `boolean`                | `false` | (single) permite fechar tudo.     |
+| `value` / `defaultValue` | `string \| string[]`     | —       | Item(s) aberto(s).                |
+| `onValueChange`          | `(v) => void`            | —       | Callback de mudança.              |
+| `disabled`               | `boolean`                | `false` | Bloqueia toda a árvore.           |
 
 ### AccordionItem · AccordionTrigger · AccordionContent
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` (Item) | `string` | — | Identificador único. |
-| `disabled` (Item) | `boolean` | `false` | Bloqueia este item. |
-| `className` | `string` | — | Tailwind / overrides. |
+| Prop              | Tipo      | Default | Descrição             |
+| ----------------- | --------- | ------- | --------------------- |
+| `value` (Item)    | `string`  | —       | Identificador único.  |
+| `disabled` (Item) | `boolean` | `false` | Bloqueia este item.   |
+| `className`       | `string`  | —       | Tailwind / overrides. |
 
 ## Subcomponents
 
@@ -122,7 +122,9 @@ export function Faq() {
   <Card>
     <CardHeader>
       <CardTitle>Type · Single + collapsible</CardTitle>
-      <CardDescription>FAQ — uma pergunta de cada vez, todas podem fechar.</CardDescription>
+      <CardDescription>
+        FAQ — uma pergunta de cada vez, todas podem fechar.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Accordion type="single" collapsible>
@@ -140,17 +142,21 @@ export function Faq() {
   <Card>
     <CardHeader>
       <CardTitle>Type · Multiple</CardTitle>
-      <CardDescription>Release notes — várias seções abertas em paralelo.</CardDescription>
+      <CardDescription>
+        Release notes — várias seções abertas em paralelo.
+      </CardDescription>
     </CardHeader>
     <CardContent>
-      <Accordion type="multiple" defaultValue={["v1"]}>
+      <Accordion type="multiple" defaultValue={['v1']}>
         <AccordionItem value="v1">
           <AccordionTrigger>v1.2 · Performance</AccordionTrigger>
           <AccordionContent>Hidratação 30% mais rápida.</AccordionContent>
         </AccordionItem>
         <AccordionItem value="v2">
           <AccordionTrigger>v1.2 · Acessibilidade</AccordionTrigger>
-          <AccordionContent>WCAG 2.2 AA em todos os primitivos.</AccordionContent>
+          <AccordionContent>
+            WCAG 2.2 AA em todos os primitivos.
+          </AccordionContent>
         </AccordionItem>
       </Accordion>
     </CardContent>
@@ -159,11 +165,11 @@ export function Faq() {
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| `data-state=closed` | Trigger sem fundo ativo, content `display: none`. |
-| `data-state=open` | Trigger com fundo accent, content animado para baixo. |
-| `disabled` | Item ignora cliques e foco; opacidade 50%. |
+| Estado              | Comportamento                                         |
+| ------------------- | ----------------------------------------------------- |
+| `data-state=closed` | Trigger sem fundo ativo, content `display: none`.     |
+| `data-state=open`   | Trigger com fundo accent, content animado para baixo. |
+| `disabled`          | Item ignora cliques e foco; opacidade 50%.            |
 
 ## Composition
 
@@ -199,12 +205,12 @@ caça ao tesouro.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix gera `region` por content + `button` no trigger com `aria-expanded`. |
-| **Keyboard** | `Space`/`Enter` alterna; `↑`/`↓` navegam entre triggers. |
-| **Focus** | Trigger tem `focus-visible:ring-[3px]` (3px ring). |
-| **Screen reader** | Anuncia "expandido" / "recolhido" no toggle. |
+| Concern           | Comportamento                                                              |
+| ----------------- | -------------------------------------------------------------------------- |
+| **Roles**         | Radix gera `region` por content + `button` no trigger com `aria-expanded`. |
+| **Keyboard**      | `Space`/`Enter` alterna; `↑`/`↓` navegam entre triggers.                   |
+| **Focus**         | Trigger tem `focus-visible:ring-[3px]` (3px ring).                         |
+| **Screen reader** | Anuncia "expandido" / "recolhido" no toggle.                               |
 
 ## Related
 

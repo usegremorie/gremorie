@@ -3,7 +3,10 @@ title: Code Block
 description: Syntax-highlighted code surface powered by shiki. Lazy-loads token highlighting on mount, ships matched dark and light themes, and pairs with a context-aware copy button.
 ---
 
-import { CodeBlockPreview, CodeBlockCopyPreview } from "@/components/preview/ai/code-workflow";
+import {
+  CodeBlockPreview,
+  CodeBlockCopyPreview,
+} from '@/components/preview/ai/code-workflow';
 
 ## Overview
 
@@ -30,26 +33,12 @@ Use it for streamed code artifacts, MDX snippets inside tool output, agent-gener
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-code-block
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-code-block
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-code-block
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-code-block
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-code-block ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-code-block ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-code-block ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-code-block ```
+  </Tab>
 </Tabs>
 
 Requires `shiki` and `@gremorie/rx-forms` (for `Button`) as transitive dependencies. Both are pulled in automatically by the registry.
@@ -76,19 +65,19 @@ import { Component, input } from "@angular/core";
 import { CodeBlock, CodeBlockCopyButton } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [CodeBlock, CodeBlockCopyButton],
-  template: `
-    <code-block [code]="source()" language="tsx" [showLineNumbers]="true">
+selector: "app-example",
+standalone: true,
+imports: [CodeBlock, CodeBlockCopyButton],
+template: `     <code-block [code]="source()" language="tsx" [showLineNumbers]="true">
       <code-block-copy-button />
     </code-block>
   `,
 })
 export class ExampleComponent {
-  readonly source = input.required<string>();
+readonly source = input.required<string>();
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -140,7 +129,7 @@ Useful for long snippets where users need a reference point. The gutter is muted
 
 ```tsx
 <CodeBlock code={longSnippet} language="tsx" showLineNumbers />
-```
+````
 
 ### Copy plus custom action
 

@@ -2,18 +2,18 @@
 title: Shimmer
 description: Texto com gradiente animado — feedback de "pensando" mais expressivo que spinner.
 component: Shimmer
-importPath: "@kalvner/kds/ai/shimmer"
+importPath: '@kalvner/kds/ai/shimmer'
 status: stable
 ---
 
-import { ShimmerPreview } from "@/components/ai-chatbot-demos";
+import { ShimmerPreview } from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -25,7 +25,9 @@ e outros componentes pra indicar fase pré-streaming.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Texto com gradiente animado — feedback de pensando.</CardDescription>
+    <CardDescription>
+      Texto com gradiente animado — feedback de pensando.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ShimmerPreview />
@@ -46,12 +48,12 @@ e outros componentes pra indicar fase pré-streaming.
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `children` | `ReactNode` | — | Conteúdo do shimmer (texto). |
-| `duration` | `number` | `2` | Duração em segundos do ciclo do gradient. |
-| `spread` | `number` | `2` | Largura do "brilho" relativa ao texto. |
-| `className` | `string` | — | Override (em geral pra mudar o tamanho/peso). |
+| Prop        | Tipo        | Default | Descrição                                     |
+| ----------- | ----------- | ------- | --------------------------------------------- |
+| `children`  | `ReactNode` | —       | Conteúdo do shimmer (texto).                  |
+| `duration`  | `number`    | `2`     | Duração em segundos do ciclo do gradient.     |
+| `spread`    | `number`    | `2`     | Largura do "brilho" relativa ao texto.        |
+| `className` | `string`    | —       | Override (em geral pra mudar o tamanho/peso). |
 
 ## Subcomponents
 
@@ -63,7 +65,9 @@ Sempre animado (não há estado off/on). Para parar a animação, use
 condicional no parent:
 
 ```tsx
-{isLoading ? <Shimmer>Carregando...</Shimmer> : "Pronto"}
+{
+  isLoading ? <Shimmer>Carregando...</Shimmer> : 'Pronto';
+}
 ```
 
 ## When to use
@@ -88,10 +92,10 @@ condicional no parent:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Reduced motion** | Respeita `prefers-reduced-motion` — remove a animação. |
-| **Contrast** | Pareie com texto em outro lugar pra screen readers (ex.: `aria-label="loading"`). |
+| Concern            | Comportamento                                                                     |
+| ------------------ | --------------------------------------------------------------------------------- |
+| **Reduced motion** | Respeita `prefers-reduced-motion` — remove a animação.                            |
+| **Contrast**       | Pareie com texto em outro lugar pra screen readers (ex.: `aria-label="loading"`). |
 
 ## Related
 

@@ -2,7 +2,7 @@
 title: DropdownMenu
 description: Menu de ações ancorado a um trigger — verbos, atalhos, submenus.
 component: DropdownMenu
-importPath: "@kalvner/kds/overlays/dropdown-menu"
+importPath: '@kalvner/kds/overlays/dropdown-menu'
 status: stable
 ---
 
@@ -11,13 +11,13 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   DropdownMenuAccount,
   DropdownMenuCheckboxes,
-  DropdownMenuRadios
-} from "@/components/overlay-demos";
+  DropdownMenuRadios,
+} from '@/components/overlay-demos';
 
 ## Overview
 
@@ -25,9 +25,9 @@ import {
 **ações** (Editar, Duplicar, Excluir) — não para valores. A regra
 mental que evita confusão:
 
-| Os itens são… | Use |
-|---|---|
-| verbos ("Editar", "Excluir") | **DropdownMenu** |
+| Os itens são…                  | Use                         |
+| ------------------------------ | --------------------------- |
+| verbos ("Editar", "Excluir")   | **DropdownMenu**            |
 | substantivos ("USA", "Brasil") | [`Select`](../forms/select) |
 
 Suporta atalhos de teclado, submenus, checkbox / radio items, e item
@@ -73,20 +73,20 @@ geralmente esconde dois componentes diferentes.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `DropdownMenu` | Raiz. |
-| `DropdownMenuTrigger` | Elemento que abre o menu. |
-| `DropdownMenuContent` | Container portalado. |
-| `DropdownMenuItem` | Item de ação. Aceita `variant: 'default' \| 'destructive'`. |
-| `DropdownMenuCheckboxItem` | Toggle on/off com indicador. |
-| `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` | Seleção exclusiva entre N opções. |
-| `DropdownMenuLabel` | Cabeçalho de seção. |
-| `DropdownMenuSeparator` | Linha divisória entre grupos. |
-| `DropdownMenuShortcut` | Texto à direita com keyboard shortcut. |
-| `DropdownMenuSub` + `SubTrigger` + `SubContent` | Submenu nested. |
-| `DropdownMenuGroup` | Agrupa items relacionados (semantic). |
-| `DropdownMenuPortal` | Necessário para `SubContent` em alguns casos. |
+| Componente                                         | Descrição                                                   |
+| -------------------------------------------------- | ----------------------------------------------------------- |
+| `DropdownMenu`                                     | Raiz.                                                       |
+| `DropdownMenuTrigger`                              | Elemento que abre o menu.                                   |
+| `DropdownMenuContent`                              | Container portalado.                                        |
+| `DropdownMenuItem`                                 | Item de ação. Aceita `variant: 'default' \| 'destructive'`. |
+| `DropdownMenuCheckboxItem`                         | Toggle on/off com indicador.                                |
+| `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` | Seleção exclusiva entre N opções.                           |
+| `DropdownMenuLabel`                                | Cabeçalho de seção.                                         |
+| `DropdownMenuSeparator`                            | Linha divisória entre grupos.                               |
+| `DropdownMenuShortcut`                             | Texto à direita com keyboard shortcut.                      |
+| `DropdownMenuSub` + `SubTrigger` + `SubContent`    | Submenu nested.                                             |
+| `DropdownMenuGroup`                                | Agrupa items relacionados (semantic).                       |
+| `DropdownMenuPortal`                               | Necessário para `SubContent` em alguns casos.               |
 
 ## Usage
 
@@ -96,15 +96,17 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator
-} from "@kalvner/kds/overlays/dropdown-menu";
-import { Button } from "@kalvner/kds/forms/button";
+  DropdownMenuSeparator,
+} from '@kalvner/kds/overlays/dropdown-menu';
+import { Button } from '@kalvner/kds/forms/button';
 
 export function RowActions() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Ações">…</Button>
+        <Button variant="ghost" size="icon-sm" aria-label="Ações">
+          …
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>Editar</DropdownMenuItem>
@@ -173,13 +175,13 @@ export function RowActions() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix aplica `role="menu"` + `role="menuitem"` (e variantes). |
-| **Foco** | Foco entra no primeiro item ao abrir. Volta ao trigger ao fechar. |
-| **Keyboard** | `↑/↓` navega items. `→` abre submenu. `Enter` ativa. `Esc` fecha. Tipear letra pula para item começando com aquela letra. |
-| **Screen reader** | Itens são anunciados como "menuitem"; checkboxes como "menuitemcheckbox" + estado; radios como "menuitemradio" + estado. |
-| **Destructive variant** | Não é anunciada por SR (é estilo). Inclua a palavra "Excluir" no label. |
+| Concern                 | Comportamento                                                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**               | Radix aplica `role="menu"` + `role="menuitem"` (e variantes).                                                             |
+| **Foco**                | Foco entra no primeiro item ao abrir. Volta ao trigger ao fechar.                                                         |
+| **Keyboard**            | `↑/↓` navega items. `→` abre submenu. `Enter` ativa. `Esc` fecha. Tipear letra pula para item começando com aquela letra. |
+| **Screen reader**       | Itens são anunciados como "menuitem"; checkboxes como "menuitemcheckbox" + estado; radios como "menuitemradio" + estado.  |
+| **Destructive variant** | Não é anunciada por SR (é estilo). Inclua a palavra "Excluir" no label.                                                   |
 
 ## Related
 

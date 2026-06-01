@@ -2,7 +2,7 @@
 title: Resizable
 description: Painéis com handles arrastáveis — para layouts de dev tools e pro apps.
 component: Resizable
-importPath: "@kalvner/kds/containers/resizable"
+importPath: '@kalvner/kds/containers/resizable'
 status: stable
 ---
 
@@ -11,14 +11,14 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   ResizableEditor,
   ResizableHorizontal,
   ResizableThreePane,
-  ResizableVertical
-} from "@/components/navigation-demos";
+  ResizableVertical,
+} from '@/components/navigation-demos';
 
 ## Overview
 
@@ -35,7 +35,9 @@ ajustar o canvas para o que está fazendo agora.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Split horizontal 50/50, arrastar a alça central para redimensionar.</CardDescription>
+    <CardDescription>
+      Split horizontal 50/50, arrastar a alça central para redimensionar.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ResizableHorizontal />
@@ -59,11 +61,11 @@ ajustar o canvas para o que está fazendo agora.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `ResizablePanelGroup` | Frame que coordena os panels; aceita `orientation`. |
-| `ResizablePanel` | Painel filho; aceita `defaultSize`, `minSize`, `maxSize`, `collapsible`. |
-| `ResizableHandle` | Divisor arrastável entre dois panels; `withHandle` mostra alça. |
+| Componente            | Descrição                                                                |
+| --------------------- | ------------------------------------------------------------------------ |
+| `ResizablePanelGroup` | Frame que coordena os panels; aceita `orientation`.                      |
+| `ResizablePanel`      | Painel filho; aceita `defaultSize`, `minSize`, `maxSize`, `collapsible`. |
+| `ResizableHandle`     | Divisor arrastável entre dois panels; `withHandle` mostra alça.          |
 
 ## Usage
 
@@ -71,8 +73,8 @@ ajustar o canvas para o que está fazendo agora.
 import {
   ResizableHandle,
   ResizablePanel,
-  ResizablePanelGroup
-} from "@kalvner/kds/containers/resizable";
+  ResizablePanelGroup,
+} from '@kalvner/kds/containers/resizable';
 
 export function EditorLayout() {
   return (
@@ -99,7 +101,9 @@ export function EditorLayout() {
   <Card>
     <CardHeader>
       <CardTitle>Vertical split</CardTitle>
-      <CardDescription>Topo + inferior — útil para split editor + terminal.</CardDescription>
+      <CardDescription>
+        Topo + inferior — útil para split editor + terminal.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <ResizableVertical />
@@ -108,7 +112,9 @@ export function EditorLayout() {
   <Card>
     <CardHeader>
       <CardTitle>Three-pane</CardTitle>
-      <CardDescription>Sidebar + main + inspector — padrão Mail / IDE.</CardDescription>
+      <CardDescription>
+        Sidebar + main + inspector — padrão Mail / IDE.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <ResizableThreePane />
@@ -121,7 +127,9 @@ export function EditorLayout() {
 <Card>
   <CardHeader>
     <CardTitle>Code editor layout</CardTitle>
-    <CardDescription>FileTree + editor + preview — padrão VS Code / CodeSandbox.</CardDescription>
+    <CardDescription>
+      FileTree + editor + preview — padrão VS Code / CodeSandbox.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ResizableEditor />
@@ -164,13 +172,13 @@ export function EditorLayout() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Handles têm `role="separator"`; `aria-orientation` reflete a direção do split. |
-| **Keyboard** | Handle focável via Tab; setas movem o handle (10px por step); `Home`/`End` saltam para limites; `Enter` em handles colapsáveis (`collapsible` panel) fecha/abre. |
-| **Focus** | Foco visível com ring; ring offset evita confusão com hover state. |
-| **Screen reader** | Anuncia "separator, vertical/horizontal" e mudanças de tamanho percentual. |
-| **Touch** | Handles funcionam em touch, mas área de hit é 4px por padrão — em mobile, prefira layout fixo. |
+| Concern           | Comportamento                                                                                                                                                    |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**         | Handles têm `role="separator"`; `aria-orientation` reflete a direção do split.                                                                                   |
+| **Keyboard**      | Handle focável via Tab; setas movem o handle (10px por step); `Home`/`End` saltam para limites; `Enter` em handles colapsáveis (`collapsible` panel) fecha/abre. |
+| **Focus**         | Foco visível com ring; ring offset evita confusão com hover state.                                                                                               |
+| **Screen reader** | Anuncia "separator, vertical/horizontal" e mudanças de tamanho percentual.                                                                                       |
+| **Touch**         | Handles funcionam em touch, mas área de hit é 4px por padrão — em mobile, prefira layout fixo.                                                                   |
 
 ## Related
 

@@ -40,7 +40,12 @@ export default meta;
 type Story = StoryObj<ReasoningArgs>;
 
 export const Streaming: Story = {
-  args: { isStreaming: true, defaultOpen: true, open: true, duration: undefined },
+  args: {
+    isStreaming: true,
+    defaultOpen: true,
+    open: true,
+    duration: undefined,
+  },
   render: (args) => ({
     props: args,
     template: `
@@ -70,7 +75,12 @@ export const Done: Story = {
  */
 export const DoneUnknownDuration: Story = {
   name: 'Done (unknown duration)',
-  args: { isStreaming: false, defaultOpen: true, open: true, duration: undefined },
+  args: {
+    isStreaming: false,
+    defaultOpen: true,
+    open: true,
+    duration: undefined,
+  },
   render: (args) => ({
     props: args,
     template: `

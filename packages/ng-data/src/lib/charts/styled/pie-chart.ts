@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { cn } from '@gremorie/ng-core';
 import { ChartFrame } from '../headless/chart-frame';
 import { Pie } from '../headless/pie';
@@ -32,7 +37,12 @@ interface LegendItem {
         [xKey]="nameKey()"
         class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
       >
-        <svg:g [pie]="valueKey()" [innerRadiusRatio]="donut() ? 0.6 : 0" #p="pie" [attr.transform]="p.transform()">
+        <svg:g
+          [pie]="valueKey()"
+          [innerRadiusRatio]="donut() ? 0.6 : 0"
+          #p="pie"
+          [attr.transform]="p.transform()"
+        >
           @for (s of p.slices(); track s.name) {
             <svg:path
               [attr.d]="s.d"
@@ -44,17 +54,26 @@ interface LegendItem {
         </svg:g>
       </svg>
 
-      <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+      <ul
+        class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"
+      >
         @for (item of legend(); track item.name) {
           <li class="flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[2px]" [style.background]="item.color"></span>
+            <span
+              class="size-2.5 rounded-[2px]"
+              [style.background]="item.color"
+            ></span>
             {{ item.name }}
           </li>
         }
       </ul>
 
       <table class="sr-only">
-        <caption>{{ ariaLabel() }}</caption>
+        <caption>
+          {{
+            ariaLabel()
+          }}
+        </caption>
         <thead>
           <tr>
             <th>{{ nameKey() }}</th>

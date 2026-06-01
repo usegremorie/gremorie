@@ -6,7 +6,9 @@ export interface SeriesReg {
 }
 
 /** Shared Y domain [0, max] across all registered series. Falls back to [0, 1]. */
-export function computeYDomain(registrations: readonly SeriesReg[]): [number, number] {
+export function computeYDomain(
+  registrations: readonly SeriesReg[],
+): [number, number] {
   let max = 0;
   let seen = false;
   for (const reg of registrations) {

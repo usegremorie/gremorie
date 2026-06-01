@@ -42,7 +42,11 @@ export class Bar implements OnInit, OnDestroy {
     const data = this.ctx.data();
     const xKey = this.ctx.xKey();
     const categories = data.map((d) => String(d[xKey]));
-    const band = bandScale(categories, [this.ctx.plotLeft(), this.ctx.plotRight()], 0.2);
+    const band = bandScale(
+      categories,
+      [this.ctx.plotLeft(), this.ctx.plotRight()],
+      0.2,
+    );
     const keys = this.ctx.seriesKeys();
     const count = Math.max(1, keys.length);
     const index = Math.max(0, keys.indexOf(this.dataKey()));

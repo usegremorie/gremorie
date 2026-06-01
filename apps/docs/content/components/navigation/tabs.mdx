@@ -1,10 +1,15 @@
 ---
 title: Tabs
-description: "Sibling content panels that share a context. Pill or line variant, horizontal or vertical, with full keyboard navigation."
+description: 'Sibling content panels that share a context. Pill or line variant, horizontal or vertical, with full keyboard navigation.'
 ---
 
-import { TabsPreview } from "@/components/preview/navigation/navigation";
-import { Tabs as RxTabs, TabsList, TabsTrigger, TabsContent } from "@gremorie/rx-navigation";
+import { TabsPreview } from '@/components/preview/navigation/navigation';
+import {
+  Tabs as RxTabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from '@gremorie/rx-navigation';
 
 ## Overview
 
@@ -21,26 +26,10 @@ Reach for Tabs when **the views live in the same scope** - Profile / Billing / A
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-tabs
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-tabs
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-tabs
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-tabs
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-tabs ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-tabs ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-tabs ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-tabs ```</Tab>
 </Tabs>
 
 ## Usage
@@ -84,40 +73,40 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Root container. Wraps Radix `Tabs.Root`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultValue` | `string` | - | Uncontrolled initial active tab. |
-| `value` | `string` | - | Controlled active tab. |
-| `onValueChange` | `(value: string) => void` | - | Fires when the active tab changes. |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Affects keyboard navigation and layout. Vertical lays the list and panel side-by-side. |
-| `dir` | `"ltr" \| "rtl"` | `"ltr"` | Reading direction for arrow-key navigation. |
-| `activationMode` | `"automatic" \| "manual"` | `"automatic"` | `"automatic"` activates a tab on focus; `"manual"` requires Enter or Space. |
+| Prop             | Type                         | Default        | Description                                                                            |
+| ---------------- | ---------------------------- | -------------- | -------------------------------------------------------------------------------------- |
+| `defaultValue`   | `string`                     | -              | Uncontrolled initial active tab.                                                       |
+| `value`          | `string`                     | -              | Controlled active tab.                                                                 |
+| `onValueChange`  | `(value: string) => void`    | -              | Fires when the active tab changes.                                                     |
+| `orientation`    | `"horizontal" \| "vertical"` | `"horizontal"` | Affects keyboard navigation and layout. Vertical lays the list and panel side-by-side. |
+| `dir`            | `"ltr" \| "rtl"`             | `"ltr"`        | Reading direction for arrow-key navigation.                                            |
+| `activationMode` | `"automatic" \| "manual"`    | `"automatic"`  | `"automatic"` activates a tab on focus; `"manual"` requires Enter or Space.            |
 
 ### `<TabsList>`
 
 Container for the triggers. Wraps Radix `Tabs.List`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop      | Type                  | Default     | Description                                                                                                                               |
+| --------- | --------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `variant` | `"default" \| "line"` | `"default"` | `"default"` is a pill list with a rounded muted background. `"line"` is transparent with a single bottom underline on the active trigger. |
-| `loop` | `boolean` | `true` | Whether keyboard focus loops at the ends. |
+| `loop`    | `boolean`             | `true`      | Whether keyboard focus loops at the ends.                                                                                                 |
 
 ### `<TabsTrigger>`
 
 The clickable tab. Wraps Radix `Tabs.Trigger`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | - | Required. Matches the corresponding `<TabsContent>` value. |
-| `disabled` | `boolean` | `false` | Disables this trigger. |
+| Prop       | Type      | Default | Description                                                |
+| ---------- | --------- | ------- | ---------------------------------------------------------- |
+| `value`    | `string`  | -       | Required. Matches the corresponding `<TabsContent>` value. |
+| `disabled` | `boolean` | `false` | Disables this trigger.                                     |
 
 ### `<TabsContent>`
 
 The panel revealed when its trigger is active. Wraps Radix `Tabs.Content`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | - | Required. Matches a `<TabsTrigger>` value. |
+| Prop         | Type      | Default | Description                                                              |
+| ------------ | --------- | ------- | ------------------------------------------------------------------------ |
+| `value`      | `string`  | -       | Required. Matches a `<TabsTrigger>` value.                               |
 | `forceMount` | `boolean` | `false` | Force the panel into the DOM even when inactive (useful for animations). |
 
 ## Composition
@@ -140,9 +129,15 @@ Render triggers inside `<TabsList>` only - placing them outside breaks the keybo
       <TabsTrigger value="billing">Billing</TabsTrigger>
       <TabsTrigger value="api">API keys</TabsTrigger>
     </TabsList>
-    <TabsContent value="profile" className="mt-4 text-sm text-muted-foreground">Profile fields...</TabsContent>
-    <TabsContent value="billing" className="mt-4 text-sm text-muted-foreground">Billing details...</TabsContent>
-    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">API keys list...</TabsContent>
+    <TabsContent value="profile" className="mt-4 text-sm text-muted-foreground">
+      Profile fields...
+    </TabsContent>
+    <TabsContent value="billing" className="mt-4 text-sm text-muted-foreground">
+      Billing details...
+    </TabsContent>
+    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">
+      API keys list...
+    </TabsContent>
   </RxTabs>
 </div>
 
@@ -170,9 +165,18 @@ Use when tabs sit inside a card or panel and need a clear, contained look.
       <TabsTrigger value="usage">Usage</TabsTrigger>
       <TabsTrigger value="api">API</TabsTrigger>
     </TabsList>
-    <TabsContent value="overview" className="mt-4 text-sm text-muted-foreground">High-level summary.</TabsContent>
-    <TabsContent value="usage" className="mt-4 text-sm text-muted-foreground">Code patterns.</TabsContent>
-    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">Prop tables.</TabsContent>
+    <TabsContent
+      value="overview"
+      className="mt-4 text-sm text-muted-foreground"
+    >
+      High-level summary.
+    </TabsContent>
+    <TabsContent value="usage" className="mt-4 text-sm text-muted-foreground">
+      Code patterns.
+    </TabsContent>
+    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">
+      Prop tables.
+    </TabsContent>
   </RxTabs>
 </div>
 
@@ -211,7 +215,7 @@ Use for in-panel settings menus. Arrow Up / Down navigate between triggers when 
 ### Controlled value
 
 ```tsx
-const [tab, setTab] = useState("profile");
+const [tab, setTab] = useState('profile');
 
 <Tabs value={tab} onValueChange={setTab}>
   <TabsList>
@@ -220,7 +224,7 @@ const [tab, setTab] = useState("profile");
   </TabsList>
   <TabsContent value="profile">...</TabsContent>
   <TabsContent value="billing">...</TabsContent>
-</Tabs>
+</Tabs>;
 ```
 
 Use when the active tab must sync with URL state, a router, or a form wizard.

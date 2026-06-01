@@ -2,18 +2,18 @@
 title: Panel
 description: Painel flutuante dentro do Canvas — wrapper estilizado do `<Panel>` do ReactFlow.
 component: Panel
-importPath: "@kalvner/kds/ai/panel"
+importPath: '@kalvner/kds/ai/panel'
 status: stable
 ---
 
-import { PanelPreview } from "@/components/ai-workflow-demos";
+import { PanelPreview } from '@/components/ai-workflow-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -38,9 +38,7 @@ Use pra status, controles secundários, info contextual.
 
 ```tsx
 <Canvas nodes={nodes} edges={edges}>
-  <Panel position="top-left">
-    Workflow status: 3 nodes
-  </Panel>
+  <Panel position="top-left">Workflow status: 3 nodes</Panel>
   <Panel position="top-right">
     <Button>Run</Button>
   </Panel>
@@ -52,10 +50,10 @@ Use pra status, controles secundários, info contextual.
 Aceita **todos** os props de
 [`<Panel>`](https://reactflow.dev/api-reference/components/panel) do ReactFlow:
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'top-left'` | Canto onde o panel fica fixo. |
-| `className` | `string` | KDS aplica `m-4 rounded-md border bg-card p-1`. | Override. |
+| Prop        | Tipo                                                                                              | Default                                         | Descrição                     |
+| ----------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------- |
+| `position`  | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'top-left'`                                    | Canto onde o panel fica fixo. |
+| `className` | `string`                                                                                          | KDS aplica `m-4 rounded-md border bg-card p-1`. | Override.                     |
 
 Aceita `ComponentProps<"div">`.
 
@@ -87,10 +85,10 @@ free-form.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
+| Concern      | Comportamento                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------- |
 | **Position** | Panel fica em camada absoluta — leitor de tela pode pegar fora de ordem. Pareie com `aria-label`. |
-| **Focus** | Botões dentro do Panel são acessíveis via Tab. |
+| **Focus**    | Botões dentro do Panel são acessíveis via Tab.                                                    |
 
 ## Related
 

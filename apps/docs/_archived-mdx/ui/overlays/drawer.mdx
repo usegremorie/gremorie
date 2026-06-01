@@ -2,7 +2,7 @@
 title: Drawer
 description: Bottom sheet mobile-first com gesture support — baseado em vaul.
 component: Drawer
-importPath: "@kalvner/kds/overlays/drawer"
+importPath: '@kalvner/kds/overlays/drawer'
 status: stable
 ---
 
@@ -11,9 +11,9 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { DrawerPreview } from "@/components/overlay-demos";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { DrawerPreview } from '@/components/overlay-demos';
 
 ## Overview
 
@@ -59,16 +59,16 @@ forçam o usuário a olhar para baixo, o que é desconfortável.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Drawer` | Raiz, baseada em `vaul`. |
-| `DrawerTrigger` | Elemento que abre o drawer. |
-| `DrawerContent` | Container com handle bar (em direção bottom). |
-| `DrawerHeader` | Wrapper de título + descrição. |
-| `DrawerTitle` | Título obrigatório. |
-| `DrawerDescription` | Descrição opcional. |
-| `DrawerFooter` | Rodapé com ações. |
-| `DrawerClose` | Wrapper que fecha o drawer. |
+| Componente          | Descrição                                     |
+| ------------------- | --------------------------------------------- |
+| `Drawer`            | Raiz, baseada em `vaul`.                      |
+| `DrawerTrigger`     | Elemento que abre o drawer.                   |
+| `DrawerContent`     | Container com handle bar (em direção bottom). |
+| `DrawerHeader`      | Wrapper de título + descrição.                |
+| `DrawerTitle`       | Título obrigatório.                           |
+| `DrawerDescription` | Descrição opcional.                           |
+| `DrawerFooter`      | Rodapé com ações.                             |
+| `DrawerClose`       | Wrapper que fecha o drawer.                   |
 
 ## Usage
 
@@ -81,9 +81,9 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-  DrawerClose
-} from "@kalvner/kds/overlays/drawer";
-import { Button } from "@kalvner/kds/forms/button";
+  DrawerClose,
+} from '@kalvner/kds/overlays/drawer';
+import { Button } from '@kalvner/kds/forms/button';
 
 export function ConfirmOrder() {
   return (
@@ -114,22 +114,14 @@ Padrão útil: usar `Drawer` em mobile e `Dialog` em desktop. A
 escolha vive na lógica de breakpoint da página, não no primitivo.
 
 ```tsx
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 export function ResponsiveOverlay({ children }: { children: React.ReactNode }) {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   if (isDesktop) {
-    return (
-      <Dialog>
-        {/* mesmos children, semantic equivalent */}
-      </Dialog>
-    );
+    return <Dialog>{/* mesmos children, semantic equivalent */}</Dialog>;
   }
-  return (
-    <Drawer>
-      {/* mesmos children */}
-    </Drawer>
-  );
+  return <Drawer>{/* mesmos children */}</Drawer>;
 }
 ```
 
@@ -163,12 +155,12 @@ export function ResponsiveOverlay({ children }: { children: React.ReactNode }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `vaul` aplica `role="dialog"` + `aria-modal="true"`. |
-| **Foco** | Focus trap ativo. Escape fecha. Foco volta ao trigger. |
-| **Keyboard** | `Tab` cicla. `Esc` fecha. Drag é gesture-only. |
-| **Screen reader** | `DrawerTitle` é o nome; `DrawerDescription` a descrição. |
+| Concern            | Comportamento                                                           |
+| ------------------ | ----------------------------------------------------------------------- |
+| **Roles**          | `vaul` aplica `role="dialog"` + `aria-modal="true"`.                    |
+| **Foco**           | Focus trap ativo. Escape fecha. Foco volta ao trigger.                  |
+| **Keyboard**       | `Tab` cicla. `Esc` fecha. Drag é gesture-only.                          |
+| **Screen reader**  | `DrawerTitle` é o nome; `DrawerDescription` a descrição.                |
 | **Reduced motion** | A animação de slide respeita `prefers-reduced-motion` no nível do tema. |
 
 ## Related

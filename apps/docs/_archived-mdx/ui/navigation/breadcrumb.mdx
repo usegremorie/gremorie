@@ -2,7 +2,7 @@
 title: Breadcrumb
 description: Trilha hierárquica para hierarquias com ≥3 níveis — orientação espacial sem custo de cliques.
 component: Breadcrumb
-importPath: "@kalvner/kds/navigation/breadcrumb"
+importPath: '@kalvner/kds/navigation/breadcrumb'
 status: stable
 ---
 
@@ -11,14 +11,14 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   BreadcrumbCollapsed,
   BreadcrumbCustomSeparator,
   BreadcrumbDeep,
-  BreadcrumbPreview
-} from "@/components/navigation-demos";
+  BreadcrumbPreview,
+} from '@/components/navigation-demos';
 
 ## Overview
 
@@ -64,15 +64,15 @@ JavaScript de runtime; SSR-friendly por padrão.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Breadcrumb` | `<nav aria-label="breadcrumb">`. |
-| `BreadcrumbList` | `<ol>` que enfileira os itens. |
-| `BreadcrumbItem` | `<li>` para cada nível. |
-| `BreadcrumbLink` | Link clicável; aceita `asChild` para integrar com routers. |
-| `BreadcrumbPage` | Página atual — não navegável, com `aria-current="page"`. |
-| `BreadcrumbSeparator` | Separador (chevron padrão; passa `children` para customizar). |
-| `BreadcrumbEllipsis` | Indica passos colapsados, geralmente acoplado a um Popover/Dropdown. |
+| Componente            | Descrição                                                            |
+| --------------------- | -------------------------------------------------------------------- |
+| `Breadcrumb`          | `<nav aria-label="breadcrumb">`.                                     |
+| `BreadcrumbList`      | `<ol>` que enfileira os itens.                                       |
+| `BreadcrumbItem`      | `<li>` para cada nível.                                              |
+| `BreadcrumbLink`      | Link clicável; aceita `asChild` para integrar com routers.           |
+| `BreadcrumbPage`      | Página atual — não navegável, com `aria-current="page"`.             |
+| `BreadcrumbSeparator` | Separador (chevron padrão; passa `children` para customizar).        |
+| `BreadcrumbEllipsis`  | Indica passos colapsados, geralmente acoplado a um Popover/Dropdown. |
 
 ## Usage
 
@@ -83,8 +83,8 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
-} from "@kalvner/kds/navigation/breadcrumb";
+  BreadcrumbSeparator,
+} from '@kalvner/kds/navigation/breadcrumb';
 
 export function PageTrail() {
   return (
@@ -109,7 +109,9 @@ export function PageTrail() {
   <Card>
     <CardHeader>
       <CardTitle>Custom separator</CardTitle>
-      <CardDescription>Slash, dot, ou ícone próprio — passe via children.</CardDescription>
+      <CardDescription>
+        Slash, dot, ou ícone próprio — passe via children.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <BreadcrumbCustomSeparator />
@@ -158,7 +160,7 @@ export function PageTrail() {
   via search, ainda assim mostre `Home > Blog > Título`. A
   trilha é uma promessa do site, não do histórico de navegação.
 - **Mobile colapsa.** Em telas estreitas, `Home > ... > Atual`
-  + Popover. Não tente fazer scroll horizontal.
+  - Popover. Não tente fazer scroll horizontal.
 - **Limite até 6 níveis.** Acima disso a hierarquia provavelmente
   está mal estruturada.
 - **Não use ícones sozinhos.** Texto sempre. Ícone como reforço,
@@ -166,13 +168,13 @@ export function PageTrail() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<nav aria-label="breadcrumb">` envolve uma `<ol>` ordenada. |
-| **Current page** | `BreadcrumbPage` aplica `role="link"` + `aria-disabled="true"` + `aria-current="page"` para SRs. |
-| **Keyboard** | Tab segue a ordem do DOM; cada link é focável. Os separadores são `aria-hidden`. |
-| **Screen reader** | Anunciado como "navigation, breadcrumb". Os itens são anunciados em ordem. |
-| **Custom separator** | Garanta `aria-hidden="true"` no ícone (já aplicado pelo `BreadcrumbSeparator`). |
+| Concern              | Comportamento                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| **Roles**            | `<nav aria-label="breadcrumb">` envolve uma `<ol>` ordenada.                                     |
+| **Current page**     | `BreadcrumbPage` aplica `role="link"` + `aria-disabled="true"` + `aria-current="page"` para SRs. |
+| **Keyboard**         | Tab segue a ordem do DOM; cada link é focável. Os separadores são `aria-hidden`.                 |
+| **Screen reader**    | Anunciado como "navigation, breadcrumb". Os itens são anunciados em ordem.                       |
+| **Custom separator** | Garanta `aria-hidden="true"` no ícone (já aplicado pelo `BreadcrumbSeparator`).                  |
 
 ## Related
 

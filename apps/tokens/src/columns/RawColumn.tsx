@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import { parseColor, toOklchString, toHex } from "../util/color";
-import { useProject } from "../state/store";
+import { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
+import { parseColor, toOklchString, toHex } from '../util/color';
+import { useProject } from '../state/store';
 
 export function RawColumn() {
   const { graph, selectedTheme, selectedMode, queueChange } = useProject();
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
   if (!graph) return null;
-  const primitives = Object.values(graph.primitives).filter((p: any) =>
-    p.name.startsWith("--color-") && p.theme === selectedTheme && p.mode === selectedMode
+  const primitives = Object.values(graph.primitives).filter(
+    (p: any) =>
+      p.name.startsWith('--color-') &&
+      p.theme === selectedTheme &&
+      p.mode === selectedMode,
   );
 
   const current = primitives.find((p: any) => p.name === selectedToken);
@@ -17,14 +20,16 @@ export function RawColumn() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Raw</h3>
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        Raw
+      </h3>
       <ul className="flex flex-col gap-1 max-h-[420px] overflow-auto">
         {primitives.map((p: any) => (
           <li key={p.name}>
             <button
               onClick={() => setSelectedToken(p.name)}
               className={`flex w-full items-center gap-2 rounded-md border border-input px-2 py-1 text-left text-xs hover:bg-accent ${
-                selectedToken === p.name ? "ring-2 ring-ring" : ""
+                selectedToken === p.name ? 'ring-2 ring-ring' : ''
               }`}
             >
               <span
@@ -44,9 +49,9 @@ export function RawColumn() {
               const next = parseColor(hex);
               if (!next || !selectedToken) return;
               queueChange({
-                kind: "primitive-value",
+                kind: 'primitive-value',
                 tokenName: selectedToken,
-                newValue: toOklchString(next)
+                newValue: toOklchString(next),
               });
             }}
           />

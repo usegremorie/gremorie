@@ -20,7 +20,10 @@ export function computeLinePath(
 ): string {
   if (data.length === 0) return '';
   return linePath(
-    data.map((d) => ({ x: xScale(String(d[xKey])), y: yScale(Number(d[yKey])) })),
+    data.map((d) => ({
+      x: xScale(String(d[xKey])),
+      y: yScale(Number(d[yKey])),
+    })),
   );
 }
 

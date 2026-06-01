@@ -2,18 +2,22 @@
 title: Plan
 description: Plano formal do agente — Card colapsável com título, descrição streaming e steps.
 component: Plan
-importPath: "@kalvner/kds/ai/plan"
+importPath: '@kalvner/kds/ai/plan'
 status: stable
 ---
 
-import { PlanCollapsedPreview, PlanExpandedPreview, PlanStreamingPreview } from "@/components/ai-chatbot-demos";
+import {
+  PlanCollapsedPreview,
+  PlanExpandedPreview,
+  PlanStreamingPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -80,10 +84,10 @@ execução; Task é a execução em si.
 
 ### Plan (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `isStreaming` | `boolean` | `false` | Quando `true`, PlanTitle e PlanDescription envelopam texto em Shimmer. |
-| `open` / `defaultOpen` | `boolean` | — | Controle do collapsible. |
+| Prop                   | Tipo      | Default | Descrição                                                              |
+| ---------------------- | --------- | ------- | ---------------------------------------------------------------------- |
+| `isStreaming`          | `boolean` | `false` | Quando `true`, PlanTitle e PlanDescription envelopam texto em Shimmer. |
+| `open` / `defaultOpen` | `boolean` | —       | Controle do collapsible.                                               |
 
 Herda de [Collapsible](../../ui/display/collapsible).
 
@@ -94,15 +98,15 @@ Wrapper flex (`items-start justify-between`). Aceita
 
 ### PlanTitle
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `children` | `string` | — | Título (string requerida — Shimmer só funciona com string). |
+| Prop       | Tipo     | Default | Descrição                                                   |
+| ---------- | -------- | ------- | ----------------------------------------------------------- |
+| `children` | `string` | —       | Título (string requerida — Shimmer só funciona com string). |
 
 ### PlanDescription
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `children` | `string` | — | Descrição (string requerida). |
+| Prop       | Tipo     | Default | Descrição                     |
+| ---------- | -------- | ------- | ----------------------------- |
+| `children` | `string` | —       | Descrição (string requerida). |
 
 ### PlanAction
 
@@ -137,31 +141,35 @@ Botão que toggle Plan. Default visual: ChevronsUpDown size-4. Aceita
 
 ## States
 
-| State | Comportamento |
-|---|---|
-| `isStreaming=true` | Title + Description em Shimmer. |
-| `isStreaming=false` | Texto normal. |
-| `open` | Content visível. |
-| `closed` | Só Header + Trigger visíveis. |
+| State               | Comportamento                   |
+| ------------------- | ------------------------------- |
+| `isStreaming=true`  | Title + Description em Shimmer. |
+| `isStreaming=false` | Texto normal.                   |
+| `open`              | Content visível.                |
+| `closed`            | Só Header + Trigger visíveis.   |
 
 ## Composition
 
 ```tsx
 <Message from="assistant">
   <MessageContent>
-    <Plan isStreaming={status === "planning"}>
+    <Plan isStreaming={status === 'planning'}>
       <PlanHeader>
         <div>
           <PlanTitle>{plan.title}</PlanTitle>
           <PlanDescription>{plan.description}</PlanDescription>
         </div>
-        <PlanAction><PlanTrigger /></PlanAction>
+        <PlanAction>
+          <PlanTrigger />
+        </PlanAction>
       </PlanHeader>
       <PlanContent>
         <Task>
           <TaskTrigger title="Steps" />
           <TaskContent>
-            {plan.steps.map((s) => <TaskItem key={s.id}>{s.label}</TaskItem>)}
+            {plan.steps.map((s) => (
+              <TaskItem key={s.id}>{s.label}</TaskItem>
+            ))}
           </TaskContent>
         </Task>
       </PlanContent>
@@ -192,11 +200,11 @@ Botão que toggle Plan. Default visual: ChevronsUpDown size-4. Aceita
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `<button>` (Collapsible). |
+| Concern       | Comportamento                                                           |
+| ------------- | ----------------------------------------------------------------------- |
+| **Roles**     | Trigger é `<button>` (Collapsible).                                     |
 | **Streaming** | Shimmer não interfere com leitor de tela — texto continua selecionável. |
-| **Focus** | Trigger herda `focus-visible:ring`. |
+| **Focus**     | Trigger herda `focus-visible:ring`.                                     |
 
 ## Related
 

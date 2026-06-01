@@ -2,18 +2,22 @@
 title: Confirmation
 description: HITL gate — surface de approve/reject pra tool-calls que exigem aprovação humana.
 component: Confirmation
-importPath: "@kalvner/kds/ai/confirmation"
+importPath: '@kalvner/kds/ai/confirmation'
 status: stable
 ---
 
-import { ConfirmationRequestPreview, ConfirmationApprovedPreview, ConfirmationRejectedPreview } from "@/components/ai-chatbot-demos";
+import {
+  ConfirmationRequestPreview,
+  ConfirmationApprovedPreview,
+  ConfirmationRejectedPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -62,7 +66,10 @@ Confirmation mostra o gate de aprovação.
       <ConfirmationAction onClick={() => approve(part.toolCallId)}>
         Aprovar
       </ConfirmationAction>
-      <ConfirmationAction variant="outline" onClick={() => reject(part.toolCallId)}>
+      <ConfirmationAction
+        variant="outline"
+        onClick={() => reject(part.toolCallId)}
+      >
         Rejeitar
       </ConfirmationAction>
     </ConfirmationActions>
@@ -74,11 +81,11 @@ Confirmation mostra o gate de aprovação.
 
 ### Confirmation (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `approval` | `{ id: string; approved?: boolean; reason?: string }` | — | Estado da aprovação (do AI SDK). Quando `undefined` ou state `input-streaming/available`, NÃO renderiza. |
-| `state` | `ToolUIPart["state"]` | — | Estado completo do tool-call. |
-| `className` | `string` | — | Override. |
+| Prop        | Tipo                                                  | Default | Descrição                                                                                                |
+| ----------- | ----------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| `approval`  | `{ id: string; approved?: boolean; reason?: string }` | —       | Estado da aprovação (do AI SDK). Quando `undefined` ou state `input-streaming/available`, NÃO renderiza. |
+| `state`     | `ToolUIPart["state"]`                                 | —       | Estado completo do tool-call.                                                                            |
+| `className` | `string`                                              | —       | Override.                                                                                                |
 
 Herda de [Alert](../../ui/feedback/alert).
 
@@ -89,9 +96,9 @@ texto principal do alert.
 
 ### ConfirmationActions · ConfirmationAction
 
-| Prop (Action) | Tipo | Default | Descrição |
-|---|---|---|---|
-| `variant` | `ButtonVariant` | `'default'` | "Aprovar" usa default; "Rejeitar" use `outline`. |
+| Prop (Action) | Tipo            | Default     | Descrição                                        |
+| ------------- | --------------- | ----------- | ------------------------------------------------ |
+| `variant`     | `ButtonVariant` | `'default'` | "Aprovar" usa default; "Rejeitar" use `outline`. |
 
 `ConfirmationAction` é [Button](../../ui/forms/button); aceita
 `onClick` etc.
@@ -118,47 +125,54 @@ Wrappers que renderizam **condicionalmente** baseado no state:
 
 ## States
 
-| state input | O que renderiza |
-|---|---|
-| `input-streaming` / `input-available` | Nada (Confirmation oculto). |
-| `approval-requested` | Children dentro de `<ConfirmationRequest>`. |
-| `approval-responded` (approved=true) | Children dentro de `<ConfirmationAccepted>`. |
+| state input                           | O que renderiza                              |
+| ------------------------------------- | -------------------------------------------- |
+| `input-streaming` / `input-available` | Nada (Confirmation oculto).                  |
+| `approval-requested`                  | Children dentro de `<ConfirmationRequest>`.  |
+| `approval-responded` (approved=true)  | Children dentro de `<ConfirmationAccepted>`. |
 | `approval-responded` (approved=false) | Children dentro de `<ConfirmationRejected>`. |
-| `output-denied` | `<ConfirmationRejected>`. |
+| `output-denied`                       | `<ConfirmationRejected>`.                    |
 
 ## Composition
 
 ### Tool + Confirmation HITL
 
 ```tsx
-{toolParts.map((part) => (
-  <Tool key={part.toolCallId}>
-    <ToolHeader type={part.type} state={part.state} />
-    <ToolContent>
-      <ToolInput input={part.input} />
-      <ToolOutput output={part.output} />
-    </ToolContent>
-    <Confirmation approval={part.approval} state={part.state}>
-      <ConfirmationRequest>
-        <ConfirmationTitle>Aprovar tool-call?</ConfirmationTitle>
-        <ConfirmationActions>
-          <ConfirmationAction onClick={() => approve(part.toolCallId)}>
-            Aprovar
-          </ConfirmationAction>
-          <ConfirmationAction variant="outline" onClick={() => reject(part.toolCallId)}>
-            Rejeitar
-          </ConfirmationAction>
-        </ConfirmationActions>
-      </ConfirmationRequest>
-      <ConfirmationAccepted>
-        <ConfirmationTitle>✅ Aprovado</ConfirmationTitle>
-      </ConfirmationAccepted>
-      <ConfirmationRejected>
-        <ConfirmationTitle>❌ Rejeitado: {part.approval?.reason}</ConfirmationTitle>
-      </ConfirmationRejected>
-    </Confirmation>
-  </Tool>
-))}
+{
+  toolParts.map((part) => (
+    <Tool key={part.toolCallId}>
+      <ToolHeader type={part.type} state={part.state} />
+      <ToolContent>
+        <ToolInput input={part.input} />
+        <ToolOutput output={part.output} />
+      </ToolContent>
+      <Confirmation approval={part.approval} state={part.state}>
+        <ConfirmationRequest>
+          <ConfirmationTitle>Aprovar tool-call?</ConfirmationTitle>
+          <ConfirmationActions>
+            <ConfirmationAction onClick={() => approve(part.toolCallId)}>
+              Aprovar
+            </ConfirmationAction>
+            <ConfirmationAction
+              variant="outline"
+              onClick={() => reject(part.toolCallId)}
+            >
+              Rejeitar
+            </ConfirmationAction>
+          </ConfirmationActions>
+        </ConfirmationRequest>
+        <ConfirmationAccepted>
+          <ConfirmationTitle>✅ Aprovado</ConfirmationTitle>
+        </ConfirmationAccepted>
+        <ConfirmationRejected>
+          <ConfirmationTitle>
+            ❌ Rejeitado: {part.approval?.reason}
+          </ConfirmationTitle>
+        </ConfirmationRejected>
+      </Confirmation>
+    </Tool>
+  ));
+}
 ```
 
 ## When to use
@@ -184,12 +198,12 @@ Wrappers que renderizam **condicionalmente** baseado no state:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Role** | Alert por baixo (`role="alert"`). |
-| **Live region** | Alert tem `aria-live="polite"` implícito — leitores anunciam. |
-| **Buttons** | Approve/Reject têm labels claros. |
-| **Visibility** | Confirmation é renderizado/escondido via context, não display none — leitor de tela vê só o estado atual. |
+| Concern         | Comportamento                                                                                             |
+| --------------- | --------------------------------------------------------------------------------------------------------- |
+| **Role**        | Alert por baixo (`role="alert"`).                                                                         |
+| **Live region** | Alert tem `aria-live="polite"` implícito — leitores anunciam.                                             |
+| **Buttons**     | Approve/Reject têm labels claros.                                                                         |
+| **Visibility**  | Confirmation é renderizado/escondido via context, não display none — leitor de tela vê só o estado atual. |
 
 ## Related
 

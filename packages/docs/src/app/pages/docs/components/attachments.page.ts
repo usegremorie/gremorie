@@ -16,7 +16,11 @@ import {
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 import { DocsPreview } from '../../../shared/preview.component';
 
 const PREVIEW_ITEMS: AttachmentData[] = [
@@ -128,7 +132,10 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         </docs-section>
 
         <docs-section title="Installation" anchor="install">
-          <docs-code-block lang="bash" code="npm install @gremorie/ng-ai @gremorie/ng-core" />
+          <docs-code-block
+            lang="bash"
+            code="npm install @gremorie/ng-ai @gremorie/ng-core"
+          />
           <docs-prose>
             <p>Or via the CLI:</p>
           </docs-prose>
@@ -142,19 +149,32 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         <docs-section title="Variants" anchor="variants">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><strong>grid</strong> (default) — wraps cards with a thumbnail header. Best for message bubbles and rich previews.</li>
-              <li><strong>inline</strong> — compact badge row. Best for the row above a prompt input's textarea.</li>
-              <li><strong>list</strong> — vertical stack with full metadata. Best for upload UIs.</li>
+              <li>
+                <strong>grid</strong> (default) — wraps cards with a thumbnail
+                header. Best for message bubbles and rich previews.
+              </li>
+              <li>
+                <strong>inline</strong> — compact badge row. Best for the row
+                above a prompt input's textarea.
+              </li>
+              <li>
+                <strong>list</strong> — vertical stack with full metadata. Best
+                for upload UIs.
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
 
-        <docs-section title="Composition with PromptInput" anchor="prompt-input">
+        <docs-section
+          title="Composition with PromptInput"
+          anchor="prompt-input"
+        >
           <docs-prose>
             <p>
-              When nested inside a <a routerLink="/docs/components/prompt-input">PromptInput</a>, the attachment
-              state is owned by the container. Bind the <code>attachments</code> model both ways and
-              wire the list:
+              When nested inside a
+              <a routerLink="/docs/components/prompt-input">PromptInput</a>, the
+              attachment state is owned by the container. Bind the
+              <code>attachments</code> model both ways and wire the list:
             </p>
           </docs-prose>
           <docs-code-block lang="typescript" [code]="promptInputUsage" />
@@ -162,7 +182,10 @@ const PREVIEW_ITEMS: AttachmentData[] = [
 
         <docs-section title="API — AttachmentData" anchor="api-data">
           <docs-prose>
-            <p>The shape every item accepts. Compatible with <code>FileUIPart</code> from the Vercel AI SDK.</p>
+            <p>
+              The shape every item accepts. Compatible with
+              <code>FileUIPart</code> from the Vercel AI SDK.
+            </p>
           </docs-prose>
           <docs-api-table [rows]="dataShape" [showDefault]="false" />
         </docs-section>
@@ -175,7 +198,10 @@ const PREVIEW_ITEMS: AttachmentData[] = [
           <docs-api-table [rows]="itemInputs" />
         </docs-section>
 
-        <docs-section title="API — AttachmentItem outputs" anchor="api-item-outputs">
+        <docs-section
+          title="API — AttachmentItem outputs"
+          anchor="api-item-outputs"
+        >
           <docs-api-table [rows]="itemOutputs" [showDefault]="false" />
         </docs-section>
 
@@ -201,11 +227,27 @@ const PREVIEW_ITEMS: AttachmentData[] = [
         <docs-section title="Accessibility" anchor="a11y">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><strong>role="list"</strong> on the AttachmentList container, configurable <code>ariaLabel</code></li>
-              <li><strong>role="listitem"</strong> on each AttachmentItem, with <code>data-media-category</code> for CSS targeting</li>
-              <li>Remove button has an explicit <code>aria-label</code> (default "Remove attachment")</li>
-              <li>Preview images get an <code>alt</code> derived from the filename — pass a more descriptive value via your own <code>fallback</code> template when needed</li>
-              <li>Errored state surfaces a visible "Error" badge in addition to the destructive border</li>
+              <li>
+                <strong>role="list"</strong> on the AttachmentList container,
+                configurable <code>ariaLabel</code>
+              </li>
+              <li>
+                <strong>role="listitem"</strong> on each AttachmentItem, with
+                <code>data-media-category</code> for CSS targeting
+              </li>
+              <li>
+                Remove button has an explicit <code>aria-label</code> (default
+                "Remove attachment")
+              </li>
+              <li>
+                Preview images get an <code>alt</code> derived from the filename
+                — pass a more descriptive value via your own
+                <code>fallback</code> template when needed
+              </li>
+              <li>
+                Errored state surfaces a visible "Error" badge in addition to
+                the destructive border
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -214,22 +256,49 @@ const PREVIEW_ITEMS: AttachmentData[] = [
           <docs-prose>
             <p>Semantic tokens consumed:</p>
             <ul class="ml-5 list-disc space-y-1">
-              <li><code>--card</code> / <code>--card-foreground</code> — item background</li>
+              <li>
+                <code>--card</code> / <code>--card-foreground</code> — item
+                background
+              </li>
               <li><code>--border</code> — item border</li>
-              <li><code>--muted</code> / <code>--muted-foreground</code> — preview background, secondary text</li>
-              <li><code>--accent</code> / <code>--accent-foreground</code> — remove button hover</li>
-              <li><code>--destructive</code> / <code>--destructive-foreground</code> — errored item border + error badge</li>
+              <li>
+                <code>--muted</code> / <code>--muted-foreground</code> — preview
+                background, secondary text
+              </li>
+              <li>
+                <code>--accent</code> / <code>--accent-foreground</code> —
+                remove button hover
+              </li>
+              <li>
+                <code>--destructive</code> /
+                <code>--destructive-foreground</code> — errored item border +
+                error badge
+              </li>
               <li><code>--ring</code> — focus rings</li>
             </ul>
-            <p>The component does <strong>not</strong> ship its own tokens — see <a routerLink="/docs/primitives/theme">Theme tokens</a> for the full list.</p>
+            <p>
+              The component does <strong>not</strong> ship its own tokens — see
+              <a routerLink="/docs/primitives/theme">Theme tokens</a> for the
+              full list.
+            </p>
           </docs-prose>
         </docs-section>
 
         <docs-section title="Known issues" anchor="known-issues">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><strong>Hover cards deferred to v0.2.</strong> AI Elements ships an AttachmentHoverCard for showing a larger preview on hover in inline variant. Gremorie NG will adopt it once the popover primitive lands (target: v0.2 alongside Conversation).</li>
-              <li><strong>id generation.</strong> <code>toAttachmentData()</code> uses an internal counter for ids. If you persist attachments across reloads, generate stable ids yourself.</li>
+              <li>
+                <strong>Hover cards deferred to v0.2.</strong> AI Elements ships
+                an AttachmentHoverCard for showing a larger preview on hover in
+                inline variant. Gremorie NG will adopt it once the popover
+                primitive lands (target: v0.2 alongside Conversation).
+              </li>
+              <li>
+                <strong>id generation.</strong>
+                <code>toAttachmentData()</code> uses an internal counter for
+                ids. If you persist attachments across reloads, generate stable
+                ids yourself.
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -365,47 +434,148 @@ export class Uploader {
 </prompt-input>`;
 
   protected readonly dataShape: readonly ApiRow[] = [
-    { name: 'id', type: 'string', description: 'Stable identifier — used for tracking in @for loops.' },
-    { name: 'filename', type: 'string?', description: 'Display name. Falls back to a category label ("Image", "Document") when omitted.' },
-    { name: 'mediaType', type: 'string?', description: 'MIME type. Drives the preview surface and label fallback.' },
-    { name: 'url', type: 'string?', description: 'Already-uploaded URL — used as <img>/<video> source.' },
-    { name: 'file', type: 'File?', description: 'Native File — used to derive a blob URL for image previews.' },
-    { name: 'size', type: 'number?', description: 'Bytes. When omitted but `file` is set, derived from file.size.' },
+    {
+      name: 'id',
+      type: 'string',
+      description: 'Stable identifier — used for tracking in @for loops.',
+    },
+    {
+      name: 'filename',
+      type: 'string?',
+      description:
+        'Display name. Falls back to a category label ("Image", "Document") when omitted.',
+    },
+    {
+      name: 'mediaType',
+      type: 'string?',
+      description: 'MIME type. Drives the preview surface and label fallback.',
+    },
+    {
+      name: 'url',
+      type: 'string?',
+      description: 'Already-uploaded URL — used as <img>/<video> source.',
+    },
+    {
+      name: 'file',
+      type: 'File?',
+      description:
+        'Native File — used to derive a blob URL for image previews.',
+    },
+    {
+      name: 'size',
+      type: 'number?',
+      description:
+        'Bytes. When omitted but `file` is set, derived from file.size.',
+    },
   ];
 
   protected readonly listInputs: readonly ApiRow[] = [
-    { name: 'variant', type: "'grid' | 'inline' | 'list'", default: "'grid'", description: 'Layout shape. Items read this from the list via DI.' },
-    { name: 'ariaLabel', type: 'string', default: "'Attachments'", description: 'aria-label applied to the role="list" host.' },
+    {
+      name: 'variant',
+      type: "'grid' | 'inline' | 'list'",
+      default: "'grid'",
+      description: 'Layout shape. Items read this from the list via DI.',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      default: "'Attachments'",
+      description: 'aria-label applied to the role="list" host.',
+    },
   ];
 
   protected readonly itemInputs: readonly ApiRow[] = [
-    { name: 'data', type: 'AttachmentData', default: '(required)', description: 'The attachment to render.' },
-    { name: 'loading', type: 'boolean', default: 'false', description: 'Show animated skeleton overlay on the preview.' },
-    { name: 'errored', type: 'boolean', default: 'false', description: 'Destructive border + "Error" badge.' },
-    { name: 'variant', type: "'grid' | 'inline' | 'list' | undefined", default: 'undefined', description: 'Override the parent list variant for a single item.' },
+    {
+      name: 'data',
+      type: 'AttachmentData',
+      default: '(required)',
+      description: 'The attachment to render.',
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      default: 'false',
+      description: 'Show animated skeleton overlay on the preview.',
+    },
+    {
+      name: 'errored',
+      type: 'boolean',
+      default: 'false',
+      description: 'Destructive border + "Error" badge.',
+    },
+    {
+      name: 'variant',
+      type: "'grid' | 'inline' | 'list' | undefined",
+      default: 'undefined',
+      description: 'Override the parent list variant for a single item.',
+    },
   ];
 
   protected readonly itemOutputs: readonly ApiRow[] = [
-    { name: 'removed', type: 'AttachmentData', description: 'Emitted when AttachmentRemove inside the item is clicked. Carries the data object.' },
+    {
+      name: 'removed',
+      type: 'AttachmentData',
+      description:
+        'Emitted when AttachmentRemove inside the item is clicked. Carries the data object.',
+    },
   ];
 
   protected readonly previewInputs: readonly ApiRow[] = [
-    { name: 'fallback', type: 'TemplateRef<unknown> | null', default: 'null', description: 'Custom non-image surface (your own icon system, custom layout, etc).' },
+    {
+      name: 'fallback',
+      type: 'TemplateRef<unknown> | null',
+      default: 'null',
+      description:
+        'Custom non-image surface (your own icon system, custom layout, etc).',
+    },
   ];
 
   protected readonly infoInputs: readonly ApiRow[] = [
-    { name: 'showMediaType', type: 'boolean', default: 'false', description: 'Add the MIME type to the secondary line.' },
-    { name: 'showSize', type: 'boolean', default: 'true', description: 'Add the formatted file size to the secondary line.' },
+    {
+      name: 'showMediaType',
+      type: 'boolean',
+      default: 'false',
+      description: 'Add the MIME type to the secondary line.',
+    },
+    {
+      name: 'showSize',
+      type: 'boolean',
+      default: 'true',
+      description: 'Add the formatted file size to the secondary line.',
+    },
   ];
 
   protected readonly removeInputs: readonly ApiRow[] = [
-    { name: 'label', type: 'string', default: "'Remove attachment'", description: 'Screen-reader label and tooltip.' },
+    {
+      name: 'label',
+      type: 'string',
+      default: "'Remove attachment'",
+      description: 'Screen-reader label and tooltip.',
+    },
   ];
 
   protected readonly utils: readonly ApiRow[] = [
-    { name: 'toAttachmentData(file, overrides?)', type: '(File, Partial<AttachmentData>?) => AttachmentData', description: 'Convert a native File into the shape components consume. Generates an id if you do not provide one.' },
-    { name: 'getMediaCategory(data)', type: '(data) => "image" | "video" | "audio" | "document" | "source" | "unknown"', description: 'Coarse classification driving the preview surface.' },
-    { name: 'getAttachmentLabel(data)', type: '(data) => string', description: 'Best human-readable label — filename, then category fallback, then "Attachment".' },
-    { name: 'formatFileSize(bytes)', type: '(number | undefined) => string', description: 'Format bytes as a short string like "240 KB" or "12.4 MB".' },
+    {
+      name: 'toAttachmentData(file, overrides?)',
+      type: '(File, Partial<AttachmentData>?) => AttachmentData',
+      description:
+        'Convert a native File into the shape components consume. Generates an id if you do not provide one.',
+    },
+    {
+      name: 'getMediaCategory(data)',
+      type: '(data) => "image" | "video" | "audio" | "document" | "source" | "unknown"',
+      description: 'Coarse classification driving the preview surface.',
+    },
+    {
+      name: 'getAttachmentLabel(data)',
+      type: '(data) => string',
+      description:
+        'Best human-readable label — filename, then category fallback, then "Attachment".',
+    },
+    {
+      name: 'formatFileSize(bytes)',
+      type: '(number | undefined) => string',
+      description: 'Format bytes as a short string like "240 KB" or "12.4 MB".',
+    },
   ];
 }

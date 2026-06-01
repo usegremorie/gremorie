@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { cn } from '@gremorie/ng-core';
 import { ChartFrame } from '../headless/chart-frame';
 import { RadialBar } from '../headless/radial-bar';
@@ -31,25 +36,42 @@ interface LegendItem {
         [xKey]="nameKey()"
         class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
       >
-        <svg:g [radialBar]="valueKey()" #r="radialBar" [attr.transform]="r.transform()">
+        <svg:g
+          [radialBar]="valueKey()"
+          #r="radialBar"
+          [attr.transform]="r.transform()"
+        >
           @for (a of r.arcs(); track a.name) {
-            <svg:path [attr.d]="a.track" fill="currentColor" fill-opacity="0.08" />
+            <svg:path
+              [attr.d]="a.track"
+              fill="currentColor"
+              fill-opacity="0.08"
+            />
             <svg:path [attr.d]="a.d" [attr.fill]="color(a.index)" />
           }
         </svg:g>
       </svg>
 
-      <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+      <ul
+        class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"
+      >
         @for (item of legend(); track item.name) {
           <li class="flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[2px]" [style.background]="item.color"></span>
+            <span
+              class="size-2.5 rounded-[2px]"
+              [style.background]="item.color"
+            ></span>
             {{ item.name }}
           </li>
         }
       </ul>
 
       <table class="sr-only">
-        <caption>{{ ariaLabel() }}</caption>
+        <caption>
+          {{
+            ariaLabel()
+          }}
+        </caption>
         <thead>
           <tr>
             <th>{{ nameKey() }}</th>

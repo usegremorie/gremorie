@@ -2,7 +2,7 @@
 title: Pagination
 description: Navegação por páginas com URLs estáveis — para deep linking e bookmarking.
 component: Pagination
-importPath: "@kalvner/kds/navigation/pagination"
+importPath: '@kalvner/kds/navigation/pagination'
 status: stable
 ---
 
@@ -11,15 +11,15 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   PaginationEllipses,
   PaginationFirstPage,
   PaginationLastPage,
   PaginationPreview,
-  PaginationTableFooter
-} from "@/components/navigation-demos";
+  PaginationTableFooter,
+} from '@/components/navigation-demos';
 
 ## Overview
 
@@ -31,16 +31,18 @@ artigos de um blog, paginated APIs.
 A decisão entre Pagination, infinite scroll e load-more é uma
 escolha de **commitment do usuário**:
 
-| Quando o usuário precisa… | Use |
-|---|---|
-| Bookmarkar e compartilhar uma posição | **Pagination** |
-| Explorar sem fim e sem comprometimento | **Infinite scroll** |
-| Carregar mais sob demanda mas chegar ao footer | **Load-more** |
+| Quando o usuário precisa…                      | Use                 |
+| ---------------------------------------------- | ------------------- |
+| Bookmarkar e compartilhar uma posição          | **Pagination**      |
+| Explorar sem fim e sem comprometimento         | **Infinite scroll** |
+| Carregar mais sob demanda mas chegar ao footer | **Load-more**       |
 
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Numérica + Previous/Next na primeira posição.</CardDescription>
+    <CardDescription>
+      Numérica + Previous/Next na primeira posição.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <PaginationPreview />
@@ -68,15 +70,15 @@ o range correto, marca `isActive` na atual, e desabilita
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Pagination` | `<nav aria-label="pagination">`. |
-| `PaginationContent` | `<ul>` que organiza os itens. |
-| `PaginationItem` | `<li>` — um nó por link/ellipsis. |
-| `PaginationLink` | Link de página numerada; suporta `isActive`. |
-| `PaginationPrevious` | Link "Previous" com chevron à esquerda. |
-| `PaginationNext` | Link "Next" com chevron à direita. |
-| `PaginationEllipsis` | Espaço visual quando há páginas omitidas. |
+| Componente           | Descrição                                    |
+| -------------------- | -------------------------------------------- |
+| `Pagination`         | `<nav aria-label="pagination">`.             |
+| `PaginationContent`  | `<ul>` que organiza os itens.                |
+| `PaginationItem`     | `<li>` — um nó por link/ellipsis.            |
+| `PaginationLink`     | Link de página numerada; suporta `isActive`. |
+| `PaginationPrevious` | Link "Previous" com chevron à esquerda.      |
+| `PaginationNext`     | Link "Next" com chevron à direita.           |
+| `PaginationEllipsis` | Espaço visual quando há páginas omitidas.    |
 
 ## Usage
 
@@ -87,8 +89,8 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
-} from "@kalvner/kds/navigation/pagination";
+  PaginationPrevious,
+} from '@kalvner/kds/navigation/pagination';
 
 export function ListPager({ page, total }: { page: number; total: number }) {
   return (
@@ -119,7 +121,9 @@ export function ListPager({ page, total }: { page: number; total: number }) {
   <Card className="md:col-span-2">
     <CardHeader>
       <CardTitle>With ellipses</CardTitle>
-      <CardDescription>Para totais grandes — mostra extremos + página atual.</CardDescription>
+      <CardDescription>
+        Para totais grandes — mostra extremos + página atual.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <PaginationEllipses />
@@ -133,7 +137,9 @@ export function ListPager({ page, total }: { page: number; total: number }) {
   <Card>
     <CardHeader>
       <CardTitle>At first page</CardTitle>
-      <CardDescription>Previous desabilitado via aria + opacity.</CardDescription>
+      <CardDescription>
+        Previous desabilitado via aria + opacity.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <PaginationFirstPage />
@@ -155,7 +161,9 @@ export function ListPager({ page, total }: { page: number; total: number }) {
 <Card>
   <CardHeader>
     <CardTitle>Data table footer</CardTitle>
-    <CardDescription>Range textual à esquerda, paginator à direita.</CardDescription>
+    <CardDescription>
+      Range textual à esquerda, paginator à direita.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <PaginationTableFooter />
@@ -182,7 +190,7 @@ export function ListPager({ page, total }: { page: number; total: number }) {
 ## Best practices
 
 - **URLs reais sempre.** Use `href="?page=2"` em vez de `onClick`
-  + state. Garante refresh, share, back/forward, deep-linking.
+  - state. Garante refresh, share, back/forward, deep-linking.
 - **Desabilite com aria.** Em Previous/Next nos extremos, aplique
   `aria-disabled="true"` + `tabIndex={-1}` + `pointer-events-none`.
 - **Range textual de apoio.** "Mostrando 21–30 de 142" responde
@@ -195,13 +203,13 @@ export function ListPager({ page, total }: { page: number; total: number }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<nav aria-label="pagination">`. |
-| **Current page** | Link ativo recebe `aria-current="page"`. |
+| Concern            | Comportamento                                                                                                                     |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | `<nav aria-label="pagination">`.                                                                                                  |
+| **Current page**   | Link ativo recebe `aria-current="page"`.                                                                                          |
 | **Disabled state** | Aplique `aria-disabled="true"` + `tabIndex={-1}` + classes que removem pointer events. Não use atributo HTML `disabled` em `<a>`. |
-| **Keyboard** | Tab navega normalmente entre os links visíveis. |
-| **Screen reader** | Anunciado como "navigation, pagination" + número da página atual. |
+| **Keyboard**       | Tab navega normalmente entre os links visíveis.                                                                                   |
+| **Screen reader**  | Anunciado como "navigation, pagination" + número da página atual.                                                                 |
 
 ## Related
 

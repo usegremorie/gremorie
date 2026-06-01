@@ -41,8 +41,10 @@ The user knows what they are doing before they click.
 ### Do: a single word when the object is obvious
 
 ```tsx
-{/* In a settings panel that only saves one thing */}
-<Button>Save</Button>
+{
+  /* In a settings panel that only saves one thing */
+}
+<Button>Save</Button>;
 ```
 
 There is only one thing to save here. Adding "changes" would be redundant.
@@ -76,6 +78,7 @@ This reads as a heading, not a button. Replace with "Confirm purchase" or "Confi
 ### Cancel vs go back vs close
 
 These three are not interchangeable:
+
 - **Cancel** = discard work-in-progress (a form being filled).
 - **Go back** = navigate to the previous step (in a wizard).
 - **Close** = dismiss a non-modal panel or detail view without losing state.

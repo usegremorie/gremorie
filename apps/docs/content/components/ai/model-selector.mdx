@@ -3,7 +3,7 @@ title: Model Selector
 description: Cmd+K-style model picker built on Dialog + Command, with provider logos and shortcut keys.
 ---
 
-import { ModelSelectorPreview } from "@/components/preview/ai/chatbot-rest";
+import { ModelSelectorPreview } from '@/components/preview/ai/chatbot-rest';
 
 ## Overview
 
@@ -20,26 +20,16 @@ Use it as the model switch in the chat shell - either as a discrete button in th
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-model-selector
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-model-selector
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-model-selector
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-model-selector
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-model-selector ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-model-selector ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-model-selector ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-model-selector ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -100,8 +90,8 @@ Extends `ComponentProps<typeof Dialog>`.
 
 ### `<ModelSelectorContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop    | Type        | Default            | Description                        |
+| ------- | ----------- | ------------------ | ---------------------------------- |
 | `title` | `ReactNode` | `"Model Selector"` | Accessible (sr-only) dialog title. |
 
 `DialogContent` with zero padding and a `Command` inside.
@@ -110,22 +100,22 @@ Extends `ComponentProps<typeof Dialog>`.
 
 These thin wrappers forward `Command*` props:
 
-| Component | Wraps |
-|---|---|
-| `ModelSelectorDialog` | `CommandDialog` (full Cmd+K dialog mode) |
-| `ModelSelectorInput` | `CommandInput` (taller `py-3.5`) |
-| `ModelSelectorList` | `CommandList` |
-| `ModelSelectorEmpty` | `CommandEmpty` |
-| `ModelSelectorGroup` | `CommandGroup` (accepts `heading`) |
-| `ModelSelectorItem` | `CommandItem` |
-| `ModelSelectorSeparator` | `CommandSeparator` |
-| `ModelSelectorShortcut` | `CommandShortcut` (for `Cmd+1`-style hints) |
+| Component                | Wraps                                       |
+| ------------------------ | ------------------------------------------- |
+| `ModelSelectorDialog`    | `CommandDialog` (full Cmd+K dialog mode)    |
+| `ModelSelectorInput`     | `CommandInput` (taller `py-3.5`)            |
+| `ModelSelectorList`      | `CommandList`                               |
+| `ModelSelectorEmpty`     | `CommandEmpty`                              |
+| `ModelSelectorGroup`     | `CommandGroup` (accepts `heading`)          |
+| `ModelSelectorItem`      | `CommandItem`                               |
+| `ModelSelectorSeparator` | `CommandSeparator`                          |
+| `ModelSelectorShortcut`  | `CommandShortcut` (for `Cmd+1`-style hints) |
 
 ### `<ModelSelectorLogo>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `provider` | `string` | - | Required. Pulled from `models.dev/logos/{provider}.svg`. Covers most major providers (anthropic, openai, google, mistral, deepseek, xai, ...). |
+| Prop       | Type     | Default | Description                                                                                                                                    |
+| ---------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider` | `string` | -       | Required. Pulled from `models.dev/logos/{provider}.svg`. Covers most major providers (anthropic, openai, google, mistral, deepseek, xai, ...). |
 
 Rendered as a tiny `img` (12 x 12), inverted in dark mode.
 
@@ -203,19 +193,19 @@ const [open, setOpen] = useState(false);
 
 useEffect(() => {
   const onKey = (e: KeyboardEvent) => {
-    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       setOpen((o) => !o);
     }
   };
-  window.addEventListener("keydown", onKey);
-  return () => window.removeEventListener("keydown", onKey);
+  window.addEventListener('keydown', onKey);
+  return () => window.removeEventListener('keydown', onKey);
 }, []);
 
 <ModelSelectorDialog open={open} onOpenChange={setOpen}>
   <ModelSelectorInput placeholder="Switch model..." />
   <ModelSelectorList>{/* items */}</ModelSelectorList>
-</ModelSelectorDialog>
+</ModelSelectorDialog>;
 ```
 
 ## Accessibility

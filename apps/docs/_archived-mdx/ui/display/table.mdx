@@ -2,7 +2,7 @@
 title: Table
 description: Wrapper estilizado sobre `<table>` semântico — base do DataTable pattern.
 component: Table
-importPath: "@kalvner/kds/display/table"
+importPath: '@kalvner/kds/display/table'
 status: stable
 ---
 
@@ -14,15 +14,15 @@ import {
   TableFooter,
   TableHead,
   TableHeader,
-  TableRow
-} from "@kalvner/kds/display/table";
+  TableRow,
+} from '@kalvner/kds/display/table';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -93,8 +93,8 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from "@kalvner/kds/display/table";
+  TableRow,
+} from '@kalvner/kds/display/table';
 
 export function InvoicesTable({ invoices }) {
   return (
@@ -126,16 +126,16 @@ Todos os componentes herdam props nativas dos elementos HTML
 correspondentes (`<table>`, `<thead>`, `<tr>`, `<th>`, `<td>`,
 `<tfoot>`, `<caption>`).
 
-| Componente | Aceita | Notas |
-|---|---|---|
-| `Table` | `React.ComponentProps<'table'>` | Embrulhado em container scroll-x. |
-| `TableHeader` | `<thead>` | Border-bottom em todas as rows. |
-| `TableBody` | `<tbody>` | Última row sem border. |
-| `TableFooter` | `<tfoot>` | `bg-muted/50 font-medium`. |
-| `TableRow` | `<tr>` | Hover state, suporte a `data-state="selected"`. |
-| `TableHead` | `<th>` | h-10, font-medium, text-foreground. |
-| `TableCell` | `<td>` | p-2, align-middle. |
-| `TableCaption` | `<caption>` | mt-4, muted, text-sm. |
+| Componente     | Aceita                          | Notas                                           |
+| -------------- | ------------------------------- | ----------------------------------------------- |
+| `Table`        | `React.ComponentProps<'table'>` | Embrulhado em container scroll-x.               |
+| `TableHeader`  | `<thead>`                       | Border-bottom em todas as rows.                 |
+| `TableBody`    | `<tbody>`                       | Última row sem border.                          |
+| `TableFooter`  | `<tfoot>`                       | `bg-muted/50 font-medium`.                      |
+| `TableRow`     | `<tr>`                          | Hover state, suporte a `data-state="selected"`. |
+| `TableHead`    | `<th>`                          | h-10, font-medium, text-foreground.             |
+| `TableCell`    | `<td>`                          | p-2, align-middle.                              |
+| `TableCaption` | `<caption>`                     | mt-4, muted, text-sm.                           |
 
 ## Subcomponents
 
@@ -151,11 +151,11 @@ ajuste padding via `className` no `TableCell`/`TableHead`.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| Row hover | `bg-muted/50`. |
-| Row `data-state="selected"` | `bg-muted` permanente. |
-| `caption-bottom` | Caption renderizado **abaixo** da tabela (HTML default). |
+| Estado                      | Comportamento                                            |
+| --------------------------- | -------------------------------------------------------- |
+| Row hover                   | `bg-muted/50`.                                           |
+| Row `data-state="selected"` | `bg-muted` permanente.                                   |
+| `caption-bottom`            | Caption renderizado **abaixo** da tabela (HTML default). |
 
 ## Composition
 
@@ -176,7 +176,7 @@ Headers tornam-se botões clicáveis; ícone de seta indica direção:
 
 ```tsx
 <TableHead>
-  <Button variant="ghost" onClick={() => toggleSort("amount")}>
+  <Button variant="ghost" onClick={() => toggleSort('amount')}>
     Total <ArrowUpDown className="ml-2 size-4" />
   </Button>
 </TableHead>
@@ -219,14 +219,14 @@ demais primitivos KDS.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Semantics** | Usa `<table>` real — leitor de tela navega por linha/coluna. |
-| **Caption** | `<caption>` é anunciado primeiro; descreva o conteúdo. |
-| **Header cells** | `<th>` é announced como header durante navegação por celula. |
-| **Scope** | Adicione `scope="col"` nos `<th>` em tabelas complexas. |
-| **Selection** | Use `aria-selected` na row se houver seleção fora de DataTable. |
-| **Mobile** | Container scroll-x preserva todas as colunas; usuário rola. |
+| Concern          | Comportamento                                                   |
+| ---------------- | --------------------------------------------------------------- |
+| **Semantics**    | Usa `<table>` real — leitor de tela navega por linha/coluna.    |
+| **Caption**      | `<caption>` é anunciado primeiro; descreva o conteúdo.          |
+| **Header cells** | `<th>` é announced como header durante navegação por celula.    |
+| **Scope**        | Adicione `scope="col"` nos `<th>` em tabelas complexas.         |
+| **Selection**    | Use `aria-selected` na row se houver seleção fora de DataTable. |
+| **Mobile**       | Container scroll-x preserva todas as colunas; usuário rola.     |
 
 ## Related
 

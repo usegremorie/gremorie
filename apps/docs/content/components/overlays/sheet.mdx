@@ -1,9 +1,9 @@
 ---
 title: Sheet
-description: "Side-anchored panel for longer flows, built on Radix Dialog with directional slide-in from any edge."
+description: 'Side-anchored panel for longer flows, built on Radix Dialog with directional slide-in from any edge.'
 ---
 
-import { SheetPreview } from "@/components/preview/overlays/overlays";
+import { SheetPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -20,26 +20,10 @@ For desktop ergonomics, prefer `right` (filter and detail panels). `left` is con
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-sheet
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-sheet
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-sheet
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-sheet
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-sheet ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-sheet ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-sheet ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-sheet ```</Tab>
 </Tabs>
 
 ## Usage
@@ -92,10 +76,10 @@ Extends Radix `Dialog.Root`. Same controlled API as `Dialog` (`open`, `defaultOp
 
 ### `<SheetContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Edge the sheet docks against and slides in from. |
-| `showCloseButton` | `boolean` | `true` | Renders the top-right X close button. |
+| Prop              | Type                                     | Default   | Description                                      |
+| ----------------- | ---------------------------------------- | --------- | ------------------------------------------------ |
+| `side`            | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Edge the sheet docks against and slides in from. |
+| `showCloseButton` | `boolean`                                | `true`    | Renders the top-right X close button.            |
 
 Wraps Radix `Dialog.Content` in a Portal with the overlay. Width and height adapt to `side`:
 
@@ -137,9 +121,7 @@ The canonical desktop pattern. Filter form pinned, scrollable body, apply/reset 
     <SheetHeader>
       <SheetTitle>Filters</SheetTitle>
     </SheetHeader>
-    <div className="flex-1 overflow-auto px-4">
-      {/* filter form */}
-    </div>
+    <div className="flex-1 overflow-auto px-4">{/* filter form */}</div>
     <SheetFooter>
       <Button variant="outline">Reset</Button>
       <Button>Apply</Button>
@@ -163,9 +145,7 @@ Pair with a hamburger trigger on mobile for primary navigation.
     <SheetHeader>
       <SheetTitle>Navigation</SheetTitle>
     </SheetHeader>
-    <nav className="px-4">
-      {/* nav links */}
-    </nav>
+    <nav className="px-4">{/* nav links */}</nav>
   </SheetContent>
 </Sheet>
 ```

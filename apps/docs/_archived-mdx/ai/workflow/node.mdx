@@ -2,18 +2,22 @@
 title: Node
 description: Card visual de um nó de workflow — handles configuráveis, header, content, footer.
 component: Node
-importPath: "@kalvner/kds/ai/node"
+importPath: '@kalvner/kds/ai/node'
 status: stable
 ---
 
-import { NodeToolPreview, NodeInputPreview, NodeOutputPreview } from "@/components/ai-workflow-demos";
+import {
+  NodeToolPreview,
+  NodeInputPreview,
+  NodeOutputPreview,
+} from '@/components/ai-workflow-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -53,7 +57,13 @@ Use como `nodeTypes.<key>` no Canvas. Cada Node aceita `handles:
 Defina como custom node type:
 
 ```tsx
-import { Node, NodeContent, NodeDescription, NodeHeader, NodeTitle } from "@kalvner/kds/ai/node";
+import {
+  Node,
+  NodeContent,
+  NodeDescription,
+  NodeHeader,
+  NodeTitle,
+} from '@kalvner/kds/ai/node';
 
 function ToolNode({ data }) {
   return (
@@ -69,17 +79,17 @@ function ToolNode({ data }) {
   );
 }
 
-<Canvas nodes={nodes} edges={edges} nodeTypes={{ tool: ToolNode }} />
+<Canvas nodes={nodes} edges={edges} nodeTypes={{ tool: ToolNode }} />;
 ```
 
 ## Props
 
 ### Node (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `handles` | `{ target: boolean; source: boolean }` | — | Controla quais handles aparecem. `target` na esquerda (input), `source` na direita (output). |
-| `className` | `string` | — | Override (default tem `gap-0 rounded-md p-0`). |
+| Prop        | Tipo                                   | Default | Descrição                                                                                    |
+| ----------- | -------------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `handles`   | `{ target: boolean; source: boolean }` | —       | Controla quais handles aparecem. `target` na esquerda (input), `source` na direita (output). |
+| `className` | `string`                               | —       | Override (default tem `gap-0 rounded-md p-0`).                                               |
 
 Herda de [Card](../../ui/display/card).
 
@@ -120,6 +130,7 @@ Aceita `ComponentProps<typeof CardFooter>`. Default tem `border-t` + `p-3`.
 ## States
 
 `handles` define o comportamento de conexão:
+
 - `{ target: true, source: false }` — node terminal (output, sem
   saída). Padrão de "answer".
 - `{ target: false, source: true }` — node de entrada (input, sem
@@ -136,8 +147,12 @@ function ToolNode({ data, selected }) {
   return (
     <Node handles={{ target: true, source: true }} selected={selected}>
       <Toolbar isVisible={selected} nodeId={data.id}>
-        <Button variant="ghost" size="icon"><Copy /></Button>
-        <Button variant="ghost" size="icon"><Trash /></Button>
+        <Button variant="ghost" size="icon">
+          <Copy />
+        </Button>
+        <Button variant="ghost" size="icon">
+          <Trash />
+        </Button>
       </Toolbar>
       <NodeHeader>
         <NodeTitle>{data.label}</NodeTitle>
@@ -173,11 +188,11 @@ function ToolNode({ data, selected }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Card é `<div>` neutro; embrulhe em `<article>` se hierarquia importa. |
-| **Handles** | Renderizados via Radix internals do ReactFlow. |
-| **Keyboard** | ReactFlow lida com nav (Tab + Arrow). |
+| Concern      | Comportamento                                                         |
+| ------------ | --------------------------------------------------------------------- |
+| **Roles**    | Card é `<div>` neutro; embrulhe em `<article>` se hierarquia importa. |
+| **Handles**  | Renderizados via Radix internals do ReactFlow.                        |
+| **Keyboard** | ReactFlow lida com nav (Tab + Arrow).                                 |
 
 ## Related
 

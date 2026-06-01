@@ -3,7 +3,7 @@ title: Artifact
 description: Generic card chrome for AI-generated objects. The wrapper around code, docs, charts, images and any other asset the model produces.
 ---
 
-import { ArtifactPreview } from "@/components/preview/ai/code-workflow";
+import { ArtifactPreview } from '@/components/preview/ai/code-workflow';
 
 ## Overview
 
@@ -20,26 +20,10 @@ It is intentionally agnostic about what goes inside `ArtifactContent`. Compose i
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-artifact
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-artifact
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-artifact
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-artifact
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-artifact ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-artifact ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-artifact ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-artifact ```</Tab>
 </Tabs>
 
 Pulls in `rx-forms` (for `Button`) and `rx-overlays` (for `Tooltip`) so `ArtifactAction` works out of the box.
@@ -86,9 +70,9 @@ Angular edition planned for Phase 5h. Use the React edition for now, or open an 
 
 ### `<Artifact>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes on the root `div`. Useful for sizing (`max-w-2xl`, `h-full`). |
+| Prop        | Type     | Default | Description                                                                 |
+| ----------- | -------- | ------- | --------------------------------------------------------------------------- |
+| `className` | `string` | -       | Extra classes on the root `div`. Useful for sizing (`max-w-2xl`, `h-full`). |
 
 Extends all `HTMLAttributes<HTMLDivElement>`. Default chrome: rounded border, shadow-sm, vertical flex column.
 
@@ -112,14 +96,14 @@ Extends all `HTMLAttributes<HTMLDivElement>`.
 
 ### `<ArtifactAction>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `tooltip` | `string` | - | When set, wraps the button in a `Tooltip` and supplies the label. Doubles as `sr-only` text. |
-| `label` | `string` | - | Explicit accessible label. Overrides `tooltip` for sr-only text. |
-| `icon` | `LucideIcon` | - | Convenience for icon-only actions. Renders the icon at `size-4`. |
-| `variant` | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`. |
-| `size` | `ButtonSize` | `"sm"` | Forwarded to the underlying `Button`. |
-| `children` | `ReactNode` | - | Falls back to `icon` when `children` is missing. |
+| Prop       | Type            | Default   | Description                                                                                  |
+| ---------- | --------------- | --------- | -------------------------------------------------------------------------------------------- |
+| `tooltip`  | `string`        | -         | When set, wraps the button in a `Tooltip` and supplies the label. Doubles as `sr-only` text. |
+| `label`    | `string`        | -         | Explicit accessible label. Overrides `tooltip` for sr-only text.                             |
+| `icon`     | `LucideIcon`    | -         | Convenience for icon-only actions. Renders the icon at `size-4`.                             |
+| `variant`  | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`.                                                        |
+| `size`     | `ButtonSize`    | `"sm"`    | Forwarded to the underlying `Button`.                                                        |
+| `children` | `ReactNode`     | -         | Falls back to `icon` when `children` is missing.                                             |
 
 When `tooltip` is set, the action wraps itself in a `TooltipProvider` + `Tooltip`. If your page already has a `TooltipProvider` at the root, that nesting is harmless (Radix de-duplicates).
 
@@ -127,11 +111,11 @@ When `tooltip` is set, the action wraps itself in a `TooltipProvider` + `Tooltip
 
 Specialised `ArtifactAction` with a built-in `XIcon`. Carries `aria-label="Close"` via `sr-only` span.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `ReactNode` | `<XIcon />` | Override the icon if you need a different close glyph. |
-| `variant` | `ButtonVariant` | `"ghost"` | Forwarded to `Button`. |
-| `size` | `ButtonSize` | `"sm"` | Forwarded to `Button`. |
+| Prop       | Type            | Default     | Description                                            |
+| ---------- | --------------- | ----------- | ------------------------------------------------------ |
+| `children` | `ReactNode`     | `<XIcon />` | Override the icon if you need a different close glyph. |
+| `variant`  | `ButtonVariant` | `"ghost"`   | Forwarded to `Button`.                                 |
+| `size`     | `ButtonSize`    | `"sm"`      | Forwarded to `Button`.                                 |
 
 ### `<ArtifactContent>`
 
@@ -200,7 +184,11 @@ Use `WebPreview` inside for a runnable artifact. The header explains what the us
   <ArtifactHeader>
     <ArtifactTitle>chart.png</ArtifactTitle>
     <ArtifactActions>
-      <ArtifactAction tooltip="Download" icon={DownloadIcon} onClick={download} />
+      <ArtifactAction
+        tooltip="Download"
+        icon={DownloadIcon}
+        onClick={download}
+      />
       <ArtifactClose />
     </ArtifactActions>
   </ArtifactHeader>

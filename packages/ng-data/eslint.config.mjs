@@ -34,7 +34,16 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['chart', 'area-chart', 'bar-chart', 'line-chart', 'pie-chart', 'radar-chart', 'radial-chart', 'scatter-chart'],
+          prefix: [
+            'chart',
+            'area-chart',
+            'bar-chart',
+            'line-chart',
+            'pie-chart',
+            'radar-chart',
+            'radial-chart',
+            'scatter-chart',
+          ],
           style: 'kebab-case',
         },
       ],

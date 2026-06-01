@@ -5,7 +5,11 @@ import { NgScrollbar, ScrollArea } from '@gremorie/ng-containers';
 import { ApiRow, DocsApiTable } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 import { DocsPreview } from '../../../shared/preview.component';
 
 @Component({
@@ -32,8 +36,12 @@ import { DocsPreview } from '../../../shared/preview.component';
         <docs-section title="Installation" anchor="install">
           <docs-prose>
             Scroll Area wraps
-            <a href="https://ngx-scrollbar.netlify.app" target="_blank" rel="noopener noreferrer">ngx-scrollbar</a>,
-            so install both:
+            <a
+              href="https://ngx-scrollbar.netlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              >ngx-scrollbar</a
+            >, so install both:
           </docs-prose>
           <docs-code-block lang="bash" [code]="install" />
           <docs-prose>Or via the Gremorie NG CLI:</docs-prose>
@@ -46,10 +54,15 @@ import { DocsPreview } from '../../../shared/preview.component';
           lede="Add the [gremorie] attribute to an <ng-scrollbar> and give it a constrained height."
         >
           <docs-preview [code]="usage" label="vertical scroll">
-            <ng-scrollbar gremorie class="h-56 w-full rounded-md border border-border">
+            <ng-scrollbar
+              gremorie
+              class="h-56 w-full rounded-md border border-border"
+            >
               <div class="flex flex-col gap-2 p-4">
                 @for (item of items; track item) {
-                  <div class="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground">
+                  <div
+                    class="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
+                  >
                     {{ item }}
                   </div>
                 }
@@ -71,10 +84,24 @@ import { DocsPreview } from '../../../shared/preview.component';
         <docs-section title="Notes" anchor="notes">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><code>ScrollArea</code> is an attribute directive — it does not render its own element, it styles <code>&lt;ng-scrollbar&gt;</code>.</li>
-              <li>Import <code>ScrollAreaImports</code> to pull in both <code>NgScrollbarModule</code> and the <code>[gremorie]</code> directive at once.</li>
-              <li>The host gets <code>display: block</code> and <code>data-slot="scroll-area"</code> for styling/testing hooks.</li>
-              <li>ngx-scrollbar handles the heavy lifting (overlay scrollbar, smooth scroll, RTL, virtual scroll integration).</li>
+              <li>
+                <code>ScrollArea</code> is an attribute directive — it does not
+                render its own element, it styles
+                <code>&lt;ng-scrollbar&gt;</code>.
+              </li>
+              <li>
+                Import <code>ScrollAreaImports</code> to pull in both
+                <code>NgScrollbarModule</code> and the
+                <code>[gremorie]</code> directive at once.
+              </li>
+              <li>
+                The host gets <code>display: block</code> and
+                <code>data-slot="scroll-area"</code> for styling/testing hooks.
+              </li>
+              <li>
+                ngx-scrollbar handles the heavy lifting (overlay scrollbar,
+                smooth scroll, RTL, virtual scroll integration).
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -83,9 +110,13 @@ import { DocsPreview } from '../../../shared/preview.component';
   `,
 })
 export default class ScrollAreaPage {
-  protected readonly items = Array.from({ length: 24 }, (_, i) => 'Item ' + (i + 1));
+  protected readonly items = Array.from(
+    { length: 24 },
+    (_, i) => 'Item ' + (i + 1),
+  );
 
-  protected readonly install = 'npm install ngx-scrollbar @gremorie/ng-containers';
+  protected readonly install =
+    'npm install ngx-scrollbar @gremorie/ng-containers';
 
   protected readonly installCli = 'npx gremorie add scroll-area';
 
@@ -117,7 +148,7 @@ export default class ScrollAreaPage {
     '  Gremorie NG',
     '  class="h-72"',
     '  [style.--scrollbar-thickness]="10"',
-    "  [style.--scrollbar-thumb-color]=\"'var(--primary)'\"",
+    '  [style.--scrollbar-thumb-color]="\'var(--primary)\'"',
     '>',
     '  …',
     '</ng-scrollbar>',

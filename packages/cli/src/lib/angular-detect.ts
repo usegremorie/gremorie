@@ -58,7 +58,10 @@ export function readPackageJsonDependencies(
       dependencies?: Record<string, string>;
       devDependencies?: Record<string, string>;
     };
-    return { ...(parsed.dependencies ?? {}), ...(parsed.devDependencies ?? {}) };
+    return {
+      ...(parsed.dependencies ?? {}),
+      ...(parsed.devDependencies ?? {}),
+    };
   } catch {
     return {};
   }

@@ -34,7 +34,14 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['ai', 'prompt-input', 'message', 'tool-call', 'code-block', 'source-list'],
+          prefix: [
+            'ai',
+            'prompt-input',
+            'message',
+            'tool-call',
+            'code-block',
+            'source-list',
+          ],
           style: 'kebab-case',
         },
       ],

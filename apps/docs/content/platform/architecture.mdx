@@ -40,11 +40,11 @@ gremorie/
 
 Three layers, each with a distinct responsibility:
 
-| Layer | Lives in | Naming | Changes |
-|---|---|---|---|
-| **1. Primitive** | `@theme {}` blocks | `--color-<palette>-<stop>` | Almost never (follows Tailwind) |
-| **2. Semantic** | `:root` / `[data-theme]` selectors | `--<role>` (no prefix) | Per theme switch |
-| **3. Chart** | `@theme inline {}` blocks | `--color-chart-<group>-<n>` | Per chart-data context |
+| Layer            | Lives in                           | Naming                      | Changes                         |
+| ---------------- | ---------------------------------- | --------------------------- | ------------------------------- |
+| **1. Primitive** | `@theme {}` blocks                 | `--color-<palette>-<stop>`  | Almost never (follows Tailwind) |
+| **2. Semantic**  | `:root` / `[data-theme]` selectors | `--<role>` (no prefix)      | Per theme switch                |
+| **3. Chart**     | `@theme inline {}` blocks          | `--color-chart-<group>-<n>` | Per chart-data context          |
 
 Editing a primitive cascades through every theme that references it.
 Switching `data-theme="X"` updates every semantic token in-place — components

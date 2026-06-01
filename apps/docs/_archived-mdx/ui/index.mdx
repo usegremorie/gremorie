@@ -29,8 +29,8 @@ Phase 1 (foundation) está completa; Phase 2 popula as 9 categorias incrementalm
 Padrão path-per-component pra garantir tree-shaking (per ADR-012):
 
 ```tsx
-import { Stack } from "@kalvner/kds/containers/stack";
-import { Button } from "@kalvner/kds/forms/button";
+import { Stack } from '@kalvner/kds/containers/stack';
+import { Button } from '@kalvner/kds/forms/button';
 ```
 
 A barrel root export (`@kalvner/kds`) existe como fallback de compatibilidade, mas o path-per-component é o padrão pra novo código.

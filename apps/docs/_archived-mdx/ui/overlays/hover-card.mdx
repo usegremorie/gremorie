@@ -2,7 +2,7 @@
 title: HoverCard
 description: Preview rico em hover — sem interatividade dentro, sem informação crítica.
 component: HoverCard
-importPath: "@kalvner/kds/overlays/hover-card"
+importPath: '@kalvner/kds/overlays/hover-card'
 status: stable
 ---
 
@@ -11,9 +11,9 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { HoverCardPreview } from "@/components/overlay-demos";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { HoverCardPreview } from '@/components/overlay-demos';
 
 ## Overview
 
@@ -51,11 +51,11 @@ página inteira, etc.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `HoverCard` | Raiz que controla open via hover. |
+| Componente         | Descrição                                 |
+| ------------------ | ----------------------------------------- |
+| `HoverCard`        | Raiz que controla open via hover.         |
 | `HoverCardTrigger` | Elemento que dispara o preview ao pairar. |
-| `HoverCardContent` | Container portalado com o preview. |
+| `HoverCardContent` | Container portalado com o preview.        |
 
 ## Usage
 
@@ -63,8 +63,8 @@ página inteira, etc.
 import {
   HoverCard,
   HoverCardTrigger,
-  HoverCardContent
-} from "@kalvner/kds/overlays/hover-card";
+  HoverCardContent,
+} from '@kalvner/kds/overlays/hover-card';
 
 export function UserMention({ user }) {
   return (
@@ -113,14 +113,14 @@ export function UserMention({ user }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix aplica `role="dialog"` (com `aria-haspopup`) embora seja efêmero. |
-| **Foco** | Foco no trigger dispara abrir; sair do trigger fecha. Foco não entra no content. |
-| **Keyboard** | `Tab` para o trigger abre. `Esc` fecha. Não há navegação para dentro do content. |
-| **Screen reader** | O content é anunciado quando aberto via foco. Para conteúdo verdadeiramente crítico, prefira mostrar inline ou em Popover. |
-| **Touch** | Sem trigger natural — design para que touch users tenham acesso ao mesmo conteúdo via clique. |
-| **Reduced motion** | Fade respeita `prefers-reduced-motion`. |
+| Concern            | Comportamento                                                                                                              |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | Radix aplica `role="dialog"` (com `aria-haspopup`) embora seja efêmero.                                                    |
+| **Foco**           | Foco no trigger dispara abrir; sair do trigger fecha. Foco não entra no content.                                           |
+| **Keyboard**       | `Tab` para o trigger abre. `Esc` fecha. Não há navegação para dentro do content.                                           |
+| **Screen reader**  | O content é anunciado quando aberto via foco. Para conteúdo verdadeiramente crítico, prefira mostrar inline ou em Popover. |
+| **Touch**          | Sem trigger natural — design para que touch users tenham acesso ao mesmo conteúdo via clique.                              |
+| **Reduced motion** | Fade respeita `prefers-reduced-motion`.                                                                                    |
 
 ## Related
 

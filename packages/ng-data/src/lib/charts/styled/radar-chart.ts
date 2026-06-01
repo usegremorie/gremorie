@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { cn } from '@gremorie/ng-core';
 import { ChartFrame } from '../headless/chart-frame';
 import { Radar } from '../headless/radar';
@@ -36,7 +41,12 @@ interface SeriesView {
           <svg:g [radar]="s.key" [color]="s.color" #r="radar">
             @if (i === 0) {
               @for (ring of r.rings(); track $index) {
-                <svg:path [attr.d]="ring" fill="none" stroke="currentColor" stroke-opacity="0.12" />
+                <svg:path
+                  [attr.d]="ring"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-opacity="0.12"
+                />
               }
               @for (ax of r.axes(); track ax.label) {
                 <svg:line
@@ -53,7 +63,9 @@ interface SeriesView {
                   text-anchor="middle"
                   dominant-baseline="middle"
                   class="fill-muted-foreground text-[10px]"
-                >{{ ax.label }}</svg:text>
+                >
+                  {{ ax.label }}
+                </svg:text>
               }
             }
             <svg:path
@@ -67,17 +79,26 @@ interface SeriesView {
         }
       </svg>
 
-      <ul class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+      <ul
+        class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"
+      >
         @for (s of series(); track s.key) {
           <li class="flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[2px]" [style.background]="s.color"></span>
+            <span
+              class="size-2.5 rounded-[2px]"
+              [style.background]="s.color"
+            ></span>
             {{ s.label }}
           </li>
         }
       </ul>
 
       <table class="sr-only">
-        <caption>{{ ariaLabel() }}</caption>
+        <caption>
+          {{
+            ariaLabel()
+          }}
+        </caption>
         <thead>
           <tr>
             <th>{{ xKey() }}</th>
@@ -114,7 +135,10 @@ export class RadarChart {
   );
 
   readonly ariaLabel = computed(
-    () => `Radar chart of ${this.series().map((s) => s.label).join(', ')} by ${this.xKey()}`,
+    () =>
+      `Radar chart of ${this.series()
+        .map((s) => s.label)
+        .join(', ')} by ${this.xKey()}`,
   );
 
   readonly cardClass = cn(

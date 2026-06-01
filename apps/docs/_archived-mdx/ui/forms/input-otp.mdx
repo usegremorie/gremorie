@@ -2,7 +2,7 @@
 title: InputOTP
 description: Input segmentado para códigos de uso único (2FA, verificação SMS).
 component: InputOTP
-importPath: "@kalvner/kds/forms/input-otp"
+importPath: '@kalvner/kds/forms/input-otp'
 status: stable
 ---
 
@@ -10,15 +10,15 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
-  InputOTPSlot
-} from "@kalvner/kds/forms/input-otp";
+  InputOTPSlot,
+} from '@kalvner/kds/forms/input-otp';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -71,17 +71,17 @@ visuais e refletem o estado via context.
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSlot
-} from "@kalvner/kds/forms/input-otp";
+  InputOTPSlot,
+} from '@kalvner/kds/forms/input-otp';
 
 export function VerifyForm() {
-  const [code, setCode] = React.useState("");
+  const [code, setCode] = React.useState('');
   return (
     <InputOTP maxLength={6} value={code} onChange={setCode}>
       <InputOTPGroup>
@@ -98,20 +98,20 @@ export function VerifyForm() {
 
 ### InputOTP (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `maxLength` | `number` | — | Quantidade total de slots. |
-| `value` | `string` | — | Controlado. |
-| `onChange` | `(v: string) => void` | — | Callback. |
-| `pattern` | `string` (regex) | `'^[0-9]+$'` opcional | Restringe caracteres. |
-| `containerClassName` | `string` | — | Classe no container externo. |
-| `disabled` | `boolean` | `false` | Bloqueia. |
+| Prop                 | Tipo                  | Default               | Descrição                    |
+| -------------------- | --------------------- | --------------------- | ---------------------------- |
+| `maxLength`          | `number`              | —                     | Quantidade total de slots.   |
+| `value`              | `string`              | —                     | Controlado.                  |
+| `onChange`           | `(v: string) => void` | —                     | Callback.                    |
+| `pattern`            | `string` (regex)      | `'^[0-9]+$'` opcional | Restringe caracteres.        |
+| `containerClassName` | `string`              | —                     | Classe no container externo. |
+| `disabled`           | `boolean`             | `false`               | Bloqueia.                    |
 
 ### InputOTPSlot
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `index` | `number` | — | Posição (0..maxLength-1). |
+| Prop    | Tipo     | Default | Descrição                 |
+| ------- | -------- | ------- | ------------------------- |
+| `index` | `number` | —       | Posição (0..maxLength-1). |
 
 ## Subcomponents
 
@@ -143,12 +143,12 @@ export function VerifyForm() {
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| Slot ativo | Border `ring`, ring 3px, caret animado pulsando. |
-| Slot preenchido | Char visível em texto. |
-| `aria-invalid` | Border destrutiva, ring destrutivo no slot ativo. |
-| `disabled` | Container com opacity 50%. |
+| Estado          | Comportamento                                     |
+| --------------- | ------------------------------------------------- |
+| Slot ativo      | Border `ring`, ring 3px, caret animado pulsando.  |
+| Slot preenchido | Char visível em texto.                            |
+| `aria-invalid`  | Border destrutiva, ring destrutivo no slot ativo. |
+| `disabled`      | Container com opacity 50%.                        |
 
 ## Composition
 
@@ -159,14 +159,20 @@ Padrão típico — formulário de verificação 2FA:
   <Label htmlFor="otp">Código de verificação</Label>
   <InputOTP id="otp" maxLength={6} value={code} onChange={setCode}>
     <InputOTPGroup>
-      {[0, 1, 2].map((i) => <InputOTPSlot key={i} index={i} />)}
+      {[0, 1, 2].map((i) => (
+        <InputOTPSlot key={i} index={i} />
+      ))}
     </InputOTPGroup>
     <InputOTPSeparator />
     <InputOTPGroup>
-      {[3, 4, 5].map((i) => <InputOTPSlot key={i} index={i} />)}
+      {[3, 4, 5].map((i) => (
+        <InputOTPSlot key={i} index={i} />
+      ))}
     </InputOTPGroup>
   </InputOTP>
-  <Button type="submit" disabled={code.length !== 6}>Verificar</Button>
+  <Button type="submit" disabled={code.length !== 6}>
+    Verificar
+  </Button>
 </form>
 ```
 
@@ -200,14 +206,14 @@ em fluxos rápidos — economiza um clique.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Autocomplete** | Suporta `one-time-code` automático no iOS Safari. |
-| **Paste** | "Colar" preenche todos os slots de uma vez. |
-| **Keyboard** | Backspace volta ao slot anterior; setas navegam. |
-| **Mobile** | Use `inputMode="numeric"` para teclado numérico. |
-| **Caret** | Slot ativo mostra caret animado (visual feedback além do ring). |
-| **Live region** | Para feedback de erro ("Código inválido"), use Alert ou Toast. |
+| Concern          | Comportamento                                                   |
+| ---------------- | --------------------------------------------------------------- |
+| **Autocomplete** | Suporta `one-time-code` automático no iOS Safari.               |
+| **Paste**        | "Colar" preenche todos os slots de uma vez.                     |
+| **Keyboard**     | Backspace volta ao slot anterior; setas navegam.                |
+| **Mobile**       | Use `inputMode="numeric"` para teclado numérico.                |
+| **Caret**        | Slot ativo mostra caret animado (visual feedback além do ring). |
+| **Live region**  | Para feedback de erro ("Código inválido"), use Alert ou Toast.  |
 
 ## Related
 

@@ -1,10 +1,6 @@
 import type { AttachmentData } from '../attachments/attachment.types';
 
-export type PromptInputState =
-  | 'ready'
-  | 'submitted'
-  | 'streaming'
-  | 'error';
+export type PromptInputState = 'ready' | 'submitted' | 'streaming' | 'error';
 
 export type PromptInputSize = 'sm' | 'md' | 'lg';
 

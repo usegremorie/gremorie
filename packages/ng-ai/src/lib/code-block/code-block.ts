@@ -8,11 +8,7 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  codeToHtml,
-  type BundledLanguage,
-  type ShikiTransformer,
-} from 'shiki';
+import { codeToHtml, type BundledLanguage, type ShikiTransformer } from 'shiki';
 
 /**
  * Highlights `code` for both light and dark themes (github-light-default

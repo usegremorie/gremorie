@@ -47,7 +47,11 @@ import { ChartsDemo } from './charts-demo';
 
       <footer class="pt-4 text-xs text-muted-foreground">
         <p>
-          Press <kbd class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs">Mod+K</kbd>
+          Press
+          <kbd
+            class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs"
+            >Mod+K</kbd
+          >
           to focus the first textarea globally.
         </p>
       </footer>

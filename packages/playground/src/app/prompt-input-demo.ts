@@ -73,7 +73,9 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section class="flex flex-col gap-3 rounded-lg border border-border bg-card p-5">
+    <section
+      class="flex flex-col gap-3 rounded-lg border border-border bg-card p-5"
+    >
       <header class="flex items-center justify-between">
         <div>
           <h2 class="text-lg font-semibold text-foreground">{{ label() }}</h2>
@@ -100,7 +102,10 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
         @if (attachments().length > 0) {
           <attachment-list variant="inline">
             @for (item of attachments(); track item.id) {
-              <attachment-item [data]="item" (removed)="onAttachmentRemoved($event)">
+              <attachment-item
+                [data]="item"
+                (removed)="onAttachmentRemoved($event)"
+              >
                 <attachment-preview />
                 <attachment-info [showSize]="false" />
                 <attachment-remove />
@@ -109,7 +114,9 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
           </attachment-list>
         }
 
-        <prompt-input-textarea placeholder="Ask anything — or drop a file here…" />
+        <prompt-input-textarea
+          placeholder="Ask anything — or drop a file here…"
+        />
 
         <prompt-input-toolbar>
           <prompt-input-tools>
@@ -144,8 +151,18 @@ const ACCEPT = ['image/*', 'application/pdf', 'text/*'] as const;
               title="Attach file"
               (pressedChange)="onTool('attach')"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 17.93 8.8l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 17.93 8.8l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                />
               </svg>
             </ai-button>
 

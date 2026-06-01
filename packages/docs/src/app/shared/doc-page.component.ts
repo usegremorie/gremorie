@@ -14,7 +14,9 @@ import {
     <article class="flex flex-col gap-6">
       <header class="flex flex-col gap-2 border-b border-border pb-6">
         @if (eyebrow()) {
-          <span class="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <span
+            class="text-xs font-medium uppercase tracking-wide text-muted-foreground"
+          >
             {{ eyebrow() }}
           </span>
         }
@@ -22,7 +24,9 @@ import {
           {{ title() }}
         </h1>
         @if (lede()) {
-          <p class="max-w-prose text-base text-muted-foreground">{{ lede() }}</p>
+          <p class="max-w-prose text-base text-muted-foreground">
+            {{ lede() }}
+          </p>
         }
       </header>
 
@@ -43,7 +47,10 @@ export class DocsPage {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="flex flex-col gap-3">
-      <h2 class="scroll-mt-20 text-xl font-semibold tracking-tight text-foreground" [id]="anchor()">
+      <h2
+        class="scroll-mt-20 text-xl font-semibold tracking-tight text-foreground"
+        [id]="anchor()"
+      >
         {{ title() }}
       </h2>
       @if (lede()) {
@@ -66,6 +73,10 @@ export class DocsSection {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="max-w-prose text-sm leading-relaxed text-foreground/90 [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-muted-foreground hover:[&_a]:decoration-foreground [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[12.5px] [&_strong]:font-semibold [&_strong]:text-foreground"><ng-content /></div>`,
+  template: `<div
+    class="max-w-prose text-sm leading-relaxed text-foreground/90 [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-muted-foreground hover:[&_a]:decoration-foreground [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[12.5px] [&_strong]:font-semibold [&_strong]:text-foreground"
+  >
+    <ng-content />
+  </div>`,
 })
 export class DocsProse {}

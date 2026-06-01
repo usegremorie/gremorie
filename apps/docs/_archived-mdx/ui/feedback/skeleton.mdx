@@ -2,18 +2,18 @@
 title: Skeleton
 description: Bloco placeholder pulsante que reserva geometria enquanto o conteúdo real carrega.
 component: Skeleton
-importPath: "@kalvner/kds/feedback/skeleton"
+importPath: '@kalvner/kds/feedback/skeleton'
 status: stable
 ---
 
-import { Skeleton } from "@kalvner/kds/feedback/skeleton";
+import { Skeleton } from '@kalvner/kds/feedback/skeleton';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -32,7 +32,9 @@ exatamente isso — não um retângulo gigante de placeholder.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Três geometrias lado a lado — texto, avatar, card.</CardDescription>
+    <CardDescription>
+      Três geometrias lado a lado — texto, avatar, card.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="flex items-start gap-6">
@@ -67,7 +69,7 @@ intencional: cada caso de uso tem geometria diferente.
 ## Usage
 
 ```tsx
-import { Skeleton } from "@kalvner/kds/feedback/skeleton";
+import { Skeleton } from '@kalvner/kds/feedback/skeleton';
 
 export function UserCardLoading() {
   return (
@@ -88,10 +90,10 @@ export function UserCardLoading() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `className` | `string` | — | Geometria (width, height, rounded). É a única coisa que você costuma passar. |
-| `...rest` | `React.ComponentProps<'div'>` | — | Tudo o que `<div>` aceita (`id`, `aria-*`). |
+| Prop        | Tipo                          | Default | Descrição                                                                    |
+| ----------- | ----------------------------- | ------- | ---------------------------------------------------------------------------- |
+| `className` | `string`                      | —       | Geometria (width, height, rounded). É a única coisa que você costuma passar. |
+| `...rest`   | `React.ComponentProps<'div'>` | —       | Tudo o que `<div>` aceita (`id`, `aria-*`).                                  |
 
 Sem props específicas — Skeleton é puramente um `<div>` estilizado.
 A geometria fica em `className`.
@@ -169,7 +171,9 @@ A geometria fica em `className`.
   <Card>
     <CardHeader>
       <CardTitle>Pulsing (default)</CardTitle>
-      <CardDescription>animate-pulse comunica "estou trabalhando".</CardDescription>
+      <CardDescription>
+        animate-pulse comunica "estou trabalhando".
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Skeleton className="h-4 w-48" />
@@ -178,14 +182,16 @@ A geometria fica em `className`.
   <Card>
     <CardHeader>
       <CardTitle>Reduced motion</CardTitle>
-      <CardDescription>Em SO com motion reduzido, fica estático.</CardDescription>
+      <CardDescription>
+        Em SO com motion reduzido, fica estático.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="space-y-2">
         <Skeleton className="h-4 w-48" />
         <p className="text-xs text-muted-foreground">
-          O Tailwind v4 desabilita `animate-pulse` automaticamente para
-          usuários com `prefers-reduced-motion: reduce`.
+          O Tailwind v4 desabilita `animate-pulse` automaticamente para usuários
+          com `prefers-reduced-motion: reduce`.
         </p>
       </div>
     </CardContent>
@@ -282,14 +288,14 @@ A geometria fica em `className`.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Sem role específico — Skeleton é puramente visual. A semântica de "carregando" deve vir do container via `aria-busy="true"`. |
-| **Live region** | Combine com `aria-live="polite"` no container para anunciar quando o conteúdo aparecer. |
-| **Keyboard** | Não recebe foco. |
+| Concern            | Comportamento                                                                                                                                                                                   |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | Sem role específico — Skeleton é puramente visual. A semântica de "carregando" deve vir do container via `aria-busy="true"`.                                                                    |
+| **Live region**    | Combine com `aria-live="polite"` no container para anunciar quando o conteúdo aparecer.                                                                                                         |
+| **Keyboard**       | Não recebe foco.                                                                                                                                                                                |
 | **Reduced motion** | `animate-pulse` é desligado automaticamente para usuários com `prefers-reduced-motion: reduce`. O bloco fica estático e a comunicação visual continua via `bg-accent` em contraste com o fundo. |
-| **Contraste** | `bg-accent` tem contraste sutil — não dependa do skeleton para transmitir informação além de "espaço reservado". |
-| **Touch / mobile** | Não interativo. Mantenha a geometria do skeleton casando com o conteúdo real para evitar shift quando o usuário rola. |
+| **Contraste**      | `bg-accent` tem contraste sutil — não dependa do skeleton para transmitir informação além de "espaço reservado".                                                                                |
+| **Touch / mobile** | Não interativo. Mantenha a geometria do skeleton casando com o conteúdo real para evitar shift quando o usuário rola.                                                                           |
 
 ## Related
 

@@ -2,19 +2,19 @@
 title: Badge
 description: Label compacto para status, contadores e tags — quatro variantes visuais.
 component: Badge
-importPath: "@kalvner/kds/display/badge"
+importPath: '@kalvner/kds/display/badge'
 status: stable
 ---
 
-import { Badge } from "@kalvner/kds/display/badge";
+import { Badge } from '@kalvner/kds/display/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { ArrowUpRight, Check, CircleDot } from "lucide-react";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { ArrowUpRight, Check, CircleDot } from 'lucide-react';
 
 ## Overview
 
@@ -58,10 +58,10 @@ listas, costuma medir ~20px de altura.
 ## Usage
 
 ```tsx
-import { Badge } from "@kalvner/kds/display/badge";
+import { Badge } from '@kalvner/kds/display/badge';
 
-export function PostStatus({ status }: { status: "draft" | "published" }) {
-  return status === "draft" ? (
+export function PostStatus({ status }: { status: 'draft' | 'published' }) {
+  return status === 'draft' ? (
     <Badge variant="outline">Em rascunho</Badge>
   ) : (
     <Badge>Publicado</Badge>
@@ -71,11 +71,11 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `variant` | `'default' \| 'secondary' \| 'destructive' \| 'outline'` | `'default'` | Variante visual. |
-| `asChild` | `boolean` | `false` | Renderiza o filho em vez de `<span>` (Radix Slot). Útil para `<a>` clicável. |
-| `...rest` | `React.ComponentProps<'span'>` | — | Tudo o que `<span>` aceita (`className`, `aria-*`). |
+| Prop      | Tipo                                                     | Default     | Descrição                                                                    |
+| --------- | -------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------- |
+| `variant` | `'default' \| 'secondary' \| 'destructive' \| 'outline'` | `'default'` | Variante visual.                                                             |
+| `asChild` | `boolean`                                                | `false`     | Renderiza o filho em vez de `<span>` (Radix Slot). Útil para `<a>` clicável. |
+| `...rest` | `React.ComponentProps<'span'>`                           | —           | Tudo o que `<span>` aceita (`className`, `aria-*`).                          |
 
 ## Variants
 
@@ -101,7 +101,9 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
   <Card>
     <CardHeader>
       <CardTitle>Destructive</CardTitle>
-      <CardDescription>Erros e falhas — não use para "deletado".</CardDescription>
+      <CardDescription>
+        Erros e falhas — não use para "deletado".
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Badge variant="destructive">Falhou</Badge>
@@ -110,7 +112,9 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
   <Card>
     <CardHeader>
       <CardTitle>Outline</CardTitle>
-      <CardDescription>Discreto — bom para tags em listas longas.</CardDescription>
+      <CardDescription>
+        Discreto — bom para tags em listas longas.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Badge variant="outline">Beta</Badge>
@@ -159,7 +163,9 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
   <Card>
     <CardHeader>
       <CardTitle>As link (asChild)</CardTitle>
-      <CardDescription>Vira &lt;a&gt; clicável com hover style.</CardDescription>
+      <CardDescription>
+        Vira &lt;a&gt; clicável com hover style.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Badge asChild variant="outline">
@@ -175,16 +181,33 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
   <Card>
     <CardHeader>
       <CardTitle>Status in list</CardTitle>
-      <CardDescription>Estados misturados — outline, default, secondary.</CardDescription>
+      <CardDescription>
+        Estados misturados — outline, default, secondary.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="divide-y divide-border rounded-md border bg-card">
         {[
-          { name: "Atualização sobre o redesign", status: "Em rascunho", variant: "outline" },
-          { name: "Lançamento da versão 2.0", status: "Publicado", variant: "default" },
-          { name: "Migração para Postgres", status: "Em revisão", variant: "secondary" }
+          {
+            name: 'Atualização sobre o redesign',
+            status: 'Em rascunho',
+            variant: 'outline',
+          },
+          {
+            name: 'Lançamento da versão 2.0',
+            status: 'Publicado',
+            variant: 'default',
+          },
+          {
+            name: 'Migração para Postgres',
+            status: 'Em revisão',
+            variant: 'secondary',
+          },
         ].map((item) => (
-          <div key={item.name} className="flex items-center justify-between gap-3 px-3 py-2.5">
+          <div
+            key={item.name}
+            className="flex items-center justify-between gap-3 px-3 py-2.5"
+          >
             <span className="text-sm">{item.name}</span>
             <Badge variant={item.variant}>{item.status}</Badge>
           </div>
@@ -200,16 +223,18 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
     <CardContent>
       <nav className="space-y-1 rounded-md border bg-card p-2">
         {[
-          { label: "Inbox", count: 12 },
-          { label: "Mencionados", count: 3 },
-          { label: "Spam", count: 0 }
+          { label: 'Inbox', count: 12 },
+          { label: 'Mencionados', count: 3 },
+          { label: 'Spam', count: 0 },
         ].map((item) => (
           <div
             key={item.label}
             className="flex items-center justify-between rounded-sm px-3 py-1.5 text-sm hover:bg-accent"
           >
             <span>{item.label}</span>
-            {item.count > 0 ? <Badge variant="secondary">{item.count}</Badge> : null}
+            {item.count > 0 ? (
+              <Badge variant="secondary">{item.count}</Badge>
+            ) : null}
           </div>
         ))}
       </nav>
@@ -245,7 +270,7 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
   `secondary`.
 - **Texto curto, sempre.** 1-2 palavras é o ideal. Para 3+, considere
   se o que você quer não é uma frase em texto inline com `text-xs
-  text-muted-foreground` em vez de Badge.
+text-muted-foreground` em vez de Badge.
 - **Mantenha consistência por estado em todo o produto.** Se "Em
   revisão" é `secondary` em uma tela, deve ser `secondary` em todas.
 - **Evite uma Badge ao lado de outra cor de fundo forte.** Badge
@@ -256,13 +281,13 @@ export function PostStatus({ status }: { status: "draft" | "published" }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<span>` por default — sem role implícita. Não confunda Badge com botão; ele não é interativo. Para virar `<a>`, use `asChild`. |
-| **Keyboard** | Não recebe foco no estado padrão. Quando `asChild` com `<a>`, herda foco do link. |
-| **Screen reader** | Lê o texto interno. Para contadores, considere `aria-label="12 mensagens não lidas"` para dar contexto além do número solto. |
-| **Cor + ícone** | Para comunicar status, combine cor + ícone + texto. Não dependa só de cor (daltonismo, low-vision). |
-| **Live region** | Quando um contador muda dinamicamente (mensagens recebidas), wrap o Badge em um container `aria-live="polite"` para anunciar a mudança. |
+| Concern           | Comportamento                                                                                                                           |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**         | `<span>` por default — sem role implícita. Não confunda Badge com botão; ele não é interativo. Para virar `<a>`, use `asChild`.         |
+| **Keyboard**      | Não recebe foco no estado padrão. Quando `asChild` com `<a>`, herda foco do link.                                                       |
+| **Screen reader** | Lê o texto interno. Para contadores, considere `aria-label="12 mensagens não lidas"` para dar contexto além do número solto.            |
+| **Cor + ícone**   | Para comunicar status, combine cor + ícone + texto. Não dependa só de cor (daltonismo, low-vision).                                     |
+| **Live region**   | Quando um contador muda dinamicamente (mensagens recebidas), wrap o Badge em um container `aria-live="polite"` para anunciar a mudança. |
 
 ## Related
 

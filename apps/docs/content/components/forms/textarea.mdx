@@ -1,9 +1,9 @@
 ---
 title: Textarea
-description: "Multi-line text field that auto-grows via `field-sizing: content`, with the same token-driven focus and error states as Input."
+description: 'Multi-line text field that auto-grows via `field-sizing: content`, with the same token-driven focus and error states as Input.'
 ---
 
-import { TextareaPreview } from "@/components/preview/forms/forms";
+import { TextareaPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Visual states match `Input` exactly: `border-input` for default, `focus-visible:
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-textarea
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-textarea
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-textarea
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-textarea
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-textarea ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-textarea ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-textarea ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-textarea ```</Tab>
 </Tabs>
 
 ## Usage
@@ -70,16 +54,18 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Textarea>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `rows` | `number` | - | Hint for initial visible rows. Less critical here since `field-sizing: content` overrides static sizing once the user types. |
-| `disabled` | `boolean` | `false` | Disables interaction. Applies `cursor-not-allowed` and `opacity-50`. |
-| `aria-invalid` | `boolean` | - | When `true`, switches border and focus ring to the destructive token. |
+| Prop           | Type      | Default | Description                                                                                                                  |
+| -------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `rows`         | `number`  | -       | Hint for initial visible rows. Less critical here since `field-sizing: content` overrides static sizing once the user types. |
+| `disabled`     | `boolean` | `false` | Disables interaction. Applies `cursor-not-allowed` and `opacity-50`.                                                         |
+| `aria-invalid` | `boolean` | -       | When `true`, switches border and focus ring to the destructive token.                                                        |
 
 Extends all `React.ComponentProps<"textarea">`. Renders with `data-slot="textarea"`.
 
 <Callout type="info">
-**Auto-grow via `field-sizing: content`** is supported in Chromium 123+ and Firefox 128+. For older browsers, the textarea still works but does not auto-resize; pass `rows` to set a reasonable static height.
+  **Auto-grow via `field-sizing: content`** is supported in Chromium 123+ and
+  Firefox 128+. For older browsers, the textarea still works but does not
+  auto-resize; pass `rows` to set a reasonable static height.
 </Callout>
 
 ## Composition
@@ -133,8 +119,8 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupTextarea,
-} from "@gremorie/rx-forms";
-import { Send } from "lucide-react";
+} from '@gremorie/rx-forms';
+import { Send } from 'lucide-react';
 
 <InputGroup>
   <InputGroupTextarea placeholder="Write a message..." />
@@ -144,7 +130,7 @@ import { Send } from "lucide-react";
       Send
     </InputGroupButton>
   </InputGroupAddon>
-</InputGroup>
+</InputGroup>;
 ```
 
 ### Read-only

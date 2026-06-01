@@ -7,21 +7,21 @@
   --background: var(--color-gray-900);
 }
 
-[data-theme="amber-minimal"] {
+[data-theme='amber-minimal'] {
   --background: var(--color-amber-50);
 }
 
-[data-theme="amber-minimal"].dark {
+[data-theme='amber-minimal'].dark {
   --background: var(--color-amber-950);
 }
 
 :root,
-[data-theme="default"] {
+[data-theme='default'] {
   --radius: 0.625rem;
   --background: var(--color-neutral-50);
 }
 
 :root.dark,
-[data-theme="default"].dark {
+[data-theme='default'].dark {
   --background: var(--color-neutral-950);
 }

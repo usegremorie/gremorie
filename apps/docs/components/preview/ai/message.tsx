@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Message,
@@ -7,8 +7,8 @@ import {
   MessageContent,
   MessageResponse,
   MessageToolbar,
-} from "@gremorie/rx-ai";
-import { Copy, RefreshCw, ThumbsDown, ThumbsUp } from "lucide-react";
+} from '@gremorie/rx-ai';
+import { Copy, RefreshCw, ThumbsDown, ThumbsUp } from 'lucide-react';
 
 const assistantMarkdown = `## How can I help?
 

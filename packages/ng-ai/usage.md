@@ -1,24 +1,24 @@
 ---
-whenToUse: "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI."
-whenNotToUse: "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core."
+whenToUse: 'Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.'
+whenNotToUse: 'Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.'
 bestPractices:
-  - "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine."
-  - "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error)."
-  - "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit)."
-  - "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component."
-  - "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+  - 'Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.'
+  - 'Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).'
+  - 'Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).'
+  - 'Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.'
+  - 'Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection.'
 antipatterns:
-  - "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload."
-  - "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it."
-  - "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter)."
-  - "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete."
-  - "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+  - 'Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.'
+  - 'Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.'
+  - 'Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).'
+  - 'Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.'
+  - 'Mixing attachment variants within the same list - inconsistency between items breaks scannability.'
 api:
   inputs:
     - name: value
       type: string
       required: false
-      description: "Two-way bound textarea value."
+      description: 'Two-way bound textarea value.'
     - name: state
       type: "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')"
       required: false
@@ -31,16 +31,16 @@ api:
       type: "'grid' | 'inline' | 'list'"
       required: false
       default: "'list'"
-      description: "AttachmentList variant - layout for the attachment row/grid."
+      description: 'AttachmentList variant - layout for the attachment row/grid.'
   outputs:
     - name: gremoriePromptSubmit
       payload: PromptInputSubmitEvent
-      description: "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+      description: 'Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit.'
     - name: gremoriePromptAttachmentError
       payload: PromptInputAttachmentError
-      description: "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+      description: 'Fired when an attachment is rejected (bad MIME, too large, etc.).'
 examples:
-  - title: "Basic chat input"
+  - title: 'Basic chat input'
     code: |
       <gremorie-prompt-input [(value)]="draft" (gremoriePromptSubmit)="onSubmit($event)">
         <gremorie-prompt-input-textarea placeholder="Ask anything"></gremorie-prompt-input-textarea>
@@ -48,7 +48,7 @@ examples:
           <gremorie-prompt-input-submit></gremorie-prompt-input-submit>
         </gremorie-prompt-input-toolbar>
       </gremorie-prompt-input>
-  - title: "Inline attachment list"
+  - title: 'Inline attachment list'
     code: |
       <gremorie-attachment-list variant="inline">
         <gremorie-attachment-item *ngFor="let a of attachments" [data]="a">

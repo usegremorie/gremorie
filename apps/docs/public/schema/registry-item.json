@@ -39,12 +39,7 @@
     },
     "framework": {
       "type": "string",
-      "enum": [
-        "ng",
-        "rx",
-        "vue",
-        "sv"
-      ]
+      "enum": ["ng", "rx", "vue", "sv"]
     },
     "title": {
       "type": "string"
@@ -80,11 +75,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "path",
-          "content",
-          "type"
-        ],
+        "required": ["path", "content", "type"],
         "properties": {
           "path": {
             "type": "string"
@@ -148,10 +139,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "type"
-                ],
+                "required": ["name", "type"],
                 "properties": {
                   "name": {
                     "type": "string"
@@ -175,10 +163,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "payload"
-                ],
+                "required": ["name", "payload"],
                 "properties": {
                   "name": {
                     "type": "string"
@@ -198,10 +183,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": [
-              "title",
-              "code"
-            ],
+            "required": ["title", "code"],
             "properties": {
               "title": {
                 "type": "string"

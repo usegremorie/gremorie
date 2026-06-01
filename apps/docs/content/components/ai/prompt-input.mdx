@@ -18,26 +18,16 @@ The component also carries an enforced keyboard contract: Enter submits, Shift+E
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-prompt-input
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-prompt-input
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-prompt-input
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-prompt-input
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-prompt-input ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-prompt-input ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-prompt-input ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-prompt-input ```
+  </Tab>
 </Tabs>
 
 Brings in `rx-forms` (InputGroup family + Button + Select), `rx-overlays` (DropdownMenu + HoverCard + Tooltip), `rx-display` (Command + Dialog) and `rx-core` (the `cn` helper) as registry dependencies.
@@ -64,19 +54,21 @@ import {
 export function ChatBox() {
   const [status, setStatus] = useState<ChatStatus>("ready");
 
-  return (
-    <PromptInput onSubmit={(message) => send(message.text, message.files)}>
-      <PromptInputBody>
-        <PromptInputTextarea placeholder="Ask anything" />
-        <PromptInputFooter>
-          <span />
-          <PromptInputSubmit status={status} />
-        </PromptInputFooter>
-      </PromptInputBody>
-    </PromptInput>
-  );
+return (
+
+<PromptInput onSubmit={(message) => send(message.text, message.files)}>
+<PromptInputBody>
+<PromptInputTextarea placeholder="Ask anything" />
+<PromptInputFooter>
+<span />
+<PromptInputSubmit status={status} />
+</PromptInputFooter>
+</PromptInputBody>
+</PromptInput>
+);
 }
-```
+
+````
 </Tab>
 <Tab value="Angular">
 ```ts
@@ -103,16 +95,17 @@ import {
 export class ChatBoxComponent {
   status = signal<ChatStatus>("ready");
 }
-```
+````
+
 </Tab>
 </Tabs>
 
 ### Full-featured
 
 ```tsx
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 import {
   type ChatStatus,
   PromptInput,
@@ -134,18 +127,18 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-} from "@gremorie/rx-ai";
-import { GlobeIcon } from "lucide-react";
+} from '@gremorie/rx-ai';
+import { GlobeIcon } from 'lucide-react';
 
 const models = [
-  { id: "gpt-4o", label: "GPT-4o" },
-  { id: "claude-4.5", label: "Claude 4.5" },
+  { id: 'gpt-4o', label: 'GPT-4o' },
+  { id: 'claude-4.5', label: 'Claude 4.5' },
 ];
 
 export function ChatBox() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [status, setStatus] = useState<ChatStatus>("ready");
-  const [model, setModel] = useState("gpt-4o");
+  const [status, setStatus] = useState<ChatStatus>('ready');
+  const [model, setModel] = useState('gpt-4o');
 
   return (
     <PromptInput
@@ -197,38 +190,38 @@ export function ChatBox() {
 
 ### Types
 
-| Type | Shape | Description |
-|---|---|---|
-| `ChatStatus` | `"ready" \| "submitted" \| "streaming" \| "error"` | The lifecycle states `PromptInputSubmit` reacts to. |
-| `FileUIPart` | `{ type: "file"; url: string; mediaType: string; filename?: string }` | The Vercel AI SDK's file part shape. Exported here for convenience. |
-| `AttachmentFile` | `FileUIPart & { id: string }` | Internal representation that adds a stable ID. Used by the attachments context. |
-| `PromptInputMessage` | `{ text: string; files: FileUIPart[] }` | What `onSubmit` receives. |
+| Type                 | Shape                                                                 | Description                                                                     |
+| -------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `ChatStatus`         | `"ready" \| "submitted" \| "streaming" \| "error"`                    | The lifecycle states `PromptInputSubmit` reacts to.                             |
+| `FileUIPart`         | `{ type: "file"; url: string; mediaType: string; filename?: string }` | The Vercel AI SDK's file part shape. Exported here for convenience.             |
+| `AttachmentFile`     | `FileUIPart & { id: string }`                                         | Internal representation that adds a stable ID. Used by the attachments context. |
+| `PromptInputMessage` | `{ text: string; files: FileUIPart[] }`                               | What `onSubmit` receives.                                                       |
 
 ### `<PromptInput>`
 
 The root form. Manages attachments, file drag-drop and submit lifecycle. Use a `PromptInputProvider` parent to lift state outside.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `onSubmit` | `(message: PromptInputMessage, event: FormEvent) => void \| Promise<void>` | - | **Required.** Fires on form submit (Enter key, Submit click, or `requestSubmit`). |
-| `accept` | `string` | - | Comma-separated MIME pattern (`"image/*,application/pdf"`). Validates pasted and dropped files. |
-| `multiple` | `boolean` | - | Allow more than one file per pick. |
-| `globalDrop` | `boolean` | `false` | When true, accepts drops anywhere on the document. Default scope is the form element. |
-| `syncHiddenInput` | `boolean` | `false` | Clear the hidden file input when the attachments list goes to 0. Useful for re-picking the same filename. |
-| `maxFiles` | `number` | - | Cap on total attachments. Extra files trigger `onError({ code: "max_files" })`. |
-| `maxFileSize` | `number` | - | Per-file byte cap. Files over the limit trigger `onError({ code: "max_file_size" })`. |
-| `onError` | `(err: { code: "max_files" \| "max_file_size" \| "accept"; message: string }) => void` | - | Fires when validation rejects files. |
-| `className` | `string` | - | Extra classes on the underlying `InputGroup`. |
-| `children` | `ReactNode` | - | Typically `PromptInputBody` and its descendants. |
+| Prop              | Type                                                                                   | Default | Description                                                                                               |
+| ----------------- | -------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------- |
+| `onSubmit`        | `(message: PromptInputMessage, event: FormEvent) => void \| Promise<void>`             | -       | **Required.** Fires on form submit (Enter key, Submit click, or `requestSubmit`).                         |
+| `accept`          | `string`                                                                               | -       | Comma-separated MIME pattern (`"image/*,application/pdf"`). Validates pasted and dropped files.           |
+| `multiple`        | `boolean`                                                                              | -       | Allow more than one file per pick.                                                                        |
+| `globalDrop`      | `boolean`                                                                              | `false` | When true, accepts drops anywhere on the document. Default scope is the form element.                     |
+| `syncHiddenInput` | `boolean`                                                                              | `false` | Clear the hidden file input when the attachments list goes to 0. Useful for re-picking the same filename. |
+| `maxFiles`        | `number`                                                                               | -       | Cap on total attachments. Extra files trigger `onError({ code: "max_files" })`.                           |
+| `maxFileSize`     | `number`                                                                               | -       | Per-file byte cap. Files over the limit trigger `onError({ code: "max_file_size" })`.                     |
+| `onError`         | `(err: { code: "max_files" \| "max_file_size" \| "accept"; message: string }) => void` | -       | Fires when validation rejects files.                                                                      |
+| `className`       | `string`                                                                               | -       | Extra classes on the underlying `InputGroup`.                                                             |
+| `children`        | `ReactNode`                                                                            | -       | Typically `PromptInputBody` and its descendants.                                                          |
 
 ### `<PromptInputProvider>`
 
 Optional provider that lifts text and attachment state above `PromptInput`. Wrap your tree once near the root, then any descendant can use `usePromptInputController()` or `useProviderAttachments()`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `initialInput` | `string` | `""` | Seed value for the controlled textarea. |
-| `children` | `ReactNode` | - | The tree that should observe the lifted state. |
+| Prop           | Type        | Default | Description                                    |
+| -------------- | ----------- | ------- | ---------------------------------------------- |
+| `initialInput` | `string`    | `""`    | Seed value for the controlled textarea.        |
+| `children`     | `ReactNode` | -       | The tree that should observe the lifted state. |
 
 ### `<PromptInputBody>` / `<PromptInputHeader>` / `<PromptInputFooter>` / `<PromptInputTools>`
 
@@ -245,41 +238,41 @@ All extend their underlying DOM element props.
 
 The composer. Auto-resizes between `min-h-16` and `max-h-48`. Default `name="message"` so it serializes as the form's text field.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `placeholder` | `string` | `"What would you like to know?"` | Placeholder text. |
-| `value` / `onChange` | controlled props | - | When provided, the textarea is fully controlled. Otherwise the provider's text input drives it (if any). |
+| Prop                 | Type             | Default                          | Description                                                                                              |
+| -------------------- | ---------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `placeholder`        | `string`         | `"What would you like to know?"` | Placeholder text.                                                                                        |
+| `value` / `onChange` | controlled props | -                                | When provided, the textarea is fully controlled. Otherwise the provider's text input drives it (if any). |
 
 Built-in keyboard contract:
 
-| Key | Behavior |
-|---|---|
-| `Enter` | `requestSubmit()` (skipped if Submit is disabled) |
-| `Shift+Enter` | Newline |
-| `Backspace` on empty textarea | Removes the most recent attachment |
-| IME composition | Enter is ignored while composing |
-| Paste with files | Attaches files automatically |
+| Key                           | Behavior                                          |
+| ----------------------------- | ------------------------------------------------- |
+| `Enter`                       | `requestSubmit()` (skipped if Submit is disabled) |
+| `Shift+Enter`                 | Newline                                           |
+| `Backspace` on empty textarea | Removes the most recent attachment                |
+| IME composition               | Enter is ignored while composing                  |
+| Paste with files              | Attaches files automatically                      |
 
 ### `<PromptInputAttachments>` / `<PromptInputAttachment>`
 
-| Component | Purpose |
-|---|---|
+| Component                | Purpose                                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
 | `PromptInputAttachments` | Container that renders one child per attachment via a function child. Renders nothing when the list is empty. |
-| `PromptInputAttachment` | A single chip with a hover-card preview (image thumbnail or paperclip icon) and a remove button. |
+| `PromptInputAttachment`  | A single chip with a hover-card preview (image thumbnail or paperclip icon) and a remove button.              |
 
 `PromptInputAttachments`:
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `(attachment: AttachmentFile) => ReactNode` | - | **Required.** Render function. |
-| `className` | `string` | - | Extra classes on the wrapper. |
+| Prop        | Type                                        | Default | Description                    |
+| ----------- | ------------------------------------------- | ------- | ------------------------------ |
+| `children`  | `(attachment: AttachmentFile) => ReactNode` | -       | **Required.** Render function. |
+| `className` | `string`                                    | -       | Extra classes on the wrapper.  |
 
 `PromptInputAttachment`:
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `AttachmentFile` | - | **Required.** The attachment to render. |
-| `className` | `string` | - | Extra classes on the chip. |
+| Prop        | Type             | Default | Description                             |
+| ----------- | ---------------- | ------- | --------------------------------------- |
+| `data`      | `AttachmentFile` | -       | **Required.** The attachment to render. |
+| `className` | `string`         | -       | Extra classes on the chip.              |
 
 ### `<PromptInputButton>` / `<PromptInputSubmit>`
 
@@ -287,13 +280,13 @@ Built-in keyboard contract:
 
 `PromptInputSubmit` is a status-driven `InputGroupButton` whose icon depends on `status`:
 
-| `status` | Icon | Behavior |
-|---|---|---|
-| `"ready"` | `CornerDownLeftIcon` | Submit when clicked. Disabled when the textarea is empty. |
-| `"submitted"` | `Loader2Icon` (spinning) | Disabled. |
-| `"streaming"` | `SquareIcon` | Click to stop generation (host wires up the handler). |
-| `"error"` | `XIcon` | Click to retry (host wires up the handler). |
-| `undefined` | `CornerDownLeftIcon` | Same as `"ready"`. |
+| `status`      | Icon                     | Behavior                                                  |
+| ------------- | ------------------------ | --------------------------------------------------------- |
+| `"ready"`     | `CornerDownLeftIcon`     | Submit when clicked. Disabled when the textarea is empty. |
+| `"submitted"` | `Loader2Icon` (spinning) | Disabled.                                                 |
+| `"streaming"` | `SquareIcon`             | Click to stop generation (host wires up the handler).     |
+| `"error"`     | `XIcon`                  | Click to retry (host wires up the handler).               |
+| `undefined`   | `CornerDownLeftIcon`     | Same as `"ready"`.                                        |
 
 Carries `aria-label="Submit"`.
 
@@ -307,11 +300,11 @@ Carries `aria-label="Submit"`.
 
 Web Speech API toggle.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `textareaRef` | `RefObject<HTMLTextAreaElement \| null>` | - | When provided, transcribed text is appended to the textarea value. |
-| `onTranscriptionChange` | `(text: string) => void` | - | Fires whenever a final transcript is appended. |
-| `lang` | `string` | `"en-US"` | BCP-47 language tag passed to `SpeechRecognition`. |
+| Prop                    | Type                                     | Default   | Description                                                        |
+| ----------------------- | ---------------------------------------- | --------- | ------------------------------------------------------------------ |
+| `textareaRef`           | `RefObject<HTMLTextAreaElement \| null>` | -         | When provided, transcribed text is appended to the textarea value. |
+| `onTranscriptionChange` | `(text: string) => void`                 | -         | Fires whenever a final transcript is appended.                     |
+| `lang`                  | `string`                                 | `"en-US"` | BCP-47 language tag passed to `SpeechRecognition`.                 |
 
 Carries `aria-label="Toggle voice input"`. Disabled when neither `SpeechRecognition` nor `webkitSpeechRecognition` is available. Animates a pulsing accent surface while listening.
 
@@ -335,10 +328,10 @@ Wrappers around `Select` from `@gremorie/rx-forms` (`PromptInputSelect`, `Prompt
 
 ### Hooks
 
-| Hook | Purpose |
-|---|---|
-| `usePromptInputController()` | Read or mutate the text input value and attachments. Throws if no `PromptInputProvider` parent. |
-| `useProviderAttachments()` | Read attachment state lifted to the provider. Throws if no `PromptInputProvider` parent. |
+| Hook                          | Purpose                                                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `usePromptInputController()`  | Read or mutate the text input value and attachments. Throws if no `PromptInputProvider` parent.                                       |
+| `useProviderAttachments()`    | Read attachment state lifted to the provider. Throws if no `PromptInputProvider` parent.                                              |
 | `usePromptInputAttachments()` | Read attachment state from the closest `PromptInput`. Used inside descendants like `PromptInputTextarea` and `PromptInputAttachment`. |
 
 ## Composition
@@ -374,15 +367,12 @@ PromptInput (root <form>, state machine + drag-drop + InputGroup wrapper)
 Use `PromptInputProvider` to share the textarea value and attachments with siblings (e.g. a suggestions panel that wants to write into the input).
 
 ```tsx
-import {
-  PromptInputProvider,
-  usePromptInputController,
-} from "@gremorie/rx-ai";
+import { PromptInputProvider, usePromptInputController } from '@gremorie/rx-ai';
 
 function SuggestionRow() {
   const { textInput } = usePromptInputController();
   return (
-    <Button onClick={() => textInput.setInput("Summarize this thread")}>
+    <Button onClick={() => textInput.setInput('Summarize this thread')}>
       Insert suggestion
     </Button>
   );
@@ -442,13 +432,13 @@ const [open, setOpen] = useState(false);
 
 useEffect(() => {
   const handler = (e: KeyboardEvent) => {
-    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       setOpen((v) => !v);
     }
   };
-  document.addEventListener("keydown", handler);
-  return () => document.removeEventListener("keydown", handler);
+  document.addEventListener('keydown', handler);
+  return () => document.removeEventListener('keydown', handler);
 }, []);
 
 <PromptInputCommandDialog open={open} onOpenChange={setOpen}>
@@ -468,21 +458,24 @@ useEffect(() => {
 Wire `status` to your network state to flip Submit between arrow, spinner and stop.
 
 ```tsx
-const [status, setStatus] = useState<ChatStatus>("ready");
+const [status, setStatus] = useState<ChatStatus>('ready');
 
 async function send(message: PromptInputMessage) {
-  setStatus("submitted");
+  setStatus('submitted');
   try {
     await streamResponse(message, {
-      onStreamStart: () => setStatus("streaming"),
-      onComplete: () => setStatus("ready"),
+      onStreamStart: () => setStatus('streaming'),
+      onComplete: () => setStatus('ready'),
     });
   } catch {
-    setStatus("error");
+    setStatus('error');
   }
 }
 
-<PromptInputSubmit status={status} onClick={status === "streaming" ? stop : undefined} />;
+<PromptInputSubmit
+  status={status}
+  onClick={status === 'streaming' ? stop : undefined}
+/>;
 ```
 
 ## Accessibility

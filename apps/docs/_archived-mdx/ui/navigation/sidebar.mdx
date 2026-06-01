@@ -2,7 +2,7 @@
 title: Sidebar
 description: App-shell sidebar composta — header, content, footer, com modos collapsible e mobile.
 component: Sidebar
-importPath: "@kalvner/kds/navigation/sidebar"
+importPath: '@kalvner/kds/navigation/sidebar'
 status: stable
 ---
 
@@ -11,12 +11,9 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import {
-  SidebarPreview,
-  SidebarSaaS
-} from "@/components/navigation-demos";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { SidebarPreview, SidebarSaaS } from '@/components/navigation-demos';
 
 ## Overview
 
@@ -36,7 +33,9 @@ anatomia esperada de produtos como Linear, Vercel, Notion.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>App shell minimal: Header + Content + Footer.</CardDescription>
+    <CardDescription>
+      App shell minimal: Header + Content + Footer.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <SidebarPreview />
@@ -82,22 +81,22 @@ detecta mobile, e instala o atalho `⌘B` para toggle.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `SidebarProvider` | Provider de contexto — estado, mobile detection, keyboard shortcut. |
-| `Sidebar` | Container principal; aceita `side` (left/right), `variant` (sidebar/floating/inset), `collapsible` (offcanvas/icon/none). |
-| `SidebarTrigger` | Botão que abre/fecha (hamburger). |
-| `SidebarRail` | Barra fina lateral que serve como handle de toggle (desktop). |
-| `SidebarInset` | `<main>` que carrega o conteúdo principal ao lado da sidebar. |
-| `SidebarHeader` / `SidebarContent` / `SidebarFooter` | Regiões verticais. |
-| `SidebarGroup` / `SidebarGroupLabel` / `SidebarGroupContent` / `SidebarGroupAction` | Agrupar menu items por seção. |
-| `SidebarMenu` / `SidebarMenuItem` / `SidebarMenuButton` | A lista propriamente dita. |
-| `SidebarMenuBadge` / `SidebarMenuAction` | Badges (counts) ou ações secundárias por item. |
-| `SidebarMenuSub` / `SidebarMenuSubItem` / `SidebarMenuSubButton` | Sub-itens aninhados. |
-| `SidebarMenuSkeleton` | Loading state com largura aleatória. |
-| `SidebarSeparator` | Linha divisora. |
-| `SidebarInput` | Search field com estilo da sidebar. |
-| `useSidebar` | Hook para acessar estado e ações. |
+| Componente                                                                          | Descrição                                                                                                                 |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `SidebarProvider`                                                                   | Provider de contexto — estado, mobile detection, keyboard shortcut.                                                       |
+| `Sidebar`                                                                           | Container principal; aceita `side` (left/right), `variant` (sidebar/floating/inset), `collapsible` (offcanvas/icon/none). |
+| `SidebarTrigger`                                                                    | Botão que abre/fecha (hamburger).                                                                                         |
+| `SidebarRail`                                                                       | Barra fina lateral que serve como handle de toggle (desktop).                                                             |
+| `SidebarInset`                                                                      | `<main>` que carrega o conteúdo principal ao lado da sidebar.                                                             |
+| `SidebarHeader` / `SidebarContent` / `SidebarFooter`                                | Regiões verticais.                                                                                                        |
+| `SidebarGroup` / `SidebarGroupLabel` / `SidebarGroupContent` / `SidebarGroupAction` | Agrupar menu items por seção.                                                                                             |
+| `SidebarMenu` / `SidebarMenuItem` / `SidebarMenuButton`                             | A lista propriamente dita.                                                                                                |
+| `SidebarMenuBadge` / `SidebarMenuAction`                                            | Badges (counts) ou ações secundárias por item.                                                                            |
+| `SidebarMenuSub` / `SidebarMenuSubItem` / `SidebarMenuSubButton`                    | Sub-itens aninhados.                                                                                                      |
+| `SidebarMenuSkeleton`                                                               | Loading state com largura aleatória.                                                                                      |
+| `SidebarSeparator`                                                                  | Linha divisora.                                                                                                           |
+| `SidebarInput`                                                                      | Search field com estilo da sidebar.                                                                                       |
+| `useSidebar`                                                                        | Hook para acessar estado e ações.                                                                                         |
 
 ## Usage
 
@@ -111,8 +110,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger
-} from "@kalvner/kds/navigation/sidebar";
+  SidebarTrigger,
+} from '@kalvner/kds/navigation/sidebar';
 
 export default function AppLayout({ children }) {
   return (
@@ -143,7 +142,9 @@ export default function AppLayout({ children }) {
 <Card>
   <CardHeader>
     <CardTitle>SaaS dashboard</CardTitle>
-    <CardDescription>Team switcher + grupos de itens + footer com settings.</CardDescription>
+    <CardDescription>
+      Team switcher + grupos de itens + footer com settings.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <SidebarSaaS />
@@ -152,10 +153,10 @@ export default function AppLayout({ children }) {
 
 ## Variants
 
-| Prop | Valores | Quando usar |
-|---|---|---|
-| `side` | `"left"` (default) / `"right"` | Right é raro — útil para inspector / properties panel. |
-| `variant` | `"sidebar"` / `"floating"` / `"inset"` | Floating = card flutuante; Inset = sidebar aninhada com gap externo. |
+| Prop          | Valores                                       | Quando usar                                                                            |
+| ------------- | --------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `side`        | `"left"` (default) / `"right"`                | Right é raro — útil para inspector / properties panel.                                 |
+| `variant`     | `"sidebar"` / `"floating"` / `"inset"`        | Floating = card flutuante; Inset = sidebar aninhada com gap externo.                   |
 | `collapsible` | `"offcanvas"` (default) / `"icon"` / `"none"` | Icon mantém ícones quando collapsed; offcanvas esconde tudo; none desabilita o toggle. |
 
 ## When to use
@@ -192,12 +193,12 @@ export default function AppLayout({ children }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Estrutura semântica via `<nav>` no `<aside>`/`<div>` da Sidebar; menu items são `<button>` ou `<a>`. |
-| **Keyboard** | Tab navega entre items; `⌘B` / `Ctrl+B` toggla a sidebar. |
-| **Focus** | Em modo collapsed/icon, o foco continua acessível e tooltips revelam labels. |
-| **Mobile** | Em telas estreitas, automaticamente vira um Sheet com `role="dialog"`. |
+| Concern           | Comportamento                                                                                                         |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Roles**         | Estrutura semântica via `<nav>` no `<aside>`/`<div>` da Sidebar; menu items são `<button>` ou `<a>`.                  |
+| **Keyboard**      | Tab navega entre items; `⌘B` / `Ctrl+B` toggla a sidebar.                                                             |
+| **Focus**         | Em modo collapsed/icon, o foco continua acessível e tooltips revelam labels.                                          |
+| **Mobile**        | Em telas estreitas, automaticamente vira um Sheet com `role="dialog"`.                                                |
 | **Screen reader** | `SidebarMenuButton` herda semântica de `<button>`; estado ativo via `aria-current="page"` quando o consumidor aplica. |
 
 ## Related

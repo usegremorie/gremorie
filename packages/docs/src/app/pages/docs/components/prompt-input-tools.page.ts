@@ -2,7 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-prompt-input-tools',
@@ -22,8 +26,13 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="Accessibility" anchor="a11y">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><code>role="group"</code> with <code>aria-label="Prompt actions"</code></li>
-              <li>Layout: <code>flex flex-1 flex-wrap items-center gap-1</code></li>
+              <li>
+                <code>role="group"</code> with
+                <code>aria-label="Prompt actions"</code>
+              </li>
+              <li>
+                Layout: <code>flex flex-1 flex-wrap items-center gap-1</code>
+              </li>
               <li>No props — pure presentational wrapper</li>
             </ul>
           </docs-prose>

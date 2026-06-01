@@ -1,10 +1,19 @@
 ---
 title: Table
-description: "Styled wrapper around native HTML table. Skin only - bring TanStack Table for sorting, filtering, and pagination."
+description: 'Styled wrapper around native HTML table. Skin only - bring TanStack Table for sorting, filtering, and pagination.'
 ---
 
-import { TablePreview } from "@/components/preview/display/display";
-import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "@gremorie/rx-display";
+import { TablePreview } from '@/components/preview/display/display';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from '@gremorie/rx-display';
 
 ## Overview
 
@@ -21,26 +30,10 @@ For sorting, filtering, pagination, row selection, or virtualization, compose Ta
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-table
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-table
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-table
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-table
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-table ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-table ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-table ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-table ```</Tab>
 </Tabs>
 
 ## Usage
@@ -254,7 +247,7 @@ Every cell should be a `TableCell` or `TableHead` - mixing in raw `<td>` or `<th
 ### Selected row state
 
 ```tsx
-<TableRow data-state={selected ? "selected" : undefined}>
+<TableRow data-state={selected ? 'selected' : undefined}>
   <TableCell>...</TableCell>
 </TableRow>
 ```

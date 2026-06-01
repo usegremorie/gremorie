@@ -17,7 +17,9 @@ import { formatFileSize } from './attachment.utils';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `@if (formatted(); as size) {{{ size }}}`,
+  template: `@if (formatted(); as size) {
+    {{ size }}
+  }`,
   host: {
     class: 'text-xs text-muted-foreground',
     '[hidden]': '!formatted()',

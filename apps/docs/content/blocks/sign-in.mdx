@@ -1,6 +1,6 @@
 ---
 title: Sign-in
-description: "Authentication card with GitHub provider plus email and password. Drop into the auth route and wire to your backend."
+description: 'Authentication card with GitHub provider plus email and password. Drop into the auth route and wire to your backend.'
 ---
 
 ## Overview
@@ -75,7 +75,7 @@ bunx --bun gremorie@latest add block-sign-in
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
 import {
   Card,
@@ -85,9 +85,9 @@ import {
   CardHeader,
   CardTitle,
   Separator,
-} from "@gremorie/rx-display";
-import { Button, Input, Label } from "@gremorie/rx-forms";
-import { Github } from "lucide-react";
+} from '@gremorie/rx-display';
+import { Button, Input, Label } from '@gremorie/rx-forms';
+import { Github } from 'lucide-react';
 
 export function SignIn() {
   return (
@@ -137,7 +137,7 @@ export function SignIn() {
       <CardFooter className="flex flex-col gap-3">
         <Button className="w-full">Sign in</Button>
         <p className="text-center text-xs text-muted-foreground">
-          Don&apos;t have an account?{" "}
+          Don&apos;t have an account?{' '}
           <a
             href="#"
             className="text-foreground underline-offset-4 hover:underline"

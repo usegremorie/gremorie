@@ -2,23 +2,23 @@
 title: Collapsible
 description: Disclosure de uma única seção — o bloco mínimo de show / hide.
 component: Collapsible
-importPath: "@kalvner/kds/display/collapsible"
+importPath: '@kalvner/kds/display/collapsible'
 status: stable
 ---
 
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger
-} from "@kalvner/kds/display/collapsible";
-import { Button } from "@kalvner/kds/forms/button";
+  CollapsibleTrigger,
+} from '@kalvner/kds/display/collapsible';
+import { Button } from '@kalvner/kds/forms/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -69,9 +69,9 @@ e adiciona estado roving entre os itens.
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger
-} from "@kalvner/kds/display/collapsible";
-import { Button } from "@kalvner/kds/forms/button";
+  CollapsibleTrigger,
+} from '@kalvner/kds/display/collapsible';
+import { Button } from '@kalvner/kds/forms/button';
 
 export function Details() {
   return (
@@ -79,9 +79,7 @@ export function Details() {
       <CollapsibleTrigger asChild>
         <Button variant="ghost">Ver detalhes</Button>
       </CollapsibleTrigger>
-      <CollapsibleContent>
-        Conteúdo opcional.
-      </CollapsibleContent>
+      <CollapsibleContent>Conteúdo opcional.</CollapsibleContent>
     </Collapsible>
   );
 }
@@ -91,18 +89,18 @@ export function Details() {
 
 ### Collapsible (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `open` / `defaultOpen` | `boolean` | `false` | Estado controlado / inicial. |
-| `onOpenChange` | `(v) => void` | — | Callback. |
-| `disabled` | `boolean` | `false` | Bloqueia trigger. |
+| Prop                   | Tipo          | Default | Descrição                    |
+| ---------------------- | ------------- | ------- | ---------------------------- |
+| `open` / `defaultOpen` | `boolean`     | `false` | Estado controlado / inicial. |
+| `onOpenChange`         | `(v) => void` | —       | Callback.                    |
+| `disabled`             | `boolean`     | `false` | Bloqueia trigger.            |
 
 ### CollapsibleTrigger · CollapsibleContent
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `asChild` (Trigger) | `boolean` | `false` | Compose com Slot — usa o filho como trigger. |
-| `forceMount` (Content) | `boolean` | — | Mantém montado no DOM mesmo fechado. |
+| Prop                   | Tipo      | Default | Descrição                                    |
+| ---------------------- | --------- | ------- | -------------------------------------------- |
+| `asChild` (Trigger)    | `boolean` | `false` | Compose com Slot — usa o filho como trigger. |
+| `forceMount` (Content) | `boolean` | —       | Mantém montado no DOM mesmo fechado.         |
 
 ## Subcomponents
 
@@ -119,11 +117,11 @@ content.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
+| Estado              | Comportamento                                            |
+| ------------------- | -------------------------------------------------------- |
 | `data-state=closed` | Content escondido (`display: none` ou animação fechada). |
-| `data-state=open` | Content visível. |
-| `disabled` | Trigger não responde a cliques nem teclas. |
+| `data-state=open`   | Content visível.                                         |
+| `disabled`          | Trigger não responde a cliques nem teclas.               |
 
 ## Composition
 
@@ -178,12 +176,12 @@ content.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `button` com `aria-expanded` e `aria-controls`. |
-| **Keyboard** | `Space`/`Enter` alterna. |
-| **Focus** | Herda do elemento usado em `asChild` — Button traz `focus-visible:ring`. |
-| **Screen reader** | Anuncia "expandido" / "recolhido". |
+| Concern           | Comportamento                                                            |
+| ----------------- | ------------------------------------------------------------------------ |
+| **Roles**         | Trigger é `button` com `aria-expanded` e `aria-controls`.                |
+| **Keyboard**      | `Space`/`Enter` alterna.                                                 |
+| **Focus**         | Herda do elemento usado em `asChild` — Button traz `focus-visible:ring`. |
+| **Screen reader** | Anuncia "expandido" / "recolhido".                                       |
 
 ## Related
 

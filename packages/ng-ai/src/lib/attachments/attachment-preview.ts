@@ -33,8 +33,7 @@ const ICON_BY_CATEGORY: Record<
 > = {
   video:
     'M23 7l-7 5 7 5V7z M14 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z',
-  audio:
-    'M9 18V5l12-2v13 M6 18a3 3 0 1 0 3 3v-3 M18 16a3 3 0 1 0 3 3v-3',
+  audio: 'M9 18V5l12-2v13 M6 18a3 3 0 1 0 3 3v-3 M18 16a3 3 0 1 0 3 3v-3',
   document:
     'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8',
   source:
@@ -82,7 +81,9 @@ const ICON_BY_CATEGORY: Record<
       <span class="absolute inset-0 animate-pulse bg-muted/60"></span>
     }
     @if (parent.errored()) {
-      <span class="absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-[10px] font-medium text-destructive-foreground">
+      <span
+        class="absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-[10px] font-medium text-destructive-foreground"
+      >
         Error
       </span>
     }

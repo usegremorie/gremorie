@@ -15,26 +15,10 @@ Both variants are React components that conform to xyflow's `EdgeProps` contract
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-edge
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-edge
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-edge
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-edge
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-edge ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-edge ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-edge ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-edge ```</Tab>
 </Tabs>
 
 Requires `@xyflow/react`.
@@ -47,13 +31,13 @@ Requires `@xyflow/react`.
 import { Canvas, Edge } from "@gremorie/rx-ai";
 
 const edgeTypes = {
-  temporary: Edge.Temporary,
-  animated: Edge.Animated,
+temporary: Edge.Temporary,
+animated: Edge.Animated,
 };
 
 const edges = [
-  { id: "e1", source: "1", target: "2", type: "animated" },
-  { id: "e2", source: "2", target: "3", type: "temporary" },
+{ id: "e1", source: "1", target: "2", type: "animated" },
+{ id: "e2", source: "2", target: "3", type: "temporary" },
 ];
 
 export function Workflow() {
@@ -80,12 +64,12 @@ A dashed simple-bezier edge. Renders `BaseEdge` with `stroke-1 stroke-ring` and 
 
 Accepts standard `EdgeProps` from `@xyflow/react`:
 
-| Prop | Type | Description |
-|---|---|---|
-| `id` | `string` | Edge ID. Forwarded to the SVG `<path id>`. |
-| `sourceX` / `sourceY` | `number` | Source handle coordinates (provided by xyflow). |
-| `targetX` / `targetY` | `number` | Target handle coordinates (provided by xyflow). |
-| `sourcePosition` / `targetPosition` | `Position` | Handle sides. Used by `getSimpleBezierPath`. |
+| Prop                                | Type       | Description                                     |
+| ----------------------------------- | ---------- | ----------------------------------------------- |
+| `id`                                | `string`   | Edge ID. Forwarded to the SVG `<path id>`.      |
+| `sourceX` / `sourceY`               | `number`   | Source handle coordinates (provided by xyflow). |
+| `targetX` / `targetY`               | `number`   | Target handle coordinates (provided by xyflow). |
+| `sourcePosition` / `targetPosition` | `Position` | Handle sides. Used by `getSimpleBezierPath`.    |
 
 You do not call these props yourself - xyflow forwards them automatically.
 
@@ -97,15 +81,16 @@ Returns `null` if either the source or target node has not yet hydrated through 
 
 Accepts standard `EdgeProps`:
 
-| Prop | Type | Description |
-|---|---|---|
-| `id` | `string` | Edge ID. |
-| `source` | `string` | Source node ID. |
-| `target` | `string` | Target node ID. |
-| `markerEnd` | `string` | Optional arrowhead marker URL. |
-| `style` | `CSSProperties` | Forwarded to `BaseEdge`. |
+| Prop        | Type            | Description                    |
+| ----------- | --------------- | ------------------------------ |
+| `id`        | `string`        | Edge ID.                       |
+| `source`    | `string`        | Source node ID.                |
+| `target`    | `string`        | Target node ID.                |
+| `markerEnd` | `string`        | Optional arrowhead marker URL. |
+| `style`     | `CSSProperties` | Forwarded to `BaseEdge`.       |
 
 Internal helpers:
+
 - `getHandleCoordsByPosition(node, position)` - resolves the absolute handle coordinates from `node.internals`.
 - `getEdgeParams(source, target)` - computes source and target points using `Position.Right` -> `Position.Left`.
 
@@ -124,9 +109,7 @@ The `Animated` variant is hardcoded to a left-to-right flow direction (source on
 Show a dashed `Edge.Temporary` while the user is still configuring the connection, then swap to a solid edge once committed.
 
 ```tsx
-const edges = [
-  { id: "draft-1", source: "a", target: "b", type: "temporary" },
-];
+const edges = [{ id: 'draft-1', source: 'a', target: 'b', type: 'temporary' }];
 ```
 
 ### Live agent message flow
@@ -135,8 +118,8 @@ Use `Edge.Animated` to visualize messages flowing between agents in a multi-agen
 
 ```tsx
 const edges = [
-  { id: "trace-1", source: "planner", target: "tools", type: "animated" },
-  { id: "trace-2", source: "tools", target: "synthesizer", type: "animated" },
+  { id: 'trace-1', source: 'planner', target: 'tools', type: 'animated' },
+  { id: 'trace-2', source: 'tools', target: 'synthesizer', type: 'animated' },
 ];
 ```
 

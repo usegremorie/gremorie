@@ -1,1 +1,1 @@
-export * from "./radar-chart";
+export * from './radar-chart';

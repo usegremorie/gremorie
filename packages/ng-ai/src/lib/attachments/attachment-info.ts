@@ -24,11 +24,16 @@ import { formatFileSize } from './attachment.utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span class="truncate text-sm leading-tight text-foreground" [attr.title]="label()">
+    <span
+      class="truncate text-sm leading-tight text-foreground"
+      [attr.title]="label()"
+    >
       {{ label() }}
     </span>
     @if (secondary(); as line) {
-      <span class="truncate text-xs leading-tight text-muted-foreground">{{ line }}</span>
+      <span class="truncate text-xs leading-tight text-muted-foreground">{{
+        line
+      }}</span>
     }
   `,
   host: {

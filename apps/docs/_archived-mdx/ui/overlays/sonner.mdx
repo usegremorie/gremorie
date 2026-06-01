@@ -2,18 +2,18 @@
 title: Sonner
 description: Toasts transientes flutuantes — feedback breve que não bloqueia, com promise / undo embutidos.
 component: Toaster
-importPath: "@kalvner/kds/overlays/sonner"
+importPath: '@kalvner/kds/overlays/sonner'
 status: stable
 ---
 
-import { Button } from "@kalvner/kds/forms/button";
+import { Button } from '@kalvner/kds/forms/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   ToastDefault,
   ToastError,
@@ -22,8 +22,8 @@ import {
   ToastSuccess,
   ToastWarning,
   ToastWithDescription,
-  ToastWithUndo
-} from "@/components/overlay-demos";
+  ToastWithUndo,
+} from '@/components/overlay-demos';
 
 ## Overview
 
@@ -36,12 +36,12 @@ semânticas.
 
 A hierarquia de feedback é importante:
 
-| Primitive | Forma | Tempo | Uso |
-|---|---|---|---|
-| **Sonner (toast)** | flutuante, canto da tela | 4–6s | "Salvo", "Convite enviado", "Excluído. Desfazer." |
-| [`Alert`](../feedback/alert) | in-flow, parte da página | persistente | "Sessão expirada", "Plano quase no limite" |
-| Banner (próximo) | page-spanning topo | persistente | "Manutenção programada para hoje 02:00" |
-| [`AlertDialog`](./alert-dialog) | modal bloqueante | exige ação | "Excluir conta para sempre?" |
+| Primitive                       | Forma                    | Tempo       | Uso                                               |
+| ------------------------------- | ------------------------ | ----------- | ------------------------------------------------- |
+| **Sonner (toast)**              | flutuante, canto da tela | 4–6s        | "Salvo", "Convite enviado", "Excluído. Desfazer." |
+| [`Alert`](../feedback/alert)    | in-flow, parte da página | persistente | "Sessão expirada", "Plano quase no limite"        |
+| Banner (próximo)                | page-spanning topo       | persistente | "Manutenção programada para hoje 02:00"           |
+| [`AlertDialog`](./alert-dialog) | modal bloqueante         | exige ação  | "Excluir conta para sempre?"                      |
 
 Toast é o canal certo para a maioria dos resultados — `Salvo`,
 `Falhou`, `Enviado`. Para algo que o usuário precisa **ler antes de
@@ -80,22 +80,22 @@ lugar.
 
 ## Subcomponents / API
 
-| API | Descrição |
-|---|---|
-| `<Toaster />` | Mount no root da app (uma única vez). |
-| `toast(message)` | Toast neutro. |
-| `toast.success(message)` | Variante success com ícone. |
-| `toast.error(message)` | Variante error com ícone. |
-| `toast.info(message)` | Variante info. |
-| `toast.warning(message)` | Variante warning. |
+| API                                                   | Descrição                                                               |
+| ----------------------------------------------------- | ----------------------------------------------------------------------- |
+| `<Toaster />`                                         | Mount no root da app (uma única vez).                                   |
+| `toast(message)`                                      | Toast neutro.                                                           |
+| `toast.success(message)`                              | Variante success com ícone.                                             |
+| `toast.error(message)`                                | Variante error com ícone.                                               |
+| `toast.info(message)`                                 | Variante info.                                                          |
+| `toast.warning(message)`                              | Variante warning.                                                       |
 | `toast.promise(promise, { loading, success, error })` | Mostra loading e troca para success ou error quando a promessa resolve. |
-| `toast(message, { description, action })` | Toast com descrição e/ou botão de ação (ex.: "Desfazer"). |
+| `toast(message, { description, action })`             | Toast com descrição e/ou botão de ação (ex.: "Desfazer").               |
 
 ## Usage
 
 ```tsx
 // app/layout.tsx
-import { Toaster } from "@kalvner/kds/overlays/sonner";
+import { Toaster } from '@kalvner/kds/overlays/sonner';
 
 export default function RootLayout({ children }) {
   return (
@@ -111,14 +111,12 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // any component
-"use client";
-import { toast } from "@kalvner/kds/overlays/sonner";
-import { Button } from "@kalvner/kds/forms/button";
+'use client';
+import { toast } from '@kalvner/kds/overlays/sonner';
+import { Button } from '@kalvner/kds/forms/button';
 
 export function SaveButton() {
-  return (
-    <Button onClick={() => toast.success("Salvo")}>Salvar</Button>
-  );
+  return <Button onClick={() => toast.success('Salvo')}>Salvar</Button>;
 }
 ```
 
@@ -187,7 +185,8 @@ export function SaveButton() {
   <CardHeader>
     <CardTitle>Undo affordance (Tier 2 stakes)</CardTitle>
     <CardDescription>
-      Fecha o loop com a Tier 2 do <a href="./dialog#stakes">modelo de stakes</a> em Dialog. Após confirmar
+      Fecha o loop com a Tier 2 do{' '}
+      <a href="./dialog#stakes">modelo de stakes</a> em Dialog. Após confirmar
       "Excluir", o toast "Excluído. Desfazer." dá ~6s para reverter.
     </CardDescription>
   </CardHeader>
@@ -246,13 +245,13 @@ export function SaveButton() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Sonner usa `role="status"` (default) ou `role="alert"` (para errors), com `aria-live`. |
-| **Foco** | Toasts não roubam foco. Usuário continua trabalhando. |
-| **Keyboard** | Toast com action (`Desfazer`) é alcançável via Tab da próxima vez que o trigger ganhar foco. |
-| **Screen reader** | `aria-live="polite"` (default) ou `aria-live="assertive"` (errors). Mensagens são anunciadas sem interromper o que o usuário estiver fazendo. |
-| **Reduced motion** | A entrada/saída respeita `prefers-reduced-motion` no nível do tema. |
+| Concern            | Comportamento                                                                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | Sonner usa `role="status"` (default) ou `role="alert"` (para errors), com `aria-live`.                                                        |
+| **Foco**           | Toasts não roubam foco. Usuário continua trabalhando.                                                                                         |
+| **Keyboard**       | Toast com action (`Desfazer`) é alcançável via Tab da próxima vez que o trigger ganhar foco.                                                  |
+| **Screen reader**  | `aria-live="polite"` (default) ou `aria-live="assertive"` (errors). Mensagens são anunciadas sem interromper o que o usuário estiver fazendo. |
+| **Reduced motion** | A entrada/saída respeita `prefers-reduced-motion` no nível do tema.                                                                           |
 
 ## Related
 

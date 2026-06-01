@@ -2,7 +2,7 @@
 title: ContextMenu
 description: Menu de ações secundário invocado por right-click — sempre como acelerador, nunca como único caminho.
 component: ContextMenu
-importPath: "@kalvner/kds/overlays/context-menu"
+importPath: '@kalvner/kds/overlays/context-menu'
 status: stable
 ---
 
@@ -11,9 +11,9 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { ContextMenuPreview } from "@/components/overlay-demos";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { ContextMenuPreview } from '@/components/overlay-demos';
 
 ## Overview
 
@@ -32,7 +32,9 @@ lugar.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Clique com o botão direito na área pontilhada.</CardDescription>
+    <CardDescription>
+      Clique com o botão direito na área pontilhada.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ContextMenuPreview />
@@ -66,18 +68,18 @@ lugar.
 Mesma estrutura do `DropdownMenu` — apenas o `Trigger` muda de
 botão para uma região:
 
-| Componente | Descrição |
-|---|---|
-| `ContextMenu` | Raiz. |
-| `ContextMenuTrigger` | Região que captura right-click. |
-| `ContextMenuContent` | Container portalado. |
-| `ContextMenuItem` | Item de ação. Aceita `variant: 'default' \| 'destructive'`. |
-| `ContextMenuCheckboxItem` | Toggle on/off. |
-| `ContextMenuRadioGroup` + `ContextMenuRadioItem` | Seleção exclusiva. |
-| `ContextMenuLabel` | Cabeçalho de seção. |
-| `ContextMenuSeparator` | Linha divisória. |
-| `ContextMenuShortcut` | Texto à direita com keyboard shortcut. |
-| `ContextMenuSub` + `SubTrigger` + `SubContent` | Submenu nested. |
+| Componente                                       | Descrição                                                   |
+| ------------------------------------------------ | ----------------------------------------------------------- |
+| `ContextMenu`                                    | Raiz.                                                       |
+| `ContextMenuTrigger`                             | Região que captura right-click.                             |
+| `ContextMenuContent`                             | Container portalado.                                        |
+| `ContextMenuItem`                                | Item de ação. Aceita `variant: 'default' \| 'destructive'`. |
+| `ContextMenuCheckboxItem`                        | Toggle on/off.                                              |
+| `ContextMenuRadioGroup` + `ContextMenuRadioItem` | Seleção exclusiva.                                          |
+| `ContextMenuLabel`                               | Cabeçalho de seção.                                         |
+| `ContextMenuSeparator`                           | Linha divisória.                                            |
+| `ContextMenuShortcut`                            | Texto à direita com keyboard shortcut.                      |
+| `ContextMenuSub` + `SubTrigger` + `SubContent`   | Submenu nested.                                             |
 
 ## Usage
 
@@ -86,8 +88,8 @@ import {
   ContextMenu,
   ContextMenuTrigger,
   ContextMenuContent,
-  ContextMenuItem
-} from "@kalvner/kds/overlays/context-menu";
+  ContextMenuItem,
+} from '@kalvner/kds/overlays/context-menu';
 
 export function FileTile({ file }) {
   return (
@@ -136,13 +138,13 @@ export function FileTile({ file }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix aplica `role="menu"` no content e `role="menuitem"` (e variantes) nos items. |
-| **Foco** | Foco entra no primeiro item ao abrir. Volta para o trigger (ou para o body) ao fechar. |
-| **Keyboard** | `Shift+F10` ou `Menu key` abrem o ContextMenu (convenção do SO). `↑/↓` navegam. `Esc` fecha. |
+| Concern           | Comportamento                                                                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**         | Radix aplica `role="menu"` no content e `role="menuitem"` (e variantes) nos items.                                                                      |
+| **Foco**          | Foco entra no primeiro item ao abrir. Volta para o trigger (ou para o body) ao fechar.                                                                  |
+| **Keyboard**      | `Shift+F10` ou `Menu key` abrem o ContextMenu (convenção do SO). `↑/↓` navegam. `Esc` fecha.                                                            |
 | **Screen reader** | Mesma semântica do DropdownMenu. SR usuários precisam saber que a região é "context-menu enabled" — anuncie via texto na vizinhança ou `aria-haspopup`. |
-| **Touch** | Sem equivalente padronizado. **Espelhe ações em DropdownMenu visível** para tocar. |
+| **Touch**         | Sem equivalente padronizado. **Espelhe ações em DropdownMenu visível** para tocar.                                                                      |
 
 ## Related
 

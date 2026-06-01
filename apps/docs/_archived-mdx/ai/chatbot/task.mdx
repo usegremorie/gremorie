@@ -2,18 +2,21 @@
 title: Task
 description: Lista de tarefas colapsável com arquivos referenciados — execução estruturada de agente.
 component: Task
-importPath: "@kalvner/kds/ai/task"
+importPath: '@kalvner/kds/ai/task'
 status: stable
 ---
 
-import { TaskCollapsedPreview, TaskExpandedPreview } from "@/components/ai-chatbot-demos";
+import {
+  TaskCollapsedPreview,
+  TaskExpandedPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -72,10 +75,10 @@ Herda de [Collapsible](../../ui/display/collapsible) — `open`,
 
 ### TaskTrigger
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `title` | `string` | — | Texto do header. |
-| `className` | `string` | — | Override. |
+| Prop        | Tipo     | Default | Descrição        |
+| ----------- | -------- | ------- | ---------------- |
+| `title`     | `string` | —       | Texto do header. |
+| `className` | `string` | —       | Override.        |
 
 ### TaskItem
 
@@ -111,8 +114,13 @@ Task dentro de Message:
     <Task defaultOpen>
       <TaskTrigger title="Aplicando refactor" />
       <TaskContent>
-        <TaskItem>Renomeei <TaskItemFile>colors.css</TaskItemFile> → <TaskItemFile>colors-default.css</TaskItemFile></TaskItem>
-        <TaskItem>Atualizei imports em <TaskItemFile>globals.css</TaskItemFile></TaskItem>
+        <TaskItem>
+          Renomeei <TaskItemFile>colors.css</TaskItemFile> →{' '}
+          <TaskItemFile>colors-default.css</TaskItemFile>
+        </TaskItem>
+        <TaskItem>
+          Atualizei imports em <TaskItemFile>globals.css</TaskItemFile>
+        </TaskItem>
       </TaskContent>
     </Task>
     <MessageResponse>{summary}</MessageResponse>
@@ -139,9 +147,9 @@ Task dentro de Message:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `<button>` (Collapsible). |
+| Concern   | Comportamento                                                         |
+| --------- | --------------------------------------------------------------------- |
+| **Roles** | Trigger é `<button>` (Collapsible).                                   |
 | **Lists** | Considere wrap em `<ul>` se a hierarquia importar pra leitor de tela. |
 
 ## Related

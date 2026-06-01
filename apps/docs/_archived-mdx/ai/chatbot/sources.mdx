@@ -2,18 +2,18 @@
 title: Sources
 description: Lista colapsável de fontes citadas — abaixo da resposta do modelo.
 component: Sources
-importPath: "@kalvner/kds/ai/sources"
+importPath: '@kalvner/kds/ai/sources'
 status: stable
 ---
 
-import { SourcesPreview } from "@/components/ai-chatbot-demos";
+import { SourcesPreview } from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -47,8 +47,14 @@ contador ("3 sources"); user expande pra ver os links.
 <Sources>
   <SourcesTrigger count={3} />
   <SourcesContent>
-    <Source href="https://ds.kalvner.com/tokens/primitive" title="Tokens primitivos" />
-    <Source href="https://ds.kalvner.com/tokens/semantic" title="Tokens semânticos" />
+    <Source
+      href="https://ds.kalvner.com/tokens/primitive"
+      title="Tokens primitivos"
+    />
+    <Source
+      href="https://ds.kalvner.com/tokens/semantic"
+      title="Tokens semânticos"
+    />
     <Source href="https://radix-ui.com" title="Radix UI" />
   </SourcesContent>
 </Sources>
@@ -63,10 +69,10 @@ por baixo.
 
 ### SourcesTrigger
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `count` | `number` | — | Número exibido no badge ("3 sources"). |
-| `className` | `string` | — | Override. |
+| Prop        | Tipo     | Default | Descrição                              |
+| ----------- | -------- | ------- | -------------------------------------- |
+| `count`     | `number` | —       | Número exibido no badge ("3 sources"). |
+| `className` | `string` | —       | Override.                              |
 
 ### SourcesContent
 
@@ -74,11 +80,11 @@ Wrapper das `<Source>` filhas. Aceita `ComponentProps<"div">`.
 
 ### Source
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `href` | `string` | — | URL do link. |
-| `title` | `string` | — | Texto exibido. |
-| `children` | `ReactNode` | — | Override do conteúdo (ex.: ícone + título custom). |
+| Prop       | Tipo        | Default | Descrição                                          |
+| ---------- | ----------- | ------- | -------------------------------------------------- |
+| `href`     | `string`    | —       | URL do link.                                       |
+| `title`    | `string`    | —       | Texto exibido.                                     |
+| `children` | `ReactNode` | —       | Override do conteúdo (ex.: ícone + título custom). |
 
 Aceita `ComponentProps<"a">` — `target="_blank"` etc.
 
@@ -91,10 +97,10 @@ Aceita `ComponentProps<"a">` — `target="_blank"` etc.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
+| Estado    | Comportamento             |
+| --------- | ------------------------- |
 | Collapsed | Mostra trigger com count. |
-| Expanded | Lista de Sources visível. |
+| Expanded  | Lista de Sources visível. |
 
 ## Composition
 
@@ -103,7 +109,9 @@ texto remetem a items aqui via index:
 
 ```tsx
 <MessageContent>
-  <p>Tokens usam Tailwind v4 <InlineCitation>[1]</InlineCitation>...</p>
+  <p>
+    Tokens usam Tailwind v4 <InlineCitation>[1]</InlineCitation>...
+  </p>
   <Sources>
     <SourcesTrigger count={1} />
     <SourcesContent>
@@ -129,16 +137,16 @@ texto remetem a items aqui via index:
 
 - **Trunque títulos longos.** URLs não cabem; mostre o título da página
   ou primeira frase semântica.
-- **target="_blank"** + `rel="noreferrer"` — sources são externas.
+- **target="\_blank"** + `rel="noreferrer"` — sources são externas.
 - **Ordem importa.** Liste por relevância ou ordem de uso, não alfabética.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `<button>` com `aria-expanded`. |
+| Concern            | Comportamento                                                      |
+| ------------------ | ------------------------------------------------------------------ |
+| **Roles**          | Trigger é `<button>` com `aria-expanded`.                          |
 | **External links** | `<a target="_blank">` com `rel="noreferrer"` automático no Source. |
-| **Contagem** | Trigger lê "Sources, 3" pra screen readers. |
+| **Contagem**       | Trigger lê "Sources, 3" pra screen readers.                        |
 
 ## Related
 

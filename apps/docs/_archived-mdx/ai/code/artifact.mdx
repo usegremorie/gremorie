@@ -2,18 +2,18 @@
 title: Artifact
 description: Surface dedicada pra código / documento gerado — header com title + actions, content scrollável.
 component: Artifact
-importPath: "@kalvner/kds/ai/artifact"
+importPath: '@kalvner/kds/ai/artifact'
 status: stable
 ---
 
-import { ArtifactPreview } from "@/components/ai-code-demos";
+import { ArtifactPreview } from '@/components/ai-code-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -28,7 +28,9 @@ re-gerar.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Artifact de código com header + actions toolbar.</CardDescription>
+    <CardDescription>
+      Artifact de código com header + actions toolbar.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ArtifactPreview />
@@ -58,9 +60,15 @@ re-gerar.
     <ArtifactTitle>landing-page.tsx</ArtifactTitle>
     <ArtifactDescription>React component · 124 linhas</ArtifactDescription>
     <ArtifactActions>
-      <ArtifactAction tooltip="Copiar"><Copy /></ArtifactAction>
-      <ArtifactAction tooltip="Re-gerar"><RefreshCw /></ArtifactAction>
-      <ArtifactAction tooltip="Baixar"><Download /></ArtifactAction>
+      <ArtifactAction tooltip="Copiar">
+        <Copy />
+      </ArtifactAction>
+      <ArtifactAction tooltip="Re-gerar">
+        <RefreshCw />
+      </ArtifactAction>
+      <ArtifactAction tooltip="Baixar">
+        <Download />
+      </ArtifactAction>
       <ArtifactClose />
     </ArtifactActions>
   </ArtifactHeader>
@@ -84,20 +92,20 @@ title-left / actions-right.
 
 ### ArtifactTitle / ArtifactDescription
 
-| Componente | Aceita |
-|---|---|
-| `ArtifactTitle` | `HTMLAttributes<HTMLParagraphElement>`. |
+| Componente            | Aceita                                  |
+| --------------------- | --------------------------------------- |
+| `ArtifactTitle`       | `HTMLAttributes<HTMLParagraphElement>`. |
 | `ArtifactDescription` | `HTMLAttributes<HTMLParagraphElement>`. |
 
 Title é semibold; Description é muted text-sm.
 
 ### ArtifactActions · ArtifactAction · ArtifactClose
 
-| Componente | Função |
-|---|---|
-| `ArtifactActions` | Wrapper flex (gap-1). |
-| `ArtifactAction` | Botão da toolbar. Aceita `tooltip` opcional. Herda Button props. |
-| `ArtifactClose` | Botão X — fecha/dismiss o artifact. Herda Button props. |
+| Componente        | Função                                                           |
+| ----------------- | ---------------------------------------------------------------- |
+| `ArtifactActions` | Wrapper flex (gap-1).                                            |
+| `ArtifactAction`  | Botão da toolbar. Aceita `tooltip` opcional. Herda Button props. |
+| `ArtifactClose`   | Botão X — fecha/dismiss o artifact. Herda Button props.          |
 
 ### ArtifactContent
 
@@ -125,8 +133,12 @@ corpo do artifact.
     <ArtifactTitle>Component.tsx</ArtifactTitle>
     <ArtifactDescription>React · 84 linhas</ArtifactDescription>
     <ArtifactActions>
-      <ArtifactAction tooltip="Copy"><Copy /></ArtifactAction>
-      <ArtifactAction tooltip="Download"><Download /></ArtifactAction>
+      <ArtifactAction tooltip="Copy">
+        <Copy />
+      </ArtifactAction>
+      <ArtifactAction tooltip="Download">
+        <Download />
+      </ArtifactAction>
       <ArtifactClose />
     </ArtifactActions>
   </ArtifactHeader>
@@ -158,9 +170,7 @@ corpo do artifact.
 ```tsx
 <div className="grid grid-cols-[1fr_400px]">
   <Conversation>...</Conversation>
-  {currentArtifact && (
-    <Artifact>...</Artifact>
-  )}
+  {currentArtifact && <Artifact>...</Artifact>}
 </div>
 ```
 
@@ -185,11 +195,11 @@ corpo do artifact.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
+| Concern     | Comportamento                                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- |
 | **Heading** | ArtifactTitle é `<p>` por padrão. Para a11y melhor, embrulhe em `<h2>` quando o artifact ocupar surface dedicada. |
-| **Close** | `aria-label="Close artifact"`. |
-| **Actions** | `tooltip` injeta `aria-label` automático. |
+| **Close**   | `aria-label="Close artifact"`.                                                                                    |
+| **Actions** | `tooltip` injeta `aria-label` automático.                                                                         |
 
 ## Related
 

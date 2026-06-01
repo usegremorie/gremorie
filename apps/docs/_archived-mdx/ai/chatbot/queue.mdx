@@ -2,18 +2,21 @@
 title: Queue
 description: Lista de mensagens / tarefas pendentes — sidebar de inbox para agentes assíncronos.
 component: Queue
-importPath: "@kalvner/kds/ai/queue"
+importPath: '@kalvner/kds/ai/queue'
 status: stable
 ---
 
-import { QueuePreview, QueueSectionedPreview } from "@/components/ai-chatbot-demos";
+import {
+  QueuePreview,
+  QueueSectionedPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -86,8 +89,8 @@ Aceita `ComponentProps<"li">`. É um `<li>` real — preserve semântica.
 
 ### QueueItemIndicator
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
+| Prop        | Tipo      | Default | Descrição                                    |
+| ----------- | --------- | ------- | -------------------------------------------- |
 | `completed` | `boolean` | `false` | Quando `true`, dot é preenchido (concluído). |
 
 Aceita `ComponentProps<"span">` (extras passam pro span).
@@ -102,25 +105,26 @@ Sub-texto (muted). Aceita `ComponentProps<"div">`.
 
 ### QueueItemActions · QueueItemAction
 
-| Componente | Função |
-|---|---|
-| `QueueItemActions` | Wrapper flex (gap-1). |
-| `QueueItemAction` | Botão individual. Herda de [Button](../../ui/forms/button) com size default `icon-sm`. Aceita `tooltip` opcional. |
+| Componente         | Função                                                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `QueueItemActions` | Wrapper flex (gap-1).                                                                                             |
+| `QueueItemAction`  | Botão individual. Herda de [Button](../../ui/forms/button) com size default `icon-sm`. Aceita `tooltip` opcional. |
 
 ### QueueItemAttachment · Image · File
 
 Slots pra mostrar arquivos enviados pelo user na entry da queue.
+
 - `QueueItemAttachment` — wrapper.
 - `QueueItemImage` — `<img>` com `rounded` + size fixo.
 - `QueueItemFile` — chip com filename.
 
 ### QueueSection · trigger / label / content
 
-| Prop (Label) | Tipo | Default | Descrição |
-|---|---|---|---|
-| `label` | `string` | — | Texto da seção ("Em andamento"). |
-| `count` | `number` | — | Contador opcional ("5"). |
-| `icon` | `ReactNode` | — | Ícone à esquerda do label. |
+| Prop (Label) | Tipo        | Default | Descrição                        |
+| ------------ | ----------- | ------- | -------------------------------- |
+| `label`      | `string`    | —       | Texto da seção ("Em andamento"). |
+| `count`      | `number`    | —       | Contador opcional ("5").         |
+| `icon`       | `ReactNode` | —       | Ícone à esquerda do label.       |
 
 `QueueSection` é um Collapsible. `QueueSectionTrigger` é um botão
 que mostra/esconde o `QueueSectionContent`.
@@ -139,11 +143,11 @@ que mostra/esconde o `QueueSectionContent`.
 
 ## States
 
-| Item | Comportamento |
-|---|---|
-| Default (pending) | Indicator vazio (border). |
-| `completed` | Indicator preenchido. |
-| Hover | Actions aparecem (opacity-0 → 100 group-hover). |
+| Item              | Comportamento                                   |
+| ----------------- | ----------------------------------------------- |
+| Default (pending) | Indicator vazio (border).                       |
+| `completed`       | Indicator preenchido.                           |
+| Hover             | Actions aparecem (opacity-0 → 100 group-hover). |
 
 ## Composition
 
@@ -186,10 +190,10 @@ que mostra/esconde o `QueueSectionContent`.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Semantic** | `<li>` real preserva navegação por leitor de tela. |
-| **Sections** | Collapsible interno tem `aria-expanded`. |
+| Concern       | Comportamento                                               |
+| ------------- | ----------------------------------------------------------- |
+| **Semantic**  | `<li>` real preserva navegação por leitor de tela.          |
+| **Sections**  | Collapsible interno tem `aria-expanded`.                    |
 | **Indicator** | Cor + texto descritivo via aria-label custom (recomendado). |
 
 ## Related

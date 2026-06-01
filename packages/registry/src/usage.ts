@@ -40,7 +40,10 @@ interface UsageFrontmatter {
  * The markdown body is currently ignored (kept for future human-facing docs).
  * Missing files yield a `TBD` placeholder so the generator never blocks.
  */
-export function readUsage(packageRoot: string, itemName: string): RegistryUsage {
+export function readUsage(
+  packageRoot: string,
+  itemName: string,
+): RegistryUsage {
   // Prefer per-item usage at usage/<item>.md; fall back to the package-level
   // usage.md when the per-item file is absent. This gives granular items room
   // to grow their own docs over time while keeping shared docs for packages
@@ -63,8 +66,7 @@ export function readUsage(packageRoot: string, itemName: string): RegistryUsage 
   return {
     whenToUse: parsed.whenToUse ?? `TBD - document when to use ${itemName}.`,
     whenNotToUse:
-      parsed.whenNotToUse ??
-      `TBD - document when to reach for something else.`,
+      parsed.whenNotToUse ?? `TBD - document when to reach for something else.`,
     bestPractices: parsed.bestPractices ?? [],
     antipatterns: parsed.antipatterns ?? [],
     ...(parsed.api ? { api: parsed.api } : {}),

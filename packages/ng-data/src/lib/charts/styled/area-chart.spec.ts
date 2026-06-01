@@ -26,7 +26,9 @@ async function render() {
 describe('AreaChart', () => {
   it('renders one area path per configured series', async () => {
     const fixture = await render();
-    const paths = fixture.nativeElement.querySelectorAll('path[data-slot="area"]');
+    const paths = fixture.nativeElement.querySelectorAll(
+      'path[data-slot="area"]',
+    );
     expect(paths.length).toBe(2);
   });
 

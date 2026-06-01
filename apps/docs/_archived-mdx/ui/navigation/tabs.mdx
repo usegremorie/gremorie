@@ -2,7 +2,7 @@
 title: Tabs
 description: Content switcher para alternar entre views mutuamente exclusivas dentro do mesmo escopo.
 component: Tabs
-importPath: "@kalvner/kds/navigation/tabs"
+importPath: '@kalvner/kds/navigation/tabs'
 status: stable
 ---
 
@@ -11,15 +11,15 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   TabsDisabled,
   TabsLineVariant,
   TabsPreview,
   TabsVertical,
-  TabsWithIcons
-} from "@/components/navigation-demos";
+  TabsWithIcons,
+} from '@/components/navigation-demos';
 
 ## Overview
 
@@ -67,12 +67,12 @@ A relação `TabsTrigger.value === TabsContent.value` é o pareamento.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Tabs` | Raiz que controla `value` e `orientation`. |
-| `TabsList` | Wrapper dos triggers; aceita `variant` (`default` ou `line`). |
-| `TabsTrigger` | Botão de aba ligado a um `value`. |
-| `TabsContent` | Painel de conteúdo do `value` correspondente. |
+| Componente    | Descrição                                                     |
+| ------------- | ------------------------------------------------------------- |
+| `Tabs`        | Raiz que controla `value` e `orientation`.                    |
+| `TabsList`    | Wrapper dos triggers; aceita `variant` (`default` ou `line`). |
+| `TabsTrigger` | Botão de aba ligado a um `value`.                             |
+| `TabsContent` | Painel de conteúdo do `value` correspondente.                 |
 
 ## Usage
 
@@ -81,8 +81,8 @@ import {
   Tabs,
   TabsContent,
   TabsList,
-  TabsTrigger
-} from "@kalvner/kds/navigation/tabs";
+  TabsTrigger,
+} from '@kalvner/kds/navigation/tabs';
 
 export function Settings() {
   return (
@@ -104,7 +104,9 @@ export function Settings() {
   <Card>
     <CardHeader>
       <CardTitle>Line indicator</CardTitle>
-      <CardDescription>Sublinhado discreto, ideal quando o card já tem fundo.</CardDescription>
+      <CardDescription>
+        Sublinhado discreto, ideal quando o card já tem fundo.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <TabsLineVariant />
@@ -113,7 +115,9 @@ export function Settings() {
   <Card>
     <CardHeader>
       <CardTitle>With icons</CardTitle>
-      <CardDescription>Ícones reforçam a categoria — não substituem rótulo.</CardDescription>
+      <CardDescription>
+        Ícones reforçam a categoria — não substituem rótulo.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <TabsWithIcons />
@@ -122,7 +126,9 @@ export function Settings() {
   <Card className="md:col-span-2">
     <CardHeader>
       <CardTitle>Vertical orientation</CardTitle>
-      <CardDescription>Colunas finas, lista de seções à esquerda.</CardDescription>
+      <CardDescription>
+        Colunas finas, lista de seções à esquerda.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <TabsVertical />
@@ -135,7 +141,9 @@ export function Settings() {
 <Card>
   <CardHeader>
     <CardTitle>Disabled tab</CardTitle>
-    <CardDescription>Bloquear acesso, mas mantendo o item visível para informar.</CardDescription>
+    <CardDescription>
+      Bloquear acesso, mas mantendo o item visível para informar.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <TabsDisabled />
@@ -171,13 +179,13 @@ export function Settings() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix aplica `role="tablist"`, `role="tab"`, `role="tabpanel"` automaticamente. |
-| **Keyboard** | Setas navegam entre triggers (horizontal: ←/→; vertical: ↑/↓). `Home` / `End` saltam para os extremos. |
-| **Focus** | Foco passa pelo TabsList como uma única parada (`tabindex=0` na ativa, `-1` nas demais). |
-| **Activation** | Padrão `automatic` — focar muda o painel. Para painéis pesados, mude para `activationMode="manual"` (foca, mas só ativa com Enter/Space). |
-| **Screen reader** | Triggers anunciados como "Tab N de M, selected" quando ativos. |
+| Concern           | Comportamento                                                                                                                             |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**         | Radix aplica `role="tablist"`, `role="tab"`, `role="tabpanel"` automaticamente.                                                           |
+| **Keyboard**      | Setas navegam entre triggers (horizontal: ←/→; vertical: ↑/↓). `Home` / `End` saltam para os extremos.                                    |
+| **Focus**         | Foco passa pelo TabsList como uma única parada (`tabindex=0` na ativa, `-1` nas demais).                                                  |
+| **Activation**    | Padrão `automatic` — focar muda o painel. Para painéis pesados, mude para `activationMode="manual"` (foca, mas só ativa com Enter/Space). |
+| **Screen reader** | Triggers anunciados como "Tab N de M, selected" quando ativos.                                                                            |
 
 ## Related
 

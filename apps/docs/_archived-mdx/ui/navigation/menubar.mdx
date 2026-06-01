@@ -2,7 +2,7 @@
 title: Menubar
 description: Menu bar de aplicação desktop-style — File / Edit / View / Help.
 component: Menubar
-importPath: "@kalvner/kds/navigation/menubar"
+importPath: '@kalvner/kds/navigation/menubar'
 status: stable
 ---
 
@@ -11,9 +11,9 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { MenubarPreview } from "@/components/navigation-demos";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { MenubarPreview } from '@/components/navigation-demos';
 
 ## Overview
 
@@ -30,7 +30,9 @@ direita — toda a anatomia clássica de menu bar.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>File / Edit / View / Help — clique nos triggers.</CardDescription>
+    <CardDescription>
+      File / Edit / View / Help — clique nos triggers.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <MenubarPreview />
@@ -59,24 +61,25 @@ direita — toda a anatomia clássica de menu bar.
 ```
 
 A barra é uma sequência de `MenubarMenu`, cada um com seu trigger
-+ content. Items podem ser ações simples, submenus, checkboxes
-ou radio groups.
+
+- content. Items podem ser ações simples, submenus, checkboxes
+  ou radio groups.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Menubar` | Container horizontal. |
-| `MenubarMenu` | Wrapper de um menu (trigger + content). |
-| `MenubarTrigger` | Botão que abre o menu. |
-| `MenubarContent` | Painel dropdown de itens. |
-| `MenubarItem` | Linha clicável; aceita `variant="destructive"`. |
-| `MenubarSeparator` | Divisor horizontal entre grupos. |
-| `MenubarLabel` | Cabeçalho não interativo. |
-| `MenubarShortcut` | Span alinhado à direita para atalho de teclado. |
-| `MenubarCheckboxItem` | Item com indicador de check. |
-| `MenubarRadioGroup` / `MenubarRadioItem` | Radio única dentro de um grupo. |
-| `MenubarSub` / `MenubarSubTrigger` / `MenubarSubContent` | Submenu aninhado. |
+| Componente                                               | Descrição                                       |
+| -------------------------------------------------------- | ----------------------------------------------- |
+| `Menubar`                                                | Container horizontal.                           |
+| `MenubarMenu`                                            | Wrapper de um menu (trigger + content).         |
+| `MenubarTrigger`                                         | Botão que abre o menu.                          |
+| `MenubarContent`                                         | Painel dropdown de itens.                       |
+| `MenubarItem`                                            | Linha clicável; aceita `variant="destructive"`. |
+| `MenubarSeparator`                                       | Divisor horizontal entre grupos.                |
+| `MenubarLabel`                                           | Cabeçalho não interativo.                       |
+| `MenubarShortcut`                                        | Span alinhado à direita para atalho de teclado. |
+| `MenubarCheckboxItem`                                    | Item com indicador de check.                    |
+| `MenubarRadioGroup` / `MenubarRadioItem`                 | Radio única dentro de um grupo.                 |
+| `MenubarSub` / `MenubarSubTrigger` / `MenubarSubContent` | Submenu aninhado.                               |
 
 ## Usage
 
@@ -87,8 +90,8 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarShortcut,
-  MenubarTrigger
-} from "@kalvner/kds/navigation/menubar";
+  MenubarTrigger,
+} from '@kalvner/kds/navigation/menubar';
 
 export function EditorMenubar() {
   return (
@@ -143,13 +146,13 @@ export function EditorMenubar() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix aplica `role="menubar"`, `role="menuitem"`, `role="menuitemcheckbox"`, `role="menuitemradio"`. |
-| **Keyboard** | Setas movem; `Enter` abre/seleciona; `Esc` fecha; `Alt` ativa atalhos das letras (em alguns browsers). |
-| **Focus** | Foco volta ao trigger ao fechar. |
-| **Screen reader** | Anuncia tipo do item, estado (checked/unchecked) e disabled. |
-| **Shortcuts** | Texto do shortcut é visualmente apresentado mas o handler precisa estar no app — Menubar não captura shortcuts globalmente. |
+| Concern           | Comportamento                                                                                                               |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**         | Radix aplica `role="menubar"`, `role="menuitem"`, `role="menuitemcheckbox"`, `role="menuitemradio"`.                        |
+| **Keyboard**      | Setas movem; `Enter` abre/seleciona; `Esc` fecha; `Alt` ativa atalhos das letras (em alguns browsers).                      |
+| **Focus**         | Foco volta ao trigger ao fechar.                                                                                            |
+| **Screen reader** | Anuncia tipo do item, estado (checked/unchecked) e disabled.                                                                |
+| **Shortcuts**     | Texto do shortcut é visualmente apresentado mas o handler precisa estar no app — Menubar não captura shortcuts globalmente. |
 
 ## Related
 

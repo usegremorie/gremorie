@@ -3,7 +3,7 @@ title: Form
 description: react-hook-form integration with field-aware subcomponents that auto-wire `htmlFor`, `aria-describedby`, and `aria-invalid` so validation announcements come for free.
 ---
 
-import { FormPreview } from "@/components/preview/forms/forms";
+import { FormPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ import { FormPreview } from "@/components/preview/forms/forms";
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-form
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-form
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-form
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-form
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-form ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-form ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-form ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-form ```</Tab>
 </Tabs>
 
 ## Usage
@@ -61,10 +45,10 @@ import {
   FormLabel,
   FormMessage,
   Input,
-} from "@gremorie/rx-forms";
+} from '@gremorie/rx-forms';
 
 const schema = z.object({
-  email: z.string().email("Please enter a valid email."),
+email: z.string().email("Please enter a valid email."),
 });
 
 export function Example() {
@@ -73,33 +57,35 @@ export function Example() {
     defaultValues: { email: "" },
   });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    console.log(values);
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" {...field} />
-              </FormControl>
-              <FormDescription>We'll never share your email.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-  );
+function onSubmit(values: z.infer<typeof schema>) {
+console.log(values);
 }
-```
+
+return (
+
+<Form {...form}>
+<form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+<FormField
+control={form.control}
+name="email"
+render={({ field }) => (
+<FormItem>
+<FormLabel>Email</FormLabel>
+<FormControl>
+<Input type="email" {...field} />
+</FormControl>
+<FormDescription>We'll never share your email.</FormDescription>
+<FormMessage />
+</FormItem>
+)}
+/>
+<Button type="submit">Submit</Button>
+</form>
+</Form>
+);
+}
+
+````
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
@@ -117,27 +103,27 @@ Alias for react-hook-form's `FormProvider`. Spread the result of `useForm()` int
 ```tsx
 const form = useForm();
 return <Form {...form}>{children}</Form>;
-```
+````
 
 ### `<FormField>`
 
 Typed wrapper around react-hook-form's `Controller`. Pushes the field `name` into a `FormFieldContext` so child subcomponents can look up the field state via `useFormField`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `name` | `FieldPath<TFieldValues>` | - | Path to the form field. Required. |
-| `control` | `Control<TFieldValues>` | - | The `control` returned by `useForm`. Required. |
-| `render` | `(props: { field, fieldState, formState }) => ReactElement` | - | Render prop. Required. |
-| `defaultValue` | inferred | - | Initial value. Falls back to `useForm` defaults. |
-| `rules` | `RegisterOptions` | - | Field-level validation rules. |
+| Prop           | Type                                                        | Default | Description                                      |
+| -------------- | ----------------------------------------------------------- | ------- | ------------------------------------------------ |
+| `name`         | `FieldPath<TFieldValues>`                                   | -       | Path to the form field. Required.                |
+| `control`      | `Control<TFieldValues>`                                     | -       | The `control` returned by `useForm`. Required.   |
+| `render`       | `(props: { field, fieldState, formState }) => ReactElement` | -       | Render prop. Required.                           |
+| `defaultValue` | inferred                                                    | -       | Initial value. Falls back to `useForm` defaults. |
+| `rules`        | `RegisterOptions`                                           | -       | Field-level validation rules.                    |
 
 ### `<FormItem>`
 
 A row wrapper that calls `useId()` once and pushes the id into `FormItemContext`. Renders a `div` with `grid gap-2` so labels, controls, descriptions, and messages stack with consistent spacing.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes on the wrapper. |
+| Prop        | Type     | Default | Description                   |
+| ----------- | -------- | ------- | ----------------------------- |
+| `className` | `string` | -       | Extra classes on the wrapper. |
 
 Extends all `React.ComponentProps<"div">`.
 
@@ -145,9 +131,9 @@ Extends all `React.ComponentProps<"div">`.
 
 Wraps `<Label>` and reads `formItemId` from `useFormField` so `htmlFor` is set automatically. When the field has an error, applies `data-error="true"` and the destructive text color.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes. |
+| Prop        | Type     | Default | Description    |
+| ----------- | -------- | ------- | -------------- |
+| `className` | `string` | -       | Extra classes. |
 
 Extends all `Radix Label.Root` props.
 
@@ -163,9 +149,9 @@ Extends all `Slot.Root` props.
 
 Helper text rendered with `text-sm text-muted-foreground`. Its `id` is referenced by the parent `FormControl`'s `aria-describedby`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes. |
+| Prop        | Type     | Default | Description    |
+| ----------- | -------- | ------- | -------------- |
+| `className` | `string` | -       | Extra classes. |
 
 Extends all `React.ComponentProps<"p">`.
 
@@ -173,10 +159,10 @@ Extends all `React.ComponentProps<"p">`.
 
 Renders the field error message. **Returns `null` when there's no error**, so it does not appear in the DOM until validation fails. When it renders, its `id` is referenced by `FormControl`'s `aria-describedby`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes. Default is `text-sm text-destructive`. |
-| `children` | `ReactNode` | - | Fallback message when there's no validation error to show. |
+| Prop        | Type        | Default | Description                                                |
+| ----------- | ----------- | ------- | ---------------------------------------------------------- |
+| `className` | `string`    | -       | Extra classes. Default is `text-sm text-destructive`.      |
+| `children`  | `ReactNode` | -       | Fallback message when there's no validation error to show. |
 
 Extends all `React.ComponentProps<"p">`.
 
@@ -235,13 +221,13 @@ Pair with `zodResolver` for type-safe validation. The schema drives both runtime
 
 ```tsx
 const schema = z.object({
-  email: z.string().email("Invalid email."),
-  age: z.number().int().min(13, "Must be at least 13."),
+  email: z.string().email('Invalid email.'),
+  age: z.number().int().min(13, 'Must be at least 13.'),
 });
 
 const form = useForm<z.infer<typeof schema>>({
   resolver: zodResolver(schema),
-  defaultValues: { email: "", age: 0 },
+  defaultValues: { email: '', age: 0 },
 });
 ```
 
@@ -286,7 +272,7 @@ async function onSubmit(values: FormValues) {
     form.setError(result.error.field, { message: result.error.message });
     return;
   }
-  router.push("/welcome");
+  router.push('/welcome');
 }
 ```
 
