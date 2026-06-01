@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Tooltip,
@@ -34,7 +33,11 @@ export type ArtifactProps = HTMLAttributes<HTMLDivElement>;
 export const Artifact = ({ className, ...props }: ArtifactProps) => (
   <div
     className={cn(
-      "flex flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
+      // `@container/artifact` lets the header adapt to the CARD's own width
+      // (not the viewport), so actions collapse/expand based on how much room
+      // the card actually has. `min-w-[280px]` keeps icon + truncated title +
+      // a menu button always legible.
+      "@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
       className
     )}
     {...props}
@@ -49,9 +52,10 @@ export const ArtifactHeader = ({
 }: ArtifactHeaderProps) => (
   <div
     className={cn(
-      // `items-stretch` lets the featured icon match the height of the
-      // title + description block (see ArtifactFeaturedIcon).
-      "flex items-stretch gap-3 border-b bg-muted/50 px-4 py-3",
+      // Header shares the card surface (white on light); only the bottom
+      // border separates it from the content. `items-stretch` lets the
+      // featured icon match the height of the title + description block.
+      "flex items-stretch gap-3 border-b px-4 py-3",
       className
     )}
     {...props}
@@ -126,6 +130,46 @@ export const ArtifactActions = ({
   ...props
 }: ArtifactActionsProps) => (
   <div className={cn("flex shrink-0 items-center gap-1", className)} {...props} />
+);
+
+/**
+ * Header actions shown ONLY when the card is wide enough (≥ 448px / `@28rem`,
+ * via the `@container/artifact` on `Artifact`). Put the **primary** actions
+ * here (e.g. the Download menu); on a narrow card they hide and you surface the
+ * same actions through the collapsed More menu instead.
+ *
+ * Note: the view toggle is intentionally NOT wrapped in this — it stays visible
+ * at every width.
+ */
+export const ArtifactActionsExpanded = ({
+  className,
+  ...props
+}: ArtifactActionsProps) => (
+  <div
+    className={cn(
+      "hidden shrink-0 items-center gap-1 @[28rem]/artifact:flex",
+      className
+    )}
+    {...props}
+  />
+);
+
+/**
+ * Header action shown ONLY when the card is narrow (< 448px). Put the single
+ * collapsed **More** menu here — it carries every action (primary + secondary)
+ * when there's no room to expand them.
+ */
+export const ArtifactActionsCollapsed = ({
+  className,
+  ...props
+}: ArtifactActionsProps) => (
+  <div
+    className={cn(
+      "flex shrink-0 items-center gap-1 @[28rem]/artifact:hidden",
+      className
+    )}
+    {...props}
+  />
 );
 
 export type ArtifactActionProps = ComponentProps<typeof Button> & {
@@ -245,20 +289,18 @@ export interface ArtifactMenuProps {
   icon: LucideIcon;
   label: string;
   items: (ArtifactMenuItem | "separator")[];
-  heading?: string;
   align?: "start" | "end";
   className?: string;
 }
 
 /**
  * Icon-triggered dropdown for header actions (Download, More, …). Generic —
- * the trigger icon, heading and items are all passed in.
+ * the trigger icon and items are passed in. No heading: just the options.
  */
 export const ArtifactMenu = ({
   icon: Icon,
   label,
   items,
-  heading,
   align = "end",
   className,
 }: ArtifactMenuProps) => (
@@ -275,7 +317,6 @@ export const ArtifactMenu = ({
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align={align} className="w-44">
-      {heading ? <DropdownMenuLabel>{heading}</DropdownMenuLabel> : null}
       {items.map((it, i) =>
         it === "separator" ? (
           <DropdownMenuSeparator key={i} />

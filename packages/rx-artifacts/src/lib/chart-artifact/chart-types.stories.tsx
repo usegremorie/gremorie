@@ -23,6 +23,8 @@ import {
 import {
   Artifact,
   ArtifactActions,
+  ArtifactActionsCollapsed,
+  ArtifactActionsExpanded,
   ArtifactContent,
   ArtifactDescription,
   ArtifactFeaturedIcon,
@@ -140,17 +142,31 @@ function ChartCard({
           <ArtifactDescription>{description}</ArtifactDescription>
         </ArtifactHeading>
         <ArtifactActions>
-          <ArtifactMenu
-            icon={Download}
-            label="Download"
-            heading="Download"
-            items={[{ label: "Image (PNG)" }, { label: "Data (CSV)" }]}
-          />
-          <ArtifactMenu
-            icon={Ellipsis}
-            label="More actions"
-            items={[{ label: "Copy values" }, { label: "Save" }]}
-          />
+          <ArtifactActionsExpanded>
+            <ArtifactMenu
+              icon={Download}
+              label="Download"
+              items={[{ label: "Image (PNG)" }, { label: "Data (CSV)" }]}
+            />
+            <ArtifactMenu
+              icon={Ellipsis}
+              label="More actions"
+              items={[{ label: "Copy values" }, { label: "Save" }]}
+            />
+          </ArtifactActionsExpanded>
+          <ArtifactActionsCollapsed>
+            <ArtifactMenu
+              icon={Ellipsis}
+              label="Actions"
+              items={[
+                { label: "Image (PNG)" },
+                { label: "Data (CSV)" },
+                "separator",
+                { label: "Copy values" },
+                { label: "Save" },
+              ]}
+            />
+          </ArtifactActionsCollapsed>
         </ArtifactActions>
       </ArtifactHeader>
       <ArtifactContent>{children}</ArtifactContent>

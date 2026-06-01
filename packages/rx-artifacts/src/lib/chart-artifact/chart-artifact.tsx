@@ -26,6 +26,8 @@ import { useRef, useState } from "react";
 import {
   Artifact,
   ArtifactActions,
+  ArtifactActionsCollapsed,
+  ArtifactActionsExpanded,
   ArtifactContent,
   ArtifactDescription,
   ArtifactFeaturedIcon,
@@ -255,6 +257,7 @@ export function ChartArtifact({
         </ArtifactHeading>
 
         <ArtifactActions>
+          {/* The view toggle stays at every width. */}
           <ArtifactViewToggle
             value={view}
             onValueChange={(v) => setView(v as ChartArtifactView)}
@@ -263,29 +266,53 @@ export function ChartArtifact({
               { value: "table", icon: TableIcon, label: "Table view" },
             ]}
           />
-          <ArtifactMenu
-            icon={Download}
-            label="Download"
-            heading="Download"
-            items={[
-              { label: "Image (PNG)", icon: ImageDown, onSelect: downloadImage },
-              { label: "Data (CSV)", icon: Sheet, onSelect: downloadData },
-            ]}
-          />
-          <ArtifactMenu
-            icon={Ellipsis}
-            label="More actions"
-            items={[
-              { label: "Copy values", icon: Copy, onSelect: copyValues },
-              { label: "Save", icon: Bookmark, onSelect: () => onSave?.() },
-              "separator",
-              {
-                label: "Regenerate",
-                icon: RefreshCw,
-                onSelect: () => onRegenerate?.(),
-              },
-            ]}
-          />
+
+          {/* Wide card (≥448px): primary Download menu + secondary More menu. */}
+          <ArtifactActionsExpanded>
+            <ArtifactMenu
+              icon={Download}
+              label="Download"
+              items={[
+                { label: "Image (PNG)", icon: ImageDown, onSelect: downloadImage },
+                { label: "Data (CSV)", icon: Sheet, onSelect: downloadData },
+              ]}
+            />
+            <ArtifactMenu
+              icon={Ellipsis}
+              label="More actions"
+              items={[
+                { label: "Copy values", icon: Copy, onSelect: copyValues },
+                { label: "Save", icon: Bookmark, onSelect: () => onSave?.() },
+                "separator",
+                {
+                  label: "Regenerate",
+                  icon: RefreshCw,
+                  onSelect: () => onRegenerate?.(),
+                },
+              ]}
+            />
+          </ArtifactActionsExpanded>
+
+          {/* Narrow card (<448px): one More menu carrying every action. */}
+          <ArtifactActionsCollapsed>
+            <ArtifactMenu
+              icon={Ellipsis}
+              label="Actions"
+              items={[
+                { label: "Download image (PNG)", icon: ImageDown, onSelect: downloadImage },
+                { label: "Download data (CSV)", icon: Sheet, onSelect: downloadData },
+                "separator",
+                { label: "Copy values", icon: Copy, onSelect: copyValues },
+                { label: "Save", icon: Bookmark, onSelect: () => onSave?.() },
+                "separator",
+                {
+                  label: "Regenerate",
+                  icon: RefreshCw,
+                  onSelect: () => onRegenerate?.(),
+                },
+              ]}
+            />
+          </ArtifactActionsCollapsed>
         </ArtifactActions>
       </ArtifactHeader>
 

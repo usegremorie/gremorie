@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ChartArtifact, type ChartArtifactDatum } from "./chart-artifact";
+import {
+  ChartArtifact,
+  type ChartArtifactDatum,
+  type ChartArtifactProps,
+} from "./chart-artifact";
 
 /**
  * # ChartArtifact
@@ -194,4 +198,31 @@ export const TableFirst: Story = {
     ...Default.args,
     defaultView: "table",
   },
+};
+
+/**
+ * Responsive header — the actions adapt to the **card's own width** (container
+ * query, not the viewport). The view toggle is always visible; the Download
+ * menu shows in the header on a wide card (≥ 448px) and collapses into the
+ * single More menu on a narrow one (< 448px). Min card width is 280px.
+ */
+export const ResponsiveWidths: Story = {
+  parameters: { layout: "padded", controls: { disable: true } },
+  decorators: [(Story) => <Story />],
+  render: () => (
+    <div className="flex flex-col gap-6">
+      {[
+        { w: "20rem", label: "Narrow (320px) — actions collapse into More" },
+        { w: "28rem", label: "Threshold (448px) — Download expands into the header" },
+        { w: "48rem", label: "Wide (768px) — AI-chat default" },
+      ].map(({ w, label }) => (
+        <div key={w}>
+          <p className="mb-2 text-muted-foreground text-xs">{label}</p>
+          <div style={{ width: w, maxWidth: "100%" }}>
+            <ChartArtifact {...(Default.args as ChartArtifactProps)} />
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
 };
