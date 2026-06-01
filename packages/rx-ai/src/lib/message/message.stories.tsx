@@ -136,11 +136,11 @@ export const WithBranches: Story = {
     <Message from="assistant">
       <MessageBranch defaultBranch={0}>
         <MessageBranchContent>
-          <MessageContent>
+          <MessageContent key="a">
             Option A - short summary: ship Friday, delay migration, revisit
             auth.
           </MessageContent>
-          <MessageContent>
+          <MessageContent key="b">
             Option B - detailed plan: 1) Dashboard goes live Friday, 2)
             Migration moves to Q3, 3) Auth review next sprint.
           </MessageContent>

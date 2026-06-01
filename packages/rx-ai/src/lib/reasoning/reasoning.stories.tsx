@@ -96,9 +96,9 @@ export const CustomTrigger: Story = {
   render: () => (
     <Reasoning isStreaming={false} defaultOpen={true} duration={3}>
       <ReasoningTrigger>
-        <button className="text-sm font-medium underline-offset-4 hover:underline">
+        <span className="text-sm font-medium underline-offset-4 hover:underline">
           Show reasoning ↓
-        </button>
+        </span>
       </ReasoningTrigger>
       <ReasoningContent>Detailed reasoning content goes here.</ReasoningContent>
     </Reasoning>
