@@ -21,8 +21,8 @@ const features = [
     title: 'AI-native',
     description:
       'Knowledge layer plus MCP serves the corpus to LLMs. Your design system is legible to language models, not just designers.',
-    accent: 'var(--brand)',
-    accentSubtle: 'var(--brand-subtle)',
+    accent: 'var(--primary)',
+    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
   },
   {
     icon: GitBranch,

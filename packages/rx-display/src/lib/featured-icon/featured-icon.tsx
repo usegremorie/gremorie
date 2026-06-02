@@ -11,7 +11,7 @@ import { cn } from '@gremorie/rx-core';
  * Token-driven, so theme + dark mode flow through automatically. Pass a
  * Lucide `icon` (or any `children`); the container sizes the glyph.
  *
- * Variants: `color` (brand · gray · success · error) × `theme`
+ * Variants: `color` (primary · gray · success · error) × `theme`
  * (light · solid · outline) × `size` (sm · md · lg · xl) × `shape`
  * (square · circle).
  */
@@ -27,7 +27,7 @@ const featuredIconVariants = cva(
       },
       shape: { square: '', circle: 'rounded-full' },
       theme: { light: '', solid: '', outline: '' },
-      color: { brand: '', gray: '', success: '', error: '' },
+      color: { primary: '', gray: '', success: '', error: '' },
     },
     compoundVariants: [
       // Square corner radius scales with size.
@@ -36,16 +36,16 @@ const featuredIconVariants = cva(
       { shape: 'square', size: 'lg', class: 'rounded-xl' },
       { shape: 'square', size: 'xl', class: 'rounded-2xl' },
       // color × theme.
-      { color: 'brand', theme: 'light', class: 'bg-brand/10 text-brand' },
+      { color: 'primary', theme: 'light', class: 'bg-primary/10 text-primary' },
       {
-        color: 'brand',
+        color: 'primary',
         theme: 'solid',
-        class: 'bg-brand text-brand-foreground',
+        class: 'bg-primary text-primary-foreground',
       },
       {
-        color: 'brand',
+        color: 'primary',
         theme: 'outline',
-        class: 'border border-brand/30 text-brand',
+        class: 'border border-primary/30 text-primary',
       },
       {
         color: 'gray',
@@ -93,7 +93,7 @@ const featuredIconVariants = cva(
       size: 'md',
       shape: 'square',
       theme: 'light',
-      color: 'brand',
+      color: 'primary',
     },
   },
 );
@@ -117,7 +117,7 @@ function FeaturedIcon({
   return (
     <span
       data-slot="featured-icon"
-      data-color={color ?? 'brand'}
+      data-color={color ?? 'primary'}
       data-theme={theme ?? 'light'}
       className={cn(
         featuredIconVariants({ size, shape, theme, color }),

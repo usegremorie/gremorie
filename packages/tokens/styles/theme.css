@@ -1,5 +1,5 @@
 /*
- * Gremorie NG - Two-tier token system
+ * Gremorie two-tier token system.
  *
  * Layer 1 (Primitives): raw palette, base radii
  * Layer 2 (Semantics):  what components consume
@@ -7,7 +7,17 @@
  * Components NEVER consume primitives directly.
  * Editing primitives = rebrand global.
  * Editing semantics inside .dark = remap dark mode.
+ *
+ * Named themes (opt-in via data-theme on the root element) live in themes/.
+ * They are imported here at the top because CSS requires @import before other
+ * rules; custom properties resolve at use time, so referencing primitives
+ * defined further down is fine. Dark mode keeps the existing `.dark` class.
  */
+@import './themes/claude.css';
+@import './themes/chatgpt.css';
+@import './themes/gemini.css';
+@import './themes/perplexity.css';
+@import './themes/mistral.css';
 
 @theme {
   /* ─── 1. PRIMITIVES ───────────────────────────────── */
@@ -41,31 +51,11 @@
   --color-red-900: oklch(39.6% 0.141 25.723);
   --color-red-950: oklch(25.8% 0.092 26.042);
 
-  /*
-   * Brand palette (Gremorie - violet).
-   * Gremorie = grimoire + memory + Goetic demon Gremory.
-   * Violet anchors the esoteric/mystic identity without going full fantasy.
-   * Used as ACCENT on the landing and select doc surfaces - NOT as primary,
-   * so the DS keeps gray-900 as neutral primary for dogfood symmetry.
-   * Hue ~270 (violet), moderate chroma. Step values follow Tailwind cadence.
-   */
-  --color-brand-50: oklch(0.97 0.02 295);
-  --color-brand-100: oklch(0.94 0.04 290);
-  --color-brand-200: oklch(0.87 0.08 285);
-  --color-brand-300: oklch(0.78 0.13 280);
-  --color-brand-400: oklch(0.68 0.18 275);
-  --color-brand-500: oklch(0.6 0.22 272);
-  --color-brand-600: oklch(0.52 0.24 270);
-  --color-brand-700: oklch(0.45 0.22 268);
-  --color-brand-800: oklch(0.38 0.18 266);
-  --color-brand-900: oklch(0.3 0.14 264);
-  --color-brand-950: oklch(0.22 0.1 262);
-
   /* ─── Tailwind v4 default palettes (full primitive set) ─────
    * Imported verbatim from tailwindcss/theme.css so the project
    * OWNS the raw palette instead of leaning on Tailwind defaults.
-   * gray (neutralized), red (custom) and brand (violet) above are
-   * the project's intentional overrides and are NOT duplicated here.
+   * gray (neutralized) and red (custom) above are the project's
+   * intentional overrides and are NOT duplicated here.
    * Consume via semantics/chart tokens - components never read
    * primitives directly. */
   --color-orange-50: oklch(98% 0.016 73.684);
@@ -356,12 +346,33 @@
   --color-taupe-900: oklch(21.4% 0.009 43.1);
   --color-taupe-950: oklch(14.7% 0.004 49.3);
 
+  /* Clay: warm coral/terracotta, anchored on Claude's brand (~#D97757).
+     Used only by the Claude theme; tuned visually. */
+  --color-clay-50: oklch(0.97 0.012 50);
+  --color-clay-100: oklch(0.94 0.022 50);
+  --color-clay-200: oklch(0.88 0.04 49);
+  --color-clay-300: oklch(0.81 0.058 48);
+  --color-clay-400: oklch(0.74 0.075 48);
+  --color-clay-500: oklch(0.68 0.087 47);
+  --color-clay-600: oklch(0.61 0.09 46);
+  --color-clay-700: oklch(0.52 0.08 45);
+  --color-clay-800: oklch(0.43 0.065 44);
+  --color-clay-900: oklch(0.36 0.05 43);
+  --color-clay-950: oklch(0.26 0.035 42);
+
   /* Radii base */
   --radius-base: 0.625rem;
   --radius-sm: calc(var(--radius-base) * 0.6);
   --radius-md: calc(var(--radius-base) * 0.8);
   --radius-lg: var(--radius-base);
   --radius-xl: calc(var(--radius-base) * 1.4);
+
+  /* Typography, spacing, tracking (tweakcn contract). Themes may override. */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', monospace;
+  --spacing: 0.25rem;
+  --tracking-normal: 0em;
 }
 
 :root {
@@ -396,21 +407,34 @@
   --success: oklch(0.65 0.18 145);
   --success-foreground: var(--color-gray-50);
 
-  /*
-   * Semantic brand tokens. Components and surfaces opt-in via these.
-   * --brand           : main brand surface (filled buttons, hero halo, accents)
-   * --brand-foreground: text on brand surface
-   * --brand-subtle    : tinted background for icon tiles, soft halos (~12% alpha)
-   * --brand-muted     : low-emphasis brand text/border
-   */
-  --brand: var(--color-brand-600);
-  --brand-foreground: var(--color-gray-50);
-  --brand-subtle: color-mix(in oklch, var(--color-brand-500) 12%, transparent);
-  --brand-muted: var(--color-brand-700);
-
   --border: var(--color-gray-200);
   --input: var(--color-gray-200);
   --ring: var(--color-gray-400);
+
+  /* ─── Sidebar (shadcn/tweakcn) ───── */
+  --sidebar: var(--color-gray-50);
+  --sidebar-foreground: var(--color-gray-950);
+  --sidebar-primary: var(--color-gray-900);
+  --sidebar-primary-foreground: var(--color-gray-50);
+  --sidebar-accent: var(--color-gray-100);
+  --sidebar-accent-foreground: var(--color-gray-900);
+  --sidebar-border: var(--color-gray-200);
+  --sidebar-ring: var(--color-gray-400);
+
+  /* ─── Shadows (tweakcn contract; themes may override) ───── */
+  --shadow-2xs: 0 1px 2px 0 oklch(0 0 0 / 0.04);
+  --shadow-xs: 0 1px 3px 0 oklch(0 0 0 / 0.06);
+  --shadow-sm:
+    0 1px 3px 0 oklch(0 0 0 / 0.08), 0 1px 2px -1px oklch(0 0 0 / 0.08);
+  --shadow:
+    0 4px 6px -1px oklch(0 0 0 / 0.08), 0 2px 4px -2px oklch(0 0 0 / 0.08);
+  --shadow-md:
+    0 6px 10px -2px oklch(0 0 0 / 0.1), 0 2px 6px -2px oklch(0 0 0 / 0.08);
+  --shadow-lg:
+    0 12px 20px -4px oklch(0 0 0 / 0.1), 0 4px 8px -4px oklch(0 0 0 / 0.08);
+  --shadow-xl:
+    0 20px 28px -6px oklch(0 0 0 / 0.12), 0 8px 12px -6px oklch(0 0 0 / 0.1);
+  --shadow-2xl: 0 28px 56px -12px oklch(0 0 0 / 0.2);
 
   /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -449,18 +473,19 @@
   --success: oklch(0.7 0.18 145);
   --success-foreground: var(--color-gray-950);
 
-  /*
-   * Brand on dark: brighter hue so it pops on dark surfaces, subtle alpha
-   * tunes up because dark backgrounds eat ~30% of perceived chroma.
-   */
-  --brand: var(--color-brand-400);
-  --brand-foreground: var(--color-gray-950);
-  --brand-subtle: color-mix(in oklch, var(--color-brand-400) 18%, transparent);
-  --brand-muted: var(--color-brand-300);
-
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: var(--color-gray-500);
+
+  /* Sidebar (dark) */
+  --sidebar: var(--color-gray-900);
+  --sidebar-foreground: var(--color-gray-50);
+  --sidebar-primary: var(--color-gray-100);
+  --sidebar-primary-foreground: var(--color-gray-900);
+  --sidebar-accent: var(--color-gray-800);
+  --sidebar-accent-foreground: var(--color-gray-50);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: var(--color-gray-500);
 
   /* Chart series (dark) */
   --chart-1: oklch(0.488 0.243 264.376);
@@ -540,10 +565,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-brand-subtle: var(--brand-subtle);
-  --color-brand-muted: var(--brand-muted);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 /*
@@ -562,5 +591,9 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--border);
+  }
+  body {
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-normal);
   }
 }

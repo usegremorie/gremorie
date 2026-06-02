@@ -47,7 +47,7 @@ export function GET() {
   lines.push('   - Angular, complete edition: `npm i @gremorie/angular`');
   lines.push('     ```ts');
   lines.push(
-    '     // In src/styles.css: @import "tailwindcss"; @import "@gremorie/ng-core/styles/theme.css";',
+    '     // In src/styles.css: @import "tailwindcss"; @import "@gremorie/tokens/theme.css";',
   );
   lines.push('     import { Badge, Carousel } from "@gremorie/angular";');
   lines.push('     ```');

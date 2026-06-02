@@ -1,5 +1,5 @@
 {
-  "name": "@gremorie/tokens",
+  "name": "@gremorie/tokens-atlas",
   "version": "0.0.0",
   "private": true,
   "description": "Tokens - visual editor SPA for Gremorie token refinement. Note: rendering depends on @gremorie/react-* (Phase 5).",
