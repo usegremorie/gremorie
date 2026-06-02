@@ -53,5 +53,9 @@
     "tslib": "^2.3.0",
     "vaul": "^1.1.2"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
 }
