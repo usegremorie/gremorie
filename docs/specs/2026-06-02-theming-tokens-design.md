@@ -153,14 +153,14 @@ Tokens missing today that we add: the three font tokens, and any of
 Exact brand values are confirmed against official sources during
 implementation. Direction:
 
-| Theme              | Light primary direction | Font                     | Custom scale         |
-| ------------------ | ----------------------- | ------------------------ | -------------------- |
-| Gremorie (default) | Fumadocs neutral        | Fumadocs font            | none                 |
-| Claude             | clay (coral terracotta) | serif display, sans body | `--color-clay-*`     |
-| ChatGPT            | emerald/graphite, flat  | neutral sans             | none (emerald)       |
-| Gemini             | indigo to violet        | neutral sans             | none (indigo/violet) |
-| Perplexity         | teal/petrol             | neutral sans             | none (teal)          |
-| Mistral            | orange/flame            | neutral sans             | none (orange)        |
+| Theme              | Light primary direction | Font                     | Custom scale     |
+| ------------------ | ----------------------- | ------------------------ | ---------------- |
+| Gremorie (default) | Fumadocs neutral        | Fumadocs font            | none             |
+| Claude             | clay (coral terracotta) | serif display, sans body | `--color-clay-*` |
+| ChatGPT            | emerald/graphite, flat  | neutral sans             | none (emerald)   |
+| Gemini             | indigo                  | neutral sans             | none (indigo)    |
+| Perplexity         | teal/petrol             | neutral sans             | none (teal)      |
+| Mistral            | orange/flame            | neutral sans             | none (orange)    |
 
 Only Claude introduces a new primitive family (`clay`), a full 50..950 OKLCH
 scale in the same cadence as the existing customs. All other themes map to
