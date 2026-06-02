@@ -36,7 +36,7 @@
     "@gremorie/rx-display": ">=0.0.1",
     "@gremorie/rx-forms": ">=0.0.1",
     "@gremorie/rx-overlays": ">=0.0.1",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "lucide-react": "^0.547.0",
