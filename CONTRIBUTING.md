@@ -39,4 +39,5 @@ Open a GitHub Issue with reproduction steps, expected behavior, actual behavior,
 
 ## Code of conduct
 
-Be kind. Be precise. Disagree with ideas, not with people.
+Be kind. Be precise. Disagree with ideas, not with people. Participation is
+governed by our [Code of Conduct](./CODE_OF_CONDUCT.md).
