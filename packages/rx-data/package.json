@@ -36,7 +36,7 @@
     "react": "^18 || ^19"
   },
   "dependencies": {
-    "recharts": "^3.8.0",
+    "recharts": "^3.8.1",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
