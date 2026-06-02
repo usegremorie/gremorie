@@ -49,7 +49,7 @@ import {
 
 export type ChartArtifactDatum = Record<string, string | number>;
 export type ChartArtifactView = 'chart' | 'table';
-export type ChartArtifactColor = 'brand' | 'gray' | 'success' | 'error';
+export type ChartArtifactColor = 'primary' | 'gray' | 'success' | 'error';
 
 /** Which chart primitive the artifact embeds. */
 export type ChartArtifactType =
@@ -233,7 +233,7 @@ export function ChartArtifact({
   numberFormat,
   fileName = 'chart',
   icon = ChartColumn,
-  accent = 'brand',
+  accent = 'primary',
   className,
   onRegenerate,
   onSave,

@@ -79,7 +79,7 @@ export const ArtifactFeaturedIcon = ({
   ...props
 }: ArtifactFeaturedIconProps) => (
   <FeaturedIcon
-    color="brand"
+    color="primary"
     size="md"
     className={cn('shrink-0 self-start', className)}
     {...props}

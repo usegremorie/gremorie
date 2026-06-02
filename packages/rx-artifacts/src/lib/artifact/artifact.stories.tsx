@@ -57,7 +57,7 @@ import {
  * | Component | Key props |
  * | --- | --- |
  * | `Artifact` / `ArtifactHeader` / `ArtifactHeading` / `ArtifactContent` | `HTMLAttributes<HTMLDivElement>` |
- * | `ArtifactFeaturedIcon` | `FeaturedIcon` props (defaults `size="md"`, `color="brand"`) |
+ * | `ArtifactFeaturedIcon` | `FeaturedIcon` props (defaults `size="md"`, `color="primary"`) |
  * | `ArtifactAction` | `Button` props + `tooltip?`, `label?`, `icon?: LucideIcon` |
  * | `ArtifactViewToggle` | `value`, `onValueChange`, `options: { value, icon, label }[]` |
  * | `ArtifactMenu` | `icon`, `label`, `items: (MenuItem \| "separator")[]`, `heading?`, `align?` |
@@ -85,7 +85,7 @@ import {
  * | `--border` | Card border + header divider |
  * | `--foreground` | Title text |
  * | `--muted-foreground` | Description + action icons |
- * | `--brand` | `ArtifactFeaturedIcon` default badge color |
+ * | `--primary` | `ArtifactFeaturedIcon` default badge color |
  */
 const meta = {
   title: 'Artifacts/Artifact',
@@ -146,7 +146,7 @@ export const WithViewToggleAndMenus: Story = {
       return (
         <Artifact>
           <ArtifactHeader>
-            <ArtifactFeaturedIcon icon={CodeIcon} color="brand" />
+            <ArtifactFeaturedIcon icon={CodeIcon} color="primary" />
             <ArtifactHeading>
               <ArtifactTitle>Component snippet</ArtifactTitle>
               <ArtifactDescription>

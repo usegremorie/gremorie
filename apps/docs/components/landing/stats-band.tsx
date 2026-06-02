@@ -19,8 +19,8 @@ const qualities = [
     icon: Sparkles,
     label: 'AI-native',
     description: 'Knowledge layer',
-    accent: 'var(--brand)',
-    accentSubtle: 'var(--brand-subtle)',
+    accent: 'var(--primary)',
+    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
   },
   {
     icon: ServerCog,
