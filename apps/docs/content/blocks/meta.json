@@ -4,11 +4,13 @@
   "description": "Production-ready compositions",
   "icon": "LayoutGrid",
   "pages": [
-    "overview",
+    "index",
+    "---Application---",
     "sign-in",
     "dashboard",
     "chat-surface",
     "settings-form",
+    "---Marketing & states---",
     "marketing-hero",
     "empty-state"
   ]

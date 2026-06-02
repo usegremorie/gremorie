@@ -3,7 +3,7 @@ title: Button
 description: Primary click target with six visual variants, eight size presets (including icon-only), and an `asChild` escape hatch for polymorphic rendering.
 ---
 
-import { ButtonPreview } from "@/components/preview/forms/forms";
+import { ButtonPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ When the action needs to render as a link, list item, or any non-button host, se
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-button
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-button
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-button
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-button
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-button ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-button ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-button ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-button ```</Tab>
 </Tabs>
 
 ## Usage
@@ -65,12 +49,12 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Button>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `variant` | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"default"` | Visual treatment. |
-| `size` | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Footprint preset. Icon sizes are square (`size-*`) with no horizontal padding. |
-| `asChild` | `boolean` | `false` | When `true`, renders via Radix `Slot.Root`; the first child receives all button styles, props and events. |
-| `disabled` | `boolean` | `false` | Standard HTML attribute. Adds `pointer-events-none` and `opacity-50`. |
+| Prop       | Type                                                                                 | Default     | Description                                                                                               |
+| ---------- | ------------------------------------------------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `variant`  | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"`        | `"default"` | Visual treatment.                                                                                         |
+| `size`     | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Footprint preset. Icon sizes are square (`size-*`) with no horizontal padding.                            |
+| `asChild`  | `boolean`                                                                            | `false`     | When `true`, renders via Radix `Slot.Root`; the first child receives all button styles, props and events. |
+| `disabled` | `boolean`                                                                            | `false`     | Standard HTML attribute. Adds `pointer-events-none` and `opacity-50`.                                     |
 
 Extends all `React.ComponentProps<"button">`. Forwards a `data-slot="button"`, `data-variant`, and `data-size` for downstream composition (e.g. `ButtonGroup`, `InputGroup`).
 
@@ -79,11 +63,11 @@ Extends all `React.ComponentProps<"button">`. Forwards a `data-slot="button"`, `
 Exported CVA factory so other primitives can reuse the button surface without rendering an actual `<button>`. `Calendar` nav arrows and `InputGroupButton` consume it directly.
 
 ```tsx
-import { buttonVariants } from "@gremorie/rx-forms";
+import { buttonVariants } from '@gremorie/rx-forms';
 
-<a className={buttonVariants({ variant: "outline", size: "sm" })} href="/docs">
+<a className={buttonVariants({ variant: 'outline', size: 'sm' })} href="/docs">
   Read more
-</a>
+</a>;
 ```
 
 ## Composition
@@ -114,12 +98,12 @@ Showcase every variant for visual reference. `default` for primary actions, `des
 Drop an icon as a child. CSS auto-sizes it and tightens the horizontal padding via `has-[>svg]:px-3`.
 
 ```tsx
-import { Download } from "lucide-react";
+import { Download } from 'lucide-react';
 
 <Button>
   <Download />
   Download report
-</Button>
+</Button>;
 ```
 
 ### Icon-only button
@@ -127,11 +111,11 @@ import { Download } from "lucide-react";
 Use `size="icon"` (or `icon-xs`, `icon-sm`, `icon-lg`) for square buttons. Always pair with an `aria-label` so screen readers announce the action.
 
 ```tsx
-import { Trash2 } from "lucide-react";
+import { Trash2 } from 'lucide-react';
 
 <Button size="icon" variant="ghost" aria-label="Delete row">
   <Trash2 />
-</Button>
+</Button>;
 ```
 
 ### `asChild` for navigation
@@ -139,11 +123,11 @@ import { Trash2 } from "lucide-react";
 Render the button styles onto a `<Link>` or `<a>` so the element semantics match the destination (`router.push` on click, working middle-click, SEO-friendly href).
 
 ```tsx
-import Link from "next/link";
+import Link from 'next/link';
 
 <Button asChild>
   <Link href="/dashboard">Open dashboard</Link>
-</Button>
+</Button>;
 ```
 
 ## Accessibility

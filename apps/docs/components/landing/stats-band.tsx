@@ -1,10 +1,10 @@
-import { Award, ServerCog, Sparkles } from "lucide-react";
-import { Separator } from "@gremorie/rx-display";
+import { Separator } from '@gremorie/rx-display';
+import { Award, ServerCog, Sparkles } from 'lucide-react';
 
 const numbers = [
-  { value: "85", label: "primitives" },
-  { value: "8", label: "categories" },
-  { value: "25+", label: "corpus articles" },
+  { value: '85', label: 'primitives' },
+  { value: '8', label: 'categories' },
+  { value: '25+', label: 'corpus articles' },
 ];
 
 /**
@@ -17,24 +17,24 @@ const numbers = [
 const qualities = [
   {
     icon: Sparkles,
-    label: "AI-native",
-    description: "Knowledge layer",
-    accent: "var(--brand)",
-    accentSubtle: "var(--brand-subtle)",
+    label: 'AI-native',
+    description: 'Knowledge layer',
+    accent: 'var(--brand)',
+    accentSubtle: 'var(--brand-subtle)',
   },
   {
     icon: ServerCog,
-    label: "MCP server",
-    description: "Tool included",
-    accent: "var(--chart-2)",
-    accentSubtle: "color-mix(in oklch, var(--chart-2) 14%, transparent)",
+    label: 'MCP server',
+    description: 'Tool included',
+    accent: 'var(--chart-2)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-2) 14%, transparent)',
   },
   {
     icon: Award,
-    label: "MIT licensed",
-    description: "Open source",
-    accent: "var(--chart-4)",
-    accentSubtle: "color-mix(in oklch, var(--chart-4) 14%, transparent)",
+    label: 'MIT licensed',
+    description: 'Open source',
+    accent: 'var(--chart-4)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-4) 14%, transparent)',
   },
 ];
 

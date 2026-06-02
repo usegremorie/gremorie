@@ -1,13 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const SHORTCUTS = [
-  { keys: "Mod+Shift+L", action: "Toggle light/dark" },
-  { keys: "Mod+S",       action: "Apply changes" },
-  { keys: "?",           action: "Show this sheet" },
-  { keys: "Esc",         action: "Close modal" }
+  { keys: 'Mod+Shift+L', action: 'Toggle light/dark' },
+  { keys: 'Mod+S', action: 'Apply changes' },
+  { keys: '?', action: 'Show this sheet' },
+  { keys: 'Esc', action: 'Close modal' },
 ];
 
-export function CheatSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function CheatSheet({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

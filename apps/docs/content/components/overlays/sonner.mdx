@@ -1,9 +1,9 @@
 ---
 title: Sonner
-description: "Transient toast notifications built on sonner. Mount the Toaster once at the root and fire toast() from anywhere."
+description: 'Transient toast notifications built on sonner. Mount the Toaster once at the root and fire toast() from anywhere.'
 ---
 
-import { SonnerPreview } from "@/components/preview/overlays/overlays";
+import { SonnerPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -22,26 +22,10 @@ The Gremorie `Toaster` follows the document's `.dark` class automatically and sh
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-sonner
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-sonner
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-sonner
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-sonner
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-sonner ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-sonner ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-sonner ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-sonner ```</Tab>
 </Tabs>
 
 ## Usage
@@ -52,7 +36,7 @@ Mount the `Toaster` once at the root of your application:
 
 ```tsx
 // app/layout.tsx
-import { Toaster } from "@gremorie/rx-overlays";
+import { Toaster } from '@gremorie/rx-overlays';
 
 export default function RootLayout({ children }) {
   return (
@@ -69,16 +53,16 @@ export default function RootLayout({ children }) {
 Then fire toasts from any client component:
 
 ```tsx
-"use client";
-import { Button } from "@gremorie/rx-forms";
-import { toast } from "@gremorie/rx-overlays";
+'use client';
+import { Button } from '@gremorie/rx-forms';
+import { toast } from '@gremorie/rx-overlays';
 
 export function SaveButton() {
   return (
     <Button
       onClick={() =>
-        toast.success("Saved", {
-          description: "Your changes are live.",
+        toast.success('Saved', {
+          description: 'Your changes are live.',
         })
       }
     >
@@ -87,6 +71,7 @@ export function SaveButton() {
   );
 }
 ```
+
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
@@ -101,17 +86,17 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Wraps sonner's `Toaster` with KDS tokens and icons. Mount once per app.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `theme` | `"light" \| "dark" \| "system"` | auto-detected from `.dark` class | Toast theme. Pass explicitly to override the document-class detection. |
-| `position` | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right" \| "top-center" \| "bottom-center"` | `"bottom-right"` | Where toasts stack. |
-| `richColors` | `boolean` | `false` | Use color-coded backgrounds for `success`, `error`, `warning`, `info`. |
-| `expand` | `boolean` | `false` | Always expand the stack instead of collapsing on hover. |
-| `duration` | `number` | `4000` | Default toast lifetime in milliseconds. |
-| `closeButton` | `boolean` | `false` | Render a close button on every toast. |
-| `gap` | `number` | `14` | Vertical gap between stacked toasts. |
-| `offset` | `string \| number` | `32` | Distance from the viewport edge. |
-| `visibleToasts` | `number` | `3` | Max toasts visible at once. |
+| Prop            | Type                                                                                              | Default                          | Description                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------------- |
+| `theme`         | `"light" \| "dark" \| "system"`                                                                   | auto-detected from `.dark` class | Toast theme. Pass explicitly to override the document-class detection. |
+| `position`      | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right" \| "top-center" \| "bottom-center"` | `"bottom-right"`                 | Where toasts stack.                                                    |
+| `richColors`    | `boolean`                                                                                         | `false`                          | Use color-coded backgrounds for `success`, `error`, `warning`, `info`. |
+| `expand`        | `boolean`                                                                                         | `false`                          | Always expand the stack instead of collapsing on hover.                |
+| `duration`      | `number`                                                                                          | `4000`                           | Default toast lifetime in milliseconds.                                |
+| `closeButton`   | `boolean`                                                                                         | `false`                          | Render a close button on every toast.                                  |
+| `gap`           | `number`                                                                                          | `14`                             | Vertical gap between stacked toasts.                                   |
+| `offset`        | `string \| number`                                                                                | `32`                             | Distance from the viewport edge.                                       |
+| `visibleToasts` | `number`                                                                                          | `3`                              | Max toasts visible at once.                                            |
 
 All other sonner `ToasterProps` are forwarded.
 
@@ -119,36 +104,36 @@ All other sonner `ToasterProps` are forwarded.
 
 Default toast. Returns a toast id you can pass to `toast.dismiss()`.
 
-| Option | Type | Description |
-|---|---|---|
-| `description` | `string \| ReactNode` | Secondary line below the message. |
-| `action` | `{ label: string; onClick: () => void }` | Single inline action button. |
-| `cancel` | `{ label: string; onClick?: () => void }` | Secondary cancel/undo button. |
-| `duration` | `number` | Override the default duration. |
-| `id` | `string \| number` | Custom id for later updates or dismissal. |
-| `onDismiss` | `(toast) => void` | Fired when the toast is dismissed. |
-| `onAutoClose` | `(toast) => void` | Fired when the toast auto-closes. |
+| Option        | Type                                      | Description                               |
+| ------------- | ----------------------------------------- | ----------------------------------------- |
+| `description` | `string \| ReactNode`                     | Secondary line below the message.         |
+| `action`      | `{ label: string; onClick: () => void }`  | Single inline action button.              |
+| `cancel`      | `{ label: string; onClick?: () => void }` | Secondary cancel/undo button.             |
+| `duration`    | `number`                                  | Override the default duration.            |
+| `id`          | `string \| number`                        | Custom id for later updates or dismissal. |
+| `onDismiss`   | `(toast) => void`                         | Fired when the toast is dismissed.        |
+| `onAutoClose` | `(toast) => void`                         | Fired when the toast auto-closes.         |
 
 ### Typed shortcuts
 
-| Method | Icon | When to use |
-|---|---|---|
-| `toast.success(message, options)` | `CircleCheck` | Positive confirmation. |
-| `toast.error(message, options)` | `OctagonX` | Failure that the user should know about. |
-| `toast.warning(message, options)` | `TriangleAlert` | Risky state that is not yet a failure. |
-| `toast.info(message, options)` | `Info` | Neutral system message. |
-| `toast.loading(message, options)` | `Loader2` (animated) | Pending operation. Pair with `toast.success` on resolution. |
-| `toast.promise(promise, opts)` | `Loader2` then resolved icon | Auto-transitions loading → success/error from a Promise. |
-| `toast.custom(jsx, options)` | - | Fully custom toast body. |
-| `toast.dismiss(id?)` | - | Dismiss a specific toast or all. |
+| Method                            | Icon                         | When to use                                                 |
+| --------------------------------- | ---------------------------- | ----------------------------------------------------------- |
+| `toast.success(message, options)` | `CircleCheck`                | Positive confirmation.                                      |
+| `toast.error(message, options)`   | `OctagonX`                   | Failure that the user should know about.                    |
+| `toast.warning(message, options)` | `TriangleAlert`              | Risky state that is not yet a failure.                      |
+| `toast.info(message, options)`    | `Info`                       | Neutral system message.                                     |
+| `toast.loading(message, options)` | `Loader2` (animated)         | Pending operation. Pair with `toast.success` on resolution. |
+| `toast.promise(promise, opts)`    | `Loader2` then resolved icon | Auto-transitions loading → success/error from a Promise.    |
+| `toast.custom(jsx, options)`      | -                            | Fully custom toast body.                                    |
+| `toast.dismiss(id?)`              | -                            | Dismiss a specific toast or all.                            |
 
 `toast.promise` signature:
 
 ```tsx
 toast.promise(savePost(), {
-  loading: "Saving...",
+  loading: 'Saving...',
   success: (data) => `Saved post #${data.id}`,
-  error: "Save failed",
+  error: 'Save failed',
 });
 ```
 
@@ -166,10 +151,10 @@ toast.promise(savePost(), {
 The canonical "saved with undo" pattern.
 
 ```tsx
-toast.success("Item archived", {
-  description: "You can restore it within 30 days.",
+toast.success('Item archived', {
+  description: 'You can restore it within 30 days.',
   action: {
-    label: "Undo",
+    label: 'Undo',
     onClick: () => restore(item.id),
   },
 });
@@ -181,9 +166,9 @@ Drive loading, success, and error states from a single call.
 
 ```tsx
 toast.promise(api.publish(post), {
-  loading: "Publishing post...",
+  loading: 'Publishing post...',
   success: (post) => `${post.title} is live`,
-  error: "Publish failed - retry?",
+  error: 'Publish failed - retry?',
 });
 ```
 
@@ -200,11 +185,11 @@ Top-center stack with semantic backgrounds.
 Disable auto-close for failures that require user attention.
 
 ```tsx
-toast.error("Connection lost", {
-  description: "Reconnecting...",
+toast.error('Connection lost', {
+  description: 'Reconnecting...',
   duration: Infinity,
   action: {
-    label: "Retry now",
+    label: 'Retry now',
     onClick: () => reconnect(),
   },
 });

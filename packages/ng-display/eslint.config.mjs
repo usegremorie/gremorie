@@ -34,7 +34,7 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['gn-card', 'gn-badge'],
+          prefix: ['gn-card', 'gn-badge', 'gn-carousel'],
           style: 'kebab-case',
         },
       ],

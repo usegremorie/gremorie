@@ -3,7 +3,7 @@ title: Input OTP
 description: Segmented one-time-password input built on the `input-otp` library, with paste-to-fill, autocomplete, and inter-slot focus management.
 ---
 
-import { InputOTPPreview } from "@/components/preview/forms/forms";
+import { InputOTPPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use it for 2FA, email verification, SMS confirmation - any ephemeral code the us
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-input-otp
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-input-otp
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-input-otp
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-input-otp
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-input-otp ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-input-otp ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-input-otp ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-input-otp ```</Tab>
 </Tabs>
 
 ## Usage
@@ -80,14 +64,14 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<InputOTP>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `maxLength` | `number` | - | Total number of slots. Required. |
-| `value` | `string` | - | Controlled value. |
-| `onChange` | `(value: string) => void` | - | Fires on every keystroke and paste. |
-| `pattern` | `RegExp \| string` | - | Restrict allowed characters (e.g. `^[0-9]+$` for digits only). |
-| `containerClassName` | `string` | - | Classes applied to the wrapper row, not the underlying input. |
-| `className` | `string` | - | Classes applied to the underlying input (kept visually hidden). |
+| Prop                 | Type                      | Default | Description                                                     |
+| -------------------- | ------------------------- | ------- | --------------------------------------------------------------- |
+| `maxLength`          | `number`                  | -       | Total number of slots. Required.                                |
+| `value`              | `string`                  | -       | Controlled value.                                               |
+| `onChange`           | `(value: string) => void` | -       | Fires on every keystroke and paste.                             |
+| `pattern`            | `RegExp \| string`        | -       | Restrict allowed characters (e.g. `^[0-9]+$` for digits only).  |
+| `containerClassName` | `string`                  | -       | Classes applied to the wrapper row, not the underlying input.   |
+| `className`          | `string`                  | -       | Classes applied to the underlying input (kept visually hidden). |
 
 Extends all `React.ComponentProps<typeof OTPInput>` from `input-otp`. Renders with `autocomplete="one-time-code"` by default so the browser offers to autofill SMS codes on supported devices.
 
@@ -99,9 +83,9 @@ Extends all `React.ComponentProps<"div">`.
 
 ### `<InputOTPSlot>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `index` | `number` | - | Position in the underlying value (0-based). Required. |
+| Prop    | Type     | Default | Description                                           |
+| ------- | -------- | ------- | ----------------------------------------------------- |
+| `index` | `number` | -       | Position in the underlying value (0-based). Required. |
 
 Reads the active char, focus state, and fake caret position from `OTPInputContext` and renders the corresponding visual.
 

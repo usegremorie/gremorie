@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import { useState } from "react";
 import {
   Badge,
   Card,
@@ -8,21 +7,22 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { Button, Input, Label } from "@gremorie/rx-forms";
-import { RotateCcw } from "lucide-react";
+} from '@gremorie/rx-display';
+import { Button, Input, Label } from '@gremorie/rx-forms';
+import { RotateCcw } from 'lucide-react';
+import { useState } from 'react';
 
-type Op = "+" | "-" | "*" | "/";
+type Op = '+' | '-' | '*' | '/';
 
 function compute(a: number, b: number, op: Op): number {
   switch (op) {
-    case "+":
+    case '+':
       return a + b;
-    case "-":
+    case '-':
       return a - b;
-    case "*":
+    case '*':
       return a * b;
-    case "/":
+    case '/':
       return b === 0 ? NaN : a / b;
   }
 }
@@ -30,7 +30,7 @@ function compute(a: number, b: number, op: Op): number {
 export function Calculator() {
   const [a, setA] = useState(48);
   const [b, setB] = useState(12);
-  const [op, setOp] = useState<Op>("+");
+  const [op, setOp] = useState<Op>('+');
   const result = compute(a, b, op);
 
   return (
@@ -60,11 +60,11 @@ export function Calculator() {
           <div className="flex flex-col gap-2">
             <Label htmlFor="calc-op">Operator</Label>
             <div id="calc-op" className="flex gap-1">
-              {(["+", "-", "*", "/"] as Op[]).map((o) => (
+              {(['+', '-', '*', '/'] as Op[]).map((o) => (
                 <Button
                   key={o}
                   size="sm"
-                  variant={op === o ? "default" : "outline"}
+                  variant={op === o ? 'default' : 'outline'}
                   onClick={() => setOp(o)}
                   className="flex-1 font-mono"
                   type="button"
@@ -89,7 +89,7 @@ export function Calculator() {
         <div className="flex items-center justify-between gap-3 rounded-lg border bg-muted/30 px-4 py-3">
           <span className="text-sm text-muted-foreground">Result</span>
           <span className="text-2xl font-mono font-semibold">
-            {Number.isNaN(result) ? "-" : result}
+            {Number.isNaN(result) ? '-' : result}
           </span>
         </div>
         <Button
@@ -98,7 +98,7 @@ export function Calculator() {
           onClick={() => {
             setA(0);
             setB(0);
-            setOp("+");
+            setOp('+');
           }}
           className="self-start"
         >

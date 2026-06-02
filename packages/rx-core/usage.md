@@ -1,16 +1,16 @@
 ---
-whenToUse: "Any React project consuming Gremorie components - provides the cn() utility for merging class names with Tailwind merge."
-whenNotToUse: "Plain class concatenation when no Tailwind conflict resolution is needed - a simple template literal is enough."
+whenToUse: 'Any React project consuming Gremorie components - provides the cn() utility for merging class names with Tailwind merge.'
+whenNotToUse: 'Plain class concatenation when no Tailwind conflict resolution is needed - a simple template literal is enough.'
 bestPractices:
-  - "Use cn() inside React components when composing className from props with conditional or array inputs."
-  - "Keep rx-core small - new utilities only when they are genuinely cross-category."
+  - 'Use cn() inside React components when composing className from props with conditional or array inputs.'
+  - 'Keep rx-core small - new utilities only when they are genuinely cross-category.'
 antipatterns:
-  - "Importing clsx + twMerge directly instead of cn() - defeats the point of having a shared helper."
+  - 'Importing clsx + twMerge directly instead of cn() - defeats the point of having a shared helper.'
 api:
   inputs: []
   outputs: []
 examples:
-  - title: "Compose class names"
+  - title: 'Compose class names'
     code: |
       import { cn } from '@gremorie/rx-core';
 

@@ -2,26 +2,26 @@
 title: ToggleGroup
 description: Conjunto coordenado de Toggles — alinhamento, formatação combinada, filtros.
 component: ToggleGroup
-importPath: "@kalvner/kds/forms/toggle-group"
+importPath: '@kalvner/kds/forms/toggle-group'
 status: stable
 ---
 
-import { ToggleGroup, ToggleGroupItem } from "@kalvner/kds/forms/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from '@kalvner/kds/forms/toggle-group';
 import {
   AlignCenter,
   AlignLeft,
   AlignRight,
   Bold,
   Italic,
-  Underline
-} from "lucide-react";
+  Underline,
+} from 'lucide-react';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -41,10 +41,21 @@ form-bound (label-led, captura no submit). ToggleGroup é stateful UI
     <CardDescription>Alinhamento de texto — single, outline.</CardDescription>
   </CardHeader>
   <CardContent>
-    <ToggleGroup type="single" defaultValue="left" variant="outline" aria-label="Alinhamento">
-      <ToggleGroupItem value="left" aria-label="Esquerda"><AlignLeft /></ToggleGroupItem>
-      <ToggleGroupItem value="center" aria-label="Centro"><AlignCenter /></ToggleGroupItem>
-      <ToggleGroupItem value="right" aria-label="Direita"><AlignRight /></ToggleGroupItem>
+    <ToggleGroup
+      type="single"
+      defaultValue="left"
+      variant="outline"
+      aria-label="Alinhamento"
+    >
+      <ToggleGroupItem value="left" aria-label="Esquerda">
+        <AlignLeft />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Centro">
+        <AlignCenter />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="right" aria-label="Direita">
+        <AlignRight />
+      </ToggleGroupItem>
     </ToggleGroup>
   </CardContent>
 </Card>
@@ -63,7 +74,7 @@ em "segmented control"; com `spacing>0` viram chips separados.
 ## Usage
 
 ```tsx
-import { ToggleGroup, ToggleGroupItem } from "@kalvner/kds/forms/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from '@kalvner/kds/forms/toggle-group';
 
 export function Alignment({ value, onValueChange }) {
   return (
@@ -74,9 +85,15 @@ export function Alignment({ value, onValueChange }) {
       variant="outline"
       aria-label="Alinhamento"
     >
-      <ToggleGroupItem value="left" aria-label="Esquerda">L</ToggleGroupItem>
-      <ToggleGroupItem value="center" aria-label="Centro">C</ToggleGroupItem>
-      <ToggleGroupItem value="right" aria-label="Direita">R</ToggleGroupItem>
+      <ToggleGroupItem value="left" aria-label="Esquerda">
+        L
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Centro">
+        C
+      </ToggleGroupItem>
+      <ToggleGroupItem value="right" aria-label="Direita">
+        R
+      </ToggleGroupItem>
     </ToggleGroup>
   );
 }
@@ -86,24 +103,24 @@ export function Alignment({ value, onValueChange }) {
 
 ### ToggleGroup (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `type` | `'single' \| 'multiple'` | — | Modo (radio-like vs. checkbox-like). |
-| `value` / `defaultValue` | `string \| string[]` | — | Valor(es) ativo(s). |
-| `onValueChange` | `(v) => void` | — | Callback. |
-| `variant` | `'default' \| 'outline'` | `'default'` | Propaga aos Items. |
-| `size` | `'sm' \| 'default' \| 'lg'` | `'default'` | Propaga aos Items. |
-| `spacing` | `number` | `0` | Gap entre items. `0` = segmented; `>0` = chips. |
-| `disabled` | `boolean` | `false` | Bloqueia toda a árvore. |
-| `aria-label` | `string` | — | Obrigatório (descreve o grupo). |
+| Prop                     | Tipo                        | Default     | Descrição                                       |
+| ------------------------ | --------------------------- | ----------- | ----------------------------------------------- |
+| `type`                   | `'single' \| 'multiple'`    | —           | Modo (radio-like vs. checkbox-like).            |
+| `value` / `defaultValue` | `string \| string[]`        | —           | Valor(es) ativo(s).                             |
+| `onValueChange`          | `(v) => void`               | —           | Callback.                                       |
+| `variant`                | `'default' \| 'outline'`    | `'default'` | Propaga aos Items.                              |
+| `size`                   | `'sm' \| 'default' \| 'lg'` | `'default'` | Propaga aos Items.                              |
+| `spacing`                | `number`                    | `0`         | Gap entre items. `0` = segmented; `>0` = chips. |
+| `disabled`               | `boolean`                   | `false`     | Bloqueia toda a árvore.                         |
+| `aria-label`             | `string`                    | —           | Obrigatório (descreve o grupo).                 |
 
 ### ToggleGroupItem
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `string` | — | Identificador único. |
-| `disabled` | `boolean` | `false` | Bloqueia este item. |
-| `aria-label` | `string` | — | Obrigatório quando só ícone. |
+| Prop         | Tipo      | Default | Descrição                    |
+| ------------ | --------- | ------- | ---------------------------- |
+| `value`      | `string`  | —       | Identificador único.         |
+| `disabled`   | `boolean` | `false` | Bloqueia este item.          |
+| `aria-label` | `string`  | —       | Obrigatório quando só ícone. |
 
 ## Subcomponents
 
@@ -119,10 +136,21 @@ export function Alignment({ value, onValueChange }) {
       <CardDescription>Exclusivo — um item ativo por vez.</CardDescription>
     </CardHeader>
     <CardContent>
-      <ToggleGroup type="single" defaultValue="center" variant="outline" aria-label="single">
-        <ToggleGroupItem value="left" aria-label="Esquerda"><AlignLeft /></ToggleGroupItem>
-        <ToggleGroupItem value="center" aria-label="Centro"><AlignCenter /></ToggleGroupItem>
-        <ToggleGroupItem value="right" aria-label="Direita"><AlignRight /></ToggleGroupItem>
+      <ToggleGroup
+        type="single"
+        defaultValue="center"
+        variant="outline"
+        aria-label="single"
+      >
+        <ToggleGroupItem value="left" aria-label="Esquerda">
+          <AlignLeft />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="center" aria-label="Centro">
+          <AlignCenter />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="right" aria-label="Direita">
+          <AlignRight />
+        </ToggleGroupItem>
       </ToggleGroup>
     </CardContent>
   </Card>
@@ -132,10 +160,20 @@ export function Alignment({ value, onValueChange }) {
       <CardDescription>Combinável — bold + italic juntos.</CardDescription>
     </CardHeader>
     <CardContent>
-      <ToggleGroup type="multiple" defaultValue={["bold"]} aria-label="multiple">
-        <ToggleGroupItem value="bold" aria-label="Negrito"><Bold /></ToggleGroupItem>
-        <ToggleGroupItem value="italic" aria-label="Itálico"><Italic /></ToggleGroupItem>
-        <ToggleGroupItem value="underline" aria-label="Sublinhado"><Underline /></ToggleGroupItem>
+      <ToggleGroup
+        type="multiple"
+        defaultValue={['bold']}
+        aria-label="multiple"
+      >
+        <ToggleGroupItem value="bold" aria-label="Negrito">
+          <Bold />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="italic" aria-label="Itálico">
+          <Italic />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="underline" aria-label="Sublinhado">
+          <Underline />
+        </ToggleGroupItem>
       </ToggleGroup>
     </CardContent>
   </Card>
@@ -143,12 +181,12 @@ export function Alignment({ value, onValueChange }) {
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| Item `data-state=off` | Aparência neutra. |
-| Item `data-state=on` | Background `accent`, foreground `accent-foreground`. |
-| `disabled` | Toda a árvore bloqueada. |
-| `spacing=0` + `outline` | Borders compartilhados (segmented control). |
+| Estado                  | Comportamento                                        |
+| ----------------------- | ---------------------------------------------------- |
+| Item `data-state=off`   | Aparência neutra.                                    |
+| Item `data-state=on`    | Background `accent`, foreground `accent-foreground`. |
+| `disabled`              | Toda a árvore bloqueada.                             |
+| `spacing=0` + `outline` | Borders compartilhados (segmented control).          |
 
 ## Composition
 
@@ -157,13 +195,21 @@ Em barras de formatação, separe grupos relacionados com pequeno gap:
 ```tsx
 <div className="flex items-center gap-2">
   <ToggleGroup type="multiple" aria-label="Estilo">
-    <ToggleGroupItem value="bold"><Bold /></ToggleGroupItem>
-    <ToggleGroupItem value="italic"><Italic /></ToggleGroupItem>
+    <ToggleGroupItem value="bold">
+      <Bold />
+    </ToggleGroupItem>
+    <ToggleGroupItem value="italic">
+      <Italic />
+    </ToggleGroupItem>
   </ToggleGroup>
   <Separator orientation="vertical" className="h-6" />
   <ToggleGroup type="single" aria-label="Alinhamento">
-    <ToggleGroupItem value="left"><AlignLeft /></ToggleGroupItem>
-    <ToggleGroupItem value="center"><AlignCenter /></ToggleGroupItem>
+    <ToggleGroupItem value="left">
+      <AlignLeft />
+    </ToggleGroupItem>
+    <ToggleGroupItem value="center">
+      <AlignCenter />
+    </ToggleGroupItem>
   </ToggleGroup>
 </div>
 ```
@@ -193,12 +239,12 @@ Em barras de formatação, separe grupos relacionados com pequeno gap:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Root é `group`; `type="single"` faz items virarem `role="radio"` num roving group. |
-| **Keyboard** | `←` `→` (`↑` `↓`) navegam entre items, `Space`/`Enter` alterna. |
-| **Focus** | Roving — só um item no tab order de cada vez. |
-| **Label** | `aria-label` no Root + por item (se ícone-only) — ambos obrigatórios. |
+| Concern      | Comportamento                                                                      |
+| ------------ | ---------------------------------------------------------------------------------- |
+| **Roles**    | Root é `group`; `type="single"` faz items virarem `role="radio"` num roving group. |
+| **Keyboard** | `←` `→` (`↑` `↓`) navegam entre items, `Space`/`Enter` alterna.                    |
+| **Focus**    | Roving — só um item no tab order de cada vez.                                      |
+| **Label**    | `aria-label` no Root + por item (se ícone-only) — ambos obrigatórios.              |
 
 ## Related
 

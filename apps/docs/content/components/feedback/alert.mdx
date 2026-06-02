@@ -1,11 +1,11 @@
 ---
 title: Alert
-description: "Persistent in-flow message anchored to page content with an icon, title, and description."
+description: 'Persistent in-flow message anchored to page content with an icon, title, and description.'
 ---
 
-import { AlertPreview } from "@/components/preview/feedback/feedback";
-import { Alert, AlertTitle, AlertDescription } from "@gremorie/rx-feedback";
-import { Info, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { AlertPreview } from '@/components/preview/feedback/feedback';
+import { Alert, AlertTitle, AlertDescription } from '@gremorie/rx-feedback';
+import { Info, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 ## Overview
 
@@ -22,26 +22,10 @@ The Alert API stays deliberately small. Variants ship as `default` and `destruct
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-alert
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-alert
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-alert
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-alert
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-alert ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-alert ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-alert ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-alert ```</Tab>
 </Tabs>
 
 ## Usage
@@ -78,29 +62,29 @@ Angular edition planned for a follow-up release. The variant API will map direct
 
 The root. Renders a `<div role="alert">` styled as a two-column grid: an optional 16 px icon slot on the left and a stack of title plus description on the right. The icon column collapses when no `<svg>` child is present.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `variant` | `"default" \| "destructive"` | `"default"` | Visual intent. `default` uses card surface tokens; `destructive` uses the destructive text color and tints the description. |
-| `className` | `string` | - | Extra classes merged after the variant classes. Use for spacing escape hatches, not for changing the surface treatment. |
-| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes. The `role="alert"` is set automatically; do not override it. |
+| Prop        | Type                          | Default     | Description                                                                                                                 |
+| ----------- | ----------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `variant`   | `"default" \| "destructive"`  | `"default"` | Visual intent. `default` uses card surface tokens; `destructive` uses the destructive text color and tints the description. |
+| `className` | `string`                      | -           | Extra classes merged after the variant classes. Use for spacing escape hatches, not for changing the surface treatment.     |
+| `...props`  | `React.ComponentProps<"div">` | -           | Standard div attributes. The `role="alert"` is set automatically; do not override it.                                       |
 
 ### `<AlertTitle>`
 
 Renders a `<div>` for the headline. Sits in the second column of the grid, line-clamped to one line by default so a long title cannot push the icon out of alignment.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes merged after the title classes. |
-| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes. |
+| Prop        | Type                          | Default | Description                                   |
+| ----------- | ----------------------------- | ------- | --------------------------------------------- |
+| `className` | `string`                      | -       | Extra classes merged after the title classes. |
+| `...props`  | `React.ComponentProps<"div">` | -       | Standard div attributes.                      |
 
 ### `<AlertDescription>`
 
 Renders a `<div>` for the body. Inherits muted foreground on the default variant, switches to a tinted destructive color on the destructive variant via the `data-slot` selector.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes merged after the description classes. |
-| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes including nested `<p>` (which receives a relaxed leading by default). |
+| Prop        | Type                          | Default | Description                                                                                   |
+| ----------- | ----------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `className` | `string`                      | -       | Extra classes merged after the description classes.                                           |
+| `...props`  | `React.ComponentProps<"div">` | -       | Standard div attributes including nested `<p>` (which receives a relaxed leading by default). |
 
 ## Composition
 

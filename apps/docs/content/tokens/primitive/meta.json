@@ -1,8 +1,9 @@
 {
   "title": "Primitive",
   "icon": "Layers",
+  "description": "The raw vocabulary — Tailwind v4 palettes and dimensional scales, with no semantic meaning yet.",
   "pages": [
-    "index",
+    "visao-geral",
     "typography",
     "spacing",
     "radius",

@@ -14,26 +14,10 @@ Use it for the most common workflow affordances: edit, duplicate, delete, config
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-toolbar
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-toolbar
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-toolbar
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-toolbar
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-toolbar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-toolbar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-toolbar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-toolbar ```</Tab>
 </Tabs>
 
 Requires `@xyflow/react` as a peer dependency. Already a transitive dep of the workflow family, so installing `rx-canvas`, `rx-node` or any other workflow primitive brings it along.
@@ -41,7 +25,7 @@ Requires `@xyflow/react` as a peer dependency. Already a transitive dep of the w
 Import the xyflow stylesheet once at app entry:
 
 ```ts
-import "@xyflow/react/dist/style.css";
+import '@xyflow/react/dist/style.css';
 ```
 
 ## Usage
@@ -80,11 +64,10 @@ import {
 } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Toolbar, ToolbarGroup, ToolbarButton],
-  template: `
-    <toolbar>
+selector: "app-example",
+standalone: true,
+imports: [Toolbar, ToolbarGroup, ToolbarButton],
+template: `     <toolbar>
       <toolbar-group ariaLabel="Formatting">
         <toolbar-button [pressed]="bold" ariaLabel="Bold" (clicked)="bold = !bold">
           <span class="font-bold">B</span>
@@ -97,9 +80,10 @@ import {
   `,
 })
 export class ExampleComponent {
-  bold = false;
+bold = false;
 }
-```
+
+````
 
 > The Angular `<toolbar>` is the generic primitive (a `<div role="toolbar">`). Pair it with `@xyflow/angular` at the app level if you need a canvas-anchored toolbar.
 </Tab>
@@ -144,7 +128,7 @@ The default minimal toolbar. Visible only when the node is selected.
     <TrashIcon className="size-4" />
   </Button>
 </Toolbar>
-```
+````
 
 ### Always visible
 
@@ -163,13 +147,13 @@ Pass `isVisible` to keep the toolbar mounted regardless of selection. Useful for
 Override `position` when the canvas region below the node is too crowded.
 
 ```tsx
-import { Position } from "@xyflow/react";
+import { Position } from '@xyflow/react';
 
 <Toolbar position={Position.Top}>
   <Button size="icon" variant="ghost" aria-label="Configure">
     <SettingsIcon className="size-4" />
   </Button>
-</Toolbar>
+</Toolbar>;
 ```
 
 ## Accessibility

@@ -2,7 +2,7 @@
 title: AlertDialog
 description: Modal não-cancelável para confirmações que o usuário precisa decidir.
 component: AlertDialog
-importPath: "@kalvner/kds/overlays/alert-dialog"
+importPath: '@kalvner/kds/overlays/alert-dialog'
 status: stable
 ---
 
@@ -11,12 +11,12 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   DeleteItemsAlertDialog,
-  DeleteProjectAlertDialog
-} from "@/components/overlay-demos";
+  DeleteProjectAlertDialog,
+} from '@/components/overlay-demos';
 
 ## Overview
 
@@ -64,18 +64,18 @@ no Action quando for um gesto perigoso.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `AlertDialog` | Raiz que controla open/closed. |
-| `AlertDialogTrigger` | Elemento clicável que abre o alert. |
-| `AlertDialogContent` | Container portalado, modal, sem cancel-on-overlay. |
-| `AlertDialogHeader` | Wrapper de título + descrição. |
-| `AlertDialogTitle` | Título obrigatório. |
-| `AlertDialogDescription` | Descrição com consequências explícitas. |
-| `AlertDialogFooter` | Rodapé com ações (Cancel + Action). |
-| `AlertDialogAction` | Botão de confirmação. Aceita `variant` e `size` do Button. |
-| `AlertDialogCancel` | Botão de cancelar (variant `outline` por padrão). |
-| `AlertDialogPortal` / `AlertDialogOverlay` | Expostos para casos avançados. |
+| Componente                                 | Descrição                                                  |
+| ------------------------------------------ | ---------------------------------------------------------- |
+| `AlertDialog`                              | Raiz que controla open/closed.                             |
+| `AlertDialogTrigger`                       | Elemento clicável que abre o alert.                        |
+| `AlertDialogContent`                       | Container portalado, modal, sem cancel-on-overlay.         |
+| `AlertDialogHeader`                        | Wrapper de título + descrição.                             |
+| `AlertDialogTitle`                         | Título obrigatório.                                        |
+| `AlertDialogDescription`                   | Descrição com consequências explícitas.                    |
+| `AlertDialogFooter`                        | Rodapé com ações (Cancel + Action).                        |
+| `AlertDialogAction`                        | Botão de confirmação. Aceita `variant` e `size` do Button. |
+| `AlertDialogCancel`                        | Botão de cancelar (variant `outline` por padrão).          |
+| `AlertDialogPortal` / `AlertDialogOverlay` | Expostos para casos avançados.                             |
 
 ## Usage
 
@@ -89,9 +89,9 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogCancel,
-  AlertDialogAction
-} from "@kalvner/kds/overlays/alert-dialog";
-import { Button } from "@kalvner/kds/forms/button";
+  AlertDialogAction,
+} from '@kalvner/kds/overlays/alert-dialog';
+import { Button } from '@kalvner/kds/forms/button';
 
 export function ConfirmDelete() {
   return (
@@ -121,7 +121,9 @@ export function ConfirmDelete() {
 <Card>
   <CardHeader>
     <CardTitle>Destructive</CardTitle>
-    <CardDescription>Tier 2 — destrutivo. Botão Action com variante destructive.</CardDescription>
+    <CardDescription>
+      Tier 2 — destrutivo. Botão Action com variante destructive.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <DeleteItemsAlertDialog />
@@ -133,7 +135,10 @@ export function ConfirmDelete() {
 <Card>
   <CardHeader>
     <CardTitle>Typed confirmation (Tier 3)</CardTitle>
-    <CardDescription>O botão de confirmação só habilita quando o usuário digita o nome do recurso.</CardDescription>
+    <CardDescription>
+      O botão de confirmação só habilita quando o usuário digita o nome do
+      recurso.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <DeleteProjectAlertDialog />
@@ -172,14 +177,14 @@ export function ConfirmDelete() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix `AlertDialog` aplica `role="alertdialog"` + `aria-modal="true"`. |
-| **Foco** | Foco vai para o `AlertDialogCancel` por padrão (recomendação WAI-ARIA — proteger usuário do gesto perigoso). Refoca o trigger ao fechar. |
-| **Keyboard** | `Esc` fecha (= Cancel). `Tab` cicla entre os focáveis. **Não fecha por overlay click** — diferença chave vs Dialog. |
-| **Screen reader** | Anuncia `AlertDialogTitle` como nome e `AlertDialogDescription` como descrição. O `role="alertdialog"` força o SR a interromper a leitura para chamar atenção. |
-| **Touch target** | Footer ações respeitam o `Button` (36px default). Em mobile, considere `size="lg"`. |
-| **Reduced motion** | Mesma abordagem do Dialog — fade + zoom respeitam tokens de tema. |
+| Concern            | Comportamento                                                                                                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | Radix `AlertDialog` aplica `role="alertdialog"` + `aria-modal="true"`.                                                                                         |
+| **Foco**           | Foco vai para o `AlertDialogCancel` por padrão (recomendação WAI-ARIA — proteger usuário do gesto perigoso). Refoca o trigger ao fechar.                       |
+| **Keyboard**       | `Esc` fecha (= Cancel). `Tab` cicla entre os focáveis. **Não fecha por overlay click** — diferença chave vs Dialog.                                            |
+| **Screen reader**  | Anuncia `AlertDialogTitle` como nome e `AlertDialogDescription` como descrição. O `role="alertdialog"` força o SR a interromper a leitura para chamar atenção. |
+| **Touch target**   | Footer ações respeitam o `Button` (36px default). Em mobile, considere `size="lg"`.                                                                            |
+| **Reduced motion** | Mesma abordagem do Dialog — fade + zoom respeitam tokens de tema.                                                                                              |
 
 ## Related
 

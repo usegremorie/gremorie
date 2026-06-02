@@ -1,10 +1,10 @@
 ---
 title: Progress
-description: "Determinate horizontal progress bar with token-driven track and indicator."
+description: 'Determinate horizontal progress bar with token-driven track and indicator.'
 ---
 
-import { ProgressPreview } from "@/components/preview/feedback/feedback";
-import { Progress } from "@gremorie/rx-feedback";
+import { ProgressPreview } from '@/components/preview/feedback/feedback';
+import { Progress } from '@gremorie/rx-feedback';
 
 ## Overview
 
@@ -21,26 +21,10 @@ Use Progress when **percent complete is known**: uploads with byte counts, multi
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-progress
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-progress
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-progress
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-progress
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-progress ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-progress ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-progress ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-progress ```</Tab>
 </Tabs>
 
 ## Usage
@@ -76,23 +60,26 @@ Angular edition planned for a follow-up release. The value contract will map dir
 
 The root and indicator together. Renders a Radix `Root` styled as a 8 px track plus an `Indicator` that translates horizontally based on `value`. The track and indicator slots are exposed via `data-slot="progress"` and `data-slot="progress-indicator"`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `number \| null` | - | Current value, 0 to 100. Drives the indicator translation. Set to `null` to enter the indeterminate state (the indicator stops responding to value and you take over via a custom class). |
-| `max` | `number` | `100` | Upper bound. Most callers leave this at 100 and pass a percentage; pass a different `max` (e.g. file bytes) only when the source value is naturally in that range. |
-| `getValueLabel` | `(value: number, max: number) => string` | percentage | Custom label generator for `aria-valuetext`. Override to localize ("42 percent") or to expose units ("3 of 8 steps"). |
-| `className` | `string` | - | Applied to the root track. Override height with care - 8 px (`h-2`) matches the rest of the surface. |
-| `...props` | `React.ComponentProps<typeof ProgressPrimitive.Root>` | - | All Radix Root attributes. |
+| Prop            | Type                                                  | Default    | Description                                                                                                                                                                               |
+| --------------- | ----------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`         | `number \| null`                                      | -          | Current value, 0 to 100. Drives the indicator translation. Set to `null` to enter the indeterminate state (the indicator stops responding to value and you take over via a custom class). |
+| `max`           | `number`                                              | `100`      | Upper bound. Most callers leave this at 100 and pass a percentage; pass a different `max` (e.g. file bytes) only when the source value is naturally in that range.                        |
+| `getValueLabel` | `(value: number, max: number) => string`              | percentage | Custom label generator for `aria-valuetext`. Override to localize ("42 percent") or to expose units ("3 of 8 steps").                                                                     |
+| `className`     | `string`                                              | -          | Applied to the root track. Override height with care - 8 px (`h-2`) matches the rest of the surface.                                                                                      |
+| `...props`      | `React.ComponentProps<typeof ProgressPrimitive.Root>` | -          | All Radix Root attributes.                                                                                                                                                                |
 
 <Callout type="warn">
-The bundled indicator is determinate. To build an indeterminate variant, pass `value={null}` and add a custom class on the indicator (or fork the component) to animate a moving stripe. Showing an indeterminate bar with a fake animated value is a tracking-by-illusion anti-pattern.
+  The bundled indicator is determinate. To build an indeterminate variant, pass
+  `value={null}` and add a custom class on the indicator (or fork the component)
+  to animate a moving stripe. Showing an indeterminate bar with a fake animated
+  value is a tracking-by-illusion anti-pattern.
 </Callout>
 
 ## Composition
 
 1. **`<Progress value={n} />`** is the whole component - there is no separate `<ProgressIndicator>` slot to compose at the call site.
 2. **Pair with a label**: a silent bar leaves the user guessing. Mount a small `<span>` above or beside it with the percent, the step count, or the byte progress.
-3. **Inside an `Alert` or a `Card`**: progress that explains *what* is loading reads better than progress that floats alone. Wrap with a context line so users know why they are waiting.
+3. **Inside an `Alert` or a `Card`**: progress that explains _what_ is loading reads better than progress that floats alone. Wrap with a context line so users know why they are waiting.
 
 ## Variations
 
@@ -132,9 +119,9 @@ The default shape for any long-running task with a known total. Keep the value t
 </div>
 
 ```tsx
-{steps.map((step) => (
-  <Progress key={step.id} value={step.percent} />
-))}
+{
+  steps.map((step) => <Progress key={step.id} value={step.percent} />);
+}
 ```
 
 For multi-stream tasks (parallel uploads, batch jobs reporting per-item progress). Pair each row with a per-row label outside the bar.

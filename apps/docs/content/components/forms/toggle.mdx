@@ -3,7 +3,7 @@ title: Toggle
 description: Two-state press-button (`aria-pressed`) built on Radix Toggle, for stateful actions like text formatting and view modes.
 ---
 
-import { TogglePreview } from "@/components/preview/forms/forms";
+import { TogglePreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ For form-bound boolean values use `Checkbox` or `Switch`. Don't use Toggle as na
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-toggle
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-toggle
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-toggle
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-toggle
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-toggle ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-toggle ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-toggle ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-toggle ```</Tab>
 </Tabs>
 
 ## Usage
@@ -70,14 +54,14 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Toggle>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `pressed` | `boolean` | - | Controlled pressed state. |
-| `defaultPressed` | `boolean` | - | Uncontrolled initial state. |
-| `onPressedChange` | `(pressed: boolean) => void` | - | Fires when the user toggles. |
-| `disabled` | `boolean` | `false` | Disables interaction. |
-| `variant` | `"default" \| "outline"` | `"default"` | `default` is transparent; `outline` adds a border for standalone toolbar use. |
-| `size` | `"default" \| "sm" \| "lg"` | `"default"` | Footprint preset. |
+| Prop              | Type                         | Default     | Description                                                                   |
+| ----------------- | ---------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `pressed`         | `boolean`                    | -           | Controlled pressed state.                                                     |
+| `defaultPressed`  | `boolean`                    | -           | Uncontrolled initial state.                                                   |
+| `onPressedChange` | `(pressed: boolean) => void` | -           | Fires when the user toggles.                                                  |
+| `disabled`        | `boolean`                    | `false`     | Disables interaction.                                                         |
+| `variant`         | `"default" \| "outline"`     | `"default"` | `default` is transparent; `outline` adds a border for standalone toolbar use. |
+| `size`            | `"default" \| "sm" \| "lg"`  | `"default"` | Footprint preset.                                                             |
 
 Forwards to `TogglePrimitive.Root`. The pressed state is mirrored via `data-state` (`on` / `off`), which drives the accent background.
 
@@ -86,11 +70,11 @@ Forwards to `TogglePrimitive.Root`. The pressed state is mirrored via `data-stat
 Exported CVA factory. Reused by `ToggleGroupItem` so children inherit the same surface via context.
 
 ```tsx
-import { toggleVariants } from "@gremorie/rx-forms";
+import { toggleVariants } from '@gremorie/rx-forms';
 
-<div className={toggleVariants({ variant: "outline", size: "sm" })}>
+<div className={toggleVariants({ variant: 'outline', size: 'sm' })}>
   Custom host
-</div>
+</div>;
 ```
 
 ## Composition
@@ -106,11 +90,11 @@ import { toggleVariants } from "@gremorie/rx-forms";
 The canonical text-editor pattern. Always pair with `aria-label`.
 
 ```tsx
-import { Bold } from "lucide-react";
+import { Bold } from 'lucide-react';
 
 <Toggle aria-label="Bold">
   <Bold />
-</Toggle>
+</Toggle>;
 ```
 
 ### Default pressed
@@ -118,11 +102,11 @@ import { Bold } from "lucide-react";
 For toggles whose default state should be "on" (e.g. autosave indicator, an applied filter).
 
 ```tsx
-import { Italic } from "lucide-react";
+import { Italic } from 'lucide-react';
 
 <Toggle aria-label="Italic" defaultPressed>
   <Italic />
-</Toggle>
+</Toggle>;
 ```
 
 ### Outline variant
@@ -130,11 +114,11 @@ import { Italic } from "lucide-react";
 When the toggle stands alone (not inside a `ToggleGroup`), the `outline` variant adds a visible boundary so it reads as an interactive control on flat surfaces.
 
 ```tsx
-import { Underline } from "lucide-react";
+import { Underline } from 'lucide-react';
 
 <Toggle aria-label="Underline" variant="outline">
   <Underline />
-</Toggle>
+</Toggle>;
 ```
 
 ### Controlled with effect
@@ -143,14 +127,12 @@ Bind the pressed state to your editor / view state.
 
 ```tsx
 function BoldToggle({ editor }) {
-  const isBold = editor.isActive("bold");
+  const isBold = editor.isActive('bold');
   return (
     <Toggle
       aria-label="Bold"
       pressed={isBold}
-      onPressedChange={(pressed) =>
-        editor.chain().focus().toggleBold().run()
-      }
+      onPressedChange={(pressed) => editor.chain().focus().toggleBold().run()}
     >
       <Bold />
     </Toggle>

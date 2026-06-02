@@ -14,26 +14,10 @@ Use it inside `Artifact` for image-only artifacts, inside `MessageContent` for i
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-image
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-image
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-image
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-image
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-image ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-image ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-image ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-image ```</Tab>
 </Tabs>
 
 Brings in the `ai` package types as a peer dependency.
@@ -69,13 +53,13 @@ Angular edition planned for Phase 5h. Use the React edition for now, or open an 
 
 Extends `Experimental_GeneratedImage` from the `ai` package.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `base64` | `string` | - | **Required.** The base64-encoded image data. Used to build the `data:` URI. |
-| `mediaType` | `string` | - | **Required.** Mime type (`"image/png"`, `"image/jpeg"`, `"image/webp"`, ...). Used in the `data:` URI prefix. |
-| `uint8Array` | `Uint8Array` | - | Forwarded from `Experimental_GeneratedImage` but ignored by the renderer. The data URI is built from `base64`. |
-| `alt` | `string` | - | **Required for a11y.** Description of the image content. Pass a short factual description, not `"AI generated image"`. |
-| `className` | `string` | - | Extra classes on the `<img>`. Merged with the default `h-auto max-w-full overflow-hidden rounded-md`. |
+| Prop         | Type         | Default | Description                                                                                                            |
+| ------------ | ------------ | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `base64`     | `string`     | -       | **Required.** The base64-encoded image data. Used to build the `data:` URI.                                            |
+| `mediaType`  | `string`     | -       | **Required.** Mime type (`"image/png"`, `"image/jpeg"`, `"image/webp"`, ...). Used in the `data:` URI prefix.          |
+| `uint8Array` | `Uint8Array` | -       | Forwarded from `Experimental_GeneratedImage` but ignored by the renderer. The data URI is built from `base64`.         |
+| `alt`        | `string`     | -       | **Required for a11y.** Description of the image content. Pass a short factual description, not `"AI generated image"`. |
+| `className`  | `string`     | -       | Extra classes on the `<img>`. Merged with the default `h-auto max-w-full overflow-hidden rounded-md`.                  |
 
 All other `<img>` attributes flow through (e.g. `width`, `height`, `loading`, `decoding`, `style`).
 
@@ -112,12 +96,20 @@ Drop the image inside `MessageContent` alongside text and citations.
   <ArtifactHeader>
     <ArtifactTitle>logo.png</ArtifactTitle>
     <ArtifactActions>
-      <ArtifactAction tooltip="Download" icon={DownloadIcon} onClick={download} />
+      <ArtifactAction
+        tooltip="Download"
+        icon={DownloadIcon}
+        onClick={download}
+      />
       <ArtifactClose />
     </ArtifactActions>
   </ArtifactHeader>
   <ArtifactContent>
-    <Image base64={logo.base64} mediaType={logo.mediaType} alt="Generated logo" />
+    <Image
+      base64={logo.base64}
+      mediaType={logo.mediaType}
+      alt="Generated logo"
+    />
   </ArtifactContent>
 </Artifact>
 ```

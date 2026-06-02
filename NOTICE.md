@@ -36,7 +36,7 @@ the MIT License found in `LICENSE`.
 
 ### Other third-party software
 
-- Radix UI primitives (MIT) - used in many rx-* packages
+- Radix UI primitives (MIT) - used in many rx-\* packages
 - D3.js (BSD-3-Clause) - used in rx-data, ng-data
 - React (MIT), Angular (MIT), Next.js (MIT), Fumadocs (MIT)
 - See individual `package.json` files for the full dependency list

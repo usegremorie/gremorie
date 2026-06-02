@@ -3,7 +3,7 @@ title: Colors
 description: Mapeamento intenção → primitivo para os quatro temas KDS, em light e dark mode.
 ---
 
-import { SemanticThemeTable } from "@/components/token-tables";
+import { SemanticThemeTable } from '@/components/token-tables';
 
 Tokens semânticos são **intenções** — `primary`, `foreground`,
 `border`. Cada tema preenche essas intenções com primitivos
@@ -25,11 +25,10 @@ o primitivo apontado em cada tema diz se a inconsistência é da
 chrome do componente ou do mapeamento do tema.
 
 <Callout type="info">
-  As swatches das colunas Light e Dark abaixo só renderizam com
-  fidelidade quando você visualiza no modo correspondente. Se
-  estiver em light mode, as swatches Dark mostram o primitivo
-  como ele aparece **na sua janela atual** — útil para auditar,
-  não para inspecionar o tema dark de fato.
+  As swatches das colunas Light e Dark abaixo só renderizam com fidelidade
+  quando você visualiza no modo correspondente. Se estiver em light mode, as
+  swatches Dark mostram o primitivo como ele aparece **na sua janela atual** —
+  útil para auditar, não para inspecionar o tema dark de fato.
 </Callout>
 
 <SemanticThemeTable themeId="default" />
@@ -56,8 +55,12 @@ A receita curta:
    `packages/kds/src/styles/tokens/semantic/colors-<id>.css`.
 2. **Defina** os dois selectors:
    ```css
-   [data-theme="<id>"] { /* light */ }
-   [data-theme="<id>"].dark { /* dark */ }
+   [data-theme='<id>'] {
+     /* light */
+   }
+   [data-theme='<id>'].dark {
+     /* dark */
+   }
    ```
 3. **Preencha** todas as 27 intenções da tabela acima — light e
    dark — referenciando primitivos via `var(--color-<token>)`.
@@ -70,8 +73,7 @@ nada quebre exige rodar componentes em todos os estados. Por
 isso a KDS embarca apenas quatro temas curados.
 
 <Callout type="warn">
-  **Não digite OKLCH ou hex em arquivos de tema.** Se o primitivo
-  certo não existe, **adicione-o** primeiro em
-  `tokens/primitive/colors.css`. Hardcoded values em temas
-  quebram a cascata.
+  **Não digite OKLCH ou hex em arquivos de tema.** Se o primitivo certo não
+  existe, **adicione-o** primeiro em `tokens/primitive/colors.css`. Hardcoded
+  values em temas quebram a cascata.
 </Callout>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Artifact,
@@ -15,7 +15,7 @@ import {
   WebPreviewConsole,
   WebPreviewNavigation,
   WebPreviewUrl,
-} from "@gremorie/rx-ai";
+} from '@gremorie/rx-artifacts';
 
 // ---------- CodeBlock ----------
 
@@ -87,8 +87,16 @@ export function WebPreviewConsolePreview() {
       <WebPreviewBody src="https://gremorie.com" className="h-[180px]" />
       <WebPreviewConsole
         logs={[
-          { level: "log", message: "[ready] dev server on :5020", timestamp: new Date() },
-          { level: "warn", message: "Slow render on /components/ai/canvas", timestamp: new Date() },
+          {
+            level: 'log',
+            message: '[ready] dev server on :5020',
+            timestamp: new Date(),
+          },
+          {
+            level: 'warn',
+            message: 'Slow render on /components/ai/canvas',
+            timestamp: new Date(),
+          },
         ]}
       />
     </WebPreview>

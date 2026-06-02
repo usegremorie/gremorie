@@ -3,7 +3,7 @@ title: Breadcrumb
 description: "Hierarchical trail showing the user's path. Semantic nav with explicit terminal page and optional collapse."
 ---
 
-import { BreadcrumbPreview } from "@/components/preview/navigation/navigation";
+import { BreadcrumbPreview } from '@/components/preview/navigation/navigation';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -12,7 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
-} from "@gremorie/rx-navigation";
+} from '@gremorie/rx-navigation';
 
 ## Overview
 
@@ -29,26 +29,12 @@ Reach for Breadcrumb only on **deep hierarchies (three levels or more)**. Flat s
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-breadcrumb
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-breadcrumb
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-breadcrumb
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-breadcrumb
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-breadcrumb ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-breadcrumb ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-breadcrumb ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-breadcrumb ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -99,59 +85,59 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Renders a `<nav aria-label="breadcrumb">`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"nav">` | - | Standard nav attributes. The `aria-label="breadcrumb"` is set automatically. |
+| Prop       | Type                          | Default | Description                                                                  |
+| ---------- | ----------------------------- | ------- | ---------------------------------------------------------------------------- |
+| `...props` | `React.ComponentProps<"nav">` | -       | Standard nav attributes. The `aria-label="breadcrumb"` is set automatically. |
 
 ### `<BreadcrumbList>`
 
 Renders an `<ol>` with flex-wrap and subtle gap.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"ol">` | - | Standard ol attributes. |
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"ol">` | -       | Standard ol attributes. |
 
 ### `<BreadcrumbItem>`
 
 Renders an `<li>` with `inline-flex items-center gap-1.5`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"li">` | - | Standard li attributes. |
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"li">` | -       | Standard li attributes. |
 
 ### `<BreadcrumbLink>`
 
 The clickable ancestor segment. Renders an `<a>` by default; pass `asChild` to delegate rendering to a routing component (Next.js `Link`, React Router `Link`).
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `asChild` | `boolean` | `false` | When `true`, renders into the single child element via Radix `Slot`. Use with framework `Link` components. |
-| `...props` | `React.ComponentProps<"a">` | - | Standard anchor attributes, including `href`. |
+| Prop       | Type                        | Default | Description                                                                                                |
+| ---------- | --------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `asChild`  | `boolean`                   | `false` | When `true`, renders into the single child element via Radix `Slot`. Use with framework `Link` components. |
+| `...props` | `React.ComponentProps<"a">` | -       | Standard anchor attributes, including `href`.                                                              |
 
 ### `<BreadcrumbPage>`
 
 The terminal segment - the current page. Renders a `<span>` with `role="link"`, `aria-disabled="true"`, and `aria-current="page"`. Not interactive.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Standard span attributes. |
 
 ### `<BreadcrumbSeparator>`
 
 The visual divider between segments. Renders an `<li role="presentation" aria-hidden="true">` containing a `ChevronRight` by default. Override by passing children.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `React.ReactNode` | `<ChevronRight />` | Custom separator content (e.g. a slash, a different icon). |
-| `...props` | `React.ComponentProps<"li">` | - | Standard li attributes. |
+| Prop       | Type                         | Default            | Description                                                |
+| ---------- | ---------------------------- | ------------------ | ---------------------------------------------------------- |
+| `children` | `React.ReactNode`            | `<ChevronRight />` | Custom separator content (e.g. a slash, a different icon). |
+| `...props` | `React.ComponentProps<"li">` | -                  | Standard li attributes.                                    |
 
 ### `<BreadcrumbEllipsis>`
 
 Placeholder for collapsed middle segments. Renders a 36 by 36 px square containing a `MoreHorizontal` icon and a visually hidden "More" label. Wrap inside a `Popover` or `DropdownMenu` trigger to reveal the hidden segments.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Standard span attributes. |
 
 ## Composition
 

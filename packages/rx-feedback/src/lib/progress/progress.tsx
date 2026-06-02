@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Progress as ProgressPrimitive } from "radix-ui";
-import * as React from "react";
+import { Progress as ProgressPrimitive } from 'radix-ui';
+import * as React from 'react';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 
 /**
  * Progress - determinate progress indicator (0-100).
@@ -26,8 +26,8 @@ function Progress({
     <ProgressPrimitive.Root
       data-slot="progress"
       className={cn(
-        "relative h-2 w-full overflow-hidden rounded-full bg-primary/20",
-        className
+        'relative h-2 w-full overflow-hidden rounded-full bg-primary/20',
+        className,
       )}
       {...props}
     >

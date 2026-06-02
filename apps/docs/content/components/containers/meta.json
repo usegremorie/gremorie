@@ -1,6 +1,6 @@
 {
   "title": "Containers",
-  "description": "Container primitives - AspectRatio, Resizable, ScrollArea, Stack",
   "icon": "LayoutPanelLeft",
+  "description": "Layout primitives — aspect ratio, resizable panels, scroll area, stack.",
   "pages": ["aspect-ratio", "resizable", "scroll-area", "stack"]
 }

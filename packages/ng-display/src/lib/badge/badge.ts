@@ -37,7 +37,9 @@ export const badgeVariants = cva(
   },
 );
 
-export type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>;
+export type BadgeVariant = NonNullable<
+  VariantProps<typeof badgeVariants>['variant']
+>;
 
 /**
  * Badge — compact label for status, counts and tags. Mirrors React

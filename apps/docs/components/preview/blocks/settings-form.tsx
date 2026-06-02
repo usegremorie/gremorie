@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import { useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -9,8 +8,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { Button, Input, Label, Slider, Switch } from "@gremorie/rx-forms";
+} from '@gremorie/rx-display';
+import { Button, Input, Label, Slider, Switch } from '@gremorie/rx-forms';
+import { useState } from 'react';
 
 /**
  * Settings form block: profile + notifications + appearance card
@@ -22,9 +22,9 @@ export function SettingsForm() {
   const [fontScale, setFontScale] = useState(1);
 
   const notifications: Array<{ id: string; label: string; on: boolean }> = [
-    { id: "n-product", label: "Product updates", on: true },
-    { id: "n-billing", label: "Billing alerts", on: true },
-    { id: "n-newsletter", label: "Weekly newsletter", on: false },
+    { id: 'n-product', label: 'Product updates', on: true },
+    { id: 'n-billing', label: 'Billing alerts', on: true },
+    { id: 'n-newsletter', label: 'Weekly newsletter', on: false },
   ];
 
   return (

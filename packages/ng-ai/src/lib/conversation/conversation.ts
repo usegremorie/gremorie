@@ -39,11 +39,7 @@ const STICK_THRESHOLD_PX = 24;
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div
-      #scroller
-      class="size-full overflow-y-auto"
-      (scroll)="onScroll()"
-    >
+    <div #scroller class="size-full overflow-y-auto" (scroll)="onScroll()">
       <ng-content />
     </div>
   `,
@@ -58,7 +54,9 @@ const STICK_THRESHOLD_PX = 24;
     },
   ],
 })
-export class Conversation implements AfterViewInit, OnDestroy, ConversationState {
+export class Conversation
+  implements AfterViewInit, OnDestroy, ConversationState
+{
   protected readonly scroller =
     viewChild.required<ElementRef<HTMLDivElement>>('scroller');
 

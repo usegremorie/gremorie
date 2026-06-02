@@ -2,18 +2,21 @@
 title: CodeBlock
 description: Bloco de código com syntax highlighting via Shiki — themes light/dark, copy button.
 component: CodeBlock
-importPath: "@kalvner/kds/ai/code-block"
+importPath: '@kalvner/kds/ai/code-block'
 status: stable
 ---
 
-import { CodeBlockPreview, CodeBlockCopyPreview } from "@/components/ai-code-demos";
+import {
+  CodeBlockPreview,
+  CodeBlockCopyPreview,
+} from '@/components/ai-code-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -47,7 +50,7 @@ fenced code blocks de markdown.
 ## Usage
 
 ```tsx
-import { CodeBlock, CodeBlockCopyButton } from "@kalvner/kds/ai/code-block";
+import { CodeBlock, CodeBlockCopyButton } from '@kalvner/kds/ai/code-block';
 
 const code = `import { Button } from "@kalvner/kds/forms/button";
 
@@ -57,26 +60,26 @@ export function MyButton() {
 
 <CodeBlock code={code} language="typescript">
   <CodeBlockCopyButton />
-</CodeBlock>
+</CodeBlock>;
 ```
 
 ## Props
 
 ### CodeBlock (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `code` | `string` | — | Source code. Aceita string com newlines. |
-| `language` | `string` | — | ID Shiki (`typescript`, `tsx`, `python`, `bash`, ...). |
-| `themes` | `{ light?: string; dark?: string }` | `github-light/github-dark` | Themes Shiki. |
-| `className` | `string` | — | Override do wrapper. |
+| Prop        | Tipo                                | Default                    | Descrição                                              |
+| ----------- | ----------------------------------- | -------------------------- | ------------------------------------------------------ |
+| `code`      | `string`                            | —                          | Source code. Aceita string com newlines.               |
+| `language`  | `string`                            | —                          | ID Shiki (`typescript`, `tsx`, `python`, `bash`, ...). |
+| `themes`    | `{ light?: string; dark?: string }` | `github-light/github-dark` | Themes Shiki.                                          |
+| `className` | `string`                            | —                          | Override do wrapper.                                   |
 
 ### CodeBlockCopyButton
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `timeout` | `number` | `2000` | ms até voltar pro ícone Copy após cliclar (mostra Check). |
-| `onCopy` | `() => void` | — | Callback opcional. |
+| Prop      | Tipo         | Default | Descrição                                                 |
+| --------- | ------------ | ------- | --------------------------------------------------------- |
+| `timeout` | `number`     | `2000`  | ms até voltar pro ícone Copy após cliclar (mostra Check). |
+| `onCopy`  | `() => void` | —       | Callback opcional.                                        |
 
 Herda de [Button](../../ui/forms/button) — `variant`, `size`, etc.
 Default `variant="ghost"` `size="icon"`.
@@ -87,9 +90,9 @@ Função async exportada que retorna HTML highlighted (use server-side
 ou em fluxos onde você quer o resultado pré-renderizado):
 
 ```ts
-import { highlightCode } from "@kalvner/kds/ai/code-block";
+import { highlightCode } from '@kalvner/kds/ai/code-block';
 
-const html = await highlightCode(code, "tsx", { light: "github-light" });
+const html = await highlightCode(code, 'tsx', { light: 'github-light' });
 ```
 
 ## Subcomponents
@@ -170,11 +173,11 @@ pretty-printing.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<pre><code>` semântico — leitor de tela navega corretamente. |
-| **Copy button** | `aria-label="Copy code"`; ao copiar, anuncia "Copied". |
-| **Contrast** | Themes Shiki passam WCAG AA por default; teste com axe se customizar. |
+| Concern         | Comportamento                                                         |
+| --------------- | --------------------------------------------------------------------- |
+| **Roles**       | `<pre><code>` semântico — leitor de tela navega corretamente.         |
+| **Copy button** | `aria-label="Copy code"`; ao copiar, anuncia "Copied".                |
+| **Contrast**    | Themes Shiki passam WCAG AA por default; teste com axe se customizar. |
 
 ## Related
 

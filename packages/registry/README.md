@@ -41,10 +41,10 @@ By default, in `packages/<package>/usage.md`. The file uses YAML frontmatter:
 
 ```yaml
 ---
-whenToUse: "Container for an AI prompt input with state machine."
-whenNotToUse: "A plain text input - reach for ng-core utilities instead."
+whenToUse: 'Container for an AI prompt input with state machine.'
+whenNotToUse: 'A plain text input - reach for ng-core utilities instead.'
 bestPractices:
-  - "Always nest a PromptInputTextarea."
+  - 'Always nest a PromptInputTextarea.'
 antipatterns:
   - "Don't wire the submit handler outside the host element."
 api:

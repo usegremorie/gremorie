@@ -30,7 +30,9 @@ export class ToolbarGroup {
   protected readonly hostClass = computed(() =>
     cn(
       'inline-flex items-center',
-      this.orientation() === 'horizontal' ? 'flex-row gap-0.5' : 'flex-col gap-0.5',
+      this.orientation() === 'horizontal'
+        ? 'flex-row gap-0.5'
+        : 'flex-col gap-0.5',
     ),
   );
 }

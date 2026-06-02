@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { cn } from '@gremorie/ng-core';
 import { Bar } from '../headless/bar';
 import { CartesianGrid } from '../headless/cartesian-grid';
@@ -69,7 +74,9 @@ interface SeriesView {
               [attr.y]="x.labelY()"
               text-anchor="middle"
               class="fill-muted-foreground text-[10px]"
-            >{{ t.label }}</svg:text>
+            >
+              {{ t.label }}
+            </svg:text>
           }
         </svg:g>
 
@@ -81,13 +88,19 @@ interface SeriesView {
               text-anchor="end"
               dominant-baseline="middle"
               class="fill-muted-foreground text-[10px]"
-            >{{ t.label }}</svg:text>
+            >
+              {{ t.label }}
+            </svg:text>
           }
         </svg:g>
       </svg>
 
       <table class="sr-only">
-        <caption>{{ ariaLabel() }}</caption>
+        <caption>
+          {{
+            ariaLabel()
+          }}
+        </caption>
         <thead>
           <tr>
             <th>{{ xKey() }}</th>
@@ -124,7 +137,10 @@ export class BarChart {
   );
 
   readonly ariaLabel = computed(
-    () => `Bar chart of ${this.series().map((s) => s.label).join(', ')} by ${this.xKey()}`,
+    () =>
+      `Bar chart of ${this.series()
+        .map((s) => s.label)
+        .join(', ')} by ${this.xKey()}`,
   );
 
   readonly cardClass = cn(

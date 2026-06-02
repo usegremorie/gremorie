@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "title": "Platform",
+  "description": "CLI, registry, MCP",
+  "icon": "Wrench",
+  "pages": [
+    "index",
+    "---Ferramentas---",
+    "cli",
+    "registry",
+    "mcp",
+    "---Nos bastidores---",
+    "architecture",
+    "internal"
+  ]
+}

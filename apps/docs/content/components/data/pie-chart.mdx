@@ -1,13 +1,16 @@
 ---
 title: Pie Chart
-description: "Parts of a whole, one slice per data row, with optional donut hole and token-driven colors."
+description: 'Parts of a whole, one slice per data row, with optional donut hole and token-driven colors.'
 ---
 
-import { PieChartPreview, PieChartDonutPreview } from "@/components/preview/data/charts";
+import {
+  PieChartPreview,
+  PieChartDonutPreview,
+} from '@/components/preview/data/charts';
 
 ## Overview
 
-`PieChart` is the styled wrapper of the headless charting engine for **parts of a whole**. Pass tabular `data`, the `nameKey` (the slice label field), and the `valueKey` (the numeric value field). Slice colors cycle through the `--chart-1` through `--chart-5` tokens automatically. Pass `donut` for a donut variant with a centered hole.
+`PieChart` is a recharts chart built on the shadcn `chart` primitive (`ChartContainer`) for **parts of a whole**. Pass tabular `data`, the `nameKey` (the slice label field), and the `dataKey` (the numeric value field). Slice colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip. Pass `donut` for a donut variant with a centered hole.
 
 Reach for PieChart when **proportions matter** and you have **two to six categories** that sum to a meaningful total - traffic share by browser, revenue by tier, allocations by team. For seven or more categories, a [`BarChart`](/components/data/bar-chart) reads faster; for time-series proportions, a stacked [`AreaChart`](/components/data/area-chart) carries more information.
 
@@ -20,26 +23,10 @@ Reach for PieChart when **proportions matter** and you have **two to six categor
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-pie-chart
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-pie-chart
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-pie-chart
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-pie-chart
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-pie-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-pie-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-pie-chart ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-pie-chart ```</Tab>
 </Tabs>
 
 ## Usage
@@ -47,24 +34,35 @@ bunx --bun gremorie@latest add rx-pie-chart
 <Tabs items={['React', 'Angular']}>
 <Tab value="React">
 ```tsx
-import { PieChart } from "@gremorie/rx-data";
+import { PieChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
 
-const data = [
-  { browser: "Chrome", visitors: 275 },
-  { browser: "Safari", visitors: 200 },
-  { browser: "Firefox", visitors: 187 },
-  { browser: "Edge", visitors: 173 },
-  { browser: "Other", visitors: 90 },
+const data: ChartDatum[] = [
+{ browser: "Chrome", visitors: 275, fill: "var(--chart-1)" },
+{ browser: "Safari", visitors: 200, fill: "var(--chart-2)" },
+{ browser: "Firefox", visitors: 187, fill: "var(--chart-3)" },
+{ browser: "Edge", visitors: 173, fill: "var(--chart-4)" },
+{ browser: "Other", visitors: 90, fill: "var(--chart-5)" },
 ];
 
+const config: ChartConfig = {
+visitors: { label: "Visitors" },
+Chrome: { label: "Chrome" },
+Safari: { label: "Safari" },
+Firefox: { label: "Firefox" },
+Edge: { label: "Edge" },
+Other: { label: "Other" },
+};
+
 export function BrowserShare() {
-  return <PieChart data={data} nameKey="browser" valueKey="visitors" />;
+  return (
+    <PieChart data={data} config={config} nameKey="browser" dataKey="visitors" />
+  );
 }
 ```
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
-Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+Angular edition planned for a follow-up release; it mirrors this component's anatomy.
 </Callout>
 </Tab>
 </Tabs>
@@ -73,41 +71,53 @@ Angular edition planned for a follow-up release. The headless engine is framewor
 
 ### `<PieChart>`
 
-The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>` with one `<path>` per slice, a wrapping legend of slice swatches plus labels, and an `sr-only` data table for assistive tech.
+A recharts pie/donut composed inside the shadcn `chart` primitive (`ChartContainer`). Slice colors come from each row's `fill`; the optional `config` provides the labels shown in the tooltip.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `readonly Datum[]` | - | Tabular data. One row per slice. Must include a string field at `nameKey` and a numeric field at `valueKey`. |
-| `nameKey` | `string` | - | Name of the slice label field. Drives the legend and the `sr-only` table headers. |
-| `valueKey` | `string` | - | Name of the numeric value field. Slices are sized proportionally to its sum. |
-| `donut` | `boolean` | `false` | When `true`, carves out a centered hole, producing a donut chart with `innerRadiusRatio` of 0.6. |
-| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus a square aspect. |
+| Prop         | Type                    | Default | Description                                                                                                                                                          |
+| ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`       | `readonly ChartDatum[]` | -       | Tabular data. One row per slice. Each row needs a string field at `nameKey`, a numeric field at `dataKey`, and a `fill` for its slice color (e.g. `var(--chart-1)`). |
+| `nameKey`    | `string`                | -       | Name of the slice label field. Used to resolve the tooltip label.                                                                                                    |
+| `dataKey`    | `string`                | -       | Name of the numeric value field. Slices are sized proportionally to its sum.                                                                                         |
+| `config`     | `ChartConfig`           | `{}`    | Optional label/color map keyed by slice name (and value key). Powers the tooltip labels.                                                                             |
+| `donut`      | `boolean`               | `false` | When `true`, carves out a centered hole (`innerRadius` 60) to produce a donut chart.                                                                                 |
+| `showLabels` | `boolean`               | `false` | When `true`, draws each slice's name inside the slice via recharts `LabelList`.                                                                                      |
+| `tooltip`    | `boolean`               | `true`  | Toggles the hover tooltip (`ChartTooltip` + `ChartTooltipContent`).                                                                                                  |
+| `className`  | `string`                | -       | Merged onto the `ChartContainer`. The bundled style supplies a centered, square aspect frame.                                                                        |
 
-### Headless primitives exposed
+### Chart primitives for custom composition
 
-| Export | Role |
-|---|---|
-| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides the polar projection context. |
-| `Pie` | Render-prop primitive yielding `{ slices }`. Each slice carries `{ d, name, index, value, fraction }` so you draw the `<path>` and pick the color yourself. |
+For full control, compose raw recharts inside `ChartContainer` using the shadcn chart primitives, all re-exported from `@gremorie/rx-data`. This mirrors the official shadcn pie block ([ui.shadcn.com/charts/pie](https://ui.shadcn.com/charts/pie)).
+
+| Export                                 | Role                                                                              |
+| -------------------------------------- | --------------------------------------------------------------------------------- |
+| `ChartContainer`                       | Responsive frame; injects per-key CSS color vars (`--color-<key>`) from `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Hover card and its themed content.                                                |
+| `ChartLegend` / `ChartLegendContent`   | Optional legend and its themed content.                                           |
+| `useChart`                             | Hook returning the active `config` from context (use inside custom children).     |
+| `PieChart`, `Pie`, `Cell`, `Label`     | Raw recharts primitives composed inside `ChartContainer`.                         |
 
 ### Types
 
-| Type | Shape |
-|---|---|
-| `Datum` | `Record<string, string \| number>` - one row of chart data. |
+| Type          | Shape                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - one row of chart data; `fill` sets the per-slice color. |
+| `ChartConfig` | Map of key → `{ label?, icon?, color? }`; provides tooltip/legend labels (and optional colors).                  |
 
 <Callout type="info">
-`PieChart` does **not** take a `config` prop - slice colors are auto-assigned from the `--chart-1` through `--chart-5` tokens in row order. For explicit per-slice colors, drop down to the headless `<Pie>` and supply your own `fill`.
+  Slice colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), not
+  from `config`. The optional `config` maps each slice name to a `{label}` and
+  drives the labels shown in the tooltip.
 </Callout>
 
 ## Composition
 
-1. **Pick `nameKey` and `valueKey`** - the label column and the numeric column. Both must exist on every row.
-2. **Order rows by magnitude** before passing them in. The biggest slice should sit at the 12-o'clock anchor so the eye reads it first.
-3. **Toggle `donut`** when you want to embed a total or label at the center, or when the surrounding card is large enough that a solid pie feels too heavy.
-4. **For more than five colors**, drop down to `<Pie>` and supply a longer color list. The bundled wrapper cycles `--chart-1` through `--chart-5`.
+1. **Pick `nameKey` and `dataKey`** - the label column and the numeric column. Both must exist on every row.
+2. **Set a `fill` per row** - point each row at a `--chart-*` token (e.g. `fill: "var(--chart-1)"`). This is where slice colors come from.
+3. **Add a `config`** mapping each slice name (and the value key) to a `{ label }` so the tooltip reads cleanly.
+4. **Order rows by magnitude** before passing them in. The biggest slice should sit at the 12-o'clock anchor so the eye reads it first.
+5. **Toggle `donut`** when you want to embed a total or label at the center, or when the surrounding card is large enough that a solid pie feels too heavy.
 
-The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspect-square` so the slices stay circular.
+The chart auto-sizes to its parent through `ChartContainer` (recharts `ResponsiveContainer`). The frame forces `aspect-square` so the slices stay circular.
 
 ## Variations
 
@@ -118,7 +128,7 @@ The chart auto-sizes to its parent via `ResizeObserver`. The figure forces `aspe
 </div>
 
 ```tsx
-<PieChart data={data} nameKey="browser" valueKey="visitors" />
+<PieChart data={data} config={config} nameKey="browser" dataKey="visitors" />
 ```
 
 The default. Use when the surrounding surface is small (card, side panel) or when no centered label is needed.
@@ -130,49 +140,82 @@ The default. Use when the surrounding surface is small (card, side panel) or whe
 </div>
 
 ```tsx
-<PieChart data={data} nameKey="browser" valueKey="visitors" donut />
+<PieChart
+  data={data}
+  config={config}
+  nameKey="browser"
+  dataKey="visitors"
+  donut
+/>
 ```
 
-Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses `innerRadiusRatio` of 0.6.
+Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses an `innerRadius` of 60.
 
-### Headless customization
+### Custom composition
+
+When you need explicit per-slice colors, gradient fills, a center label, or a custom legend, compose raw recharts inside `ChartContainer`. This mirrors the official shadcn pie block.
 
 ```tsx
-import { ChartFrame, Pie } from "@gremorie/rx-data";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from '@gremorie/rx-data';
+import { Cell, Pie, PieChart } from 'recharts';
 
-export function ExplicitColorPie({ data, nameKey, valueKey, colorByName }) {
+export function ExplicitColorPie({
+  data,
+  config,
+  nameKey,
+  dataKey,
+  colorByName,
+}: {
+  data: ChartDatum[];
+  config: ChartConfig;
+  nameKey: string;
+  dataKey: string;
+  colorByName: Record<string, string>;
+}) {
   return (
-    <figure role="img" aria-label="Custom pie">
-      <ChartFrame data={data} xKey={nameKey} className="mx-auto aspect-square max-h-[260px] w-full">
-        <Pie valueKey={valueKey}>
-          {({ slices }) =>
-            slices.map((s) => (
-              <path
-                key={s.name}
-                d={s.d}
-                fill={colorByName[s.name]}
-                stroke="var(--background)"
-                strokeWidth={2}
-              />
-            ))
-          }
+    <ChartContainer
+      config={config}
+      className="mx-auto aspect-square max-h-[260px]"
+    >
+      <PieChart>
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent nameKey={nameKey} hideLabel />}
+        />
+        <Pie
+          data={data}
+          dataKey={dataKey}
+          nameKey={nameKey}
+          stroke="var(--background)"
+          strokeWidth={2}
+        >
+          {data.map((row) => (
+            <Cell
+              key={String(row[nameKey])}
+              fill={colorByName[String(row[nameKey])]}
+            />
+          ))}
         </Pie>
-      </ChartFrame>
-    </figure>
+      </PieChart>
+    </ChartContainer>
   );
 }
 ```
 
-Drop down to headless when you need explicit colors keyed by slice name, gradient fills, or a custom legend layout.
+You can also skip `<Cell>` entirely and set `fill` directly on each row of `data` - the wrapper does exactly that.
 
 ## Accessibility
 
-- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Pie chart of visitors by browser"` or `"Donut chart of visitors by browser"`).
-- **Mirror table**: the chart appends a visually hidden `<table>` listing every slice name and value. Screen readers navigate the data via native table commands.
-- **Visible legend**: a wrapping `<ul>` of swatch plus label sits below the chart, providing the color-to-name mapping for sighted users without depending on tooltips.
+- **Accessibility layer**: recharts' `accessibilityLayer` provides keyboard navigation and screen-reader announcements for the chart data.
 - **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
-- **Slice separation**: slices are stroked with the background color at 2 px, so adjacent slices stay distinguishable for users with color-vision deficiencies even when the colors are close.
-- **Limit slice count**: above six slices, a pie becomes hard to read even with the legend. Reach for [`BarChart`](/components/data/bar-chart) instead.
+- **Slice separation**: stroke slices with the background color (see the custom composition example) so adjacent slices stay distinguishable for users with color-vision deficiencies even when the colors are close.
+- **Limit slice count**: above six slices, a pie becomes hard to read. Reach for [`BarChart`](/components/data/bar-chart) instead.
 
 ## Related
 

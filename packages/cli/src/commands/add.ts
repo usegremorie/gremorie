@@ -22,9 +22,8 @@ export async function addCommand(
   const cwd = process.cwd();
   const requested = options.framework;
   // Treat the legacy alias "react" as "rx" so old scripts keep working.
-  const normalised = (requested === ('react' as RegistryFramework))
-    ? 'rx'
-    : requested;
+  const normalised =
+    requested === ('react' as RegistryFramework) ? 'rx' : requested;
   const framework: RegistryFramework =
     normalised ?? detectFramework(cwd) ?? 'ng';
   const client = createRegistryClient();
@@ -32,7 +31,11 @@ export async function addCommand(
   console.log();
   console.log(kleur.bold().cyan(`gremorie add ${name}`));
   console.log(kleur.dim(`  registry:  ${client.baseUrl}`));
-  console.log(kleur.dim(`  framework: ${framework}${options.framework ? '' : ' (auto-detected)'}`));
+  console.log(
+    kleur.dim(
+      `  framework: ${framework}${options.framework ? '' : ' (auto-detected)'}`,
+    ),
+  );
   console.log(kleur.dim(`  target:    ${cwd}`));
   console.log();
 
@@ -67,18 +70,12 @@ export async function addCommand(
     for (const file of item.files) {
       const dest = join(cwd, file.target ?? file.path);
       if (options.dryRun) {
-        console.log(
-          kleur.yellow('  ~'),
-          kleur.dim(file.target ?? file.path),
-        );
+        console.log(kleur.yellow('  ~'), kleur.dim(file.target ?? file.path));
       } else {
         mkdirSync(dirname(dest), { recursive: true });
         writeFileSync(dest, file.content, 'utf-8');
         writtenCount += 1;
-        console.log(
-          kleur.green('  +'),
-          kleur.dim(file.target ?? file.path),
-        );
+        console.log(kleur.green('  +'), kleur.dim(file.target ?? file.path));
       }
     }
   }

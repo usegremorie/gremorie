@@ -2,20 +2,20 @@
 title: Button
 description: Click target primário — seis variantes visuais e quatro presets de tamanho.
 component: Button
-importPath: "@kalvner/kds/forms/button"
+importPath: '@kalvner/kds/forms/button'
 status: stable
 ---
 
-import { Button } from "@kalvner/kds/forms/button";
+import { Button } from '@kalvner/kds/forms/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { ArrowRight, Loader2, Mail, Plus, Trash2 } from "lucide-react";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { ArrowRight, Loader2, Mail, Plus, Trash2 } from 'lucide-react';
 
 ## Overview
 
@@ -62,7 +62,7 @@ navegação.
 ## Usage
 
 ```tsx
-import { Button } from "@kalvner/kds/forms/button";
+import { Button } from '@kalvner/kds/forms/button';
 
 export function Example() {
   return <Button onClick={() => save()}>Salvar</Button>;
@@ -81,13 +81,13 @@ export function Example() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `variant` | `'default' \| 'destructive' \| 'outline' \| 'secondary' \| 'ghost' \| 'link'` | `'default'` | Variante visual. |
-| `size` | `'default' \| 'xs' \| 'sm' \| 'lg' \| 'icon' \| 'icon-xs' \| 'icon-sm' \| 'icon-lg'` | `'default'` | Altura + padding. |
-| `asChild` | `boolean` | `false` | Renderiza o único filho em vez de um `<button>` (Radix Slot). |
-| `disabled` | `boolean` | `false` | Estado nativo `disabled` do botão. |
-| `...rest` | `React.ComponentProps<'button'>` | — | Tudo que `<button>` aceita (`type`, `onClick`, `aria-*`). |
+| Prop       | Tipo                                                                                 | Default     | Descrição                                                     |
+| ---------- | ------------------------------------------------------------------------------------ | ----------- | ------------------------------------------------------------- |
+| `variant`  | `'default' \| 'destructive' \| 'outline' \| 'secondary' \| 'ghost' \| 'link'`        | `'default'` | Variante visual.                                              |
+| `size`     | `'default' \| 'xs' \| 'sm' \| 'lg' \| 'icon' \| 'icon-xs' \| 'icon-sm' \| 'icon-lg'` | `'default'` | Altura + padding.                                             |
+| `asChild`  | `boolean`                                                                            | `false`     | Renderiza o único filho em vez de um `<button>` (Radix Slot). |
+| `disabled` | `boolean`                                                                            | `false`     | Estado nativo `disabled` do botão.                            |
+| `...rest`  | `React.ComponentProps<'button'>`                                                     | —           | Tudo que `<button>` aceita (`type`, `onClick`, `aria-*`).     |
 
 ## Variants
 
@@ -104,7 +104,9 @@ export function Example() {
   <Card>
     <CardHeader>
       <CardTitle>Destructive</CardTitle>
-      <CardDescription>Ações irreversíveis — sempre confirme antes.</CardDescription>
+      <CardDescription>
+        Ações irreversíveis — sempre confirme antes.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Button variant="destructive">
@@ -166,7 +168,9 @@ export function Example() {
   <Card>
     <CardHeader>
       <CardTitle>Loading</CardTitle>
-      <CardDescription>Spinner + texto — desabilitado para evitar duplo envio.</CardDescription>
+      <CardDescription>
+        Spinner + texto — desabilitado para evitar duplo envio.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Button disabled>
@@ -202,7 +206,9 @@ export function Example() {
   <Card>
     <CardHeader>
       <CardTitle>Icon-only</CardTitle>
-      <CardDescription>Toolbar e ações de tabela. Inclua aria-label.</CardDescription>
+      <CardDescription>
+        Toolbar e ações de tabela. Inclua aria-label.
+      </CardDescription>
     </CardHeader>
     <CardContent className="flex gap-2">
       <Button size="icon-sm" variant="ghost" aria-label="Adicionar">
@@ -233,7 +239,9 @@ export function Example() {
   <Card>
     <CardHeader>
       <CardTitle>Form footer</CardTitle>
-      <CardDescription>Cancelar à esquerda, ação primária à direita — convenção ocidental.</CardDescription>
+      <CardDescription>
+        Cancelar à esquerda, ação primária à direita — convenção ocidental.
+      </CardDescription>
     </CardHeader>
     <CardContent className="flex justify-end gap-3">
       <Button variant="ghost">Cancelar</Button>
@@ -243,7 +251,9 @@ export function Example() {
   <Card>
     <CardHeader>
       <CardTitle>Destructive confirmation</CardTitle>
-      <CardDescription>Saída segura à esquerda, destrutivo à direita.</CardDescription>
+      <CardDescription>
+        Saída segura à esquerda, destrutivo à direita.
+      </CardDescription>
     </CardHeader>
     <CardContent className="flex justify-end gap-3">
       <Button variant="ghost">Cancelar</Button>
@@ -291,15 +301,15 @@ mas o padrão de stakes (low / high) ditará o gating.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<button>` nativo. Quando `asChild` é usado, garanta que o componente filho gere semântica equivalente (`<a>` ganha `role="link"` automaticamente). |
-| **Keyboard** | `Tab` navega; `Enter` e `Space` ativam. `disabled` remove do tab order. |
-| **Focus ring** | `focus-visible:ring-[3px] ring-ring/50` — visível só no foco via teclado. |
-| **Screen reader** | Anunciado como "button" + texto interno. Para icon-only, exija `aria-label`. |
-| **Disabled vs aria-disabled** | Use `disabled` (HTML nativo) — bloqueia clique e keyboard. `aria-disabled` apenas anuncia mas não bloqueia. |
-| **Loading state** | Combine `disabled` + spinner. Considere `aria-live="polite"` no container quando o estado mudar dinamicamente. |
-| **Touch target** | `default` é 36px de altura — borderline para mobile. Em telas táteis, prefira `lg` (40px) ou wraps com padding. |
+| Concern                       | Comportamento                                                                                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**                     | `<button>` nativo. Quando `asChild` é usado, garanta que o componente filho gere semântica equivalente (`<a>` ganha `role="link"` automaticamente). |
+| **Keyboard**                  | `Tab` navega; `Enter` e `Space` ativam. `disabled` remove do tab order.                                                                             |
+| **Focus ring**                | `focus-visible:ring-[3px] ring-ring/50` — visível só no foco via teclado.                                                                           |
+| **Screen reader**             | Anunciado como "button" + texto interno. Para icon-only, exija `aria-label`.                                                                        |
+| **Disabled vs aria-disabled** | Use `disabled` (HTML nativo) — bloqueia clique e keyboard. `aria-disabled` apenas anuncia mas não bloqueia.                                         |
+| **Loading state**             | Combine `disabled` + spinner. Considere `aria-live="polite"` no container quando o estado mudar dinamicamente.                                      |
+| **Touch target**              | `default` é 36px de altura — borderline para mobile. Em telas táteis, prefira `lg` (40px) ou wraps com padding.                                     |
 
 ## Related
 

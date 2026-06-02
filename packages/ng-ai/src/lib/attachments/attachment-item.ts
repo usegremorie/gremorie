@@ -12,14 +12,8 @@ import {
 import { cva } from 'class-variance-authority';
 
 import { AttachmentList } from './attachment-list';
-import {
-  AttachmentData,
-  AttachmentMediaCategory,
-} from './attachment.types';
-import {
-  getAttachmentLabel,
-  getMediaCategory,
-} from './attachment.utils';
+import { AttachmentData, AttachmentMediaCategory } from './attachment.types';
+import { getAttachmentLabel, getMediaCategory } from './attachment.utils';
 
 const itemVariants = cva(
   'group/attachment relative rounded-md border border-border bg-card text-card-foreground transition-colors motion-safe:animate-[gremorie-fade-in_120ms_ease-out]',
@@ -126,4 +120,3 @@ export class AttachmentItem {
     return this.previewUrl();
   }
 }
-

@@ -2,18 +2,18 @@
 title: Context
 description: Indicador de uso de tokens / context window — popover com breakdown por categoria.
 component: Context
-importPath: "@kalvner/kds/ai/context"
+importPath: '@kalvner/kds/ai/context'
 status: stable
 ---
 
-import { ContextPreview } from "@/components/ai-chatbot-demos";
+import { ContextPreview } from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -26,7 +26,9 @@ percentages relativos ao `maxTokens` do modelo.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Context badge — hover/click pra abrir o breakdown.</CardDescription>
+    <CardDescription>
+      Context badge — hover/click pra abrir o breakdown.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ContextPreview />
@@ -76,12 +78,12 @@ percentages relativos ao `maxTokens` do modelo.
 
 ### Context (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `maxTokens` | `number` | — | Tamanho do context window do modelo. Usado pra calcular percentages. |
-| `usedTokens` | `number` | — | Total de tokens consumidos. |
-| `usage` | `LanguageModelUsage` (AI SDK) | — | Breakdown por categoria — input, output, reasoning, cached. |
-| `modelId` | `string` | — | ID do modelo (claude-opus-4-7, gpt-4o, ...). |
+| Prop         | Tipo                          | Default | Descrição                                                            |
+| ------------ | ----------------------------- | ------- | -------------------------------------------------------------------- |
+| `maxTokens`  | `number`                      | —       | Tamanho do context window do modelo. Usado pra calcular percentages. |
+| `usedTokens` | `number`                      | —       | Total de tokens consumidos.                                          |
+| `usage`      | `LanguageModelUsage` (AI SDK) | —       | Breakdown por categoria — input, output, reasoning, cached.          |
+| `modelId`    | `string`                      | —       | ID do modelo (claude-opus-4-7, gpt-4o, ...).                         |
 
 Herda de [HoverCard](../../ui/overlays/hover-card) — `openDelay`, `closeDelay`.
 
@@ -92,16 +94,17 @@ progresso SVG + porcentagem.
 
 ### ContextContent · Header / Body / Footer
 
-| Componente | Função |
-|---|---|
-| `ContextContent` | Wrapper do HoverCardContent. |
-| `ContextContentHeader` | Título do popover (ex.: "Context · 21k / 128k"). |
-| `ContextContentBody` | Wrapper das linhas de breakdown. |
+| Componente             | Função                                                 |
+| ---------------------- | ------------------------------------------------------ |
+| `ContextContent`       | Wrapper do HoverCardContent.                           |
+| `ContextContentHeader` | Título do popover (ex.: "Context · 21k / 128k").       |
+| `ContextContentBody`   | Wrapper das linhas de breakdown.                       |
 | `ContextContentFooter` | Total + modelId + estimativa de custo (via tokenlens). |
 
 ### ContextInputUsage · OutputUsage · ReasoningUsage · CacheUsage
 
 Linhas individuais. Cada uma lê do `usage` provider e mostra:
+
 - Label (Input / Output / Reasoning / Cache)
 - Valor numérico
 - Mini-progress bar (porção do max)
@@ -124,11 +127,11 @@ Use pra construir variantes custom de breakdown.
 
 ## States
 
-| Estado | Visual |
-|---|---|
-| Used menor que 50% | Ring verde. |
-| Used 50-80% | Ring amarelo (yellow-500). |
-| Used acima de 80% | Ring vermelho (red-500) — alerta de saturação. |
+| Estado             | Visual                                         |
+| ------------------ | ---------------------------------------------- |
+| Used menor que 50% | Ring verde.                                    |
+| Used 50-80%        | Ring amarelo (yellow-500).                     |
+| Used acima de 80%  | Ring vermelho (red-500) — alerta de saturação. |
 
 Cores específicas dependem do tema.
 
@@ -154,10 +157,10 @@ Cores específicas dependem do tema.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **HoverCard** | Acessível via teclado (Tab focus + Enter). |
-| **Progress visual** | Pareie com texto — ring sozinho é canal único. |
+| Concern               | Comportamento                                           |
+| --------------------- | ------------------------------------------------------- |
+| **HoverCard**         | Acessível via teclado (Tab focus + Enter).              |
+| **Progress visual**   | Pareie com texto — ring sozinho é canal único.          |
 | **Number formatting** | Use `Intl.NumberFormat` pra "21,320" em vez de "21320". |
 
 ## Related

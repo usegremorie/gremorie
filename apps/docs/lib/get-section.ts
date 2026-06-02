@@ -6,19 +6,19 @@
  * tabs.transform() callback decoupled from the directory layout.
  */
 export function getSection(path: string | undefined): string {
-  if (!path) return "get-started";
-  const [dir] = path.split("/", 1);
+  if (!path) return 'get-started';
+  const [dir] = path.split('/', 1);
   return (
     (
       {
-        "get-started": "get-started",
-        corpus: "corpus",
-        tokens: "tokens",
-        components: "components",
-        blocks: "blocks",
-        artifacts: "artifacts",
-        platform: "platform"
+        'get-started': 'get-started',
+        corpus: 'corpus',
+        tokens: 'tokens',
+        components: 'components',
+        blocks: 'blocks',
+        artifacts: 'artifacts',
+        platform: 'platform',
       } as const
-    )[dir ?? ""] ?? "get-started"
+    )[dir ?? ''] ?? 'get-started'
   );
 }

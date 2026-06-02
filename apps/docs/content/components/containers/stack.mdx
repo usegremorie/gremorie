@@ -1,10 +1,10 @@
 ---
 title: Stack
-description: "Vertical flex layout with consistent gap, alignment, and justification tokens."
+description: 'Vertical flex layout with consistent gap, alignment, and justification tokens.'
 ---
 
-import { StackPreview } from "@/components/preview/containers/containers";
-import { Stack } from "@gremorie/rx-containers";
+import { StackPreview } from '@/components/preview/containers/containers';
+import { Stack } from '@gremorie/rx-containers';
 
 ## Overview
 
@@ -21,26 +21,10 @@ Stack exists to **kill ad-hoc `flex flex-col gap-X items-Y` strings**. Once gap,
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-stack
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-stack
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-stack
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-stack
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-stack ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-stack ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-stack ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-stack ```</Tab>
 </Tabs>
 
 ## Usage
@@ -72,17 +56,19 @@ Angular edition planned for a follow-up release. The token enums will map one-to
 
 Renders a `<div>` with `flex flex-col` plus the gap, alignment, and justification classes derived from the variant enums.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `gap` | `"none" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` | Vertical spacing between children. Maps to `gap-0`, `gap-1`, `gap-2`, `gap-4`, `gap-6`, `gap-8`, `gap-12` so values match the project spacing scale. |
-| `align` | `"start" \| "center" \| "end" \| "stretch" \| "baseline"` | `"stretch"` | Cross-axis alignment, applied as `items-*`. Most card and form contexts want `stretch`; vertical menus and modal columns want `start`. |
-| `justify` | `"start" \| "center" \| "end" \| "between" \| "around" \| "evenly"` | `"start"` | Main-axis alignment, applied as `justify-*`. Use `between` when the last child should pin to the bottom of a height-bounded Stack. |
-| `className` | `string` | - | Extra classes merged after the variant classes. Use for layout escape hatches (`min-h-0`, `flex-1`, `mx-auto`); avoid overriding the variant classes themselves. |
-| `ref` | `Ref<HTMLDivElement>` | - | Forwarded ref to the underlying `<div>`. |
-| `...props` | `React.ComponentPropsWithoutRef<"div">` | - | Standard div attributes. |
+| Prop        | Type                                                                | Default     | Description                                                                                                                                                      |
+| ----------- | ------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gap`       | `"none" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"`           | `"md"`      | Vertical spacing between children. Maps to `gap-0`, `gap-1`, `gap-2`, `gap-4`, `gap-6`, `gap-8`, `gap-12` so values match the project spacing scale.             |
+| `align`     | `"start" \| "center" \| "end" \| "stretch" \| "baseline"`           | `"stretch"` | Cross-axis alignment, applied as `items-*`. Most card and form contexts want `stretch`; vertical menus and modal columns want `start`.                           |
+| `justify`   | `"start" \| "center" \| "end" \| "between" \| "around" \| "evenly"` | `"start"`   | Main-axis alignment, applied as `justify-*`. Use `between` when the last child should pin to the bottom of a height-bounded Stack.                               |
+| `className` | `string`                                                            | -           | Extra classes merged after the variant classes. Use for layout escape hatches (`min-h-0`, `flex-1`, `mx-auto`); avoid overriding the variant classes themselves. |
+| `ref`       | `Ref<HTMLDivElement>`                                               | -           | Forwarded ref to the underlying `<div>`.                                                                                                                         |
+| `...props`  | `React.ComponentPropsWithoutRef<"div">`                             | -           | Standard div attributes.                                                                                                                                         |
 
 <Callout type="info">
-**Vertical only.** Stack has no `direction` prop. For horizontal flow, pair it with a row helper (or plain `flex flex-row gap-*`). For two-axis grids, reach for a dedicated `Grid` primitive.
+  **Vertical only.** Stack has no `direction` prop. For horizontal flow, pair it
+  with a row helper (or plain `flex flex-row gap-*`). For two-axis grids, reach
+  for a dedicated `Grid` primitive.
 </Callout>
 
 ## Composition

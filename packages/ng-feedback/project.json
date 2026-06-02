@@ -33,12 +33,6 @@
         "packageRoot": "dist/{projectRoot}"
       }
     },
-    "test": {
-      "executor": "@nx/angular:unit-test",
-      "options": {
-        "watch": false
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint"
     }

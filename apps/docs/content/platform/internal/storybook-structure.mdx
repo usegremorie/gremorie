@@ -70,17 +70,17 @@ Validated against Material UI, Atlassian ADS, Polaris, Mantine, Chakra,
 and Radix Primitives. Components are organised by **what they do**, not
 what they look like.
 
-| Category | Function | Examples |
-|---|---|---|
-| **Containers** | Structure and spacing helpers | Stack, Flex, Grid, Box, Spacer, ScrollArea, AspectRatio |
-| **Typography** | Text and textual elements | Heading, Text, Code (static), KBD, Blockquote, Link, List |
-| **Forms** | User input collection | Button, Input, Select, Checkbox, Radio, Switch, Slider, Textarea, Combobox, DatePicker, FileUpload, Field |
-| **Display** | Non-textual static presentation | Avatar, Badge, Card, Item, Image, Icon, Separator, Accordion |
-| **Data** | Structured data visualisation | Table, Chart, Stat, Sparkline, KPI, Tree, DescriptionList |
-| **Feedback** | Temporary states and indicators | Alert, Banner, Progress, Spinner, Skeleton, Toast, Empty |
-| **Navigation** | Section-to-section navigation | Tabs, Breadcrumb, Pagination, NavigationMenu, Sidebar, Steps |
-| **Overlays** | Floating layers | Dialog, Sheet, Drawer, AlertDialog, Popover, Tooltip, DropdownMenu, Command |
-| **AI** | AI-native components | See sub-categories below |
+| Category       | Function                        | Examples                                                                                                  |
+| -------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Containers** | Structure and spacing helpers   | Stack, Flex, Grid, Box, Spacer, ScrollArea, AspectRatio                                                   |
+| **Typography** | Text and textual elements       | Heading, Text, Code (static), KBD, Blockquote, Link, List                                                 |
+| **Forms**      | User input collection           | Button, Input, Select, Checkbox, Radio, Switch, Slider, Textarea, Combobox, DatePicker, FileUpload, Field |
+| **Display**    | Non-textual static presentation | Avatar, Badge, Card, Item, Image, Icon, Separator, Accordion                                              |
+| **Data**       | Structured data visualisation   | Table, Chart, Stat, Sparkline, KPI, Tree, DescriptionList                                                 |
+| **Feedback**   | Temporary states and indicators | Alert, Banner, Progress, Spinner, Skeleton, Toast, Empty                                                  |
+| **Navigation** | Section-to-section navigation   | Tabs, Breadcrumb, Pagination, NavigationMenu, Sidebar, Steps                                              |
+| **Overlays**   | Floating layers                 | Dialog, Sheet, Drawer, AlertDialog, Popover, Tooltip, DropdownMenu, Command                               |
+| **AI**         | AI-native components            | See sub-categories below                                                                                  |
 
 `AI` is one of the nine categories, not a special case. The Angular edition
 opens with the AI category (PromptInput, Conversation, Message); broader
@@ -119,17 +119,17 @@ StackTrace, Terminal, TestResults, WebPreview.
 
 ### Disambiguating edge cases
 
-| Component | Lives in | Why |
-|---|---|---|
-| Skeleton | Feedback | Loading state, pairs with Spinner |
-| Toast | Feedback | Primary function is feedback |
-| Sidebar | Navigation | Navigating container |
-| CodeBlock (static) | Typography | No streaming, no tool call |
-| CodeBlock (streaming) | AI / Code | Generated during AI response |
-| Snippet (AI Elements) | AI / Code | Agent-generated, distinct from Typography Code |
-| Shimmer | AI / Chatbot | AI-streaming specific, not the generic Feedback Skeleton |
-| Link | Typography | Text that navigates |
-| Banner | Feedback | In-flow persistent message |
+| Component             | Lives in     | Why                                                      |
+| --------------------- | ------------ | -------------------------------------------------------- |
+| Skeleton              | Feedback     | Loading state, pairs with Spinner                        |
+| Toast                 | Feedback     | Primary function is feedback                             |
+| Sidebar               | Navigation   | Navigating container                                     |
+| CodeBlock (static)    | Typography   | No streaming, no tool call                               |
+| CodeBlock (streaming) | AI / Code    | Generated during AI response                             |
+| Snippet (AI Elements) | AI / Code    | Agent-generated, distinct from Typography Code           |
+| Shimmer               | AI / Chatbot | AI-streaming specific, not the generic Feedback Skeleton |
+| Link                  | Typography   | Text that navigates                                      |
+| Banner                | Feedback     | In-flow persistent message                               |
 
 ## Tokens: three coexisting types
 
@@ -151,13 +151,13 @@ theme).
 **Only when the product has dataviz** (charts, dashboards, analytics). Full
 palettes for encoding data, in 5 canonical groups:
 
-| Group | Data type | Foundation |
-|---|---|---|
-| **Sequential** | Ordered, low to high | ColorBrewer (Cynthia Brewer, Penn State) |
-| **Categorical** | Nominal, no order | ColorBrewer |
-| **Divergent** | Significant centre point | ColorBrewer |
-| **Status** | State / severity | AWS Cloudscape, IBM Carbon |
-| **Comparison** | 2 discrete groups plus neutral baseline | Kalvner DS Standard (A/B test, actual vs target) |
+| Group           | Data type                               | Foundation                                       |
+| --------------- | --------------------------------------- | ------------------------------------------------ |
+| **Sequential**  | Ordered, low to high                    | ColorBrewer (Cynthia Brewer, Penn State)         |
+| **Categorical** | Nominal, no order                       | ColorBrewer                                      |
+| **Divergent**   | Significant centre point                | ColorBrewer                                      |
+| **Status**      | State / severity                        | AWS Cloudscape, IBM Carbon                       |
+| **Comparison**  | 2 discrete groups plus neutral baseline | Kalvner DS Standard (A/B test, actual vs target) |
 
 The first three are academic consensus since the 1990s (ColorBrewer). Status
 and Comparison are product-DS standard. **Cyclical** and **Highlight** are
@@ -165,14 +165,14 @@ optional; add only when there's a real use case.
 
 #### CSS variable naming
 
-| Group | Prefix | Example |
-|---|---|---|
-| Sequential default | `--chart-1..5` | `--chart-1`, ..., `--chart-5` |
-| Sequential additional | `--chart-<color>-1..5` | `--chart-green-1` |
-| Categorical | `--chart-cat-1..N` | `--chart-cat-1` |
-| Divergent | `--chart-div-1..N` | `--chart-div-1` (with centre) |
-| Status | `--chart-status-<intent>` | `--chart-status-success`, `--chart-status-error` |
-| Comparison | `--chart-cmp-a`, `--chart-cmp-b`, `--chart-cmp-baseline` | pair plus neutral baseline |
+| Group                 | Prefix                                                   | Example                                          |
+| --------------------- | -------------------------------------------------------- | ------------------------------------------------ |
+| Sequential default    | `--chart-1..5`                                           | `--chart-1`, ..., `--chart-5`                    |
+| Sequential additional | `--chart-<color>-1..5`                                   | `--chart-green-1`                                |
+| Categorical           | `--chart-cat-1..N`                                       | `--chart-cat-1`                                  |
+| Divergent             | `--chart-div-1..N`                                       | `--chart-div-1` (with centre)                    |
+| Status                | `--chart-status-<intent>`                                | `--chart-status-success`, `--chart-status-error` |
+| Comparison            | `--chart-cmp-a`, `--chart-cmp-b`, `--chart-cmp-baseline` | pair plus neutral baseline                       |
 
 ### Why Chart is a peer of Primitive and Semantic
 

@@ -2,18 +2,23 @@
 title: Tool
 description: Surface colapsável de tool-call — header com badge de status, input/output, suporte a HITL.
 component: Tool
-importPath: "@kalvner/kds/ai/tool"
+importPath: '@kalvner/kds/ai/tool'
 status: stable
 ---
 
-import { ToolRunningPreview, ToolCompletedPreview, ToolErrorPreview, ToolApprovalPreview } from "@/components/ai-chatbot-demos";
+import {
+  ToolRunningPreview,
+  ToolCompletedPreview,
+  ToolErrorPreview,
+  ToolApprovalPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -49,75 +54,77 @@ correspondentes.
 ## Usage
 
 ```tsx
-import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@kalvner/kds/ai/tool";
+import {
+  Tool,
+  ToolContent,
+  ToolHeader,
+  ToolInput,
+  ToolOutput,
+} from '@kalvner/kds/ai/tool';
 
 <Tool defaultOpen>
-  <ToolHeader
-    type="tool-search"
-    state="output-available"
-    title="search"
-  />
+  <ToolHeader type="tool-search" state="output-available" title="search" />
   <ToolContent>
-    <ToolInput input={{ query: "tokens", limit: 5 }} />
+    <ToolInput input={{ query: 'tokens', limit: 5 }} />
     <ToolOutput output={<pre>{JSON.stringify(results, null, 2)}</pre>} />
   </ToolContent>
-</Tool>
+</Tool>;
 ```
 
 ## Props
 
 ### Tool (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `open` / `defaultOpen` | `boolean` | — | Controle do collapsible. |
-| `className` | `string` | — | Override; padrão tem `border rounded-md`. |
+| Prop                   | Tipo      | Default | Descrição                                 |
+| ---------------------- | --------- | ------- | ----------------------------------------- |
+| `open` / `defaultOpen` | `boolean` | —       | Controle do collapsible.                  |
+| `className`            | `string`  | —       | Override; padrão tem `border rounded-md`. |
 
 Herda os outros props de [Collapsible](../../ui/display/collapsible).
 
 ### ToolHeader
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `type` | `ToolUIPart["type"]` | — | Tipo do tool — string como `tool-search`, `tool-fetch`. Mostrado como label. |
-| `state` | `ToolUIPart["state"]` | — | Estado da execução. Controla o badge + ícone. |
-| `title` | `string` | — | Override do label exibido (default: `type` sem prefixo `tool-`). |
-| `className` | `string` | — | Override do header. |
+| Prop        | Tipo                  | Default | Descrição                                                                    |
+| ----------- | --------------------- | ------- | ---------------------------------------------------------------------------- |
+| `type`      | `ToolUIPart["type"]`  | —       | Tipo do tool — string como `tool-search`, `tool-fetch`. Mostrado como label. |
+| `state`     | `ToolUIPart["state"]` | —       | Estado da execução. Controla o badge + ícone.                                |
+| `title`     | `string`              | —       | Override do label exibido (default: `type` sem prefixo `tool-`).             |
+| `className` | `string`              | —       | Override do header.                                                          |
 
 #### `state` values e visuais
 
-| State | Badge | Ícone |
-|---|---|---|
-| `input-streaming` | "Pending" | `CircleIcon` |
-| `input-available` | "Running" | `ClockIcon` (animate-pulse) |
-| `approval-requested` | "Awaiting Approval" | `ClockIcon` (yellow) |
-| `approval-responded` | "Responded" | `CheckCircleIcon` (blue) |
-| `output-available` | "Completed" | `CheckCircleIcon` (green) |
-| `output-error` | "Error" | `XCircleIcon` (red) |
-| `output-denied` | "Denied" | `XCircleIcon` (orange) |
+| State                | Badge               | Ícone                       |
+| -------------------- | ------------------- | --------------------------- |
+| `input-streaming`    | "Pending"           | `CircleIcon`                |
+| `input-available`    | "Running"           | `ClockIcon` (animate-pulse) |
+| `approval-requested` | "Awaiting Approval" | `ClockIcon` (yellow)        |
+| `approval-responded` | "Responded"         | `CheckCircleIcon` (blue)    |
+| `output-available`   | "Completed"         | `CheckCircleIcon` (green)   |
+| `output-error`       | "Error"             | `XCircleIcon` (red)         |
+| `output-denied`      | "Denied"            | `XCircleIcon` (orange)      |
 
 ### ToolContent
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `className` | `string` | — | Override. |
+| Prop        | Tipo     | Default | Descrição |
+| ----------- | -------- | ------- | --------- |
+| `className` | `string` | —       | Override. |
 
 Aceita `ToolInput` + `ToolOutput` como filhos canônicos.
 
 ### ToolInput
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `input` | `unknown` | — | Objeto/valor que será serializado como JSON pretty-print via [CodeBlock](../code/code-block). |
-| `className` | `string` | — | Override. |
+| Prop        | Tipo      | Default | Descrição                                                                                     |
+| ----------- | --------- | ------- | --------------------------------------------------------------------------------------------- |
+| `input`     | `unknown` | —       | Objeto/valor que será serializado como JSON pretty-print via [CodeBlock](../code/code-block). |
+| `className` | `string`  | —       | Override.                                                                                     |
 
 ### ToolOutput
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `output` | `ReactNode` | — | Resultado renderizado. Pode ser JSX, string, JSON pretty-print. |
-| `errorText` | `string` | — | Quando presente, sobrescreve o output mostrando erro em vermelho. |
-| `className` | `string` | — | Override. |
+| Prop        | Tipo        | Default | Descrição                                                         |
+| ----------- | ----------- | ------- | ----------------------------------------------------------------- |
+| `output`    | `ReactNode` | —       | Resultado renderizado. Pode ser JSX, string, JSON pretty-print.   |
+| `errorText` | `string`    | —       | Quando presente, sobrescreve o output mostrando erro em vermelho. |
+| `className` | `string`    | —       | Override.                                                         |
 
 ## Subcomponents
 
@@ -135,6 +142,7 @@ Aceita `ToolInput` + `ToolOutput` como filhos canônicos.
 ## States
 
 Ver tabela em ToolHeader → `state` values. O state afeta:
+
 - Cor + ícone do badge
 - Comportamento do TolOutput (mostra errorText quando state é `output-error`/`output-denied`)
 - Visibilidade automática do ToolOutput em alguns states
@@ -156,12 +164,10 @@ Pra UI custom de approval, combine com [Confirmation](./confirmation).
     title="delete_record"
   />
   <ToolContent>
-    <ToolInput input={{ recordId: "user_42" }} />
+    <ToolInput input={{ recordId: 'user_42' }} />
   </ToolContent>
   <Confirmation approval={part.approval} state={part.state}>
-    <ConfirmationTitle>
-      Aprovar exclusão?
-    </ConfirmationTitle>
+    <ConfirmationTitle>Aprovar exclusão?</ConfirmationTitle>
     <ConfirmationActions>
       <ConfirmationAction onClick={approve}>Aprovar</ConfirmationAction>
       <ConfirmationAction variant="outline" onClick={reject}>
@@ -210,12 +216,12 @@ Pra UI custom de approval, combine com [Confirmation](./confirmation).
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `<button>` com `aria-expanded`. Content é `<region>`. |
-| **Badge** | `aria-label` no ícone (ex.: "Awaiting approval"). |
-| **Status changes** | Mudanças de `state` são visuais — combine com `aria-live="polite"` no parent (Conversation `role="log"` já cobre). |
-| **Code highlighting** | ToolInput herda acessibilidade do CodeBlock. |
+| Concern               | Comportamento                                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **Roles**             | Trigger é `<button>` com `aria-expanded`. Content é `<region>`.                                                    |
+| **Badge**             | `aria-label` no ícone (ex.: "Awaiting approval").                                                                  |
+| **Status changes**    | Mudanças de `state` são visuais — combine com `aria-live="polite"` no parent (Conversation `role="log"` já cobre). |
+| **Code highlighting** | ToolInput herda acessibilidade do CodeBlock.                                                                       |
 
 ## Related
 

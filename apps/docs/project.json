@@ -39,6 +39,7 @@
     },
     "lint": {
       "executor": "nx:run-commands",
+      "dependsOn": ["^build"],
       "options": {
         "cwd": "apps/docs",
         "command": "eslint ."
@@ -46,6 +47,7 @@
     },
     "typecheck": {
       "executor": "nx:run-commands",
+      "dependsOn": ["^build"],
       "options": {
         "cwd": "apps/docs",
         "command": "tsc --noEmit"

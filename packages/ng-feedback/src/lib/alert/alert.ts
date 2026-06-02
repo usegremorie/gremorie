@@ -30,7 +30,9 @@ export const alertVariants = cva(
   },
 );
 
-export type AlertVariant = NonNullable<VariantProps<typeof alertVariants>['variant']>;
+export type AlertVariant = NonNullable<
+  VariantProps<typeof alertVariants>['variant']
+>;
 
 /**
  * Alert — in-flow feedback message. Mirrors React `Alert` from

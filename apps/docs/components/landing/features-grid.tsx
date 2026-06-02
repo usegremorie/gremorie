@@ -1,10 +1,10 @@
-import { Brain, Copy, GitBranch, Sparkles } from "lucide-react";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
+} from '@gremorie/rx-display';
+import { Brain, Copy, GitBranch, Sparkles } from 'lucide-react';
 
 /**
  * Each feature gets its own accent token (chart-N) for the icon tile and
@@ -18,38 +18,38 @@ import {
 const features = [
   {
     icon: Sparkles,
-    title: "AI-native",
+    title: 'AI-native',
     description:
-      "Knowledge layer plus MCP serves the corpus to LLMs. Your design system is legible to language models, not just designers.",
-    accent: "var(--brand)",
-    accentSubtle: "var(--brand-subtle)",
+      'Knowledge layer plus MCP serves the corpus to LLMs. Your design system is legible to language models, not just designers.',
+    accent: 'var(--brand)',
+    accentSubtle: 'var(--brand-subtle)',
   },
   {
     icon: GitBranch,
-    title: "Two editions",
+    title: 'Two editions',
     description:
-      "Angular and React from the same registry. Same primitives, same semantics, same tokens. Shared corpus across stacks.",
-    accent: "var(--chart-2)",
-    accentSubtle: "color-mix(in oklch, var(--chart-2) 12%, transparent)",
+      'Angular and React from the same registry. Same primitives, same semantics, same tokens. Shared corpus across stacks.',
+    accent: 'var(--chart-2)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-2) 12%, transparent)',
   },
   {
     icon: Copy,
-    title: "Copy-paste",
+    title: 'Copy-paste',
     description:
-      "Run gremorie add and the code is yours. No black-box dependency. Own every line, refactor without asking.",
-    accent: "var(--chart-3)",
-    accentSubtle: "color-mix(in oklch, var(--chart-3) 12%, transparent)",
+      'Run gremorie add and the code is yours. No black-box dependency. Own every line, refactor without asking.',
+    accent: 'var(--chart-3)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-3) 12%, transparent)',
   },
   {
     icon: Brain,
-    title: "MCP-ready",
+    title: 'MCP-ready',
     description:
-      "Claude, Cursor, and Codex generate idiomatic UI by reading the MCP server. They build with your DS, not against it.",
+      'Claude, Cursor, and Codex generate idiomatic UI by reading the MCP server. They build with your DS, not against it.',
     // chart-5 chosen over chart-4 so the icon does NOT land on violet in
     // dark mode (chart-4 dark is violet, which would clash with the AI
     // brand accent on the first card).
-    accent: "var(--chart-5)",
-    accentSubtle: "color-mix(in oklch, var(--chart-5) 12%, transparent)",
+    accent: 'var(--chart-5)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-5) 12%, transparent)',
   },
 ];
 

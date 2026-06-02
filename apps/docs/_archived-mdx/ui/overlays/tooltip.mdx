@@ -2,7 +2,7 @@
 title: Tooltip
 description: Label curto e não-essencial que aparece em hover/focus.
 component: Tooltip
-importPath: "@kalvner/kds/overlays/tooltip"
+importPath: '@kalvner/kds/overlays/tooltip'
 status: stable
 ---
 
@@ -11,13 +11,13 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   TooltipPreview,
   TooltipShortcut,
-  TooltipSides
-} from "@/components/overlay-demos";
+  TooltipSides,
+} from '@/components/overlay-demos';
 
 ## Overview
 
@@ -59,18 +59,18 @@ quando você passa o mouse de um para outro, eles entram em modo
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
+| Componente        | Descrição                                           |
+| ----------------- | --------------------------------------------------- |
 | `TooltipProvider` | Envolve a árvore. Configura `delayDuration` global. |
-| `Tooltip` | Raiz para um tooltip individual. |
-| `TooltipTrigger` | Elemento ao qual o tooltip se ancora. |
-| `TooltipContent` | Bubble com texto. Inclui Arrow automaticamente. |
+| `Tooltip`         | Raiz para um tooltip individual.                    |
+| `TooltipTrigger`  | Elemento ao qual o tooltip se ancora.               |
+| `TooltipContent`  | Bubble com texto. Inclui Arrow automaticamente.     |
 
 ## Usage
 
 ```tsx
 // app/layout.tsx
-import { TooltipProvider } from "@kalvner/kds/overlays/tooltip";
+import { TooltipProvider } from '@kalvner/kds/overlays/tooltip';
 
 export default function RootLayout({ children }) {
   return (
@@ -85,7 +85,11 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // in a component
-import { Tooltip, TooltipTrigger, TooltipContent } from "@kalvner/kds/overlays/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from '@kalvner/kds/overlays/tooltip';
 
 export function SaveButton() {
   return (
@@ -152,14 +156,14 @@ export function SaveButton() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix Tooltip aplica `role="tooltip"` no content e `aria-describedby` no trigger. |
-| **Foco** | Tooltip aparece em focus do trigger (não só hover). Some quando o foco sai. |
-| **Keyboard** | `Esc` fecha o tooltip ativo sem mover o foco. |
-| **Screen reader** | O conteúdo do tooltip é anunciado via `aria-describedby` quando o trigger ganha foco. |
-| **Touch** | Touch users não disparam tooltip — por isso conteúdo crítico não pode viver aqui. |
-| **Reduced motion** | Fade respeita `prefers-reduced-motion`. |
+| Concern            | Comportamento                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| **Roles**          | Radix Tooltip aplica `role="tooltip"` no content e `aria-describedby` no trigger.     |
+| **Foco**           | Tooltip aparece em focus do trigger (não só hover). Some quando o foco sai.           |
+| **Keyboard**       | `Esc` fecha o tooltip ativo sem mover o foco.                                         |
+| **Screen reader**  | O conteúdo do tooltip é anunciado via `aria-describedby` quando o trigger ganha foco. |
+| **Touch**          | Touch users não disparam tooltip — por isso conteúdo crítico não pode viver aqui.     |
+| **Reduced motion** | Fade respeita `prefers-reduced-motion`.                                               |
 
 ## Related
 

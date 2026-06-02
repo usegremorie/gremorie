@@ -1,6 +1,6 @@
 ---
 title: Navigation patterns
-description: "Tabs, accordion, sidebar, breadcrumb. Each solves a different navigation problem; pick by context, not by visual preference."
+description: 'Tabs, accordion, sidebar, breadcrumb. Each solves a different navigation problem; pick by context, not by visual preference.'
 related: rx-tabs, rx-accordion, rx-sidebar, rx-breadcrumb, rx-navigation-menu
 tags: [patterns, navigation, information-architecture]
 ---
@@ -52,12 +52,12 @@ Use breadcrumb when the user is **in a hierarchy and benefits from knowing where
 
 These four patterns map to different navigation problems:
 
-| Problem | Pattern |
-|---------|---------|
-| Switch between views of the same object | Tabs |
-| Hide content that is occasionally needed | Accordion |
-| Move between major sections of the app | Sidebar |
-| Show position in a hierarchy | Breadcrumb |
+| Problem                                  | Pattern    |
+| ---------------------------------------- | ---------- |
+| Switch between views of the same object  | Tabs       |
+| Hide content that is occasionally needed | Accordion  |
+| Move between major sections of the app   | Sidebar    |
+| Show position in a hierarchy             | Breadcrumb |
 
 When designers swap them - tabs used as a wizard, accordion hiding primary content, sidebar with breadcrumb-like behavior - users get lost because the visual pattern no longer matches their mental model of "where am I and where can I go".
 
@@ -88,9 +88,7 @@ Three peer views of the same user profile. Always one active.
 <Accordion type="single" collapsible>
   <AccordionItem value="advanced">
     <AccordionTrigger>Advanced settings</AccordionTrigger>
-    <AccordionContent>
-      {/* Rarely-changed options */}
-    </AccordionContent>
+    <AccordionContent>{/* Rarely-changed options */}</AccordionContent>
   </AccordionItem>
 </Accordion>
 ```

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
 import {
   CircleCheckIcon,
   InfoIcon,
   Loader2Icon,
   OctagonXIcon,
-  TriangleAlertIcon
-} from "lucide-react";
-import * as React from "react";
-import { Toaster as Sonner, toast, type ToasterProps } from "sonner";
+  TriangleAlertIcon,
+} from 'lucide-react';
+import * as React from 'react';
+import { Toaster as Sonner, toast, type ToasterProps } from 'sonner';
 
 /**
  * Toaster - root mount for transient toast notifications.
@@ -29,17 +29,17 @@ import { Toaster as Sonner, toast, type ToasterProps } from "sonner";
  */
 const Toaster = ({ theme, ...props }: ToasterProps) => {
   const [resolvedTheme, setResolvedTheme] = React.useState<
-    ToasterProps["theme"]
-  >(theme ?? "system");
+    ToasterProps['theme']
+  >(theme ?? 'system');
 
   React.useEffect(() => {
-    if (theme || typeof document === "undefined") return;
+    if (theme || typeof document === 'undefined') return;
     const root = document.documentElement;
     const update = () =>
-      setResolvedTheme(root.classList.contains("dark") ? "dark" : "light");
+      setResolvedTheme(root.classList.contains('dark') ? 'dark' : 'light');
     update();
     const observer = new MutationObserver(update);
-    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   }, [theme]);
 
@@ -52,14 +52,14 @@ const Toaster = ({ theme, ...props }: ToasterProps) => {
         info: <InfoIcon className="size-4" />,
         warning: <TriangleAlertIcon className="size-4" />,
         error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />
+        loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
       style={
         {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)"
+          '--normal-bg': 'var(--popover)',
+          '--normal-text': 'var(--popover-foreground)',
+          '--normal-border': 'var(--border)',
+          '--border-radius': 'var(--radius)',
         } as React.CSSProperties
       }
       {...props}

@@ -1,4 +1,4 @@
-import { reactLibraryConfig } from "./react-library.js";
+import { reactLibraryConfig } from './react-library.js';
 
 /**
  * ESLint flat config for Next.js apps in the Gremorie monorepo.
@@ -11,9 +11,9 @@ export const nextConfig = [
   ...reactLibraryConfig,
   {
     rules: {
-      "react/react-in-jsx-scope": "off"
-    }
-  }
+      'react/react-in-jsx-scope': 'off',
+    },
+  },
 ];
 
 export default nextConfig;

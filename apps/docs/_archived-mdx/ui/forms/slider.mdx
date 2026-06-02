@@ -2,19 +2,19 @@
 title: Slider
 description: Input numérico contínuo via thumb arrastável — volume, brilho, faixas.
 component: Slider
-importPath: "@kalvner/kds/forms/slider"
+importPath: '@kalvner/kds/forms/slider'
 status: stable
 ---
 
-import { Slider } from "@kalvner/kds/forms/slider";
-import { Label } from "@kalvner/kds/forms/label";
+import { Slider } from '@kalvner/kds/forms/slider';
+import { Label } from '@kalvner/kds/forms/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -56,7 +56,7 @@ para precisão, prefira [Input](./input) `type="number"`.
 ## Usage
 
 ```tsx
-import { Slider } from "@kalvner/kds/forms/slider";
+import { Slider } from '@kalvner/kds/forms/slider';
 
 export function Volume({ value, onChange }) {
   return (
@@ -73,18 +73,18 @@ export function Volume({ value, onChange }) {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `number[]` | — | Controlado. Array (1 ou 2 thumbs). |
-| `defaultValue` | `number[]` | `[min, max]` | Não controlado. |
-| `onValueChange` | `(v: number[]) => void` | — | Disparado em cada movimento. |
-| `onValueCommit` | `(v: number[]) => void` | — | Disparado ao soltar (drag end). |
-| `min` / `max` | `number` | `0` / `100` | Limites. |
-| `step` | `number` | `1` | Granularidade. |
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direção da trilha. |
-| `disabled` | `boolean` | `false` | Bloqueia thumbs. |
-| `inverted` | `boolean` | `false` | Inverte o sentido. |
-| `aria-label` | `string` | — | Obrigatório se sem Label visível. |
+| Prop            | Tipo                         | Default        | Descrição                          |
+| --------------- | ---------------------------- | -------------- | ---------------------------------- |
+| `value`         | `number[]`                   | —              | Controlado. Array (1 ou 2 thumbs). |
+| `defaultValue`  | `number[]`                   | `[min, max]`   | Não controlado.                    |
+| `onValueChange` | `(v: number[]) => void`      | —              | Disparado em cada movimento.       |
+| `onValueCommit` | `(v: number[]) => void`      | —              | Disparado ao soltar (drag end).    |
+| `min` / `max`   | `number`                     | `0` / `100`    | Limites.                           |
+| `step`          | `number`                     | `1`            | Granularidade.                     |
+| `orientation`   | `'horizontal' \| 'vertical'` | `'horizontal'` | Direção da trilha.                 |
+| `disabled`      | `boolean`                    | `false`        | Bloqueia thumbs.                   |
+| `inverted`      | `boolean`                    | `false`        | Inverte o sentido.                 |
+| `aria-label`    | `string`                     | —              | Obrigatório se sem Label visível.  |
 
 ## Subcomponents
 
@@ -97,7 +97,9 @@ thumbs são internos, com `data-slot` para customização avançada.
   <Card>
     <CardHeader>
       <CardTitle>Range</CardTitle>
-      <CardDescription>Dois thumbs — faixa de preço, intervalo.</CardDescription>
+      <CardDescription>
+        Dois thumbs — faixa de preço, intervalo.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Slider defaultValue={[20, 80]} max={100} step={1} aria-label="Faixa" />
@@ -109,18 +111,23 @@ thumbs são internos, com `data-slot` para customização avançada.
       <CardDescription>step=10 — snap em granularidade grossa.</CardDescription>
     </CardHeader>
     <CardContent>
-      <Slider defaultValue={[40]} max={100} step={10} aria-label="Volume passos" />
+      <Slider
+        defaultValue={[40]}
+        max={100}
+        step={10}
+        aria-label="Volume passos"
+      />
     </CardContent>
   </Card>
 </div>
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| Default | Thumb com hover ring 4px, focus-visible ring 4px. |
-| `disabled` | Opacidade 50%, ignora pointer/teclado. |
-| `data-orientation=vertical` | Trilha vertical (mín. h-44). |
+| Estado                      | Comportamento                                     |
+| --------------------------- | ------------------------------------------------- |
+| Default                     | Thumb com hover ring 4px, focus-visible ring 4px. |
+| `disabled`                  | Opacidade 50%, ignora pointer/teclado.            |
+| `data-orientation=vertical` | Trilha vertical (mín. h-44).                      |
 
 ## Composition
 
@@ -166,13 +173,13 @@ ajuste fino.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Cada thumb é `role="slider"` com `aria-valuenow`, `aria-valuemin`, `aria-valuemax`. |
-| **Keyboard** | `←` `→` (`↑` `↓`) movem por step; `Home` / `End` vão ao mín / máx; `PageUp` / `PageDown` saltam 10×. |
-| **Touch** | Hit area do thumb é 16px — combine com label clicável que mostra valor. |
-| **Label** | `aria-label` ou Label vinculado obrigatório. |
-| **Reduced motion** | `transition-[color,box-shadow]` respeita `prefers-reduced-motion`. |
+| Concern            | Comportamento                                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------------------------- |
+| **Roles**          | Cada thumb é `role="slider"` com `aria-valuenow`, `aria-valuemin`, `aria-valuemax`.                  |
+| **Keyboard**       | `←` `→` (`↑` `↓`) movem por step; `Home` / `End` vão ao mín / máx; `PageUp` / `PageDown` saltam 10×. |
+| **Touch**          | Hit area do thumb é 16px — combine com label clicável que mostra valor.                              |
+| **Label**          | `aria-label` ou Label vinculado obrigatório.                                                         |
+| **Reduced motion** | `transition-[color,box-shadow]` respeita `prefers-reduced-motion`.                                   |
 
 ## Related
 

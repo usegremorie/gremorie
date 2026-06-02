@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   ChainOfThought,
@@ -31,8 +31,13 @@ import {
   TaskItem,
   TaskItemFile,
   TaskTrigger,
-} from "@gremorie/rx-ai";
-import { CheckCircle2, FileSearch, MessageCircleQuestion, Search } from "lucide-react";
+} from '@gremorie/rx-ai';
+import {
+  CheckCircle2,
+  FileSearch,
+  MessageCircleQuestion,
+  Search,
+} from 'lucide-react';
 
 // ---------- Shimmer ----------
 
@@ -43,11 +48,11 @@ export function ShimmerPreview() {
 // ---------- Suggestion ----------
 
 const SUGGESTIONS = [
-  "Explain the registry architecture",
-  "Show me a Plan example",
-  "How do I add a new primitive?",
-  "What is the MCP server for?",
-  "Compare Angular and React editions",
+  'Explain the registry architecture',
+  'Show me a Plan example',
+  'How do I add a new primitive?',
+  'What is the MCP server for?',
+  'Compare Angular and React editions',
 ];
 
 export function SuggestionPreview() {
@@ -185,7 +190,9 @@ export function PlanStreamingPreview() {
         <PlanTitle>Composing the layout</PlanTitle>
         <PlanDescription>Streaming response from the model...</PlanDescription>
       </PlanHeader>
-      <PlanContent>Resolving primitives required for this composition.</PlanContent>
+      <PlanContent>
+        Resolving primitives required for this composition.
+      </PlanContent>
     </Plan>
   );
 }
@@ -197,7 +204,11 @@ export function ChainOfThoughtPreview() {
     <ChainOfThought defaultOpen>
       <ChainOfThoughtHeader>Researching the answer</ChainOfThoughtHeader>
       <ChainOfThoughtContent>
-        <ChainOfThoughtStep icon={Search} label="Searching docs" status="complete" />
+        <ChainOfThoughtStep
+          icon={Search}
+          label="Searching docs"
+          status="complete"
+        />
         <ChainOfThoughtStep
           icon={FileSearch}
           label="Reading 3 registry entries"

@@ -5,9 +5,9 @@ description: Bipolar com pivô neutro — variação acima/abaixo, NPS, sentimen
 
 import {
   ChartSchemeSwatchRow,
-  ChartSchemeTable
-} from "@/components/token-tables";
-import { DIVERGENT_SCHEME } from "@/lib/chart-tokens";
+  ChartSchemeTable,
+} from '@/components/token-tables';
+import { DIVERGENT_SCHEME } from '@/lib/chart-tokens';
 
 **Divergent** é o esquema para **dado contínuo bipolar** — quando
 existe um pivô significativo (zero, média, baseline) e os valores
@@ -46,42 +46,39 @@ sem pivô, use [Sequential](/tokens/chart/sequential).
 ## Anti-patterns
 
 <Callout type="warn">
-  **Red-Yellow-Green (RdYlGn) — proibido.** A KDS não fornece
-  esse esquema nem como opt-in. Para dados de performance com
-  semântica boa/ruim onde a paleta tradicional pediria
-  vermelho-amarelo-verde, use Divergent (Red-Blue) e adicione
-  ícones ou labels para reforçar a semântica.
+  **Red-Yellow-Green (RdYlGn) — proibido.** A KDS não fornece esse esquema nem
+  como opt-in. Para dados de performance com semântica boa/ruim onde a paleta
+  tradicional pediria vermelho-amarelo-verde, use Divergent (Red-Blue) e
+  adicione ícones ou labels para reforçar a semântica.
 </Callout>
 
 <Callout type="warn">
-  Usar Divergent quando a métrica não tem pivô claro. Se você se
-  pega justificando "o ponto médio é mais ou menos onde está a
-  maioria dos dados", não há pivô — use Sequential.
+  Usar Divergent quando a métrica não tem pivô claro. Se você se pega
+  justificando "o ponto médio é mais ou menos onde está a maioria dos dados",
+  não há pivô — use Sequential.
 </Callout>
 
 ## Exemplo de consumo
 
 ```tsx
-import { Bar, BarChart, ReferenceLine } from "recharts";
+import { Bar, BarChart, ReferenceLine } from 'recharts';
 
 // Variação % vs baseline. Stops mapeados pela magnitude.
 const tokenForVariation = (delta: number) => {
-  if (delta < -20) return "div-1"; // strongly negative
-  if (delta < -5)  return "div-2";
-  if (delta < 0)   return "div-3";
-  if (delta === 0) return "div-4"; // pivot
-  if (delta < 5)   return "div-5";
-  if (delta < 20)  return "div-6";
-  return "div-7";                  // strongly positive
+  if (delta < -20) return 'div-1'; // strongly negative
+  if (delta < -5) return 'div-2';
+  if (delta < 0) return 'div-3';
+  if (delta === 0) return 'div-4'; // pivot
+  if (delta < 5) return 'div-5';
+  if (delta < 20) return 'div-6';
+  return 'div-7'; // strongly positive
 };
 
 <BarChart data={regions}>
   <ReferenceLine y={0} stroke="var(--color-chart-div-4)" />
   <Bar
     dataKey="delta"
-    fill={(entry) =>
-      `var(--color-chart-${tokenForVariation(entry.delta)})`
-    }
+    fill={(entry) => `var(--color-chart-${tokenForVariation(entry.delta)})`}
   />
-</BarChart>
+</BarChart>;
 ```

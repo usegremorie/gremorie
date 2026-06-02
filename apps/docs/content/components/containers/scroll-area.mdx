@@ -1,10 +1,10 @@
 ---
 title: Scroll Area
-description: "Themeable scroll container with consistent scrollbars across browsers and OSes."
+description: 'Themeable scroll container with consistent scrollbars across browsers and OSes.'
 ---
 
-import { ScrollAreaPreview } from "@/components/preview/containers/containers";
-import { ScrollArea, ScrollBar } from "@gremorie/rx-containers";
+import { ScrollAreaPreview } from '@/components/preview/containers/containers';
+import { ScrollArea, ScrollBar } from '@gremorie/rx-containers';
 
 ## Overview
 
@@ -21,26 +21,16 @@ For everyday overflow inside the body or a generic panel, **native scroll is sti
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-scroll-area
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-scroll-area
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-scroll-area
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-scroll-area
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-scroll-area ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-scroll-area ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-scroll-area ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-scroll-area ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -78,23 +68,23 @@ Angular edition planned for a follow-up release. The React API will translate to
 
 The root and the most common entry point. Composes a Radix `Root` with a `Viewport` for the scrollable content, an auto-mounted vertical `ScrollBar`, and a `Corner` for the bottom-right intersection. Pass children directly - they end up inside the viewport.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Applied to the root. The root must declare a fixed `height` (and optionally a `width`) for scrolling to engage. |
-| `type` | `"auto" \| "always" \| "scroll" \| "hover"` | `"hover"` | Visibility behaviour of the scrollbar. `hover` shows on hover, `scroll` shows during scroll then fades, `always` keeps it visible, `auto` matches the platform. |
-| `scrollHideDelay` | `number` | `600` | Milliseconds before the scrollbar fades when `type="scroll"` or `type="hover"`. |
-| `dir` | `"ltr" \| "rtl"` | inherited | Reading direction. Flips scrollbar placement when set to `rtl`. |
-| `...props` | `React.ComponentProps<typeof ScrollAreaPrimitive.Root>` | - | All Radix Root attributes. |
+| Prop              | Type                                                    | Default   | Description                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `className`       | `string`                                                | -         | Applied to the root. The root must declare a fixed `height` (and optionally a `width`) for scrolling to engage.                                                 |
+| `type`            | `"auto" \| "always" \| "scroll" \| "hover"`             | `"hover"` | Visibility behaviour of the scrollbar. `hover` shows on hover, `scroll` shows during scroll then fades, `always` keeps it visible, `auto` matches the platform. |
+| `scrollHideDelay` | `number`                                                | `600`     | Milliseconds before the scrollbar fades when `type="scroll"` or `type="hover"`.                                                                                 |
+| `dir`             | `"ltr" \| "rtl"`                                        | inherited | Reading direction. Flips scrollbar placement when set to `rtl`.                                                                                                 |
+| `...props`        | `React.ComponentProps<typeof ScrollAreaPrimitive.Root>` | -         | All Radix Root attributes.                                                                                                                                      |
 
 ### `<ScrollBar>`
 
 The styled track plus thumb. The root mounts a vertical bar automatically. Mount a second `ScrollBar` with `orientation="horizontal"` whenever the content scrolls sideways.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Which axis the bar controls. Mount one per axis. |
-| `className` | `string` | - | Applied to the scrollbar element. Touch-target sizing comes from the primitive; override carefully. |
-| `...props` | `React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>` | - | All Radix Scrollbar attributes. |
+| Prop          | Type                                                                   | Default      | Description                                                                                         |
+| ------------- | ---------------------------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------- |
+| `orientation` | `"vertical" \| "horizontal"`                                           | `"vertical"` | Which axis the bar controls. Mount one per axis.                                                    |
+| `className`   | `string`                                                               | -            | Applied to the scrollbar element. Touch-target sizing comes from the primitive; override carefully. |
+| `...props`    | `React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>` | -            | All Radix Scrollbar attributes.                                                                     |
 
 ## Composition
 
@@ -145,7 +135,11 @@ The most common shape. Default `type="hover"` keeps the scrollbar quiet until th
   <div className="flex w-max gap-3 p-4">
     {covers.map((cover) => (
       <figure key={cover.id} className="shrink-0">
-        <img src={cover.src} alt={cover.alt} className="h-32 w-48 rounded-md object-cover" />
+        <img
+          src={cover.src}
+          alt={cover.alt}
+          className="h-32 w-48 rounded-md object-cover"
+        />
       </figure>
     ))}
   </div>

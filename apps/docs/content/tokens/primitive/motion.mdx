@@ -6,8 +6,8 @@ description: Curvas de easing, durações canônicas e animações bundled — f
 import {
   AnimationTable,
   DurationTable,
-  EaseTable
-} from "@/components/token-tables";
+  EaseTable,
+} from '@/components/token-tables';
 
 Motion é a **gramática temporal** da interface. Quando um botão
 muda de cor instantaneamente, ele parece quebrado. Quando muda
@@ -20,7 +20,7 @@ Duas famílias de motion, com papéis diferentes:
 
 - **Transitions** acontecem entre **dois estados** (hover de
   botão, abertura de drawer, troca de tab). Use `transition-*`
-  + `duration-*` + `ease-*`.
+  - `duration-*` + `ease-*`.
 - **Animations** rodam **continuamente** ou em loop discreto
   (loaders, pulses, skeletons). Use `animate-*`.
 
@@ -70,7 +70,9 @@ cobrem os principais casos.
   (parallax, swooshes) deve ser desabilitado:
   ```css
   @media (prefers-reduced-motion: reduce) {
-    .my-fancy-animation { animation: none; }
+    .my-fancy-animation {
+      animation: none;
+    }
   }
   ```
 - **Não anime tudo ao mesmo tempo.** Se uma transition envolve 5

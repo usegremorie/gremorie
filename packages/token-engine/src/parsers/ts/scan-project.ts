@@ -1,10 +1,10 @@
-import { Project } from "ts-morph";
-import { readdirSync, statSync } from "node:fs";
-import { join, basename, extname } from "node:path";
-import { extractCvaFromFile } from "./cva.js";
-import type { ComponentInfo } from "../../graph/types.js";
+import { Project } from 'ts-morph';
+import { readdirSync, statSync } from 'node:fs';
+import { join, basename, extname } from 'node:path';
+import { extractCvaFromFile } from './cva.js';
+import type { ComponentInfo } from '../../graph/types.js';
 
-const CANDIDATE_DIRS = ["components/ui", "src/components/ui"];
+const CANDIDATE_DIRS = ['components/ui', 'src/components/ui'];
 
 function walkTsx(dir: string, out: string[] = []): string[] {
   let entries: string[];
@@ -17,7 +17,7 @@ function walkTsx(dir: string, out: string[] = []): string[] {
     const full = join(dir, entry);
     const st = statSync(full);
     if (st.isDirectory()) walkTsx(full, out);
-    else if (extname(entry) === ".tsx") out.push(full);
+    else if (extname(entry) === '.tsx') out.push(full);
   }
   return out;
 }

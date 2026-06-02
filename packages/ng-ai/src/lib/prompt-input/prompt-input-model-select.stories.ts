@@ -4,9 +4,22 @@ import { PromptInputModelSelect } from './prompt-input-model-select';
 import type { PromptInputModelOption } from './prompt-input.types';
 
 const MODELS: readonly PromptInputModelOption[] = [
-  { id: 'claude-opus-4-7', label: 'Claude Opus 4.7', description: 'Highest quality, slower', badge: 'flagship' },
-  { id: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6', description: 'Balanced' },
-  { id: 'claude-haiku-4-5', label: 'Claude Haiku 4.5', description: 'Fastest, cheapest' },
+  {
+    id: 'claude-opus-4-7',
+    label: 'Claude Opus 4.7',
+    description: 'Highest quality, slower',
+    badge: 'flagship',
+  },
+  {
+    id: 'claude-sonnet-4-6',
+    label: 'Claude Sonnet 4.6',
+    description: 'Balanced',
+  },
+  {
+    id: 'claude-haiku-4-5',
+    label: 'Claude Haiku 4.5',
+    description: 'Fastest, cheapest',
+  },
   { id: 'gpt-5', label: 'GPT-5', description: 'Coming soon', disabled: true },
 ];
 

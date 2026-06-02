@@ -30,7 +30,10 @@ describe('ChartContext', () => {
 
   it('builds a Y scale mapped into the plot band (0 at plotBottom, max at plotTop)', () => {
     const ctx = makeCtx();
-    ctx.register({ key: 'sales', values: () => ctx.data().map((d) => Number(d['sales'])) });
+    ctx.register({
+      key: 'sales',
+      values: () => ctx.data().map((d) => Number(d['sales'])),
+    });
     const y = ctx.yScale();
     expect(y(0)).toBe(208); // bottom of plot band
     expect(y(100)).toBe(8); // top of plot band
@@ -45,7 +48,10 @@ describe('ChartContext', () => {
 
   it('unregister removes a series from the domain', () => {
     const ctx = makeCtx();
-    ctx.register({ key: 'sales', values: () => ctx.data().map((d) => Number(d['sales'])) });
+    ctx.register({
+      key: 'sales',
+      values: () => ctx.data().map((d) => Number(d['sales'])),
+    });
     expect(ctx.yScale()(100)).toBe(8); // top of plot band
     ctx.unregister('sales');
     // no series -> domain [0,1] -> y(1) is at plotTop

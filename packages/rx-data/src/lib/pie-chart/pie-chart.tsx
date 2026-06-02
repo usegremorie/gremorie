@@ -1,103 +1,82 @@
-import { cn } from "@gremorie/rx-core";
-import { ChartFrame } from "../headless/chart-frame";
-import { Pie } from "../headless/pie";
-import type { Datum } from "../headless/types";
+'use client';
+
+import { cn } from '@gremorie/rx-core';
+import { LabelList, Pie, PieChart as RechartsPieChart } from 'recharts';
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface PieChartProps {
-  data: readonly Datum[];
+  /** Tabular rows. Give each row a `fill` (e.g. `var(--color-chrome)`) for slice colors. */
+  data: readonly ChartDatum[];
+  /** Slice label field. */
   nameKey: string;
-  valueKey: string;
+  /** Numeric value field. */
+  dataKey: string;
+  /** Optional label/color map (powers the tooltip labels). */
+  config?: ChartConfig;
+  /** Render as a donut. */
   donut?: boolean;
+  /** Draw the slice label inside each slice. */
+  showLabels?: boolean;
+  /** Hover tooltip. */
+  tooltip?: boolean;
   className?: string;
 }
 
-const colorAt = (i: number) => `var(--chart-${(i % 5) + 1})`;
-
 /**
- * Styled pie / donut chart. `nameKey` is the slice label field, `valueKey` the
- * numeric value field. Slice colors cycle through the `--chart-1..5` tokens.
- * Set `donut` for a donut.
+ * Pie / donut chart — recharts + the shadcn `chart` primitives. Slice colors
+ * come from each row's `fill`. Pass `donut` for a donut.
  *
  * @example
  * ```tsx
- * <PieChart data={data} nameKey="browser" valueKey="visitors" donut />
+ * <PieChart data={data} nameKey="browser" dataKey="visitors" donut />
  * ```
  */
 export function PieChart({
   data,
   nameKey,
-  valueKey,
+  dataKey,
+  config = {},
   donut = false,
+  showLabels = false,
+  tooltip = true,
   className,
 }: PieChartProps) {
-  const ariaLabel = `${
-    donut ? "Donut" : "Pie"
-  } chart of ${valueKey} by ${nameKey}`;
-
-  const legend = data.map((row, i) => ({
-    name: String(row[nameKey]),
-    color: colorAt(i),
-  }));
-
   return (
-    <figure
-      role="img"
-      aria-label={ariaLabel}
-      data-slot="pie-chart"
-      className={cn(
-        "flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground",
-        className
-      )}
+    <ChartContainer
+      config={config}
+      className={cn('mx-auto aspect-square max-h-[250px]', className)}
     >
-      <ChartFrame
-        data={data}
-        xKey={nameKey}
-        className="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
-      >
-        <Pie valueKey={valueKey} innerRadiusRatio={donut ? 0.6 : 0}>
-          {({ slices }) =>
-            slices.map((s) => (
-              <path
-                key={s.name}
-                d={s.d}
-                fill={colorAt(s.index)}
-                stroke="var(--background)"
-                strokeWidth={2}
-              />
-            ))
-          }
-        </Pie>
-      </ChartFrame>
-
-      <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-        {legend.map((item) => (
-          <li key={item.name} className="flex items-center gap-1.5">
-            <span
-              className="size-2.5 rounded-[2px]"
-              style={{ background: item.color }}
+      <RechartsPieChart>
+        {tooltip ? (
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent nameKey={nameKey} hideLabel />}
+          />
+        ) : null}
+        <Pie
+          data={data as ChartDatum[]}
+          dataKey={dataKey}
+          nameKey={nameKey}
+          innerRadius={donut ? 60 : 0}
+          labelLine={false}
+        >
+          {showLabels ? (
+            <LabelList
+              dataKey={nameKey}
+              className="fill-background"
+              stroke="none"
+              fontSize={12}
             />
-            {item.name}
-          </li>
-        ))}
-      </ul>
-
-      <table className="sr-only">
-        <caption>{ariaLabel}</caption>
-        <thead>
-          <tr>
-            <th>{nameKey}</th>
-            <th>{valueKey}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              <td>{row[nameKey]}</td>
-              <td>{row[valueKey]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </figure>
+          ) : null}
+        </Pie>
+      </RechartsPieChart>
+    </ChartContainer>
   );
 }

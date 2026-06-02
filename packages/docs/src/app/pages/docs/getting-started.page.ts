@@ -3,11 +3,22 @@ import { RouterLink } from '@angular/router';
 
 import { DocsCodeBlock } from '../../shared/code-block.component';
 import { DocsLayout } from '../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-getting-started',
-  imports: [DocsLayout, DocsPage, DocsSection, DocsProse, DocsCodeBlock, RouterLink],
+  imports: [
+    DocsLayout,
+    DocsPage,
+    DocsSection,
+    DocsProse,
+    DocsCodeBlock,
+    RouterLink,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-layout>
@@ -19,11 +30,18 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Requirements" anchor="requirements">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><strong>Angular 21+</strong> (Angular 22 supported when GA)</li>
+              <li>
+                <strong>Angular 21+</strong> (Angular 22 supported when GA)
+              </li>
               <li><strong>TypeScript 5.9+</strong></li>
               <li><strong>Tailwind CSS v4</strong> with OKLCH color support</li>
-              <li><strong>Standalone components</strong> (no NgModule support)</li>
-              <li><strong>Zoneless</strong> compatible (recommended; works with zone.js too)</li>
+              <li>
+                <strong>Standalone components</strong> (no NgModule support)
+              </li>
+              <li>
+                <strong>Zoneless</strong> compatible (recommended; works with
+                zone.js too)
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -32,13 +50,14 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
           <docs-code-block lang="bash" code="npm install @gremorie/ng-ai" />
           <docs-prose>
             <p>
-              <code>&#64;usegremorie/gremorie-prompt-input</code> ships the full PromptInput family
-              (10 components). Each component is standalone and tree-shakeable — import only
-              what you use.
+              <code>&#64;usegremorie/gremorie-prompt-input</code> ships the full
+              PromptInput family (10 components). Each component is standalone
+              and tree-shakeable — import only what you use.
             </p>
             <p>
-              Peer dependencies (<code>clsx</code>, <code>tailwind-merge</code>) are installed
-              alongside. <code>&#64;angular/core ^21.2.0</code> is required.
+              Peer dependencies (<code>clsx</code>, <code>tailwind-merge</code>)
+              are installed alongside. <code>&#64;angular/core ^21.2.0</code> is
+              required.
             </p>
           </docs-prose>
         </docs-section>
@@ -46,21 +65,20 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Add the theme" anchor="theme">
           <docs-prose>
             <p>
-              Gremorie NG ships a two-tier token system (primitives -> semantics).
-              Import it once in your global stylesheet, then customize the variables
-              for rebrand.
+              Gremorie NG ships a two-tier token system (primitives ->
+              semantics). Import it once in your global stylesheet, then
+              customize the variables for rebrand.
             </p>
           </docs-prose>
-          <docs-code-block
-            title="styles.css"
-            lang="css"
-            [code]="themeImport"
-          />
+          <docs-code-block title="styles.css" lang="css" [code]="themeImport" />
         </docs-section>
 
         <docs-section title="Use a component" anchor="use">
           <docs-prose>
-            <p>Compose the three core PromptInput pieces in a standalone component:</p>
+            <p>
+              Compose the three core PromptInput pieces in a standalone
+              component:
+            </p>
           </docs-prose>
           <docs-code-block
             title="chat.component.ts"
@@ -69,8 +87,10 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
           />
           <docs-prose>
             <p>
-              See <a routerLink="/docs/components/prompt-input">PromptInput</a> for the full
-              container API, or jump to <a routerLink="/docs/integrations/signals">Plain signals</a>
+              See
+              <a routerLink="/docs/components/prompt-input">PromptInput</a> for
+              the full container API, or jump to
+              <a routerLink="/docs/integrations/signals">Plain signals</a>
               for a complete end-to-end streaming example with no AI library.
             </p>
           </docs-prose>
@@ -79,9 +99,11 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="Editor support (Angular ESLint)" anchor="eslint">
           <docs-prose>
             <p>
-              Gremorie NG ships components with selectors like <code>prompt-input</code> (no library
-              prefix). If your project uses <code>&#64;angular-eslint</code> with the default
-              <code>app</code> prefix, add the Gremorie NG-allowed prefixes to your rule config.
+              Gremorie NG ships components with selectors like
+              <code>prompt-input</code> (no library prefix). If your project
+              uses <code>&#64;angular-eslint</code> with the default
+              <code>app</code> prefix, add the Gremorie NG-allowed prefixes to
+              your rule config.
             </p>
           </docs-prose>
           <docs-code-block
@@ -94,9 +116,27 @@ import { DocsPage, DocsSection, DocsProse } from '../../shared/doc-page.componen
         <docs-section title="What's next" anchor="next">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><a routerLink="/docs/components/prompt-input">Browse the PromptInput container</a> — start here</li>
-              <li><a routerLink="/docs/integrations/signals">Plain signals integration</a> — wire it to anything</li>
-              <li><a href="https://github.com/usegremorie/gremorie" target="_blank" rel="noopener">GitHub repository</a> — source, issues, discussions</li>
+              <li>
+                <a routerLink="/docs/components/prompt-input"
+                  >Browse the PromptInput container</a
+                >
+                — start here
+              </li>
+              <li>
+                <a routerLink="/docs/integrations/signals"
+                  >Plain signals integration</a
+                >
+                — wire it to anything
+              </li>
+              <li>
+                <a
+                  href="https://github.com/usegremorie/gremorie"
+                  target="_blank"
+                  rel="noopener"
+                  >GitHub repository</a
+                >
+                — source, issues, discussions
+              </li>
             </ul>
           </docs-prose>
         </docs-section>

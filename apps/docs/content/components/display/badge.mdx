@@ -1,11 +1,11 @@
 ---
 title: Badge
-description: "Compact label for status, counts, and tags. Six variants, optional asChild for link-style badges."
+description: 'Compact label for status, counts, and tags. Six variants, optional asChild for link-style badges.'
 ---
 
-import { BadgePreview } from "@/components/preview/display/display";
-import { Badge } from "@gremorie/rx-display";
-import { CheckIcon, AlertCircleIcon } from "lucide-react";
+import { BadgePreview } from '@/components/preview/display/display';
+import { Badge } from '@gremorie/rx-display';
+import { CheckIcon, AlertCircleIcon } from 'lucide-react';
 
 ## Overview
 
@@ -22,26 +22,10 @@ Six variants ship by default: `default` (filled primary), `secondary`, `destruct
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-badge
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-badge
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-badge
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-badge
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-badge ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-badge ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-badge ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-badge ```</Tab>
 </Tabs>
 
 ## Usage
@@ -74,22 +58,22 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Badge>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. `default` is filled primary; `outline` shows only a border; `ghost` is invisible until rendered as an anchor; `link` styles as inline text. |
-| `asChild` | `boolean` | `false` | When `true`, renders the immediate child via Radix `Slot` and merges all classes onto it. Use to wrap an `<a>` or framework `Link`. |
-| `className` | `string` | - | Extra classes merged via `cn`. |
+| Prop        | Type                                                                          | Default     | Description                                                                                                                                               |
+| ----------- | ----------------------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`   | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. `default` is filled primary; `outline` shows only a border; `ghost` is invisible until rendered as an anchor; `link` styles as inline text. |
+| `asChild`   | `boolean`                                                                     | `false`     | When `true`, renders the immediate child via Radix `Slot` and merges all classes onto it. Use to wrap an `<a>` or framework `Link`.                       |
+| `className` | `string`                                                                      | -           | Extra classes merged via `cn`.                                                                                                                            |
 
 All other `span` props are forwarded.
 
 The `badgeVariants` CVA function is also exported, so you can compose Badge styles onto a custom element without using Badge itself:
 
 ```tsx
-import { badgeVariants } from "@gremorie/rx-display";
+import { badgeVariants } from '@gremorie/rx-display';
 
-<a href="/docs" className={badgeVariants({ variant: "outline" })}>
+<a href="/docs" className={badgeVariants({ variant: 'outline' })}>
   Docs
-</a>
+</a>;
 ```
 
 ## Composition

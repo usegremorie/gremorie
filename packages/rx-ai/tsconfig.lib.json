@@ -12,7 +12,12 @@
     "types": []
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/**/*.stories.ts", "src/**/*.stories.tsx"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.stories.ts",
+    "src/**/*.stories.tsx"
+  ],
   "references": [
     {
       "path": "../rx-core/tsconfig.lib.json"
@@ -31,6 +36,9 @@
     },
     {
       "path": "../rx-containers/tsconfig.lib.json"
+    },
+    {
+      "path": "../rx-artifacts/tsconfig.lib.json"
     }
   ]
 }

@@ -2,19 +2,19 @@
 title: RadioGroup
 description: Grupo de opções mutuamente exclusivas — uma única seleção, sempre visível.
 component: RadioGroup
-importPath: "@kalvner/kds/forms/radio-group"
+importPath: '@kalvner/kds/forms/radio-group'
 status: stable
 ---
 
-import { RadioGroup, RadioGroupItem } from "@kalvner/kds/forms/radio-group";
-import { Label } from "@kalvner/kds/forms/label";
+import { RadioGroup, RadioGroupItem } from '@kalvner/kds/forms/radio-group';
+import { Label } from '@kalvner/kds/forms/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -58,16 +58,16 @@ listas mais longas — países, fusos, categorias com 20+ — prefira
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `RadioGroup` | Raiz que mantém valor + onChange. |
-| `RadioGroupItem` | Cada opção individual. |
+| Componente       | Descrição                         |
+| ---------------- | --------------------------------- |
+| `RadioGroup`     | Raiz que mantém valor + onChange. |
+| `RadioGroupItem` | Cada opção individual.            |
 
 ## Usage
 
 ```tsx
-import { RadioGroup, RadioGroupItem } from "@kalvner/kds/forms/radio-group";
-import { Label } from "@kalvner/kds/forms/label";
+import { RadioGroup, RadioGroupItem } from '@kalvner/kds/forms/radio-group';
+import { Label } from '@kalvner/kds/forms/label';
 
 export function PlanField() {
   return (
@@ -89,22 +89,22 @@ export function PlanField() {
 
 ### RadioGroup
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `string` | — | Valor selecionado (controlado). |
-| `defaultValue` | `string` | — | Valor inicial (não controlado). |
-| `onValueChange` | `(v: string) => void` | — | Callback de mudança. |
-| `disabled` | `boolean` | `false` | Desabilita todos os items. |
-| `required` | `boolean` | `false` | Pelo menos um item deve ser selecionado. |
-| `name` | `string` | — | Nome do form, para FormData. |
+| Prop            | Tipo                  | Default | Descrição                                |
+| --------------- | --------------------- | ------- | ---------------------------------------- |
+| `value`         | `string`              | —       | Valor selecionado (controlado).          |
+| `defaultValue`  | `string`              | —       | Valor inicial (não controlado).          |
+| `onValueChange` | `(v: string) => void` | —       | Callback de mudança.                     |
+| `disabled`      | `boolean`             | `false` | Desabilita todos os items.               |
+| `required`      | `boolean`             | `false` | Pelo menos um item deve ser selecionado. |
+| `name`          | `string`              | —       | Nome do form, para FormData.             |
 
 ### RadioGroupItem
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `string` | — | Valor único do item. |
+| Prop       | Tipo      | Default | Descrição                |
+| ---------- | --------- | ------- | ------------------------ |
+| `value`    | `string`  | —       | Valor único do item.     |
 | `disabled` | `boolean` | `false` | Desabilita só este item. |
-| `id` | `string` | — | Vincula ao Label. |
+| `id`       | `string`  | —       | Vincula ao Label.        |
 
 ## Variants
 
@@ -203,7 +203,9 @@ export function PlanField() {
             <Label htmlFor="err-b-mdx">B</Label>
           </div>
         </RadioGroup>
-        <span className="block text-sm text-destructive">Selecione um plano.</span>
+        <span className="block text-sm text-destructive">
+          Selecione um plano.
+        </span>
       </fieldset>
     </CardContent>
   </Card>
@@ -214,7 +216,9 @@ export function PlanField() {
 <Card>
   <CardHeader>
     <CardTitle>Plan picker</CardTitle>
-    <CardDescription>Cards inteiros clicáveis com borda primary quando selecionado.</CardDescription>
+    <CardDescription>
+      Cards inteiros clicáveis com borda primary quando selecionado.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <RadioGroup defaultValue="starter" className="grid gap-3">
@@ -276,13 +280,13 @@ export function PlanField() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix gera `role="radiogroup"` + `role="radio"` em cada item. |
-| **Keyboard** | `Tab` entra no grupo; setas (↑↓ ou ←→) navegam entre opções; `Space` seleciona. |
-| **Roving tabindex** | Apenas o item ativo (ou o primeiro em grupo vazio) é tabbable. Padrão Radix. |
-| **Group label** | Use `<fieldset><legend>` para legendas semânticas, ou `aria-labelledby` apontando para um título externo. |
-| **Erro** | `aria-invalid` em cada item + mensagem via `aria-describedby`. |
+| Concern             | Comportamento                                                                                             |
+| ------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Roles**           | Radix gera `role="radiogroup"` + `role="radio"` em cada item.                                             |
+| **Keyboard**        | `Tab` entra no grupo; setas (↑↓ ou ←→) navegam entre opções; `Space` seleciona.                           |
+| **Roving tabindex** | Apenas o item ativo (ou o primeiro em grupo vazio) é tabbable. Padrão Radix.                              |
+| **Group label**     | Use `<fieldset><legend>` para legendas semânticas, ou `aria-labelledby` apontando para um título externo. |
+| **Erro**            | `aria-invalid` em cada item + mensagem via `aria-describedby`.                                            |
 
 ## Related
 

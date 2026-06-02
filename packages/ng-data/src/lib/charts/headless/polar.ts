@@ -6,7 +6,11 @@ export interface PolarLayout {
 }
 
 /** Compute the center and a radius that fits the box, minus padding for labels. */
-export function polarLayout(width: number, height: number, pad = 8): PolarLayout {
+export function polarLayout(
+  width: number,
+  height: number,
+  pad = 8,
+): PolarLayout {
   return {
     cx: width / 2,
     cy: height / 2,
@@ -28,7 +32,9 @@ export function polarPoint(
 }
 
 /** Closed SVG polygon `d` through the given points. Empty string if < 2 points. */
-export function polygonPath(points: readonly { x: number; y: number }[]): string {
+export function polygonPath(
+  points: readonly { x: number; y: number }[],
+): string {
   if (points.length < 2) return '';
   return `M${points.map((p) => `${p.x},${p.y}`).join('L')}Z`;
 }

@@ -35,10 +35,14 @@ export class Pie {
   /** 0 = full pie; e.g. 0.6 = donut with a hole at 60% of the radius. */
   readonly innerRadiusRatio = input<number>(0);
 
-  private readonly layout = computed(() => polarLayout(this.ctx.width(), this.ctx.height(), 8));
+  private readonly layout = computed(() =>
+    polarLayout(this.ctx.width(), this.ctx.height(), 8),
+  );
 
   /** Translate to apply to the host `<g>` so (0,0) is the pie center. */
-  readonly transform = computed(() => `translate(${this.layout().cx},${this.layout().cy})`);
+  readonly transform = computed(
+    () => `translate(${this.layout().cx},${this.layout().cy})`,
+  );
 
   readonly slices = computed<PieSlice[]>(() => {
     const data = this.ctx.data();

@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import { useState } from "react";
 import {
   Badge,
   Card,
@@ -13,33 +12,34 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@gremorie/rx-display";
-import { Input } from "@gremorie/rx-forms";
-import { Search } from "lucide-react";
+} from '@gremorie/rx-display';
+import { Input } from '@gremorie/rx-forms';
+import { Search } from 'lucide-react';
+import { useState } from 'react';
 
 type Row = {
   id: string;
   name: string;
   role: string;
-  status: "Active" | "Invited" | "Suspended";
+  status: 'Active' | 'Invited' | 'Suspended';
 };
 
 const ROWS: Row[] = [
-  { id: "U-001", name: "Olivia Martin", role: "Owner", status: "Active" },
-  { id: "U-002", name: "Jackson Lee", role: "Editor", status: "Active" },
-  { id: "U-003", name: "Isabella Nguyen", role: "Viewer", status: "Invited" },
-  { id: "U-004", name: "William Kim", role: "Editor", status: "Suspended" },
-  { id: "U-005", name: "Sofia Davis", role: "Viewer", status: "Active" },
+  { id: 'U-001', name: 'Olivia Martin', role: 'Owner', status: 'Active' },
+  { id: 'U-002', name: 'Jackson Lee', role: 'Editor', status: 'Active' },
+  { id: 'U-003', name: 'Isabella Nguyen', role: 'Viewer', status: 'Invited' },
+  { id: 'U-004', name: 'William Kim', role: 'Editor', status: 'Suspended' },
+  { id: 'U-005', name: 'Sofia Davis', role: 'Viewer', status: 'Active' },
 ];
 
-function statusVariant(s: Row["status"]) {
-  if (s === "Active") return "default" as const;
-  if (s === "Invited") return "secondary" as const;
-  return "outline" as const;
+function statusVariant(s: Row['status']) {
+  if (s === 'Active') return 'default' as const;
+  if (s === 'Invited') return 'secondary' as const;
+  return 'outline' as const;
 }
 
 export function DataTable() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const filtered = ROWS.filter((r) =>
     r.name.toLowerCase().includes(query.toLowerCase()),
   );

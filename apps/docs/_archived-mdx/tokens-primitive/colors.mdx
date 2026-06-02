@@ -3,10 +3,8 @@ title: Colors
 description: 26 paletas × 11 stops — Tailwind v4 estendido com 4 paletas customizadas (mauve, mist, olive, taupe) sintetizadas para suportar os temas KDS.
 ---
 
-import {
-  ColorPaletteTable
-} from "@/components/token-tables";
-import { COLOR_PALETTES } from "@/lib/primitive-tokens";
+import { ColorPaletteTable } from '@/components/token-tables';
+import { COLOR_PALETTES } from '@/lib/primitive-tokens';
 
 A KDS herda as paletas do Tailwind v4 e estende com **quatro
 paletas customizadas** (mauve, mist, olive, taupe) — necessárias
@@ -24,13 +22,13 @@ hues completamente diferentes.
 Os stops vão de **50** (mais claro) a **950** (mais escuro). Não
 existe regra rígida de uso — mas há padrões fortes:
 
-| Faixa | Uso típico |
-|---|---|
-| **50, 100** | Backgrounds, hover de itens, surfaces sutis |
-| **200, 300** | Borders, separadores, surfaces secundárias |
-| **400, 500** | Texto secundário, ícones, placeholders |
-| **600, 700** | Texto principal, primary actions, ícones de UI ativa |
-| **800, 900, 950** | Headings, dark mode surfaces |
+| Faixa             | Uso típico                                           |
+| ----------------- | ---------------------------------------------------- |
+| **50, 100**       | Backgrounds, hover de itens, surfaces sutis          |
+| **200, 300**      | Borders, separadores, surfaces secundárias           |
+| **400, 500**      | Texto secundário, ícones, placeholders               |
+| **600, 700**      | Texto principal, primary actions, ícones de UI ativa |
+| **800, 900, 950** | Headings, dark mode surfaces                         |
 
 Esses stops também são **stable**: Tailwind v4 não muda OKLCH
 quando você atualiza versão minor. Se quiser mudar o tom de
@@ -57,11 +55,10 @@ totalidade dos casos é consumir um **token semântico** (`bg-primary`,
 `text-foreground`) em vez de um primitivo.
 
 <Callout type="info">
-  **HEX é aproximação.** Os valores HEX nas tabelas abaixo são a
-  conversão sRGB-clamped do OKLCH. Para stops saturados em fuchsia,
-  lime, etc., o OKLCH descreve cores **fora do gamut sRGB** —
-  o HEX é o ponto mais próximo dentro do gamut, não o valor
-  exato. A fonte da verdade é sempre OKLCH.
+  **HEX é aproximação.** Os valores HEX nas tabelas abaixo são a conversão
+  sRGB-clamped do OKLCH. Para stops saturados em fuchsia, lime, etc., o OKLCH
+  descreve cores **fora do gamut sRGB** — o HEX é o ponto mais próximo dentro do
+  gamut, não o valor exato. A fonte da verdade é sempre OKLCH.
 </Callout>
 
 ## Neutros
@@ -74,8 +71,9 @@ customizações KDS** (mauve, mist, olive, taupe) sintetizadas para
 permitir mapeamento fiel dos temas tweakcn-importados.
 
 {COLOR_PALETTES.filter((p) =>
-  ["slate", "gray", "zinc", "neutral", "stone", "mauve", "olive", "mist", "taupe"].includes(p.id)
+["slate", "gray", "zinc", "neutral", "stone", "mauve", "olive", "mist", "taupe"].includes(p.id)
 ).map((p) => (
+
   <ColorPaletteTable key={p.id} palette={p} />
 ))}
 
@@ -87,8 +85,9 @@ amplitude vai do crítico (red, para destrutivo) até o orgânico
 melhores cores para warning sem cair na clichê do amarelo puro.
 
 {COLOR_PALETTES.filter((p) =>
-  ["red", "orange", "amber", "yellow", "lime", "green"].includes(p.id)
+["red", "orange", "amber", "yellow", "lime", "green"].includes(p.id)
 ).map((p) => (
+
   <ColorPaletteTable key={p.id} palette={p} />
 ))}
 
@@ -101,8 +100,9 @@ charts categóricos. **Emerald** é o token de sucesso em charts;
 **sky** é o token de info.
 
 {COLOR_PALETTES.filter((p) =>
-  ["emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple"].includes(p.id)
+["emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple"].includes(p.id)
 ).map((p) => (
+
   <ColorPaletteTable key={p.id} palette={p} />
 ))}
 
@@ -114,8 +114,9 @@ Divergent (Red-Blue) e combina particularmente bem com stone e
 taupe.
 
 {COLOR_PALETTES.filter((p) =>
-  ["fuchsia", "pink", "rose"].includes(p.id)
+["fuchsia", "pink", "rose"].includes(p.id)
 ).map((p) => (
+
   <ColorPaletteTable key={p.id} palette={p} />
 ))}
 

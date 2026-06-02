@@ -1,4 +1,5 @@
 # IAP Chat — Design Spec
+
 **Data:** 2026-05-20  
 **Pacote:** `packages/iap/` (novo Angular SPA no monorepo ShadNG)  
 **Objetivo:** Tela de chat estilo Claude Desktop para testar a IAP (assistente RAG da Impulseup), com streaming SSE real, persistência Supabase e sistema de temas.
@@ -91,18 +92,21 @@ Main: `flex: 1; display: flex; flex-col; overflow: hidden`
 ### 3.3 Top-bar (`top-bar.component.ts`)
 
 Alinhado à direita no header principal:
+
 - Reutiliza `DocsThemeToggle` (importado de `packages/docs/src/app/shared/theme-toggle.component.ts`) — toggle dark/light.
 - Dropdown de tema de cor: `BrnSelectImports` + trigger estilizado mostrando o preset ativo. 4 presets: `default` (cinza), `blue` (azul corporativo), `emerald` (esmeralda), `sunset` (pôr do sol).
 
 ### 3.4 Estado vazio (`chat-shell.component.ts`)
 
 Quando não há conversa ativa:
+
 ```
 [centralizado verticalmente]
   Boa noite, {nome}
   Como posso ajudar você hoje?
   [prompt-input centralizado, max-w-2xl]
 ```
+
 Nome vem de `supabaseService.user()?.email` ou fallback "Kalvner".
 
 ### 3.5 Conversa ativa (`chat-shell.component.ts`)
@@ -136,12 +140,14 @@ Nome vem de `supabaseService.user()?.email` ou fallback "Kalvner".
 **Padrão de mercado** (ChatGPT, Claude.ai, Gemini, Vercel AI): `marked` + `DOMPurify` + `DomSanitizer.bypassSecurityTrustHtml()` + `[innerHTML]`.
 
 **Por quê:**
+
 - `marked` v15 — parser síncrono, já dependência do workspace raiz; essencial para re-parsear a cada delta do stream dentro de um `computed()` signal.
 - `DOMPurify` — sanitiza o HTML gerado pelo `marked` antes de injetar no DOM (previne XSS de conteúdo externo via API).
 - `DomSanitizer.bypassSecurityTrustHtml()` — necessário porque o sanitizer do Angular remove tags legítimas de markdown (`<table>`, `<pre>`, `<code>`). Só é seguro usar após o DOMPurify já ter limpado.
 - `prismjs` já está no workspace — disponível para syntax highlighting futuro nos blocos de código.
 
 **Fluxo no `computed()`:**
+
 ```typescript
 marked.parse(content) as string   // markdown → HTML string (sync)
   → DOMPurify.sanitize(html)      // remove XSS
@@ -193,10 +199,17 @@ interface IapMessage {
   streaming?: boolean;
 }
 
-interface StepEvent { id: string; kind: string; status: string; label: string; description?: string; }
+interface StepEvent {
+  id: string;
+  kind: string;
+  status: string;
+  label: string;
+  description?: string;
+}
 ```
 
 Expõe via signals:
+
 ```typescript
 readonly messages = signal<IapMessage[]>([]);
 readonly steps = signal<StepEvent[]>([]);
@@ -206,6 +219,7 @@ readonly error = signal<string | null>(null);
 ```
 
 Método `sendMessage(question: string): Promise<void>`:
+
 1. Adiciona mensagem user ao array.
 2. Adiciona mensagem assistant vazia com `streaming: true`.
 3. Define `inputState = 'streaming'`.
@@ -214,6 +228,7 @@ Método `sendMessage(question: string): Promise<void>`:
 6. Ao terminar: `inputState = 'ready'`, `streaming = false`.
 
 Payload:
+
 ```typescript
 {
   question,
@@ -246,12 +261,12 @@ Payload:
 
 Definidos via `data-color-theme` attribute no `<html>`:
 
-| Preset | Nome | Primary |
-|--------|------|---------|
-| `default` | Padrão | cinza (atual) |
-| `blue` | Azul Corporativo | oklch(0.5 0.18 250) |
-| `emerald` | Esmeralda | oklch(0.52 0.18 162) |
-| `sunset` | Pôr do Sol | oklch(0.58 0.2 35) |
+| Preset    | Nome             | Primary              |
+| --------- | ---------------- | -------------------- |
+| `default` | Padrão           | cinza (atual)        |
+| `blue`    | Azul Corporativo | oklch(0.5 0.18 250)  |
+| `emerald` | Esmeralda        | oklch(0.52 0.18 162) |
+| `sunset`  | Pôr do Sol       | oklch(0.58 0.2 35)   |
 
 Cada preset sobrescreve apenas `--primary` e `--primary-foreground` (mínimo para impacto visual imediato, sem quebrar o tema base).
 
@@ -260,6 +275,7 @@ Cada preset sobrescreve apenas `--primary` e `--primary-foreground` (mínimo par
 ## 7. Proxy de desenvolvimento
 
 `proxy.conf.json`:
+
 ```json
 {
   "/api": {

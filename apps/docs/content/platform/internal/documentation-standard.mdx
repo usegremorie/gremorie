@@ -33,6 +33,7 @@ checked.
 ## Documentation completeness checklist
 
 ### Required sections
+
 - [ ] 1. Frontmatter complete (status, version, deps, category)
 - [ ] 2. Overview (1 paragraph: what + when to use + when NOT to use)
 - [ ] 3. Interactive preview at the top
@@ -60,6 +61,7 @@ checked.
 - [ ] 25. Known issues / limitations
 
 ### Quality bar
+
 - [ ] Every code example IS runnable (copy + paste works)
 - [ ] Every interactive preview lets you edit inputs
 - [ ] No "TODO", "TBD", or "coming soon" in the public text
@@ -98,12 +100,12 @@ Copy this for every component. Sections in the order shown.
 title: PromptInput
 description: Prompt input container with state machine and form behaviour.
 component: prompt-input
-status: stable                  # stable | preview | deprecated
+status: stable # stable | preview | deprecated
 version: 0.1.0
 since: 0.1.0
 category: AI / Chatbot
 dependencies:
-  - "@gremorie/ng-core"
+  - '@gremorie/ng-core'
 related:
   - prompt-input-textarea
   - prompt-input-toolbar
@@ -133,13 +135,13 @@ related:
 
 \`\`\`
 <prompt-input>
-+-- <prompt-input-attachments>     (optional)
-|   +-- <prompt-input-attachment>
-+-- <prompt-input-textarea>        (required)
-+-- <prompt-input-toolbar>         (optional, recommended)
-    +-- <prompt-input-tools>
-    |   +-- <prompt-input-button>
-    +-- <prompt-input-submit>
++-- <prompt-input-attachments> (optional)
+| +-- <prompt-input-attachment>
++-- <prompt-input-textarea> (required)
++-- <prompt-input-toolbar> (optional, recommended)
++-- <prompt-input-tools>
+| +-- <prompt-input-button>
++-- <prompt-input-submit>
 \`\`\`
 
 ## Installation
@@ -166,33 +168,33 @@ The CLI verifies prerequisites and offers to install what's missing.
 
 ### Inputs / Props
 
-| Name | Type | Default | Description |
-|---|---|---|---|
-| `value` | `Signal<string>` | `signal('')` | Two-way binding via `[(value)]` |
-| `state` | `PromptInputState` | `'ready'` | State machine value |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Visual size |
-| ... | ... | ... | ... |
+| Name    | Type                   | Default      | Description                     |
+| ------- | ---------------------- | ------------ | ------------------------------- |
+| `value` | `Signal<string>`       | `signal('')` | Two-way binding via `[(value)]` |
+| `state` | `PromptInputState`     | `'ready'`    | State machine value             |
+| `size`  | `'sm' \| 'md' \| 'lg'` | `'md'`       | Visual size                     |
+| ...     | ...                    | ...          | ...                             |
 
 ### Outputs / Events
 
-| Name | Payload | Fires when |
-|---|---|---|
-| `valueChange` | `string` | Every textarea change |
-| `submit` | `PromptInputSubmitEvent` | User submits |
-| ... | ... | ... |
+| Name          | Payload                  | Fires when            |
+| ------------- | ------------------------ | --------------------- |
+| `valueChange` | `string`                 | Every textarea change |
+| `submit`      | `PromptInputSubmitEvent` | User submits          |
+| ...           | ...                      | ...                   |
 
 ### Slots / Children
 
-| Slot | Accepts | Required |
-|---|---|---|
+| Slot    | Accepts                                     | Required          |
+| ------- | ------------------------------------------- | ----------------- |
 | Default | Textarea, Toolbar, Attachments in any order | At least textarea |
 
 ### Imperative API
 
-| Method | Returns | Description |
-|---|---|---|
-| `focus()` | `void` | Focus the textarea |
-| `clear()` | `void` | Clear textarea and attachments |
+| Method    | Returns | Description                    |
+| --------- | ------- | ------------------------------ |
+| `focus()` | `void`  | Focus the textarea             |
+| `clear()` | `void`  | Clear textarea and attachments |
 
 ### Exported types
 
@@ -200,9 +202,9 @@ The CLI verifies prerequisites and offers to install what's missing.
 export type PromptInputState = 'ready' | 'submitted' | 'streaming' | 'error';
 
 export interface PromptInputSubmitEvent {
-  value: string;
-  attachments: File[];
-  preventDefault: () => void;
+value: string;
+attachments: File[];
+preventDefault: () => void;
 }
 \`\`\`
 
@@ -263,23 +265,23 @@ Last submission failed. Submit becomes a retry button.
 
 ### Keyboard shortcuts
 
-| Key | Action | Configurable |
-|---|---|---|
-| `Enter` | Submit (if `submitOnEnter=true`) | Yes |
-| `Shift + Enter` | Newline in textarea | No |
-| `Mod + Enter` | Force submit | No |
-| `Esc` | Clear OR cancel streaming (state-dependent) | No |
-| `Mod + K` | Global focus | Yes |
-| `Tab` | Navigation through textarea -> toolbar -> submit | No |
+| Key             | Action                                           | Configurable |
+| --------------- | ------------------------------------------------ | ------------ |
+| `Enter`         | Submit (if `submitOnEnter=true`)                 | Yes          |
+| `Shift + Enter` | Newline in textarea                              | No           |
+| `Mod + Enter`   | Force submit                                     | No           |
+| `Esc`           | Clear OR cancel streaming (state-dependent)      | No           |
+| `Mod + K`       | Global focus                                     | Yes          |
+| `Tab`           | Navigation through textarea -> toolbar -> submit | No           |
 
 ### ARIA
 
-| Element | Role / Attribute | Value |
-|---|---|---|
-| Container | `role` | `"form"` |
-| Container | `aria-label` | `"AI prompt input"` (configurable) |
-| Submit button | `aria-label` | varies by state: "Send", "Submitting", "Stop", "Retry" |
-| Live region | `aria-live` | `"polite"` for state changes |
+| Element       | Role / Attribute | Value                                                  |
+| ------------- | ---------------- | ------------------------------------------------------ |
+| Container     | `role`           | `"form"`                                               |
+| Container     | `aria-label`     | `"AI prompt input"` (configurable)                     |
+| Submit button | `aria-label`     | varies by state: "Send", "Submitting", "Stop", "Retry" |
+| Live region   | `aria-live`      | `"polite"` for state changes                           |
 
 ### Screen reader
 
@@ -318,12 +320,12 @@ uses a two-tier system (primitives -> semantics). Components consume
 To change behaviour without editing CSS vars, edit the classes in the
 component file:
 
-| Subcomponent | Key classes |
-|---|---|
-| Container | `flex flex-col gap-2 rounded-md border bg-background p-3` |
-| Textarea | `min-h-[2.5rem] max-h-[12rem] resize-none bg-transparent` |
-| Submit (ready) | `bg-primary text-primary-foreground` |
-| ... | ... |
+| Subcomponent   | Key classes                                               |
+| -------------- | --------------------------------------------------------- |
+| Container      | `flex flex-col gap-2 rounded-md border bg-background p-3` |
+| Textarea       | `min-h-[2.5rem] max-h-[12rem] resize-none bg-transparent` |
+| Submit (ready) | `bg-primary text-primary-foreground`                      |
+| ...            | ...                                                       |
 
 ### Customisation
 
@@ -451,13 +453,13 @@ guides. Docs are a graph, not a tree.
 
 Per component, measure each release:
 
-| Metric | Target |
-|---|---|
-| Checklist items filled | 100% (binary) |
-| Broken links | 0 |
-| `TODO` / `TBD` / `...` | 0 occurrences |
-| Code examples tested | 100% (CI validates) |
-| Lighthouse score on page | >= 95 |
-| a11y issues (axe) | 0 critical |
+| Metric                   | Target              |
+| ------------------------ | ------------------- |
+| Checklist items filled   | 100% (binary)       |
+| Broken links             | 0                   |
+| `TODO` / `TBD` / `...`   | 0 occurrences       |
+| Code examples tested     | 100% (CI validates) |
+| Lighthouse score on page | >= 95               |
+| a11y issues (axe)        | 0 critical          |
 
 CI blocks the merge if any metric fails.

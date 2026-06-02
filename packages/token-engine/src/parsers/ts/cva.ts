@@ -4,11 +4,11 @@ import {
   type CallExpression,
   type ObjectLiteralExpression,
   type PropertyAssignment,
-} from "ts-morph";
-import type { ComponentInfo } from "../../graph/types.js";
+} from 'ts-morph';
+import type { ComponentInfo } from '../../graph/types.js';
 
 function unquote(s: string): string {
-  return s.replace(/^["'`](.*)["'`]$/s, "$1");
+  return s.replace(/^["'`](.*)["'`]$/s, '$1');
 }
 
 function getStringLiteral(node: any): string | null {
@@ -30,7 +30,7 @@ function findCvaCall(file: SourceFile): CallExpression | null {
     if (node.getKind() !== SyntaxKind.CallExpression) return;
     const call = node as CallExpression;
     const expr = call.getExpression();
-    if (expr.getText() === "cva") found = call;
+    if (expr.getText() === 'cva') found = call;
   });
   return found;
 }
@@ -40,7 +40,7 @@ function objectToRecord(obj: ObjectLiteralExpression): Record<string, string> {
   for (const prop of obj.getProperties()) {
     if (prop.getKind() !== SyntaxKind.PropertyAssignment) continue;
     const pa = prop as PropertyAssignment;
-    const name = pa.getName().replace(/^["']|["']$/g, "");
+    const name = pa.getName().replace(/^["']|["']$/g, '');
     const value = getStringLiteral(pa.getInitializer());
     if (value !== null) result[name] = value;
   }
@@ -49,13 +49,13 @@ function objectToRecord(obj: ObjectLiteralExpression): Record<string, string> {
 
 export function extractCvaFromFile(
   file: SourceFile,
-  componentName: string
+  componentName: string,
 ): ComponentInfo | null {
   const call = findCvaCall(file);
   if (!call) return null;
 
   const args = call.getArguments();
-  const baseClasses = getStringLiteral(args[0]) ?? "";
+  const baseClasses = getStringLiteral(args[0]) ?? '';
 
   const variants: Record<string, string[]> = {};
   const classesByVariant: Record<string, Record<string, string>> = {};
@@ -72,7 +72,7 @@ export function extractCvaFromFile(
         continue;
       const obj = init as ObjectLiteralExpression;
 
-      if (key === "variants") {
+      if (key === 'variants') {
         for (const group of obj.getProperties()) {
           if (group.getKind() !== SyntaxKind.PropertyAssignment) continue;
           const ga = group as PropertyAssignment;
@@ -84,7 +84,7 @@ export function extractCvaFromFile(
           classesByVariant[groupName] = classes;
           variants[groupName] = Object.keys(classes);
         }
-      } else if (key === "defaultVariants") {
+      } else if (key === 'defaultVariants') {
         defaultVariants = objectToRecord(obj);
       }
     }

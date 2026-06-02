@@ -1,8 +1,14 @@
-"use client";
+'use client';
 
-import { Alert, AlertDescription, AlertTitle, Progress, Skeleton } from "@gremorie/rx-feedback";
-import { CheckCircle2, Info, AlertTriangle } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Progress,
+  Skeleton,
+} from '@gremorie/rx-feedback';
+import { CheckCircle2, Info, AlertTriangle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // ---------- Alert ----------
 

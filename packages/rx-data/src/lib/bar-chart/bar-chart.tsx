@@ -1,146 +1,177 @@
-import { cn } from "@gremorie/rx-core";
-import { Bar } from "../headless/bar";
-import { CartesianGrid } from "../headless/cartesian-grid";
-import { ChartFrame } from "../headless/chart-frame";
-import { XAxis, YAxis } from "../headless/axis";
-import type { ChartConfig, Datum } from "../headless/types";
+'use client';
+
+import { cn } from '@gremorie/rx-core';
+import {
+  Bar,
+  BarChart as RechartsBarChart,
+  CartesianGrid,
+  Cell,
+  LabelList,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from '../chart/chart';
+import type { ChartDatum } from '../chart/types';
 
 export interface BarChartProps {
-  data: readonly Datum[];
+  /** Tabular rows. For per-bar colors, give each row a `fill` (e.g. `var(--chart-1)`). */
+  data: readonly ChartDatum[];
+  /** Maps each value field to a label + color. One entry per series. */
   config: ChartConfig;
+  /** Category field (the X axis, or the Y axis when `horizontal`). */
   xKey: string;
+  /** Stack the series instead of grouping them side by side. */
+  stacked?: boolean;
+  /** Render horizontal bars (recharts `layout="vertical"`). */
+  horizontal?: boolean;
+  /** Show the numeric value axis (left Y when vertical, bottom X when horizontal). */
+  yAxis?: boolean;
+  /** Draw the value on top of (or beside) each bar. */
+  showLabels?: boolean;
+  /** Hover tooltip. */
+  tooltip?: boolean;
+  /** Corner radius of the bars. */
+  radius?: number;
   className?: string;
 }
 
 /**
- * Styled grouped bar chart. Pass tabular `data`, a serializable `config`
- * mapping each value field to a label + token color, and the `xKey` category.
+ * Bar chart — recharts + the shadcn `chart` primitives. Renders one `<Bar>` per
+ * `config` entry (colored `var(--color-<key>)`); for a single categorical
+ * series give each row its own `fill` and the bars take those colors.
+ *
+ * The primitive is **complete**: the numeric value axis is available via
+ * `yAxis` (on by default), horizontal/stacked layouts, labels and per-bar
+ * colors. Consumers (e.g. the chart artifact) turn options off as needed.
  *
  * @example
  * ```tsx
- * <BarChart data={data} config={config} xKey="month" />
+ * <BarChart data={data} config={{ desktop: { label: "Desktop", color: "var(--chart-1)" } }} xKey="month" />
+ * <BarChart data={data} config={config} xKey="month" yAxis={false} stacked />
  * ```
  */
 export function BarChart({
   data,
   config,
   xKey,
+  stacked = false,
+  horizontal = false,
+  yAxis = true,
+  showLabels = false,
+  tooltip = true,
+  radius = 8,
   className,
 }: BarChartProps) {
-  const series = Object.entries(config).map(([key, entry]) => ({
-    key,
-    label: entry.label,
-    color: entry.color,
-  }));
+  const keys = Object.keys(config).filter((k) => k !== xKey);
+  const single = keys.length <= 1;
+  const perRowFill = single && data.some((d) => 'fill' in d);
 
-  const ariaLabel = `Bar chart of ${series
-    .map((s) => s.label)
-    .join(", ")} by ${xKey}`;
+  /**
+   * Round only the OUTER corners of a stack (so segments don't read as
+   * separate pills). Single series → all four corners. Recharts radius array
+   * is [topLeft, topRight, bottomRight, bottomLeft].
+   */
+  const segRadius = (i: number): number | [number, number, number, number] => {
+    if (!stacked || single) return radius;
+    if (horizontal) {
+      if (i === 0) return [radius, 0, 0, radius]; // leftmost (stack base)
+      if (i === keys.length - 1) return [0, radius, radius, 0]; // rightmost (stack top)
+      return 0;
+    }
+    if (i === 0) return [0, 0, radius, radius]; // bottom of stack
+    if (i === keys.length - 1) return [radius, radius, 0, 0]; // top of stack
+    return 0;
+  };
 
   return (
-    <figure
-      role="img"
-      aria-label={ariaLabel}
-      data-slot="bar-chart"
-      className={cn(
-        "flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground",
-        className
-      )}
-    >
-      <ChartFrame
-        data={data}
-        xKey={xKey}
-        className="aspect-video w-full overflow-visible text-muted-foreground"
+    <ChartContainer config={config} className={cn(className)}>
+      <RechartsBarChart
+        accessibilityLayer
+        data={data as ChartDatum[]}
+        layout={horizontal ? 'vertical' : 'horizontal'}
+        margin={{
+          top: showLabels && !horizontal ? 20 : 8,
+          right: 12,
+          left: yAxis && !horizontal ? 0 : 12,
+          bottom: 0,
+        }}
       >
-        <CartesianGrid>
-          {(lines) =>
-            lines.map((l, i) => (
-              <line
-                key={i}
-                x1={l.x1}
-                x2={l.x2}
-                y1={l.y}
-                y2={l.y}
-                stroke="currentColor"
-                strokeOpacity={0.15}
+        <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
+        {horizontal ? (
+          <>
+            <YAxis
+              dataKey={xKey}
+              type="category"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+            />
+            <XAxis
+              dataKey={keys[0]}
+              type="number"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              hide={!yAxis}
+            />
+          </>
+        ) : (
+          <>
+            <XAxis
+              dataKey={xKey}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+            />
+            {yAxis ? (
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                width={40}
               />
-            ))
-          }
-        </CartesianGrid>
-
-        {series.map((s) => (
-          <Bar key={s.key} dataKey={s.key}>
-            {(rects) =>
-              rects.map((r, i) => (
-                <rect
-                  key={i}
-                  x={r.x}
-                  y={r.y}
-                  width={r.width}
-                  height={r.height}
-                  fill={s.color}
-                  rx={2}
-                />
-              ))
-            }
+            ) : null}
+          </>
+        )}
+        {tooltip ? (
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel={perRowFill} />}
+          />
+        ) : null}
+        {keys.map((key, i) => (
+          <Bar
+            key={key}
+            dataKey={key}
+            fill={`var(--color-${key})`}
+            radius={segRadius(i)}
+            stackId={stacked ? 'a' : undefined}
+          >
+            {perRowFill
+              ? data.map((d, idx) => (
+                  <Cell
+                    key={idx}
+                    fill={(d.fill as string) ?? `var(--color-${key})`}
+                  />
+                ))
+              : null}
+            {showLabels && (single || i === keys.length - 1) ? (
+              <LabelList
+                position={horizontal ? 'right' : 'top'}
+                offset={8}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            ) : null}
           </Bar>
         ))}
-
-        <XAxis>
-          {({ ticks, labelY }) =>
-            ticks.map((t) => (
-              <text
-                key={t.label}
-                x={t.x}
-                y={labelY}
-                textAnchor="middle"
-                className="fill-muted-foreground text-[10px]"
-              >
-                {t.label}
-              </text>
-            ))
-          }
-        </XAxis>
-
-        <YAxis>
-          {({ ticks, labelX }) =>
-            ticks.map((t) => (
-              <text
-                key={t.value}
-                x={labelX}
-                y={t.y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="fill-muted-foreground text-[10px]"
-              >
-                {t.label}
-              </text>
-            ))
-          }
-        </YAxis>
-      </ChartFrame>
-
-      <table className="sr-only">
-        <caption>{ariaLabel}</caption>
-        <thead>
-          <tr>
-            <th>{xKey}</th>
-            {series.map((s) => (
-              <th key={s.key}>{s.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              <td>{row[xKey]}</td>
-              {series.map((s) => (
-                <td key={s.key}>{row[s.key]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </figure>
+      </RechartsBarChart>
+    </ChartContainer>
   );
 }

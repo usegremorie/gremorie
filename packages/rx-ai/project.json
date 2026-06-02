@@ -16,6 +16,20 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "storybook": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "options": {
+        "command": "storybook dev -p 4401 --no-open -c packages/rx-ai/.storybook"
+      }
+    },
+    "build-storybook": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/storybook/rx-ai"],
+      "options": {
+        "command": "storybook build -c packages/rx-ai/.storybook -o dist/storybook/rx-ai"
+      }
     }
   }
 }

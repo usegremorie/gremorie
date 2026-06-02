@@ -1,9 +1,9 @@
 ---
 title: Tooltip
-description: "Short non-essential context shown on hover and keyboard focus. Built on Radix Tooltip with a built-in arrow."
+description: 'Short non-essential context shown on hover and keyboard focus. Built on Radix Tooltip with a built-in arrow.'
 ---
 
-import { TooltipPreview } from "@/components/preview/overlays/overlays";
+import { TooltipPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -22,26 +22,10 @@ The `TooltipContent` renders its own arrow automatically.
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-tooltip
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-tooltip
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-tooltip
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-tooltip
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-tooltip ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-tooltip ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-tooltip ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-tooltip ```</Tab>
 </Tabs>
 
 ## Usage
@@ -77,7 +61,7 @@ Mount a single `TooltipProvider` at your app root so every tooltip shares the sa
 
 ```tsx
 // app/layout.tsx
-import { TooltipProvider } from "@gremorie/rx-overlays";
+import { TooltipProvider } from '@gremorie/rx-overlays';
 
 export default function RootLayout({ children }) {
   return (
@@ -89,6 +73,7 @@ export default function RootLayout({ children }) {
   );
 }
 ```
+
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
@@ -101,11 +86,11 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<TooltipProvider>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `delayDuration` | `number` | `0` | Default delay in milliseconds before tooltips open. |
-| `skipDelayDuration` | `number` | `300` | Time the user has after closing one tooltip to open another without delay. |
-| `disableHoverableContent` | `boolean` | `false` | When `true`, tooltips close as soon as the pointer leaves the trigger. |
+| Prop                      | Type      | Default | Description                                                                |
+| ------------------------- | --------- | ------- | -------------------------------------------------------------------------- |
+| `delayDuration`           | `number`  | `0`     | Default delay in milliseconds before tooltips open.                        |
+| `skipDelayDuration`       | `number`  | `300`   | Time the user has after closing one tooltip to open another without delay. |
+| `disableHoverableContent` | `boolean` | `false` | When `true`, tooltips close as soon as the pointer leaves the trigger.     |
 
 Mount once at the application root. All tooltips share its timers.
 
@@ -113,12 +98,12 @@ Mount once at the application root. All tooltips share its timers.
 
 Extends Radix `Tooltip.Root`. Notable props:
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `open` | `boolean` | - | Controlled open state. |
-| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
-| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
-| `delayDuration` | `number` | inherits from provider | Per-tooltip override of the delay. |
+| Prop            | Type                      | Default                | Description                           |
+| --------------- | ------------------------- | ---------------------- | ------------------------------------- |
+| `open`          | `boolean`                 | -                      | Controlled open state.                |
+| `defaultOpen`   | `boolean`                 | `false`                | Initial open state when uncontrolled. |
+| `onOpenChange`  | `(open: boolean) => void` | -                      | Fired when open state changes.        |
+| `delayDuration` | `number`                  | inherits from provider | Per-tooltip override of the delay.    |
 
 ### `<TooltipTrigger>`
 
@@ -126,11 +111,11 @@ Extends Radix `Tooltip.Trigger`. Pair with `asChild` to forward styles to a `But
 
 ### `<TooltipContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `sideOffset` | `number` | `0` | Pixel gap between trigger and content. |
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred side; flips automatically when there is no room. |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger axis. |
+| Prop         | Type                                     | Default    | Description                                                |
+| ------------ | ---------------------------------------- | ---------- | ---------------------------------------------------------- |
+| `sideOffset` | `number`                                 | `0`        | Pixel gap between trigger and content.                     |
+| `side`       | `"top" \| "right" \| "bottom" \| "left"` | `"top"`    | Preferred side; flips automatically when there is no room. |
+| `align`      | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to the trigger axis.                    |
 
 Wrapped in a Radix `Portal`. The arrow indicator is included automatically.
 

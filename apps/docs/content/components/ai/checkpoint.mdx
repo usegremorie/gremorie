@@ -3,7 +3,10 @@ title: Checkpoint
 description: Conversation savepoint marker - a labeled bookmark on the timeline with an optional tooltip describing the captured state.
 ---
 
-import { CheckpointPreview, CheckpointTooltipPreview } from "@/components/preview/ai/chatbot-rest";
+import {
+  CheckpointPreview,
+  CheckpointTooltipPreview,
+} from '@/components/preview/ai/chatbot-rest';
 
 ## Overview
 
@@ -28,26 +31,12 @@ Use it when the user can branch, restore or rewind from this point. Pair the tri
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-checkpoint
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-checkpoint
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-checkpoint
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-checkpoint
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-checkpoint ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-checkpoint ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-checkpoint ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-checkpoint ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -89,23 +78,24 @@ Extends all `HTMLAttributes<HTMLDivElement>`.
 
 ### `<CheckpointIcon>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `ReactNode` | - | When provided, fully replaces the default `BookmarkIcon`. |
+| Prop       | Type        | Default | Description                                               |
+| ---------- | ----------- | ------- | --------------------------------------------------------- |
+| `children` | `ReactNode` | -       | When provided, fully replaces the default `BookmarkIcon`. |
 
 Forwards all `LucideProps` to the default icon (size, stroke, etc.).
 
 ### `<CheckpointTrigger>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `tooltip` | `string` | - | Tooltip text. When set, the trigger is wrapped in `Tooltip` / `TooltipContent`. |
-| `variant` | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`. |
-| `size` | `ButtonSize` | `"sm"` | Forwarded to the underlying `Button`. |
-| `children` | `ReactNode` | - | Icon, label, or both. |
+| Prop       | Type            | Default   | Description                                                                     |
+| ---------- | --------------- | --------- | ------------------------------------------------------------------------------- |
+| `tooltip`  | `string`        | -         | Tooltip text. When set, the trigger is wrapped in `Tooltip` / `TooltipContent`. |
+| `variant`  | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`.                                           |
+| `size`     | `ButtonSize`    | `"sm"`    | Forwarded to the underlying `Button`.                                           |
+| `children` | `ReactNode`     | -         | Icon, label, or both.                                                           |
 
 <Callout type="info">
-`CheckpointTrigger` relies on `TooltipProvider`. Make sure one is present higher in the tree.
+  `CheckpointTrigger` relies on `TooltipProvider`. Make sure one is present
+  higher in the tree.
 </Callout>
 
 ## Composition
@@ -150,9 +140,7 @@ Use `CheckpointIcon` for a static marker and pair it with a `CheckpointTrigger` 
   <CheckpointIcon>
     <FlagIcon className="size-4" />
   </CheckpointIcon>
-  <CheckpointTrigger tooltip="Restart from this point">
-    Reset
-  </CheckpointTrigger>
+  <CheckpointTrigger tooltip="Restart from this point">Reset</CheckpointTrigger>
 </Checkpoint>
 ```
 

@@ -3,7 +3,11 @@ title: Confirmation
 description: Human-in-the-loop approval prompt for tool calls, with request, approved and rejected states driven by tool state.
 ---
 
-import { ConfirmationRequestPreview, ConfirmationApprovedPreview, ConfirmationRejectedPreview } from "@/components/preview/ai/chatbot-rest";
+import {
+  ConfirmationRequestPreview,
+  ConfirmationApprovedPreview,
+  ConfirmationRejectedPreview,
+} from '@/components/preview/ai/chatbot-rest';
 
 ## Overview
 
@@ -34,26 +38,16 @@ Use it for irreversible operations (deletes, payments, deploys, write-to-prod) w
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-confirmation
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-confirmation
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-confirmation
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-confirmation
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-confirmation ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-confirmation ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-confirmation ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-confirmation ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -101,10 +95,10 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Confirmation>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `state` | `ToolUIPart["state"]` | - | Required tool call state from the AI SDK. The component returns `null` while state is `input-streaming` or `input-available`. |
-| `approval` | `{ id: string; approved?: boolean; reason?: string }` | - | Required approval payload. Drives which slot is rendered. |
+| Prop       | Type                                                  | Default | Description                                                                                                                   |
+| ---------- | ----------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `state`    | `ToolUIPart["state"]`                                 | -       | Required tool call state from the AI SDK. The component returns `null` while state is `input-streaming` or `input-available`. |
+| `approval` | `{ id: string; approved?: boolean; reason?: string }` | -       | Required approval payload. Drives which slot is rendered.                                                                     |
 
 Extends `ComponentProps<typeof Alert>`.
 
@@ -114,19 +108,19 @@ Renders an inline `AlertDescription`. Use it for the prompt copy.
 
 ### `<ConfirmationRequest>` / `<ConfirmationAccepted>` / `<ConfirmationRejected>`
 
-| Component | Renders when |
-|---|---|
-| `ConfirmationRequest` | `state === "approval-requested"` |
-| `ConfirmationAccepted` | `approval.approved === true` and state is `approval-responded`, `output-denied` or `output-available` |
+| Component              | Renders when                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| `ConfirmationRequest`  | `state === "approval-requested"`                                                                       |
+| `ConfirmationAccepted` | `approval.approved === true` and state is `approval-responded`, `output-denied` or `output-available`  |
 | `ConfirmationRejected` | `approval.approved === false` and state is `approval-responded`, `output-denied` or `output-available` |
 
 Each accepts `children: ReactNode`.
 
 ### `<ConfirmationActions>` / `<ConfirmationAction>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `ReactNode` | - | Action buttons. The container only renders during `approval-requested`. |
+| Prop       | Type        | Default | Description                                                             |
+| ---------- | ----------- | ------- | ----------------------------------------------------------------------- |
+| `children` | `ReactNode` | -       | Action buttons. The container only renders during `approval-requested`. |
 
 `ConfirmationAction` extends `Button` props with a smaller default size (`h-8 px-3 text-sm`).
 
@@ -153,7 +147,9 @@ Render every slot so the same JSX serves the full lifecycle.
   <ConfirmationTitle>Charge $499 to the saved card?</ConfirmationTitle>
   <ConfirmationRequest>
     <ConfirmationActions>
-      <ConfirmationAction variant="outline" onClick={reject}>Cancel</ConfirmationAction>
+      <ConfirmationAction variant="outline" onClick={reject}>
+        Cancel
+      </ConfirmationAction>
       <ConfirmationAction onClick={approve}>Charge</ConfirmationAction>
     </ConfirmationActions>
   </ConfirmationRequest>
@@ -171,7 +167,9 @@ Use Alert variants and a destructive action button to signal severity.
   <ConfirmationTitle>Permanently delete 1,204 records?</ConfirmationTitle>
   <ConfirmationRequest>
     <ConfirmationActions>
-      <ConfirmationAction variant="outline" onClick={reject}>Keep them</ConfirmationAction>
+      <ConfirmationAction variant="outline" onClick={reject}>
+        Keep them
+      </ConfirmationAction>
       <ConfirmationAction variant="destructive" onClick={approve}>
         Delete
       </ConfirmationAction>
@@ -188,7 +186,7 @@ Surface the rejection reason captured on `approval.reason`.
 <Confirmation state={state} approval={approval}>
   <ConfirmationTitle>Deploy to production?</ConfirmationTitle>
   <ConfirmationRejected>
-    <p>Deploy blocked. Reason: {approval?.reason ?? "no reason given"}.</p>
+    <p>Deploy blocked. Reason: {approval?.reason ?? 'no reason given'}.</p>
   </ConfirmationRejected>
 </Confirmation>
 ```

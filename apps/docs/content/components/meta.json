@@ -3,5 +3,19 @@
   "title": "Components",
   "description": "Primitives from the registry, installable via gremorie add",
   "icon": "Component",
-  "pages": ["overview", "ai", "forms", "overlays", "display", "containers", "feedback", "navigation", "data"]
+  "pages": [
+    "index",
+    "---AI---",
+    "ai",
+    "---Inputs---",
+    "forms",
+    "---Layout & display---",
+    "display",
+    "data",
+    "containers",
+    "---Interaction---",
+    "overlays",
+    "navigation",
+    "feedback"
+  ]
 }

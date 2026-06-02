@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Accordion,
@@ -31,10 +31,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@gremorie/rx-display";
-import { Button } from "@gremorie/rx-forms";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+} from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 // ---------- Accordion ----------
 
@@ -73,7 +73,10 @@ export function AvatarPreview() {
   return (
     <div className="flex items-center gap-3">
       <Avatar>
-        <AvatarImage src="https://avatars.githubusercontent.com/u/41934312?v=4" alt="@kalvner" />
+        <AvatarImage
+          src="https://avatars.githubusercontent.com/u/41934312?v=4"
+          alt="@kalvner"
+        />
         <AvatarFallback>KA</AvatarFallback>
       </Avatar>
       <Avatar>
@@ -152,9 +155,9 @@ export function CollapsiblePreview() {
     <Collapsible open={open} onOpenChange={setOpen} className="w-full max-w-md">
       <CollapsibleTrigger asChild>
         <Button variant="outline" className="w-full justify-between">
-          What's inside Gremorie?
+          What&apos;s inside Gremorie?
           <ChevronDown
-            className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
+            className={`size-4 transition-transform ${open ? 'rotate-180' : ''}`}
           />
         </Button>
       </CollapsibleTrigger>
@@ -188,11 +191,11 @@ export function SeparatorPreview() {
 // ---------- Table ----------
 
 const REGISTRY_ITEMS = [
-  { id: "rx-message", category: "AI", deps: 4 },
-  { id: "rx-button", category: "Forms", deps: 1 },
-  { id: "rx-card", category: "Display", deps: 0 },
-  { id: "rx-area-chart", category: "Data", deps: 2 },
-  { id: "rx-alert", category: "Feedback", deps: 1 },
+  { id: 'rx-message', category: 'AI', deps: 4 },
+  { id: 'rx-button', category: 'Forms', deps: 1 },
+  { id: 'rx-card', category: 'Display', deps: 0 },
+  { id: 'rx-area-chart', category: 'Data', deps: 2 },
+  { id: 'rx-alert', category: 'Feedback', deps: 1 },
 ];
 
 export function TablePreview() {

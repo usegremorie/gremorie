@@ -2,7 +2,7 @@
 title: Dialog
 description: Modal centrado para decisões focadas e fluxos curtos — com modelo de 3 tiers para confirmações.
 component: Dialog
-importPath: "@kalvner/kds/overlays/dialog"
+importPath: '@kalvner/kds/overlays/dialog'
 status: stable
 ---
 
@@ -11,14 +11,14 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   ArchiveProjectDialog,
   DeleteAccountDialog,
   DeleteCommentDialog,
-  DialogPreview
-} from "@/components/overlay-demos";
+  DialogPreview,
+} from '@/components/overlay-demos';
 
 ## Overview
 
@@ -31,17 +31,19 @@ editar um item, mostrar um detalhe específico.
 A escolha entre Dialog, Sheet, Popover e Drawer é uma escolha de
 peso da interrupção:
 
-| Quando o conteúdo… | Use |
-|---|---|
-| precisa de foco total e é curto (1–3 campos, 1 decisão) | **Dialog** |
-| é um fluxo longo / múltiplas seções (filtros, settings) | **Sheet** |
-| é inline e contextual (date picker, mini form) | **Popover** |
-| é mobile-first com gesto de arrastar | **Drawer** |
+| Quando o conteúdo…                                      | Use         |
+| ------------------------------------------------------- | ----------- |
+| precisa de foco total e é curto (1–3 campos, 1 decisão) | **Dialog**  |
+| é um fluxo longo / múltiplas seções (filtros, settings) | **Sheet**   |
+| é inline e contextual (date picker, mini form)          | **Popover** |
+| é mobile-first com gesto de arrastar                    | **Drawer**  |
 
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Dialog padrão com header, conteúdo e footer.</CardDescription>
+    <CardDescription>
+      Dialog padrão com header, conteúdo e footer.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <DialogPreview />
@@ -75,17 +77,17 @@ quando o `X` for redundante (poucos casos).
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Dialog` | Raiz que controla open/closed. |
-| `DialogTrigger` | Elemento clicável que abre o dialog. |
-| `DialogContent` | Container portalado com overlay e focus trap. |
-| `DialogHeader` | Wrapper de título + descrição. |
-| `DialogTitle` | Título obrigatório (semântica). |
-| `DialogDescription` | Descrição opcional anunciada por SR. |
-| `DialogFooter` | Wrapper das ações no rodapé. |
-| `DialogClose` | Wrapper que fecha o dialog ao clicar. |
-| `DialogPortal` / `DialogOverlay` | Expostos para casos avançados. |
+| Componente                       | Descrição                                     |
+| -------------------------------- | --------------------------------------------- |
+| `Dialog`                         | Raiz que controla open/closed.                |
+| `DialogTrigger`                  | Elemento clicável que abre o dialog.          |
+| `DialogContent`                  | Container portalado com overlay e focus trap. |
+| `DialogHeader`                   | Wrapper de título + descrição.                |
+| `DialogTitle`                    | Título obrigatório (semântica).               |
+| `DialogDescription`              | Descrição opcional anunciada por SR.          |
+| `DialogFooter`                   | Wrapper das ações no rodapé.                  |
+| `DialogClose`                    | Wrapper que fecha o dialog ao clicar.         |
+| `DialogPortal` / `DialogOverlay` | Expostos para casos avançados.                |
 
 ## Usage
 
@@ -98,9 +100,9 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose
-} from "@kalvner/kds/overlays/dialog";
-import { Button } from "@kalvner/kds/forms/button";
+  DialogClose,
+} from '@kalvner/kds/overlays/dialog';
+import { Button } from '@kalvner/kds/forms/button';
 
 export function ConfirmPublish() {
   return (
@@ -144,7 +146,9 @@ um Dialog comum com **botão default** (não destructive) — o objetivo
 <Card>
   <CardHeader>
     <CardTitle>Tier 1 · Excluir comentário</CardTitle>
-    <CardDescription>Confirmação básica. Botão padrão. Sem ênfase de risco.</CardDescription>
+    <CardDescription>
+      Confirmação básica. Botão padrão. Sem ênfase de risco.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <DeleteCommentDialog />
@@ -164,7 +168,9 @@ gesto seguro.
 <Card>
   <CardHeader>
     <CardTitle>Tier 2 · Arquivar projeto</CardTitle>
-    <CardDescription>Destructive button + descrição explícita + undo via Sonner.</CardDescription>
+    <CardDescription>
+      Destructive button + descrição explícita + undo via Sonner.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ArchiveProjectDialog />
@@ -183,7 +189,9 @@ Linear para projetos. O objetivo não é só evitar clique acidental;
 <Card>
   <CardHeader>
     <CardTitle>Tier 3 · Excluir conta</CardTitle>
-    <CardDescription>Typed confirmation. Digite <code>DELETE</code> para habilitar.</CardDescription>
+    <CardDescription>
+      Typed confirmation. Digite <code>DELETE</code> para habilitar.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <DeleteAccountDialog />
@@ -192,10 +200,10 @@ Linear para projetos. O objetivo não é só evitar clique acidental;
 
 ### Decision matrix
 
-| Reversibilidade | Impacto baixo | Impacto alto |
-|---|---|---|
-| **Reversível** | Tier 1 — Dialog comum | Tier 2 — Dialog destructive + undo |
-| **Irreversível** | Tier 2 — Dialog destructive | Tier 3 — Typed confirmation |
+| Reversibilidade  | Impacto baixo               | Impacto alto                       |
+| ---------------- | --------------------------- | ---------------------------------- |
+| **Reversível**   | Tier 1 — Dialog comum       | Tier 2 — Dialog destructive + undo |
+| **Irreversível** | Tier 2 — Dialog destructive | Tier 3 — Typed confirmation        |
 
 Quando ficar em dúvida, suba um tier. O custo de fricção extra é
 sempre menor do que o custo de uma exclusão acidental — sobretudo em
@@ -242,15 +250,15 @@ forçando uma escolha explícita.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix `Dialog` aplica `role="dialog"` + `aria-modal="true"`. |
-| **Foco** | Foco entra automaticamente no primeiro elemento focável; preso até o close (focus trap). Volta para o trigger ao fechar. |
-| **Keyboard** | `Esc` fecha. `Tab`/`Shift+Tab` cicla entre os focáveis dentro do dialog. |
-| **Screen reader** | `DialogTitle` é obrigatório — anunciado como nome do dialog. `DialogDescription` é anunciado quando vinculado via `aria-describedby` (Radix faz isso automaticamente). |
-| **Layout shift** | Como o dialog é portalado e o body recebe `overflow: hidden`, há uma gutter de scrollbar — Radix compensa com padding-right para evitar CLS. Ver [[ui/layout/cumulative-layout-shift]]. |
-| **Touch target** | Botões no footer respeitam o tamanho mínimo do `Button` primitive (36px / `lg` = 40px). |
-| **Reduced motion** | A animação enter/exit usa `data-[state=open/closed]:animate-in/out`; respeite `prefers-reduced-motion` no nível do tema. |
+| Concern            | Comportamento                                                                                                                                                                           |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | Radix `Dialog` aplica `role="dialog"` + `aria-modal="true"`.                                                                                                                            |
+| **Foco**           | Foco entra automaticamente no primeiro elemento focável; preso até o close (focus trap). Volta para o trigger ao fechar.                                                                |
+| **Keyboard**       | `Esc` fecha. `Tab`/`Shift+Tab` cicla entre os focáveis dentro do dialog.                                                                                                                |
+| **Screen reader**  | `DialogTitle` é obrigatório — anunciado como nome do dialog. `DialogDescription` é anunciado quando vinculado via `aria-describedby` (Radix faz isso automaticamente).                  |
+| **Layout shift**   | Como o dialog é portalado e o body recebe `overflow: hidden`, há uma gutter de scrollbar — Radix compensa com padding-right para evitar CLS. Ver [[ui/layout/cumulative-layout-shift]]. |
+| **Touch target**   | Botões no footer respeitam o tamanho mínimo do `Button` primitive (36px / `lg` = 40px).                                                                                                 |
+| **Reduced motion** | A animação enter/exit usa `data-[state=open/closed]:animate-in/out`; respeite `prefers-reduced-motion` no nível do tema.                                                                |
 
 ## Related
 

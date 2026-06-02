@@ -34,7 +34,26 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['ai', 'prompt-input', 'attachment', 'message', 'tool-call', 'code-block', 'source-list'],
+          // One namespaced prefix per AI Elements family (mirrors the Vercel AI
+          // Elements component names — intentional, not the workspace `gn-` prefix).
+          prefix: [
+            'ai',
+            'attachment',
+            'chain-of-thought',
+            'code-block',
+            'conversation',
+            'inline-citation',
+            'message',
+            'prompt-input',
+            'reasoning',
+            'source',
+            'sources',
+            'suggestion',
+            'suggestions',
+            'task',
+            'tool',
+            'toolbar',
+          ],
           style: 'kebab-case',
         },
       ],

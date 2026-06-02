@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { AspectRatio as AspectRatioPrimitive } from "radix-ui";
-import * as React from "react";
+import { AspectRatio as AspectRatioPrimitive } from 'radix-ui';
+import * as React from 'react';
 
 /**
  * AspectRatio - reserves vertical space for media before content loads.

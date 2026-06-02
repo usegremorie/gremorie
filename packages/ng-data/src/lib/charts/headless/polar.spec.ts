@@ -10,7 +10,7 @@ describe('polarLayout', () => {
 });
 
 describe('polarPoint', () => {
-  it('places angle 0 at the top (12 o\'clock)', () => {
+  it("places angle 0 at the top (12 o'clock)", () => {
     const p = polarPoint(0, 0, 10, 0);
     expect(p.x).toBeCloseTo(0);
     expect(p.y).toBeCloseTo(-10);

@@ -3,7 +3,10 @@ title: Web Preview
 description: Sandboxed iframe surface for live HTML preview. Includes URL bar, optional console output and a context-shared URL state.
 ---
 
-import { WebPreviewPreview, WebPreviewConsolePreview } from "@/components/preview/ai/code-workflow";
+import {
+  WebPreviewPreview,
+  WebPreviewConsolePreview,
+} from '@/components/preview/ai/code-workflow';
 
 ## Overview
 
@@ -30,26 +33,16 @@ Pair with [`Artifact`](/components/ai/artifact) when the preview is part of a ge
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-web-preview
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-web-preview
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-web-preview
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-web-preview
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-web-preview ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-web-preview ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-web-preview ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-web-preview ```
+  </Tab>
 </Tabs>
 
 Brings in `rx-display` (for `Collapsible`), `rx-forms` (for `Input` and `Button`) and `rx-overlays` (for `Tooltip`) as registry dependencies.
@@ -91,11 +84,11 @@ Angular edition planned for Phase 5h. Use the React edition for now, or open an 
 
 ### `<WebPreview>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultUrl` | `string` | `""` | Initial URL. Seeds the internal `url` state and `WebPreviewUrl`. |
-| `onUrlChange` | `(url: string) => void` | - | Fires whenever a child calls `setUrl` (typically on Enter inside `WebPreviewUrl`). |
-| `className` | `string` | - | Extra classes on the root `div`. |
+| Prop          | Type                    | Default | Description                                                                        |
+| ------------- | ----------------------- | ------- | ---------------------------------------------------------------------------------- |
+| `defaultUrl`  | `string`                | `""`    | Initial URL. Seeds the internal `url` state and `WebPreviewUrl`.                   |
+| `onUrlChange` | `(url: string) => void` | -       | Fires whenever a child calls `setUrl` (typically on Enter inside `WebPreviewUrl`). |
+| `className`   | `string`                | -       | Extra classes on the root `div`.                                                   |
 
 Extends all `ComponentProps<"div">`. Provides `WebPreviewContext` to all descendants.
 
@@ -109,11 +102,11 @@ Extends all `ComponentProps<"div">`.
 
 ### `<WebPreviewNavigationButton>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `tooltip` | `string` | - | Tooltip label. Required for icon-only buttons. |
-| `onClick` | `() => void` | - | Click handler. |
-| `disabled` | `boolean` | - | Standard Button disabled state. |
+| Prop       | Type         | Default | Description                                    |
+| ---------- | ------------ | ------- | ---------------------------------------------- |
+| `tooltip`  | `string`     | -       | Tooltip label. Required for icon-only buttons. |
+| `onClick`  | `() => void` | -       | Click handler.                                 |
+| `disabled` | `boolean`    | -       | Standard Button disabled state.                |
 
 Renders a 32x32 ghost `Button` wrapped in a `Tooltip`. Use for back / forward / reload affordances.
 
@@ -121,11 +114,11 @@ Renders a 32x32 ghost `Button` wrapped in a `Tooltip`. Use for back / forward / 
 
 Controlled or uncontrolled URL input. Reads `url` from `WebPreviewContext` and calls `setUrl` on Enter, which propagates to `onUrlChange`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | context `url` | Override the context value to make the input fully controlled. |
-| `onChange` | `ChangeEventHandler<HTMLInputElement>` | - | Optional override of the change handler. |
-| `onKeyDown` | `KeyboardEventHandler<HTMLInputElement>` | - | Called alongside the internal Enter handler. |
+| Prop        | Type                                     | Default       | Description                                                    |
+| ----------- | ---------------------------------------- | ------------- | -------------------------------------------------------------- |
+| `value`     | `string`                                 | context `url` | Override the context value to make the input fully controlled. |
+| `onChange`  | `ChangeEventHandler<HTMLInputElement>`   | -             | Optional override of the change handler.                       |
+| `onKeyDown` | `KeyboardEventHandler<HTMLInputElement>` | -             | Called alongside the internal Enter handler.                   |
 
 Extends all `Input` props from `@gremorie/rx-forms`.
 
@@ -133,21 +126,21 @@ Extends all `Input` props from `@gremorie/rx-forms`.
 
 The sandboxed iframe.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `src` | `string` | context `url` | Override the iframe source. Falls back to the context URL. |
-| `loading` | `ReactNode` | - | Optional skeleton or spinner rendered alongside the iframe. |
-| `className` | `string` | - | Extra classes on the iframe. |
+| Prop        | Type        | Default       | Description                                                 |
+| ----------- | ----------- | ------------- | ----------------------------------------------------------- |
+| `src`       | `string`    | context `url` | Override the iframe source. Falls back to the context URL.  |
+| `loading`   | `ReactNode` | -             | Optional skeleton or spinner rendered alongside the iframe. |
+| `className` | `string`    | -             | Extra classes on the iframe.                                |
 
 Hardcoded sandbox: `allow-scripts allow-same-origin allow-forms allow-popups allow-presentation`. Title: `"Preview"`.
 
 ### `<WebPreviewConsole>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `logs` | `Array<{ level, message, timestamp }>` | `[]` | Log entries. `level` is `"log" \| "warn" \| "error"`, `timestamp` is a `Date`. |
-| `children` | `ReactNode` | - | Extra content rendered below the logs (raw HTML console, debug controls, etc.). |
-| `className` | `string` | - | Extra classes on the `Collapsible` root. |
+| Prop        | Type                                   | Default | Description                                                                     |
+| ----------- | -------------------------------------- | ------- | ------------------------------------------------------------------------------- |
+| `logs`      | `Array<{ level, message, timestamp }>` | `[]`    | Log entries. `level` is `"log" \| "warn" \| "error"`, `timestamp` is a `Date`.  |
+| `children`  | `ReactNode`                            | -       | Extra content rendered below the logs (raw HTML console, debug controls, etc.). |
+| `className` | `string`                               | -       | Extra classes on the `Collapsible` root.                                        |
 
 A `Collapsible` that opens or closes via the shared `consoleOpen` state. Empty logs surface a "No console output" placeholder. The trigger + content are rendered internally - do NOT compose with separate `WebPreviewConsoleTrigger` / `WebPreviewConsoleContent`, those subcomponents do not exist.
 

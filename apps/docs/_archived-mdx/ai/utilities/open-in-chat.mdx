@@ -2,18 +2,21 @@
 title: OpenInChat
 description: Dropdown que abre o conteúdo atual em outra IA — ChatGPT, Claude, Cursor, v0, T3, Scira.
 component: OpenIn
-importPath: "@kalvner/kds/ai/open-in-chat"
+importPath: '@kalvner/kds/ai/open-in-chat'
 status: stable
 ---
 
-import { OpenInChatPreview, OpenInChatCuratedPreview } from "@/components/ai-utilities-demos";
+import {
+  OpenInChatPreview,
+  OpenInChatCuratedPreview,
+} from '@/components/ai-utilities-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -70,9 +73,9 @@ etc) com URL pré-formatada e ícone do brand.
 
 ### OpenIn (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `query` | `string` | — | String que será passada como prompt na URL de destino. |
+| Prop    | Tipo     | Default | Descrição                                              |
+| ------- | -------- | ------- | ------------------------------------------------------ |
+| `query` | `string` | —       | String que será passada como prompt na URL de destino. |
 
 Herda de [DropdownMenu](../../ui/overlays/dropdown-menu) — `open`,
 `onOpenChange`, etc.
@@ -103,14 +106,14 @@ DropdownMenuSeparator.
 Cada Item é um `<DropdownMenuItem>` que renderiza `<a target="_blank">`
 com URL formatada via `URLSearchParams`:
 
-| Item | URL pattern | Icon |
-|---|---|---|
-| `OpenInChatGPT` | `https://chatgpt.com/?hints=search&prompt=...` | OpenAI logo |
-| `OpenInClaude` | `https://claude.ai/new?q=...` | Claude logo |
-| `OpenInScira` | `https://scira.ai/?q=...` | Scira logo |
-| `OpenInv0` | `https://v0.app?q=...` | v0 logo |
-| `OpenInCursor` | `https://cursor.com/link/prompt?text=...` | Cursor logo |
-| `OpenInT3` | `https://t3.chat/new?q=...` | MessageCircle |
+| Item            | URL pattern                                    | Icon          |
+| --------------- | ---------------------------------------------- | ------------- |
+| `OpenInChatGPT` | `https://chatgpt.com/?hints=search&prompt=...` | OpenAI logo   |
+| `OpenInClaude`  | `https://claude.ai/new?q=...`                  | Claude logo   |
+| `OpenInScira`   | `https://scira.ai/?q=...`                      | Scira logo    |
+| `OpenInv0`      | `https://v0.app?q=...`                         | v0 logo       |
+| `OpenInCursor`  | `https://cursor.com/link/prompt?text=...`      | Cursor logo   |
+| `OpenInT3`      | `https://t3.chat/new?q=...`                    | MessageCircle |
 
 Cada um aceita `ComponentProps<typeof DropdownMenuItem>` —
 você pode passar `disabled`, `className`, etc.
@@ -134,7 +137,10 @@ function OpenInPerplexity() {
   const { query } = useOpenInContext();
   return (
     <DropdownMenuItem asChild>
-      <a href={`https://perplexity.ai/?q=${encodeURIComponent(query)}`} target="_blank">
+      <a
+        href={`https://perplexity.ai/?q=${encodeURIComponent(query)}`}
+        target="_blank"
+      >
         Open in Perplexity
       </a>
     </DropdownMenuItem>
@@ -166,11 +172,11 @@ function OpenInPerplexity() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **DropdownMenu** | Acessível via teclado (Enter abre, Arrow navega, Esc fecha). |
-| **External links** | Cada Item é `<a target="_blank" rel="noopener">`. |
-| **Brand icons** | SVGs com `<title>` — leitores de tela leem o nome do provider. |
+| Concern            | Comportamento                                                  |
+| ------------------ | -------------------------------------------------------------- |
+| **DropdownMenu**   | Acessível via teclado (Enter abre, Arrow navega, Esc fecha).   |
+| **External links** | Cada Item é `<a target="_blank" rel="noopener">`.              |
+| **Brand icons**    | SVGs com `<title>` — leitores de tela leem o nome do provider. |
 
 ## Related
 

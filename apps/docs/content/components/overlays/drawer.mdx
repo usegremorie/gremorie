@@ -1,9 +1,9 @@
 ---
 title: Drawer
-description: "Direction-aware sheet (top, bottom, left, right) built on vaul with native drag-to-dismiss gestures."
+description: 'Direction-aware sheet (top, bottom, left, right) built on vaul with native drag-to-dismiss gestures.'
 ---
 
-import { DrawerPreview } from "@/components/preview/overlays/overlays";
+import { DrawerPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -20,26 +20,10 @@ The recommended pattern is responsive: `Drawer` below `md`, `Dialog` or `Sheet` 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-drawer
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-drawer
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-drawer
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-drawer
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-drawer ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-drawer ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-drawer ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-drawer ```</Tab>
 </Tabs>
 
 ## Usage
@@ -93,17 +77,17 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Extends vaul `Drawer.Root`. Notable props:
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `direction` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Edge from which the drawer slides in. |
-| `open` | `boolean` | - | Controlled open state. |
-| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
-| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
-| `shouldScaleBackground` | `boolean` | - | Applies a subtle scale to siblings of the drawer (iOS look). Requires `[vaul-drawer-wrapper]` on a parent. |
-| `snapPoints` | `(string \| number)[]` | - | Resting positions (e.g. `[0.4, 0.8, 1]`). |
-| `activeSnapPoint` | `string \| number \| null` | - | Controlled snap point. |
-| `onAnimationEnd` | `(open: boolean) => void` | - | Fired after drag/animation settles. |
-| `modal` | `boolean` | `true` | Disable outside interaction while open. |
+| Prop                    | Type                                     | Default    | Description                                                                                                |
+| ----------------------- | ---------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| `direction`             | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Edge from which the drawer slides in.                                                                      |
+| `open`                  | `boolean`                                | -          | Controlled open state.                                                                                     |
+| `defaultOpen`           | `boolean`                                | `false`    | Initial open state when uncontrolled.                                                                      |
+| `onOpenChange`          | `(open: boolean) => void`                | -          | Fired when open state changes.                                                                             |
+| `shouldScaleBackground` | `boolean`                                | -          | Applies a subtle scale to siblings of the drawer (iOS look). Requires `[vaul-drawer-wrapper]` on a parent. |
+| `snapPoints`            | `(string \| number)[]`                   | -          | Resting positions (e.g. `[0.4, 0.8, 1]`).                                                                  |
+| `activeSnapPoint`       | `string \| number \| null`               | -          | Controlled snap point.                                                                                     |
+| `onAnimationEnd`        | `(open: boolean) => void`                | -          | Fired after drag/animation settles.                                                                        |
+| `modal`                 | `boolean`                                | `true`     | Disable outside interaction while open.                                                                    |
 
 All other props from vaul `Drawer.Root` are forwarded.
 
@@ -187,14 +171,16 @@ Resting positions let the drawer settle at 40% then expand to full height. Usefu
 ```tsx
 const [snap, setSnap] = useState<number | string | null>(0.4);
 
-<Drawer snapPoints={[0.4, 1]} activeSnapPoint={snap} setActiveSnapPoint={setSnap}>
+<Drawer
+  snapPoints={[0.4, 1]}
+  activeSnapPoint={snap}
+  setActiveSnapPoint={setSnap}
+>
   <DrawerTrigger asChild>
     <Button>Preview</Button>
   </DrawerTrigger>
-  <DrawerContent>
-    {/* content scales between 40% and 100% */}
-  </DrawerContent>
-</Drawer>
+  <DrawerContent>{/* content scales between 40% and 100% */}</DrawerContent>
+</Drawer>;
 ```
 
 ## Accessibility

@@ -1,6 +1,6 @@
 ---
 title: Calculator
-description: "Interactive tool-call artifact with state management and a result display."
+description: 'Interactive tool-call artifact with state management and a result display.'
 ---
 
 ## Overview
@@ -92,9 +92,9 @@ Sample prompts that produce valid output for this artifact:
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Badge,
   Card,
@@ -102,21 +102,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { Button, Input, Label } from "@gremorie/rx-forms";
-import { RotateCcw } from "lucide-react";
+} from '@gremorie/rx-display';
+import { Button, Input, Label } from '@gremorie/rx-forms';
+import { RotateCcw } from 'lucide-react';
 
-type Op = "+" | "-" | "*" | "/";
+type Op = '+' | '-' | '*' | '/';
 
 function compute(a: number, b: number, op: Op): number {
   switch (op) {
-    case "+":
+    case '+':
       return a + b;
-    case "-":
+    case '-':
       return a - b;
-    case "*":
+    case '*':
       return a * b;
-    case "/":
+    case '/':
       return b === 0 ? NaN : a / b;
   }
 }
@@ -124,7 +124,7 @@ function compute(a: number, b: number, op: Op): number {
 export function Calculator() {
   const [a, setA] = useState(48);
   const [b, setB] = useState(12);
-  const [op, setOp] = useState<Op>("+");
+  const [op, setOp] = useState<Op>('+');
   const result = compute(a, b, op);
 
   return (
@@ -163,9 +163,9 @@ export function Calculator() {
 ## Streaming behavior
 
 <Callout type="info">
-  This artifact renders after the payload parses, then takes over its
-  own state. The model seeds the initial values; the user drives
-  everything that follows. Subsequent tool calls can re-seed.
+  This artifact renders after the payload parses, then takes over its own state.
+  The model seeds the initial values; the user drives everything that follows.
+  Subsequent tool calls can re-seed.
 </Callout>
 
 ## Related

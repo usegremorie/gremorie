@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "title": "Artifacts",
+  "description": "AI generative outputs",
+  "icon": "Sparkles",
+  "pages": [
+    "index",
+    "---Dados e visualização---",
+    "chart-bar",
+    "data-table",
+    "---Documentos---",
+    "code-block",
+    "markdown-doc",
+    "---Interativo---",
+    "form-schema",
+    "calculator"
+  ]
+}

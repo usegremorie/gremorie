@@ -1,13 +1,13 @@
 ---
 title: Pagination
-description: "Bookmarkable page-by-page navigation. Semantic nav with previous, next, page links, and ellipsis."
+description: 'Bookmarkable page-by-page navigation. Semantic nav with previous, next, page links, and ellipsis.'
 ---
 
 import {
   PaginationPreview,
   PaginationSimpleRangePreview,
   PaginationWithEllipsisPreview,
-} from "@/components/preview/navigation/navigation";
+} from '@/components/preview/navigation/navigation';
 
 ## Overview
 
@@ -24,26 +24,12 @@ Reach for Pagination when **URLs must be shareable, stable order matters, and us
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-pagination
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-pagination
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-pagination
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-pagination
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-pagination ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-pagination ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-pagination ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-pagination ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -104,59 +90,59 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Renders a `<nav role="navigation" aria-label="pagination">` centered on the page axis.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"nav">` | - | Standard nav attributes. Label and role are set automatically. |
+| Prop       | Type                          | Default | Description                                                    |
+| ---------- | ----------------------------- | ------- | -------------------------------------------------------------- |
+| `...props` | `React.ComponentProps<"nav">` | -       | Standard nav attributes. Label and role are set automatically. |
 
 ### `<PaginationContent>`
 
 Renders a `<ul>` with `flex flex-row items-center gap-1`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"ul">` | - | Standard ul attributes. |
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"ul">` | -       | Standard ul attributes. |
 
 ### `<PaginationItem>`
 
 Renders a plain `<li>`. The list wrapping is essential for semantics; do not skip it.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"li">` | - | Standard li attributes. |
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"li">` | -       | Standard li attributes. |
 
 ### `<PaginationLink>`
 
 The clickable page link. Renders an `<a>` styled with `buttonVariants` from `@gremorie/rx-forms`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `isActive` | `boolean` | `false` | When `true`, sets `aria-current="page"` and switches the button variant to `outline`. Otherwise renders as `ghost`. |
-| `size` | `"default" \| "sm" \| "lg" \| "icon"` | `"icon"` | Forwarded to the underlying `buttonVariants`. Page numbers default to `"icon"` so they sit on a square grid. |
-| `...props` | `React.ComponentProps<"a">` | - | Standard anchor attributes, including `href`. |
+| Prop       | Type                                  | Default  | Description                                                                                                         |
+| ---------- | ------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `isActive` | `boolean`                             | `false`  | When `true`, sets `aria-current="page"` and switches the button variant to `outline`. Otherwise renders as `ghost`. |
+| `size`     | `"default" \| "sm" \| "lg" \| "icon"` | `"icon"` | Forwarded to the underlying `buttonVariants`. Page numbers default to `"icon"` so they sit on a square grid.        |
+| `...props` | `React.ComponentProps<"a">`           | -        | Standard anchor attributes, including `href`.                                                                       |
 
 ### `<PaginationPrevious>`
 
 Convenience wrapper around `<PaginationLink>` that renders a `ChevronLeft` plus a "Previous" label (the label is hidden below `sm` breakpoint to keep the control compact on mobile). Sets `aria-label="Go to previous page"` and `size="default"`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<typeof PaginationLink>` | - | Same shape as `PaginationLink`. Pass `href` and any other anchor attrs. |
+| Prop       | Type                                          | Default | Description                                                             |
+| ---------- | --------------------------------------------- | ------- | ----------------------------------------------------------------------- |
+| `...props` | `React.ComponentProps<typeof PaginationLink>` | -       | Same shape as `PaginationLink`. Pass `href` and any other anchor attrs. |
 
 ### `<PaginationNext>`
 
 Mirror of `PaginationPrevious`: "Next" label plus `ChevronRight`. Sets `aria-label="Go to next page"` and `size="default"`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<typeof PaginationLink>` | - | Same shape as `PaginationLink`. |
+| Prop       | Type                                          | Default | Description                     |
+| ---------- | --------------------------------------------- | ------- | ------------------------------- |
+| `...props` | `React.ComponentProps<typeof PaginationLink>` | -       | Same shape as `PaginationLink`. |
 
 ### `<PaginationEllipsis>`
 
 Renders a `<span aria-hidden>` square containing a `MoreHorizontal` icon and a visually hidden "More pages" label.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Standard span attributes. |
 
 ## Composition
 
@@ -187,7 +173,9 @@ The primitive does not own the page math. Callers compute which page numbers, el
       <PaginationLink href="?page=1">1</PaginationLink>
     </PaginationItem>
     <PaginationItem>
-      <PaginationLink href="?page=2" isActive>2</PaginationLink>
+      <PaginationLink href="?page=2" isActive>
+        2
+      </PaginationLink>
     </PaginationItem>
     <PaginationItem>
       <PaginationLink href="?page=3">3</PaginationLink>
@@ -223,7 +211,9 @@ Use when the total page count fits comfortably without truncation (under ten).
       <PaginationLink href="?page=4">4</PaginationLink>
     </PaginationItem>
     <PaginationItem>
-      <PaginationLink href="?page=5" isActive>5</PaginationLink>
+      <PaginationLink href="?page=5" isActive>
+        5
+      </PaginationLink>
     </PaginationItem>
     <PaginationItem>
       <PaginationLink href="?page=6">6</PaginationLink>
@@ -257,7 +247,9 @@ Use for long ranges. Keep first and last anchored, show a window around the curr
       />
     </PaginationItem>
     <PaginationItem>
-      <PaginationLink href="?page=1" isActive>1</PaginationLink>
+      <PaginationLink href="?page=1" isActive>
+        1
+      </PaginationLink>
     </PaginationItem>
     <PaginationItem>
       <PaginationLink href="?page=2">2</PaginationLink>

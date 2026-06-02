@@ -3,5 +3,12 @@
   "title": "Tokens",
   "description": "Design tokens: primitives, semantics, charts",
   "icon": "Palette",
-  "pages": ["index", "primitive", "semantic", "chart"]
+  "pages": [
+    "index",
+    "---Foundation---",
+    "primitive",
+    "---Applied---",
+    "semantic",
+    "chart"
+  ]
 }

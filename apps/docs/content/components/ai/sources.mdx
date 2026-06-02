@@ -3,7 +3,7 @@ title: Sources
 description: Collapsible "sources used" panel for RAG responses, with a trigger showing the count and a list of Source links.
 ---
 
-import { SourcesPreview } from "@/components/preview/ai/chatbot";
+import { SourcesPreview } from '@/components/preview/ai/chatbot';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use it under the assistant response (typically inside `MessageContent` after `Me
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-sources
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-sources
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-sources
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-sources
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-sources ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-sources ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-sources ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-sources ```</Tab>
 </Tabs>
 
 ## Usage
@@ -74,11 +58,10 @@ import {
 } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Sources, SourcesTrigger, SourcesContent, Source],
-  template: `
-    <sources>
+selector: "app-example",
+standalone: true,
+imports: [Sources, SourcesTrigger, SourcesContent, Source],
+template: `     <sources>
       <sources-trigger [count]="sources().length" />
       <sources-content>
         @for (s of sources(); track s.url) {
@@ -89,9 +72,10 @@ import {
   `,
 })
 export class ExampleComponent {
-  readonly sources = input<Array<{ url: string; title: string }>>([]);
+readonly sources = input<Array<{ url: string; title: string }>>([]);
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -148,7 +132,7 @@ The 90% case: book icon + title, opens externally.
     ))}
   </SourcesContent>
 </Sources>
-```
+````
 
 ### Custom source with favicon
 

@@ -2,7 +2,7 @@
 title: Avatar
 description: Retrato circular de pessoa ou entidade com fallback automático.
 component: Avatar
-importPath: "@kalvner/kds/display/avatar"
+importPath: '@kalvner/kds/display/avatar'
 status: stable
 ---
 
@@ -11,16 +11,16 @@ import {
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
-  AvatarImage
-} from "@kalvner/kds/display/avatar";
+  AvatarImage,
+} from '@kalvner/kds/display/avatar';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { User } from "lucide-react";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { User } from 'lucide-react';
 
 ## Overview
 
@@ -40,7 +40,9 @@ inteiro em vez de tentar separar primeiro/último nome.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Avatar com imagem carregada e fallback de iniciais pronto.</CardDescription>
+    <CardDescription>
+      Avatar com imagem carregada e fallback de iniciais pronto.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <Avatar size="lg">
@@ -69,14 +71,14 @@ A propagação do `data-size` permite que `AvatarBadge` e
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Avatar` | Container circular com `size` e `data-slot`. |
-| `AvatarImage` | `<img>` que renderiza só após load com sucesso. |
-| `AvatarFallback` | Renderiza enquanto carrega e quando há erro. Recebe iniciais ou ícone. |
-| `AvatarBadge` | Pequeno indicador (online, presence) sobreposto no canto. |
-| `AvatarGroup` | Wrapper que sobrepõe múltiplos Avatars com `ring`. |
-| `AvatarGroupCount` | "+N" rollup dentro de AvatarGroup. |
+| Componente         | Descrição                                                              |
+| ------------------ | ---------------------------------------------------------------------- |
+| `Avatar`           | Container circular com `size` e `data-slot`.                           |
+| `AvatarImage`      | `<img>` que renderiza só após load com sucesso.                        |
+| `AvatarFallback`   | Renderiza enquanto carrega e quando há erro. Recebe iniciais ou ícone. |
+| `AvatarBadge`      | Pequeno indicador (online, presence) sobreposto no canto.              |
+| `AvatarGroup`      | Wrapper que sobrepõe múltiplos Avatars com `ring`.                     |
+| `AvatarGroupCount` | "+N" rollup dentro de AvatarGroup.                                     |
 
 ## Usage
 
@@ -84,8 +86,8 @@ A propagação do `data-size` permite que `AvatarBadge` e
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage
-} from "@kalvner/kds/display/avatar";
+  AvatarImage,
+} from '@kalvner/kds/display/avatar';
 
 function getInitials(name: string) {
   const parts = name.trim().split(/\s+/);
@@ -93,7 +95,13 @@ function getInitials(name: string) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export function UserAvatar({ name, photoUrl }: { name: string; photoUrl?: string }) {
+export function UserAvatar({
+  name,
+  photoUrl,
+}: {
+  name: string;
+  photoUrl?: string;
+}) {
   return (
     <Avatar>
       {photoUrl ? <AvatarImage src={photoUrl} alt={name} /> : null}
@@ -107,10 +115,10 @@ export function UserAvatar({ name, photoUrl }: { name: string; photoUrl?: string
 
 ### Avatar
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `size` | `'sm' \| 'default' \| 'lg'` | `'default'` | Tamanho — 24px / 32px / 40px. Para XL, passe `size-12+` via className. |
-| `...rest` | `React.ComponentProps<typeof Root>` | — | Tudo que o root do Radix Avatar aceita. |
+| Prop      | Tipo                                | Default     | Descrição                                                              |
+| --------- | ----------------------------------- | ----------- | ---------------------------------------------------------------------- |
+| `size`    | `'sm' \| 'default' \| 'lg'`         | `'default'` | Tamanho — 24px / 32px / 40px. Para XL, passe `size-12+` via className. |
+| `...rest` | `React.ComponentProps<typeof Root>` | —           | Tudo que o root do Radix Avatar aceita.                                |
 
 ### AvatarImage
 
@@ -145,7 +153,9 @@ flash de iniciais antes da imagem carregar.
   <Card>
     <CardHeader>
       <CardTitle>Initials</CardTitle>
-      <CardDescription>Sem imagem — iniciais derivadas do nome.</CardDescription>
+      <CardDescription>
+        Sem imagem — iniciais derivadas do nome.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Avatar>
@@ -185,7 +195,9 @@ flash de iniciais antes da imagem carregar.
 <Card>
   <CardHeader>
     <CardTitle>Sizes</CardTitle>
-    <CardDescription>sm 24px · default 32px · lg 40px · custom xl via size-12.</CardDescription>
+    <CardDescription>
+      sm 24px · default 32px · lg 40px · custom xl via size-12.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="flex items-end gap-4">
@@ -211,7 +223,9 @@ flash de iniciais antes da imagem carregar.
   <Card>
     <CardHeader>
       <CardTitle>AvatarGroup</CardTitle>
-      <CardDescription>Sobreposição com +N rollup para grupos grandes.</CardDescription>
+      <CardDescription>
+        Sobreposição com +N rollup para grupos grandes.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <AvatarGroup>
@@ -231,7 +245,9 @@ flash de iniciais antes da imagem carregar.
   <Card>
     <CardHeader>
       <CardTitle>User row</CardTitle>
-      <CardDescription>Avatar + nome + cargo — padrão recorrente.</CardDescription>
+      <CardDescription>
+        Avatar + nome + cargo — padrão recorrente.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="flex items-center gap-3 rounded-md border bg-card p-3">
@@ -244,7 +260,9 @@ flash de iniciais antes da imagem carregar.
         </Avatar>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium leading-tight">Bruno Kalvner</p>
-          <p className="text-xs text-muted-foreground">Design System Engineer</p>
+          <p className="text-xs text-muted-foreground">
+            Design System Engineer
+          </p>
         </div>
       </div>
     </CardContent>
@@ -284,18 +302,18 @@ flash de iniciais antes da imagem carregar.
   ignoram o avatar — perda de contexto em listas de pessoas.
 - **Não use o avatar como botão de menu sem aria-label.** Em headers,
   o avatar costuma abrir um menu — wrap em `<button aria-label="Menu
-  da conta">` para que leitores de tela saibam o que vai acontecer.
+da conta">` para que leitores de tela saibam o que vai acontecer.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **alt** | Sempre presente no `AvatarImage`. Use o nome real da pessoa, não "Avatar". |
-| **Fallback semântico** | Quando o fallback é iniciais, leitores de tela leem as letras como acrônimo — geralmente OK. Para fallback de ícone, garanta que o entorno (texto ao lado) carrega o nome. |
-| **Roles** | Sem role específica. O `<img>` interno tem role `img` natural. |
+| Concern                       | Comportamento                                                                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **alt**                       | Sempre presente no `AvatarImage`. Use o nome real da pessoa, não "Avatar".                                                                                                            |
+| **Fallback semântico**        | Quando o fallback é iniciais, leitores de tela leem as letras como acrônimo — geralmente OK. Para fallback de ícone, garanta que o entorno (texto ao lado) carrega o nome.            |
+| **Roles**                     | Sem role específica. O `<img>` interno tem role `img` natural.                                                                                                                        |
 | **Decorativo vs informativo** | Em listas de pessoas, avatar é informativo — `alt` é obrigatório. Em compositions onde o nome aparece logo ao lado, considere `aria-hidden="true"` no Avatar para evitar redundância. |
-| **Touch target** | Sizes default (32px) e sm (24px) são pequenos para alvos clicáveis. Quando o Avatar é interativo, wrap em um `<button>` com padding mínimo de 44px (WCAG 2.5.5). |
-| **Status badge** | Quando combinar com `AvatarBadge` para indicar presença, comunique também via texto adjacent — daltonismo afeta a leitura de cor (verde vs cinza). |
+| **Touch target**              | Sizes default (32px) e sm (24px) são pequenos para alvos clicáveis. Quando o Avatar é interativo, wrap em um `<button>` com padding mínimo de 44px (WCAG 2.5.5).                      |
+| **Status badge**              | Quando combinar com `AvatarBadge` para indicar presença, comunique também via texto adjacent — daltonismo afeta a leitura de cor (verde vs cinza).                                    |
 
 ## Related
 

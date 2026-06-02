@@ -1,6 +1,6 @@
 ---
 title: Dialog, Drawer, Popover, Tooltip
-description: "Four overlays, four jobs: focused decisions, long flows, contextual content, brief hints. Pick by job, not by aesthetics."
+description: 'Four overlays, four jobs: focused decisions, long flows, contextual content, brief hints. Pick by job, not by aesthetics.'
 related: rx-dialog, rx-sheet, rx-popover, rx-tooltip, rx-hover-card
 tags: [components, overlays, modal, popover, tooltip]
 ---
@@ -11,13 +11,13 @@ Overlays differ by **stakes** and **scope**. Dialog interrupts for a decision. D
 
 ## The rule
 
-| Component | Job | Modal? | Focus trapped? | Triggered by |
-|-----------|-----|--------|----------------|--------------|
-| **Dialog** | Focused decision or short form. Blocks the underlying UI. | Yes | Yes | Click |
-| **Drawer / Sheet** | Longer flow, detail panel, multi-step form. Side-anchored. | Often yes | Yes | Click |
-| **Popover** | Contextual interactive content (date picker, color picker, mini-form). | No | No | Click |
-| **Tooltip** | Brief identifying label or hint, plain text. | No | No | Hover / focus |
-| **HoverCard** | Rich preview of a referenced entity (user card, link preview). | No | No | Hover / focus |
+| Component          | Job                                                                    | Modal?    | Focus trapped? | Triggered by  |
+| ------------------ | ---------------------------------------------------------------------- | --------- | -------------- | ------------- |
+| **Dialog**         | Focused decision or short form. Blocks the underlying UI.              | Yes       | Yes            | Click         |
+| **Drawer / Sheet** | Longer flow, detail panel, multi-step form. Side-anchored.             | Often yes | Yes            | Click         |
+| **Popover**        | Contextual interactive content (date picker, color picker, mini-form). | No        | No             | Click         |
+| **Tooltip**        | Brief identifying label or hint, plain text.                           | No        | No             | Hover / focus |
+| **HoverCard**      | Rich preview of a referenced entity (user card, link preview).         | No        | No             | Hover / focus |
 
 Decision steps:
 
@@ -44,7 +44,9 @@ Tooltips on touch devices have no hover state, so anything actionable inside the
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Invite a member</DialogTitle>
-      <DialogDescription>They will receive an email with a sign-in link.</DialogDescription>
+      <DialogDescription>
+        They will receive an email with a sign-in link.
+      </DialogDescription>
     </DialogHeader>
     <form>
       <Input name="email" placeholder="email@example.com" />

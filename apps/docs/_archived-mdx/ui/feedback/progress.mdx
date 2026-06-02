@@ -2,18 +2,18 @@
 title: Progress
 description: Indicador determinado de progresso (0–100) — uploads, multi-step, batch jobs.
 component: Progress
-importPath: "@kalvner/kds/feedback/progress"
+importPath: '@kalvner/kds/feedback/progress'
 status: stable
 ---
 
-import { Progress } from "@kalvner/kds/feedback/progress";
+import { Progress } from '@kalvner/kds/feedback/progress';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -54,7 +54,7 @@ confundem sobre o estado real ("É 60%? 70%?").
 ## Usage
 
 ```tsx
-import { Progress } from "@kalvner/kds/feedback/progress";
+import { Progress } from '@kalvner/kds/feedback/progress';
 
 export function Upload({ pct }: { pct: number }) {
   return <Progress value={pct} aria-label={`${pct} por cento`} />;
@@ -63,12 +63,12 @@ export function Upload({ pct }: { pct: number }) {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `number \| null` | `0` | 0..100. `null` reservado para indeterminado. |
-| `max` | `number` | `100` | Valor máximo. |
-| `aria-label` | `string` | — | **Obrigatório** se não houver label visível associado. |
-| `className` | `string` | — | Override no track (h, w, bg). |
+| Prop         | Tipo             | Default | Descrição                                              |
+| ------------ | ---------------- | ------- | ------------------------------------------------------ |
+| `value`      | `number \| null` | `0`     | 0..100. `null` reservado para indeterminado.           |
+| `max`        | `number`         | `100`   | Valor máximo.                                          |
+| `aria-label` | `string`         | —       | **Obrigatório** se não houver label visível associado. |
+| `className`  | `string`         | —       | Override no track (h, w, bg).                          |
 
 ## Subcomponents
 
@@ -175,12 +175,12 @@ Em multi-step forms, mostre `current/total` em vez de porcentagem:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix expõe `role="progressbar"` com `aria-valuenow`, `aria-valuemin=0`, `aria-valuemax=100`. |
-| **Label** | `aria-label` ou `aria-labelledby` é obrigatório. |
-| **Live region** | Para feedback de operação, embrulhe num `aria-live="polite"` no container. |
-| **Reduced motion** | A `transition-all` no indicator respeita `prefers-reduced-motion`. |
+| Concern            | Comportamento                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| **Roles**          | Radix expõe `role="progressbar"` com `aria-valuenow`, `aria-valuemin=0`, `aria-valuemax=100`. |
+| **Label**          | `aria-label` ou `aria-labelledby` é obrigatório.                                              |
+| **Live region**    | Para feedback de operação, embrulhe num `aria-live="polite"` no container.                    |
+| **Reduced motion** | A `transition-all` no indicator respeita `prefers-reduced-motion`.                            |
 
 ## Related
 

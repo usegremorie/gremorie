@@ -2,19 +2,19 @@
 title: Textarea
 description: Campo de texto multi-linha com auto-resize via field-sizing CSS.
 component: Textarea
-importPath: "@kalvner/kds/forms/textarea"
+importPath: '@kalvner/kds/forms/textarea'
 status: stable
 ---
 
-import { Textarea } from "@kalvner/kds/forms/textarea";
-import { Label } from "@kalvner/kds/forms/label";
+import { Textarea } from '@kalvner/kds/forms/textarea';
+import { Label } from '@kalvner/kds/forms/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -51,8 +51,8 @@ Textarea trata só texto plano.
 ## Usage
 
 ```tsx
-import { Textarea } from "@kalvner/kds/forms/textarea";
-import { Label } from "@kalvner/kds/forms/label";
+import { Textarea } from '@kalvner/kds/forms/textarea';
+import { Label } from '@kalvner/kds/forms/label';
 
 export function BioField() {
   return (
@@ -66,14 +66,14 @@ export function BioField() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `disabled` | `boolean` | `false` | Bloqueia interação. |
-| `readOnly` | `boolean` | `false` | Permite seleção/cópia mas bloqueia edição. |
-| `placeholder` | `string` | — | Hint dentro do campo. |
-| `rows` | `number` | — | Linhas iniciais. Compete com `min-h-16` — prefira não setar. |
-| `aria-invalid` | `boolean` | — | Aciona ring vermelho. |
-| `...rest` | `React.ComponentProps<'textarea'>` | — | Tudo de `<textarea>`. |
+| Prop           | Tipo                               | Default | Descrição                                                    |
+| -------------- | ---------------------------------- | ------- | ------------------------------------------------------------ |
+| `disabled`     | `boolean`                          | `false` | Bloqueia interação.                                          |
+| `readOnly`     | `boolean`                          | `false` | Permite seleção/cópia mas bloqueia edição.                   |
+| `placeholder`  | `string`                           | —       | Hint dentro do campo.                                        |
+| `rows`         | `number`                           | —       | Linhas iniciais. Compete com `min-h-16` — prefira não setar. |
+| `aria-invalid` | `boolean`                          | —       | Aciona ring vermelho.                                        |
+| `...rest`      | `React.ComponentProps<'textarea'>` | —       | Tudo de `<textarea>`.                                        |
 
 ## States
 
@@ -108,11 +108,15 @@ export function BioField() {
   <Card>
     <CardHeader>
       <CardTitle>Auto-resize</CardTitle>
-      <CardDescription>field-sizing: content cresce com o conteúdo.</CardDescription>
+      <CardDescription>
+        field-sizing: content cresce com o conteúdo.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Textarea
-        defaultValue={"Linha 1\nLinha 2\nLinha 3\nA cada linha o textarea expande."}
+        defaultValue={
+          'Linha 1\nLinha 2\nLinha 3\nA cada linha o textarea expande.'
+        }
       />
     </CardContent>
   </Card>
@@ -131,7 +135,9 @@ export function BioField() {
           aria-describedby="bio-err-msg"
           placeholder="Mínimo 20 caracteres"
         />
-        <span id="bio-err-msg" className="block text-sm text-destructive">Bio precisa ter pelo menos 20 caracteres.</span>
+        <span id="bio-err-msg" className="block text-sm text-destructive">
+          Bio precisa ter pelo menos 20 caracteres.
+        </span>
       </div>
     </CardContent>
   </Card>
@@ -160,15 +166,14 @@ export function BioField() {
 <Card>
   <CardHeader>
     <CardTitle>Comment box</CardTitle>
-    <CardDescription>Caixa de comentário com helper, contador e submit.</CardDescription>
+    <CardDescription>
+      Caixa de comentário com helper, contador e submit.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="grid gap-2">
       <Label htmlFor="comment-comp">Comentário</Label>
-      <Textarea
-        id="comment-comp"
-        placeholder="Escreva seu comentário"
-      />
+      <Textarea id="comment-comp" placeholder="Escreva seu comentário" />
       <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span>Markdown habilitado</span>
         <span>0 / 500</span>
@@ -209,13 +214,13 @@ export function BioField() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Label** | Sempre vincule via `htmlFor` + `id`. |
-| **Erro** | `aria-invalid` + `aria-describedby` apontando para a mensagem. |
-| **Contador como descrição** | Use `aria-describedby` apontando para o contador para que leitores de tela informem o limite. |
-| **Resize manual** | Por padrão, `<textarea>` permite resize via canto inferior direito. `field-sizing: content` desabilita esse comportamento — ok para a maioria. |
-| **Touch target** | Min-height 64px é confortável para mobile. |
+| Concern                     | Comportamento                                                                                                                                  |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Label**                   | Sempre vincule via `htmlFor` + `id`.                                                                                                           |
+| **Erro**                    | `aria-invalid` + `aria-describedby` apontando para a mensagem.                                                                                 |
+| **Contador como descrição** | Use `aria-describedby` apontando para o contador para que leitores de tela informem o limite.                                                  |
+| **Resize manual**           | Por padrão, `<textarea>` permite resize via canto inferior direito. `field-sizing: content` desabilita esse comportamento — ok para a maioria. |
+| **Touch target**            | Min-height 64px é confortável para mobile.                                                                                                     |
 
 ## Related
 

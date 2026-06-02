@@ -2,7 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-primitive-cn',
@@ -18,13 +22,25 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="Why" anchor="why">
           <docs-prose>
             <p>
-              When you build components with Tailwind, two problems show up constantly:
+              When you build components with Tailwind, two problems show up
+              constantly:
             </p>
             <ul class="ml-5 list-disc space-y-1">
-              <li>You want to conditionally include classes based on state (<code>disabled</code>, <code>active</code>, etc.) — <code>clsx</code> solves this.</li>
-              <li>You want consumers to override your base classes — <code>tailwind-merge</code> resolves <code>p-2 p-4</code> to <code>p-4</code>, instead of letting both win randomly.</li>
+              <li>
+                You want to conditionally include classes based on state
+                (<code>disabled</code>, <code>active</code>, etc.) —
+                <code>clsx</code> solves this.
+              </li>
+              <li>
+                You want consumers to override your base classes —
+                <code>tailwind-merge</code> resolves <code>p-2 p-4</code> to
+                <code>p-4</code>, instead of letting both win randomly.
+              </li>
             </ul>
-            <p><strong>cn()</strong> combines both in one call. Every Gremorie NG component uses it internally.</p>
+            <p>
+              <strong>cn()</strong> combines both in one call. Every Gremorie NG
+              component uses it internally.
+            </p>
           </docs-prose>
         </docs-section>
 
@@ -39,8 +55,9 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="Source" anchor="source">
           <docs-prose>
             <p>
-              The whole implementation — type signature plus body. Steal it directly into your own
-              code if you don't want the dependency. The peer deps (<code>clsx</code>,
+              The whole implementation — type signature plus body. Steal it
+              directly into your own code if you don't want the dependency. The
+              peer deps (<code>clsx</code>,
               <code>tailwind-merge</code>) are small and well-maintained.
             </p>
           </docs-prose>
@@ -50,9 +67,20 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="When NOT to use" anchor="when-not">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li><strong>Static class strings</strong> — if your classes never change, a plain string literal is faster and clearer.</li>
-              <li><strong>Non-Tailwind class names</strong> — <code>tailwind-merge</code> only understands Tailwind utilities. For BEM or other systems, use <code>clsx</code> directly.</li>
-              <li><strong>Inline styles</strong> — <code>cn()</code> is for the <code>class</code> attribute. For dynamic CSS variables, use <code>[style.--var]</code> bindings.</li>
+              <li>
+                <strong>Static class strings</strong> — if your classes never
+                change, a plain string literal is faster and clearer.
+              </li>
+              <li>
+                <strong>Non-Tailwind class names</strong> —
+                <code>tailwind-merge</code> only understands Tailwind utilities.
+                For BEM or other systems, use <code>clsx</code> directly.
+              </li>
+              <li>
+                <strong>Inline styles</strong> — <code>cn()</code> is for the
+                <code>class</code> attribute. For dynamic CSS variables, use
+                <code>[style.--var]</code> bindings.
+              </li>
             </ul>
           </docs-prose>
         </docs-section>

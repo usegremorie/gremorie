@@ -1,7 +1,4 @@
-import {
-  AttachmentData,
-  AttachmentMediaCategory,
-} from './attachment.types';
+import { AttachmentData, AttachmentMediaCategory } from './attachment.types';
 
 let idCounter = 0;
 function nextId(): string {

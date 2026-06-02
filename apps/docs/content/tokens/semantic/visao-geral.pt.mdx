@@ -1,0 +1,101 @@
+---
+title: Visão geral
+description: Tokens semânticos traduzem primitivos em intenção. É aqui que a KDS suporta múltiplos temas e modo escuro sem que componentes saibam disso.
+---
+
+Se primitivos são "que cores existem", os tokens **semânticos** são
+"o que essas cores significam". Em vez de pintar um botão como
+`bg-neutral-900`, você pinta como `bg-primary` — e o
+significado de "primary" muda quando o tema muda.
+
+## A intenção como interface
+
+Toda a chrome dos componentes Gremorie conversa com a
+camada semântica. Ela define um conjunto fixo de **intenções** —
+`background`, `foreground`, `primary`, `border`, `ring`, etc — que
+qualquer tema precisa preencher.
+
+| Intenção                    | O que representa                      |
+| --------------------------- | ------------------------------------- |
+| `background` / `foreground` | Superfície base e texto sobre ela     |
+| `card` / `popover`          | Variações de superfície com elevação  |
+| `primary`                   | A ação principal — botão protagonista |
+| `secondary`                 | Ação secundária, baixo contraste      |
+| `muted`                     | Texto e superfícies em segundo plano  |
+| `accent`                    | Hover, seleção, destaque sutil        |
+| `destructive`               | Ações irreversíveis, erro             |
+| `border` / `input` / `ring` | Forms e estado de foco                |
+| `sidebar-*`                 | Variantes para a chrome de navegação  |
+
+## Quatro temas, dois modos
+
+A KDS embarca **quatro temas** que cobrem direções estéticas
+distintas:
+
+<Cards>
+  <Card
+    title="Default (Neutral)"
+    description="Tema neutro padrão (baseColor neutral). Conservador, profissional, sem identidade de marca."
+  />
+  <Card
+    title="Amber Minimal"
+    description="Brand amber sobre neutros frios. Energia warm-tech, criativo, fitness."
+  />
+  <Card
+    title="Amethyst Haze"
+    description="Lavanda dessaturada sobre mauve. Editorial, contemplativo, AI-first."
+  />
+  <Card
+    title="Claude"
+    description="Stone, taupe, olive e amber. Pegada terrosa, próxima de papel, AI consumer."
+  />
+</Cards>
+
+Cada tema entrega **light e dark** independentemente. O switch é
+uma única troca de atributo:
+
+```html
+<html data-theme="amber-minimal">
+  <!-- light -->
+  <html data-theme="claude" class="dark">
+    <!-- dark -->
+  </html>
+</html>
+```
+
+Componentes não sabem qual tema está ativo. Eles pedem `bg-primary`,
+e o navegador resolve o `var(--primary)` no contexto certo.
+
+## Como os tokens são definidos
+
+Cada tema é um arquivo CSS em
+`packages/kds/src/styles/tokens/semantic/colors-<id>.css`. Os
+valores **referenciam primitivos** via `var(--color-<token>)`:
+
+```css
+[data-theme='amber-minimal'] {
+  --primary: var(--color-amber-500);
+  --foreground: var(--color-neutral-800);
+  --border: var(--color-gray-200);
+  /* ... */
+}
+```
+
+A consequência: se você ajustar o `--color-amber-500` na camada
+primitive, o tema Amber Minimal — e qualquer outro que referencie
+amber-500 — atualiza automaticamente. **Edite uma vez, cascateia.**
+
+## Para a tabela completa
+
+A página [Colors](/tokens/semantic/colors) tem o mapeamento
+intenção → primitivo (light e dark) para os quatro temas. Use-a
+para entender por que um botão fica âmbar em um tema e cinza em
+outro — e para auditar se o seu próprio tema customizado está
+preenchendo as intenções com primitivos consistentes.
+
+<Callout type="info">
+  **A regra crítica:** semânticos sempre referenciam primitivos via `var(...)`.
+  Nunca digite OKLCH ou hex direto num arquivo de tema. Se o primitivo certo não
+  existe, **adicione um primitivo primeiro** e depois referencie. Isso mantém a
+  cascata íntegra.
+</Callout>

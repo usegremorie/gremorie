@@ -20,4 +20,9 @@ export interface SeriesConfigEntry {
 /** Maps a data field name to its series config. JSON-serializable (generative-UI ready). */
 export type ChartConfig = Record<string, SeriesConfigEntry>;
 
-export const DEFAULT_MARGIN: Margin = { top: 8, right: 8, bottom: 24, left: 40 };
+export const DEFAULT_MARGIN: Margin = {
+  top: 8,
+  right: 8,
+  bottom: 24,
+  left: 40,
+};

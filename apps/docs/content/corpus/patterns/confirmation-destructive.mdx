@@ -1,6 +1,6 @@
 ---
 title: Confirmation for destructive actions
-description: "When to confirm, when to make recoverable, and how to phrase the dialog. Avoid asking twice for safe actions."
+description: 'When to confirm, when to make recoverable, and how to phrase the dialog. Avoid asking twice for safe actions.'
 related: rx-alert-dialog, rx-dialog, rx-toast, rx-button
 tags: [patterns, destructive, confirmation, undo]
 ---
@@ -35,9 +35,9 @@ Nielsen #5 (error prevention by design) prefers the system architecture that pre
 ```tsx
 function archiveItem(id) {
   performArchive(id);
-  toast("Item archived", {
+  toast('Item archived', {
     action: {
-      label: "Undo",
+      label: 'Undo',
       onClick: () => restoreItem(id),
     },
   });
@@ -57,7 +57,8 @@ The action happens immediately. The user has ~5 seconds to undo. No dialog, no i
     <AlertDialogHeader>
       <AlertDialogTitle>Delete &ldquo;Marketing site&rdquo;?</AlertDialogTitle>
       <AlertDialogDescription>
-        All data, members, and integrations tied to this project will be permanently removed. This cannot be undone.
+        All data, members, and integrations tied to this project will be
+        permanently removed. This cannot be undone.
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>

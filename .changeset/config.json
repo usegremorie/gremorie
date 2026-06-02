@@ -1,11 +1,36 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "kalvner/shadng" }],
+  "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [],
+  "fixed": [
+    [
+      "@gremorie/react",
+      "@gremorie/angular",
+      "@gremorie/rx-core",
+      "@gremorie/rx-ai",
+      "@gremorie/rx-artifacts",
+      "@gremorie/rx-display",
+      "@gremorie/rx-forms",
+      "@gremorie/rx-overlays",
+      "@gremorie/rx-feedback",
+      "@gremorie/rx-containers",
+      "@gremorie/rx-data",
+      "@gremorie/rx-navigation",
+      "@gremorie/ng-core",
+      "@gremorie/ng-ai",
+      "@gremorie/ng-display",
+      "@gremorie/ng-containers",
+      "@gremorie/ng-data",
+      "@gremorie/ng-feedback",
+      "@gremorie/cli"
+    ]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "develop",
   "updateInternalDependencies": "patch",
-  "ignore": ["docs", "docs-e2e", "playground"]
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  },
+  "ignore": ["docs", "docs-e2e"]
 }

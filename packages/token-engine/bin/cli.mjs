@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { resolve } from "node:path";
-import { serve } from "@hono/node-server";
-import open from "open";
-import { createApp } from "../dist/server/app.js";
-import { detectRegistryProject } from "../dist/project/detect.js";
+import { resolve } from 'node:path';
+import { serve } from '@hono/node-server';
+import open from 'open';
+import { createApp } from '../dist/server/app.js';
+import { detectRegistryProject } from '../dist/project/detect.js';
 
 const target = process.argv[2] ?? process.cwd();
 const projectRoot = resolve(target);
@@ -11,13 +11,13 @@ const project = detectRegistryProject(projectRoot);
 
 if (!project) {
   console.error(`x Not a registry-compatible project: ${projectRoot}`);
-  console.error("  Looking for components.json with tailwind.css path.");
+  console.error('  Looking for components.json with tailwind.css path.');
   process.exit(1);
 }
 
 const app = createApp({
   projectRoot: project.root,
-  globalsCss: project.globalsCss
+  globalsCss: project.globalsCss,
 });
 
 const PORT = 5024;
@@ -25,6 +25,8 @@ serve({ fetch: app.fetch, port: PORT }, (info) => {
   const url = `http://localhost:5023/`;
   console.log(`> Tokens - serving project: ${project.root}`);
   console.log(`> Engine API: http://localhost:${info.port}`);
-  console.log(`> Editor UI: ${url} (run \`pnpm dev:tokens\` in another terminal)`);
+  console.log(
+    `> Editor UI: ${url} (run \`pnpm dev:tokens\` in another terminal)`,
+  );
   open(url).catch(() => {});
 });

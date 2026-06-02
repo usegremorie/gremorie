@@ -5,9 +5,9 @@ description: Gradiente de uma única matiz para dados ordenados — heatmaps, ch
 
 import {
   ChartSchemeSwatchRow,
-  ChartSchemeTable
-} from "@/components/token-tables";
-import { SEQUENTIAL_SCHEME } from "@/lib/chart-tokens";
+  ChartSchemeTable,
+} from '@/components/token-tables';
+import { SEQUENTIAL_SCHEME } from '@/lib/chart-tokens';
 
 **Sequential** é o esquema de uma matiz só — cinco stops de blue,
 do `200` (mais claro) ao `900` (mais escuro). É color-blind safe
@@ -44,32 +44,30 @@ Em vez disso, use [Categorical](/tokens/chart/categorical).
 ## Anti-patterns
 
 <Callout type="warn">
-  Aplicar Sequential a uma escala bipolar com midpoint
-  significativo (variação acima/abaixo da média, sentiment) —
-  você apaga o pivô neutro e perde o ponto de referência. Use
-  [Divergent](/tokens/chart/divergent).
+  Aplicar Sequential a uma escala bipolar com midpoint significativo (variação
+  acima/abaixo da média, sentiment) — você apaga o pivô neutro e perde o ponto
+  de referência. Use [Divergent](/tokens/chart/divergent).
 </Callout>
 
 <Callout type="warn">
-  Usar mais de 5 stops num gráfico Sequential — a partir de 6, a
-  diferença de claridade entre stops adjacentes fica muito sutil
-  para leitura confiável. Se você precisa de mais granularidade,
-  considere uma escala contínua (e.g. `interpolate(blue-200,
-  blue-900)`) em vez de stops discretos.
+  Usar mais de 5 stops num gráfico Sequential — a partir de 6, a diferença de
+  claridade entre stops adjacentes fica muito sutil para leitura confiável. Se
+  você precisa de mais granularidade, considere uma escala contínua (e.g.
+  `interpolate(blue-200, blue-900)`) em vez de stops discretos.
 </Callout>
 
 ## Exemplo de consumo
 
 ```tsx
-import { Bar, BarChart } from "recharts";
+import { Bar, BarChart } from 'recharts';
 
 const data = [
-  { hora: "09h", uso: 12, level: "seq-1" },
-  { hora: "12h", uso: 87, level: "seq-4" },
-  { hora: "15h", uso: 134, level: "seq-5" },
+  { hora: '09h', uso: 12, level: 'seq-1' },
+  { hora: '12h', uso: 87, level: 'seq-4' },
+  { hora: '15h', uso: 134, level: 'seq-5' },
 ];
 
 <BarChart data={data}>
   <Bar dataKey="uso" fill={(entry) => `var(--color-chart-${entry.level})`} />
-</BarChart>
+</BarChart>;
 ```

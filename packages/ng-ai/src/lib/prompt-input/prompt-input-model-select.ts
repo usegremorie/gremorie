@@ -62,7 +62,16 @@ const optionVariants = cva(
       (click)="toggle()"
     >
       <span class="truncate">{{ selectedLabel() }}</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-3.5 shrink-0 opacity-60">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="size-3.5 shrink-0 opacity-60"
+      >
         <polyline points="6 9 12 15 18 9" />
       </svg>
     </button>
@@ -88,17 +97,30 @@ const optionVariants = cva(
               <span class="flex w-full items-center justify-between gap-2">
                 <span class="truncate font-medium">{{ option.label }}</span>
                 @if (option.badge) {
-                  <span class="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                  <span
+                    class="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground"
+                  >
                     {{ option.badge }}
                   </span>
                 }
               </span>
               @if (option.description) {
-                <span class="truncate text-xs text-muted-foreground">{{ option.description }}</span>
+                <span class="truncate text-xs text-muted-foreground">{{
+                  option.description
+                }}</span>
               }
             </span>
             @if (value() === option.id) {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 shrink-0 text-foreground">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="size-4 shrink-0 text-foreground"
+              >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             }

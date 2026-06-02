@@ -2,18 +2,21 @@
 title: ChainOfThought
 description: Steps numerados de pensamento — versão estruturada do Reasoning, com search results inline.
 component: ChainOfThought
-importPath: "@kalvner/kds/ai/chain-of-thought"
+importPath: '@kalvner/kds/ai/chain-of-thought'
 status: stable
 ---
 
-import { ChainOfThoughtPreview, ChainOfThoughtSearchPreview } from "@/components/ai-chatbot-demos";
+import {
+  ChainOfThoughtPreview,
+  ChainOfThoughtSearchPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -67,19 +70,19 @@ Aceita `ComponentProps<"div">`. Não há props além do `className`/`children`.
 
 ### ChainOfThoughtHeader
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
+| Prop    | Tipo     | Default       | Descrição                  |
+| ------- | -------- | ------------- | -------------------------- |
 | `title` | `string` | `'Reasoning'` | Título mostrado no header. |
 
 ### ChainOfThoughtStep
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `status` | `'complete' \| 'active' \| 'pending'` | `'pending'` | Define o ícone e a opacidade. |
-| `label` | `string` | — | Texto do step. |
-| `description` | `string` | — | Subtexto (opcional). |
-| `icon` | `ReactNode` | — | Override do ícone (default depende do status). |
-| `children` | `ReactNode` | — | Conteúdo expandido (ex.: SearchResults). |
+| Prop          | Tipo                                  | Default     | Descrição                                      |
+| ------------- | ------------------------------------- | ----------- | ---------------------------------------------- |
+| `status`      | `'complete' \| 'active' \| 'pending'` | `'pending'` | Define o ícone e a opacidade.                  |
+| `label`       | `string`                              | —           | Texto do step.                                 |
+| `description` | `string`                              | —           | Subtexto (opcional).                           |
+| `icon`        | `ReactNode`                           | —           | Override do ícone (default depende do status). |
+| `children`    | `ReactNode`                           | —           | Conteúdo expandido (ex.: SearchResults).       |
 
 ### ChainOfThoughtSearchResults
 
@@ -104,11 +107,11 @@ adicione `onClick` ou wrapping `<a>` pra navegação.
 
 ## States
 
-| Step status | Visual |
-|---|---|
-| `complete` | CheckIcon verde, opacidade total. |
-| `active` | Dot pulsante, opacidade total. |
-| `pending` | Dot vazio, opacidade reduzida. |
+| Step status | Visual                            |
+| ----------- | --------------------------------- |
+| `complete`  | CheckIcon verde, opacidade total. |
+| `active`    | Dot pulsante, opacidade total.    |
+| `pending`   | Dot vazio, opacidade reduzida.    |
 
 ## Composition
 
@@ -147,11 +150,11 @@ da resposta):
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Steps** | Lista semântica pode ser explicitada via `role="list"` no Content. |
-| **Status icons** | Acompanhados de texto; cor não é canal único. |
-| **Search results** | Chips clicáveis precisam ser `<a>` com `href` pra acessibilidade. |
+| Concern            | Comportamento                                                      |
+| ------------------ | ------------------------------------------------------------------ |
+| **Steps**          | Lista semântica pode ser explicitada via `role="list"` no Content. |
+| **Status icons**   | Acompanhados de texto; cor não é canal único.                      |
+| **Search results** | Chips clicáveis precisam ser `<a>` com `href` pra acessibilidade.  |
 
 ## Related
 

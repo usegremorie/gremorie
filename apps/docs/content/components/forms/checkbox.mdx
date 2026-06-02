@@ -3,7 +3,7 @@ title: Checkbox
 description: Binary or tri-state selection control built on Radix Checkbox, with indeterminate support and form-payload semantics.
 ---
 
-import { CheckboxPreview } from "@/components/preview/forms/forms";
+import { CheckboxPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use Checkbox when the value is part of a form submission (terms acceptance, mult
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-checkbox
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-checkbox
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-checkbox
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-checkbox
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-checkbox ```</Tab>
 </Tabs>
 
 ## Usage
@@ -70,16 +54,16 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Checkbox>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `checked` | `boolean \| "indeterminate"` | - | Controlled checked state. Pass `"indeterminate"` for the dash indicator. |
-| `defaultChecked` | `boolean \| "indeterminate"` | - | Uncontrolled initial state. |
-| `onCheckedChange` | `(checked: boolean \| "indeterminate") => void` | - | Fires when the user toggles the checkbox. |
-| `disabled` | `boolean` | `false` | Disables interaction. |
-| `required` | `boolean` | `false` | Mark as required for form submission. |
-| `name` | `string` | - | Form field name. |
-| `value` | `string` | `"on"` | Form field value when checked. |
-| `aria-invalid` | `boolean` | - | Switches border / ring to destructive token. |
+| Prop              | Type                                            | Default | Description                                                              |
+| ----------------- | ----------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| `checked`         | `boolean \| "indeterminate"`                    | -       | Controlled checked state. Pass `"indeterminate"` for the dash indicator. |
+| `defaultChecked`  | `boolean \| "indeterminate"`                    | -       | Uncontrolled initial state.                                              |
+| `onCheckedChange` | `(checked: boolean \| "indeterminate") => void` | -       | Fires when the user toggles the checkbox.                                |
+| `disabled`        | `boolean`                                       | `false` | Disables interaction.                                                    |
+| `required`        | `boolean`                                       | `false` | Mark as required for form submission.                                    |
+| `name`            | `string`                                        | -       | Form field name.                                                         |
+| `value`           | `string`                                        | `"on"`  | Form field value when checked.                                           |
+| `aria-invalid`    | `boolean`                                       | -       | Switches border / ring to destructive token.                             |
 
 Forwards all props to `CheckboxPrimitive.Root` and renders a `CheckboxPrimitive.Indicator` with a `CheckIcon` inside. The `data-state` attribute (`unchecked`, `checked`, `indeterminate`) drives the visual surface.
 
@@ -99,7 +83,10 @@ The canonical form pattern. Checkbox + Label side by side.
 <div className="flex items-center gap-2">
   <Checkbox id="terms" />
   <Label htmlFor="terms">
-    I accept the <a href="/terms" className="underline">terms</a>
+    I accept the{' '}
+    <a href="/terms" className="underline">
+      terms
+    </a>
   </Label>
 </div>
 ```
@@ -128,7 +115,7 @@ function SelectAll({ items, selected, onChange }) {
     <div className="flex items-center gap-2">
       <Checkbox
         id="select-all"
-        checked={allSelected ? true : someSelected ? "indeterminate" : false}
+        checked={allSelected ? true : someSelected ? 'indeterminate' : false}
         onCheckedChange={(value) => {
           onChange(value === true ? items.map((i) => i.id) : []);
         }}

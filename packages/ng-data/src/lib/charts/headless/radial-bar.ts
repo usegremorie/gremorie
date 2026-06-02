@@ -42,9 +42,13 @@ export class RadialBar {
 
   readonly valueKey = input.required<string>({ alias: 'radialBar' });
 
-  private readonly layout = computed(() => polarLayout(this.ctx.width(), this.ctx.height(), 8));
+  private readonly layout = computed(() =>
+    polarLayout(this.ctx.width(), this.ctx.height(), 8),
+  );
 
-  readonly transform = computed(() => `translate(${this.layout().cx},${this.layout().cy})`);
+  readonly transform = computed(
+    () => `translate(${this.layout().cx},${this.layout().cy})`,
+  );
 
   readonly arcs = computed<RadialArc[]>(() => {
     const data = this.ctx.data();

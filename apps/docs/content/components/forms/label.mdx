@@ -3,7 +3,7 @@ title: Label
 description: Accessible label primitive built on Radix Label - associates with any control via `htmlFor`, propagates disabled state via peer selectors.
 ---
 
-import { LabelPreview } from "@/components/preview/forms/forms";
+import { LabelPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use it for every form control that doesn't already carry an embedded label - inp
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-label
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-label
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-label
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-label
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-label ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-label ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-label ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-label ```</Tab>
 </Tabs>
 
 ## Usage
@@ -70,9 +54,9 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Label>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `htmlFor` | `string` | - | The `id` of the associated control. Required for click-to-focus and screen reader association. |
+| Prop      | Type     | Default | Description                                                                                    |
+| --------- | -------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `htmlFor` | `string` | -       | The `id` of the associated control. Required for click-to-focus and screen reader association. |
 
 Extends all props of `@radix-ui/react-label`'s `Root` (which itself extends `<label>` attributes). Renders with `data-slot="label"`.
 

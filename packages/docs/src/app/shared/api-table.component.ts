@@ -33,12 +33,24 @@ export interface ApiRow {
         <tbody>
           @for (row of rows(); track row.name; let last = $last) {
             <tr [class.border-b]="!last" class="border-border align-top">
-              <td class="px-3 py-2 font-mono text-[12.5px] text-foreground">{{ row.name }}</td>
-              <td class="px-3 py-2 font-mono text-[12.5px] text-muted-foreground">{{ row.type }}</td>
+              <td class="px-3 py-2 font-mono text-[12.5px] text-foreground">
+                {{ row.name }}
+              </td>
+              <td
+                class="px-3 py-2 font-mono text-[12.5px] text-muted-foreground"
+              >
+                {{ row.type }}
+              </td>
               @if (showDefault()) {
-                <td class="px-3 py-2 font-mono text-[12.5px] text-muted-foreground">{{ row.default || '—' }}</td>
+                <td
+                  class="px-3 py-2 font-mono text-[12.5px] text-muted-foreground"
+                >
+                  {{ row.default || '—' }}
+                </td>
               }
-              <td class="px-3 py-2 text-[13px] text-foreground/90">{{ row.description }}</td>
+              <td class="px-3 py-2 text-[13px] text-foreground/90">
+                {{ row.description }}
+              </td>
             </tr>
           }
         </tbody>

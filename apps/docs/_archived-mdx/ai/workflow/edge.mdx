@@ -2,18 +2,21 @@
 title: Edge
 description: Conectores entre nodes — variantes Animated (com partícula) e Temporary (tracejada).
 component: Edge
-importPath: "@kalvner/kds/ai/edge"
+importPath: '@kalvner/kds/ai/edge'
 status: stable
 ---
 
-import { EdgeAnimatedPreview, EdgeTemporaryPreview } from "@/components/ai-workflow-demos";
+import {
+  EdgeAnimatedPreview,
+  EdgeTemporaryPreview,
+} from '@/components/ai-workflow-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -27,7 +30,9 @@ objeto `{ Animated, Temporary }` com renderers específicos.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Edge animada com partícula percorrendo o caminho.</CardDescription>
+    <CardDescription>
+      Edge animada com partícula percorrendo o caminho.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <EdgeAnimatedPreview />
@@ -37,22 +42,22 @@ objeto `{ Animated, Temporary }` com renderers específicos.
 ## Usage
 
 ```tsx
-import { Canvas } from "@kalvner/kds/ai/canvas";
-import { Edge } from "@kalvner/kds/ai/edge";
+import { Canvas } from '@kalvner/kds/ai/canvas';
+import { Edge } from '@kalvner/kds/ai/edge';
 
 const edgeTypes = {
   animated: Edge.Animated,
-  temporary: Edge.Temporary
+  temporary: Edge.Temporary,
 };
 
 <Canvas
   nodes={nodes}
   edges={[
-    { id: "e1", source: "1", target: "2", type: "animated" },
-    { id: "e2", source: "2", target: "3", type: "temporary" }
+    { id: 'e1', source: '1', target: '2', type: 'animated' },
+    { id: 'e2', source: '2', target: '3', type: 'temporary' },
   ]}
   edgeTypes={edgeTypes}
-/>
+/>;
 ```
 
 ## Anatomy
@@ -92,15 +97,15 @@ Edge variants seguem a interface
 [`EdgeProps`](https://reactflow.dev/api-reference/types/edge-props)
 do ReactFlow:
 
-| Prop | Tipo | Descrição |
-|---|---|---|
-| `id` | `string` | ID único. |
-| `source` / `target` | `string` | Node IDs. |
-| `sourceX` / `sourceY` | `number` | Coords (auto pelo ReactFlow). |
-| `targetX` / `targetY` | `number` | Coords (auto). |
-| `sourcePosition` / `targetPosition` | `Position` | Lados (Left, Right, Top, Bottom). |
-| `style` | `CSSProperties` | Override. |
-| `markerEnd` | `string` | Setinha no final. |
+| Prop                                | Tipo            | Descrição                         |
+| ----------------------------------- | --------------- | --------------------------------- |
+| `id`                                | `string`        | ID único.                         |
+| `source` / `target`                 | `string`        | Node IDs.                         |
+| `sourceX` / `sourceY`               | `number`        | Coords (auto pelo ReactFlow).     |
+| `targetX` / `targetY`               | `number`        | Coords (auto).                    |
+| `sourcePosition` / `targetPosition` | `Position`      | Lados (Left, Right, Top, Bottom). |
+| `style`                             | `CSSProperties` | Override.                         |
+| `markerEnd`                         | `string`        | Setinha no final.                 |
 
 Você não passa essas props diretamente — passa via array `edges` ao
 Canvas, e o ReactFlow as injeta no renderer.
@@ -131,8 +136,9 @@ Não há subcomponentes — são funções de renderização puras.
 
 ```tsx
 const edgeTypes = useMemo(
-  () => prefersReducedMotion ? { default: BaseEdge } : { animated: Edge.Animated },
-  [prefersReducedMotion]
+  () =>
+    prefersReducedMotion ? { default: BaseEdge } : { animated: Edge.Animated },
+  [prefersReducedMotion],
 );
 ```
 
@@ -143,10 +149,10 @@ const edgeTypes = useMemo(
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
+| Concern            | Comportamento                                                                            |
+| ------------------ | ---------------------------------------------------------------------------------------- |
 | **Reduced motion** | SMIL não respeita `prefers-reduced-motion` automaticamente — implementar lógica externa. |
-| **Color** | Stroke usa `var(--ring)` — adapta ao tema. |
+| **Color**          | Stroke usa `var(--ring)` — adapta ao tema.                                               |
 
 ## Related
 

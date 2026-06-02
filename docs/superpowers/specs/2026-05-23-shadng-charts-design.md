@@ -18,6 +18,7 @@ O Gremorie (DS AI-native, edições Angular e React) precisa de componentes de *
 Unovis entra **depois e opcional** (`@gremorie/ng-charts-advanced`) só para viz exótica (sankey, network, mapas) e datasets de N alto (canvas).
 
 ### Por que não as alternativas
+
 - **ngx-charts (Swimlane):** em `24.x` suporta Angular 18/19, **não Angular 21**; histórico de atraso a cada versão. Acoplaria a compatibilidade da lib pública ao release deles. Theming SCSS próprio, atrito com tokens Tailwind. Não é "own the code".
 - **Unovis (F5):** ótimo motor (CSS vars, tree-shakable, breadth enorme), mas é runtime dependency e API própria — vira "wrapper estilizado", não componente que o usuário possui. Reservado para o pacote `-advanced`.
 - **Chart.js/ng2-charts, ECharts, ApexCharts:** canvas-based — theming por CSS var difícil, SSR ruim, não-composáveis. Contra a filosofia Gremorie de own-the-code via SVG componível.
@@ -63,6 +64,7 @@ presets           AreaChart, BarChart, LineChart, PieChart, RadarChart, RadialCh
 ```
 
 ### Conjunto de charts da Fase 1
+
 Area, Line, Bar (stacked/grouped), Pie/Donut, Radar, RadialBar, **Scatter/Bubble**. (Paridade com o set canônico de charts da referência + Scatter.)
 
 ## Composição (API)
@@ -90,10 +92,10 @@ dono do código, não fica marcado como "shadng"):
 Forma de dados igual ao Recharts: **array de records**.
 
 ```ts
-data   = signal([{ month: 'Jan', sales: 100, profit: 40 }, /* ... */]);
+data = signal([{ month: 'Jan', sales: 100, profit: 40 } /* ... */]);
 config = signal({
-  sales:  { label: 'Vendas', color: 'var(--chart-1)', format: 'currency:BRL' },
-  profit: { label: 'Lucro',  color: 'var(--chart-2)', format: 'currency:BRL' },
+  sales: { label: 'Vendas', color: 'var(--chart-1)', format: 'currency:BRL' },
+  profit: { label: 'Lucro', color: 'var(--chart-2)', format: 'currency:BRL' },
 });
 ```
 

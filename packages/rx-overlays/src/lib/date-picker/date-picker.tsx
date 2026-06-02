@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
 
-import { cn } from "@gremorie/rx-core";
-import { Button, Calendar } from "@gremorie/rx-forms";
+import { cn } from '@gremorie/rx-core';
+import { Button, Calendar } from '@gremorie/rx-forms';
 
-import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 
 /**
  * DatePicker - composite of Popover + Calendar with Gremorie defaults.
@@ -30,9 +30,9 @@ type DatePickerProps = {
 function DatePicker({
   value,
   onValueChange,
-  placeholder = "Selecione uma data",
+  placeholder = 'Selecione uma data',
   disabled,
-  className
+  className,
 }: DatePickerProps) {
   return (
     <Popover>
@@ -41,14 +41,14 @@ function DatePicker({
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
-            !value && "text-muted-foreground",
-            className
+            'w-[240px] justify-start text-left font-normal',
+            !value && 'text-muted-foreground',
+            className,
           )}
           data-slot="date-picker-trigger"
         >
           <CalendarIcon className="mr-2 size-4" />
-          {value ? format(value, "PP") : <span>{placeholder}</span>}
+          {value ? format(value, 'PP') : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

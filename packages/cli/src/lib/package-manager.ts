@@ -7,7 +7,9 @@ export type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun';
  * Detect the package manager used by the consumer's project, in order:
  * pnpm-lock.yaml > yarn.lock > bun.lockb > package-lock.json > fallback npm.
  */
-export function detectPackageManager(cwd: string = process.cwd()): PackageManager {
+export function detectPackageManager(
+  cwd: string = process.cwd(),
+): PackageManager {
   if (existsSync(join(cwd, 'pnpm-lock.yaml'))) return 'pnpm';
   if (existsSync(join(cwd, 'yarn.lock'))) return 'yarn';
   if (existsSync(join(cwd, 'bun.lockb'))) return 'bun';

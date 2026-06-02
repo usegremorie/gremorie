@@ -4,20 +4,20 @@ description: Quando usar Checkbox, RadioGroup, Switch, Toggle, ToggleGroup ou Se
 status: stable
 ---
 
-import { Checkbox } from "@kalvner/kds/forms/checkbox";
-import { RadioGroup, RadioGroupItem } from "@kalvner/kds/forms/radio-group";
-import { Switch } from "@kalvner/kds/forms/switch";
-import { Toggle } from "@kalvner/kds/forms/toggle";
-import { ToggleGroup, ToggleGroupItem } from "@kalvner/kds/forms/toggle-group";
-import { Label } from "@kalvner/kds/forms/label";
-import { Bold, Italic, Underline } from "lucide-react";
+import { Checkbox } from '@kalvner/kds/forms/checkbox';
+import { RadioGroup, RadioGroupItem } from '@kalvner/kds/forms/radio-group';
+import { Switch } from '@kalvner/kds/forms/switch';
+import { Toggle } from '@kalvner/kds/forms/toggle';
+import { ToggleGroup, ToggleGroupItem } from '@kalvner/kds/forms/toggle-group';
+import { Label } from '@kalvner/kds/forms/label';
+import { Bold, Italic, Underline } from 'lucide-react';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Por que existe esse guia
 
@@ -65,14 +65,14 @@ A interação tem efeito imediato (sem botão Salvar)?
 
 ## Tabela comparativa
 
-| Componente   | Estado captura | Quantidade | Efeito       | Form-bound? | Visual                |
-|--------------|----------------|------------|--------------|-------------|------------------------|
-| Checkbox     | boolean        | 0…n        | No submit    | Sim         | Quadrado + check       |
-| RadioGroup   | string (1)     | 1 de N     | No submit    | Sim         | Círculo + dot          |
-| Switch       | boolean        | 1          | Imediato     | Não (config)| Trilho + thumb         |
-| Toggle       | boolean        | 1          | Imediato     | Não         | Botão (aria-pressed)   |
-| ToggleGroup  | string \| string[] | 1 ou n de N | Imediato | Não         | Conjunto de botões     |
-| Select       | string (1)     | 1 de N     | No submit    | Sim         | Dropdown               |
+| Componente  | Estado captura     | Quantidade  | Efeito    | Form-bound?  | Visual               |
+| ----------- | ------------------ | ----------- | --------- | ------------ | -------------------- |
+| Checkbox    | boolean            | 0…n         | No submit | Sim          | Quadrado + check     |
+| RadioGroup  | string (1)         | 1 de N      | No submit | Sim          | Círculo + dot        |
+| Switch      | boolean            | 1           | Imediato  | Não (config) | Trilho + thumb       |
+| Toggle      | boolean            | 1           | Imediato  | Não          | Botão (aria-pressed) |
+| ToggleGroup | string \| string[] | 1 ou n de N | Imediato  | Não          | Conjunto de botões   |
+| Select      | string (1)         | 1 de N      | No submit | Sim          | Dropdown             |
 
 ## Os componentes lado a lado
 
@@ -116,7 +116,9 @@ poucas (até cinco), e ver todas as opções juntas ajuda a comparar.
 <Card>
   <CardHeader>
     <CardTitle>Plano</CardTitle>
-    <CardDescription>Uma escolha exclusiva entre opções comparáveis.</CardDescription>
+    <CardDescription>
+      Uma escolha exclusiva entre opções comparáveis.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <RadioGroup defaultValue="month" className="flex flex-col gap-3">
@@ -177,7 +179,9 @@ filtro ativável. Não é configuração — é estado de UI agora.
 <Card>
   <CardHeader>
     <CardTitle>Formatação</CardTitle>
-    <CardDescription>Botão que indica estado ativo via aria-pressed.</CardDescription>
+    <CardDescription>
+      Botão que indica estado ativo via aria-pressed.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <Toggle aria-label="Negrito">
@@ -233,7 +237,7 @@ honestos — não assumem default e forçam o usuário a escolher
 ativamente. Sara Soueidan e NN/g convergem nesse ponto:
 
 > ❌ `[ ]` Está grávida?
-> ✅ `( )` Sim   `( )` Não   `( )` Prefiro não dizer
+> ✅ `( )` Sim `( )` Não `( )` Prefiro não dizer
 
 Regra: se o item NÃO marcado pode ser interpretado de duas formas
 ("não marquei porque é não" vs. "não marquei porque ainda não

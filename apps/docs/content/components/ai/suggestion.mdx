@@ -3,7 +3,7 @@ title: Suggestion
 description: Horizontal scrollable row of prompt suggestion pills - the canonical "quick replies" pattern for chat.
 ---
 
-import { SuggestionPreview } from "@/components/preview/ai/chatbot";
+import { SuggestionPreview } from '@/components/preview/ai/chatbot';
 
 ## Overview
 
@@ -20,26 +20,12 @@ Use them in the empty state of `Conversation`, after a clarifying question from 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-suggestion
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-suggestion
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-suggestion
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-suggestion
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-suggestion ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-suggestion ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-suggestion ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-suggestion ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -66,25 +52,25 @@ import { Component } from "@angular/core";
 import { Suggestion, Suggestions } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Suggestions, Suggestion],
-  template: `
-    <suggestions>
+selector: "app-example",
+standalone: true,
+imports: [Suggestions, Suggestion],
+template: `     <suggestions>
       @for (s of items; track s) {
-        <suggestion [value]="s" (select)="onSelect($event)">{{ s }}</suggestion>
+        <suggestion [value]="s" (selected)="onSelect($event)">{{ s }}</suggestion>
       }
     </suggestions>
   `,
 })
 export class ExampleComponent {
-  readonly items = ["Tell me a joke", "Summarize this", "Translate to French"];
+readonly items = ["Tell me a joke", "Summarize this", "Translate to French"];
 
-  onSelect(value: string): void {
-    console.log("picked", value);
-  }
+onSelect(value: string): void {
+console.log("picked", value);
 }
-```
+}
+
+````
 </Tab>
 </Tabs>
 
@@ -125,17 +111,14 @@ The canonical pattern: a horizontal strip of prompts above the prompt input.
     <Suggestion key={s} suggestion={s} onClick={sendPrompt} />
   ))}
 </Suggestions>
-```
+````
 
 ### Empty-state hero
 
 Drop suggestions inside `ConversationEmptyState` to invite the first prompt.
 
 ```tsx
-<ConversationEmptyState
-  title="Ask anything"
-  description="Or try one of these:"
->
+<ConversationEmptyState title="Ask anything" description="Or try one of these:">
   <Suggestions>
     <Suggestion suggestion="What's on my calendar today?" onClick={send} />
     <Suggestion suggestion="Summarize yesterday's standup" onClick={send} />
@@ -168,7 +151,7 @@ Disable the row while the assistant is still responding.
       key={s}
       suggestion={s}
       onClick={send}
-      disabled={status === "streaming"}
+      disabled={status === 'streaming'}
     />
   ))}
 </Suggestions>
