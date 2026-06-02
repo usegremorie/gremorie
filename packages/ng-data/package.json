@@ -28,5 +28,9 @@
     "vite": "^7.0.0",
     "@nx/vite": "^22.7.2"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
 }

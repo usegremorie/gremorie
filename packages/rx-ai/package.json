@@ -39,10 +39,7 @@
     "@gremorie/rx-forms": ">=0.0.1",
     "@gremorie/rx-overlays": ">=0.0.1",
     "@gremorie/rx-artifacts": ">=0.0.1",
-    "react": "^18 || ^19",
-    "@storybook/react-vite": "^9.1.20",
-    "@tailwindcss/vite": "^4.3.0",
-    "@storybook/react": "9.1.20"
+    "react": "^18 || ^19"
   },
   "dependencies": {
     "@radix-ui/react-use-controllable-state": "^1.2.2",
@@ -55,5 +52,9 @@
     "tslib": "^2.3.0",
     "use-stick-to-bottom": "^1.1.4"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
 }
