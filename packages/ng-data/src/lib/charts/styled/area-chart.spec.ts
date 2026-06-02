@@ -23,14 +23,7 @@ async function render() {
   return fixture;
 }
 
-// TODO(ng-data/charts): re-enable once the styled chart's headless child
-// directives (Area/CartesianGrid/XAxis/YAxis) are fully AOT-compiled under the
-// @analogjs/vite-plugin-angular transform. They currently report "not in the
-// TypeScript program", so their input wiring is incomplete and the parent's
-// required `config` input reads as unset at first render (NG0950). The headless
-// math is covered by the unit specs in ../headless/*; this is a component-render
-// harness gap, not a component bug.
-describe.skip('AreaChart', () => {
+describe('AreaChart', () => {
   it('renders one area path per configured series', async () => {
     const fixture = await render();
     const paths = fixture.nativeElement.querySelectorAll(
@@ -44,7 +37,6 @@ describe.skip('AreaChart', () => {
     const figure = fixture.nativeElement.querySelector('[role="img"]');
     expect(figure).toBeTruthy();
     expect(figure.getAttribute('aria-label')).toContain('Sales');
-
     const rows = fixture.nativeElement.querySelectorAll('table tbody tr');
     expect(rows.length).toBe(DATA.length);
   });
