@@ -9,4 +9,5 @@
 # Generated files (Next regenerates these; not ours to format)
 **/next-env.d.ts
 apps/docs/public/r/**
+apps/docs/public/schema/**
 **/.next/**

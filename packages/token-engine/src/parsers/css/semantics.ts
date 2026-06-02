@@ -25,7 +25,9 @@ function classifySelector(selector: string): SelectorTheme | null {
   if (trimmed === '.dark' || trimmed === ':root.dark')
     return { theme: 'default', mode: 'dark' };
 
-  const dataMatch = /\[data-theme="([^"]+)"\](\.dark)?/.exec(trimmed);
+  // Accept both quote styles — CSS authors (and formatters like Prettier)
+  // may emit either `[data-theme="x"]` or `[data-theme='x']`.
+  const dataMatch = /\[data-theme=["']([^"']+)["']\](\.dark)?/.exec(trimmed);
   if (dataMatch) {
     return { theme: dataMatch[1]!, mode: dataMatch[2] ? 'dark' : 'light' };
   }
