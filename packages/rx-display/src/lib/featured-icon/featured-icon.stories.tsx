@@ -25,7 +25,7 @@ import { FeaturedIcon } from './featured-icon';
  * | Prop | Type | Default | Description |
  * | --- | --- | --- | --- |
  * | `icon` | `LucideIcon` | — | Glyph to render (or pass `children`). |
- * | `color` | `"brand" \| "gray" \| "success" \| "error"` | `"brand"` | Semantic color. |
+ * | `color` | `"primary" \| "gray" \| "success" \| "error"` | `"primary"` | Semantic color. |
  * | `theme` | `"light" \| "solid" \| "outline"` | `"light"` | Fill style. |
  * | `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` | 32 / 40 / 48 / 56 px. |
  * | `shape` | `"square" \| "circle"` | `"square"` | Container shape. |
@@ -34,7 +34,7 @@ import { FeaturedIcon } from './featured-icon';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--brand` / `--brand-foreground` | `color="brand"` fill + icon |
+ * | `--primary` / `--primary-foreground` | `color="primary"` fill + icon |
  * | `--success` / `--success-foreground` | `color="success"` |
  * | `--destructive` / `--destructive-foreground` | `color="error"` |
  * | `--muted` / `--secondary` / `--muted-foreground` | `color="gray"` |
@@ -47,7 +47,7 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     icon: Sparkles,
-    color: 'brand',
+    color: 'primary',
     theme: 'light',
     size: 'md',
     shape: 'square',
@@ -55,7 +55,7 @@ const meta = {
   argTypes: {
     color: {
       control: 'inline-radio',
-      options: ['brand', 'gray', 'success', 'error'],
+      options: ['primary', 'gray', 'success', 'error'],
     },
     theme: { control: 'inline-radio', options: ['light', 'solid', 'outline'] },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
@@ -69,7 +69,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-const COLORS = ['brand', 'gray', 'success', 'error'] as const;
+const COLORS = ['primary', 'gray', 'success', 'error'] as const;
 const THEMES = ['light', 'solid', 'outline'] as const;
 
 /** Every color × theme combination. */
@@ -122,7 +122,7 @@ export const Semantic: Story = {
     <div className="flex items-center gap-4">
       <FeaturedIcon icon={Check} color="success" />
       <FeaturedIcon icon={TriangleAlert} color="error" />
-      <FeaturedIcon icon={ChartColumn} color="brand" />
+      <FeaturedIcon icon={ChartColumn} color="primary" />
       <FeaturedIcon icon={Bell} color="gray" />
     </div>
   ),
