@@ -48,5 +48,9 @@
   },
   "sideEffects": [
     "**/*.css"
-  ]
+  ],
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
 }

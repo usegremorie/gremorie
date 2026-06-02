@@ -43,5 +43,9 @@
     "shiki": "^4.1.0",
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
 }
