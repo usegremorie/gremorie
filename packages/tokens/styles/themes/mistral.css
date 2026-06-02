@@ -1,1 +1,36 @@
-/* mistral theme (filled in Phase 3) */
+/*
+ * Mistral theme: flame orange, slightly tighter radius.
+ * Activate with data-theme="mistral" on the root element.
+ */
+[data-theme='mistral'] {
+  --primary: var(--color-orange-600);
+  --primary-foreground: var(--color-gray-50);
+  --accent: var(--color-orange-100);
+  --accent-foreground: var(--color-orange-900);
+  --ring: var(--color-orange-500);
+
+  --sidebar-primary: var(--color-orange-600);
+  --sidebar-primary-foreground: var(--color-gray-50);
+  --sidebar-ring: var(--color-orange-500);
+
+  --chart-1: var(--color-orange-500);
+  --chart-2: var(--color-orange-300);
+  --chart-3: var(--color-orange-700);
+  --chart-4: var(--color-amber-400);
+  --chart-5: var(--color-red-400);
+
+  --radius-base: 0.5rem;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-theme='mistral'].dark {
+  --primary: var(--color-orange-400);
+  --primary-foreground: var(--color-gray-950);
+  --accent: var(--color-orange-900);
+  --accent-foreground: var(--color-orange-50);
+  --ring: var(--color-orange-400);
+
+  --sidebar-primary: var(--color-orange-400);
+  --sidebar-primary-foreground: var(--color-gray-950);
+  --sidebar-ring: var(--color-orange-400);
+}

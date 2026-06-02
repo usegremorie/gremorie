@@ -1,1 +1,36 @@
-/* perplexity theme (filled in Phase 3) */
+/*
+ * Perplexity theme: teal/petrol, sober and tight.
+ * Activate with data-theme="perplexity" on the root element.
+ */
+[data-theme='perplexity'] {
+  --primary: var(--color-teal-700);
+  --primary-foreground: var(--color-gray-50);
+  --accent: var(--color-teal-100);
+  --accent-foreground: var(--color-teal-900);
+  --ring: var(--color-teal-600);
+
+  --sidebar-primary: var(--color-teal-700);
+  --sidebar-primary-foreground: var(--color-gray-50);
+  --sidebar-ring: var(--color-teal-600);
+
+  --chart-1: var(--color-teal-600);
+  --chart-2: var(--color-teal-300);
+  --chart-3: var(--color-cyan-600);
+  --chart-4: var(--color-sky-400);
+  --chart-5: var(--color-emerald-400);
+
+  --radius-base: 0.375rem;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-theme='perplexity'].dark {
+  --primary: var(--color-teal-400);
+  --primary-foreground: var(--color-gray-950);
+  --accent: var(--color-teal-900);
+  --accent-foreground: var(--color-teal-50);
+  --ring: var(--color-teal-400);
+
+  --sidebar-primary: var(--color-teal-400);
+  --sidebar-primary-foreground: var(--color-gray-950);
+  --sidebar-ring: var(--color-teal-400);
+}
