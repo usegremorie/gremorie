@@ -32,14 +32,14 @@
     "README.md"
   ],
   "peerDependencies": {
+    "@gremorie/rx-artifacts": ">=0.0.1",
     "@gremorie/rx-containers": ">=0.0.1",
     "@gremorie/rx-core": ">=0.0.1",
     "@gremorie/rx-display": ">=0.0.1",
     "@gremorie/rx-feedback": ">=0.0.1",
     "@gremorie/rx-forms": ">=0.0.1",
     "@gremorie/rx-overlays": ">=0.0.1",
-    "@gremorie/rx-artifacts": ">=0.0.1",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "@radix-ui/react-use-controllable-state": "^1.2.2",

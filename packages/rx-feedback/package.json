@@ -32,7 +32,7 @@
   ],
   "peerDependencies": {
     "@gremorie/rx-core": ">=0.0.1",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
