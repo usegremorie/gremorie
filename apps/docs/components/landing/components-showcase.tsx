@@ -32,8 +32,8 @@ const categories = [
     slug: 'ai',
     description:
       'Conversation, Message, PromptInput, Reasoning, Artifact, Canvas.',
-    accent: 'var(--brand)',
-    accentSubtle: 'var(--brand-subtle)',
+    accent: 'var(--primary)',
+    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
   },
   {
     name: 'Forms',

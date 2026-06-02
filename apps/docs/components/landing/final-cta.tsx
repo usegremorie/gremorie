@@ -29,18 +29,21 @@ export function FinalCta() {
           repeat of the hero. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[680px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/10 blur-[140px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[680px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]"
       />
       <div className="mx-auto max-w-3xl px-6 text-center">
         <Badge variant="secondary" className="mb-6 gap-2 py-1">
-          <span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />
+          <span
+            className="size-1.5 rounded-full bg-primary"
+            aria-hidden="true"
+          />
           Built by AI engineers, for AI engineers
         </Badge>
 
         <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           Stop fighting your design system.
           <br />
-          <span className="text-brand">Make it AI-legible.</span>
+          <span className="text-primary">Make it AI-legible.</span>
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
           Open source. MCP-ready. Production-grade. Ship a brand-aware UI your

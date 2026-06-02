@@ -76,7 +76,7 @@ export function ArtifactsSpotlight() {
         className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-96 -translate-y-1/2 blur-3xl"
         style={{
           background:
-            'linear-gradient(90deg, color-mix(in oklch, var(--chart-1) 12%, transparent) 0%, color-mix(in oklch, var(--brand) 12%, transparent) 50%, color-mix(in oklch, var(--chart-3) 12%, transparent) 100%)',
+            'linear-gradient(90deg, color-mix(in oklch, var(--chart-1) 12%, transparent) 0%, color-mix(in oklch, var(--primary) 12%, transparent) 50%, color-mix(in oklch, var(--chart-3) 12%, transparent) 100%)',
         }}
       />
       <div className="mx-auto max-w-7xl px-6">
@@ -170,12 +170,12 @@ export function ArtifactsSpotlight() {
               className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 opacity-50"
               style={{
                 background:
-                  'radial-gradient(ellipse at top, var(--brand-subtle), transparent 70%)',
+                  'radial-gradient(ellipse at top, color-mix(in oklch, var(--primary) 12%, transparent), transparent 70%)',
               }}
             />
             <CardHeader className="flex-row items-center justify-between border-b border-border/60 py-3">
               <div className="flex items-center gap-2">
-                <span className="inline-flex size-7 items-center justify-center rounded-md bg-brand-subtle text-brand">
+                <span className="inline-flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
                   <Code2 className="size-3.5" aria-hidden="true" />
                 </span>
                 <div className="flex flex-col gap-0.5">
