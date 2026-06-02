@@ -57,7 +57,7 @@ const blocks: ReadonlyArray<{
     category: 'AI',
     description: 'Conversation, Message, PromptInput - fully wired.',
     href: '/blocks#chat-surface',
-    chart: 'var(--brand)',
+    chart: 'var(--primary)',
     shape: 'chat',
   },
   {

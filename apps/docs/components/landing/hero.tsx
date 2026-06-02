@@ -10,8 +10,8 @@ import { HeroDemo } from './hero-demo';
  * CTAs are rx-forms Button (asChild wraps Next Link / anchor).
  *
  * Brand identity (Deanna refresh):
- * - Background halo behind demo uses --brand (violet) instead of --primary,
- *   giving the hero its first dose of brand color without touching primary.
+ * - Background halo behind the demo uses --primary so it follows the active
+ *   theme (neutral by default, colored when a data-theme is set).
  * - 3 CTA hierarchy: primary "Get Started" (filled), secondary "View Components"
  *   (outline), tertiary "Star on GitHub" (ghost). The ghost variant pulls back
  *   visually so the eye lands on Get Started first.
@@ -21,12 +21,12 @@ import { HeroDemo } from './hero-demo';
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Ambient brand halo - top-right corner, very low intensity. Sits below
+      {/* Ambient primary halo - top-right corner, very low intensity. Sits below
           everything (`-z-10`) and is decorative (`aria-hidden`). Sets the
           mystical tone without competing with content. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 right-0 -z-10 h-[480px] w-[480px] rounded-full bg-brand/15 blur-[120px]"
+        className="pointer-events-none absolute -top-32 right-0 -z-10 h-[480px] w-[480px] rounded-full bg-primary/15 blur-[120px]"
       />
       <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -105,18 +105,18 @@ export function Hero() {
             Use `inert` (not just aria-hidden) so descendant buttons/textarea
             are removed from the tab order entirely. WCAG 4.1.2 fix.
 
-            Halo updated to brand/15 -> brand/5 fade so the demo card sits in
-            a warm violet glow instead of the previous neutral primary tint.
+            Halo updated to primary/15 -> primary/5 fade so the demo card sits in
+            a warm primary glow instead of the previous neutral primary tint.
           */}
           <div className="relative" aria-hidden="true" inert>
             {/*
-              Halo bumped from brand/20 to brand/30 + blur-3xl per Odo
-              final audit. brand/20 read as subliminal in light mode -
+              Halo bumped from primary/20 to primary/30 + blur-3xl per Odo
+              final audit. primary/20 read as subliminal in light mode -
               users could not tell the violet identity was already there.
-              brand/30 + larger blur radius pushes the violet glow into
+              primary/30 + larger blur radius pushes the primary glow into
               "visible but ambient" territory without becoming a tint.
             */}
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-brand/30 via-brand/5 to-transparent blur-3xl" />
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/30 via-primary/5 to-transparent blur-3xl" />
             <HeroDemo />
           </div>
         </div>

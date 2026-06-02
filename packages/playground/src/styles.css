@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import '../../ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';
 
 @source '../../ng-core/src/**/*.{ts,html}';
 @source '../../ng-attachments/src/**/*.{ts,html}';

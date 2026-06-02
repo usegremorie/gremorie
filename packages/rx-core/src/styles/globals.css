@@ -1,12 +1,12 @@
 /*
- * SUPERSEDED — do not import this file.
+ * SUPERSEDED: do not import this file.
  *
  * The published `@gremorie/rx-core/styles/globals.css` is now COMPILED from
  * `packages/rx-core/styles/globals.src.css` into `dist/styles/globals.css`
  * (see project.json `build`). Consumers import the compiled output via the
  * package export; this raw `@theme` source no longer ships and is kept only
- * for git history. Edit the token source of truth in
- * `packages/ng-core/styles/theme.css`, and the @source list in
+ * for git history. Edit the token source of truth in `@gremorie/tokens`
+ * (`packages/tokens/styles/theme.css`), and the @source list in
  * `packages/rx-core/styles/globals.src.css`.
  */
-@import '../../../ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';

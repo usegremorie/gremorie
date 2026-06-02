@@ -111,7 +111,7 @@ import {
 })
 export default class ThemePrimitivePage {
   protected readonly install = `@import 'tailwindcss';
-@import '@gremorie/ng-core/theme.css';`;
+@import '@gremorie/tokens/theme.css';`;
 
   protected readonly brandExample = `:root {
   --primary: oklch(0.5 0.2 250);          /* your blue */
