@@ -1,7 +1,10 @@
 import type {
-  TokenGraph, PrimitiveToken, SemanticToken, ComponentInfo
-} from "../../graph/types.js";
-import { tokenKey } from "../../graph/types.js";
+  TokenGraph,
+  PrimitiveToken,
+  SemanticToken,
+  ComponentInfo,
+} from '../../graph/types.js';
+import { tokenKey } from '../../graph/types.js';
 
 interface Inputs {
   primitives: PrimitiveToken[];

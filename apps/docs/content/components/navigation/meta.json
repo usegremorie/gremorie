@@ -1,7 +1,7 @@
 {
   "title": "Navigation",
-  "description": "Navigation primitives - Breadcrumb, Menubar, NavigationMenu, Pagination, Sidebar, Tabs",
   "icon": "Navigation",
+  "description": "Move around the app — breadcrumb, tabs, sidebar, pagination, menus.",
   "pages": [
     "breadcrumb",
     "menubar",

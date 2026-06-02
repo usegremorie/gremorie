@@ -1,10 +1,17 @@
 ---
 title: Avatar
-description: "User or entity portrait with graceful image fallback. Sizes, presence badges, and overlapping groups."
+description: 'User or entity portrait with graceful image fallback. Sizes, presence badges, and overlapping groups.'
 ---
 
-import { AvatarPreview } from "@/components/preview/display/display";
-import { Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount } from "@gremorie/rx-display";
+import { AvatarPreview } from '@/components/preview/display/display';
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  AvatarGroup,
+  AvatarGroupCount,
+} from '@gremorie/rx-display';
 
 ## Overview
 
@@ -21,26 +28,10 @@ Three sizes ship on the root (`sm`, `default`, `lg`) and propagate to subcompone
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-avatar
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-avatar
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-avatar
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-avatar
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-avatar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-avatar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-avatar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-avatar ```</Tab>
 </Tabs>
 
 ## Usage
@@ -77,10 +68,10 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Root container. Wraps Radix `Avatar.Root`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `size` | `"sm" \| "default" \| "lg"` | `"default"` | Sets the root dimensions (`size-6`, `size-8`, `size-10`) and propagates to subcomponents via `data-size`. |
-| `className` | `string` | - | Extra classes. Use to override the default `size-*` when you need an in-between or larger size. |
+| Prop        | Type                        | Default     | Description                                                                                               |
+| ----------- | --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `size`      | `"sm" \| "default" \| "lg"` | `"default"` | Sets the root dimensions (`size-6`, `size-8`, `size-10`) and propagates to subcomponents via `data-size`. |
+| `className` | `string`                    | -           | Extra classes. Use to override the default `size-*` when you need an in-between or larger size.           |
 
 For sizes beyond `lg`, pass an explicit `size-12` or larger via `className`.
 
@@ -88,18 +79,18 @@ For sizes beyond `lg`, pass an explicit `size-12` or larger via `className`.
 
 The image. Wraps Radix `Avatar.Image`. Forwards all `img` props including `src`, `alt`, `onLoadingStatusChange`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `src` | `string` | - | Image URL. Required for the image to render. |
-| `alt` | `string` | - | Alt text. Required for accessibility. |
+| Prop  | Type     | Default | Description                                  |
+| ----- | -------- | ------- | -------------------------------------------- |
+| `src` | `string` | -       | Image URL. Required for the image to render. |
+| `alt` | `string` | -       | Alt text. Required for accessibility.        |
 
 ### `<AvatarFallback>`
 
 The fallback content (typically initials). Wraps Radix `Avatar.Fallback`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `delayMs` | `number` | - | Delays the fallback render to avoid a flash while the image loads. |
+| Prop      | Type     | Default | Description                                                        |
+| --------- | -------- | ------- | ------------------------------------------------------------------ |
+| `delayMs` | `number` | -       | Delays the fallback render to avoid a flash while the image loads. |
 
 ### `<AvatarBadge>`
 
@@ -128,7 +119,10 @@ Trailing "+N" indicator for hidden Avatars in a group. Inherits the group's size
 
 <div className="rounded-lg border p-6 not-prose">
   <Avatar>
-    <AvatarImage src="https://avatars.githubusercontent.com/u/41934312?v=4" alt="@kalvner" />
+    <AvatarImage
+      src="https://avatars.githubusercontent.com/u/41934312?v=4"
+      alt="@kalvner"
+    />
     <AvatarFallback>KA</AvatarFallback>
   </Avatar>
 </div>
@@ -206,7 +200,10 @@ If the image fails to load, the fallback renders automatically.
 
 <div className="rounded-lg border p-6 not-prose">
   <Avatar size="lg">
-    <AvatarImage src="https://avatars.githubusercontent.com/u/41934312?v=4" alt="@kalvner" />
+    <AvatarImage
+      src="https://avatars.githubusercontent.com/u/41934312?v=4"
+      alt="@kalvner"
+    />
     <AvatarFallback>KA</AvatarFallback>
     <AvatarBadge className="bg-emerald-500" />
   </Avatar>

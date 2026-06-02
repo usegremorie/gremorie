@@ -1,6 +1,6 @@
 ---
 title: Settings form
-description: "Profile plus Notifications plus Appearance card stack with a sticky save bar. The canonical settings surface."
+description: 'Profile plus Notifications plus Appearance card stack with a sticky save bar. The canonical settings surface.'
 ---
 
 ## Overview
@@ -72,9 +72,9 @@ bunx --bun gremorie@latest add block-settings-form
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -83,17 +83,17 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { Button, Input, Label, Slider, Switch } from "@gremorie/rx-forms";
+} from '@gremorie/rx-display';
+import { Button, Input, Label, Slider, Switch } from '@gremorie/rx-forms';
 
 export function SettingsForm() {
   const [radius, setRadius] = useState(8);
   const [fontScale, setFontScale] = useState(1);
 
   const notifications = [
-    { id: "n-product", label: "Product updates", on: true },
-    { id: "n-billing", label: "Billing alerts", on: true },
-    { id: "n-newsletter", label: "Weekly newsletter", on: false },
+    { id: 'n-product', label: 'Product updates', on: true },
+    { id: 'n-billing', label: 'Billing alerts', on: true },
+    { id: 'n-newsletter', label: 'Weekly newsletter', on: false },
   ];
 
   return (
@@ -119,7 +119,11 @@ export function SettingsForm() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="settings-email">Email</Label>
-              <Input id="settings-email" type="email" defaultValue="kira@gremorie.com" />
+              <Input
+                id="settings-email"
+                type="email"
+                defaultValue="kira@gremorie.com"
+              />
             </div>
           </div>
         </CardContent>
@@ -132,7 +136,10 @@ export function SettingsForm() {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {notifications.map((row) => (
-            <div key={row.id} className="flex items-center justify-between gap-4">
+            <div
+              key={row.id}
+              className="flex items-center justify-between gap-4"
+            >
               <Label htmlFor={row.id} className="text-sm font-normal">
                 {row.label}
               </Label>

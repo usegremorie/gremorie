@@ -10,7 +10,9 @@ const program = new Command();
 
 program
   .name('gremorie')
-  .description('Scaffold AI components into your Angular app via the Gremorie registry.')
+  .description(
+    'Scaffold AI components into your Angular app via the Gremorie registry.',
+  )
   .version('0.0.1', '-v, --version');
 
 program

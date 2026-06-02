@@ -1,25 +1,25 @@
-import Link from "next/link";
-import { Github } from "lucide-react";
-import { Separator } from "@gremorie/rx-display";
+import { Separator } from '@gremorie/rx-display';
+import { Github } from 'lucide-react';
+import Link from 'next/link';
 
 const resourceLinks = [
-  { label: "Get started", href: "/get-started/installation" },
-  { label: "Components", href: "/components/overview" },
-  { label: "Blocks", href: "/blocks/overview" },
-  { label: "Corpus", href: "/corpus" },
-  { label: "Tokens", href: "/tokens" },
+  { label: 'Get started', href: '/get-started/installation' },
+  { label: 'Components', href: '/components' },
+  { label: 'Blocks', href: '/blocks' },
+  { label: 'Corpus', href: '/corpus' },
+  { label: 'Tokens', href: '/tokens' },
 ];
 
 const communityLinks = [
   {
-    label: "GitHub",
-    href: "https://github.com/usegremorie/gremorie",
+    label: 'GitHub',
+    href: 'https://github.com/usegremorie/gremorie',
     icon: Github,
     external: true,
   },
   {
-    label: "Issues",
-    href: "https://github.com/usegremorie/gremorie/issues",
+    label: 'Issues',
+    href: 'https://github.com/usegremorie/gremorie/issues',
     icon: Github,
     external: true,
   },
@@ -27,13 +27,13 @@ const communityLinks = [
 
 const legalLinks = [
   {
-    label: "License",
-    href: "https://github.com/usegremorie/gremorie/blob/develop/LICENSE",
+    label: 'License',
+    href: 'https://github.com/usegremorie/gremorie/blob/develop/LICENSE',
     external: true,
   },
   {
-    label: "NOTICE",
-    href: "https://github.com/usegremorie/gremorie/blob/develop/NOTICE.md",
+    label: 'NOTICE',
+    href: 'https://github.com/usegremorie/gremorie/blob/develop/NOTICE.md',
     external: true,
   },
 ];

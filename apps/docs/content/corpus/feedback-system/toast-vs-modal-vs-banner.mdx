@@ -1,6 +1,6 @@
 ---
 title: Toast vs modal vs banner
-description: "Three feedback surfaces, three stakes. Pick by severity and how blocking the message must be."
+description: 'Three feedback surfaces, three stakes. Pick by severity and how blocking the message must be.'
 related: rx-sonner, rx-alert-dialog, rx-dialog, rx-alert
 tags: [feedback, toast, modal, banner, severity]
 ---
@@ -63,7 +63,7 @@ Severity is not just about color or icon: it is about how persistent and blockin
 ```tsx
 function handleSave() {
   saveSettings();
-  toast.success("Settings saved");
+  toast.success('Settings saved');
 }
 ```
 
@@ -100,7 +100,7 @@ Decision required, irreversible. Blocking is justified.
 ### Don't: toast for a billing failure
 
 ```tsx
-toast.error("Payment failed");
+toast.error('Payment failed');
 ```
 
 The user blinks and misses it. Payment failures need a banner ("Your last payment failed. Update your card") or a route to a billing page.
@@ -128,16 +128,16 @@ This is toast material. A banner suggests permanence.
 
 ## A quick severity table
 
-| Severity | Stakes | Persistent? | Blocking? | Surface |
-|----------|--------|-------------|-----------|---------|
-| Info, low | Acknowledge an action | No | No | Toast |
-| Success | Confirm an action succeeded | No | No | Toast |
-| Warning, transient | Action partially succeeded or has a caveat | No | No | Toast |
-| Warning, persistent | Condition the user should know about | Yes | No | Banner |
-| Error, transient | Action failed but recoverable | No | No | Toast (with retry) |
-| Error, persistent | System is in a broken state | Yes | No | Banner |
-| Error, blocking | Action is impossible until resolved | Yes | Yes | Modal |
-| Decision required | Destructive or irreversible action | Yes | Yes | Modal |
+| Severity            | Stakes                                     | Persistent? | Blocking? | Surface            |
+| ------------------- | ------------------------------------------ | ----------- | --------- | ------------------ |
+| Info, low           | Acknowledge an action                      | No          | No        | Toast              |
+| Success             | Confirm an action succeeded                | No          | No        | Toast              |
+| Warning, transient  | Action partially succeeded or has a caveat | No          | No        | Toast              |
+| Warning, persistent | Condition the user should know about       | Yes         | No        | Banner             |
+| Error, transient    | Action failed but recoverable              | No          | No        | Toast (with retry) |
+| Error, persistent   | System is in a broken state                | Yes         | No        | Banner             |
+| Error, blocking     | Action is impossible until resolved        | Yes         | Yes       | Modal              |
+| Decision required   | Destructive or irreversible action         | Yes         | Yes       | Modal              |
 
 ## Counter-cases
 

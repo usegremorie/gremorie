@@ -3,7 +3,7 @@ title: Input
 description: Single-line text field that adopts every native HTML `type` and exposes token-driven focus, error, and disabled states.
 ---
 
-import { InputPreview } from "@/components/preview/forms/forms";
+import { InputPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ All visual states are token-driven: `border-input` for default, `focus-visible:r
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-input
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-input
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-input
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-input
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-input ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-input ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-input ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-input ```</Tab>
 </Tabs>
 
 ## Usage
@@ -70,11 +54,11 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Input>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `type` | `string` | `"text"` | Any native HTML input type. Drives keyboard, validation, and platform UI (e.g. date picker, file dialog). |
-| `disabled` | `boolean` | `false` | Disables interaction. Applies `pointer-events-none` and `opacity-50`. |
-| `aria-invalid` | `boolean` | - | When `true`, switches border and focus ring to the destructive token. |
+| Prop           | Type      | Default  | Description                                                                                               |
+| -------------- | --------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `type`         | `string`  | `"text"` | Any native HTML input type. Drives keyboard, validation, and platform UI (e.g. date picker, file dialog). |
+| `disabled`     | `boolean` | `false`  | Disables interaction. Applies `pointer-events-none` and `opacity-50`.                                     |
+| `aria-invalid` | `boolean` | -        | When `true`, switches border and focus ring to the destructive token.                                     |
 
 Extends all `React.ComponentProps<"input">`. Renders with `data-slot="input"` so the parent `InputGroup` can drive group-wide focus and error states.
 
@@ -104,13 +88,7 @@ The canonical pattern. `type="email"` triggers the email keyboard on mobile and 
 ```tsx
 <div className="grid gap-2">
   <Label htmlFor="quantity">Quantity</Label>
-  <Input
-    id="quantity"
-    type="number"
-    min={1}
-    max={99}
-    defaultValue={1}
-  />
+  <Input id="quantity" type="number" min={1} max={99} defaultValue={1} />
 </div>
 ```
 

@@ -26,14 +26,25 @@ import type { ChartConfig, Datum } from '@gremorie/ng-data';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="flex flex-col gap-4">
-      <h2 class="text-lg font-medium text-foreground">@gremorie/ng-data - all charts</h2>
+      <h2 class="text-lg font-medium text-foreground">
+        @gremorie/ng-data - all charts
+      </h2>
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <area-chart [data]="monthly()" [config]="duo()" xKey="month" />
         <line-chart [data]="monthly()" [config]="duo()" xKey="month" />
         <bar-chart [data]="monthly()" [config]="duo()" xKey="month" />
         <scatter-chart [data]="scatter()" [config]="scatterConfig()" xKey="x" />
-        <pie-chart [data]="browsers()" nameKey="browser" valueKey="visitors" [donut]="true" />
-        <radial-chart [data]="browsers()" nameKey="browser" valueKey="visitors" />
+        <pie-chart
+          [data]="browsers()"
+          nameKey="browser"
+          valueKey="visitors"
+          [donut]="true"
+        />
+        <radial-chart
+          [data]="browsers()"
+          nameKey="browser"
+          valueKey="visitors"
+        />
         <radar-chart [data]="metrics()" [config]="duo()" xKey="metric" />
       </div>
     </section>

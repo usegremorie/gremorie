@@ -2,7 +2,7 @@
 title: ScrollArea
 description: Container scrollable com scrollbar themeable — para casos onde o native bar não atende.
 component: ScrollArea
-importPath: "@kalvner/kds/containers/scroll-area"
+importPath: '@kalvner/kds/containers/scroll-area'
 status: stable
 ---
 
@@ -11,13 +11,13 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   ScrollAreaHorizontal,
   ScrollAreaList,
-  ScrollAreaPreview
-} from "@/components/navigation-demos";
+  ScrollAreaPreview,
+} from '@/components/navigation-demos';
 
 ## Overview
 
@@ -39,7 +39,9 @@ nativo.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Lista vertical longa, ScrollArea com altura fixa.</CardDescription>
+    <CardDescription>
+      Lista vertical longa, ScrollArea com altura fixa.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ScrollAreaPreview />
@@ -61,22 +63,24 @@ Para ambos os eixos, adicione um por orientação.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `ScrollArea` | Container scrollable. Aceita classes de altura/largura. |
-| `ScrollBar` | A barra; aceita `orientation="vertical"` (default) ou `"horizontal"`. |
+| Componente   | Descrição                                                             |
+| ------------ | --------------------------------------------------------------------- |
+| `ScrollArea` | Container scrollable. Aceita classes de altura/largura.               |
+| `ScrollBar`  | A barra; aceita `orientation="vertical"` (default) ou `"horizontal"`. |
 
 ## Usage
 
 ```tsx
-import { ScrollArea } from "@kalvner/kds/containers/scroll-area";
+import { ScrollArea } from '@kalvner/kds/containers/scroll-area';
 
 export function NotificationsList({ items }) {
   return (
     <ScrollArea className="h-72 w-full">
       <ul className="divide-y">
         {items.map((item) => (
-          <li key={item.id} className="px-4 py-3">{item.title}</li>
+          <li key={item.id} className="px-4 py-3">
+            {item.title}
+          </li>
         ))}
       </ul>
     </ScrollArea>
@@ -90,7 +94,9 @@ export function NotificationsList({ items }) {
   <Card className="md:col-span-2">
     <CardHeader>
       <CardTitle>Horizontal</CardTitle>
-      <CardDescription>Carrosséis e tracks de imagens com indicador visível.</CardDescription>
+      <CardDescription>
+        Carrosséis e tracks de imagens com indicador visível.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <ScrollAreaHorizontal />
@@ -103,7 +109,9 @@ export function NotificationsList({ items }) {
 <Card>
   <CardHeader>
     <CardTitle>Long list inside a card</CardTitle>
-    <CardDescription>Header fixo, lista scrollável dentro do mesmo card.</CardDescription>
+    <CardDescription>
+      Header fixo, lista scrollável dentro do mesmo card.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ScrollAreaList />
@@ -145,11 +153,11 @@ export function NotificationsList({ items }) {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix preserva `tabindex` no viewport — a área é focável e teclado funciona. |
-| **Keyboard** | `Arrow` move; `PageUp`/`PageDown` paginam; `Home`/`End` saltam. |
-| **Touch** | Drag funciona normalmente em touch devices. |
+| Concern            | Comportamento                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| **Roles**          | Radix preserva `tabindex` no viewport — a área é focável e teclado funciona.                                       |
+| **Keyboard**       | `Arrow` move; `PageUp`/`PageDown` paginam; `Home`/`End` saltam.                                                    |
+| **Touch**          | Drag funciona normalmente em touch devices.                                                                        |
 | **Reduced motion** | A barra anima com fade — respeite `prefers-reduced-motion` no nível do tema (já configurado nos tokens de motion). |
 
 ## Related

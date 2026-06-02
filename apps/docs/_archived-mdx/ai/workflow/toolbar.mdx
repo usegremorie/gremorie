@@ -2,18 +2,18 @@
 title: Toolbar
 description: Toolbar contextual que aparece quando um Node está selecionado.
 component: Toolbar
-importPath: "@kalvner/kds/ai/toolbar"
+importPath: '@kalvner/kds/ai/toolbar'
 status: stable
 ---
 
-import { ToolbarPreview } from "@/components/ai-workflow-demos";
+import { ToolbarPreview } from '@/components/ai-workflow-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -37,16 +37,20 @@ edit) sem ocupar espaço permanente no card.
 ## Usage
 
 ```tsx
-import { Toolbar } from "@kalvner/kds/ai/toolbar";
-import { Button } from "@kalvner/kds/forms/button";
-import { Copy, Trash } from "lucide-react";
+import { Toolbar } from '@kalvner/kds/ai/toolbar';
+import { Button } from '@kalvner/kds/forms/button';
+import { Copy, Trash } from 'lucide-react';
 
 function MyNode({ data, selected }) {
   return (
     <Node handles={{ target: true, source: true }}>
       <Toolbar isVisible={selected} nodeId={data.id}>
-        <Button variant="ghost" size="icon"><Copy /></Button>
-        <Button variant="ghost" size="icon"><Trash /></Button>
+        <Button variant="ghost" size="icon">
+          <Copy />
+        </Button>
+        <Button variant="ghost" size="icon">
+          <Trash />
+        </Button>
       </Toolbar>
       ...
     </Node>
@@ -59,14 +63,14 @@ function MyNode({ data, selected }) {
 Aceita **todos** os props de
 [`<NodeToolbar>`](https://reactflow.dev/api-reference/components/node-toolbar) do ReactFlow:
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `nodeId` | `string \| string[]` | — | ID do node alvo (ou array de IDs). |
-| `isVisible` | `boolean` | (auto pelo selected) | Override de visibilidade. |
-| `position` | `Position` | `Position.Bottom` (KDS) | Lado do node onde aparece. |
-| `offset` | `number` | `10` | Distância em pixels do node. |
-| `align` | `'start' \| 'center' \| 'end'` | `'center'` | Alinhamento. |
-| `className` | `string` | KDS aplica `flex gap-1 rounded-sm border bg-background p-1.5`. | Override. |
+| Prop        | Tipo                           | Default                                                        | Descrição                          |
+| ----------- | ------------------------------ | -------------------------------------------------------------- | ---------------------------------- |
+| `nodeId`    | `string \| string[]`           | —                                                              | ID do node alvo (ou array de IDs). |
+| `isVisible` | `boolean`                      | (auto pelo selected)                                           | Override de visibilidade.          |
+| `position`  | `Position`                     | `Position.Bottom` (KDS)                                        | Lado do node onde aparece.         |
+| `offset`    | `number`                       | `10`                                                           | Distância em pixels do node.       |
+| `align`     | `'start' \| 'center' \| 'end'` | `'center'`                                                     | Alinhamento.                       |
+| `className` | `string`                       | KDS aplica `flex gap-1 rounded-sm border bg-background p-1.5`. | Override.                          |
 
 ## Subcomponents
 
@@ -74,10 +78,10 @@ Toolbar é monolítico — children são botões livres.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| `isVisible=true` ou node selected | Renderiza. |
-| Caso contrário | Não renderiza. |
+| Estado                            | Comportamento  |
+| --------------------------------- | -------------- |
+| `isVisible=true` ou node selected | Renderiza.     |
+| Caso contrário                    | Não renderiza. |
 
 ReactFlow trata visibilidade automática quando você omite
 `isVisible` e usa `selected` no Node.
@@ -102,11 +106,11 @@ ReactFlow trata visibilidade automática quando você omite
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
+| Concern        | Comportamento                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------- |
 | **Visibility** | Toolbar entra/sai do DOM dinamicamente — leitores anunciam mudança via `aria-live` automático do ReactFlow. |
-| **Buttons** | Cada botão precisa de `aria-label` ou Tooltip. |
-| **Keyboard** | Quando node selecionado, Tab navega pra Toolbar. |
+| **Buttons**    | Cada botão precisa de `aria-label` ou Tooltip.                                                              |
+| **Keyboard**   | Quando node selecionado, Tab navega pra Toolbar.                                                            |
 
 ## Related
 

@@ -14,26 +14,10 @@ For per-node action bars, use [`Toolbar`](/components/ai/toolbar). For zoom and 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-panel
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-panel
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-panel
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-panel
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-panel ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-panel ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-panel ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-panel ```</Tab>
 </Tabs>
 
 Requires `@xyflow/react`.
@@ -70,11 +54,11 @@ Angular edition planned for Phase 5h. The workflow family is React-only for now.
 
 Forwards all `PanelProps` from `@xyflow/react`. The Gremorie wrapper only adds chrome.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"top-left"` | Corner the panel docks to. xyflow default. |
-| `children` | `ReactNode` | - | Panel content. Buttons, status pills, mini-forms, etc. |
-| `className` | `string` | - | Extra classes. Merged with the default chrome via `cn`. |
+| Prop        | Type                                                                                              | Default      | Description                                             |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------- |
+| `position`  | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"top-left"` | Corner the panel docks to. xyflow default.              |
+| `children`  | `ReactNode`                                                                                       | -            | Panel content. Buttons, status pills, mini-forms, etc.  |
+| `className` | `string`                                                                                          | -            | Extra classes. Merged with the default chrome via `cn`. |
 
 Default chrome: `m-4 overflow-hidden rounded-md border bg-card p-1`.
 
@@ -92,8 +76,12 @@ A short row of buttons in the top-right that survives any canvas pan and zoom.
 
 ```tsx
 <Panel position="top-right" className="flex gap-2 p-2">
-  <Button size="sm" variant="outline" onClick={discard}>Discard</Button>
-  <Button size="sm" onClick={save}>Save</Button>
+  <Button size="sm" variant="outline" onClick={discard}>
+    Discard
+  </Button>
+  <Button size="sm" onClick={save}>
+    Save
+  </Button>
 </Panel>
 ```
 

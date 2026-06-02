@@ -2,7 +2,7 @@
 title: Form
 description: Wrappers de react-hook-form + zod com ARIA wiring automático.
 component: Form
-importPath: "@kalvner/kds/forms/form"
+importPath: '@kalvner/kds/forms/form'
 status: stable
 ---
 
@@ -11,17 +11,18 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
 `Form` agrupa os primitivos do KDS (Input, Textarea, Select, Checkbox,
 RadioGroup, Switch) com [`react-hook-form`](https://react-hook-form.com)
-+ [`zod`](https://zod.dev) e ARIA wiring automático. O resultado:
-formulários acessíveis com validação tipada e mensagens em PT-BR, sem
-ter que ligar `htmlFor` / `aria-describedby` / `aria-invalid`
-manualmente em cada campo.
+
+- [`zod`](https://zod.dev) e ARIA wiring automático. O resultado:
+  formulários acessíveis com validação tipada e mensagens em PT-BR, sem
+  ter que ligar `htmlFor` / `aria-describedby` / `aria-invalid`
+  manualmente em cada campo.
 
 A anatomia segue o template canônico de form row:
 
@@ -77,16 +78,16 @@ Esse desacoplamento é importante para evitar CLS — ver
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Form` | Alias para `FormProvider` do RHF. Aceita o objeto de `useForm()`. |
-| `FormField` | Wrapper de `Controller`. Provê o `name` para os filhos. |
-| `FormItem` | Grid `gap-2` com id único. Contexto pra subcomponents. |
-| `FormLabel` | Label vinculado via id automático. Vermelho em erro. |
-| `FormControl` | Slot que injeta `id`, `aria-describedby`, `aria-invalid`. |
-| `FormDescription` | Helper text com id rastreável por screen readers. |
-| `FormMessage` | Mensagem de erro (só renderiza quando há erro). |
-| `useFormField` | Hook que expõe os ids, name, e fieldState do contexto. |
+| Componente        | Descrição                                                         |
+| ----------------- | ----------------------------------------------------------------- |
+| `Form`            | Alias para `FormProvider` do RHF. Aceita o objeto de `useForm()`. |
+| `FormField`       | Wrapper de `Controller`. Provê o `name` para os filhos.           |
+| `FormItem`        | Grid `gap-2` com id único. Contexto pra subcomponents.            |
+| `FormLabel`       | Label vinculado via id automático. Vermelho em erro.              |
+| `FormControl`     | Slot que injeta `id`, `aria-describedby`, `aria-invalid`.         |
+| `FormDescription` | Helper text com id rastreável por screen readers.                 |
+| `FormMessage`     | Mensagem de erro (só renderiza quando há erro).                   |
+| `useFormField`    | Hook que expõe os ids, name, e fieldState do contexto.            |
 
 ## Usage
 
@@ -97,11 +98,11 @@ pnpm add react-hook-form zod @hookform/resolvers
 ```
 
 ```tsx
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "@kalvner/kds/forms/button";
+import { Button } from '@kalvner/kds/forms/button';
 import {
   Form,
   FormControl,
@@ -109,19 +110,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from "@kalvner/kds/forms/form";
-import { Input } from "@kalvner/kds/forms/input";
+  FormMessage,
+} from '@kalvner/kds/forms/form';
+import { Input } from '@kalvner/kds/forms/input';
 
 const schema = z.object({
-  email: z.string().email("Digite um e-mail válido"),
-  password: z.string().min(8, "Mínimo 8 caracteres")
+  email: z.string().email('Digite um e-mail válido'),
+  password: z.string().min(8, 'Mínimo 8 caracteres'),
 });
 
 export function LoginForm() {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    defaultValues: { email: "", password: "" }
+    defaultValues: { email: '', password: '' },
   });
 
   return (
@@ -182,11 +183,11 @@ return <Form {...form}>...</Form>;
 
 ### FormField
 
-| Prop | Tipo | Descrição |
-|---|---|---|
-| `control` | `Control` | `form.control` do `useForm`. |
-| `name` | `string` (paths do schema) | Caminho do campo. |
-| `render` | `({ field, fieldState }) => ReactNode` | Render prop. |
+| Prop      | Tipo                                   | Descrição                    |
+| --------- | -------------------------------------- | ---------------------------- |
+| `control` | `Control`                              | `form.control` do `useForm`. |
+| `name`    | `string` (paths do schema)             | Caminho do campo.            |
+| `render`  | `({ field, fieldState }) => ReactNode` | Render prop.                 |
 
 ### FormItem / FormLabel / FormControl / FormDescription / FormMessage
 
@@ -200,7 +201,9 @@ Aceitam todos os props do elemento subjacente (`<div>`, `<label>`,
   <Card>
     <CardHeader>
       <CardTitle>Submit (default)</CardTitle>
-      <CardDescription>useForm sem `mode` valida apenas no submit.</CardDescription>
+      <CardDescription>
+        useForm sem `mode` valida apenas no submit.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <span className="text-sm text-muted-foreground">
@@ -234,27 +237,28 @@ Aceitam todos os props do elemento subjacente (`<div>`, `<label>`,
 
 ## States
 
-| Estado | Como ativar | Comportamento visual |
-|---|---|---|
-| Idle | Estado inicial. | Label normal, controle com border padrão. |
-| Focused | Tab/click no controle. | Ring `ring-ring/50`. |
-| Validating | Em modes onChange/onBlur, durante a validação async. | Geralmente imperceptível — Zod sync é instantâneo. |
-| Error | Schema falha. | `FormLabel` vermelho, `FormControl` com `aria-invalid="true"`, `FormMessage` aparece. |
-| Submitting | `form.formState.isSubmitting` — desabilite o Button + spinner. | Button com `disabled` + spinner. |
+| Estado     | Como ativar                                                    | Comportamento visual                                                                  |
+| ---------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Idle       | Estado inicial.                                                | Label normal, controle com border padrão.                                             |
+| Focused    | Tab/click no controle.                                         | Ring `ring-ring/50`.                                                                  |
+| Validating | Em modes onChange/onBlur, durante a validação async.           | Geralmente imperceptível — Zod sync é instantâneo.                                    |
+| Error      | Schema falha.                                                  | `FormLabel` vermelho, `FormControl` com `aria-invalid="true"`, `FormMessage` aparece. |
+| Submitting | `form.formState.isSubmitting` — desabilite o Button + spinner. | Button com `disabled` + spinner.                                                      |
 
 ## Composition
 
 <Card>
   <CardHeader>
     <CardTitle>Profile form</CardTitle>
-    <CardDescription>Form completo combinando todos os primitivos.</CardDescription>
+    <CardDescription>
+      Form completo combinando todos os primitivos.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <span className="text-sm text-muted-foreground">
       Veja a story <code>Composed · Profile form</code> em Storybook →
-      Primitives → Forms → Form para um exemplo end-to-end com Input,
-      Textarea, Select, RadioGroup, Switch e Checkbox dentro de um único
-      Form.
+      Primitives → Forms → Form para um exemplo end-to-end com Input, Textarea,
+      Select, RadioGroup, Switch e Checkbox dentro de um único Form.
     </span>
   </CardContent>
 </Card>
@@ -273,7 +277,7 @@ Aceitam todos os props do elemento subjacente (`<div>`, `<label>`,
 - Buscas que disparam em onChange — RHF é overkill; um `Input`
   controlado basta.
 - Server Actions com validação no servidor — Zod via `zod-form-data`
-  + `useFormStatus` pode ser mais simples.
+  - `useFormStatus` pode ser mais simples.
 
 ## Best practices
 
@@ -293,14 +297,14 @@ Aceitam todos os props do elemento subjacente (`<div>`, `<label>`,
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Label** | `FormLabel` recebe `htmlFor={formItemId}` automaticamente. |
-| **Description** | `FormDescription` ganha id; `FormControl` aponta `aria-describedby` para ele. |
-| **Erro** | Quando há erro, `FormMessage` ganha id e é incluído em `aria-describedby`; `FormControl` ganha `aria-invalid="true"`. |
-| **Roving focus** | Não aplicável — formulários são linear tab order. |
-| **Submit failure** | Use `form.setFocus("campo")` para focar o primeiro campo com erro após Submit. |
-| **Live regions** | Para feedback assíncrono (ex: "Salvando…" → "Salvo"), considere `aria-live="polite"` em um container de status. |
+| Concern            | Comportamento                                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| **Label**          | `FormLabel` recebe `htmlFor={formItemId}` automaticamente.                                                            |
+| **Description**    | `FormDescription` ganha id; `FormControl` aponta `aria-describedby` para ele.                                         |
+| **Erro**           | Quando há erro, `FormMessage` ganha id e é incluído em `aria-describedby`; `FormControl` ganha `aria-invalid="true"`. |
+| **Roving focus**   | Não aplicável — formulários são linear tab order.                                                                     |
+| **Submit failure** | Use `form.setFocus("campo")` para focar o primeiro campo com erro após Submit.                                        |
+| **Live regions**   | Para feedback assíncrono (ex: "Salvando…" → "Salvo"), considere `aria-live="polite"` em um container de status.       |
 
 ## Related
 

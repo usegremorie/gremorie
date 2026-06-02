@@ -14,26 +14,10 @@ The xyflow stylesheet is imported at the module level (`@xyflow/react/dist/style
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-canvas
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-canvas
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-canvas
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-canvas
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-canvas ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-canvas ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-canvas ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-canvas ```</Tab>
 </Tabs>
 
 Requires `@xyflow/react` as a peer dependency.
@@ -55,6 +39,7 @@ import {
 } from "@gremorie/rx-ai";
 
 const nodeTypes = { card: (props) => (
+
   <Node {...props} handles={{ target: true, source: true }}>
     <NodeHeader>
       <NodeTitle>{props.data.label}</NodeTitle>
@@ -67,22 +52,24 @@ export function Workflow() {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
-  return (
-    <div className="h-[480px] w-full">
-      <Canvas
+return (
+
+<div className="h-[480px] w-full">
+<Canvas
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
       >
-        <Controls />
-        <Panel position="top-right">Workflow tools</Panel>
-      </Canvas>
-    </div>
-  );
+<Controls />
+<Panel position="top-right">Workflow tools</Panel>
+</Canvas>
+</div>
+);
 }
-```
+
+````
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
@@ -133,14 +120,14 @@ For visualizing a static flow (e.g. an agent trace), disable interactions.
 >
   <Controls showInteractive={false} />
 </Canvas>
-```
+````
 
 ### Editor with custom connection line
 
 Pair with [`Connection`](/components/ai/connection) for a Gremorie-themed connection preview.
 
 ```tsx
-import { Connection } from "@gremorie/rx-ai";
+import { Connection } from '@gremorie/rx-ai';
 
 <Canvas
   nodes={nodes}
@@ -149,13 +136,13 @@ import { Connection } from "@gremorie/rx-ai";
   onConnect={onConnect}
 >
   <Controls />
-</Canvas>
+</Canvas>;
 ```
 
 ### With minimap and panel overlay
 
 ```tsx
-import { MiniMap } from "@xyflow/react";
+import { MiniMap } from '@xyflow/react';
 
 <Canvas nodes={nodes} edges={edges}>
   <Controls />
@@ -163,7 +150,7 @@ import { MiniMap } from "@xyflow/react";
     <p className="text-xs font-medium">Agent graph</p>
   </Panel>
   <MiniMap pannable zoomable />
-</Canvas>
+</Canvas>;
 ```
 
 ## Accessibility

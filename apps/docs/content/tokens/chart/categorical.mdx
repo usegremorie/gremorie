@@ -5,9 +5,9 @@ description: Oito hues perceptualmente distintos para categorias nominais — re
 
 import {
   ChartSchemeSwatchRow,
-  ChartSchemeTable
-} from "@/components/token-tables";
-import { CATEGORICAL_SCHEME } from "@/lib/chart-tokens";
+  ChartSchemeTable,
+} from '@/components/token-tables';
+import { CATEGORICAL_SCHEME } from '@/lib/chart-tokens';
 
 **Categorical** é o esquema para **dados nominais sem ordem** —
 quando você compara magnitudes entre categorias que não têm
@@ -56,31 +56,30 @@ Se você precisa de mais de 8 séries, considere:
 ## Anti-patterns
 
 <Callout type="warn">
-  Usar Categorical para mais de 8 séries. As cores começam a se
-  confundir e a leitura desmorona. Refatore para uma das três
-  alternativas acima.
+  Usar Categorical para mais de 8 séries. As cores começam a se confundir e a
+  leitura desmorona. Refatore para uma das três alternativas acima.
 </Callout>
 
 <Callout type="warn">
-  Misturar Categorical com Status no mesmo gráfico ("uma das
-  séries é vermelha porque é a métrica de erro"). Isso polui a
-  leitura — o usuário vai inferir significado em todas as cores.
+  Misturar Categorical com Status no mesmo gráfico ("uma das séries é vermelha
+  porque é a métrica de erro"). Isso polui a leitura — o usuário vai inferir
+  significado em todas as cores.
 </Callout>
 
 ## Exemplo de consumo
 
 ```tsx
-import { Line, LineChart } from "recharts";
+import { Line, LineChart } from 'recharts';
 
 const config = {
-  receita:    { label: "Receita",    color: "var(--color-chart-cat-1)" },
-  custo:      { label: "Custo",      color: "var(--color-chart-cat-2)" },
-  lucro:      { label: "Lucro",      color: "var(--color-chart-cat-3)" },
+  receita: { label: 'Receita', color: 'var(--color-chart-cat-1)' },
+  custo: { label: 'Custo', color: 'var(--color-chart-cat-2)' },
+  lucro: { label: 'Lucro', color: 'var(--color-chart-cat-3)' },
 } satisfies ChartConfig;
 
 <LineChart data={data}>
   <Line dataKey="receita" stroke="var(--color-chart-cat-1)" />
-  <Line dataKey="custo"   stroke="var(--color-chart-cat-2)" />
-  <Line dataKey="lucro"   stroke="var(--color-chart-cat-3)" />
-</LineChart>
+  <Line dataKey="custo" stroke="var(--color-chart-cat-2)" />
+  <Line dataKey="lucro" stroke="var(--color-chart-cat-3)" />
+</LineChart>;
 ```

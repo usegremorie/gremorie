@@ -1,12 +1,16 @@
 ---
 title: Collapsible
-description: "Single-section expandable region. The minimal building block for show-more toggles and inline disclosures."
+description: 'Single-section expandable region. The minimal building block for show-more toggles and inline disclosures.'
 ---
 
-import { CollapsiblePreview } from "@/components/preview/display/display";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@gremorie/rx-display";
-import { Button } from "@gremorie/rx-forms";
-import { ChevronDown } from "lucide-react";
+import { CollapsiblePreview } from '@/components/preview/display/display';
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { ChevronDown } from 'lucide-react';
 
 ## Overview
 
@@ -23,26 +27,16 @@ Reach for Collapsible when you have **one** thing that expands: a card's "more d
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-collapsible
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-collapsible
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-collapsible
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-collapsible
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-collapsible ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-collapsible ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-collapsible ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-collapsible ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -84,19 +78,19 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Wraps Radix `Collapsible.Root`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `open` | `boolean` | - | Controlled open state. |
-| `defaultOpen` | `boolean` | `false` | Uncontrolled default. |
-| `onOpenChange` | `(open: boolean) => void` | - | Fires when the open state changes. |
-| `disabled` | `boolean` | `false` | Prevents the trigger from firing. |
+| Prop           | Type                      | Default | Description                        |
+| -------------- | ------------------------- | ------- | ---------------------------------- |
+| `open`         | `boolean`                 | -       | Controlled open state.             |
+| `defaultOpen`  | `boolean`                 | `false` | Uncontrolled default.              |
+| `onOpenChange` | `(open: boolean) => void` | -       | Fires when the open state changes. |
+| `disabled`     | `boolean`                 | `false` | Prevents the trigger from firing.  |
 
 ### `<CollapsibleTrigger>`
 
 The clickable element that toggles the panel. Wraps Radix `Collapsible.Trigger`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop      | Type      | Default | Description                                                                                 |
+| --------- | --------- | ------- | ------------------------------------------------------------------------------------------- |
 | `asChild` | `boolean` | `false` | When `true`, renders the immediate child as the trigger (typical pattern: wrap a `Button`). |
 
 When `asChild` is used, the child receives `aria-expanded`, `aria-controls`, and the click handler.
@@ -128,8 +122,8 @@ The trigger and content can sit at any depth inside the root - Radix Collapsible
       </Button>
     </CollapsibleTrigger>
     <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm text-muted-foreground">
-      Nog is the chief engineer of the Kalvner crew. Implements code, infra, and ships.
-      Backs up before destructive changes. Never commits secrets.
+      Nog is the chief engineer of the Kalvner crew. Implements code, infra, and
+      ships. Backs up before destructive changes. Never commits secrets.
     </CollapsibleContent>
   </Collapsible>
 </div>
@@ -155,19 +149,19 @@ const [open, setOpen] = useState(false);
 
 <Collapsible open={open} onOpenChange={setOpen}>
   <CollapsibleTrigger asChild>
-    <Button>{open ? "Hide" : "Show"} advanced settings</Button>
+    <Button>{open ? 'Hide' : 'Show'} advanced settings</Button>
   </CollapsibleTrigger>
   <CollapsibleContent>
     <SettingsPanel />
   </CollapsibleContent>
-</Collapsible>
+</Collapsible>;
 ```
 
 ### Inline disclosure
 
 <div className="rounded-lg border p-6 not-prose">
   <p className="text-sm">
-    Gremorie ships 100 primitives across 9 React packages.{" "}
+    Gremorie ships 100 primitives across 9 React packages.{' '}
     <Collapsible className="inline">
       <CollapsibleTrigger className="text-primary underline">
         Show breakdown
@@ -185,7 +179,7 @@ const [open, setOpen] = useState(false);
 
 ```tsx
 <p>
-  Gremorie ships 100 primitives.{" "}
+  Gremorie ships 100 primitives.{' '}
   <Collapsible className="inline">
     <CollapsibleTrigger>Show breakdown</CollapsibleTrigger>
     <CollapsibleContent>

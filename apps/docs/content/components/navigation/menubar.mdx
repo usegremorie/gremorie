@@ -1,9 +1,9 @@
 ---
 title: Menubar
-description: "Desktop-app-style horizontal multi-menu bar. File, Edit, View, Help with submenus, checkboxes, radios, and shortcuts."
+description: 'Desktop-app-style horizontal multi-menu bar. File, Edit, View, Help with submenus, checkboxes, radios, and shortcuts.'
 ---
 
-import { MenubarPreview } from "@/components/preview/navigation/navigation";
+import { MenubarPreview } from '@/components/preview/navigation/navigation';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Reach for Menubar when **you are emulating a desktop application** - code editor
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-menubar
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-menubar
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-menubar
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-menubar
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-menubar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-menubar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-menubar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-menubar ```</Tab>
 </Tabs>
 
 ## Usage
@@ -98,80 +82,80 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Root container. Wraps Radix `Menubar.Root`. Renders a horizontal `flex h-9 items-center gap-1 rounded-md border bg-background p-1 shadow-xs` bar.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultValue` | `string` | - | Uncontrolled initially open menu. |
-| `value` | `string` | - | Controlled open menu. |
-| `onValueChange` | `(value: string) => void` | - | Fires when the open menu changes. |
-| `dir` | `"ltr" \| "rtl"` | `"ltr"` | Reading direction. |
-| `loop` | `boolean` | `true` | Whether keyboard focus loops at the ends of the bar. |
+| Prop            | Type                      | Default | Description                                          |
+| --------------- | ------------------------- | ------- | ---------------------------------------------------- |
+| `defaultValue`  | `string`                  | -       | Uncontrolled initially open menu.                    |
+| `value`         | `string`                  | -       | Controlled open menu.                                |
+| `onValueChange` | `(value: string) => void` | -       | Fires when the open menu changes.                    |
+| `dir`           | `"ltr" \| "rtl"`          | `"ltr"` | Reading direction.                                   |
+| `loop`          | `boolean`                 | `true`  | Whether keyboard focus loops at the ends of the bar. |
 
 ### `<MenubarMenu>`
 
 A single menu (trigger plus content). Wraps Radix `Menubar.Menu`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | - | Identifier used by Root's controlled `value`. |
+| Prop    | Type     | Default | Description                                   |
+| ------- | -------- | ------- | --------------------------------------------- |
+| `value` | `string` | -       | Identifier used by Root's controlled `value`. |
 
 ### `<MenubarTrigger>`
 
 The bar button that opens the menu. Wraps Radix `Menubar.Trigger`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop       | Type      | Default | Description            |
+| ---------- | --------- | ------- | ---------------------- |
 | `disabled` | `boolean` | `false` | Disables this trigger. |
 
 ### `<MenubarContent>`
 
 The dropdown panel. Wraps Radix `Menubar.Content` inside a `MenubarPortal`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `align` | `"start" \| "center" \| "end"` | `"start"` | Horizontal alignment relative to the trigger. |
-| `alignOffset` | `number` | `-4` | Pixel offset from the alignment edge. |
-| `sideOffset` | `number` | `8` | Distance in pixels between the trigger and the content. |
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side. |
-| `loop` | `boolean` | `true` | Whether keyboard focus loops at the ends of the panel. |
+| Prop          | Type                                     | Default    | Description                                             |
+| ------------- | ---------------------------------------- | ---------- | ------------------------------------------------------- |
+| `align`       | `"start" \| "center" \| "end"`           | `"start"`  | Horizontal alignment relative to the trigger.           |
+| `alignOffset` | `number`                                 | `-4`       | Pixel offset from the alignment edge.                   |
+| `sideOffset`  | `number`                                 | `8`        | Distance in pixels between the trigger and the content. |
+| `side`        | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side.                                         |
+| `loop`        | `boolean`                                | `true`     | Whether keyboard focus loops at the ends of the panel.  |
 
 ### `<MenubarItem>`
 
 A standard action item.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `inset` | `boolean` | `false` | When `true`, adds left padding so the item aligns with checkbox / radio items. |
-| `variant` | `"default" \| "destructive"` | `"default"` | `"destructive"` paints the item and its icon in the destructive token. |
-| `disabled` | `boolean` | `false` | Disables this item. |
-| `onSelect` | `(event: Event) => void` | - | Fires on activation. Call `event.preventDefault()` to keep the menu open. |
+| Prop       | Type                         | Default     | Description                                                                    |
+| ---------- | ---------------------------- | ----------- | ------------------------------------------------------------------------------ |
+| `inset`    | `boolean`                    | `false`     | When `true`, adds left padding so the item aligns with checkbox / radio items. |
+| `variant`  | `"default" \| "destructive"` | `"default"` | `"destructive"` paints the item and its icon in the destructive token.         |
+| `disabled` | `boolean`                    | `false`     | Disables this item.                                                            |
+| `onSelect` | `(event: Event) => void`     | -           | Fires on activation. Call `event.preventDefault()` to keep the menu open.      |
 
 ### `<MenubarCheckboxItem>`
 
 A toggle item rendered with a leading check indicator.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `checked` | `boolean \| "indeterminate"` | `false` | Current state. |
-| `onCheckedChange` | `(checked: boolean) => void` | - | Fires when the state changes. |
-| `disabled` | `boolean` | `false` | Disables this item. |
+| Prop              | Type                         | Default | Description                   |
+| ----------------- | ---------------------------- | ------- | ----------------------------- |
+| `checked`         | `boolean \| "indeterminate"` | `false` | Current state.                |
+| `onCheckedChange` | `(checked: boolean) => void` | -       | Fires when the state changes. |
+| `disabled`        | `boolean`                    | `false` | Disables this item.           |
 
 ### `<MenubarRadioGroup>` and `<MenubarRadioItem>`
 
 A radio set rendered with a leading dot indicator.
 
-| Component | Prop | Type | Description |
-|---|---|---|---|
-| `RadioGroup` | `value` | `string` | Controlled selected value. |
+| Component    | Prop            | Type                      | Description                            |
+| ------------ | --------------- | ------------------------- | -------------------------------------- |
+| `RadioGroup` | `value`         | `string`                  | Controlled selected value.             |
 | `RadioGroup` | `onValueChange` | `(value: string) => void` | Fires when the selected value changes. |
-| `RadioItem` | `value` | `string` | Required. Matches the group's `value`. |
-| `RadioItem` | `disabled` | `boolean` | Disables this item. |
+| `RadioItem`  | `value`         | `string`                  | Required. Matches the group's `value`. |
+| `RadioItem`  | `disabled`      | `boolean`                 | Disables this item.                    |
 
 ### `<MenubarLabel>`
 
 A non-interactive header inside a content panel.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop    | Type      | Default | Description                                                          |
+| ------- | --------- | ------- | -------------------------------------------------------------------- |
 | `inset` | `boolean` | `false` | When `true`, adds left padding to align with checkbox / radio items. |
 
 ### `<MenubarSeparator>`
@@ -182,21 +166,21 @@ A 1 px horizontal divider with `-mx-1 my-1` to extend across the panel padding.
 
 A right-aligned `<span>` for the keyboard shortcut hint. Styled with `ml-auto text-xs tracking-widest text-muted-foreground`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `...props` | `React.ComponentProps<"span">` | - | Standard span attributes. |
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Standard span attributes. |
 
 ### `<MenubarSub>`, `<MenubarSubTrigger>`, `<MenubarSubContent>`
 
 Nested submenus. The sub-trigger automatically appends a right-pointing chevron.
 
-| Component | Prop | Type | Description |
-|---|---|---|---|
-| `Sub` | `defaultOpen` | `boolean` | Uncontrolled initial open state. |
-| `Sub` | `open` | `boolean` | Controlled open state. |
-| `Sub` | `onOpenChange` | `(open: boolean) => void` | Fires when the sub opens or closes. |
-| `SubTrigger` | `inset` | `boolean` | Adds left padding for alignment with checkbox / radio items. |
-| `SubTrigger` | `disabled` | `boolean` | Disables the sub-trigger. |
+| Component    | Prop           | Type                      | Description                                                  |
+| ------------ | -------------- | ------------------------- | ------------------------------------------------------------ |
+| `Sub`        | `defaultOpen`  | `boolean`                 | Uncontrolled initial open state.                             |
+| `Sub`        | `open`         | `boolean`                 | Controlled open state.                                       |
+| `Sub`        | `onOpenChange` | `(open: boolean) => void` | Fires when the sub opens or closes.                          |
+| `SubTrigger` | `inset`        | `boolean`                 | Adds left padding for alignment with checkbox / radio items. |
+| `SubTrigger` | `disabled`     | `boolean`                 | Disables the sub-trigger.                                    |
 
 ### `<MenubarGroup>` and `<MenubarPortal>`
 

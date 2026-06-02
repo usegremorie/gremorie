@@ -1,8 +1,9 @@
-import Link from "next/link";
-import { ArrowRight, Github } from "lucide-react";
-import { Button } from "@gremorie/rx-forms";
-import { Badge } from "@gremorie/rx-display";
-import { HeroDemo } from "./hero-demo";
+import { Badge } from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { ArrowRight, Github } from 'lucide-react';
+import Link from 'next/link';
+
+import { HeroDemo } from './hero-demo';
 
 /**
  * Landing hero. Dogfood: status pill is rx-display Badge;
@@ -36,21 +37,26 @@ export function Hero() {
                 className="size-1.5 rounded-full bg-success"
                 aria-hidden="true"
               />
-              AI-native design system, in development
+              In active development
             </Badge>
 
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              The AI-native{" "}
-              <span className="text-brand">design system</span>
+              The AI-native design system for{' '}
+              <span className="text-cyan-600 dark:text-cyan-500">React</span>{' '}
+              and{' '}
+              <span className="text-rose-500 dark:text-rose-400">Angular</span>
             </h1>
 
             <div className="flex max-w-xl flex-col gap-3 text-lg leading-relaxed text-muted-foreground">
               <p>
-                Registry plus MCP for AI-driven generation. Angular and React,
-                copy-paste components.
+                AI-native components and blocks, available through an MCP server
+                and a registry. Its documentation runs as a chain — design
+                principles into components, components into the blocks built
+                from them — so an LLM reads the whole system.
               </p>
               <p className="text-base">
-                Your design system becomes a memory the LLM can read.
+                Designers prototype with the real components through MCP;
+                developers ship the same ones to production.
               </p>
             </div>
 
@@ -62,7 +68,7 @@ export function Hero() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/components/overview">View Components</Link>
+                <Link href="/components">View Components</Link>
               </Button>
               <Button size="lg" variant="ghost" asChild>
                 <a
@@ -78,17 +84,17 @@ export function Hero() {
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-4 text-xs text-muted-foreground">
               <span>
-                <span className="font-medium text-foreground">85</span>{" "}
+                <span className="font-medium text-foreground">85</span>{' '}
                 primitives
               </span>
               <span>
                 <span className="font-medium text-foreground">
                   React + Angular
-                </span>{" "}
+                </span>{' '}
                 editions
               </span>
               <span>
-                <span className="font-medium text-foreground">MIT</span>{" "}
+                <span className="font-medium text-foreground">MIT</span>{' '}
                 licensed
               </span>
             </div>

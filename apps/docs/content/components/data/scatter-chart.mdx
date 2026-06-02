@@ -1,13 +1,16 @@
 ---
 title: Scatter Chart
-description: "Correlation between a numeric X field and one or more Y series, plotted as colored dots."
+description: 'Correlation between a numeric X field and one or more Y series, plotted as colored dots.'
 ---
 
-import { ScatterChartPreview, ScatterChartMultiPreview } from "@/components/preview/data/charts";
+import {
+  ScatterChartPreview,
+  ScatterChartMultiPreview,
+} from '@/components/preview/data/charts';
 
 ## Overview
 
-`ScatterChart` is the styled wrapper of the headless charting engine for **two numeric axes**. `xKey` is a numeric field (linear X axis); each entry in `config` is a numeric Y series. The chart wires up scales, the cartesian grid, the Y axis, one set of dots per series, plus an `sr-only` HTML table that mirrors the data for assistive tech.
+`ScatterChart` is the styled wrapper over recharts' `ScatterChart`, composed on the shadcn `chart` primitive (`ChartContainer`). `xKey` is a numeric field (linear X axis); each entry in `config` is a numeric Y series. The chart wires up the cartesian grid, the numeric X and Y axes, an optional tooltip, and one set of dots per series.
 
 Reach for ScatterChart when you need to surface **correlation, density, or outliers** - response time vs payload size, conversion rate vs traffic, runtime vs input. For ordered category trends use [`LineChart`](/components/data/line-chart) or [`AreaChart`](/components/data/area-chart); for discrete category comparison use [`BarChart`](/components/data/bar-chart).
 
@@ -20,26 +23,16 @@ Reach for ScatterChart when you need to surface **correlation, density, or outli
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-scatter-chart
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-scatter-chart
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-scatter-chart
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-scatter-chart
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-scatter-chart ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-scatter-chart ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-scatter-chart ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-scatter-chart ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -48,19 +41,19 @@ bunx --bun gremorie@latest add rx-scatter-chart
 <Tab value="React">
 ```tsx
 import { ScatterChart } from "@gremorie/rx-data";
-import type { ChartConfig, Datum } from "@gremorie/rx-data";
+import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
 
-const data: Datum[] = [
-  { x: 30, y: 100 },
-  { x: 50, y: 200 },
-  { x: 70, y: 150 },
-  { x: 90, y: 250 },
-  { x: 110, y: 175 },
-  { x: 130, y: 300 },
+const data: ChartDatum[] = [
+{ x: 30, y: 100 },
+{ x: 50, y: 200 },
+{ x: 70, y: 150 },
+{ x: 90, y: 250 },
+{ x: 110, y: 175 },
+{ x: 130, y: 300 },
 ];
 
 const config: ChartConfig = {
-  y: { label: "Value", color: "var(--chart-1)" },
+y: { label: "Value", color: "var(--chart-1)" },
 };
 
 export function CorrelationChart() {
@@ -70,7 +63,7 @@ export function CorrelationChart() {
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
-Angular edition planned for a follow-up release. The headless engine is framework-neutral; the Angular surface will mirror the React props.
+Angular edition planned for a follow-up release; it mirrors this component's anatomy.
 </Callout>
 </Tab>
 </Tabs>
@@ -79,39 +72,94 @@ Angular edition planned for a follow-up release. The headless engine is framewor
 
 ### `<ScatterChart>`
 
-The styled wrapper. Renders a `<figure role="img">` containing the chart `<svg>`, a cartesian grid, the Y axis (the X axis is implicit and labeled by the first series via the headless render prop), one `<Scatter>` per series in `config`, and an `sr-only` data table for assistive tech.
+The styled wrapper over recharts' `ScatterChart`, composed on `ChartContainer`. Renders the responsive frame, a cartesian grid, the numeric X and Y axes, an optional tooltip, and one `<Scatter>` per `config` key colored `var(--color-<key>)`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `readonly Datum[]` | - | Tabular data. Each row carries the numeric `xKey` value plus one numeric value per `config` key. |
-| `config` | `ChartConfig` | - | Maps each Y series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. |
-| `xKey` | `string` | - | Name of the **numeric** field on each `Datum` used as the X axis. Linear, not categorical. |
-| `className` | `string` | - | Merged onto the outer figure. The bundled style supplies a rounded card surface plus aspect ratio. |
+| Prop        | Type           | Default | Description                                                                                                                                                                                                         |
+| ----------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `ChartDatum[]` | -       | Tabular data. Each row carries the numeric `xKey` value plus one numeric value per `config` key.                                                                                                                    |
+| `config`    | `ChartConfig`  | -       | Maps each Y series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
+| `xKey`      | `string`       | -       | Name of the **numeric** field on each row used as the X axis. Linear, not categorical.                                                                                                                              |
+| `tooltip`   | `boolean`      | `true`  | Toggles the hover tooltip.                                                                                                                                                                                          |
+| `className` | `string`       | -       | Merged onto the `ChartContainer`.                                                                                                                                                                                   |
 
-### Headless primitives exposed
+### Composing with the chart primitive
 
-| Export | Role |
-|---|---|
-| `ChartFrame` | Root `<svg>`, owns size via `ResizeObserver`, provides scales and shared Y domain. |
-| `CartesianGrid` | Render-prop primitive yielding horizontal grid lines for the current Y ticks. |
-| `YAxis` | Render-prop primitive yielding Y tick positions and labels. |
-| `Scatter` | Per-series render-prop primitive yielding `{ points, xTicks, labelY }`. Each point has `{ cx, cy }` projected screen coordinates. The first series typically also renders the X tick labels via `xTicks`. |
+For full control, compose recharts directly inside `ChartContainer` using the exported primitives. shadcn ships no scatter block, but the composition follows the same pattern as the [other shadcn chart blocks](https://ui.shadcn.com/charts).
+
+| Export                | Role                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| `ChartContainer`      | Responsive frame; injects per-series `--color-<key>` vars from `config`. |
+| `ChartTooltip`        | recharts `Tooltip` re-export; pair with `ChartTooltipContent`.           |
+| `ChartTooltipContent` | Styled tooltip body.                                                     |
+| `ChartLegend`         | recharts `Legend` re-export; pair with `ChartLegendContent`.             |
+| `ChartLegendContent`  | Styled legend body.                                                      |
+| `useChart`            | Hook to read the active `config` inside a custom child.                  |
 
 ### Types
 
-| Type | Shape |
-|---|---|
-| `Datum` | `Record<string, string \| number>` - one row of chart data. |
-| `ChartConfig` | `Record<string, { label: string; color: string; format?: string }>` - JSON-serializable series map. |
+| Type          | Shape                                                                                                                       |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - one row of chart data; the optional `fill` sets a per-point color. |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - per-series label and color map.                                   |
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from '@gremorie/rx-data';
+import { CartesianGrid, Scatter, ScatterChart, XAxis, YAxis } from 'recharts';
+
+const config = {
+  y: { label: 'Value', color: 'var(--chart-1)' },
+} satisfies ChartConfig;
+
+export function Example({ data }: { data: ChartDatum[] }) {
+  return (
+    <ChartContainer config={config}>
+      <ScatterChart
+        accessibilityLayer
+        margin={{ left: 12, right: 12, top: 8, bottom: 8 }}
+      >
+        <CartesianGrid />
+        <XAxis
+          dataKey="x"
+          type="number"
+          name="x"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
+        <YAxis
+          type="number"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          width={40}
+        />
+        <ChartTooltip
+          cursor={{ strokeDasharray: '3 3' }}
+          content={<ChartTooltipContent />}
+        />
+        <Scatter name="y" dataKey="y" fill="var(--color-y)" />
+      </ScatterChart>
+    </ChartContainer>
+  );
+}
+```
+
+Drop down to this level for bubble charts (size encoded by a third field), per-point coloring via the row's `fill`, jitter overlays, or a custom legend via `ChartLegend` + `ChartLegendContent`.
 
 ## Composition
 
-1. **`xKey` must be numeric**. The X scale is linear, not band - the X axis projects values against the numeric domain.
-2. **Each `config` entry** becomes one set of dots. The shared Y domain auto-includes every series.
-3. **The first series** is responsible for rendering the X tick labels via the `xTicks` slot of the `Scatter` render prop - the wrapper handles this internally so callers do not have to think about it.
-4. **For custom dots** (different radii by value, colored per-point, jittered to reduce overlap), drop down to `<ChartFrame>` plus `<Scatter>` and supply your own render prop.
+1. **`xKey` must be numeric**. Both axes use recharts' `type="number"`, so the X scale is linear, not a band scale.
+2. **Each `config` entry** becomes one `<Scatter>` set of dots, colored by its `var(--color-<key>)` variable. The shared Y domain auto-includes every series.
+3. **Per-point color** is possible by setting a `fill` field on individual rows of `ChartDatum`; recharts reads it over the series color.
+4. **Keep the series count low** - two or three before the dots get too dense to read against each other.
 
-The chart auto-sizes to its parent via `ResizeObserver`. The default class on the figure pins the chart to `aspect-video`.
+The chart auto-sizes to its parent through `ChartContainer`'s responsive frame.
 
 ## Variations
 
@@ -124,7 +172,7 @@ The chart auto-sizes to its parent via `ResizeObserver`. The default class on th
 ```tsx
 <ScatterChart
   data={data}
-  config={{ y: { label: "Value", color: "var(--chart-1)" } }}
+  config={{ y: { label: 'Value', color: 'var(--chart-1)' } }}
   xKey="x"
 />
 ```
@@ -139,55 +187,20 @@ The default shape. Reach for a single series when surfacing correlation or densi
 
 ```tsx
 const config: ChartConfig = {
-  height: { label: "Median", color: "var(--chart-1)" },
-  max: { label: "Max", color: "var(--chart-2)" },
+  height: { label: 'Median', color: 'var(--chart-1)' },
+  max: { label: 'Max', color: 'var(--chart-2)' },
 };
 
-<ScatterChart data={data} config={config} xKey="weight" />
+<ScatterChart data={data} config={config} xKey="weight" />;
 ```
 
 For comparing two distributions against the same X axis. Color tokens carry the series distinction; keep the count at two or three before the dots get too dense to read.
 
-### Headless customization
-
-```tsx
-import { ChartFrame, CartesianGrid, YAxis, Scatter } from "@gremorie/rx-data";
-
-export function VariableRadiusScatter({ data, xKey, yKey, sizeKey, color }) {
-  return (
-    <figure role="img" aria-label="Scatter chart sized by population">
-      <ChartFrame data={data} xKey={xKey} className="aspect-video w-full text-muted-foreground">
-        <CartesianGrid>{(lines) => /* custom grid */ null}</CartesianGrid>
-        <Scatter dataKey={yKey}>
-          {({ points }) =>
-            points.map((p, i) => (
-              <circle
-                key={i}
-                cx={p.cx}
-                cy={p.cy}
-                r={Math.sqrt(Number(data[i][sizeKey])) * 0.5}
-                fill={color}
-                fillOpacity={0.6}
-              />
-            ))
-          }
-        </Scatter>
-        <YAxis>{({ ticks, labelX }) => /* custom ticks */ null}</YAxis>
-      </ChartFrame>
-    </figure>
-  );
-}
-```
-
-Drop down to headless for bubble charts (size encoded by a third field), per-point coloring, or jitter overlays. The render prop hands you the projected positions so the engine still owns the math.
-
 ## Accessibility
 
-- **Figure role**: the wrapper renders `<figure role="img">` with an auto-generated `aria-label` (`"Scatter chart of Value against x"`).
-- **Mirror table**: the chart appends a visually hidden `<table>` carrying every row and column. Screen readers navigate the data via native table commands.
-- **Token contrast**: `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
-- **Static rendering**: no animation by default, so users with `prefers-reduced-motion: reduce` are not penalized.
-- **Density caveat**: dense scatter plots can hide outliers behind clusters. Lower `fillOpacity` (the default is 0.7) or jitter slightly to keep individual points legible.
+- recharts' `accessibilityLayer` adds keyboard navigation and screen-reader announcements for the plotted series.
+- `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
+- **Density caveat**: dense scatter plots can hide outliers behind clusters. Set a lower `fillOpacity` on a custom `<Scatter>` or jitter slightly to keep individual points legible.
 
 ## Related
 

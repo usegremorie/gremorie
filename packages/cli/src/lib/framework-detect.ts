@@ -9,7 +9,9 @@ import type { RegistryFramework } from '../registry.js';
  * The label "rx" is intentional and consistent with the registry layout
  * (`/r/rx/...`) and the npm prefix (`@gremorie/rx-*`). It is not "react".
  */
-export function detectFramework(cwd: string = process.cwd()): RegistryFramework | null {
+export function detectFramework(
+  cwd: string = process.cwd(),
+): RegistryFramework | null {
   const deps = readPackageJsonDependencies(cwd);
   if (deps['@angular/core']) return 'ng';
   if (deps['react']) return 'rx';

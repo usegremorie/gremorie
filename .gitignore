@@ -64,3 +64,8 @@ __screenshots__/
 .claude/
 .playwright-mcp/
 .nog-screenshots/
+
+# Stray TS compile output in src shadows .tsx in bundlers (Vite resolves .js first)
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts.map

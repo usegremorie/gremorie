@@ -14,26 +14,10 @@ Use whenever a canvas needs zoom controls (any read-write graph editor) or read-
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-controls
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-controls
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-controls
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-controls
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-controls ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-controls ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-controls ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-controls ```</Tab>
 </Tabs>
 
 Requires `@xyflow/react`.
@@ -67,16 +51,16 @@ Angular edition planned for Phase 5h. The workflow family is React-only for now.
 
 Forwards all `ControlProps` from `@xyflow/react`. The Gremorie wrapper only restyles - it never overrides behavior props.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `position` | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right"` | `"bottom-left"` | Corner the controls dock to. xyflow default. |
-| `showZoom` | `boolean` | `true` | Show the zoom in / out buttons. |
-| `showFitView` | `boolean` | `true` | Show the fit-view button. |
-| `showInteractive` | `boolean` | `true` | Show the lock toggle. Set to `false` for read-only canvases. |
-| `fitViewOptions` | `FitViewOptions` | - | Forwarded to the fit-view action (padding, duration, etc.). |
-| `onZoomIn` / `onZoomOut` / `onFitView` / `onInteractiveChange` | callbacks | - | Hooks into each control. |
-| `children` | `ReactNode` | - | Extra control buttons appended to the strip. Each child should follow xyflow's `ControlButton` API. |
-| `className` | `string` | - | Extra classes. |
+| Prop                                                           | Type                                                           | Default         | Description                                                                                         |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------- |
+| `position`                                                     | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right"` | `"bottom-left"` | Corner the controls dock to. xyflow default.                                                        |
+| `showZoom`                                                     | `boolean`                                                      | `true`          | Show the zoom in / out buttons.                                                                     |
+| `showFitView`                                                  | `boolean`                                                      | `true`          | Show the fit-view button.                                                                           |
+| `showInteractive`                                              | `boolean`                                                      | `true`          | Show the lock toggle. Set to `false` for read-only canvases.                                        |
+| `fitViewOptions`                                               | `FitViewOptions`                                               | -               | Forwarded to the fit-view action (padding, duration, etc.).                                         |
+| `onZoomIn` / `onZoomOut` / `onFitView` / `onInteractiveChange` | callbacks                                                      | -               | Hooks into each control.                                                                            |
+| `children`                                                     | `ReactNode`                                                    | -               | Extra control buttons appended to the strip. Each child should follow xyflow's `ControlButton` API. |
+| `className`                                                    | `string`                                                       | -               | Extra classes.                                                                                      |
 
 Default chrome added by Gremorie: `gap-px overflow-hidden rounded-md border bg-card p-1 shadow-none!`. Child buttons are restyled to `rounded-md`, transparent background, hover state `bg-secondary`.
 
@@ -113,8 +97,8 @@ Hide the lock toggle when the canvas is non-interactive anyway.
 Append a "reset" or "auto-layout" button using xyflow's `ControlButton`.
 
 ```tsx
-import { ControlButton } from "@xyflow/react";
-import { LayoutGridIcon } from "lucide-react";
+import { ControlButton } from '@xyflow/react';
+import { LayoutGridIcon } from 'lucide-react';
 
 <Canvas nodes={nodes} edges={edges}>
   <Controls>
@@ -122,7 +106,7 @@ import { LayoutGridIcon } from "lucide-react";
       <LayoutGridIcon className="size-4" />
     </ControlButton>
   </Controls>
-</Canvas>
+</Canvas>;
 ```
 
 ### Docked top-right

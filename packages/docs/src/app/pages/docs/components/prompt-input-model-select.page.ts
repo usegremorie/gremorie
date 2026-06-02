@@ -3,11 +3,22 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-prompt-input-model-select',
-  imports: [DocsLayout, DocsPage, DocsSection, DocsProse, DocsCodeBlock, DocsApiTable],
+  imports: [
+    DocsLayout,
+    DocsPage,
+    DocsSection,
+    DocsProse,
+    DocsCodeBlock,
+    DocsApiTable,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-layout>
@@ -31,10 +42,20 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="Accessibility" anchor="a11y">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li>Trigger has <code>aria-haspopup="listbox"</code> and <code>aria-expanded</code></li>
-              <li>Open panel has <code>role="listbox"</code>; each option has <code>role="option"</code> and <code>aria-selected</code></li>
+              <li>
+                Trigger has <code>aria-haspopup="listbox"</code> and
+                <code>aria-expanded</code>
+              </li>
+              <li>
+                Open panel has <code>role="listbox"</code>; each option has
+                <code>role="option"</code> and <code>aria-selected</code>
+              </li>
               <li>Disabled options are skipped on click</li>
-              <li><strong>v0.1 note</strong>: typeahead and full combobox keyboard pattern pending. Migration to <code>&#64;spartan-ng/brain/select</code> planned for v0.2.</li>
+              <li>
+                <strong>v0.1 note</strong>: typeahead and full combobox keyboard
+                pattern pending. Migration to
+                <code>&#64;spartan-ng/brain/select</code> planned for v0.2.
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -64,18 +85,59 @@ export class Chat {
 }`;
 
   protected readonly inputs: readonly ApiRow[] = [
-    { name: 'options', type: 'readonly PromptInputModelOption[]', default: '(required)', description: 'Available options.' },
-    { name: 'value', type: 'string | null', default: 'null', description: 'Selected option id. Two-way bindable.' },
-    { name: 'placeholder', type: 'string', default: "'Choose model'", description: 'Shown when value is null.' },
-    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable independently of parent.' },
-    { name: 'ariaLabel', type: 'string', default: "'Select model'", description: 'Accessible label.' },
+    {
+      name: 'options',
+      type: 'readonly PromptInputModelOption[]',
+      default: '(required)',
+      description: 'Available options.',
+    },
+    {
+      name: 'value',
+      type: 'string | null',
+      default: 'null',
+      description: 'Selected option id. Two-way bindable.',
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      default: "'Choose model'",
+      description: 'Shown when value is null.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      default: 'false',
+      description: 'Disable independently of parent.',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      default: "'Select model'",
+      description: 'Accessible label.',
+    },
   ];
 
   protected readonly optionShape: readonly ApiRow[] = [
-    { name: 'id', type: 'string', description: 'Unique identifier matched against value.' },
+    {
+      name: 'id',
+      type: 'string',
+      description: 'Unique identifier matched against value.',
+    },
     { name: 'label', type: 'string', description: 'Visible label.' },
-    { name: 'description', type: 'string?', description: 'Secondary text under the label.' },
-    { name: 'badge', type: 'string?', description: 'Small uppercase tag (e.g. "flagship").' },
-    { name: 'disabled', type: 'boolean?', description: 'When true, option is shown but not selectable.' },
+    {
+      name: 'description',
+      type: 'string?',
+      description: 'Secondary text under the label.',
+    },
+    {
+      name: 'badge',
+      type: 'string?',
+      description: 'Small uppercase tag (e.g. "flagship").',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean?',
+      description: 'When true, option is shown but not selectable.',
+    },
   ];
 }

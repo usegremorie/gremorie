@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "title": "Componentes",
+  "description": "Primitives from the registry, installable via gremorie add",
+  "icon": "Component",
+  "pages": [
+    "index",
+    "---IA---",
+    "ai",
+    "---Entradas---",
+    "forms",
+    "---Layout e exibição---",
+    "display",
+    "data",
+    "containers",
+    "---Interação---",
+    "overlays",
+    "navigation",
+    "feedback"
+  ]
+}

@@ -39,9 +39,7 @@ export class Message {
   protected readonly hostClass = computed(() =>
     cn(
       'group flex w-full max-w-[95%] flex-col gap-2',
-      this.from() === 'user'
-        ? 'is-user ml-auto justify-end'
-        : 'is-assistant',
+      this.from() === 'user' ? 'is-user ml-auto justify-end' : 'is-assistant',
     ),
   );
 }

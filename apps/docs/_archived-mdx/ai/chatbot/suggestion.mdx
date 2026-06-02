@@ -2,18 +2,18 @@
 title: Suggestion
 description: Chips horizontais de prompts sugeridos — onboarding e quick actions.
 component: Suggestion
-importPath: "@kalvner/kds/ai/suggestion"
+importPath: '@kalvner/kds/ai/suggestion'
 status: stable
 ---
 
-import { SuggestionPreview } from "@/components/ai-chatbot-demos";
+import { SuggestionPreview } from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -47,7 +47,10 @@ Use no empty state da Conversation, ou abaixo do PromptInput pra
 ```tsx
 <Suggestions>
   <Suggestion suggestion="Como configuro multi-tema?" onClick={send} />
-  <Suggestion suggestion="Quais tokens chart estão disponíveis?" onClick={send} />
+  <Suggestion
+    suggestion="Quais tokens chart estão disponíveis?"
+    onClick={send}
+  />
   <Suggestion suggestion="Como integro Form com zod?" onClick={send} />
 </Suggestions>
 ```
@@ -61,10 +64,10 @@ oculto + flex layout.
 
 ### Suggestion
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `suggestion` | `string` | — | Texto exibido E enviado. |
-| `onClick` | `(suggestion: string) => void` | — | Callback no click; recebe a string. |
+| Prop         | Tipo                           | Default | Descrição                           |
+| ------------ | ------------------------------ | ------- | ----------------------------------- |
+| `suggestion` | `string`                       | —       | Texto exibido E enviado.            |
+| `onClick`    | `(suggestion: string) => void` | —       | Callback no click; recebe a string. |
 
 Herda de [Button](../../ui/forms/button) — `variant`, `size`, etc.
 Default é `variant="outline"` `size="sm"`.
@@ -95,11 +98,11 @@ Default é `variant="outline"` `size="sm"`.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<button>` para cada Suggestion (herda de Button). |
-| **Scroll** | ScrollArea com keyboard nav (Tab). |
-| **Focus** | `focus-visible:ring` herdado. |
+| Concern    | Comportamento                                      |
+| ---------- | -------------------------------------------------- |
+| **Roles**  | `<button>` para cada Suggestion (herda de Button). |
+| **Scroll** | ScrollArea com keyboard nav (Tab).                 |
+| **Focus**  | `focus-visible:ring` herdado.                      |
 
 ## Related
 

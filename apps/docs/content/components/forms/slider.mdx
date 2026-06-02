@@ -3,7 +3,7 @@ title: Slider
 description: Continuous numeric input via draggable thumb - single or range, horizontal or vertical, with a `thumbAriaLabel` extension for multi-thumb accessibility.
 ---
 
-import { SliderPreview } from "@/components/preview/forms/forms";
+import { SliderPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use Slider when **approximate position is more useful than exact precision** - v
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-slider
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-slider
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-slider
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-slider
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-slider ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-slider ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-slider ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-slider ```</Tab>
 </Tabs>
 
 ## Usage
@@ -65,25 +49,27 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Slider>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `number[]` | - | Controlled value(s). One number for single thumb; two for range. |
-| `defaultValue` | `number[]` | `[min, max]` | Uncontrolled initial value(s). |
-| `onValueChange` | `(value: number[]) => void` | - | Fires on every drag step. |
-| `onValueCommit` | `(value: number[]) => void` | - | Fires when the user releases the thumb (useful for network commits). |
-| `min` | `number` | `0` | Minimum value. |
-| `max` | `number` | `100` | Maximum value. |
-| `step` | `number` | `1` | Increment between allowed values. |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Vertical sliders default to `min-h-44` so they have something to drag along. |
-| `disabled` | `boolean` | `false` | Disables interaction. |
-| `name` | `string` | - | Form field name. |
-| `thumbAriaLabel` | `string \| string[]` | - | **Gremorie extension** (not in shadcn default). Accessible name for each thumb. Pass an array for range sliders, e.g. `["Minimum price", "Maximum price"]`. Required for WCAG 4.1.2 when the slider lacks an adjacent `<Label>`. |
-| `aria-label` | `string` | - | Falls back to this for thumb labels when `thumbAriaLabel` is not set. |
+| Prop             | Type                         | Default        | Description                                                                                                                                                                                                                      |
+| ---------------- | ---------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`          | `number[]`                   | -              | Controlled value(s). One number for single thumb; two for range.                                                                                                                                                                 |
+| `defaultValue`   | `number[]`                   | `[min, max]`   | Uncontrolled initial value(s).                                                                                                                                                                                                   |
+| `onValueChange`  | `(value: number[]) => void`  | -              | Fires on every drag step.                                                                                                                                                                                                        |
+| `onValueCommit`  | `(value: number[]) => void`  | -              | Fires when the user releases the thumb (useful for network commits).                                                                                                                                                             |
+| `min`            | `number`                     | `0`            | Minimum value.                                                                                                                                                                                                                   |
+| `max`            | `number`                     | `100`          | Maximum value.                                                                                                                                                                                                                   |
+| `step`           | `number`                     | `1`            | Increment between allowed values.                                                                                                                                                                                                |
+| `orientation`    | `"horizontal" \| "vertical"` | `"horizontal"` | Vertical sliders default to `min-h-44` so they have something to drag along.                                                                                                                                                     |
+| `disabled`       | `boolean`                    | `false`        | Disables interaction.                                                                                                                                                                                                            |
+| `name`           | `string`                     | -              | Form field name.                                                                                                                                                                                                                 |
+| `thumbAriaLabel` | `string \| string[]`         | -              | **Gremorie extension** (not in shadcn default). Accessible name for each thumb. Pass an array for range sliders, e.g. `["Minimum price", "Maximum price"]`. Required for WCAG 4.1.2 when the slider lacks an adjacent `<Label>`. |
+| `aria-label`     | `string`                     | -              | Falls back to this for thumb labels when `thumbAriaLabel` is not set.                                                                                                                                                            |
 
 Forwards to `SliderPrimitive.Root`. Renders `SliderPrimitive.Track`, `SliderPrimitive.Range`, and one `SliderPrimitive.Thumb` per value.
 
 <Callout type="info">
-**`thumbAriaLabel` is a Gremorie addition** to the standard shadcn Slider. Without it, range sliders announce two unnamed thumbs and fail WCAG 4.1.2 (Name, Role, Value). Always set it for range / multi-thumb sliders.
+  **`thumbAriaLabel` is a Gremorie addition** to the standard shadcn Slider.
+  Without it, range sliders announce two unnamed thumbs and fail WCAG 4.1.2
+  (Name, Role, Value). Always set it for range / multi-thumb sliders.
 </Callout>
 
 ## Composition
@@ -132,7 +118,7 @@ Pass two values for `defaultValue` (or `value`). Always set `thumbAriaLabel` as 
   min={0}
   max={100}
   step={1}
-  thumbAriaLabel={["Minimum price", "Maximum price"]}
+  thumbAriaLabel={['Minimum price', 'Maximum price']}
 />
 ```
 
@@ -141,13 +127,7 @@ Pass two values for `defaultValue` (or `value`). Always set `thumbAriaLabel` as 
 Use a larger `step` for discrete values like rating or font size.
 
 ```tsx
-<Slider
-  defaultValue={[3]}
-  min={1}
-  max={5}
-  step={1}
-  aria-label="Rating"
-/>
+<Slider defaultValue={[3]} min={1} max={5} step={1} aria-label="Rating" />
 ```
 
 ### Vertical orientation
@@ -156,11 +136,7 @@ Useful for media controls, color pickers, or any UI where horizontal space is pr
 
 ```tsx
 <div className="h-44">
-  <Slider
-    defaultValue={[60]}
-    orientation="vertical"
-    aria-label="Brightness"
-  />
+  <Slider defaultValue={[60]} orientation="vertical" aria-label="Brightness" />
 </div>
 ```
 

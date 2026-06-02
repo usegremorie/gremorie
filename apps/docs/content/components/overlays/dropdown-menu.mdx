@@ -1,9 +1,9 @@
 ---
 title: Dropdown Menu
-description: "Verb-led action menu attached to a trigger. Items, groups, separators, checkbox or radio items, submenus, and right-aligned shortcut hints."
+description: 'Verb-led action menu attached to a trigger. Items, groups, separators, checkbox or radio items, submenus, and right-aligned shortcut hints.'
 ---
 
-import { DropdownMenuPreview } from "@/components/preview/overlays/overlays";
+import { DropdownMenuPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -20,26 +20,16 @@ The compound exposes everything Radix offers: items with destructive variant, ch
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-dropdown-menu
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-dropdown-menu
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-dropdown-menu
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-dropdown-menu
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-dropdown-menu ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-dropdown-menu ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-dropdown-menu ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-dropdown-menu ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -94,28 +84,28 @@ Extends Radix `DropdownMenu.Trigger`. Use `asChild` to forward styles to a `Butt
 
 ### `<DropdownMenuContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `sideOffset` | `number` | `4` | Pixel gap between trigger and content. |
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side; flips automatically. |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger axis. |
+| Prop         | Type                                     | Default    | Description                             |
+| ------------ | ---------------------------------------- | ---------- | --------------------------------------- |
+| `sideOffset` | `number`                                 | `4`        | Pixel gap between trigger and content.  |
+| `side`       | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side; flips automatically.    |
+| `align`      | `"start" \| "center" \| "end"`           | `"center"` | Alignment relative to the trigger axis. |
 
 Wrapped in a Radix `Portal`. Capped at `--radix-dropdown-menu-content-available-height`, scrollable, `min-w-[8rem]`.
 
 ### `<DropdownMenuItem>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `inset` | `boolean` | `false` | Adds `pl-8` so the item lines up with checkbox/radio rows. |
-| `variant` | `"default" \| "destructive"` | `"default"` | `destructive` switches text and icon color to the destructive token. |
-| `disabled` | `boolean` | `false` | Disables interaction; renders at 50% opacity. |
+| Prop       | Type                         | Default     | Description                                                          |
+| ---------- | ---------------------------- | ----------- | -------------------------------------------------------------------- |
+| `inset`    | `boolean`                    | `false`     | Adds `pl-8` so the item lines up with checkbox/radio rows.           |
+| `variant`  | `"default" \| "destructive"` | `"default"` | `destructive` switches text and icon color to the destructive token. |
+| `disabled` | `boolean`                    | `false`     | Disables interaction; renders at 50% opacity.                        |
 
 ### `<DropdownMenuCheckboxItem>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `checked` | `boolean \| "indeterminate"` | - | Controlled checked state. |
-| `onCheckedChange` | `(checked: boolean) => void` | - | Fired when toggled. |
+| Prop              | Type                         | Default | Description               |
+| ----------------- | ---------------------------- | ------- | ------------------------- |
+| `checked`         | `boolean \| "indeterminate"` | -       | Controlled checked state. |
+| `onCheckedChange` | `(checked: boolean) => void` | -       | Fired when toggled.       |
 
 Renders an absolute-positioned check icon on the left when checked.
 
@@ -127,8 +117,8 @@ Pair a group with one or more radio items. The group owns the `value` and `onVal
 
 Non-interactive section heading.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop    | Type      | Default | Description                                      |
+| ------- | --------- | ------- | ------------------------------------------------ |
 | `inset` | `boolean` | `false` | Adds `pl-8` for alignment with check/radio rows. |
 
 ### `<DropdownMenuSeparator>`
@@ -195,10 +185,16 @@ Toggle visible columns or filters without closing the menu.
 <DropdownMenuContent>
   <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
   <DropdownMenuSeparator />
-  <DropdownMenuCheckboxItem checked={cols.name} onCheckedChange={toggle("name")}>
+  <DropdownMenuCheckboxItem
+    checked={cols.name}
+    onCheckedChange={toggle('name')}
+  >
     Name
   </DropdownMenuCheckboxItem>
-  <DropdownMenuCheckboxItem checked={cols.email} onCheckedChange={toggle("email")}>
+  <DropdownMenuCheckboxItem
+    checked={cols.email}
+    onCheckedChange={toggle('email')}
+  >
     Email
   </DropdownMenuCheckboxItem>
 </DropdownMenuContent>

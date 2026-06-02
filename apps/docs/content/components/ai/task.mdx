@@ -3,7 +3,10 @@ title: Task
 description: Collapsible task block for an agent action - title in the trigger, item list with inline file badges in the body.
 ---
 
-import { TaskCollapsedPreview, TaskExpandedPreview } from "@/components/preview/ai/chatbot";
+import {
+  TaskCollapsedPreview,
+  TaskExpandedPreview,
+} from '@/components/preview/ai/chatbot';
 
 ## Overview
 
@@ -28,26 +31,10 @@ Use it when the agent is editing a codebase, browsing a documentation tree, or o
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-task
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-task
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-task
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-task
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-task ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-task ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-task ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-task ```</Tab>
 </Tabs>
 
 ## Usage
@@ -86,11 +73,10 @@ import {
 } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile],
-  template: `
-    <task [open]="true">
+selector: "app-example",
+standalone: true,
+imports: [Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile],
+template: `     <task [open]="true">
       <task-trigger title="Refactor router" />
       <task-content>
         <task-item>
@@ -105,7 +91,8 @@ import {
   `,
 })
 export class ExampleComponent {}
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -177,7 +164,7 @@ Default usage - the agent reports the files it touched.
     </TaskItem>
   </TaskContent>
 </Task>
-```
+````
 
 ### Custom trigger
 

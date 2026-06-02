@@ -1,7 +1,5 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { Sparkles } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -15,8 +13,10 @@ import {
   Reasoning,
   ReasoningContent,
   ReasoningTrigger,
-} from "@gremorie/rx-ai";
-import { Card } from "@gremorie/rx-display";
+} from '@gremorie/rx-ai';
+import { Card } from '@gremorie/rx-display';
+import { Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Live demo card for the hero. Loops through a fake AI conversation so
@@ -37,36 +37,36 @@ import { Card } from "@gremorie/rx-display";
  *   and the final "done" state is rendered statically (full user message,
  *   collapsed-ish reasoning, full assistant message), no typing.
  */
-const USER_MESSAGE = "Show me a sales dashboard";
+const USER_MESSAGE = 'Show me a sales dashboard';
 const REASONING_TEXT =
-  "Generating a 4-card KPI grid with revenue, orders, AOV, and conversion. Using semantic tokens and the chart artifact for the trend line.";
+  'Generating a 4-card KPI grid with revenue, orders, AOV, and conversion. Using semantic tokens and the chart artifact for the trend line.';
 const ASSISTANT_TEXT =
-  "Here is a dashboard with 4 KPI cards and a 12-month revenue chart. Each card uses the Card primitive with semantic color tokens. The chart is a Chart artifact bound to your data schema.";
+  'Here is a dashboard with 4 KPI cards and a 12-month revenue chart. Each card uses the Card primitive with semantic color tokens. The chart is a Chart artifact bound to your data schema.';
 
-type Phase = "idle" | "reasoning" | "assistant" | "done";
+type Phase = 'idle' | 'reasoning' | 'assistant' | 'done';
 
 function usePrefersReducedMotion() {
   const [reduce, setReduce] = useState(false);
   useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return;
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReduce(mql.matches);
     const handler = (e: MediaQueryListEvent) => setReduce(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
   }, []);
   return reduce;
 }
 
 function useTypewriter(text: string, active: boolean, speed = 22) {
-  const [out, setOut] = useState("");
+  const [out, setOut] = useState('');
   useEffect(() => {
     if (!active) {
-      setOut("");
+      setOut('');
       return;
     }
     let i = 0;
-    setOut("");
+    setOut('');
     const id = setInterval(() => {
       i += 1;
       setOut(text.slice(0, i));
@@ -81,7 +81,7 @@ export function HeroDemo() {
   const reducedMotion = usePrefersReducedMotion();
   // When reducedMotion is true, lock the phase to "done" so all final
   // content renders statically with no animation cycle.
-  const [phase, setPhase] = useState<Phase>("idle");
+  const [phase, setPhase] = useState<Phase>('idle');
   const timers = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export function HeroDemo() {
     if (reducedMotion) {
       timers.current.forEach((t) => clearTimeout(t));
       timers.current = [];
-      setPhase("done");
+      setPhase('done');
       return;
     }
 
@@ -103,10 +103,10 @@ export function HeroDemo() {
       // shortened from 600ms to 250ms, and reasoning -> assistant from
       // 3200ms to 2100ms so the cycle reaches assistant copy faster on
       // first paint - casual visitors no longer see a stuck idle.
-      setPhase("idle");
-      timers.current.push(setTimeout(() => setPhase("reasoning"), 250));
-      timers.current.push(setTimeout(() => setPhase("assistant"), 2100));
-      timers.current.push(setTimeout(() => setPhase("done"), 6800));
+      setPhase('idle');
+      timers.current.push(setTimeout(() => setPhase('reasoning'), 250));
+      timers.current.push(setTimeout(() => setPhase('assistant'), 2100));
+      timers.current.push(setTimeout(() => setPhase('done'), 6800));
       timers.current.push(setTimeout(run, 10500));
     }
     run();
@@ -117,12 +117,12 @@ export function HeroDemo() {
 
   const animatedReasoning = useTypewriter(
     REASONING_TEXT,
-    !reducedMotion && phase === "reasoning",
+    !reducedMotion && phase === 'reasoning',
     14,
   );
   const animatedAssistant = useTypewriter(
     ASSISTANT_TEXT,
-    !reducedMotion && (phase === "assistant" || phase === "done"),
+    !reducedMotion && (phase === 'assistant' || phase === 'done'),
     18,
   );
 
@@ -132,12 +132,12 @@ export function HeroDemo() {
 
   const showReasoning =
     reducedMotion ||
-    phase === "reasoning" ||
-    phase === "assistant" ||
-    phase === "done";
-  const isReasoningStreaming = !reducedMotion && phase === "reasoning";
+    phase === 'reasoning' ||
+    phase === 'assistant' ||
+    phase === 'done';
+  const isReasoningStreaming = !reducedMotion && phase === 'reasoning';
   const showAssistant =
-    reducedMotion || phase === "assistant" || phase === "done";
+    reducedMotion || phase === 'assistant' || phase === 'done';
 
   // Cosmetic no-op handler. The submit button is permanently disabled.
   const handleSubmit = () => {

@@ -1,6 +1,6 @@
 ---
 title: Chart (bar)
-description: "Bar chart artifact rendering a schema-driven dataset emitted by the model."
+description: 'Bar chart artifact rendering a schema-driven dataset emitted by the model.'
 ---
 
 ## Overview
@@ -92,7 +92,7 @@ Sample prompts that produce valid output for this artifact:
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
 import {
   Badge,
@@ -101,8 +101,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
+} from '@gremorie/rx-display';
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
 
 const SCHEMA = `{
   type: "chart-bar",
@@ -110,15 +110,15 @@ const SCHEMA = `{
   config: { xKey: string; yKey: string; label: string },
 }`;
 
-const DATA: Datum[] = [
-  { category: "Q1", value: 42000 },
-  { category: "Q2", value: 51000 },
-  { category: "Q3", value: 48000 },
-  { category: "Q4", value: 62000 },
+const DATA: ChartDatum[] = [
+  { category: 'Q1', value: 42000 },
+  { category: 'Q2', value: 51000 },
+  { category: 'Q3', value: 48000 },
+  { category: 'Q4', value: 62000 },
 ];
 
 const CONFIG: ChartConfig = {
-  value: { label: "Revenue", color: "var(--chart-1)" },
+  value: { label: 'Revenue', color: 'var(--chart-1)' },
 };
 
 export function ChartBar() {
@@ -170,9 +170,9 @@ export function ChartBar() {
 ## Streaming behavior
 
 <Callout type="info">
-  This artifact renders after the JSON payload parses. Partial payloads
-  are deferred until `data` is a valid array — the chart never renders
-  half a dataset.
+  This artifact renders after the JSON payload parses. Partial payloads are
+  deferred until `data` is a valid array — the chart never renders half a
+  dataset.
 </Callout>
 
 ## Related

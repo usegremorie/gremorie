@@ -3,7 +3,7 @@ title: Select
 description: Dropdown chooser for short fixed lists - compound primitive built on Radix Select with portaled, animated, and scroll-aware content.
 ---
 
-import { SelectPreview } from "@/components/preview/forms/forms";
+import { SelectPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ For lists longer than ~10 items, reach for a `Combobox` so users can type to fil
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-select
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-select
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-select
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-select
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-select ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-select ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-select ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-select ```</Tab>
 </Tabs>
 
 ## Usage
@@ -84,16 +68,16 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Root provider. Owns the selected value and open state.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | - | Controlled value. |
-| `defaultValue` | `string` | - | Uncontrolled initial value. |
-| `onValueChange` | `(value: string) => void` | - | Fires when the user picks an option. |
-| `open` | `boolean` | - | Controlled open state. |
-| `onOpenChange` | `(open: boolean) => void` | - | Fires when the listbox opens or closes. |
-| `disabled` | `boolean` | `false` | Disables the trigger. |
-| `name` | `string` | - | Form field name; submits the selected value with surrounding `<form>`. |
-| `required` | `boolean` | `false` | Marks the underlying form input as required. |
+| Prop            | Type                      | Default | Description                                                            |
+| --------------- | ------------------------- | ------- | ---------------------------------------------------------------------- |
+| `value`         | `string`                  | -       | Controlled value.                                                      |
+| `defaultValue`  | `string`                  | -       | Uncontrolled initial value.                                            |
+| `onValueChange` | `(value: string) => void` | -       | Fires when the user picks an option.                                   |
+| `open`          | `boolean`                 | -       | Controlled open state.                                                 |
+| `onOpenChange`  | `(open: boolean) => void` | -       | Fires when the listbox opens or closes.                                |
+| `disabled`      | `boolean`                 | `false` | Disables the trigger.                                                  |
+| `name`          | `string`                  | -       | Form field name; submits the selected value with surrounding `<form>`. |
+| `required`      | `boolean`                 | `false` | Marks the underlying form input as required.                           |
 
 Forwards to `SelectPrimitive.Root`.
 
@@ -101,17 +85,17 @@ Forwards to `SelectPrimitive.Root`.
 
 The visible button users click to open the listbox.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop   | Type                | Default     | Description                        |
+| ------ | ------------------- | ----------- | ---------------------------------- |
 | `size` | `"sm" \| "default"` | `"default"` | `sm` is `h-8`; `default` is `h-9`. |
 
 Renders the trigger surface and a trailing `ChevronDownIcon`.
 
 ### `<SelectValue>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `placeholder` | `ReactNode` | - | Rendered when the value is empty. |
+| Prop          | Type        | Default | Description                       |
+| ------------- | ----------- | ------- | --------------------------------- |
+| `placeholder` | `ReactNode` | -       | Rendered when the value is empty. |
 
 Reads from the parent `Select` context and renders the current value.
 
@@ -119,20 +103,20 @@ Reads from the parent `Select` context and renders the current value.
 
 The portalled listbox. Animates in / out and respects `--radix-select-content-available-height`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `position` | `"item-aligned" \| "popper"` | `"item-aligned"` | `item-aligned` matches the selected item to the trigger; `popper` floats below the trigger like a `Popover`. |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Cross-axis alignment of the popover. |
-| `sideOffset` | `number` | `0` | Distance between trigger and content. |
+| Prop         | Type                           | Default          | Description                                                                                                  |
+| ------------ | ------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| `position`   | `"item-aligned" \| "popper"`   | `"item-aligned"` | `item-aligned` matches the selected item to the trigger; `popper` floats below the trigger like a `Popover`. |
+| `align`      | `"start" \| "center" \| "end"` | `"center"`       | Cross-axis alignment of the popover.                                                                         |
+| `sideOffset` | `number`                       | `0`              | Distance between trigger and content.                                                                        |
 
 Wraps `SelectScrollUpButton` + `SelectPrimitive.Viewport` + `SelectScrollDownButton` so long lists scroll naturally.
 
 ### `<SelectItem>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | - | The value reported back to the parent `Select`. Required. |
-| `disabled` | `boolean` | `false` | When `true`, removes the item from the active set. |
+| Prop       | Type      | Default | Description                                               |
+| ---------- | --------- | ------- | --------------------------------------------------------- |
+| `value`    | `string`  | -       | The value reported back to the parent `Select`. Required. |
+| `disabled` | `boolean` | `false` | When `true`, removes the item from the active set.        |
 
 Renders a `CheckIcon` indicator (visible only when selected) and the children as the item text.
 
@@ -208,7 +192,7 @@ For form submission. `name` makes the value participate in the surrounding `<for
 
 ```tsx
 function ControlledSelect() {
-  const [model, setModel] = React.useState("opus");
+  const [model, setModel] = React.useState('opus');
   return (
     <Select value={model} onValueChange={setModel} name="model">
       <SelectTrigger>

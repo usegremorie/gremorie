@@ -52,6 +52,9 @@ export * from './lib/chain-of-thought';
 // Sources (citation cards)
 export * from './lib/sources';
 
+// InlineCitation (footnote citation with hover-card)
+export * from './lib/inline-citation';
+
 // Task (collapsible file list card)
 export * from './lib/task';
 

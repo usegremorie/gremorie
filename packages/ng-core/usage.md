@@ -1,13 +1,13 @@
 ---
-whenToUse: "Foundational utilities and the Button primitive. Install before any other Gremorie package."
-whenNotToUse: "Standalone primitive usage outside an Angular app - this package depends on @angular/core."
+whenToUse: 'Foundational utilities and the Button primitive. Install before any other Gremorie package.'
+whenNotToUse: 'Standalone primitive usage outside an Angular app - this package depends on @angular/core.'
 bestPractices:
-  - "Import `cn` from @gremorie/ng-core to merge Tailwind classes; do not pull in clsx or tailwind-merge directly."
-  - "Use the Button primitive as-is. Variants and sizes are consistent with the React edition."
+  - 'Import `cn` from @gremorie/ng-core to merge Tailwind classes; do not pull in clsx or tailwind-merge directly.'
+  - 'Use the Button primitive as-is. Variants and sizes are consistent with the React edition.'
   - "Apply the theme.css once at the root of the app (`@import '@gremorie/ng-core/theme.css';`)."
 antipatterns:
-  - "Re-implementing a Button via raw `<button>` plus Tailwind classes - the primitive already covers variants, sizes, icons, disabled states."
-  - "Forking the cva calls in button.ts - extend through composition instead so future upstream updates flow in."
+  - 'Re-implementing a Button via raw `<button>` plus Tailwind classes - the primitive already covers variants, sizes, icons, disabled states.'
+  - 'Forking the cva calls in button.ts - extend through composition instead so future upstream updates flow in.'
 api:
   inputs:
     - name: variant
@@ -21,16 +21,16 @@ api:
     - name: disabled
       type: boolean
       required: false
-      default: "false"
+      default: 'false'
   outputs:
     - name: gremorieClick
       payload: MouseEvent
-      description: "Emitted on click when the button is not disabled."
+      description: 'Emitted on click when the button is not disabled.'
 examples:
-  - title: "Default button"
+  - title: 'Default button'
     code: |
       <button gButton>Save</button>
-  - title: "Destructive icon button"
+  - title: 'Destructive icon button'
     code: |
       <button gButton variant="destructive" size="icon">
         <trash-icon />

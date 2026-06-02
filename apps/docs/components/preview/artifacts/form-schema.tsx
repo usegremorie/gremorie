@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import { useState } from "react";
 import {
   Badge,
   Card,
@@ -8,8 +7,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { Button, Checkbox, Input, Label } from "@gremorie/rx-forms";
+} from '@gremorie/rx-display';
+import { Button, Checkbox, Input, Label } from '@gremorie/rx-forms';
+import { useState } from 'react';
 
 const SCHEMA = `{
   fields: [
@@ -58,7 +58,7 @@ export function FormSchema() {
             </Label>
           </div>
           <Button type="submit" className="w-full">
-            {submitted ? "Sent!" : "Submit"}
+            {submitted ? 'Sent!' : 'Submit'}
           </Button>
           <pre className="mt-2 overflow-x-auto rounded bg-muted/40 p-3 text-xs font-mono text-muted-foreground">
             {SCHEMA}

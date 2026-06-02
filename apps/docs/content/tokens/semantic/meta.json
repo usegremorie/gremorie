@@ -1,5 +1,6 @@
 {
   "title": "Semantic",
   "icon": "Brush",
-  "pages": ["index", "colors"]
+  "description": "Primitives mapped to intent — how the system supports themes and dark mode without components knowing.",
+  "pages": ["visao-geral", "colors"]
 }

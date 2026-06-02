@@ -6,8 +6,8 @@
  * computed values, then a use-case description. Styling uses
  * Fumadocs / KDS utility classes and CSS variables — no client JS.
  */
-import type { ChartScheme } from "@/lib/chart-tokens";
-import type { ColorPalette, ColorRow } from "@/lib/primitive-tokens";
+import type { ChartScheme } from '@/lib/chart-tokens';
+import type { ColorPalette, ColorRow } from '@/lib/primitive-tokens';
 
 import {
   ANIMATIONS,
@@ -16,27 +16,27 @@ import {
   INSET_SHADOWS,
   RADIUS_TOKENS,
   SHADOW_TOKENS,
-  SPACING_STEPS
-} from "@/lib/scale-tokens";
-import { SEMANTIC_THEMES } from "@/lib/semantic-tokens";
+  SPACING_STEPS,
+} from '@/lib/scale-tokens';
+import { SEMANTIC_THEMES } from '@/lib/semantic-tokens';
 import {
   FONT_FAMILIES,
   LEADINGS,
   TRACKINGS,
   TYPE_SIZES,
-  TYPE_WEIGHTS
-} from "@/lib/typography-tokens";
+  TYPE_WEIGHTS,
+} from '@/lib/typography-tokens';
 
 const TH =
-  "px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-fd-muted-foreground border-b border-fd-border";
-const TD = "px-3 py-2 align-middle border-b border-fd-border";
-const MONO = "font-mono text-xs text-fd-foreground";
-const MONO_MUTED = "font-mono text-xs text-fd-muted-foreground";
+  'px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-fd-muted-foreground border-b border-fd-border';
+const TD = 'px-3 py-2 align-middle border-b border-fd-border';
+const MONO = 'font-mono text-xs text-fd-foreground';
+const MONO_MUTED = 'font-mono text-xs text-fd-muted-foreground';
 
 function Swatch({ value, square = true }: { value: string; square?: boolean }) {
   return (
     <span
-      className={`inline-block ${square ? "h-6 w-6" : "h-4 w-12"} shrink-0 rounded border border-fd-border align-middle`}
+      className={`inline-block ${square ? 'h-6 w-6' : 'h-4 w-12'} shrink-0 rounded border border-fd-border align-middle`}
       style={{ backgroundColor: value }}
       aria-hidden
     />
@@ -58,8 +58,12 @@ export function ColorPaletteTable({ palette }: { palette: ColorPalette }) {
         <table className="w-full border-collapse text-sm">
           <thead className="bg-fd-muted/40">
             <tr>
-              <th className={TH} style={{ width: "60px" }}>Amostra</th>
-              <th className={TH} style={{ width: "70px" }}>Passo</th>
+              <th className={TH} style={{ width: '60px' }}>
+                Amostra
+              </th>
+              <th className={TH} style={{ width: '70px' }}>
+                Passo
+              </th>
               <th className={TH}>CSS Token</th>
               <th className={TH}>Classe Tailwind</th>
               <th className={TH}>OKLCH</th>
@@ -94,7 +98,9 @@ export function TypeSizeTable() {
       <table className="w-full border-collapse text-sm">
         <thead className="bg-fd-muted/40">
           <tr>
-            <th className={TH} style={{ width: "32%" }}>Amostra</th>
+            <th className={TH} style={{ width: '32%' }}>
+              Amostra
+            </th>
             <th className={TH}>Token</th>
             <th className={TH}>Classe</th>
             <th className={TH}>Tamanho</th>
@@ -134,7 +140,9 @@ export function TypeWeightTable() {
       <table className="w-full border-collapse text-sm">
         <thead className="bg-fd-muted/40">
           <tr>
-            <th className={TH} style={{ width: "20%" }}>Amostra</th>
+            <th className={TH} style={{ width: '20%' }}>
+              Amostra
+            </th>
             <th className={TH}>Token</th>
             <th className={TH}>Classe</th>
             <th className={TH}>Valor</th>
@@ -145,10 +153,7 @@ export function TypeWeightTable() {
           {TYPE_WEIGHTS.map((row) => (
             <tr key={row.token} className="hover:bg-fd-muted/20">
               <td className={TD}>
-                <span
-                  style={{ fontWeight: row.value }}
-                  className="text-base"
-                >
+                <span style={{ fontWeight: row.value }} className="text-base">
                   Texto
                 </span>
               </td>
@@ -251,7 +256,9 @@ export function SpacingTable() {
       <table className="w-full border-collapse text-sm">
         <thead className="bg-fd-muted/40">
           <tr>
-            <th className={TH} style={{ width: "30%" }}>Amostra</th>
+            <th className={TH} style={{ width: '30%' }}>
+              Amostra
+            </th>
             <th className={TH}>Passo</th>
             <th className={TH}>Classe</th>
             <th className={TH}>Rem</th>
@@ -265,7 +272,7 @@ export function SpacingTable() {
               <td className={TD}>
                 <span
                   className="block h-3 rounded bg-fd-primary/70"
-                  style={{ width: row.rem, maxWidth: "100%" }}
+                  style={{ width: row.rem, maxWidth: '100%' }}
                   aria-hidden
                 />
               </td>
@@ -290,7 +297,9 @@ export function RadiusTable() {
       <table className="w-full border-collapse text-sm">
         <thead className="bg-fd-muted/40">
           <tr>
-            <th className={TH} style={{ width: "80px" }}>Amostra</th>
+            <th className={TH} style={{ width: '80px' }}>
+              Amostra
+            </th>
             <th className={TH}>Token</th>
             <th className={TH}>Classe</th>
             <th className={TH}>Rem</th>
@@ -330,7 +339,9 @@ export function ShadowTable({ inset = false }: { inset?: boolean } = {}) {
       <table className="w-full border-collapse text-sm">
         <thead className="bg-fd-muted/40">
           <tr>
-            <th className={TH} style={{ width: "100px" }}>Amostra</th>
+            <th className={TH} style={{ width: '100px' }}>
+              Amostra
+            </th>
             <th className={TH}>Token</th>
             <th className={TH}>Classe</th>
             <th className={TH}>Definição</th>
@@ -459,15 +470,19 @@ export function SemanticThemeTable({ themeId }: { themeId: string }) {
       </p>
       <p className="mt-2 text-xs text-fd-muted-foreground">
         <code className="font-mono">--radius</code>: {theme.radius}
-        {" · "}selector{" "}
+        {' · '}selector{' '}
         <code className="font-mono">[data-theme=&quot;{theme.id}&quot;]</code>
       </p>
       <div className="mt-4 overflow-x-auto rounded-lg border border-fd-border">
         <table className="w-full border-collapse text-sm">
           <thead className="bg-fd-muted/40">
             <tr>
-              <th className={TH} style={{ width: "60px" }}>Light</th>
-              <th className={TH} style={{ width: "60px" }}>Dark</th>
+              <th className={TH} style={{ width: '60px' }}>
+                Light
+              </th>
+              <th className={TH} style={{ width: '60px' }}>
+                Dark
+              </th>
               <th className={TH}>Token</th>
               <th className={TH}>Primitivo (light)</th>
               <th className={TH}>Primitivo (dark)</th>
@@ -513,7 +528,7 @@ export function ChartSchemeSwatchRow({ scheme }: { scheme: ChartScheme }) {
       <div className="flex w-full gap-1 font-mono text-[10px] text-fd-muted-foreground">
         {scheme.rows.map((row) => (
           <div key={row.token} className="flex-1 truncate text-center">
-            {row.token.replace(/^--color-chart-/, "")}
+            {row.token.replace(/^--color-chart-/, '')}
           </div>
         ))}
       </div>
@@ -528,7 +543,9 @@ export function ChartSchemeTable({ scheme }: { scheme: ChartScheme }) {
       <table className="w-full border-collapse text-sm">
         <thead className="bg-fd-muted/40">
           <tr>
-            <th className={TH} style={{ width: "60px" }}>Amostra</th>
+            <th className={TH} style={{ width: '60px' }}>
+              Amostra
+            </th>
             <th className={TH}>Token</th>
             <th className={TH}>Primitivo</th>
             {hasMeaning ? <th className={TH}>Significado</th> : null}
@@ -542,9 +559,7 @@ export function ChartSchemeTable({ scheme }: { scheme: ChartScheme }) {
               </td>
               <td className={`${TD} ${MONO}`}>{row.token}</td>
               <td className={`${TD} ${MONO_MUTED}`}>{row.primitive}</td>
-              {hasMeaning ? (
-                <td className={TD}>{row.meaning ?? ""}</td>
-              ) : null}
+              {hasMeaning ? <td className={TD}>{row.meaning ?? ''}</td> : null}
             </tr>
           ))}
         </tbody>

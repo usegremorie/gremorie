@@ -1,6 +1,6 @@
 ---
 title: Form
-description: "Labels, validation, error messages, and submission flow. The rules that make forms recoverable."
+description: 'Labels, validation, error messages, and submission flow. The rules that make forms recoverable.'
 related: rx-form, rx-input, rx-label, rx-input-group, rx-field-group
 tags: [components, forms, validation, accessibility]
 ---
@@ -40,8 +40,8 @@ The "name + problem + fix" structure on errors comes from Nielsen #9 (help users
         id="email"
         name="email"
         type="email"
-        aria-invalid={errors.email ? "true" : undefined}
-        aria-describedby={errors.email ? "email-error" : undefined}
+        aria-invalid={errors.email ? 'true' : undefined}
+        aria-describedby={errors.email ? 'email-error' : undefined}
       />
       {errors.email && (
         <FieldDescription id="email-error" role="alert">

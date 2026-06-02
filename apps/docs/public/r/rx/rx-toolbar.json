@@ -19,7 +19,7 @@
   "files": [
     {
       "path": "src/lib/toolbar/toolbar.tsx",
-      "content": "import { cn } from \"@gremorie/rx-core\";\nimport { NodeToolbar, Position } from \"@xyflow/react\";\nimport type { ComponentProps } from \"react\";\n\ntype ToolbarProps = ComponentProps<typeof NodeToolbar>;\n\nexport const Toolbar = ({ className, ...props }: ToolbarProps) => (\n  <NodeToolbar\n    className={cn(\n      \"flex items-center gap-1 rounded-sm border bg-background p-1.5\",\n      className\n    )}\n    position={Position.Bottom}\n    {...props}\n  />\n);\n",
+      "content": "import { cn } from '@gremorie/rx-core';\nimport { NodeToolbar, Position } from '@xyflow/react';\nimport type { ComponentProps } from 'react';\n\ntype ToolbarProps = ComponentProps<typeof NodeToolbar>;\n\nexport const Toolbar = ({ className, ...props }: ToolbarProps) => (\n  <NodeToolbar\n    className={cn(\n      'flex items-center gap-1 rounded-sm border bg-background p-1.5',\n      className,\n    )}\n    position={Position.Bottom}\n    {...props}\n  />\n);\n",
       "type": "registry:component",
       "target": "src/components/gremorie/ai/toolbar/toolbar.tsx"
     }

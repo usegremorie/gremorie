@@ -13,10 +13,10 @@
  * meant to be injected into LLM context.
  */
 
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
-const CORPUS_DIR = path.join(process.cwd(), "content", "corpus");
+const CORPUS_DIR = path.join(process.cwd(), 'content', 'corpus');
 
 export interface GuidelineDoc {
   /** Filename without extension (also the URL slug under /corpus/). */
@@ -38,12 +38,12 @@ export interface GuidelineDoc {
  */
 function readFrontmatter(raw: string): { title: string; description: string } {
   const match = raw.match(/^---\n([\s\S]*?)\n---/);
-  if (!match || !match[1]) return { title: "", description: "" };
+  if (!match || !match[1]) return { title: '', description: '' };
   const block = match[1];
   const titleMatch = /^title:\s*(.+)$/m.exec(block);
   const descMatch = /^description:\s*(.+)$/m.exec(block);
-  const title = titleMatch?.[1]?.trim() ?? "";
-  const description = descMatch?.[1]?.trim() ?? "";
+  const title = titleMatch?.[1]?.trim() ?? '';
+  const description = descMatch?.[1]?.trim() ?? '';
   return {
     title: stripQuotes(title),
     description: stripQuotes(description),
@@ -51,7 +51,10 @@ function readFrontmatter(raw: string): { title: string; description: string } {
 }
 
 function stripQuotes(s: string): string {
-  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+  if (
+    (s.startsWith('"') && s.endsWith('"')) ||
+    (s.startsWith("'") && s.endsWith("'"))
+  ) {
     return s.slice(1, -1);
   }
   return s;
@@ -62,7 +65,7 @@ function stripQuotes(s: string): string {
  * Sub-folders (heuristics/, components/, patterns/, etc.) are flattened
  * with slash slugs.
  */
-async function walkMdx(dir: string, relBase = ""): Promise<GuidelineDoc[]> {
+async function walkMdx(dir: string, relBase = ''): Promise<GuidelineDoc[]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   const docs: GuidelineDoc[] = [];
   for (const entry of entries) {
@@ -72,10 +75,10 @@ async function walkMdx(dir: string, relBase = ""): Promise<GuidelineDoc[]> {
       docs.push(...(await walkMdx(fullPath, rel)));
       continue;
     }
-    if (!entry.name.endsWith(".mdx")) continue;
-    const raw = await fs.readFile(fullPath, "utf-8");
+    if (!entry.name.endsWith('.mdx')) continue;
+    const raw = await fs.readFile(fullPath, 'utf-8');
     const { title, description } = readFrontmatter(raw);
-    const slug = rel.replace(/\.mdx$/, "");
+    const slug = rel.replace(/\.mdx$/, '');
     docs.push({
       slug,
       path: `content/corpus/${rel}`,
@@ -89,7 +92,7 @@ async function walkMdx(dir: string, relBase = ""): Promise<GuidelineDoc[]> {
 
 /** List every guideline doc with title + slug + description (no body). */
 export async function listGuidelines(): Promise<
-  Array<Omit<GuidelineDoc, "content">>
+  Array<Omit<GuidelineDoc, 'content'>>
 > {
   const docs = await walkMdx(CORPUS_DIR);
   return docs.map(({ content: _, ...meta }) => meta);

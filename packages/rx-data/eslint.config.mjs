@@ -8,7 +8,12 @@ export default [
       '@nx/dependency-checks': [
         'error',
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
+          // Stories import dev-only tooling (@storybook/react, recharts demos)
+          // that must not leak into the published peerDependencies.
+          ignoredFiles: [
+            '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/**/*.stories.{ts,tsx,js,jsx}',
+          ],
         },
       ],
     },

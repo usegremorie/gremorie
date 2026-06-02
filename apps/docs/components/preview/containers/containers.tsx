@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   AspectRatio,
@@ -7,7 +7,7 @@ import {
   ResizablePanelGroup,
   ScrollArea,
   Stack,
-} from "@gremorie/rx-containers";
+} from '@gremorie/rx-containers';
 
 // ---------- AspectRatio ----------
 

@@ -2,18 +2,22 @@
 title: Conversation
 description: Container de chat com sticky-bottom — encaixa Message, PromptInput e ScrollButton no fluxo natural.
 component: Conversation
-importPath: "@kalvner/kds/ai/conversation"
+importPath: '@kalvner/kds/ai/conversation'
 status: stable
 ---
 
-import { ConversationPreview, ConversationEmptyPreview, ConversationLongPreview } from "@/components/ai-chatbot-demos";
+import {
+  ConversationPreview,
+  ConversationEmptyPreview,
+  ConversationLongPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -32,7 +36,9 @@ disso.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Conversation com 4 bubbles user/assistant.</CardDescription>
+    <CardDescription>
+      Conversation com 4 bubbles user/assistant.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ConversationPreview />
@@ -53,16 +59,16 @@ disso.
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
 import {
   Conversation,
   ConversationContent,
   ConversationEmptyState,
-  ConversationScrollButton
-} from "@kalvner/kds/ai/conversation";
-import { Message, MessageContent } from "@kalvner/kds/ai/message";
-import { MessagesSquare } from "lucide-react";
+  ConversationScrollButton,
+} from '@kalvner/kds/ai/conversation';
+import { Message, MessageContent } from '@kalvner/kds/ai/message';
+import { MessagesSquare } from 'lucide-react';
 
 export function ChatThread({ messages }: { messages: ChatMessage[] }) {
   if (messages.length === 0) {
@@ -96,20 +102,20 @@ export function ChatThread({ messages }: { messages: ChatMessage[] }) {
 
 ### Conversation (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `initial` | `'smooth' \| 'instant' \| false` | `'smooth'` | Comportamento do scroll inicial. |
-| `resize` | `'smooth' \| 'instant' \| false` | `'smooth'` | Comportamento ao redimensionar (ex.: viewport mobile rotaciona). |
-| `role` | `string` | `'log'` | Role ARIA — sempre `log` para que leitores de tela anunciem novas entradas. |
-| `className` | `string` | — | Override (`relative flex-1 overflow-y-hidden` é o default). |
+| Prop        | Tipo                             | Default    | Descrição                                                                   |
+| ----------- | -------------------------------- | ---------- | --------------------------------------------------------------------------- |
+| `initial`   | `'smooth' \| 'instant' \| false` | `'smooth'` | Comportamento do scroll inicial.                                            |
+| `resize`    | `'smooth' \| 'instant' \| false` | `'smooth'` | Comportamento ao redimensionar (ex.: viewport mobile rotaciona).            |
+| `role`      | `string`                         | `'log'`    | Role ARIA — sempre `log` para que leitores de tela anunciem novas entradas. |
+| `className` | `string`                         | —          | Override (`relative flex-1 overflow-y-hidden` é o default).                 |
 
 Todos os props extras herdam de `<StickToBottom>` do
 `use-stick-to-bottom`.
 
 ### ConversationContent
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
+| Prop        | Tipo     | Default                     | Descrição                    |
+| ----------- | -------- | --------------------------- | ---------------------------- |
 | `className` | `string` | `'flex flex-col gap-8 p-4'` | Override do wrapper interno. |
 
 Aceita qualquer prop válida em `<StickToBottom.Content>` (que é
@@ -117,18 +123,18 @@ Aceita qualquer prop válida em `<StickToBottom.Content>` (que é
 
 ### ConversationEmptyState
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `title` | `string` | `'No messages yet'` | Título do estado vazio. |
-| `description` | `string` | `'Start a conversation to see messages here'` | Subtexto. |
-| `icon` | `ReactNode` | — | Ícone opcional (Lucide ~`size-12`). |
-| `children` | `ReactNode` | — | Override total — substitui icon/title/description. |
+| Prop          | Tipo        | Default                                       | Descrição                                          |
+| ------------- | ----------- | --------------------------------------------- | -------------------------------------------------- |
+| `title`       | `string`    | `'No messages yet'`                           | Título do estado vazio.                            |
+| `description` | `string`    | `'Start a conversation to see messages here'` | Subtexto.                                          |
+| `icon`        | `ReactNode` | —                                             | Ícone opcional (Lucide ~`size-12`).                |
+| `children`    | `ReactNode` | —                                             | Override total — substitui icon/title/description. |
 
 ### ConversationScrollButton
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `className` | `string` | — | Override de posição/aparência. |
+| Prop        | Tipo     | Default | Descrição                      |
+| ----------- | -------- | ------- | ------------------------------ |
+| `className` | `string` | —       | Override de posição/aparência. |
 
 Herda todos os props de [Button](../../forms/button) — `variant`,
 `size`, etc. Por padrão é `variant="outline"` `size="icon"`,
@@ -151,12 +157,12 @@ posicionado `absolute bottom-4 left-1/2`.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| `isAtBottom=true` | Scroll fica grudado no fim; novas mensagens empurram junto. |
-| `isAtBottom=false` | Scroll preso; ScrollButton aparece. |
-| Empty | EmptyState ocupa o container inteiro (centralizado). |
-| Resize | `resize="smooth"` rola pra mostrar o último item de novo. |
+| Estado             | Comportamento                                               |
+| ------------------ | ----------------------------------------------------------- |
+| `isAtBottom=true`  | Scroll fica grudado no fim; novas mensagens empurram junto. |
+| `isAtBottom=false` | Scroll preso; ScrollButton aparece.                         |
+| Empty              | EmptyState ocupa o container inteiro (centralizado).        |
+| Resize             | `resize="smooth"` rola pra mostrar o último item de novo.   |
 
 ## Variants
 
@@ -172,18 +178,20 @@ Pra primeira impressão, combine EmptyState com [Suggestion](./suggestion)
 pra sugerir queries de partida:
 
 ```tsx
-{messages.length === 0 ? (
-  <ConversationEmptyState>
-    <h3>Bem-vindo</h3>
-    <p>Comece com uma destas:</p>
-    <Suggestions>
-      <Suggestion suggestion="Como configuro multi-tema?" />
-      <Suggestion suggestion="Quais tokens chart estão disponíveis?" />
-    </Suggestions>
-  </ConversationEmptyState>
-) : (
-  <ConversationContent>{/* messages */}</ConversationContent>
-)}
+{
+  messages.length === 0 ? (
+    <ConversationEmptyState>
+      <h3>Bem-vindo</h3>
+      <p>Comece com uma destas:</p>
+      <Suggestions>
+        <Suggestion suggestion="Como configuro multi-tema?" />
+        <Suggestion suggestion="Quais tokens chart estão disponíveis?" />
+      </Suggestions>
+    </ConversationEmptyState>
+  ) : (
+    <ConversationContent>{/* messages */}</ConversationContent>
+  );
+}
 ```
 
 ### Conversation + PromptInput layout
@@ -237,13 +245,13 @@ fora do Conversation:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Role** | `role="log"` no root — leitores de tela anunciam novas entradas automaticamente. |
-| **Live region** | O `log` é implicitamente `aria-live="polite"`. Para mensagens críticas (erros do agente), use Sonner toast em vez de só uma Message. |
-| **Focus** | ScrollButton tem `focus-visible:ring-[3px]` herdado de Button. |
-| **Reduced motion** | `initial="smooth"` e `resize="smooth"` respeitam `prefers-reduced-motion` (vira `instant`). |
-| **Screen reader** | Em listas longas, anuncie remetente antes do texto: `<Message from="user">[user said] {text}</Message>` ou via Streamdown. |
+| Concern            | Comportamento                                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Role**           | `role="log"` no root — leitores de tela anunciam novas entradas automaticamente.                                                     |
+| **Live region**    | O `log` é implicitamente `aria-live="polite"`. Para mensagens críticas (erros do agente), use Sonner toast em vez de só uma Message. |
+| **Focus**          | ScrollButton tem `focus-visible:ring-[3px]` herdado de Button.                                                                       |
+| **Reduced motion** | `initial="smooth"` e `resize="smooth"` respeitam `prefers-reduced-motion` (vira `instant`).                                          |
+| **Screen reader**  | Em listas longas, anuncie remetente antes do texto: `<Message from="user">[user said] {text}</Message>` ou via Streamdown.           |
 
 ## Related
 

@@ -3,7 +3,12 @@ title: Message
 description: Atomic chat turn with role-aware layout, attachments, branch navigation and a streaming markdown surface.
 ---
 
-import { MessageAssistantPreview, MessageUserPreview, MessageMarkdownPreview, MessagePairPreview } from "@/components/preview/ai/message";
+import {
+  MessageAssistantPreview,
+  MessageUserPreview,
+  MessageMarkdownPreview,
+  MessagePairPreview,
+} from '@/components/preview/ai/message';
 
 ## Overview
 
@@ -40,26 +45,10 @@ Use it as the atomic unit of any conversation: one `Message` per turn, composed 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-message
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-message
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-message
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-message
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-message ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-message ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-message ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-message ```</Tab>
 </Tabs>
 
 ## Usage
@@ -94,11 +83,10 @@ import {
 } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Message, MessageContent, MessageResponse],
-  template: `
-    <message from="assistant">
+selector: "app-example",
+standalone: true,
+imports: [Message, MessageContent, MessageResponse],
+template: `     <message from="assistant">
       <message-content>
         <message-response>{{ markdown }}</message-response>
       </message-content>
@@ -106,9 +94,10 @@ import {
   `,
 })
 export class ExampleComponent {
-  readonly markdown = "Hello! How can I help you today?";
+readonly markdown = "Hello! How can I help you today?";
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -187,7 +176,7 @@ Use while tokens are still arriving. Pair with `Reasoning` to expose thinking.
     <MessageResponse>{partialMarkdown}</MessageResponse>
   </MessageContent>
 </Message>
-```
+````
 
 ### User turn with attachments
 

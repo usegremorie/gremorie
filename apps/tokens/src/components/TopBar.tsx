@@ -1,13 +1,14 @@
-import { useProject } from "../state/store";
+import { useProject } from '../state/store';
 
 export function TopBar() {
-  const { selectedMode, toggleMode, project, pendingChanges, apply } = useProject();
+  const { selectedMode, toggleMode, project, pendingChanges, apply } =
+    useProject();
 
   const onApply = async () => {
     const gs = useProject.getState().gitStatus;
     if (gs?.dirty) {
       const ok = window.confirm(
-        `Your git tree is dirty on branch ${gs.branch ?? "detached HEAD"}.\nApply changes anyway?`
+        `Your git tree is dirty on branch ${gs.branch ?? 'detached HEAD'}.\nApply changes anyway?`,
       );
       if (!ok) return;
     }
@@ -31,7 +32,7 @@ export function TopBar() {
           aria-label="Toggle light/dark"
           title="Mod+Shift+L"
         >
-          {selectedMode === "light" ? "Light" : "Dark"}
+          {selectedMode === 'light' ? 'Light' : 'Dark'}
         </button>
         <button
           onClick={onApply}

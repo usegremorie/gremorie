@@ -2,7 +2,7 @@
 title: Card
 description: Superfície composta — Header → Content → Footer — para agrupar conteúdo relacionado.
 component: Card
-importPath: "@kalvner/kds/display/card"
+importPath: '@kalvner/kds/display/card'
 status: stable
 ---
 
@@ -13,12 +13,12 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
-import { Button } from "@kalvner/kds/forms/button";
-import { Badge } from "@kalvner/kds/display/badge";
-import { Separator } from "@kalvner/kds/display/separator";
-import { TrendingUp } from "lucide-react";
+  CardTitle,
+} from '@kalvner/kds/display/card';
+import { Button } from '@kalvner/kds/forms/button';
+import { Badge } from '@kalvner/kds/display/badge';
+import { Separator } from '@kalvner/kds/display/separator';
+import { TrendingUp } from 'lucide-react';
 
 ## Overview
 
@@ -82,8 +82,8 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 export function KpiTile() {
   return (
@@ -102,18 +102,18 @@ export function KpiTile() {
 ## Props
 
 Todos os subcomponentes herdam `ComponentPropsWithoutRef<"div">` —
-qualquer prop válida em `<div>` (className, id, onClick, role, aria-*…)
+qualquer prop válida em `<div>` (className, id, onClick, role, aria-\*…)
 funciona. Apenas o `className` é estilizado; o resto passa direto.
 
-| Componente | Estilo aplicado |
-|---|---|
-| `Card` | `bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm` |
-| `CardHeader` | `grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6` (com slot `card-action`: `grid-cols-[1fr_auto]`) |
-| `CardTitle` | `leading-none font-semibold` |
-| `CardDescription` | `text-muted-foreground text-sm` |
-| `CardAction` | `col-start-2 row-span-2 row-start-1 self-start justify-self-end` |
-| `CardContent` | `px-6` |
-| `CardFooter` | `flex items-center px-6` |
+| Componente        | Estilo aplicado                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `Card`            | `bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm`                                  |
+| `CardHeader`      | `grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6` (com slot `card-action`: `grid-cols-[1fr_auto]`) |
+| `CardTitle`       | `leading-none font-semibold`                                                                                         |
+| `CardDescription` | `text-muted-foreground text-sm`                                                                                      |
+| `CardAction`      | `col-start-2 row-span-2 row-start-1 self-start justify-self-end`                                                     |
+| `CardContent`     | `px-6`                                                                                                               |
+| `CardFooter`      | `flex items-center px-6`                                                                                             |
 
 Cada subcomponente expõe um `data-slot` (`card`, `card-header`,
 `card-title`, `card-description`, `card-action`, `card-content`,
@@ -123,8 +123,8 @@ Cada subcomponente expõe um `data-slot` (`card`, `card-header`,
 
 - **`Card`** — wrapper externo, define a superfície.
 - **`CardHeader`** — usa CSS Grid para acomodar Title + Description
-  + Action automaticamente. Quando há `<CardAction>`, vira layout
-  2 colunas com a action à direita ocupando ambas as linhas.
+  - Action automaticamente. Quando há `<CardAction>`, vira layout
+    2 colunas com a action à direita ocupando ambas as linhas.
 - **`CardTitle`** — texto destaque do header. Use `<h2>`/`<h3>`
   semânticos por fora se a hierarquia importar para leitor de tela
   (Card é puramente visual).
@@ -149,9 +149,7 @@ Card não tem variantes embutidas — variação acontece pela composição
       <CardTitle>Header + Content + Footer</CardTitle>
       <CardDescription>Padrão completo.</CardDescription>
     </CardHeader>
-    <CardContent>
-      Corpo principal do card.
-    </CardContent>
+    <CardContent>Corpo principal do card.</CardContent>
     <CardFooter className="text-sm text-muted-foreground">
       Linha de meta no rodapé.
     </CardFooter>
@@ -161,21 +159,19 @@ Card não tem variantes embutidas — variação acontece pela composição
       <CardTitle>Header + Action</CardTitle>
       <CardDescription>CardAction encaixa à direita.</CardDescription>
       <CardAction>
-        <Button variant="ghost" size="sm">Editar</Button>
+        <Button variant="ghost" size="sm">
+          Editar
+        </Button>
       </CardAction>
     </CardHeader>
-    <CardContent>
-      A action ocupa as duas linhas do header.
-    </CardContent>
+    <CardContent>A action ocupa as duas linhas do header.</CardContent>
   </Card>
   <Card>
     <CardHeader className="border-b">
       <CardTitle>Header com separador</CardTitle>
       <CardDescription>border-b ajusta o pb-6 automaticamente.</CardDescription>
     </CardHeader>
-    <CardContent>
-      Conteúdo isolado por linha.
-    </CardContent>
+    <CardContent>Conteúdo isolado por linha.</CardContent>
   </Card>
   <Card>
     <CardContent>
@@ -192,12 +188,12 @@ Card não tem variantes embutidas — variação acontece pela composição
 Card é puramente visual — não tem estados próprios. Estados
 contextuais aparecem na composição:
 
-| Comportamento | Como adicionar |
-|---|---|
-| Hover destacado | `className="transition-shadow hover:shadow-md"` |
-| Selecionado | `className="border-primary ring-2 ring-primary/20"` |
-| Disabled / desabilitado | `className="opacity-60 pointer-events-none"` |
-| Linkado (clicável) | Embrulhe em `<a>` ou use Button como Card via Slot |
+| Comportamento           | Como adicionar                                      |
+| ----------------------- | --------------------------------------------------- |
+| Hover destacado         | `className="transition-shadow hover:shadow-md"`     |
+| Selecionado             | `className="border-primary ring-2 ring-primary/20"` |
+| Disabled / desabilitado | `className="opacity-60 pointer-events-none"`        |
+| Linkado (clicável)      | Embrulhe em `<a>` ou use Button como Card via Slot  |
 
 ## Composition
 
@@ -245,13 +241,17 @@ contextuais aparecem na composição:
 <Card className="max-w-md">
   <CardHeader>
     <CardTitle>Multi-tema</CardTitle>
-    <CardDescription>4 temas, light + dark, todos com tokens semânticos.</CardDescription>
+    <CardDescription>
+      4 temas, light + dark, todos com tokens semânticos.
+    </CardDescription>
   </CardHeader>
   <CardContent className="text-sm text-muted-foreground">
     Cada tema é um diff em um só arquivo CSS. Componentes nunca hardcodam cor.
   </CardContent>
   <CardFooter>
-    <Button variant="outline" size="sm">Ver tokens</Button>
+    <Button variant="outline" size="sm">
+      Ver tokens
+    </Button>
   </CardFooter>
 </Card>
 
@@ -291,13 +291,13 @@ contextuais aparecem na composição:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Card é `<div>` puro — sem role implícito. Para grupos semânticos (lista de cards), use `<ul>/<li>` por fora. |
-| **Heading** | `CardTitle` é `<div>` por padrão; embrulhe em `<h2>` ou similar quando a página tiver hierarquia. |
-| **Action focus** | `CardAction` herda o focus do filho (Button tem `focus-visible:ring`). |
-| **Linkado** | Para Cards inteiramente clicáveis, prefira `<a>` ou `<Link>` em volta — não JS-only `onClick`. |
-| **Contraste** | `bg-card` + `text-card-foreground` garantem AA em todos os 4 temas. |
+| Concern          | Comportamento                                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Roles**        | Card é `<div>` puro — sem role implícito. Para grupos semânticos (lista de cards), use `<ul>/<li>` por fora. |
+| **Heading**      | `CardTitle` é `<div>` por padrão; embrulhe em `<h2>` ou similar quando a página tiver hierarquia.            |
+| **Action focus** | `CardAction` herda o focus do filho (Button tem `focus-visible:ring`).                                       |
+| **Linkado**      | Para Cards inteiramente clicáveis, prefira `<a>` ou `<Link>` em volta — não JS-only `onClick`.               |
+| **Contraste**    | `bg-card` + `text-card-foreground` garantem AA em todos os 4 temas.                                          |
 
 ## Related
 

@@ -3,7 +3,7 @@ title: Switch
 description: Immediate-effect on/off toggle built on Radix Switch, with `sm` and `default` size presets.
 ---
 
-import { SwitchPreview } from "@/components/preview/forms/forms";
+import { SwitchPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Two sizes - `sm` (compact) and `default` - are exposed via the `size` prop. The 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-switch
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-switch
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-switch
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-switch
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-switch ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-switch ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-switch ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-switch ```</Tab>
 </Tabs>
 
 ## Usage
@@ -70,16 +54,16 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Switch>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `checked` | `boolean` | - | Controlled checked state. |
-| `defaultChecked` | `boolean` | - | Uncontrolled initial state. |
-| `onCheckedChange` | `(checked: boolean) => void` | - | Fires when the user toggles the switch. |
-| `disabled` | `boolean` | `false` | Disables interaction. |
-| `required` | `boolean` | `false` | Required for form submission. |
-| `name` | `string` | - | Form field name. |
-| `value` | `string` | `"on"` | Form field value when checked. |
-| `size` | `"sm" \| "default"` | `"default"` | Footprint preset. `sm` is `h-3.5 w-6`; `default` is `h-[1.15rem] w-8`. |
+| Prop              | Type                         | Default     | Description                                                            |
+| ----------------- | ---------------------------- | ----------- | ---------------------------------------------------------------------- |
+| `checked`         | `boolean`                    | -           | Controlled checked state.                                              |
+| `defaultChecked`  | `boolean`                    | -           | Uncontrolled initial state.                                            |
+| `onCheckedChange` | `(checked: boolean) => void` | -           | Fires when the user toggles the switch.                                |
+| `disabled`        | `boolean`                    | `false`     | Disables interaction.                                                  |
+| `required`        | `boolean`                    | `false`     | Required for form submission.                                          |
+| `name`            | `string`                     | -           | Form field name.                                                       |
+| `value`           | `string`                     | `"on"`      | Form field value when checked.                                         |
+| `size`            | `"sm" \| "default"`          | `"default"` | Footprint preset. `sm` is `h-3.5 w-6`; `default` is `h-[1.15rem] w-8`. |
 
 Forwards to `SwitchPrimitive.Root`. Renders an internal `SwitchPrimitive.Thumb` that translates on `data-state=checked`.
 
@@ -132,7 +116,7 @@ function NotificationToggle() {
       await api.updateNotifications(next);
     } catch {
       setEnabled(!next);
-      toast.error("Could not update notifications.");
+      toast.error('Could not update notifications.');
     }
   }
 

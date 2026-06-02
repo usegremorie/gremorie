@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Badge, Card } from "@gremorie/rx-display";
-import { Button } from "@gremorie/rx-forms";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Badge, Card } from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 /**
  * Marketing hero block: brand-tinted halo, badge, headline with brand
@@ -23,9 +23,8 @@ export function MarketingHero() {
             v1.0 just shipped
           </Badge>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Build faster with{" "}
-            <span className="text-brand">design systems</span> that LLMs
-            understand.
+            Build faster with <span className="text-brand">design systems</span>{' '}
+            that LLMs understand.
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">
             Registry plus MCP, 85 primitives, two editions. Copy-paste your way

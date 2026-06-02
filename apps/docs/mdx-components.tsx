@@ -1,18 +1,18 @@
-import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
-import { Banner } from "fumadocs-ui/components/banner";
-import { Callout } from "fumadocs-ui/components/callout";
-import { Card, Cards } from "fumadocs-ui/components/card";
-import { File, Files, Folder } from "fumadocs-ui/components/files";
-import { ImageZoom } from "fumadocs-ui/components/image-zoom";
-import { Step, Steps } from "fumadocs-ui/components/steps";
-import * as TabsComponents from "fumadocs-ui/components/tabs";
-import { TypeTable } from "fumadocs-ui/components/type-table";
-import defaultMdxComponents from "fumadocs-ui/mdx";
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { Banner } from 'fumadocs-ui/components/banner';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { File, Files, Folder } from 'fumadocs-ui/components/files';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import * as TabsComponents from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+import defaultMdxComponents from 'fumadocs-ui/mdx';
 
-import { ArtifactPreview } from "@/components/preview/artifacts";
-import { BlockPreview } from "@/components/preview/blocks";
+import type { MDXComponents } from 'mdx/types';
 
-import type { MDXComponents } from "mdx/types";
+import { ArtifactPreview } from '@/components/preview/artifacts';
+import { BlockPreview } from '@/components/preview/blocks';
 
 /**
  * Global MDX components for the KDS docs site.
@@ -43,6 +43,6 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     TypeTable,
     ArtifactPreview,
     BlockPreview,
-    ...components
+    ...components,
   };
 }

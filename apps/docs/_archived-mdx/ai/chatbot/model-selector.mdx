@@ -2,25 +2,26 @@
 title: ModelSelector
 description: Paleta ⌘K de modelos de IA — Command dialog estendido com grupos por provider.
 component: ModelSelector
-importPath: "@kalvner/kds/ai/model-selector"
+importPath: '@kalvner/kds/ai/model-selector'
 status: stable
 ---
 
-import { ModelSelectorPreview } from "@/components/ai-chatbot-demos";
+import { ModelSelectorPreview } from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
 `ModelSelector` é o **switcher de modelos** — paleta tipo ⌘K
 (Command palette) com lista filtrada de modelos disponíveis,
 agrupados por provider. Construído sobre [Command](../../ui/overlays/command)
-+ [Dialog](../../ui/overlays/dialog).
+
+- [Dialog](../../ui/overlays/dialog).
 
 Use na header do chat ou em settings — sempre que o user precisa
 trocar de modelo no meio do fluxo.
@@ -28,7 +29,9 @@ trocar de modelo no meio do fluxo.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Botão que abre o ModelSelector (⇧⌘K também funciona).</CardDescription>
+    <CardDescription>
+      Botão que abre o ModelSelector (⇧⌘K também funciona).
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ModelSelectorPreview />
@@ -52,17 +55,17 @@ trocar de modelo no meio do fluxo.
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   ModelSelectorDialog,
   ModelSelectorEmpty,
   ModelSelectorGroup,
   ModelSelectorInput,
   ModelSelectorItem,
-  ModelSelectorList
-} from "@kalvner/kds/ai/model-selector";
+  ModelSelectorList,
+} from '@kalvner/kds/ai/model-selector';
 
 export function ModelPalette() {
   const [open, setOpen] = useState(false);
@@ -103,13 +106,13 @@ Herda de [CommandInput](../../ui/overlays/command). Aceita
 
 Wrappers fininhos sobre [Command](../../ui/overlays/command) primitives:
 
-| Componente | Wrapper de | Notas |
-|---|---|---|
-| `ModelSelectorList` | `CommandList` | Container scrolável. |
-| `ModelSelectorEmpty` | `CommandEmpty` | Mostrado quando o filter retorna 0. |
-| `ModelSelectorGroup` | `CommandGroup` | Aceita `heading` (string) — provider. |
-| `ModelSelectorItem` | `CommandItem` | Aceita `onSelect`, `disabled`, `value`. |
-| `ModelSelectorShortcut` | `CommandShortcut` | Atalho de teclado à direita. |
+| Componente              | Wrapper de        | Notas                                   |
+| ----------------------- | ----------------- | --------------------------------------- |
+| `ModelSelectorList`     | `CommandList`     | Container scrolável.                    |
+| `ModelSelectorEmpty`    | `CommandEmpty`    | Mostrado quando o filter retorna 0.     |
+| `ModelSelectorGroup`    | `CommandGroup`    | Aceita `heading` (string) — provider.   |
+| `ModelSelectorItem`     | `CommandItem`     | Aceita `onSelect`, `disabled`, `value`. |
+| `ModelSelectorShortcut` | `CommandShortcut` | Atalho de teclado à direita.            |
 
 ## Subcomponents
 
@@ -125,6 +128,7 @@ Wrappers fininhos sobre [Command](../../ui/overlays/command) primitives:
 ## States
 
 Herda do Command:
+
 - Item `data-selected=true` (highlighted via teclado/hover)
 - Item `data-disabled=true` (greyed)
 - Empty (filter=0)
@@ -183,12 +187,12 @@ useEffect(() => {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Combobox** | Herda do Command — `role="combobox"` no input. |
-| **Listbox** | List é `role="listbox"`, items são `role="option"`. |
-| **Keyboard** | ↑↓ navegam, Enter seleciona, Esc fecha. |
-| **Focus restore** | Dialog devolve foco ao trigger ao fechar. |
+| Concern           | Comportamento                                       |
+| ----------------- | --------------------------------------------------- |
+| **Combobox**      | Herda do Command — `role="combobox"` no input.      |
+| **Listbox**       | List é `role="listbox"`, items são `role="option"`. |
+| **Keyboard**      | ↑↓ navegam, Enter seleciona, Esc fecha.             |
+| **Focus restore** | Dialog devolve foco ao trigger ao fechar.           |
 
 ## Related
 

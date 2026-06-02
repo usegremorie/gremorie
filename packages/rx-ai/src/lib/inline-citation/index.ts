@@ -1,1 +1,1 @@
-export * from "./inline-citation";
+export * from './inline-citation';

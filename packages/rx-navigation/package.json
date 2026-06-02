@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-navigation",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "React navigation primitives for Gremorie - Breadcrumb, Menubar, NavigationMenu, Pagination, Sidebar, Tabs.",
   "license": "MIT",
   "repository": {
@@ -34,16 +34,16 @@
     "README.md"
   ],
   "peerDependencies": {
-    "@gremorie/rx-core": "^0.0.1",
-    "@gremorie/rx-display": "^0.0.1",
-    "@gremorie/rx-feedback": "^0.0.1",
-    "@gremorie/rx-forms": "^0.0.1",
-    "@gremorie/rx-overlays": "^0.0.1",
+    "@gremorie/rx-core": ">=0.0.1",
+    "@gremorie/rx-display": ">=0.0.1",
+    "@gremorie/rx-feedback": ">=0.0.1",
+    "@gremorie/rx-forms": ">=0.0.1",
+    "@gremorie/rx-overlays": ">=0.0.1",
     "react": "^18 || ^19"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
-    "lucide-react": "^0.468.0",
+    "lucide-react": "0.547.0",
     "radix-ui": "^1.4.3",
     "tslib": "^2.3.0"
   },

@@ -2,7 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-integration-signals',
@@ -18,61 +22,80 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="What this shows" anchor="overview">
           <docs-prose>
             <p>
-              Gremorie NG components consume <strong>signal-driven inputs</strong> for state, value,
-              and attachments. The library doesn't import any AI framework — you bring your
-              own state. This example uses a backend that returns server-sent events (SSE),
-              streamed chunk by chunk into a signal.
+              Gremorie NG components consume
+              <strong>signal-driven inputs</strong> for state, value, and
+              attachments. The library doesn't import any AI framework — you
+              bring your own state. This example uses a backend that returns
+              server-sent events (SSE), streamed chunk by chunk into a signal.
             </p>
           </docs-prose>
         </docs-section>
 
         <docs-section title="Component" anchor="component">
-          <docs-code-block title="chat.component.ts" lang="typescript" [code]="chatComponent" />
+          <docs-code-block
+            title="chat.component.ts"
+            lang="typescript"
+            [code]="chatComponent"
+          />
         </docs-section>
 
         <docs-section title="Backend (any framework)" anchor="backend">
           <docs-prose>
             <p>The server endpoint streams chunks of plain text:</p>
           </docs-prose>
-          <docs-code-block title="POST /api/chat" lang="javascript" [code]="backend" />
+          <docs-code-block
+            title="POST /api/chat"
+            lang="javascript"
+            [code]="backend"
+          />
         </docs-section>
 
         <docs-section title="What's happening" anchor="explanation">
           <docs-prose>
             <ol class="ml-5 list-decimal space-y-2">
               <li>
-                <strong>State machine.</strong> The container's <code>state</code> input drives the
-                submit button visual and the aria-live announcements. We move through
-                <code>ready → submitted → streaming → ready</code> on success, or
-                <code>error</code> on failure.
+                <strong>State machine.</strong> The container's
+                <code>state</code> input drives the submit button visual and the
+                aria-live announcements. We move through
+                <code>ready → submitted → streaming → ready</code> on success,
+                or <code>error</code> on failure.
               </li>
               <li>
-                <strong>Submit handler.</strong> On <code>(submitted)</code> we POST to the backend
-                and read the response body via <code>ReadableStream</code>. Each chunk appended to
-                the <code>response()</code> signal — your message renderer reads from there.
+                <strong>Submit handler.</strong> On <code>(submitted)</code> we
+                POST to the backend and read the response body via
+                <code>ReadableStream</code>. Each chunk appended to the
+                <code>response()</code> signal — your message renderer reads
+                from there.
               </li>
               <li>
-                <strong>Cancel.</strong> On <code>(canceled)</code> (Esc or Stop button click during
-                streaming) we abort the underlying <code>AbortController</code>.
+                <strong>Cancel.</strong> On <code>(canceled)</code> (Esc or Stop
+                button click during streaming) we abort the underlying
+                <code>AbortController</code>.
               </li>
               <li>
-                <strong>Retry.</strong> On <code>(retried)</code> (Submit click in error state) we
-                re-fire the same request.
+                <strong>Retry.</strong> On <code>(retried)</code> (Submit click
+                in error state) we re-fire the same request.
               </li>
             </ol>
           </docs-prose>
         </docs-section>
 
-        <docs-section title="Adapting to Hashbrown or Vercel AI SDK" anchor="adapting">
+        <docs-section
+          title="Adapting to Hashbrown or Vercel AI SDK"
+          anchor="adapting"
+        >
           <docs-prose>
             <p>
-              Replace the manual <code>fetch + ReadableStream</code> with the library's helpers,
-              but keep the same <code>state</code> signal driving the container. Hashbrown's
-              <code>chatResource()</code> exposes a <code>status()</code> signal that maps
-              1:1 to our four states. Vercel AI SDK's Angular adapter is similar.
+              Replace the manual <code>fetch + ReadableStream</code> with the
+              library's helpers, but keep the same <code>state</code> signal
+              driving the container. Hashbrown's
+              <code>chatResource()</code> exposes a <code>status()</code> signal
+              that maps 1:1 to our four states. Vercel AI SDK's Angular adapter
+              is similar.
             </p>
             <p>
-              Dedicated integration docs for Hashbrown and Vercel AI SDK are planned for v0.1.1.
+              Dedicated integration docs for Hashbrown and Vercel AI SDK are
+              planned for v0.1.1.
             </p>
           </docs-prose>
         </docs-section>

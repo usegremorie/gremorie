@@ -1,8 +1,9 @@
 {
   "title": "Chart",
   "icon": "ChartLine",
+  "description": "Five canonical data-viz color schemes, each matched to a specific shape of data.",
   "pages": [
-    "index",
+    "visao-geral",
     "sequential",
     "categorical",
     "divergent",

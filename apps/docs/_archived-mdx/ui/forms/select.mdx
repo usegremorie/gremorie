@@ -2,7 +2,7 @@
 title: Select
 description: Dropdown de seleção única — listbox portalada com keyboard navigation completa.
 component: Select
-importPath: "@kalvner/kds/forms/select"
+importPath: '@kalvner/kds/forms/select'
 status: stable
 ---
 
@@ -14,16 +14,16 @@ import {
   SelectLabel,
   SelectSeparator,
   SelectTrigger,
-  SelectValue
-} from "@kalvner/kds/forms/select";
-import { Label } from "@kalvner/kds/forms/label";
+  SelectValue,
+} from '@kalvner/kds/forms/select';
+import { Label } from '@kalvner/kds/forms/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -77,16 +77,16 @@ mas economiza espaço vertical.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `Select` | Raiz que controla open/closed e value. |
-| `SelectTrigger` | Botão visível que abre o listbox. |
-| `SelectValue` | Renderiza o valor atual ou placeholder. |
-| `SelectContent` | Container portalado com a lista. |
-| `SelectGroup` | Agrupa items relacionados. |
-| `SelectLabel` | Título de um SelectGroup. |
-| `SelectItem` | Cada opção individual. |
-| `SelectSeparator` | Linha divisória entre grupos. |
+| Componente                                  | Descrição                                              |
+| ------------------------------------------- | ------------------------------------------------------ |
+| `Select`                                    | Raiz que controla open/closed e value.                 |
+| `SelectTrigger`                             | Botão visível que abre o listbox.                      |
+| `SelectValue`                               | Renderiza o valor atual ou placeholder.                |
+| `SelectContent`                             | Container portalado com a lista.                       |
+| `SelectGroup`                               | Agrupa items relacionados.                             |
+| `SelectLabel`                               | Título de um SelectGroup.                              |
+| `SelectItem`                                | Cada opção individual.                                 |
+| `SelectSeparator`                           | Linha divisória entre grupos.                          |
 | `SelectScrollUpButton` / `ScrollDownButton` | Botões de scroll quando a lista é maior que o popover. |
 
 ## Usage
@@ -97,8 +97,8 @@ import {
   SelectTrigger,
   SelectValue,
   SelectContent,
-  SelectItem
-} from "@kalvner/kds/forms/select";
+  SelectItem,
+} from '@kalvner/kds/forms/select';
 
 export function FrameworkPicker() {
   return (
@@ -119,20 +119,20 @@ export function FrameworkPicker() {
 
 ### Select (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `string` | — | Valor selecionado (controlado). |
-| `defaultValue` | `string` | — | Não controlado. |
-| `onValueChange` | `(v: string) => void` | — | Callback. |
-| `disabled` | `boolean` | `false` | Bloqueia trigger. |
-| `name` | `string` | — | Nome do form, para FormData. |
+| Prop            | Tipo                  | Default | Descrição                       |
+| --------------- | --------------------- | ------- | ------------------------------- |
+| `value`         | `string`              | —       | Valor selecionado (controlado). |
+| `defaultValue`  | `string`              | —       | Não controlado.                 |
+| `onValueChange` | `(v: string) => void` | —       | Callback.                       |
+| `disabled`      | `boolean`             | `false` | Bloqueia trigger.               |
+| `name`          | `string`              | —       | Nome do form, para FormData.    |
 
 ### SelectTrigger
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `size` | `'sm' \| 'default'` | `'default'` | Altura. |
-| `aria-invalid` | `boolean` | — | Aciona ring vermelho. |
+| Prop           | Tipo                | Default     | Descrição             |
+| -------------- | ------------------- | ----------- | --------------------- |
+| `size`         | `'sm' \| 'default'` | `'default'` | Altura.               |
+| `aria-invalid` | `boolean`           | —           | Aciona ring vermelho. |
 
 ## States
 
@@ -199,7 +199,9 @@ export function FrameworkPicker() {
   <Card>
     <CardHeader>
       <CardTitle>Error</CardTitle>
-      <CardDescription>aria-invalid no trigger + mensagem abaixo.</CardDescription>
+      <CardDescription>
+        aria-invalid no trigger + mensagem abaixo.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="grid gap-2">
@@ -212,7 +214,9 @@ export function FrameworkPicker() {
             <SelectItem value="br">Brasil</SelectItem>
           </SelectContent>
         </Select>
-        <span className="block text-sm text-destructive">Selecione um país.</span>
+        <span className="block text-sm text-destructive">
+          Selecione um país.
+        </span>
       </div>
     </CardContent>
   </Card>
@@ -223,7 +227,10 @@ export function FrameworkPicker() {
 <Card>
   <CardHeader>
     <CardTitle>Grouped countries</CardTitle>
-    <CardDescription>Listas longas se beneficiam de SelectGroup + SelectLabel + SelectSeparator.</CardDescription>
+    <CardDescription>
+      Listas longas se beneficiam de SelectGroup + SelectLabel +
+      SelectSeparator.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <Select>
@@ -283,14 +290,14 @@ export function FrameworkPicker() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix expõe `role="combobox"` no trigger, `role="listbox"` no content, `role="option"` em cada item. |
-| **Keyboard** | `Tab` foca trigger; `Space` ou `Enter` ou `↓` abre; `↑↓` navega; `Enter` seleciona; `Esc` fecha; type-ahead funciona (digite "B" para pular pra Brasil). |
-| **Focus management** | Foco volta ao trigger ao fechar. |
-| **Anúncio** | "Combobox, [valor atual], collapsed/expanded, [N de M]". |
-| **Erro** | `aria-invalid` no trigger; mensagem com `aria-describedby`. |
-| **Touch target** | Trigger 36px default — borderline mobile. Para mobile crítico, considere `h-10`. |
+| Concern              | Comportamento                                                                                                                                            |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**            | Radix expõe `role="combobox"` no trigger, `role="listbox"` no content, `role="option"` em cada item.                                                     |
+| **Keyboard**         | `Tab` foca trigger; `Space` ou `Enter` ou `↓` abre; `↑↓` navega; `Enter` seleciona; `Esc` fecha; type-ahead funciona (digite "B" para pular pra Brasil). |
+| **Focus management** | Foco volta ao trigger ao fechar.                                                                                                                         |
+| **Anúncio**          | "Combobox, [valor atual], collapsed/expanded, [N de M]".                                                                                                 |
+| **Erro**             | `aria-invalid` no trigger; mensagem com `aria-describedby`.                                                                                              |
+| **Touch target**     | Trigger 36px default — borderline mobile. Para mobile crítico, considere `h-10`.                                                                         |
 
 ## Related
 

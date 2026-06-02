@@ -15,7 +15,8 @@ const ICON_MAP: Record<PromptInputState, string> = {
   ready: 'M5 12h14M13 5l7 7-7 7',
   submitted: '', // spinner — rendered via SVG below
   streaming: 'M6 6h12v12H6z',
-  error: 'M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z',
+  error:
+    'M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z',
 };
 
 const LABEL_MAP: Record<PromptInputState, string> = {
@@ -33,7 +34,8 @@ const submitVariants = cva(
         ready: 'bg-primary text-primary-foreground hover:bg-primary/90',
         submitted: 'bg-muted text-muted-foreground',
         streaming: 'bg-destructive/10 text-destructive hover:bg-destructive/20',
-        error: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        error:
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       },
     },
     defaultVariants: {
@@ -98,7 +100,9 @@ export class PromptInputSubmit {
 
   readonly disabled = input<boolean>(false);
 
-  protected readonly state = computed<PromptInputState>(() => this.parent.state());
+  protected readonly state = computed<PromptInputState>(() =>
+    this.parent.state(),
+  );
 
   protected readonly isBusy = computed(
     () => this.state() === 'submitted' || this.state() === 'streaming',

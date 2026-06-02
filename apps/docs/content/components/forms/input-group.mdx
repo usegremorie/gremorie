@@ -3,7 +3,7 @@ title: Input Group
 description: Composable input layout that wraps Input or Textarea with inline and block addons (icons, buttons, kbd hints) while preserving group-wide focus and error states.
 ---
 
-import { InputGroupPreview } from "@/components/preview/forms/forms";
+import { InputGroupPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,16 @@ Four alignment positions are exposed via `data-align` on `InputGroupAddon`: `inl
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-input-group
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-input-group
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-input-group
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-input-group
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-input-group ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-input-group ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-input-group ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-input-group ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -83,8 +73,8 @@ Extends all `React.ComponentProps<"div">`.
 
 ### `<InputGroupAddon>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop    | Type                                                             | Default          | Description                                                                                  |
+| ------- | ---------------------------------------------------------------- | ---------------- | -------------------------------------------------------------------------------------------- |
 | `align` | `"inline-start" \| "inline-end" \| "block-start" \| "block-end"` | `"inline-start"` | Where the addon sits relative to the input. `block-*` switches the group to a column layout. |
 
 Extends all `React.ComponentProps<"div">`. Clicking the addon (outside of any nested `<button>`) focuses the input by querying the parent's first child input.
@@ -103,11 +93,11 @@ Extends all `React.ComponentProps<"textarea">`.
 
 ### `<InputGroupButton>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `size` | `"xs" \| "sm" \| "icon-xs" \| "icon-sm"` | `"xs"` | Smaller footprint than `Button` to fit inside the input height. |
-| `variant` | inherited from `Button` | `"ghost"` | Forwarded to the underlying `Button`. |
-| `type` | `string` | `"button"` | Defaults to `"button"` so it never accidentally submits a form. |
+| Prop      | Type                                     | Default    | Description                                                     |
+| --------- | ---------------------------------------- | ---------- | --------------------------------------------------------------- |
+| `size`    | `"xs" \| "sm" \| "icon-xs" \| "icon-sm"` | `"xs"`     | Smaller footprint than `Button` to fit inside the input height. |
+| `variant` | inherited from `Button`                  | `"ghost"`  | Forwarded to the underlying `Button`.                           |
+| `type`    | `string`                                 | `"button"` | Defaults to `"button"` so it never accidentally submits a form. |
 
 Extends all `Button` props (except `size`, which is replaced).
 
@@ -164,7 +154,7 @@ The leading addon shows a static label that clicks-through to focus the input.
 `align="block-end"` puts an addon under the textarea. Ideal for chat composers and comment forms.
 
 ```tsx
-import { Paperclip, Send } from "lucide-react";
+import { Paperclip, Send } from 'lucide-react';
 
 <InputGroup>
   <InputGroupTextarea placeholder="Write a message..." rows={3} />
@@ -177,7 +167,7 @@ import { Paperclip, Send } from "lucide-react";
       Send
     </InputGroupButton>
   </InputGroupAddon>
-</InputGroup>
+</InputGroup>;
 ```
 
 ### Kbd hint for shortcut

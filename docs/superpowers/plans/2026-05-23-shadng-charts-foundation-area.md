@@ -4,7 +4,7 @@
 
 **Goal:** Build the shared chart foundation (scales, formatters, shape helpers, reactive chart context, frame, axes, grid) plus a complete Area chart in both layers (headless directives + styled `<area-chart>`), proving the whole architecture end-to-end.
 
-**Architecture:** Own-the-code on D3 *math* modules (`d3-scale`, `d3-shape`, `d3-array`, `d3-format`, `d3-time-format`) rendering SVG via Angular. Two layers in one package: **headless** = attribute directives on real SVG elements wired through a DI-provided `ChartContext` (series self-register their values so the frame computes shared domains); **styled** = `<area-chart>` element component that renders the headless composition inside a Card with token colors and an accessible data-table fallback. All geometry lives in pure, unit-tested functions; directives only wire signals to attributes.
+**Architecture:** Own-the-code on D3 _math_ modules (`d3-scale`, `d3-shape`, `d3-array`, `d3-format`, `d3-time-format`) rendering SVG via Angular. Two layers in one package: **headless** = attribute directives on real SVG elements wired through a DI-provided `ChartContext` (series self-register their values so the frame computes shared domains); **styled** = `<area-chart>` element component that renders the headless composition inside a Card with token colors and an accessible data-table fallback. All geometry lives in pure, unit-tested functions; directives only wire signals to attributes.
 
 **Tech Stack:** Angular 21 (signals, zoneless), Nx, ng-packagr, Vitest (`@nx/angular:unit-test`), Storybook (`@storybook/angular`), Tailwind v4, `class-variance-authority`/`cn`, D3 math modules.
 
@@ -13,6 +13,7 @@
 ## Scope
 
 **In scope (this plan):**
+
 - New package `@gremorie/ng-charts` (single entry point for now).
 - Pure helpers: formatter registry, scale helpers, shape helpers, domain computation.
 - Reactive `ChartContext` (signals + series registration → shared domains + scales).
@@ -22,6 +23,7 @@
 - CLI registry entry. One Storybook story.
 
 **Out of scope (explicit follow-up plans):**
+
 - The other 6 charts (Line, Bar, Pie/Donut, Radar, RadialBar, Scatter) — each reuses this foundation.
 - Interactive tooltip (pointer→bisector→active datum) + CDK Overlay styled tooltip.
 - Animation (`AnimationService` + `d3-interpolate`) and keyboard navigation.
@@ -68,6 +70,7 @@ Modified:
 ### Task 1: Scaffold the `@gremorie/ng-charts` package
 
 **Files:**
+
 - Create: `packages/shadng-charts/package.json`
 - Create: `packages/shadng-charts/ng-package.json`
 - Create: `packages/shadng-charts/project.json`
@@ -85,10 +88,12 @@ Modified:
 - [ ] **Step 1: Install runtime deps and types**
 
 Run:
+
 ```bash
 npm i d3-scale d3-shape d3-array d3-format d3-time-format
 npm i -D @types/d3-scale @types/d3-shape @types/d3-array @types/d3-format @types/d3-time-format
 ```
+
 Expected: packages added to root `package.json`, no errors.
 
 - [ ] **Step 2: Create `package.json`**
@@ -187,6 +192,7 @@ Expected: packages added to root `package.json`, no errors.
 - [ ] **Step 5: Create the four tsconfig files** (copies of scroll-area's)
 
 `tsconfig.json`:
+
 ```json
 {
   "extends": "../../tsconfig.base.json",
@@ -213,6 +219,7 @@ Expected: packages added to root `package.json`, no errors.
 ```
 
 `tsconfig.lib.json`:
+
 ```json
 {
   "extends": "./tsconfig.json",
@@ -238,6 +245,7 @@ Expected: packages added to root `package.json`, no errors.
 ```
 
 `tsconfig.lib.prod.json`:
+
 ```json
 {
   "extends": "./tsconfig.lib.json",
@@ -251,6 +259,7 @@ Expected: packages added to root `package.json`, no errors.
 ```
 
 `tsconfig.spec.json`:
+
 ```json
 {
   "extends": "./tsconfig.json",
@@ -310,6 +319,7 @@ export default [
 - [ ] **Step 7: Add the path alias to `tsconfig.base.json`**
 
 Add to the `"paths"` object (after the `@gremorie/ng-scroll-area` line):
+
 ```json
 "@gremorie/ng-charts": ["./packages/shadng-charts/src/index.ts"]
 ```
@@ -339,7 +349,12 @@ export interface SeriesConfigEntry {
 /** Maps a data field name to its series config. JSON-serializable (generative-UI ready). */
 export type ChartConfig = Record<string, SeriesConfigEntry>;
 
-export const DEFAULT_MARGIN: Margin = { top: 8, right: 8, bottom: 24, left: 40 };
+export const DEFAULT_MARGIN: Margin = {
+  top: 8,
+  right: 8,
+  bottom: 24,
+  left: 40,
+};
 ```
 
 - [ ] **Step 9: Create `src/index.ts`** (barrel — grows as tasks add files)
@@ -382,6 +397,7 @@ git commit -m "feat(charts): scaffold @gremorie/ng-charts package"
 ### Task 2: Formatter preset registry
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/format.ts`
 - Test: `packages/shadng-charts/src/lib/headless/format.spec.ts`
 
@@ -437,7 +453,10 @@ const percent = d3Format('.1~%');
 export function formatValue(value: number, preset = 'number'): string {
   if (preset.startsWith('currency:')) {
     const currency = preset.slice('currency:'.length) || 'USD';
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(value);
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency,
+    }).format(value);
   }
   switch (preset) {
     case 'percent':
@@ -462,6 +481,7 @@ Expected: PASS.
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/format';
 ```
@@ -476,6 +496,7 @@ git commit -m "feat(charts): formatter preset registry"
 ### Task 3: Scale helpers
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/scales.ts`
 - Test: `packages/shadng-charts/src/lib/headless/scales.spec.ts`
 
@@ -526,7 +547,9 @@ export function linearScale(
   domain: readonly [number, number],
   range: readonly [number, number],
 ): (value: number) => number {
-  return scaleLinear().domain([...domain]).range([...range]);
+  return scaleLinear()
+    .domain([...domain])
+    .range([...range]);
 }
 
 /** Categorical position scale; categories land at discrete points across the range. */
@@ -534,7 +557,10 @@ export function pointScale(
   categories: readonly string[],
   range: readonly [number, number],
 ): (value: string) => number {
-  const scale = scalePoint<string>().domain([...categories]).range([...range]).padding(0);
+  const scale = scalePoint<string>()
+    .domain([...categories])
+    .range([...range])
+    .padding(0);
   return (value: string) => scale(value) ?? 0;
 }
 
@@ -556,6 +582,7 @@ Expected: PASS.
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/scales';
 ```
@@ -570,6 +597,7 @@ git commit -m "feat(charts): scale helpers (linear, point, niceMax)"
 ### Task 4: Shape helpers
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/shape.ts`
 - Test: `packages/shadng-charts/src/lib/headless/shape.spec.ts`
 
@@ -650,6 +678,7 @@ Expected: PASS.
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/shape';
 ```
@@ -664,6 +693,7 @@ git commit -m "feat(charts): shape helpers (linePath, areaPath)"
 ### Task 5: Domain computation
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/domain.ts`
 - Test: `packages/shadng-charts/src/lib/headless/domain.spec.ts`
 
@@ -687,7 +717,9 @@ describe('computeYDomain', () => {
   });
 
   it('guards against an all-zero / negative max', () => {
-    expect(computeYDomain([{ key: 'x', values: () => [0, 0] }])).toEqual([0, 1]);
+    expect(computeYDomain([{ key: 'x', values: () => [0, 0] }])).toEqual([
+      0, 1,
+    ]);
   });
 });
 ```
@@ -708,7 +740,9 @@ export interface SeriesReg {
 }
 
 /** Shared Y domain [0, max] across all registered series. Falls back to [0, 1]. */
-export function computeYDomain(registrations: readonly SeriesReg[]): [number, number] {
+export function computeYDomain(
+  registrations: readonly SeriesReg[],
+): [number, number] {
   let max = 0;
   let seen = false;
   for (const reg of registrations) {
@@ -729,6 +763,7 @@ Expected: PASS.
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/domain';
 ```
@@ -743,6 +778,7 @@ git commit -m "feat(charts): shared Y-domain computation"
 ### Task 6: ChartContext (reactive core)
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/chart-context.ts`
 - Test: `packages/shadng-charts/src/lib/headless/chart-context.spec.ts`
 
@@ -775,7 +811,10 @@ describe('ChartContext', () => {
 
   it('builds a Y scale from registered series (0 at bottom)', () => {
     const ctx = makeCtx();
-    ctx.register({ key: 'sales', values: () => ctx.data().map((d) => Number(d['sales'])) });
+    ctx.register({
+      key: 'sales',
+      values: () => ctx.data().map((d) => Number(d['sales'])),
+    });
     const y = ctx.yScale();
     expect(y(0)).toBe(200); // bottom
     expect(y(100)).toBe(0); // top
@@ -790,7 +829,10 @@ describe('ChartContext', () => {
 
   it('unregister removes a series from the domain', () => {
     const ctx = makeCtx();
-    ctx.register({ key: 'sales', values: () => ctx.data().map((d) => Number(d['sales'])) });
+    ctx.register({
+      key: 'sales',
+      values: () => ctx.data().map((d) => Number(d['sales'])),
+    });
     expect(ctx.yScale()(100)).toBe(0);
     ctx.unregister('sales');
     // no series -> domain [0,1] -> y(100) clamps far above top (negative)
@@ -844,7 +886,9 @@ export class ChartContext {
 
   readonly yDomain = computed(() => computeYDomain(this.registry()));
 
-  readonly yScale = computed(() => linearScale(this.yDomain(), [this.innerHeight(), 0]));
+  readonly yScale = computed(() =>
+    linearScale(this.yDomain(), [this.innerHeight(), 0]),
+  );
 
   readonly xScale = computed(() =>
     pointScale(
@@ -863,6 +907,7 @@ Expected: PASS.
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/chart-context';
 ```
@@ -877,6 +922,7 @@ git commit -m "feat(charts): reactive ChartContext with shared scales"
 ### Task 7: Area series — pure path + `[area]` directive
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/area.ts`
 - Test: `packages/shadng-charts/src/lib/headless/area.spec.ts`
 
@@ -893,7 +939,8 @@ describe('computeAreaPath', () => {
     { month: 'Mar', sales: 100 },
   ];
   // simple test scales: x by index*100, y inverted over height 200, domain [0,100]
-  const xScale = (v: string) => ({ Jan: 0, Feb: 100, Mar: 200 } as Record<string, number>)[v] ?? 0;
+  const xScale = (v: string) =>
+    (({ Jan: 0, Feb: 100, Mar: 200 }) as Record<string, number>)[v] ?? 0;
   const yScale = (v: number) => 200 - (v / 100) * 200;
 
   it('builds an area path from data through the scales to the baseline', () => {
@@ -1003,6 +1050,7 @@ Expected: PASS.
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/area';
 ```
@@ -1017,6 +1065,7 @@ git commit -m "feat(charts): area series (pure path + [area] directive)"
 ### Task 8: Axis ticks (pure) + `xAxis` / `yAxis` directives
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/axis.ts`
 - Test: `packages/shadng-charts/src/lib/headless/axis.spec.ts`
 
@@ -1056,7 +1105,10 @@ import { formatValue } from './format';
 export function computeTicks(max: number, count: number): number[] {
   if (max <= 0) return [0];
   const step = max / count;
-  return Array.from({ length: count + 1 }, (_, i) => Math.round(i * step * 1e6) / 1e6);
+  return Array.from(
+    { length: count + 1 },
+    (_, i) => Math.round(i * step * 1e6) / 1e6,
+  );
 }
 
 interface YTick {
@@ -1148,6 +1200,7 @@ Expected: PASS (pure `computeTicks` tests).
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/axis';
 ```
@@ -1162,6 +1215,7 @@ git commit -m "feat(charts): axis ticks (pure) + xAxis/yAxis directives"
 ### Task 9: `chartFrame` directive + `cartesianGrid` directive
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/headless/chart-frame.ts`
 - Create: `packages/shadng-charts/src/lib/headless/cartesian-grid.ts`
 
@@ -1169,7 +1223,7 @@ These are thin DOM-wiring directives. ResizeObserver is client-only and guarded;
 
 - [ ] **Step 1: Create `chart-frame.ts`**
 
-```ts
+````ts
 import {
   afterNextRender,
   Directive,
@@ -1239,7 +1293,7 @@ export class ChartFrame {
     });
   }
 }
-```
+````
 
 - [ ] **Step 2: Create `cartesian-grid.ts`**
 
@@ -1281,6 +1335,7 @@ Expected: build succeeds.
 - [ ] **Step 4: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/headless/chart-frame';
 export * from './lib/headless/cartesian-grid';
@@ -1296,6 +1351,7 @@ git commit -m "feat(charts): chartFrame (ResizeObserver) + cartesianGrid directi
 ### Task 10: Styled `<area-chart>` component
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/styled/area-chart.ts`
 - Test: `packages/shadng-charts/src/lib/styled/area-chart.spec.ts`
 
@@ -1335,7 +1391,9 @@ async function render() {
 describe('AreaChart', () => {
   it('renders one area path per configured series', async () => {
     const fixture = await render();
-    const paths = fixture.nativeElement.querySelectorAll('path[data-slot="area"]');
+    const paths = fixture.nativeElement.querySelectorAll(
+      'path[data-slot="area"]',
+    );
     expect(paths.length).toBe(2);
   });
 
@@ -1358,8 +1416,13 @@ Expected: FAIL — `AreaChart` not found.
 
 - [ ] **Step 3: Write minimal implementation**
 
-```ts
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+````ts
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { cn } from '@gremorie/ng-core';
 import { Area } from '../headless/area';
 import { CartesianGrid } from '../headless/cartesian-grid';
@@ -1388,11 +1451,7 @@ interface SeriesView {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'data-slot': 'area-chart' },
   template: `
-    <figure
-      role="img"
-      [attr.aria-label]="ariaLabel()"
-      [class]="cardClass()"
-    >
+    <figure role="img" [attr.aria-label]="ariaLabel()" [class]="cardClass()">
       <svg
         chartFrame
         [data]="data()"
@@ -1414,7 +1473,13 @@ interface SeriesView {
         </svg:g>
 
         @for (s of series(); track s.key) {
-          <svg:path [area]="s.key" [color]="s.color" [attr.stroke]="s.color" stroke-width="2" fill-opacity="0.2" />
+          <svg:path
+            [area]="s.key"
+            [color]="s.color"
+            [attr.stroke]="s.color"
+            stroke-width="2"
+            fill-opacity="0.2"
+          />
         }
 
         <svg:g xAxis #x="xAxis">
@@ -1425,7 +1490,9 @@ interface SeriesView {
               dy="-2"
               text-anchor="middle"
               class="fill-muted-foreground text-[10px]"
-            >{{ t.label }}</svg:text>
+            >
+              {{ t.label }}
+            </svg:text>
           }
         </svg:g>
 
@@ -1436,13 +1503,19 @@ interface SeriesView {
               [attr.y]="t.y"
               dy="-2"
               class="fill-muted-foreground text-[10px]"
-            >{{ t.label }}</svg:text>
+            >
+              {{ t.label }}
+            </svg:text>
           }
         </svg:g>
       </svg>
 
       <table class="sr-only">
-        <caption>{{ ariaLabel() }}</caption>
+        <caption>
+          {{
+            ariaLabel()
+          }}
+        </caption>
         <thead>
           <tr>
             <th>{{ xKey() }}</th>
@@ -1482,14 +1555,20 @@ export class AreaChart {
   );
 
   readonly ariaLabel = computed(
-    () => `Area chart of ${this.series().map((s) => s.label).join(', ')} by ${this.xKey()}`,
+    () =>
+      `Area chart of ${this.series()
+        .map((s) => s.label)
+        .join(', ')} by ${this.xKey()}`,
   );
 
   readonly cardClass = computed(() =>
-    cn('flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground', this.class()),
+    cn(
+      'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
+      this.class(),
+    ),
   );
 }
-```
+````
 
 - [ ] **Step 4: Run test to verify it passes**
 
@@ -1501,11 +1580,13 @@ Expected: PASS (2 area paths; role=img + aria-label with "Sales"; 3 table rows).
 - [ ] **Step 5: Export from barrel and commit**
 
 Add to `src/index.ts`:
+
 ```ts
 export * from './lib/styled/area-chart';
 ```
 
 Then remove the temporary harness file:
+
 ```bash
 git rm packages/shadng-charts/src/lib/smoke.spec.ts
 ```
@@ -1520,29 +1601,32 @@ git commit -m "feat(charts): styled <area-chart> with token colors + a11y table"
 ### Task 11: Chart color tokens in the theme
 
 **Files:**
+
 - Modify: `packages/shadng-core/styles/theme.css`
 
 - [ ] **Step 1: Add `--chart-1..5` to the `:root` semantics block**
 
 Find the `:root {` block (semantics). After the `--ring:` line, add:
+
 ```css
-  /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+/* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
+--chart-1: oklch(0.646 0.222 41.116);
+--chart-2: oklch(0.6 0.118 184.704);
+--chart-3: oklch(0.398 0.07 227.392);
+--chart-4: oklch(0.828 0.189 84.429);
+--chart-5: oklch(0.769 0.188 70.08);
 ```
 
 - [ ] **Step 2: Add dark-mode chart tokens to the `.dark` block**
 
 Find the `.dark {` block. After its last `--ring:` (or final semantic) line, add:
+
 ```css
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+--chart-1: oklch(0.488 0.243 264.376);
+--chart-2: oklch(0.696 0.17 162.48);
+--chart-3: oklch(0.769 0.188 70.08);
+--chart-4: oklch(0.627 0.265 303.9);
+--chart-5: oklch(0.645 0.246 16.439);
 ```
 
 - [ ] **Step 3: Commit**
@@ -1557,11 +1641,13 @@ git commit -m "feat(charts): add --chart-1..5 tokens (light + dark)"
 ### Task 12: CLI registry entry
 
 **Files:**
+
 - Modify: `packages/shadng-cli/src/registry.ts`
 
 - [ ] **Step 1: Add the `charts` entry**
 
 In the `REGISTRY` array, after the `scroll-area` entry and before the `// Future:` comment, add:
+
 ```ts
   {
     name: 'charts',
@@ -1590,6 +1676,7 @@ git commit -m "feat(charts): register charts in the CLI registry"
 ### Task 13: Storybook story for `<area-chart>`
 
 **Files:**
+
 - Create: `packages/shadng-charts/src/lib/styled/area-chart.stories.ts`
 
 This story is the artifact future visual-regression screenshots will target.
@@ -1690,6 +1777,7 @@ git commit -m "chore(charts): verification pass — tests, lint, build green"
 ## Self-Review
 
 **Spec coverage** (against `2026-05-23-shadng-charts-design.md`):
+
 - Own-the-code on D3 math → Tasks 2-4 (format/scales/shape) ✓
 - Headless + styled layers → Tasks 6-9 (headless) + Task 10 (styled) ✓
 - Data flow via signals + series self-registration / shared domains → Tasks 5-7 ✓

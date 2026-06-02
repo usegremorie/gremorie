@@ -1,10 +1,10 @@
 ---
 title: Skeleton
-description: "Pulsing placeholder block that reserves layout space while content fetches."
+description: 'Pulsing placeholder block that reserves layout space while content fetches.'
 ---
 
-import { SkeletonPreview } from "@/components/preview/feedback/feedback";
-import { Skeleton } from "@gremorie/rx-feedback";
+import { SkeletonPreview } from '@/components/preview/feedback/feedback';
+import { Skeleton } from '@gremorie/rx-feedback';
 
 ## Overview
 
@@ -21,26 +21,10 @@ Reach for Skeleton on every async surface where the layout depends on the respon
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-skeleton
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-skeleton
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-skeleton
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-skeleton
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-skeleton ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-skeleton ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-skeleton ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-skeleton ```</Tab>
 </Tabs>
 
 ## Usage
@@ -76,13 +60,15 @@ Angular edition planned for a follow-up release. The same shape-by-class contrac
 
 Renders a `<div>` styled with `animate-pulse rounded-md bg-accent`. Shape the element with width and height utility classes that match the content underneath.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | The whole API. Set width and height (`size-12`, `h-4 w-[200px]`), override the radius (`rounded-full` for avatars), or change the surface (`bg-muted`) when the default accent surface clashes with the parent. |
-| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes. The component itself adds no role; semantics belong to the surrounding region. |
+| Prop        | Type                          | Default | Description                                                                                                                                                                                                     |
+| ----------- | ----------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `className` | `string`                      | -       | The whole API. Set width and height (`size-12`, `h-4 w-[200px]`), override the radius (`rounded-full` for avatars), or change the surface (`bg-muted`) when the default accent surface clashes with the parent. |
+| `...props`  | `React.ComponentProps<"div">` | -       | Standard div attributes. The component itself adds no role; semantics belong to the surrounding region.                                                                                                         |
 
 <Callout type="info">
-The default animation uses Tailwind's `animate-pulse`. Users with `prefers-reduced-motion: reduce` automatically get the static state - the project ships a global motion override, no per-component config required.
+  The default animation uses Tailwind's `animate-pulse`. Users with
+  `prefers-reduced-motion: reduce` automatically get the static state - the
+  project ships a global motion override, no per-component config required.
 </Callout>
 
 ## Composition
@@ -165,5 +151,5 @@ Use a fixed count that matches the typical page size (5-10 rows). Overshooting f
 ## Related
 
 - [Progress](/components/feedback/progress) - reach for Progress when percent complete is known.
-- [Alert](/components/feedback/alert) - reach for Alert when the surface needs to explain *why* the user is waiting.
+- [Alert](/components/feedback/alert) - reach for Alert when the surface needs to explain _why_ the user is waiting.
 - [AspectRatio](/components/containers/aspect-ratio) - pair with Skeleton to reserve cover-image space without computing dimensions by hand.

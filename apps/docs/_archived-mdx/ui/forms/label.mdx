@@ -2,20 +2,20 @@
 title: Label
 description: Rótulo acessível para controles de formulário — par obrigatório de Input, Select, Checkbox.
 component: Label
-importPath: "@kalvner/kds/forms/label"
+importPath: '@kalvner/kds/forms/label'
 status: stable
 ---
 
-import { Label } from "@kalvner/kds/forms/label";
-import { Input } from "@kalvner/kds/forms/input";
-import { Checkbox } from "@kalvner/kds/forms/checkbox";
+import { Label } from '@kalvner/kds/forms/label';
+import { Input } from '@kalvner/kds/forms/input';
+import { Checkbox } from '@kalvner/kds/forms/checkbox';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -58,14 +58,15 @@ ferramentas de preenchimento automático.
 ```
 
 A `id` do Input deve bater com o `htmlFor` do Label. `react-hook-form`
-+ `FormItem` resolvem isso para você — geram um id único via
-`React.useId()` e propagam.
+
+- `FormItem` resolvem isso para você — geram um id único via
+  `React.useId()` e propagam.
 
 ## Usage
 
 ```tsx
-import { Label } from "@kalvner/kds/forms/label";
-import { Input } from "@kalvner/kds/forms/input";
+import { Label } from '@kalvner/kds/forms/label';
+import { Input } from '@kalvner/kds/forms/input';
 
 export function NameField() {
   return (
@@ -92,11 +93,11 @@ export function NameField() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `htmlFor` | `string` | — | ID do controle vinculado. |
-| `className` | `string` | — | Classes Tailwind extras. |
-| `...rest` | `React.ComponentProps<typeof LabelPrimitive.Root>` | — | Tudo do Radix Label.Root. |
+| Prop        | Tipo                                               | Default | Descrição                 |
+| ----------- | -------------------------------------------------- | ------- | ------------------------- |
+| `htmlFor`   | `string`                                           | —       | ID do controle vinculado. |
+| `className` | `string`                                           | —       | Classes Tailwind extras.  |
+| `...rest`   | `React.ComponentProps<typeof LabelPrimitive.Root>` | —       | Tudo do Radix Label.Root. |
 
 ## States
 
@@ -104,7 +105,9 @@ export function NameField() {
   <Card>
     <CardHeader>
       <CardTitle>Required</CardTitle>
-      <CardDescription>Asterisco vermelho — anuncie como `obrigatório`.</CardDescription>
+      <CardDescription>
+        Asterisco vermelho — anuncie como `obrigatório`.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="grid gap-2">
@@ -139,7 +142,9 @@ export function NameField() {
       <div className="grid gap-2">
         <Label htmlFor="help">Email</Label>
         <Input id="help" type="email" placeholder="voce@exemplo.com" />
-        <span className="block text-sm text-muted-foreground">Usaremos para confirmar a conta.</span>
+        <span className="block text-sm text-muted-foreground">
+          Usaremos para confirmar a conta.
+        </span>
       </div>
     </CardContent>
   </Card>
@@ -164,7 +169,9 @@ export function NameField() {
 <Card>
   <CardHeader>
     <CardTitle>Canonical form row</CardTitle>
-    <CardDescription>Label + Input + helper — a unidade mínima de qualquer form.</CardDescription>
+    <CardDescription>
+      Label + Input + helper — a unidade mínima de qualquer form.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="grid gap-2">
@@ -175,7 +182,9 @@ export function NameField() {
         </span>
       </Label>
       <Input id="comp-name" placeholder="Bruno Kalvner" />
-      <span className="block text-sm text-muted-foreground">Como aparece no documento de identificação.</span>
+      <span className="block text-sm text-muted-foreground">
+        Como aparece no documento de identificação.
+      </span>
     </div>
   </CardContent>
 </Card>
@@ -212,13 +221,13 @@ export function NameField() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<label>` HTML nativo via Radix. Anuncia o controle vinculado. |
-| **Vinculação** | `htmlFor` + `id` (preferido) ou wrap do controle como child. |
-| **Click target** | Clicar no Label foca o controle. Para Checkbox/Radio, marca/desmarca. |
-| **Disabled** | Dim automático via `peer-disabled` quando o controle vinculado está disabled. |
-| **Required** | Asterisco precisa de `aria-label="obrigatório"`. Combine com `required` no Input. |
+| Concern          | Comportamento                                                                     |
+| ---------------- | --------------------------------------------------------------------------------- |
+| **Roles**        | `<label>` HTML nativo via Radix. Anuncia o controle vinculado.                    |
+| **Vinculação**   | `htmlFor` + `id` (preferido) ou wrap do controle como child.                      |
+| **Click target** | Clicar no Label foca o controle. Para Checkbox/Radio, marca/desmarca.             |
+| **Disabled**     | Dim automático via `peer-disabled` quando o controle vinculado está disabled.     |
+| **Required**     | Asterisco precisa de `aria-label="obrigatório"`. Combine com `required` no Input. |
 
 ## Related
 

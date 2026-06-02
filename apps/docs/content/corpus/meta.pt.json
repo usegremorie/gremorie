@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "title": "Corpus",
+  "description": "Conhecimento de UX agnóstico de framework",
+  "icon": "BookOpen",
+  "pages": [
+    "index",
+    "---Princípios---",
+    "heuristics",
+    "visual-hierarchy",
+    "---Padrões---",
+    "components",
+    "patterns",
+    "---Estados & feedback---",
+    "states",
+    "feedback-system",
+    "---Escrita---",
+    "ux-writing"
+  ]
+}

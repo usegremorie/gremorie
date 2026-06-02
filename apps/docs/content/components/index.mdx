@@ -1,0 +1,147 @@
+---
+title: Overview
+description: The components Gremorie ships via registry — what they do, what's on / off, and the contract with consumer backends.
+---
+
+This page describes the **components that Gremorie ships** (consumable via
+CLI and MCP), all their features (including what can be toggled on / off),
+and the contract with any backend the component depends on.
+
+> Not to be confused with the [UX corpus](/corpus). The
+> corpus is text knowledge — **when** to use a button versus a link, label
+> rules, hierarchy. This page is the **code** the registry distributes.
+
+## Principles
+
+Aligned with the Gremorie [philosophy](/get-started/philosophy) and the
+[architecture](/platform/architecture):
+
+- **Imported and editable.** Distribution via **registry** (not closed npm):
+  the CLI copies the **source into the consumer's repo**, who becomes the
+  owner and edits as needed.
+- **Zero lock-in.** The dev takes the component away. No runtime dep on us.
+- **Decoupled tokens.** Client branding applies through tokens (colours,
+  radius, typography) without touching component code.
+- **Toggleable features.** Every "extra" capability (slash commands, chart
+  actions) can be disabled — by composition (don't include the part) or by
+  flag.
+
+## Per-component documentation contract
+
+Every registry component must document:
+
+1. **What it does** — one line.
+2. **Features** — list of what comes included.
+3. **API** — props plus compound subcomponents.
+4. **How to toggle each feature** — composition and / or flags.
+5. **Backend contract** — what the consumer must provide if any (skills +
+   handler for slash commands, for example). ChartArtifact = 100% frontend,
+   no backend.
+6. **With / without examples** for each toggleable feature.
+7. **Live docs** — Fumadocs page (prop table + side-by-side examples) plus
+   Storybook stories with Controls to toggle features live.
+
+See the [documentation standard](/platform/internal/documentation-standard)
+for the binary checklist.
+
+## API pattern: composition vs flags
+
+Two ways, combinable.
+
+**Composition (compound - preferred):** turn off by not
+including the part.
+
+```tsx
+<ChartArtifact data={data}>
+  <ChartArtifact.Toolbar>
+    <ChartArtifact.TableToggle />
+    <ChartArtifact.DownloadCsv />
+    {/* no <DownloadImage/> -> the button doesn't render */}
+  </ChartArtifact.Toolbar>
+</ChartArtifact>
+```
+
+**Flags (convenience, quick on / off):**
+
+```tsx
+<ChartArtifact data={data} actions={{ table: true, csv: false, image: false }} />
+
+<PromptInput onSubmit={fn} />                 {/* no skills -> no slash menu */}
+<PromptInput skills={skills} onSubmit={fn} /> {/* with slash */}
+```
+
+Each component's docs show both paths and the **default** (everything on)
+plus how to **opt out**.
+
+## Initial catalogue
+
+Validated in the `up-product` prototype (`apps/web/src/features/iap/`) —
+strong candidates for the first registry items.
+
+### 1. ChartArtifact — **recommended pilot**
+
+Visualisation card for AI / analytics output.
+
+- **What it does:** renders the artifact (bar / line / pie / radar / table /
+  KPI) with an action toolbar.
+- **Features:** chart / table toggle, **CSV download**, **PNG download**
+  (image), semantic palette system.
+- **Backend:** **none** — 100% frontend. CSV and PNG are client-side (via
+  `html-to-image` or similar). This is why it's the best pilot: it proves
+  the registry + docs flow without the server complication.
+- **Toggleable:** each action (table / CSV / PNG) via compound or flag.
+- **Reference code:** `up-product` ->
+  `apps/web/src/features/iap/artifacts/*` (renderers, `iap-export-csv`,
+  PNG exporter, palettes).
+
+### 2. PromptInput (with slash commands)
+
+Chat composer in the Claude / Cursor style.
+
+- **What it does:** input with modes, context chips, and an **inline slash
+  menu** (coloured command in the text itself, via a highlight layer).
+- **Features:** slash -> list of "skills / commands" (filter, keyboard
+  navigation, optional auto-detection), context chips, mode selector,
+  attachments.
+- **Backend:** **contract** — the consumer provides the skill list and a
+  handler (`onSubmit` / adapter). The UI is ours; execution is the dev's.
+  Same model as AI Elements: ready primitive, you wire it to your backend.
+- **Toggleable:** slash off (no `skills` -> no menu); chips, modes, and
+  attachments are optional.
+- **Reference code:** `up-product` ->
+  `apps/web/src/features/iap/chat/{chat-prompt-input,skill-slash-menu}.tsx`.
+
+## Distribution
+
+- `registry.json` + per-item JSON -> served by the Gremorie docs site at
+  `/r/...`.
+- Consumption (CLI): `npx gremorie add ng-chart-artifact` -> source lands
+  in the dev's repo.
+- Consumption (AI agent): MCP server reads the same registry and exposes
+  `get_component(name)` / `get_block(name)` / `get_guidelines(topic)` to
+  Claude or Cursor.
+- Versioning (semver), peer deps, a11y, and decoupled theming are part of
+  the "production-ready" bar — see warning below.
+
+> **Extracting is not productising.** Plug-and-play for third parties
+> requires a stable public API, decoupled tokens, tree-shaking, a11y
+> guarantees, docs + examples, and ongoing maintenance. It's a product line,
+> not a weekend extraction. The path: **ChartArtifact first** (frontend
+> only) as proof, then PromptInput (with backend contract).
+
+## Status
+
+Planning. Origin: discussion stemming from the `up-product` iap prototype
+(slash commands + chart card with export). Next concrete step: spec the
+public API of ChartArtifact and the registry item structure.
+
+## Related
+
+- [Architecture](/platform/architecture) — stack, registry,
+  distribution
+- [Documentation standard](/platform/internal/documentation-standard) — the
+  binary checklist every component must satisfy
+- [Storybook structure](/platform/internal/storybook-structure) — the
+  canonical sidebar tree (9 Primitives categories, AI = Chatbot + Code)
+- [Contributing](/get-started/contributing) — how to add a new
+  component

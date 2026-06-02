@@ -3,7 +3,7 @@ title: Toggle Group
 description: Coordinated cluster of Toggles - radio-like with `type="single"` or checkbox-like with `type="multiple"`, with shared sizing and variant via context.
 ---
 
-import { ToggleGroupPreview } from "@/components/preview/forms/forms";
+import { ToggleGroupPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,16 @@ Use ToggleGroup for **formatting and view state** (text alignment, view mode, fi
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-toggle-group
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-toggle-group
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-toggle-group
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-toggle-group
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-toggle-group ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-toggle-group ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-toggle-group ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-toggle-group ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -78,29 +68,29 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<ToggleGroup>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `type` | `"single" \| "multiple"` | - | `single` enforces one pressed item; `multiple` allows any number. Required. |
-| `value` | `string \| string[]` | - | Controlled value. Single string for `type="single"`, array for `type="multiple"`. |
-| `defaultValue` | `string \| string[]` | - | Uncontrolled initial value. |
-| `onValueChange` | `(value: string \| string[]) => void` | - | Fires when selection changes. |
-| `disabled` | `boolean` | `false` | Disables the whole group. |
-| `variant` | `"default" \| "outline"` | `"default"` | Forwarded to every item via context. |
-| `size` | `"default" \| "sm" \| "lg"` | `"default"` | Forwarded to every item via context. |
-| `spacing` | `number` | `0` | Gap between items in spacing units. `0` joins them with a shared border (button-group style); positive values break them into separate buttons. |
-| `rovingFocus` | `boolean` | `true` | Enables roving tabindex (Radix default). |
-| `loop` | `boolean` | `true` | Arrow keys wrap. |
+| Prop            | Type                                  | Default     | Description                                                                                                                                     |
+| --------------- | ------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`          | `"single" \| "multiple"`              | -           | `single` enforces one pressed item; `multiple` allows any number. Required.                                                                     |
+| `value`         | `string \| string[]`                  | -           | Controlled value. Single string for `type="single"`, array for `type="multiple"`.                                                               |
+| `defaultValue`  | `string \| string[]`                  | -           | Uncontrolled initial value.                                                                                                                     |
+| `onValueChange` | `(value: string \| string[]) => void` | -           | Fires when selection changes.                                                                                                                   |
+| `disabled`      | `boolean`                             | `false`     | Disables the whole group.                                                                                                                       |
+| `variant`       | `"default" \| "outline"`              | `"default"` | Forwarded to every item via context.                                                                                                            |
+| `size`          | `"default" \| "sm" \| "lg"`           | `"default"` | Forwarded to every item via context.                                                                                                            |
+| `spacing`       | `number`                              | `0`         | Gap between items in spacing units. `0` joins them with a shared border (button-group style); positive values break them into separate buttons. |
+| `rovingFocus`   | `boolean`                             | `true`      | Enables roving tabindex (Radix default).                                                                                                        |
+| `loop`          | `boolean`                             | `true`      | Arrow keys wrap.                                                                                                                                |
 
 Forwards to `ToggleGroupPrimitive.Root`. Wraps children in an internal `ToggleGroupContext` so `ToggleGroupItem` inherits `variant`, `size`, and `spacing`.
 
 ### `<ToggleGroupItem>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `value` | `string` | - | The value reported back to the parent. Required. |
-| `disabled` | `boolean` | `false` | Disables this single item. |
-| `variant` | `"default" \| "outline"` | inherited from group | Override the group's variant for this item. Rare. |
-| `size` | `"default" \| "sm" \| "lg"` | inherited from group | Override the group's size for this item. Rare. |
+| Prop       | Type                        | Default              | Description                                       |
+| ---------- | --------------------------- | -------------------- | ------------------------------------------------- |
+| `value`    | `string`                    | -                    | The value reported back to the parent. Required.  |
+| `disabled` | `boolean`                   | `false`              | Disables this single item.                        |
+| `variant`  | `"default" \| "outline"`    | inherited from group | Override the group's variant for this item. Rare. |
+| `size`     | `"default" \| "sm" \| "lg"` | inherited from group | Override the group's size for this item. Rare.    |
 
 The item reads from `ToggleGroupContext` before falling back to its own props, so the group always wins unless explicitly overridden.
 
@@ -118,7 +108,7 @@ The item reads from `ToggleGroupContext` before falling back to its own props, s
 The canonical pattern. `type="single"` for radio-like behaviour.
 
 ```tsx
-import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
+import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 
 <ToggleGroup type="single" defaultValue="left">
   <ToggleGroupItem value="left" aria-label="Align left">
@@ -130,7 +120,7 @@ import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
   <ToggleGroupItem value="right" aria-label="Align right">
     <AlignRight />
   </ToggleGroupItem>
-</ToggleGroup>
+</ToggleGroup>;
 ```
 
 ### Multi-select formatting
@@ -138,9 +128,9 @@ import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 `type="multiple"` lets users press multiple items (e.g. bold + italic at the same time).
 
 ```tsx
-import { Bold, Italic, Underline } from "lucide-react";
+import { Bold, Italic, Underline } from 'lucide-react';
 
-<ToggleGroup type="multiple" defaultValue={["bold"]}>
+<ToggleGroup type="multiple" defaultValue={['bold']}>
   <ToggleGroupItem value="bold" aria-label="Bold">
     <Bold />
   </ToggleGroupItem>
@@ -150,7 +140,7 @@ import { Bold, Italic, Underline } from "lucide-react";
   <ToggleGroupItem value="underline" aria-label="Underline">
     <Underline />
   </ToggleGroupItem>
-</ToggleGroup>
+</ToggleGroup>;
 ```
 
 ### Outline variant with spacing
@@ -158,7 +148,7 @@ import { Bold, Italic, Underline } from "lucide-react";
 When the cluster should read as a row of independent buttons rather than one joined unit, use `variant="outline"` plus a positive `spacing` value.
 
 ```tsx
-import { List, LayoutGrid, Rows3 } from "lucide-react";
+import { List, LayoutGrid, Rows3 } from 'lucide-react';
 
 <ToggleGroup type="single" defaultValue="grid" variant="outline" spacing={1}>
   <ToggleGroupItem value="list" aria-label="List view">
@@ -170,7 +160,7 @@ import { List, LayoutGrid, Rows3 } from "lucide-react";
   <ToggleGroupItem value="board" aria-label="Board view">
     <Rows3 />
   </ToggleGroupItem>
-</ToggleGroup>
+</ToggleGroup>;
 ```
 
 ### Controlled selection

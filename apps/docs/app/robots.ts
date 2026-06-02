@@ -1,24 +1,25 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next';
 
 /**
- * Site-wide robots.txt (layer 2 of 3).
+ * Site-wide robots.txt.
  *
- * Blocks every crawler from every path while the Gremorie docs site is
- * deployed publicly on Vercel without a custom domain. Pair this with
- * `metadata.robots` in `app/layout.tsx` and the `X-Robots-Tag` header in
- * `vercel.json` for defense in depth.
+ * gremorie.com is live and launch-ready, so crawlers and AI agents are
+ * allowed in — this is what lets an assistant fetch the docs / llms.txt
+ * when a user hands it only the domain.
  *
- * When `gremorie.com` is bought and the content is launch-ready, switch
- * this back to `allow: "/"` and remove the `metadata.robots` block plus
- * the `X-Robots-Tag` header from `vercel.json`.
+ * NOTE: search-engine *indexing* is still suppressed via the
+ * `X-Robots-Tag: noindex` header in `vercel.json` (soft launch). That
+ * header does not block AI agents that fetch a page on purpose. Remove it
+ * when you want Google to index the site (full SEO launch).
  */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: "*",
-        disallow: "/"
-      }
-    ]
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+    host: 'https://gremorie.com',
   };
 }

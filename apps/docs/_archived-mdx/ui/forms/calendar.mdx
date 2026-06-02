@@ -2,18 +2,18 @@
 title: Calendar
 description: Grade de seleção de data — single, range, multiple — sobre react-day-picker.
 component: Calendar
-importPath: "@kalvner/kds/forms/calendar"
+importPath: '@kalvner/kds/forms/calendar'
 status: stable
 ---
 
-import { Calendar } from "@kalvner/kds/forms/calendar";
+import { Calendar } from '@kalvner/kds/forms/calendar';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -55,10 +55,10 @@ telas pequenas.
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
-import * as React from "react";
-import { Calendar } from "@kalvner/kds/forms/calendar";
+import * as React from 'react';
+import { Calendar } from '@kalvner/kds/forms/calendar';
 
 export function BookingCalendar() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -75,18 +75,18 @@ export function BookingCalendar() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `mode` | `'single' \| 'range' \| 'multiple'` | — | Modo de seleção. |
-| `selected` | `Date \| Date[] \| DateRange` | — | Conforme o `mode`. |
-| `onSelect` | `(value) => void` | — | Callback. Tipagem casa com o `mode`. |
-| `disabled` | `Date \| Matcher` | — | Datas bloqueadas (passadas, fim de semana, custom). |
-| `numberOfMonths` | `number` | `1` | Útil em `range` (`2` mostra 2 meses lado a lado). |
-| `defaultMonth` | `Date` | hoje | Mês visível no carregamento. |
-| `showOutsideDays` | `boolean` | `true` | Exibe dias do mês adjacente esmaecidos. |
-| `autoFocus` | `boolean` | `false` | Foca o dia ao montar — use em Popover. |
-| `locale` | `Locale` (date-fns) | `enUS` | Pt-BR via `import { ptBR } from "date-fns/locale"`. |
-| `weekStartsOn` | `0..6` | `0` | 1 para semana começando na segunda. |
+| Prop              | Tipo                                | Default | Descrição                                           |
+| ----------------- | ----------------------------------- | ------- | --------------------------------------------------- |
+| `mode`            | `'single' \| 'range' \| 'multiple'` | —       | Modo de seleção.                                    |
+| `selected`        | `Date \| Date[] \| DateRange`       | —       | Conforme o `mode`.                                  |
+| `onSelect`        | `(value) => void`                   | —       | Callback. Tipagem casa com o `mode`.                |
+| `disabled`        | `Date \| Matcher`                   | —       | Datas bloqueadas (passadas, fim de semana, custom). |
+| `numberOfMonths`  | `number`                            | `1`     | Útil em `range` (`2` mostra 2 meses lado a lado).   |
+| `defaultMonth`    | `Date`                              | hoje    | Mês visível no carregamento.                        |
+| `showOutsideDays` | `boolean`                           | `true`  | Exibe dias do mês adjacente esmaecidos.             |
+| `autoFocus`       | `boolean`                           | `false` | Foca o dia ao montar — use em Popover.              |
+| `locale`          | `Locale` (date-fns)                 | `enUS`  | Pt-BR via `import { ptBR } from "date-fns/locale"`. |
+| `weekStartsOn`    | `0..6`                              | `0`     | 1 para semana começando na segunda.                 |
 
 A lista completa segue a API do
 [react-day-picker](https://daypicker.dev/api/interfaces/PropsBase).
@@ -103,7 +103,9 @@ react-day-picker, customizáveis via `classNames` ou `components`.
   <Card>
     <CardHeader>
       <CardTitle>Range (2 meses)</CardTitle>
-      <CardDescription>Filtros de período em uma só visualização.</CardDescription>
+      <CardDescription>
+        Filtros de período em uma só visualização.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <Calendar mode="range" numberOfMonths={2} className="rounded-md border" />
@@ -113,12 +115,12 @@ react-day-picker, customizáveis via `classNames` ou `components`.
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
-| `selected` | Day com `bg-primary text-primary-foreground`. |
-| `today` | Day com `bg-accent text-accent-foreground`. |
-| `outside` | Day adjacente ao mês corrente, opacidade reduzida. |
-| `disabled` | Day bloqueado para clique e foco. |
+| Estado     | Comportamento                                      |
+| ---------- | -------------------------------------------------- |
+| `selected` | Day com `bg-primary text-primary-foreground`.      |
+| `today`    | Day com `bg-accent text-accent-foreground`.        |
+| `outside`  | Day adjacente ao mês corrente, opacidade reduzida. |
+| `disabled` | Day bloqueado para clique e foco.                  |
 
 ## Composition
 
@@ -164,13 +166,13 @@ Já vem pronto: [DatePicker](./date-picker).
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Grid ARIA com `role="grid"`, células `role="gridcell"`. |
+| Concern      | Comportamento                                                                                 |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| **Roles**    | Grid ARIA com `role="grid"`, células `role="gridcell"`.                                       |
 | **Keyboard** | `←` `→` `↑` `↓` movem dia/semana, `PageUp`/`PageDown` mês, `Home`/`End` início/fim da semana. |
-| **Focus** | `autoFocus` + Popover dá foco automático ao abrir. |
-| **Locale** | Anúncios de leitor de tela respeitam `locale`. |
-| **Disabled** | Dias bloqueados não recebem foco. |
+| **Focus**    | `autoFocus` + Popover dá foco automático ao abrir.                                            |
+| **Locale**   | Anúncios de leitor de tela respeitam `locale`.                                                |
+| **Disabled** | Dias bloqueados não recebem foco.                                                             |
 
 ## Related
 

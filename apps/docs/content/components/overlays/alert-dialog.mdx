@@ -1,9 +1,9 @@
 ---
 title: Alert Dialog
-description: "Interruptive confirmation dialog. Blocks the UI, has no overlay-close, and requires an explicit Action or Cancel."
+description: 'Interruptive confirmation dialog. Blocks the UI, has no overlay-close, and requires an explicit Action or Cancel.'
 ---
 
-import { AlertDialogPreview } from "@/components/preview/overlays/overlays";
+import { AlertDialogPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -20,26 +20,16 @@ If your dialog is informational, dismissible, or part of a routine flow, use `Di
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-alert-dialog
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-alert-dialog
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-alert-dialog
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-alert-dialog
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-alert-dialog ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-alert-dialog ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-alert-dialog ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-alert-dialog ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -98,27 +88,27 @@ Extends Radix `AlertDialog.Root`. Same controlled API as `Dialog` (`open`, `defa
 
 ### `<AlertDialogContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop   | Type                | Default     | Description                                                                                        |
+| ------ | ------------------- | ----------- | -------------------------------------------------------------------------------------------------- |
 | `size` | `"default" \| "sm"` | `"default"` | Compact variant. `sm` constrains width to `max-w-xs` and switches the footer to a two-column grid. |
 
 Wraps Radix `AlertDialog.Content` in a Portal with the overlay. Has no built-in X close button by design.
 
 ### `<AlertDialogAction>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop      | Type                | Default     | Description                                                                       |
+| --------- | ------------------- | ----------- | --------------------------------------------------------------------------------- |
 | `variant` | `Button["variant"]` | `"default"` | Forwarded to the wrapping `Button`. Use `"destructive"` for delete confirmations. |
-| `size` | `Button["size"]` | `"default"` | Forwarded to the wrapping `Button`. |
+| `size`    | `Button["size"]`    | `"default"` | Forwarded to the wrapping `Button`.                                               |
 
 Renders a `Button` with `asChild` wrapping a Radix `AlertDialog.Action`. Closes the dialog and runs your handler.
 
 ### `<AlertDialogCancel>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop      | Type                | Default     | Description                         |
+| --------- | ------------------- | ----------- | ----------------------------------- |
 | `variant` | `Button["variant"]` | `"outline"` | Forwarded to the wrapping `Button`. |
-| `size` | `Button["size"]` | `"default"` | Forwarded to the wrapping `Button`. |
+| `size`    | `Button["size"]`    | `"default"` | Forwarded to the wrapping `Button`. |
 
 Closes the dialog and returns focus to the trigger.
 

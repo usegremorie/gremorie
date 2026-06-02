@@ -3,7 +3,7 @@ title: Shimmer
 description: Animated text shimmer effect that slides a gradient across the characters - the universal "the model is working" cue.
 ---
 
-import { ShimmerPreview } from "@/components/preview/ai/chatbot";
+import { ShimmerPreview } from '@/components/preview/ai/chatbot';
 
 ## Overview
 
@@ -20,26 +20,10 @@ Use it for ephemeral status text - "Thinking...", "Generating response...", "Loa
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-shimmer
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-shimmer
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-shimmer
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-shimmer
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-shimmer ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-shimmer ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-shimmer ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-shimmer ```</Tab>
 </Tabs>
 
 ## Usage
@@ -60,13 +44,14 @@ import { Component } from "@angular/core";
 import { Shimmer } from "@gremorie/ng-ai";
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Shimmer],
-  template: `<span ngShimmer>Thinking...</span>`,
+selector: "app-example",
+standalone: true,
+imports: [Shimmer],
+template: `<span ngShimmer>Thinking...</span>`,
 })
 export class ExampleComponent {}
-```
+
+````
 
 > The Angular version is a directive (`[ngShimmer]`) rather than a component. Apply it to any element with text content; the spread auto-scales with character count, mirroring the React implementation.
 </Tab>
@@ -98,7 +83,7 @@ The 90% case: a short status string.
 
 ```tsx
 <Shimmer>Generating response...</Shimmer>
-```
+````
 
 ### Inline inside a sentence
 
@@ -115,7 +100,9 @@ Render as `span` to shimmer a single word inside a normal paragraph.
 For shorter labels where the default 2s feels slow.
 
 ```tsx
-<Shimmer duration={1} spread={1}>Reasoning</Shimmer>
+<Shimmer duration={1} spread={1}>
+  Reasoning
+</Shimmer>
 ```
 
 ### Reasoning trigger override

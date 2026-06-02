@@ -24,7 +24,7 @@ export function ChartSwatchRow({ tokens }: { tokens: string[] }) {
       <div className="flex w-full gap-1 text-[10px] font-mono text-fd-muted-foreground">
         {tokens.map((token) => (
           <div key={token} className="flex-1 truncate text-center">
-            {token.replace(/^--color-chart-/, "")}
+            {token.replace(/^--color-chart-/, '')}
           </div>
         ))}
       </div>

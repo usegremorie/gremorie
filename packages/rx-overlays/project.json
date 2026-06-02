@@ -3,7 +3,12 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/rx-overlays/src",
   "projectType": "library",
-  "tags": ["scope:lib", "type:component", "category:overlays", "framework:react"],
+  "tags": [
+    "scope:lib",
+    "type:component",
+    "category:overlays",
+    "framework:react"
+  ],
   "targets": {
     "build": {
       "executor": "nx:run-commands",

@@ -1,10 +1,10 @@
 ---
 title: Aspect Ratio
-description: "Reserve responsive vertical space so media never causes layout shift."
+description: 'Reserve responsive vertical space so media never causes layout shift.'
 ---
 
-import { AspectRatioPreview } from "@/components/preview/containers/containers";
-import { AspectRatio } from "@gremorie/rx-containers";
+import { AspectRatioPreview } from '@/components/preview/containers/containers';
+import { AspectRatio } from '@gremorie/rx-containers';
 
 ## Overview
 
@@ -21,26 +21,16 @@ Reach for AspectRatio whenever the **height of a child is derived from its width
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-aspect-ratio
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-aspect-ratio
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-aspect-ratio
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-aspect-ratio
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-aspect-ratio ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-aspect-ratio ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-aspect-ratio ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-aspect-ratio ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -76,11 +66,11 @@ Angular edition planned for a follow-up release. The React API will translate on
 
 Renders a `<div>` styled by Radix to maintain `width / height = ratio` at every breakpoint. The child element should size itself with `size-full` (or `width: 100%; height: 100%`) so it fills the reserved box.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `ratio` | `number` | `1` | Aspect ratio expressed as width divided by height. Use `16 / 9` for landscape video, `4 / 3` for legacy video, `1` for square, `3 / 4` for portrait posters. |
-| `asChild` | `boolean` | `false` | When `true`, merges props onto the single child element via Radix `Slot` instead of rendering an extra `div`. |
-| `...props` | `React.ComponentProps<"div">` | - | Standard div attributes including `className` and `style`. |
+| Prop       | Type                          | Default | Description                                                                                                                                                  |
+| ---------- | ----------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ratio`    | `number`                      | `1`     | Aspect ratio expressed as width divided by height. Use `16 / 9` for landscape video, `4 / 3` for legacy video, `1` for square, `3 / 4` for portrait posters. |
+| `asChild`  | `boolean`                     | `false` | When `true`, merges props onto the single child element via Radix `Slot` instead of rendering an extra `div`.                                                |
+| `...props` | `React.ComponentProps<"div">` | -       | Standard div attributes including `className` and `style`.                                                                                                   |
 
 ## Composition
 
@@ -140,7 +130,10 @@ Use `ratio={1}` plus `rounded-full` for avatar tiles that scale fluidly inside g
 
 <div className="rounded-lg border p-6 not-prose">
   <div className="max-w-md">
-    <AspectRatio ratio={16 / 9} className="animate-pulse rounded-md bg-accent" />
+    <AspectRatio
+      ratio={16 / 9}
+      className="animate-pulse rounded-md bg-accent"
+    />
   </div>
 </div>
 

@@ -16,15 +16,15 @@
  * MDX already contain. No domain logic, no DB.
  */
 
-import { createMcpHandler } from "mcp-handler";
-import { z } from "zod";
+import { createMcpHandler } from 'mcp-handler';
+import { z } from 'zod';
 
-import { getGuidelines, listGuidelines } from "@/lib/mcp/guidelines";
+import { getGuidelines, listGuidelines } from '@/lib/mcp/guidelines';
 import {
   filterRegistry,
   readRegistryIndex,
   readRegistryItem,
-} from "@/lib/mcp/registry";
+} from '@/lib/mcp/registry';
 
 /*
  * The MCP SDK's `registerTool` has deeply nested generics (dual v3/v4 zod
@@ -33,7 +33,7 @@ import {
  * by the zod inputSchema at runtime.
  */
 type ToolHandlerResult = {
-  content: Array<{ type: "text"; text: string }>;
+  content: Array<{ type: 'text'; text: string }>;
   isError?: boolean;
 };
 type RegisterTool = <I extends Record<string, unknown>>(
@@ -49,7 +49,9 @@ type RegisterTool = <I extends Record<string, unknown>>(
 const handler = createMcpHandler(
   (server) => {
     // Cast once; subsequent calls type-check the zod schemas as the SDK does at runtime.
-    const registerTool = server.registerTool.bind(server) as unknown as RegisterTool;
+    const registerTool = server.registerTool.bind(
+      server,
+    ) as unknown as RegisterTool;
     /*
      * ─── list_components ────────────────────────────────────────────
      * Lists every registry item (lightweight catalogue, no source).
@@ -57,13 +59,13 @@ const handler = createMcpHandler(
      * "what's available?" without paying for the full source payload.
      */
     registerTool(
-      "list_components",
+      'list_components',
       {
-        title: "List components",
+        title: 'List components',
         description:
-          "List every Gremorie registry item (name, title, description, categories, framework). " +
+          'List every Gremorie registry item (name, title, description, categories, framework). ' +
           "Optionally filter by framework (e.g. 'ng', 'rx'). Returns only the index, not source. " +
-          "Use get_component for the full item.",
+          'Use get_component for the full item.',
         inputSchema: {
           framework: z
             .string()
@@ -77,7 +79,7 @@ const handler = createMcpHandler(
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(
                 {
                   registry: index.name,
@@ -102,18 +104,18 @@ const handler = createMcpHandler(
      * Combined with AND. Returns the same shape as list_components.
      */
     registerTool(
-      "search_components",
+      'search_components',
       {
-        title: "Search components",
+        title: 'Search components',
         description:
-          "Search Gremorie registry items by substring (name + title + description) and / or category. " +
-          "All filters combine with AND. Use this to find candidates before calling get_component for full source.",
+          'Search Gremorie registry items by substring (name + title + description) and / or category. ' +
+          'All filters combine with AND. Use this to find candidates before calling get_component for full source.',
         inputSchema: {
           query: z
             .string()
             .optional()
             .describe(
-              "Free-text substring matched case-insensitively against name, title, and description.",
+              'Free-text substring matched case-insensitively against name, title, and description.',
             ),
           framework: z
             .string()
@@ -137,11 +139,15 @@ const handler = createMcpHandler(
         category?: string;
       }) => {
         const index = await readRegistryIndex();
-        const items = filterRegistry(index.items, { query, framework, category });
+        const items = filterRegistry(index.items, {
+          query,
+          framework,
+          category,
+        });
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(
                 {
                   registry: index.name,
@@ -165,13 +171,13 @@ const handler = createMcpHandler(
      * This is the payload an agent uses to generate code correctly.
      */
     registerTool(
-      "get_component",
+      'get_component',
       {
-        title: "Get component",
+        title: 'Get component',
         description:
-          "Return the full registry item for a Gremorie component: source files, dependencies, cssVars, and the usage doc " +
-          "(whenToUse, whenNotToUse, bestPractices, antipatterns, API, examples). This is what an AI agent needs to generate " +
-          "code that uses the component correctly.",
+          'Return the full registry item for a Gremorie component: source files, dependencies, cssVars, and the usage doc ' +
+          '(whenToUse, whenNotToUse, bestPractices, antipatterns, API, examples). This is what an AI agent needs to generate ' +
+          'code that uses the component correctly.',
         inputSchema: {
           name: z
             .string()
@@ -192,7 +198,7 @@ const handler = createMcpHandler(
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: `Component "${name}" not found in registry. Try list_components to see available items.`,
               },
             ],
@@ -202,7 +208,7 @@ const handler = createMcpHandler(
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(item, null, 2),
             },
           ],
@@ -219,12 +225,12 @@ const handler = createMcpHandler(
      * surface.
      */
     registerTool(
-      "get_block",
+      'get_block',
       {
-        title: "Get block",
+        title: 'Get block',
         description:
-          "Return the full registry item for a Gremorie block (registry:block). Blocks are composed, ready-to-paste sections " +
-          "(versus single primitives). Same payload shape as get_component.",
+          'Return the full registry item for a Gremorie block (registry:block). Blocks are composed, ready-to-paste sections ' +
+          '(versus single primitives). Same payload shape as get_component.',
         inputSchema: {
           name: z
             .string()
@@ -232,7 +238,7 @@ const handler = createMcpHandler(
           framework: z
             .string()
             .optional()
-            .describe("Framework hint. Optional."),
+            .describe('Framework hint. Optional.'),
         },
       },
       async ({ name, framework }: { name: string; framework?: string }) => {
@@ -241,18 +247,18 @@ const handler = createMcpHandler(
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: `Block "${name}" not found in registry.`,
               },
             ],
             isError: true,
           };
         }
-        if (item.type !== "registry:block") {
+        if (item.type !== 'registry:block') {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: `Item "${name}" exists but is type "${item.type}", not "registry:block". Use get_component instead.`,
               },
             ],
@@ -262,7 +268,7 @@ const handler = createMcpHandler(
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(item, null, 2),
             },
           ],
@@ -280,14 +286,14 @@ const handler = createMcpHandler(
      * Without a topic, returns the index (all docs, header only).
      */
     registerTool(
-      "get_guidelines",
+      'get_guidelines',
       {
-        title: "Get guidelines",
+        title: 'Get guidelines',
         description:
-          "Return Gremorie UX corpus guidelines (MDX) from content/corpus/. Covers Nielsen heuristics, component " +
-          "patterns (button, dialog, form), interaction patterns (confirmation, navigation), state patterns " +
-          "(loading/empty/error), UX writing, feedback system (toast vs modal vs banner), and visual hierarchy. " +
-          "Pass a topic (slug or substring) to narrow; omit to get the index of all guidelines.",
+          'Return Gremorie UX corpus guidelines (MDX) from content/corpus/. Covers Nielsen heuristics, component ' +
+          'patterns (button, dialog, form), interaction patterns (confirmation, navigation), state patterns ' +
+          '(loading/empty/error), UX writing, feedback system (toast vs modal vs banner), and visual hierarchy. ' +
+          'Pass a topic (slug or substring) to narrow; omit to get the index of all guidelines.',
         inputSchema: {
           topic: z
             .string()
@@ -303,12 +309,12 @@ const handler = createMcpHandler(
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: JSON.stringify(
                   {
                     count: index.length,
                     guidelines: index,
-                    hint: "Call get_guidelines with a topic (slug or substring) to fetch the full MDX.",
+                    hint: 'Call get_guidelines with a topic (slug or substring) to fetch the full MDX.',
                   },
                   null,
                   2,
@@ -323,7 +329,7 @@ const handler = createMcpHandler(
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: `No guideline matches "${topic}". Call get_guidelines with no topic to see the index.`,
               },
             ],
@@ -334,7 +340,7 @@ const handler = createMcpHandler(
         // Many matches -> return them all (LLM picks).
         return {
           content: docs.map((doc) => ({
-            type: "text" as const,
+            type: 'text' as const,
             text: `# ${doc.title} (${doc.slug})\n\n_source: ${doc.path}_\n\n${doc.content}`,
           })),
         };
@@ -346,9 +352,9 @@ const handler = createMcpHandler(
   {},
   // adapter config — must match the [transport] route position
   {
-    basePath: "/api",
+    basePath: '/api',
     maxDuration: 60,
-    verboseLogs: process.env.NODE_ENV !== "production",
+    verboseLogs: process.env.NODE_ENV !== 'production',
   },
 );
 

@@ -2,18 +2,18 @@
 title: Connection
 description: Linha animada que aparece enquanto o user arrasta de um handle pra outro.
 component: Connection
-importPath: "@kalvner/kds/ai/connection"
+importPath: '@kalvner/kds/ai/connection'
 status: stable
 ---
 
-import { ConnectionPreview } from "@/components/ai-workflow-demos";
+import { ConnectionPreview } from '@/components/ai-workflow-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -27,7 +27,9 @@ Passa pro Canvas via `connectionLineComponent`.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Drag entre handles dispara a Connection line.</CardDescription>
+    <CardDescription>
+      Drag entre handles dispara a Connection line.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ConnectionPreview />
@@ -37,14 +39,10 @@ Passa pro Canvas via `connectionLineComponent`.
 ## Usage
 
 ```tsx
-import { Canvas } from "@kalvner/kds/ai/canvas";
-import { Connection } from "@kalvner/kds/ai/connection";
+import { Canvas } from '@kalvner/kds/ai/canvas';
+import { Connection } from '@kalvner/kds/ai/connection';
 
-<Canvas
-  nodes={nodes}
-  edges={edges}
-  connectionLineComponent={Connection}
-/>
+<Canvas nodes={nodes} edges={edges} connectionLineComponent={Connection} />;
 ```
 
 ## Props
@@ -52,13 +50,13 @@ import { Connection } from "@kalvner/kds/ai/connection";
 Connection é uma `ConnectionLineComponent` do ReactFlow — recebe
 props que ReactFlow injeta automaticamente:
 
-| Prop | Tipo | Descrição |
-|---|---|---|
-| `fromX` / `fromY` | `number` | Origem (handle clicado). |
-| `toX` / `toY` | `number` | Mira atual do mouse. |
-| `fromPosition` / `toPosition` | `Position` | Lados. |
-| `connectionLineType` | `ConnectionLineType` | Tipo (Bezier, Step, Straight). |
-| `connectionLineStyle` | `CSSProperties` | Override. |
+| Prop                          | Tipo                 | Descrição                      |
+| ----------------------------- | -------------------- | ------------------------------ |
+| `fromX` / `fromY`             | `number`             | Origem (handle clicado).       |
+| `toX` / `toY`                 | `number`             | Mira atual do mouse.           |
+| `fromPosition` / `toPosition` | `Position`           | Lados.                         |
+| `connectionLineType`          | `ConnectionLineType` | Tipo (Bezier, Step, Straight). |
+| `connectionLineStyle`         | `CSSProperties`      | Override.                      |
 
 Você não passa props diretamente — só registra o componente no Canvas.
 

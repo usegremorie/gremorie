@@ -14,26 +14,10 @@ Use it as the base for every custom node type. Pair with `Toolbar` for selection
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-node
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-node
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-node
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-node
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-node ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-node ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-node ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-node ```</Tab>
 </Tabs>
 
 Brings in `rx-display` (for `Card`) as a registry dependency. Requires `@xyflow/react` as a peer.
@@ -56,23 +40,25 @@ import { Button } from "@gremorie/rx-forms";
 import { PlayIcon } from "lucide-react";
 
 const AgentNode = (props) => (
-  <Node {...props} handles={{ target: true, source: true }}>
-    <NodeHeader>
-      <NodeTitle>{props.data.name}</NodeTitle>
-      <NodeDescription>{props.data.model}</NodeDescription>
-      <NodeAction>
-        <Button size="icon" variant="ghost" aria-label="Run">
-          <PlayIcon className="size-4" />
-        </Button>
-      </NodeAction>
-    </NodeHeader>
-    <NodeContent>{props.data.prompt}</NodeContent>
-    <NodeFooter>{props.data.tokenCount} tokens</NodeFooter>
-  </Node>
+
+<Node {...props} handles={{ target: true, source: true }}>
+  <NodeHeader>
+    <NodeTitle>{props.data.name}</NodeTitle>
+    <NodeDescription>{props.data.model}</NodeDescription>
+    <NodeAction>
+      <Button size="icon" variant="ghost" aria-label="Run">
+        <PlayIcon className="size-4" />
+      </Button>
+    </NodeAction>
+  </NodeHeader>
+  <NodeContent>{props.data.prompt}</NodeContent>
+  <NodeFooter>{props.data.tokenCount} tokens</NodeFooter>
+</Node>
 );
 
 const nodeTypes = { agent: AgentNode };
-```
+
+````
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
@@ -131,7 +117,7 @@ const StartNode = (props) => (
     <NodeContent>Start</NodeContent>
   </Node>
 );
-```
+````
 
 ### Output-only node (terminal)
 

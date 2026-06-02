@@ -2,18 +2,21 @@
 title: WebPreview
 description: iframe-based preview de site/app gerado pelo modelo — barra de URL, console, navigation.
 component: WebPreview
-importPath: "@kalvner/kds/ai/web-preview"
+importPath: '@kalvner/kds/ai/web-preview'
 status: stable
 ---
 
-import { WebPreviewPreview, WebPreviewConsolePreview } from "@/components/ai-code-demos";
+import {
+  WebPreviewPreview,
+  WebPreviewConsolePreview,
+} from '@/components/ai-code-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -25,7 +28,9 @@ ou pra mostrar referências externas em surface controlada.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Preview de site dentro de iframe com URL bar.</CardDescription>
+    <CardDescription>
+      Preview de site dentro de iframe com URL bar.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <WebPreviewPreview />
@@ -59,10 +64,10 @@ ou pra mostrar referências externas em surface controlada.
 
 ### WebPreview (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `defaultUrl` | `string` | — | URL inicial (uncontrolled). |
-| `onUrlChange` | `(url: string) => void` | — | Callback ao mudar URL no input. |
+| Prop          | Tipo                    | Default | Descrição                       |
+| ------------- | ----------------------- | ------- | ------------------------------- |
+| `defaultUrl`  | `string`                | —       | URL inicial (uncontrolled).     |
+| `onUrlChange` | `(url: string) => void` | —       | Callback ao mudar URL no input. |
 
 Aceita `ComponentProps<"div">`. Provider interno que segura a URL atual.
 
@@ -72,9 +77,9 @@ Aceita `ComponentProps<"div">`. Wrapper flex pros buttons + URL bar.
 
 ### WebPreviewNavigationButton
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `tooltip` | `string` | — | Tooltip do botão (envolve em [Tooltip](../../ui/overlays/tooltip)). |
+| Prop      | Tipo     | Default | Descrição                                                           |
+| --------- | -------- | ------- | ------------------------------------------------------------------- |
+| `tooltip` | `string` | —       | Tooltip do botão (envolve em [Tooltip](../../ui/overlays/tooltip)). |
 
 Herda de [Button](../../ui/forms/button). Default `variant="ghost"`
 `size="icon"`.
@@ -89,17 +94,17 @@ ao Enter.
 Herda de `iframe`. Aceita `src` (override do contexto), `sandbox`,
 `loading`, etc.
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `src` | `string` | — | Override (lê do contexto se não passado). |
-| `loading` | `'eager' \| 'lazy'` | — | Loading hint. |
-| `sandbox` | `string` | `'allow-scripts allow-same-origin'` | Iframe sandbox. |
+| Prop      | Tipo                | Default                             | Descrição                                 |
+| --------- | ------------------- | ----------------------------------- | ----------------------------------------- |
+| `src`     | `string`            | —                                   | Override (lê do contexto se não passado). |
+| `loading` | `'eager' \| 'lazy'` | —                                   | Loading hint.                             |
+| `sandbox` | `string`            | `'allow-scripts allow-same-origin'` | Iframe sandbox.                           |
 
 ### WebPreviewConsole
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `logs` | `Array<{ level, message, timestamp }>` | `[]` | Logs do console capturados. |
+| Prop   | Tipo                                   | Default | Descrição                   |
+| ------ | -------------------------------------- | ------- | --------------------------- |
+| `logs` | `Array<{ level, message, timestamp }>` | `[]`    | Logs do console capturados. |
 
 Aceita `ComponentProps<"div">`. Mostra logs com cores baseadas em level.
 
@@ -114,11 +119,11 @@ Aceita `ComponentProps<"div">`. Mostra logs com cores baseadas em level.
 
 ## States
 
-| Estado | Visual |
-|---|---|
-| Loading | iframe mostra fallback browser. |
-| Console open | WebPreviewConsole renderiza abaixo do body. |
-| Console closed | Body ocupa todo o espaço. |
+| Estado         | Visual                                      |
+| -------------- | ------------------------------------------- |
+| Loading        | iframe mostra fallback browser.             |
+| Console open   | WebPreviewConsole renderiza abaixo do body. |
+| Console closed | Body ocupa todo o espaço.                   |
 
 ## Composition
 
@@ -152,9 +157,9 @@ Aceita `ComponentProps<"div">`. Mostra logs com cores baseadas em level.
   <WebPreviewBody className="flex-1" />
   <WebPreviewConsole
     logs={[
-      { level: "log", message: "Hot reload connected", timestamp: new Date() },
-      { level: "warn", message: "Deprecated API", timestamp: new Date() },
-      { level: "error", message: "Failed to fetch", timestamp: new Date() }
+      { level: 'log', message: 'Hot reload connected', timestamp: new Date() },
+      { level: 'warn', message: 'Deprecated API', timestamp: new Date() },
+      { level: 'error', message: 'Failed to fetch', timestamp: new Date() },
     ]}
   />
 </WebPreview>
@@ -183,11 +188,11 @@ Aceita `ComponentProps<"div">`. Mostra logs com cores baseadas em level.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **iframe** | Adicione `title` no `<WebPreviewBody>` — leitor de tela usa pra contexto. |
-| **URL input** | Acessível via Tab + Enter. |
-| **Console** | Logs precisam de `<time>` semântico pra timestamps lerem corretamente. |
+| Concern       | Comportamento                                                             |
+| ------------- | ------------------------------------------------------------------------- |
+| **iframe**    | Adicione `title` no `<WebPreviewBody>` — leitor de tela usa pra contexto. |
+| **URL input** | Acessível via Tab + Enter.                                                |
+| **Console**   | Logs precisam de `<time>` semântico pra timestamps lerem corretamente.    |
 
 ## Related
 

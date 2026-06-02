@@ -1,0 +1,17 @@
+{
+  "root": true,
+  "title": "Blocks",
+  "description": "Production-ready compositions",
+  "icon": "LayoutGrid",
+  "pages": [
+    "index",
+    "---Aplicação---",
+    "sign-in",
+    "dashboard",
+    "chat-surface",
+    "settings-form",
+    "---Marketing e estados---",
+    "marketing-hero",
+    "empty-state"
+  ]
+}

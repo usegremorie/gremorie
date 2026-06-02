@@ -2,18 +2,18 @@
 title: Canvas
 description: Wrapper do ReactFlow pra agent workflows visuais — pan, zoom, fit-view com defaults sensatos.
 component: Canvas
-importPath: "@kalvner/kds/ai/canvas"
+importPath: '@kalvner/kds/ai/canvas'
 status: stable
 ---
 
-import { CanvasPreview } from "@/components/ai-workflow-demos";
+import { CanvasPreview } from '@/components/ai-workflow-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -50,20 +50,30 @@ Backgrounds são adicionados internamente (cor `--sidebar`).
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
-import "@xyflow/react/dist/style.css";
-import { Canvas } from "@kalvner/kds/ai/canvas";
+import '@xyflow/react/dist/style.css';
+import { Canvas } from '@kalvner/kds/ai/canvas';
 
 const nodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "Receber prompt" }, type: "input" },
-  { id: "2", position: { x: 220, y: 0 }, data: { label: "Buscar contexto" } },
-  { id: "3", position: { x: 440, y: 0 }, data: { label: "Gerar resposta" }, type: "output" }
+  {
+    id: '1',
+    position: { x: 0, y: 0 },
+    data: { label: 'Receber prompt' },
+    type: 'input',
+  },
+  { id: '2', position: { x: 220, y: 0 }, data: { label: 'Buscar contexto' } },
+  {
+    id: '3',
+    position: { x: 440, y: 0 },
+    data: { label: 'Gerar resposta' },
+    type: 'output',
+  },
 ];
 
 const edges = [
-  { id: "e1-2", source: "1", target: "2", animated: true },
-  { id: "e2-3", source: "2", target: "3", animated: true }
+  { id: 'e1-2', source: '1', target: '2', animated: true },
+  { id: 'e2-3', source: '2', target: '3', animated: true },
 ];
 
 export function Workflow() {
@@ -81,21 +91,21 @@ export function Workflow() {
 
 Aceita **todos** os props de [`<ReactFlow>`](https://reactflow.dev/api-reference/react-flow). Os mais comuns:
 
-| Prop | Tipo | Descrição |
-|---|---|---|
-| `nodes` | `Node[]` | Array de nodes. |
-| `edges` | `Edge[]` | Array de edges. |
-| `onNodesChange` | `OnNodesChange` | Callback de mudanças (drag, delete). |
-| `onEdgesChange` | `OnEdgesChange` | Callback de mudanças. |
-| `onConnect` | `OnConnect` | Quando user conecta dois handles. |
-| `nodeTypes` | `Record<string, NodeComponent>` | Map de custom node renderers. |
-| `edgeTypes` | `Record<string, EdgeComponent>` | Map de custom edge renderers. |
-| `fitView` | `boolean` | `true` por default no KDS. |
-| `panOnDrag` | `boolean` | `false` no KDS (drag = select). |
-| `panOnScroll` | `boolean` | `true` no KDS. |
-| `selectionOnDrag` | `boolean` | `true` no KDS. |
-| `zoomOnDoubleClick` | `boolean` | `false` no KDS. |
-| `deleteKeyCode` | `string \| string[]` | `["Backspace", "Delete"]` no KDS. |
+| Prop                | Tipo                            | Descrição                            |
+| ------------------- | ------------------------------- | ------------------------------------ |
+| `nodes`             | `Node[]`                        | Array de nodes.                      |
+| `edges`             | `Edge[]`                        | Array de edges.                      |
+| `onNodesChange`     | `OnNodesChange`                 | Callback de mudanças (drag, delete). |
+| `onEdgesChange`     | `OnEdgesChange`                 | Callback de mudanças.                |
+| `onConnect`         | `OnConnect`                     | Quando user conecta dois handles.    |
+| `nodeTypes`         | `Record<string, NodeComponent>` | Map de custom node renderers.        |
+| `edgeTypes`         | `Record<string, EdgeComponent>` | Map de custom edge renderers.        |
+| `fitView`           | `boolean`                       | `true` por default no KDS.           |
+| `panOnDrag`         | `boolean`                       | `false` no KDS (drag = select).      |
+| `panOnScroll`       | `boolean`                       | `true` no KDS.                       |
+| `selectionOnDrag`   | `boolean`                       | `true` no KDS.                       |
+| `zoomOnDoubleClick` | `boolean`                       | `false` no KDS.                      |
+| `deleteKeyCode`     | `string \| string[]`            | `["Backspace", "Delete"]` no KDS.    |
 
 KDS aplica esses defaults; você pode override individualmente.
 
@@ -134,10 +144,10 @@ KDS aplica esses defaults; você pode override individualmente.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Keyboard** | ReactFlow tem keyboard nav nativo (Tab, Arrow keys). |
-| **Screen reader** | Workflow visual é difícil pra screen reader; pareie com lista textual fallback. |
+| Concern            | Comportamento                                                                                             |
+| ------------------ | --------------------------------------------------------------------------------------------------------- |
+| **Keyboard**       | ReactFlow tem keyboard nav nativo (Tab, Arrow keys).                                                      |
+| **Screen reader**  | Workflow visual é difícil pra screen reader; pareie com lista textual fallback.                           |
 | **Reduced motion** | Animated edges não têm fallback automático — implemente check de `prefers-reduced-motion` se for crítico. |
 
 ## Related

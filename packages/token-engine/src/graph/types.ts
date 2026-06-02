@@ -1,13 +1,13 @@
-export type ColorMode = "light" | "dark";
+export type ColorMode = 'light' | 'dark';
 export type ThemeId = string;
 
 export interface TokenReference {
-  kind: "reference";
+  kind: 'reference';
   targetName: string;
 }
 
 export interface TokenLiteral {
-  kind: "literal";
+  kind: 'literal';
   raw: string;
 }
 
@@ -22,17 +22,17 @@ interface TokenBase {
 }
 
 export interface PrimitiveToken extends TokenBase {
-  kind: "primitive";
+  kind: 'primitive';
   value: string;
 }
 
 export interface SemanticToken extends TokenBase {
-  kind: "semantic";
+  kind: 'semantic';
   value: TokenValue;
 }
 
 export interface ComponentToken extends TokenBase {
-  kind: "component";
+  kind: 'component';
   value: TokenValue;
 }
 
@@ -59,6 +59,10 @@ export interface TokenGraph {
   themes: ThemeId[];
 }
 
-export function tokenKey(token: { theme: ThemeId; mode: ColorMode; name: string }): string {
+export function tokenKey(token: {
+  theme: ThemeId;
+  mode: ColorMode;
+  name: string;
+}): string {
   return `${token.theme}::${token.mode}::${token.name}`;
 }

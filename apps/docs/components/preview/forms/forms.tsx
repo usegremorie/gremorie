@@ -1,11 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
 import {
   Button,
   ButtonGroup,
   ButtonGroupSeparator,
-  ButtonGroupText,
   Calendar,
   Checkbox,
   Input,
@@ -13,7 +11,6 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-  InputGroupTextarea,
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
@@ -31,8 +28,9 @@ import {
   Toggle,
   ToggleGroup,
   ToggleGroupItem,
-} from "@gremorie/rx-forms";
-import { Bold, Italic, Mail, Search, Underline } from "lucide-react";
+} from '@gremorie/rx-forms';
+import { Bold, Italic, Mail, Search, Underline } from 'lucide-react';
+import { useState } from 'react';
 
 // ---------- Button ----------
 

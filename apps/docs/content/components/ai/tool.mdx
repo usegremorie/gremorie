@@ -3,7 +3,12 @@ title: Tool
 description: Collapsible tool-call trace with a state-aware status badge, JSON input and rendered output. The transparency surface for any AI tool invocation.
 ---
 
-import { ToolRunningPreview, ToolCompletedPreview, ToolErrorPreview, ToolApprovalPreview } from "@/components/preview/ai/chatbot-rest";
+import {
+  ToolRunningPreview,
+  ToolCompletedPreview,
+  ToolErrorPreview,
+  ToolApprovalPreview,
+} from '@/components/preview/ai/chatbot-rest';
 
 ## Overview
 
@@ -40,26 +45,10 @@ Use it whenever the model invokes a function: web search, code execution, file I
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-tool
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-tool
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-tool
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-tool
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-tool ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-tool ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-tool ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-tool ```</Tab>
 </Tabs>
 
 The registry resolves `rx-collapsible`, `rx-badge` and `rx-code-block` as cross-primitive dependencies, so you get the full tool-trace surface in a single CLI call.
@@ -103,19 +92,18 @@ import {
 } from "@gremorie/ng-ai";
 
 interface ToolPart {
-  type: string;
-  state: ToolState;
-  input: unknown;
-  output: unknown;
-  errorText: string | null;
+type: string;
+state: ToolState;
+input: unknown;
+output: unknown;
+errorText: string | null;
 }
 
 @Component({
-  selector: "app-example",
-  standalone: true,
-  imports: [Tool, ToolHeader, ToolContent, ToolInput, ToolOutput],
-  template: `
-    <tool [open]="true">
+selector: "app-example",
+standalone: true,
+imports: [Tool, ToolHeader, ToolContent, ToolInput, ToolOutput],
+template: `     <tool [open]="true">
       <tool-header [type]="part().type" [state]="part().state" />
       <tool-content>
         <tool-input [input]="part().input" />
@@ -125,9 +113,10 @@ interface ToolPart {
   `,
 })
 export class ExampleComponent {
-  readonly part = input.required<ToolPart>();
+readonly part = input.required<ToolPart>();
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -201,7 +190,7 @@ Render the trace as soon as the model starts emitting input tokens. The badge st
     <ToolInput input={partialInput} />
   </ToolContent>
 </Tool>
-```
+````
 
 ### Approval-gated action
 
@@ -211,7 +200,7 @@ For dangerous tools (file writes, deletions, MCP calls with side effects), surfa
 <Tool defaultOpen>
   <ToolHeader type="tool-delete-file" state="approval-requested" />
   <ToolContent>
-    <ToolInput input={{ path: "src/old-component.tsx" }} />
+    <ToolInput input={{ path: 'src/old-component.tsx' }} />
   </ToolContent>
 </Tool>
 ```
@@ -224,7 +213,7 @@ When the tool throws, pass `errorText`. The output panel flips to a destructive 
 <Tool defaultOpen>
   <ToolHeader type="tool-search" state="output-error" />
   <ToolContent>
-    <ToolInput input={{ query: "missing-item" }} />
+    <ToolInput input={{ query: 'missing-item' }} />
     <ToolOutput output={undefined} errorText="Registry returned 404." />
   </ToolContent>
 </Tool>

@@ -2,7 +2,7 @@
 title: Command
 description: Paleta de comandos teclado-first — ⌘K floating ou inline (Combobox).
 component: Command
-importPath: "@kalvner/kds/overlays/command"
+importPath: '@kalvner/kds/overlays/command'
 status: stable
 ---
 
@@ -15,23 +15,23 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut
-} from "@kalvner/kds/overlays/command";
+  CommandShortcut,
+} from '@kalvner/kds/overlays/command';
 import {
   Calculator,
   Calendar,
   CreditCard,
   Settings,
   Smile,
-  User
-} from "lucide-react";
+  User,
+} from 'lucide-react';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -59,9 +59,18 @@ recorrentes. Não use para usuários novos.
       <CommandList>
         <CommandEmpty>Nenhum resultado.</CommandEmpty>
         <CommandGroup heading="Sugestões">
-          <CommandItem><Calendar /><span>Agenda</span></CommandItem>
-          <CommandItem><Smile /><span>Buscar emoji</span></CommandItem>
-          <CommandItem><Calculator /><span>Calculadora</span></CommandItem>
+          <CommandItem>
+            <Calendar />
+            <span>Agenda</span>
+          </CommandItem>
+          <CommandItem>
+            <Smile />
+            <span>Buscar emoji</span>
+          </CommandItem>
+          <CommandItem>
+            <Calculator />
+            <span>Calculadora</span>
+          </CommandItem>
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Configurações">
@@ -107,9 +116,9 @@ recorrentes. Não use para usuários novos.
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   CommandDialog,
   CommandEmpty,
@@ -117,21 +126,21 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandShortcut
-} from "@kalvner/kds/overlays/command";
+  CommandShortcut,
+} from '@kalvner/kds/overlays/command';
 
 export function Palette() {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((v) => !v);
       }
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
   }, []);
 
   return (
@@ -140,7 +149,7 @@ export function Palette() {
       <CommandList>
         <CommandEmpty>No results.</CommandEmpty>
         <CommandGroup heading="Navigation">
-          <CommandItem onSelect={() => navigate("/inbox")}>
+          <CommandItem onSelect={() => navigate('/inbox')}>
             Inbox
             <CommandShortcut>G I</CommandShortcut>
           </CommandItem>
@@ -155,29 +164,29 @@ export function Palette() {
 
 ### Command (Root) e CommandDialog
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` / `onValueChange` | `string` / `(v) => void` | — | Item selecionado (para controle externo). |
-| `filter` | `(value, search) => number` | — | Custom filter (default: `cmdk` substring). |
-| `loop` | `boolean` | `false` | ↑/↓ dão wrap. |
+| Prop                      | Tipo                        | Default | Descrição                                  |
+| ------------------------- | --------------------------- | ------- | ------------------------------------------ |
+| `value` / `onValueChange` | `string` / `(v) => void`    | —       | Item selecionado (para controle externo).  |
+| `filter`                  | `(value, search) => number` | —       | Custom filter (default: `cmdk` substring). |
+| `loop`                    | `boolean`                   | `false` | ↑/↓ dão wrap.                              |
 
 `CommandDialog` herda **todos** os props de [Dialog](./dialog), além
 de `title`/`description` (sr-only por padrão).
 
 ### CommandInput
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `placeholder` | `string` | — | Inclua sempre uma dica de teclado. |
-| `value` / `onValueChange` | `string` / `(v) => void` | — | Controlado opcional. |
+| Prop                      | Tipo                     | Default | Descrição                          |
+| ------------------------- | ------------------------ | ------- | ---------------------------------- |
+| `placeholder`             | `string`                 | —       | Inclua sempre uma dica de teclado. |
+| `value` / `onValueChange` | `string` / `(v) => void` | —       | Controlado opcional.               |
 
 ### CommandItem
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `value` | `string` | (texto do filho) | Override do que o filtro busca. |
-| `onSelect` | `(value: string) => void` | — | Disparado ao Enter ou clique. |
-| `disabled` | `boolean` | `false` | Bloqueia este item. |
+| Prop       | Tipo                      | Default          | Descrição                       |
+| ---------- | ------------------------- | ---------------- | ------------------------------- |
+| `value`    | `string`                  | (texto do filho) | Override do que o filtro busca. |
+| `onSelect` | `(value: string) => void` | —                | Disparado ao Enter ou clique.   |
+| `disabled` | `boolean`                 | `false`          | Bloqueia este item.             |
 
 ## Subcomponents
 
@@ -214,11 +223,11 @@ de `title`/`description` (sr-only por padrão).
 
 ## States
 
-| Estado | Comportamento |
-|---|---|
+| Estado                    | Comportamento                                    |
+| ------------------------- | ------------------------------------------------ |
 | Item `data-selected=true` | Background accent, foreground accent-foreground. |
-| Item `data-disabled=true` | Pointer-events none, opacity 50%. |
-| Empty (filter=0) | `CommandEmpty` aparece em vez dos grupos. |
+| Item `data-disabled=true` | Pointer-events none, opacity 50%.                |
+| Empty (filter=0)          | `CommandEmpty` aparece em vez dos grupos.        |
 
 ## Composition
 
@@ -232,7 +241,7 @@ foco vai para o `CommandInput`.
 <Popover>
   <PopoverTrigger asChild>
     <Button variant="outline">
-      {value ? value : "Selecione um framework"}
+      {value ? value : 'Selecione um framework'}
     </Button>
   </PopoverTrigger>
   <PopoverContent className="w-[280px] p-0">
@@ -287,14 +296,14 @@ app (não pulverize por feature).
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Combobox** | `cmdk` aplica `role="combobox"` no input com `aria-controls` e `aria-expanded`. |
-| **Listbox** | A lista é `role="listbox"`, items são `role="option"`. |
-| **Keyboard** | `↑`/`↓` navegam, `Enter` seleciona, `Esc` fecha (no Dialog). |
-| **Focus** | `CommandDialog` move foco pro input ao abrir; restaura ao fechar. |
-| **Title** | `CommandDialog` requer `title` (sr-only ok). |
-| **Live filter** | `CommandEmpty` é anunciado ao mudar de "tem resultados" para "não tem". |
+| Concern         | Comportamento                                                                   |
+| --------------- | ------------------------------------------------------------------------------- |
+| **Combobox**    | `cmdk` aplica `role="combobox"` no input com `aria-controls` e `aria-expanded`. |
+| **Listbox**     | A lista é `role="listbox"`, items são `role="option"`.                          |
+| **Keyboard**    | `↑`/`↓` navegam, `Enter` seleciona, `Esc` fecha (no Dialog).                    |
+| **Focus**       | `CommandDialog` move foco pro input ao abrir; restaura ao fechar.               |
+| **Title**       | `CommandDialog` requer `title` (sr-only ok).                                    |
+| **Live filter** | `CommandEmpty` é anunciado ao mudar de "tem resultados" para "não tem".         |
 
 ## Related
 

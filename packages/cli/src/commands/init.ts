@@ -4,7 +4,10 @@ import { execSync } from 'node:child_process';
 
 import kleur from 'kleur';
 
-import { detectAngular, readPackageJsonDependencies } from '../lib/angular-detect.js';
+import {
+  detectAngular,
+  readPackageJsonDependencies,
+} from '../lib/angular-detect.js';
 import {
   detectPackageManager,
   installCommand,
@@ -88,7 +91,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   } else {
     const stylesPath = join(cwd, ctx.rootStylesPath);
     const current = readFileSync(stylesPath, 'utf-8');
-    if (current.includes("@gremorie/ng-core/theme.css")) {
+    if (current.includes('@gremorie/ng-core/theme.css')) {
       console.log(
         kleur.green('✓'),
         kleur.dim(`Theme import already in ${ctx.rootStylesPath}.`),
@@ -104,9 +107,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
       writeFileSync(stylesPath, next);
       console.log(
         kleur.green('✓'),
-        kleur.dim(
-          `Added theme import to ${ctx.rootStylesPath} (top of file).`,
-        ),
+        kleur.dim(`Added theme import to ${ctx.rootStylesPath} (top of file).`),
       );
     }
   }
@@ -125,7 +126,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
         'Note: theme.css uses Tailwind CSS v4. If your project does not have Tailwind installed, run:',
       ),
     );
-    console.log(`  ${kleur.cyan(installCommand(pm, ['tailwindcss', '@tailwindcss/postcss'], { saveDev: true }))}`);
+    console.log(
+      `  ${kleur.cyan(installCommand(pm, ['tailwindcss', '@tailwindcss/postcss'], { saveDev: true }))}`,
+    );
     console.log();
   }
 }

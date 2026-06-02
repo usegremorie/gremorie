@@ -24,8 +24,7 @@ import {
   template: `<ng-content />`,
   host: {
     role: 'toolbar',
-    class:
-      'flex items-center gap-1 rounded-sm border bg-background p-1.5',
+    class: 'flex items-center gap-1 rounded-sm border bg-background p-1.5',
   },
 })
 export class Toolbar {}

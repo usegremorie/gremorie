@@ -102,6 +102,20 @@ export const ITEMS: ItemConfig[] = [
     dependencies: ['@angular/core', 'class-variance-authority'],
     registryDependencies: [],
   },
+  {
+    name: 'ng-carousel',
+    framework: 'ng',
+    title: 'Carousel (Angular)',
+    description:
+      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gn-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/carousel/carousel.ts', 'src/lib/carousel/index.ts'],
+    targetPrefix: 'src/app/gremorie/carousel',
+    srcStrip: 'src/lib/carousel/',
+    dependencies: ['@angular/core', 'embla-carousel'],
+    registryDependencies: ['ng-utils'],
+  },
 
   // ---------------------------------------------------------------------------
   // Angular: feedback
@@ -325,6 +339,23 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/reasoning/',
     dependencies: ['@angular/core', '@spartan-ng/brain'],
     registryDependencies: ['ng-utils', 'ng-shimmer'],
+  },
+  {
+    name: 'ng-inline-citation',
+    framework: 'ng',
+    title: 'Inline Citation (Angular)',
+    description:
+      'Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gn-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/inline-citation/inline-citation.ts',
+      'src/lib/inline-citation/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/inline-citation',
+    srcStrip: 'src/lib/inline-citation/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils', 'ng-badge', 'ng-carousel'],
   },
   {
     name: 'ng-chain-of-thought',
@@ -685,12 +716,7 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/components/gremorie/forms/input-group',
     srcStrip: 'src/lib/input-group/',
     dependencies: ['class-variance-authority'],
-    registryDependencies: [
-      'rx-utils',
-      'rx-button',
-      'rx-input',
-      'rx-textarea',
-    ],
+    registryDependencies: ['rx-utils', 'rx-button', 'rx-input', 'rx-textarea'],
   },
   {
     name: 'rx-dropdown-menu',
@@ -858,7 +884,12 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/components/gremorie/forms/date-picker',
     srcStrip: 'src/lib/date-picker/',
     dependencies: ['date-fns', 'lucide-react'],
-    registryDependencies: ['rx-utils', 'rx-button', 'rx-calendar', 'rx-popover'],
+    registryDependencies: [
+      'rx-utils',
+      'rx-button',
+      'rx-calendar',
+      'rx-popover',
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -1422,10 +1453,7 @@ export const ITEMS: ItemConfig[] = [
     sourceFiles: ['src/lib/reasoning/reasoning.tsx'],
     targetPrefix: 'src/components/gremorie/ai/reasoning',
     srcStrip: 'src/lib/reasoning/',
-    dependencies: [
-      '@radix-ui/react-use-controllable-state',
-      'streamdown',
-    ],
+    dependencies: ['@radix-ui/react-use-controllable-state', 'streamdown'],
     registryDependencies: ['rx-utils', 'rx-collapsible', 'rx-shimmer'],
   },
   {
@@ -1624,7 +1652,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/rx-ai',
+    packageRoot: 'packages/rx-artifacts',
     sourceFiles: ['src/lib/artifact/artifact.tsx'],
     targetPrefix: 'src/components/gremorie/ai/artifact',
     srcStrip: 'src/lib/artifact/',
@@ -1638,7 +1666,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Syntax-highlighted code surface powered by shiki. Lazy-loads codeToHtml on mount; exposes CodeBlockCopyButton with copy/copied state. Pass code + language, optional showLineNumbers; ships dark + light themes by default.',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/rx-ai',
+    packageRoot: 'packages/rx-artifacts',
     sourceFiles: ['src/lib/code-block/code-block.tsx'],
     targetPrefix: 'src/components/gremorie/ai/code-block',
     srcStrip: 'src/lib/code-block/',
@@ -1652,7 +1680,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable Input, WebPreviewBody renders an iframe with the current URL, and WebPreviewConsole (Collapsible) shows console logs and errors below.',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/rx-ai',
+    packageRoot: 'packages/rx-artifacts',
     sourceFiles: ['src/lib/web-preview/web-preview.tsx'],
     targetPrefix: 'src/components/gremorie/ai/web-preview',
     srcStrip: 'src/lib/web-preview/',
@@ -1801,44 +1829,28 @@ export const ITEMS: ItemConfig[] = [
   },
 
   // ============================================================
-  // Fase 5k - React data viz (8 primitives - closes Bridge parity)
-  // Headless chart engine + 7 styled charts.
-  // Mirrors ng-data structure: a shared ng-chart-equivalent base
-  // (rx-chart) carries the headless primitives, each styled chart
-  // depends on it. Brings the React edition to parity with the
-  // Angular edition and closes the data-viz gap from Bridge.
+  // React data viz - recharts + the shadcn `chart` primitive (1 base + 7 charts).
+  // A shared `rx-chart` base carries the chart primitive (ChartContainer /
+  // ChartTooltip / ChartTooltipContent / ChartLegend) wired to the design
+  // tokens; each styled chart composes it with recharts. (Replaces the former
+  // d3 headless engine, which is retired on the React side.)
   // ============================================================
   {
     name: 'rx-chart',
     framework: 'rx',
     title: 'Chart (React)',
     description:
-      'Headless chart engine for the React edition - chart-context (React Context + hooks), scales, axis, cartesian-grid, chart-frame, plus shape helpers (area, line, bar, scatter, pie, polar, radar, radial-bar). Shared base for every styled chart.',
+      'The chart primitive for the React edition - ChartContainer (responsive frame + per-series CSS color vars), ChartTooltip / ChartTooltipContent, ChartLegend / ChartLegendContent, useChart, and the ChartConfig / ChartDatum types. Built on recharts; the shared base every styled chart composes.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: [
-      'src/lib/headless/types.ts',
-      'src/lib/headless/format.ts',
-      'src/lib/headless/scales.ts',
-      'src/lib/headless/shape.ts',
-      'src/lib/headless/domain.ts',
-      'src/lib/headless/polar.ts',
-      'src/lib/headless/chart-context.tsx',
-      'src/lib/headless/chart-frame.tsx',
-      'src/lib/headless/axis.tsx',
-      'src/lib/headless/cartesian-grid.tsx',
-      'src/lib/headless/area.tsx',
-      'src/lib/headless/line.tsx',
-      'src/lib/headless/bar.tsx',
-      'src/lib/headless/scatter.tsx',
-      'src/lib/headless/pie.tsx',
-      'src/lib/headless/radar.tsx',
-      'src/lib/headless/radial-bar.tsx',
-      'src/lib/headless/index.ts',
+      'src/lib/chart/chart.tsx',
+      'src/lib/chart/types.ts',
+      'src/lib/chart/index.ts',
     ],
-    targetPrefix: 'src/components/gremorie/data/headless',
-    srcStrip: 'src/lib/headless/',
-    dependencies: ['react', 'd3-scale', 'd3-shape', 'd3-format'],
+    targetPrefix: 'src/components/gremorie/data/chart',
+    srcStrip: 'src/lib/chart/',
+    dependencies: ['react', 'recharts'],
     registryDependencies: ['rx-utils'],
   },
   {
@@ -1846,7 +1858,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Area Chart (React)',
     description:
-      'Styled area chart - cumulative quantity over a continuous domain. Uses the rx-chart headless primitives.',
+      'Styled area chart - cumulative quantity over a continuous domain. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/area-chart/area-chart.tsx'],
@@ -1860,7 +1872,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Line Chart (React)',
     description:
-      'Styled line chart - trends over a continuous domain. Uses the rx-chart headless primitives.',
+      'Styled line chart - trends over a continuous domain. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/line-chart/line-chart.tsx'],
@@ -1874,7 +1886,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Bar Chart (React)',
     description:
-      'Styled grouped bar chart - compare values across categories with one bar per series in each band. Uses the rx-chart headless primitives.',
+      'Styled grouped bar chart - compare values across categories with one bar per series in each band. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/bar-chart/bar-chart.tsx'],
@@ -1888,7 +1900,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Scatter Chart (React)',
     description:
-      'Styled scatter chart - show correlation between a numeric X field and one or more Y series. Uses the rx-chart headless primitives.',
+      'Styled scatter chart - show correlation between a numeric X field and one or more Y series. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/scatter-chart/scatter-chart.tsx'],
@@ -1902,7 +1914,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Pie Chart (React)',
     description:
-      'Styled pie / donut chart - parts of a whole, one slice per data row. Uses the rx-chart headless primitives.',
+      'Styled pie / donut chart - parts of a whole, one slice per data row. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/pie-chart/pie-chart.tsx'],
@@ -1916,7 +1928,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Radar Chart (React)',
     description:
-      'Styled radar chart - compare series across multiple axes that share a radial domain. Uses the rx-chart headless primitives.',
+      'Styled radar chart - compare series across multiple axes that share a radial domain. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/radar-chart/radar-chart.tsx'],
@@ -1930,7 +1942,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Radial Chart (React)',
     description:
-      'Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Uses the rx-chart headless primitives.',
+      'Styled radial bar chart - concentric rings, one per data row, each sweep proportional to its value. Composes the rx-chart primitive with recharts.',
     categories: ['data', 'charts'],
     packageRoot: 'packages/rx-data',
     sourceFiles: ['src/lib/radial-chart/radial-chart.tsx'],

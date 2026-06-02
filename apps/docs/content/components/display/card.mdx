@@ -1,12 +1,20 @@
 ---
 title: Card
-description: "Composable surface for grouping related content. Headers, descriptions, content slots, and footers - opt in to the parts you need."
+description: 'Composable surface for grouping related content. Headers, descriptions, content slots, and footers - opt in to the parts you need.'
 ---
 
-import { CardPreview } from "@/components/preview/display/display";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from "@gremorie/rx-display";
-import { Button } from "@gremorie/rx-forms";
-import { Badge } from "@gremorie/rx-display";
+import { CardPreview } from '@/components/preview/display/display';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  CardAction,
+} from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
+import { Badge } from '@gremorie/rx-display';
 
 ## Overview
 
@@ -23,26 +31,10 @@ Card is intentionally surface-only. It doesn't manage focus, hover, or selection
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-card
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-card
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-card
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-card
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-card ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-card ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-card ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-card ```</Tab>
 </Tabs>
 
 ## Usage
@@ -93,9 +85,9 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 The root surface. Renders a rounded `div` with border, background, and a `flex flex-col gap-6` rhythm.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes merged via `cn`. Use for layout (width, max-width, margin), not for surface colors. |
+| Prop        | Type     | Default | Description                                                                                       |
+| ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `className` | `string` | -       | Extra classes merged via `cn`. Use for layout (width, max-width, margin), not for surface colors. |
 
 All other `div` props are forwarded.
 
@@ -103,9 +95,9 @@ All other `div` props are forwarded.
 
 Container for the title, description, and optional action. Uses a `grid` so `CardAction` can sit top-right while title and description stack on the left.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes merged via `cn`. |
+| Prop        | Type     | Default | Description                    |
+| ----------- | -------- | ------- | ------------------------------ |
+| `className` | `string` | -       | Extra classes merged via `cn`. |
 
 ### `<CardTitle>`
 
@@ -196,7 +188,9 @@ Use the full composition rather than dumping everything into `CardContent` - the
   <Card className="max-w-sm">
     <CardHeader>
       <CardTitle>Invite teammates</CardTitle>
-      <CardDescription>They will get an email with a join link.</CardDescription>
+      <CardDescription>
+        They will get an email with a join link.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <p className="text-sm text-muted-foreground">
@@ -204,7 +198,9 @@ Use the full composition rather than dumping everything into `CardContent` - the
       </p>
     </CardContent>
     <CardFooter className="border-t">
-      <Button variant="outline" className="w-full">Send invites</Button>
+      <Button variant="outline" className="w-full">
+        Send invites
+      </Button>
     </CardFooter>
   </Card>
 </div>
@@ -221,7 +217,9 @@ Use the full composition rather than dumping everything into `CardContent` - the
     </p>
   </CardContent>
   <CardFooter className="border-t">
-    <Button variant="outline" className="w-full">Send invites</Button>
+    <Button variant="outline" className="w-full">
+      Send invites
+    </Button>
   </CardFooter>
 </Card>
 ```

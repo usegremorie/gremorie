@@ -2,18 +2,21 @@
 title: Image
 description: Render de imagem gerada pelo modelo — base64 + mediaType, sem mais.
 component: Image
-importPath: "@kalvner/kds/ai/image"
+importPath: '@kalvner/kds/ai/image'
 status: stable
 ---
 
-import { ImagePreview, ImageTinyPreview } from "@/components/ai-utilities-demos";
+import {
+  ImagePreview,
+  ImageTinyPreview,
+} from '@/components/ai-utilities-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -44,9 +47,9 @@ retorna uma imagem como parte da resposta.
 ## Usage
 
 ```tsx
-import { Image } from "@kalvner/kds/ai/image";
+import { Image } from '@kalvner/kds/ai/image';
 
-const generatedImage = await generateImage({ prompt: "..." });
+const generatedImage = await generateImage({ prompt: '...' });
 // generatedImage: { base64, mediaType, uint8Array }
 
 <Image
@@ -54,18 +57,18 @@ const generatedImage = await generateImage({ prompt: "..." });
   mediaType={generatedImage.mediaType}
   uint8Array={generatedImage.uint8Array}
   alt="Imagem gerada do prompt"
-/>
+/>;
 ```
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `base64` | `string` | — | Base64 da imagem (sem `data:` prefix). |
-| `mediaType` | `string` | — | MIME type (`image/png`, `image/jpeg`, ...). |
-| `uint8Array` | `Uint8Array` | — | Bytes (não usado no render — está no tipo da AI SDK). |
-| `alt` | `string` | — | Alt text — sempre forneça. |
-| `className` | `string` | `'h-auto max-w-full overflow-hidden rounded-md'` | Override. |
+| Prop         | Tipo         | Default                                          | Descrição                                             |
+| ------------ | ------------ | ------------------------------------------------ | ----------------------------------------------------- |
+| `base64`     | `string`     | —                                                | Base64 da imagem (sem `data:` prefix).                |
+| `mediaType`  | `string`     | —                                                | MIME type (`image/png`, `image/jpeg`, ...).           |
+| `uint8Array` | `Uint8Array` | —                                                | Bytes (não usado no render — está no tipo da AI SDK). |
+| `alt`        | `string`     | —                                                | Alt text — sempre forneça.                            |
+| `className`  | `string`     | `'h-auto max-w-full overflow-hidden rounded-md'` | Override.                                             |
 
 Aceita `ComponentProps<"img">` (todos os atributos HTML válidos).
 
@@ -131,9 +134,9 @@ herdados — você pode adicionar via CSS:
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Alt text** | Obrigatório — passe sempre. |
+| Concern        | Comportamento                                     |
+| -------------- | ------------------------------------------------- |
+| **Alt text**   | Obrigatório — passe sempre.                       |
 | **Decorative** | Use `alt=""` se decorativa (raro pra gen images). |
 
 ## Related

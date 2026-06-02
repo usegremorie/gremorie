@@ -1,4 +1,11 @@
-import { computed, Directive, inject, input, type OnDestroy, type OnInit } from '@angular/core';
+import {
+  computed,
+  Directive,
+  inject,
+  input,
+  type OnDestroy,
+  type OnInit,
+} from '@angular/core';
 import { ChartContext } from './chart-context';
 import { areaPath } from './shape';
 import type { Datum } from './types';

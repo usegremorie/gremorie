@@ -19,7 +19,7 @@
   "files": [
     {
       "path": "src/lib/panel/panel.tsx",
-      "content": "import { cn } from \"@gremorie/rx-core\";\nimport { Panel as PanelPrimitive } from \"@xyflow/react\";\nimport type { ComponentProps } from \"react\";\n\ntype PanelProps = ComponentProps<typeof PanelPrimitive>;\n\nexport const Panel = ({ className, ...props }: PanelProps) => (\n  <PanelPrimitive\n    className={cn(\n      \"m-4 overflow-hidden rounded-md border bg-card p-1\",\n      className\n    )}\n    {...props}\n  />\n);\n",
+      "content": "import { cn } from '@gremorie/rx-core';\nimport { Panel as PanelPrimitive } from '@xyflow/react';\nimport type { ComponentProps } from 'react';\n\ntype PanelProps = ComponentProps<typeof PanelPrimitive>;\n\nexport const Panel = ({ className, ...props }: PanelProps) => (\n  <PanelPrimitive\n    className={cn(\n      'm-4 overflow-hidden rounded-md border bg-card p-1',\n      className,\n    )}\n    {...props}\n  />\n);\n",
       "type": "registry:component",
       "target": "src/components/gremorie/ai/panel/panel.tsx"
     }

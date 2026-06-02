@@ -3,7 +3,7 @@ title: Button Group
 description: Cluster of buttons (or selects) joined by a shared border, with optional separators and label text.
 ---
 
-import { ButtonGroupPreview } from "@/components/preview/forms/forms";
+import { ButtonGroupPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -20,26 +20,16 @@ It also accepts `Select` triggers and `ButtonGroupText` so you can mix labels an
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-button-group
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-button-group
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-button-group
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-button-group
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-button-group ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-button-group ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-button-group ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-button-group ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -75,24 +65,24 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<ButtonGroup>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop          | Type                         | Default        | Description                                                                                                     |
+| ------------- | ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
 | `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Lays children side by side or stacked. Borders adapt: horizontal strips `border-l`, vertical strips `border-t`. |
 
 Extends all `React.ComponentProps<"div">`. Always rendered with `role="group"` and `data-slot="button-group"`.
 
 ### `<ButtonGroupSeparator>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop          | Type                         | Default      | Description                                                                         |
+| ------------- | ---------------------------- | ------------ | ----------------------------------------------------------------------------------- |
 | `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | Radix `Separator` direction. Defaults to a vertical 1px line for horizontal groups. |
 
 Wraps `@radix-ui/react-separator`. Decorative (forced `decorative` flag), so it does not announce to screen readers.
 
 ### `<ButtonGroupText>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop      | Type      | Default | Description                                                                                                                          |
+| --------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `asChild` | `boolean` | `false` | Render as `Slot.Root` so the first child receives the muted/bordered surface. Use for non-interactive labels (e.g. "of 12", a unit). |
 
 Extends all `React.ComponentProps<"div">`.
@@ -125,7 +115,7 @@ Use for related commands. Separators communicate that each action is distinct, e
 Switch `orientation` to stack actions in a compact column - useful for image editors, video players, and any tool palette.
 
 ```tsx
-import { Bold, Italic, Underline } from "lucide-react";
+import { Bold, Italic, Underline } from 'lucide-react';
 
 <ButtonGroup orientation="vertical">
   <Button size="icon" variant="outline" aria-label="Bold">
@@ -137,7 +127,7 @@ import { Bold, Italic, Underline } from "lucide-react";
   <Button size="icon" variant="outline" aria-label="Underline">
     <Underline />
   </Button>
-</ButtonGroup>
+</ButtonGroup>;
 ```
 
 ### Pagination with label text
@@ -145,7 +135,7 @@ import { Bold, Italic, Underline } from "lucide-react";
 Combine `ButtonGroupText` with arrow buttons. The text stays non-interactive but inherits the group's surface.
 
 ```tsx
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 <ButtonGroup>
   <Button variant="outline" size="icon" aria-label="Previous page">
@@ -155,7 +145,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
   <Button variant="outline" size="icon" aria-label="Next page">
     <ChevronRight />
   </Button>
-</ButtonGroup>
+</ButtonGroup>;
 ```
 
 ## Accessibility

@@ -3,7 +3,7 @@ title: Calendar
 description: Date picker grid built on react-day-picker v10 - single date, multiple dates, or a date range, with token-driven theming and lucide chevrons.
 ---
 
-import { CalendarPreview } from "@/components/preview/forms/forms";
+import { CalendarPreview } from '@/components/preview/forms/forms';
 
 ## Overview
 
@@ -24,26 +24,10 @@ Use `Calendar` standalone in pages with plenty of space (scheduling, planners). 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-calendar
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-calendar
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-calendar
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-calendar
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-calendar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-calendar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-calendar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-calendar ```</Tab>
 </Tabs>
 
 ## Usage
@@ -72,19 +56,19 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Forwards every prop to `DayPicker` from `react-day-picker`. The most relevant ones:
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `mode` | `"single" \| "multiple" \| "range"` | `"single"` | Selection model. |
-| `selected` | `Date \| Date[] \| DateRange` | - | Controlled selection. Shape depends on `mode`. |
-| `onSelect` | depends on `mode` | - | Fires when the user picks a date. |
-| `disabled` | `Matcher \| Matcher[]` | - | Disable specific dates (past dates, weekends, custom predicates). |
-| `showOutsideDays` | `boolean` | `true` | Show greyed-out days from neighbouring months. |
-| `numberOfMonths` | `number` | `1` | Show multiple months side by side (useful for range pickers). |
-| `defaultMonth` | `Date` | current month | Initial month displayed when uncontrolled. |
-| `locale` | `Locale` | en-US | `date-fns` locale for month / weekday labels. |
-| `autoFocus` | `boolean` | `false` | Focus the first selected (or today's) cell on mount. Used by `DatePicker` inside `Popover`. |
-| `className` | `string` | - | Classes on the wrapper `<div>`. Defaults to `p-3`. |
-| `classNames` | `Partial<ClassNames>` | - | Override any internal class. Merged onto the Gremorie defaults via `cn`. |
+| Prop              | Type                                | Default       | Description                                                                                 |
+| ----------------- | ----------------------------------- | ------------- | ------------------------------------------------------------------------------------------- |
+| `mode`            | `"single" \| "multiple" \| "range"` | `"single"`    | Selection model.                                                                            |
+| `selected`        | `Date \| Date[] \| DateRange`       | -             | Controlled selection. Shape depends on `mode`.                                              |
+| `onSelect`        | depends on `mode`                   | -             | Fires when the user picks a date.                                                           |
+| `disabled`        | `Matcher \| Matcher[]`              | -             | Disable specific dates (past dates, weekends, custom predicates).                           |
+| `showOutsideDays` | `boolean`                           | `true`        | Show greyed-out days from neighbouring months.                                              |
+| `numberOfMonths`  | `number`                            | `1`           | Show multiple months side by side (useful for range pickers).                               |
+| `defaultMonth`    | `Date`                              | current month | Initial month displayed when uncontrolled.                                                  |
+| `locale`          | `Locale`                            | en-US         | `date-fns` locale for month / weekday labels.                                               |
+| `autoFocus`       | `boolean`                           | `false`       | Focus the first selected (or today's) cell on mount. Used by `DatePicker` inside `Popover`. |
+| `className`       | `string`                            | -             | Classes on the wrapper `<div>`. Defaults to `p-3`.                                          |
+| `classNames`      | `Partial<ClassNames>`               | -             | Override any internal class. Merged onto the Gremorie defaults via `cn`.                    |
 
 For the full list of props, see the [react-day-picker docs](https://daypicker.dev/api/interfaces/DayPickerProps).
 
@@ -120,7 +104,7 @@ function SingleDate() {
 State is `{ from?: Date; to?: Date }`. Pair with `numberOfMonths={2}` for the classic side-by-side calendar UX.
 
 ```tsx
-import type { DateRange } from "react-day-picker";
+import type { DateRange } from 'react-day-picker';
 
 function DateRangeExample() {
   const [range, setRange] = React.useState<DateRange | undefined>();

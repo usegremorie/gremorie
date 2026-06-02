@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-core",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "ShadNG core — shared utilities, design tokens, and the Button primitive.",
   "license": "MIT",
   "repository": {
@@ -8,14 +8,22 @@
     "url": "https://github.com/usegremorie/gremorie.git",
     "directory": "packages/ng-core"
   },
-  "keywords": ["angular", "ai", "ui", "tokens", "button"],
+  "keywords": [
+    "angular",
+    "ai",
+    "ui",
+    "tokens",
+    "button"
+  ],
   "peerDependencies": {
     "@angular/core": "^21.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.0",
     "tailwind-merge": "^3.0.0"
   },
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "types": "./index.d.ts",

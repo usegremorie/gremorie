@@ -1,10 +1,18 @@
 ---
 title: Carousel
-description: "Horizontal or vertical scrollable slide region built on Embla. Touch, drag, keyboard, plugins."
+description: 'Horizontal or vertical scrollable slide region built on Embla. Touch, drag, keyboard, plugins.'
 ---
 
-import { CarouselPreview } from "@/components/preview/display/display";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, Card, CardContent } from "@gremorie/rx-display";
+import { CarouselPreview } from '@/components/preview/display/display';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  Card,
+  CardContent,
+} from '@gremorie/rx-display';
 
 ## Overview
 
@@ -21,26 +29,10 @@ Carousels hide content past the first slide - use only when order matters less t
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-carousel
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-carousel
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-carousel
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-carousel
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-carousel ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-carousel ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-carousel ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-carousel ```</Tab>
 </Tabs>
 
 ## Usage
@@ -86,13 +78,13 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Root container. Sets up Embla, exposes context for `CarouselContent`, `CarouselItem`, `CarouselPrevious`, and `CarouselNext`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `opts` | `EmblaOptionsType` | - | Embla options. Common keys: `align: "start" \| "center" \| "end"`, `loop: boolean`, `dragFree: boolean`. See [Embla docs](https://www.embla-carousel.com/api/options/). |
-| `plugins` | `EmblaPluginType[]` | - | Embla plugins. Common: `Autoplay`, `WheelGestures`, `ClassNames`, `Fade`. |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Sets the Embla `axis` and styles `CarouselContent` and arrow positions accordingly. |
-| `setApi` | `(api: CarouselApi) => void` | - | Receives the Embla API instance once initialized. Use to control the carousel from outside (call `api.scrollTo(2)`, read `api.selectedScrollSnap()`). |
-| `className` | `string` | - | Extra classes on the root `div`. |
+| Prop          | Type                         | Default        | Description                                                                                                                                                             |
+| ------------- | ---------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `opts`        | `EmblaOptionsType`           | -              | Embla options. Common keys: `align: "start" \| "center" \| "end"`, `loop: boolean`, `dragFree: boolean`. See [Embla docs](https://www.embla-carousel.com/api/options/). |
+| `plugins`     | `EmblaPluginType[]`          | -              | Embla plugins. Common: `Autoplay`, `WheelGestures`, `ClassNames`, `Fade`.                                                                                               |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Sets the Embla `axis` and styles `CarouselContent` and arrow positions accordingly.                                                                                     |
+| `setApi`      | `(api: CarouselApi) => void` | -              | Receives the Embla API instance once initialized. Use to control the carousel from outside (call `api.scrollTo(2)`, read `api.selectedScrollSnap()`).                   |
+| `className`   | `string`                     | -              | Extra classes on the root `div`.                                                                                                                                        |
 
 The root renders with `role="region"` and `aria-roledescription="carousel"` so AT announces it correctly.
 
@@ -108,11 +100,11 @@ A single slide. Renders with `role="group"` and `aria-roledescription="slide"`. 
 
 Pre-styled arrow buttons (built on `Button` from `@gremorie/rx-forms` with `variant="outline"` and `size="icon"`). Auto-disable when there is no previous/next slide. Position absolutely outside the carousel (`-left-12` / `-right-12`).
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `variant` | inherited from `Button` | `"outline"` | Visual style. |
-| `size` | inherited from `Button` | `"icon"` | Size token. |
-| `className` | `string` | - | Extra classes - useful when the default `-left-12` position clips. |
+| Prop        | Type                    | Default     | Description                                                        |
+| ----------- | ----------------------- | ----------- | ------------------------------------------------------------------ |
+| `variant`   | inherited from `Button` | `"outline"` | Visual style.                                                      |
+| `size`      | inherited from `Button` | `"icon"`    | Size token.                                                        |
+| `className` | `string`                | -           | Extra classes - useful when the default `-left-12` position clips. |
 
 All other `Button` props are forwarded.
 
@@ -125,12 +117,12 @@ const [api, setApi] = useState<CarouselApi | null>(null);
 
 useEffect(() => {
   if (!api) return;
-  api.on("select", () => {
-    console.log("Current slide:", api.selectedScrollSnap());
+  api.on('select', () => {
+    console.log('Current slide:', api.selectedScrollSnap());
   });
 }, [api]);
 
-<Carousel setApi={setApi}>...</Carousel>
+<Carousel setApi={setApi}>...</Carousel>;
 ```
 
 ## Composition
@@ -147,7 +139,7 @@ The Carousel registers a `keydown` handler on the root that scrolls on `ArrowLef
 ### Multi-slide view
 
 <div className="rounded-lg border p-6 not-prose">
-  <Carousel className="w-full max-w-sm" opts={{ align: "start" }}>
+  <Carousel className="w-full max-w-sm" opts={{ align: 'start' }}>
     <CarouselContent className="-ml-2">
       {Array.from({ length: 6 }).map((_, i) => (
         <CarouselItem key={i} className="pl-2 basis-1/3">
@@ -165,7 +157,7 @@ The Carousel registers a `keydown` handler on the root that scrolls on `ArrowLef
 </div>
 
 ```tsx
-<Carousel opts={{ align: "start" }}>
+<Carousel opts={{ align: 'start' }}>
   <CarouselContent className="-ml-2">
     {items.map((item) => (
       <CarouselItem key={item.id} className="pl-2 basis-1/3">
@@ -199,7 +191,7 @@ When `orientation="vertical"`, set an explicit height on the Carousel and the in
 ### With Embla plugin (autoplay)
 
 ```tsx
-import Autoplay from "embla-carousel-autoplay";
+import Autoplay from 'embla-carousel-autoplay';
 
 <Carousel
   plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
@@ -208,7 +200,7 @@ import Autoplay from "embla-carousel-autoplay";
   <CarouselContent>...</CarouselContent>
   <CarouselPrevious />
   <CarouselNext />
-</Carousel>
+</Carousel>;
 ```
 
 `stopOnInteraction: true` is non-negotiable - users who interact with the carousel should not have it keep moving under them.

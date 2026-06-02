@@ -2,19 +2,19 @@
 title: Switch
 description: Toggle de efeito imediato — on / off, sem botão Salvar.
 component: Switch
-importPath: "@kalvner/kds/forms/switch"
+importPath: '@kalvner/kds/forms/switch'
 status: stable
 ---
 
-import { Switch } from "@kalvner/kds/forms/switch";
-import { Label } from "@kalvner/kds/forms/label";
+import { Switch } from '@kalvner/kds/forms/switch';
+import { Label } from '@kalvner/kds/forms/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -56,16 +56,13 @@ componente correto.
 ## Usage
 
 ```tsx
-import { Switch } from "@kalvner/kds/forms/switch";
-import { Label } from "@kalvner/kds/forms/label";
+import { Switch } from '@kalvner/kds/forms/switch';
+import { Label } from '@kalvner/kds/forms/label';
 
 export function NotificationsToggle() {
   return (
     <div className="flex items-center gap-3">
-      <Switch
-        id="notify"
-        onCheckedChange={(v) => persist({ notify: v })}
-      />
+      <Switch id="notify" onCheckedChange={(v) => persist({ notify: v })} />
       <Label htmlFor="notify">Notificações</Label>
     </div>
   );
@@ -74,21 +71,23 @@ export function NotificationsToggle() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `checked` | `boolean` | — | Controlado. |
-| `defaultChecked` | `boolean` | `false` | Não controlado. |
-| `onCheckedChange` | `(v: boolean) => void` | — | Callback. |
-| `size` | `'sm' \| 'default'` | `'default'` | Altura do switch + thumb. |
-| `disabled` | `boolean` | `false` | Bloqueia interação. |
-| `id` | `string` | — | Vincula ao Label. |
+| Prop              | Tipo                   | Default     | Descrição                 |
+| ----------------- | ---------------------- | ----------- | ------------------------- |
+| `checked`         | `boolean`              | —           | Controlado.               |
+| `defaultChecked`  | `boolean`              | `false`     | Não controlado.           |
+| `onCheckedChange` | `(v: boolean) => void` | —           | Callback.                 |
+| `size`            | `'sm' \| 'default'`    | `'default'` | Altura do switch + thumb. |
+| `disabled`        | `boolean`              | `false`     | Bloqueia interação.       |
+| `id`              | `string`               | —           | Vincula ao Label.         |
 
 ## Variants
 
 <Card>
   <CardHeader>
     <CardTitle>Sizes</CardTitle>
-    <CardDescription>sm para listas densas, default para painéis.</CardDescription>
+    <CardDescription>
+      sm para listas densas, default para painéis.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="flex items-center gap-6">
@@ -149,7 +148,9 @@ export function NotificationsToggle() {
 <Card>
   <CardHeader>
     <CardTitle>Settings panel</CardTitle>
-    <CardDescription>Linhas com label + descrição + switch à direita.</CardDescription>
+    <CardDescription>
+      Linhas com label + descrição + switch à direita.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <div className="divide-y divide-border rounded-lg border bg-card">
@@ -209,14 +210,14 @@ export function NotificationsToggle() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix expõe `role="switch"` + `aria-checked`. |
-| **Keyboard** | `Tab` foca; `Space` ou `Enter` alterna. |
-| **Label** | Vincule via `htmlFor` + `id` ou `aria-label`. |
-| **Disabled** | `disabled` bloqueia foco e interação. |
+| Concern          | Comportamento                                                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**        | Radix expõe `role="switch"` + `aria-checked`.                                                                                 |
+| **Keyboard**     | `Tab` foca; `Space` ou `Enter` alterna.                                                                                       |
+| **Label**        | Vincule via `htmlFor` + `id` ou `aria-label`.                                                                                 |
+| **Disabled**     | `disabled` bloqueia foco e interação.                                                                                         |
 | **Touch target** | Default size (32×18px) é pequeno para mobile — combine com Label clicável (a linha inteira em painéis), ampliando a área hit. |
-| **Anúncio** | Leitores de tela falam "ligado" / "desligado" + texto do label. |
+| **Anúncio**      | Leitores de tela falam "ligado" / "desligado" + texto do label.                                                               |
 
 ## Related
 

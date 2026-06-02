@@ -6,7 +6,7 @@ importPath: '@kalvner/kds/containers/stack'
 status: stable
 ---
 
-import { Stack } from "@kalvner/kds/containers/stack";
+import { Stack } from '@kalvner/kds/containers/stack';
 
 # Stack
 
@@ -24,9 +24,15 @@ soon).
 
 <div className="my-4 rounded-md border border-fd-border p-4">
   <Stack gap="md">
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">First item</div>
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">Second item</div>
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">Third item</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">
+      First item
+    </div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">
+      Second item
+    </div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-3 text-fd-foreground">
+      Third item
+    </div>
   </Stack>
 </div>
 
@@ -36,7 +42,7 @@ soon).
 for guaranteed tree-shaking (per ADR-012):
 
 ```tsx
-import { Stack } from "@kalvner/kds/containers/stack";
+import { Stack } from '@kalvner/kds/containers/stack';
 ```
 
 The barrel root export (`@kalvner/kds`) exists as a fallback but
@@ -94,13 +100,21 @@ the smallest gap that reads as separation.
 
 <div className="my-4 rounded-md border border-fd-border p-4">
   <Stack gap="lg">
-    {(["none", "xs", "sm", "md", "lg", "xl", "2xl"]).map((g) => (
+    {['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'].map((g) => (
       <div key={g}>
-        <p className="mb-2 font-mono text-xs text-fd-muted-foreground">gap=&quot;{g}&quot;</p>
+        <p className="mb-2 font-mono text-xs text-fd-muted-foreground">
+          gap=&quot;{g}&quot;
+        </p>
         <Stack gap={g}>
-          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">A</div>
-          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">B</div>
-          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">C</div>
+          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+            A
+          </div>
+          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+            B
+          </div>
+          <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+            C
+          </div>
         </Stack>
       </div>
     ))}
@@ -114,9 +128,15 @@ makes children fill the container width.
 
 <div className="my-4 rounded-md border border-fd-border p-4">
   <Stack align="start" gap="sm">
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">Short</div>
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">A medium item</div>
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">Longer item with more text</div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+      Short
+    </div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+      A medium item
+    </div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+      Longer item with more text
+    </div>
   </Stack>
 </div>
 
@@ -126,10 +146,20 @@ Main-axis distribution maps to CSS `justify-content`. Only visible
 when the Stack has a fixed height larger than its content.
 
 <div className="my-4 rounded-md border border-fd-border p-4">
-  <Stack justify="between" gap="none" className="h-40 rounded-md bg-fd-muted/40 p-2">
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">A</div>
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">B</div>
-    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">C</div>
+  <Stack
+    justify="between"
+    gap="none"
+    className="h-40 rounded-md bg-fd-muted/40 p-2"
+  >
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+      A
+    </div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+      B
+    </div>
+    <div className="rounded-md border border-fd-border bg-fd-card px-4 py-2 text-fd-foreground">
+      C
+    </div>
   </Stack>
 </div>
 
@@ -162,6 +192,7 @@ form panels and card bodies:
         </Stack>
       </Stack>
     </Stack>
+
   </div>
 </div>
 
@@ -186,11 +217,11 @@ form panels and card bodies:
 
 ## API Reference
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `gap` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | `'md'` | Spacing between items via Tailwind's gap scale |
-| `align` | `'start' \| 'center' \| 'end' \| 'stretch' \| 'baseline'` | `'stretch'` | Cross-axis alignment (`align-items`) |
-| `justify` | `'start' \| 'center' \| 'end' \| 'between' \| 'around' \| 'evenly'` | `'start'` | Main-axis distribution (`justify-content`) |
+| Prop      | Type                                                                | Default     | Description                                    |
+| --------- | ------------------------------------------------------------------- | ----------- | ---------------------------------------------- |
+| `gap`     | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'`           | `'md'`      | Spacing between items via Tailwind's gap scale |
+| `align`   | `'start' \| 'center' \| 'end' \| 'stretch' \| 'baseline'`           | `'stretch'` | Cross-axis alignment (`align-items`)           |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between' \| 'around' \| 'evenly'` | `'start'`   | Main-axis distribution (`justify-content`)     |
 
 In addition to the props above, Stack accepts every standard `div`
 prop (forwarded to the rendered element). The `ref` prop is
@@ -203,14 +234,14 @@ ARIA roles or interactive behaviour. It renders an unstyled,
 semantically-neutral `<div>` and inherits the surrounding document
 flow.
 
-| Concern | Behaviour |
-|---|---|
-| **Roles** | None added. Pass `role="..."` if the content needs one (e.g. `role="list"` for menus). |
-| **Keyboard navigation** | Stack itself is non-interactive and not focusable. Children handle their own keyboard semantics. |
-| **Screen readers** | Stack is invisible to AT — only its children are announced. |
-| **Focus management** | None. Use the `tabIndex` and `onFocus` props of children if you need focus-trap or skip-link behaviour. |
-| **Touch targets** | Spacing between children comes from `gap` — pick `md` (1rem) or larger if children are touch targets, to keep them ≥ 44×44 CSS px when stacked. |
-| **Motion** | None. |
+| Concern                 | Behaviour                                                                                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**               | None added. Pass `role="..."` if the content needs one (e.g. `role="list"` for menus).                                                          |
+| **Keyboard navigation** | Stack itself is non-interactive and not focusable. Children handle their own keyboard semantics.                                                |
+| **Screen readers**      | Stack is invisible to AT — only its children are announced.                                                                                     |
+| **Focus management**    | None. Use the `tabIndex` and `onFocus` props of children if you need focus-trap or skip-link behaviour.                                         |
+| **Touch targets**       | Spacing between children comes from `gap` — pick `md` (1rem) or larger if children are touch targets, to keep them ≥ 44×44 CSS px when stacked. |
+| **Motion**              | None.                                                                                                                                           |
 
 If you're stacking semantically-related items, mark the wrapping
 element accordingly — `<Stack as="nav">` or `role="list"` makes the

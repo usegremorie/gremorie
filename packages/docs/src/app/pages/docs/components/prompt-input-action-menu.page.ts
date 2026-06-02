@@ -3,11 +3,22 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-prompt-input-action-menu',
-  imports: [DocsLayout, DocsPage, DocsSection, DocsProse, DocsCodeBlock, DocsApiTable],
+  imports: [
+    DocsLayout,
+    DocsPage,
+    DocsSection,
+    DocsProse,
+    DocsCodeBlock,
+    DocsApiTable,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-layout>
@@ -30,7 +41,10 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
               <li>Closes on outside click</li>
               <li>Closes on <code>Escape</code></li>
               <li>Disabled inherits from parent PromptInput via DI</li>
-              <li>Opens with a motion-safe pop-in animation (skipped under prefers-reduced-motion)</li>
+              <li>
+                Opens with a motion-safe pop-in animation (skipped under
+                prefers-reduced-motion)
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -38,9 +52,19 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="Accessibility" anchor="a11y">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li>Trigger has <code>aria-haspopup="menu"</code> and <code>aria-expanded</code></li>
-              <li>Open panel has <code>role="menu"</code> with the same aria-label as the trigger</li>
-              <li><strong>v0.1 note</strong>: keyboard navigation inside the menu is limited (no arrow-key roving tabindex yet). Migration to <code>&#64;spartan-ng/brain/menu</code> planned for v0.2.</li>
+              <li>
+                Trigger has <code>aria-haspopup="menu"</code> and
+                <code>aria-expanded</code>
+              </li>
+              <li>
+                Open panel has <code>role="menu"</code> with the same aria-label
+                as the trigger
+              </li>
+              <li>
+                <strong>v0.1 note</strong>: keyboard navigation inside the menu
+                is limited (no arrow-key roving tabindex yet). Migration to
+                <code>&#64;spartan-ng/brain/menu</code> planned for v0.2.
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -56,7 +80,17 @@ export default class PromptInputActionMenuPage {
 </prompt-input-action-menu>`;
 
   protected readonly inputs: readonly ApiRow[] = [
-    { name: 'ariaLabel', type: 'string', default: "'More actions'", description: 'Accessible label for the trigger and menu.' },
-    { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable independently of parent.' },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      default: "'More actions'",
+      description: 'Accessible label for the trigger and menu.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      default: 'false',
+      description: 'Disable independently of parent.',
+    },
   ];
 }

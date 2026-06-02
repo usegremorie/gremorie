@@ -1,6 +1,6 @@
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from 'react';
 
 /**
  * Card - surface primitive for grouping related content.
@@ -18,105 +18,102 @@ import type { ComponentPropsWithoutRef } from "react";
  * for downstream consumers of `@kalvner/kds/display/card`.
  */
 
-export type CardProps = ComponentPropsWithoutRef<"div">;
+export type CardProps = ComponentPropsWithoutRef<'div'>;
 
 export function Card({ className, ...props }: CardProps) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-        className
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm',
+        className,
       )}
       {...props}
     />
   );
 }
-Card.displayName = "Card";
+Card.displayName = 'Card';
 
-export type CardHeaderProps = ComponentPropsWithoutRef<"div">;
+export type CardHeaderProps = ComponentPropsWithoutRef<'div'>;
 
 export function CardHeader({ className, ...props }: CardHeaderProps) {
   return (
     <div
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
-        className
+        '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
+        className,
       )}
       {...props}
     />
   );
 }
-CardHeader.displayName = "CardHeader";
+CardHeader.displayName = 'CardHeader';
 
-export type CardTitleProps = ComponentPropsWithoutRef<"div">;
+export type CardTitleProps = ComponentPropsWithoutRef<'div'>;
 
 export function CardTitle({ className, ...props }: CardTitleProps) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn('leading-none font-semibold', className)}
       {...props}
     />
   );
 }
-CardTitle.displayName = "CardTitle";
+CardTitle.displayName = 'CardTitle';
 
-export type CardDescriptionProps = ComponentPropsWithoutRef<"div">;
+export type CardDescriptionProps = ComponentPropsWithoutRef<'div'>;
 
-export function CardDescription({
-  className,
-  ...props
-}: CardDescriptionProps) {
+export function CardDescription({ className, ...props }: CardDescriptionProps) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn('text-muted-foreground text-sm', className)}
       {...props}
     />
   );
 }
-CardDescription.displayName = "CardDescription";
+CardDescription.displayName = 'CardDescription';
 
-export type CardActionProps = ComponentPropsWithoutRef<"div">;
+export type CardActionProps = ComponentPropsWithoutRef<'div'>;
 
 export function CardAction({ className, ...props }: CardActionProps) {
   return (
     <div
       data-slot="card-action"
       className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
+        'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
+        className,
       )}
       {...props}
     />
   );
 }
-CardAction.displayName = "CardAction";
+CardAction.displayName = 'CardAction';
 
-export type CardContentProps = ComponentPropsWithoutRef<"div">;
+export type CardContentProps = ComponentPropsWithoutRef<'div'>;
 
 export function CardContent({ className, ...props }: CardContentProps) {
   return (
     <div
       data-slot="card-content"
-      className={cn("px-6", className)}
+      className={cn('px-6', className)}
       {...props}
     />
   );
 }
-CardContent.displayName = "CardContent";
+CardContent.displayName = 'CardContent';
 
-export type CardFooterProps = ComponentPropsWithoutRef<"div">;
+export type CardFooterProps = ComponentPropsWithoutRef<'div'>;
 
 export function CardFooter({ className, ...props }: CardFooterProps) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
+      className={cn('flex items-center px-6 [.border-t]:pt-6', className)}
       {...props}
     />
   );
 }
-CardFooter.displayName = "CardFooter";
+CardFooter.displayName = 'CardFooter';

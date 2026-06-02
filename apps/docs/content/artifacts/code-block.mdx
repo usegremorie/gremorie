@@ -1,6 +1,6 @@
 ---
 title: Code block
-description: "Syntax-highlighted code artifact with copy-to-clipboard, streamed by the model."
+description: 'Syntax-highlighted code artifact with copy-to-clipboard, streamed by the model.'
 ---
 
 ## Overview
@@ -92,7 +92,7 @@ Sample prompts that produce valid output for this artifact:
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
 import {
   Badge,
@@ -101,8 +101,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { CodeBlock, CodeBlockCopyButton } from "@gremorie/rx-ai";
+} from '@gremorie/rx-display';
+import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-ai';
 
 const CODE = `import { Button } from "@gremorie/rx-forms";
 
@@ -154,10 +154,9 @@ export function CodeBlockArtifact() {
 ## Streaming behavior
 
 <Callout type="info">
-  This artifact supports partial schema. As the model streams code,
-  Shiki re-highlights on each chunk so the user sees colorized output
-  appear progressively. The copy button stays armed against the latest
-  buffered value.
+  This artifact supports partial schema. As the model streams code, Shiki
+  re-highlights on each chunk so the user sees colorized output appear
+  progressively. The copy button stays armed against the latest buffered value.
 </Callout>
 
 ## Related

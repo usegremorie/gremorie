@@ -1,0 +1,25 @@
+{
+  "name": "react",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/react/src",
+  "projectType": "library",
+  "tags": ["scope:lib", "type:meta", "framework:react"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "packages/react",
+        "parallel": false,
+        "commands": [
+          "tsc -p tsconfig.lib.json",
+          "tailwindcss -i styles/gremorie.css -o dist/styles.css --minify"
+        ]
+      },
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

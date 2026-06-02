@@ -3,7 +3,7 @@ title: Spacing
 description: Uma única base (4px) gera toda a escala de espaçamento via calc() do Tailwind v4.
 ---
 
-import { SpacingTable } from "@/components/token-tables";
+import { SpacingTable } from '@/components/token-tables';
 
 Espaçamento é o ritmo da interface. É o que diz "esses dois
 elementos andam juntos" e "esse outro é parte de outro grupo" sem
@@ -19,11 +19,21 @@ utilitários via `calc()`.
 
 ```css
 /* Tailwind v4 deriva tudo disso: */
-.p-1  { padding: calc(var(--spacing) * 1); }   /* 4px */
-.p-2  { padding: calc(var(--spacing) * 2); }   /* 8px */
-.p-4  { padding: calc(var(--spacing) * 4); }   /* 16px */
-.gap-6 { gap: calc(var(--spacing) * 6); }       /* 24px */
-.h-32 { height: calc(var(--spacing) * 32); }   /* 128px */
+.p-1 {
+  padding: calc(var(--spacing) * 1);
+} /* 4px */
+.p-2 {
+  padding: calc(var(--spacing) * 2);
+} /* 8px */
+.p-4 {
+  padding: calc(var(--spacing) * 4);
+} /* 16px */
+.gap-6 {
+  gap: calc(var(--spacing) * 6);
+} /* 24px */
+.h-32 {
+  height: calc(var(--spacing) * 32);
+} /* 128px */
 ```
 
 A consequência prática: **não há lista de stops** como em radius

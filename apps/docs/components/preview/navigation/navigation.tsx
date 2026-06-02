@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Breadcrumb,
@@ -29,7 +29,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@gremorie/rx-navigation";
+} from '@gremorie/rx-navigation';
 
 // ---------- Breadcrumb ----------
 
@@ -202,7 +202,9 @@ export function MenubarPreview() {
       <MenubarMenu>
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          <MenubarCheckboxItem checked>Always show bookmarks</MenubarCheckboxItem>
+          <MenubarCheckboxItem checked>
+            Always show bookmarks
+          </MenubarCheckboxItem>
           <MenubarCheckboxItem>Show full URL</MenubarCheckboxItem>
           <MenubarSeparator />
           <MenubarRadioGroup value="comfortable">
@@ -224,7 +226,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@gremorie/rx-navigation";
+} from '@gremorie/rx-navigation';
 
 export function NavigationMenuPreview() {
   return (

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@gremorie/rx-forms";
-import { Inbox, Plus } from "lucide-react";
+import { Button } from '@gremorie/rx-forms';
+import { Inbox, Plus } from 'lucide-react';
 
 /**
  * Empty state block: dashed border, centered icon, headline,

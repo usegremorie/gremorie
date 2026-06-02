@@ -14,26 +14,12 @@ Use it by passing the component itself (not an instance) to `Canvas` through Rea
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-connection
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-connection
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-connection
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-connection
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-connection ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-connection ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-connection ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-connection ```
+  </Tab>
 </Tabs>
 
 Requires `@xyflow/react`.
@@ -72,14 +58,15 @@ Angular edition planned for Phase 5h. The workflow family is React-only for now.
 
 A `ConnectionLineComponent` from `@xyflow/react`. xyflow passes the props automatically when the user starts dragging from a handle.
 
-| Prop | Type | Description |
-|---|---|---|
+| Prop    | Type     | Description                                |
+| ------- | -------- | ------------------------------------------ |
 | `fromX` | `number` | Source X coordinate (the handle position). |
-| `fromY` | `number` | Source Y coordinate. |
-| `toX` | `number` | Cursor X coordinate. |
-| `toY` | `number` | Cursor Y coordinate. |
+| `fromY` | `number` | Source Y coordinate.                       |
+| `toX`   | `number` | Cursor X coordinate.                       |
+| `toY`   | `number` | Cursor Y coordinate.                       |
 
 Renders:
+
 - A `<path>` with `class="animated"`, `stroke="var(--color-ring)"` and a bezier curve whose control points sit at the midpoint between source and target.
 - A `<circle>` at the cursor (`fill="#fff"`, `stroke="var(--color-ring)"`, `r={3}`) so the tip is visible against any background.
 
@@ -117,15 +104,15 @@ Remove the dash animation if you prefer a calmer visual.
 If you need a different stroke color (e.g. destructive while hovering a "delete edge" zone), wrap `Connection` in your own component.
 
 ```tsx
-import type { ConnectionLineComponent } from "@xyflow/react";
+import type { ConnectionLineComponent } from '@xyflow/react';
 
 const DestructiveConnection: ConnectionLineComponent = (props) => (
-  <g style={{ filter: "drop-shadow(0 0 4px var(--color-destructive))" }}>
+  <g style={{ filter: 'drop-shadow(0 0 4px var(--color-destructive))' }}>
     <Connection {...props} />
   </g>
 );
 
-<Canvas connectionLineComponent={DestructiveConnection} />
+<Canvas connectionLineComponent={DestructiveConnection} />;
 ```
 
 ## Accessibility

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Slider as SliderPrimitive } from "radix-ui";
-import * as React from "react";
+import { Slider as SliderPrimitive } from 'radix-ui';
+import * as React from 'react';
 
-import { cn } from "@gremorie/rx-core";
+import { cn } from '@gremorie/rx-core';
 
 /**
  * Slider - continuous numeric input via draggable thumb.
@@ -48,19 +48,19 @@ function Slider({
         : Array.isArray(defaultValue)
           ? defaultValue
           : [min, max],
-    [value, defaultValue, min, max]
+    [value, defaultValue, min, max],
   );
 
-  const rootAriaLabel = props["aria-label"];
+  const rootAriaLabel = props['aria-label'];
 
   function thumbLabel(index: number): string {
     if (Array.isArray(thumbAriaLabel)) {
       return thumbAriaLabel[index] ?? `Slider thumb ${index + 1}`;
     }
-    if (typeof thumbAriaLabel === "string") {
+    if (typeof thumbAriaLabel === 'string') {
       return thumbAriaLabel;
     }
-    if (typeof rootAriaLabel === "string") {
+    if (typeof rootAriaLabel === 'string') {
       return rootAriaLabel;
     }
     return `Slider thumb ${index + 1}`;
@@ -74,21 +74,21 @@ function Slider({
       min={min}
       max={max}
       className={cn(
-        "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
-        className
+        'relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
+        className,
       )}
       {...props}
     >
       <SliderPrimitive.Track
         data-slot="slider-track"
         className={cn(
-          "relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5"
+          'relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5',
         )}
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
           className={cn(
-            "absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"
+            'absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',
           )}
         />
       </SliderPrimitive.Track>

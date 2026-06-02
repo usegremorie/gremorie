@@ -2,18 +2,21 @@
 title: Checkpoint
 description: Marcador de snapshot conversacional — botão pra restaurar a conversa em um ponto.
 component: Checkpoint
-importPath: "@kalvner/kds/ai/checkpoint"
+importPath: '@kalvner/kds/ai/checkpoint'
 status: stable
 ---
 
-import { CheckpointPreview, CheckpointTooltipPreview } from "@/components/ai-chatbot-demos";
+import {
+  CheckpointPreview,
+  CheckpointTooltipPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -64,15 +67,17 @@ Aceita `LucideProps`. Default é `BookmarkIcon` size-4. Você pode
 substituir passando `children`:
 
 ```tsx
-<CheckpointIcon><Save className="size-4" /></CheckpointIcon>
+<CheckpointIcon>
+  <Save className="size-4" />
+</CheckpointIcon>
 ```
 
 ### CheckpointTrigger
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `tooltip` | `string` | — | Texto do tooltip (envolve em [Tooltip](../../ui/overlays/tooltip)). |
-| `children` | `ReactNode` | — | Label do botão. |
+| Prop       | Tipo        | Default | Descrição                                                           |
+| ---------- | ----------- | ------- | ------------------------------------------------------------------- |
+| `tooltip`  | `string`    | —       | Texto do tooltip (envolve em [Tooltip](../../ui/overlays/tooltip)). |
+| `children` | `ReactNode` | —       | Label do botão.                                                     |
 
 Herda de [Button](../../ui/forms/button) — `variant`, `size`, `onClick`, etc. Default `variant="ghost"` `size="sm"`.
 
@@ -106,11 +111,11 @@ Herda de [Button](../../ui/forms/button) — `variant`, `size`, `onClick`, etc. 
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `<button>` (Button). |
+| Concern     | Comportamento                                |
+| ----------- | -------------------------------------------- |
+| **Roles**   | Trigger é `<button>` (Button).               |
 | **Tooltip** | Quando passado, é Radix Tooltip (acessível). |
-| **Icon** | Decorativo — pareie com texto/tooltip. |
+| **Icon**    | Decorativo — pareie com texto/tooltip.       |
 
 ## Related
 

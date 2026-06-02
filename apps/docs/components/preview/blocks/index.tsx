@@ -1,17 +1,17 @@
-import { ChatSurface } from "./chat-surface";
-import { Dashboard } from "./dashboard";
-import { EmptyState } from "./empty-state";
-import { MarketingHero } from "./marketing-hero";
-import { SettingsForm } from "./settings-form";
-import { SignIn } from "./sign-in";
+import { ChatSurface } from './chat-surface';
+import { Dashboard } from './dashboard';
+import { EmptyState } from './empty-state';
+import { MarketingHero } from './marketing-hero';
+import { SettingsForm } from './settings-form';
+import { SignIn } from './sign-in';
 
 const blocks = {
-  "sign-in": SignIn,
+  'sign-in': SignIn,
   dashboard: Dashboard,
-  "chat-surface": ChatSurface,
-  "settings-form": SettingsForm,
-  "marketing-hero": MarketingHero,
-  "empty-state": EmptyState,
+  'chat-surface': ChatSurface,
+  'settings-form': SettingsForm,
+  'marketing-hero': MarketingHero,
+  'empty-state': EmptyState,
 } as const;
 
 export type BlockName = keyof typeof blocks;

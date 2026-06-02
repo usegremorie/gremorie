@@ -1,10 +1,10 @@
 ---
 title: Separator
-description: "Horizontal or vertical visual divider. Decorative by default; opt in to semantic separation when needed."
+description: 'Horizontal or vertical visual divider. Decorative by default; opt in to semantic separation when needed.'
 ---
 
-import { SeparatorPreview } from "@/components/preview/display/display";
-import { Separator } from "@gremorie/rx-display";
+import { SeparatorPreview } from '@/components/preview/display/display';
+import { Separator } from '@gremorie/rx-display';
 
 ## Overview
 
@@ -21,26 +21,10 @@ The default `decorative={true}` is the right call in the vast majority of cases 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-separator
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-separator
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-separator
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-separator
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-separator ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-separator ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-separator ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-separator ```</Tab>
 </Tabs>
 
 ## Usage
@@ -79,11 +63,11 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 Extends Radix `Separator.Root`.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the line. Horizontal renders `h-px w-full`; vertical renders `w-px h-full`. |
-| `decorative` | `boolean` | `true` | When `true`, the separator is hidden from AT (`role="none"`). When `false`, AT announces it with `role="separator"` and `aria-orientation`. |
-| `className` | `string` | - | Extra classes. For vertical separators, set an explicit height (`h-4`, `h-6`, etc.) - the default `h-full` only works inside a flex parent with a known height. |
+| Prop          | Type                         | Default        | Description                                                                                                                                                     |
+| ------------- | ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the line. Horizontal renders `h-px w-full`; vertical renders `w-px h-full`.                                                                        |
+| `decorative`  | `boolean`                    | `true`         | When `true`, the separator is hidden from AT (`role="none"`). When `false`, AT announces it with `role="separator"` and `aria-orientation`.                     |
+| `className`   | `string`                     | -              | Extra classes. For vertical separators, set an explicit height (`h-4`, `h-6`, etc.) - the default `h-full` only works inside a flex parent with a known height. |
 
 All other `div` props are forwarded.
 

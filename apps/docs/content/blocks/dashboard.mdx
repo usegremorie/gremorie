@@ -1,6 +1,6 @@
 ---
 title: Dashboard
-description: "KPI grid plus chart strip plus transactions table. The canonical analytics surface for SaaS and storefront dashboards."
+description: 'KPI grid plus chart strip plus transactions table. The canonical analytics surface for SaaS and storefront dashboards.'
 ---
 
 ## Overview
@@ -71,7 +71,7 @@ bunx --bun gremorie@latest add block-dashboard
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
 import {
   Badge,
@@ -86,9 +86,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@gremorie/rx-display";
-import { BarChart, type ChartConfig, type Datum } from "@gremorie/rx-data";
-import { Button } from "@gremorie/rx-forms";
+} from '@gremorie/rx-display';
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
+import { Button } from '@gremorie/rx-forms';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -97,28 +97,52 @@ import {
   Download,
   ShoppingCart,
   Users,
-} from "lucide-react";
+} from 'lucide-react';
 
 const KPIs = [
-  { label: "Revenue", value: "$48,920", delta: "+12.4%", trend: "up", icon: DollarSign },
-  { label: "Customers", value: "2,318", delta: "+4.1%", trend: "up", icon: Users },
-  { label: "Orders", value: "1,204", delta: "+18.3%", trend: "up", icon: ShoppingCart },
-  { label: "Refunds", value: "$1,420", delta: "-3.2%", trend: "down", icon: CreditCard },
+  {
+    label: 'Revenue',
+    value: '$48,920',
+    delta: '+12.4%',
+    trend: 'up',
+    icon: DollarSign,
+  },
+  {
+    label: 'Customers',
+    value: '2,318',
+    delta: '+4.1%',
+    trend: 'up',
+    icon: Users,
+  },
+  {
+    label: 'Orders',
+    value: '1,204',
+    delta: '+18.3%',
+    trend: 'up',
+    icon: ShoppingCart,
+  },
+  {
+    label: 'Refunds',
+    value: '$1,420',
+    delta: '-3.2%',
+    trend: 'down',
+    icon: CreditCard,
+  },
 ] as const;
 
-const REVENUE_DATA: Datum[] = [
-  { month: "Jan", revenue: 4200 },
-  { month: "Feb", revenue: 5100 },
-  { month: "Mar", revenue: 4800 },
-  { month: "Apr", revenue: 6200 },
-  { month: "May", revenue: 7400 },
-  { month: "Jun", revenue: 6900 },
-  { month: "Jul", revenue: 8100 },
-  { month: "Aug", revenue: 8900 },
+const REVENUE_DATA: ChartDatum[] = [
+  { month: 'Jan', revenue: 4200 },
+  { month: 'Feb', revenue: 5100 },
+  { month: 'Mar', revenue: 4800 },
+  { month: 'Apr', revenue: 6200 },
+  { month: 'May', revenue: 7400 },
+  { month: 'Jun', revenue: 6900 },
+  { month: 'Jul', revenue: 8100 },
+  { month: 'Aug', revenue: 8900 },
 ];
 
 const REVENUE_CONFIG: ChartConfig = {
-  revenue: { label: "Revenue", color: "var(--chart-1)" },
+  revenue: { label: 'Revenue', color: 'var(--chart-1)' },
 };
 
 export function Dashboard() {
@@ -150,12 +174,12 @@ export function Dashboard() {
             <CardContent>
               <p
                 className={
-                  trend === "up"
-                    ? "flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400"
-                    : "flex items-center gap-1 text-xs text-destructive"
+                  trend === 'up'
+                    ? 'flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400'
+                    : 'flex items-center gap-1 text-xs text-destructive'
                 }
               >
-                {trend === "up" ? (
+                {trend === 'up' ? (
                   <ArrowUpRight className="size-3" aria-hidden />
                 ) : (
                   <ArrowDownRight className="size-3" aria-hidden />
@@ -194,9 +218,7 @@ export function Dashboard() {
                 <TableHead className="text-right">Amount</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {/* rows */}
-            </TableBody>
+            <TableBody>{/* rows */}</TableBody>
           </Table>
         </CardContent>
       </Card>

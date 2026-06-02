@@ -2,18 +2,18 @@
 title: Separator
 description: Linha fina semântica ou decorativa para dividir grupos de conteúdo.
 component: Separator
-importPath: "@kalvner/kds/display/separator"
+importPath: '@kalvner/kds/display/separator'
 status: stable
 ---
 
-import { Separator } from "@kalvner/kds/display/separator";
+import { Separator } from '@kalvner/kds/display/separator';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -62,15 +62,13 @@ ocupa 100% da largura disponível; no vertical precisa de um container
 ## Usage
 
 ```tsx
-import { Separator } from "@kalvner/kds/display/separator";
+import { Separator } from '@kalvner/kds/display/separator';
 
 export function SettingsHeader() {
   return (
     <div className="space-y-1">
       <h3 className="text-sm font-semibold">Conta</h3>
-      <p className="text-sm text-muted-foreground">
-        Email, senha, idioma.
-      </p>
+      <p className="text-sm text-muted-foreground">Email, senha, idioma.</p>
       <Separator className="my-4" />
     </div>
   );
@@ -79,11 +77,11 @@ export function SettingsHeader() {
 
 ## Props
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Eixo do separador. |
-| `decorative` | `boolean` | `true` | Quando `true`, expõe `role="none"` (ornamento). Quando `false`, expõe `role="separator"` semântico. |
-| `...rest` | `React.ComponentProps<'div'>` | — | Tudo o que `<div>` aceita (`className`, `id`, `aria-*`). |
+| Prop          | Tipo                          | Default        | Descrição                                                                                           |
+| ------------- | ----------------------------- | -------------- | --------------------------------------------------------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`  | `'horizontal'` | Eixo do separador.                                                                                  |
+| `decorative`  | `boolean`                     | `true`         | Quando `true`, expõe `role="none"` (ornamento). Quando `false`, expõe `role="separator"` semântico. |
+| `...rest`     | `React.ComponentProps<'div'>` | —              | Tudo o que `<div>` aceita (`className`, `id`, `aria-*`).                                            |
 
 ## Variants
 
@@ -124,7 +122,9 @@ export function SettingsHeader() {
   <Card>
     <CardHeader>
       <CardTitle>Decorative (default)</CardTitle>
-      <CardDescription>role="none" — ignorado por leitores de tela.</CardDescription>
+      <CardDescription>
+        role="none" — ignorado por leitores de tela.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="space-y-2 text-sm">
@@ -137,7 +137,9 @@ export function SettingsHeader() {
   <Card>
     <CardHeader>
       <CardTitle>Semantic</CardTitle>
-      <CardDescription>decorative=false expõe role="separator".</CardDescription>
+      <CardDescription>
+        decorative=false expõe role="separator".
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="space-y-2 text-sm">
@@ -155,7 +157,9 @@ export function SettingsHeader() {
   <Card>
     <CardHeader>
       <CardTitle>Settings sections</CardTitle>
-      <CardDescription>Cada bloco de settings termina com um Separator.</CardDescription>
+      <CardDescription>
+        Cada bloco de settings termina com um Separator.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="rounded-md border bg-card p-4">
@@ -179,17 +183,49 @@ export function SettingsHeader() {
   <Card>
     <CardHeader>
       <CardTitle>Toolbar groups</CardTitle>
-      <CardDescription>Vertical separators entre grupos de ações.</CardDescription>
+      <CardDescription>
+        Vertical separators entre grupos de ações.
+      </CardDescription>
     </CardHeader>
     <CardContent>
       <div className="flex h-9 w-fit items-center gap-2 rounded-md border bg-card p-1.5 text-sm">
-        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">B</button>
-        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">I</button>
-        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">U</button>
+        <button
+          type="button"
+          className="rounded-sm px-2 py-0.5 hover:bg-accent"
+        >
+          B
+        </button>
+        <button
+          type="button"
+          className="rounded-sm px-2 py-0.5 hover:bg-accent"
+        >
+          I
+        </button>
+        <button
+          type="button"
+          className="rounded-sm px-2 py-0.5 hover:bg-accent"
+        >
+          U
+        </button>
         <Separator orientation="vertical" />
-        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">L</button>
-        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">C</button>
-        <button type="button" className="rounded-sm px-2 py-0.5 hover:bg-accent">R</button>
+        <button
+          type="button"
+          className="rounded-sm px-2 py-0.5 hover:bg-accent"
+        >
+          L
+        </button>
+        <button
+          type="button"
+          className="rounded-sm px-2 py-0.5 hover:bg-accent"
+        >
+          C
+        </button>
+        <button
+          type="button"
+          className="rounded-sm px-2 py-0.5 hover:bg-accent"
+        >
+          R
+        </button>
       </div>
     </CardContent>
   </Card>
@@ -231,13 +267,13 @@ export function SettingsHeader() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Quando `decorative={true}` (default): `role="none"`. Quando `decorative={false}`: `role="separator"` com `aria-orientation`. |
-| **Keyboard** | Não recebe foco — separador não é interativo. |
-| **Screen reader** | No modo decorativo, leitor de tela ignora. No modo semântico, anuncia "separator" e a orientação. |
-| **Contraste** | `bg-border` é um cinza muito sutil — ele cumpre o papel de respiração visual, não de elemento informacional. Não dependa do separador para transmitir informação crítica. |
-| **Mobile / touch** | Não aplicável — separador é estático. |
+| Concern            | Comportamento                                                                                                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Roles**          | Quando `decorative={true}` (default): `role="none"`. Quando `decorative={false}`: `role="separator"` com `aria-orientation`.                                              |
+| **Keyboard**       | Não recebe foco — separador não é interativo.                                                                                                                             |
+| **Screen reader**  | No modo decorativo, leitor de tela ignora. No modo semântico, anuncia "separator" e a orientação.                                                                         |
+| **Contraste**      | `bg-border` é um cinza muito sutil — ele cumpre o papel de respiração visual, não de elemento informacional. Não dependa do separador para transmitir informação crítica. |
+| **Mobile / touch** | Não aplicável — separador é estático.                                                                                                                                     |
 
 ## Related
 

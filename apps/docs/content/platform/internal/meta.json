@@ -1,4 +1,12 @@
 {
   "title": "Internal",
-  "pages": ["about", "documentation-standard", "storybook-structure", "accessibility", "layout-stability"]
+  "icon": "Settings2",
+  "description": "How Gremorie is built and documented — doc standard, Storybook structure, accessibility, layout stability.",
+  "pages": [
+    "about",
+    "documentation-standard",
+    "storybook-structure",
+    "accessibility",
+    "layout-stability"
+  ]
 }

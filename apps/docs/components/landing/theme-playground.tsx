@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { ArrowRight, RotateCcw, Sparkles } from "lucide-react";
-import { Button, Slider } from "@gremorie/rx-forms";
-import { Card } from "@gremorie/rx-display";
+import { Card } from '@gremorie/rx-display';
+import { Button, Slider } from '@gremorie/rx-forms';
+import { ArrowRight, RotateCcw, Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 type Hue = {
   name: string;
@@ -12,15 +12,15 @@ type Hue = {
   hsl: string;
 };
 
-const HUE_VIOLET: Hue = { name: "Violet", value: "violet", hsl: "262 83% 58%" };
+const HUE_VIOLET: Hue = { name: 'Violet', value: 'violet', hsl: '262 83% 58%' };
 
 const hues: Hue[] = [
-  { name: "Neutral", value: "neutral", hsl: "240 5% 26%" },
+  { name: 'Neutral', value: 'neutral', hsl: '240 5% 26%' },
   HUE_VIOLET,
-  { name: "Emerald", value: "emerald", hsl: "160 84% 39%" },
-  { name: "Rose", value: "rose", hsl: "346 84% 57%" },
-  { name: "Amber", value: "amber", hsl: "38 92% 50%" },
-  { name: "Sky", value: "sky", hsl: "199 89% 48%" },
+  { name: 'Emerald', value: 'emerald', hsl: '160 84% 39%' },
+  { name: 'Rose', value: 'rose', hsl: '346 84% 57%' },
+  { name: 'Amber', value: 'amber', hsl: '38 92% 50%' },
+  { name: 'Sky', value: 'sky', hsl: '199 89% 48%' },
 ];
 
 const DEFAULT_RADIUS = 8;
@@ -68,8 +68,8 @@ export function ThemePlayground() {
               Theme everything with tokens
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Three layers: primitive, semantic, chart. Override at any
-              layer to retheme your entire app. Try a few changes below.
+              Three layers: primitive, semantic, chart. Override at any layer to
+              retheme your entire app. Try a few changes below.
             </p>
           </div>
           <Button variant="outline" asChild>
@@ -117,8 +117,8 @@ export function ThemePlayground() {
                     aria-label={`Primary hue: ${h.name}`}
                     className={`size-9 rounded-full border-2 transition-all ${
                       hue.value === h.value
-                        ? "scale-110 border-foreground"
-                        : "border-transparent hover:scale-105"
+                        ? 'scale-110 border-foreground'
+                        : 'border-transparent hover:scale-105'
                     }`}
                     style={{ background: `hsl(${h.hsl})` }}
                   />
@@ -166,14 +166,12 @@ export function ThemePlayground() {
               so token changes stay local to the preview. */}
           <Card
             className="relative px-8 py-8"
-            style={
-              {
-                ["--demo-primary" as string]: `hsl(${hue.hsl})`,
-                ["--demo-radius" as string]: `${radius}px`,
-                ["--demo-font-scale" as string]: fontScale,
-                fontSize: `calc(1rem * var(--demo-font-scale))`,
-              } as React.CSSProperties
-            }
+            style={{
+              ['--demo-primary' as string]: `hsl(${hue.hsl})`,
+              ['--demo-radius' as string]: `${radius}px`,
+              ['--demo-font-scale' as string]: fontScale,
+              fontSize: `calc(1rem * var(--demo-font-scale))`,
+            }}
           >
             {/* LIVE PREVIEW pulse - small pulsing dot + label. Tells user
                 the area is responsive to the controls. */}
@@ -190,14 +188,14 @@ export function ThemePlayground() {
 
             <div
               className="border border-border p-6"
-              style={{ borderRadius: "var(--demo-radius)" }}
+              style={{ borderRadius: 'var(--demo-radius)' }}
             >
               <div className="mb-2 flex items-center gap-2">
                 <span
                   className="inline-flex size-6 items-center justify-center text-white"
                   style={{
-                    background: "var(--demo-primary)",
-                    borderRadius: "calc(var(--demo-radius) * 0.6)",
+                    background: 'var(--demo-primary)',
+                    borderRadius: 'calc(var(--demo-radius) * 0.6)',
                   }}
                 >
                   <Sparkles className="size-3.5" aria-hidden="true" />
@@ -208,16 +206,16 @@ export function ThemePlayground() {
                 <span
                   className="ml-auto inline-flex h-6 items-center px-2 text-[10px] font-medium uppercase tracking-wider text-white"
                   style={{
-                    background: "var(--demo-primary)",
-                    borderRadius: "calc(var(--demo-radius) * 0.5)",
+                    background: 'var(--demo-primary)',
+                    borderRadius: 'calc(var(--demo-radius) * 0.5)',
                   }}
                 >
                   Active
                 </span>
               </div>
               <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
-                Tokens propagate from primitive through semantic and into
-                every primitive. Change one variable, restyle the system.
+                Tokens propagate from primitive through semantic and into every
+                primitive. Change one variable, restyle the system.
               </p>
 
               {/* Mini form row - input + button - shows form controls
@@ -228,14 +226,14 @@ export function ThemePlayground() {
                   defaultValue="hello@gremorie.dev"
                   aria-label="Demo email input"
                   className="flex-1 border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-[var(--demo-primary)]"
-                  style={{ borderRadius: "var(--demo-radius)" }}
+                  style={{ borderRadius: 'var(--demo-radius)' }}
                 />
                 <button
                   type="button"
                   className="inline-flex h-9 items-center justify-center px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
                   style={{
-                    background: "var(--demo-primary)",
-                    borderRadius: "var(--demo-radius)",
+                    background: 'var(--demo-primary)',
+                    borderRadius: 'var(--demo-radius)',
                   }}
                 >
                   Subscribe
@@ -247,8 +245,8 @@ export function ThemePlayground() {
                   type="button"
                   className="inline-flex h-9 items-center justify-center px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
                   style={{
-                    background: "var(--demo-primary)",
-                    borderRadius: "var(--demo-radius)",
+                    background: 'var(--demo-primary)',
+                    borderRadius: 'var(--demo-radius)',
                   }}
                 >
                   Primary action
@@ -256,7 +254,7 @@ export function ThemePlayground() {
                 <button
                   type="button"
                   className="inline-flex h-9 items-center justify-center border border-border px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-                  style={{ borderRadius: "var(--demo-radius)" }}
+                  style={{ borderRadius: 'var(--demo-radius)' }}
                 >
                   Secondary
                 </button>
@@ -264,9 +262,9 @@ export function ThemePlayground() {
                   className="inline-flex h-7 items-center justify-center px-3 text-xs font-medium"
                   style={{
                     background:
-                      "color-mix(in srgb, var(--demo-primary) 14%, transparent)",
-                    color: "var(--demo-primary)",
-                    borderRadius: "calc(var(--demo-radius) * 0.7)",
+                      'color-mix(in srgb, var(--demo-primary) 14%, transparent)',
+                    color: 'var(--demo-primary)',
+                    borderRadius: 'calc(var(--demo-radius) * 0.7)',
                   }}
                 >
                   Badge

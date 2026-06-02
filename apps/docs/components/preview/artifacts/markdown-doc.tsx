@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Badge,
@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
+} from '@gremorie/rx-display';
 
 export function MarkdownDoc() {
   return (
@@ -38,12 +38,10 @@ export function MarkdownDoc() {
             <li>Settings page with sticky save bar</li>
           </ul>
           <h3>Blockers</h3>
-          <p>
-            Waiting on an API key for the analytics provider. ETA Monday.
-          </p>
+          <p>Waiting on an API key for the analytics provider. ETA Monday.</p>
           <blockquote>
-            Note: the empty-state pattern is now reusable across all
-            zero-data surfaces.
+            Note: the empty-state pattern is now reusable across all zero-data
+            surfaces.
           </blockquote>
         </article>
       </CardContent>

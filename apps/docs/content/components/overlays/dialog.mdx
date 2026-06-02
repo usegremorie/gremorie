@@ -1,9 +1,9 @@
 ---
 title: Dialog
-description: "Modal overlay anchored at viewport center, built on Radix Dialog with header, footer, and built-in close button."
+description: 'Modal overlay anchored at viewport center, built on Radix Dialog with header, footer, and built-in close button.'
 ---
 
-import { DialogPreview } from "@/components/preview/overlays/overlays";
+import { DialogPreview } from '@/components/preview/overlays/overlays';
 
 ## Overview
 
@@ -20,26 +20,10 @@ The close button is on by default. Set `showCloseButton={false}` when the dialog
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-dialog
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-dialog
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-dialog
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-dialog
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-dialog ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-dialog ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-dialog ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-dialog ```</Tab>
 </Tabs>
 
 ## Usage
@@ -95,12 +79,12 @@ Angular edition planned for Phase 5h. Star the repo to track progress.
 
 ### `<Dialog>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `open` | `boolean` | - | Controlled open state. |
-| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
-| `onOpenChange` | `(open: boolean) => void` | - | Fired when open state changes. |
-| `modal` | `boolean` | `true` | Disable outside interaction while open. |
+| Prop           | Type                      | Default | Description                             |
+| -------------- | ------------------------- | ------- | --------------------------------------- |
+| `open`         | `boolean`                 | -       | Controlled open state.                  |
+| `defaultOpen`  | `boolean`                 | `false` | Initial open state when uncontrolled.   |
+| `onOpenChange` | `(open: boolean) => void` | -       | Fired when open state changes.          |
+| `modal`        | `boolean`                 | `true`  | Disable outside interaction while open. |
 
 Extends Radix `Dialog.Root`. Renders no DOM by itself.
 
@@ -110,9 +94,9 @@ Extends Radix `Dialog.Trigger`. Pair with `asChild` to forward styles to a `Butt
 
 ### `<DialogContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `showCloseButton` | `boolean` | `true` | Renders the top-right X close button. Disable when supplying a custom dismiss. |
+| Prop              | Type      | Default | Description                                                                    |
+| ----------------- | --------- | ------- | ------------------------------------------------------------------------------ |
+| `showCloseButton` | `boolean` | `true`  | Renders the top-right X close button. Disable when supplying a custom dismiss. |
 
 Wraps Radix `Dialog.Content` inside a Portal with the overlay. Centered at 50/50, capped at `sm:max-w-lg`, animated open/close.
 

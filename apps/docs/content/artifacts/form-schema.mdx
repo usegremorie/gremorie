@@ -1,6 +1,6 @@
 ---
 title: Form (schema)
-description: "Form artifact generated from a JSON Schema of fields, with validation and submit."
+description: 'Form artifact generated from a JSON Schema of fields, with validation and submit.'
 ---
 
 ## Overview
@@ -97,9 +97,9 @@ Sample prompts that produce valid output for this artifact:
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Badge,
   Card,
@@ -107,8 +107,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@gremorie/rx-display";
-import { Button, Checkbox, Input, Label } from "@gremorie/rx-forms";
+} from '@gremorie/rx-display';
+import { Button, Checkbox, Input, Label } from '@gremorie/rx-forms';
 
 export function FormSchema() {
   const [submitted, setSubmitted] = useState(false);
@@ -149,7 +149,7 @@ export function FormSchema() {
             </Label>
           </div>
           <Button type="submit" className="w-full">
-            {submitted ? "Sent!" : "Submit"}
+            {submitted ? 'Sent!' : 'Submit'}
           </Button>
         </form>
       </CardContent>
@@ -173,8 +173,8 @@ export function FormSchema() {
 ## Streaming behavior
 
 <Callout type="info">
-  This artifact renders after the field schema parses. Fields appear
-  all at once to preserve form layout; partial parses are buffered.
+  This artifact renders after the field schema parses. Fields appear all at once
+  to preserve form layout; partial parses are buffered.
 </Callout>
 
 ## Related

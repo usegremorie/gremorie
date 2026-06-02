@@ -2,18 +2,22 @@
 title: Reasoning
 description: Surface colapsável de "pensamento" do modelo — auto-abre durante streaming, fecha quando termina.
 component: Reasoning
-importPath: "@kalvner/kds/ai/reasoning"
+importPath: '@kalvner/kds/ai/reasoning'
 status: stable
 ---
 
-import { ReasoningPreview, ReasoningStreamingPreview, ReasoningExpandedPreview } from "@/components/ai-chatbot-demos";
+import {
+  ReasoningPreview,
+  ReasoningStreamingPreview,
+  ReasoningExpandedPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -31,7 +35,9 @@ o1, etc) ou qualquer agente que separe planning de execution.
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Reasoning collapsado — clique pra ver o pensamento.</CardDescription>
+    <CardDescription>
+      Reasoning collapsado — clique pra ver o pensamento.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <ReasoningPreview />
@@ -51,9 +57,13 @@ o1, etc) ou qualquer agente que separe planning de execution.
 ## Usage
 
 ```tsx
-"use client";
+'use client';
 
-import { Reasoning, ReasoningContent, ReasoningTrigger } from "@kalvner/kds/ai/reasoning";
+import {
+  Reasoning,
+  ReasoningContent,
+  ReasoningTrigger,
+} from '@kalvner/kds/ai/reasoning';
 
 export function ThinkingBlock({ thoughts, isStreaming }) {
   return (
@@ -69,32 +79,32 @@ export function ThinkingBlock({ thoughts, isStreaming }) {
 
 ### Reasoning (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `isStreaming` | `boolean` | `false` | Quando `true`, força `open=true` automaticamente. Quando muda pra `false`, fecha (a menos que o user tenha clicado pra abrir manualmente). |
-| `open` / `defaultOpen` | `boolean` | — | Controle externo (override do auto-behavior). |
-| `onOpenChange` | `(open: boolean) => void` | — | Callback quando o user clica trigger. |
-| `duration` | `number` | `1` | Segundos para a animação de "pensando" no trigger. |
-| `className` | `string` | — | Override. |
+| Prop                   | Tipo                      | Default | Descrição                                                                                                                                  |
+| ---------------------- | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `isStreaming`          | `boolean`                 | `false` | Quando `true`, força `open=true` automaticamente. Quando muda pra `false`, fecha (a menos que o user tenha clicado pra abrir manualmente). |
+| `open` / `defaultOpen` | `boolean`                 | —       | Controle externo (override do auto-behavior).                                                                                              |
+| `onOpenChange`         | `(open: boolean) => void` | —       | Callback quando o user clica trigger.                                                                                                      |
+| `duration`             | `number`                  | `1`     | Segundos para a animação de "pensando" no trigger.                                                                                         |
+| `className`            | `string`                  | —       | Override.                                                                                                                                  |
 
 Aceita os outros props de [Collapsible](../../ui/display/collapsible).
 
 ### ReasoningTrigger
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `title` | `string` | `'Reasoning'` (ou `'Thought for X seconds'` quando isStreaming muda) | Texto do header. |
-| `className` | `string` | — | Override. |
+| Prop        | Tipo     | Default                                                              | Descrição        |
+| ----------- | -------- | -------------------------------------------------------------------- | ---------------- |
+| `title`     | `string` | `'Reasoning'` (ou `'Thought for X seconds'` quando isStreaming muda) | Texto do header. |
+| `className` | `string` | —                                                                    | Override.        |
 
 Mostra `BrainIcon` + `title` + `ChevronDownIcon`. Durante streaming
 exibe duração; ao parar, mostra "Thought for Xs".
 
 ### ReasoningContent
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `children` | `string` | — | Markdown. Renderiza via Streamdown (memoizado). |
-| `className` | `string` | — | Override; padrão tem `text-muted-foreground` + animações de slide. |
+| Prop        | Tipo     | Default | Descrição                                                          |
+| ----------- | -------- | ------- | ------------------------------------------------------------------ |
+| `children`  | `string` | —       | Markdown. Renderiza via Streamdown (memoizado).                    |
+| `className` | `string` | —       | Override; padrão tem `text-muted-foreground` + animações de slide. |
 
 ## Subcomponents
 
@@ -112,22 +122,22 @@ Hook retorna `{ isStreaming: boolean }`. Use pra montar triggers
 custom (ex.: trigger que mostra avatar do modelo durante thinking):
 
 ```tsx
-import { useReasoning } from "@kalvner/kds/ai/reasoning";
+import { useReasoning } from '@kalvner/kds/ai/reasoning';
 
 function CustomTrigger() {
   const { isStreaming } = useReasoning();
-  return <button>{isStreaming ? "🧠 thinking" : "Show reasoning"}</button>;
+  return <button>{isStreaming ? '🧠 thinking' : 'Show reasoning'}</button>;
 }
 ```
 
 ## States
 
-| State | Comportamento |
-|---|---|
-| `isStreaming=true` | Abre automaticamente, conteúdo aparece. Trigger mostra duration crescente. |
-| `isStreaming=false` (após streaming) | Fecha auto após pequeno delay; trigger mostra "Thought for Xs". |
-| `open` (controlado) | Override total — ignora isStreaming. |
-| User clica trigger | `onOpenChange` dispara; isStreaming já não controla. |
+| State                                | Comportamento                                                              |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `isStreaming=true`                   | Abre automaticamente, conteúdo aparece. Trigger mostra duration crescente. |
+| `isStreaming=false` (após streaming) | Fecha auto após pequeno delay; trigger mostra "Thought for Xs".            |
+| `open` (controlado)                  | Override total — ignora isStreaming.                                       |
+| User clica trigger                   | `onOpenChange` dispara; isStreaming já não controla.                       |
 
 ## Composition
 
@@ -136,7 +146,7 @@ function CustomTrigger() {
 ```tsx
 <Message from="assistant">
   <MessageContent>
-    <Reasoning isStreaming={status === "thinking"}>
+    <Reasoning isStreaming={status === 'thinking'}>
       <ReasoningTrigger />
       <ReasoningContent>{thinkingTokens}</ReasoningContent>
     </Reasoning>
@@ -179,13 +189,13 @@ function CustomTrigger() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Trigger é `<button>` com `aria-expanded`. Content é `<region>`. |
-| **Keyboard** | Space/Enter alterna o trigger. |
-| **Focus** | Trigger herda `focus-visible:ring-[3px]`. |
-| **Live region** | Content tem animação `slide-in/out` que respeita `prefers-reduced-motion`. |
-| **Screen reader** | Anuncia "expandido"/"recolhido" no toggle. |
+| Concern           | Comportamento                                                              |
+| ----------------- | -------------------------------------------------------------------------- |
+| **Roles**         | Trigger é `<button>` com `aria-expanded`. Content é `<region>`.            |
+| **Keyboard**      | Space/Enter alterna o trigger.                                             |
+| **Focus**         | Trigger herda `focus-visible:ring-[3px]`.                                  |
+| **Live region**   | Content tem animação `slide-in/out` que respeita `prefers-reduced-motion`. |
+| **Screen reader** | Anuncia "expandido"/"recolhido" no toggle.                                 |
 
 ## Related
 

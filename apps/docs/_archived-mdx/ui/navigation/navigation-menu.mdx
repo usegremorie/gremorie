@@ -2,7 +2,7 @@
 title: NavigationMenu
 description: Header primário de marketing com painéis ricos — padrão Vercel/Stripe.
 component: NavigationMenu
-importPath: "@kalvner/kds/navigation/navigation-menu"
+importPath: '@kalvner/kds/navigation/navigation-menu'
 status: stable
 ---
 
@@ -11,12 +11,12 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 import {
   NavigationMenuPreview,
-  NavigationMenuRichPanel
-} from "@/components/navigation-demos";
+  NavigationMenuRichPanel,
+} from '@/components/navigation-demos';
 
 ## Overview
 
@@ -67,17 +67,17 @@ com triggers.
 
 ## Subcomponents
 
-| Componente | Descrição |
-|---|---|
-| `NavigationMenu` | Raiz; aceita `viewport={false}` para ancorar painéis sob cada item. |
-| `NavigationMenuList` | `<ul>` horizontal dos triggers. |
-| `NavigationMenuItem` | `<li>` que abriga trigger + content. |
-| `NavigationMenuTrigger` | Botão que abre o painel; renderiza chevron de affordance. |
-| `NavigationMenuContent` | Painel que aparece sob o trigger ativo. |
-| `NavigationMenuLink` | Link — direto ou dentro de um painel. |
-| `NavigationMenuIndicator` | Setinha animada que segue o trigger ativo. |
-| `NavigationMenuViewport` | Container que renderiza o painel. |
-| `navigationMenuTriggerStyle` | Helper CVA — o mesmo estilo do trigger para links diretos. |
+| Componente                   | Descrição                                                           |
+| ---------------------------- | ------------------------------------------------------------------- |
+| `NavigationMenu`             | Raiz; aceita `viewport={false}` para ancorar painéis sob cada item. |
+| `NavigationMenuList`         | `<ul>` horizontal dos triggers.                                     |
+| `NavigationMenuItem`         | `<li>` que abriga trigger + content.                                |
+| `NavigationMenuTrigger`      | Botão que abre o painel; renderiza chevron de affordance.           |
+| `NavigationMenuContent`      | Painel que aparece sob o trigger ativo.                             |
+| `NavigationMenuLink`         | Link — direto ou dentro de um painel.                               |
+| `NavigationMenuIndicator`    | Setinha animada que segue o trigger ativo.                          |
+| `NavigationMenuViewport`     | Container que renderiza o painel.                                   |
+| `navigationMenuTriggerStyle` | Helper CVA — o mesmo estilo do trigger para links diretos.          |
 
 ## Usage
 
@@ -89,8 +89,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle
-} from "@kalvner/kds/navigation/navigation-menu";
+  navigationMenuTriggerStyle,
+} from '@kalvner/kds/navigation/navigation-menu';
 
 export function HeaderNav() {
   return (
@@ -103,7 +103,10 @@ export function HeaderNav() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/pricing">
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            href="/pricing"
+          >
             Pricing
           </NavigationMenuLink>
         </NavigationMenuItem>
@@ -118,7 +121,10 @@ export function HeaderNav() {
 <Card>
   <CardHeader>
     <CardTitle>Rich panel</CardTitle>
-    <CardDescription>Hero à esquerda + lista de links à direita — padrão "categorias do produto".</CardDescription>
+    <CardDescription>
+      Hero à esquerda + lista de links à direita — padrão "categorias do
+      produto".
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <NavigationMenuRichPanel />
@@ -156,12 +162,12 @@ export function HeaderNav() {
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | Radix aplica `role="menubar"` na lista, `role="menuitem"` nos triggers, e gerencia `aria-expanded`. |
-| **Keyboard** | Setas movem entre triggers; `Enter`/`Space` abre painel; `Esc` fecha; `Tab` saindo do painel mantém ordem. |
-| **Focus** | Foco entra no painel quando aberto; `Esc` retorna ao trigger. |
-| **Screen reader** | Triggers anunciados como "Products, expanded/collapsed, menu". |
+| Concern           | Comportamento                                                                                              |
+| ----------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Roles**         | Radix aplica `role="menubar"` na lista, `role="menuitem"` nos triggers, e gerencia `aria-expanded`.        |
+| **Keyboard**      | Setas movem entre triggers; `Enter`/`Space` abre painel; `Esc` fecha; `Tab` saindo do painel mantém ordem. |
+| **Focus**         | Foco entra no painel quando aberto; `Esc` retorna ao trigger.                                              |
+| **Screen reader** | Triggers anunciados como "Products, expanded/collapsed, menu".                                             |
 
 ## Related
 

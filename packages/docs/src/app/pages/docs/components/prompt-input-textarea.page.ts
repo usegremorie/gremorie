@@ -3,11 +3,22 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DocsApiTable, ApiRow } from '../../../shared/api-table.component';
 import { DocsCodeBlock } from '../../../shared/code-block.component';
 import { DocsLayout } from '../../../shared/doc-layout.component';
-import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.component';
+import {
+  DocsPage,
+  DocsSection,
+  DocsProse,
+} from '../../../shared/doc-page.component';
 
 @Component({
   selector: 'docs-prompt-input-textarea',
-  imports: [DocsLayout, DocsPage, DocsSection, DocsProse, DocsCodeBlock, DocsApiTable],
+  imports: [
+    DocsLayout,
+    DocsPage,
+    DocsSection,
+    DocsProse,
+    DocsCodeBlock,
+    DocsApiTable,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <docs-layout>
@@ -31,10 +42,19 @@ import { DocsPage, DocsSection, DocsProse } from '../../../shared/doc-page.compo
         <docs-section title="Accessibility" anchor="a11y">
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
-              <li>Renders a native <code>&lt;textarea&gt;</code> with <code>aria-multiline="true"</code></li>
-              <li><code>aria-disabled</code> mirrors parent's <code>disabled</code></li>
+              <li>
+                Renders a native <code>&lt;textarea&gt;</code> with
+                <code>aria-multiline="true"</code>
+              </li>
+              <li>
+                <code>aria-disabled</code> mirrors parent's
+                <code>disabled</code>
+              </li>
               <li><code>data-state</code> attribute exposes parent state</li>
-              <li>Automatically disables while parent is in <code>submitted</code> state</li>
+              <li>
+                Automatically disables while parent is in
+                <code>submitted</code> state
+              </li>
             </ul>
           </docs-prose>
         </docs-section>
@@ -52,15 +72,44 @@ export default class PromptInputTextareaPage {
 </prompt-input>`;
 
   protected readonly inputs: readonly ApiRow[] = [
-    { name: 'placeholder', type: 'string', default: "'Ask anything…'", description: 'Native placeholder text.' },
-    { name: 'rows', type: 'number', default: '1', description: 'Initial row count.' },
-    { name: 'maxLength', type: 'number | null', default: 'null', description: 'Hard cap on character count.' },
-    { name: 'maxHeightPx', type: 'number', default: '192', description: 'Maximum height before scroll. 12rem default.' },
-    { name: 'ariaLabel', type: 'string', default: "'Prompt'", description: 'aria-label for the textarea.' },
+    {
+      name: 'placeholder',
+      type: 'string',
+      default: "'Ask anything…'",
+      description: 'Native placeholder text.',
+    },
+    {
+      name: 'rows',
+      type: 'number',
+      default: '1',
+      description: 'Initial row count.',
+    },
+    {
+      name: 'maxLength',
+      type: 'number | null',
+      default: 'null',
+      description: 'Hard cap on character count.',
+    },
+    {
+      name: 'maxHeightPx',
+      type: 'number',
+      default: '192',
+      description: 'Maximum height before scroll. 12rem default.',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      default: "'Prompt'",
+      description: 'aria-label for the textarea.',
+    },
   ];
 
   protected readonly methods: readonly ApiRow[] = [
-    { name: 'focus()', type: '() => void', description: 'Focus the textarea programmatically.' },
+    {
+      name: 'focus()',
+      type: '() => void',
+      description: 'Focus the textarea programmatically.',
+    },
     { name: 'blur()', type: '() => void', description: 'Blur the textarea.' },
   ];
 }

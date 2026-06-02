@@ -30,9 +30,7 @@ export const SOURCES = new InjectionToken<SourcesState>('SourcesState');
   host: {
     class: 'not-prose mb-4 text-primary text-xs block',
   },
-  providers: [
-    { provide: SOURCES, useExisting: forwardRef(() => Sources) },
-  ],
+  providers: [{ provide: SOURCES, useExisting: forwardRef(() => Sources) }],
 })
 export class Sources implements SourcesState {
   readonly open = model<boolean>(false);

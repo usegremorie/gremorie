@@ -1,6 +1,6 @@
 ---
 title: Data table
-description: "Filterable table artifact that renders JSON rows with sort and search."
+description: 'Filterable table artifact that renders JSON rows with sort and search.'
 ---
 
 ## Overview
@@ -91,9 +91,9 @@ Sample prompts that produce valid output for this artifact:
 <Tab value="React">
 
 ```tsx
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Badge,
   Card,
@@ -106,24 +106,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@gremorie/rx-display";
-import { Input } from "@gremorie/rx-forms";
-import { Search } from "lucide-react";
+} from '@gremorie/rx-display';
+import { Input } from '@gremorie/rx-forms';
+import { Search } from 'lucide-react';
 
 type Row = {
   id: string;
   name: string;
   role: string;
-  status: "Active" | "Invited" | "Suspended";
+  status: 'Active' | 'Invited' | 'Suspended';
 };
 
 const ROWS: Row[] = [
-  { id: "U-001", name: "Olivia Martin", role: "Owner", status: "Active" },
+  { id: 'U-001', name: 'Olivia Martin', role: 'Owner', status: 'Active' },
   // ...
 ];
 
 export function DataTable() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const filtered = ROWS.filter((r) =>
     r.name.toLowerCase().includes(query.toLowerCase()),
   );
@@ -192,9 +192,8 @@ export function DataTable() {
 ## Streaming behavior
 
 <Callout type="info">
-  This artifact renders after the JSON payload parses. Streaming row
-  appends are buffered and flushed in batches to avoid jank in long
-  result sets.
+  This artifact renders after the JSON payload parses. Streaming row appends are
+  buffered and flushed in batches to avoid jank in long result sets.
 </Callout>
 
 ## Related

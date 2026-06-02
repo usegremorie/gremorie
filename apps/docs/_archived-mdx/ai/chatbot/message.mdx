@@ -2,18 +2,23 @@
 title: Message
 description: Entrada individual do chat — user vs. assistant, com slots de actions, branching, anexos e response markdown.
 component: Message
-importPath: "@kalvner/kds/ai/message"
+importPath: '@kalvner/kds/ai/message'
 status: stable
 ---
 
-import { MessageAssistantPreview, MessageUserPreview, MessageMarkdownPreview, MessagePairPreview } from "@/components/ai-chatbot-demos";
+import {
+  MessageAssistantPreview,
+  MessageUserPreview,
+  MessageMarkdownPreview,
+  MessagePairPreview,
+} from '@/components/ai-chatbot-demos';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from "@kalvner/kds/display/card";
+  CardTitle,
+} from '@kalvner/kds/display/card';
 
 ## Overview
 
@@ -29,7 +34,9 @@ geração) e Attachments (anexos do user).
 <Card>
   <CardHeader>
     <CardTitle>Preview</CardTitle>
-    <CardDescription>Message do assistente — alinhada à esquerda, sem fundo.</CardDescription>
+    <CardDescription>
+      Message do assistente — alinhada à esquerda, sem fundo.
+    </CardDescription>
   </CardHeader>
   <CardContent>
     <MessageAssistantPreview />
@@ -58,65 +65,67 @@ geração) e Attachments (anexos do user).
 ## Usage
 
 ```tsx
-import { Message, MessageContent, MessageResponse } from "@kalvner/kds/ai/message";
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from '@kalvner/kds/ai/message';
 
 <Message from="assistant">
   <MessageContent>
-    <MessageResponse>
-      {markdownString /* streaming OK */}
-    </MessageResponse>
+    <MessageResponse>{markdownString /* streaming OK */}</MessageResponse>
   </MessageContent>
-</Message>
+</Message>;
 ```
 
 ## Props
 
 ### Message (Root)
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `from` | `'user' \| 'assistant' \| 'system' \| 'tool'` | — | Papel do remetente. Aplica `is-user`/`is-assistant` para variants CSS internos. |
-| `className` | `string` | — | Override do wrapper. |
+| Prop        | Tipo                                          | Default | Descrição                                                                       |
+| ----------- | --------------------------------------------- | ------- | ------------------------------------------------------------------------------- |
+| `from`      | `'user' \| 'assistant' \| 'system' \| 'tool'` | —       | Papel do remetente. Aplica `is-user`/`is-assistant` para variants CSS internos. |
+| `className` | `string`                                      | —       | Override do wrapper.                                                            |
 
 Aceita qualquer `HTMLAttributes<HTMLDivElement>` (id, role, etc).
 
 ### MessageContent
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `className` | `string` | — | Override do bubble. User: `bg-secondary px-4 py-3 rounded-lg`. Assistant: sem fundo. |
-| `children` | `ReactNode` | — | Texto, markdown ou MessageResponse. |
+| Prop        | Tipo        | Default | Descrição                                                                            |
+| ----------- | ----------- | ------- | ------------------------------------------------------------------------------------ |
+| `className` | `string`    | —       | Override do bubble. User: `bg-secondary px-4 py-3 rounded-lg`. Assistant: sem fundo. |
+| `children`  | `ReactNode` | —       | Texto, markdown ou MessageResponse.                                                  |
 
 ### MessageResponse
 
 Wrapper memoizado sobre [`Streamdown`](https://github.com/vercel/streamdown).
 Re-renderiza só quando `children` muda — eficiente em streams longos.
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `children` | `string` | — | Markdown source (parcial OK em stream). |
-| `className` | `string` | — | Override; `[&>*:first-child]:mt-0 [&>*:last-child]:mb-0` é o default (remove margem das pontas). |
+| Prop        | Tipo     | Default | Descrição                                                                                        |
+| ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------ |
+| `children`  | `string` | —       | Markdown source (parcial OK em stream).                                                          |
+| `className` | `string` | —       | Override; `[&>*:first-child]:mt-0 [&>*:last-child]:mb-0` é o default (remove margem das pontas). |
 
 Herda os outros props de `Streamdown` — `mode`, `parseMarkdownIntoBlocksFn`, etc.
 
 ### MessageActions · MessageAction
 
-| Prop | Tipo | Default | Descrição |
-|---|---|---|---|
-| `tooltip` (Action) | `string` | — | Texto do tooltip. |
-| `label` (Action) | `string` | — | Override do `aria-label`/sr-only (default: `tooltip`). |
-| `variant` (Action) | `ButtonVariant` | `'ghost'` | Visual. |
-| `size` (Action) | `ButtonSize` | `'icon-sm'` | Tamanho. |
+| Prop               | Tipo            | Default     | Descrição                                              |
+| ------------------ | --------------- | ----------- | ------------------------------------------------------ |
+| `tooltip` (Action) | `string`        | —           | Texto do tooltip.                                      |
+| `label` (Action)   | `string`        | —           | Override do `aria-label`/sr-only (default: `tooltip`). |
+| `variant` (Action) | `ButtonVariant` | `'ghost'`   | Visual.                                                |
+| `size` (Action)    | `ButtonSize`    | `'icon-sm'` | Tamanho.                                               |
 
 ### MessageBranch · branch nav
 
-| Componente | Função |
-|---|---|
-| `MessageBranch` | Provider — segura o estado `currentBranch`. Aceita `defaultBranch={0}` e `onBranchChange={(i) => ...}`. |
-| `MessageBranchContent` | Wrapper — cada filho direto vira uma branch. Mostra só o atual. |
-| `MessageBranchSelector` | Wrapper visual com `from` (alinha igual à Message). |
-| `MessageBranchPrevious` / `Next` | Setas de navegação. Se houver ≤1 branch, ficam disabled. |
-| `MessageBranchPage` | Indicador "1 of 3". |
+| Componente                       | Função                                                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `MessageBranch`                  | Provider — segura o estado `currentBranch`. Aceita `defaultBranch={0}` e `onBranchChange={(i) => ...}`. |
+| `MessageBranchContent`           | Wrapper — cada filho direto vira uma branch. Mostra só o atual.                                         |
+| `MessageBranchSelector`          | Wrapper visual com `from` (alinha igual à Message).                                                     |
+| `MessageBranchPrevious` / `Next` | Setas de navegação. Se houver ≤1 branch, ficam disabled.                                                |
+| `MessageBranchPage`              | Indicador "1 of 3".                                                                                     |
 
 ### MessageAttachments · MessageAttachment
 
@@ -124,10 +133,10 @@ Herda os outros props de `Streamdown` — `mode`, `parseMarkdownIntoBlocksFn`, e
 `onRemove?: () => void`. Detecta image vs. file pela `mediaType`.
 Hover mostra botão remove flutuante.
 
-| Prop (Attachment) | Tipo | Descrição |
-|---|---|---|
-| `data` | `FileUIPart` | `{ filename, mediaType, url }`. |
-| `onRemove` | `() => void` | Callback opcional — habilita o XIcon hover. |
+| Prop (Attachment) | Tipo         | Descrição                                   |
+| ----------------- | ------------ | ------------------------------------------- |
+| `data`            | `FileUIPart` | `{ filename, mediaType, url }`.             |
+| `onRemove`        | `() => void` | Callback opcional — habilita o XIcon hover. |
 
 ## Subcomponents
 
@@ -141,7 +150,7 @@ Hover mostra botão remove flutuante.
   bubble: copy, regenerate, thumbs up/down, etc. `tooltip` é
   obrigatório quando só ícone.
 - **`MessageToolbar`** — wrapper flex que hospeda `MessageActions`
-  + `MessageBranch*`.
+  - `MessageBranch*`.
 - **`MessageBranch*`** — navegação entre alternativas de geração
   (regenerate cria branches).
 - **`MessageAttachments`** + **`MessageAttachment`** — fileia
@@ -156,13 +165,13 @@ MessageContent.
 
 ## States
 
-| Estado | Como é refletido |
-|---|---|
+| Estado    | Como é refletido                                                        |
+| --------- | ----------------------------------------------------------------------- |
 | Streaming | `MessageResponse` re-renderiza eficientemente conforme `children` muda. |
-| Editado | Adicione MessageAction com tooltip "Editar" + ícone Pencil. |
-| Erro | Use [Alert](../../ui/feedback/alert) dentro do MessageContent. |
-| Tool-call | Coloque [Tool](./tool) dentro do MessageContent. |
-| Reasoning | Coloque [Reasoning](./reasoning) antes do texto principal. |
+| Editado   | Adicione MessageAction com tooltip "Editar" + ícone Pencil.             |
+| Erro      | Use [Alert](../../ui/feedback/alert) dentro do MessageContent.          |
+| Tool-call | Coloque [Tool](./tool) dentro do MessageContent.                        |
+| Reasoning | Coloque [Reasoning](./reasoning) antes do texto principal.              |
 
 ## Composition
 
@@ -171,7 +180,7 @@ MessageContent.
 ```tsx
 <Message from="assistant">
   <MessageContent>
-    <Reasoning isStreaming={status === "thinking"}>
+    <Reasoning isStreaming={status === 'thinking'}>
       <ReasoningTrigger />
       <ReasoningContent>{thoughtTokens}</ReasoningContent>
     </Reasoning>
@@ -179,8 +188,12 @@ MessageContent.
   </MessageContent>
   <MessageToolbar>
     <MessageActions>
-      <MessageAction tooltip="Copiar"><Copy /></MessageAction>
-      <MessageAction tooltip="Regerar"><RefreshCw /></MessageAction>
+      <MessageAction tooltip="Copiar">
+        <Copy />
+      </MessageAction>
+      <MessageAction tooltip="Regerar">
+        <RefreshCw />
+      </MessageAction>
     </MessageActions>
   </MessageToolbar>
 </Message>
@@ -228,13 +241,13 @@ MessageContent.
 
 ## Accessibility
 
-| Concern | Comportamento |
-|---|---|
-| **Roles** | `<Message>` é `<div>` neutro; herda do parent `Conversation` (`role="log"`). |
-| **Streaming** | `MessageResponse` é memoizado; updates não disparam announcements duplicados. |
-| **Branches** | `MessageBranchPrevious`/`Next` têm `aria-label` ("Previous branch" / "Next branch"). |
-| **Attachments** | `MessageAttachment` usa `<img alt={filename}>` — sempre pareie com filename. |
-| **Toolbar** | MessageAction com `tooltip` injeta `aria-label`/`<span class="sr-only">`. |
+| Concern         | Comportamento                                                                        |
+| --------------- | ------------------------------------------------------------------------------------ |
+| **Roles**       | `<Message>` é `<div>` neutro; herda do parent `Conversation` (`role="log"`).         |
+| **Streaming**   | `MessageResponse` é memoizado; updates não disparam announcements duplicados.        |
+| **Branches**    | `MessageBranchPrevious`/`Next` têm `aria-label` ("Previous branch" / "Next branch"). |
+| **Attachments** | `MessageAttachment` usa `<img alt={filename}>` — sempre pareie com filename.         |
+| **Toolbar**     | MessageAction com `tooltip` injeta `aria-label`/`<span class="sr-only">`.            |
 
 ## Related
 

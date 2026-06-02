@@ -14,26 +14,16 @@ All links open in a new tab with `rel="noopener"`.
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-<Tab value="npm">
-```bash
-npx gremorie@latest add rx-open-in-chat
-```
-</Tab>
-<Tab value="pnpm">
-```bash
-pnpm dlx gremorie@latest add rx-open-in-chat
-```
-</Tab>
-<Tab value="yarn">
-```bash
-yarn dlx gremorie@latest add rx-open-in-chat
-```
-</Tab>
-<Tab value="bun">
-```bash
-bunx --bun gremorie@latest add rx-open-in-chat
-```
-</Tab>
+  <Tab value="npm">```bash npx gremorie@latest add rx-open-in-chat ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-open-in-chat ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-open-in-chat ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-open-in-chat ```
+  </Tab>
 </Tabs>
 
 Brings in `rx-overlays` (for `DropdownMenu`) and `rx-forms` (for `Button`).
@@ -87,9 +77,9 @@ Angular edition planned for Phase 5h. Use the React edition for now, or open an 
 
 ### `<OpenIn>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `query` | `string` | - | **Required.** The text passed to each provider. ChatGPT receives it as a `prompt` param, Claude as `q`, Cursor as `text`, etc. |
+| Prop    | Type     | Default | Description                                                                                                                    |
+| ------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `query` | `string` | -       | **Required.** The text passed to each provider. ChatGPT receives it as a `prompt` param, Claude as `q`, Cursor as `text`, etc. |
 
 Extends all `DropdownMenu` props. Provides `OpenInContext` with `{ query }` to all descendants.
 
@@ -97,8 +87,8 @@ Extends all `DropdownMenu` props. Provides `OpenInContext` with `{ query }` to a
 
 Wraps `DropdownMenuTrigger` with `asChild`. When `children` is omitted, renders a default `Button variant="outline"` reading "Open in chat" with a chevron-down icon.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop       | Type        | Default        | Description                                                |
+| ---------- | ----------- | -------------- | ---------------------------------------------------------- |
 | `children` | `ReactNode` | default Button | Override the trigger entirely. Pass any clickable element. |
 
 ### `<OpenInContent>`
@@ -113,14 +103,14 @@ Pass-through wrappers around `DropdownMenuItem`, `DropdownMenuLabel`, and `Dropd
 
 Each exports a `DropdownMenuItem` rendering the brand icon, title and `ExternalLinkIcon`. All accept the same `DropdownMenuItem` props.
 
-| Component | URL pattern | Query param |
-|---|---|---|
-| `<OpenInChatGPT>` | `https://chatgpt.com/?hints=search&prompt=...` | `prompt` |
-| `<OpenInClaude>` | `https://claude.ai/new?q=...` | `q` |
-| `<OpenInT3>` | `https://t3.chat/new?q=...` | `q` |
-| `<OpenInScira>` | `https://scira.ai/?q=...` | `q` |
-| `<OpenInv0>` | `https://v0.app?q=...` | `q` |
-| `<OpenInCursor>` | `https://cursor.com/link/prompt?text=...` | `text` |
+| Component         | URL pattern                                    | Query param |
+| ----------------- | ---------------------------------------------- | ----------- |
+| `<OpenInChatGPT>` | `https://chatgpt.com/?hints=search&prompt=...` | `prompt`    |
+| `<OpenInClaude>`  | `https://claude.ai/new?q=...`                  | `q`         |
+| `<OpenInT3>`      | `https://t3.chat/new?q=...`                    | `q`         |
+| `<OpenInScira>`   | `https://scira.ai/?q=...`                      | `q`         |
+| `<OpenInv0>`      | `https://v0.app?q=...`                         | `q`         |
+| `<OpenInCursor>`  | `https://cursor.com/link/prompt?text=...`      | `text`      |
 
 GitHub is configured internally (`providers.github`) but there is no exported component for it - if you need a "Open in GitHub" item, compose it manually with `OpenInItem` and an `<a href>` pointing at your repo URL.
 
@@ -177,7 +167,7 @@ Lead with Cursor and v0 for technical audiences.
 Compose a custom destination using the bare `OpenInItem`.
 
 ```tsx
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon } from 'lucide-react';
 
 function OpenInPerplexity() {
   return (
