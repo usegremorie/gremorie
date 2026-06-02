@@ -36,7 +36,15 @@
     "changeset:version": "changeset version",
     "build:libs": "nx run-many -t build --projects=cli,ng-core,ng-ai,ng-containers,ng-data,ng-display,ng-feedback,angular,rx-core,rx-ai,rx-artifacts,rx-containers,rx-data,rx-display,rx-feedback,rx-forms,rx-navigation,rx-overlays,react",
     "release:dry": "npm run build:libs && node scripts/release.mjs --dry-run",
-    "release": "npm run build:libs && node scripts/release.mjs"
+    "release": "npm run build:libs && node scripts/release.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "eslint --fix --no-warn-ignored",
+      "prettier --write"
+    ],
+    "*.{json,md,mdx,css,html,yml,yaml}": "prettier --write"
   },
   "private": true,
   "devDependencies": {
@@ -88,8 +96,10 @@
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-playwright": "^1.6.2",
+    "husky": "^9.1.7",
     "jsdom": "^22.0.0",
     "jsonc-eslint-parser": "^2.1.0",
+    "lint-staged": "^17.0.7",
     "ng-packagr": "~21.2.0",
     "nx": "22.7.2",
     "prettier": "^3.8.1",
