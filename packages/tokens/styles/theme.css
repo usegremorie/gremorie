@@ -1,5 +1,5 @@
 /*
- * Gremorie NG - Two-tier token system
+ * Gremorie two-tier token system.
  *
  * Layer 1 (Primitives): raw palette, base radii
  * Layer 2 (Semantics):  what components consume
@@ -7,7 +7,17 @@
  * Components NEVER consume primitives directly.
  * Editing primitives = rebrand global.
  * Editing semantics inside .dark = remap dark mode.
+ *
+ * Named themes (opt-in via data-theme on the root element) live in themes/.
+ * They are imported here at the top because CSS requires @import before other
+ * rules; custom properties resolve at use time, so referencing primitives
+ * defined further down is fine. Dark mode keeps the existing `.dark` class.
  */
+@import './themes/claude.css';
+@import './themes/chatgpt.css';
+@import './themes/gemini.css';
+@import './themes/perplexity.css';
+@import './themes/mistral.css';
 
 @theme {
   /* ─── 1. PRIMITIVES ───────────────────────────────── */
@@ -567,5 +577,9 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--border);
+  }
+  body {
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-normal);
   }
 }
