@@ -17,7 +17,7 @@
   "files": [
     {
       "path": "src/lib/canvas/canvas.tsx",
-      "content": "import { Background, ReactFlow, type ReactFlowProps } from \"@xyflow/react\";\nimport type { ReactNode } from \"react\";\nimport \"@xyflow/react/dist/style.css\";\n\ntype CanvasProps = ReactFlowProps & {\n  children?: ReactNode;\n};\n\nexport const Canvas = ({ children, ...props }: CanvasProps) => (\n  <ReactFlow\n    deleteKeyCode={[\"Backspace\", \"Delete\"]}\n    fitView\n    panOnDrag={false}\n    panOnScroll\n    selectionOnDrag={true}\n    zoomOnDoubleClick={false}\n    {...props}\n  >\n    <Background bgColor=\"var(--sidebar)\" />\n    {children}\n  </ReactFlow>\n);\n",
+      "content": "import { Background, ReactFlow, type ReactFlowProps } from '@xyflow/react';\nimport type { ReactNode } from 'react';\nimport '@xyflow/react/dist/style.css';\n\ntype CanvasProps = ReactFlowProps & {\n  children?: ReactNode;\n};\n\nexport const Canvas = ({ children, ...props }: CanvasProps) => (\n  <ReactFlow\n    deleteKeyCode={['Backspace', 'Delete']}\n    fitView\n    panOnDrag={false}\n    panOnScroll\n    selectionOnDrag={true}\n    zoomOnDoubleClick={false}\n    {...props}\n  >\n    <Background bgColor=\"var(--sidebar)\" />\n    {children}\n  </ReactFlow>\n);\n",
       "type": "registry:component",
       "target": "src/components/gremorie/ai/canvas/canvas.tsx"
     }

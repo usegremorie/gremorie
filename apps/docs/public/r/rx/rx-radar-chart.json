@@ -5,14 +5,22 @@
   "framework": "rx",
   "title": "Radar Chart (React)",
   "description": "Styled radar chart - compare series across multiple axes that share a radial domain. Composes the rx-chart primitive with recharts.",
-  "categories": ["data", "charts"],
-  "dependencies": ["react"],
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "react"
+  ],
   "devDependencies": [],
-  "registryDependencies": ["rx-utils", "rx-chart"],
+  "registryDependencies": [
+    "rx-utils",
+    "rx-chart"
+  ],
   "files": [
     {
       "path": "src/lib/radar-chart/radar-chart.tsx",
-      "content": "\"use client\";\n\nimport { cn } from \"@gremorie/rx-core\";\nimport {\n  PolarAngleAxis,\n  PolarGrid,\n  Radar,\n  RadarChart as RechartsRadarChart,\n} from \"recharts\";\n\nimport {\n  ChartContainer,\n  ChartTooltip,\n  ChartTooltipContent,\n  type ChartConfig,\n} from \"../chart/chart\";\nimport type { ChartDatum } from \"../chart/types\";\n\nexport interface RadarChartProps {\n  /** Tabular rows — one spoke per row. */\n  data: readonly ChartDatum[];\n  /** Maps each value field to a label + color. One entry per series. */\n  config: ChartConfig;\n  /** Spoke (angle) field. */\n  xKey: string;\n  /** Grid shape. */\n  gridType?: \"polygon\" | \"circle\";\n  /** Hover tooltip. */\n  tooltip?: boolean;\n  className?: string;\n}\n\n/**\n * Radar chart — recharts + the shadcn `chart` primitives. One `<Radar>` per\n * `config` entry over a shared angular axis (`xKey`).\n *\n * @example\n * ```tsx\n * <RadarChart data={data} config={config} xKey=\"month\" />\n * ```\n */\nexport function RadarChart({\n  data,\n  config,\n  xKey,\n  gridType = \"polygon\",\n  tooltip = true,\n  className,\n}: RadarChartProps) {\n  const keys = Object.keys(config).filter((k) => k !== xKey);\n  const single = keys.length <= 1;\n\n  return (\n    <ChartContainer\n      config={config}\n      className={cn(\"mx-auto aspect-square max-h-[250px]\", className)}\n    >\n      <RechartsRadarChart data={data as ChartDatum[]}>\n        {tooltip ? (\n          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />\n        ) : null}\n        <PolarAngleAxis dataKey={xKey} />\n        <PolarGrid gridType={gridType} />\n        {keys.map((key) => (\n          <Radar\n            key={key}\n            dataKey={key}\n            fill={`var(--color-${key})`}\n            fillOpacity={single ? 0.6 : 0}\n            stroke={`var(--color-${key})`}\n            strokeWidth={single ? 0 : 2}\n          />\n        ))}\n      </RechartsRadarChart>\n    </ChartContainer>\n  );\n}\n",
+      "content": "'use client';\n\nimport { cn } from '@gremorie/rx-core';\nimport {\n  PolarAngleAxis,\n  PolarGrid,\n  Radar,\n  RadarChart as RechartsRadarChart,\n} from 'recharts';\n\nimport {\n  ChartContainer,\n  ChartTooltip,\n  ChartTooltipContent,\n  type ChartConfig,\n} from '../chart/chart';\nimport type { ChartDatum } from '../chart/types';\n\nexport interface RadarChartProps {\n  /** Tabular rows — one spoke per row. */\n  data: readonly ChartDatum[];\n  /** Maps each value field to a label + color. One entry per series. */\n  config: ChartConfig;\n  /** Spoke (angle) field. */\n  xKey: string;\n  /** Grid shape. */\n  gridType?: 'polygon' | 'circle';\n  /** Hover tooltip. */\n  tooltip?: boolean;\n  className?: string;\n}\n\n/**\n * Radar chart — recharts + the shadcn `chart` primitives. One `<Radar>` per\n * `config` entry over a shared angular axis (`xKey`).\n *\n * @example\n * ```tsx\n * <RadarChart data={data} config={config} xKey=\"month\" />\n * ```\n */\nexport function RadarChart({\n  data,\n  config,\n  xKey,\n  gridType = 'polygon',\n  tooltip = true,\n  className,\n}: RadarChartProps) {\n  const keys = Object.keys(config).filter((k) => k !== xKey);\n  const single = keys.length <= 1;\n\n  return (\n    <ChartContainer\n      config={config}\n      className={cn('mx-auto aspect-square max-h-[250px]', className)}\n    >\n      <RechartsRadarChart data={data as ChartDatum[]}>\n        {tooltip ? (\n          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />\n        ) : null}\n        <PolarAngleAxis dataKey={xKey} />\n        <PolarGrid gridType={gridType} />\n        {keys.map((key) => (\n          <Radar\n            key={key}\n            dataKey={key}\n            fill={`var(--color-${key})`}\n            fillOpacity={single ? 0.6 : 0}\n            stroke={`var(--color-${key})`}\n            strokeWidth={single ? 0 : 2}\n          />\n        ))}\n      </RechartsRadarChart>\n    </ChartContainer>\n  );\n}\n",
       "type": "registry:component",
       "target": "src/components/gremorie/data/radar-chart/radar-chart.tsx"
     }

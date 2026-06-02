@@ -19,7 +19,7 @@
   "files": [
     {
       "path": "src/lib/image/image.tsx",
-      "content": "/** biome-ignore-all lint/nursery/useImageSize: \"size will be handled by props\" */\n\nimport { cn } from \"@gremorie/rx-core\";\nimport type { Experimental_GeneratedImage } from \"ai\";\n\nexport type ImageProps = Experimental_GeneratedImage & {\n  className?: string;\n  alt?: string;\n};\n\nexport const Image = ({\n  base64,\n  uint8Array,\n  mediaType,\n  ...props\n}: ImageProps) => (\n  <img\n    {...props}\n    alt={props.alt}\n    className={cn(\n      \"h-auto max-w-full overflow-hidden rounded-md\",\n      props.className\n    )}\n    src={`data:${mediaType};base64,${base64}`}\n  />\n);\n",
+      "content": "/** biome-ignore-all lint/nursery/useImageSize: \"size will be handled by props\" */\n\nimport { cn } from '@gremorie/rx-core';\nimport type { Experimental_GeneratedImage } from 'ai';\n\nexport type ImageProps = Experimental_GeneratedImage & {\n  className?: string;\n  alt?: string;\n};\n\nexport const Image = ({\n  base64,\n  uint8Array,\n  mediaType,\n  ...props\n}: ImageProps) => (\n  <img\n    {...props}\n    alt={props.alt}\n    className={cn(\n      'h-auto max-w-full overflow-hidden rounded-md',\n      props.className,\n    )}\n    src={`data:${mediaType};base64,${base64}`}\n  />\n);\n",
       "type": "registry:component",
       "target": "src/components/gremorie/ai/image/image.tsx"
     }
