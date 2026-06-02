@@ -23,7 +23,7 @@
 @import 'tailwindcss';
 
 /* Tokens — primitives + semantics + light/dark + keyframes (source of truth). */
-@import '../../ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';
 
 /*
  * Generate every utility used by any component in @gremorie/react so the

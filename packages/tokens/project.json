@@ -1,0 +1,17 @@
+{
+  "name": "tokens",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/tokens/styles",
+  "projectType": "library",
+  "tags": ["scope:lib", "type:tokens"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/packages/tokens"],
+      "options": {
+        "command": "node -e \"const fs=require('fs');fs.cpSync('packages/tokens/styles','dist/packages/tokens/styles',{recursive:true});fs.copyFileSync('packages/tokens/package.json','dist/packages/tokens/package.json');fs.copyFileSync('packages/tokens/README.md','dist/packages/tokens/README.md')\""
+      }
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  }
+}

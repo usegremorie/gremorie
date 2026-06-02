@@ -3,6 +3,5 @@
   "dest": "../../dist/packages/ng-core",
   "lib": {
     "entryFile": "src/index.ts"
-  },
-  "assets": ["styles/theme.css"]
+  }
 }

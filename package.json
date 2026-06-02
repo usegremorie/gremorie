@@ -28,7 +28,7 @@
     "serve:playground": "nx serve playground",
     "serve:docs": "nx serve docs",
     "serve:docs-ng": "nx serve docs-ng",
-    "serve:tokens": "nx serve tokens",
+    "serve:tokens": "nx serve tokens-atlas",
     "storybook": "nx storybook ng-ai",
     "storybook:rx": "nx storybook rx-ai",
     "build-storybook": "nx build-storybook ng-ai",
