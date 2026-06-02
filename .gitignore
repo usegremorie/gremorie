@@ -65,6 +65,10 @@ __screenshots__/
 .playwright-mcp/
 .nog-screenshots/
 
+# Internal agent process docs (plans/specs) and stray screenshots
+docs/superpowers/
+/*.png
+
 # Stray TS compile output in src shadows .tsx in bundlers (Vite resolves .js first)
 packages/*/src/**/*.js
 packages/*/src/**/*.js.map
