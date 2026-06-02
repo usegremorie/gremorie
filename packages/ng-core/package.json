@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/ng-core",
   "version": "0.3.0",
-  "description": "ShadNG core — shared utilities, design tokens, and the Button primitive.",
+  "description": "Gremorie Angular core: shared utilities and the Button primitive. Design tokens live in @gremorie/tokens.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,8 +28,7 @@
     ".": {
       "types": "./index.d.ts",
       "import": "./fesm2022/ng-core.mjs"
-    },
-    "./theme.css": "./styles/theme.css"
+    }
   },
   "homepage": "https://gremorie.com",
   "publishConfig": {

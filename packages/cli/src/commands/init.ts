@@ -13,7 +13,7 @@ import {
   installCommand,
 } from '../lib/package-manager.js';
 
-const THEME_IMPORT_LINE = "@import '@gremorie/ng-core/theme.css';";
+const THEME_IMPORT_LINE = "@import '@gremorie/tokens/theme.css';";
 
 export interface InitOptions {
   dryRun?: boolean;
@@ -91,7 +91,10 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   } else {
     const stylesPath = join(cwd, ctx.rootStylesPath);
     const current = readFileSync(stylesPath, 'utf-8');
-    if (current.includes('@gremorie/ng-core/theme.css')) {
+    if (
+      current.includes('@gremorie/tokens/theme.css') ||
+      current.includes('@gremorie/ng-core/theme.css')
+    ) {
       console.log(
         kleur.green('✓'),
         kleur.dim(`Theme import already in ${ctx.rootStylesPath}.`),

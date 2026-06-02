@@ -5,10 +5,9 @@
  * `dist/styles/globals.css` — a flat, self-contained stylesheet. This is the
  * tokens entry point for category installs (e.g. `@gremorie/rx-forms` alone).
  *
- * It used to be a raw `@import "../../../ng-core/styles/theme.css"` — a
- * monorepo-relative path that 404'd in a consumer's node_modules AND, even
- * when resolved, left components unstyled because the host bundler doesn't
- * process `@theme` from node_modules. Pre-compiling fixes both:
+ * It imports the neutral token package and is compiled so the host bundler
+ * does not need to process `@theme` from node_modules (which would leave
+ * components unstyled). Pre-compiling ships the result either way:
  *
  *   @import "@gremorie/rx-core/styles/globals.css";
  *
@@ -19,7 +18,7 @@
  */
 
 @import 'tailwindcss';
-@import '../../ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';
 
 /* Every utility used by any React-edition component, so a category install is
    styled out of the box without the consumer configuring Tailwind @source. */
