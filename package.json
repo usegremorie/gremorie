@@ -7,6 +7,11 @@
     "type": "git",
     "url": "https://github.com/usegremorie/gremorie.git"
   },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
+  "packageManager": "npm@11.6.2",
   "scripts": {
     "build": "nx run-many -t build",
     "build:core": "nx build ng-core",
