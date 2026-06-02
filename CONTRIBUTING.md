@@ -1,6 +1,6 @@
 # Contributing to ShadNG
 
-Thanks for the interest. ShadNG is in early bootstrapping — APIs and structure are still moving.
+Thanks for the interest. ShadNG is in early bootstrapping, so APIs and structure are still moving.
 
 ## Ground rules
 
