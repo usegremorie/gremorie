@@ -41,31 +41,11 @@
   --color-red-900: oklch(39.6% 0.141 25.723);
   --color-red-950: oklch(25.8% 0.092 26.042);
 
-  /*
-   * Brand palette (Gremorie - violet).
-   * Gremorie = grimoire + memory + Goetic demon Gremory.
-   * Violet anchors the esoteric/mystic identity without going full fantasy.
-   * Used as ACCENT on the landing and select doc surfaces - NOT as primary,
-   * so the DS keeps gray-900 as neutral primary for dogfood symmetry.
-   * Hue ~270 (violet), moderate chroma. Step values follow Tailwind cadence.
-   */
-  --color-brand-50: oklch(0.97 0.02 295);
-  --color-brand-100: oklch(0.94 0.04 290);
-  --color-brand-200: oklch(0.87 0.08 285);
-  --color-brand-300: oklch(0.78 0.13 280);
-  --color-brand-400: oklch(0.68 0.18 275);
-  --color-brand-500: oklch(0.6 0.22 272);
-  --color-brand-600: oklch(0.52 0.24 270);
-  --color-brand-700: oklch(0.45 0.22 268);
-  --color-brand-800: oklch(0.38 0.18 266);
-  --color-brand-900: oklch(0.3 0.14 264);
-  --color-brand-950: oklch(0.22 0.1 262);
-
   /* ─── Tailwind v4 default palettes (full primitive set) ─────
    * Imported verbatim from tailwindcss/theme.css so the project
    * OWNS the raw palette instead of leaning on Tailwind defaults.
-   * gray (neutralized), red (custom) and brand (violet) above are
-   * the project's intentional overrides and are NOT duplicated here.
+   * gray (neutralized) and red (custom) above are the project's
+   * intentional overrides and are NOT duplicated here.
    * Consume via semantics/chart tokens - components never read
    * primitives directly. */
   --color-orange-50: oklch(98% 0.016 73.684);
@@ -396,18 +376,6 @@
   --success: oklch(0.65 0.18 145);
   --success-foreground: var(--color-gray-50);
 
-  /*
-   * Semantic brand tokens. Components and surfaces opt-in via these.
-   * --brand           : main brand surface (filled buttons, hero halo, accents)
-   * --brand-foreground: text on brand surface
-   * --brand-subtle    : tinted background for icon tiles, soft halos (~12% alpha)
-   * --brand-muted     : low-emphasis brand text/border
-   */
-  --brand: var(--color-brand-600);
-  --brand-foreground: var(--color-gray-50);
-  --brand-subtle: color-mix(in oklch, var(--color-brand-500) 12%, transparent);
-  --brand-muted: var(--color-brand-700);
-
   --border: var(--color-gray-200);
   --input: var(--color-gray-200);
   --ring: var(--color-gray-400);
@@ -448,15 +416,6 @@
 
   --success: oklch(0.7 0.18 145);
   --success-foreground: var(--color-gray-950);
-
-  /*
-   * Brand on dark: brighter hue so it pops on dark surfaces, subtle alpha
-   * tunes up because dark backgrounds eat ~30% of perceived chroma.
-   */
-  --brand: var(--color-brand-400);
-  --brand-foreground: var(--color-gray-950);
-  --brand-subtle: color-mix(in oklch, var(--color-brand-400) 18%, transparent);
-  --brand-muted: var(--color-brand-300);
 
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
@@ -540,10 +499,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-brand-subtle: var(--brand-subtle);
-  --color-brand-muted: var(--brand-muted);
 }
 
 /*
