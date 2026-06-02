@@ -1,1 +1,36 @@
-/* gemini theme (filled in Phase 3) */
+/*
+ * Gemini theme: indigo, rounder radius.
+ * Activate with data-theme="gemini" on the root element.
+ */
+[data-theme='gemini'] {
+  --primary: var(--color-indigo-600);
+  --primary-foreground: var(--color-gray-50);
+  --accent: var(--color-indigo-100);
+  --accent-foreground: var(--color-indigo-900);
+  --ring: var(--color-indigo-500);
+
+  --sidebar-primary: var(--color-indigo-600);
+  --sidebar-primary-foreground: var(--color-gray-50);
+  --sidebar-ring: var(--color-indigo-500);
+
+  --chart-1: var(--color-indigo-500);
+  --chart-2: var(--color-indigo-300);
+  --chart-3: var(--color-blue-500);
+  --chart-4: var(--color-sky-400);
+  --chart-5: var(--color-violet-400);
+
+  --radius-base: 1rem;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-theme='gemini'].dark {
+  --primary: var(--color-indigo-400);
+  --primary-foreground: var(--color-gray-950);
+  --accent: var(--color-indigo-900);
+  --accent-foreground: var(--color-indigo-50);
+  --ring: var(--color-indigo-400);
+
+  --sidebar-primary: var(--color-indigo-400);
+  --sidebar-primary-foreground: var(--color-gray-950);
+  --sidebar-ring: var(--color-indigo-400);
+}

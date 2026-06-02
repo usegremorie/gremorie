@@ -346,6 +346,20 @@
   --color-taupe-900: oklch(21.4% 0.009 43.1);
   --color-taupe-950: oklch(14.7% 0.004 49.3);
 
+  /* Clay: warm coral/terracotta, anchored on Claude's brand (~#D97757).
+     Used only by the Claude theme; tuned visually. */
+  --color-clay-50: oklch(0.97 0.012 50);
+  --color-clay-100: oklch(0.94 0.022 50);
+  --color-clay-200: oklch(0.88 0.04 49);
+  --color-clay-300: oklch(0.81 0.058 48);
+  --color-clay-400: oklch(0.74 0.075 48);
+  --color-clay-500: oklch(0.68 0.087 47);
+  --color-clay-600: oklch(0.61 0.09 46);
+  --color-clay-700: oklch(0.52 0.08 45);
+  --color-clay-800: oklch(0.43 0.065 44);
+  --color-clay-900: oklch(0.36 0.05 43);
+  --color-clay-950: oklch(0.26 0.035 42);
+
   /* Radii base */
   --radius-base: 0.625rem;
   --radius-sm: calc(var(--radius-base) * 0.6);
