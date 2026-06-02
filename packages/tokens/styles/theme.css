@@ -342,6 +342,13 @@
   --radius-md: calc(var(--radius-base) * 0.8);
   --radius-lg: var(--radius-base);
   --radius-xl: calc(var(--radius-base) * 1.4);
+
+  /* Typography, spacing, tracking (tweakcn contract). Themes may override. */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', monospace;
+  --spacing: 0.25rem;
+  --tracking-normal: 0em;
 }
 
 :root {
@@ -379,6 +386,31 @@
   --border: var(--color-gray-200);
   --input: var(--color-gray-200);
   --ring: var(--color-gray-400);
+
+  /* ─── Sidebar (shadcn/tweakcn) ───── */
+  --sidebar: var(--color-gray-50);
+  --sidebar-foreground: var(--color-gray-950);
+  --sidebar-primary: var(--color-gray-900);
+  --sidebar-primary-foreground: var(--color-gray-50);
+  --sidebar-accent: var(--color-gray-100);
+  --sidebar-accent-foreground: var(--color-gray-900);
+  --sidebar-border: var(--color-gray-200);
+  --sidebar-ring: var(--color-gray-400);
+
+  /* ─── Shadows (tweakcn contract; themes may override) ───── */
+  --shadow-2xs: 0 1px 2px 0 oklch(0 0 0 / 0.04);
+  --shadow-xs: 0 1px 3px 0 oklch(0 0 0 / 0.06);
+  --shadow-sm:
+    0 1px 3px 0 oklch(0 0 0 / 0.08), 0 1px 2px -1px oklch(0 0 0 / 0.08);
+  --shadow:
+    0 4px 6px -1px oklch(0 0 0 / 0.08), 0 2px 4px -2px oklch(0 0 0 / 0.08);
+  --shadow-md:
+    0 6px 10px -2px oklch(0 0 0 / 0.1), 0 2px 6px -2px oklch(0 0 0 / 0.08);
+  --shadow-lg:
+    0 12px 20px -4px oklch(0 0 0 / 0.1), 0 4px 8px -4px oklch(0 0 0 / 0.08);
+  --shadow-xl:
+    0 20px 28px -6px oklch(0 0 0 / 0.12), 0 8px 12px -6px oklch(0 0 0 / 0.1);
+  --shadow-2xl: 0 28px 56px -12px oklch(0 0 0 / 0.2);
 
   /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -420,6 +452,16 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: var(--color-gray-500);
+
+  /* Sidebar (dark) */
+  --sidebar: var(--color-gray-900);
+  --sidebar-foreground: var(--color-gray-50);
+  --sidebar-primary: var(--color-gray-100);
+  --sidebar-primary-foreground: var(--color-gray-900);
+  --sidebar-accent: var(--color-gray-800);
+  --sidebar-accent-foreground: var(--color-gray-50);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: var(--color-gray-500);
 
   /* Chart series (dark) */
   --chart-1: oklch(0.488 0.243 264.376);
@@ -499,6 +541,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 /*
