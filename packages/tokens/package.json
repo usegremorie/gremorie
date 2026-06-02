@@ -1,0 +1,34 @@
+{
+  "name": "@gremorie/tokens",
+  "version": "0.3.0",
+  "description": "Framework-free design tokens for Gremorie: primitives, semantics, and themes as plain CSS. Consumed by the React and Angular editions.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://gremorie.com",
+  "keywords": [
+    "design-tokens",
+    "css",
+    "theme",
+    "tailwind",
+    "gremorie"
+  ],
+  "type": "module",
+  "exports": {
+    "./theme.css": "./styles/theme.css",
+    "./themes/*": "./styles/themes/*"
+  },
+  "files": [
+    "styles",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}
