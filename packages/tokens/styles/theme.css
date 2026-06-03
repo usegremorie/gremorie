@@ -349,8 +349,9 @@
   /* Clay: warm coral/terracotta, anchored on Claude's brand color #D97757.
      The brand color IS clay-500 exactly; the rest of the ramp is derived from
      it (smooth lightness, chroma peaking mid and tapering at the ends, gamut
-     mapped to sRGB). clay-600 is the light-mode --primary, kept dark enough for
-     white text to pass WCAG AA (4.75:1). Used only by the Claude theme. */
+     mapped to sRGB). clay-500 (the brand) is the light-mode --primary, with a
+     white icon on the submit button (graphical 3:1); clay-400 is the dark-mode
+     --primary. Used only by the Claude theme. */
   --color-clay-50: oklch(0.971 0.013 44); /* #fef3ee */
   --color-clay-100: oklch(0.936 0.03 43); /* #fce4da */
   --color-clay-200: oklch(0.882 0.058 42); /* #fbccbb */
