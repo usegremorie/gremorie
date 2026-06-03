@@ -11,7 +11,7 @@
   --popover: oklch(0.99 0.006 85);
   --popover-foreground: var(--color-gray-950);
 
-  --primary: var(--color-clay-600);
+  --primary: var(--color-clay-500);
   --primary-foreground: var(--color-gray-50);
   --secondary: oklch(0.95 0.012 80);
   --secondary-foreground: var(--color-clay-900);
