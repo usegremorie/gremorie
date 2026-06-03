@@ -5,7 +5,11 @@
   "icon": "Component",
   "pages": [
     "index",
-    "ai",
+    "---AI---",
+    "chatbot",
+    "code",
+    "workflow",
+    "utilities",
     "---Inputs---",
     "forms",
     "---Layout & display---",

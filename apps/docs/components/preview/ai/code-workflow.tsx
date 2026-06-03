@@ -94,7 +94,7 @@ export function WebPreviewConsolePreview() {
           },
           {
             level: 'warn',
-            message: 'Slow render on /components/ai/canvas',
+            message: 'Slow render on /components/workflow/canvas',
             timestamp: new Date(),
           },
         ]}

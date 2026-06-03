@@ -72,6 +72,49 @@ const foundationsRedirects = [
   },
 ];
 
+/**
+ * 301 redirects from the legacy flat AI paths to the new category folders.
+ * The AI docs moved from /components/ai/<name> into the Chatbot, Code,
+ * Workflow and Utilities categories under the Components root.
+ */
+const aiCategoryMap = {
+  'prompt-input': 'chatbot',
+  message: 'chatbot',
+  conversation: 'chatbot',
+  reasoning: 'chatbot',
+  'chain-of-thought': 'chatbot',
+  task: 'chatbot',
+  tool: 'chatbot',
+  sources: 'chatbot',
+  'inline-citation': 'chatbot',
+  plan: 'chatbot',
+  checkpoint: 'chatbot',
+  confirmation: 'chatbot',
+  context: 'chatbot',
+  queue: 'chatbot',
+  suggestion: 'chatbot',
+  shimmer: 'chatbot',
+  'model-selector': 'chatbot',
+  artifact: 'code',
+  'code-block': 'code',
+  'web-preview': 'code',
+  canvas: 'workflow',
+  node: 'workflow',
+  edge: 'workflow',
+  connection: 'workflow',
+  controls: 'workflow',
+  panel: 'workflow',
+  toolbar: 'workflow',
+  image: 'utilities',
+  'open-in-chat': 'utilities',
+};
+
+const aiRedirects = Object.entries(aiCategoryMap).map(([name, category]) => ({
+  source: `/components/ai/${name}`,
+  destination: `/components/${category}/${name}`,
+  permanent: true,
+}));
+
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -87,7 +130,7 @@ const config = {
     '@gremorie/rx-overlays',
   ],
   async redirects() {
-    return foundationsRedirects;
+    return [...foundationsRedirects, ...aiRedirects];
   },
 };
 
