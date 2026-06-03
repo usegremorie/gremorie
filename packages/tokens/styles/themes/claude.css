@@ -2,7 +2,7 @@
  * Claude theme: warm clay (coral terracotta) on cream surfaces, serif display.
  * Activate with data-theme="claude" on the root element.
  */
-[data-theme='claude'] {
+:root[data-theme='claude'] {
   /* Warm cream surfaces instead of pure neutral. */
   --background: oklch(0.98 0.008 85);
   --foreground: var(--color-gray-950);
@@ -43,7 +43,7 @@
   --font-serif: 'Tiempos Headline', Georgia, 'Times New Roman', serif;
 }
 
-[data-theme='claude'].dark {
+:root[data-theme='claude'].dark {
   --background: oklch(0.2 0.01 60);
   --foreground: var(--color-gray-50);
   --card: oklch(0.24 0.012 60);

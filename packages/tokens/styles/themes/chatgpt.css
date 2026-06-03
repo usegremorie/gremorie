@@ -2,7 +2,7 @@
  * ChatGPT theme: emerald accent on a flat, low-shadow surface.
  * Activate with data-theme="chatgpt" on the root element.
  */
-[data-theme='chatgpt'] {
+:root[data-theme='chatgpt'] {
   --primary: var(--color-emerald-600);
   --primary-foreground: var(--color-gray-50);
   --accent: var(--color-emerald-100);
@@ -29,7 +29,7 @@
   --shadow-lg: 0 4px 8px 0 oklch(0 0 0 / 0.06);
 }
 
-[data-theme='chatgpt'].dark {
+:root[data-theme='chatgpt'].dark {
   --primary: var(--color-emerald-400);
   --primary-foreground: var(--color-gray-950);
   --accent: var(--color-emerald-900);
