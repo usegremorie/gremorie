@@ -95,19 +95,3 @@ export const Default: Story = {
     </OpenIn>
   ),
 };
-
-/** A focused subset — just the chat assistants. */
-export const ChatProvidersOnly: Story = {
-  args: { query: SAMPLE_QUERY, defaultOpen: true },
-  render: (args) => (
-    <OpenIn {...args}>
-      <OpenInTrigger />
-      <OpenInContent>
-        <OpenInChatGPT />
-        <OpenInClaude />
-        <OpenInT3 />
-        <OpenInScira />
-      </OpenInContent>
-    </OpenIn>
-  ),
-};
