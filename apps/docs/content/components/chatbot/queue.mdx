@@ -1,0 +1,242 @@
+---
+title: Queue
+description: Pending message queue list, shown above the prompt input, with optional collapsible sections for todos and queued turns.
+---
+
+import {
+  QueuePreview,
+  QueueSectionedPreview,
+} from '@/components/preview/ai/chatbot-rest';
+
+## Overview
+
+`Queue` is the dock that surfaces what the assistant has lined up. It renders a vertical list of items (queued user turns, pending todos, attached files) above the prompt input, with optional collapsible sections to group them by status.
+
+Use it when the user has fired multiple prompts in a row, when the agent is mid-task with a known list of remaining steps, or when files are staged for the next turn.
+
+## Preview
+
+### Default
+
+<div className="rounded-lg border p-6 not-prose">
+  <QueuePreview />
+</div>
+
+### Sectioned
+
+<div className="rounded-lg border p-6 not-prose">
+  <QueueSectionedPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-queue ```</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Queue,
+  QueueList,
+  QueueItem,
+  QueueItemIndicator,
+  QueueItemContent,
+} from "@gremorie/rx-ai";
+
+export function Example({ todos }) {
+  return (
+    <Queue>
+      <QueueList>
+        {todos.map((todo) => (
+          <QueueItem key={todo.id}>
+            <QueueItemIndicator completed={todo.status === "completed"} />
+            <QueueItemContent completed={todo.status === "completed"}>
+              {todo.title}
+            </QueueItemContent>
+          </QueueItem>
+        ))}
+      </QueueList>
+    </Queue>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Queue>`
+
+Outer card surface. Rounded border + light shadow. Extends `ComponentProps<"div">`.
+
+### `<QueueList>`
+
+`ScrollArea` capped at `max-h-40`. Wraps children in `<ul>`. Extends `ComponentProps<typeof ScrollArea>`.
+
+### `<QueueItem>`
+
+`<li>` with hover background. Extends `ComponentProps<"li">`.
+
+### `<QueueItemIndicator>`
+
+| Prop        | Type      | Default | Description                                       |
+| ----------- | --------- | ------- | ------------------------------------------------- |
+| `completed` | `boolean` | `false` | When true, the dot fills with a muted background. |
+
+Small status dot.
+
+### `<QueueItemContent>` / `<QueueItemDescription>`
+
+| Prop        | Type      | Default | Description                                     |
+| ----------- | --------- | ------- | ----------------------------------------------- |
+| `completed` | `boolean` | `false` | When true, applies muted color + strikethrough. |
+
+`QueueItemContent` is the primary line (truncated to 1 line). `QueueItemDescription` adds a sub-line.
+
+### `<QueueItemActions>` / `<QueueItemAction>`
+
+Hover-reveal action row. `QueueItemAction` extends a ghost icon `Button` with opacity transition.
+
+### `<QueueItemAttachment>` / `<QueueItemImage>` / `<QueueItemFile>`
+
+Attachment row inside an item. `QueueItemImage` is a 32x32 thumbnail; `QueueItemFile` is a paperclip badge with truncated filename.
+
+### Sectioned API
+
+For sectioned queues:
+
+| Component             | Role                                                                                  |
+| --------------------- | ------------------------------------------------------------------------------------- |
+| `QueueSection`        | `Collapsible` container, `defaultOpen` true.                                          |
+| `QueueSectionTrigger` | Section header (a `button` that toggles).                                             |
+| `QueueSectionLabel`   | Inside the trigger - chevron + icon + count + label. Props: `count`, `label`, `icon`. |
+| `QueueSectionContent` | The expanded body.                                                                    |
+
+### Types
+
+`QueueMessage`, `QueueMessagePart`, `QueueTodo` are exported as type helpers.
+
+## Composition
+
+1. **`<Queue>`** is the outer card.
+2. **`<QueueList>`** wraps a scrollable `<ul>`.
+3. **`<QueueItem>`** is one entry, with `<QueueItemIndicator>` + `<QueueItemContent>` (+ optional description, actions, attachments).
+4. **`<QueueSection>` + `<QueueSectionTrigger>` + `<QueueSectionLabel>` + `<QueueSectionContent>`** group items into collapsible groups (e.g. "Pending", "Completed").
+
+## Variations
+
+### Todo list
+
+The most common case: a flat list of pending and completed todos with strikethrough on completion.
+
+```tsx
+<Queue>
+  <QueueList>
+    {todos.map((todo) => (
+      <QueueItem key={todo.id}>
+        <QueueItemIndicator completed={todo.status === 'completed'} />
+        <QueueItemContent completed={todo.status === 'completed'}>
+          {todo.title}
+        </QueueItemContent>
+        {todo.description ? (
+          <QueueItemDescription completed={todo.status === 'completed'}>
+            {todo.description}
+          </QueueItemDescription>
+        ) : null}
+      </QueueItem>
+    ))}
+  </QueueList>
+</Queue>
+```
+
+### Sectioned by status
+
+Group todos into a "Pending" and "Completed" section, collapsible independently.
+
+```tsx
+<Queue>
+  <QueueSection>
+    <QueueSectionTrigger>
+      <QueueSectionLabel
+        count={pending.length}
+        label="pending"
+        icon={<CircleIcon className="size-3.5" />}
+      />
+    </QueueSectionTrigger>
+    <QueueSectionContent>
+      <QueueList>
+        {pending.map((t) => (
+          <QueueItem key={t.id}>
+            <QueueItemIndicator />
+            <QueueItemContent>{t.title}</QueueItemContent>
+          </QueueItem>
+        ))}
+      </QueueList>
+    </QueueSectionContent>
+  </QueueSection>
+  <QueueSection defaultOpen={false}>
+    <QueueSectionTrigger>
+      <QueueSectionLabel
+        count={completed.length}
+        label="completed"
+        icon={<CheckIcon className="size-3.5" />}
+      />
+    </QueueSectionTrigger>
+    <QueueSectionContent>
+      <QueueList>
+        {completed.map((t) => (
+          <QueueItem key={t.id}>
+            <QueueItemIndicator completed />
+            <QueueItemContent completed>{t.title}</QueueItemContent>
+          </QueueItem>
+        ))}
+      </QueueList>
+    </QueueSectionContent>
+  </QueueSection>
+</Queue>
+```
+
+### Queue with attachments and hover actions
+
+Stage files alongside the queued message; reveal Delete on hover.
+
+```tsx
+<QueueItem>
+  <QueueItemIndicator />
+  <QueueItemContent>Summarize the attached docs</QueueItemContent>
+  <QueueItemAttachment>
+    <QueueItemImage src="/screenshots/a.png" />
+    <QueueItemFile>specs.pdf</QueueItemFile>
+  </QueueItemAttachment>
+  <QueueItemActions>
+    <QueueItemAction onClick={remove} aria-label="Remove from queue">
+      <XIcon className="size-3" />
+    </QueueItemAction>
+  </QueueItemActions>
+</QueueItem>
+```
+
+## Accessibility
+
+- **Keyboard**: section triggers are real `<button>`s and toggle on Enter / Space. Item actions inherit `Button` keyboard behaviour.
+- **ARIA**: `QueueSection` (Radix Collapsible) wires `aria-expanded` / `aria-controls` on the trigger and `data-state` on the content.
+- **Screen readers**: `QueueItemIndicator` is decorative; the announcement comes from `QueueItemContent` (and `QueueItemDescription`). Provide `aria-label` on `QueueItemAction` for icon-only buttons.
+- **Focus management**: hover-only actions become focusable via Tab; the opacity transition is purely visual.
+
+## Related
+
+- [PromptInput](/components/chatbot/prompt-input) - sits below the queue
+- [Suggestion](/components/chatbot/suggestion) - quick-reply chips for the empty queue
+- [Task](/components/chatbot/task) - per-task breakdown when an item expands into sub-steps

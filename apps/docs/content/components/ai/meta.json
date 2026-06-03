@@ -1,7 +1,0 @@
-{
-  "title": "AI",
-  "icon": "Sparkles",
-  "description": "Chat, reasoning, tools, workflows and generative output: the components that make a product AI-native.",
-  "defaultOpen": true,
-  "pages": ["(chatbot)", "(code)", "(workflow)", "(utilities)"]
-}

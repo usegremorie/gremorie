@@ -1,0 +1,190 @@
+---
+title: Context
+description: Token usage indicator - circular progress trigger with a hover card breakdown of input, output, reasoning, cache and total cost.
+---
+
+import { ContextPreview } from '@/components/preview/ai/chatbot-rest';
+
+## Overview
+
+`Context` shows how much of the model's context window the current conversation has consumed. The trigger is a tiny circular gauge with the percentage; hovering reveals a card with token counts (input, output, reasoning, cache) and an estimated USD cost computed via `tokenlens`.
+
+Use it in the chat toolbar next to the prompt input so users can pace longer conversations and spot context-pressure before they hit the limit.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ContextPreview />
+</div>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-context ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-context ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-context ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-context ```</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Context,
+  ContextTrigger,
+  ContextContent,
+  ContextContentHeader,
+  ContextContentBody,
+  ContextContentFooter,
+  ContextInputUsage,
+  ContextOutputUsage,
+} from "@gremorie/rx-ai";
+
+export function Example({ usage }) {
+  return (
+    <Context
+      usedTokens={usage.totalTokens}
+      maxTokens={200_000}
+      usage={usage}
+      modelId="anthropic/claude-sonnet-4"
+    >
+      <ContextTrigger />
+      <ContextContent>
+        <ContextContentHeader />
+        <ContextContentBody>
+          <ContextInputUsage />
+          <ContextOutputUsage />
+        </ContextContentBody>
+        <ContextContentFooter />
+      </ContextContent>
+    </Context>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Context>`
+
+| Prop         | Type                 | Default | Description                                                                                    |
+| ------------ | -------------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `usedTokens` | `number`             | -       | Required. Total tokens consumed. Drives the percentage and progress bar.                       |
+| `maxTokens`  | `number`             | -       | Required. Model context window.                                                                |
+| `usage`      | `LanguageModelUsage` | -       | Optional AI SDK usage payload (input, output, reasoning, cached). Drives per-bucket breakdown. |
+| `modelId`    | `string`             | -       | Optional `tokenlens` model id used to compute costs.                                           |
+
+Extends `ComponentProps<typeof HoverCard>`.
+
+### `<ContextTrigger>`
+
+Renders a ghost `Button` with the percentage + a circular SVG gauge. Children override the default content. Forwards all `Button` props.
+
+### `<ContextContent>`
+
+Hover card body. Adds `min-w-60`, divides children with hairlines, removes default padding. Forwards `HoverCardContent` props.
+
+### `<ContextContentHeader>` / `<ContextContentBody>` / `<ContextContentFooter>`
+
+Three vertical regions:
+
+| Region | Default content                                                 |
+| ------ | --------------------------------------------------------------- |
+| Header | Percent + compact `used / total` tokens + `Progress` bar        |
+| Body   | Container for per-bucket usage rows                             |
+| Footer | Total cost in USD (via `tokenlens`) on a `bg-secondary` surface |
+
+All accept `children` to override the defaults.
+
+### Usage rows
+
+`<ContextInputUsage>`, `<ContextOutputUsage>`, `<ContextReasoningUsage>`, `<ContextCacheUsage>`
+
+Auto-hide when the corresponding usage bucket is zero. Render a label + token count + cost. Override with `children` for custom layouts.
+
+## Composition
+
+1. **`<Context>`** receives usage data and provides it via context to children.
+2. **`<ContextTrigger>`** is the toolbar pill (percentage + gauge).
+3. **`<ContextContent>`** is the hover card.
+4. Inside the content, **`<ContextContentHeader>`** shows the headline, **`<ContextContentBody>`** lists per-bucket rows, **`<ContextContentFooter>`** shows total cost.
+
+## Variations
+
+### Minimal trigger + auto-populated card
+
+The "happy path". Defaults give you everything: percent, total tokens, per-bucket rows, USD cost.
+
+```tsx
+<Context
+  usedTokens={usage.totalTokens}
+  maxTokens={200_000}
+  usage={usage}
+  modelId="anthropic/claude-sonnet-4"
+>
+  <ContextTrigger />
+  <ContextContent>
+    <ContextContentHeader />
+    <ContextContentBody>
+      <ContextInputUsage />
+      <ContextOutputUsage />
+      <ContextReasoningUsage />
+      <ContextCacheUsage />
+    </ContextContentBody>
+    <ContextContentFooter />
+  </ContextContent>
+</Context>
+```
+
+### Custom trigger label
+
+Replace the default percent + gauge with a custom label (e.g. raw token counts) for power users.
+
+```tsx
+<Context usedTokens={used} maxTokens={max}>
+  <ContextTrigger>
+    <Button variant="ghost">
+      <CircleIcon className="size-4" />
+      {used.toLocaleString()} / {max.toLocaleString()}
+    </Button>
+  </ContextTrigger>
+  <ContextContent>...</ContextContent>
+</Context>
+```
+
+### Free-tier (no cost footer)
+
+Drop `modelId` and `ContextContentFooter` to hide pricing on free or self-hosted models.
+
+```tsx
+<Context usedTokens={used} maxTokens={max} usage={usage}>
+  <ContextTrigger />
+  <ContextContent>
+    <ContextContentHeader />
+    <ContextContentBody>
+      <ContextInputUsage />
+      <ContextOutputUsage />
+    </ContextContentBody>
+  </ContextContent>
+</Context>
+```
+
+## Accessibility
+
+- **Keyboard**: the trigger is a real `Button` and the hover card opens on focus as well as hover (Radix default).
+- **ARIA**: the circular gauge SVG carries `role="img"` and `aria-label="Model context usage"`. The percentage is also rendered as live text, so screen readers do not depend on the gauge alone.
+- **Screen readers**: each row pairs a label (`Input`, `Output`, `Reasoning`, `Cache`) with token + cost values, so the breakdown reads naturally.
+- **Focus management**: hover card uses Radix focus trapping; pressing Esc returns focus to the trigger.
+
+## Related
+
+- [PromptInput](/components/chatbot/prompt-input) - the toolbar where `Context` typically lives
+- [ModelSelector](/components/chatbot/model-selector) - pair with `Context` to expose model + usage in one row

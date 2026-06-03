@@ -1,0 +1,186 @@
+---
+title: Node
+description: Card-based node primitive for Canvas. Wraps Gremorie Card with target / source xyflow Handles and a header / content / footer composition that matches the rest of the design system.
+---
+
+## Overview
+
+`Node` is the card-shaped vertex you place inside a `Canvas`. It composes a `Card` from `@gremorie/rx-display` with xyflow `Handle`s on the left (target) and right (source), then exposes the same `Header` / `Title` / `Description` / `Action` / `Content` / `Footer` composition as a regular `Card`.
+
+The wrapper customizes `Card` for the canvas context: removes default padding so handles align cleanly, narrows the width to `w-sm`, and skins the header and footer with a secondary surface so they read as distinct from the content body.
+
+Use it as the base for every custom node type. Pair with `Toolbar` for selection-anchored actions, `Edge` to connect nodes, and `Connection` for in-progress drags.
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-node ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-node ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-node ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-node ```</Tab>
+</Tabs>
+
+Brings in `rx-display` (for `Card`) as a registry dependency. Requires `@xyflow/react` as a peer.
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Node,
+  NodeAction,
+  NodeContent,
+  NodeDescription,
+  NodeFooter,
+  NodeHeader,
+  NodeTitle,
+} from "@gremorie/rx-ai";
+import { Button } from "@gremorie/rx-forms";
+import { PlayIcon } from "lucide-react";
+
+const AgentNode = (props) => (
+
+<Node {...props} handles={{ target: true, source: true }}>
+  <NodeHeader>
+    <NodeTitle>{props.data.name}</NodeTitle>
+    <NodeDescription>{props.data.model}</NodeDescription>
+    <NodeAction>
+      <Button size="icon" variant="ghost" aria-label="Run">
+        <PlayIcon className="size-4" />
+      </Button>
+    </NodeAction>
+  </NodeHeader>
+  <NodeContent>{props.data.prompt}</NodeContent>
+  <NodeFooter>{props.data.tokenCount} tokens</NodeFooter>
+</Node>
+);
+
+const nodeTypes = { agent: AgentNode };
+
+````
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. The workflow family is React-only for now. Use the React edition or open an issue to prioritize this primitive.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Node>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `handles` | `{ target: boolean; source: boolean }` | - | **Required.** Which sides of the node expose connection handles. `target` adds a left handle, `source` adds a right handle. |
+| `className` | `string` | - | Extra classes on the underlying `Card`. |
+
+Extends all `Card` props from `@gremorie/rx-display`. Renders the Card with `gap-0 rounded-md p-0` and the `node-container` class for canvas-level targeting. xyflow forwards selection / dragging props automatically when used inside a registered `nodeTypes` entry.
+
+### `<NodeHeader>`
+
+Border-bottom header with a secondary background and tight `p-3!` padding. Hosts the title, description and trailing action.
+
+Extends all `CardHeader` props.
+
+### `<NodeTitle>` / `<NodeDescription>` / `<NodeAction>`
+
+Pass-through wrappers around `CardTitle`, `CardDescription` and `CardAction`. Identical APIs - they exist so the visual identity stays consistent across editions and so consumers can swap implementations without touching every node type.
+
+### `<NodeContent>`
+
+Body slot with `p-3` padding. Extends all `CardContent` props.
+
+### `<NodeFooter>`
+
+Border-top footer with a secondary background and `p-3!` padding. Mirrors `NodeHeader`.
+
+Extends all `CardFooter` props.
+
+## Composition
+
+1. **Register the node type** on `Canvas` via the `nodeTypes` prop. The key (e.g. `"agent"`) is what edge data references as `type`.
+2. **Inside the node**, declare the `handles` config so xyflow knows where connections can land.
+3. **Compose with Header / Content / Footer** to match the rest of Gremorie. The secondary-toned header and footer create natural visual separation from the body.
+4. **Add a `Toolbar`** for selection-anchored actions (edit, delete, configure). For permanent actions inside the card, use `NodeAction` in the header instead.
+
+## Variations
+
+### Input-only node (entry point)
+
+Source handle only - no incoming connections.
+
+```tsx
+const StartNode = (props) => (
+  <Node {...props} handles={{ target: false, source: true }}>
+    <NodeContent>Start</NodeContent>
+  </Node>
+);
+````
+
+### Output-only node (terminal)
+
+Target handle only - no outgoing connections.
+
+```tsx
+const EndNode = (props) => (
+  <Node {...props} handles={{ target: true, source: false }}>
+    <NodeContent>End</NodeContent>
+  </Node>
+);
+```
+
+### Full card with header, action and footer
+
+A complete agent node with metadata in the header, prompt in the body, status in the footer and a run action.
+
+```tsx
+<Node {...props} handles={{ target: true, source: true }}>
+  <NodeHeader>
+    <NodeTitle>{props.data.name}</NodeTitle>
+    <NodeDescription>{props.data.model}</NodeDescription>
+    <NodeAction>
+      <Button size="icon" variant="ghost" aria-label="Run">
+        <PlayIcon className="size-4" />
+      </Button>
+    </NodeAction>
+  </NodeHeader>
+  <NodeContent>{props.data.prompt}</NodeContent>
+  <NodeFooter>{props.data.tokenCount} tokens</NodeFooter>
+</Node>
+```
+
+### Node with selection-anchored toolbar
+
+Combine with `Toolbar` for actions that only show up when the node is selected.
+
+```tsx
+<Node {...props} handles={{ target: true, source: true }}>
+  <Toolbar>
+    <Button size="icon" variant="ghost" aria-label="Edit">
+      <PencilIcon className="size-4" />
+    </Button>
+    <Button size="icon" variant="ghost" aria-label="Delete">
+      <TrashIcon className="size-4" />
+    </Button>
+  </Toolbar>
+  <NodeContent>{props.data.label}</NodeContent>
+</Node>
+```
+
+## Accessibility
+
+- **Keyboard**: xyflow handles node selection and arrow-key movement when the canvas has focus. Interactive children (`NodeAction`, `Toolbar` buttons) need their own `aria-label`s since they are typically icon-only.
+- **Semantics**: A `Node` renders as a `<div>` (via `Card`). When the node represents something semantically important (an agent, a tool), expose that role via `aria-label` on the `Card` itself or on `NodeTitle`.
+- **Handles**: xyflow's `Handle` is a small target circle without an accessible name. If your flow is meant to be navigated with assistive tech, supply `aria-label`s describing what kind of connection the handle accepts ("Accepts message input").
+- **Color contrast**: The secondary background on `NodeHeader` and `NodeFooter` clears 4.5:1 against the foreground token in both Gremorie themes. Re-verify if you customize tokens.
+- **Focus visible**: Do not strip the default xyflow focus ring on selected nodes - users on keyboard navigation rely on it.
+
+## Related
+
+- [Canvas](/components/workflow/canvas) - the surface where nodes live
+- [Edge](/components/workflow/edge) - the lines that connect node handles
+- [Connection](/components/workflow/connection) - the in-progress drag line between handles
+- [Toolbar](/components/workflow/toolbar) - selection-anchored action bar for a node
+- [Panel](/components/workflow/panel) - canvas-corner overlay for non-node-specific actions
