@@ -107,3 +107,20 @@ Caveat to hold onto: this table is a static diff. Static diffs miss runtime rend
 2. Execute in the spec priority order with executing-plans or subagent-driven-development, one commit per component (fix(rx-ai/<name>): reimport faithful AI Elements with project subcomponents).
 3. For every component, run nx build rx-ai and nx lint rx-ai, open the integrated story on port 4401, screenshot via Playwright, and only then mark it done.
 4. Finish with nx run-many -t lint build test --all and nx format:check --all, then open the PR fix/rx-ai-aielements-fidelity into develop.
+
+## Execution outcome (2026-06-02)
+
+All 26 components were reimported or verified faithful and screenshot validated in Storybook on port 4401. Several audit-agent findings turned out to be false positives once checked against the official registry source, and are recorded here so they are not re-chased:
+
+- open-in-chat: the official ships only 6 providers and no GitHub. The local providers.github stub was non official dead code and was removed (not implemented).
+- conversation: the official has exactly 4 exports. ConversationDownload and messagesToMarkdown do not exist in the official, so nothing was added.
+- edge: the official uses the exact same stroke-1 stroke-ring class and var(--primary) dot. No drift, no change.
+- node: byte identical to the official, including the props.children placement. No change.
+- checkpoint and image: the unused className and uint8Array are intentional destructures (exclude from the props spread), byte identical to the official. No change.
+- reasoning: faithful and renders well. The ref optimization is an intentional, working divergence; the Streamdown className spread matches the official. No change.
+
+Code changes (commits): prompt-input (faithful reimport, full barrel, one integrated story, and the footer must be a sibling of Body render fix), open-in-chat (removed the non official GitHub stub), message and toolbar and tool and suggestion (story consolidation into one integrated story with controls). Plus the lucide-react alignment chore and this audit table.
+
+Verified faithful with render screenshotted, no code change needed: context, inline-citation, queue, chain-of-thought, reasoning, model-selector, canvas, node, edge, connection, controls, panel, conversation, confirmation, plan, task, sources, checkpoint, shimmer, image.
+
+Cross cutting: GARANTIA 1 composition is clean across all 26 (no inline primitives). The one real render bug was prompt-input (footer nesting), which also affects the apps/docs examples (spun off as a separate follow up).
