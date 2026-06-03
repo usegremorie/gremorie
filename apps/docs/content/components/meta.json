@@ -5,7 +5,6 @@
   "icon": "Component",
   "pages": [
     "index",
-    "---AI---",
     "ai",
     "---Inputs---",
     "forms",
