@@ -346,19 +346,22 @@
   --color-taupe-900: oklch(21.4% 0.009 43.1);
   --color-taupe-950: oklch(14.7% 0.004 49.3);
 
-  /* Clay: warm coral/terracotta, anchored on Claude's brand (~#D97757).
-     Used only by the Claude theme; tuned visually. */
-  --color-clay-50: oklch(0.97 0.012 50);
-  --color-clay-100: oklch(0.94 0.022 50);
-  --color-clay-200: oklch(0.88 0.04 49);
-  --color-clay-300: oklch(0.81 0.058 48);
-  --color-clay-400: oklch(0.74 0.075 48);
-  --color-clay-500: oklch(0.68 0.087 47);
-  --color-clay-600: oklch(0.61 0.09 46);
-  --color-clay-700: oklch(0.52 0.08 45);
-  --color-clay-800: oklch(0.43 0.065 44);
-  --color-clay-900: oklch(0.36 0.05 43);
-  --color-clay-950: oklch(0.26 0.035 42);
+  /* Clay: warm coral/terracotta, anchored on Claude's brand color #D97757.
+     The brand color IS clay-500 exactly; the rest of the ramp is derived from
+     it (smooth lightness, chroma peaking mid and tapering at the ends, gamut
+     mapped to sRGB). clay-600 is the light-mode --primary, kept dark enough for
+     white text to pass WCAG AA (4.75:1). Used only by the Claude theme. */
+  --color-clay-50: oklch(0.971 0.013 44); /* #fef3ee */
+  --color-clay-100: oklch(0.936 0.03 43); /* #fce4da */
+  --color-clay-200: oklch(0.882 0.058 42); /* #fbccbb */
+  --color-clay-300: oklch(0.815 0.09 41); /* #f5af96 */
+  --color-clay-400: oklch(0.745 0.118 40); /* #ec9272 */
+  --color-clay-500: oklch(0.672 0.131 38.76); /* #d97757 brand */
+  --color-clay-600: oklch(0.57 0.135 38); /* #b85637 */
+  --color-clay-700: oklch(0.5 0.118 36); /* #9a4730 */
+  --color-clay-800: oklch(0.43 0.093 35); /* #7a3b2b */
+  --color-clay-900: oklch(0.365 0.067 34); /* #5d3026 */
+  --color-clay-950: oklch(0.268 0.042 33); /* #381e18 */
 
   /* Radii base */
   --radius-base: 0.625rem;
