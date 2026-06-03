@@ -1,6 +1,5 @@
 {
   "title": "Chatbot",
-  "defaultOpen": true,
   "pages": [
     "prompt-input",
     "message",
