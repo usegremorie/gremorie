@@ -59,11 +59,11 @@ return (
 <PromptInput onSubmit={(message) => send(message.text, message.files)}>
 <PromptInputBody>
 <PromptInputTextarea placeholder="Ask anything" />
+</PromptInputBody>
 <PromptInputFooter>
 <span />
 <PromptInputSubmit status={status} />
 </PromptInputFooter>
-</PromptInputBody>
 </PromptInput>
 );
 }
@@ -152,35 +152,35 @@ export function ChatBox() {
           {(file) => <PromptInputAttachment data={file} />}
         </PromptInputAttachments>
         <PromptInputTextarea ref={textareaRef} placeholder="Ask anything" />
-        <PromptInputFooter>
-          <PromptInputTools>
-            <PromptInputActionMenu>
-              <PromptInputActionMenuTrigger aria-label="Add attachment" />
-              <PromptInputActionMenuContent>
-                <PromptInputActionAddAttachments />
-              </PromptInputActionMenuContent>
-            </PromptInputActionMenu>
-            <PromptInputSpeechButton textareaRef={textareaRef} />
-            <PromptInputButton aria-label="Search the web">
-              <GlobeIcon />
-              Web
-            </PromptInputButton>
-            <PromptInputSelect value={model} onValueChange={setModel}>
-              <PromptInputSelectTrigger>
-                <PromptInputSelectValue placeholder="Model" />
-              </PromptInputSelectTrigger>
-              <PromptInputSelectContent>
-                {models.map((m) => (
-                  <PromptInputSelectItem key={m.id} value={m.id}>
-                    {m.label}
-                  </PromptInputSelectItem>
-                ))}
-              </PromptInputSelectContent>
-            </PromptInputSelect>
-          </PromptInputTools>
-          <PromptInputSubmit status={status} />
-        </PromptInputFooter>
       </PromptInputBody>
+      <PromptInputFooter>
+        <PromptInputTools>
+          <PromptInputActionMenu>
+            <PromptInputActionMenuTrigger aria-label="Add attachment" />
+            <PromptInputActionMenuContent>
+              <PromptInputActionAddAttachments />
+            </PromptInputActionMenuContent>
+          </PromptInputActionMenu>
+          <PromptInputSpeechButton textareaRef={textareaRef} />
+          <PromptInputButton aria-label="Search the web">
+            <GlobeIcon />
+            Web
+          </PromptInputButton>
+          <PromptInputSelect value={model} onValueChange={setModel}>
+            <PromptInputSelectTrigger>
+              <PromptInputSelectValue placeholder="Model" />
+            </PromptInputSelectTrigger>
+            <PromptInputSelectContent>
+              {models.map((m) => (
+                <PromptInputSelectItem key={m.id} value={m.id}>
+                  {m.label}
+                </PromptInputSelectItem>
+              ))}
+            </PromptInputSelectContent>
+          </PromptInputSelect>
+        </PromptInputTools>
+        <PromptInputSubmit status={status} />
+      </PromptInputFooter>
     </PromptInput>
   );
 }
@@ -338,20 +338,28 @@ Wrappers around `Select` from `@gremorie/rx-forms` (`PromptInputSelect`, `Prompt
 
 ```
 PromptInput (root <form>, state machine + drag-drop + InputGroup wrapper)
-  PromptInputBody (display: contents, flows children into the group)
-    PromptInputHeader (optional, above the textarea)
+  PromptInputBody (display: contents, wraps only the attachments + textarea)
     PromptInputAttachments (render-prop list of chips, hidden when empty)
       PromptInputAttachment (chip + HoverCard preview + remove button)
     PromptInputTextarea (auto-resize, Enter submits, Shift+Enter newline)
-    PromptInputFooter (default home for tools + submit)
-      PromptInputTools (left, action buttons)
-        PromptInputActionMenu (dropdown trigger + content + items)
-          PromptInputActionAddAttachments (pre-wired item)
-        PromptInputSpeechButton (Web Speech toggle)
-        PromptInputButton (custom actions - web search, etc.)
-        PromptInputSelect (model picker)
-      PromptInputSubmit (right, status-driven icon)
+  PromptInputHeader (optional, sibling of Body, renders above the textarea)
+  PromptInputFooter (default home for tools + submit, sibling of Body)
+    PromptInputTools (left, action buttons)
+      PromptInputActionMenu (dropdown trigger + content + items)
+        PromptInputActionAddAttachments (pre-wired item)
+      PromptInputSpeechButton (Web Speech toggle)
+      PromptInputButton (custom actions - web search, etc.)
+      PromptInputSelect (model picker)
+    PromptInputSubmit (right, status-driven icon)
 ```
+
+> [!important]
+> `PromptInputHeader` and `PromptInputFooter` must be siblings of
+> `PromptInputBody`, not nested inside it. `PromptInputBody` is `display: contents`,
+> and the underlying `InputGroup` only switches to its stacked column layout when
+> a `data-align="block-end"` addon is its direct child. A footer nested inside the
+> contents Body is not a direct child, so the group stays a single row and the
+> textarea collapses into a thin bar.
 
 ### How the parts plug together
 
@@ -385,11 +393,11 @@ export function ChatSurface() {
       <PromptInput onSubmit={handle}>
         <PromptInputBody>
           <PromptInputTextarea />
-          <PromptInputFooter>
-            <span />
-            <PromptInputSubmit />
-          </PromptInputFooter>
         </PromptInputBody>
+        <PromptInputFooter>
+          <span />
+          <PromptInputSubmit />
+        </PromptInputFooter>
       </PromptInput>
     </PromptInputProvider>
   );

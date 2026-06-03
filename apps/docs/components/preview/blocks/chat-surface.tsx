@@ -156,11 +156,11 @@ export function ChatSurface() {
         <PromptInput onSubmit={handleSubmit}>
           <PromptInputBody>
             <PromptInputTextarea placeholder="Ask anything..." />
-            <PromptInputFooter>
-              <PromptInputTools />
-              <PromptInputSubmit status={status} />
-            </PromptInputFooter>
           </PromptInputBody>
+          <PromptInputFooter>
+            <PromptInputTools />
+            <PromptInputSubmit status={status} />
+          </PromptInputFooter>
         </PromptInput>
       </div>
     </div>
