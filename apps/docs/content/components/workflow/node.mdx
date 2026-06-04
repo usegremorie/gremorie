@@ -3,6 +3,8 @@ title: Node
 description: Card-based node primitive for Canvas. Wraps Gremorie Card with target / source xyflow Handles and a header / content / footer composition that matches the rest of the design system.
 ---
 
+import { NodePreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Node` is the card-shaped vertex you place inside a `Canvas`. It composes a `Card` from `@gremorie/rx-display` with xyflow `Handle`s on the left (target) and right (source), then exposes the same `Header` / `Title` / `Description` / `Action` / `Content` / `Footer` composition as a regular `Card`.
@@ -10,6 +12,12 @@ description: Card-based node primitive for Canvas. Wraps Gremorie Card with targ
 The wrapper customizes `Card` for the canvas context: removes default padding so handles align cleanly, narrows the width to `w-sm`, and skins the header and footer with a secondary surface so they read as distinct from the content body.
 
 Use it as the base for every custom node type. Pair with `Toolbar` for selection-anchored actions, `Edge` to connect nodes, and `Connection` for in-progress drags.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <NodePreview />
+</div>
 
 ## Installation
 

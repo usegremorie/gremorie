@@ -3,6 +3,8 @@ title: Open in Chat
 description: Dropdown that hands the current query off to an external chat. Ships pre-wired buttons for ChatGPT, Claude, Scira, T3, v0 and Cursor, plus generic items for custom providers.
 ---
 
+import { OpenInPreview } from '@/components/preview/ai/utilities';
+
 ## Overview
 
 `OpenIn` lets users continue a conversation in their preferred external chat. It is a `DropdownMenu` that carries a single `query` string in context, and exposes per-provider items that render a labeled `<a>` link with the matching brand icon and an `ExternalLinkIcon`.
@@ -10,6 +12,12 @@ description: Dropdown that hands the current query off to an external chat. Ship
 The component file ships URL builders for seven providers (GitHub, Scira, ChatGPT, Claude, T3, v0, Cursor) and exports React components for six of them. Use them directly via `OpenInChatGPT`, `OpenInClaude`, `OpenInT3`, `OpenInScira`, `OpenInv0` and `OpenInCursor` - or compose a generic `OpenInItem` for any custom destination.
 
 All links open in a new tab with `rel="noopener"`.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <OpenInPreview />
+</div>
 
 ## Installation
 

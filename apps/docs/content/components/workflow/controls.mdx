@@ -3,6 +3,8 @@ title: Controls
 description: Themed corner controls for a Canvas. Zoom in, zoom out, fit view and lock interaction, all skinned with Gremorie tokens.
 ---
 
+import { ControlsPreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Controls` is a Gremorie skin over `Controls` from `@xyflow/react`. It docks to the bottom-left of a `Canvas` by default and exposes the standard interaction buttons: zoom in, zoom out, fit view, and a lock toggle that disables panning and node interaction.
@@ -10,6 +12,12 @@ description: Themed corner controls for a Canvas. Zoom in, zoom out, fit view an
 The Gremorie chrome strips xyflow's heavy borders and shadows in favor of a single rounded border, a `bg-card` background and ghost-style buttons that pick up `bg-secondary` on hover. This keeps the controls visually quiet so they do not compete with the workflow content.
 
 Use whenever a canvas needs zoom controls (any read-write graph editor) or read-only navigation aids (agent traces, large flow visualizations).
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ControlsPreview />
+</div>
 
 ## Installation
 
