@@ -3,6 +3,8 @@ title: Edge
 description: Edge variants for a Canvas. Temporary (dashed simple-bezier) and Animated (flowing dot along a bezier). Register both via the edgeTypes prop.
 ---
 
+import { EdgePreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Edge` is a namespace object that ships two production-ready edge components for xyflow workflows:
@@ -11,6 +13,12 @@ description: Edge variants for a Canvas. Temporary (dashed simple-bezier) and An
 - **`Edge.Animated`** - a standard bezier path with a small primary-colored circle that animates along it via `<animateMotion>`. Use it to represent live data flow between nodes (streaming tokens, observability traces, agent message passing).
 
 Both variants are React components that conform to xyflow's `EdgeProps` contract. You register them on the `Canvas` through the `edgeTypes` prop and then reference them by key when constructing the edge data.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <EdgePreview />
+</div>
 
 ## Installation
 

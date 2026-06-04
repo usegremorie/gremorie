@@ -3,6 +3,8 @@ title: Toolbar
 description: Floating per-node action bar inside a Canvas. Anchored below the selected node, surfaces contextual actions like edit, duplicate and delete.
 ---
 
+import { ToolbarPreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Toolbar` is a thin Gremorie skin over `NodeToolbar` from `@xyflow/react`. It renders a small floating row of actions that appears next to a node when the node is selected (or always, depending on `isVisible`).
@@ -10,6 +12,12 @@ description: Floating per-node action bar inside a Canvas. Anchored below the se
 Place it inside a `<Node>` body. xyflow positions it relative to the node automatically (defaulting to `Position.Bottom`) and re-flows it as the node moves or the canvas pans. The chrome is intentionally minimal: a rounded border, light background and `gap-1` flex row that holds whatever buttons you want.
 
 Use it for the most common workflow affordances: edit, duplicate, delete, configure. For more involved controls that should always be visible (like canvas-level zoom and fit), reach for [`Controls`](/components/workflow/controls) instead.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ToolbarPreview />
+</div>
 
 ## Installation
 

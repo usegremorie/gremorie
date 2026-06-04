@@ -3,6 +3,8 @@ title: Panel
 description: Floating corner overlay inside a Canvas. Pre-themed bordered card surface for canvas-level controls, status indicators, or contextual widgets.
 ---
 
+import { PanelPreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Panel` is a Gremorie skin over xyflow's `Panel` primitive. It anchors to a corner of the `Canvas` viewport and stays put as the canvas pans and zooms - which makes it the right surface for canvas-level controls (save, export, layout actions), status indicators (agent thinking, deployment state), or contextual widgets that should always be reachable.
@@ -10,6 +12,12 @@ description: Floating corner overlay inside a Canvas. Pre-themed bordered card s
 The Gremorie chrome adds a `m-4` margin, a rounded border, a `bg-card` surface and `p-1` padding so the panel reads as a self-contained tile rather than floating raw content over the workflow.
 
 For per-node action bars, use [`Toolbar`](/components/workflow/toolbar). For zoom and fit controls, use [`Controls`](/components/workflow/controls). `Panel` covers the rest.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <PanelPreview />
+</div>
 
 ## Installation
 
