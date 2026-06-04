@@ -60,7 +60,7 @@ const FlowHost = ({ toolbar }: { toolbar: ReactNode }) => (
 );
 
 const meta = {
-  title: 'AI/Toolbar',
+  title: 'AI/Workflow/Toolbar',
   component: Toolbar,
   tags: ['autodocs'],
   parameters: { layout: 'centered', controls: { disable: true } },

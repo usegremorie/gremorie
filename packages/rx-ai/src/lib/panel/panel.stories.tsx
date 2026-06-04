@@ -41,7 +41,7 @@ import { Panel } from './panel';
  * | `--border` | Panel border. |
  */
 const meta = {
-  title: 'AI/Panel',
+  title: 'AI/Workflow/Panel',
   component: Panel,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

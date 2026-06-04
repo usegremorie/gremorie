@@ -12,7 +12,7 @@ import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from './tool';
  * matrix.
  */
 const meta = {
-  title: 'AI/Tool',
+  title: 'AI/Chatbot/Tool',
   component: ToolHeader,
   tags: ['autodocs'],
   argTypes: {

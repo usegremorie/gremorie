@@ -12,7 +12,7 @@ import { Suggestion, Suggestions } from './suggestion';
  * `Button` exposes `sm | default | lg` sizes (no `md`).
  */
 const meta = {
-  title: 'AI/Suggestion',
+  title: 'AI/Chatbot/Suggestion',
   component: Suggestion,
   tags: ['autodocs'],
   argTypes: {
