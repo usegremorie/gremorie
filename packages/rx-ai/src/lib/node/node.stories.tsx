@@ -69,7 +69,7 @@ import {
  * | `--sidebar` | Canvas background behind the node. |
  */
 const meta = {
-  title: 'AI/Node',
+  title: 'AI/Workflow/Node',
   component: Node,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

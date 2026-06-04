@@ -76,7 +76,7 @@ import {
  * | `--muted-foreground` | Text and status colors. |
  */
 const meta = {
-  title: 'AI/Queue',
+  title: 'AI/Chatbot/Queue',
   component: Queue,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

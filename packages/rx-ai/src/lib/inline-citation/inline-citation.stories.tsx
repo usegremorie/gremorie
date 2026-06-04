@@ -28,7 +28,7 @@ import {
  * / InlineCitationQuote / Carousel).
  */
 const meta = {
-  title: 'AI/InlineCitation',
+  title: 'AI/Chatbot/InlineCitation',
   component: InlineCitation,
   tags: ['autodocs'],
   parameters: { layout: 'centered', controls: { disable: true } },

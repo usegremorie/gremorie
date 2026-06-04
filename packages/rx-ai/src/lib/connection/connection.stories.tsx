@@ -39,7 +39,7 @@ import { Connection } from './connection';
  * | `--color-ring` | Stroke of the provisional connection line and dot. |
  */
 const meta = {
-  title: 'AI/Connection',
+  title: 'AI/Workflow/Connection',
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
 } satisfies Meta;

@@ -24,7 +24,7 @@ import {
  * (actions toolbar, branch selector, markdown response).
  */
 const meta = {
-  title: 'AI/Message',
+  title: 'AI/Chatbot/Message',
   component: Message,
   tags: ['autodocs'],
   argTypes: {

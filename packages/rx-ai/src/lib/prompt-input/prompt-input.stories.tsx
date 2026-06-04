@@ -106,7 +106,7 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
  * control to walk the canonical states ready, submitted, streaming and error.
  */
 const meta = {
-  title: 'AI/PromptInput',
+  title: 'AI/Chatbot/PromptInput',
   component: IntegratedPromptInput,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

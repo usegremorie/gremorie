@@ -10,7 +10,7 @@ import { Reasoning, ReasoningContent, ReasoningTrigger } from './reasoning';
  * and the override of the trigger via projected content.
  */
 const meta = {
-  title: 'AI/Reasoning',
+  title: 'AI/Chatbot/Reasoning',
   component: Reasoning,
   tags: ['autodocs'],
   argTypes: {

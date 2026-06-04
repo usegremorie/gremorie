@@ -86,7 +86,7 @@ import {
  * **→ Data** writes the rows as CSV.
  */
 const meta = {
-  title: 'Artifacts/Chart',
+  title: 'AI/Code/Chart',
   component: ChartArtifact,
   tags: ['autodocs'],
   argTypes: {

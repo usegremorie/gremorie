@@ -33,7 +33,7 @@ import { Image } from './image';
  * | `--radius` | Corner rounding (`rounded-md`). |
  */
 const meta = {
-  title: 'AI/Image',
+  title: 'AI/Utilities/Image',
   component: Image,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

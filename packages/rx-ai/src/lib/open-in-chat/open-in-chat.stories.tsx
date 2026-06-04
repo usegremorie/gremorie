@@ -61,7 +61,7 @@ import {
  * | `--accent` | Item hover background. |
  */
 const meta = {
-  title: 'AI/OpenIn',
+  title: 'AI/Utilities/OpenIn',
   component: OpenIn,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

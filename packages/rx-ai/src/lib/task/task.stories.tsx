@@ -9,7 +9,7 @@ import { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger } from './task';
  * with mixed item types (plain text + file chip), and a custom trigger.
  */
 const meta = {
-  title: 'AI/Task',
+  title: 'AI/Chatbot/Task',
   component: Task,
   tags: ['autodocs'],
   argTypes: {
