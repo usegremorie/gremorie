@@ -40,7 +40,11 @@ const VARIANT_BUTTON =
   'transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none';
 
 function StyledTrigger({ children }: { children: ReactNode }) {
-  const { depth, collapsible } = useFolder();
+  // useFolder() is typed as nullable, but this only renders inside SidebarFolder
+  // (which provides the context), so the fallbacks are just for the type checker.
+  const folder = useFolder();
+  const depth = folder?.depth ?? 1;
+  const collapsible = folder?.collapsible ?? true;
   return (
     <SidebarFolderTrigger
       className={cn(ITEM_BASE, collapsible && VARIANT_BUTTON, 'w-full')}
