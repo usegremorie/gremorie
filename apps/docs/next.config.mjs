@@ -1,6 +1,19 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { createMDX } from 'fumadocs-mdx/next';
 
 const withMDX = createMDX();
+
+// The monorepo root, two levels up from apps/docs. Pinning Turbopack's root
+// silences the "multiple lockfiles / inferred workspace root" warning, which
+// fires when the app is built from a nested git worktree that carries its own
+// untracked package-lock.json alongside the repo-root one.
+const workspaceRoot = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  '..',
+);
 
 /**
  * 301 redirects from the legacy `/foundations/*` paths to the new
@@ -118,6 +131,9 @@ const aiRedirects = Object.entries(aiCategoryMap).map(([name, category]) => ({
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  turbopack: {
+    root: workspaceRoot,
+  },
   transpilePackages: [
     '@gremorie/rx-ai',
     '@gremorie/rx-containers',

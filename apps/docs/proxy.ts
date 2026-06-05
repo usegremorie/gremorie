@@ -8,7 +8,10 @@ import {
 import { i18n } from '@/lib/i18n';
 
 /**
- * Combined middleware: Fumadocs i18n routing + AI-onboarding telemetry.
+ * Combined proxy: Fumadocs i18n routing + AI-onboarding telemetry.
+ *
+ * (Renamed from the deprecated `middleware` file convention to `proxy` in
+ * Next.js 16; behaviour is unchanged.)
  *
  * - i18n: every doc/home request is routed through Fumadocs' locale middleware
  *   (default English stays at `/`, Portuguese under `/pt`, missing translations
@@ -37,7 +40,7 @@ function isAgnostic(pathname: string): boolean {
   );
 }
 
-export default function middleware(req: NextRequest, event: NextFetchEvent) {
+export default function proxy(req: NextRequest, event: NextFetchEvent) {
   const { pathname, search } = req.nextUrl;
   const ua = req.headers.get('user-agent') ?? '';
 
