@@ -3,12 +3,10 @@ title: Tool
 description: Collapsible tool-call trace with a state-aware status badge, JSON input and rendered output. The transparency surface for any AI tool invocation.
 ---
 
-import {
-  ToolRunningPreview,
-  ToolCompletedPreview,
-  ToolErrorPreview,
-  ToolApprovalPreview,
-} from '@/components/preview/ai/chatbot-rest';
+import { ToolRunningPreview } from '@/components/preview/ai/tool-running';
+import { ToolCompletedPreview } from '@/components/preview/ai/tool-completed';
+import { ToolErrorPreview } from '@/components/preview/ai/tool-error';
+import { ToolApprovalPreview } from '@/components/preview/ai/tool-approval';
 
 ## Overview
 
@@ -20,27 +18,27 @@ Use it whenever the model invokes a function: web search, code execution, file I
 
 ### Running
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/tool-running">
   <ToolRunningPreview />
-</div>
+</ComponentPreview>
 
 ### Completed
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/tool-completed">
   <ToolCompletedPreview />
-</div>
+</ComponentPreview>
 
 ### Error
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/tool-error">
   <ToolErrorPreview />
-</div>
+</ComponentPreview>
 
 ### Approval requested
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/tool-approval">
   <ToolApprovalPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

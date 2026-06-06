@@ -3,7 +3,7 @@ title: Sources
 description: Collapsible "sources used" panel for RAG responses, with a trigger showing the count and a list of Source links.
 ---
 
-import { SourcesPreview } from '@/components/preview/ai/chatbot';
+import { SourcesPreview } from '@/components/preview/ai/sources';
 
 ## Overview
 
@@ -13,9 +13,9 @@ Use it under the assistant response (typically inside `MessageContent` after `Me
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/sources">
   <SourcesPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

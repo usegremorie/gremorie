@@ -3,7 +3,7 @@ title: Open in Chat
 description: Dropdown that hands the current query off to an external chat. Ships pre-wired buttons for ChatGPT, Claude, Scira, T3, v0 and Cursor, plus generic items for custom providers.
 ---
 
-import { OpenInPreview } from '@/components/preview/ai/utilities';
+import { OpenInPreview } from '@/components/preview/ai/open-in';
 
 ## Overview
 
@@ -15,9 +15,9 @@ All links open in a new tab with `rel="noopener"`.
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/open-in">
   <OpenInPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

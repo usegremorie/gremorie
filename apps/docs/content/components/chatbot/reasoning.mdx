@@ -3,11 +3,9 @@ title: Reasoning
 description: Collapsible thinking block that opens during streaming, tracks duration and quietly closes when done.
 ---
 
-import {
-  ReasoningPreview,
-  ReasoningStreamingPreview,
-  ReasoningExpandedPreview,
-} from '@/components/preview/ai/chatbot';
+import { ReasoningPreview } from '@/components/preview/ai/reasoning';
+import { ReasoningStreamingPreview } from '@/components/preview/ai/reasoning-streaming';
+import { ReasoningExpandedPreview } from '@/components/preview/ai/reasoning-expanded';
 
 ## Overview
 
@@ -19,21 +17,21 @@ Use it inside `MessageContent` for assistant turns whose model exposes a reasoni
 
 ### Idle
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/reasoning">
   <ReasoningPreview />
-</div>
+</ComponentPreview>
 
 ### Streaming
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/reasoning-streaming">
   <ReasoningStreamingPreview />
-</div>
+</ComponentPreview>
 
 ### Expanded
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/reasoning-expanded">
   <ReasoningExpandedPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

@@ -3,10 +3,8 @@ title: Chain of Thought
 description: Step-by-step reasoning visualizer with status icons, nested search results and inline image evidence.
 ---
 
-import {
-  ChainOfThoughtPreview,
-  ChainOfThoughtSearchPreview,
-} from '@/components/preview/ai/chatbot';
+import { ChainOfThoughtPreview } from '@/components/preview/ai/chain-of-thought';
+import { ChainOfThoughtSearchPreview } from '@/components/preview/ai/chain-of-thought-search';
 
 ## Overview
 
@@ -18,15 +16,15 @@ It is collapsible by default so the answer stays the focus, but expanding reveal
 
 ### Default
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/chain-of-thought">
   <ChainOfThoughtPreview />
-</div>
+</ComponentPreview>
 
 ### With search context
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/chain-of-thought-search">
   <ChainOfThoughtSearchPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

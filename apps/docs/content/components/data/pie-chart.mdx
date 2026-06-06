@@ -3,10 +3,8 @@ title: Pie Chart
 description: 'Parts of a whole, one slice per data row, with optional donut hole and token-driven colors.'
 ---
 
-import {
-  PieChartPreview,
-  PieChartDonutPreview,
-} from '@/components/preview/data/charts';
+import { PieChartPreview } from '@/components/preview/data/pie-chart';
+import { PieChartDonutPreview } from '@/components/preview/data/pie-chart-donut';
 
 ## Overview
 
@@ -16,9 +14,9 @@ Reach for PieChart when **proportions matter** and you have **two to six categor
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/pie-chart">
   <PieChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

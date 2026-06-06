@@ -3,7 +3,7 @@ title: Edge
 description: Edge variants for a Canvas. Temporary (dashed simple-bezier) and Animated (flowing dot along a bezier). Register both via the edgeTypes prop.
 ---
 
-import { EdgePreview } from '@/components/preview/ai/workflow';
+import { EdgePreview } from '@/components/preview/ai/edge';
 
 ## Overview
 
@@ -16,9 +16,9 @@ Both variants are React components that conform to xyflow's `EdgeProps` contract
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/edge">
   <EdgePreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

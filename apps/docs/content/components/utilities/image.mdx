@@ -3,7 +3,7 @@ title: Image
 description: Render a base64 Experimental_GeneratedImage from the Vercel AI SDK as an inline data-URI img with sensible chrome defaults.
 ---
 
-import { ImagePreview } from '@/components/preview/ai/utilities';
+import { ImagePreview } from '@/components/preview/ai/image';
 
 ## Overview
 
@@ -15,9 +15,9 @@ Use it inside `Artifact` for image-only artifacts, inside `MessageContent` for i
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/image">
   <ImagePreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

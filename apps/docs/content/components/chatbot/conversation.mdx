@@ -3,10 +3,8 @@ title: Conversation
 description: Scroll-to-bottom container that keeps the latest message in view while content streams.
 ---
 
-import {
-  ConversationPreview,
-  ConversationEmptyPreview,
-} from '@/components/preview/ai/chatbot';
+import { ConversationPreview } from '@/components/preview/ai/conversation';
+import { ConversationEmptyPreview } from '@/components/preview/ai/conversation-empty';
 
 ## Overview
 
@@ -18,15 +16,15 @@ Use it as the parent of any `Message` stream. Use `ConversationEmptyState` for t
 
 ### Standard
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/conversation">
   <ConversationPreview />
-</div>
+</ComponentPreview>
 
 ### Empty state
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/conversation-empty">
   <ConversationEmptyPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

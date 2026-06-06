@@ -3,10 +3,8 @@ title: Code Block
 description: Syntax-highlighted code surface powered by shiki. Lazy-loads token highlighting on mount, ships matched dark and light themes, and pairs with a context-aware copy button.
 ---
 
-import {
-  CodeBlockPreview,
-  CodeBlockCopyPreview,
-} from '@/components/preview/ai/code-workflow';
+import { CodeBlockPreview } from '@/components/preview/ai/code-block';
+import { CodeBlockCopyPreview } from '@/components/preview/ai/code-block-copy';
 
 ## Overview
 
@@ -20,15 +18,15 @@ Use it for streamed code artifacts, MDX snippets inside tool output, agent-gener
 
 ### Default
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/code-block">
   <CodeBlockPreview />
-</div>
+</ComponentPreview>
 
 ### With copy button
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/code-block-copy">
   <CodeBlockCopyPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

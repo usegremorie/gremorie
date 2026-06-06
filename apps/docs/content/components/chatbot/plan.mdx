@@ -3,11 +3,9 @@ title: Plan
 description: Collapsible plan card with shimmer-marked title while streaming and an expandable body for steps and actions.
 ---
 
-import {
-  PlanCollapsedPreview,
-  PlanExpandedPreview,
-  PlanStreamingPreview,
-} from '@/components/preview/ai/chatbot';
+import { PlanCollapsedPreview } from '@/components/preview/ai/plan-collapsed';
+import { PlanExpandedPreview } from '@/components/preview/ai/plan-expanded';
+import { PlanStreamingPreview } from '@/components/preview/ai/plan-streaming';
 
 ## Overview
 
@@ -19,21 +17,21 @@ Use it for any flow where the model proposes a plan before acting (multi-step ag
 
 ### Collapsed
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/plan-collapsed">
   <PlanCollapsedPreview />
-</div>
+</ComponentPreview>
 
 ### Expanded
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/plan-expanded">
   <PlanExpandedPreview />
-</div>
+</ComponentPreview>
 
 ### Streaming
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/plan-streaming">
   <PlanStreamingPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

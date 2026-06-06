@@ -3,11 +3,9 @@ title: Confirmation
 description: Human-in-the-loop approval prompt for tool calls, with request, approved and rejected states driven by tool state.
 ---
 
-import {
-  ConfirmationRequestPreview,
-  ConfirmationApprovedPreview,
-  ConfirmationRejectedPreview,
-} from '@/components/preview/ai/chatbot-rest';
+import { ConfirmationRequestPreview } from '@/components/preview/ai/confirmation-request';
+import { ConfirmationApprovedPreview } from '@/components/preview/ai/confirmation-approved';
+import { ConfirmationRejectedPreview } from '@/components/preview/ai/confirmation-rejected';
 
 ## Overview
 
@@ -19,15 +17,15 @@ Use it for irreversible operations (deletes, payments, deploys, write-to-prod) w
 
 ### Requesting approval
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/confirmation-request">
   <ConfirmationRequestPreview />
-</div>
+</ComponentPreview>
 
 ### Approved
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/confirmation-approved">
   <ConfirmationApprovedPreview />
-</div>
+</ComponentPreview>
 
 ### Rejected
 

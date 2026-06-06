@@ -3,10 +3,8 @@ title: Checkpoint
 description: Conversation savepoint marker - a labeled bookmark on the timeline with an optional tooltip describing the captured state.
 ---
 
-import {
-  CheckpointPreview,
-  CheckpointTooltipPreview,
-} from '@/components/preview/ai/chatbot-rest';
+import { CheckpointPreview } from '@/components/preview/ai/checkpoint';
+import { CheckpointTooltipPreview } from '@/components/preview/ai/checkpoint-tooltip';
 
 ## Overview
 
@@ -18,15 +16,15 @@ Use it when the user can branch, restore or rewind from this point. Pair the tri
 
 ### Icon-only
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/checkpoint">
   <CheckpointPreview />
-</div>
+</ComponentPreview>
 
 ### With label
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/checkpoint-tooltip">
   <CheckpointTooltipPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

@@ -3,12 +3,10 @@ title: Message
 description: Atomic chat turn with role-aware layout, attachments, branch navigation and a streaming markdown surface.
 ---
 
-import {
-  MessageAssistantPreview,
-  MessageUserPreview,
-  MessageMarkdownPreview,
-  MessagePairPreview,
-} from '@/components/preview/ai/message';
+import { MessageAssistantPreview } from '@/components/preview/ai/message-assistant';
+import { MessageUserPreview } from '@/components/preview/ai/message-user';
+import { MessageMarkdownPreview } from '@/components/preview/ai/message-markdown';
+import { MessagePairPreview } from '@/components/preview/ai/message-pair';
 
 ## Overview
 
@@ -20,27 +18,27 @@ Use it as the atomic unit of any conversation: one `Message` per turn, composed 
 
 ### Assistant with toolbar
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/message-assistant">
   <MessageAssistantPreview />
-</div>
+</ComponentPreview>
 
 ### User message
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/message-user">
   <MessageUserPreview />
-</div>
+</ComponentPreview>
 
 ### Rich markdown response
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/message-markdown">
   <MessageMarkdownPreview />
-</div>
+</ComponentPreview>
 
 ### User and assistant pair
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/message-pair">
   <MessagePairPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

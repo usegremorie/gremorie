@@ -3,7 +3,7 @@ title: Artifact
 description: Generic card chrome for AI-generated objects. The wrapper around code, docs, charts, images and any other asset the model produces.
 ---
 
-import { ArtifactPreview } from '@/components/preview/ai/code-workflow';
+import { ArtifactPreview } from '@/components/preview/ai/artifact';
 
 ## Overview
 
@@ -13,9 +13,9 @@ It is intentionally agnostic about what goes inside `ArtifactContent`. Compose i
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/artifact">
   <ArtifactPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
