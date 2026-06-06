@@ -12,7 +12,7 @@ import { Suggestion, Suggestions } from './suggestion';
  * `Button` exposes `sm | default | lg` sizes (no `md`).
  */
 const meta = {
-  title: 'AI/Suggestion',
+  title: 'AI/Chatbot/Suggestion',
   component: Suggestion,
   tags: ['autodocs'],
   argTypes: {
@@ -30,25 +30,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Default - a single chip. Drive the variant and size controls to walk the
+ * four button variants (default, outline, ghost, secondary) and three sizes.
+ */
 export const Default: Story = {
   args: { suggestion: 'Tell me a joke', variant: 'outline', size: 'sm' },
-};
-
-export const Outline: Story = {
-  args: { suggestion: 'Outline', variant: 'outline', size: 'sm' },
-};
-
-export const Secondary: Story = {
-  args: { suggestion: 'Secondary', variant: 'secondary', size: 'sm' },
-};
-
-export const Ghost: Story = {
-  args: { suggestion: 'Ghost', variant: 'ghost', size: 'sm' },
-};
-
-export const Filled: Story = {
-  name: 'Filled (default)',
-  args: { suggestion: 'Default', variant: 'default', size: 'sm' },
 };
 
 /**
@@ -77,16 +64,5 @@ export const WithIcon: Story = {
         Generate a report
       </span>
     </Suggestion>
-  ),
-};
-
-export const Sizes: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-2">
-      <Suggestion suggestion="Small" size="sm" />
-      <Suggestion suggestion="Medium" size="default" />
-      <Suggestion suggestion="Large" size="lg" />
-    </div>
   ),
 };

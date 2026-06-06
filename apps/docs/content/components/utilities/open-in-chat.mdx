@@ -1,0 +1,209 @@
+---
+title: Open in Chat
+description: Dropdown that hands the current query off to an external chat. Ships pre-wired buttons for ChatGPT, Claude, Scira, T3, v0 and Cursor, plus generic items for custom providers.
+---
+
+import { OpenInPreview } from '@/components/preview/ai/open-in';
+
+## Overview
+
+`OpenIn` lets users continue a conversation in their preferred external chat. It is a `DropdownMenu` that carries a single `query` string in context, and exposes per-provider items that render a labeled `<a>` link with the matching brand icon and an `ExternalLinkIcon`.
+
+The component file ships URL builders for seven providers (GitHub, Scira, ChatGPT, Claude, T3, v0, Cursor) and exports React components for six of them. Use them directly via `OpenInChatGPT`, `OpenInClaude`, `OpenInT3`, `OpenInScira`, `OpenInv0` and `OpenInCursor` - or compose a generic `OpenInItem` for any custom destination.
+
+All links open in a new tab with `rel="noopener"`.
+
+## Preview
+
+<ComponentPreview name="ai/open-in">
+  <OpenInPreview />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-open-in-chat ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-open-in-chat ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-open-in-chat ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-open-in-chat ```
+  </Tab>
+</Tabs>
+
+Brings in `rx-overlays` (for `DropdownMenu`) and `rx-forms` (for `Button`).
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  OpenIn,
+  OpenInChatGPT,
+  OpenInClaude,
+  OpenInContent,
+  OpenInCursor,
+  OpenInLabel,
+  OpenInScira,
+  OpenInSeparator,
+  OpenInT3,
+  OpenInTrigger,
+  OpenInv0,
+} from "@gremorie/rx-ai";
+
+export function Example({ question }) {
+  return (
+    <OpenIn query={question}>
+      <OpenInTrigger />
+      <OpenInContent>
+        <OpenInLabel>Continue in</OpenInLabel>
+        <OpenInSeparator />
+        <OpenInChatGPT />
+        <OpenInClaude />
+        <OpenInT3 />
+        <OpenInScira />
+        <OpenInv0 />
+        <OpenInCursor />
+      </OpenInContent>
+    </OpenIn>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Use the React edition for now, or open an issue to prioritize this primitive.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<OpenIn>`
+
+| Prop    | Type     | Default | Description                                                                                                                    |
+| ------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `query` | `string` | -       | **Required.** The text passed to each provider. ChatGPT receives it as a `prompt` param, Claude as `q`, Cursor as `text`, etc. |
+
+Extends all `DropdownMenu` props. Provides `OpenInContext` with `{ query }` to all descendants.
+
+### `<OpenInTrigger>`
+
+Wraps `DropdownMenuTrigger` with `asChild`. When `children` is omitted, renders a default `Button variant="outline"` reading "Open in chat" with a chevron-down icon.
+
+| Prop       | Type        | Default        | Description                                                |
+| ---------- | ----------- | -------------- | ---------------------------------------------------------- |
+| `children` | `ReactNode` | default Button | Override the trigger entirely. Pass any clickable element. |
+
+### `<OpenInContent>`
+
+`DropdownMenuContent` pinned to `align="start"` and `w-[240px]`. Extends all `DropdownMenuContent` props.
+
+### `<OpenInItem>` / `<OpenInLabel>` / `<OpenInSeparator>`
+
+Pass-through wrappers around `DropdownMenuItem`, `DropdownMenuLabel`, and `DropdownMenuSeparator`. Identical APIs.
+
+### Per-provider items
+
+Each exports a `DropdownMenuItem` rendering the brand icon, title and `ExternalLinkIcon`. All accept the same `DropdownMenuItem` props.
+
+| Component         | URL pattern                                    | Query param |
+| ----------------- | ---------------------------------------------- | ----------- |
+| `<OpenInChatGPT>` | `https://chatgpt.com/?hints=search&prompt=...` | `prompt`    |
+| `<OpenInClaude>`  | `https://claude.ai/new?q=...`                  | `q`         |
+| `<OpenInT3>`      | `https://t3.chat/new?q=...`                    | `q`         |
+| `<OpenInScira>`   | `https://scira.ai/?q=...`                      | `q`         |
+| `<OpenInv0>`      | `https://v0.app?q=...`                         | `q`         |
+| `<OpenInCursor>`  | `https://cursor.com/link/prompt?text=...`      | `text`      |
+
+GitHub is configured internally (`providers.github`) but there is no exported component for it - if you need a "Open in GitHub" item, compose it manually with `OpenInItem` and an `<a href>` pointing at your repo URL.
+
+## Composition
+
+1. **`<OpenIn>`** sets the shared query. Place it where the question is available - typically inside a `Message`'s action toolbar or below a Conversation.
+2. **`<OpenInTrigger>`** is the affordance the user clicks. Use the default Button for the standard "Open in chat" look, or pass children for custom triggers (icon buttons, inline links).
+3. **`<OpenInContent>`** holds the menu items. Add `OpenInLabel` and `OpenInSeparator` for visual grouping.
+4. **Per-provider items** render in any order. Curate the list to match your audience (devs likely want Cursor and v0; consumers likely just ChatGPT and Claude).
+
+## Variations
+
+### Inline icon trigger
+
+Replace the default Button with a smaller icon trigger that fits inside a message toolbar.
+
+```tsx
+<OpenIn query={question}>
+  <OpenInTrigger>
+    <Button variant="ghost" size="icon" aria-label="Open in external chat">
+      <ExternalLinkIcon className="size-4" />
+    </Button>
+  </OpenInTrigger>
+  <OpenInContent>
+    <OpenInChatGPT />
+    <OpenInClaude />
+  </OpenInContent>
+</OpenIn>
+```
+
+### Curated dev-focused list
+
+Lead with Cursor and v0 for technical audiences.
+
+```tsx
+<OpenIn query={prompt}>
+  <OpenInTrigger />
+  <OpenInContent>
+    <OpenInLabel>Continue building</OpenInLabel>
+    <OpenInSeparator />
+    <OpenInCursor />
+    <OpenInv0 />
+    <OpenInSeparator />
+    <OpenInLabel>Or chat</OpenInLabel>
+    <OpenInSeparator />
+    <OpenInChatGPT />
+    <OpenInClaude />
+  </OpenInContent>
+</OpenIn>
+```
+
+### Custom provider via `OpenInItem`
+
+Compose a custom destination using the bare `OpenInItem`.
+
+```tsx
+import { ExternalLinkIcon } from 'lucide-react';
+
+function OpenInPerplexity() {
+  return (
+    <OpenInItem asChild>
+      <a
+        href={`https://perplexity.ai/?q=${encodeURIComponent(query)}`}
+        rel="noopener"
+        target="_blank"
+        className="flex items-center gap-2"
+      >
+        <span className="shrink-0">{/* Perplexity icon */}</span>
+        <span className="flex-1">Open in Perplexity</span>
+        <ExternalLinkIcon className="size-4 shrink-0" />
+      </a>
+    </OpenInItem>
+  );
+}
+```
+
+## Accessibility
+
+- **Keyboard**: `OpenInTrigger` is a `DropdownMenuTrigger`, so Tab focuses it and Enter / Space opens the menu. Arrow keys navigate items; Enter activates the focused link.
+- **External link signal**: Every per-provider item renders an `ExternalLinkIcon` so users know they are leaving the page. The `<a>` carries `target="_blank"` and `rel="noopener"`.
+- **Icons**: Each brand SVG has a `<title>` element ("GitHub", "OpenAI", "Claude", "v0", "Cursor", "Scira AI") so screen readers announce the destination. T3 falls back to the generic `MessageCircleIcon`.
+- **Trigger labels**: The default trigger reads "Open in chat" plus a chevron. For icon-only triggers (see Variations), supply `aria-label`.
+
+## Related
+
+- [Conversation](/components/chatbot/conversation) - the surface where the conversation lives before it gets handed off
+- [Message](/components/chatbot/message) - the turn that typically hosts this affordance
+- [Suggestion](/components/chatbot/suggestion) - the inverse direction: suggested prompts to start a new conversation

@@ -3,11 +3,9 @@ title: Pagination
 description: 'Bookmarkable page-by-page navigation. Semantic nav with previous, next, page links, and ellipsis.'
 ---
 
-import {
-  PaginationPreview,
-  PaginationSimpleRangePreview,
-  PaginationWithEllipsisPreview,
-} from '@/components/preview/navigation/navigation';
+import { PaginationPreview } from '@/components/preview/navigation/pagination';
+import { PaginationSimpleRangePreview } from '@/components/preview/navigation/pagination-simple-range';
+import { PaginationWithEllipsisPreview } from '@/components/preview/navigation/pagination-with-ellipsis';
 
 ## Overview
 
@@ -17,9 +15,9 @@ Reach for Pagination when **URLs must be shareable, stable order matters, and us
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="navigation/pagination">
   <PaginationPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -159,9 +157,9 @@ The primitive does not own the page math. Callers compute which page numbers, el
 
 ### Simple range
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="navigation/pagination-simple-range">
   <PaginationSimpleRangePreview />
-</div>
+</ComponentPreview>
 
 ```tsx
 <Pagination>
@@ -191,9 +189,9 @@ Use when the total page count fits comfortably without truncation (under ten).
 
 ### With ellipsis
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="navigation/pagination-with-ellipsis">
   <PaginationWithEllipsisPreview />
-</div>
+</ComponentPreview>
 
 ```tsx
 <Pagination>

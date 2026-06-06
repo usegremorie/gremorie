@@ -3,7 +3,7 @@ title: Alert
 description: 'Persistent in-flow message anchored to page content with an icon, title, and description.'
 ---
 
-import { AlertPreview } from '@/components/preview/feedback/feedback';
+import { AlertPreview } from '@/components/preview/feedback/alert';
 import { Alert, AlertTitle, AlertDescription } from '@gremorie/rx-feedback';
 import { Info, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
@@ -15,9 +15,9 @@ The Alert API stays deliberately small. Variants ship as `default` and `destruct
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="feedback/alert">
   <AlertPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

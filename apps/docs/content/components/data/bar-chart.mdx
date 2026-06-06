@@ -3,10 +3,8 @@ title: Bar Chart
 description: 'Grouped bars across categorical buckets, color-tokened by series with shared Y domain.'
 ---
 
-import {
-  BarChartPreview,
-  BarChartSinglePreview,
-} from '@/components/preview/data/charts';
+import { BarChartPreview } from '@/components/preview/data/bar-chart';
+import { BarChartSinglePreview } from '@/components/preview/data/bar-chart-single';
 
 ## Overview
 
@@ -16,9 +14,9 @@ Reach for BarChart when **discrete buckets** matter - revenue by product, errors
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/bar-chart">
   <BarChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -112,9 +110,9 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 
 ### Single series
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/bar-chart-single">
   <BarChartSinglePreview />
-</div>
+</ComponentPreview>
 
 ```tsx
 <BarChart

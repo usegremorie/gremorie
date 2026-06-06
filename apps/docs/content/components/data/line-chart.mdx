@@ -3,10 +3,8 @@ title: Line Chart
 description: 'Trend over an ordered domain, one stroke per series, color-tokened from chart variables.'
 ---
 
-import {
-  LineChartPreview,
-  LineChartSinglePreview,
-} from '@/components/preview/data/charts';
+import { LineChartPreview } from '@/components/preview/data/line-chart';
+import { LineChartSinglePreview } from '@/components/preview/data/line-chart-single';
 
 ## Overview
 
@@ -16,9 +14,9 @@ Reach for LineChart when **shape and direction** are the headline - month-over-m
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/line-chart">
   <LineChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

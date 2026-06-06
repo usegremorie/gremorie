@@ -3,10 +3,8 @@ title: Scatter Chart
 description: 'Correlation between a numeric X field and one or more Y series, plotted as colored dots.'
 ---
 
-import {
-  ScatterChartPreview,
-  ScatterChartMultiPreview,
-} from '@/components/preview/data/charts';
+import { ScatterChartPreview } from '@/components/preview/data/scatter-chart';
+import { ScatterChartMultiPreview } from '@/components/preview/data/scatter-chart-multi';
 
 ## Overview
 
@@ -16,9 +14,9 @@ Reach for ScatterChart when you need to surface **correlation, density, or outli
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/scatter-chart">
   <ScatterChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

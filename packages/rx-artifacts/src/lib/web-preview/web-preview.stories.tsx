@@ -56,7 +56,7 @@ import {
  * | `--destructive` | `error`-level log rows |
  */
 const meta = {
-  title: 'Artifacts/WebPreview',
+  title: 'AI/Code/WebPreview',
   component: WebPreview,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

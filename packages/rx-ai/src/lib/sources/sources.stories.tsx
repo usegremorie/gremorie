@@ -9,7 +9,7 @@ import { Source, Sources, SourcesContent, SourcesTrigger } from './sources';
  * single / many sources, and an override of the trigger label.
  */
 const meta = {
-  title: 'AI/Sources',
+  title: 'AI/Chatbot/Sources',
   component: Sources,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

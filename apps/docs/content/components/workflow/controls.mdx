@@ -1,0 +1,141 @@
+---
+title: Controls
+description: Themed corner controls for a Canvas. Zoom in, zoom out, fit view and lock interaction, all skinned with Gremorie tokens.
+---
+
+import { ControlsPreview } from '@/components/preview/ai/controls';
+
+## Overview
+
+`Controls` is a Gremorie skin over `Controls` from `@xyflow/react`. It docks to the bottom-left of a `Canvas` by default and exposes the standard interaction buttons: zoom in, zoom out, fit view, and a lock toggle that disables panning and node interaction.
+
+The Gremorie chrome strips xyflow's heavy borders and shadows in favor of a single rounded border, a `bg-card` background and ghost-style buttons that pick up `bg-secondary` on hover. This keeps the controls visually quiet so they do not compete with the workflow content.
+
+Use whenever a canvas needs zoom controls (any read-write graph editor) or read-only navigation aids (agent traces, large flow visualizations).
+
+## Preview
+
+<ComponentPreview name="ai/controls">
+  <ControlsPreview />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-controls ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-controls ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-controls ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-controls ```</Tab>
+</Tabs>
+
+Requires `@xyflow/react`.
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Canvas, Controls } from "@gremorie/rx-ai";
+
+export function Workflow() {
+  return (
+    <Canvas nodes={nodes} edges={edges}>
+      <Controls />
+    </Canvas>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. The workflow family is React-only for now. Use the React edition or open an issue to prioritize this primitive.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Controls>`
+
+Forwards all `ControlProps` from `@xyflow/react`. The Gremorie wrapper only restyles - it never overrides behavior props.
+
+| Prop                                                           | Type                                                           | Default         | Description                                                                                         |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------- |
+| `position`                                                     | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right"` | `"bottom-left"` | Corner the controls dock to. xyflow default.                                                        |
+| `showZoom`                                                     | `boolean`                                                      | `true`          | Show the zoom in / out buttons.                                                                     |
+| `showFitView`                                                  | `boolean`                                                      | `true`          | Show the fit-view button.                                                                           |
+| `showInteractive`                                              | `boolean`                                                      | `true`          | Show the lock toggle. Set to `false` for read-only canvases.                                        |
+| `fitViewOptions`                                               | `FitViewOptions`                                               | -               | Forwarded to the fit-view action (padding, duration, etc.).                                         |
+| `onZoomIn` / `onZoomOut` / `onFitView` / `onInteractiveChange` | callbacks                                                      | -               | Hooks into each control.                                                                            |
+| `children`                                                     | `ReactNode`                                                    | -               | Extra control buttons appended to the strip. Each child should follow xyflow's `ControlButton` API. |
+| `className`                                                    | `string`                                                       | -               | Extra classes.                                                                                      |
+
+Default chrome added by Gremorie: `gap-px overflow-hidden rounded-md border bg-card p-1 shadow-none!`. Child buttons are restyled to `rounded-md`, transparent background, hover state `bg-secondary`.
+
+## Composition
+
+1. **`<Canvas>`** is the parent. `Controls` must be rendered as a child so xyflow's internal `Panel` machinery can position it relative to the viewport.
+2. **Built-in buttons** (zoom in, zoom out, fit view, lock) render automatically based on the `showZoom` / `showFitView` / `showInteractive` props.
+3. **Custom buttons** can be appended via `children`. Use `ControlButton` from `@xyflow/react` to keep the styling consistent.
+
+## Variations
+
+### Default
+
+Bottom-left, all four buttons.
+
+```tsx
+<Canvas nodes={nodes} edges={edges}>
+  <Controls />
+</Canvas>
+```
+
+### Read-only canvas
+
+Hide the lock toggle when the canvas is non-interactive anyway.
+
+```tsx
+<Canvas nodes={nodes} edges={edges} nodesDraggable={false}>
+  <Controls showInteractive={false} />
+</Canvas>
+```
+
+### Custom control button
+
+Append a "reset" or "auto-layout" button using xyflow's `ControlButton`.
+
+```tsx
+import { ControlButton } from '@xyflow/react';
+import { LayoutGridIcon } from 'lucide-react';
+
+<Canvas nodes={nodes} edges={edges}>
+  <Controls>
+    <ControlButton onClick={autoLayout} title="Auto-layout">
+      <LayoutGridIcon className="size-4" />
+    </ControlButton>
+  </Controls>
+</Canvas>;
+```
+
+### Docked top-right
+
+For canvases where the bottom-left is reserved for something else (status bar, agent thinking widget), move the controls.
+
+```tsx
+<Canvas nodes={nodes} edges={edges}>
+  <Controls position="top-right" />
+</Canvas>
+```
+
+## Accessibility
+
+- **Keyboard**: Each built-in control is a real button. Tab focuses each one in order; Enter or Space activates.
+- **Labels**: xyflow ships `title` attributes on the built-in buttons (`"zoom in"`, `"zoom out"`, `"fit view"`, `"toggle interactivity"`). For custom buttons, supply `title` (and ideally `aria-label`) so the icon-only chrome is announced.
+- **Focus visible**: The Gremorie hover style (`bg-secondary`) does not interfere with xyflow's default focus ring. Do not strip `outline`.
+- **Reduced motion**: Zoom and pan animations are governed by xyflow and honor `prefers-reduced-motion`.
+
+## Related
+
+- [Canvas](/components/workflow/canvas) - the surface that hosts `Controls`
+- [Panel](/components/workflow/panel) - free-floating overlay if you need a more flexible corner widget
+- [Toolbar](/components/workflow/toolbar) - per-node floating actions (different concern - selection-anchored, not canvas-anchored)

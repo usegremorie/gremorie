@@ -88,7 +88,7 @@ import {
  * | `--primary` | `ArtifactFeaturedIcon` default badge color |
  */
 const meta = {
-  title: 'Artifacts/Artifact',
+  title: 'AI/Code/Artifact',
   component: Artifact,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

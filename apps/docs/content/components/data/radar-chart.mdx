@@ -3,7 +3,7 @@ title: Radar Chart
 description: 'Compare series across multiple axes that share a single radial domain.'
 ---
 
-import { RadarChartPreview } from '@/components/preview/data/charts';
+import { RadarChartPreview } from '@/components/preview/data/radar-chart';
 
 ## Overview
 
@@ -13,9 +13,9 @@ Reach for RadarChart when no single dimension is the headline and the **shape of
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/radar-chart">
   <RadarChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -160,9 +160,9 @@ The chart auto-sizes to its parent through `ChartContainer`'s responsive frame, 
 
 ### Two-series comparison
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/radar-chart">
   <RadarChartPreview />
-</div>
+</ComponentPreview>
 
 ```tsx
 const config: ChartConfig = {

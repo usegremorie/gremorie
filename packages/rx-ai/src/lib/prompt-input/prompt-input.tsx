@@ -38,7 +38,6 @@ import {
 } from '@gremorie/rx-forms';
 import {
   Command,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -1382,18 +1381,6 @@ export const PromptInputCommandSeparator = ({
 }: PromptInputCommandSeparatorProps) => (
   <CommandSeparator className={cn(className)} {...props} />
 );
-
-// ============================================================================
-// PromptInputCommandDialog - canonical Cmd+K floating palette
-// ============================================================================
-
-export type PromptInputCommandDialogProps = ComponentProps<
-  typeof CommandDialog
->;
-
-export const PromptInputCommandDialog = (
-  props: PromptInputCommandDialogProps,
-) => <CommandDialog {...props} />;
 
 // ============================================================================
 // PromptInputTabs* - lightweight tabbed panels inside dropdowns / menus

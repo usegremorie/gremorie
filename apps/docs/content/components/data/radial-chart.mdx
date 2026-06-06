@@ -3,7 +3,7 @@ title: Radial Chart
 description: 'Concentric radial bars - one ring per data row with sweep proportional to value.'
 ---
 
-import { RadialChartPreview } from '@/components/preview/data/charts';
+import { RadialChartPreview } from '@/components/preview/data/radial-chart';
 
 ## Overview
 
@@ -13,9 +13,9 @@ Reach for RadialChart when you want a **compact, decorative ranking** of three t
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/radial-chart">
   <RadialChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -122,9 +122,9 @@ The chart auto-sizes to its parent through `ChartContainer` (recharts `Responsiv
 
 ### Default ranking
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/radial-chart">
   <RadialChartPreview />
-</div>
+</ComponentPreview>
 
 ```tsx
 <RadialChart

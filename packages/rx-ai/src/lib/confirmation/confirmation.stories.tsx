@@ -61,7 +61,7 @@ import {
  * | `--muted-foreground` | Description text. |
  */
 const meta = {
-  title: 'AI/Confirmation',
+  title: 'AI/Chatbot/Confirmation',
   component: Confirmation,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -24,7 +24,7 @@ import {
  * (actions toolbar, branch selector, markdown response).
  */
 const meta = {
-  title: 'AI/Message',
+  title: 'AI/Chatbot/Message',
   component: Message,
   tags: ['autodocs'],
   argTypes: {
@@ -40,48 +40,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const FromUser: Story = {
-  args: { from: 'user' },
-  render: (args) => (
-    <Message {...args}>
-      <MessageContent>
-        Can you summarize the key points from our last meeting?
-      </MessageContent>
-    </Message>
-  ),
-};
-
-export const FromAssistant: Story = {
+/**
+ * Default - a full message turn (content plus an actions toolbar). Drive the
+ * `from` control to walk the canonical roles user, assistant and system, which
+ * change the bubble alignment and tone.
+ */
+export const Default: Story = {
   args: { from: 'assistant' },
   render: (args) => (
     <Message {...args}>
-      <MessageContent>
-        Sure - the three decisions were: ship the new dashboard by Friday, delay
-        the migration, and revisit the auth flow next sprint.
-      </MessageContent>
-    </Message>
-  ),
-};
-
-export const FromSystem: Story = {
-  args: { from: 'system' },
-  render: (args) => (
-    <Message {...args}>
-      <MessageContent>
-        Conversation started - Switched to GPT-4 - 3 tools enabled
-      </MessageContent>
-    </Message>
-  ),
-};
-
-/**
- * With actions - assistant turn with a toolbar of icon actions (copy,
- * regenerate, thumbs). Each `MessageAction` carries a tooltip + label.
- */
-export const WithActions: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <Message from="assistant">
       <MessageContent>
         Here&apos;s a draft of the project plan. Let me know if you want to
         revise.

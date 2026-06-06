@@ -6,7 +6,10 @@
   "pages": [
     "index",
     "---AI---",
-    "ai",
+    "chatbot",
+    "code",
+    "workflow",
+    "utilities",
     "---Inputs---",
     "forms",
     "---Layout & display---",

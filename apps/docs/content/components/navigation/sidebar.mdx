@@ -3,11 +3,19 @@ title: Sidebar
 description: 'Composable app-shell sidebar with persisted state, icon-only collapse, mobile drawer, and a 24-piece compound API.'
 ---
 
+import { SidebarPreview } from '@/components/preview/navigation/sidebar';
+
 ## Overview
 
 `Sidebar` is the cornerstone navigation primitive of the registry: a composable app-shell sidebar with header / content / footer regions, persisted collapsed state (via cookie), keyboard shortcut (`Cmd` / `Ctrl` + `B`), icon-only collapse mode with tooltip fallbacks, automatic mobile drawer via [Sheet](/components/overlays/sheet), and 24 subcomponents that compose into nav menus, badges, actions, skeletons, and sub-menus.
 
 Reach for Sidebar when **the application has more than one screen worth of navigation** - workspaces, settings sections, content categories. The primitive owns the layout chrome (the rail, the gap, the inset main area) so callers focus on the menu structure. For marketing-site nav use [NavigationMenu](/components/navigation/navigation-menu); for in-page section switching use [Tabs](/components/navigation/tabs).
+
+## Preview
+
+<ComponentPreview name="navigation/sidebar">
+  <SidebarPreview />
+</ComponentPreview>
 
 ## Installation
 

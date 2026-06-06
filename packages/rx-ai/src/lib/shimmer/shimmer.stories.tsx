@@ -15,7 +15,7 @@ import { Shimmer } from './shimmer';
  * a "Slow" variant here instead.
  */
 const meta = {
-  title: 'AI/Shimmer',
+  title: 'AI/Chatbot/Shimmer',
   component: Shimmer,
   tags: ['autodocs'],
   argTypes: {

@@ -51,7 +51,7 @@ import { Panel } from '../panel';
  * | `--sidebar` | Canvas background fill (`bgColor` on `Background`). |
  */
 const meta = {
-  title: 'AI/Canvas',
+  title: 'AI/Workflow/Canvas',
   component: Canvas,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

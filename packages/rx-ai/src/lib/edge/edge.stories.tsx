@@ -53,7 +53,7 @@ import { Edge } from './edge';
  * | `--primary` | Fill of the animated traveling dot. |
  */
 const meta = {
-  title: 'AI/Edge',
+  title: 'AI/Workflow/Edge',
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
 } satisfies Meta;

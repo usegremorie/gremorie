@@ -67,7 +67,7 @@ import {
  * | `--muted-foreground` | Row labels and meta text. |
  */
 const meta = {
-  title: 'AI/Context',
+  title: 'AI/Chatbot/Context',
   component: Context,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
