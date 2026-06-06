@@ -3,6 +3,8 @@ title: Image
 description: Render a base64 Experimental_GeneratedImage from the Vercel AI SDK as an inline data-URI img with sensible chrome defaults.
 ---
 
+import { ImagePreview } from '@/components/preview/ai/utilities';
+
 ## Overview
 
 `Image` is the surface for model-generated images. It accepts an `Experimental_GeneratedImage` from the Vercel `ai` package (base64 string + media type) and renders it as a single `<img>` with a data URI src, a default `rounded-md` border and `max-w-full` to keep layouts safe.
@@ -10,6 +12,12 @@ description: Render a base64 Experimental_GeneratedImage from the Vercel AI SDK 
 There is no fetch, no signed URL flow and no client-side decoding logic - by the time the AI SDK hands you the part, the base64 is ready. This primitive's only job is to render it consistently across artifacts, chat messages and dashboards.
 
 Use it inside `Artifact` for image-only artifacts, inside `MessageContent` for inline replies, or standalone wherever a generated image appears in your UI.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ImagePreview />
+</div>
 
 ## Installation
 
