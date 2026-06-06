@@ -3,10 +3,8 @@ title: Area Chart
 description: 'Cumulative quantity over an ordered domain, filled under the curve and color-tokened by series.'
 ---
 
-import {
-  AreaChartPreview,
-  AreaChartSinglePreview,
-} from '@/components/preview/data/charts';
+import { AreaChartPreview } from '@/components/preview/data/area-chart';
+import { AreaChartSinglePreview } from '@/components/preview/data/area-chart-single';
 
 ## Overview
 
@@ -16,9 +14,9 @@ Reach for AreaChart when the **magnitude** of a series matters as much as its tr
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/area-chart">
   <AreaChartPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -112,9 +110,9 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 
 ### Single series
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/area-chart-single">
   <AreaChartSinglePreview />
-</div>
+</ComponentPreview>
 
 ```tsx
 <AreaChart

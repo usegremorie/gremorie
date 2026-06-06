@@ -3,10 +3,8 @@ title: Task
 description: Collapsible task block for an agent action - title in the trigger, item list with inline file badges in the body.
 ---
 
-import {
-  TaskCollapsedPreview,
-  TaskExpandedPreview,
-} from '@/components/preview/ai/chatbot';
+import { TaskCollapsedPreview } from '@/components/preview/ai/task-collapsed';
+import { TaskExpandedPreview } from '@/components/preview/ai/task-expanded';
 
 ## Overview
 
@@ -18,15 +16,15 @@ Use it when the agent is editing a codebase, browsing a documentation tree, or o
 
 ### Collapsed
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/task-collapsed">
   <TaskCollapsedPreview />
-</div>
+</ComponentPreview>
 
 ### Expanded
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/task-expanded">
   <TaskExpandedPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

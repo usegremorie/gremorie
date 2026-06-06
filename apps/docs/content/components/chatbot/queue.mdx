@@ -3,10 +3,8 @@ title: Queue
 description: Pending message queue list, shown above the prompt input, with optional collapsible sections for todos and queued turns.
 ---
 
-import {
-  QueuePreview,
-  QueueSectionedPreview,
-} from '@/components/preview/ai/chatbot-rest';
+import { QueuePreview } from '@/components/preview/ai/queue';
+import { QueueSectionedPreview } from '@/components/preview/ai/queue-sectioned';
 
 ## Overview
 
@@ -18,15 +16,15 @@ Use it when the user has fired multiple prompts in a row, when the agent is mid-
 
 ### Default
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/queue">
   <QueuePreview />
-</div>
+</ComponentPreview>
 
 ### Sectioned
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/queue-sectioned">
   <QueueSectionedPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

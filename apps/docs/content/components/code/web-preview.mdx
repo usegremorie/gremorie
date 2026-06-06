@@ -3,10 +3,8 @@ title: Web Preview
 description: Sandboxed iframe surface for live HTML preview. Includes URL bar, optional console output and a context-shared URL state.
 ---
 
-import {
-  WebPreviewPreview,
-  WebPreviewConsolePreview,
-} from '@/components/preview/ai/code-workflow';
+import { WebPreviewPreview } from '@/components/preview/ai/web-preview';
+import { WebPreviewConsolePreview } from '@/components/preview/ai/web-preview-console';
 
 ## Overview
 
@@ -20,15 +18,15 @@ Pair with [`Artifact`](/components/code/artifact) when the preview is part of a 
 
 ### Basic preview with URL bar
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/web-preview">
   <WebPreviewPreview />
-</div>
+</ComponentPreview>
 
 ### With console output
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="ai/web-preview-console">
   <WebPreviewConsolePreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
