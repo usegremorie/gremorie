@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "The complete React edition of Gremorie — every component category in one package. The per-category packages remain available for granular installs and the registry.",
   "license": "MIT",
   "repository": {

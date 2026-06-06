@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-containers",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Container primitives for Angular - ScrollArea and friends. Part of Gremorie.",
   "license": "MIT",
   "repository": {
