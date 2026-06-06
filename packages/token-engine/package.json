@@ -36,8 +36,8 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.0",
-    "hono": "^4.7.0",
-    "postcss": "^8.5.0",
+    "hono": "^4.12.23",
+    "postcss": "^8.5.15",
     "ts-morph": "^25.0.0",
     "open": "^10.1.0"
   },
