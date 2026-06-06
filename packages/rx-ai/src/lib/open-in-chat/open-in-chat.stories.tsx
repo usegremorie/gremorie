@@ -61,7 +61,7 @@ import {
  * | `--accent` | Item hover background. |
  */
 const meta = {
-  title: 'AI/OpenIn',
+  title: 'AI/Utilities/OpenIn',
   component: OpenIn,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
@@ -91,22 +91,6 @@ export const Default: Story = {
         <OpenInScira />
         <OpenInv0 />
         <OpenInCursor />
-      </OpenInContent>
-    </OpenIn>
-  ),
-};
-
-/** A focused subset — just the chat assistants. */
-export const ChatProvidersOnly: Story = {
-  args: { query: SAMPLE_QUERY, defaultOpen: true },
-  render: (args) => (
-    <OpenIn {...args}>
-      <OpenInTrigger />
-      <OpenInContent>
-        <OpenInChatGPT />
-        <OpenInClaude />
-        <OpenInT3 />
-        <OpenInScira />
       </OpenInContent>
     </OpenIn>
   ),

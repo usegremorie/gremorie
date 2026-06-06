@@ -2,7 +2,7 @@
  * Perplexity theme: teal/petrol, sober and tight.
  * Activate with data-theme="perplexity" on the root element.
  */
-[data-theme='perplexity'] {
+:root[data-theme='perplexity'] {
   --primary: var(--color-teal-700);
   --primary-foreground: var(--color-gray-50);
   --accent: var(--color-teal-100);
@@ -23,7 +23,7 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
-[data-theme='perplexity'].dark {
+:root[data-theme='perplexity'].dark {
   --primary: var(--color-teal-400);
   --primary-foreground: var(--color-gray-950);
   --accent: var(--color-teal-900);

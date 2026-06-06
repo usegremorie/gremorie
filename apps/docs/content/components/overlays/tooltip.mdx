@@ -3,7 +3,7 @@ title: Tooltip
 description: 'Short non-essential context shown on hover and keyboard focus. Built on Radix Tooltip with a built-in arrow.'
 ---
 
-import { TooltipPreview } from '@/components/preview/overlays/overlays';
+import { TooltipPreview } from '@/components/preview/overlays/tooltip';
 
 ## Overview
 
@@ -15,9 +15,9 @@ The `TooltipContent` renders its own arrow automatically.
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="overlays/tooltip">
   <TooltipPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -191,5 +191,4 @@ Place tooltips above a row to avoid covering the next row.
 
 - [Hover Card](/components/overlays/hover-card) - hover-only rich preview for non-critical content.
 - [Popover](/components/overlays/popover) - click-driven, interactive overlay.
-- [Kbd](/components/display/kbd) - keyboard shortcut chip, common inside tooltips.
 - [Button](/components/forms/button) - the most common tooltip trigger.

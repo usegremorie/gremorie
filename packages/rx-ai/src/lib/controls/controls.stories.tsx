@@ -42,7 +42,7 @@ import { Controls } from './controls';
  * | `--secondary` | Button hover background. |
  */
 const meta = {
-  title: 'AI/Controls',
+  title: 'AI/Workflow/Controls',
   component: Controls,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

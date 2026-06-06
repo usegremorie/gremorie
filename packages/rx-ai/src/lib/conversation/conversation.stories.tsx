@@ -16,7 +16,7 @@ import { Message, MessageContent } from '../message';
  * runtime-only; comments call out what to look for.
  */
 const meta = {
-  title: 'AI/Conversation',
+  title: 'AI/Chatbot/Conversation',
   component: Conversation,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

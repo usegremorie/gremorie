@@ -18,7 +18,7 @@ import {
  * search results, with image preview, and the step status palette.
  */
 const meta = {
-  title: 'AI/ChainOfThought',
+  title: 'AI/Chatbot/ChainOfThought',
   component: ChainOfThought,
   tags: ['autodocs'],
   argTypes: {

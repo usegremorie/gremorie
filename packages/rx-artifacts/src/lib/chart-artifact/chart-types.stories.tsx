@@ -24,7 +24,7 @@ import { ChartArtifact, type ChartArtifactDatum } from './chart-artifact';
  * an array of `{ key, label, color }` (multi-series).
  */
 const meta = {
-  title: 'Artifacts/Chart types',
+  title: 'AI/Code/Chart types',
   component: ChartArtifact,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

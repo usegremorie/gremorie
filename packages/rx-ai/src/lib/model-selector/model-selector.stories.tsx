@@ -73,7 +73,7 @@ import {
  * | `--muted-foreground` | Group labels and shortcuts. |
  */
 const meta = {
-  title: 'AI/ModelSelector',
+  title: 'AI/Chatbot/ModelSelector',
   component: ModelSelector,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

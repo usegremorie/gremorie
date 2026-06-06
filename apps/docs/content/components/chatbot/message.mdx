@@ -1,0 +1,246 @@
+---
+title: Message
+description: Atomic chat turn with role-aware layout, attachments, branch navigation and a streaming markdown surface.
+---
+
+import { MessageAssistantPreview } from '@/components/preview/ai/message-assistant';
+import { MessageUserPreview } from '@/components/preview/ai/message-user';
+import { MessageMarkdownPreview } from '@/components/preview/ai/message-markdown';
+import { MessagePairPreview } from '@/components/preview/ai/message-pair';
+
+## Overview
+
+`Message` renders a single chat turn. It picks layout, alignment and surface treatment from the `from` role ("user" vs "assistant"), then lets you compose the inside with content, attachments, a toolbar and branch navigation. The streaming markdown is rendered by `MessageResponse`, which is memoized to keep large turns smooth while tokens stream in.
+
+Use it as the atomic unit of any conversation: one `Message` per turn, composed with siblings like `Reasoning`, `Sources` or `InlineCitation`.
+
+## Preview
+
+### Assistant with toolbar
+
+<ComponentPreview name="ai/message-assistant">
+  <MessageAssistantPreview />
+</ComponentPreview>
+
+### User message
+
+<ComponentPreview name="ai/message-user">
+  <MessageUserPreview />
+</ComponentPreview>
+
+### Rich markdown response
+
+<ComponentPreview name="ai/message-markdown">
+  <MessageMarkdownPreview />
+</ComponentPreview>
+
+### User and assistant pair
+
+<ComponentPreview name="ai/message-pair">
+  <MessagePairPreview />
+</ComponentPreview>
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-message ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-message ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-message ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-message ```</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <Message from="assistant">
+      <MessageContent>
+        <MessageResponse>{markdown}</MessageResponse>
+      </MessageContent>
+    </Message>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Message, MessageContent, MessageResponse],
+template: `     <message from="assistant">
+      <message-content>
+        <message-response>{{ markdown }}</message-response>
+      </message-content>
+    </message>
+  `,
+})
+export class ExampleComponent {
+readonly markdown = "Hello! How can I help you today?";
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<Message>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `from` | `"user" \| "assistant" \| "system"` | - | Role of the turn. Drives alignment and surface treatment via `is-user` / `is-assistant` group classes. |
+| `className` | `string` | - | Extra classes on the root `div`. |
+
+Extends all `HTMLAttributes<HTMLDivElement>`.
+
+### `<MessageContent>`
+
+Container for the turn body. Picks up styling from the parent `Message` via group selectors (e.g. user turns get a rounded secondary surface).
+
+Extends all `HTMLAttributes<HTMLDivElement>`.
+
+### `<MessageResponse>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `string` | - | Markdown source. Re-renders are gated by string equality. |
+
+Wraps `Streamdown` for incremental token-by-token rendering.
+
+### `<MessageAttachments>` / `<MessageAttachment>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `FileUIPart` | - | Attachment payload (`filename`, `mediaType`, `url`). |
+| `onRemove` | `() => void` | - | Optional remove handler. Renders an X button on hover. |
+
+### `<MessageToolbar>` / `<MessageActions>` / `<MessageAction>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tooltip` | `string` | - | Tooltip label rendered above the action. Doubles as `sr-only` text. |
+| `label` | `string` | - | Explicit accessible label (overrides tooltip for sr-only text). |
+| `variant` | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`. |
+| `size` | `ButtonSize` | `"icon-sm"` | Forwarded to the underlying `Button`. |
+
+### `<MessageBranch>` (compound)
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `defaultBranch` | `number` | `0` | Initial branch index. |
+| `onBranchChange` | `(index: number) => void` | - | Fires when the user navigates between branches. |
+
+Provides context for `MessageBranchContent`, `MessageBranchSelector`, `MessageBranchPrevious`, `MessageBranchNext` and `MessageBranchPage`.
+
+## Composition
+
+1. **`<Message>`** sets alignment and exposes the role via group classes.
+2. **`<MessageContent>`** is the surface that adapts to user vs assistant.
+3. **`<MessageResponse>`** renders streaming markdown inside the content.
+4. **`<MessageAttachments>` / `<MessageAttachment>`** sit above the content for file previews.
+5. **`<MessageToolbar>` + `<MessageActions>` + `<MessageAction>`** appear under the content for copy, regenerate, like and other affordances.
+6. **`<MessageBranch>`** wraps several `<MessageBranchContent>` siblings so users can step through alternate completions.
+
+## Variations
+
+### Streaming assistant response
+
+Use while tokens are still arriving. Pair with `Reasoning` to expose thinking.
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <Reasoning isStreaming={status === "streaming"}>
+      <ReasoningTrigger />
+      <ReasoningContent>{thinking}</ReasoningContent>
+    </Reasoning>
+    <MessageResponse>{partialMarkdown}</MessageResponse>
+  </MessageContent>
+</Message>
+````
+
+### User turn with attachments
+
+User attachments float above the bubble. The attachment row aligns to the trailing edge to match the bubble's right alignment.
+
+```tsx
+<Message from="user">
+  <MessageAttachments>
+    {files.map((file) => (
+      <MessageAttachment
+        key={file.url}
+        data={file}
+        onRemove={() => removeFile(file.url)}
+      />
+    ))}
+  </MessageAttachments>
+  <MessageContent>{prompt}</MessageContent>
+</Message>
+```
+
+### Assistant turn with branch navigation and toolbar
+
+Lets users walk through regenerated alternates and act on the current one.
+
+```tsx
+<Message from="assistant">
+  <MessageBranch>
+    <MessageBranchContent>
+      <MessageContent>
+        <MessageResponse>{variantA}</MessageResponse>
+      </MessageContent>
+    </MessageBranchContent>
+    <MessageBranchContent>
+      <MessageContent>
+        <MessageResponse>{variantB}</MessageResponse>
+      </MessageContent>
+    </MessageBranchContent>
+  </MessageBranch>
+  <MessageToolbar>
+    <MessageBranchSelector from="assistant">
+      <MessageBranchPrevious />
+      <MessageBranchPage />
+      <MessageBranchNext />
+    </MessageBranchSelector>
+    <MessageActions>
+      <MessageAction tooltip="Copy" onClick={copy}>
+        <CopyIcon />
+      </MessageAction>
+      <MessageAction tooltip="Regenerate" onClick={regenerate}>
+        <RefreshIcon />
+      </MessageAction>
+    </MessageActions>
+  </MessageToolbar>
+</Message>
+```
+
+## Accessibility
+
+- **Keyboard**: `MessageAction` and branch controls are real `Button`s, so they participate in normal Tab order and respond to Enter / Space.
+- **ARIA**: `MessageAction` reads `tooltip` (or `label`) as `sr-only` text, so icon-only actions still announce. `MessageBranchPrevious` and `MessageBranchNext` carry explicit `aria-label`s ("Previous branch", "Next branch"). `MessageAttachment` remove buttons announce as "Remove attachment".
+- **Screen readers**: Branch controls disable themselves (and announce as disabled) whenever there is only one branch. The selector hides itself entirely below two branches.
+- **Focus management**: Toolbar actions stay in document order so screen readers narrate the turn before its affordances.
+
+## Related
+
+- [Conversation](/components/chatbot/conversation) - scroll-to-bottom container for a stream of messages
+- [Reasoning](/components/chatbot/reasoning) - collapsible thinking block to embed inside a Message
+- [Sources](/components/chatbot/sources) - cite the documents an assistant turn used
+- [InlineCitation](/components/chatbot/inline-citation) - inline footnote-style citations inside `MessageResponse`

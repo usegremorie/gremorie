@@ -3,7 +3,7 @@ title: Card
 description: 'Composable surface for grouping related content. Headers, descriptions, content slots, and footers - opt in to the parts you need.'
 ---
 
-import { CardPreview } from '@/components/preview/display/display';
+import { CardPreview } from '@/components/preview/display/card';
 import {
   Card,
   CardHeader,
@@ -24,9 +24,9 @@ Card is intentionally surface-only. It doesn't manage focus, hover, or selection
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="display/card">
   <CardPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

@@ -58,7 +58,7 @@ import {
  * | `--muted-foreground` | Description and step text. |
  */
 const meta = {
-  title: 'AI/Plan',
+  title: 'AI/Chatbot/Plan',
   component: Plan,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

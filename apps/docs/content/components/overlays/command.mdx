@@ -3,7 +3,7 @@ title: Command
 description: 'Keyboard-first command palette built on cmdk. Inline picker for Combobox patterns or floating Cmd+K dialog for global navigation.'
 ---
 
-import { CommandPreview } from '@/components/preview/overlays/overlays';
+import { CommandPreview } from '@/components/preview/overlays/command';
 
 ## Overview
 
@@ -13,9 +13,9 @@ Always include a keyboard hint in the input placeholder ("Type a command or sear
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="overlays/command">
   <CommandPreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 
@@ -269,5 +269,4 @@ Disable client filtering and drive the list from a query.
 
 - [Dialog](/components/overlays/dialog) - the base modal that `CommandDialog` wraps.
 - [Popover](/components/overlays/popover) - host for the Combobox pattern.
-- [Combobox](/components/forms/combobox) - searchable single-select built on `Command` + `Popover`.
 - [Dropdown Menu](/components/overlays/dropdown-menu) - simpler action menu without search.

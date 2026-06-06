@@ -12,6 +12,29 @@ the checklist below. A component without complete docs stays in the internal
 Storybook. **It does not go on the public site. It is not advertised through
 the registry or MCP.** No exceptions.
 
+## Preview and Code: the non-negotiable surface
+
+Every component page renders an interactive **Preview / Code** tabbed surface,
+the same pattern [AI Elements](https://elements.ai-sdk.dev) and
+[shadcn/ui](https://ui.shadcn.com) use: a Preview tab with the live component
+and a Code tab with the **real, copyable source** of that exact example.
+
+The rules, in order of importance:
+
+1. **Use `<ComponentPreview name="<area>/<component>">`** (from
+   `apps/docs/components/component-preview.tsx`). It reads the example's source
+   from disk at build time, so the rendered preview and the copyable code can
+   never drift.
+2. **Each example is a self-contained file** under
+   `apps/docs/components/preview/<area>/<component>.tsx` exporting a single
+   `<Name>Preview`. Self-contained means: a reader can copy the Code tab and run
+   it. All imports live in that file.
+3. **Never hand-duplicate the preview code** into a separate prose block. A
+   `## Preview` that only renders, with the usage code written separately, is
+   below the bar and drifts the moment either side changes.
+4. A page with a live preview but no Code tab, or a Code tab whose source is not
+   the rendered example, fails this checklist.
+
 ## Why this matters
 
 1. **Adoption depends on docs.** The difference between a well-documented
@@ -36,7 +59,7 @@ checked.
 
 - [ ] 1. Frontmatter complete (status, version, deps, category)
 - [ ] 2. Overview (1 paragraph: what + when to use + when NOT to use)
-- [ ] 3. Interactive preview at the top
+- [ ] 3. Interactive Preview / Code tabs at the top via `<ComponentPreview>` (real source, copyable, never duplicated)
 - [ ] 4. Anatomy (subcomponent diagram)
 - [ ] 5. Installation (complete CLI command)
 - [ ] 6. Basic usage (minimal runnable example)

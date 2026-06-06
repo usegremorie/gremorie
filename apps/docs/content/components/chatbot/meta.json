@@ -1,0 +1,22 @@
+{
+  "title": "Chatbot",
+  "pages": [
+    "prompt-input",
+    "message",
+    "conversation",
+    "reasoning",
+    "chain-of-thought",
+    "task",
+    "tool",
+    "sources",
+    "inline-citation",
+    "plan",
+    "checkpoint",
+    "confirmation",
+    "context",
+    "queue",
+    "suggestion",
+    "shimmer",
+    "model-selector"
+  ]
+}

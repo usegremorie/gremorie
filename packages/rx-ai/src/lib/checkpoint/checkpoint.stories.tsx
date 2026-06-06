@@ -42,7 +42,7 @@ import { Checkpoint, CheckpointIcon, CheckpointTrigger } from './checkpoint';
  * | `--border` | Trailing separator. |
  */
 const meta = {
-  title: 'AI/Checkpoint',
+  title: 'AI/Chatbot/Checkpoint',
   component: Checkpoint,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

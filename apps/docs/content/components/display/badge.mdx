@@ -3,7 +3,7 @@ title: Badge
 description: 'Compact label for status, counts, and tags. Six variants, optional asChild for link-style badges.'
 ---
 
-import { BadgePreview } from '@/components/preview/display/display';
+import { BadgePreview } from '@/components/preview/display/badge';
 import { Badge } from '@gremorie/rx-display';
 import { CheckIcon, AlertCircleIcon } from 'lucide-react';
 
@@ -15,9 +15,9 @@ Six variants ship by default: `default` (filled primary), `secondary`, `destruct
 
 ## Preview
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="display/badge">
   <BadgePreview />
-</div>
+</ComponentPreview>
 
 ## Installation
 

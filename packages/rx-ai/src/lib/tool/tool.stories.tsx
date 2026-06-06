@@ -12,7 +12,7 @@ import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from './tool';
  * matrix.
  */
 const meta = {
-  title: 'AI/Tool',
+  title: 'AI/Chatbot/Tool',
   component: ToolHeader,
   tags: ['autodocs'],
   argTypes: {
@@ -36,127 +36,45 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const InputStreaming: Story = {
-  name: 'State: input-streaming',
-  args: { state: 'input-streaming', type: 'tool-readFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'pa…' }} />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
-export const InputAvailable: Story = {
-  name: 'State: input-available',
-  args: { state: 'input-available', type: 'tool-readFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'packages/rx-ai/src/lib/tool/tool.tsx' }} />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
-export const ApprovalRequested: Story = {
-  name: 'State: approval-requested',
-  args: { state: 'approval-requested', type: 'tool-deleteFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'src/temp.log' }} />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
-export const ApprovalResponded: Story = {
-  name: 'State: approval-responded',
-  args: { state: 'approval-responded', type: 'tool-deleteFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'src/temp.log' }} />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
-export const OutputAvailable: Story = {
-  name: 'State: output-available',
-  args: { state: 'output-available', type: 'tool-readFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'README.md' }} />
-        <ToolOutput
-          errorText={undefined}
-          output={{
-            content: '# Gremorie\n\nAI-native design system.',
-            size: 42,
-          }}
-        />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
-export const OutputError: Story = {
-  name: 'State: output-error',
-  args: { state: 'output-error', type: 'tool-readFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'missing.txt' }} />
-        <ToolOutput
-          errorText="ENOENT: file not found at missing.txt"
-          output={undefined}
-        />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
-export const OutputDenied: Story = {
-  name: 'State: output-denied',
-  args: { state: 'output-denied', type: 'tool-deleteFile' },
-  render: (args) => (
-    <Tool defaultOpen={true}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'src/temp.log' }} />
-        <ToolOutput
-          errorText="User denied the destructive action."
-          output={undefined}
-        />
-      </ToolContent>
-    </Tool>
-  ),
-};
-
 /**
- * Collapsed - header alone, no body. Useful regression for the chevron
- * rotation when the tool starts closed.
+ * Playground - a full tool invocation. Drive the `state` control to walk every
+ * state in the ToolUIPart union; the status badge and the output (or error)
+ * adapt. The body shows the input and, for the output states, the result.
  */
-export const Collapsed: Story = {
+export const Playground: Story = {
   args: { state: 'output-available', type: 'tool-readFile' },
-  render: (args) => (
-    <Tool defaultOpen={false}>
-      <ToolHeader {...args} />
-      <ToolContent>
-        <ToolInput input={{ path: 'README.md' }} />
-        <ToolOutput errorText={undefined} output={{ content: 'hidden' }} />
-      </ToolContent>
-    </Tool>
-  ),
+  render: (args) => {
+    const isError =
+      args.state === 'output-error' || args.state === 'output-denied';
+    const hasOutput = args.state === 'output-available';
+    return (
+      <Tool defaultOpen={true}>
+        <ToolHeader {...args} />
+        <ToolContent>
+          <ToolInput input={{ path: 'README.md' }} />
+          {(hasOutput || isError) && (
+            <ToolOutput
+              errorText={
+                args.state === 'output-error'
+                  ? 'ENOENT: file not found at README.md'
+                  : args.state === 'output-denied'
+                    ? 'User denied the destructive action.'
+                    : undefined
+              }
+              output={
+                hasOutput
+                  ? {
+                      content: '# Gremorie\n\nAI-native design system.',
+                      size: 42,
+                    }
+                  : undefined
+              }
+            />
+          )}
+        </ToolContent>
+      </Tool>
+    );
+  },
 };
 
 /**
