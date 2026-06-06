@@ -3,6 +3,8 @@ title: Connection
 description: Bezier-curve connection line for in-progress edge drags. Pass to ReactFlow's connectionLineComponent prop for Gremorie-themed previews.
 ---
 
+import { ConnectionPreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Connection` is the live preview line that follows the cursor while the user drags from a source `Handle` to a target. It is a `ConnectionLineComponent` from `@xyflow/react`, rendered as a bezier curve with a small target circle so users can see exactly where the edge will land.
@@ -10,6 +12,12 @@ description: Bezier-curve connection line for in-progress edge drags. Pass to Re
 The path uses `var(--color-ring)` for the stroke and a white-filled circle at the cursor tip, so the connection visually matches Gremorie focus states. The `animated` class on the path enables xyflow's flowing dashes (override or remove via CSS if you want a static line).
 
 Use it by passing the component itself (not an instance) to `Canvas` through ReactFlow's `connectionLineComponent` prop.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <ConnectionPreview />
+</div>
 
 ## Installation
 

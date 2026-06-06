@@ -3,6 +3,8 @@ title: Canvas
 description: ReactFlow surface for visual workflows and agent graphs. Pre-configured for pan-on-scroll, drag selection and Backspace / Delete deletion.
 ---
 
+import { CanvasPreview } from '@/components/preview/ai/workflow';
+
 ## Overview
 
 `Canvas` is a thin Gremorie wrapper around `ReactFlow` from `@xyflow/react`. It sets the defaults Gremorie expects for AI workflow canvases: `panOnScroll`, `selectionOnDrag`, `fitView` on first render, deletion bound to `Backspace` and `Delete`, and a sidebar-toned `Background`.
@@ -10,6 +12,12 @@ description: ReactFlow surface for visual workflows and agent graphs. Pre-config
 Use it for any node-and-edge surface: agent flow editors, prompt graph visualizations, pipeline builders, multi-step LLM routing. Compose with `Node`, `Edge`, `Connection`, `Controls`, `Panel` and `Toolbar` from the same family.
 
 The xyflow stylesheet is imported at the module level (`@xyflow/react/dist/style.css`), so consuming projects do not need to manage it manually - though importing it once at the app entry is still recommended to avoid order-of-execution surprises.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <CanvasPreview />
+</div>
 
 ## Installation
 

@@ -3,6 +3,8 @@ title: PromptInput
 description: The cornerstone compose surface for any AI chat. A form-rooted state machine with auto-resizing textarea, attachment chips, action menu, speech input, model selector and a status-driven submit button.
 ---
 
+import { PromptInputPreview } from '@/components/preview/ai/chatbot';
+
 ## Overview
 
 `PromptInput` is the largest primitive in `@gremorie/rx-ai`. It is a `<form>`-rooted state machine that composes an `InputGroup` from `@gremorie/rx-forms` (textarea + addons rendered as one cohesive surface) with the full set of chat-input affordances: file attachments with hover-card previews, an action menu, a speech-to-text button, a model selector, in-input action buttons and a status-driven submit button whose icon flips between arrow / spinner / stop / X depending on chat state.
@@ -14,6 +16,12 @@ State is managed in three layers:
 3. **Controlled textarea**. The provider's `textInput.value` / `textInput.setInput` drive `PromptInputTextarea` automatically when the provider is present.
 
 The component also carries an enforced keyboard contract: Enter submits, Shift+Enter newlines, Backspace on an empty textarea removes the last attachment, paste-with-files attaches automatically, IME composition events are honored. Submit is wired through `form.requestSubmit()` so HTML form validation still applies.
+
+## Preview
+
+<div className="rounded-lg border p-6 not-prose">
+  <PromptInputPreview />
+</div>
 
 ## Installation
 
