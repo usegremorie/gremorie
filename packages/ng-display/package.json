@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-display",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Display primitives for Angular - Card and Badge. Companion to Spartan-ng (fills the gap for Card and Badge). Part of Gremorie.",
   "license": "MIT",
   "repository": {
