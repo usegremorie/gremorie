@@ -30,6 +30,7 @@ const RX_PACKAGES = [
 const config: StorybookConfig = {
   stories: [
     '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../rx-core/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-artifacts/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-forms/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-display/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
