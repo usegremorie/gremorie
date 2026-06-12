@@ -19,6 +19,8 @@
 
 @import 'tailwindcss';
 @import '@gremorie/tokens/theme.css';
+/* `@custom-variant dark (.dark)` is defined once in @gremorie/tokens/theme.css
+   (imported above) and inherited here - see that file for the rationale. */
 
 /* Every utility used by any React-edition component, so a category install is
    styled out of the box without the consumer configuring Tailwind @source. */
