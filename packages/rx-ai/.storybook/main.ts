@@ -25,6 +25,7 @@ const RX_PACKAGES = [
   'rx-navigation',
   'rx-containers',
   'rx-data',
+  'rx-icons',
 ] as const;
 
 const config: StorybookConfig = {

@@ -45,6 +45,7 @@ import {
 } from './prompt-input-context';
 import { Context, ContextTrigger } from '../context';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@gremorie/rx-overlays';
+import { ClaudeIcon, GeminiIcon, OpenAiIcon } from '@gremorie/rx-icons';
 
 type ModelOption = {
   id: string;
@@ -201,10 +202,22 @@ const B2B_MODES = [
 ];
 
 const B2B_MODELS = [
-  { id: 'claude-opus-4-8', label: 'Claude Opus 4.8' },
-  { id: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6' },
-  { id: 'gpt-5', label: 'GPT-5' },
-  { id: 'gemini-2-5-pro', label: 'Gemini 2.5 Pro' },
+  {
+    id: 'claude-opus-4-8',
+    label: 'Claude Opus 4.8',
+    icon: <ClaudeIcon className="size-4" />,
+  },
+  {
+    id: 'claude-sonnet-4-6',
+    label: 'Claude Sonnet 4.6',
+    icon: <ClaudeIcon className="size-4" />,
+  },
+  { id: 'gpt-5', label: 'GPT-5', icon: <OpenAiIcon className="size-4" /> },
+  {
+    id: 'gemini-2-5-pro',
+    label: 'Gemini 2.5 Pro',
+    icon: <GeminiIcon className="size-4" />,
+  },
 ];
 
 // Example context catalogue for the "@ Add context" command palette.
@@ -349,6 +362,7 @@ const B2BPromptInput = ({
           <PromptInputSelectContent>
             {B2B_MODELS.map((model) => (
               <PromptInputSelectItem key={model.id} value={model.id}>
+                {model.icon}
                 {model.label}
               </PromptInputSelectItem>
             ))}
