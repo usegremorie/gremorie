@@ -27,7 +27,23 @@ feature/* → develop → staging → main
 - [ ] Accessibility passes (axe-core)
 - [ ] Coverage > 80% on touched code
 - [ ] Component docs checklist complete (if touching a component)
+- [ ] Semantic tokens only — no hardcoded hex/rgb/oklch and no `--color-*`
+      primitives in components; dark mode stays class-based (see below)
 - [ ] Changeset added
+
+## Color, tokens & dark mode
+
+Two-tier, class-based. The full rules live in `AGENTS.md` ("Color, tokens & dark
+mode"). The essentials:
+
+- Source of truth: `@gremorie/tokens` (`packages/tokens/styles/theme.css`).
+  Components use **semantic tokens only** (`bg-card`, `text-foreground`, …),
+  never primitives or hardcoded colors.
+- Dark mode is the **`.dark` class**, not `@media (prefers-color-scheme: dark)`.
+  The `dark:` Tailwind variant is bound to that class once, in `theme.css`.
+- **Any new Tailwind entry** (`@import "tailwindcss"`) must import
+  `@gremorie/tokens/theme.css` so it inherits the class-based `dark:` variant.
+  Omitting it lets OS dark preference break light surfaces — a shipped bug.
 
 ## Local setup
 

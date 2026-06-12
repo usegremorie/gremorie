@@ -64,6 +64,31 @@ Before claiming something is done:
   (the user runs publishes). Branch off `develop`. Install with
   `npm install --legacy-peer-deps`.
 
+## Color, tokens & dark mode (two-tier, class-based)
+
+- **Source of truth**: `packages/tokens/styles/theme.css` (`@gremorie/tokens`).
+  Layer 1 primitives (`--color-*` scales) feed Layer 2 semantics
+  (`--background`, `--card`, `--primary`, `--input`, `--border`, `--ring`,
+  `--muted`, `--accent`, `--destructive`, `--sidebar-*`, `--chart-*`, …). Named
+  themes opt in via `data-theme="<name>"` and live in `themes/`.
+- **Components consume semantic tokens only** (`bg-card`, `text-foreground`,
+  `border-input`, …). Never reference `--color-*` primitives directly, never
+  hardcode hex / rgb / hsl / oklch in `className` or `style`. (Inline SVG may use
+  `currentColor` or `var(--color-*)`.)
+- **Dark mode is class-driven** — a `.dark` class on the root (set by the host
+  app or the Storybook Theme/Dark toolbar), NOT
+  `@media (prefers-color-scheme: dark)`. Tailwind v4's `dark:` variant is bound
+  to that class with `@custom-variant dark (&:where(.dark, .dark *))`, declared
+  **once** in `theme.css`. **Every Tailwind entry** (anything with
+  `@import "tailwindcss"`) MUST import `@gremorie/tokens/theme.css` so it
+  inherits the variant. Skip it and the OS/browser dark preference fires
+  `dark:*` utilities while the token theme stays light — a white surface with
+  dark controls (`dark:bg-input/30`). That exact class-vs-media mismatch shipped
+  as a real bug; treat a new Tailwind entry without the tokens import as broken.
+- **Validate** themes and dark mode via the Storybook Theme/Dark toolbar. Do NOT
+  judge colors through a browser dark-mode extension or forced-dark flag — it
+  re-tints the rendered page and masks the real CSS.
+
 ## Where the deeper standards live
 
 - Binary docs checklist + template: `apps/docs/content/platform/internal/documentation-standard.mdx`
