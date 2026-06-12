@@ -88,7 +88,7 @@ const ContextIcon = () => {
         cx={ICON_CENTER}
         cy={ICON_CENTER}
         fill="none"
-        opacity="0.7"
+        opacity="1"
         r={ICON_RADIUS}
         stroke="currentColor"
         strokeDasharray={`${circumference} ${circumference}`}

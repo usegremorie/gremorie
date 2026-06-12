@@ -51,6 +51,10 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from '@gremorie/rx-overlays';
 import {
   CornerDownLeftIcon,
@@ -339,7 +343,7 @@ export function PromptInputAttachment({
             </div>
             <Button
               aria-label="Remove attachment"
-              className="absolute inset-0 size-5 cursor-pointer rounded p-0 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 [&>svg]:size-2.5"
+              className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-6 cursor-pointer rounded p-0 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 [&>svg]:size-2.5"
               onClick={(e) => {
                 e.stopPropagation();
                 attachments.remove(data.id);
@@ -358,7 +362,7 @@ export function PromptInputAttachment({
       <PromptInputHoverCardContent className="w-auto p-2">
         <div className="w-auto space-y-3">
           {isImage && (
-            <div className="flex max-h-96 w-96 items-center justify-center overflow-hidden rounded-md border">
+            <div className="flex max-h-64 w-64 items-center justify-center overflow-hidden rounded-md border">
               <img
                 alt={filename || 'attachment preview'}
                 className="max-h-full max-w-full object-contain"
@@ -773,7 +777,7 @@ export const PromptInput = ({
   };
 
   const inner = (
-    <>
+    <TooltipProvider>
       <input
         accept={accept}
         aria-label="Upload files"
@@ -790,9 +794,11 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        <InputGroup className="overflow-hidden">{children}</InputGroup>
+        <InputGroup className="overflow-hidden bg-card dark:bg-card">
+          {children}
+        </InputGroup>
       </form>
-    </>
+    </TooltipProvider>
   );
 
   return usingProvider ? (
@@ -957,18 +963,27 @@ export const PromptInputTextarea = ({
 // PromptInputButton - InputGroupButton wrapper for in-input actions
 // ============================================================================
 
-export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton>;
+export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
+  /**
+   * Optional hover/focus tooltip. When set, the button is wrapped in a
+   * `Tooltip` (the `PromptInput` root already provides a `TooltipProvider`,
+   * so this works out of the box). Reserve it for non-critical hints such as
+   * icon labels or keyboard shortcuts.
+   */
+  tooltip?: ReactNode;
+};
 
 export const PromptInputButton = ({
   variant = 'ghost',
   className,
   size,
+  tooltip,
   ...props
 }: PromptInputButtonProps) => {
   const newSize =
     size ?? (Children.count(props.children) > 1 ? 'sm' : 'icon-sm');
 
-  return (
+  const button = (
     <InputGroupButton
       className={cn(className)}
       size={newSize}
@@ -976,6 +991,17 @@ export const PromptInputButton = ({
       variant={variant}
       {...props}
     />
+  );
+
+  if (!tooltip) {
+    return button;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
   );
 };
 
@@ -985,6 +1011,8 @@ export const PromptInputButton = ({
 
 export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
   status?: ChatStatus;
+  /** Optional hover/focus tooltip, wrapped via the root `TooltipProvider`. */
+  tooltip?: ReactNode;
 };
 
 export const PromptInputSubmit = ({
@@ -993,6 +1021,7 @@ export const PromptInputSubmit = ({
   size = 'icon-sm',
   status,
   children,
+  tooltip,
   ...props
 }: PromptInputSubmitProps) => {
   let Icon: ReactNode = <CornerDownLeftIcon className="size-4" />;
@@ -1005,7 +1034,7 @@ export const PromptInputSubmit = ({
     Icon = <XIcon className="size-4" />;
   }
 
-  return (
+  const button = (
     <InputGroupButton
       aria-label="Submit"
       className={cn(className)}
@@ -1016,6 +1045,17 @@ export const PromptInputSubmit = ({
     >
       {children ?? Icon}
     </InputGroupButton>
+  );
+
+  if (!tooltip) {
+    return button;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
   );
 };
 
@@ -1265,9 +1305,16 @@ export type PromptInputSelectContentProps = ComponentProps<
 
 export const PromptInputSelectContent = ({
   className,
+  position = 'popper',
+  sideOffset = 4,
   ...props
 }: PromptInputSelectContentProps) => (
-  <SelectContent className={cn(className)} {...props} />
+  <SelectContent
+    className={cn(className)}
+    position={position}
+    sideOffset={sideOffset}
+    {...props}
+  />
 );
 
 export type PromptInputSelectItemProps = ComponentProps<typeof SelectItem>;
