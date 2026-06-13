@@ -25,11 +25,13 @@ const RX_PACKAGES = [
   'rx-navigation',
   'rx-containers',
   'rx-data',
+  'rx-icons',
 ] as const;
 
 const config: StorybookConfig = {
   stories: [
     '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../rx-core/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-artifacts/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-forms/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-display/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
@@ -38,6 +40,8 @@ const config: StorybookConfig = {
     '../../rx-navigation/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-containers/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../rx-data/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    // Blocks: app-level compositions (registry templates) showcased here too.
+    '../../../apps/docs/components/preview/blocks/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: ['@storybook/addon-docs'],
   framework: { name: '@storybook/react-vite', options: {} },
@@ -46,6 +50,15 @@ const config: StorybookConfig = {
     const root = process.cwd();
     cfg.plugins = cfg.plugins ?? [];
     cfg.plugins.push(tailwindcss());
+    // Block previews live in apps/docs (outside the React Babel plugin's scope),
+    // so Vite's esbuild transforms them. Force the automatic JSX runtime there
+    // too, otherwise their JSX compiles to classic React.createElement and
+    // throws "React is not defined" (the files follow the no-React-import rule).
+    cfg.esbuild = {
+      ...(cfg.esbuild as Record<string, unknown> | undefined),
+      jsx: 'automatic',
+      jsxImportSource: 'react',
+    };
     cfg.resolve = cfg.resolve ?? {};
     // Resolve TS source BEFORE .js, so a stray compiled file accidentally
     // emitted next to a .tsx (e.g. a misconfigured tsc run) can never shadow

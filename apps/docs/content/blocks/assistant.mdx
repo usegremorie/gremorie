@@ -1,0 +1,128 @@
+---
+title: Assistant
+description: 'The flagship Gremorie chat surface — Conversation, Message, Reasoning, an inline Artifact, Sources and a B2B PromptInput composer, fully composed.'
+---
+
+## Overview
+
+The Assistant is the flagship Gremorie block: a production-ready chat surface
+with a thread switcher and actions header, a streaming conversation (reasoning,
+an inline generated artifact, sources, response branches with actions), and a
+floating **B2B PromptInput composer** — context picker, a token-usage meter,
+mode and model selectors, web search, attachments, voice and a status-aware
+submit.
+
+Wire `onSubmit` to the AI SDK or any streaming endpoint and you get a full
+assistant experience in a single import.
+
+## Preview
+
+<BlockPreview name="assistant" />
+
+## Anatomy
+
+| Part                    | Role                                                                                                                                                            |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AssistantHeader**     | Thread/history switcher (left); Sources, Share and an overflow menu (right)                                                                                     |
+| **AssistantContent**    | The conversation — messages with `Reasoning`, an inline generated `Artifact`, `Sources`, and response `MessageBranch` + `MessageActions`                        |
+| **AssistantComposer**   | The floating `PromptInput` (B2B): `PromptInputContext`, the `Context` usage meter, mode + model selectors, web search, attach, voice, and a status-aware submit |
+| **AssistantDisclaimer** | The "can make mistakes" footnote                                                                                                                                |
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-assistant
+```
+
+</Tab>
+
+</Tabs>
+
+## Composition
+
+The block composes (condensed — the full, runnable source installs via the CLI
+above):
+
+```tsx
+<TooltipProvider>
+  {/* AssistantHeader — thread switcher + actions */}
+  <Conversation>
+    <ConversationContent>
+      <Message from="user">…</Message>
+      <Message from="assistant">
+        <MessageBranch>
+          <Reasoning />
+          <MessageResponse />
+          <Artifact /> {/* inline generated document */}
+          <Sources />
+          <MessageToolbar>{/* actions + branch selector */}</MessageToolbar>
+        </MessageBranch>
+      </Message>
+    </ConversationContent>
+  </Conversation>
+
+  {/* AssistantComposer — the B2B PromptInput */}
+  <Suggestions />
+  <PromptInput>
+    <PromptInputHeader>
+      <PromptInputContext />
+      <Context>
+        <ContextTrigger />
+        <ContextContent>{/* usage breakdown + cost */}</ContextContent>
+      </Context>
+    </PromptInputHeader>
+    <PromptInputBody>
+      <PromptInputTextarea />
+    </PromptInputBody>
+    <PromptInputFooter>
+      <PromptInputTools>{/* mode + model selects */}</PromptInputTools>
+      <PromptInputTools className="gap-2">
+        <PromptInputTools>{/* search · attach · voice */}</PromptInputTools>
+        <PromptInputSubmit />
+      </PromptInputTools>
+    </PromptInputFooter>
+  </PromptInput>
+</TooltipProvider>
+```
+
+## Customization
+
+- Wire `onSubmit` to the AI SDK's `sendMessage` or your streaming endpoint
+- Stream `Reasoning` while `isStreaming` is true for auto-collapse on completion
+- The composer is the B2B `PromptInput` — adjust the `PromptInputContext` items, the mode/model presets, and the `Context` usage meter
+- Swap `MessageContent` for `MessageResponse` (Streamdown) for server-streamed markdown
+
+## Related
+
+- [Conversation](/components/chatbot/conversation)
+- [Message](/components/chatbot/message)
+- [Reasoning](/components/chatbot/reasoning)
+- [Prompt Input](/components/chatbot/prompt-input)
