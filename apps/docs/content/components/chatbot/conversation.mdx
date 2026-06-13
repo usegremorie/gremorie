@@ -26,6 +26,16 @@ Use it as the parent of any `Message` stream. Use `ConversationEmptyState` for t
   <ConversationEmptyPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Conversation
+├─ ConversationContent
+│  ├─ ConversationEmptyState   shown when empty
+│  └─ Message …                the messages (see Message)
+└─ ConversationScrollButton    scroll-to-bottom
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

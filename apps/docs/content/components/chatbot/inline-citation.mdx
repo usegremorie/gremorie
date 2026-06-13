@@ -17,6 +17,19 @@ Use it for citations that belong to a specific phrase inside the assistant text.
   <InlineCitationPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+InlineCitation
+├─ InlineCitationText             the cited span
+└─ InlineCitationCard             hover card
+   ├─ InlineCitationCardTrigger   hostname badge
+   └─ InlineCitationCardBody
+      ├─ InlineCitationSource
+      ├─ InlineCitationQuote
+      └─ InlineCitationCarousel   when multiple sources
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

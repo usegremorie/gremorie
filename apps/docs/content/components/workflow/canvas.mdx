@@ -19,6 +19,16 @@ The xyflow stylesheet is imported at the module level (`@xyflow/react/dist/style
   <CanvasPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Canvas                    React Flow viewport
+├─ Node …                 nodeTypes (custom renderers)
+├─ Edge …                 edgeTypes (Edge.Temporary · Edge.Animated)
+├─ Connection             in-progress connection line
+└─ overlays (children)    Panel · Controls · Toolbar
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

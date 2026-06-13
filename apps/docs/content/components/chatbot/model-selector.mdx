@@ -17,6 +17,19 @@ Use it as the model switch in the chat shell - either as a discrete button in th
   <ModelSelectorPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ModelSelector
+├─ ModelSelectorTrigger          selected model (logo + name)
+└─ ModelSelectorContent          command palette (popover or dialog)
+   ├─ ModelSelectorInput         search
+   ├─ ModelSelectorEmpty
+   └─ ModelSelectorList
+      └─ ModelSelectorGroup       per provider
+         └─ ModelSelectorItem     logo + name + shortcut
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
