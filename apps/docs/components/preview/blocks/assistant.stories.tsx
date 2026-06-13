@@ -27,8 +27,7 @@ import type { Meta, StoryObj } from '@storybook/react';
  * │           │  ├─ Artifact          inline generated document
  * │           │  └─ Sources
  * │           └─ MessageToolbar       MessageActions + MessageBranchSelector
- * ├─ Suggestions → Suggestion
- * └─ PromptInput                      the B2B composer (see PromptInput)
+ * └─ PromptInput                      floating B2B composer (see PromptInput)
  * ```
  */
 const meta = {
