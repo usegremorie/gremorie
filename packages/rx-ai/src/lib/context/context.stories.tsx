@@ -26,15 +26,18 @@ import {
  *
  * ## Anatomy
  *
- * - **Context** — provider holding `usedTokens`, `maxTokens`, `usage`, `modelId`;
- *   wraps a `HoverCard`.
- * - **ContextTrigger** — the percentage + ring gauge button.
- * - **ContextContent** — the hovercard popover.
- * - **ContextContentHeader** — percentage, used/total and a progress bar.
- * - **ContextContentBody** — wraps the per-category usage rows.
- * - **ContextContentFooter** — total cost row (secondary background).
- * - **ContextInputUsage / OutputUsage / ReasoningUsage / CacheUsage** — one row
- *   each; auto-hidden when that token count is zero.
+ * ```text
+ * Context                      token-usage hovercard (HoverCard)
+ * ├─ ContextTrigger            % + ring gauge button
+ * └─ ContextContent
+ *    ├─ ContextContentHeader    % + used/total + progress bar
+ *    ├─ ContextContentBody
+ *    │  ├─ ContextInputUsage
+ *    │  ├─ ContextOutputUsage
+ *    │  ├─ ContextReasoningUsage
+ *    │  └─ ContextCacheUsage     (each auto-hidden when zero)
+ *    └─ ContextContentFooter    total cost
+ * ```
  *
  * ## Props
  *

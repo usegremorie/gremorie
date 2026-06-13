@@ -51,6 +51,14 @@ import { Edge } from './edge';
  * | --- | --- |
  * | `--ring` | Stroke color of the temporary edge. |
  * | `--primary` | Fill of the animated traveling dot. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Edge                  custom React Flow edge
+ * ├─ Edge.Temporary     dashed provisional edge
+ * └─ Edge.Animated      solid edge with a traveling dot
+ * ```
  */
 const meta = {
   title: 'AI/Workflow/Edge',

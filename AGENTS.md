@@ -57,6 +57,10 @@ Before claiming something is done:
   under `apps/docs/components/preview/<area>/<component>.tsx`. This mirrors the
   AI Elements / shadcn pattern. A `## Preview` that only renders, with the code
   in a separate hand-written section, is below the bar.
+- **Anatomy is mandatory, in two places**: every component documents its
+  subcomponent **hierarchy tree** (a `├─` code block of the real component
+  names) in BOTH its Storybook autodocs (`## Anatomy` in the story `meta`
+  JSDoc) AND its Fumadocs page. See `documentation-standard.mdx` item #4.
 - **rx-ai / AI components**: faithful to the official AI Elements source (names,
   subcomponents, variants, behaviour), adapted to Gremorie primitives + tokens.
 - **Storybook**: titles mirror the docs nav (`<Section>/<Category>/<Name>`).
