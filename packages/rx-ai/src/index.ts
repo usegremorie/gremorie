@@ -2,6 +2,7 @@
 export * from './lib/prompt-input';
 
 // Chatbot family (Fase 5j - Batch 1)
+export * from './lib/attachments';
 export * from './lib/chain-of-thought';
 export * from './lib/checkpoint';
 export * from './lib/confirmation';

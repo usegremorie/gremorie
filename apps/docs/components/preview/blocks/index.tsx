@@ -1,4 +1,4 @@
-import { ChatSurface } from './chat-surface';
+import { Assistant } from './assistant';
 import { Dashboard } from './dashboard';
 import { EmptyState } from './empty-state';
 import { MarketingHero } from './marketing-hero';
@@ -8,7 +8,7 @@ import { SignIn } from './sign-in';
 const blocks = {
   'sign-in': SignIn,
   dashboard: Dashboard,
-  'chat-surface': ChatSurface,
+  assistant: Assistant,
   'settings-form': SettingsForm,
   'marketing-hero': MarketingHero,
   'empty-state': EmptyState,

@@ -1131,7 +1131,8 @@
         "rx-dialog",
         "rx-dropdown-menu",
         "rx-hover-card",
-        "rx-command"
+        "rx-command",
+        "rx-attachments"
       ]
     },
     {
@@ -1358,6 +1359,22 @@
         "rx-button",
         "rx-hover-card",
         "rx-progress"
+      ]
+    },
+    {
+      "name": "rx-attachments",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Attachments (React)",
+      "description": "Composable, standalone Attachment family for chat surfaces - Attachments container (grid | inline | list variants), Attachment item, AttachmentPreview, AttachmentInfo, AttachmentRemove, AttachmentHoverCard, and AttachmentEmpty, plus getMediaCategory / getAttachmentLabel utilities. Auto-detects image, video, audio, document and source media. Reusable across PromptInput and Message.",
+      "categories": [
+        "ai",
+        "chatbot"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button",
+        "rx-hover-card"
       ]
     },
     {
@@ -1723,11 +1740,11 @@
       ]
     },
     {
-      "name": "block-chat-surface",
+      "name": "block-assistant",
       "type": "registry:block",
       "framework": "rx",
-      "title": "Chat surface block",
-      "description": "AI chat surface: Conversation log with stick-to-bottom scrolling, user and assistant Messages, Reasoning collapsible, and a PromptInput composer.",
+      "title": "Assistant block",
+      "description": "The flagship Gremorie chat surface: a thread/actions header, a streaming conversation with reasoning, an inline generated artifact, sources and response branches, plus a floating B2B PromptInput composer (context picker, usage meter, mode/model selectors, attachments and voice).",
       "categories": [
         "blocks",
         "ai",
@@ -1738,7 +1755,14 @@
         "rx-conversation",
         "rx-message",
         "rx-reasoning",
-        "rx-prompt-input"
+        "rx-sources",
+        "rx-suggestion",
+        "rx-context",
+        "rx-prompt-input",
+        "rx-artifact",
+        "rx-button",
+        "rx-dropdown-menu",
+        "rx-tooltip"
       ]
     },
     {

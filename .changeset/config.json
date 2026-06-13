@@ -16,6 +16,7 @@
       "@gremorie/rx-containers",
       "@gremorie/rx-data",
       "@gremorie/rx-navigation",
+      "@gremorie/rx-icons",
       "@gremorie/ng-core",
       "@gremorie/ng-ai",
       "@gremorie/ng-display",

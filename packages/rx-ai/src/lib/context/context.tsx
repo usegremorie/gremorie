@@ -18,6 +18,30 @@ const ICON_VIEWBOX = 24;
 const ICON_CENTER = 12;
 const ICON_STROKE_WIDTH = 2;
 
+// Clamp a fraction to [0, 1] so an over-budget context (usedTokens > maxTokens)
+// never pushes the ring gauge or the progress bar past full.
+const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
+
+// Raw used fraction. Guards a zero/negative window (no NaN/Infinity); may still
+// exceed 1 so the *number* can honestly read "107%" while the visuals clamp.
+const usedFraction = (used: number, max: number) => (max > 0 ? used / max : 0);
+
+const percentFormatter = new Intl.NumberFormat('en-US', {
+  style: 'percent',
+  maximumFractionDigits: 1,
+});
+const compactFormatter = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+});
+const usdFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+const formatPercent = (fraction: number) => percentFormatter.format(fraction);
+const formatCompact = (value: number) => compactFormatter.format(value);
+const formatUSD = (value: number) => usdFormatter.format(value);
+
 type ModelId = string;
 
 type ContextSchema = {
@@ -63,14 +87,15 @@ export const Context = ({
 const ContextIcon = () => {
   const { usedTokens, maxTokens } = useContextValue();
   const circumference = 2 * Math.PI * ICON_RADIUS;
-  const usedPercent = usedTokens / maxTokens;
-  const dashOffset = circumference * (1 - usedPercent);
+  const fraction = clamp01(usedFraction(usedTokens, maxTokens));
+  const dashOffset = circumference * (1 - fraction);
 
+  // Decorative: the consumed percentage is announced via the trigger's label.
   return (
     <svg
-      aria-label="Model context usage"
+      aria-hidden="true"
+      focusable="false"
       height="20"
-      role="img"
       style={{ color: 'currentcolor' }}
       viewBox={`0 0 ${ICON_VIEWBOX} ${ICON_VIEWBOX}`}
       width="20"
@@ -88,7 +113,7 @@ const ContextIcon = () => {
         cx={ICON_CENTER}
         cy={ICON_CENTER}
         fill="none"
-        opacity="0.7"
+        opacity="1"
         r={ICON_RADIUS}
         stroke="currentColor"
         strokeDasharray={`${circumference} ${circumference}`}
@@ -105,16 +130,20 @@ export type ContextTriggerProps = ComponentProps<typeof Button>;
 
 export const ContextTrigger = ({ children, ...props }: ContextTriggerProps) => {
   const { usedTokens, maxTokens } = useContextValue();
-  const usedPercent = usedTokens / maxTokens;
-  const renderedPercent = new Intl.NumberFormat('en-US', {
-    style: 'percent',
-    maximumFractionDigits: 1,
-  }).format(usedPercent);
+  const renderedPercent = formatPercent(usedFraction(usedTokens, maxTokens));
+  const usageLabel = `Context window: ${renderedPercent} used (${formatCompact(
+    usedTokens,
+  )} of ${formatCompact(maxTokens)} tokens)`;
 
   return (
     <HoverCardTrigger asChild>
       {children ?? (
-        <Button type="button" variant="ghost" {...props}>
+        <Button
+          aria-label={usageLabel}
+          type="button"
+          variant="ghost"
+          {...props}
+        >
           <span className="font-medium text-muted-foreground">
             {renderedPercent}
           </span>
@@ -145,17 +174,10 @@ export const ContextContentHeader = ({
   ...props
 }: ContextContentHeaderProps) => {
   const { usedTokens, maxTokens } = useContextValue();
-  const usedPercent = usedTokens / maxTokens;
-  const displayPct = new Intl.NumberFormat('en-US', {
-    style: 'percent',
-    maximumFractionDigits: 1,
-  }).format(usedPercent);
-  const used = new Intl.NumberFormat('en-US', {
-    notation: 'compact',
-  }).format(usedTokens);
-  const total = new Intl.NumberFormat('en-US', {
-    notation: 'compact',
-  }).format(maxTokens);
+  const fraction = usedFraction(usedTokens, maxTokens);
+  const displayPct = formatPercent(fraction);
+  const used = formatCompact(usedTokens);
+  const total = formatCompact(maxTokens);
 
   return (
     <div className={cn('w-full space-y-2 p-3', className)} {...props}>
@@ -168,7 +190,10 @@ export const ContextContentHeader = ({
             </p>
           </div>
           <div className="space-y-2">
-            <Progress className="bg-muted" value={usedPercent * PERCENT_MAX} />
+            <Progress
+              className="bg-muted"
+              value={clamp01(fraction) * PERCENT_MAX}
+            />
           </div>
         </>
       )}
@@ -205,10 +230,7 @@ export const ContextContentFooter = ({
         },
       }).costUSD?.totalUSD
     : undefined;
-  const totalCost = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(costUSD ?? 0);
+  const totalCost = formatUSD(costUSD ?? 0);
 
   return (
     <div
@@ -252,10 +274,6 @@ export const ContextInputUsage = ({
         usage: { input: inputTokens, output: 0 },
       }).costUSD?.totalUSD
     : undefined;
-  const inputCostText = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(inputCost ?? 0);
 
   return (
     <div
@@ -263,7 +281,10 @@ export const ContextInputUsage = ({
       {...props}
     >
       <span className="text-muted-foreground">Input</span>
-      <TokensWithCost costText={inputCostText} tokens={inputTokens} />
+      <TokensWithCost
+        costText={formatUSD(inputCost ?? 0)}
+        tokens={inputTokens}
+      />
     </div>
   );
 };
@@ -292,10 +313,6 @@ export const ContextOutputUsage = ({
         usage: { input: 0, output: outputTokens },
       }).costUSD?.totalUSD
     : undefined;
-  const outputCostText = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(outputCost ?? 0);
 
   return (
     <div
@@ -303,7 +320,10 @@ export const ContextOutputUsage = ({
       {...props}
     >
       <span className="text-muted-foreground">Output</span>
-      <TokensWithCost costText={outputCostText} tokens={outputTokens} />
+      <TokensWithCost
+        costText={formatUSD(outputCost ?? 0)}
+        tokens={outputTokens}
+      />
     </div>
   );
 };
@@ -332,10 +352,6 @@ export const ContextReasoningUsage = ({
         usage: { reasoningTokens },
       }).costUSD?.totalUSD
     : undefined;
-  const reasoningCostText = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(reasoningCost ?? 0);
 
   return (
     <div
@@ -343,7 +359,10 @@ export const ContextReasoningUsage = ({
       {...props}
     >
       <span className="text-muted-foreground">Reasoning</span>
-      <TokensWithCost costText={reasoningCostText} tokens={reasoningTokens} />
+      <TokensWithCost
+        costText={formatUSD(reasoningCost ?? 0)}
+        tokens={reasoningTokens}
+      />
     </div>
   );
 };
@@ -372,10 +391,6 @@ export const ContextCacheUsage = ({
         usage: { cacheReads: cacheTokens, input: 0, output: 0 },
       }).costUSD?.totalUSD
     : undefined;
-  const cacheCostText = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(cacheCost ?? 0);
 
   return (
     <div
@@ -383,7 +398,10 @@ export const ContextCacheUsage = ({
       {...props}
     >
       <span className="text-muted-foreground">Cache</span>
-      <TokensWithCost costText={cacheCostText} tokens={cacheTokens} />
+      <TokensWithCost
+        costText={formatUSD(cacheCost ?? 0)}
+        tokens={cacheTokens}
+      />
     </div>
   );
 };
@@ -396,11 +414,7 @@ const TokensWithCost = ({
   costText?: string;
 }) => (
   <span>
-    {tokens === undefined
-      ? '—'
-      : new Intl.NumberFormat('en-US', {
-          notation: 'compact',
-        }).format(tokens)}
+    {tokens === undefined ? '—' : formatCompact(tokens)}
     {costText ? (
       <span className="ml-2 text-muted-foreground">• {costText}</span>
     ) : null}
