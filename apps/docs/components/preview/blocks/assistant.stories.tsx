@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Assistant } from './assistant';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * Assistant - the Gremorie standard chat block. A complete, B2B-ready chat
