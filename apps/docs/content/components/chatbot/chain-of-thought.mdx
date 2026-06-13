@@ -26,6 +26,18 @@ It is collapsible by default so the answer stays the focus, but expanding reveal
   <ChainOfThoughtSearchPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ChainOfThought
+├─ ChainOfThoughtHeader
+└─ ChainOfThoughtStep              one per reasoning step
+   ├─ ChainOfThoughtContent
+   ├─ ChainOfThoughtSearchResults
+   │  └─ ChainOfThoughtSearchResult
+   └─ ChainOfThoughtImage
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

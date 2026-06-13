@@ -40,6 +40,25 @@ Use it as the atomic unit of any conversation: one `Message` per turn, composed 
   <MessagePairPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Message
+├─ MessageContent
+├─ MessageResponse        Streamdown markdown
+├─ MessageAttachments
+│  └─ MessageAttachment
+└─ MessageToolbar
+   ├─ MessageActions
+   │  └─ MessageAction
+   └─ MessageBranch
+      ├─ MessageBranchContent
+      └─ MessageBranchSelector
+         ├─ MessageBranchPrevious
+         ├─ MessageBranchPage
+         └─ MessageBranchNext
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
