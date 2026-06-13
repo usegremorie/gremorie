@@ -10,12 +10,12 @@ import {
 } from 'lucide-react';
 
 import {
-  PromptInputContext,
-  type PromptInputContextItem,
-} from './prompt-input-context';
+  PromptInputMentions,
+  type PromptInputMentionsItem,
+} from './prompt-input-mentions';
 
 /**
- * # PromptInputContext — "@ Add context"
+ * # PromptInputMentions — "@ Add context"
  *
  * The context picker for the PromptInput header: a searchable command palette
  * behind an `@` trigger, plus a removable chip per selected item. It owns its
@@ -39,7 +39,7 @@ import {
  *
  * | Prop | Type | Default | Description |
  * | --- | --- | --- | --- |
- * | `items` | `PromptInputContextItem[]` | — | Available context, grouped in declaration order. |
+ * | `items` | `PromptInputMentionsItem[]` | — | Available context, grouped in declaration order. |
  * | `value` | `string[]` | — | Controlled selected ids. |
  * | `defaultValue` | `string[]` | `[]` | Uncontrolled initial selection. |
  * | `onValueChange` | `(ids: string[]) => void` | — | Fires with the next selection. |
@@ -48,8 +48,8 @@ import {
  * | `tooltip` | `ReactNode` | `'Add context'` | Trigger tooltip (`null` to disable). |
  */
 const meta = {
-  title: 'AI/Chatbot/PromptInput/Add Context',
-  component: PromptInputContext,
+  title: 'AI/Chatbot/PromptInput/Mentions',
+  component: PromptInputMentions,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
   decorators: [
@@ -64,12 +64,12 @@ const meta = {
     placeholder: { control: 'text' },
     emptyText: { control: 'text' },
   },
-} satisfies Meta<typeof PromptInputContext>;
+} satisfies Meta<typeof PromptInputMentions>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const ITEMS: PromptInputContextItem[] = [
+const ITEMS: PromptInputMentionsItem[] = [
   {
     id: 'q3-revenue',
     label: 'Q3 revenue.csv',

@@ -21,7 +21,7 @@ import { AtSignIcon, CheckIcon, XIcon } from 'lucide-react';
 import { type ComponentProps, type ReactNode, useMemo, useState } from 'react';
 
 // ============================================================================
-// PromptInputContext - "@ Add context" command palette + selected-context chips
+// PromptInputMentions - "@ Add context" command palette + selected-context chips
 //
 // A self-contained, stateful affordance for the PromptInput header. It owns the
 // set of selected context items and renders both the trigger and the chips, so
@@ -36,7 +36,7 @@ import { type ComponentProps, type ReactNode, useMemo, useState } from 'react';
 // ModelSelector. Selection is controllable via `value` / `onValueChange`.
 // ============================================================================
 
-export type PromptInputContextItem = {
+export type PromptInputMentionsItem = {
   /** Stable identifier, returned through `onValueChange`. */
   id: string;
   /** Visible label in the palette and the selected chip. */
@@ -49,12 +49,12 @@ export type PromptInputContextItem = {
   keywords?: string[];
 };
 
-export type PromptInputContextProps = Omit<
+export type PromptInputMentionsProps = Omit<
   ComponentProps<'div'>,
   'onChange' | 'defaultValue'
 > & {
   /** Available context items, rendered grouped in declaration order. */
-  items: PromptInputContextItem[];
+  items: PromptInputMentionsItem[];
   /** Controlled selected ids. */
   value?: string[];
   /** Uncontrolled initial selected ids. */
@@ -73,7 +73,7 @@ export type PromptInputContextProps = Omit<
   align?: ComponentProps<typeof PopoverContent>['align'];
 };
 
-export const PromptInputContext = ({
+export const PromptInputMentions = ({
   items,
   value,
   defaultValue = [],
@@ -85,7 +85,7 @@ export const PromptInputContext = ({
   align = 'start',
   className,
   ...props
-}: PromptInputContextProps) => {
+}: PromptInputMentionsProps) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useControllableState<string[]>({
     prop: value,
@@ -107,7 +107,7 @@ export const PromptInputContext = ({
     () =>
       selectedIds
         .map((id) => items.find((it) => it.id === id))
-        .filter((it): it is PromptInputContextItem => Boolean(it)),
+        .filter((it): it is PromptInputMentionsItem => Boolean(it)),
     [selectedIds, items],
   );
 
@@ -116,7 +116,7 @@ export const PromptInputContext = ({
   // Group items by their `group`, preserving first-seen order.
   const groups = useMemo(() => {
     const order: string[] = [];
-    const map = new Map<string, PromptInputContextItem[]>();
+    const map = new Map<string, PromptInputMentionsItem[]>();
 
     for (const it of items) {
       const key = it.group ?? '';

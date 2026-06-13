@@ -1,33 +1,6 @@
 'use client';
 
 import {
-  ArchiveIcon,
-  ArrowUpIcon,
-  ChartColumnBigIcon,
-  ChevronDownIcon,
-  CopyIcon,
-  DownloadIcon,
-  EllipsisIcon,
-  FileSpreadsheetIcon,
-  FileTextIcon,
-  GlobeIcon,
-  LibraryIcon,
-  ListChecksIcon,
-  MessageCircleQuestionIcon,
-  MessagesSquareIcon,
-  PaperclipIcon,
-  PenSquareIcon,
-  RefreshCwIcon,
-  Share2Icon,
-  TelescopeIcon,
-  ThumbsDownIcon,
-  ThumbsUpIcon,
-  Trash2Icon,
-} from 'lucide-react';
-import type { LanguageModelUsage } from 'ai';
-import { useRef, useState } from 'react';
-
-import {
   Context,
   ContextCacheUsage,
   ContextContent,
@@ -56,9 +29,10 @@ import {
   MessageResponse,
   MessageToolbar,
   PromptInput,
+  PromptInputAttachButton,
   PromptInputBody,
   PromptInputButton,
-  PromptInputContext,
+  PromptInputMentions,
   PromptInputFooter,
   PromptInputHeader,
   PromptInputSelect,
@@ -70,7 +44,6 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-  usePromptInputAttachments,
   Reasoning,
   ReasoningContent,
   ReasoningTrigger,
@@ -81,7 +54,7 @@ import {
   Suggestion,
   Suggestions,
   type ChatStatus,
-  type PromptInputContextItem,
+  type PromptInputMentionsItem,
   type PromptInputMessage,
 } from '@gremorie/rx-ai';
 import {
@@ -95,8 +68,8 @@ import {
   ArtifactHeading,
   ArtifactTitle,
 } from '@gremorie/rx-artifacts';
-import { ClaudeIcon, GeminiIcon, OpenAiIcon } from '@gremorie/rx-icons';
 import { Button } from '@gremorie/rx-forms';
+import { ClaudeIcon, GeminiIcon, OpenAiIcon } from '@gremorie/rx-icons';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -106,6 +79,32 @@ import {
   DropdownMenuTrigger,
   TooltipProvider,
 } from '@gremorie/rx-overlays';
+import {
+  ArchiveIcon,
+  ArrowUpIcon,
+  ChartColumnBigIcon,
+  ChevronDownIcon,
+  CopyIcon,
+  DownloadIcon,
+  EllipsisIcon,
+  FileSpreadsheetIcon,
+  FileTextIcon,
+  GlobeIcon,
+  LibraryIcon,
+  ListChecksIcon,
+  MessageCircleQuestionIcon,
+  MessagesSquareIcon,
+  PenSquareIcon,
+  RefreshCwIcon,
+  Share2Icon,
+  TelescopeIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+  Trash2Icon,
+} from 'lucide-react';
+import { useRef, useState } from 'react';
+
+import type { LanguageModelUsage } from 'ai';
 
 // ── B2B composer presets (the Gremorie standard) ────────────────────────────
 const MODES = [
@@ -146,7 +145,7 @@ const MODELS = [
   },
 ];
 
-const CONTEXT_ITEMS: PromptInputContextItem[] = [
+const CONTEXT_ITEMS: PromptInputMentionsItem[] = [
   {
     id: 'q3-revenue',
     label: 'Q3 revenue.csv',
@@ -225,21 +224,6 @@ const ASSISTANT_SOURCES = [
   { href: 'https://gremorie.com', title: 'Q2 board deck' },
 ];
 
-// Direct attach button: opens the file picker straight away (no dropdown).
-function AttachButton() {
-  const { openFileDialog } = usePromptInputAttachments();
-
-  return (
-    <PromptInputButton
-      aria-label="Attach files"
-      onClick={openFileDialog}
-      tooltip="Attach files"
-    >
-      <PaperclipIcon className="size-4" />
-    </PromptInputButton>
-  );
-}
-
 // ── Composer (the floating B2B PromptInput) ─────────────────────────────────
 function Composer({
   status,
@@ -251,7 +235,7 @@ function Composer({
   return (
     <PromptInput className="rounded-xl shadow-lg" multiple onSubmit={onSubmit}>
       <PromptInputHeader>
-        <PromptInputContext items={CONTEXT_ITEMS} />
+        <PromptInputMentions items={CONTEXT_ITEMS} />
         <Context
           maxTokens={200_000}
           modelId="anthropic:claude-3-5-sonnet"
@@ -321,7 +305,7 @@ function Composer({
             >
               <GlobeIcon className="size-4" />
             </PromptInputButton>
-            <AttachButton />
+            <PromptInputAttachButton tooltip="Attach files" />
             <PromptInputSpeechButton tooltip="Voice input" />
           </PromptInputTools>
           <PromptInputSubmit status={status} tooltip="Send">
