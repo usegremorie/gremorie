@@ -384,7 +384,7 @@
   --radius-sm: calc(var(--radius-base) * 0.6);
   --radius-md: calc(var(--radius-base) * 0.8);
   --radius-lg: var(--radius-base);
-  --radius-xl: calc(var(--radius-base) * 1.4);
+  --radius-xl: calc(var(--radius-base) * 1.2);
 
   /* Typography, spacing, tracking (tweakcn contract). Themes may override. */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
