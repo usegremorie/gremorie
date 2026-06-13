@@ -10,6 +10,13 @@ import { Suggestion, Suggestions } from './suggestion';
  * `Suggestions` row container. Note the React API takes the chip label via
  * the `suggestion` prop (the Angular edition used `value`), and the React
  * `Button` exposes `sm | default | lg` sizes (no `md`).
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Suggestions       row container
+ * └─ Suggestion     clickable chip (one per suggestion)
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Suggestion',

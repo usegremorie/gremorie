@@ -141,6 +141,27 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
  * the textarea, a tools row with an action menu (add photos or files), a web
  * search toggle and a model select, plus the submit button. Drive the `status`
  * control to walk the canonical states ready, submitted, streaming and error.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * PromptInput
+ * ├─ PromptInputHeader
+ * │  ├─ PromptInputMentions          @ add-context picker (palette + chips)
+ * │  └─ Context                      token-usage meter (trigger + hovercard)
+ * ├─ PromptInputBody
+ * │  ├─ PromptInputAttachments       optional · standalone Attachments module
+ * │  └─ PromptInputTextarea
+ * └─ PromptInputFooter
+ *    ├─ PromptInputTools             left · mode + model
+ *    │  ├─ PromptInputSelect         mode
+ *    │  └─ PromptInputSelect         model
+ *    └─ PromptInputTools             right · icon group + submit
+ *       ├─ PromptInputButton         web search
+ *       ├─ PromptInputAttachButton   attach (paperclip)
+ *       ├─ PromptInputSpeechButton   voice
+ *       └─ PromptInputSubmit         status-aware send
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/PromptInput',

@@ -16,6 +16,18 @@ import {
  *
  * Mirrors the ng-ai ChainOfThought stories: header only, simple steps, with
  * search results, with image preview, and the step status palette.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * ChainOfThought
+ * ├─ ChainOfThoughtHeader
+ * └─ ChainOfThoughtStep              one per reasoning step
+ *    ├─ ChainOfThoughtContent
+ *    ├─ ChainOfThoughtSearchResults
+ *    │  └─ ChainOfThoughtSearchResult
+ *    └─ ChainOfThoughtImage
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/ChainOfThought',

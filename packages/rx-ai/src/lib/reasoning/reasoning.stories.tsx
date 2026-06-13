@@ -8,6 +8,14 @@ import { Reasoning, ReasoningContent, ReasoningTrigger } from './reasoning';
  * Stories validate the streaming -> done transition (shimmered label,
  * duration label, auto-close), the manual-control mode via `open`,
  * and the override of the trigger via projected content.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Reasoning
+ * ├─ ReasoningTrigger   "Thinking…" label (shimmers while streaming)
+ * └─ ReasoningContent   the collapsible reasoning text
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Reasoning',
