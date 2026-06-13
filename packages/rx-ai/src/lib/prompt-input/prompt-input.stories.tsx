@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { LanguageModelUsage } from 'ai';
 import {
   ArrowUpIcon,
   BookOpenIcon,
@@ -12,6 +13,7 @@ import {
   MessageCircleQuestionIcon,
   MicIcon,
   NotebookTextIcon,
+  PaperclipIcon,
   TelescopeIcon,
 } from 'lucide-react';
 
@@ -37,13 +39,26 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
+  usePromptInputAttachments,
   type ChatStatus,
 } from './prompt-input';
 import {
   PromptInputContext,
   type PromptInputContextItem,
 } from './prompt-input-context';
-import { Context, ContextTrigger } from '../context';
+import { Attachments } from '../attachments';
+import {
+  Context,
+  ContextCacheUsage,
+  ContextContent,
+  ContextContentBody,
+  ContextContentFooter,
+  ContextContentHeader,
+  ContextInputUsage,
+  ContextOutputUsage,
+  ContextReasoningUsage,
+  ContextTrigger,
+} from '../context';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@gremorie/rx-overlays';
 import { ClaudeIcon, GeminiIcon, OpenAiIcon } from '@gremorie/rx-icons';
 
@@ -260,9 +275,23 @@ const B2B_CONTEXT: PromptInputContextItem[] = [
   },
 ];
 
-// A tiny inline PNG so the image attachment chip renders a real thumbnail.
-const SAMPLE_IMG =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGNITvtIU8QwasGoBaMWjFowasGoBaMWjFowasGoBaMWDBULAMgi6FsP9QbPAAAAAElFTkSuQmCC';
+// Per-category token usage powering the context hovercard breakdown + cost.
+const B2B_USAGE: LanguageModelUsage = {
+  inputTokens: 52_600,
+  outputTokens: 6_400,
+  reasoningTokens: 2_200,
+  cachedInputTokens: 14_000,
+  totalTokens: 61_200,
+  inputTokenDetails: {
+    noCacheTokens: 38_600,
+    cacheReadTokens: 14_000,
+    cacheWriteTokens: 0,
+  },
+  outputTokenDetails: {
+    textTokens: 6_400,
+    reasoningTokens: 2_200,
+  },
+};
 
 // Outlined trigger to match the Button "outline" variant - the default
 // PromptInputSelectTrigger is borderless/ghost, so re-add the border. The fill
@@ -271,6 +300,21 @@ const SAMPLE_IMG =
 // pill on the white card.
 const OUTLINE_TRIGGER =
   'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
+
+// Direct attach button: opens the file picker straight away (no dropdown).
+const AttachButton = () => {
+  const { openFileDialog } = usePromptInputAttachments();
+
+  return (
+    <PromptInputButton
+      aria-label="Attach files"
+      onClick={openFileDialog}
+      tooltip="Attach files"
+    >
+      <PaperclipIcon className="size-4" />
+    </PromptInputButton>
+  );
+};
 
 const B2BPromptInput = ({
   withAttachments,
@@ -287,38 +331,58 @@ const B2BPromptInput = ({
   >
     <PromptInputHeader>
       <PromptInputContext items={B2B_CONTEXT} defaultValue={selectedContext} />
-      <Context maxTokens={200000} usedTokens={62600}>
+      <Context
+        maxTokens={200_000}
+        modelId="anthropic:claude-3-5-sonnet"
+        usage={B2B_USAGE}
+        usedTokens={62_600}
+      >
         <ContextTrigger className="ml-auto" />
+        <ContextContent>
+          <ContextContentHeader />
+          <ContextContentBody>
+            <div className="space-y-1">
+              <ContextInputUsage />
+              <ContextOutputUsage />
+              <ContextReasoningUsage />
+              <ContextCacheUsage />
+            </div>
+          </ContextContentBody>
+          <ContextContentFooter />
+        </ContextContent>
       </Context>
     </PromptInputHeader>
     <PromptInputBody>
       {withAttachments ? (
-        <div className="flex w-full flex-wrap gap-1.5 px-3">
+        <Attachments className="w-full px-3" variant="inline">
           <PromptInputAttachment
             data={{
-              id: 'img',
-              url: SAMPLE_IMG,
-              mediaType: 'image/png',
-              filename: 'dashboard.png',
-            }}
-          />
-          <PromptInputAttachment
-            data={{
-              id: 'json',
-              url: '',
-              mediaType: 'application/json',
-              filename: 'analytics.json',
+              id: 'chart',
+              type: 'file',
+              url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=400&fit=crop',
+              mediaType: 'image/jpeg',
+              filename: 'q3-revenue-chart.png',
             }}
           />
           <PromptInputAttachment
             data={{
               id: 'pdf',
+              type: 'file',
               url: '',
               mediaType: 'application/pdf',
               filename: 'q3-report.pdf',
             }}
           />
-        </div>
+          <PromptInputAttachment
+            data={{
+              id: 'call',
+              type: 'file',
+              url: '',
+              mediaType: 'audio/mpeg',
+              filename: 'earnings-call.mp3',
+            }}
+          />
+        </Attachments>
       ) : null}
       <PromptInputTextarea placeholder="What would you like to know?" />
     </PromptInputBody>
@@ -369,25 +433,17 @@ const B2BPromptInput = ({
           </PromptInputSelectContent>
         </PromptInputSelect>
       </PromptInputTools>
-      <PromptInputTools>
-        <PromptInputButton aria-label="Search the web" tooltip="Search the web">
-          <GlobeIcon className="size-4" />
-        </PromptInputButton>
-        <PromptInputActionMenu>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <PromptInputActionMenuTrigger aria-label="Add attachment" />
-            </TooltipTrigger>
-            <TooltipContent>Attach files</TooltipContent>
-          </Tooltip>
-          <PromptInputActionMenuContent>
-            <PromptInputActionAddAttachments />
-            <PromptInputActionMenuItem>
-              <MicIcon className="mr-2 size-4" /> Record voice
-            </PromptInputActionMenuItem>
-          </PromptInputActionMenuContent>
-        </PromptInputActionMenu>
-        <PromptInputSpeechButton tooltip="Voice input" />
+      <PromptInputTools className="gap-2">
+        <PromptInputTools>
+          <PromptInputButton
+            aria-label="Search the web"
+            tooltip="Search the web"
+          >
+            <GlobeIcon className="size-4" />
+          </PromptInputButton>
+          <AttachButton />
+          <PromptInputSpeechButton tooltip="Voice input" />
+        </PromptInputTools>
         <PromptInputSubmit status="ready" tooltip="Send">
           <ArrowUpIcon className="size-4" />
         </PromptInputSubmit>
