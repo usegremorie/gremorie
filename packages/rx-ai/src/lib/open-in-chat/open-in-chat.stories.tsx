@@ -59,6 +59,17 @@ import {
  * | --- | --- |
  * | `--popover` / `--border` | Menu surface and border. |
  * | `--accent` | Item hover background. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * OpenIn
+ * ├─ OpenInTrigger   "Open in…" button
+ * └─ OpenInContent   menu
+ *    ├─ OpenInLabel · OpenInSeparator
+ *    ├─ OpenInItem    generic target row
+ *    └─ presets       OpenInChatGPT · OpenInClaude · OpenInCursor · OpenInv0 · OpenInScira · OpenInT3
+ * ```
  */
 const meta = {
   title: 'AI/Utilities/OpenIn',

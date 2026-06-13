@@ -33,6 +33,18 @@ Use it for irreversible operations (deletes, payments, deploys, write-to-prod) w
   <ConfirmationRejectedPreview />
 </div>
 
+## Anatomy
+
+```text
+Confirmation
+├─ ConfirmationTitle
+├─ ConfirmationRequest      shown while pending
+├─ ConfirmationActions
+│  └─ ConfirmationAction    accept / reject buttons
+├─ ConfirmationAccepted     shown when approved
+└─ ConfirmationRejected     shown when rejected
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

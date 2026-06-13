@@ -7,6 +7,16 @@ import { Task, TaskContent, TaskItem, TaskItemFile, TaskTrigger } from './task';
  *
  * Mirrors the ng-ai Task stories: collapsed, expanded, with multiple files,
  * with mixed item types (plain text + file chip), and a custom trigger.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Task
+ * ├─ TaskTrigger          header (icon + title + chevron)
+ * └─ TaskContent
+ *    └─ TaskItem          one row per step
+ *       └─ TaskItemFile   file chip (optional)
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Task',

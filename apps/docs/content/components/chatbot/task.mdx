@@ -26,6 +26,16 @@ Use it when the agent is editing a codebase, browsing a documentation tree, or o
   <TaskExpandedPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Task
+├─ TaskTrigger          header (icon + title + chevron)
+└─ TaskContent
+   └─ TaskItem          one row per step
+      └─ TaskItemFile   file chip (optional)
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

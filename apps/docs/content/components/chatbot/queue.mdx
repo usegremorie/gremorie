@@ -26,6 +26,22 @@ Use it when the user has fired multiple prompts in a row, when the agent is mid-
   <QueueSectionedPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Queue
+└─ QueueList
+   └─ QueueSection                collapsible group
+      ├─ QueueSectionTrigger
+      │  └─ QueueSectionLabel      icon + count
+      └─ QueueSectionContent
+         └─ QueueItem              one per queued message
+            ├─ QueueItemIndicator
+            ├─ QueueItemContent → QueueItemDescription
+            ├─ QueueItemAttachment → QueueItemImage / QueueItemFile
+            └─ QueueItemActions → QueueItemAction
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

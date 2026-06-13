@@ -56,6 +56,19 @@ import {
  * | --- | --- |
  * | `--card` / `--border` | Card surface and border. |
  * | `--muted-foreground` | Description and step text. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Plan
+ * ├─ PlanHeader
+ * │  ├─ PlanTitle         (shimmers while streaming)
+ * │  ├─ PlanDescription
+ * │  └─ PlanAction        top-right slot
+ * ├─ PlanTrigger          chevron toggle
+ * ├─ PlanContent          collapsible body
+ * └─ PlanFooter
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Plan',

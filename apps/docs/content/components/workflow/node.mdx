@@ -19,6 +19,18 @@ Use it as the base for every custom node type. Pair with `Toolbar` for selection
   <NodePreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Node
+├─ NodeHeader
+│  ├─ NodeTitle
+│  ├─ NodeDescription
+│  └─ NodeAction      top-right slot
+├─ NodeContent        body
+└─ NodeFooter
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -40,6 +40,16 @@ Use it whenever the model invokes a function: web search, code execution, file I
   <ToolApprovalPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Tool
+├─ ToolHeader    type + status badge
+└─ ToolContent
+   ├─ ToolInput  the call arguments
+   └─ ToolOutput the result / error
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

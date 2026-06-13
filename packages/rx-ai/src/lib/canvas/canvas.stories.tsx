@@ -49,6 +49,16 @@ import { Panel } from '../panel';
  * | Token | Used for |
  * | --- | --- |
  * | `--sidebar` | Canvas background fill (`bgColor` on `Background`). |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Canvas                    React Flow viewport
+ * ├─ Node …                 nodeTypes (custom renderers)
+ * ├─ Edge …                 edgeTypes (Edge.Temporary · Edge.Animated)
+ * ├─ Connection             in-progress connection line
+ * └─ overlays (children)    Panel · Controls · Toolbar
+ * ```
  */
 const meta = {
   title: 'AI/Workflow/Canvas',
