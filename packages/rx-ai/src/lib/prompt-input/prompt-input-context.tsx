@@ -200,7 +200,7 @@ export const PromptInputContext = ({
 
       {selectedItems.map((item) => (
         <span
-          className="inline-flex h-7 items-center gap-1 rounded-md border px-2 text-xs"
+          className="inline-flex h-8 items-center gap-1 rounded-md border px-2.5 text-xs"
           key={item.id}
         >
           {item.icon ? (

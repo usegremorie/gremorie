@@ -25,7 +25,6 @@ import {
 
 import { cn } from '@gremorie/rx-core';
 import {
-  Button,
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
@@ -61,11 +60,24 @@ import {
   ImageIcon,
   Loader2Icon,
   MicIcon,
-  PaperclipIcon,
   PlusIcon,
   SquareIcon,
   XIcon,
 } from 'lucide-react';
+
+import {
+  Attachment,
+  AttachmentHoverCard,
+  AttachmentHoverCardContent,
+  AttachmentHoverCardTrigger,
+  AttachmentInfo,
+  AttachmentPreview,
+  AttachmentRemove,
+  Attachments,
+  type AttachmentVariant,
+  getAttachmentLabel,
+  getMediaCategory,
+} from '../attachments';
 
 // ============================================================================
 // Types - portable subset of FileUIPart / ChatStatus (no @ai-sdk dep here)
@@ -305,88 +317,54 @@ export function PromptInputAttachment({
   ...props
 }: PromptInputAttachmentProps) {
   const attachments = usePromptInputAttachments();
+  const mediaCategory = getMediaCategory(data);
+  const label = getAttachmentLabel(data);
 
-  const filename = data.filename || '';
-
-  const mediaType =
-    data.mediaType?.startsWith('image/') && data.url ? 'image' : 'file';
-  const isImage = mediaType === 'image';
-
-  const attachmentLabel = filename || (isImage ? 'Image' : 'Attachment');
-
+  // Delegates to the standalone Attachment module (inline variant) so the chip
+  // stays in lock-step with the canonical component used elsewhere (messages,
+  // file lists). The inline layout context comes from PromptInputAttachments.
   return (
-    <PromptInputHoverCard>
-      <HoverCardTrigger asChild>
-        <div
-          className={cn(
-            'group relative flex h-8 cursor-pointer select-none items-center gap-1.5 rounded-md border border-border px-1.5 font-medium text-sm transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-            className,
-          )}
-          key={data.id}
+    <AttachmentHoverCard>
+      <AttachmentHoverCardTrigger asChild>
+        <Attachment
+          className={className}
+          data={data}
+          onRemove={() => attachments.remove(data.id)}
           {...props}
         >
           <div className="relative size-5 shrink-0">
-            <div className="absolute inset-0 flex size-5 items-center justify-center overflow-hidden rounded bg-background transition-opacity group-hover:opacity-0">
-              {isImage ? (
-                <img
-                  alt={filename || 'attachment'}
-                  className="size-5 object-cover"
-                  height={20}
-                  src={data.url}
-                  width={20}
-                />
-              ) : (
-                <div className="flex size-5 items-center justify-center text-muted-foreground">
-                  <PaperclipIcon className="size-3" />
-                </div>
-              )}
+            <div className="absolute inset-0 transition-opacity group-hover:opacity-0">
+              <AttachmentPreview />
             </div>
-            <Button
-              aria-label="Remove attachment"
-              className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-6 cursor-pointer rounded p-0 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 [&>svg]:size-2.5"
-              onClick={(e) => {
-                e.stopPropagation();
-                attachments.remove(data.id);
-              }}
-              type="button"
-              variant="ghost"
-            >
-              <XIcon />
-              <span className="sr-only">Remove</span>
-            </Button>
+            <AttachmentRemove className="absolute inset-0" />
           </div>
-
-          <span className="flex-1 truncate">{attachmentLabel}</span>
-        </div>
-      </HoverCardTrigger>
-      <PromptInputHoverCardContent className="w-auto p-2">
-        <div className="w-auto space-y-3">
-          {isImage && (
-            <div className="flex max-h-64 w-64 items-center justify-center overflow-hidden rounded-md border">
+          <AttachmentInfo />
+        </Attachment>
+      </AttachmentHoverCardTrigger>
+      <AttachmentHoverCardContent>
+        <div className="space-y-3">
+          {mediaCategory === 'image' && data.url ? (
+            <div className="flex max-h-96 w-80 items-center justify-center overflow-hidden rounded-md border">
               <img
-                alt={filename || 'attachment preview'}
+                alt={label}
                 className="max-h-full max-w-full object-contain"
                 height={384}
                 src={data.url}
-                width={448}
+                width={320}
               />
             </div>
-          )}
-          <div className="flex items-center gap-2.5">
-            <div className="min-w-0 flex-1 space-y-1 px-0.5">
-              <h4 className="truncate font-semibold text-sm leading-none">
-                {filename || (isImage ? 'Image' : 'Attachment')}
-              </h4>
-              {data.mediaType && (
-                <p className="truncate font-mono text-muted-foreground text-xs">
-                  {data.mediaType}
-                </p>
-              )}
-            </div>
+          ) : null}
+          <div className="space-y-1 px-0.5">
+            <h4 className="font-semibold text-sm leading-none">{label}</h4>
+            {data.mediaType ? (
+              <p className="font-mono text-muted-foreground text-xs">
+                {data.mediaType}
+              </p>
+            ) : null}
           </div>
         </div>
-      </PromptInputHoverCardContent>
-    </PromptInputHoverCard>
+      </AttachmentHoverCardContent>
+    </AttachmentHoverCard>
   );
 }
 
@@ -399,11 +377,14 @@ export type PromptInputAttachmentsProps = Omit<
   'children'
 > & {
   children: (attachment: AttachmentFile) => ReactNode;
+  /** Layout variant for the attachment row. Defaults to `inline` badges. */
+  variant?: AttachmentVariant;
 };
 
 export function PromptInputAttachments({
   children,
   className,
+  variant = 'inline',
   ...props
 }: PromptInputAttachmentsProps) {
   const attachments = usePromptInputAttachments();
@@ -413,14 +394,15 @@ export function PromptInputAttachments({
   }
 
   return (
-    <div
-      className={cn('flex w-full flex-wrap items-center gap-2 p-3', className)}
+    <Attachments
+      className={cn('w-full p-3', className)}
+      variant={variant}
       {...props}
     >
       {attachments.files.map((file) => (
         <Fragment key={file.id}>{children(file)}</Fragment>
       ))}
-    </div>
+    </Attachments>
   );
 }
 
@@ -794,7 +776,7 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        <InputGroup className="overflow-hidden bg-card dark:bg-card">
+        <InputGroup className="overflow-hidden rounded-xl bg-card dark:bg-card">
           {children}
         </InputGroup>
       </form>
@@ -833,8 +815,8 @@ export const PromptInputHeader = ({
   ...props
 }: PromptInputHeaderProps) => (
   <InputGroupAddon
-    align="block-end"
-    className={cn('order-first flex-wrap gap-1', className)}
+    align="block-start"
+    className={cn('flex-wrap gap-1', className)}
     {...props}
   />
 );
