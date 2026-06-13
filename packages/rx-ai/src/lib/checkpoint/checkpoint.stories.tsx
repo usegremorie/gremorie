@@ -40,6 +40,14 @@ import { Checkpoint, CheckpointIcon, CheckpointTrigger } from './checkpoint';
  * | --- | --- |
  * | `--muted-foreground` | Row text/icon color. |
  * | `--border` | Trailing separator. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Checkpoint
+ * ├─ CheckpointIcon      marker (default bookmark)
+ * └─ CheckpointTrigger   button label (optional tooltip)
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Checkpoint',

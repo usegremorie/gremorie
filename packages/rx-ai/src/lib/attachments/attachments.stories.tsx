@@ -34,10 +34,15 @@ import {
  *
  * ## Anatomy
  *
- * `Attachments` (sets the variant) → one `Attachment` per file (`data`,
- * `onRemove`) → compose `AttachmentPreview`, `AttachmentInfo`,
- * `AttachmentRemove`, and optionally `AttachmentHoverCard` for inline previews.
- * `AttachmentEmpty` covers the zero-state.
+ * ```text
+ * Attachments                  sets the variant (grid | inline | list)
+ * ├─ Attachment                one per file (data, onRemove)
+ * │  ├─ AttachmentPreview      thumbnail / icon
+ * │  ├─ AttachmentInfo         name + media type
+ * │  ├─ AttachmentRemove
+ * │  └─ AttachmentHoverCard    inline preview (Trigger + Content)
+ * └─ AttachmentEmpty           zero-state
+ * ```
  *
  * Media category is auto-detected from `data.mediaType` via `getMediaCategory`
  * (image · video · audio · document · source · unknown), each with its own

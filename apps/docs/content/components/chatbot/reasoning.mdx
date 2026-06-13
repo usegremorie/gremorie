@@ -33,6 +33,14 @@ Use it inside `MessageContent` for assistant turns whose model exposes a reasoni
   <ReasoningExpandedPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Reasoning
+├─ ReasoningTrigger   "Thinking…" label (shimmers while streaming)
+└─ ReasoningContent   the collapsible reasoning text
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

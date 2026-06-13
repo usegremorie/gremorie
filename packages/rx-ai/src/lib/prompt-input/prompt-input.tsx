@@ -60,6 +60,7 @@ import {
   ImageIcon,
   Loader2Icon,
   MicIcon,
+  PaperclipIcon,
   PlusIcon,
   SquareIcon,
   XIcon,
@@ -1038,6 +1039,32 @@ export const PromptInputSubmit = ({
       <TooltipTrigger asChild>{button}</TooltipTrigger>
       <TooltipContent>{tooltip}</TooltipContent>
     </Tooltip>
+  );
+};
+
+// ============================================================================
+// PromptInputAttachButton - paperclip button that opens the file picker
+// ============================================================================
+
+export type PromptInputAttachButtonProps = Omit<
+  PromptInputButtonProps,
+  'onClick'
+>;
+
+export const PromptInputAttachButton = ({
+  children,
+  ...props
+}: PromptInputAttachButtonProps) => {
+  const attachments = usePromptInputAttachments();
+
+  return (
+    <PromptInputButton
+      aria-label="Attach files"
+      onClick={() => attachments.openFileDialog()}
+      {...props}
+    >
+      {children ?? <PaperclipIcon className="size-4" />}
+    </PromptInputButton>
   );
 };
 

@@ -59,6 +59,15 @@ const FlowHost = ({ toolbar }: { toolbar: ReactNode }) => (
   </div>
 );
 
+/**
+ * Toolbar - floating action toolbar for a workflow node (React edition).
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Toolbar   node action toolbar — leaf primitive (rendered on a Canvas node)
+ * ```
+ */
 const meta = {
   title: 'AI/Workflow/Toolbar',
   component: Toolbar,

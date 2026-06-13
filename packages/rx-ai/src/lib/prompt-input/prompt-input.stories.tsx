@@ -13,7 +13,6 @@ import {
   MessageCircleQuestionIcon,
   MicIcon,
   NotebookTextIcon,
-  PaperclipIcon,
   TelescopeIcon,
 } from 'lucide-react';
 
@@ -24,6 +23,7 @@ import {
   PromptInputActionMenuContent,
   PromptInputActionMenuItem,
   PromptInputActionMenuTrigger,
+  PromptInputAttachButton,
   PromptInputAttachment,
   PromptInputAttachments,
   PromptInputBody,
@@ -39,13 +39,12 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-  usePromptInputAttachments,
   type ChatStatus,
 } from './prompt-input';
 import {
-  PromptInputContext,
-  type PromptInputContextItem,
-} from './prompt-input-context';
+  PromptInputMentions,
+  type PromptInputMentionsItem,
+} from './prompt-input-mentions';
 import { Attachments } from '../attachments';
 import {
   Context,
@@ -142,6 +141,27 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
  * the textarea, a tools row with an action menu (add photos or files), a web
  * search toggle and a model select, plus the submit button. Drive the `status`
  * control to walk the canonical states ready, submitted, streaming and error.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * PromptInput
+ * ├─ PromptInputHeader
+ * │  ├─ PromptInputMentions          @ add-context picker (palette + chips)
+ * │  └─ Context                      token-usage meter (trigger + hovercard)
+ * ├─ PromptInputBody
+ * │  ├─ PromptInputAttachments       optional · standalone Attachments module
+ * │  └─ PromptInputTextarea
+ * └─ PromptInputFooter
+ *    ├─ PromptInputTools             left · mode + model
+ *    │  ├─ PromptInputSelect         mode
+ *    │  └─ PromptInputSelect         model
+ *    └─ PromptInputTools             right · icon group + submit
+ *       ├─ PromptInputButton         web search
+ *       ├─ PromptInputAttachButton   attach (paperclip)
+ *       ├─ PromptInputSpeechButton   voice
+ *       └─ PromptInputSubmit         status-aware send
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/PromptInput',
@@ -236,7 +256,7 @@ const B2B_MODELS = [
 ];
 
 // Example context catalogue for the "@ Add context" command palette.
-const B2B_CONTEXT: PromptInputContextItem[] = [
+const B2B_CONTEXT: PromptInputMentionsItem[] = [
   {
     id: 'q3-revenue',
     label: 'Q3 revenue.csv',
@@ -301,21 +321,6 @@ const B2B_USAGE: LanguageModelUsage = {
 const OUTLINE_TRIGGER =
   'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
 
-// Direct attach button: opens the file picker straight away (no dropdown).
-const AttachButton = () => {
-  const { openFileDialog } = usePromptInputAttachments();
-
-  return (
-    <PromptInputButton
-      aria-label="Attach files"
-      onClick={openFileDialog}
-      tooltip="Attach files"
-    >
-      <PaperclipIcon className="size-4" />
-    </PromptInputButton>
-  );
-};
-
 const B2BPromptInput = ({
   withAttachments,
   selectedContext,
@@ -330,7 +335,7 @@ const B2BPromptInput = ({
     onSubmit={() => undefined}
   >
     <PromptInputHeader>
-      <PromptInputContext items={B2B_CONTEXT} defaultValue={selectedContext} />
+      <PromptInputMentions items={B2B_CONTEXT} defaultValue={selectedContext} />
       <Context
         maxTokens={200_000}
         modelId="anthropic:claude-3-5-sonnet"
@@ -441,7 +446,7 @@ const B2BPromptInput = ({
           >
             <GlobeIcon className="size-4" />
           </PromptInputButton>
-          <AttachButton />
+          <PromptInputAttachButton tooltip="Attach files" />
           <PromptInputSpeechButton tooltip="Voice input" />
         </PromptInputTools>
         <PromptInputSubmit status="ready" tooltip="Send">

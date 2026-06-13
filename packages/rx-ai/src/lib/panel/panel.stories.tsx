@@ -39,6 +39,12 @@ import { Panel } from './panel';
  * | --- | --- |
  * | `--card` | Panel background. |
  * | `--border` | Panel border. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Panel   docked overlay container — leaf (rendered inside Canvas)
+ * ```
  */
 const meta = {
   title: 'AI/Workflow/Panel',
