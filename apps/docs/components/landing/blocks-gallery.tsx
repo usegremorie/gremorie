@@ -53,10 +53,10 @@ const blocks: ReadonlyArray<{
     shape: 'dashboard',
   },
   {
-    name: 'Chat surface',
+    name: 'Assistant',
     category: 'AI',
-    description: 'Conversation, Message, PromptInput - fully wired.',
-    href: '/blocks#chat-surface',
+    description: 'Conversation, reasoning, artifact, sources + a B2B composer.',
+    href: '/blocks/assistant',
     chart: 'var(--primary)',
     shape: 'chat',
   },
