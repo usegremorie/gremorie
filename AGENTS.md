@@ -64,13 +64,14 @@ Before claiming something is done:
 - **rx-ai / AI components**: faithful to the official AI Elements source (names,
   subcomponents, variants, behaviour), adapted to Gremorie primitives + tokens.
 - **Storybook**: titles mirror the docs nav (`<Section>/<Category>/<Name>`).
-- **No em dashes** in written content. **Never publish** — the user runs
-  publishes (npm). Install with `npm install --legacy-peer-deps`.
-- **Git flow (pre-1.0)**: no public users yet, so feature work branches off
-  **`main`** and PRs back into `main` (each merge deploys the docs site). The
-  `develop → main` release flow only kicks in at **1.0**. `develop` is stale on
-  purpose until then. (Earlier guidance said "branch off develop / never push
-  to main" — that is the post-1.0 rule, not the current one.)
+- **No em dashes** in written content. **Never publish** — the user runs the
+  npm publish AND the production deploy. Install with
+  `npm install --legacy-peer-deps`.
+- **Git flow**: `develop` is the **Vercel production branch** and is what
+  deploys to `www.gremorie.com`. `main` is integration; pushing to `main` only
+  builds **preview** deployments (401-protected, not public). To ship to
+  production, merge `main` into `develop`. Work may branch off `main` (pre-1.0),
+  but it is NOT live until it reaches `develop`.
 
 ## Color, tokens & dark mode (two-tier, class-based)
 
