@@ -27,12 +27,12 @@ Each artifact ships with:
 
 ## Artifacts vs Blocks vs Components
 
-|                     | Components | Blocks         | Artifacts                                                 |
-| ------------------- | ---------- | -------------- | --------------------------------------------------------- |
-| **Source of state** | Caller     | Caller         | LLM response (schema-validated)                           |
-| **Streaming**       | n/a        | Optional       | First-class -- partial renders during generation          |
-| **AI awareness**    | None       | None           | Schema is exposed via MCP `get_artifact()`                |
-| **Example**         | `Button`   | `chat-surface` | `chart` (LLM emits chart spec, artifact renders Recharts) |
+|                     | Components | Blocks      | Artifacts                                                 |
+| ------------------- | ---------- | ----------- | --------------------------------------------------------- |
+| **Source of state** | Caller     | Caller      | LLM response (schema-validated)                           |
+| **Streaming**       | n/a        | Optional    | First-class -- partial renders during generation          |
+| **AI awareness**    | None       | None        | Schema is exposed via MCP `get_artifact()`                |
+| **Example**         | `Button`   | `assistant` | `chart` (LLM emits chart spec, artifact renders Recharts) |
 
 ## Categories
 
