@@ -64,9 +64,13 @@ Before claiming something is done:
 - **rx-ai / AI components**: faithful to the official AI Elements source (names,
   subcomponents, variants, behaviour), adapted to Gremorie primitives + tokens.
 - **Storybook**: titles mirror the docs nav (`<Section>/<Category>/<Name>`).
-- **No em dashes** in written content. **Never push to `main`. Never publish**
-  (the user runs publishes). Branch off `develop`. Install with
-  `npm install --legacy-peer-deps`.
+- **No em dashes** in written content. **Never publish** — the user runs
+  publishes (npm). Install with `npm install --legacy-peer-deps`.
+- **Git flow (pre-1.0)**: no public users yet, so feature work branches off
+  **`main`** and PRs back into `main` (each merge deploys the docs site). The
+  `develop → main` release flow only kicks in at **1.0**. `develop` is stale on
+  purpose until then. (Earlier guidance said "branch off develop / never push
+  to main" — that is the post-1.0 rule, not the current one.)
 
 ## Color, tokens & dark mode (two-tier, class-based)
 
