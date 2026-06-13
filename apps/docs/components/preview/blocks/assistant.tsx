@@ -51,8 +51,6 @@ import {
   Sources,
   SourcesContent,
   SourcesTrigger,
-  Suggestion,
-  Suggestions,
   type ChatStatus,
   type PromptInputMentionsItem,
   type PromptInputMessage,
@@ -388,7 +386,7 @@ export function Assistant() {
 
   return (
     <TooltipProvider>
-      <div className="mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
+      <div className="relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
         {/* AssistantHeader */}
         <header className="flex items-center justify-between gap-2 border-b px-3 py-2">
           <DropdownMenu>
@@ -446,7 +444,7 @@ export function Assistant() {
 
         {/* AssistantContent - the conversation */}
         <Conversation className="flex-1">
-          <ConversationContent className="gap-6 px-4 py-6">
+          <ConversationContent className="gap-6 px-4 pt-6 pb-44">
             <Message from="user">
               <MessageAttachments>
                 <MessageAttachment
@@ -502,18 +500,16 @@ export function Assistant() {
           <ConversationScrollButton />
         </Conversation>
 
-        {/* AssistantComposer (floating) + AssistantDisclaimer */}
-        <div className="space-y-2 border-t bg-background px-3 pt-3 pb-2">
-          <Suggestions>
-            <Suggestion suggestion="Add a revenue chart" />
-            <Suggestion suggestion="Make it more concise" />
-            <Suggestion suggestion="Translate to Portuguese" />
-            <Suggestion suggestion="Draft the email to the board" />
-          </Suggestions>
-          <Composer onSubmit={handleSubmit} status={status} />
-          <p className="text-center text-xs text-muted-foreground">
-            Gremorie can make mistakes. Check important info.
-          </p>
+        {/* AssistantComposer - floats over the conversation; the response
+            scrolls behind it, fading out through the gradient. */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
+          <div className="h-16 bg-gradient-to-t from-card to-transparent" />
+          <div className="pointer-events-auto space-y-2 bg-card/80 px-3 pb-3 backdrop-blur-sm">
+            <Composer onSubmit={handleSubmit} status={status} />
+            <p className="text-center text-xs text-muted-foreground">
+              Gremorie can make mistakes. Check important info.
+            </p>
+          </div>
         </div>
       </div>
     </TooltipProvider>
