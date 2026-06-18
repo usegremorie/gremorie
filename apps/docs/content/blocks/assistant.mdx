@@ -21,12 +21,23 @@ assistant experience in a single import.
 
 ## Anatomy
 
-| Part                    | Role                                                                                                                                                            |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **AssistantHeader**     | Thread/history switcher (left); Sources, Share and an overflow menu (right)                                                                                     |
-| **AssistantContent**    | The conversation — messages with `Reasoning`, an inline generated `Artifact`, `Sources`, and response `MessageBranch` + `MessageActions`                        |
-| **AssistantComposer**   | The floating `PromptInput` (B2B): `PromptInputContext`, the `Context` usage meter, mode + model selectors, web search, attach, voice, and a status-aware submit |
-| **AssistantDisclaimer** | The "can make mistakes" footnote                                                                                                                                |
+```text
+Assistant
+├─ header                          thread switcher + actions (DropdownMenu · Button)
+├─ Conversation                    auto-scroll log; scrollbar reveals only while scrolling
+│  └─ ConversationContent
+│     ├─ Message (user)
+│     │  ├─ MessageContent
+│     │  └─ MessageToolbar          hover actions: MessageActions (Copy · Edit)
+│     └─ Message (assistant)
+│        └─ MessageBranch
+│           ├─ MessageBranchContent
+│           │  ├─ Reasoning
+│           │  ├─ MessageResponse
+│           │  └─ ChartArtifact     inline chart with chart/table toggle + downloads
+│           └─ MessageToolbar        MessageActions (left) · Sources + MessageBranchSelector (right)
+└─ PromptInput                      floating B2B composer (see PromptInput)
+```
 
 ## Installation
 
@@ -79,11 +90,15 @@ above):
       <Message from="user">…</Message>
       <Message from="assistant">
         <MessageBranch>
-          <Reasoning />
-          <MessageResponse />
-          <Artifact /> {/* inline generated document */}
-          <Sources />
-          <MessageToolbar>{/* actions + branch selector */}</MessageToolbar>
+          <MessageBranchContent>
+            <Reasoning />
+            <MessageResponse />
+            <ChartArtifact />{' '}
+            {/* inline chart: chart/table toggle + downloads */}
+          </MessageBranchContent>
+          <MessageToolbar>
+            {/* MessageActions (left) · Sources + branch selector (right) */}
+          </MessageToolbar>
         </MessageBranch>
       </Message>
     </ConversationContent>
@@ -92,7 +107,7 @@ above):
   {/* AssistantComposer — the floating B2B PromptInput */}
   <PromptInput>
     <PromptInputHeader>
-      <PromptInputContext />
+      <PromptInputMentions />
       <Context>
         <ContextTrigger />
         <ContextContent>{/* usage breakdown + cost */}</ContextContent>
@@ -116,7 +131,7 @@ above):
 
 - Wire `onSubmit` to the AI SDK's `sendMessage` or your streaming endpoint
 - Stream `Reasoning` while `isStreaming` is true for auto-collapse on completion
-- The composer is the B2B `PromptInput` — adjust the `PromptInputContext` items, the mode/model presets, and the `Context` usage meter
+- The composer is the B2B `PromptInput` — adjust the `PromptInputMentions` items, the mode/model presets, and the `Context` usage meter
 - Swap `MessageContent` for `MessageResponse` (Streamdown) for server-streamed markdown
 
 ## Related

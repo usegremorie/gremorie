@@ -33,11 +33,12 @@ The LLM returns structured output matching this shape:
 
 ## Anatomy
 
-1. **Card / CardHeader / CardTitle** - frame and metadata
-2. **Badge (outline)** - signals the artifact type
-3. **BarChart** - the rx-data primitive rendering the dataset
-4. **ChartConfig** - serializable map from value key to label + color token
-5. **Schema preview card** - exposes the contract for inspection
+```text
+Card
+├─ CardHeader            CardTitle + Badge (outline) — artifact type
+├─ BarChart (rx-data)    renders the dataset; ChartConfig maps value key → label + color token
+└─ schema preview card   exposes the contract for inspection
+```
 
 ## Installation
 
