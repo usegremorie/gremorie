@@ -14,11 +14,18 @@ import { BarChart } from './bar-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive frame + injects `--color-<key>` from `config`.
- * - **CartesianGrid** — horizontal rules (vertical when `horizontal`).
- * - **XAxis / YAxis** — category + value axes (axes swap when `horizontal`).
- * - **Bar** — one per series; rounded corners; optional `LabelList`.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * BarChart                       recharts bar chart wired to the chart primitive
+ * ├─ ChartContainer              responsive frame + injects --color-<key> from config
+ * │  └─ RechartsBarChart         the recharts <BarChart> (accessibilityLayer)
+ * │     ├─ CartesianGrid         horizontal rules (vertical when horizontal)
+ * │     ├─ XAxis / YAxis         category + value axes (axes swap when horizontal)
+ * │     ├─ ChartTooltip          hover card
+ * │     │  └─ ChartTooltipContent  token-styled tooltip body
+ * │     └─ Bar                   one per series; rounded corners
+ * │        ├─ Cell               per-bar fill on a single categorical series
+ * │        └─ LabelList          optional value drawn on each bar
+ * ```
  *
  * ## Props
  *

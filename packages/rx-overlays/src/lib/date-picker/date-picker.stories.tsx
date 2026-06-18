@@ -13,7 +13,14 @@ import { DatePicker } from './date-picker';
  *
  * ## Anatomy
  *
- * - **DatePicker** — outlined trigger button (shows the formatted date or placeholder) opening a popover that hosts a single-mode `Calendar`.
+ * ```text
+ * DatePicker                       composite of Popover + Calendar with Gremorie defaults
+ * ├─ Popover                       floating-surface root
+ * │  ├─ PopoverTrigger             asChild wrapper around the outlined Button
+ * │  │  └─ Button                  outlined trigger (formatted date or placeholder)
+ * │  └─ PopoverContent             floating surface (w-auto p-0)
+ * │     └─ Calendar                single-mode date grid
+ * ```
  *
  * ## Props
  *

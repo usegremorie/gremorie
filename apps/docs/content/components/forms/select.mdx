@@ -17,6 +17,21 @@ For lists longer than ~10 items, reach for a `Combobox` so users can type to fil
   <SelectPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Select                       root, owns the value (value / onValueChange)
+├─ SelectTrigger             the visible button (size = sm | default)
+│  └─ SelectValue            renders the selected value / placeholder
+└─ SelectContent             the portalled, scrollable listbox
+   ├─ SelectScrollUpButton   scroll-up affordance (auto-included)
+   ├─ SelectGroup            grouped section
+   │  ├─ SelectLabel         non-selectable group heading
+   │  └─ SelectItem          one option (check indicator when selected)
+   ├─ SelectSeparator        divider between groups
+   └─ SelectScrollDownButton scroll-down affordance (auto-included)
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

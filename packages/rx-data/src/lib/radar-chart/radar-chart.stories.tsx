@@ -13,11 +13,15 @@ import { RadarChart } from './radar-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive square frame + injects `--color-<key>`.
- * - **PolarAngleAxis** — spoke labels (`xKey`).
- * - **PolarGrid** — polygon or circular grid (`gridType`).
- * - **Radar** — one polygon per series.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * RadarChart
+ * └─ ChartContainer            responsive square frame + injects --color-<key>
+ *    └─ RadarChart (recharts)  polar plot area over the angular axis (xKey)
+ *       ├─ ChartTooltip        hover card (ChartTooltipContent)
+ *       ├─ PolarAngleAxis      spoke labels (xKey)
+ *       ├─ PolarGrid           polygon or circular grid (gridType)
+ *       └─ Radar               one polygon per series
+ * ```
  *
  * ## Props
  *

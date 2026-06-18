@@ -13,11 +13,16 @@ import { ScatterChart } from './scatter-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive frame + injects `--color-<key>`.
- * - **CartesianGrid** — full grid.
- * - **XAxis / YAxis** — both numeric (linear).
- * - **Scatter** — one set of dots per series.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * ChartContainer                      responsive frame + injects --color-<key>
+ * └─ ScatterChart                     recharts scatter plot area
+ *    ├─ CartesianGrid                 full grid
+ *    ├─ XAxis                         numeric X (linear)
+ *    ├─ YAxis                         numeric Y (linear)
+ *    ├─ ChartTooltip                  hover card
+ *    │  └─ ChartTooltipContent        styled tooltip body
+ *    └─ Scatter                       one set of dots per series
+ * ```
  *
  * ## Props
  *

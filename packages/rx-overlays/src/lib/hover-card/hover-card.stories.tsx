@@ -14,9 +14,11 @@ import { Button } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **HoverCard** — Radix root managing hover open/close timing.
- * - **HoverCardTrigger** — element that reveals the card on hover/focus.
- * - **HoverCardContent** — portalled preview surface (`align`, `sideOffset`).
+ * ```text
+ * HoverCard                  Radix root managing hover open/close timing
+ * ├─ HoverCardTrigger        element that reveals the card on hover/focus
+ * └─ HoverCardContent        portalled preview surface (align, sideOffset)
+ * ```
  *
  * ## Props
  *

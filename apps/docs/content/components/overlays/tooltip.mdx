@@ -19,6 +19,15 @@ The `TooltipContent` renders its own arrow automatically.
   <TooltipPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+TooltipProvider              shares one delay timer across all tooltips
+└─ Tooltip                   Radix root for a single tooltip instance
+   ├─ TooltipTrigger         the hover/focus anchor element
+   └─ TooltipContent         portalled bubble with a built-in arrow
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

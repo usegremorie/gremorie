@@ -17,6 +17,18 @@ The default surface is `w-72`, padded `p-4`, with a Radix-driven transform-origi
   <PopoverPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Popover                       Radix root holding open state
+├─ PopoverTrigger             opens the popover on click
+├─ PopoverAnchor              alternate positioning anchor
+└─ PopoverContent             portalled surface (align, sideOffset)
+   └─ PopoverHeader           wraps title + description
+      ├─ PopoverTitle         heading
+      └─ PopoverDescription   supporting text
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

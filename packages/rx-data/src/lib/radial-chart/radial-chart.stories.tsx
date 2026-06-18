@@ -13,10 +13,14 @@ import { RadialChart } from './radial-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive square frame + tooltip label config.
- * - **PolarGrid** — circular grid.
- * - **RadialBar** — one bar per row (`dataKey`), with a faint background track.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * ChartContainer                     responsive square frame + tooltip label config
+ * └─ RadialBarChart                  recharts polar plot area
+ *    ├─ ChartTooltip                 hover card
+ *    │  └─ ChartTooltipContent       themed tooltip body
+ *    ├─ PolarGrid                    circular grid
+ *    └─ RadialBar                    one bar per row, with a faint background track
+ * ```
  *
  * ## Props
  *

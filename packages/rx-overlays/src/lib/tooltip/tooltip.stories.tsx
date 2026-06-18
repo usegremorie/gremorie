@@ -20,10 +20,12 @@ import { Button } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **TooltipProvider** — shares delay timing across all tooltips.
- * - **Tooltip** — Radix root for a single tooltip.
- * - **TooltipTrigger** — the hover/focus anchor.
- * - **TooltipContent** — portalled bubble with an arrow.
+ * ```text
+ * TooltipProvider              shares one delay timer across all tooltips
+ * └─ Tooltip                   Radix root for a single tooltip instance
+ *    ├─ TooltipTrigger         the hover/focus anchor element
+ *    └─ TooltipContent         portalled bubble with a built-in arrow
+ * ```
  *
  * ## Props
  *

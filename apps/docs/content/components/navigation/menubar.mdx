@@ -17,6 +17,25 @@ Reach for Menubar when **you are emulating a desktop application** - code editor
   <MenubarPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Menubar
+└─ MenubarMenu                      one top-level menu (File, Edit, …)
+   ├─ MenubarTrigger                clickable label that opens the menu
+   └─ MenubarContent                portaled dropdown panel
+      ├─ MenubarItem                command row (inset / destructive variants)
+      │  └─ MenubarShortcut         right-aligned keyboard hint
+      ├─ MenubarCheckboxItem        toggleable item with a check indicator
+      ├─ MenubarRadioGroup          single-choice group
+      │  └─ MenubarRadioItem        one radio option with a dot indicator
+      ├─ MenubarLabel               non-interactive group header
+      ├─ MenubarSeparator           1px divider between groups
+      └─ MenubarSub                 nested submenu
+         ├─ MenubarSubTrigger       row that opens the submenu
+         └─ MenubarSubContent       the submenu panel
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

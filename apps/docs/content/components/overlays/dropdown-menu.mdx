@@ -17,6 +17,25 @@ The compound exposes everything Radix offers: items with destructive variant, ch
   <DropdownMenuPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+DropdownMenu                       Root holding open state
+├─ DropdownMenuTrigger             Element that opens the menu
+└─ DropdownMenuContent             Portalled surface (sideOffset default 4)
+   ├─ DropdownMenuLabel            Non-interactive section label
+   ├─ DropdownMenuSeparator        Divider
+   ├─ DropdownMenuGroup            Groups related items
+   │  └─ DropdownMenuItem          Action row (variant default | destructive, inset)
+   ├─ DropdownMenuCheckboxItem     Toggleable item
+   ├─ DropdownMenuRadioGroup       Single-choice container
+   │  └─ DropdownMenuRadioItem     Single-choice item
+   ├─ DropdownMenuSub              Nested submenu
+   │  ├─ DropdownMenuSubTrigger    Opens the submenu
+   │  └─ DropdownMenuSubContent    Submenu surface
+   └─ DropdownMenuShortcut         Right-aligned keyboard hint
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -20,12 +20,14 @@ import {
  *
  * ## Anatomy
  *
- * - **WebPreview** — the card root + context provider (`defaultUrl`, `onUrlChange`).
- * - **WebPreviewNavigation** — the top toolbar row.
- *   - **WebPreviewNavigationButton** — a ghost icon button with a tooltip.
- *   - **WebPreviewUrl** — the address input (commits on Enter).
- * - **WebPreviewBody** — the sandboxed `<iframe>` (uses the context URL unless `src` is set).
- * - **WebPreviewConsole** — a collapsible console panel rendering a `logs` array.
+ * ```text
+ * WebPreview                       card root + context provider
+ * ├─ WebPreviewNavigation          top toolbar row
+ * │  ├─ WebPreviewNavigationButton ghost icon button with a tooltip
+ * │  └─ WebPreviewUrl              address input (commits on Enter)
+ * ├─ WebPreviewBody                sandboxed iframe (context URL unless src is set)
+ * └─ WebPreviewConsole             collapsible console rendering a logs array
+ * ```
  *
  * ## Props
  *

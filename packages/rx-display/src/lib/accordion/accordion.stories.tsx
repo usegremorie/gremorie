@@ -18,10 +18,12 @@ import {
  *
  * ## Anatomy
  *
- * - **Accordion** — the Radix `Root`; carries `type` + `collapsible`.
- * - **AccordionItem** — one section, identified by `value`.
- * - **AccordionTrigger** — the clickable header (renders the chevron).
- * - **AccordionContent** — the collapsible body (animated open/close).
+ * ```text
+ * Accordion                  the Radix Root; carries type + collapsible
+ * └─ AccordionItem           one section, identified by value
+ *    ├─ AccordionTrigger     the clickable header (renders the chevron)
+ *    └─ AccordionContent     the collapsible body (animated open/close)
+ * ```
  *
  * ## Props
  *

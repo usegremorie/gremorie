@@ -17,6 +17,13 @@ Use ToggleGroup for **formatting and view state** (text alignment, view mode, fi
   <ToggleGroupPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ToggleGroup                 the Root; owns type, variant, size, spacing and shares them via context
+└─ ToggleGroupItem          one toggle button; inherits styling from the Root
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

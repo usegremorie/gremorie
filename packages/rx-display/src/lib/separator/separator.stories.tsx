@@ -12,8 +12,9 @@ import { Separator } from './separator';
  *
  * ## Anatomy
  *
- * A single token-driven element (`bg-border`): a 1px line that fills width when
- * horizontal and height when vertical.
+ * ```text
+ * Separator   single token-driven 1px line (bg-border); fills width when horizontal, height when vertical
+ * ```
  *
  * ## Props
  *

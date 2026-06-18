@@ -13,8 +13,12 @@ import { Slider } from './slider';
  *
  * ## Anatomy
  *
- * A `Slider.Root` containing a `Track` (with the filled `Range`) and one
- * `Thumb` per value.
+ * ```text
+ * Slider                  Root; wraps Radix Slider.Root
+ * ├─ Track                track background
+ * │  └─ Range             filled portion of the track
+ * └─ Thumb                one draggable handle per value
+ * ```
  *
  * ## Props
  *

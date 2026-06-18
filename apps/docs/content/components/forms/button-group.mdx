@@ -17,6 +17,14 @@ It also accepts `Select` triggers and `ButtonGroupText` so you can mix labels an
   <ButtonGroupPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ButtonGroup                  role="group" flex wrapper that fuses its children
+├─ ButtonGroupText           non-interactive text/label segment (muted addon)
+└─ ButtonGroupSeparator      thin Radix Separator between segments
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

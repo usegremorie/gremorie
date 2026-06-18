@@ -13,9 +13,15 @@ import { PieChart } from './pie-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive square frame + tooltip label config.
- * - **Pie** — one slice per row (`nameKey` + `dataKey`); `innerRadius` for donut.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * PieChart                          recharts pie / donut on the shadcn chart primitive
+ * └─ ChartContainer                 responsive square frame + tooltip label config
+ *    └─ RechartsPieChart            recharts pie surface
+ *       ├─ ChartTooltip             hover card
+ *       │  └─ ChartTooltipContent   themed tooltip body
+ *       └─ Pie                      one slice per row (nameKey + dataKey); innerRadius for donut
+ *          └─ LabelList             optional slice labels (showLabels)
+ * ```
  *
  * ## Props
  *
