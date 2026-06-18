@@ -20,15 +20,17 @@ the divider.
 
 ## Anatomy
 
-The block composes:
-
-1. **Card** - frame with header, content, and footer
-2. **CardTitle / CardDescription** - welcome line and subtitle
-3. **Button (outline)** - GitHub provider with `lucide-react` icon
-4. **Separator** - horizontal rule with "or" label
-5. **Label + Input** - email and password fields with native autocomplete hints
-6. **Button (default)** - submit action, full width
-7. **Anchor** - "Create one" sign-up link in the footer
+```text
+SignIn
+└─ Card
+   ├─ CardHeader           CardTitle (Welcome back) + CardDescription
+   ├─ CardContent
+   │  ├─ Button outline    GitHub provider (lucide icon)
+   │  ├─ Separator         "or" divider
+   │  ├─ Label + Input     email
+   │  └─ Label + Input     password (+ Forgot password link)
+   └─ CardFooter           Button (Sign in) + "Create one" link
+```
 
 ## Installation
 

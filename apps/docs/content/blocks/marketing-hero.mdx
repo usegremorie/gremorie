@@ -19,15 +19,16 @@ copy.
 
 ## Anatomy
 
-The block composes:
-
-1. **Radial halo** - `bg-gradient-to-br from-brand/30` decorative background
-2. **Badge** - eyebrow indicator with `lucide-react` Sparkles icon
-3. **h1** - 4xl / 5xl headline with a `text-brand` span
-4. **p** - supporting subhead
-5. **Button (default lg)** - primary CTA with arrow icon
-6. **Button (outline lg)** - secondary CTA
-7. **Card mockup** - window chrome with placeholder content blocks tinted by `bg-brand/20`, `bg-chart-1/20`, `bg-chart-2/20`
+```text
+MarketingHero
+├─ halo                    decorative radial gradient (brand), aria-hidden
+├─ copy column
+│  ├─ Badge                eyebrow with lucide Sparkles
+│  ├─ h1                   headline with a text-brand span
+│  ├─ p                    supporting subhead
+│  └─ CTA row              Button lg (Start free) · Button outline lg (Book a demo)
+└─ Card (mockup)           window chrome + placeholder blocks (brand / chart tints)
+```
 
 ## Installation
 

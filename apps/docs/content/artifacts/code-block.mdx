@@ -34,10 +34,12 @@ The LLM returns structured output matching this shape:
 
 ## Anatomy
 
-1. **Card / CardHeader** - frame with filename + badge
-2. **CodeBlock** - the rx-ai primitive that runs Shiki against `code`
-3. **CodeBlockCopyButton** - overlay copy-to-clipboard control
-4. **Badge (outline)** - signals the artifact type
+```text
+Card
+├─ CardHeader            filename + Badge (outline) — artifact type
+└─ CodeBlock             rx-ai primitive (Shiki highlight against `code`)
+   └─ CodeBlockCopyButton overlay copy-to-clipboard control
+```
 
 ## Installation
 

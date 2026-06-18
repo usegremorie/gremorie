@@ -32,10 +32,11 @@ The LLM returns structured output matching this shape:
 
 ## Anatomy
 
-1. **Card / CardHeader / CardTitle** - document frame and filename
-2. **Badge (outline)** - signals the artifact type
-3. **article.prose** - typography wrapper consuming rendered Markdown
-4. **dark:prose-invert** - automatic dark mode for prose
+```text
+Card
+├─ CardHeader            CardTitle + filename + Badge (outline)
+└─ article.prose         typography wrapper (dark:prose-invert) over rendered Markdown
+```
 
 ## Installation
 
