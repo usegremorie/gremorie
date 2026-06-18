@@ -23,12 +23,19 @@ import {
  *
  * ## Anatomy
  *
- * - **Table** — wraps `<table>` in an overflow container.
- * - **TableHeader** / **TableBody** / **TableFooter** — `<thead>` / `<tbody>` / `<tfoot>`.
- * - **TableRow** — `<tr>` with hover + `data-[state=selected]` styling.
- * - **TableHead** — `<th>` column header.
- * - **TableCell** — `<td>` body cell.
- * - **TableCaption** — `<caption>`, rendered below the table.
+ * ```text
+ * Table                       wraps <table> in an overflow container
+ * ├─ TableCaption             <caption>, rendered below the table
+ * ├─ TableHeader              <thead>
+ * │  └─ TableRow              <tr> with hover + data-[state=selected]
+ * │     └─ TableHead          <th> column header
+ * ├─ TableBody                <tbody>
+ * │  └─ TableRow              <tr> with hover + data-[state=selected]
+ * │     └─ TableCell          <td> body cell
+ * └─ TableFooter              <tfoot> (muted, top border)
+ *    └─ TableRow              <tr> with hover + data-[state=selected]
+ *       └─ TableCell          <td> summary cell
+ * ```
  *
  * ## Props
  *

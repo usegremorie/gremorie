@@ -21,13 +21,17 @@ import {
  *
  * ## Anatomy
  *
- * - **NavigationMenu** — the root; renders a `Viewport` when `viewport` is on.
- * - **NavigationMenuList** — the horizontal list of items.
- * - **NavigationMenuItem** — one slot (trigger + panel, or a plain link).
- * - **NavigationMenuTrigger** — the label that opens a content panel.
- * - **NavigationMenuContent** — the dropdown panel (multi-column friendly).
- * - **NavigationMenuLink** — a link, inside a panel or standalone.
- * - **navigationMenuTriggerStyle** — CVA helper to style plain links like triggers.
+ * ```text
+ * NavigationMenu                       the root; auto-mounts a Viewport when viewport is on
+ * ├─ NavigationMenuList                the horizontal list of items
+ * │  └─ NavigationMenuItem             one slot: trigger + panel, or a plain link
+ * │     ├─ NavigationMenuTrigger       the label that opens a content panel
+ * │     ├─ NavigationMenuContent       the dropdown panel (multi-column friendly)
+ * │     │  └─ NavigationMenuLink       a link, inside a panel or standalone
+ * │     └─ navigationMenuTriggerStyle  CVA helper to style plain links like triggers
+ * ├─ NavigationMenuIndicator           pointer arrow that tracks the active trigger
+ * └─ NavigationMenuViewport            shared sliding container (auto-mounted)
+ * ```
  *
  * ## Props
  *

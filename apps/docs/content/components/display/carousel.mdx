@@ -26,6 +26,16 @@ Carousels hide content past the first slide - use only when order matters less t
   <CarouselPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Carousel                       Embla root + context provider (orientation, opts, plugins)
+├─ CarouselContent             overflow viewport + flex track
+│  └─ CarouselItem             a single slide (basis-full by default)
+├─ CarouselPrevious            previous-slide arrow button, auto-disabled at the start
+└─ CarouselNext                next-slide arrow button, auto-disabled at the end
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

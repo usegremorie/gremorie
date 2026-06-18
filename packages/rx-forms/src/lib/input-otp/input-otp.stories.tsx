@@ -17,10 +17,14 @@ import {
  *
  * ## Anatomy
  *
- * - **InputOTP** — the hidden `OTPInput` owning value + `maxLength`.
- * - **InputOTPGroup** — a visual cluster of contiguous slots.
- * - **InputOTPSlot** — one character cell (reads its char from context by `index`).
- * - **InputOTPSeparator** — a `MinusIcon` divider between groups.
+ * ```text
+ * InputOTP                       hidden OTPInput owning value + maxLength
+ * ├─ InputOTPGroup               visual cluster of contiguous slots
+ * │  └─ InputOTPSlot             one character cell (reads its char by index)
+ * ├─ InputOTPSeparator           a MinusIcon divider between groups
+ * └─ InputOTPGroup               another cluster (split codes 3 + 3)
+ *    └─ InputOTPSlot             one character cell
+ * ```
  *
  * ## Props
  *

@@ -12,8 +12,9 @@ import { AspectRatio } from './aspect-ratio';
  *
  * ## Anatomy
  *
- * A single element: a box whose height is derived from its width and the
- * `ratio` prop. Its child should fill it (`h-full w-full object-cover`).
+ * ```text
+ * AspectRatio   box whose height is derived from its width and the `ratio` prop; its child fills it (`h-full w-full object-cover`)
+ * ```
  *
  * ## Props
  *

@@ -27,15 +27,22 @@ import {
  *
  * ## Anatomy
  *
- * - **Menubar** — the horizontal bar wrapper.
- * - **MenubarMenu** — one top-level menu (File, Edit, …).
- * - **MenubarTrigger** — the clickable label opening a menu.
- * - **MenubarContent** — the dropdown panel (portaled).
- * - **MenubarItem** — a command row (`variant` supports `destructive`, `inset`).
- * - **MenubarCheckboxItem** / **MenubarRadioGroup** / **MenubarRadioItem** — stateful items.
- * - **MenubarSub** / **MenubarSubTrigger** / **MenubarSubContent** — nested submenus.
- * - **MenubarShortcut** — right-aligned keyboard hint.
- * - **MenubarSeparator** / **MenubarLabel** — grouping helpers.
+ * ```text
+ * Menubar
+ * └─ MenubarMenu                      one top-level menu (File, Edit, …)
+ *    ├─ MenubarTrigger                clickable label that opens the menu
+ *    └─ MenubarContent                portaled dropdown panel
+ *       ├─ MenubarItem                command row (inset / destructive variants)
+ *       │  └─ MenubarShortcut         right-aligned keyboard hint
+ *       ├─ MenubarCheckboxItem        toggleable item with a check indicator
+ *       ├─ MenubarRadioGroup          single-choice group
+ *       │  └─ MenubarRadioItem        one radio option with a dot indicator
+ *       ├─ MenubarLabel               non-interactive group header
+ *       ├─ MenubarSeparator           1px divider between groups
+ *       └─ MenubarSub                 nested submenu
+ *          ├─ MenubarSubTrigger       row that opens the submenu
+ *          └─ MenubarSubContent       the submenu panel
+ * ```
  *
  * ## Props
  *

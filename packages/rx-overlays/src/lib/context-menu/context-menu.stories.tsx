@@ -27,15 +27,22 @@ import {
  *
  * ## Anatomy
  *
- * - **ContextMenu** — Radix root.
- * - **ContextMenuTrigger** — the region that responds to right-click.
- * - **ContextMenuContent** — portalled menu surface.
- * - **ContextMenuItem** — action row (`variant` `default | destructive`, `inset`).
- * - **ContextMenuCheckboxItem** / **ContextMenuRadioItem** — stateful items.
- * - **ContextMenuLabel** — non-interactive section label.
- * - **ContextMenuSeparator** — divider.
- * - **ContextMenuShortcut** — right-aligned keyboard hint.
- * - **ContextMenuSub / SubTrigger / SubContent** — nested submenu.
+ * ```text
+ * ContextMenu                       Radix root, owns open state
+ * ├─ ContextMenuTrigger             region that responds to right-click
+ * └─ ContextMenuContent             portalled menu surface
+ *    ├─ ContextMenuGroup            groups related items
+ *    ├─ ContextMenuItem             action row (variant default | destructive, inset)
+ *    │  └─ ContextMenuShortcut      right-aligned keyboard hint
+ *    ├─ ContextMenuCheckboxItem     toggleable item
+ *    ├─ ContextMenuRadioGroup       single-choice container
+ *    │  └─ ContextMenuRadioItem     single-choice item
+ *    ├─ ContextMenuLabel            non-interactive section label
+ *    ├─ ContextMenuSeparator        divider
+ *    └─ ContextMenuSub              nested submenu
+ *       ├─ ContextMenuSubTrigger    row that opens the submenu
+ *       └─ ContextMenuSubContent    nested menu surface
+ * ```
  *
  * ## Props
  *

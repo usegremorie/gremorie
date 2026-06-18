@@ -27,6 +27,22 @@ For sorting, filtering, pagination, row selection, or virtualization, compose Ta
   <TablePreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Table                       wraps <table> in an overflow container
+├─ TableCaption             <caption>, rendered below the table
+├─ TableHeader              <thead>
+│  └─ TableRow              <tr> with hover + data-[state=selected]
+│     └─ TableHead          <th> column header
+├─ TableBody                <tbody>
+│  └─ TableRow              <tr> with hover + data-[state=selected]
+│     └─ TableCell          <td> body cell
+└─ TableFooter              <tfoot> (muted, top border)
+   └─ TableRow              <tr> with hover + data-[state=selected]
+      └─ TableCell          <td> summary cell
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

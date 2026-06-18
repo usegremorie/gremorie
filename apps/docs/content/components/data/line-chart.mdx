@@ -18,6 +18,19 @@ Reach for LineChart when **shape and direction** are the headline - month-over-m
   <LineChartPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+LineChart                       styled wrapper; one Line per config entry
+└─ ChartContainer               responsive frame; injects --color-<key> from config
+   ├─ CartesianGrid             horizontal rules
+   ├─ XAxis                     category axis
+   ├─ YAxis                     numeric axis (optional, yAxis)
+   ├─ ChartTooltip              hover card
+   │  └─ ChartTooltipContent    token-styled tooltip body
+   └─ Line                      one per series; 2px stroke; optional dots
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

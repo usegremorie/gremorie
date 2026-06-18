@@ -18,6 +18,19 @@ Reach for ScatterChart when you need to surface **correlation, density, or outli
   <ScatterChartPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ChartContainer                      responsive frame + injects --color-<key>
+└─ ScatterChart                     recharts scatter plot area
+   ├─ CartesianGrid                 full grid
+   ├─ XAxis                         numeric X (linear)
+   ├─ YAxis                         numeric Y (linear)
+   ├─ ChartTooltip                  hover card
+   │  └─ ChartTooltipContent        styled tooltip body
+   └─ Scatter                       one set of dots per series
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

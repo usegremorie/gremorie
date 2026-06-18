@@ -19,6 +19,18 @@ Reach for Pagination when **URLs must be shareable, stable order matters, and us
   <PaginationPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Pagination                  <nav aria-label="pagination"> wrapper
+└─ PaginationContent        the <ul> row of controls
+   └─ PaginationItem        one <li> cell wrapping a control
+      ├─ PaginationLink     page-number link; isActive marks the current page
+      ├─ PaginationPrevious labelled previous-page control
+      ├─ PaginationNext     labelled next-page control
+      └─ PaginationEllipsis gap indicator for skipped page ranges
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

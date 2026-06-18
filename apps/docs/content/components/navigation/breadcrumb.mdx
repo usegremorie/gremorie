@@ -26,6 +26,18 @@ Reach for Breadcrumb only on **deep hierarchies (three levels or more)**. Flat s
   <BreadcrumbPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Breadcrumb                     <nav aria-label="breadcrumb"> wrapper
+└─ BreadcrumbList              <ol> row of segments
+   ├─ BreadcrumbItem           one segment cell
+   │  ├─ BreadcrumbLink        navigable ancestor link (asChild swaps the tag)
+   │  ├─ BreadcrumbPage        terminal current page (not a link)
+   │  └─ BreadcrumbEllipsis    collapsed-middle indicator, paired with a menu
+   └─ BreadcrumbSeparator      divider between segments (defaults to a chevron)
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

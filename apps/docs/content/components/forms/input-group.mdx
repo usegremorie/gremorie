@@ -17,6 +17,17 @@ Four alignment positions are exposed via `data-align` on `InputGroupAddon`: `inl
   <InputGroupPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+InputGroup                       role="group" wrapper owning the border + focus ring
+├─ InputGroupInput               borderless inner input control
+├─ InputGroupTextarea            borderless inner textarea control (alternate)
+└─ InputGroupAddon               positioned slot for icons/buttons/text (align)
+   ├─ InputGroupButton           compact ghost button sized for the group
+   └─ InputGroupText             inline muted text / kbd hint
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -14,7 +14,9 @@ import { Label } from './label';
  *
  * ## Anatomy
  *
- * A single `Label.Root` styled as a small, medium-weight, non-selectable row.
+ * ```text
+ * Label   single Radix Label.Root row; small, medium-weight, non-selectable
+ * ```
  *
  * ## Props
  *

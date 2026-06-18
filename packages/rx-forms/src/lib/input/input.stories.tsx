@@ -13,7 +13,9 @@ import { Input } from './input';
  *
  * ## Anatomy
  *
- * A single styled `<input>` element.
+ * ```text
+ * Input   single styled native <input> element (leaf primitive)
+ * ```
  *
  * ## Props
  *

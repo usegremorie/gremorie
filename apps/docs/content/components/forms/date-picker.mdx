@@ -21,6 +21,17 @@ DatePicker lives in `@gremorie/rx-overlays` because it composes a `Popover` (ove
   <DatePickerPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+DatePicker                       composite of Popover + Calendar with Gremorie defaults
+├─ Popover                       floating-surface root
+│  ├─ PopoverTrigger             asChild wrapper around the outlined Button
+│  │  └─ Button                  outlined trigger (formatted date or placeholder)
+│  └─ PopoverContent             floating surface (w-auto p-0)
+│     └─ Calendar                single-mode date grid
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -28,6 +28,17 @@ Pair with [`Artifact`](/components/code/artifact) when the preview is part of a 
   <WebPreviewConsolePreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+WebPreview                       card root + context provider
+├─ WebPreviewNavigation          top toolbar row
+│  ├─ WebPreviewNavigationButton ghost icon button with a tooltip
+│  └─ WebPreviewUrl              address input (commits on Enter)
+├─ WebPreviewBody                sandboxed iframe (context URL unless src is set)
+└─ WebPreviewConsole             collapsible console rendering a logs array
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

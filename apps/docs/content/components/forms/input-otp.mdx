@@ -17,6 +17,17 @@ Use it for 2FA, email verification, SMS confirmation - any ephemeral code the us
   <InputOTPPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+InputOTP                       hidden OTPInput owning value + maxLength
+├─ InputOTPGroup               visual cluster of contiguous slots
+│  └─ InputOTPSlot             one character cell (reads its char by index)
+├─ InputOTPSeparator           a MinusIcon divider between groups
+└─ InputOTPGroup               another cluster (split codes 3 + 3)
+   └─ InputOTPSlot             one character cell
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

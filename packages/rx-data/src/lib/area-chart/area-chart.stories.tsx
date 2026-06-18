@@ -13,11 +13,16 @@ import { AreaChart } from './area-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive frame + injects `--color-<key>` from `config`.
- * - **CartesianGrid** — horizontal rules.
- * - **XAxis** — category axis.
- * - **Area** — one per series; filled at 40% opacity, stroked at full.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * ChartContainer                  responsive frame + injects --color-<key> from config
+ * └─ AreaChart                    recharts area chart (accessibilityLayer)
+ *    ├─ CartesianGrid             horizontal rules
+ *    ├─ XAxis                     category axis
+ *    ├─ YAxis                     numeric axis (when yAxis)
+ *    ├─ ChartTooltip              hover card
+ *    │  └─ ChartTooltipContent    tooltip body
+ *    └─ Area                      one per series; 40% fill, full stroke
+ * ```
  *
  * ## Props
  *

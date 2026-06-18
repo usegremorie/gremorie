@@ -17,6 +17,19 @@ The close button is on by default. Set `showCloseButton={false}` when the dialog
   <DialogPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Dialog                       Radix root holding open state
+├─ DialogTrigger             element that opens the dialog
+└─ DialogContent             centered, portalled panel with overlay + close button
+   ├─ DialogHeader           wraps title + description
+   │  ├─ DialogTitle         accessible headline
+   │  └─ DialogDescription   accessible body text
+   └─ DialogFooter           action row (optional built-in close button)
+      └─ DialogClose         closes the dialog from any descendant
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

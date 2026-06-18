@@ -14,8 +14,9 @@ import { Calendar } from './calendar';
  *
  * ## Anatomy
  *
- * A `DayPicker` instance: a caption with prev/next nav (custom lucide chevrons),
- * a weekday header row, and a grid of day buttons styled via `buttonVariants`.
+ * ```text
+ * Calendar   self-contained DayPicker grid (caption + nav, weekday header, day buttons)
+ * ```
  *
  * ## Props
  *

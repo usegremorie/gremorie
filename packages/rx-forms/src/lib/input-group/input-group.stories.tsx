@@ -20,11 +20,14 @@ import {
  *
  * ## Anatomy
  *
- * - **InputGroup** — `role="group"` wrapper owning the border + focus ring.
- * - **InputGroupInput** / **InputGroupTextarea** — the borderless inner control.
- * - **InputGroupAddon** — positioned slot for icons/buttons/text (`align`).
- * - **InputGroupButton** — a compact ghost button sized for the group.
- * - **InputGroupText** — inline muted text/kbd hint.
+ * ```text
+ * InputGroup                       role="group" wrapper owning the border + focus ring
+ * ├─ InputGroupInput               borderless inner input control
+ * ├─ InputGroupTextarea            borderless inner textarea control (alternate)
+ * └─ InputGroupAddon               positioned slot for icons/buttons/text (align)
+ *    ├─ InputGroupButton           compact ghost button sized for the group
+ *    └─ InputGroupText             inline muted text / kbd hint
+ * ```
  *
  * ## Props
  *

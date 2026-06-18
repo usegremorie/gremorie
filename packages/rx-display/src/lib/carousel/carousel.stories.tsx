@@ -20,10 +20,13 @@ import {
  *
  * ## Anatomy
  *
- * - **Carousel** — the Embla root + context provider (`orientation`, `opts`, `plugins`).
- * - **CarouselContent** — the overflow viewport + flex track.
- * - **CarouselItem** — a single slide (`basis-full` by default).
- * - **CarouselPrevious** / **CarouselNext** — arrow buttons, auto-disabled at the ends.
+ * ```text
+ * Carousel                       Embla root + context provider (orientation, opts, plugins)
+ * ├─ CarouselContent             overflow viewport + flex track
+ * │  └─ CarouselItem             a single slide (basis-full by default)
+ * ├─ CarouselPrevious            previous-slide arrow button, auto-disabled at the start
+ * └─ CarouselNext                next-slide arrow button, auto-disabled at the end
+ * ```
  *
  * ## Props
  *

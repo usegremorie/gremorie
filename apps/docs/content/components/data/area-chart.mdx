@@ -18,6 +18,19 @@ Reach for AreaChart when the **magnitude** of a series matters as much as its tr
   <AreaChartPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ChartContainer                  responsive frame + injects --color-<key> from config
+└─ AreaChart                    recharts area chart (accessibilityLayer)
+   ├─ CartesianGrid             horizontal rules
+   ├─ XAxis                     category axis
+   ├─ YAxis                     numeric axis (when yAxis)
+   ├─ ChartTooltip              hover card
+   │  └─ ChartTooltipContent    tooltip body
+   └─ Area                      one per series; 40% fill, full stroke
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

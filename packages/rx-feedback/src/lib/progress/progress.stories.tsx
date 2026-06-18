@@ -13,7 +13,9 @@ import { Progress } from './progress';
  *
  * ## Anatomy
  *
- * - **Progress** — a rounded track containing a filled indicator translated by `value`%.
+ * ```text
+ * Progress   a rounded track containing a filled indicator translated by value%
+ * ```
  *
  * ## Props
  *

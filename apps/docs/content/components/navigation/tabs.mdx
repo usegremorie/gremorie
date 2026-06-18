@@ -23,6 +23,15 @@ Reach for Tabs when **the views live in the same scope** - Profile / Billing / A
   <TabsPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Tabs                  the Radix root; carries value / orientation
+├─ TabsList           the trigger track; variant default (pill) or line
+│  └─ TabsTrigger     one selectable tab
+└─ TabsContent        the panel shown for the active tab
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

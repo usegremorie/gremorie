@@ -17,6 +17,14 @@ The Radix primitive handles the roving tabindex pattern (only the selected optio
   <RadioGroupPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+RadioGroup               the Root, a grid gap-3 owning the value
+└─ RadioGroupItem        one circular option (value required); pair with a Label
+   └─ Indicator          filled CircleIcon dot, shown only when selected
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

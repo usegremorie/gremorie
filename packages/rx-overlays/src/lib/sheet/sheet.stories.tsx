@@ -23,13 +23,16 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **Sheet** — Radix root holding open state.
- * - **SheetTrigger** — element that opens the sheet.
- * - **SheetContent** — portalled sliding panel (`side`, `showCloseButton`).
- * - **SheetHeader** — wraps title + description.
- * - **SheetTitle** / **SheetDescription** — headline + body.
- * - **SheetFooter** — bottom action row.
- * - **SheetClose** — closes the sheet.
+ * ```text
+ * Sheet                          Radix root holding open state
+ * ├─ SheetTrigger                element that opens the sheet
+ * └─ SheetContent                portalled sliding panel (side, showCloseButton)
+ *    ├─ SheetHeader              wraps title + description
+ *    │  ├─ SheetTitle            headline
+ *    │  └─ SheetDescription      body text
+ *    ├─ SheetClose               closes the sheet
+ *    └─ SheetFooter              bottom action row
+ * ```
  *
  * ## Props
  *
