@@ -12,6 +12,24 @@ import { LineChartSinglePreview } from '@/components/preview/data/line-chart-sin
 
 Reach for LineChart when **shape and direction** are the headline - month-over-month conversion, weekly active users, deploys per day. Use [`AreaChart`](/components/data/area-chart) when the filled magnitude is the story; use [`BarChart`](/components/data/bar-chart) for discrete category comparisons; use [`ScatterChart`](/components/data/scatter-chart) when the X axis is itself numeric and continuous.
 
+The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+
+## Anatomy
+
+```
+<line-chart>
+└─ figure (role="img")                  card surface, aspect-video
+   ├─ svg (chart frame)
+   │  ├─ cartesian grid
+   │  ├─ x axis (category from xKey)
+   │  ├─ y axis (numeric, optional via yAxis)
+   │  ├─ stroked lines, one per config key
+   │  └─ dots (optional via dots)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
 ## Preview
 
 <ComponentPreview name="data/line-chart">
@@ -57,9 +75,32 @@ export function MonthlyTrend() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { LineChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+  selector: 'app-monthly-trend',
+  imports: [LineChart],
+  template: `<line-chart [data]="data" [config]="config" xKey="month" />`,
+})
+export class MonthlyTrendComponent {
+  readonly data: ChartDatum[] = [
+    { month: 'Jan', desktop: 186, mobile: 80 },
+    { month: 'Feb', desktop: 305, mobile: 200 },
+    { month: 'Mar', desktop: 237, mobile: 120 },
+    { month: 'Apr', desktop: 73, mobile: 190 },
+    { month: 'May', desktop: 209, mobile: 130 },
+    { month: 'Jun', desktop: 214, mobile: 140 },
+  ];
+
+  readonly config: ChartConfig = {
+    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+  };
+}
+```
 </Tab>
 </Tabs>
 
@@ -76,6 +117,7 @@ The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<LineCha
 | `xKey`      | `string`                                        | -           | Name of the category field on each row. Drives the X axis ticks.                                                                                                                                 |
 | `type`      | `"natural" \| "monotone" \| "linear" \| "step"` | `"natural"` | Interpolation curve for the lines.                                                                                                                                                               |
 | `dots`      | `boolean`                                       | `false`     | Render a marker at each data point.                                                                                                                                                              |
+| `yAxis`     | `boolean`                                       | `true`      | Render the numeric Y axis. Set to `false` for a minimal, axis-free line (sparkline-style).                                                                                                       |
 | `tooltip`   | `boolean`                                       | `true`      | Show the hover tooltip.                                                                                                                                                                          |
 | `className` | `string`                                        | -           | Merged onto the `ChartContainer`. Use for sizing escape hatches; the bundled style already supplies a rounded card surface plus aspect ratio.                                                    |
 
@@ -122,6 +164,10 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 />
 ```
 
+```html
+<line-chart [data]="data" [config]="config" xKey="week" />
+```
+
 The default shape. Reach for a single line when the story is the trajectory of one metric.
 
 ### Multi-series comparison
@@ -139,15 +185,48 @@ const config: ChartConfig = {
 <LineChart data={data} config={config} xKey="month" />;
 ```
 
+```html
+<line-chart [data]="data" [config]="config" xKey="month" />
+```
+
 For shape-to-shape comparison across cohorts. Keep the count under five lines before a [`ScatterChart`](/components/data/scatter-chart) or small-multiples layout reads better.
 
-### Interpolation and dots
+### Dots
 
-Set `type` to pick the interpolation curve (`"natural"`, `"monotone"`, `"linear"`, or `"step"`), or `dots` to mark each data point:
+Set `dots` to render a marker at each data point. Reach for it when the data is sparse and you want each reading to be individually clickable / readable.
+
+```tsx
+<LineChart data={data} config={config} xKey="month" dots />
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" [dots]="true" />
+```
+
+### Curve type
+
+Set `type` to pick the interpolation curve - `"natural"` (default), `"monotone"`, `"linear"` (straight segments), or `"step"` (stepped edges). Use `"linear"` to read exact slopes; use `"step"` for discrete state changes.
 
 ```tsx
 <LineChart data={data} config={config} xKey="month" type="monotone" />
-<LineChart data={data} config={config} xKey="month" dots />
+<LineChart data={data} config={config} xKey="month" type="step" />
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" type="monotone" />
+<line-chart [data]="data" [config]="config" xKey="month" type="step" />
+```
+
+### No axis
+
+Set `yAxis` to `false` to drop the numeric axis for a minimal, sparkline-style line that leans on the tooltip for exact values.
+
+```tsx
+<LineChart data={data} config={config} xKey="month" yAxis={false} />
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" [yAxis]="false" />
 ```
 
 ### Composing with the chart primitive

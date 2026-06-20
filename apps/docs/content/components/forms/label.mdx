@@ -4,6 +4,7 @@ description: Accessible label primitive built on Radix Label - associates with a
 ---
 
 import { LabelPreview } from '@/components/preview/forms/label';
+import { LabelRequiredPreview } from '@/components/preview/forms/label-required';
 
 ## Overview
 
@@ -73,16 +74,13 @@ The base classes apply `font-medium`, `text-sm`, `leading-none`, and `select-non
 
 ## Variations
 
-### Label above an input
+### Required field marker
 
-The canonical pattern. Place the label above the control with `gap-2` for visual breathing room.
+The canonical pattern: label above the control with `gap-2`, plus a destructive asterisk to flag a required field. Always pair the visual marker with `required` (or `aria-required`) on the control so screen readers announce it too.
 
-```tsx
-<div className="grid gap-2">
-  <Label htmlFor="email">Email</Label>
-  <Input id="email" type="email" />
-</div>
-```
+<ComponentPreview name="forms/label-required">
+  <LabelRequiredPreview />
+</ComponentPreview>
 
 ### Label beside a checkbox
 

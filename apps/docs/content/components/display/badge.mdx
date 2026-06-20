@@ -4,8 +4,10 @@ description: 'Compact label for status, counts, and tags. Six variants, optional
 ---
 
 import { BadgePreview } from '@/components/preview/display/badge';
-import { Badge } from '@gremorie/rx-display';
-import { CheckIcon, AlertCircleIcon } from 'lucide-react';
+import { BadgeVariantsPreview } from '@/components/preview/display/badge-variants';
+import { BadgeStatusPreview } from '@/components/preview/display/badge-status';
+import { BadgeLinkPreview } from '@/components/preview/display/badge-link';
+import { BadgeCountPreview } from '@/components/preview/display/badge-count';
 
 ## Overview
 
@@ -87,67 +89,35 @@ Icons compose naturally: drop an SVG inside Badge and the variant CSS handles si
 
 ## Variations
 
+### All variants
+
+<ComponentPreview name="display/badge-variants">
+  <BadgeVariantsPreview />
+</ComponentPreview>
+
+All six variants side by side: `default` (filled primary), `secondary`, `destructive`, `outline`, `ghost`, and `link`. `ghost` reads as plain text until rendered as an anchor.
+
 ### Status indicator
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="flex flex-wrap items-center gap-2">
-    <Badge variant="secondary">
-      <CheckIcon />
-      Active
-    </Badge>
-    <Badge variant="destructive">
-      <AlertCircleIcon />
-      Failed
-    </Badge>
-    <Badge variant="outline">Draft</Badge>
-  </div>
-</div>
+<ComponentPreview name="display/badge-status">
+  <BadgeStatusPreview />
+</ComponentPreview>
 
-```tsx
-<Badge variant="secondary">
-  <CheckIcon />
-  Active
-</Badge>
-<Badge variant="destructive">
-  <AlertCircleIcon />
-  Failed
-</Badge>
-<Badge variant="outline">Draft</Badge>
-```
+Pair an icon with text so the status reads clearly without relying on color alone. Icons inside Badge size automatically via `[&>svg]:size-3`.
 
 ### Badge as a link (asChild)
 
-<div className="rounded-lg border p-6 not-prose">
-  <Badge asChild variant="outline">
-    <a href="#docs">Read the docs</a>
-  </Badge>
-</div>
-
-```tsx
-<Badge asChild variant="outline">
-  <a href="/docs">Read the docs</a>
-</Badge>
-```
+<ComponentPreview name="display/badge-link">
+  <BadgeLinkPreview />
+</ComponentPreview>
 
 Hover styles activate automatically when Badge renders as an anchor - that is what the `[a&]:hover:...` selectors do internally.
 
 ### Count badge
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="flex items-center gap-2">
-    <span className="text-sm">Inbox</span>
-    <Badge>12</Badge>
-    <span className="text-sm">Notifications</span>
-    <Badge variant="destructive">99+</Badge>
-  </div>
-</div>
-
-```tsx
-<span className="text-sm">Inbox</span>
-<Badge>12</Badge>
-<span className="text-sm">Notifications</span>
-<Badge variant="destructive">99+</Badge>
-```
+<ComponentPreview name="display/badge-count">
+  <BadgeCountPreview />
+</ComponentPreview>
 
 ## Accessibility
 

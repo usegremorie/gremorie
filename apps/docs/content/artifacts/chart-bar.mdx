@@ -159,13 +159,53 @@ export function ChartBar() {
 
 <Tab value="Angular">
 
-<Callout type="info">
-  Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+The Angular edition ships the `ChartArtifact` shell from `@gremorie/ng-artifacts`,
+which wraps any `@gremorie/ng-data` chart with a chart ⇄ table toggle and
+PNG / CSV downloads, plus the same accessible data table:
+
+```ts
+import { Component } from '@angular/core';
+import { ChartArtifact } from '@gremorie/ng-artifacts';
+
+@Component({
+  selector: 'app-chart-bar',
+  imports: [ChartArtifact],
+  template: `
+    <chart-artifact
+      title="Quarterly revenue"
+      description="Generated from a chart schema returned by the LLM."
+      type="bar"
+      categoryKey="category"
+      valueKey="value"
+      valueLabel="Revenue"
+      [data]="data"
+    />
+  `,
+})
+export class ChartBarComponent {
+  readonly data = [
+    { category: 'Q1', value: 42000 },
+    { category: 'Q2', value: 51000 },
+    { category: 'Q3', value: 48000 },
+    { category: 'Q4', value: 62000 },
+  ];
+}
+```
+
+Pass `type` (`bar | area | line | pie | radar | radial | scatter`) to switch the
+embedded chart, or a `valueKey` array for multi-series. The shell mirrors the
+React `ChartArtifact` input for input.
 
 </Tab>
 
 </Tabs>
+
+## ChartArtifact props
+
+Generated from the agnostic component contract (`@gremorie/contracts`), so the
+React and Angular editions and this table never drift:
+
+<PropsTable for="chart-artifact" />
 
 ## Streaming behavior
 

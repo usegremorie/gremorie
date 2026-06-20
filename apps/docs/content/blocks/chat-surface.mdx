@@ -139,9 +139,27 @@ export function ChatSurface() {
 
 <Tab value="Angular">
 
-<Callout type="info">
-  Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { Assistant } from '@gremorie/ng-ai';
+import type { PromptInputSubmitEvent } from '@gremorie/ng-ai';
+
+@Component({
+  selector: 'app-chat',
+  imports: [Assistant],
+  template: `<ai-assistant (submitted)="onSubmit($event)" />`,
+})
+export class ChatComponent {
+  onSubmit(event: PromptInputSubmitEvent) {
+    // Wire to the AI SDK sendMessage or your streaming endpoint.
+  }
+}
+```
+
+The Angular `Assistant` composes the same primitives as the React block
+(`Conversation`, `Message`, `Reasoning`, `PromptInput`) into one fixed-height
+chat surface. The composer toolbar is a sibling of the textarea (never nested),
+and the reasoning panel auto-collapses when `isStreaming` flips to false.
 
 </Tab>
 

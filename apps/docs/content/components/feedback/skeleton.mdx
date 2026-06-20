@@ -4,7 +4,9 @@ description: 'Pulsing placeholder block that reserves layout space while content
 ---
 
 import { SkeletonPreview } from '@/components/preview/feedback/skeleton';
-import { Skeleton } from '@gremorie/rx-feedback';
+import { SkeletonAvatarPreview } from '@/components/preview/feedback/skeleton-avatar';
+import { SkeletonCardPreview } from '@/components/preview/feedback/skeleton-card';
+import { SkeletonListPreview } from '@/components/preview/feedback/skeleton-list';
 
 ## Overview
 
@@ -80,66 +82,29 @@ Renders a `<div>` styled with `animate-pulse rounded-md bg-accent`. Shape the el
 
 ## Variations
 
-### Single avatar plus two lines
+### Avatar plus text
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="flex items-center gap-4">
-    <Skeleton className="size-12 rounded-full" />
-    <div className="flex flex-col gap-2">
-      <Skeleton className="h-4 w-[200px]" />
-      <Skeleton className="h-4 w-[160px]" />
-    </div>
-  </div>
-</div>
+<ComponentPreview name="feedback/skeleton-avatar">
+  <SkeletonAvatarPreview />
+</ComponentPreview>
 
-```tsx
-<div className="flex items-center gap-4" aria-busy="true" aria-live="polite">
-  <Skeleton className="size-12 rounded-full" />
-  <div className="flex flex-col gap-2">
-    <Skeleton className="h-4 w-[200px]" />
-    <Skeleton className="h-4 w-[160px]" />
-  </div>
-</div>
-```
+The standard user-profile placeholder: a circular avatar beside two short text lines. Two lines feel honest; three is the upper bound before the placeholder starts to flicker on real data.
 
-The standard user-profile placeholder. Two short lines feel honest; three is the upper bound before the placeholder starts to flicker on real data.
+### Card placeholder
 
-### Cover plus text card
+<ComponentPreview name="feedback/skeleton-card">
+  <SkeletonCardPreview />
+</ComponentPreview>
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="max-w-sm space-y-3 rounded-md border p-4">
-    <Skeleton className="aspect-video w-full rounded-md" />
-    <Skeleton className="h-4 w-3/4" />
-    <Skeleton className="h-4 w-1/2" />
-  </div>
-</div>
+For card-grid layouts. Use `aspect-video` on the cover Skeleton so the placeholder height matches what the real `<img>` will reserve, then taper the two text lines to `w-3/4` and `w-1/2` so the block reads as a heading plus subtext.
 
-```tsx
-<Card aria-busy="true" aria-live="polite">
-  <CardContent className="flex flex-col gap-3">
-    <Skeleton className="aspect-video w-full rounded-md" />
-    <Skeleton className="h-4 w-3/4" />
-    <Skeleton className="h-4 w-1/2" />
-  </CardContent>
-</Card>
-```
+### List rows
 
-For card-grid layouts. Use `aspect-video` on the cover Skeleton so the placeholder height matches what the real `<img>` will reserve.
+<ComponentPreview name="feedback/skeleton-list">
+  <SkeletonListPreview />
+</ComponentPreview>
 
-### List row repetition
-
-```tsx
-<ul aria-busy="true" aria-live="polite" className="flex flex-col gap-3">
-  {Array.from({ length: 5 }).map((_, i) => (
-    <li key={i} className="flex items-center gap-3">
-      <Skeleton className="size-8 rounded-full" />
-      <Skeleton className="h-3 flex-1" />
-    </li>
-  ))}
-</ul>
-```
-
-Use a fixed count that matches the typical page size (5-10 rows). Overshooting feels like a fake throughput; undershooting causes a jump when more rows arrive.
+Render one row per expected item rather than a single big block. Use a fixed count that matches the typical page size (5-10 rows). Overshooting feels like fake throughput; undershooting causes a jump when more rows arrive.
 
 ## Accessibility
 

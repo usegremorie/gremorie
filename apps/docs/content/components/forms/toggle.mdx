@@ -4,6 +4,9 @@ description: Two-state press-button (`aria-pressed`) built on Radix Toggle, for 
 ---
 
 import { TogglePreview } from '@/components/preview/forms/toggle';
+import { ToggleOutlinePreview } from '@/components/preview/forms/toggle-outline';
+import { ToggleSizesPreview } from '@/components/preview/forms/toggle-sizes';
+import { ToggleDisabledPreview } from '@/components/preview/forms/toggle-disabled';
 
 ## Overview
 
@@ -113,13 +116,25 @@ import { Italic } from 'lucide-react';
 
 When the toggle stands alone (not inside a `ToggleGroup`), the `outline` variant adds a visible boundary so it reads as an interactive control on flat surfaces.
 
-```tsx
-import { Underline } from 'lucide-react';
+<ComponentPreview name="forms/toggle-outline">
+  <ToggleOutlinePreview />
+</ComponentPreview>
 
-<Toggle aria-label="Underline" variant="outline">
-  <Underline />
-</Toggle>;
-```
+### Sizes
+
+Three footprint presets - `sm`, `default`, `lg` - keep toggles aligned with neighbouring controls in a toolbar.
+
+<ComponentPreview name="forms/toggle-sizes">
+  <ToggleSizesPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` removes the toggle from the tab order and drops its opacity. The pressed state is still visible so users can see what was active.
+
+<ComponentPreview name="forms/toggle-disabled">
+  <ToggleDisabledPreview />
+</ComponentPreview>
 
 ### Controlled with effect
 

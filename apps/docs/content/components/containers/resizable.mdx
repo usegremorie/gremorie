@@ -4,11 +4,9 @@ description: 'Split panes with draggable handles, persistable layouts, and a sin
 ---
 
 import { ResizablePreview } from '@/components/preview/containers/resizable';
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from '@gremorie/rx-containers';
+import { ResizableTwoPanePreview } from '@/components/preview/containers/resizable-two-pane';
+import { ResizableVerticalPreview } from '@/components/preview/containers/resizable-vertical';
+import { ResizableThreePanePreview } from '@/components/preview/containers/resizable-three-pane';
 
 ## Overview
 
@@ -119,24 +117,9 @@ The dividers are keyboard-operable separators with `aria-orientation` set automa
 
 ### Two-pane editor
 
-<div className="rounded-lg border p-6 not-prose">
-  <ResizablePanelGroup
-    orientation="horizontal"
-    className="min-h-[180px] max-w-md rounded-lg border"
-  >
-    <ResizablePanel defaultSize={30}>
-      <div className="flex h-full items-center justify-center p-4 text-sm">
-        Files
-      </div>
-    </ResizablePanel>
-    <ResizableHandle withHandle />
-    <ResizablePanel defaultSize={70}>
-      <div className="flex h-full items-center justify-center p-4 text-sm">
-        Editor
-      </div>
-    </ResizablePanel>
-  </ResizablePanelGroup>
-</div>
+<ComponentPreview name="containers/resizable-two-pane">
+  <ResizableTwoPanePreview />
+</ComponentPreview>
 
 ```tsx
 <ResizablePanelGroup orientation="horizontal" autoSaveId="files-editor">
@@ -154,6 +137,10 @@ The classic IDE shape. `minSize={15}` keeps the file tree from disappearing acci
 
 ### Vertical split with bottom panel
 
+<ComponentPreview name="containers/resizable-vertical">
+  <ResizableVerticalPreview />
+</ComponentPreview>
+
 ```tsx
 <ResizablePanelGroup orientation="vertical" className="h-screen">
   <ResizablePanel defaultSize={70}>
@@ -169,6 +156,10 @@ The classic IDE shape. `minSize={15}` keeps the file tree from disappearing acci
 For terminal-on-bottom or log drawers. The handle rotates automatically because the group orientation flips to vertical.
 
 ### Three panes with a collapsible sidebar
+
+<ComponentPreview name="containers/resizable-three-pane">
+  <ResizableThreePanePreview />
+</ComponentPreview>
 
 ```tsx
 <ResizablePanelGroup orientation="horizontal" autoSaveId="three-pane">

@@ -4,6 +4,7 @@ description: 'Interruptive confirmation dialog. Blocks the UI, has no overlay-cl
 ---
 
 import { AlertDialogPreview } from '@/components/preview/overlays/alert-dialog';
+import { AlertDialogDestructivePreview } from '@/components/preview/overlays/alert-dialog-destructive';
 
 ## Overview
 
@@ -146,7 +147,13 @@ Pass-throughs over the Radix primitives with `data-slot` attributes.
 
 ### Destructive confirmation
 
-The most common shape. Cancel uses the outline variant, action uses `destructive`.
+The most common shape. Cancel uses the outline variant, action uses `destructive`. There is no overlay-dismiss and no X close, so the user must choose.
+
+<ComponentPreview name="overlays/alert-dialog-destructive">
+  <AlertDialogDestructivePreview />
+</ComponentPreview>
+
+The same pattern in code:
 
 ```tsx
 <AlertDialog>

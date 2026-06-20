@@ -4,6 +4,8 @@ description: 'Desktop-app-style horizontal multi-menu bar. File, Edit, View, Hel
 ---
 
 import { MenubarPreview } from '@/components/preview/navigation/menubar';
+import { MenubarShortcutsPreview } from '@/components/preview/navigation/menubar-shortcuts';
+import { MenubarSubmenuPreview } from '@/components/preview/navigation/menubar-submenu';
 
 ## Overview
 
@@ -197,45 +199,13 @@ The cross-menu keyboard contract is what distinguishes Menubar from a row of ind
 
 ## Variations
 
-### File / Edit / View pattern
+### File / Edit / View with shortcuts
 
-```tsx
-<Menubar>
-  <MenubarMenu>
-    <MenubarTrigger>File</MenubarTrigger>
-    <MenubarContent>
-      <MenubarItem>
-        New tab <MenubarShortcut>CtrlT</MenubarShortcut>
-      </MenubarItem>
-      <MenubarItem>
-        New window <MenubarShortcut>CtrlN</MenubarShortcut>
-      </MenubarItem>
-      <MenubarSeparator />
-      <MenubarItem>Print...</MenubarItem>
-    </MenubarContent>
-  </MenubarMenu>
-  <MenubarMenu>
-    <MenubarTrigger>Edit</MenubarTrigger>
-    <MenubarContent>
-      <MenubarItem>
-        Undo <MenubarShortcut>CtrlZ</MenubarShortcut>
-      </MenubarItem>
-      <MenubarItem>
-        Redo <MenubarShortcut>CtrlShiftZ</MenubarShortcut>
-      </MenubarItem>
-    </MenubarContent>
-  </MenubarMenu>
-  <MenubarMenu>
-    <MenubarTrigger>View</MenubarTrigger>
-    <MenubarContent>
-      <MenubarItem>Reload</MenubarItem>
-      <MenubarItem>Fullscreen</MenubarItem>
-    </MenubarContent>
-  </MenubarMenu>
-</Menubar>
-```
+<ComponentPreview name="navigation/menubar-shortcuts">
+  <MenubarShortcutsPreview />
+</ComponentPreview>
 
-Use as the top-of-window bar in editor-style apps. Each menu groups related commands with shortcuts.
+Use as the top-of-window bar in editor-style apps. Each menu groups related commands, and `<MenubarShortcut>` renders the keyboard hint right-aligned. The shortcut text is visual only - wire the real bindings in your own handler.
 
 ### With checkbox and radio items
 
@@ -262,28 +232,11 @@ Use to expose persistent view preferences. Checkbox items toggle independently; 
 
 ### Nested submenus
 
-```tsx
-<Menubar>
-  <MenubarMenu>
-    <MenubarTrigger>File</MenubarTrigger>
-    <MenubarContent>
-      <MenubarItem>New file</MenubarItem>
-      <MenubarSub>
-        <MenubarSubTrigger>Open recent</MenubarSubTrigger>
-        <MenubarSubContent>
-          <MenubarItem>Project alpha</MenubarItem>
-          <MenubarItem>Project beta</MenubarItem>
-          <MenubarItem>Project gamma</MenubarItem>
-        </MenubarSubContent>
-      </MenubarSub>
-      <MenubarSeparator />
-      <MenubarItem variant="destructive">Close window</MenubarItem>
-    </MenubarContent>
-  </MenubarMenu>
-</Menubar>
-```
+<ComponentPreview name="navigation/menubar-submenu">
+  <MenubarSubmenuPreview />
+</ComponentPreview>
 
-Use sparingly. Submenus are valuable for grouping (Open recent, Export as, Theme), but deep nesting hurts discoverability.
+Use sparingly. Submenus are valuable for grouping (Open recent, Export as, Theme), but deep nesting hurts discoverability. `<MenubarSubTrigger>` appends a right-pointing chevron automatically.
 
 ## Accessibility
 

@@ -4,6 +4,7 @@ description: 'Side-anchored panel for longer flows, built on Radix Dialog with d
 ---
 
 import { SheetPreview } from '@/components/preview/overlays/sheet';
+import { SheetSidesPreview } from '@/components/preview/overlays/sheet-sides';
 
 ## Overview
 
@@ -107,6 +108,14 @@ Pass-throughs over the Radix primitives with `data-slot` attributes.
 5. **Dismissal**: click overlay, press `Esc`, click the X (`showCloseButton`), or call `SheetClose`.
 
 ## Variations
+
+### Sides
+
+`SheetContent` slides in from any edge via the `side` prop (`top`, `right`, `bottom`, `left`). Each trigger below opens the sheet from a different edge.
+
+<ComponentPreview name="overlays/sheet-sides">
+  <SheetSidesPreview />
+</ComponentPreview>
 
 ### Right filter panel
 

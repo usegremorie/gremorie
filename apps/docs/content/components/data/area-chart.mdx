@@ -12,6 +12,23 @@ import { AreaChartSinglePreview } from '@/components/preview/data/area-chart-sin
 
 Reach for AreaChart when the **magnitude** of a series matters as much as its trend - traffic by month, revenue by week, error count by day. For pure shape comparison without magnitude emphasis, prefer [`LineChart`](/components/data/line-chart); for discrete category-vs-category comparisons, prefer [`BarChart`](/components/data/bar-chart).
 
+The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+
+## Anatomy
+
+```
+<area-chart>
+└─ figure (role="img")                  card surface, aspect-video
+   ├─ svg (chart frame)
+   │  ├─ cartesian grid
+   │  ├─ x axis (category from xKey)
+   │  ├─ y axis (numeric, optional via yAxis)
+   │  └─ filled areas, one per config key  (stacked or overlaid)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
 ## Preview
 
 <ComponentPreview name="data/area-chart">
@@ -57,9 +74,32 @@ export function MonthlyVisitors() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { AreaChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+  selector: 'app-monthly-visitors',
+  imports: [AreaChart],
+  template: `<area-chart [data]="data" [config]="config" xKey="month" />`,
+})
+export class MonthlyVisitorsComponent {
+  readonly data: ChartDatum[] = [
+    { month: 'Jan', desktop: 186, mobile: 80 },
+    { month: 'Feb', desktop: 305, mobile: 200 },
+    { month: 'Mar', desktop: 237, mobile: 120 },
+    { month: 'Apr', desktop: 73, mobile: 190 },
+    { month: 'May', desktop: 209, mobile: 130 },
+    { month: 'Jun', desktop: 214, mobile: 140 },
+  ];
+
+  readonly config: ChartConfig = {
+    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+  };
+}
+```
 </Tab>
 </Tabs>
 
@@ -76,6 +116,7 @@ The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<AreaCha
 | `xKey`      | `string`                                        | -           | Name of the category field on each row. Drives the X axis ticks.                                                                                                                                 |
 | `stacked`   | `boolean`                                       | `false`     | Stack the series instead of overlaying them.                                                                                                                                                     |
 | `type`      | `"natural" \| "monotone" \| "linear" \| "step"` | `"natural"` | Interpolation curve for the areas.                                                                                                                                                               |
+| `yAxis`     | `boolean`                                       | `true`      | Render the numeric Y axis. Set to `false` for a minimal, axis-free area (sparkline-style).                                                                                                       |
 | `tooltip`   | `boolean`                                       | `true`      | Show the hover tooltip.                                                                                                                                                                          |
 | `className` | `string`                                        | -           | Merged onto the `ChartContainer`. Use for sizing escape hatches; the bundled style already supplies a rounded card surface plus aspect ratio.                                                    |
 
@@ -122,6 +163,10 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 />
 ```
 
+```html
+<area-chart [data]="data" [config]="config" xKey="month" />
+```
+
 The default shape. Reach for a single area when one metric is the headline.
 
 ### Multi-series
@@ -139,15 +184,48 @@ const config: ChartConfig = {
 <AreaChart data={data} config={config} xKey="month" />;
 ```
 
+```html
+<area-chart [data]="data" [config]="config" xKey="month" />
+```
+
 For side-by-side comparison. Areas overlap with `fillOpacity` at 0.4 so the lower series stays visible behind the higher one. Limit to three series before reaching for [`LineChart`](/components/data/line-chart) instead.
 
-### Stacked and interpolation
+### Stacked
 
-Set `stacked` to layer the series, or `type` to pick the interpolation curve (`"natural"`, `"monotone"`, `"linear"`, or `"step"`):
+Set `stacked` to layer the series so each area sits on top of the one below and the silhouette reads as a cumulative total.
 
 ```tsx
 <AreaChart data={data} config={config} xKey="month" stacked />
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" [stacked]="true" />
+```
+
+### Curve type
+
+Set `type` to pick the interpolation curve - `"natural"` (default), `"monotone"`, `"linear"` (straight segments), or `"step"` (stepped edges). Use `"linear"` to read exact inflection points; use `"step"` for discrete state changes.
+
+```tsx
+<AreaChart data={data} config={config} xKey="month" type="linear" />
 <AreaChart data={data} config={config} xKey="month" type="step" />
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" type="linear" />
+<area-chart [data]="data" [config]="config" xKey="month" type="step" />
+```
+
+### No axis
+
+Set `yAxis` to `false` to drop the numeric axis for a minimal, sparkline-style area that leans on the tooltip for exact values.
+
+```tsx
+<AreaChart data={data} config={config} xKey="month" yAxis={false} />
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" [yAxis]="false" />
 ```
 
 ### Composing with the chart primitive
