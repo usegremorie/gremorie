@@ -3,6 +3,7 @@ import { chartArtifact } from './contracts/artifacts/chart-artifact.contract';
 
 export * from './types';
 export * from './generators/props-table';
+export * from './generators/workbench';
 export { chartArtifact };
 
 // NOTE: the parity lint (./lint/*) is intentionally NOT re-exported here - it
