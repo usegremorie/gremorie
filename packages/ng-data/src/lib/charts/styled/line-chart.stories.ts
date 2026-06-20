@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { LineChart } from './line-chart';
-import type { ChartConfig, Datum } from '../headless/types';
+import type { ChartConfig, ChartDatum } from '../headless/types';
 
-const DATA: Datum[] = [
+const DATA: ChartDatum[] = [
   { month: 'Jan', sales: 186, profit: 80 },
   { month: 'Feb', sales: 305, profit: 200 },
   { month: 'Mar', sales: 237, profit: 120 },
@@ -24,11 +24,27 @@ const meta: Meta<LineChart> = {
     props: args,
     template: `
       <div style="width: 640px;">
-        <line-chart [data]="data" [config]="config" [xKey]="xKey" />
+        <line-chart
+          [data]="data"
+          [config]="config"
+          [xKey]="xKey"
+          [type]="type"
+          [dots]="dots"
+          [yAxis]="yAxis"
+          [tooltip]="tooltip"
+        />
       </div>
     `,
   }),
-  args: { data: DATA, config: CONFIG, xKey: 'month' },
+  args: {
+    data: DATA,
+    config: CONFIG,
+    xKey: 'month',
+    type: 'natural',
+    dots: false,
+    yAxis: true,
+    tooltip: true,
+  },
 };
 
 export default meta;
@@ -38,3 +54,7 @@ export const Default: Story = {};
 export const SingleSeries: Story = {
   args: { config: { sales: { label: 'Sales', color: 'var(--chart-1)' } } },
 };
+export const WithDots: Story = { args: { dots: true } };
+export const Linear: Story = { args: { type: 'linear' } };
+export const Step: Story = { args: { type: 'step' } };
+export const NoAxis: Story = { args: { yAxis: false } };

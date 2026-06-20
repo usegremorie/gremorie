@@ -37,6 +37,9 @@ export * from './lib/message';
 // Conversation (auto-stick scroll log)
 export * from './lib/conversation';
 
+// Assistant (flagship composed chat surface — chat-surface block parity)
+export * from './lib/assistant';
+
 // Suggestion (clickable chips)
 export * from './lib/suggestion';
 

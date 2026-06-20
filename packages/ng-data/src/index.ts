@@ -16,6 +16,7 @@ export * from './lib/charts/headless/radial-bar';
 export * from './lib/charts/headless/axis';
 export * from './lib/charts/headless/chart-frame';
 export * from './lib/charts/headless/cartesian-grid';
+export * from './lib/charts/headless/tooltip';
 
 // Charts - styled presets
 export * from './lib/charts/styled/area-chart';

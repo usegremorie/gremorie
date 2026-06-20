@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { RadialChart } from './radial-chart';
-import type { Datum } from '../headless/types';
+import type { ChartDatum } from '../headless/types';
 
-const DATA: Datum[] = [
+const DATA: ChartDatum[] = [
   { browser: 'Chrome', visitors: 275 },
   { browser: 'Safari', visitors: 200 },
   { browser: 'Firefox', visitors: 187 },
@@ -18,14 +18,20 @@ const meta: Meta<RadialChart> = {
     props: args,
     template: `
       <div style="width: 360px;">
-        <radial-chart [data]="data" [nameKey]="nameKey" [valueKey]="valueKey" />
+        <radial-chart
+          [data]="data"
+          [nameKey]="nameKey"
+          [dataKey]="dataKey"
+          [tooltip]="tooltip"
+        />
       </div>
     `,
   }),
-  args: { data: DATA, nameKey: 'browser', valueKey: 'visitors' },
+  args: { data: DATA, nameKey: 'browser', dataKey: 'visitors', tooltip: true },
 };
 
 export default meta;
 type Story = StoryObj<RadialChart>;
 
 export const Default: Story = {};
+export const NoTooltip: Story = { args: { tooltip: false } };
