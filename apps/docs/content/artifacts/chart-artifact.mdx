@@ -1,0 +1,186 @@
+---
+title: Chart Artifact
+description: 'The Chart preset of the artifact shell — embeds any rx-data chart with a working chart ⇄ table toggle and PNG / CSV downloads.'
+---
+
+## Overview
+
+`ChartArtifact` is the **Chart preset** of the generic [`Artifact`](/components/code/artifact) shell. It embeds any of the styled chart primitives from `@gremorie/rx-data` — bar, area, line, pie, radar, radial, or scatter — inside the artifact card, with a built-in chart ⇄ table toggle and downloads. Because it embeds the real chart primitives, any change to them reflects here automatically.
+
+The model emits a small tabular dataset plus the keys that map columns to the chart; the artifact renders the chart, builds an accessible **wide** table (one column per value series, so multi-series charts keep every value), and wires the header actions. Single-series categorical charts (bar / pie / radial) color one row per slice; multi-series charts (line / area / radar / scatter) color per column. The header collapses its actions into a single menu on narrow cards.
+
+## Preview
+
+<ArtifactPreview name="chart-artifact" />
+
+## Schema
+
+The LLM returns structured output matching this shape:
+
+```ts
+{
+  title: string,
+  description?: string,
+  type?: "bar" | "area" | "line" | "pie" | "radar" | "radial" | "scatter",
+  data: Array<Record<string, string | number>>,
+  categoryKey: string,
+  valueKey: string | Array<{ key: string; label?: string; color?: string }>,
+}
+```
+
+## Anatomy
+
+```text
+Artifact                       generic artifact card shell
+├─ ArtifactHeader
+│  ├─ ArtifactFeaturedIcon     leading featured icon (color = accent)
+│  ├─ ArtifactHeading          ArtifactTitle + optional ArtifactDescription
+│  └─ ArtifactActions
+│     ├─ ArtifactViewToggle    chart ⇄ table switch (always visible)
+│     ├─ ArtifactActionsExpanded   wide card: Download menu + More menu
+│     └─ ArtifactActionsCollapsed  narrow card: single Actions menu
+└─ ArtifactContent
+   ├─ <rx-data chart>          bar · area · line · pie · radar · radial · scatter
+   └─ Table                    wide table — one column per value series (table view)
+```
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-chart-artifact
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-chart-artifact
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-chart-artifact
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-chart-artifact
+```
+
+</Tab>
+
+</Tabs>
+
+Composes the `Artifact` shell (`rx-artifact`), the chart primitives (`rx-data`), and the `Table` (`rx-display`).
+
+## Prompt examples
+
+Sample prompts that produce valid output for this artifact:
+
+- "Chart visitors by acquisition channel for the last 30 days."
+- "Plot monthly revenue for desktop and mobile as a line chart."
+- "Show capability scores across six dimensions as a radar chart."
+
+## Code
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import { ChartArtifact } from '@gremorie/rx-artifacts';
+import { TrendingUpIcon } from 'lucide-react';
+
+const data = [
+  { channel: 'Organic', visitors: 4200 },
+  { channel: 'Referral', visitors: 3100 },
+  { channel: 'Social', visitors: 2400 },
+  { channel: 'Email', visitors: 1800 },
+  { channel: 'Paid', visitors: 1200 },
+];
+
+export function VisitorsByChannel() {
+  return (
+    <ChartArtifact
+      title="Visitors by channel"
+      description="Last 30 days · toggle to inspect the table or download."
+      icon={TrendingUpIcon}
+      type="bar"
+      data={data}
+      categoryKey="channel"
+      valueKey="visitors"
+      categoryLabel="Channel"
+      valueLabel="Visitors"
+      fileName="visitors-by-channel"
+    />
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  Angular edition planned for a follow-up release. Star the repo to track
+  progress.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Props
+
+| Prop            | Type                                                                     | Default       | Description                                                             |
+| --------------- | ------------------------------------------------------------------------ | ------------- | ----------------------------------------------------------------------- |
+| `title`         | `string`                                                                 | -             | Single-line heading.                                                    |
+| `description`   | `string`                                                                 | -             | Optional supporting text (truncates).                                   |
+| `data`          | `Array<Record<string, string \| number>>`                                | -             | Tabular rows — one object per category / point.                         |
+| `type`          | `"bar" \| "area" \| "line" \| "pie" \| "radar" \| "radial" \| "scatter"` | `"bar"`       | Which chart primitive to embed.                                         |
+| `categoryKey`   | `string`                                                                 | -             | Category / X field (first table column).                                |
+| `valueKey`      | `string \| ChartArtifactSeries[]`                                        | -             | One value series (string) or many (array). Each becomes a table column. |
+| `categoryLabel` | `string`                                                                 | title-cased   | Header label for the category column.                                   |
+| `valueLabel`    | `string`                                                                 | title-cased   | Label for a single value series (ignored when `valueKey` is an array).  |
+| `defaultView`   | `"chart" \| "table"`                                                     | `"chart"`     | Which view shows first.                                                 |
+| `numberFormat`  | `Intl.NumberFormatOptions`                                               | -             | Value formatting for table + CSV + tooltip.                             |
+| `fileName`      | `string`                                                                 | `"chart"`     | Base name for downloaded PNG / CSV.                                     |
+| `icon`          | `LucideIcon`                                                             | `ChartColumn` | Featured icon in the header.                                            |
+| `accent`        | `"primary" \| "gray" \| "success" \| "error"`                            | `"primary"`   | Featured icon color.                                                    |
+| `onRegenerate`  | `() => void`                                                             | -             | Wired to the "Regenerate" menu item.                                    |
+| `onSave`        | `() => void`                                                             | -             | Wired to the "Save" menu item.                                          |
+
+## Downloads
+
+The header **Download** menu (or the collapsed **Actions** menu on narrow cards) exposes:
+
+- **Image (PNG)** — rasterizes the live chart SVG at 2× by inlining computed styles onto a clone, so the export matches the on-screen theme. If the current view is the table, it switches to the chart view first, then exports.
+- **Data (CSV)** — serializes the wide table (category column + one column per series) with proper quoting.
+- **Copy values** — copies tab-separated values to the clipboard for pasting into a sheet.
+
+## Streaming behavior
+
+<Callout type="info">
+  Like every artifact, this renders after the dataset is a valid array — partial
+  payloads are deferred, so the chart never draws half a dataset.
+</Callout>
+
+## Related
+
+- [Artifact](/components/code/artifact) - the generic shell this preset builds on.
+- [Chart](/components/data/chart) - the foundation primitive the embedded charts compose on.
+- [Bar Chart](/components/data/bar-chart) - the default embedded chart type.
+- [Artifacts overview](/artifacts)

@@ -43,7 +43,7 @@ import { Slider } from './slider';
  * | `--ring` | thumb focus/hover ring |
  */
 const meta = {
-  title: 'Inputs/Slider',
+  title: 'Inputs/Selection/Slider',
   component: Slider,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

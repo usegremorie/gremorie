@@ -45,7 +45,7 @@ import { AreaChart } from './area-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Area',
+  title: 'Layout & display/Data/Area Chart',
   component: AreaChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

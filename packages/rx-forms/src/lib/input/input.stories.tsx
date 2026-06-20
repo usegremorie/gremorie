@@ -38,7 +38,7 @@ import { Input } from './input';
  * | `--primary` / `--primary-foreground` | text selection |
  */
 const meta = {
-  title: 'Inputs/Input',
+  title: 'Inputs/Text/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

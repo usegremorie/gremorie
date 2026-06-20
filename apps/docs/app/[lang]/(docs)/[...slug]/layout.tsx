@@ -2,7 +2,6 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 
 import type { ReactNode } from 'react';
 
-import { ClosedFolder } from '@/components/closed-folder';
 import { ThemeSwitchWithFlag } from '@/components/flag-language-switch';
 import { getSection } from '@/lib/get-section';
 import { baseOptions } from '@/lib/layout.shared';
@@ -40,13 +39,10 @@ export default async function Layout({
       tree={source.getPageTree(lang)}
       sidebar={{
         collapsible: true,
-        // 0 = categorias (folders) fechadas por padrão.
+        // 0 = categorias (folders) fechadas por padrão. A categoria da página
+        // ativa abre automaticamente e PERMANECE aberta ao navegar entre seus
+        // subitens (comportamento padrão do Fumadocs Folder).
         defaultOpenLevel: 0,
-        // Folder customizada que nunca auto-expande, nem a da página ativa
-        // (o Fumadocs abre a ativa por padrão). Mantém tudo sempre fechado.
-        components: {
-          Folder: ClosedFolder,
-        },
         tabs: {
           transform(option, node) {
             const meta = source.getNodeMeta(node);

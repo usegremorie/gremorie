@@ -70,7 +70,7 @@ import {
  * | `--muted-foreground` | placeholder + group label |
  */
 const meta = {
-  title: 'Inputs/Select',
+  title: 'Inputs/Selection/Select',
   component: Select,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

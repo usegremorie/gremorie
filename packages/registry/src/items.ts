@@ -980,6 +980,20 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: [],
   },
   {
+    name: 'rx-item',
+    framework: 'rx',
+    title: 'Item (React)',
+    description:
+      'Flexible list-row primitive (compound) - media, title, description, and actions on one line. A single cascading `size` (lg/md/sm/none) drives media size and title/description typography at once; media variants icon/featured/avatar/image. Use for settings rows, file/resource lists, and selectable list items.',
+    categories: ['display'],
+    packageRoot: 'packages/rx-display',
+    sourceFiles: ['src/lib/item/item.tsx'],
+    targetPrefix: 'src/components/gremorie/display/item',
+    srcStrip: 'src/lib/item/',
+    dependencies: ['class-variance-authority', 'radix-ui'],
+    registryDependencies: ['rx-utils', 'rx-separator'],
+  },
+  {
     name: 'rx-separator',
     framework: 'rx',
     title: 'Separator (React)',

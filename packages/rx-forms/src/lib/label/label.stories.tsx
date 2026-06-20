@@ -33,7 +33,7 @@ import { Label } from './label';
  * | (peer/group `disabled`) | drives the 50% opacity dim |
  */
 const meta = {
-  title: 'Inputs/Label',
+  title: 'Inputs/Text/Label',
   component: Label,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

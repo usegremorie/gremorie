@@ -43,7 +43,7 @@ import { ScatterChart } from './scatter-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Scatter',
+  title: 'Layout & display/Data/Scatter Chart',
   component: ScatterChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

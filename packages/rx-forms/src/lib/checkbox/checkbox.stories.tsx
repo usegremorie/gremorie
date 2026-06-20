@@ -40,7 +40,7 @@ import { Checkbox } from './checkbox';
  * | `--destructive` | `aria-invalid` state |
  */
 const meta = {
-  title: 'Inputs/Checkbox',
+  title: 'Inputs/Selection/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

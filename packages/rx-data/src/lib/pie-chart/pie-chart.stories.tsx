@@ -43,7 +43,7 @@ import { PieChart } from './pie-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Pie',
+  title: 'Layout & display/Data/Pie Chart',
   component: PieChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

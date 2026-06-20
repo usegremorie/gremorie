@@ -47,7 +47,7 @@ import { Button } from '@gremorie/rx-forms';
  * | `--radius` | `--border-radius` |
  */
 const meta = {
-  title: 'Interaction/Overlays/Toaster',
+  title: 'Interaction/Overlays/Sonner',
   component: Toaster,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

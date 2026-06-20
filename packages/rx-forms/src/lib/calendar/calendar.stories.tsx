@@ -40,7 +40,7 @@ import { Calendar } from './calendar';
  * | `--ring` | focus ring on nav buttons |
  */
 const meta = {
-  title: 'Inputs/Calendar',
+  title: 'Inputs/Date/Calendar',
   component: Calendar,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

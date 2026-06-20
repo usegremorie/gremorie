@@ -61,7 +61,7 @@ import {
  * | `--radius` | kbd / button corner rounding |
  */
 const meta = {
-  title: 'Inputs/InputGroup',
+  title: 'Inputs/Text/InputGroup',
   component: InputGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -45,7 +45,7 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
  * | `--destructive` | `aria-invalid` state |
  */
 const meta = {
-  title: 'Inputs/RadioGroup',
+  title: 'Inputs/Selection/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

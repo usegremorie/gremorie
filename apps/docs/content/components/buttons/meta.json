@@ -1,0 +1,6 @@
+{
+  "title": "Buttons",
+  "icon": "SquareMousePointer",
+  "description": "Buttons and toggles - button, button group, toggle, toggle group.",
+  "pages": ["button", "button-group", "toggle", "toggle-group"]
+}

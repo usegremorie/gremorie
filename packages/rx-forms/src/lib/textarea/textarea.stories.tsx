@@ -36,7 +36,7 @@ import { Textarea } from './textarea';
  * | `--muted-foreground` | placeholder |
  */
 const meta = {
-  title: 'Inputs/Textarea',
+  title: 'Inputs/Text/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
