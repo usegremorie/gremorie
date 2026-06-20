@@ -7,8 +7,8 @@ import {
   type OnInit,
 } from '@angular/core';
 import { ChartContext } from './chart-context';
-import { linePath } from './shape';
-import type { Datum } from './types';
+import { linePath, type XYPoint } from './shape';
+import type { CurveType, Datum } from './types';
 
 /** Pure: project data through the scales into a line `d` string. */
 export function computeLinePath(
@@ -17,6 +17,7 @@ export function computeLinePath(
   yKey: string,
   xScale: (v: string) => number,
   yScale: (v: number) => number,
+  curve: CurveType = 'linear',
 ): string {
   if (data.length === 0) return '';
   return linePath(
@@ -24,17 +25,20 @@ export function computeLinePath(
       x: xScale(String(d[xKey])),
       y: yScale(Number(d[yKey])),
     })),
+    curve,
   );
 }
 
 /**
  * Renders a stroked line for one series on a `<path>` inside a `[chartFrame]` SVG.
  * Self-registers its values so the frame's shared Y domain includes this series.
+ * Exposes `points()` so the styled layer can draw dot markers.
  *
- * @example `<svg:path [line]="'sales'" color="var(--chart-1)"></svg:path>`
+ * @example `<svg:path [line]="'sales'" color="var(--chart-1)" curve="natural"></svg:path>`
  */
 @Directive({
   selector: 'path[line]',
+  exportAs: 'line',
   host: {
     'data-slot': 'line',
     fill: 'none',
@@ -47,6 +51,7 @@ export class Line implements OnInit, OnDestroy {
 
   readonly dataKey = input.required<string>({ alias: 'line' });
   readonly color = input<string>('currentColor');
+  readonly curve = input<CurveType>('linear');
 
   readonly d = computed(() =>
     computeLinePath(
@@ -55,8 +60,20 @@ export class Line implements OnInit, OnDestroy {
       this.dataKey(),
       (v) => this.ctx.xScale()(v),
       (v) => this.ctx.yScale()(v),
+      this.curve(),
     ),
   );
+
+  /** Pixel position of each datum — for dot markers / tooltip snapping. */
+  readonly points = computed<XYPoint[]>(() => {
+    const xKey = this.ctx.xKey();
+    const key = this.dataKey();
+    const xScale = this.ctx.xScale();
+    const yScale = this.ctx.yScale();
+    return this.ctx
+      .data()
+      .map((d) => ({ x: xScale(String(d[xKey])), y: yScale(Number(d[key])) }));
+  });
 
   ngOnInit(): void {
     const key = this.dataKey();

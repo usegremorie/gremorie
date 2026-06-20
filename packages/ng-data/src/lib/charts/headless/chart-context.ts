@@ -1,5 +1,9 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { computeYDomain, type SeriesReg } from './domain';
+import {
+  computeStackedYDomain,
+  computeYDomain,
+  type SeriesReg,
+} from './domain';
 import { linearScale, niceMax, pointScale } from './scales';
 import { DEFAULT_MARGIN, type Datum, type Margin } from './types';
 
@@ -15,6 +19,9 @@ export class ChartContext {
   readonly margin = signal<Margin>(DEFAULT_MARGIN);
   readonly data = signal<readonly Datum[]>([]);
   readonly xKey = signal<string>('');
+
+  /** When true, the Y domain covers per-row stacked sums (bar/area stacking). */
+  readonly stacked = signal(false);
 
   private readonly registry = signal<readonly SeriesReg[]>([]);
 
@@ -49,11 +56,29 @@ export class ChartContext {
   );
 
   readonly yDomain = computed<[number, number]>(() => {
-    const [min, rawMax] = computeYDomain(this.registry());
+    const [min, rawMax] = this.stacked()
+      ? computeStackedYDomain(this.registry())
+      : computeYDomain(this.registry());
     // Round the upper bound to a readable value so axis ticks land on
     // clean numbers (e.g. 305 -> 500 -> ticks 0/125/250/375/500).
     return [min, niceMax(rawMax)];
   });
+
+  /**
+   * Cumulative base value for `key` at each row when stacking — the sum of all
+   * series registered *before* it. Series register in template/config order, so
+   * this is the stack order. Returns zeros when not stacking.
+   */
+  stackBaseFor(key: string): readonly number[] {
+    const keys = this.seriesKeys();
+    const idx = keys.indexOf(key);
+    const data = this.data();
+    if (!this.stacked() || idx <= 0) return data.map(() => 0);
+    const below = keys.slice(0, idx);
+    return data.map((row) =>
+      below.reduce((sum, k) => sum + Number(row[k] ?? 0), 0),
+    );
+  }
 
   readonly yScale = computed(() =>
     linearScale(this.yDomain(), [this.plotBottom(), this.plotTop()]),

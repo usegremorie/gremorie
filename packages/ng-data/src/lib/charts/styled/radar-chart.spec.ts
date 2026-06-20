@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { AreaChart } from './area-chart';
+import { RadarChart } from './radar-chart';
 import type { ChartConfig, ChartDatum } from '../headless/types';
 
 const DATA: ChartDatum[] = [
-  { month: 'Jan', sales: 10, profit: 4 },
-  { month: 'Feb', sales: 50, profit: 20 },
-  { month: 'Mar', sales: 30, profit: 12 },
+  { metric: 'Speed', sales: 120, profit: 90 },
+  { metric: 'Quality', sales: 98, profit: 130 },
+  { metric: 'Comfort', sales: 86, profit: 70 },
 ];
 const CONFIG: ChartConfig = {
   sales: { label: 'Sales', color: 'var(--chart-1)' },
@@ -13,25 +13,17 @@ const CONFIG: ChartConfig = {
 };
 
 async function render() {
-  const fixture = TestBed.createComponent(AreaChart);
+  const fixture = TestBed.createComponent(RadarChart);
   fixture.componentRef.setInput('data', DATA);
   fixture.componentRef.setInput('config', CONFIG);
-  fixture.componentRef.setInput('xKey', 'month');
+  fixture.componentRef.setInput('xKey', 'metric');
   fixture.detectChanges();
   await fixture.whenStable();
   fixture.detectChanges();
   return fixture;
 }
 
-describe('AreaChart', () => {
-  it('renders one area path per configured series', async () => {
-    const fixture = await render();
-    const paths = fixture.nativeElement.querySelectorAll(
-      'path[data-slot="area"]',
-    );
-    expect(paths.length).toBe(2);
-  });
-
+describe('RadarChart', () => {
   it('exposes role=img with a label built from series + an a11y data table', async () => {
     const fixture = await render();
     const host = fixture.nativeElement as HTMLElement;
@@ -39,5 +31,13 @@ describe('AreaChart', () => {
     expect(host.getAttribute('aria-label')).toContain('Sales');
     const rows = host.querySelectorAll('table tbody tr');
     expect(rows.length).toBe(DATA.length);
+  });
+
+  it('renders one radar group per configured series', async () => {
+    const fixture = await render();
+    const groups = fixture.nativeElement.querySelectorAll(
+      'g[data-slot="radar"]',
+    );
+    expect(groups.length).toBe(2);
   });
 });

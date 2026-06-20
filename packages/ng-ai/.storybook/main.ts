@@ -4,8 +4,9 @@ import type { StorybookConfig } from '@storybook/angular';
  * Shared Storybook config for all `@gremorie/ng-*` packages.
  *
  * Although this lives under `packages/ng-ai/.storybook`, the `stories` glob
- * reaches into sibling packages (`ng-display`, `ng-feedback`) so a single
- * Storybook instance covers every Angular primitive in the workspace. One
+ * reaches into sibling packages (`ng-data`, `ng-containers`, `ng-display`,
+ * `ng-feedback`, `ng-artifacts`) so a single Storybook instance covers every
+ * Angular primitive in the workspace. One
  * server (port 4400) + one browserTarget (`playground:build`) instead of one
  * Storybook target per package. Tailwind scanning is handled by
  * `playground/src/styles.css` (`@source` directives include every ng-*
@@ -16,8 +17,11 @@ import type { StorybookConfig } from '@storybook/angular';
 const config: StorybookConfig = {
   stories: [
     '../src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../ng-data/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../ng-containers/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../ng-display/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../ng-feedback/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../ng-artifacts/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [],
   framework: {

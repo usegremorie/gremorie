@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { AreaChart } from './area-chart';
+import { LineChart } from './line-chart';
 import type { ChartConfig, ChartDatum } from '../headless/types';
 
 const DATA: ChartDatum[] = [
-  { month: 'Jan', sales: 10, profit: 4 },
-  { month: 'Feb', sales: 50, profit: 20 },
-  { month: 'Mar', sales: 30, profit: 12 },
+  { month: 'Jan', sales: 186, profit: 80 },
+  { month: 'Feb', sales: 305, profit: 200 },
+  { month: 'Mar', sales: 237, profit: 120 },
 ];
 const CONFIG: ChartConfig = {
   sales: { label: 'Sales', color: 'var(--chart-1)' },
@@ -13,7 +13,7 @@ const CONFIG: ChartConfig = {
 };
 
 async function render() {
-  const fixture = TestBed.createComponent(AreaChart);
+  const fixture = TestBed.createComponent(LineChart);
   fixture.componentRef.setInput('data', DATA);
   fixture.componentRef.setInput('config', CONFIG);
   fixture.componentRef.setInput('xKey', 'month');
@@ -23,13 +23,13 @@ async function render() {
   return fixture;
 }
 
-describe('AreaChart', () => {
-  it('renders one area path per configured series', async () => {
+describe('LineChart', () => {
+  it('renders one stroked line per configured series', async () => {
     const fixture = await render();
-    const paths = fixture.nativeElement.querySelectorAll(
-      'path[data-slot="area"]',
+    const lines = fixture.nativeElement.querySelectorAll(
+      'path[data-slot="line"]',
     );
-    expect(paths.length).toBe(2);
+    expect(lines.length).toBe(2);
   });
 
   it('exposes role=img with a label built from series + an a11y data table', async () => {
