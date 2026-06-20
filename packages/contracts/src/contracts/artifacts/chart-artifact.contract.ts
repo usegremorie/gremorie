@@ -103,6 +103,6 @@ export const chartArtifact = defineContract({
     example:
       '<chart-artifact title="Monthly revenue" type="bar" categoryKey="month" valueKey="revenue" [data]="data" />',
   },
-  preview: { rx: 'artifacts-chartartifact--bar', ng: 'artifacts-chartartifact--bar' },
+  preview: { rx: 'ai-code-chart--default', ng: 'artifacts-chartartifact--bar' },
   figma: { nodeId: null },
 });
