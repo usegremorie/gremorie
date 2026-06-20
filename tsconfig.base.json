@@ -22,6 +22,7 @@
       "@gremorie/ng-ai": ["./packages/ng-ai/src/index.ts"],
       "@gremorie/ng-containers": ["./packages/ng-containers/src/index.ts"],
       "@gremorie/ng-data": ["./packages/ng-data/src/index.ts"],
+      "@gremorie/ng-artifacts": ["./packages/ng-artifacts/src/index.ts"],
       "@gremorie/ng-display": ["./packages/ng-display/src/index.ts"],
       "@gremorie/ng-feedback": ["./packages/ng-feedback/src/index.ts"],
       "@gremorie/rx-core": ["./packages/rx-core/src/index.ts"],
@@ -36,6 +37,7 @@
       "@gremorie/rx-artifacts": ["./packages/rx-artifacts/src/index.ts"],
       "@gremorie/react": ["./packages/react/src/index.ts"],
       "@gremorie/angular": ["./packages/angular/src/index.ts"],
+      "@gremorie/contracts": ["./packages/contracts/src/index.ts"],
       "@gremorie/token-engine": ["./packages/token-engine/src/index.ts"],
       "@gremorie/token-engine/graph/types": [
         "./packages/token-engine/src/graph/types.ts"
