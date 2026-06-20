@@ -42,7 +42,7 @@ import { RadarChart } from './radar-chart';
  * | `--muted-foreground` | Spoke labels |
  */
 const meta = {
-  title: 'Layout & display/Data/Radar',
+  title: 'Layout & display/Data/Radar Chart',
   component: RadarChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

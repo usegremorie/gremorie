@@ -45,7 +45,7 @@ import { LineChart } from './line-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Line',
+  title: 'Layout & display/Data/Line Chart',
   component: LineChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

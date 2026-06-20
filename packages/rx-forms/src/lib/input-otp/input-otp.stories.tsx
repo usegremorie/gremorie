@@ -58,7 +58,7 @@ import {
  * | `--foreground` | fake caret |
  */
 const meta = {
-  title: 'Inputs/InputOTP',
+  title: 'Inputs/Text/InputOTP',
   component: InputOTP,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

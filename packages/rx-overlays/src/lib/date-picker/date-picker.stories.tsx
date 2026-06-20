@@ -41,7 +41,7 @@ import { DatePicker } from './date-picker';
  * | `--border` | Trigger + popover border |
  */
 const meta = {
-  title: 'Interaction/Overlays/DatePicker',
+  title: 'Inputs/Date/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

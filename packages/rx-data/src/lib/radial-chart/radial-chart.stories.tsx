@@ -41,7 +41,7 @@ import { RadialChart } from './radial-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Radial',
+  title: 'Layout & display/Data/Radial Chart',
   component: RadialChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

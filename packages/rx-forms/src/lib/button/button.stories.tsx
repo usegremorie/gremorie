@@ -39,7 +39,7 @@ import { Button } from './button';
  * | `--background` / `--input` | `outline` surface |
  */
 const meta = {
-  title: 'Inputs/Button',
+  title: 'Inputs/Buttons/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

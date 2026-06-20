@@ -38,7 +38,7 @@ import { Switch } from './switch';
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: 'Inputs/Switch',
+  title: 'Inputs/Selection/Switch',
   component: Switch,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

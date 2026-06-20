@@ -50,7 +50,7 @@ import { BarChart } from './bar-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Bar',
+  title: 'Layout & display/Data/Bar Chart',
   component: BarChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -47,7 +47,7 @@ import {
  * | `--border` | shared segment borders |
  */
 const meta = {
-  title: 'Inputs/ButtonGroup',
+  title: 'Inputs/Buttons/ButtonGroup',
   component: ButtonGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

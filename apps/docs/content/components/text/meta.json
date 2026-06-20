@@ -1,0 +1,6 @@
+{
+  "title": "Text",
+  "icon": "TextCursorInput",
+  "description": "Text entry - input, input group, OTP, textarea, and label.",
+  "pages": ["input", "input-group", "input-otp", "textarea", "label"]
+}

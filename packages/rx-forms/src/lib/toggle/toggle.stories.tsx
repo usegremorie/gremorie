@@ -39,7 +39,7 @@ import { Toggle } from './toggle';
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: 'Inputs/Toggle',
+  title: 'Inputs/Buttons/Toggle',
   component: Toggle,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

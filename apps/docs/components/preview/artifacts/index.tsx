@@ -1,4 +1,5 @@
 import { Calculator } from './calculator';
+import { ChartArtifactPreview } from './chart-artifact';
 import { ChartBar } from './chart-bar';
 import { CodeBlockArtifact } from './code-block';
 import { DataTable } from './data-table';
@@ -6,6 +7,7 @@ import { FormSchema } from './form-schema';
 import { MarkdownDoc } from './markdown-doc';
 
 const artifacts = {
+  'chart-artifact': ChartArtifactPreview,
   'chart-bar': ChartBar,
   'code-block': CodeBlockArtifact,
   'markdown-doc': MarkdownDoc,

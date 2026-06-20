@@ -54,7 +54,7 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: 'Inputs/ToggleGroup',
+  title: 'Inputs/Buttons/ToggleGroup',
   component: ToggleGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
