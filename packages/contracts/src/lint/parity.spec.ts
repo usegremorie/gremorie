@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { resolve } from 'node:path';
 import { checkParity } from './parity';
 import { extractReactProps, extractAngularInputs } from './introspect';
-import { chartArtifact } from '../index';
+import { chartArtifact, CONTRACTS } from '../index';
 
 describe('checkParity (logic)', () => {
   it('passes when rx and ng expose the contract props (honouring adapts)', () => {
@@ -30,27 +30,55 @@ describe('checkParity (logic)', () => {
   });
 });
 
-describe('parity on the real chart-artifact (drift gate)', () => {
-  const RX = resolve(
-    process.cwd(),
-    '../rx-artifacts/src/lib/chart-artifact/chart-artifact.tsx',
-  );
-  const NG = resolve(
-    process.cwd(),
-    '../ng-artifacts/src/lib/chart-artifact/chart-artifact.ts',
-  );
+/** Maps each contract to its real React props interface + Angular component class. */
+const SOURCE_MAP: Record<
+  string,
+  { rx: { file: string; sym: string }; ng: { file: string; sym: string } }
+> = {
+  'chart-artifact': {
+    rx: { file: '../rx-artifacts/src/lib/chart-artifact/chart-artifact.tsx', sym: 'ChartArtifactProps' },
+    ng: { file: '../ng-artifacts/src/lib/chart-artifact/chart-artifact.ts', sym: 'ChartArtifact' },
+  },
+  'area-chart': {
+    rx: { file: '../rx-data/src/lib/area-chart/area-chart.tsx', sym: 'AreaChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/area-chart.ts', sym: 'AreaChart' },
+  },
+  'bar-chart': {
+    rx: { file: '../rx-data/src/lib/bar-chart/bar-chart.tsx', sym: 'BarChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/bar-chart.ts', sym: 'BarChart' },
+  },
+  'line-chart': {
+    rx: { file: '../rx-data/src/lib/line-chart/line-chart.tsx', sym: 'LineChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/line-chart.ts', sym: 'LineChart' },
+  },
+  'scatter-chart': {
+    rx: { file: '../rx-data/src/lib/scatter-chart/scatter-chart.tsx', sym: 'ScatterChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/scatter-chart.ts', sym: 'ScatterChart' },
+  },
+  'pie-chart': {
+    rx: { file: '../rx-data/src/lib/pie-chart/pie-chart.tsx', sym: 'PieChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/pie-chart.ts', sym: 'PieChart' },
+  },
+  'radar-chart': {
+    rx: { file: '../rx-data/src/lib/radar-chart/radar-chart.tsx', sym: 'RadarChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/radar-chart.ts', sym: 'RadarChart' },
+  },
+  'radial-chart': {
+    rx: { file: '../rx-data/src/lib/radial-chart/radial-chart.tsx', sym: 'RadialChartProps' },
+    ng: { file: '../ng-data/src/lib/charts/styled/radial-chart.ts', sym: 'RadialChart' },
+  },
+};
 
-  it('extracts the real props/inputs with core props present in both', () => {
-    const rx = extractReactProps(RX, 'ChartArtifactProps');
-    const ng = extractAngularInputs(NG, 'ChartArtifact');
-    expect(rx.length).toBeGreaterThan(5);
-    expect(ng.length).toBeGreaterThan(5);
-    for (const core of ['title', 'data', 'type', 'categoryKey', 'valueKey']) {
-      expect(rx).toContain(core);
-      expect(ng).toContain(core);
-    }
-    const res = checkParity(chartArtifact, { rx, ng });
-    if (!res.ok) console.warn('chart-artifact parity diff:', JSON.stringify(res));
-    expect(res.ok).toBe(true);
-  });
+describe('parity on real sources (drift gate)', () => {
+  for (const contract of CONTRACTS) {
+    const src = SOURCE_MAP[contract.name];
+    if (!src) continue;
+    it(`${contract.name}: rx props == ng inputs == contract`, () => {
+      const rx = extractReactProps(resolve(process.cwd(), src.rx.file), src.rx.sym);
+      const ng = extractAngularInputs(resolve(process.cwd(), src.ng.file), src.ng.sym);
+      const res = checkParity(contract, { rx, ng });
+      if (!res.ok) console.warn(`${contract.name} parity diff:`, JSON.stringify(res));
+      expect(res.ok).toBe(true);
+    });
+  }
 });
