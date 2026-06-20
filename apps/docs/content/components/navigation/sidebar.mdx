@@ -4,6 +4,7 @@ description: 'Composable app-shell sidebar with persisted state, icon-only colla
 ---
 
 import { SidebarPreview } from '@/components/preview/navigation/sidebar';
+import { SidebarFloatingPreview } from '@/components/preview/navigation/sidebar-floating';
 
 ## Overview
 
@@ -431,6 +432,14 @@ Use when the sidebar carries categorised navigation with per-group affordances (
 ```
 
 Use when the sidebar should collapse to icon-only width (3 rem) instead of sliding off-canvas. The `tooltip` prop on `<SidebarMenuButton>` is **required** in this mode - it surfaces the label in a side-aligned tooltip when collapsed.
+
+### Floating variant
+
+<ComponentPreview name="navigation/sidebar-floating">
+  <SidebarFloatingPreview />
+</ComponentPreview>
+
+Pass `variant="floating"` to detach the panel from the viewport edge with a rounded border and shadow. It pairs naturally with `collapsible="icon"`. The other variants are `"sidebar"` (default, flush to the edge) and `"inset"` (which pushes the paired `<SidebarInset>` in as a rounded card).
 
 ### With sub-menus
 

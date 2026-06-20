@@ -4,14 +4,10 @@ description: 'User or entity portrait with graceful image fallback. Sizes, prese
 ---
 
 import { AvatarPreview } from '@/components/preview/display/avatar';
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-  AvatarBadge,
-  AvatarGroup,
-  AvatarGroupCount,
-} from '@gremorie/rx-display';
+import { AvatarFallbackPreview } from '@/components/preview/display/avatar-fallback';
+import { AvatarSizesPreview } from '@/components/preview/display/avatar-sizes';
+import { AvatarGroupPreview } from '@/components/preview/display/avatar-group';
+import { AvatarBadgePreview } from '@/components/preview/display/avatar-badge';
 
 ## Overview
 
@@ -115,107 +111,37 @@ Trailing "+N" indicator for hidden Avatars in a group. Inherits the group's size
 
 ## Variations
 
-### Image with fallback
-
-<div className="rounded-lg border p-6 not-prose">
-  <Avatar>
-    <AvatarImage
-      src="https://avatars.githubusercontent.com/u/41934312?v=4"
-      alt="@kalvner"
-    />
-    <AvatarFallback>KA</AvatarFallback>
-  </Avatar>
-</div>
-
-```tsx
-<Avatar>
-  <AvatarImage src="https://github.com/kalvner.png" alt="@kalvner" />
-  <AvatarFallback>KA</AvatarFallback>
-</Avatar>
-```
-
-If the image fails to load, the fallback renders automatically.
-
 ### Sizes
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="flex items-center gap-3">
-    <Avatar size="sm">
-      <AvatarFallback>SM</AvatarFallback>
-    </Avatar>
-    <Avatar>
-      <AvatarFallback>MD</AvatarFallback>
-    </Avatar>
-    <Avatar size="lg">
-      <AvatarFallback>LG</AvatarFallback>
-    </Avatar>
-  </div>
-</div>
+<ComponentPreview name="display/avatar-sizes">
+  <AvatarSizesPreview />
+</ComponentPreview>
 
-```tsx
-<Avatar size="sm">
-  <AvatarFallback>SM</AvatarFallback>
-</Avatar>
-<Avatar>
-  <AvatarFallback>MD</AvatarFallback>
-</Avatar>
-<Avatar size="lg">
-  <AvatarFallback>LG</AvatarFallback>
-</Avatar>
-```
+Three sizes ship on the root: `sm` (`size-6`), `default` (`size-8`), and `lg` (`size-10`). The size propagates to subcomponents via `data-size`.
+
+### Fallback only
+
+<ComponentPreview name="display/avatar-fallback">
+  <AvatarFallbackPreview />
+</ComponentPreview>
+
+When the image source is missing or fails to load, `AvatarFallback` renders automatically - typically initials. The Avatar never shows a broken image.
 
 ### Overlapping group
 
-<div className="rounded-lg border p-6 not-prose">
-  <AvatarGroup>
-    <Avatar>
-      <AvatarFallback>KA</AvatarFallback>
-    </Avatar>
-    <Avatar>
-      <AvatarFallback>NG</AvatarFallback>
-    </Avatar>
-    <Avatar>
-      <AvatarFallback>SP</AvatarFallback>
-    </Avatar>
-    <AvatarGroupCount>+3</AvatarGroupCount>
-  </AvatarGroup>
-</div>
+<ComponentPreview name="display/avatar-group">
+  <AvatarGroupPreview />
+</ComponentPreview>
 
-```tsx
-<AvatarGroup>
-  <Avatar>
-    <AvatarFallback>KA</AvatarFallback>
-  </Avatar>
-  <Avatar>
-    <AvatarFallback>NG</AvatarFallback>
-  </Avatar>
-  <Avatar>
-    <AvatarFallback>SP</AvatarFallback>
-  </Avatar>
-  <AvatarGroupCount>+3</AvatarGroupCount>
-</AvatarGroup>
-```
+`AvatarGroup` applies `-space-x-2` and a background ring so the avatars read as a stack. End with `AvatarGroupCount` to show overflow.
 
 ### With presence badge
 
-<div className="rounded-lg border p-6 not-prose">
-  <Avatar size="lg">
-    <AvatarImage
-      src="https://avatars.githubusercontent.com/u/41934312?v=4"
-      alt="@kalvner"
-    />
-    <AvatarFallback>KA</AvatarFallback>
-    <AvatarBadge className="bg-emerald-500" />
-  </Avatar>
-</div>
+<ComponentPreview name="display/avatar-badge">
+  <AvatarBadgePreview />
+</ComponentPreview>
 
-```tsx
-<Avatar size="lg">
-  <AvatarImage src="..." alt="@user" />
-  <AvatarFallback>KA</AvatarFallback>
-  <AvatarBadge className="bg-emerald-500" />
-</Avatar>
-```
+`AvatarBadge` positions absolutely in the bottom-right corner and adapts its size to the parent Avatar's `data-size`.
 
 ## Accessibility
 

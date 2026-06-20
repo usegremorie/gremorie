@@ -4,6 +4,9 @@ description: Continuous numeric input via draggable thumb - single or range, hor
 ---
 
 import { SliderPreview } from '@/components/preview/forms/slider';
+import { SliderRangePreview } from '@/components/preview/forms/slider-range';
+import { SliderStepsPreview } from '@/components/preview/forms/slider-steps';
+import { SliderDisabledPreview } from '@/components/preview/forms/slider-disabled';
 
 ## Overview
 
@@ -112,23 +115,25 @@ function Volume() {
 
 Pass two values for `defaultValue` (or `value`). Always set `thumbAriaLabel` as an array so each thumb has a unique name.
 
-```tsx
-<Slider
-  defaultValue={[20, 80]}
-  min={0}
-  max={100}
-  step={1}
-  thumbAriaLabel={['Minimum price', 'Maximum price']}
-/>
-```
+<ComponentPreview name="forms/slider-range">
+  <SliderRangePreview />
+</ComponentPreview>
 
 ### Stepped slider
 
-Use a larger `step` for discrete values like rating or font size.
+Use a larger `step` to snap to discrete values like quantity, rating, or font size.
 
-```tsx
-<Slider defaultValue={[3]} min={1} max={5} step={1} aria-label="Rating" />
-```
+<ComponentPreview name="forms/slider-steps">
+  <SliderStepsPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` removes the thumbs from the tab order and drops opacity to 50%.
+
+<ComponentPreview name="forms/slider-disabled">
+  <SliderDisabledPreview />
+</ComponentPreview>
 
 ### Vertical orientation
 

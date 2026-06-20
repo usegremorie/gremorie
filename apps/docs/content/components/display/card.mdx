@@ -4,17 +4,8 @@ description: 'Composable surface for grouping related content. Headers, descript
 ---
 
 import { CardPreview } from '@/components/preview/display/card';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  CardAction,
-} from '@gremorie/rx-display';
-import { Button } from '@gremorie/rx-forms';
-import { Badge } from '@gremorie/rx-display';
+import { CardWithActionPreview } from '@/components/preview/display/card-with-action';
+import { CardWithFooterPreview } from '@/components/preview/display/card-with-footer';
 
 ## Overview
 
@@ -130,99 +121,19 @@ Use the full composition rather than dumping everything into `CardContent` - the
 
 ## Variations
 
-### Simple card
-
-<div className="rounded-lg border p-6 not-prose">
-  <Card className="max-w-sm">
-    <CardHeader>
-      <CardTitle>Hello there</CardTitle>
-      <CardDescription>A minimal card with just a header.</CardDescription>
-    </CardHeader>
-  </Card>
-</div>
-
-```tsx
-<Card className="max-w-sm">
-  <CardHeader>
-    <CardTitle>Hello there</CardTitle>
-    <CardDescription>A minimal card with just a header.</CardDescription>
-  </CardHeader>
-</Card>
-```
-
 ### Card with action
 
-<div className="rounded-lg border p-6 not-prose">
-  <Card className="max-w-sm">
-    <CardHeader>
-      <CardTitle>Monthly revenue</CardTitle>
-      <CardDescription>Across all active workspaces.</CardDescription>
-      <CardAction>
-        <Badge variant="secondary">+12.4%</Badge>
-      </CardAction>
-    </CardHeader>
-    <CardContent>
-      <p className="text-2xl font-semibold">$48,210</p>
-    </CardContent>
-  </Card>
-</div>
+<ComponentPreview name="display/card-with-action">
+  <CardWithActionPreview />
+</ComponentPreview>
 
-```tsx
-<Card className="max-w-sm">
-  <CardHeader>
-    <CardTitle>Monthly revenue</CardTitle>
-    <CardDescription>Across all active workspaces.</CardDescription>
-    <CardAction>
-      <Badge variant="secondary">+12.4%</Badge>
-    </CardAction>
-  </CardHeader>
-  <CardContent>
-    <p className="text-2xl font-semibold">$48,210</p>
-  </CardContent>
-</Card>
-```
+`CardAction` sits in the top-right of `CardHeader` via CSS grid - JSX order does not matter. `CardHeader` detects it through `has-data-[slot=card-action]` and switches to a two-column layout.
 
 ### Card with bordered footer
 
-<div className="rounded-lg border p-6 not-prose">
-  <Card className="max-w-sm">
-    <CardHeader>
-      <CardTitle>Invite teammates</CardTitle>
-      <CardDescription>
-        They will get an email with a join link.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <p className="text-sm text-muted-foreground">
-        Up to 10 seats are included on the Pro plan.
-      </p>
-    </CardContent>
-    <CardFooter className="border-t">
-      <Button variant="outline" className="w-full">
-        Send invites
-      </Button>
-    </CardFooter>
-  </Card>
-</div>
-
-```tsx
-<Card className="max-w-sm">
-  <CardHeader>
-    <CardTitle>Invite teammates</CardTitle>
-    <CardDescription>They will get an email with a join link.</CardDescription>
-  </CardHeader>
-  <CardContent>
-    <p className="text-sm text-muted-foreground">
-      Up to 10 seats are included on the Pro plan.
-    </p>
-  </CardContent>
-  <CardFooter className="border-t">
-    <Button variant="outline" className="w-full">
-      Send invites
-    </Button>
-  </CardFooter>
-</Card>
-```
+<ComponentPreview name="display/card-with-footer">
+  <CardWithFooterPreview />
+</ComponentPreview>
 
 The `border-t` on `CardFooter` triggers `[.border-t]:pt-6`, expanding the footer's top padding so the separator reads cleanly.
 

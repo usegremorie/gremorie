@@ -6,6 +6,7 @@ description: 'Bookmarkable page-by-page navigation. Semantic nav with previous, 
 import { PaginationPreview } from '@/components/preview/navigation/pagination';
 import { PaginationSimpleRangePreview } from '@/components/preview/navigation/pagination-simple-range';
 import { PaginationWithEllipsisPreview } from '@/components/preview/navigation/pagination-with-ellipsis';
+import { PaginationDisabledEdgesPreview } from '@/components/preview/navigation/pagination-disabled-edges';
 
 ## Overview
 
@@ -232,6 +233,10 @@ Use when the total page count fits comfortably without truncation (under ten).
 Use for long ranges. Keep first and last anchored, show a window around the current page, and elide the gaps.
 
 ### Disabled edges at boundaries
+
+<ComponentPreview name="navigation/pagination-disabled-edges">
+  <PaginationDisabledEdgesPreview />
+</ComponentPreview>
 
 ```tsx
 <Pagination>

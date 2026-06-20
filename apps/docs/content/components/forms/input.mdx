@@ -4,6 +4,10 @@ description: Single-line text field that adopts every native HTML `type` and exp
 ---
 
 import { InputPreview } from '@/components/preview/forms/input';
+import { InputWithLabelPreview } from '@/components/preview/forms/input-with-label';
+import { InputInvalidPreview } from '@/components/preview/forms/input-invalid';
+import { InputFilePreview } from '@/components/preview/forms/input-file';
+import { InputDisabledPreview } from '@/components/preview/forms/input-disabled';
 
 ## Overview
 
@@ -70,16 +74,13 @@ Extends all `React.ComponentProps<"input">`. Renders with `data-slot="input"` so
 
 ## Variations
 
-### Email field with placeholder
+### With label
 
-The canonical pattern. `type="email"` triggers the email keyboard on mobile and enables built-in browser validation.
+The canonical pattern. `type="email"` triggers the email keyboard on mobile and enables built-in browser validation. Pair every input with a `<Label>` linked via `htmlFor`.
 
-```tsx
-<div className="grid gap-2">
-  <Label htmlFor="email">Email</Label>
-  <Input id="email" type="email" placeholder="you@example.com" />
-</div>
-```
+<ComponentPreview name="forms/input-with-label">
+  <InputWithLabelPreview />
+</ComponentPreview>
 
 ### Number input with min/max
 
@@ -92,36 +93,29 @@ The canonical pattern. `type="email"` triggers the email keyboard on mobile and 
 </div>
 ```
 
-### Error state
+### Invalid state
 
-Drive `aria-invalid` from your validation library. The destructive ring and border come for free.
+Drive `aria-invalid` from your validation library and point `aria-describedby` at the error text. The destructive ring and border come for free.
 
-```tsx
-<div className="grid gap-2">
-  <Label htmlFor="email-bad">Email</Label>
-  <Input
-    id="email-bad"
-    type="email"
-    aria-invalid
-    aria-describedby="email-error"
-    defaultValue="not-an-email"
-  />
-  <p id="email-error" className="text-sm text-destructive">
-    Please enter a valid email.
-  </p>
-</div>
-```
+<ComponentPreview name="forms/input-invalid">
+  <InputInvalidPreview />
+</ComponentPreview>
 
 ### File input
 
 `type="file"` renders the native picker. The internal `file:` selectors style the button-like trigger.
 
-```tsx
-<div className="grid gap-2">
-  <Label htmlFor="avatar">Avatar</Label>
-  <Input id="avatar" type="file" accept="image/*" />
-</div>
-```
+<ComponentPreview name="forms/input-file">
+  <InputFilePreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` removes the input from the tab order, blocks pointer events, and drops opacity to 50%.
+
+<ComponentPreview name="forms/input-disabled">
+  <InputDisabledPreview />
+</ComponentPreview>
 
 ## Accessibility
 

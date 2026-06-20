@@ -4,6 +4,7 @@ description: 'Anchored, click-driven overlay for interactive contextual content.
 ---
 
 import { PopoverPreview } from '@/components/preview/overlays/popover';
+import { PopoverFormPreview } from '@/components/preview/overlays/popover-form';
 
 ## Overview
 
@@ -118,6 +119,14 @@ Optional layout helpers. Header stacks title and description; title is `font-med
 5. **Dismissal**: click outside, press `Esc`, or close programmatically.
 
 ## Variations
+
+### Form popover
+
+A mini form anchored to the trigger. The popover stays open while the user edits the inputs.
+
+<ComponentPreview name="overlays/popover-form">
+  <PopoverFormPreview />
+</ComponentPreview>
 
 ### Settings popover
 
