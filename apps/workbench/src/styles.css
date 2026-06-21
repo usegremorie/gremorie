@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+@import '../../../packages/rx-core/src/styles/globals.css';
+@import '../../../packages/tokens/styles/themes/claude.css';
+@import '../../../packages/tokens/styles/themes/chatgpt.css';
+@import '../../../packages/tokens/styles/themes/gemini.css';
+@import '../../../packages/tokens/styles/themes/mistral.css';
+@import '../../../packages/tokens/styles/themes/perplexity.css';
+
+/* The token system ships dark mode as a `.dark` class that remaps CSS vars, but
+   no `@custom-variant`, so Tailwind's `dark:` utilities (e.g. the CodeBlock
+   light/dark swap) default to OS preference. Bind `dark:` to the class so the
+   workbench's own toggle drives both the vars and the utilities. */
+@custom-variant dark (&:is(.dark *));
+
+@source './**/*.{ts,tsx}';
+@source '../../../packages/rx-core/src/**/*.{ts,tsx}';
+@source '../../../packages/rx-forms/src/**/*.{ts,tsx}';
+@source '../../../packages/rx-navigation/src/**/*.{ts,tsx}';
+@source '../../../packages/rx-containers/src/**/*.{ts,tsx}';
+@source '../../../packages/rx-display/src/**/*.{ts,tsx}';
+@source '../../../packages/rx-overlays/src/**/*.{ts,tsx}';
+@source '../../../packages/rx-artifacts/src/**/*.{ts,tsx}';
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
