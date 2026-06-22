@@ -32,25 +32,25 @@
     "README.md"
   ],
   "peerDependencies": {
+    "@gremorie/rx-artifacts": ">=0.3.0",
     "@gremorie/rx-containers": ">=0.3.0",
     "@gremorie/rx-core": ">=0.3.0",
     "@gremorie/rx-display": ">=0.3.0",
     "@gremorie/rx-feedback": ">=0.3.0",
     "@gremorie/rx-forms": ">=0.3.0",
     "@gremorie/rx-overlays": ">=0.3.0",
-    "@gremorie/rx-artifacts": ">=0.3.0",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
-    "@radix-ui/react-use-controllable-state": "^1.2.2",
-    "@xyflow/react": "^12.10.2",
-    "ai": "^6.0.191",
+    "@radix-ui/react-use-controllable-state": "^1.2.3",
+    "@xyflow/react": "^12.11.1",
+    "ai": "^6.0.208",
     "lucide-react": "^0.547.0",
     "motion": "^12.40.0",
     "streamdown": "^2.5.0",
     "tokenlens": "^1.3.1",
     "tslib": "^2.3.0",
-    "use-stick-to-bottom": "^1.1.4"
+    "use-stick-to-bottom": "^1.1.6"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",

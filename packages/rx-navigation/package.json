@@ -39,12 +39,12 @@
     "@gremorie/rx-feedback": ">=0.3.0",
     "@gremorie/rx-forms": ">=0.3.0",
     "@gremorie/rx-overlays": ">=0.3.0",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.547.0",
-    "radix-ui": "^1.4.3",
+    "radix-ui": "^1.6.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,

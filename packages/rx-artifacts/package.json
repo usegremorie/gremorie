@@ -36,11 +36,11 @@
     "@gremorie/rx-display": ">=0.3.0",
     "@gremorie/rx-forms": ">=0.3.0",
     "@gremorie/rx-overlays": ">=0.3.0",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "lucide-react": "^0.547.0",
-    "shiki": "^4.1.0",
+    "shiki": "^4.2.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
