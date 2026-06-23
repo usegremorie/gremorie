@@ -178,6 +178,16 @@ export const Default: Story = {
 };
 
 /**
+ * Workbench preset: the canonical departments dataset, top-aligned (layout
+ * `padded`) at a fixed 26rem width so the dual-framework workbench renders the
+ * IDENTICAL use case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: Default.args,
+};
+
+/**
  * A currency dataset — shows the categorical palette cycling and value
  * formatting (USD, no decimals) carried into the table and CSV.
  */
