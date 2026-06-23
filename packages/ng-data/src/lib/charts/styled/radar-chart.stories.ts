@@ -34,7 +34,13 @@ const meta: Meta<RadarChart> = {
       </div>
     `,
   }),
-  args: { data: DATA, config: CONFIG, xKey: 'metric', gridType: 'polygon', tooltip: true },
+  args: {
+    data: DATA,
+    config: CONFIG,
+    xKey: 'metric',
+    gridType: 'polygon',
+    tooltip: true,
+  },
 };
 
 export default meta;
@@ -44,4 +50,50 @@ export const Default: Story = {};
 export const CircleGrid: Story = { args: { gridType: 'circle' } };
 export const SingleSeries: Story = {
   args: { config: { sales: { label: 'Sales', color: 'var(--chart-1)' } } },
+};
+
+// Shared with the React `Workbench` story (rx-data) — keep byte-identical so the
+// dual-framework workbench renders the same use case on both sides.
+const WORKBENCH_DATA: ChartDatum[] = [
+  { trait: 'Speed', you: 120, team: 110 },
+  { trait: 'Reliability', you: 98, team: 130 },
+  { trait: 'Comfort', you: 86, team: 100 },
+  { trait: 'Safety', you: 99, team: 90 },
+  { trait: 'Efficiency', you: 85, team: 120 },
+  { trait: 'Range', you: 65, team: 85 },
+];
+
+const WORKBENCH_CONFIG: ChartConfig = {
+  you: { label: 'You', color: 'var(--chart-1)' },
+  team: { label: 'Team', color: 'var(--chart-2)' },
+};
+
+/**
+ * Workbench preset: skill traits you vs. team across shared spokes, top-aligned
+ * at a fixed 28rem width so the dual-framework workbench renders the IDENTICAL
+ * use case as the React `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="width: 28rem; max-width: 100%;">
+        <radar-chart
+          [data]="data"
+          [config]="config"
+          [xKey]="xKey"
+          [gridType]="gridType"
+          [tooltip]="tooltip"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    data: WORKBENCH_DATA,
+    config: WORKBENCH_CONFIG,
+    xKey: 'trait',
+    gridType: 'polygon',
+    tooltip: true,
+  },
 };

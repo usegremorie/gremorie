@@ -39,18 +39,21 @@ import {
 import { CheckIcon, InfoIcon, MoonIcon, SunIcon, XIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
+import { Sidebar } from './sidebar';
+
 /**
  * Gremorie Workbench - audit the React and Angular editions side by side. The
- * shell dogfoods the rx-* primitives (Resizable, Tabs, Select, Switch, Badge,
- * Separator, ScrollArea, Tooltip, CodeBlock); both previews are symmetric
- * Storybook iframes (React :4401, Angular :4400) driven by the same contract
- * controls, so the only variable between columns is the framework.
+ * shell dogfoods the rx-* primitives; both previews are symmetric Storybook
+ * iframes (React :4401, Angular :4400) driven by the same contract controls and
+ * the same theme globals, so the only variable between columns is the framework.
  */
-const RX_BASE = 'http://localhost:4401';
-const NG_BASE = 'http://localhost:4400';
+// Storybook origins. Local dev falls back to the running Storybook dev servers;
+// production points at the published Storybooks (e.g. Chromatic branch
+// permalinks) via build-time env vars. Same iframe contract either way.
+const RX_BASE = import.meta.env.VITE_RX_BASE ?? 'http://localhost:4401';
+const NG_BASE = import.meta.env.VITE_NG_BASE ?? 'http://localhost:4400';
 
-/** The Gremorie brand themes, applied via `data-theme` on the root element.
- *  `default` clears the attribute and falls back to the base palette. */
+/** The Gremorie brand themes, applied via `data-theme` on the root element. */
 const THEMES = [
   { value: 'default', label: 'Default' },
   { value: 'claude', label: 'Claude' },
@@ -85,13 +88,19 @@ function encodeArgs(values: Values): string {
   return parts.length ? `&args=${parts.join(';')}` : '';
 }
 
+/** Build a Storybook iframe URL with the args AND the theme globals, so the
+ *  previewed component re-themes in lockstep with the workbench shell. */
 function storyUrl(
   base: string,
   id: string | undefined,
   values: Values,
+  theme: string,
+  dark: boolean,
 ): string | null {
   if (!id) return null;
-  return `${base}/iframe.html?id=${id}&viewMode=story${encodeArgs(values)}`;
+  const globals = `&globals=theme:${theme};dark:!${dark}`;
+  // shortcuts=false + singleStory=true: Chromatic's recommended embed flags.
+  return `${base}/iframe.html?id=${id}&viewMode=story&shortcuts=false&singleStory=true${encodeArgs(values)}${globals}`;
 }
 
 const pascal = (s: string) =>
@@ -143,100 +152,90 @@ function storySource(fw: 'rx' | 'ng', name: string): string | null {
   return key ? map[key] : null;
 }
 
-/** The interactive input for a single controllable prop. */
-function ControlInput({
+/** Tiny info affordance: an icon that reveals the prop description on hover,
+ *  keeping the control row clean (Figma-playground style). */
+function PropInfo({ text }: { text: string }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          className="text-muted-foreground/50 transition-colors hover:text-foreground"
+        >
+          <InfoIcon className="size-3" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-56 text-xs">{text}</TooltipContent>
+    </Tooltip>
+  );
+}
+
+/** One playground row: just the name + control. Type is implied by the control
+ *  (a text box is a string, a dropdown shows its options on open); the optional
+ *  description lives behind an info icon. Required props get a subtle marker. */
+function PropField({
   control,
+  meta,
   value,
   onChange,
 }: {
   control: WorkbenchControl;
+  meta: PropRow | undefined;
   value: string | number | boolean | undefined;
   onChange: (v: string | number | boolean) => void;
 }) {
+  const labelRow = (
+    <div className="flex items-center gap-1">
+      <Label className="font-medium text-foreground text-xs">
+        {control.name}
+      </Label>
+      {meta?.required && (
+        <span className="text-[10px] text-rose-500 leading-none">*</span>
+      )}
+      {meta?.description && <PropInfo text={meta.description} />}
+    </div>
+  );
+
   if (control.kind === 'toggle') {
-    return <Switch checked={Boolean(value)} onCheckedChange={onChange} />;
+    return (
+      <div className="flex items-center justify-between gap-2">
+        {labelRow}
+        <Switch checked={Boolean(value)} onCheckedChange={onChange} />
+      </div>
+    );
   }
   if (control.kind === 'select') {
     return (
-      <Select value={String(value ?? '')} onValueChange={onChange}>
-        <SelectTrigger className="h-8" size="sm">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {control.options?.map((o) => (
-            <SelectItem key={o} value={o}>
-              {o}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="space-y-1.5">
+        {labelRow}
+        <Select value={String(value ?? '')} onValueChange={onChange}>
+          <SelectTrigger className="h-8 w-full" size="sm">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {control.options?.map((o) => (
+              <SelectItem key={o} value={o}>
+                {o}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     );
   }
   return (
-    <Input
-      type={control.kind === 'number' ? 'number' : 'text'}
-      className="h-8"
-      value={String(value ?? '')}
-      onChange={(e) =>
-        onChange(
-          control.kind === 'number' ? Number(e.target.value) : e.target.value,
-        )
-      }
-    />
-  );
-}
-
-/** One prop row: name + type + required badge + description, and - when the
- *  prop is controllable - the live control that drives both previews. */
-function PropField({
-  prop,
-  control,
-  value,
-  onChange,
-}: {
-  prop: PropRow;
-  control: WorkbenchControl | undefined;
-  value: string | number | boolean | undefined;
-  onChange: (v: string | number | boolean) => void;
-}) {
-  return (
     <div className="space-y-1.5">
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        {control?.kind === 'toggle' ? (
-          <Label className="flex flex-1 items-center justify-between gap-2 font-medium text-foreground text-xs">
-            <span>{prop.name}</span>
-            <ControlInput control={control} value={value} onChange={onChange} />
-          </Label>
-        ) : (
-          <Label className="font-medium text-foreground text-xs">
-            {prop.name}
-          </Label>
-        )}
-        {prop.required && (
-          <Badge
-            variant="outline"
-            className="h-4 border-amber-500/40 px-1 text-[9px] text-amber-600 dark:text-amber-400"
-          >
-            required
-          </Badge>
-        )}
-        <code className="font-mono text-[10px] text-muted-foreground">
-          {prop.type}
-        </code>
-      </div>
-      {prop.description && (
-        <p className="text-[11px] text-muted-foreground leading-snug">
-          {prop.description}
-        </p>
-      )}
-      {control && control.kind !== 'toggle' && (
-        <ControlInput control={control} value={value} onChange={onChange} />
-      )}
-      {!control && (
-        <p className="text-[11px] text-muted-foreground/70 italic">
-          set in code{prop.default !== '-' ? ` · default ${prop.default}` : ''}
-        </p>
-      )}
+      {labelRow}
+      <Input
+        type={control.kind === 'number' ? 'number' : 'text'}
+        className="h-8"
+        value={String(value ?? '')}
+        onChange={(e) =>
+          onChange(
+            control.kind === 'number' ? Number(e.target.value) : e.target.value,
+          )
+        }
+      />
     </div>
   );
 }
@@ -300,7 +299,7 @@ function FrameworkColumn({
         defaultValue="preview"
         className="flex min-h-0 flex-1 flex-col gap-0"
       >
-        <div className="flex shrink-0 items-center justify-between gap-2 border-b px-3 py-2">
+        <div className="flex h-12 shrink-0 items-center justify-between gap-2 border-b px-3">
           <div className="flex items-center gap-2">
             <span className="font-semibold text-sm">{title}</span>
             <Badge variant="secondary" className="h-5 font-mono text-[10px]">
@@ -325,7 +324,7 @@ function FrameworkColumn({
             <iframe
               title={`${title} preview`}
               src={url}
-              className="h-full w-full border-0 bg-white"
+              className="h-full w-full border-0 bg-background"
             />
           ) : (
             <p className="p-4 text-muted-foreground text-sm">
@@ -358,20 +357,7 @@ function FrameworkColumn({
           <span className="font-medium text-[11px] text-muted-foreground uppercase tracking-wide">
             Install
           </span>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className="text-muted-foreground/70 hover:text-foreground"
-              >
-                <InfoIcon className="size-3" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-60 text-xs">
-              First line copies the component source into your app via the
-              registry; second installs the bundled package from npm.
-            </TooltipContent>
-          </Tooltip>
+          <PropInfo text="First line copies the component source into your app via the registry; second installs the bundled package from npm." />
         </div>
         <CodeBlock
           code={`${commands.registry}\n${commands.npm}`}
@@ -394,7 +380,7 @@ export function App() {
 
   // Drive both the CSS-var tokens (`.dark`) and the brand palette (`data-theme`)
   // from the root element, so the whole shell - every rx-* component and the
-  // CodeBlock - re-themes together.
+  // CodeBlock - re-themes together. The previews follow via Storybook globals.
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('dark', dark);
@@ -402,11 +388,22 @@ export function App() {
     else root.setAttribute('data-theme', theme);
   }, [dark, theme]);
 
+  const contracted = useMemo(
+    () => new Set(entries.map((e) => e.name)),
+    [entries],
+  );
+
   if (!entry) {
     return <p className="p-6">No component contracts found.</p>;
   }
 
-  const controlByName = new Map(entry.controls.map((c) => [c.name, c]));
+  const metaByName = new Map(entry.props.map((p) => [p.name, p]));
+  const selectByName = (n: string) => {
+    const next = entries.find((e) => e.name === n);
+    if (!next) return;
+    setName(n);
+    setValues(defaults(next));
+  };
   const set = (k: string, v: string | number | boolean) =>
     setValues((prev) => ({ ...prev, [k]: v }));
 
@@ -417,28 +414,11 @@ export function App() {
   return (
     <TooltipProvider delayDuration={150}>
       <div className="flex h-screen flex-col bg-background text-foreground">
+        {/* Top bar: identity + theme controls */}
         <header className="flex shrink-0 items-center gap-3 border-b px-4 py-2.5">
           <span className="font-semibold text-sm">Gremorie Workbench</span>
           <Separator orientation="vertical" className="h-5" />
-          <Select
-            value={name}
-            onValueChange={(v) => {
-              const next = entries.find((x) => x.name === v) ?? entry;
-              setName(v);
-              setValues(defaults(next));
-            }}
-          >
-            <SelectTrigger className="h-8 w-72" size="sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {entries.map((e) => (
-                <SelectItem key={e.name} value={e.name}>
-                  {e.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <span className="font-medium text-sm">{entry.name}</span>
           <Badge variant="secondary">{entry.category}</Badge>
           {entry.status && (
             <Badge variant={entry.status === 'stable' ? 'default' : 'outline'}>
@@ -491,103 +471,109 @@ export function App() {
           </div>
         </header>
 
-        <ResizablePanelGroup direction="horizontal" className="min-h-0 flex-1">
-          {/* Column 1 - shared anatomy + agnostic guidance */}
-          <ResizablePanel defaultSize={19} minSize={12}>
-            <div className="flex h-full min-h-0 flex-col">
-              <div className="shrink-0 border-b px-4 py-3">
-                <h2 className="font-semibold text-sm">Anatomy & guidance</h2>
-                <p className="text-[11px] text-muted-foreground">
-                  Shared across both editions
-                </p>
-              </div>
-              <ScrollArea className="min-h-0 flex-1">
-                <div className="space-y-4 p-4">
-                  <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 font-mono text-[11px] text-foreground leading-relaxed">
-                    {entry.anatomy.trim()}
-                  </pre>
-                  <Separator />
-                  <p className="text-muted-foreground text-xs leading-relaxed">
-                    {entry.guidance.summary}
-                  </p>
-                  <GuidanceList
-                    title="Use when"
-                    items={entry.guidance.whenToUse}
-                    tone="do"
-                  />
-                  {whenNot && whenNot.length > 0 && (
+        <div className="flex min-h-0 flex-1">
+          {/* Left nav: full component catalog, collapsible by category */}
+          <Sidebar
+            active={name}
+            contracted={contracted}
+            onSelect={selectByName}
+          />
+
+          {/* Content: anatomy/guidance · props · React · Angular */}
+          <ResizablePanelGroup
+            direction="horizontal"
+            className="min-h-0 flex-1"
+          >
+            <ResizablePanel defaultSize={20} minSize={13}>
+              <div className="flex h-full min-h-0 flex-col">
+                <div className="flex h-12 shrink-0 items-center border-b px-4">
+                  <h2 className="font-semibold text-sm">Anatomy & guidance</h2>
+                </div>
+                <ScrollArea className="min-h-0 flex-1">
+                  <div className="space-y-4 p-4">
+                    <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 font-mono text-[11px] text-foreground leading-relaxed">
+                      {entry.anatomy.trim()}
+                    </pre>
+                    <Separator />
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      {entry.guidance.summary}
+                    </p>
                     <GuidanceList
-                      title="Avoid when"
-                      items={whenNot}
-                      tone="dont"
+                      title="Use when"
+                      items={entry.guidance.whenToUse}
+                      tone="do"
                     />
-                  )}
-                </div>
-              </ScrollArea>
-            </div>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-
-          {/* Column 2 - the agnostic public API, controllable props are live */}
-          <ResizablePanel defaultSize={20} minSize={14}>
-            <div className="flex h-full min-h-0 flex-col">
-              <div className="flex shrink-0 items-center justify-between border-b px-4 py-3">
-                <div>
-                  <h2 className="font-semibold text-sm">Props</h2>
-                  <p className="text-[11px] text-muted-foreground">
-                    Drive both previews
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setValues(defaults(entry))}
-                >
-                  Reset
-                </Button>
+                    {whenNot && whenNot.length > 0 && (
+                      <GuidanceList
+                        title="Avoid when"
+                        items={whenNot}
+                        tone="dont"
+                      />
+                    )}
+                  </div>
+                </ScrollArea>
               </div>
-              <ScrollArea className="min-h-0 flex-1">
-                <div className="space-y-4 p-4">
-                  {entry.props.map((prop) => (
-                    <PropField
-                      key={prop.name}
-                      prop={prop}
-                      control={controlByName.get(prop.name)}
-                      value={values[prop.name]}
-                      onChange={(v) => set(prop.name, v)}
-                    />
-                  ))}
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+
+            <ResizablePanel defaultSize={18} minSize={13}>
+              <div className="flex h-full min-h-0 flex-col">
+                <div className="flex h-12 shrink-0 items-center justify-between border-b px-4">
+                  <h2 className="font-semibold text-sm">Properties</h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setValues(defaults(entry))}
+                  >
+                    Reset
+                  </Button>
                 </div>
-              </ScrollArea>
-            </div>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
+                <ScrollArea className="min-h-0 flex-1">
+                  <div className="space-y-4 p-4">
+                    {entry.controls.length === 0 && (
+                      <p className="text-muted-foreground text-xs">
+                        No interactive props for this component.
+                      </p>
+                    )}
+                    {entry.controls.map((c) => (
+                      <PropField
+                        key={c.name}
+                        control={c}
+                        meta={metaByName.get(c.name)}
+                        value={values[c.name]}
+                        onChange={(v) => set(c.name, v)}
+                      />
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
 
-          {/* Column 3 - React */}
-          <ResizablePanel defaultSize={30.5} minSize={20}>
-            <FrameworkColumn
-              title="React"
-              edition="rx-*"
-              url={storyUrl(RX_BASE, entry.preview.rx, values)}
-              code={storySource('rx', entry.name) ?? rxCode(entry, values)}
-              language="tsx"
-              commands={entry.commands.rx}
-            />
-          </ResizablePanel>
-          <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={31} minSize={20}>
+              <FrameworkColumn
+                title="React"
+                edition="rx-*"
+                url={storyUrl(RX_BASE, entry.preview.rx, values, theme, dark)}
+                code={storySource('rx', entry.name) ?? rxCode(entry, values)}
+                language="tsx"
+                commands={entry.commands.rx}
+              />
+            </ResizablePanel>
+            <ResizableHandle withHandle />
 
-          {/* Column 4 - Angular */}
-          <ResizablePanel defaultSize={30.5} minSize={20}>
-            <FrameworkColumn
-              title="Angular"
-              edition="ng-*"
-              url={storyUrl(NG_BASE, entry.preview.ng, values)}
-              code={storySource('ng', entry.name) ?? ngCode(entry, values)}
-              language="typescript"
-              commands={entry.commands.ng}
-            />
-          </ResizablePanel>
-        </ResizablePanelGroup>
+            <ResizablePanel defaultSize={31} minSize={20}>
+              <FrameworkColumn
+                title="Angular"
+                edition="ng-*"
+                url={storyUrl(NG_BASE, entry.preview.ng, values, theme, dark)}
+                code={storySource('ng', entry.name) ?? ngCode(entry, values)}
+                language="typescript"
+                commands={entry.commands.ng}
+              />
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
       </div>
     </TooltipProvider>
   );

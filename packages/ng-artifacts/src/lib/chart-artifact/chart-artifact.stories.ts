@@ -44,6 +44,17 @@ const SCATTER = [
   { size: 260, price: 590 },
 ];
 
+// Shared with the React `Workbench` story (rx-artifacts) - keep byte-identical
+// so the dual-framework workbench renders the same use case on both sides.
+const RATINGS = [
+  { department: 'Marketing', rating: 4.37 },
+  { department: 'Product', rating: 4.12 },
+  { department: 'Support', rating: 3.94 },
+  { department: 'Sales', rating: 3.76 },
+  { department: 'Finance', rating: 3.72 },
+  { department: 'Ops', rating: 3.58 },
+];
+
 const meta: Meta<ChartArtifact> = {
   title: 'Artifacts/ChartArtifact',
   component: ChartArtifact,
@@ -174,6 +185,48 @@ export const TableDefault: Story = {
     categoryKey: 'month',
     valueKey: 'revenue',
     defaultView: 'table',
+  },
+};
+
+/**
+ * Workbench preset: the canonical departments dataset, top-aligned at a fixed
+ * 26rem width so the dual-framework workbench renders the IDENTICAL use case as
+ * the React `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="width: 26rem; max-width: 100%;">
+        <chart-artifact
+          [title]="title"
+          [description]="description"
+          [data]="data"
+          [type]="type"
+          [categoryKey]="categoryKey"
+          [valueKey]="valueKey"
+          [valueLabel]="valueLabel"
+          [defaultView]="defaultView"
+          [numberFormat]="numberFormat"
+          [fileName]="fileName"
+          [accent]="accent"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    title: 'Average rating by department',
+    description: 'Q3 review scores across six departments.',
+    data: RATINGS,
+    type: 'bar',
+    categoryKey: 'department',
+    valueKey: 'rating',
+    valueLabel: 'Rating',
+    defaultView: 'chart',
+    numberFormat: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+    fileName: 'ratings-by-department',
+    accent: 'primary',
   },
 };
 

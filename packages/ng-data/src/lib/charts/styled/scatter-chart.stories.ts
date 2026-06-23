@@ -48,3 +48,48 @@ type Story = StoryObj<ScatterChart>;
 export const Default: Story = {};
 export const TwoSeries: Story = { args: { config: TWO } };
 export const NoAxis: Story = { args: { yAxis: false } };
+
+// Shared with the React `Workbench` story (rx-data) — keep byte-identical so the
+// dual-framework workbench renders the same use case on both sides.
+const WORKBENCH_DATA: ChartDatum[] = [
+  { size: 90, price: 180 },
+  { size: 120, price: 250 },
+  { size: 180, price: 410 },
+  { size: 200, price: 460 },
+  { size: 260, price: 590 },
+  { size: 320, price: 720 },
+];
+
+const WORKBENCH_CONFIG: ChartConfig = {
+  price: { label: 'Price ($k)', color: 'var(--chart-1)' },
+};
+
+/**
+ * Workbench preset: listing size vs. price, top-aligned at a fixed 28rem width
+ * so the dual-framework workbench renders the IDENTICAL use case as the React
+ * `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="width: 28rem; max-width: 100%;">
+        <scatter-chart
+          [data]="data"
+          [config]="config"
+          [xKey]="xKey"
+          [yAxis]="yAxis"
+          [tooltip]="tooltip"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    data: WORKBENCH_DATA,
+    config: WORKBENCH_CONFIG,
+    xKey: 'size',
+    yAxis: true,
+    tooltip: true,
+  },
+};

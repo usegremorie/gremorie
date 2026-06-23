@@ -23,8 +23,17 @@ export const chartArtifact = defineContract({
           ├─ chart view (one of the 7 chart primitives, by type)
           └─ table view (one column per value series)`,
   props: [
-    { name: 'title', type: 'string', required: true, desc: 'Single-line heading.' },
-    { name: 'description', type: 'string', desc: 'Optional supporting line (truncates).' },
+    {
+      name: 'title',
+      type: 'string',
+      required: true,
+      desc: 'Single-line heading.',
+    },
+    {
+      name: 'description',
+      type: 'string',
+      desc: 'Optional supporting line (truncates).',
+    },
     {
       name: 'data',
       type: 'ChartArtifactDatum[]',
@@ -38,15 +47,28 @@ export const chartArtifact = defineContract({
       options: ['bar', 'area', 'line', 'pie', 'radar', 'radial', 'scatter'],
       desc: 'Which chart primitive to embed.',
     },
-    { name: 'categoryKey', type: 'string', required: true, desc: 'Category / X field.' },
+    {
+      name: 'categoryKey',
+      type: 'string',
+      required: true,
+      desc: 'Category / X field.',
+    },
     {
       name: 'valueKey',
       type: 'string | ChartArtifactSeries[]',
       required: true,
       desc: 'Value field(s): a string for one series, or a series array for multi-series.',
     },
-    { name: 'categoryLabel', type: 'string', desc: 'Header label for the category column.' },
-    { name: 'valueLabel', type: 'string', desc: 'Label for a single value series.' },
+    {
+      name: 'categoryLabel',
+      type: 'string',
+      desc: 'Header label for the category column.',
+    },
+    {
+      name: 'valueLabel',
+      type: 'string',
+      desc: 'Label for a single value series.',
+    },
     {
       name: 'defaultView',
       type: 'ChartArtifactView',
@@ -59,7 +81,12 @@ export const chartArtifact = defineContract({
       type: 'Intl.NumberFormatOptions',
       desc: 'Number formatting for the table, CSV and tooltip.',
     },
-    { name: 'fileName', type: 'string', default: 'chart', desc: 'Base name for downloads.' },
+    {
+      name: 'fileName',
+      type: 'string',
+      default: 'chart',
+      desc: 'Base name for downloads.',
+    },
     { name: 'icon', type: 'LucideIcon', desc: 'Featured icon in the header.' },
     {
       name: 'accent',
@@ -88,12 +115,16 @@ export const chartArtifact = defineContract({
     },
   ],
   guidance: {
-    summary: 'A chart wrapped as a downloadable, toggleable artifact (chart or table).',
+    summary:
+      'A chart wrapped as a downloadable, toggleable artifact (chart or table).',
     whenToUse: [
       'Present a model-generated dataset as a chart the user can also read as a table and download.',
     ],
     whenNotToUse: [
-      { text: 'A plain static chart with no toggle / download / header', use: 'bar-chart' },
+      {
+        text: 'A plain static chart with no toggle / download / header',
+        use: 'bar-chart',
+      },
       { text: 'Raw tabular data with no chart', use: 'table' },
     ],
     rules: [
@@ -103,6 +134,9 @@ export const chartArtifact = defineContract({
     example:
       '<chart-artifact title="Monthly revenue" type="bar" categoryKey="month" valueKey="revenue" [data]="data" />',
   },
-  preview: { rx: 'ai-code-chart--default', ng: 'artifacts-chartartifact--bar' },
+  preview: {
+    rx: 'ai-code-chart--workbench',
+    ng: 'artifacts-chartartifact--workbench',
+  },
   figma: { nodeId: null },
 });
