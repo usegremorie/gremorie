@@ -137,6 +137,7 @@ const config = {
   transpilePackages: [
     '@gremorie/contracts',
     '@gremorie/rx-ai',
+    '@gremorie/rx-artifacts',
     '@gremorie/rx-containers',
     '@gremorie/rx-core',
     '@gremorie/rx-data',
