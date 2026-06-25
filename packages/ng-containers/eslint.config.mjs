@@ -34,7 +34,13 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['scroll-area', 'container'],
+          prefix: [
+            'scroll-area',
+            'container',
+            'gn-stack',
+            'gn-aspect-ratio',
+            'gn-resizable',
+          ],
           style: 'kebab-case',
         },
       ],

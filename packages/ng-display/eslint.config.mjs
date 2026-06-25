@@ -34,7 +34,16 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['gn-card', 'gn-badge', 'gn-carousel'],
+          prefix: [
+            'gn-card',
+            'gn-badge',
+            'gn-carousel',
+            'gn-accordion',
+            'gn-avatar',
+            'gn-collapsible',
+            'gn-separator',
+            'gn-table',
+          ],
           style: 'kebab-case',
         },
       ],
