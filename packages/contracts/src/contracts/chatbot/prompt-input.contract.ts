@@ -141,5 +141,14 @@ export const promptInput = defineContract({
     rx: 'ai-chatbot-promptinput--ready',
     ng: 'promptinput-container--ready',
   },
+  tag: { rx: 'PromptInput', ng: 'prompt-input' },
+  example: {
+    state: 'ready',
+    size: 'md',
+    variant: 'default',
+    disabled: false,
+    submitOnEnter: true,
+    placeholder: 'Ask anything…',
+  },
   figma: { nodeId: null },
 });

@@ -75,5 +75,13 @@ export const button = defineContract({
       '<button variant="outline" size="icon" aria-label="Submit"><ArrowUpIcon /></button>',
   },
   preview: { rx: 'inputs-button--default' },
+  tag: { rx: 'Button', ng: 'ai-button' },
+  // No Angular Workbench story exists (button lives in ng-core, not yet
+  // Storybook-globbed), so these seed from the contract's scalar defaults.
+  example: {
+    variant: 'default',
+    size: 'default',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

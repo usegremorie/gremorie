@@ -87,5 +87,13 @@ export const modelSelector = defineContract({
     rx: 'ai-chatbot-modelselector--default',
     ng: 'ai-modelselector--workbench',
   },
+  tag: { rx: 'ModelSelector', ng: 'model-selector' },
+  example: {
+    value: 'claude-3-5-sonnet',
+    provider: 'anthropic',
+    placeholder: 'Search models…',
+    title: 'Model Selector',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

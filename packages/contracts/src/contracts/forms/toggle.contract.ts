@@ -85,5 +85,13 @@ export const toggle = defineContract({
     rx: 'inputs-toggle--default',
     ng: 'forms-toggle--workbench',
   },
+  tag: { rx: 'Toggle', ng: 'gn-toggle' },
+  example: {
+    pressed: false,
+    variant: 'default',
+    size: 'default',
+    disabled: false,
+    'aria-label': 'Toggle italic',
+  },
   figma: { nodeId: null },
 });

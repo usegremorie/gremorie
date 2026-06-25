@@ -95,5 +95,11 @@ export const chainOfThought = defineContract({
     rx: 'ai-chatbot-chainofthought--simple',
     ng: 'ai-chainofthought--simple',
   },
+  tag: { rx: 'ChainOfThought', ng: 'chain-of-thought' },
+  example: {
+    open: true,
+    label: 'Identifying relevant sources',
+    status: 'complete',
+  },
   figma: { nodeId: null },
 });

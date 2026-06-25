@@ -87,5 +87,7 @@ export const menubar = defineContract({
     rx: 'interaction-navigation-menubar--default',
     ng: 'navigation-menubar--workbench',
   },
+  tag: { rx: 'Menubar', ng: 'gn-menubar' },
+  example: { inset: false, variant: 'default', align: 'start' },
   figma: { nodeId: null },
 });

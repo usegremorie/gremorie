@@ -70,5 +70,12 @@ export const checkpoint = defineContract({
     rx: 'ai-chatbot-checkpoint--default',
     ng: 'ai-checkpoint--workbench',
   },
+  tag: { rx: 'Checkpoint', ng: 'checkpoint' },
+  example: {
+    tooltip: 'Restore to this checkpoint',
+    variant: 'ghost',
+    size: 'sm',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

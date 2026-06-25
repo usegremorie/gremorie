@@ -89,5 +89,11 @@ export const dialog = defineContract({
     rx: 'interaction-overlays-dialog--default',
     ng: 'overlays-dialog--workbench',
   },
+  tag: { rx: 'Dialog', ng: 'gn-dialog' },
+  example: {
+    defaultOpen: false,
+    modal: true,
+    showCloseButton: true,
+  },
   figma: { nodeId: null },
 });

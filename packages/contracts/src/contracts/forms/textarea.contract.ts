@@ -66,5 +66,12 @@ export const textarea = defineContract({
     rx: 'inputs-textarea--default',
     ng: 'forms-textarea--workbench',
   },
+  tag: { rx: 'Textarea', ng: 'gn-textarea' },
+  example: {
+    placeholder: 'Type your message…',
+    disabled: false,
+    'aria-invalid': false,
+    value: '',
+  },
   figma: { nodeId: null },
 });

@@ -54,5 +54,8 @@ export const card = defineContract({
     rx: 'layout-display-display-card--default',
     ng: 'display-card--default',
   },
+  tag: { rx: 'Card', ng: 'gn-card' },
+  // No controllable scalar props (className only); nothing to seed.
+  example: {},
   figma: { nodeId: null },
 });

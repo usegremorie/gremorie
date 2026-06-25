@@ -54,5 +54,11 @@ export const scrollArea = defineContract({
   preview: {
     rx: 'layout-display-containers-scrollarea--vertical',
   },
+  // ng has no standalone host element: it is a directive applied to ngx-scrollbar's
+  // <ng-scrollbar> (selector: ng-scrollbar[gremorie]). Live code targets that element.
+  tag: { rx: 'ScrollArea', ng: 'ng-scrollbar[gremorie]' },
+  // orientation is React-only (ng delegates both axes to ngx-scrollbar); seeded
+  // from the React default.
+  example: { orientation: 'vertical' },
   figma: { nodeId: null },
 });

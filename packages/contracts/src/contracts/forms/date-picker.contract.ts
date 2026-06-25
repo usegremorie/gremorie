@@ -71,5 +71,10 @@ export const datePicker = defineContract({
   preview: {
     ng: 'forms-date-picker--workbench',
   },
+  tag: { rx: 'DatePicker', ng: 'gn-date-picker' },
+  example: {
+    placeholder: 'Pick a date',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

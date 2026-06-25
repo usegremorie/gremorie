@@ -53,5 +53,7 @@ export const separator = defineContract({
     rx: 'layout-display-display-separator--default',
     ng: 'display-separator--workbench',
   },
+  tag: { rx: 'Separator', ng: 'gn-separator' },
+  example: { orientation: 'horizontal', decorative: true },
   figma: { nodeId: null },
 });

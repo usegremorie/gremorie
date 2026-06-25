@@ -121,5 +121,13 @@ export const artifact = defineContract({
   preview: {
     rx: 'ai-code-artifact--default',
   },
+  tag: { rx: 'Artifact', ng: 'artifact' },
+  // No NG Workbench story for the bare shell (only the typed presets have one);
+  // these scalar seeds mirror the canonical RX `WithViewToggleAndMenus` usage.
+  example: {
+    value: 'preview',
+    color: 'primary',
+    align: 'end',
+  },
   figma: { nodeId: null },
 });

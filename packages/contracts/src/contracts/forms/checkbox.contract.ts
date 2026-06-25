@@ -86,5 +86,12 @@ export const checkbox = defineContract({
     rx: 'inputs-checkbox--default',
     ng: 'forms-checkbox--workbench',
   },
+  tag: { rx: 'Checkbox', ng: 'gn-checkbox' },
+  example: {
+    checked: false,
+    disabled: false,
+    required: false,
+    'aria-invalid': false,
+  },
   figma: { nodeId: null },
 });

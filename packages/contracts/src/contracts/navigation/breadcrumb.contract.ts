@@ -58,5 +58,7 @@ export const breadcrumb = defineContract({
     rx: 'interaction-navigation-breadcrumb--default',
     ng: 'navigation-breadcrumb--workbench',
   },
+  tag: { rx: 'Breadcrumb', ng: 'gn-breadcrumb' },
+  example: { asChild: false },
   figma: { nodeId: null },
 });

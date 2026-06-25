@@ -70,5 +70,11 @@ export const suggestion = defineContract({
     rx: 'ai-chatbot-suggestion--row',
     ng: 'ai-suggestion--row',
   },
+  tag: { rx: 'Suggestion', ng: 'suggestion' },
+  example: {
+    suggestion: 'Tell me a joke',
+    variant: 'outline',
+    size: 'sm',
+  },
   figma: { nodeId: null },
 });

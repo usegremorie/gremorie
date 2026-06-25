@@ -74,5 +74,10 @@ export const radioGroup = defineContract({
     rx: 'inputs-radio-group--default',
     ng: 'forms-radio-group--workbench',
   },
+  tag: { rx: 'RadioGroup', ng: 'gn-radio-group' },
+  example: {
+    value: 'comfortable',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

@@ -86,5 +86,10 @@ export const codeBlock = defineContract({
     rx: 'ai-code-codeblock--type-script',
     ng: 'artifacts-codeblock--workbench',
   },
+  tag: { rx: 'CodeBlock', ng: 'code-block' },
+  example: {
+    language: 'typescript',
+    showLineNumbers: false,
+  },
   figma: { nodeId: null },
 });

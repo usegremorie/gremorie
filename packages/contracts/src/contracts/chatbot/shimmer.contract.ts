@@ -72,5 +72,11 @@ export const shimmer = defineContract({
     rx: 'ai-chatbot-shimmer--default',
     ng: 'ai-shimmer--default',
   },
+  tag: { rx: 'Shimmer', ng: '[ngShimmer]' },
+  example: {
+    duration: 2,
+    spread: 2,
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

@@ -70,9 +70,12 @@ function defaults(entry: WorkbenchEntry | undefined): Values {
   const v: Values = {};
   if (!entry) return v;
   for (const c of entry.controls) {
-    if (c.default !== undefined) v[c.name] = c.default;
+    const ex = entry.example?.[c.name];
+    if (ex !== undefined) v[c.name] = ex;
+    else if (c.default !== undefined) v[c.name] = c.default;
     else if (c.kind === 'toggle') v[c.name] = false;
     else if (c.kind === 'select') v[c.name] = c.options?.[0] ?? '';
+    else v[c.name] = '';
   }
   return v;
 }
@@ -106,50 +109,52 @@ function storyUrl(
 const pascal = (s: string) =>
   s.replace(/(^|-)(\w)/g, (_, __, c: string) => c.toUpperCase());
 
-/** Fallback usage snippet, only shown if a story source can't be located. */
-function rxCode(entry: WorkbenchEntry, values: Values): string {
+/** "npm i @gremorie/rx-forms" -> "@gremorie/rx-forms" */
+const pkgFromNpm = (npm: string) => npm.replace(/^npm i\s+/, '').trim();
+
+/**
+ * Live consumer-usage code, generated from the current control values - the code
+ * a consumer copies, updating as the controls change. React uses the component
+ * (PascalCase) as the JSX tag; Angular imports the component class and uses its
+ * selector in the template. Empty controls are omitted; a `data` prop (if the
+ * component has one) is shown as a bound reference.
+ */
+function usageCode(
+  entry: WorkbenchEntry,
+  values: Values,
+  fw: 'rx' | 'ng',
+): string {
+  const cls = pascal(entry.name);
+  const tag =
+    fw === 'rx' ? (entry.tag.rx ?? cls) : (entry.tag.ng ?? entry.name);
+  const pkg = pkgFromNpm(
+    fw === 'rx' ? entry.commands.rx.npm : entry.commands.ng.npm,
+  );
+
   const attrs = entry.controls
     .map((c) => {
       const v = values[c.name];
       if (v === '' || v === undefined) return null;
-      if (c.kind === 'toggle') return v ? c.name : null;
-      if (c.kind === 'number') return `${c.name}={${v}}`;
+      if (c.kind === 'toggle') {
+        return fw === 'rx' ? (v ? c.name : null) : `[${c.name}]="${v}"`;
+      }
+      if (c.kind === 'number') {
+        return fw === 'rx' ? `${c.name}={${v}}` : `[${c.name}]="${v}"`;
+      }
       return `${c.name}="${v}"`;
     })
-    .filter(Boolean);
-  return `<${pascal(entry.name)} ${attrs.join(' ')} data={data} />`;
-}
+    .filter(Boolean) as string[];
 
-function ngCode(entry: WorkbenchEntry, values: Values): string {
-  const attrs = entry.controls
-    .map((c) => {
-      const v = values[c.name];
-      if (v === '' || v === undefined) return null;
-      if (c.kind === 'toggle' || c.kind === 'number')
-        return `[${c.name}]="${v}"`;
-      return `${c.name}="${v}"`;
-    })
-    .filter(Boolean);
-  return `<${entry.name} ${attrs.join(' ')} [data]="data" />`;
-}
+  if (entry.props.some((p) => p.name === 'data')) {
+    attrs.push(fw === 'rx' ? 'data={data}' : '[data]="data"');
+  }
 
-// Real story sources, loaded as raw text at build time (Vite). The Code tab
-// shows the actual source of the story rendered in the Preview iframe - same
-// pattern as the docs ComponentPreview, so Preview and Code never drift.
-const RX_STORY_SRC = import.meta.glob(
-  '../../../packages/{rx-data,rx-artifacts}/src/**/*.stories.tsx',
-  { query: '?raw', import: 'default', eager: true },
-) as Record<string, string>;
-const NG_STORY_SRC = import.meta.glob(
-  '../../../packages/{ng-data,ng-artifacts}/src/**/*.stories.ts',
-  { query: '?raw', import: 'default', eager: true },
-) as Record<string, string>;
+  const el =
+    attrs.length > 1
+      ? `<${tag}\n${attrs.map((a) => `  ${a}`).join('\n')}\n/>`
+      : `<${tag}${attrs.length ? ` ${attrs[0]}` : ''} />`;
 
-function storySource(fw: 'rx' | 'ng', name: string): string | null {
-  const map = fw === 'rx' ? RX_STORY_SRC : NG_STORY_SRC;
-  const suffix = `/${name}.stories.${fw === 'rx' ? 'tsx' : 'ts'}`;
-  const key = Object.keys(map).find((k) => k.endsWith(suffix));
-  return key ? map[key] : null;
+  return `import { ${cls} } from '${pkg}';\n\n${el}`;
 }
 
 /** Tiny info affordance: an icon that reveals the prop description on hover,
@@ -555,7 +560,7 @@ export function App() {
                 title="React"
                 edition="rx-*"
                 url={storyUrl(RX_BASE, entry.preview.rx, values, theme, dark)}
-                code={storySource('rx', entry.name) ?? rxCode(entry, values)}
+                code={usageCode(entry, values, 'rx')}
                 language="tsx"
                 commands={entry.commands.rx}
               />
@@ -567,7 +572,7 @@ export function App() {
                 title="Angular"
                 edition="ng-*"
                 url={storyUrl(NG_BASE, entry.preview.ng, values, theme, dark)}
-                code={storySource('ng', entry.name) ?? ngCode(entry, values)}
+                code={usageCode(entry, values, 'ng')}
                 language="typescript"
                 commands={entry.commands.ng}
               />

@@ -89,5 +89,12 @@ export const queue = defineContract({
     rx: 'ai-chatbot-queue--default',
     ng: 'ai-queue--workbench',
   },
+  tag: { rx: 'Queue', ng: 'queue' },
+  example: {
+    completed: false,
+    defaultOpen: true,
+    label: 'pending',
+    count: 2,
+  },
   figma: { nodeId: null },
 });

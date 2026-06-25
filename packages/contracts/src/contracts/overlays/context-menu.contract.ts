@@ -90,5 +90,11 @@ export const contextMenu = defineContract({
     rx: 'interaction-overlays-contextmenu--default',
     ng: 'overlays-contextmenu--workbench',
   },
+  tag: { rx: 'ContextMenu', ng: 'gn-context-menu' },
+  example: {
+    modal: true,
+    inset: false,
+    variant: 'default',
+  },
   figma: { nodeId: null },
 });

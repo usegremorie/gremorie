@@ -81,5 +81,14 @@ export const slider = defineContract({
     rx: 'inputs-slider--single',
     ng: 'forms-slider--workbench',
   },
+  tag: { rx: 'Slider', ng: 'gn-slider' },
+  example: {
+    min: 0,
+    max: 100,
+    step: 1,
+    orientation: 'horizontal',
+    disabled: false,
+    thumbAriaLabel: 'Value',
+  },
   figma: { nodeId: null },
 });

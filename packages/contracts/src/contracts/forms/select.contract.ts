@@ -88,5 +88,9 @@ export const select = defineContract({
     rx: 'inputs-select--default',
     ng: 'forms-select--workbench',
   },
+  tag: { rx: 'Select', ng: 'gn-select' },
+  example: {
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

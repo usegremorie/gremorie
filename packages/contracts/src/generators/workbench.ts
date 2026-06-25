@@ -28,6 +28,10 @@ export interface WorkbenchEntry {
   controls: WorkbenchControl[];
   guidance: Guidance;
   preview: { rx?: string; ng?: string };
+  /** Component identifier per edition (rx PascalCase name, ng selector). */
+  tag: { rx?: string; ng?: string };
+  /** Canonical controllable-prop values: seed the controls, drive the live code. */
+  example: Record<string, string | number | boolean>;
   commands: { rx: FrameworkCommands; ng: FrameworkCommands };
 }
 
@@ -53,7 +57,12 @@ function toControls(contract: ComponentContract): WorkbenchControl[] {
   for (const p of contract.props) {
     if (p.adapts) continue;
     if (p.options) {
-      controls.push({ name: p.name, kind: 'select', options: p.options, default: p.default });
+      controls.push({
+        name: p.name,
+        kind: 'select',
+        options: p.options,
+        default: p.default,
+      });
     } else if (p.type === 'boolean') {
       controls.push({ name: p.name, kind: 'toggle', default: p.default });
     } else if (p.type === 'number') {
@@ -69,7 +78,10 @@ function buildCommands(
   name: string,
   category: string,
 ): { rx: FrameworkCommands; ng: FrameworkCommands } {
-  const pkg = NPM_PKG[category] ?? { rx: '@gremorie/rx-core', ng: '@gremorie/ng-core' };
+  const pkg = NPM_PKG[category] ?? {
+    rx: '@gremorie/rx-core',
+    ng: '@gremorie/ng-core',
+  };
   return {
     rx: { registry: `npx gremorie add rx-${name}`, npm: `npm i ${pkg.rx}` },
     ng: { registry: `npx gremorie add ng-${name}`, npm: `npm i ${pkg.ng}` },
@@ -87,6 +99,8 @@ export function toWorkbenchEntry(contract: ComponentContract): WorkbenchEntry {
     controls: toControls(contract),
     guidance: contract.guidance,
     preview: contract.preview ?? {},
+    tag: contract.tag ?? {},
+    example: contract.example ?? {},
     commands: buildCommands(contract.name, contract.category),
   };
 }

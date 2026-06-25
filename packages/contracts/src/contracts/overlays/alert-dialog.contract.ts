@@ -90,5 +90,11 @@ export const alertDialog = defineContract({
     rx: 'interaction-overlays-alertdialog--default',
     ng: 'overlays-alertdialog--workbench',
   },
+  tag: { rx: 'AlertDialog', ng: 'gn-alert-dialog' },
+  example: {
+    defaultOpen: false,
+    size: 'default',
+    variant: 'default',
+  },
   figma: { nodeId: null },
 });

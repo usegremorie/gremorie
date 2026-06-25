@@ -88,5 +88,11 @@ export const drawer = defineContract({
     rx: 'interaction-overlays-drawer--default',
     ng: 'overlays-drawer--workbench',
   },
+  tag: { rx: 'Drawer', ng: 'gn-drawer' },
+  example: {
+    defaultOpen: false,
+    direction: 'bottom',
+    modal: true,
+  },
   figma: { nodeId: null },
 });

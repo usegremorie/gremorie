@@ -68,5 +68,9 @@ export const inputGroup = defineContract({
     rx: 'inputs-input-group--leading-icon',
     ng: 'forms-input-group--workbench',
   },
+  tag: { rx: 'InputGroup', ng: 'gn-input-group' },
+  // The ng Workbench story renders sub-components with no top-level scalar args,
+  // so there are no canonical scalar values to seed.
+  example: {},
   figma: { nodeId: null },
 });

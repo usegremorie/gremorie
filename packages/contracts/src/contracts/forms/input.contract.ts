@@ -70,5 +70,13 @@ export const input = defineContract({
     rx: 'inputs-input--default',
     ng: 'forms-input--workbench',
   },
+  tag: { rx: 'Input', ng: 'gn-input' },
+  example: {
+    type: 'text',
+    placeholder: 'Type here…',
+    disabled: false,
+    'aria-invalid': false,
+    value: '',
+  },
   figma: { nodeId: null },
 });

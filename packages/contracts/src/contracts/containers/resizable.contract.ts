@@ -89,5 +89,10 @@ export const resizable = defineContract({
     rx: 'layout-display-containers-resizable--horizontal',
     ng: 'layout-display-containers-resizable--workbench',
   },
+  // tag.rx is the root panel-group component; ng is the root group selector.
+  tag: { rx: 'ResizablePanelGroup', ng: 'gn-resizable-panel-group' },
+  // Only the root group's scalar (direction) is seedable; defaultSize / minSize /
+  // withHandle live on the per-part panels / handle, not the root.
+  example: { direction: 'horizontal' },
   figma: { nodeId: null },
 });

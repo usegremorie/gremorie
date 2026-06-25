@@ -100,5 +100,12 @@ export const message = defineContract({
     rx: 'ai-chatbot-message--default',
     ng: 'ai-message--from-assistant',
   },
+  tag: { rx: 'Message', ng: 'message' },
+  example: {
+    from: 'assistant',
+    variant: 'ghost',
+    side: 'top',
+    defaultBranch: 0,
+  },
   figma: { nodeId: null },
 });

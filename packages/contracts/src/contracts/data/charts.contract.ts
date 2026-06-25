@@ -63,7 +63,7 @@ const CURVE = {
   default: 'natural',
   options: ['natural', 'monotone', 'linear', 'step'],
   desc: 'Curve interpolation.',
-} as const;
+};
 
 export const areaChart = defineContract({
   name: 'area-chart',
@@ -98,6 +98,14 @@ export const areaChart = defineContract({
   preview: {
     rx: 'layout-display-data-area--workbench',
     ng: 'charts-areachart--workbench',
+  },
+  tag: { rx: 'AreaChart', ng: 'area-chart' },
+  example: {
+    xKey: 'month',
+    stacked: false,
+    type: 'natural',
+    yAxis: true,
+    tooltip: true,
   },
 });
 
@@ -149,6 +157,16 @@ export const barChart = defineContract({
     rx: 'layout-display-data-bar--workbench',
     ng: 'charts-barchart--workbench',
   },
+  tag: { rx: 'BarChart', ng: 'bar-chart' },
+  example: {
+    xKey: 'month',
+    stacked: false,
+    horizontal: false,
+    yAxis: true,
+    showLabels: false,
+    tooltip: true,
+    radius: 8,
+  },
 });
 
 export const lineChart = defineContract({
@@ -182,6 +200,14 @@ export const lineChart = defineContract({
     rx: 'layout-display-data-line--workbench',
     ng: 'charts-linechart--workbench',
   },
+  tag: { rx: 'LineChart', ng: 'line-chart' },
+  example: {
+    xKey: 'month',
+    type: 'natural',
+    dots: false,
+    yAxis: true,
+    tooltip: true,
+  },
 });
 
 export const scatterChart = defineContract({
@@ -208,6 +234,12 @@ export const scatterChart = defineContract({
   preview: {
     rx: 'layout-display-data-scatter--workbench',
     ng: 'charts-scatterchart--workbench',
+  },
+  tag: { rx: 'ScatterChart', ng: 'scatter-chart' },
+  example: {
+    xKey: 'size',
+    yAxis: true,
+    tooltip: true,
   },
 });
 
@@ -263,6 +295,14 @@ export const pieChart = defineContract({
     rx: 'layout-display-data-pie--workbench',
     ng: 'charts-piechart--workbench',
   },
+  tag: { rx: 'PieChart', ng: 'pie-chart' },
+  example: {
+    nameKey: 'browser',
+    dataKey: 'visitors',
+    donut: false,
+    showLabels: false,
+    tooltip: true,
+  },
 });
 
 export const radarChart = defineContract({
@@ -301,6 +341,12 @@ export const radarChart = defineContract({
     rx: 'layout-display-data-radar--workbench',
     ng: 'charts-radarchart--workbench',
   },
+  tag: { rx: 'RadarChart', ng: 'radar-chart' },
+  example: {
+    xKey: 'trait',
+    gridType: 'polygon',
+    tooltip: true,
+  },
 });
 
 export const radialChart = defineContract({
@@ -338,6 +384,12 @@ export const radialChart = defineContract({
   preview: {
     rx: 'layout-display-data-radial--workbench',
     ng: 'charts-radialchart--workbench',
+  },
+  tag: { rx: 'RadialChart', ng: 'radial-chart' },
+  example: {
+    nameKey: 'browser',
+    dataKey: 'visitors',
+    tooltip: true,
   },
 });
 

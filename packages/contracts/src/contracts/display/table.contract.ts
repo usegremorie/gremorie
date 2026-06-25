@@ -56,5 +56,8 @@ export const table = defineContract({
     rx: 'layout-display-display-table--default',
     ng: 'display-table--workbench',
   },
+  tag: { rx: 'Table', ng: 'gn-table' },
+  // No controllable scalar props (className only); nothing to seed.
+  example: {},
   figma: { nodeId: null },
 });

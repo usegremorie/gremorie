@@ -72,5 +72,11 @@ export const avatar = defineContract({
     rx: 'layout-display-display-avatar--default',
     ng: 'display-avatar--workbench',
   },
+  tag: { rx: 'Avatar', ng: 'gn-avatar' },
+  example: {
+    size: 'default',
+    src: 'https://github.com/shadcn.png',
+    alt: '@shadcn',
+  },
   figma: { nodeId: null },
 });

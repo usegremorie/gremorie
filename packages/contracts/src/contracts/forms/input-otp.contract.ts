@@ -85,5 +85,10 @@ export const inputOtp = defineContract({
     rx: 'inputs-input-otp--six-digits',
     ng: 'forms-input-otp--workbench',
   },
+  tag: { rx: 'InputOTP', ng: 'gn-input-otp' },
+  example: {
+    maxLength: 6,
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

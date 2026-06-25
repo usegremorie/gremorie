@@ -101,5 +101,9 @@ export const webPreview = defineContract({
     rx: 'ai-code-webpreview--default',
     ng: 'artifacts-webpreview--workbench',
   },
+  tag: { rx: 'WebPreview', ng: 'web-preview' },
+  example: {
+    defaultUrl: 'https://example.com',
+  },
   figma: { nodeId: null },
 });

@@ -138,5 +138,17 @@ export const chartArtifact = defineContract({
     rx: 'ai-code-chart--workbench',
     ng: 'artifacts-chartartifact--workbench',
   },
+  tag: { rx: 'ChartArtifact', ng: 'chart-artifact' },
+  example: {
+    title: 'Average rating by department',
+    description: 'Q3 review scores across six departments.',
+    type: 'bar',
+    categoryKey: 'department',
+    valueKey: 'rating',
+    valueLabel: 'Rating',
+    defaultView: 'chart',
+    fileName: 'ratings-by-department',
+    accent: 'primary',
+  },
   figma: { nodeId: null },
 });
