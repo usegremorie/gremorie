@@ -1,9 +1,15 @@
 import type { ComponentContract } from './types';
 import { chartArtifact } from './contracts/artifacts/chart-artifact.contract';
+import { ARTIFACTS_CONTRACTS } from './contracts/artifacts';
 import { CHART_CONTRACTS } from './contracts/data/charts.contract';
+import { CHATBOT_CONTRACTS } from './contracts/chatbot';
+import { CONTAINERS_CONTRACTS } from './contracts/containers';
 import { DISPLAY_CONTRACTS } from './contracts/display';
+import { FEEDBACK_CONTRACTS } from './contracts/feedback';
 import { FORMS_CONTRACTS } from './contracts/forms';
+import { NAVIGATION_CONTRACTS } from './contracts/navigation';
 import { OVERLAYS_CONTRACTS } from './contracts/overlays';
+import { UTILITIES_CONTRACTS } from './contracts/utilities';
 
 export * from './types';
 export * from './generators/props-table';
@@ -18,9 +24,14 @@ export * from './contracts/data/charts.contract';
 
 /** Every registered component contract. Generators and the parity lint iterate this. */
 export const CONTRACTS: ComponentContract[] = [
-  chartArtifact,
+  ...ARTIFACTS_CONTRACTS,
   ...CHART_CONTRACTS,
   ...FORMS_CONTRACTS,
   ...DISPLAY_CONTRACTS,
   ...OVERLAYS_CONTRACTS,
+  ...CONTAINERS_CONTRACTS,
+  ...FEEDBACK_CONTRACTS,
+  ...NAVIGATION_CONTRACTS,
+  ...UTILITIES_CONTRACTS,
+  ...CHATBOT_CONTRACTS,
 ];
