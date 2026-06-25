@@ -67,5 +67,37 @@ export * from './lib/tool';
 // Toolbar (generic action row)
 export * from './lib/toolbar';
 
-// CodeBlock (Shiki syntax highlight)
-export * from './lib/code-block';
+// CodeBlock (Shiki syntax highlight) — canonical home is @gremorie/ng-artifacts
+// (parity with React, where CodeBlock lives in @gremorie/rx-artifacts and rx-ai
+// re-exports it). Re-exported here for backward compatibility.
+export {
+  CodeBlock,
+  CODE_BLOCK,
+  highlightCode,
+  CodeBlockCopyButton,
+  type CodeBlockState,
+} from '@gremorie/ng-artifacts';
+
+// Checkpoint (conversation save-point row)
+export * from './lib/checkpoint';
+
+// Confirmation (tool approval alert)
+export * from './lib/confirmation';
+
+// Context (token-usage hover card)
+export * from './lib/context';
+
+// Image (AI-generated image)
+export * from './lib/image';
+
+// ModelSelector (command-palette model picker)
+export * from './lib/model-selector';
+
+// OpenInChat (open-in-provider dropdown)
+export * from './lib/open-in-chat';
+
+// Plan (collapsible plan card)
+export * from './lib/plan';
+
+// Queue (queued messages / todos)
+export * from './lib/queue';
