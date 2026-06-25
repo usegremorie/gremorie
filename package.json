@@ -41,7 +41,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs}": [
-      "eslint --fix --no-warn-ignored",
+      "eslint --flag v10_config_lookup_from_file --fix --no-warn-ignored",
       "prettier --write"
     ],
     "*.{json,md,mdx,css,html,yml,yaml}": "prettier --write"
