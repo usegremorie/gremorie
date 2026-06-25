@@ -22,13 +22,13 @@
     "@angular/common": "^21.2.0",
     "@angular/compiler": "^21.2.0",
     "@angular/core": "^21.2.0",
+    "@gremorie/ng-artifacts": ">=0.0.1",
     "@gremorie/ng-core": ">=0.0.1",
     "@gremorie/ng-display": ">=0.0.1",
     "@nx/vite": "^22.7.2",
     "@spartan-ng/brain": "^0.0.1-alpha.694",
     "class-variance-authority": "^0.7.1",
     "marked": "^15.0.0",
-    "shiki": "^4.0.0",
     "vite": "^7.0.0",
     "@angular/platform-browser": "~21.2.0"
   },
@@ -41,9 +41,6 @@
     },
     "marked": {
       "optional": false
-    },
-    "shiki": {
-      "optional": true
     }
   },
   "sideEffects": false,

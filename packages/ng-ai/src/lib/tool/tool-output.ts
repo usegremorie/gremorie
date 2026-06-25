@@ -6,7 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
-import { CodeBlock } from '../code-block/code-block';
+import { CodeBlock } from '@gremorie/ng-artifacts';
 
 /**
  * ToolOutput — labelled body showing either the result or an error. Mirrors

@@ -20,7 +20,7 @@ type CodeBlockArgs = {
 };
 
 const meta: Meta<CodeBlockArgs> = {
-  title: 'AI/CodeBlock',
+  title: 'Artifacts/CodeBlock',
   component: CodeBlock,
   tags: ['autodocs'],
   decorators: [
@@ -126,6 +126,27 @@ export const WithCopyButton: Story = {
       <code-block [code]="code" language="typescript">
         <code-block-copy-button />
       </code-block>
+    `,
+    props: {
+      code: TS_CODE,
+    },
+  }),
+};
+
+/**
+ * Workbench preset: the canonical TypeScript snippet with a copy button, at a
+ * fixed 32rem width so the dual-framework workbench renders the IDENTICAL use
+ * case on both sides. Keep in sync with the React `CodeBlock` workbench preview.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div style="width: 32rem; max-width: 100%;">
+        <code-block [code]="code" language="typescript">
+          <code-block-copy-button />
+        </code-block>
+      </div>
     `,
     props: {
       code: TS_CODE,

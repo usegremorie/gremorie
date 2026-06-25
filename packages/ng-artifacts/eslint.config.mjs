@@ -34,7 +34,10 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['artifact', 'chart-artifact'],
+          // One namespaced prefix per artifact family (mirrors the React
+          // @gremorie/rx-artifacts component names — code-block + web-preview
+          // moved here to match React's package layout).
+          prefix: ['artifact', 'chart-artifact', 'code-block', 'web-preview'],
           style: 'kebab-case',
         },
       ],
