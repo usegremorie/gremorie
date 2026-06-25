@@ -22,6 +22,9 @@ const config: StorybookConfig = {
     '../../ng-display/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../ng-feedback/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../ng-artifacts/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../ng-forms/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../ng-overlays/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '../../ng-navigation/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [],
   framework: {

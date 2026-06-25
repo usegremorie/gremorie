@@ -8,6 +8,9 @@
 @source '../../ng-display/src/**/*.{ts,html}';
 @source '../../ng-feedback/src/**/*.{ts,html}';
 @source '../../ng-artifacts/src/**/*.{ts,html}';
+@source '../../ng-forms/src/**/*.{ts,html}';
+@source '../../ng-overlays/src/**/*.{ts,html}';
+@source '../../ng-navigation/src/**/*.{ts,html}';
 
 html,
 body {
