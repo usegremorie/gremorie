@@ -3,122 +3,85 @@ import { Button } from '@gremorie/rx-forms';
 import { ArrowRight, Github } from 'lucide-react';
 import Link from 'next/link';
 
-import { HeroDemo } from './hero-demo';
-
 /**
- * Landing hero. Dogfood: status pill is rx-display Badge;
- * CTAs are rx-forms Button (asChild wraps Next Link / anchor).
+ * Landing hero - centered composition (shadcnblocks-style): status pill, the
+ * tagline, a two-paragraph subtitle, the CTA hierarchy, and the edition marks,
+ * all centered in a single column. The live chat surface that used to sit in a
+ * right column now lives below the hero as the Assistant showcase.
  *
- * Brand identity (Deanna refresh):
- * - Background halo behind the demo uses --primary so it follows the active
- *   theme (neutral by default, colored when a data-theme is set).
- * - 3 CTA hierarchy: primary "Get Started" (filled), secondary "View Components"
- *   (outline), tertiary "Star on GitHub" (ghost). The ghost variant pulls back
- *   visually so the eye lands on Get Started first.
- * - Subtitle split in two paragraphs - tagline + clarifier - improves rhythm
- *   and keeps each sentence under ~12 words.
+ * Dogfood: status pill is rx-display Badge; CTAs are rx-forms Button (asChild
+ * wraps Next Link / anchor). The primary halo follows the active theme.
  */
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Ambient primary halo - top-right corner, very low intensity. Sits below
-          everything (`-z-10`) and is decorative (`aria-hidden`). Sets the
-          mystical tone without competing with content. */}
+      {/* Ambient primary halo, centered behind the headline - sets the mystical
+          tone without competing with content. Decorative. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 right-0 -z-10 h-[480px] w-[480px] rounded-full bg-primary/15 blur-[120px]"
+        className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[520px] w-[820px] max-w-full -translate-x-1/2 rounded-full bg-primary/15 blur-[140px]"
       />
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left column: copy + CTAs */}
-          <div className="flex flex-col gap-6">
-            <Badge variant="secondary" className="w-fit gap-2 py-1">
-              <span
-                className="size-1.5 rounded-full bg-success"
-                aria-hidden="true"
-              />
-              In active development
-            </Badge>
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center lg:py-28">
+        <Badge variant="secondary" className="gap-2 py-1">
+          <span
+            className="size-1.5 rounded-full bg-success"
+            aria-hidden="true"
+          />
+          In active development
+        </Badge>
 
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              The AI-native design system for{' '}
-              <span className="text-cyan-600 dark:text-cyan-500">React</span>{' '}
-              and{' '}
-              <span className="text-rose-500 dark:text-rose-400">Angular</span>
-            </h1>
+        <h1 className="text-balance font-bold text-4xl text-foreground tracking-tight sm:text-5xl lg:text-6xl">
+          The AI-native design system for{' '}
+          <span className="text-cyan-600 dark:text-cyan-500">React</span> and{' '}
+          <span className="text-rose-500 dark:text-rose-400">Angular</span>
+        </h1>
 
-            <div className="flex max-w-xl flex-col gap-3 text-lg leading-relaxed text-muted-foreground">
-              <p>
-                AI-native components and blocks, available through an MCP server
-                and a registry. Its documentation runs as a chain — design
-                principles into components, components into the blocks built
-                from them — so an LLM reads the whole system.
-              </p>
-              <p className="text-base">
-                Designers prototype with the real components through MCP;
-                developers ship the same ones to production.
-              </p>
-            </div>
+        <div className="flex max-w-2xl flex-col gap-3 text-balance text-lg text-muted-foreground leading-relaxed">
+          <p>
+            AI-native components and blocks, delivered through an MCP server and
+            a registry. The documentation runs as a chain - design principles
+            into components, components into the blocks built from them - so an
+            LLM reads the whole system.
+          </p>
+          <p className="text-base">
+            Designers prototype with the real components through MCP; developers
+            ship the same ones to production.
+          </p>
+        </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <Button size="lg" asChild>
-                <Link href="/get-started/installation">
-                  Get Started
-                  <ArrowRight aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/components">View Components</Link>
-              </Button>
-              <Button size="lg" variant="ghost" asChild>
-                <a
-                  href="https://github.com/usegremorie/gremorie"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <Github aria-hidden="true" />
-                  Star on GitHub
-                </a>
-              </Button>
-            </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button size="lg" asChild>
+            <Link href="/get-started/installation">
+              Get Started
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+          <Button size="lg" variant="outline" asChild>
+            <Link href="/components">View Components</Link>
+          </Button>
+          <Button size="lg" variant="ghost" asChild>
+            <a
+              href="https://github.com/usegremorie/gremorie"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <Github aria-hidden="true" />
+              Star on GitHub
+            </a>
+          </Button>
+        </div>
 
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-4 text-xs text-muted-foreground">
-              <span>
-                <span className="font-medium text-foreground">85</span>{' '}
-                primitives
-              </span>
-              <span>
-                <span className="font-medium text-foreground">
-                  React + Angular
-                </span>{' '}
-                editions
-              </span>
-              <span>
-                <span className="font-medium text-foreground">MIT</span>{' '}
-                licensed
-              </span>
-            </div>
-          </div>
-
-          {/*
-            Right column: live demo (decorative, hidden from assistive tech).
-            Use `inert` (not just aria-hidden) so descendant buttons/textarea
-            are removed from the tab order entirely. WCAG 4.1.2 fix.
-
-            Halo updated to primary/15 -> primary/5 fade so the demo card sits in
-            a warm primary glow instead of the previous neutral primary tint.
-          */}
-          <div className="relative" aria-hidden="true" inert>
-            {/*
-              Halo bumped from primary/20 to primary/30 + blur-3xl per Odo
-              final audit. primary/20 read as subliminal in light mode -
-              users could not tell the violet identity was already there.
-              primary/30 + larger blur radius pushes the primary glow into
-              "visible but ambient" territory without becoming a tint.
-            */}
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/30 via-primary/5 to-transparent blur-3xl" />
-            <HeroDemo />
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-4 text-muted-foreground text-xs">
+          <span>
+            <span className="font-medium text-foreground">85</span> primitives
+          </span>
+          <span>
+            <span className="font-medium text-foreground">React + Angular</span>{' '}
+            editions
+          </span>
+          <span>
+            <span className="font-medium text-foreground">MIT</span> licensed
+          </span>
         </div>
       </div>
     </section>
