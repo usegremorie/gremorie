@@ -79,5 +79,7 @@ export const tabs = defineContract({
     rx: 'interaction-navigation-tabs--default',
     ng: 'navigation-tabs--workbench',
   },
+  tag: { rx: 'Tabs', ng: 'gn-tabs' },
+  example: { orientation: 'horizontal', variant: 'default', disabled: false },
   figma: { nodeId: null },
 });

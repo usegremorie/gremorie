@@ -80,5 +80,11 @@ export const switchContract = defineContract({
     rx: 'inputs-switch--default',
     ng: 'forms-switch--workbench',
   },
+  tag: { rx: 'Switch', ng: 'gn-switch' },
+  example: {
+    checked: false,
+    size: 'default',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

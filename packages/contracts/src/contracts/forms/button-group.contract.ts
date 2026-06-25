@@ -63,5 +63,9 @@ export const buttonGroup = defineContract({
     rx: 'inputs-button-group--default',
     ng: 'forms-button-group--workbench',
   },
+  tag: { rx: 'ButtonGroup', ng: 'gn-button-group' },
+  example: {
+    orientation: 'horizontal',
+  },
   figma: { nodeId: null },
 });

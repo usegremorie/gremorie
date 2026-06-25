@@ -68,5 +68,7 @@ export const stack = defineContract({
     rx: 'layout-display-containers-stack--default',
     ng: 'layout-display-containers-stack--workbench',
   },
+  tag: { rx: 'Stack', ng: 'gn-stack' },
+  example: { gap: 'md', align: 'stretch', justify: 'start' },
   figma: { nodeId: null },
 });

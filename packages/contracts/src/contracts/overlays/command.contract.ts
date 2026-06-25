@@ -110,5 +110,14 @@ export const command = defineContract({
     rx: 'interaction-overlays-command--default',
     ng: 'overlays-command--workbench',
   },
+  tag: { rx: 'Command', ng: 'gn-command' },
+  example: {
+    shouldFilter: true,
+    placeholder: 'Type a command or search...',
+    title: 'Command Palette',
+    description: 'Search for a command to run...',
+    showCloseButton: true,
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

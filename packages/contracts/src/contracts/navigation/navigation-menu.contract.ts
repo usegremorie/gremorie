@@ -61,5 +61,7 @@ export const navigationMenu = defineContract({
     rx: 'interaction-navigation-navigationmenu--default',
     ng: 'navigation-navigationmenu--workbench',
   },
+  tag: { rx: 'NavigationMenu', ng: 'gn-navigation-menu' },
+  example: { viewport: true },
   figma: { nodeId: null },
 });

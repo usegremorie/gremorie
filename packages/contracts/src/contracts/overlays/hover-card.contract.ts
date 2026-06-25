@@ -81,5 +81,12 @@ export const hoverCard = defineContract({
     rx: 'interaction-overlays-hovercard--default',
     ng: 'overlays-hovercard--workbench',
   },
+  tag: { rx: 'HoverCard', ng: 'gn-hover-card' },
+  example: {
+    openDelay: 700,
+    closeDelay: 300,
+    align: 'center',
+    sideOffset: 4,
+  },
   figma: { nodeId: null },
 });

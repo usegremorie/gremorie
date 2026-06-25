@@ -112,5 +112,14 @@ export const sidebar = defineContract({
     rx: 'interaction-navigation-sidebar--default',
     ng: 'navigation-sidebar--workbench',
   },
+  tag: { rx: 'Sidebar', ng: 'gn-sidebar' },
+  example: {
+    side: 'left',
+    variant: 'sidebar',
+    collapsible: 'offcanvas',
+    defaultOpen: true,
+    isActive: false,
+    asChild: false,
+  },
   figma: { nodeId: null },
 });

@@ -51,5 +51,9 @@ export const label = defineContract({
     rx: 'inputs-label--default',
     ng: 'forms-label--workbench',
   },
+  tag: { rx: 'Label', ng: 'gn-label' },
+  example: {
+    htmlFor: '',
+  },
   figma: { nodeId: null },
 });

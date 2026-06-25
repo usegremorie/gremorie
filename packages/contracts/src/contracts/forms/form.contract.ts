@@ -79,5 +79,9 @@ export const form = defineContract({
     rx: 'inputs-form--signup-form',
     ng: 'forms-form--workbench',
   },
+  tag: { rx: 'FormItem', ng: 'gn-form-item' },
+  example: {
+    invalid: false,
+  },
   figma: { nodeId: null },
 });

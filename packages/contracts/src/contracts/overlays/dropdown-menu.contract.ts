@@ -110,5 +110,13 @@ export const dropdownMenu = defineContract({
     rx: 'interaction-overlays-dropdownmenu--default',
     ng: 'overlays-dropdownmenu--workbench',
   },
+  tag: { rx: 'DropdownMenu', ng: 'gn-dropdown-menu' },
+  example: {
+    defaultOpen: false,
+    modal: true,
+    sideOffset: 4,
+    inset: false,
+    variant: 'default',
+  },
   figma: { nodeId: null },
 });

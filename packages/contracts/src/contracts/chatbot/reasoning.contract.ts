@@ -76,5 +76,12 @@ export const reasoning = defineContract({
     rx: 'ai-chatbot-reasoning--done',
     ng: 'ai-reasoning--done',
   },
+  tag: { rx: 'Reasoning', ng: 'reasoning' },
+  example: {
+    isStreaming: false,
+    open: false,
+    defaultOpen: false,
+    duration: 4,
+  },
   figma: { nodeId: null },
 });

@@ -85,5 +85,12 @@ export const popover = defineContract({
     rx: 'interaction-overlays-popover--default',
     ng: 'overlays-popover--workbench',
   },
+  tag: { rx: 'Popover', ng: 'gn-popover' },
+  example: {
+    defaultOpen: false,
+    modal: false,
+    align: 'center',
+    sideOffset: 4,
+  },
   figma: { nodeId: null },
 });

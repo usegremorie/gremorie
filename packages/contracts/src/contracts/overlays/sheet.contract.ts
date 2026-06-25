@@ -90,5 +90,12 @@ export const sheet = defineContract({
     rx: 'interaction-overlays-sheet--default',
     ng: 'overlays-sheet--workbench',
   },
+  tag: { rx: 'Sheet', ng: 'gn-sheet' },
+  example: {
+    defaultOpen: false,
+    modal: true,
+    side: 'right',
+    showCloseButton: true,
+  },
   figma: { nodeId: null },
 });

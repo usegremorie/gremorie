@@ -62,5 +62,10 @@ export const task = defineContract({
     rx: 'ai-chatbot-task--expanded',
     ng: 'ai-task--expanded',
   },
+  tag: { rx: 'Task', ng: 'task' },
+  example: {
+    defaultOpen: true,
+    title: "Found 3 files matching 'config'",
+  },
   figma: { nodeId: null },
 });

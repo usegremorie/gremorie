@@ -84,5 +84,12 @@ export const tooltip = defineContract({
     rx: 'interaction-overlays-tooltip--default',
     ng: 'overlays-tooltip--workbench',
   },
+  tag: { rx: 'Tooltip', ng: 'gn-tooltip' },
+  example: {
+    delayDuration: 0,
+    defaultOpen: false,
+    side: 'top',
+    sideOffset: 4,
+  },
   figma: { nodeId: null },
 });

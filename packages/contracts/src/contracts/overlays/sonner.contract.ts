@@ -79,5 +79,13 @@ export const sonner = defineContract({
     rx: 'interaction-overlays-toaster--default',
     ng: 'overlays-sonner--workbench',
   },
+  tag: { rx: 'Toaster', ng: 'gn-sonner' },
+  example: {
+    theme: 'system',
+    position: 'bottom-right',
+    richColors: false,
+    expand: false,
+    closeButton: false,
+  },
   figma: { nodeId: null },
 });

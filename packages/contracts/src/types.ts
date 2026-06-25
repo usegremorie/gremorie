@@ -66,6 +66,18 @@ export interface ComponentContract {
   guidance: Guidance;
   /** Storybook story ids per edition, used by the workbench. */
   preview?: { rx?: string; ng?: string };
+  /**
+   * The component's identifier per edition, for generating live usage code:
+   * `rx` is the React component name (PascalCase, e.g. `'ChartArtifact'`); `ng`
+   * is the Angular element selector (e.g. `'chart-artifact'` or `'gn-input'`).
+   */
+  tag?: { rx?: string; ng?: string };
+  /**
+   * Canonical values for the controllable (scalar) props, used by the workbench
+   * to seed the controls, drive both previews (via Storybook args), and generate
+   * the live usage code. Complex props (data arrays, callbacks) are not included.
+   */
+  example?: Record<string, string | number | boolean>;
   /** Optional Figma node id for Code Connect. */
   figma?: { nodeId: string | null };
 }
@@ -77,7 +89,9 @@ export interface ComponentContract {
  */
 export function defineContract(c: ComponentContract): ComponentContract {
   if (!c.name) throw new Error('contract.name is required');
-  if (!Array.isArray(c.props)) throw new Error(`contract ${c.name}: props array required`);
-  if (!c.guidance?.summary) throw new Error(`contract ${c.name}: guidance.summary required`);
+  if (!Array.isArray(c.props))
+    throw new Error(`contract ${c.name}: props array required`);
+  if (!c.guidance?.summary)
+    throw new Error(`contract ${c.name}: guidance.summary required`);
   return c;
 }

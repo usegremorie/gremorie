@@ -69,5 +69,7 @@ export const badge = defineContract({
     rx: 'layout-display-display-badge--default',
     ng: 'display-badge--default',
   },
+  tag: { rx: 'Badge', ng: 'gn-badge' },
+  example: { variant: 'default' },
   figma: { nodeId: null },
 });

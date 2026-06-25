@@ -59,5 +59,12 @@ export const image = defineContract({
     rx: 'ai-utilities-image--default',
     ng: 'ai-image--workbench',
   },
+  tag: { rx: 'Image', ng: 'image' },
+  example: {
+    base64:
+      'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAOklEQVR4nO3OMQEAAAjDMMC/56EBvlRA00naMwsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB47gJ5IgABm0tBHwAAAABJRU5ErkJggg==',
+    mediaType: 'image/png',
+    alt: 'Generated image',
+  },
   figma: { nodeId: null },
 });

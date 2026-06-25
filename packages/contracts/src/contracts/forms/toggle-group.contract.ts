@@ -88,5 +88,12 @@ export const toggleGroup = defineContract({
     rx: 'inputs-toggle-group--multiple',
     ng: 'forms-toggle-group--workbench',
   },
+  tag: { rx: 'ToggleGroup', ng: 'gn-toggle-group' },
+  example: {
+    type: 'single',
+    variant: 'outline',
+    size: 'default',
+    spacing: 0,
+  },
   figma: { nodeId: null },
 });

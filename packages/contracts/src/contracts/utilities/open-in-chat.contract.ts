@@ -62,5 +62,9 @@ export const openInChat = defineContract({
     rx: 'ai-utilities-openin--default',
     ng: 'ai-openinchat--workbench',
   },
+  tag: { rx: 'OpenIn', ng: 'open-in' },
+  example: {
+    query: 'Explain monads with a code example',
+  },
   figma: { nodeId: null },
 });

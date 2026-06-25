@@ -61,5 +61,10 @@ export const plan = defineContract({
     rx: 'ai-chatbot-plan--default',
     ng: 'ai-plan--workbench',
   },
+  tag: { rx: 'Plan', ng: 'plan' },
+  example: {
+    isStreaming: false,
+    defaultOpen: true,
+  },
   figma: { nodeId: null },
 });

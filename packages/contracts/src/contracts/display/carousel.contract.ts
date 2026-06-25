@@ -74,5 +74,7 @@ export const carousel = defineContract({
     rx: 'layout-display-display-carousel--default',
     ng: 'display-carousel--horizontal',
   },
+  tag: { rx: 'Carousel', ng: 'gn-carousel' },
+  example: { orientation: 'horizontal' },
   figma: { nodeId: null },
 });

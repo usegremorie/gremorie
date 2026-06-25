@@ -80,5 +80,12 @@ export const conversation = defineContract({
     rx: 'ai-chatbot-conversation--short-thread',
     ng: 'ai-conversation--short-thread',
   },
+  tag: { rx: 'Conversation', ng: 'conversation' },
+  example: {
+    initial: 'smooth',
+    resize: 'smooth',
+    title: 'No messages yet',
+    description: 'Start a conversation to see messages here',
+  },
   figma: { nodeId: null },
 });

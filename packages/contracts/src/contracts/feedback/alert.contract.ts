@@ -51,5 +51,7 @@ export const alert = defineContract({
     rx: 'interaction-feedback-alert--default',
     ng: 'feedback-alert--default',
   },
+  tag: { rx: 'Alert', ng: 'gn-alert' },
+  example: { variant: 'default' },
   figma: { nodeId: null },
 });

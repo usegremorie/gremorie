@@ -94,5 +94,9 @@ export const calendar = defineContract({
     rx: 'inputs-calendar--single',
     ng: 'forms-calendar--workbench',
   },
+  tag: { rx: 'Calendar', ng: 'gn-calendar' },
+  example: {
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

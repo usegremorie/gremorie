@@ -80,5 +80,14 @@ export const inlineCitation = defineContract({
     rx: 'ai-chatbot-inlinecitation--single-source',
     ng: 'ai-inlinecitation--single-source',
   },
+  tag: { rx: 'InlineCitation', ng: 'inline-citation' },
+  example: {
+    title: 'Gremorie docs',
+    url: 'https://gremorie.com/docs',
+    description:
+      'The AI-native design system: registry + MCP, React and Angular editions.',
+    openDelay: 0,
+    closeDelay: 0,
+  },
   figma: { nodeId: null },
 });

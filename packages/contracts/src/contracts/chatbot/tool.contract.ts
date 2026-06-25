@@ -91,5 +91,11 @@ export const tool = defineContract({
     rx: 'ai-chatbot-tool--playground',
     ng: 'ai-tool--output-available',
   },
+  tag: { rx: 'Tool', ng: 'tool' },
+  example: {
+    open: true,
+    type: 'tool-readFile',
+    state: 'output-available',
+  },
   figma: { nodeId: null },
 });

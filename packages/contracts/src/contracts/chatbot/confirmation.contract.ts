@@ -81,5 +81,11 @@ export const confirmation = defineContract({
     rx: 'ai-chatbot-confirmation--requested',
     ng: 'ai-confirmation--workbench',
   },
+  tag: { rx: 'Confirmation', ng: 'confirmation' },
+  example: {
+    state: 'approval-requested',
+    variant: 'default',
+    disabled: false,
+  },
   figma: { nodeId: null },
 });

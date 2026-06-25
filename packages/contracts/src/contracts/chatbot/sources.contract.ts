@@ -69,5 +69,12 @@ export const sources = defineContract({
     rx: 'ai-chatbot-sources--expanded',
     ng: 'ai-sources--expanded',
   },
+  tag: { rx: 'Sources', ng: 'sources' },
+  example: {
+    open: true,
+    count: 3,
+    href: 'https://example.com/article-1',
+    title: 'Compound components in 2024',
+  },
   figma: { nodeId: null },
 });

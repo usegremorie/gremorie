@@ -82,5 +82,11 @@ export const context = defineContract({
     rx: 'ai-chatbot-context--default',
     ng: 'ai-context--workbench',
   },
+  tag: { rx: 'Context', ng: 'context' },
+  example: {
+    usedTokens: 12200,
+    maxTokens: 200000,
+    modelId: 'anthropic/claude-3-5-sonnet',
+  },
   figma: { nodeId: null },
 });
