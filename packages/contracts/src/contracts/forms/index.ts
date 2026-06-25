@@ -1,3 +1,4 @@
+import { button } from './button.contract';
 import { buttonGroup } from './button-group.contract';
 import { calendar } from './calendar.contract';
 import { checkbox } from './checkbox.contract';
@@ -17,6 +18,7 @@ import { toggleGroup } from './toggle-group.contract';
 
 /** All `forms` category contracts. */
 export const FORMS_CONTRACTS = [
+  button,
   input,
   label,
   textarea,
