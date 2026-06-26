@@ -59,39 +59,41 @@ const submitVariants = cva(
       [disabled]="isDisabled()"
       (click)="handleClick()"
     >
-      @if (state() === 'submitted') {
-        <svg
-          class="size-4 animate-spin"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <circle
-            cx="12"
-            cy="12"
-            r="10"
+      <ng-content>
+        @if (state() === 'submitted') {
+          <svg
+            class="size-4 animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-dasharray="20 40"
+            ></circle>
+          </svg>
+        } @else {
+          <svg
+            class="size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-dasharray="20 40"
-          ></circle>
-        </svg>
-      } @else {
-        <svg
-          class="size-4"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path [attr.d]="iconPath()"></path>
-        </svg>
-      }
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path [attr.d]="iconPath()"></path>
+          </svg>
+        }
+      </ng-content>
     </button>
   `,
 })
@@ -108,12 +110,12 @@ export class PromptInputSubmit {
     () => this.state() === 'submitted' || this.state() === 'streaming',
   );
 
+  // Parity with React PromptInputSubmit: the button is NOT auto-disabled by an
+  // empty input or the submitted state (the host decides what a click does), so
+  // the ready button stays solid (not faded). Only an explicit `disabled` (own
+  // or parent) disables it.
   protected readonly isDisabled = computed(
-    () =>
-      this.disabled() ||
-      this.parent.disabled() ||
-      this.state() === 'submitted' ||
-      (this.state() === 'ready' && this.parent.value().trim().length === 0),
+    () => this.disabled() || this.parent.disabled(),
   );
 
   protected readonly ariaLabel = computed(() => LABEL_MAP[this.state()]);

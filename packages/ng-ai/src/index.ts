@@ -6,7 +6,18 @@ export * from './lib/prompt-input/prompt-input-toolbar';
 export * from './lib/prompt-input/prompt-input-tools';
 export * from './lib/prompt-input/prompt-input-action-menu';
 export * from './lib/prompt-input/prompt-input-model-select';
+export * from './lib/prompt-input/prompt-input-header';
+export * from './lib/prompt-input/prompt-input-body';
+export * from './lib/prompt-input/prompt-input-footer';
+export * from './lib/prompt-input/prompt-input-button';
+export * from './lib/prompt-input/prompt-input-attach-button';
+export * from './lib/prompt-input/prompt-input-speech-button';
+export * from './lib/prompt-input/prompt-input-mentions';
+export * from './lib/prompt-input/prompt-input-select';
 export type * from './lib/prompt-input/prompt-input.types';
+
+// Brand / provider icons (vendored inline SVG for the Assistant composer)
+export * from './lib/icons/brand-icons';
 
 // Attachments
 export { AttachmentList } from './lib/attachments/attachment-list';
