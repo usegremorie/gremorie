@@ -144,6 +144,7 @@ const config = {
     '@gremorie/rx-display',
     '@gremorie/rx-feedback',
     '@gremorie/rx-forms',
+    '@gremorie/rx-icons',
     '@gremorie/rx-navigation',
     '@gremorie/rx-overlays',
   ],
