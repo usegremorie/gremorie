@@ -25,8 +25,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@gremorie/rx-overlays';
-import { MoonIcon, SunIcon } from 'lucide-react';
-import { useState } from 'react';
+import { MoonIcon, PaletteIcon, SunIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import {
   Assistant,
@@ -62,6 +62,17 @@ const MODELS = [
   { value: 'gemini-2-5-pro', label: 'Gemini 2.5 Pro' },
 ];
 
+// Gremorie brand themes (token sets activated via data-theme on the root, from
+// @gremorie/tokens/styles/themes/*). 'default' = the neutral base.
+const THEMES = [
+  { value: 'default', label: 'Default' },
+  { value: 'claude', label: 'Claude' },
+  { value: 'chatgpt', label: 'ChatGPT' },
+  { value: 'gemini', label: 'Gemini' },
+  { value: 'perplexity', label: 'Perplexity' },
+  { value: 'mistral', label: 'Mistral' },
+];
+
 // Block defaults - a prop is emitted in the snippet only when it differs.
 const DEFAULTS = {
   placeholder: 'Ask anything, or pick a mode...',
@@ -74,9 +85,21 @@ type ShowcaseProps = {
   placeholder: string;
   mode: string;
   model: string;
+  theme: string;
 };
 
-function reactCode({ view, placeholder, mode, model }: ShowcaseProps): string {
+function reactCode({
+  view,
+  placeholder,
+  mode,
+  model,
+  theme,
+}: ShowcaseProps): string {
+  // The theme is a token set activated on the app root, not a component prop.
+  const shell =
+    theme !== 'default'
+      ? `// Activate the theme on your app root:\n// <html data-theme="${theme}">\n\n`
+      : '';
   const props: string[] = [];
   if (view === 'empty') props.push('initialView="empty"');
   if (placeholder !== DEFAULTS.placeholder)
@@ -89,7 +112,7 @@ function reactCode({ view, placeholder, mode, model }: ShowcaseProps): string {
       ? '<Assistant />'
       : `<Assistant\n      ${props.join('\n      ')}\n    />`;
 
-  return `import { Assistant } from '@/components/gremorie/blocks/assistant';
+  return `${shell}import { Assistant } from '@/components/gremorie/blocks/assistant';
 
 export function Chat() {
   return ${tag};
@@ -101,10 +124,15 @@ function angularCode({
   placeholder,
   mode,
   model,
+  theme,
 }: ShowcaseProps): string {
   // The Angular edition ships the Assistant as the bare <ai-assistant> element
   // from @gremorie/ng-ai. The composer config (placeholder, mode, model) lives
   // in the copied block source, so the inputs surface as comments here.
+  const shell =
+    theme !== 'default'
+      ? `<!-- Activate the theme on your app root: <html data-theme="${theme}"> -->\n`
+      : '';
   const notes: string[] = [];
   if (view === 'empty') notes.push('start on the new-chat screen');
   if (placeholder !== DEFAULTS.placeholder)
@@ -113,7 +141,7 @@ function angularCode({
   if (model !== DEFAULTS.model) notes.push(`model: ${model}`);
   const comment = notes.length ? `<!-- ${notes.join(' · ')} -->\n` : '';
 
-  return `// import { Assistant } from '@gremorie/ng-ai';
+  return `${shell}// import { Assistant } from '@gremorie/ng-ai';
 
 ${comment}<ai-assistant />`;
 }
@@ -123,9 +151,26 @@ export function AssistantShowcase() {
   const [placeholder, setPlaceholder] = useState(DEFAULTS.placeholder);
   const [mode, setMode] = useState(DEFAULTS.mode);
   const [model, setModel] = useState(DEFAULTS.model);
+  const [theme, setTheme] = useState('default');
   const [previewDark, setPreviewDark] = useState(false);
 
-  const props: ShowcaseProps = { view, placeholder, mode, model };
+  // Brand themes are token sets scoped to the root element (`:root[data-theme]`),
+  // so a selection re-themes the document; cleaned up on unmount/restore.
+  useEffect(() => {
+    const root = document.documentElement;
+    const previous = root.dataset.theme;
+    if (theme === 'default') {
+      delete root.dataset.theme;
+    } else {
+      root.dataset.theme = theme;
+    }
+    return () => {
+      if (previous) root.dataset.theme = previous;
+      else delete root.dataset.theme;
+    };
+  }, [theme]);
+
+  const props: ShowcaseProps = { view, placeholder, mode, model, theme };
 
   return (
     <TooltipProvider>
@@ -260,30 +305,48 @@ export function AssistantShowcase() {
           <div className="flex min-w-0 flex-col">
             <div className="flex h-12 shrink-0 items-center justify-between border-b px-4">
               <span className="font-semibold text-sm">Preview</span>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-8"
-                    onClick={() => setPreviewDark((d) => !d)}
-                    aria-label={
-                      previewDark
-                        ? 'Switch preview to light'
-                        : 'Switch preview to dark'
-                    }
+              <div className="flex items-center gap-2">
+                <Select value={theme} onValueChange={setTheme}>
+                  <SelectTrigger
+                    aria-label="Preview theme"
+                    className="h-8 w-[8.5rem] gap-1.5 text-xs"
                   >
-                    {previewDark ? (
-                      <SunIcon className="size-4" />
-                    ) : (
-                      <MoonIcon className="size-4" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="text-xs">
-                  {previewDark ? 'Light' : 'Dark'}
-                </TooltipContent>
-              </Tooltip>
+                    <PaletteIcon className="size-3.5 text-muted-foreground" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {THEMES.map((t) => (
+                      <SelectItem key={t.value} value={t.value}>
+                        {t.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="size-8"
+                      onClick={() => setPreviewDark((d) => !d)}
+                      aria-label={
+                        previewDark
+                          ? 'Switch preview to light'
+                          : 'Switch preview to dark'
+                      }
+                    >
+                      {previewDark ? (
+                        <SunIcon className="size-4" />
+                      ) : (
+                        <MoonIcon className="size-4" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="text-xs">
+                    {previewDark ? 'Light' : 'Dark'}
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
             <div
               className={cn(
