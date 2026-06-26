@@ -11,7 +11,9 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
  * `type="single"` is radio-like, `type="multiple"` is checkbox-like. `variant`,
  * `size` and `spacing` propagate from the Root to items.
  */
-const meta: Meta<ToggleGroup> = {
+// `type` is exposed via the BrnToggleGroup hostDirective, not a class input, so
+// widen the story type to include it for the controls/args.
+const meta: Meta<ToggleGroup & { type: 'single' | 'multiple' }> = {
   title: 'Forms/ToggleGroup',
   component: ToggleGroup,
   tags: ['autodocs'],
@@ -25,7 +27,7 @@ const meta: Meta<ToggleGroup> = {
 };
 
 export default meta;
-type Story = StoryObj<ToggleGroup>;
+type Story = StoryObj<ToggleGroup & { type: 'single' | 'multiple' }>;
 
 export const Workbench: Story = {
   parameters: { layout: 'padded' },
