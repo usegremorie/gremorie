@@ -205,9 +205,18 @@ const REVENUE_BY_REGION = [
 function Composer({
   status,
   onSubmit,
+  placeholder = 'Ask anything, or pick a mode...',
+  defaultMode = 'research',
+  defaultModel = 'claude-sonnet-4-6',
 }: {
   status: ChatStatus;
   onSubmit: (message: PromptInputMessage) => void;
+  /** Textarea placeholder. */
+  placeholder?: string;
+  /** Initially-selected composer mode (one of MODES' ids). */
+  defaultMode?: string;
+  /** Initially-selected model (one of MODELS' ids). */
+  defaultModel?: string;
 }) {
   return (
     <PromptInput className="rounded-xl shadow-lg" multiple onSubmit={onSubmit}>
@@ -235,11 +244,11 @@ function Composer({
         </Context>
       </PromptInputHeader>
       <PromptInputBody>
-        <PromptInputTextarea placeholder="Ask anything, or pick a mode..." />
+        <PromptInputTextarea placeholder={placeholder} />
       </PromptInputBody>
       <PromptInputFooter>
         <PromptInputTools className="gap-2">
-          <PromptInputSelect defaultValue="research">
+          <PromptInputSelect defaultValue={defaultMode}>
             <PromptInputSelectTrigger
               aria-label="Select mode"
               className={OUTLINE_TRIGGER}
@@ -256,7 +265,7 @@ function Composer({
               ))}
             </PromptInputSelectContent>
           </PromptInputSelect>
-          <PromptInputSelect defaultValue="claude-sonnet-4-6">
+          <PromptInputSelect defaultValue={defaultModel}>
             <PromptInputSelectTrigger
               aria-label="Select model"
               className={OUTLINE_TRIGGER}
@@ -346,9 +355,18 @@ export type AssistantView = 'filled' | 'empty';
 
 export function Assistant({
   initialView = 'filled',
+  placeholder,
+  defaultMode,
+  defaultModel,
 }: {
   /** Start in a live conversation (`filled`) or the empty new-chat state. */
   initialView?: AssistantView;
+  /** Composer textarea placeholder. */
+  placeholder?: string;
+  /** Initially-selected composer mode (Ask / Analyze / Research / Plan id). */
+  defaultMode?: string;
+  /** Initially-selected model (one of the MODELS ids). */
+  defaultModel?: string;
 } = {}) {
   const [view, setView] = useState<AssistantView>(initialView);
   const [status, setStatus] = useState<ChatStatus>('ready');
@@ -450,7 +468,13 @@ export function Assistant({
               How can I help you today?
             </h2>
             <div className="w-full max-w-2xl">
-              <Composer onSubmit={handleSubmit} status={status} />
+              <Composer
+                onSubmit={handleSubmit}
+                status={status}
+                placeholder={placeholder}
+                defaultMode={defaultMode}
+                defaultModel={defaultModel}
+              />
             </div>
           </div>
         ) : (
@@ -553,7 +577,13 @@ export function Assistant({
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
               <div className="h-8 bg-gradient-to-t from-card to-transparent" />
               <div className="pointer-events-auto space-y-2 bg-card/80 px-3 pb-3 backdrop-blur-sm">
-                <Composer onSubmit={handleSubmit} status={status} />
+                <Composer
+                  onSubmit={handleSubmit}
+                  status={status}
+                  placeholder={placeholder}
+                  defaultMode={defaultMode}
+                  defaultModel={defaultModel}
+                />
                 <p className="text-center text-xs text-muted-foreground">
                   Gremorie can make mistakes. Check important info.
                 </p>
