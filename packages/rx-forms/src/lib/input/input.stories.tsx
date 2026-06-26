@@ -13,7 +13,9 @@ import { Input } from './input';
  *
  * ## Anatomy
  *
- * A single styled `<input>` element.
+ * ```text
+ * Input   single styled native <input> element (leaf primitive)
+ * ```
  *
  * ## Props
  *
@@ -36,7 +38,7 @@ import { Input } from './input';
  * | `--primary` / `--primary-foreground` | text selection |
  */
 const meta = {
-  title: 'Inputs/Input',
+  title: 'Inputs/Text/Input',
   component: Input,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -28,6 +28,13 @@ Use it for streamed code artifacts, MDX snippets inside tool output, agent-gener
   <CodeBlockCopyPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+CodeBlock                  Shiki-highlighted code container; exposes the raw code via context
+└── CodeBlockCopyButton    Optional action-slot child; copies the context code to the clipboard
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

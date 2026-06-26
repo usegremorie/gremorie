@@ -13,8 +13,10 @@ import { ScrollArea, ScrollBar } from './scroll-area';
  *
  * ## Anatomy
  *
- * - **ScrollArea** — root: viewport + a default vertical `ScrollBar` + corner.
- * - **ScrollBar** — a styled scrollbar; mount one explicitly per axis you need.
+ * ```text
+ * ScrollArea              root: viewport + a default vertical ScrollBar + corner
+ * └─ ScrollBar            a styled scrollbar; mount one explicitly per axis you need
+ * ```
  *
  * ## Props
  *

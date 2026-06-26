@@ -13,9 +13,9 @@ import { Button } from './button';
  *
  * ## Anatomy
  *
- * A single `<button>` (or, with `asChild`, the child element) styled by
- * `buttonVariants`. SVG children are auto-sized to `size-4` (smaller for `xs` /
- * icon sizes).
+ * ```text
+ * Button   single <button> (or asChild child) styled by buttonVariants; SVG children auto-sized to size-4
+ * ```
  *
  * ## Props
  *
@@ -39,7 +39,7 @@ import { Button } from './button';
  * | `--background` / `--input` | `outline` surface |
  */
 const meta = {
-  title: 'Inputs/Button',
+  title: 'Inputs/Buttons/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -40,6 +40,12 @@ import { Controls } from './controls';
  * | `--card` | Control cluster background. |
  * | `--border` | Cluster border. |
  * | `--secondary` | Button hover background. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Controls   zoom · fit-view · interactivity cluster — leaf (inside Canvas)
+ * ```
  */
 const meta = {
   title: 'AI/Workflow/Controls',

@@ -39,18 +39,20 @@ import {
  *
  * ## Anatomy
  *
- * - **Artifact** — the rounded, bordered card root.
- * - **ArtifactHeader** — the muted header strip.
- *   - **ArtifactFeaturedIcon** — the badge that anchors the header (wraps `FeaturedIcon`).
- *   - **ArtifactHeading** — flex column for title + description.
- *     - **ArtifactTitle** — single-line heading (truncates).
- *     - **ArtifactDescription** — single-line supporting text (truncates).
- *   - **ArtifactActions** — the right-aligned action cluster.
- *     - **ArtifactAction** — a ghost icon button (optional `tooltip`).
- *     - **ArtifactViewToggle** — a segmented view switch (chart ⇄ table, …).
- *     - **ArtifactMenu** — an icon-triggered dropdown of items.
- *     - **ArtifactClose** — an X button.
- * - **ArtifactContent** — the scrollable body slot.
+ * ```text
+ * Artifact                       rounded, bordered card root
+ * ├─ ArtifactHeader              muted header strip
+ * │  ├─ ArtifactFeaturedIcon     badge anchoring the header (wraps FeaturedIcon)
+ * │  ├─ ArtifactHeading          flex column for title + description
+ * │  │  ├─ ArtifactTitle         single-line heading (truncates)
+ * │  │  └─ ArtifactDescription   single-line supporting text (truncates)
+ * │  └─ ArtifactActions          right-aligned action cluster
+ * │     ├─ ArtifactAction        ghost icon button (optional tooltip)
+ * │     ├─ ArtifactViewToggle    segmented view switch (chart ⇄ table, …)
+ * │     ├─ ArtifactMenu          icon-triggered dropdown of items
+ * │     └─ ArtifactClose         X button
+ * └─ ArtifactContent             scrollable body slot
+ * ```
  *
  * ## Props
  *

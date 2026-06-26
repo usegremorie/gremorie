@@ -25,12 +25,15 @@ import {
  *
  * ## Anatomy
  *
- * - **Pagination** — the `<nav aria-label="pagination">` wrapper.
- * - **PaginationContent** — the `<ul>` row of controls.
- * - **PaginationItem** — one `<li>` cell.
- * - **PaginationLink** — a page-number link; `isActive` marks the current page.
- * - **PaginationPrevious** / **PaginationNext** — labelled prev/next controls.
- * - **PaginationEllipsis** — gap indicator for skipped page ranges.
+ * ```text
+ * Pagination                  <nav aria-label="pagination"> wrapper
+ * └─ PaginationContent        the <ul> row of controls
+ *    └─ PaginationItem        one <li> cell wrapping a control
+ *       ├─ PaginationLink     page-number link; isActive marks the current page
+ *       ├─ PaginationPrevious labelled previous-page control
+ *       ├─ PaginationNext     labelled next-page control
+ *       └─ PaginationEllipsis gap indicator for skipped page ranges
+ * ```
  *
  * ## Props (PaginationLink)
  *

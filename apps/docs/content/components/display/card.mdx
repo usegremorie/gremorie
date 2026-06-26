@@ -19,6 +19,18 @@ Card is intentionally surface-only. It doesn't manage focus, hover, or selection
   <CardPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Card                       the surface (bg-card, rounded, bordered, vertical flow)
+├─ CardHeader              title/description area; lays out a CardAction to the right when present
+│  ├─ CardTitle            semibold heading line
+│  ├─ CardDescription      muted supporting copy
+│  └─ CardAction           top-right slot (button, menu, switch)
+├─ CardContent             the main body (padded horizontally)
+└─ CardFooter              bottom row (actions, captions, metadata)
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -147,6 +159,6 @@ The `border-t` on `CardFooter` triggers `[.border-t]:pt-6`, expanding the footer
 ## Related
 
 - [Badge](/components/display/badge) - common content for `CardAction`.
-- [Button](/components/forms/button) - typical action in `CardFooter`.
+- [Button](/components/buttons/button) - typical action in `CardFooter`.
 - [Separator](/components/display/separator) - dividers inside dense cards.
 - [Table](/components/display/table) - frequent body content for data cards.

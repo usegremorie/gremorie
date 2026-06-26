@@ -13,7 +13,9 @@ import { Textarea } from './textarea';
  *
  * ## Anatomy
  *
- * A single styled `<textarea>` (min height ~4rem, auto-growing).
+ * ```text
+ * Textarea   single styled <textarea>, min-h-16, auto-growing via field-sizing: content
+ * ```
  *
  * ## Props
  *
@@ -34,7 +36,7 @@ import { Textarea } from './textarea';
  * | `--muted-foreground` | placeholder |
  */
 const meta = {
-  title: 'Inputs/Textarea',
+  title: 'Inputs/Text/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

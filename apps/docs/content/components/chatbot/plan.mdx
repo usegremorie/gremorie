@@ -33,6 +33,19 @@ Use it for any flow where the model proposes a plan before acting (multi-step ag
   <PlanStreamingPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Plan
+├─ PlanHeader
+│  ├─ PlanTitle         (shimmers while streaming)
+│  ├─ PlanDescription
+│  └─ PlanAction        top-right slot
+├─ PlanTrigger          chevron toggle
+├─ PlanContent          collapsible body
+└─ PlanFooter
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

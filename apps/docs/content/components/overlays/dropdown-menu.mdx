@@ -20,6 +20,25 @@ The compound exposes everything Radix offers: items with destructive variant, ch
   <DropdownMenuPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+DropdownMenu                       Root holding open state
+├─ DropdownMenuTrigger             Element that opens the menu
+└─ DropdownMenuContent             Portalled surface (sideOffset default 4)
+   ├─ DropdownMenuLabel            Non-interactive section label
+   ├─ DropdownMenuSeparator        Divider
+   ├─ DropdownMenuGroup            Groups related items
+   │  └─ DropdownMenuItem          Action row (variant default | destructive, inset)
+   ├─ DropdownMenuCheckboxItem     Toggleable item
+   ├─ DropdownMenuRadioGroup       Single-choice container
+   │  └─ DropdownMenuRadioItem     Single-choice item
+   ├─ DropdownMenuSub              Nested submenu
+   │  ├─ DropdownMenuSubTrigger    Opens the submenu
+   │  └─ DropdownMenuSubContent    Submenu surface
+   └─ DropdownMenuShortcut         Right-aligned keyboard hint
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -258,6 +277,6 @@ Nest secondary actions inside a sub-trigger.
 ## Related
 
 - [Context Menu](/components/overlays/context-menu) - same compound, triggered by right-click on a region.
-- [Select](/components/forms/select) - value-led picker (countries, status), not actions.
+- [Select](/components/selection/select) - value-led picker (countries, status), not actions.
 - [Popover](/components/overlays/popover) - generic anchored overlay when items don't follow menu semantics.
 - [Command](/components/overlays/command) - searchable command list for power users.

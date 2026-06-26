@@ -59,6 +59,18 @@ import {
  * | --- | --- |
  * | `--card` / `--border` | Alert surface and border. |
  * | `--muted-foreground` | Description text. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Confirmation
+ * ├─ ConfirmationTitle
+ * ├─ ConfirmationRequest      shown while pending
+ * ├─ ConfirmationActions
+ * │  └─ ConfirmationAction    accept / reject buttons
+ * ├─ ConfirmationAccepted     shown when approved
+ * └─ ConfirmationRejected     shown when rejected
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Confirmation',

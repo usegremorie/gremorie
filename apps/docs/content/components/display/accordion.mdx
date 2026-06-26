@@ -21,6 +21,15 @@ For a single, isolated "show more" toggle, prefer [Collapsible](/components/disp
   <AccordionPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Accordion                  the Radix Root; carries type + collapsible
+└─ AccordionItem           one section, identified by value
+   ├─ AccordionTrigger     the clickable header (renders the chevron)
+   └─ AccordionContent     the collapsible body (animated open/close)
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -22,13 +22,16 @@ import { Button } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **Drawer** — vaul root holding open state + `direction`.
- * - **DrawerTrigger** — element that opens the drawer.
- * - **DrawerContent** — portalled panel with a drag handle (bottom direction).
- * - **DrawerHeader** — wraps title + description.
- * - **DrawerTitle** / **DrawerDescription** — accessible headline + body.
- * - **DrawerFooter** — bottom action row.
- * - **DrawerClose** — closes the drawer.
+ * ```text
+ * Drawer                     vaul root holding open state + direction
+ * ├─ DrawerTrigger           element that opens the drawer
+ * └─ DrawerContent           portalled panel with a drag handle (bottom)
+ *    ├─ DrawerHeader         wraps title + description
+ *    │  ├─ DrawerTitle           accessible headline
+ *    │  └─ DrawerDescription     accessible body text
+ *    └─ DrawerFooter         bottom action row
+ *       └─ DrawerClose       closes the drawer
+ * ```
  *
  * ## Props
  *

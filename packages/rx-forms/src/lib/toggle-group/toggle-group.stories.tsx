@@ -21,9 +21,10 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
  *
  * ## Anatomy
  *
- * - **ToggleGroup** — the `Root`; owns `type`, `variant`, `size`, `spacing` and
- *   shares them via context.
- * - **ToggleGroupItem** — one toggle button; inherits styling from the Root.
+ * ```text
+ * ToggleGroup                 the Root; owns type, variant, size, spacing and shares them via context
+ * └─ ToggleGroupItem          one toggle button; inherits styling from the Root
+ * ```
  *
  * ## Props
  *
@@ -53,7 +54,7 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: 'Inputs/ToggleGroup',
+  title: 'Inputs/Buttons/ToggleGroup',
   component: ToggleGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

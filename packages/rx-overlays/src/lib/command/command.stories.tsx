@@ -29,14 +29,16 @@ import {
  *
  * ## Anatomy
  *
- * - **Command** — cmdk root list container.
- * - **CommandInput** — search field with a leading magnifier.
- * - **CommandList** — scrollable results region.
- * - **CommandEmpty** — message shown when nothing matches.
- * - **CommandGroup** — labelled cluster of items.
- * - **CommandItem** — a selectable row.
- * - **CommandShortcut** — right-aligned keyboard hint.
- * - **CommandSeparator** — divider between groups.
+ * ```text
+ * Command                       cmdk root list container
+ * ├─ CommandInput               search field with a leading magnifier
+ * └─ CommandList                scrollable results region
+ *    ├─ CommandEmpty            message shown when nothing matches
+ *    ├─ CommandGroup            labelled cluster of items
+ *    │  └─ CommandItem          a selectable row
+ *    │     └─ CommandShortcut   right-aligned keyboard hint
+ *    └─ CommandSeparator        divider between groups
+ * ```
  *
  * ## Props
  *

@@ -14,8 +14,9 @@ import { Stack } from './stack';
  *
  * ## Anatomy
  *
- * A single element: a flex column whose spacing and cross-/main-axis alignment
- * are driven entirely by props (no subcomponents).
+ * ```text
+ * Stack   flex column; spacing and cross-/main-axis alignment driven entirely by props
+ * ```
  *
  * ## Props
  *

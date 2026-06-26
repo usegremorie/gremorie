@@ -13,8 +13,9 @@ import { Badge } from './badge';
  *
  * ## Anatomy
  *
- * A single inline element: a rounded, bordered pill that wraps text and/or a
- * leading `[&>svg]:size-3` icon.
+ * ```text
+ * Badge   rounded, bordered pill wrapping text and/or a leading size-3 icon
+ * ```
  *
  * ## Props
  *

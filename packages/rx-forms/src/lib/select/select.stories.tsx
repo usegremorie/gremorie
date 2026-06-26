@@ -21,13 +21,18 @@ import {
  *
  * ## Anatomy
  *
- * - **Select** — the `Root`, owns the value (`value` / `onValueChange`).
- * - **SelectTrigger** — the visible button (`size` = `sm | default`).
- * - **SelectValue** — renders the selected value / `placeholder`.
- * - **SelectContent** — the portalled, scrollable listbox.
- * - **SelectGroup** / **SelectLabel** — grouped sections with headings.
- * - **SelectItem** — one option (check indicator when selected).
- * - **SelectSeparator** — divider between groups.
+ * ```text
+ * Select                       root, owns the value (value / onValueChange)
+ * ├─ SelectTrigger             the visible button (size = sm | default)
+ * │  └─ SelectValue            renders the selected value / placeholder
+ * └─ SelectContent             the portalled, scrollable listbox
+ *    ├─ SelectScrollUpButton   scroll-up affordance (auto-included)
+ *    ├─ SelectGroup            grouped section
+ *    │  ├─ SelectLabel         non-selectable group heading
+ *    │  └─ SelectItem          one option (check indicator when selected)
+ *    ├─ SelectSeparator        divider between groups
+ *    └─ SelectScrollDownButton scroll-down affordance (auto-included)
+ * ```
  *
  * ## Props
  *
@@ -65,7 +70,7 @@ import {
  * | `--muted-foreground` | placeholder + group label |
  */
 const meta = {
-  title: 'Inputs/Select',
+  title: 'Inputs/Selection/Select',
   component: Select,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

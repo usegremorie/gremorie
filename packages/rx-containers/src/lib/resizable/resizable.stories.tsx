@@ -17,9 +17,11 @@ import {
  *
  * ## Anatomy
  *
- * - **ResizablePanelGroup** — the frame; `direction` sets horizontal vs. vertical.
- * - **ResizablePanel** — a region sized by `defaultSize` / `minSize` / `maxSize` (percentages).
- * - **ResizableHandle** — the drag divider; pass `withHandle` for a visible grip.
+ * ```text
+ * ResizablePanelGroup        the frame; orientation sets horizontal vs. vertical
+ * ├─ ResizablePanel          a region sized by defaultSize / minSize / maxSize (percentages)
+ * └─ ResizableHandle         the drag divider; pass withHandle for a visible grip
+ * ```
  *
  * ## Props
  *

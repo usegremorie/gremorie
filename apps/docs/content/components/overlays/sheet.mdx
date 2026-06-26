@@ -18,6 +18,19 @@ For desktop ergonomics, prefer `right` (filter and detail panels). `left` is con
   <SheetPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Sheet                          Radix root holding open state
+├─ SheetTrigger                element that opens the sheet
+└─ SheetContent                portalled sliding panel (side, showCloseButton)
+   ├─ SheetHeader              wraps title + description
+   │  ├─ SheetTitle            headline
+   │  └─ SheetDescription      body text
+   ├─ SheetClose               closes the sheet
+   └─ SheetFooter              bottom action row
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

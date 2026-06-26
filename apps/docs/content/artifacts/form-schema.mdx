@@ -38,11 +38,13 @@ The LLM returns structured output matching this shape:
 
 ## Anatomy
 
-1. **Card / CardHeader / CardTitle** - frame and badge
-2. **Field row** (`Label` + control) - rendered per field
-3. **Input / Checkbox** - rx-forms primitives mapped from `type`
-4. **Button (submit)** - full-width submit with transient confirmation
-5. **Schema preview** - exposes the JSON contract for inspection
+```text
+Card
+├─ CardHeader            CardTitle + Badge
+├─ field row             Label + control, rendered per field (Input / Checkbox from `type`)
+├─ Button (submit)       full-width, transient confirmation
+└─ schema preview        exposes the JSON contract for inspection
+```
 
 ## Installation
 
@@ -179,7 +181,7 @@ export function FormSchema() {
 
 ## Related
 
-- [Input](/components/forms/input)
-- [Checkbox](/components/forms/checkbox)
-- [Label](/components/forms/label)
+- [Input](/components/text/input)
+- [Checkbox](/components/selection/checkbox)
+- [Label](/components/text/label)
 - [Artifacts overview](/artifacts)

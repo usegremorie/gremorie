@@ -19,12 +19,13 @@ table will keep working without changes.
 
 ## Anatomy
 
-The block composes:
-
-1. **Page header** - title, subtitle, and "Export" Button with icon
-2. **KPI grid** - four Cards with label, value, delta, and trend icon
-3. **Revenue card** - `BarChart` from `@gremorie/rx-data` with monthly series
-4. **Transactions card** - `Table` with invoice, customer, status Badge, amount
+```text
+Dashboard
+├─ header                  page title + subtitle + Export Button
+├─ KPI grid                four StatCard (Card · CardHeader · CardTitle · trend delta)
+├─ Card (Revenue)          BarChart (rx-data) — monthly series
+└─ Card (Transactions)     Table — invoice · customer · status Badge · amount
+```
 
 ## Installation
 

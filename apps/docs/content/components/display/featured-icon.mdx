@@ -1,0 +1,157 @@
+---
+title: Featured Icon
+description: 'A glyph inside a themed container — the small badge that anchors a card, artifact, or empty-state header. Color × theme × size × shape, all token-driven.'
+---
+
+import { FeaturedIconPreview } from '@/components/preview/display/featured-icon';
+import { FeaturedIcon } from '@gremorie/rx-display';
+import { SparklesIcon, CheckIcon, RocketIcon } from 'lucide-react';
+
+## Overview
+
+`FeaturedIcon` wraps a single icon in a styled, themed container — the small "badge" that anchors a card header, an artifact, or an empty state. It is entirely token-driven, so theme and dark mode flow through automatically; you never pass a raw color. Pass a Lucide `icon` (the container sizes the glyph) or arbitrary `children`.
+
+Four axes compose freely: `color` (`primary`, `gray`, `success`, `error`) × `theme` (`light`, `solid`, `outline`) × `size` (`sm`, `md`, `lg`, `xl`) × `shape` (`square`, `circle`). The square corner radius scales with size; `circle` is fully rounded. It renders a `<span>` and is non-interactive by default.
+
+## Preview
+
+<ComponentPreview name="display/featured-icon">
+  <FeaturedIconPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+FeaturedIcon   themed container (span) sizing a single icon glyph or children
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-featured-icon ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-featured-icon ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-featured-icon ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-featured-icon ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { FeaturedIcon } from "@gremorie/rx-display";
+import { SparklesIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <div className="flex items-center gap-3">
+      <FeaturedIcon icon={SparklesIcon} />
+      <FeaturedIcon color="success" theme="solid" icon={SparklesIcon} />
+      <FeaturedIcon color="error" theme="outline" shape="circle" icon={SparklesIcon} />
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release; it mirrors this component's anatomy.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<FeaturedIcon>`
+
+| Prop        | Type                                          | Default     | Description                                                                   |
+| ----------- | --------------------------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `icon`      | `LucideIcon`                                  | -           | Lucide icon component to render. The container sizes the glyph per `size`.    |
+| `children`  | `ReactNode`                                   | -           | Alternative to `icon` — render arbitrary content (e.g. a custom SVG).         |
+| `color`     | `"primary" \| "gray" \| "success" \| "error"` | `"primary"` | Semantic color, resolved against tokens per `theme`.                          |
+| `theme`     | `"light" \| "solid" \| "outline"`             | `"light"`   | `light` = tinted background; `solid` = filled; `outline` = bordered, no fill. |
+| `size`      | `"sm" \| "md" \| "lg" \| "xl"`                | `"md"`      | Container size (sm 32 · md 40 · lg 48 · xl 56px); the glyph scales with it.   |
+| `shape`     | `"square" \| "circle"`                        | `"square"`  | `square` corner radius scales with size; `circle` is fully rounded.           |
+| `className` | `string`                                      | -           | Extra classes merged via `cn`.                                                |
+
+All other `span` props are forwarded. The `featuredIconVariants` CVA function is also exported.
+
+## Composition
+
+`FeaturedIcon` is a leaf — its levers are the four variant axes. It is most often the leading element of a header:
+
+```tsx
+<div className="flex items-center gap-3">
+  <FeaturedIcon icon={RocketIcon} />
+  <div>
+    <p className="font-medium">Ready to launch</p>
+    <p className="text-muted-foreground text-sm">Everything checks out.</p>
+  </div>
+</div>
+```
+
+## Variations
+
+### Themes
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex flex-wrap items-center gap-3">
+    <FeaturedIcon theme="light" icon={SparklesIcon} />
+    <FeaturedIcon theme="solid" icon={SparklesIcon} />
+    <FeaturedIcon theme="outline" icon={SparklesIcon} />
+  </div>
+</div>
+
+```tsx
+<FeaturedIcon theme="light" icon={SparklesIcon} />
+<FeaturedIcon theme="solid" icon={SparklesIcon} />
+<FeaturedIcon theme="outline" icon={SparklesIcon} />
+```
+
+### Semantic colors
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex flex-wrap items-center gap-3">
+    <FeaturedIcon color="primary" icon={SparklesIcon} />
+    <FeaturedIcon color="success" icon={CheckIcon} />
+    <FeaturedIcon color="error" icon={RocketIcon} />
+    <FeaturedIcon color="gray" icon={RocketIcon} />
+  </div>
+</div>
+
+```tsx
+<FeaturedIcon color="success" theme="light" icon={CheckIcon} />
+```
+
+### Circle shape and sizes
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex flex-wrap items-center gap-3">
+    <FeaturedIcon shape="circle" size="sm" icon={RocketIcon} />
+    <FeaturedIcon shape="circle" size="md" icon={RocketIcon} />
+    <FeaturedIcon shape="circle" size="lg" icon={RocketIcon} />
+    <FeaturedIcon shape="circle" size="xl" icon={RocketIcon} />
+  </div>
+</div>
+
+```tsx
+<FeaturedIcon shape="circle" size="lg" icon={RocketIcon} />
+```
+
+## Accessibility
+
+- **Decorative by default**: the rendered icon is marked `aria-hidden`, so the glyph is not announced. When the icon carries meaning that isn't conveyed by nearby text, add an accessible label on a wrapping element (e.g. `aria-label`).
+- **Color is not the only signal**: pair the semantic `color` with text or an icon shape that communicates the same state, so the meaning survives for users who can't perceive color.
+- **Contrast**: the semantic tokens ship with AA contrast against their tinted/solid backgrounds in both themes.
+
+## Related
+
+- [Card](/components/display/card) - common host for a FeaturedIcon in the header.
+- [Badge](/components/display/badge) - compact text label, the sibling status primitive.
+- [Item](/components/display/item) - list row whose `featured` media variant uses the same treatment.

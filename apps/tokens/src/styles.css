@@ -1,3 +1,8 @@
 @import 'tailwindcss';
 /* Phase 5: re-enable when @gremorie/react-* ships */
 /* @import "@gremorie/react-core/styles/globals.css"; */
+
+/* Class-based dark variant (matches @gremorie/tokens). Declared inline here
+   because this stub does not yet import the token entry above; once it does,
+   the variant comes from there and this line can be removed. */
+@custom-variant dark (&:where(.dark, .dark *));

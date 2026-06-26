@@ -19,6 +19,22 @@ For sorting, filtering, pagination, row selection, or virtualization, compose Ta
   <TablePreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Table                       wraps <table> in an overflow container
+├─ TableCaption             <caption>, rendered below the table
+├─ TableHeader              <thead>
+│  └─ TableRow              <tr> with hover + data-[state=selected]
+│     └─ TableHead          <th> column header
+├─ TableBody                <tbody>
+│  └─ TableRow              <tr> with hover + data-[state=selected]
+│     └─ TableCell          <td> body cell
+└─ TableFooter              <tfoot> (muted, top border)
+   └─ TableRow              <tr> with hover + data-[state=selected]
+      └─ TableCell          <td> summary cell
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -159,5 +175,5 @@ The `data-[state=selected]:bg-muted` styling picks up automatically. TanStack Ta
 
 - [Card](/components/display/card) - common host for a Table inside a dashboard tile.
 - [Pagination](/components/navigation/pagination) - pairs with Table for paginated views.
-- [Checkbox](/components/forms/checkbox) - drop into selection columns.
+- [Checkbox](/components/selection/checkbox) - drop into selection columns.
 - **DataTable pattern** (Patterns layer) - composes Table with TanStack Table for sorting, filtering, pagination, and selection.

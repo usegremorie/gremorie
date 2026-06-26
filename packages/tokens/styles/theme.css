@@ -19,6 +19,21 @@
 @import './themes/perplexity.css';
 @import './themes/mistral.css';
 
+/*
+ * Dark mode is CLASS-driven: the dark token values live under `.dark` (below),
+ * toggled by the host app or the Storybook toolbar. Tailwind v4 otherwise
+ * defaults the `dark:` utility variant to `@media (prefers-color-scheme: dark)`,
+ * which would fire `dark:*` utilities from the OS/browser preference even while
+ * the token theme stays light - producing a light surface with dark controls
+ * (e.g. `dark:bg-input/30`). Binding the variant to the same `.dark` class keeps
+ * utilities and tokens in lockstep.
+ *
+ * This lives in the token source of truth so EVERY Tailwind entry that imports
+ * `@gremorie/tokens/theme.css` inherits it automatically - no per-entry repeat,
+ * nothing to forget. A new Tailwind entry only needs to import these tokens.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* ─── 1. PRIMITIVES ───────────────────────────────── */
   --color-gray-0: oklch(
@@ -369,7 +384,7 @@
   --radius-sm: calc(var(--radius-base) * 0.6);
   --radius-md: calc(var(--radius-base) * 0.8);
   --radius-lg: var(--radius-base);
-  --radius-xl: calc(var(--radius-base) * 1.4);
+  --radius-xl: calc(var(--radius-base) * 1.2);
 
   /* Typography, spacing, tracking (tweakcn contract). Themes may override. */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;

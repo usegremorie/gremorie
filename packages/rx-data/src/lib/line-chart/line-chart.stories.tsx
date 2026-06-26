@@ -13,11 +13,16 @@ import { LineChart } from './line-chart';
  *
  * ## Anatomy
  *
- * - **ChartContainer** — responsive frame + injects `--color-<key>` from `config`.
- * - **CartesianGrid** — horizontal rules.
- * - **XAxis** — category axis.
- * - **Line** — one per series; 2px stroke; optional dots.
- * - **ChartTooltip** — hover card (`ChartTooltipContent`).
+ * ```text
+ * LineChart                       styled wrapper; one Line per config entry
+ * └─ ChartContainer               responsive frame; injects --color-<key> from config
+ *    ├─ CartesianGrid             horizontal rules
+ *    ├─ XAxis                     category axis
+ *    ├─ YAxis                     numeric axis (optional, yAxis)
+ *    ├─ ChartTooltip              hover card
+ *    │  └─ ChartTooltipContent    token-styled tooltip body
+ *    └─ Line                      one per series; 2px stroke; optional dots
+ * ```
  *
  * ## Props
  *
@@ -40,7 +45,7 @@ import { LineChart } from './line-chart';
  * | `--background` / `--foreground` | Tooltip surface + text |
  */
 const meta = {
-  title: 'Layout & display/Data/Line',
+  title: 'Layout & display/Data/Line Chart',
   component: LineChart,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

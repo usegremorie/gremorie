@@ -32,6 +32,17 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
   <RadialChartPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ChartContainer                     responsive square frame + tooltip label config
+└─ RadialBarChart                  recharts polar plot area
+   ├─ ChartTooltip                 hover card
+   │  └─ ChartTooltipContent       themed tooltip body
+   ├─ PolarGrid                    circular grid
+   └─ RadialBar                    one bar per row, with a faint background track
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

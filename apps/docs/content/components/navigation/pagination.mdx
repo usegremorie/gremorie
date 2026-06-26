@@ -20,6 +20,18 @@ Reach for Pagination when **URLs must be shareable, stable order matters, and us
   <PaginationPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Pagination                  <nav aria-label="pagination"> wrapper
+└─ PaginationContent        the <ul> row of controls
+   └─ PaginationItem        one <li> cell wrapping a control
+      ├─ PaginationLink     page-number link; isActive marks the current page
+      ├─ PaginationPrevious labelled previous-page control
+      ├─ PaginationNext     labelled next-page control
+      └─ PaginationEllipsis gap indicator for skipped page ranges
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -278,4 +290,4 @@ Use on page 1 (previous) or the last page (next). The primitive does not auto-de
 
 - [Breadcrumb](/components/navigation/breadcrumb) - hierarchical trail, not page-by-page navigation.
 - [Tabs](/components/navigation/tabs) - sibling content within one container.
-- [Button](/components/forms/button) - the underlying styling source via `buttonVariants`.
+- [Button](/components/buttons/button) - the underlying styling source via `buttonVariants`.

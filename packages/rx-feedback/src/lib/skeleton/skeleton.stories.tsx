@@ -13,7 +13,9 @@ import { Skeleton } from './skeleton';
  *
  * ## Anatomy
  *
- * - **Skeleton** — a single pulsing, rounded block sized by its className.
+ * ```text
+ * Skeleton   a single pulsing, rounded block sized by its className
+ * ```
  *
  * ## Props
  *

@@ -3,6 +3,7 @@
   "pages": [
     "prompt-input",
     "message",
+    "attachments",
     "conversation",
     "reasoning",
     "chain-of-thought",

@@ -38,15 +38,22 @@ import { Button } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **DropdownMenu** — Radix root holding open state.
- * - **DropdownMenuTrigger** — element that opens the menu.
- * - **DropdownMenuContent** — portalled surface (`sideOffset` default `4`).
- * - **DropdownMenuItem** — action row (`variant` `default | destructive`, `inset`).
- * - **DropdownMenuCheckboxItem** / **DropdownMenuRadioItem** — stateful items.
- * - **DropdownMenuLabel** — non-interactive section label.
- * - **DropdownMenuSeparator** — divider.
- * - **DropdownMenuShortcut** — right-aligned keyboard hint.
- * - **DropdownMenuSub / SubTrigger / SubContent** — nested submenu.
+ * ```text
+ * DropdownMenu                       Root holding open state
+ * ├─ DropdownMenuTrigger             Element that opens the menu
+ * └─ DropdownMenuContent             Portalled surface (sideOffset default 4)
+ *    ├─ DropdownMenuLabel            Non-interactive section label
+ *    ├─ DropdownMenuSeparator        Divider
+ *    ├─ DropdownMenuGroup            Groups related items
+ *    │  └─ DropdownMenuItem          Action row (variant default | destructive, inset)
+ *    ├─ DropdownMenuCheckboxItem     Toggleable item
+ *    ├─ DropdownMenuRadioGroup       Single-choice container
+ *    │  └─ DropdownMenuRadioItem     Single-choice item
+ *    ├─ DropdownMenuSub              Nested submenu
+ *    │  ├─ DropdownMenuSubTrigger    Opens the submenu
+ *    │  └─ DropdownMenuSubContent    Submenu surface
+ *    └─ DropdownMenuShortcut         Right-aligned keyboard hint
+ * ```
  *
  * ## Props
  *

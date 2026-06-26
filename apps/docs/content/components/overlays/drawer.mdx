@@ -18,6 +18,19 @@ The recommended pattern is responsive: `Drawer` below `md`, `Dialog` or `Sheet` 
   <DrawerPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Drawer                     vaul root holding open state + direction
+├─ DrawerTrigger           element that opens the drawer
+└─ DrawerContent           portalled panel with a drag handle (bottom)
+   ├─ DrawerHeader         wraps title + description
+   │  ├─ DrawerTitle           accessible headline
+   │  └─ DrawerDescription     accessible body text
+   └─ DrawerFooter         bottom action row
+      └─ DrawerClose       closes the drawer
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

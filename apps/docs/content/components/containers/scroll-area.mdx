@@ -18,6 +18,13 @@ For everyday overflow inside the body or a generic panel, **native scroll is sti
   <ScrollAreaPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ScrollArea              root: viewport + a default vertical ScrollBar + corner
+└─ ScrollBar            a styled scrollbar; mount one explicitly per axis you need
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 @import '../../rx-core/src/styles/globals.css';
+/* The class-based `dark:` variant is inherited from @gremorie/tokens/theme.css
+   (imported transitively via the globals above). */
 
 /* Tailwind v4 class scanning across every rx-* package so utilities used
    inside the primitives are generated for the Storybook bundle. */
@@ -12,3 +14,5 @@
 @source "../../rx-navigation/src/**/*.{ts,tsx}";
 @source "../../rx-containers/src/**/*.{ts,tsx}";
 @source "../../rx-data/src/**/*.{ts,tsx}";
+@source "../../rx-core/src/**/*.{ts,tsx}";
+@source "../../../apps/docs/components/preview/blocks/**/*.{ts,tsx}";

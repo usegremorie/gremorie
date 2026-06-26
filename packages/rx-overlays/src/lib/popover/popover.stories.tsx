@@ -21,12 +21,15 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **Popover** — Radix root holding open state.
- * - **PopoverTrigger** — element that opens the popover on click.
- * - **PopoverContent** — portalled surface (`align`, `sideOffset`).
- * - **PopoverHeader** — wraps title + description.
- * - **PopoverTitle** / **PopoverDescription** — heading + supporting text.
- * - **PopoverAnchor** — alternate positioning anchor.
+ * ```text
+ * Popover                       Radix root holding open state
+ * ├─ PopoverTrigger             opens the popover on click
+ * ├─ PopoverAnchor              alternate positioning anchor
+ * └─ PopoverContent             portalled surface (align, sideOffset)
+ *    └─ PopoverHeader           wraps title + description
+ *       ├─ PopoverTitle         heading
+ *       └─ PopoverDescription   supporting text
+ * ```
  *
  * ## Props
  *

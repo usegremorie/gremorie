@@ -37,6 +37,12 @@ import { Connection } from './connection';
  * | Token | Used for |
  * | --- | --- |
  * | `--color-ring` | Stroke of the provisional connection line and dot. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Connection   provisional connection line — leaf (Canvas's connectionLineComponent)
+ * ```
  */
 const meta = {
   title: 'AI/Workflow/Connection',

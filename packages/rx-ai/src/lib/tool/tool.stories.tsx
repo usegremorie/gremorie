@@ -10,6 +10,16 @@ import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from './tool';
  * distinct status badge. Stories cover every state in the
  * `ToolUIPart["state"]` union plus the collapsed case and an all-states
  * matrix.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Tool
+ * ├─ ToolHeader    type + status badge
+ * └─ ToolContent
+ *    ├─ ToolInput  the call arguments
+ *    └─ ToolOutput the result / error
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Tool',

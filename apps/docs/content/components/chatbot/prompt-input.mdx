@@ -23,6 +23,27 @@ The component also carries an enforced keyboard contract: Enter submits, Shift+E
   <PromptInputPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+PromptInput
+├─ PromptInputHeader
+│  ├─ PromptInputMentions          @ add-context picker
+│  └─ Context                      token-usage meter
+├─ PromptInputBody
+│  ├─ PromptInputAttachments       optional
+│  └─ PromptInputTextarea
+└─ PromptInputFooter
+   ├─ PromptInputTools             left · mode + model
+   │  ├─ PromptInputSelect         mode
+   │  └─ PromptInputSelect         model
+   └─ PromptInputTools             right
+      ├─ PromptInputButton         web search
+      ├─ PromptInputAttachButton   attach
+      ├─ PromptInputSpeechButton   voice
+      └─ PromptInputSubmit         send
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -394,7 +415,7 @@ function SuggestionRow() {
   );
 }
 
-export function ChatSurface() {
+export function ComposerExample() {
   return (
     <PromptInputProvider initialInput="">
       <SuggestionRow />

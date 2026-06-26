@@ -17,6 +17,21 @@ Use it in the chat toolbar next to the prompt input so users can pace longer con
   <ContextPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Context                      token-usage hovercard (HoverCard)
+├─ ContextTrigger            % + ring gauge button
+└─ ContextContent
+   ├─ ContextContentHeader    % + used/total + progress bar
+   ├─ ContextContentBody
+   │  ├─ ContextInputUsage
+   │  ├─ ContextOutputUsage
+   │  ├─ ContextReasoningUsage
+   │  └─ ContextCacheUsage     (each auto-hidden when zero)
+   └─ ContextContentFooter    total cost
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

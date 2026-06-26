@@ -36,6 +36,21 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
   <BarChartPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+BarChart                       recharts bar chart wired to the chart primitive
+├─ ChartContainer              responsive frame + injects --color-<key> from config
+│  └─ RechartsBarChart         the recharts <BarChart> (accessibilityLayer)
+│     ├─ CartesianGrid         horizontal rules (vertical when horizontal)
+│     ├─ XAxis / YAxis         category + value axes (axes swap when horizontal)
+│     ├─ ChartTooltip          hover card
+│     │  └─ ChartTooltipContent  token-styled tooltip body
+│     └─ Bar                   one per series; rounded corners
+│        ├─ Cell               per-bar fill on a single categorical series
+│        └─ LabelList          optional value drawn on each bar
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

@@ -18,9 +18,11 @@ import {
  *
  * ## Anatomy
  *
- * - **ButtonGroup** — `role="group"` flex wrapper that fuses its children.
- * - **ButtonGroupText** — a non-interactive text/label segment (muted addon).
- * - **ButtonGroupSeparator** — a thin Radix Separator between segments.
+ * ```text
+ * ButtonGroup                  role="group" flex wrapper that fuses its children
+ * ├─ ButtonGroupText           non-interactive text/label segment (muted addon)
+ * └─ ButtonGroupSeparator      thin Radix Separator between segments
+ * ```
  *
  * ## Props
  *
@@ -45,7 +47,7 @@ import {
  * | `--border` | shared segment borders |
  */
 const meta = {
-  title: 'Inputs/ButtonGroup',
+  title: 'Inputs/Buttons/ButtonGroup',
   component: ButtonGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

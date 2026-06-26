@@ -16,8 +16,9 @@ import { Checkbox } from './checkbox';
  *
  * ## Anatomy
  *
- * A `Checkbox.Root` (4×4 rounded box) wrapping a `Checkbox.Indicator` that
- * renders the check glyph when checked.
+ * ```text
+ * Checkbox   4×4 rounded box; renders the check glyph when checked
+ * ```
  *
  * ## Props
  *
@@ -39,7 +40,7 @@ import { Checkbox } from './checkbox';
  * | `--destructive` | `aria-invalid` state |
  */
 const meta = {
-  title: 'Inputs/Checkbox',
+  title: 'Inputs/Selection/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

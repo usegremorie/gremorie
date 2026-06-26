@@ -24,13 +24,15 @@ import {
  *
  * ## Anatomy
  *
- * - **Form** — `FormProvider`; spread your `useForm()` methods onto it.
- * - **FormField** — typed `Controller`; owns one field via `name` + `control`.
- * - **FormItem** — `grid gap-2` wrapper that mints a stable `id`.
- * - **FormLabel** — Label wired to the control; turns destructive on error.
- * - **FormControl** — Slot that injects `id` + ARIA onto your input.
- * - **FormDescription** — muted helper text (referenced by `aria-describedby`).
- * - **FormMessage** — renders the field error (or children); null when empty.
+ * ```text
+ * Form                       FormProvider; spread your useForm() methods onto it
+ * └─ FormField               typed Controller; owns one field via name + control
+ *    └─ FormItem             grid gap-2 wrapper that mints a stable id
+ *       ├─ FormLabel         Label wired to the control; turns destructive on error
+ *       ├─ FormControl       Slot that injects id + ARIA onto your input
+ *       ├─ FormDescription   muted helper text (referenced by aria-describedby)
+ *       └─ FormMessage       renders the field error (or children); null when empty
+ * ```
  *
  * ## Props
  *

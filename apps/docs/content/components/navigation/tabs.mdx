@@ -26,6 +26,15 @@ Reach for Tabs when **the views live in the same scope** - Profile / Billing / A
   <TabsPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Tabs                  the Radix root; carries value / orientation
+├─ TabsList           the trigger track; variant default (pill) or line
+│  └─ TabsTrigger     one selectable tab
+└─ TabsContent        the panel shown for the active tab
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -251,4 +260,4 @@ Use when the active tab must sync with URL state, a router, or a form wizard.
 
 - [NavigationMenu](/components/navigation/navigation-menu) - cross-section navigation with rich panels, not sibling content.
 - [Sidebar](/components/navigation/sidebar) - app-shell navigation across many areas.
-- [ToggleGroup](/components/forms/toggle-group) - mutually exclusive choices that aren't view containers.
+- [ToggleGroup](/components/buttons/toggle-group) - mutually exclusive choices that aren't view containers.

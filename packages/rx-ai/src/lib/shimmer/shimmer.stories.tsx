@@ -13,6 +13,12 @@ import { Shimmer } from './shimmer';
  * Note: the React edition has no "disabled/paused" prop (the Angular
  * `shimmerDisabled` input). The Angular "Paused" story is therefore mapped to
  * a "Slow" variant here instead.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Shimmer   animated gradient sweep over text — leaf primitive (no subcomponents)
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Shimmer',

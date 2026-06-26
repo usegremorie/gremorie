@@ -21,6 +21,18 @@ Three sizes ship on the root (`sm`, `default`, `lg`) and propagate to subcompone
   <AvatarPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Avatar                  root circle; sets size via data-size
+├─ AvatarImage          the portrait; hidden until loaded
+├─ AvatarFallback       initials/icon shown while loading or on error
+└─ AvatarBadge          small status dot anchored bottom-right
+AvatarGroup             overlapping -space-x-2 stack of Avatars
+├─ Avatar               each stacked portrait (see above)
+└─ AvatarGroupCount     "+N" overflow chip
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

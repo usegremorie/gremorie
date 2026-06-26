@@ -32,11 +32,13 @@ The LLM returns structured output matching this shape:
 
 ## Anatomy
 
-1. **Card / CardHeader** - frame with title + badge + filter input
-2. **Input + lucide Search icon** - inline filter affordance
-3. **Table / TableHeader / TableBody** - rx-display primitives
-4. **Badge** - per-row status formatting
-5. **Empty-row fallback** - rendered when the filter excludes every row
+```text
+Card
+├─ CardHeader            title + Badge + filter Input (lucide Search icon)
+└─ Table                 rx-display
+   ├─ TableHeader
+   └─ TableBody          rows with status Badge; empty-row fallback when filtered out
+```
 
 ## Installation
 
@@ -199,5 +201,5 @@ export function DataTable() {
 ## Related
 
 - [Table](/components/display/table)
-- [Input](/components/forms/input)
+- [Input](/components/text/input)
 - [Artifacts overview](/artifacts)

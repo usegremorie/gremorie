@@ -67,6 +67,18 @@ import {
  * | `--secondary` | Header / footer band background. |
  * | `--border` | Header bottom / footer top divider. |
  * | `--sidebar` | Canvas background behind the node. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Node
+ * ├─ NodeHeader
+ * │  ├─ NodeTitle
+ * │  ├─ NodeDescription
+ * │  └─ NodeAction      top-right slot
+ * ├─ NodeContent        body
+ * └─ NodeFooter
+ * ```
  */
 const meta = {
   title: 'AI/Workflow/Node',
