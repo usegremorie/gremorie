@@ -11,7 +11,9 @@ import { Calendar } from './calendar';
  * constraints. For a compact field, wrap it in a Popover — that is the
  * `DatePicker` composition.
  */
-const meta: Meta<Calendar> = {
+// `disabled` is exposed via the BrnCalendar hostDirective, not a class input, so
+// widen the story type to include it for the controls/args.
+const meta: Meta<Calendar & { disabled: boolean }> = {
   title: 'Forms/Calendar',
   component: Calendar,
   tags: ['autodocs'],
@@ -22,7 +24,7 @@ const meta: Meta<Calendar> = {
 };
 
 export default meta;
-type Story = StoryObj<Calendar>;
+type Story = StoryObj<Calendar & { disabled: boolean }>;
 
 /** Interactive workbench — pick a date; toggle `disabled`. */
 export const Workbench: Story = {
