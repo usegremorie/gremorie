@@ -20,6 +20,15 @@ The `TooltipContent` renders its own arrow automatically.
   <TooltipPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+TooltipProvider              shares one delay timer across all tooltips
+└─ Tooltip                   Radix root for a single tooltip instance
+   ├─ TooltipTrigger         the hover/focus anchor element
+   └─ TooltipContent         portalled bubble with a built-in arrow
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
@@ -200,4 +209,4 @@ Place tooltips above a row to avoid covering the next row.
 
 - [Hover Card](/components/overlays/hover-card) - hover-only rich preview for non-critical content.
 - [Popover](/components/overlays/popover) - click-driven, interactive overlay.
-- [Button](/components/forms/button) - the most common tooltip trigger.
+- [Button](/components/buttons/button) - the most common tooltip trigger.

@@ -18,6 +18,14 @@ Reach for Collapsible when you have **one** thing that expands: a card's "more d
   <CollapsiblePreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Collapsible                  the Radix Root (holds open / onOpenChange)
+├─ CollapsibleTrigger        the toggle (pass asChild to use your own button)
+└─ CollapsibleContent        the region revealed when open
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

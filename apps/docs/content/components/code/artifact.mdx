@@ -17,6 +17,23 @@ It is intentionally agnostic about what goes inside `ArtifactContent`. Compose i
   <ArtifactPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+Artifact                       rounded, bordered card root
+├─ ArtifactHeader              muted header strip
+│  ├─ ArtifactFeaturedIcon     badge anchoring the header (wraps FeaturedIcon)
+│  ├─ ArtifactHeading          flex column for title + description
+│  │  ├─ ArtifactTitle         single-line heading (truncates)
+│  │  └─ ArtifactDescription   single-line supporting text (truncates)
+│  └─ ArtifactActions          right-aligned action cluster
+│     ├─ ArtifactAction        ghost icon button (optional tooltip)
+│     ├─ ArtifactViewToggle    segmented view switch (chart ⇄ table, …)
+│     ├─ ArtifactMenu          icon-triggered dropdown of items
+│     └─ ArtifactClose         X button
+└─ ArtifactContent             scrollable body slot
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

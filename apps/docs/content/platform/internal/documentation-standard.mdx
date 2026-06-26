@@ -60,7 +60,7 @@ checked.
 - [ ] 1. Frontmatter complete (status, version, deps, category)
 - [ ] 2. Overview (1 paragraph: what + when to use + when NOT to use)
 - [ ] 3. Interactive Preview / Code tabs at the top via `<ComponentPreview>` (real source, copyable, never duplicated)
-- [ ] 4. Anatomy (subcomponent diagram)
+- [ ] 4. Anatomy — subcomponent **hierarchy tree** (a `├─` code block of the real component names), present in BOTH the Storybook autodocs (`## Anatomy` in the story `meta` JSDoc) AND this Fumadocs page
 - [ ] 5. Installation (complete CLI command)
 - [ ] 6. Basic usage (minimal runnable example)
 - [ ] 7. API Reference — inputs (all, with type, default, description)
@@ -154,7 +154,9 @@ related:
 
 ## Anatomy
 
-[Rendered diagram of subcomponents]
+A **hierarchy tree** of the real subcomponent names. The SAME tree must also
+live in the component's Storybook `meta` JSDoc under a `## Anatomy` heading
+(it renders in the autodocs Docs tab), so the two surfaces never drift.
 
 \`\`\`
 <prompt-input>

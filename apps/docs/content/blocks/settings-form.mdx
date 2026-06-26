@@ -20,12 +20,14 @@ breaking the others.
 
 ## Anatomy
 
-The block composes:
-
-1. **Profile Card** - Avatar + AvatarFallback + Input fields for name and email
-2. **Notifications Card** - Label + Switch rows
-3. **Appearance Card** - Slider controls for border radius and font scale
-4. **Sticky save bar** - Button (ghost) Cancel + Button Save changes
+```text
+SettingsForm
+├─ header                  title + subtitle
+├─ Card (Profile)          Avatar · AvatarFallback · Input (name, email)
+├─ Card (Notifications)    Label + Switch rows
+├─ Card (Appearance)       Slider (border radius, font scale)
+└─ save bar                sticky — Button ghost (Cancel) · Button (Save changes)
+```
 
 ## Installation
 
@@ -205,6 +207,6 @@ export function SettingsForm() {
 ## Related
 
 - [Card](/components/display/card)
-- [Switch](/components/forms/switch)
-- [Slider](/components/forms/slider)
+- [Switch](/components/selection/switch)
+- [Slider](/components/selection/slider)
 - [Avatar](/components/display/avatar)

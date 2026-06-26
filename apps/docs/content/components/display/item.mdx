@@ -1,0 +1,179 @@
+---
+title: Item
+description: 'Flexible list-row primitive — media, title, description, and actions on one line, with a single cascading size that drives the whole row.'
+---
+
+import { ItemPreview } from '@/components/preview/display/item';
+
+## Overview
+
+`Item` is the compound list-row primitive: a media slot, a title/description block, and a trailing actions slot, laid out on one line. Adapted from shadcn/ui into a **single-`size` cascade** — the `size` you set on `Item` (`lg`, `md`, `sm`, or `none`) drives the media size _and_ the title/description typography at once through `data-size` + `group-data` selectors, so no sub-part repeats measurements.
+
+The media height tracks the text block: with a description it is taller (lg 40 · md 36 · sm 32px), without one it matches the title (lg/md 20 · sm 16px). The `icon` media variant is the only fixed size — a bare 24px glyph; `featured`, `avatar`, and `image` follow the cascade. Use `variant` (`default`, `outline`, `muted`) for the surface, `interactive` for hover affordance, and `asChild` to render the row as a link or button.
+
+## Preview
+
+<ComponentPreview name="display/item">
+  <ItemPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+ItemGroup                  role="list" column wrapping rows
+├─ Item                    one row; size cascades to media + text (variant · interactive · asChild)
+│  ├─ ItemMedia            leading media — variant icon · featured · avatar · image
+│  ├─ ItemContent          flex column holding title + description
+│  │  ├─ ItemTitle         row heading; size-driven typography
+│  │  └─ ItemDescription   muted supporting text (line-clamped)
+│  ├─ ItemActions          trailing controls (buttons, chevrons)
+│  ├─ ItemHeader           full-basis top row (optional)
+│  └─ ItemFooter           full-basis bottom row (optional)
+└─ ItemSeparator           divider between rows (wraps Separator)
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-item ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-item ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-item ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-item ```</Tab>
+</Tabs>
+
+Brings in `rx-separator` (for `ItemSeparator`) as a registry dependency.
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from "@gremorie/rx-display";
+import { FolderIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <ItemGroup>
+      <Item interactive>
+        <ItemMedia variant="icon">
+          <FolderIcon />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>Design tokens</ItemTitle>
+          <ItemDescription>Colors, spacing, radius.</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <button type="button">Open</button>
+        </ItemActions>
+      </Item>
+      <ItemSeparator />
+    </ItemGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release; spartan-ng has no `Item`, so it would be a net-new port. It mirrors this component's anatomy.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Item>`
+
+| Prop          | Type                                | Default     | Description                                                                                      |
+| ------------- | ----------------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
+| `variant`     | `"default" \| "outline" \| "muted"` | `"default"` | Surface: transparent, bordered, or muted fill.                                                   |
+| `size`        | `"lg" \| "md" \| "sm" \| "none"`    | `"md"`      | Cascades to media size + title/description typography. `none` drops padding/gap (for `asChild`). |
+| `interactive` | `boolean`                           | `false`     | Adds pointer cursor + hover background.                                                          |
+| `asChild`     | `boolean`                           | `false`     | Render the row as its single child (e.g. an `<a>` or framework `Link`) via Radix `Slot`.         |
+| `className`   | `string`                            | -           | Extra classes.                                                                                   |
+
+### `<ItemMedia>`
+
+| Prop      | Type                                          | Default  | Description                                                                                                                                             |
+| --------- | --------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant` | `"icon" \| "featured" \| "avatar" \| "image"` | `"icon"` | `icon` = fixed 24px glyph; `featured` = bordered tile; `avatar` = round; `image` = rounded. `featured`/`avatar`/`image` follow the `Item` size cascade. |
+
+### `<ItemContent>` / `<ItemTitle>` / `<ItemDescription>`
+
+`ItemContent` is the flex column. `ItemTitle` is the size-driven heading. `ItemDescription` is the muted, line-clamped supporting text. All take standard element props plus `className`.
+
+### `<ItemActions>` / `<ItemHeader>` / `<ItemFooter>`
+
+`ItemActions` is the trailing controls cluster. `ItemHeader` and `ItemFooter` take full row width (`basis-full`) for stacked layouts. All take standard `div` props plus `className`.
+
+### `<ItemGroup>` / `<ItemSeparator>`
+
+`ItemGroup` is the `role="list"` flex column. `ItemSeparator` wraps `Separator` (horizontal) with collapsed margins for dividing rows.
+
+## Composition
+
+1. **`<ItemGroup>`** wraps a list of rows and provides the `list` role.
+2. **`<Item>`** sets `size`/`variant`/`interactive` once; everything inside follows.
+3. **`<ItemMedia>`** leads with an icon, featured tile, avatar, or image.
+4. **`<ItemContent>`** holds `ItemTitle` (+ optional `ItemDescription`).
+5. **`<ItemActions>`** trails with buttons or a chevron.
+6. **`<ItemSeparator>`** divides rows when you want hard lines over spacing.
+
+## Variations
+
+### Sizes
+
+The `size` on `Item` cascades to media and typography — no per-part sizing.
+
+```tsx
+<Item size="sm">…</Item>
+<Item size="md">…</Item>
+<Item size="lg">…</Item>
+```
+
+### Media variants
+
+```tsx
+<ItemMedia variant="icon"><FolderIcon /></ItemMedia>
+<ItemMedia variant="featured"><FileTextIcon /></ItemMedia>
+<ItemMedia variant="avatar"><img src={src} alt="" /></ItemMedia>
+<ItemMedia variant="image"><img src={src} alt="" /></ItemMedia>
+```
+
+### As a link (asChild)
+
+Render the whole row as an anchor so the entire surface is clickable.
+
+```tsx
+<Item asChild interactive>
+  <a href="/components/display/item">
+    <ItemMedia variant="icon">
+      <FileTextIcon />
+    </ItemMedia>
+    <ItemContent>
+      <ItemTitle>Documentation</ItemTitle>
+    </ItemContent>
+  </a>
+</Item>
+```
+
+## Accessibility
+
+- **List semantics**: `ItemGroup` carries `role="list"`, so assistive tech announces the rows as a list.
+- **Whole-row links**: with `asChild` + an `<a>`/`<button>`, native semantics apply — focus ring, keyboard activation, and link/button announcement.
+- **Focus ring**: `Item` has a visible focus-visible ring, so keyboard users see the active row.
+- **Description clamping**: `ItemDescription` line-clamps to two lines; keep critical info in the title so it is never truncated away.
+
+## Related
+
+- [Card](/components/display/card) - heavier surface for grouped content with its own header/footer.
+- [Featured Icon](/components/display/featured-icon) - the treatment behind the `featured` media variant.
+- [Separator](/components/display/separator) - the divider `ItemSeparator` wraps.

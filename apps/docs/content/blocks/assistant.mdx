@@ -1,0 +1,263 @@
+---
+title: Assistant
+description: 'The flagship Gremorie chat surface — a streaming conversation with reasoning, an inline ChartArtifact and sources, a floating B2B PromptInput composer, and a new-chat start state. Fully composed.'
+---
+
+## Overview
+
+The Assistant is the flagship Gremorie block: a complete, production-ready chat
+surface in a single import. It ships **two surfaces** driven by the header's chat
+switcher:
+
+- **Conversation** (`filled`) — a streaming log of messages: assistant
+  reasoning, the response, an inline **`ChartArtifact`** (chart ⇄ table toggle
+  with working downloads), per-response actions and **Sources**, response
+  branches, and hover actions on the user's message.
+- **New chat** (`empty`) — the start state: a centered welcome over the same
+  composer, before a conversation exists.
+
+Both share the **floating B2B `PromptInput` composer** — `@`-mentions for
+context, a token-usage `Context` meter, mode and model selectors, web search,
+attachments, voice, and a status-aware submit. The conversation scrolls behind
+the composer and under the header, dissolving through soft fades; the scrollbar
+only appears while scrolling.
+
+The block ships a self-contained local mock so it runs end to end the moment you
+install it — wire `onSubmit` to your AI SDK (or any streaming endpoint) to make
+it real.
+
+<Callout type="info">
+  This is a **block** — a fully-composed starting point you own. `gremorie add
+  block-assistant` copies the source into your app; you then edit it (swap the
+  mock data, wire your endpoint) rather than consuming a fixed prop API.
+</Callout>
+
+## Preview
+
+### Conversation
+
+<BlockPreview name="assistant" />
+
+### New chat
+
+<BlockPreview name="assistant-new-chat" />
+
+## States
+
+A single `initialView` prop picks the starting surface, and the header's chat
+switcher flips between them at runtime.
+
+| State              | How you reach it                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `filled` (default) | The live conversation. Reached on load, by sending a message, or by picking a recent chat in the header menu. |
+| `empty`            | The new-chat start. Reached via **New chat** in the header menu, or by setting `initialView="empty"`.         |
+
+```tsx
+// Start on the conversation (default)
+<Assistant />
+
+// Start on the new-chat screen
+<Assistant initialView="empty" />
+```
+
+Sending a message or clicking a quick suggestion from the empty state drops the
+user into the conversation; choosing a recent chat returns to it.
+
+## Anatomy
+
+```text
+Assistant                          data-size'd card; flips between two views
+├─ header                          thread switcher + actions (DropdownMenu · Button)
+│                                  New chat → empty · recent chat → filled
+├─ Conversation (filled)           auto-scroll log; scrollbar reveals only while scrolling
+│  └─ ConversationContent
+│     ├─ Message (user)
+│     │  ├─ MessageContent
+│     │  └─ MessageToolbar          hover actions: MessageActions (Copy · Edit)
+│     └─ Message (assistant)
+│        └─ MessageBranch
+│           ├─ MessageBranchContent
+│           │  ├─ Reasoning
+│           │  ├─ MessageResponse
+│           │  └─ ChartArtifact     inline chart with chart/table toggle + downloads
+│           └─ MessageToolbar        MessageActions (left) · Sources + MessageBranchSelector (right)
+├─ start (empty)                    centered welcome heading over the composer
+└─ PromptInput                      floating B2B composer (see Prompt Input)
+   ├─ PromptInputHeader            PromptInputMentions + Context usage meter
+   ├─ PromptInputBody → PromptInputTextarea
+   └─ PromptInputFooter            mode/model selects · web · attach · voice · submit
+```
+
+## Installation
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-assistant
+```
+
+</Tab>
+
+</Tabs>
+
+## Usage
+
+Render it directly — it works immediately on the bundled mock:
+
+```tsx
+import { Assistant } from '@/components/assistant';
+
+export default function Page() {
+  return <Assistant />;
+}
+```
+
+To make it real, replace the mock `handleSubmit` in the installed source with
+your AI SDK call and feed the streamed parts into the conversation:
+
+```tsx
+import { useChat } from '@ai-sdk/react';
+
+// inside the block, swap the local mock for:
+const { messages, sendMessage, status } = useChat();
+
+const handleSubmit = (message: PromptInputMessage) => {
+  if (!message.text.trim()) return;
+  sendMessage({ text: message.text });
+};
+
+// then map `messages` onto <Message>/<MessageResponse>, drive <PromptInputSubmit
+// status={status} />, and stream <Reasoning isStreaming> while it runs.
+```
+
+## API
+
+The block is a composed template, so the surface you tweak is mostly its source.
+The one prop it exposes:
+
+### `<Assistant>`
+
+| Prop          | Type                  | Default    | Description                                                                  |
+| ------------- | --------------------- | ---------- | ---------------------------------------------------------------------------- |
+| `initialView` | `'filled' \| 'empty'` | `'filled'` | Which surface to render first — the live conversation or the new-chat start. |
+
+```ts
+export type AssistantView = 'filled' | 'empty';
+```
+
+Everything else (header actions, the mock conversation, mode/model presets,
+context items) lives in the installed source and is meant to be edited.
+
+## Composition
+
+The block composes (condensed — the full, runnable source installs via the CLI
+above):
+
+```tsx
+<TooltipProvider>
+  {/* AssistantHeader — thread switcher + actions; New chat toggles the view */}
+  <Conversation>
+    <ConversationContent>
+      <Message from="user">…</Message>
+      <Message from="assistant">
+        <MessageBranch>
+          <MessageBranchContent>
+            <Reasoning />
+            <MessageResponse />
+            <ChartArtifact />{' '}
+            {/* inline chart: chart/table toggle + downloads */}
+          </MessageBranchContent>
+          <MessageToolbar>
+            {/* MessageActions (left) · Sources + branch selector (right) */}
+          </MessageToolbar>
+        </MessageBranch>
+      </Message>
+    </ConversationContent>
+  </Conversation>
+
+  {/* AssistantComposer — the floating B2B PromptInput (shared by both states) */}
+  <PromptInput>
+    <PromptInputHeader>
+      <PromptInputMentions />
+      <Context>
+        <ContextTrigger />
+        <ContextContent>{/* usage breakdown + cost */}</ContextContent>
+      </Context>
+    </PromptInputHeader>
+    <PromptInputBody>
+      <PromptInputTextarea />
+    </PromptInputBody>
+    <PromptInputFooter>
+      <PromptInputTools>{/* mode + model selects */}</PromptInputTools>
+      <PromptInputTools className="gap-2">
+        <PromptInputTools>{/* search · attach · voice */}</PromptInputTools>
+        <PromptInputSubmit />
+      </PromptInputTools>
+    </PromptInputFooter>
+  </PromptInput>
+</TooltipProvider>
+```
+
+## Customization
+
+- **Wire the model** — replace the mock `handleSubmit` with the AI SDK's
+  `sendMessage` (or your streaming endpoint) and drive `PromptInputSubmit
+status={status}`.
+- **Stream reasoning** — render `Reasoning` with `isStreaming` while the model
+  thinks; it auto-collapses on completion.
+- **Swap the artifact** — the inline `ChartArtifact` is one preset; drop in any
+  artifact (code, table, document) inside `MessageBranchContent`.
+- **Tune the composer** — adjust the `PromptInputMentions` items, the mode/model
+  presets, and the `Context` usage meter. See [Prompt Input](/components/chatbot/prompt-input).
+- **Sources** — the per-response Sources button sits in the action bar; point it
+  at your retrieved citations.
+- **New-chat content** — edit the welcome heading and quick suggestions in the
+  `empty` branch.
+- **Server-streamed markdown** — `MessageResponse` (Streamdown) already renders
+  markdown; feed it the streamed text.
+
+## Accessibility
+
+- The header switcher, response actions, and composer controls are real buttons
+  with labels/tooltips; the icon-only ones carry `aria-label` / `sr-only` text.
+- The conversation is a `role="log"` region (via `Conversation`) so assistive
+  tech announces new messages as they stream.
+- Focus styles use the `ring` token; the user-message hover actions also reveal
+  on `:focus-within` for keyboard users.
+- Color comes entirely from semantic tokens, so contrast holds across the themes
+  and dark mode (the card declares `text-card-foreground`).
+
+## Related
+
+- [Conversation](/components/chatbot/conversation)
+- [Message](/components/chatbot/message)
+- [Reasoning](/components/chatbot/reasoning)
+- [Prompt Input](/components/chatbot/prompt-input)
+- [Attachments](/components/chatbot/attachments)
+- [Chart Artifact](/artifacts/chart-artifact)

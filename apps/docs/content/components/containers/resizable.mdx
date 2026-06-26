@@ -20,6 +20,14 @@ Reach for Resizable on **dev tools and pro apps**: code editors, email clients, 
   <ResizablePreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+ResizablePanelGroup        the frame; orientation sets horizontal vs. vertical
+├─ ResizablePanel          a region sized by defaultSize / minSize / maxSize (percentages)
+└─ ResizableHandle         the drag divider; pass withHandle for a visible grip
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

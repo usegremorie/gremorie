@@ -39,15 +39,30 @@ import {
  *
  * ## Anatomy
  *
- * - **SidebarProvider** — context + width vars + keyboard shortcut.
- * - **Sidebar** — the panel; `variant` (sidebar/floating/inset), `side`, `collapsible`.
- * - **SidebarHeader** / **SidebarFooter** — top/bottom regions.
- * - **SidebarContent** — the scrollable middle.
- * - **SidebarGroup** + **SidebarGroupLabel** + **SidebarGroupContent** — labelled sections.
- * - **SidebarMenu** / **SidebarMenuItem** / **SidebarMenuButton** — the nav rows.
- * - **SidebarMenuBadge** / **SidebarMenuSkeleton** — count slot / loading row.
- * - **SidebarInset** — the main content area beside the sidebar.
- * - **SidebarTrigger** / **SidebarRail** — toggle controls.
+ * ```text
+ * SidebarProvider                 context + CSS width vars + Cmd/Ctrl+B shortcut
+ * ├─ Sidebar                      the panel; variant / side / collapsible
+ * │  ├─ SidebarHeader             top region (brand, switcher, search)
+ * │  │  └─ SidebarInput           sidebar-density input
+ * │  ├─ SidebarContent            scrollable middle region
+ * │  │  ├─ SidebarGroup           a labelled section block
+ * │  │  │  ├─ SidebarGroupLabel        small uppercase section label
+ * │  │  │  ├─ SidebarGroupAction       action button in the group header
+ * │  │  │  ├─ SidebarGroupContent      group body; hosts the menu
+ * │  │  │  │  └─ SidebarMenu            <ul> of nav rows
+ * │  │  │  │     └─ SidebarMenuItem     <li> row wrapper
+ * │  │  │  │        ├─ SidebarMenuButton    the clickable nav entry
+ * │  │  │  │        ├─ SidebarMenuAction    per-row action button
+ * │  │  │  │        ├─ SidebarMenuBadge     count / status slot
+ * │  │  │  │        ├─ SidebarMenuSkeleton  loading placeholder row
+ * │  │  │  │        └─ SidebarMenuSub       <ul> of sub-items
+ * │  │  │  │           └─ SidebarMenuSubItem    sub-row <li> wrapper
+ * │  │  │  │              └─ SidebarMenuSubButton  nested link row
+ * │  │  │  └─ SidebarSeparator         rule between regions / groups
+ * │  ├─ SidebarFooter             bottom region (user menu, actions)
+ * │  └─ SidebarRail               thin grab handle to toggle
+ * └─ SidebarInset                 main content area beside the sidebar
+ * ```
  *
  * ## Props (Sidebar)
  *

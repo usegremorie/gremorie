@@ -20,9 +20,12 @@ import { Alert, AlertDescription, AlertTitle } from './alert';
  *
  * ## Anatomy
  *
- * - **Alert** — the bordered container; pass an icon as the first child to claim the leading column.
- * - **AlertTitle** — the headline.
- * - **AlertDescription** — the body text.
+ * ```text
+ * Alert                  bordered container; pass an icon as the first child to claim the leading column
+ * ├─ <icon>              optional leading lucide-react glyph (Info, CheckCircle2, TriangleAlert, XCircle)
+ * ├─ AlertTitle          the headline
+ * └─ AlertDescription    the body text
+ * ```
  *
  * ## Props
  *

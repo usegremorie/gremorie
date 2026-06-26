@@ -25,14 +25,18 @@ import { Button } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **AlertDialog** — Radix root holding open state.
- * - **AlertDialogTrigger** — element that opens the dialog.
- * - **AlertDialogContent** — centered, portalled panel (`size` `default | sm`).
- * - **AlertDialogHeader** — groups media, title and description.
- * - **AlertDialogMedia** — optional icon container above the title.
- * - **AlertDialogTitle** / **AlertDialogDescription** — accessible headline + body.
- * - **AlertDialogFooter** — action row.
- * - **AlertDialogAction** / **AlertDialogCancel** — confirm / dismiss buttons (delegate to `Button`).
+ * ```text
+ * AlertDialog                       Radix root holding open state.
+ * ├─ AlertDialogTrigger             Element that opens the dialog.
+ * └─ AlertDialogContent             Centered, portalled panel (size default | sm).
+ *    ├─ AlertDialogHeader           Groups media, title and description.
+ *    │  ├─ AlertDialogMedia         Optional icon container above the title.
+ *    │  ├─ AlertDialogTitle         Accessible headline.
+ *    │  └─ AlertDialogDescription   Body text.
+ *    └─ AlertDialogFooter           Action row.
+ *       ├─ AlertDialogCancel        Dismiss button (variant="outline").
+ *       └─ AlertDialogAction        Confirm button (variant="default").
+ * ```
  *
  * ## Props
  *

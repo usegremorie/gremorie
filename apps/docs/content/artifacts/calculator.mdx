@@ -33,11 +33,14 @@ The LLM returns structured output matching this shape:
 
 ## Anatomy
 
-1. **Card / CardHeader / CardTitle** - frame and badge
-2. **Number input pair** - `Label` + `Input[type=number]` for A and B
-3. **Operator toggle group** - `Button` per operator with `aria-pressed`
-4. **Result row** - muted strip with the computed value
-5. **Reset button** - ghost button restoring defaults
+```text
+Card
+├─ CardHeader            CardTitle + type Badge
+├─ number input pair     Label + Input[type=number] (A, B)
+├─ operator toggle       Button per operator (aria-pressed)
+├─ result row            muted strip with the computed value
+└─ reset                 ghost Button restoring defaults
+```
 
 ## Installation
 
@@ -170,6 +173,6 @@ export function Calculator() {
 
 ## Related
 
-- [Input](/components/forms/input)
-- [Button](/components/forms/button)
+- [Input](/components/text/input)
+- [Button](/components/buttons/button)
 - [Artifacts overview](/artifacts)

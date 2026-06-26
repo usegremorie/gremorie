@@ -18,9 +18,11 @@ import {
  *
  * ## Anatomy
  *
- * - **Collapsible** — the Radix `Root` (holds `open` / `onOpenChange`).
- * - **CollapsibleTrigger** — the toggle (pass `asChild` to use your own button).
- * - **CollapsibleContent** — the region revealed when open.
+ * ```text
+ * Collapsible                  the Radix Root (holds open / onOpenChange)
+ * ├─ CollapsibleTrigger        the toggle (pass asChild to use your own button)
+ * └─ CollapsibleContent        the region revealed when open
+ * ```
  *
  * ## Props
  *

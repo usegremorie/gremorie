@@ -26,6 +26,19 @@ import {
  * Anatomy: InlineCitation > InlineCitationText + InlineCitationCard
  * (InlineCitationCardTrigger + InlineCitationCardBody > InlineCitationSource
  * / InlineCitationQuote / Carousel).
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * InlineCitation
+ * ├─ InlineCitationText             the cited span
+ * └─ InlineCitationCard             hover card
+ *    ├─ InlineCitationCardTrigger   hostname badge
+ *    └─ InlineCitationCardBody
+ *       ├─ InlineCitationSource
+ *       ├─ InlineCitationQuote
+ *       └─ InlineCitationCarousel   when multiple sources
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/InlineCitation',

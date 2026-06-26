@@ -71,6 +71,19 @@ import {
  * | --- | --- |
  * | `--popover` / `--border` | Command surface and border. |
  * | `--muted-foreground` | Group labels and shortcuts. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * ModelSelector
+ * ├─ ModelSelectorTrigger          selected model (logo + name)
+ * └─ ModelSelectorContent          command palette (popover or dialog)
+ *    ├─ ModelSelectorInput         search
+ *    ├─ ModelSelectorEmpty
+ *    └─ ModelSelectorList
+ *       └─ ModelSelectorGroup       per provider
+ *          └─ ModelSelectorItem     logo + name + shortcut
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/ModelSelector',

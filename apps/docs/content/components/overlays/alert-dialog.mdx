@@ -18,6 +18,21 @@ If your dialog is informational, dismissible, or part of a routine flow, use `Di
   <AlertDialogPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+AlertDialog                       Radix root holding open state.
+├─ AlertDialogTrigger             Element that opens the dialog.
+└─ AlertDialogContent             Centered, portalled panel (size default | sm).
+   ├─ AlertDialogHeader           Groups media, title and description.
+   │  ├─ AlertDialogMedia         Optional icon container above the title.
+   │  ├─ AlertDialogTitle         Accessible headline.
+   │  └─ AlertDialogDescription   Body text.
+   └─ AlertDialogFooter           Action row.
+      ├─ AlertDialogCancel        Dismiss button (variant="outline").
+      └─ AlertDialogAction        Confirm button (variant="default").
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

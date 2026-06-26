@@ -11,6 +11,13 @@ import { CodeBlock, CodeBlockCopyButton } from './code-block';
  *
  * Note: Shiki highlight is async - the snapshot may briefly appear as plain
  * text before the highlighter resolves.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * CodeBlock                  Shiki-highlighted code container; exposes the raw code via context
+ * └── CodeBlockCopyButton    Optional action-slot child; copies the context code to the clipboard
+ * ```
  */
 const meta = {
   title: 'AI/Code/CodeBlock',

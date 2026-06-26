@@ -27,13 +27,15 @@ import {
  *
  * ## Anatomy
  *
- * - **Breadcrumb** — the `<nav aria-label="breadcrumb">` wrapper.
- * - **BreadcrumbList** — the `<ol>` row of segments.
- * - **BreadcrumbItem** — one segment cell.
- * - **BreadcrumbLink** — a navigable ancestor link (`asChild` to swap the tag).
- * - **BreadcrumbPage** — the terminal current page (not a link).
- * - **BreadcrumbSeparator** — the divider between segments (defaults to a chevron).
- * - **BreadcrumbEllipsis** — collapsed-middle indicator, usually paired with a menu.
+ * ```text
+ * Breadcrumb                     <nav aria-label="breadcrumb"> wrapper
+ * └─ BreadcrumbList              <ol> row of segments
+ *    ├─ BreadcrumbItem           one segment cell
+ *    │  ├─ BreadcrumbLink        navigable ancestor link (asChild swaps the tag)
+ *    │  ├─ BreadcrumbPage        terminal current page (not a link)
+ *    │  └─ BreadcrumbEllipsis    collapsed-middle indicator, paired with a menu
+ *    └─ BreadcrumbSeparator      divider between segments (defaults to a chevron)
+ * ```
  *
  * ## Props
  *

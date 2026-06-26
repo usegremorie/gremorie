@@ -14,6 +14,16 @@ import { Message, MessageContent } from '../message';
  * Stories use a fixed height frame to demonstrate the scroll behavior
  * (auto-stick, scroll-button visibility). True auto-scroll behavior is
  * runtime-only; comments call out what to look for.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Conversation
+ * ├─ ConversationContent
+ * │  ├─ ConversationEmptyState   shown when empty
+ * │  └─ Message …                the messages (see Message)
+ * └─ ConversationScrollButton    scroll-to-bottom
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Conversation',

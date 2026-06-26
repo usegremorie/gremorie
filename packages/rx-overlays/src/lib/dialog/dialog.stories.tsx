@@ -22,13 +22,16 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **Dialog** — Radix root holding open state.
- * - **DialogTrigger** — element that opens the dialog.
- * - **DialogContent** — centered, portalled panel with overlay + optional close button.
- * - **DialogHeader** — wraps title + description.
- * - **DialogTitle** / **DialogDescription** — accessible headline + body.
- * - **DialogFooter** — action row (optional built-in close button).
- * - **DialogClose** — closes the dialog from any descendant.
+ * ```text
+ * Dialog                       Radix root holding open state
+ * ├─ DialogTrigger             element that opens the dialog
+ * └─ DialogContent             centered, portalled panel with overlay + close button
+ *    ├─ DialogHeader           wraps title + description
+ *    │  ├─ DialogTitle         accessible headline
+ *    │  └─ DialogDescription   accessible body text
+ *    └─ DialogFooter           action row (optional built-in close button)
+ *       └─ DialogClose         closes the dialog from any descendant
+ * ```
  *
  * ## Props
  *

@@ -1,0 +1,215 @@
+---
+title: Attachments
+description: Render files and source documents attached to a chat turn — grid thumbnails, inline chips, or a detailed list, with hover previews and removal.
+---
+
+import { AttachmentsPreview } from '@/components/preview/ai/attachments';
+
+## Overview
+
+`Attachments` renders the files and source documents bound to a chat turn — images, PDFs, audio, video, or cited sources. It is a compound, context-driven primitive: the `Attachments` container sets the `variant` (`grid`, `inline`, or `list`), and every `Attachment` child reads that variant to lay itself out, pick its media icon, and size its preview. Drop in only the sub-parts you need (`AttachmentPreview`, `AttachmentInfo`, `AttachmentRemove`).
+
+Each `Attachment` takes an `AttachmentData` — a `FileUIPart` or `SourceDocumentUIPart` from the `ai` package, plus an `id`. The media category (image / video / audio / document / source) is inferred from `mediaType`, so the right icon and preview render without extra config. Pass `onRemove` to surface the remove button; omit it and the button renders nothing.
+
+## Preview
+
+<ComponentPreview name="ai/attachments">
+  <AttachmentsPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+Attachments                    container; sets variant (grid · inline · list) via context
+└─ Attachment                  one file/source; reads variant, infers media category
+   ├─ AttachmentPreview        thumbnail (image/video) or media-category icon
+   ├─ AttachmentInfo           filename + optional media type (hidden in grid)
+   ├─ AttachmentRemove         remove button (renders only when onRemove is set)
+   ├─ AttachmentHoverCard      optional hover preview wrapper
+   │  ├─ AttachmentHoverCardTrigger
+   │  └─ AttachmentHoverCardContent
+   └─ AttachmentEmpty          zero-state message
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-attachments ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-attachments ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-attachments ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-attachments ```
+  </Tab>
+</Tabs>
+
+Brings in `rx-forms` (for `Button`) and `rx-overlays` (for `HoverCard`) as registry dependencies, plus the `ai` package for the attachment types.
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Attachment,
+  AttachmentInfo,
+  AttachmentPreview,
+  AttachmentRemove,
+  Attachments,
+  type AttachmentData,
+} from "@gremorie/rx-ai";
+
+export function Example({
+  files,
+  remove,
+}: {
+  files: AttachmentData[];
+  remove: (id: string) => void;
+}) {
+  return (
+    <Attachments variant="inline">
+      {files.map((data) => (
+        <Attachment key={data.id} data={data} onRemove={() => remove(data.id)}>
+          <AttachmentPreview />
+          <AttachmentInfo />
+          <AttachmentRemove />
+        </Attachment>
+      ))}
+    </Attachments>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for a follow-up release; it mirrors this component's anatomy.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Attachments>`
+
+| Prop        | Type                           | Default  | Description                                                                            |
+| ----------- | ------------------------------ | -------- | -------------------------------------------------------------------------------------- |
+| `variant`   | `"grid" \| "inline" \| "list"` | `"grid"` | Layout mode shared with every child via context. `grid` floats to the end (`ml-auto`). |
+| `className` | `string`                       | -        | Extra classes on the container.                                                        |
+
+Extends all `HTMLAttributes<HTMLDivElement>`. Provides the attachments context.
+
+### `<Attachment>`
+
+| Prop        | Type             | Default | Description                                                   |
+| ----------- | ---------------- | ------- | ------------------------------------------------------------- |
+| `data`      | `AttachmentData` | -       | A `FileUIPart` or `SourceDocumentUIPart` with an `id`.        |
+| `onRemove`  | `() => void`     | -       | When set, `AttachmentRemove` renders a working remove button. |
+| `className` | `string`         | -       | Extra classes on the item.                                    |
+
+Provides the per-item context (`data`, inferred `mediaCategory`, `onRemove`, `variant`).
+
+### `<AttachmentPreview>`
+
+| Prop           | Type        | Default | Description                                                        |
+| -------------- | ----------- | ------- | ------------------------------------------------------------------ |
+| `fallbackIcon` | `ReactNode` | -       | Override the media-category icon shown when there is no thumbnail. |
+| `className`    | `string`    | -       | Extra classes on the preview box.                                  |
+
+Renders an `<img>` for images, a `<video>` for videos, otherwise the media-category icon.
+
+### `<AttachmentInfo>`
+
+| Prop            | Type      | Default | Description                                    |
+| --------------- | --------- | ------- | ---------------------------------------------- |
+| `showMediaType` | `boolean` | `false` | Render the raw `mediaType` under the filename. |
+| `className`     | `string`  | -       | Extra classes.                                 |
+
+Returns `null` in the `grid` variant (thumbnails only).
+
+### `<AttachmentRemove>`
+
+| Prop    | Type     | Default    | Description                                  |
+| ------- | -------- | ---------- | -------------------------------------------- |
+| `label` | `string` | `"Remove"` | Accessible label (`aria-label` + `sr-only`). |
+
+Extends all `Button` props. Renders `null` unless the parent `Attachment` has `onRemove`. Stops click propagation so removing does not trigger the item.
+
+### `<AttachmentHoverCard>` / `<AttachmentHoverCardTrigger>` / `<AttachmentHoverCardContent>`
+
+Thin wrappers over `HoverCard` from `@gremorie/rx-overlays`, pre-tuned for attachment previews (zero open/close delay, `align="start"`, compact padding). Use to show a large preview on hover.
+
+### `<AttachmentEmpty>`
+
+Centered muted placeholder. Defaults to `"No attachments"`; pass `children` to override.
+
+## Composition
+
+1. **`<Attachments>`** picks the layout via `variant` and shares it through context.
+2. **`<Attachment>`** wraps one file/source and infers its media category from `mediaType`.
+3. **`<AttachmentPreview>`** shows the thumbnail or media icon.
+4. **`<AttachmentInfo>`** adds the filename (and optional media type) for `inline` / `list`.
+5. **`<AttachmentRemove>`** appears only when `onRemove` is wired.
+
+## Variations
+
+### Grid (thumbnails)
+
+The default. Square thumbnails that float to the trailing edge — ideal above a `PromptInput`.
+
+```tsx
+<Attachments variant="grid">
+  {files.map((data) => (
+    <Attachment key={data.id} data={data} onRemove={() => remove(data.id)}>
+      <AttachmentPreview />
+      <AttachmentRemove />
+    </Attachment>
+  ))}
+</Attachments>
+```
+
+### Inline (chips)
+
+Compact chips with a small icon and filename — good inside a message bubble.
+
+```tsx
+<Attachments variant="inline">
+  {files.map((data) => (
+    <Attachment key={data.id} data={data}>
+      <AttachmentPreview />
+      <AttachmentInfo />
+    </Attachment>
+  ))}
+</Attachments>
+```
+
+### List (detailed rows)
+
+Full-width rows with a larger preview, filename, and media type — good for a review surface.
+
+```tsx
+<Attachments variant="list">
+  {files.map((data) => (
+    <Attachment key={data.id} data={data} onRemove={() => remove(data.id)}>
+      <AttachmentPreview />
+      <AttachmentInfo showMediaType />
+      <AttachmentRemove />
+    </Attachment>
+  ))}
+</Attachments>
+```
+
+## Accessibility
+
+- **Remove button**: `AttachmentRemove` carries an `aria-label` (default `"Remove"`) plus an `sr-only` label, so the icon-only control is announced.
+- **Images**: previews set `alt` to the filename (falling back to `"Image"`), so screen readers describe the thumbnail.
+- **Click isolation**: removing stops propagation, so an interactive attachment row is not also triggered when the user removes it.
+- **Empty state**: `AttachmentEmpty` renders real text, so an empty attachments region is not a silent gap.
+
+## Related
+
+- [PromptInput](/components/chatbot/prompt-input) - the input dock attachments are staged above
+- [Message](/components/chatbot/message) - attachments often render inside a message turn
+- [Sources](/components/chatbot/sources) - cited source documents, a sibling concept

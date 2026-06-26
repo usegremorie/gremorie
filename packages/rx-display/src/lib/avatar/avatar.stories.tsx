@@ -20,11 +20,15 @@ import {
  *
  * ## Anatomy
  *
- * - **Avatar** — the root circle; sets `size` (propagated via `data-size`).
- * - **AvatarImage** — the portrait; hidden until loaded.
- * - **AvatarFallback** — initials/icon shown while loading or on error.
- * - **AvatarBadge** — small status dot anchored bottom-right.
- * - **AvatarGroup** / **AvatarGroupCount** — overlapping stack + overflow count.
+ * ```text
+ * Avatar                  root circle; sets size via data-size
+ * ├─ AvatarImage          the portrait; hidden until loaded
+ * ├─ AvatarFallback       initials/icon shown while loading or on error
+ * └─ AvatarBadge          small status dot anchored bottom-right
+ * AvatarGroup             overlapping -space-x-2 stack of Avatars
+ * ├─ Avatar               each stacked portrait (see above)
+ * └─ AvatarGroupCount     "+N" overflow chip
+ * ```
  *
  * ## Props
  *

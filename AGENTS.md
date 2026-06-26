@@ -57,12 +57,46 @@ Before claiming something is done:
   under `apps/docs/components/preview/<area>/<component>.tsx`. This mirrors the
   AI Elements / shadcn pattern. A `## Preview` that only renders, with the code
   in a separate hand-written section, is below the bar.
+- **Anatomy is mandatory, in two places**: every component documents its
+  subcomponent **hierarchy tree** (a `├─` code block of the real component
+  names) in BOTH its Storybook autodocs (`## Anatomy` in the story `meta`
+  JSDoc) AND its Fumadocs page. See `documentation-standard.mdx` item #4.
 - **rx-ai / AI components**: faithful to the official AI Elements source (names,
   subcomponents, variants, behaviour), adapted to Gremorie primitives + tokens.
 - **Storybook**: titles mirror the docs nav (`<Section>/<Category>/<Name>`).
-- **No em dashes** in written content. **Never push to `main`. Never publish**
-  (the user runs publishes). Branch off `develop`. Install with
+- **No em dashes** in written content. **Never publish** — the user runs the
+  npm publish AND the production deploy. Install with
   `npm install --legacy-peer-deps`.
+- **Git flow**: `develop` is the **Vercel production branch** and is what
+  deploys to `www.gremorie.com`. `main` is integration; pushing to `main` only
+  builds **preview** deployments (401-protected, not public). To ship to
+  production, merge `main` into `develop`. Work may branch off `main` (pre-1.0),
+  but it is NOT live until it reaches `develop`.
+
+## Color, tokens & dark mode (two-tier, class-based)
+
+- **Source of truth**: `packages/tokens/styles/theme.css` (`@gremorie/tokens`).
+  Layer 1 primitives (`--color-*` scales) feed Layer 2 semantics
+  (`--background`, `--card`, `--primary`, `--input`, `--border`, `--ring`,
+  `--muted`, `--accent`, `--destructive`, `--sidebar-*`, `--chart-*`, …). Named
+  themes opt in via `data-theme="<name>"` and live in `themes/`.
+- **Components consume semantic tokens only** (`bg-card`, `text-foreground`,
+  `border-input`, …). Never reference `--color-*` primitives directly, never
+  hardcode hex / rgb / hsl / oklch in `className` or `style`. (Inline SVG may use
+  `currentColor` or `var(--color-*)`.)
+- **Dark mode is class-driven** — a `.dark` class on the root (set by the host
+  app or the Storybook Theme/Dark toolbar), NOT
+  `@media (prefers-color-scheme: dark)`. Tailwind v4's `dark:` variant is bound
+  to that class with `@custom-variant dark (&:where(.dark, .dark *))`, declared
+  **once** in `theme.css`. **Every Tailwind entry** (anything with
+  `@import "tailwindcss"`) MUST import `@gremorie/tokens/theme.css` so it
+  inherits the variant. Skip it and the OS/browser dark preference fires
+  `dark:*` utilities while the token theme stays light — a white surface with
+  dark controls (`dark:bg-input/30`). That exact class-vs-media mismatch shipped
+  as a real bug; treat a new Tailwind entry without the tokens import as broken.
+- **Validate** themes and dark mode via the Storybook Theme/Dark toolbar. Do NOT
+  judge colors through a browser dark-mode extension or forced-dark flag — it
+  re-tints the rendered page and masks the real CSS.
 
 ## Where the deeper standards live
 

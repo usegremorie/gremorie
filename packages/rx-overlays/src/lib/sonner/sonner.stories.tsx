@@ -14,8 +14,17 @@ import { Button } from '@gremorie/rx-forms';
  *
  * ## Anatomy
  *
- * - **Toaster** — the singleton mount that renders the toast region.
- * - **toast(...)** — imperative API: `toast.success`, `toast.error`, `toast.warning`, `toast.info`, `toast.loading`, `toast.promise`.
+ * ```text
+ * Toaster                    singleton mount that renders the toast region
+ * ├─ toast(message, opts)    imperative API fired from anywhere
+ * │  ├─ toast.success        positive confirmation
+ * │  ├─ toast.error          failure the user should know about
+ * │  ├─ toast.warning        risky state, not yet a failure
+ * │  ├─ toast.info           neutral system message
+ * │  ├─ toast.loading        pending operation
+ * │  └─ toast.promise        auto-transitions loading → success/error
+ * └─ action                  optional inline action button on a toast
+ * ```
  *
  * ## Props
  *
@@ -38,7 +47,7 @@ import { Button } from '@gremorie/rx-forms';
  * | `--radius` | `--border-radius` |
  */
 const meta = {
-  title: 'Interaction/Overlays/Toaster',
+  title: 'Interaction/Overlays/Sonner',
   component: Toaster,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

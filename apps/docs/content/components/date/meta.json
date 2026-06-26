@@ -1,0 +1,6 @@
+{
+  "title": "Date",
+  "icon": "Calendar",
+  "description": "Date selection - calendar and date picker.",
+  "pages": ["calendar", "date-picker"]
+}

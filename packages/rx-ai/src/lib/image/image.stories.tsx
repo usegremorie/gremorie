@@ -31,6 +31,12 @@ import { Image } from './image';
  * | Token | Used for |
  * | --- | --- |
  * | `--radius` | Corner rounding (`rounded-md`). |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Image   renders a base64 image part — leaf primitive (no subcomponents)
+ * ```
  */
 const meta = {
   title: 'AI/Utilities/Image',

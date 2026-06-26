@@ -14,8 +14,9 @@ import { Toggle } from './toggle';
  *
  * ## Anatomy
  *
- * A single `Toggle.Root` styled by `toggleVariants`; `data-[state=on]` paints
- * the active (accent) look.
+ * ```text
+ * Toggle   single two-state button (aria-pressed) styled by toggleVariants; data-[state=on] paints the active look
+ * ```
  *
  * ## Props
  *
@@ -38,7 +39,7 @@ import { Toggle } from './toggle';
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: 'Inputs/Toggle',
+  title: 'Inputs/Buttons/Toggle',
   component: Toggle,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

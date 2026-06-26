@@ -13,8 +13,11 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
  *
  * ## Anatomy
  *
- * - **RadioGroup** — the `Root`, a `grid gap-3` owning the value.
- * - **RadioGroupItem** — one circular option with a filled `Indicator` dot.
+ * ```text
+ * RadioGroup               the Root, a grid gap-3 owning the value
+ * └─ RadioGroupItem        one circular option (value required); pair with a Label
+ *    └─ Indicator          filled CircleIcon dot, shown only when selected
+ * ```
  *
  * ## Props
  *
@@ -42,7 +45,7 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
  * | `--destructive` | `aria-invalid` state |
  */
 const meta = {
-  title: 'Inputs/RadioGroup',
+  title: 'Inputs/Selection/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

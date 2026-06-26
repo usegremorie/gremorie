@@ -38,6 +38,7 @@
       "@gremorie/rx-containers": ["./packages/rx-containers/src/index.ts"],
       "@gremorie/rx-data": ["./packages/rx-data/src/index.ts"],
       "@gremorie/rx-artifacts": ["./packages/rx-artifacts/src/index.ts"],
+      "@gremorie/rx-icons": ["./packages/rx-icons/src/index.ts"],
       "@gremorie/react": ["./packages/react/src/index.ts"],
       "@gremorie/angular": ["./packages/angular/src/index.ts"],
       "@gremorie/contracts": ["./packages/contracts/src/index.ts"],

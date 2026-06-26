@@ -22,6 +22,25 @@ import {
  * Mirrors the ng-ai Message stories so both editions share one anatomy:
  * the canonical roles (user, assistant, system) plus the compound recipes
  * (actions toolbar, branch selector, markdown response).
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Message
+ * ├─ MessageContent
+ * ├─ MessageResponse        Streamdown markdown
+ * ├─ MessageAttachments
+ * │  └─ MessageAttachment
+ * └─ MessageToolbar
+ *    ├─ MessageActions
+ *    │  └─ MessageAction
+ *    └─ MessageBranch
+ *       ├─ MessageBranchContent
+ *       └─ MessageBranchSelector
+ *          ├─ MessageBranchPrevious
+ *          ├─ MessageBranchPage
+ *          └─ MessageBranchNext
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Message',

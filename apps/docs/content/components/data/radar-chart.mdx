@@ -33,6 +33,18 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
   <RadarChartPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+RadarChart
+└─ ChartContainer            responsive square frame + injects --color-<key>
+   └─ RadarChart (recharts)  polar plot area over the angular axis (xKey)
+      ├─ ChartTooltip        hover card (ChartTooltipContent)
+      ├─ PolarAngleAxis      spoke labels (xKey)
+      ├─ PolarGrid           polygon or circular grid (gridType)
+      └─ Radar               one polygon per series
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

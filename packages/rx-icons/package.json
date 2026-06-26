@@ -1,0 +1,43 @@
+{
+  "name": "@gremorie/rx-icons",
+  "version": "0.4.0",
+  "description": "Gremorie icon library for React - vendored monochrome brand marks (AI providers) in the lucide style.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/rx-icons"
+  },
+  "keywords": [
+    "react",
+    "icons",
+    "svg",
+    "ai",
+    "brand"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
+}

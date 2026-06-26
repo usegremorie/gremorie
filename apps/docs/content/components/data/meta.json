@@ -3,6 +3,7 @@
   "icon": "ChartColumn",
   "description": "Charts for data viz — area, line, bar, scatter, pie, radar, radial.",
   "pages": [
+    "chart",
     "area-chart",
     "line-chart",
     "bar-chart",

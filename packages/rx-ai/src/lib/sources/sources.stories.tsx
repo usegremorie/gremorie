@@ -7,6 +7,15 @@ import { Source, Sources, SourcesContent, SourcesTrigger } from './sources';
  *
  * Mirrors the ng-ai Sources stories: collapsed (default), expanded,
  * single / many sources, and an override of the trigger label.
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Sources
+ * ├─ SourcesTrigger   "Used N sources" toggle
+ * └─ SourcesContent
+ *    └─ Source         one cited link per source
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Sources',

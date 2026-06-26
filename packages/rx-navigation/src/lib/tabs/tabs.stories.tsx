@@ -17,10 +17,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
  *
  * ## Anatomy
  *
- * - **Tabs** — the Radix root; carries `value` / `orientation`.
- * - **TabsList** — the trigger track; `variant` is `default` (pill) or `line`.
- * - **TabsTrigger** — one selectable tab.
- * - **TabsContent** — the panel shown for the active tab.
+ * ```text
+ * Tabs                  the Radix root; carries value / orientation
+ * ├─ TabsList           the trigger track; variant default (pill) or line
+ * │  └─ TabsTrigger     one selectable tab
+ * └─ TabsContent        the panel shown for the active tab
+ * ```
  *
  * ## Props
  *

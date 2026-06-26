@@ -22,14 +22,15 @@ import {
  *
  * ## Anatomy
  *
- * - **Card** — the surface (`bg-card`, rounded, bordered, vertical flow).
- * - **CardHeader** — title/description area; lays out a `CardAction` to the
- *   right when present.
- * - **CardTitle** — semibold heading line.
- * - **CardDescription** — muted supporting copy.
- * - **CardAction** — top-right slot (button, menu, switch).
- * - **CardContent** — the main body (padded horizontally).
- * - **CardFooter** — bottom row (actions, captions, metadata).
+ * ```text
+ * Card                       the surface (bg-card, rounded, bordered, vertical flow)
+ * ├─ CardHeader              title/description area; lays out a CardAction to the right when present
+ * │  ├─ CardTitle            semibold heading line
+ * │  ├─ CardDescription      muted supporting copy
+ * │  └─ CardAction           top-right slot (button, menu, switch)
+ * ├─ CardContent             the main body (padded horizontally)
+ * └─ CardFooter              bottom row (actions, captions, metadata)
+ * ```
  *
  * ## Props
  *

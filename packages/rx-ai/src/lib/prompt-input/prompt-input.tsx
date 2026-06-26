@@ -25,7 +25,6 @@ import {
 
 import { cn } from '@gremorie/rx-core';
 import {
-  Button,
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
@@ -51,6 +50,10 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from '@gremorie/rx-overlays';
 import {
   CornerDownLeftIcon,
@@ -62,6 +65,20 @@ import {
   SquareIcon,
   XIcon,
 } from 'lucide-react';
+
+import {
+  Attachment,
+  AttachmentHoverCard,
+  AttachmentHoverCardContent,
+  AttachmentHoverCardTrigger,
+  AttachmentInfo,
+  AttachmentPreview,
+  AttachmentRemove,
+  Attachments,
+  type AttachmentVariant,
+  getAttachmentLabel,
+  getMediaCategory,
+} from '../attachments';
 
 // ============================================================================
 // Types - portable subset of FileUIPart / ChatStatus (no @ai-sdk dep here)
@@ -301,88 +318,54 @@ export function PromptInputAttachment({
   ...props
 }: PromptInputAttachmentProps) {
   const attachments = usePromptInputAttachments();
+  const mediaCategory = getMediaCategory(data);
+  const label = getAttachmentLabel(data);
 
-  const filename = data.filename || '';
-
-  const mediaType =
-    data.mediaType?.startsWith('image/') && data.url ? 'image' : 'file';
-  const isImage = mediaType === 'image';
-
-  const attachmentLabel = filename || (isImage ? 'Image' : 'Attachment');
-
+  // Delegates to the standalone Attachment module (inline variant) so the chip
+  // stays in lock-step with the canonical component used elsewhere (messages,
+  // file lists). The inline layout context comes from PromptInputAttachments.
   return (
-    <PromptInputHoverCard>
-      <HoverCardTrigger asChild>
-        <div
-          className={cn(
-            'group relative flex h-8 cursor-pointer select-none items-center gap-1.5 rounded-md border border-border px-1.5 font-medium text-sm transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-            className,
-          )}
-          key={data.id}
+    <AttachmentHoverCard>
+      <AttachmentHoverCardTrigger asChild>
+        <Attachment
+          className={className}
+          data={data}
+          onRemove={() => attachments.remove(data.id)}
           {...props}
         >
           <div className="relative size-5 shrink-0">
-            <div className="absolute inset-0 flex size-5 items-center justify-center overflow-hidden rounded bg-background transition-opacity group-hover:opacity-0">
-              {isImage ? (
-                <img
-                  alt={filename || 'attachment'}
-                  className="size-5 object-cover"
-                  height={20}
-                  src={data.url}
-                  width={20}
-                />
-              ) : (
-                <div className="flex size-5 items-center justify-center text-muted-foreground">
-                  <PaperclipIcon className="size-3" />
-                </div>
-              )}
+            <div className="absolute inset-0 transition-opacity group-hover:opacity-0">
+              <AttachmentPreview />
             </div>
-            <Button
-              aria-label="Remove attachment"
-              className="absolute inset-0 size-5 cursor-pointer rounded p-0 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 [&>svg]:size-2.5"
-              onClick={(e) => {
-                e.stopPropagation();
-                attachments.remove(data.id);
-              }}
-              type="button"
-              variant="ghost"
-            >
-              <XIcon />
-              <span className="sr-only">Remove</span>
-            </Button>
+            <AttachmentRemove className="absolute inset-0" />
           </div>
-
-          <span className="flex-1 truncate">{attachmentLabel}</span>
-        </div>
-      </HoverCardTrigger>
-      <PromptInputHoverCardContent className="w-auto p-2">
-        <div className="w-auto space-y-3">
-          {isImage && (
-            <div className="flex max-h-96 w-96 items-center justify-center overflow-hidden rounded-md border">
+          <AttachmentInfo />
+        </Attachment>
+      </AttachmentHoverCardTrigger>
+      <AttachmentHoverCardContent>
+        <div className="space-y-3">
+          {mediaCategory === 'image' && data.url ? (
+            <div className="flex max-h-96 w-80 items-center justify-center overflow-hidden rounded-md border">
               <img
-                alt={filename || 'attachment preview'}
+                alt={label}
                 className="max-h-full max-w-full object-contain"
                 height={384}
                 src={data.url}
-                width={448}
+                width={320}
               />
             </div>
-          )}
-          <div className="flex items-center gap-2.5">
-            <div className="min-w-0 flex-1 space-y-1 px-0.5">
-              <h4 className="truncate font-semibold text-sm leading-none">
-                {filename || (isImage ? 'Image' : 'Attachment')}
-              </h4>
-              {data.mediaType && (
-                <p className="truncate font-mono text-muted-foreground text-xs">
-                  {data.mediaType}
-                </p>
-              )}
-            </div>
+          ) : null}
+          <div className="space-y-1 px-0.5">
+            <h4 className="font-semibold text-sm leading-none">{label}</h4>
+            {data.mediaType ? (
+              <p className="font-mono text-muted-foreground text-xs">
+                {data.mediaType}
+              </p>
+            ) : null}
           </div>
         </div>
-      </PromptInputHoverCardContent>
-    </PromptInputHoverCard>
+      </AttachmentHoverCardContent>
+    </AttachmentHoverCard>
   );
 }
 
@@ -395,11 +378,14 @@ export type PromptInputAttachmentsProps = Omit<
   'children'
 > & {
   children: (attachment: AttachmentFile) => ReactNode;
+  /** Layout variant for the attachment row. Defaults to `inline` badges. */
+  variant?: AttachmentVariant;
 };
 
 export function PromptInputAttachments({
   children,
   className,
+  variant = 'inline',
   ...props
 }: PromptInputAttachmentsProps) {
   const attachments = usePromptInputAttachments();
@@ -409,14 +395,15 @@ export function PromptInputAttachments({
   }
 
   return (
-    <div
-      className={cn('flex w-full flex-wrap items-center gap-2 p-3', className)}
+    <Attachments
+      className={cn('w-full p-3', className)}
+      variant={variant}
       {...props}
     >
       {attachments.files.map((file) => (
         <Fragment key={file.id}>{children(file)}</Fragment>
       ))}
-    </div>
+    </Attachments>
   );
 }
 
@@ -773,7 +760,7 @@ export const PromptInput = ({
   };
 
   const inner = (
-    <>
+    <TooltipProvider>
       <input
         accept={accept}
         aria-label="Upload files"
@@ -790,9 +777,11 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        <InputGroup className="overflow-hidden">{children}</InputGroup>
+        <InputGroup className="overflow-hidden rounded-xl bg-card dark:bg-card">
+          {children}
+        </InputGroup>
       </form>
-    </>
+    </TooltipProvider>
   );
 
   return usingProvider ? (
@@ -827,8 +816,8 @@ export const PromptInputHeader = ({
   ...props
 }: PromptInputHeaderProps) => (
   <InputGroupAddon
-    align="block-end"
-    className={cn('order-first flex-wrap gap-1', className)}
+    align="block-start"
+    className={cn('flex-wrap gap-1', className)}
     {...props}
   />
 );
@@ -957,18 +946,27 @@ export const PromptInputTextarea = ({
 // PromptInputButton - InputGroupButton wrapper for in-input actions
 // ============================================================================
 
-export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton>;
+export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
+  /**
+   * Optional hover/focus tooltip. When set, the button is wrapped in a
+   * `Tooltip` (the `PromptInput` root already provides a `TooltipProvider`,
+   * so this works out of the box). Reserve it for non-critical hints such as
+   * icon labels or keyboard shortcuts.
+   */
+  tooltip?: ReactNode;
+};
 
 export const PromptInputButton = ({
   variant = 'ghost',
   className,
   size,
+  tooltip,
   ...props
 }: PromptInputButtonProps) => {
   const newSize =
     size ?? (Children.count(props.children) > 1 ? 'sm' : 'icon-sm');
 
-  return (
+  const button = (
     <InputGroupButton
       className={cn(className)}
       size={newSize}
@@ -976,6 +974,17 @@ export const PromptInputButton = ({
       variant={variant}
       {...props}
     />
+  );
+
+  if (!tooltip) {
+    return button;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
   );
 };
 
@@ -985,6 +994,8 @@ export const PromptInputButton = ({
 
 export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
   status?: ChatStatus;
+  /** Optional hover/focus tooltip, wrapped via the root `TooltipProvider`. */
+  tooltip?: ReactNode;
 };
 
 export const PromptInputSubmit = ({
@@ -993,6 +1004,7 @@ export const PromptInputSubmit = ({
   size = 'icon-sm',
   status,
   children,
+  tooltip,
   ...props
 }: PromptInputSubmitProps) => {
   let Icon: ReactNode = <CornerDownLeftIcon className="size-4" />;
@@ -1005,7 +1017,7 @@ export const PromptInputSubmit = ({
     Icon = <XIcon className="size-4" />;
   }
 
-  return (
+  const button = (
     <InputGroupButton
       aria-label="Submit"
       className={cn(className)}
@@ -1016,6 +1028,43 @@ export const PromptInputSubmit = ({
     >
       {children ?? Icon}
     </InputGroupButton>
+  );
+
+  if (!tooltip) {
+    return button;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
+  );
+};
+
+// ============================================================================
+// PromptInputAttachButton - paperclip button that opens the file picker
+// ============================================================================
+
+export type PromptInputAttachButtonProps = Omit<
+  PromptInputButtonProps,
+  'onClick'
+>;
+
+export const PromptInputAttachButton = ({
+  children,
+  ...props
+}: PromptInputAttachButtonProps) => {
+  const attachments = usePromptInputAttachments();
+
+  return (
+    <PromptInputButton
+      aria-label="Attach files"
+      onClick={() => attachments.openFileDialog()}
+      {...props}
+    >
+      {children ?? <PaperclipIcon className="size-4" />}
+    </PromptInputButton>
   );
 };
 
@@ -1265,9 +1314,16 @@ export type PromptInputSelectContentProps = ComponentProps<
 
 export const PromptInputSelectContent = ({
   className,
+  position = 'popper',
+  sideOffset = 4,
   ...props
 }: PromptInputSelectContentProps) => (
-  <SelectContent className={cn(className)} {...props} />
+  <SelectContent
+    className={cn(className)}
+    position={position}
+    sideOffset={sideOffset}
+    {...props}
+  />
 );
 
 export type PromptInputSelectItemProps = ComponentProps<typeof SelectItem>;

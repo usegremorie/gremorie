@@ -74,6 +74,22 @@ import {
  * | `--background` / `--border` | Container surface and border. |
  * | `--muted` | Item hover and section header background. |
  * | `--muted-foreground` | Text and status colors. |
+ *
+ * ## Anatomy
+ *
+ * ```text
+ * Queue
+ * └─ QueueList
+ *    └─ QueueSection                collapsible group
+ *       ├─ QueueSectionTrigger
+ *       │  └─ QueueSectionLabel      icon + count
+ *       └─ QueueSectionContent
+ *          └─ QueueItem              one per queued message
+ *             ├─ QueueItemIndicator
+ *             ├─ QueueItemContent → QueueItemDescription
+ *             ├─ QueueItemAttachment → QueueItemImage / QueueItemFile
+ *             └─ QueueItemActions → QueueItemAction
+ * ```
  */
 const meta = {
   title: 'AI/Chatbot/Queue',

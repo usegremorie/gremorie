@@ -1,0 +1,6 @@
+{
+  "title": "Selection",
+  "icon": "ListChecks",
+  "description": "Choice controls - checkbox, radio group, select, switch, slider.",
+  "pages": ["checkbox", "radio-group", "select", "switch", "slider"]
+}

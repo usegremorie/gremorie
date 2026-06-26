@@ -1,0 +1,148 @@
+---
+title: Checkbox
+description: Binary or tri-state selection control built on Radix Checkbox, with indeterminate support and form-payload semantics.
+---
+
+import { CheckboxPreview } from '@/components/preview/forms/checkbox';
+import { CheckboxStatesPreview } from '@/components/preview/forms/checkbox-states';
+import { CheckboxWithLabelPreview } from '@/components/preview/forms/checkbox-with-label';
+import { CheckboxDisabledPreview } from '@/components/preview/forms/checkbox-disabled';
+
+## Overview
+
+`Checkbox` is built on `@radix-ui/react-checkbox`. It supports the three canonical states - `unchecked`, `checked`, and `indeterminate` - via Radix's `checked` prop, which accepts `true | false | "indeterminate"`. The indicator renders a `CheckIcon` from lucide.
+
+Use Checkbox when the value is part of a form submission (terms acceptance, multi-select filters, table row selection). Reach for `Switch` instead when the change takes effect immediately, without submission (notifications on / off, dark mode).
+
+## Preview
+
+<ComponentPreview name="forms/checkbox">
+  <CheckboxPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+Checkbox   4×4 rounded box; renders the check glyph when checked
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-checkbox ```</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Checkbox, Label } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox id="terms" />
+      <Label htmlFor="terms">Accept terms and conditions</Label>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Angular edition planned for Phase 5h. Star the repo to track progress.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Checkbox>`
+
+| Prop              | Type                                            | Default | Description                                                              |
+| ----------------- | ----------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| `checked`         | `boolean \| "indeterminate"`                    | -       | Controlled checked state. Pass `"indeterminate"` for the dash indicator. |
+| `defaultChecked`  | `boolean \| "indeterminate"`                    | -       | Uncontrolled initial state.                                              |
+| `onCheckedChange` | `(checked: boolean \| "indeterminate") => void` | -       | Fires when the user toggles the checkbox.                                |
+| `disabled`        | `boolean`                                       | `false` | Disables interaction.                                                    |
+| `required`        | `boolean`                                       | `false` | Mark as required for form submission.                                    |
+| `name`            | `string`                                        | -       | Form field name.                                                         |
+| `value`           | `string`                                        | `"on"`  | Form field value when checked.                                           |
+| `aria-invalid`    | `boolean`                                       | -       | Switches border / ring to destructive token.                             |
+
+Forwards all props to `CheckboxPrimitive.Root` and renders a `CheckboxPrimitive.Indicator` with a `CheckIcon` inside. The `data-state` attribute (`unchecked`, `checked`, `indeterminate`) drives the visual surface.
+
+## Composition
+
+1. **Always pair with a `<Label>`** via `htmlFor` matching the checkbox's `id`. The label is the affordance most users click.
+2. **Inside a `<Form>`**, use `<FormField>` with `<FormControl>` so ARIA wiring happens automatically.
+3. **For "select all" patterns**, drive the master checkbox into `indeterminate` when some (but not all) children are checked.
+
+## Variations
+
+### With label and description
+
+The canonical form pattern: checkbox, label, and an optional helper line. Clicking the label toggles the control.
+
+<ComponentPreview name="forms/checkbox-with-label">
+  <CheckboxWithLabelPreview />
+</ComponentPreview>
+
+### States
+
+The three canonical states - unchecked, checked, and indeterminate - side by side. Indeterminate renders the dash indicator and announces as "mixed".
+
+<ComponentPreview name="forms/checkbox-states">
+  <CheckboxStatesPreview />
+</ComponentPreview>
+
+### Indeterminate "select all"
+
+Master checkbox flips to `indeterminate` when some children are selected. Clicking it should clear all when indeterminate / checked, and select all when unchecked.
+
+```tsx
+function SelectAll({ items, selected, onChange }) {
+  const allSelected = selected.length === items.length;
+  const someSelected = selected.length > 0 && !allSelected;
+
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox
+        id="select-all"
+        checked={allSelected ? true : someSelected ? 'indeterminate' : false}
+        onCheckedChange={(value) => {
+          onChange(value === true ? items.map((i) => i.id) : []);
+        }}
+      />
+      <Label htmlFor="select-all">Select all</Label>
+    </div>
+  );
+}
+```
+
+### Disabled
+
+`Label` reads `peer-disabled` and fades automatically when the sibling `peer`-marked checkbox is disabled. Radix's `Checkbox.Root` includes the `peer` class, so both the unchecked and checked locked states stay legible.
+
+<ComponentPreview name="forms/checkbox-disabled">
+  <CheckboxDisabledPreview />
+</ComponentPreview>
+
+## Accessibility
+
+- **Native semantics**: Radix renders `role="checkbox"` with `aria-checked` reflecting the state (`true`, `false`, `mixed` for indeterminate).
+- **Keyboard**: `Space` toggles the checkbox; `Tab` / `Shift+Tab` move focus.
+- **Label association**: clicking the `<Label>` toggles the checkbox via the standard `htmlFor` mechanism.
+- **Indeterminate**: `aria-checked="mixed"` is announced as "mixed" by screen readers, signalling partial selection.
+- **Required + invalid**: combine `required` with `aria-invalid="true"` and an error message; the destructive ring kicks in automatically.
+
+## Related
+
+- [Switch](/components/selection/switch) - immediate-effect toggle (vs form-submission selection)
+- [Radio Group](/components/selection/radio-group) - single-select cousin
+- [Label](/components/text/label) - the canonical companion
+- [Form](/components/form) - wire Checkbox into react-hook-form

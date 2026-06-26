@@ -17,6 +17,14 @@ Never put critical information or interactive controls inside a `HoverCard`. Hov
   <HoverCardPreview />
 </ComponentPreview>
 
+## Anatomy
+
+```text
+HoverCard                  Radix root managing hover open/close timing
+├─ HoverCardTrigger        element that reveals the card on hover/focus
+└─ HoverCardContent        portalled preview surface (align, sideOffset)
+```
+
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>

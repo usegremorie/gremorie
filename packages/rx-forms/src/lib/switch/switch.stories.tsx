@@ -13,7 +13,9 @@ import { Switch } from './switch';
  *
  * ## Anatomy
  *
- * A `Switch.Root` (pill track) wrapping a sliding `Switch.Thumb`.
+ * ```text
+ * Switch   pill track with a sliding thumb; toggles state on click
+ * ```
  *
  * ## Props
  *
@@ -36,7 +38,7 @@ import { Switch } from './switch';
  * | `--ring` | focus ring |
  */
 const meta = {
-  title: 'Inputs/Switch',
+  title: 'Inputs/Selection/Switch',
   component: Switch,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
