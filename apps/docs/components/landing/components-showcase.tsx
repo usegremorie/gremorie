@@ -19,11 +19,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-/**
- * Each category gets its own accent. AI gets the brand violet (it is the
- * flagship category). The rest rotate through chart-1..5 so the 2x4 grid
- * has visible rhythm without becoming a rainbow.
- */
+/** The eight component categories, with a representative sample of each. */
 const categories = [
   {
     name: 'AI',
@@ -32,8 +28,6 @@ const categories = [
     slug: 'ai',
     description:
       'Conversation, Message, PromptInput, Reasoning, Artifact, Canvas.',
-    accent: 'var(--primary)',
-    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
   },
   {
     name: 'Forms',
@@ -41,8 +35,6 @@ const categories = [
     icon: Edit,
     slug: 'forms',
     description: 'Button, Input, Select, Checkbox, Switch, Form, Calendar.',
-    accent: 'var(--chart-2)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-2) 12%, transparent)',
   },
   {
     name: 'Overlays',
@@ -50,8 +42,6 @@ const categories = [
     icon: Layers,
     slug: 'overlays',
     description: 'Dialog, Drawer, Sheet, Popover, Tooltip, Command.',
-    accent: 'var(--chart-3)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-3) 12%, transparent)',
   },
   {
     name: 'Display',
@@ -59,8 +49,6 @@ const categories = [
     icon: Eye,
     slug: 'display',
     description: 'Card, Badge, Avatar, Accordion, Carousel, Table.',
-    accent: 'var(--chart-4)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-4) 12%, transparent)',
   },
   {
     name: 'Navigation',
@@ -68,8 +56,6 @@ const categories = [
     icon: Compass,
     slug: 'navigation',
     description: 'Tabs, Sidebar, Breadcrumb, Pagination, NavigationMenu.',
-    accent: 'var(--chart-5)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-5) 12%, transparent)',
   },
   {
     name: 'Containers',
@@ -77,8 +63,6 @@ const categories = [
     icon: LayoutGrid,
     slug: 'containers',
     description: 'ScrollArea, Stack, AspectRatio, Resizable.',
-    accent: 'var(--chart-1)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-1) 12%, transparent)',
   },
   {
     name: 'Feedback',
@@ -86,8 +70,6 @@ const categories = [
     icon: Bell,
     slug: 'feedback',
     description: 'Alert, Progress, Skeleton.',
-    accent: 'var(--chart-2)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-2) 12%, transparent)',
   },
   {
     name: 'Data',
@@ -96,19 +78,14 @@ const categories = [
     slug: 'data',
     description:
       'AreaChart, LineChart, BarChart, ScatterChart, PieChart, RadarChart.',
-    accent: 'var(--chart-3)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-3) 12%, transparent)',
   },
 ];
 
 /**
- * Dogfood: category tiles composed with rx-display Card + Badge,
- * "View all components" CTA uses rx-forms Button (ghost).
- *
- * Visual rhythm: each tile has its own accent (icon tile bg + hover border).
- * Aspect-square keeps the grid uniform and gives the cards a "tile" feel
- * vs. the previous compressed rectangle. Hover lift + the icon tile scaling
- * adds tactile feedback without being noisy.
+ * Dogfood: category tiles composed with rx-display Card + Badge; the "View all"
+ * CTA is an rx-forms Button. Neutral tiles, monochrome icons, a count Badge -
+ * the catalog reads like a reference, not a marketing grid. Hover is a quiet
+ * border shift.
  */
 export function ComponentsShowcase() {
   return (
@@ -139,36 +116,10 @@ export function ComponentsShowcase() {
               href="/components"
               className="group block focus-visible:outline-none"
             >
-              <Card
-                className="relative h-full gap-3 overflow-hidden py-5 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:shadow-md group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring"
-                style={{
-                  ['--cat-accent' as string]: cat.accent,
-                  ['--cat-accent-subtle' as string]: cat.accentSubtle,
-                  // Border accent 2px on the left, in the category color.
-                  // Replicates the pattern from the Features grid so the 8
-                  // category tiles are visually distinguishable in a static
-                  // screenshot (Odo final audit - previously the accent only
-                  // appeared on the icon tile, which read as monotone).
-                  borderLeft: `2px solid ${cat.accent}`,
-                }}
-              >
-                {/* Faint top-right accent halo per tile - sets it apart
-                    without overpowering the description. */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-60"
-                  style={{ background: 'var(--cat-accent-subtle)' }}
-                />
-
+              <Card className="h-full gap-3 py-5 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
                 <CardHeader className="gap-3">
                   <div className="flex items-center justify-between">
-                    <div
-                      className="flex size-10 items-center justify-center rounded-md transition-transform duration-200 group-hover:scale-110"
-                      style={{
-                        background: 'var(--cat-accent-subtle)',
-                        color: 'var(--cat-accent)',
-                      }}
-                    >
+                    <div className="flex size-9 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground">
                       <cat.icon className="size-5" aria-hidden="true" />
                     </div>
                     <Badge variant="secondary">{cat.count}</Badge>
