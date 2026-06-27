@@ -1,6 +1,7 @@
 import type { ComponentContract } from './types';
 import { chartArtifact } from './contracts/artifacts/chart-artifact.contract';
 import { ARTIFACTS_CONTRACTS } from './contracts/artifacts';
+import { BLOCKS_CONTRACTS } from './contracts/blocks';
 import { CHART_CONTRACTS } from './contracts/data/charts.contract';
 import { CHATBOT_CONTRACTS } from './contracts/chatbot';
 import { CONTAINERS_CONTRACTS } from './contracts/containers';
@@ -34,4 +35,5 @@ export const CONTRACTS: ComponentContract[] = [
   ...NAVIGATION_CONTRACTS,
   ...UTILITIES_CONTRACTS,
   ...CHATBOT_CONTRACTS,
+  ...BLOCKS_CONTRACTS,
 ];

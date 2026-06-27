@@ -365,7 +365,11 @@ function FrameworkColumn({
           <PropInfo text="First line copies the component source into your app via the registry; second installs the bundled package from npm." />
         </div>
         <CodeBlock
-          code={`${commands.registry}\n${commands.npm}`}
+          code={
+            commands.registry === commands.npm
+              ? commands.npm
+              : `${commands.registry}\n${commands.npm}`
+          }
           language="bash"
         >
           <CodeBlockCopyButton />

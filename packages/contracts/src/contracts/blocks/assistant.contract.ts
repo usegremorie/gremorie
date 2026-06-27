@@ -1,14 +1,15 @@
 import { defineContract } from '../../types';
 
 /**
- * Assistant - the flagship composed chat surface (a block, not a primitive):
- * a conversation with reasoning, an inline chart artifact and sources, response
- * branches, and a floating B2B PromptInput composer. React ships it as the
- * `block-assistant` block; Angular as the `<ai-assistant>` element.
+ * Assistant - the flagship composed chat surface. A BLOCK (a composed,
+ * copy-paste starting point built FROM the AI primitives), not a primitive, so
+ * it lives in the `blocks` category - never folded under `chatbot`. React ships
+ * it as the `block-assistant` registry block; Angular as the `<ai-assistant>`
+ * element from `@gremorie/ng-ai`.
  */
 export const assistant = defineContract({
   name: 'assistant',
-  category: 'chatbot',
+  category: 'blocks',
   status: 'stable',
   anatomy: `
     <assistant>

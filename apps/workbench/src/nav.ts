@@ -1,4 +1,5 @@
 import {
+  Blocks,
   Bot,
   Calendar,
   ChartColumnBig,
@@ -41,6 +42,27 @@ export interface NavSection {
 
 export const NAV: NavSection[] = [
   {
+    // Blocks are a distinct surface in the docs IA (/blocks, separate from
+    // /components). They are composed starting points, NOT primitives, so they
+    // get their own section - never folded into a primitive category.
+    title: 'Blocks',
+    categories: [
+      {
+        key: 'blocks',
+        label: 'Blocks',
+        icon: Blocks,
+        items: [
+          'assistant',
+          'dashboard',
+          'sign-in',
+          'settings-form',
+          'marketing-hero',
+          'empty-state',
+        ],
+      },
+    ],
+  },
+  {
     title: 'AI',
     categories: [
       {
@@ -48,7 +70,6 @@ export const NAV: NavSection[] = [
         label: 'Chatbot',
         icon: Bot,
         items: [
-          'assistant',
           'chain-of-thought',
           'checkpoint',
           'confirmation',
