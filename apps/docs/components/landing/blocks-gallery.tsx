@@ -431,11 +431,11 @@ export function BlocksGallery() {
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Production-ready blocks
+              Blocks, not just primitives
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Compositions of multiple primitives. Install one block, get a
-              wired-up screen. Variations included.
+              Whole screens composed from the primitives. Install one block and
+              get a wired-up layout, variations included, in either framework.
             </p>
           </div>
           <Button variant="ghost" asChild>

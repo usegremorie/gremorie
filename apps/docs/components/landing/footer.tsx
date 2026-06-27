@@ -61,8 +61,9 @@ export function Footer() {
               Gremorie
             </p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              The AI-native design system. A registry, a corpus, and an MCP
-              server so your LLM can read your DS as memory, not noise.
+              The production design system for React and Angular. Copy-paste
+              primitives, design tokens, and blocks, with a registry and MCP
+              server that keep the system legible to your tools.
             </p>
             <a
               href="https://github.com/usegremorie/gremorie"
