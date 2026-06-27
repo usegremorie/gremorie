@@ -11,45 +11,47 @@ import { Brain, Copy, GitBranch, Sparkles } from 'lucide-react';
  * for the left border accent. This breaks the "wall of gray cards" criticism
  * from Odo's audit while staying 100% token-driven (no raw hex anywhere).
  *
- * The brand-violet accent is reserved for the AI-native feature (which is
- * the marquee value prop). The other three rotate through chart-2..4 to
- * keep the rhythm varied but coherent.
+ * Order leads with the design-system fundamentals (own the code, ship to both
+ * frameworks, tokens) and closes with the AI-native pillar - one strong
+ * property among several, not the whole identity. The brand-violet accent
+ * stays reserved for the AI-native card. The other three rotate through
+ * chart-2..4 to keep the rhythm varied but coherent.
  */
 const features = [
   {
-    icon: Sparkles,
-    title: 'AI-native',
-    description:
-      'Knowledge layer plus MCP serves the corpus to LLMs. Your design system is legible to language models, not just designers.',
-    accent: 'var(--primary)',
-    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
-  },
-  {
-    icon: GitBranch,
-    title: 'Two editions',
-    description:
-      'Angular and React from the same registry. Same primitives, same semantics, same tokens. Shared corpus across stacks.',
-    accent: 'var(--chart-2)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-2) 12%, transparent)',
-  },
-  {
     icon: Copy,
-    title: 'Copy-paste',
+    title: 'You own the code',
     description:
-      'Run gremorie add and the code is yours. No black-box dependency. Own every line, refactor without asking.',
+      'Install from the registry and the source is yours. No black-box dependency, no version lock. Refactor every line on your own terms.',
     accent: 'var(--chart-3)',
     accentSubtle: 'color-mix(in oklch, var(--chart-3) 12%, transparent)',
   },
   {
-    icon: Brain,
-    title: 'MCP-ready',
+    icon: GitBranch,
+    title: 'React and Angular at parity',
     description:
-      'Claude, Cursor, and Codex generate idiomatic UI by reading the MCP server. They build with your DS, not against it.',
+      'Both editions ship from the same registry with the same primitives, semantics, and tokens. One design system, two frameworks, no drift.',
+    accent: 'var(--chart-2)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-2) 12%, transparent)',
+  },
+  {
+    icon: Sparkles,
+    title: 'Token-driven theming',
+    description:
+      'Every primitive is wired to a shared token layer. Restyle the whole system from one place, and themes carry across both frameworks.',
     // chart-5 chosen over chart-4 so the icon does NOT land on violet in
     // dark mode (chart-4 dark is violet, which would clash with the AI
-    // brand accent on the first card).
+    // brand accent on the AI-native card).
     accent: 'var(--chart-5)',
     accentSubtle: 'color-mix(in oklch, var(--chart-5) 12%, transparent)',
+  },
+  {
+    icon: Brain,
+    title: 'AI-native registry and MCP',
+    description:
+      'A registry and MCP server expose the system to your tools, so Claude, Cursor, and Codex generate idiomatic UI that matches what you ship.',
+    accent: 'var(--primary)',
+    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
   },
 ];
 
@@ -67,11 +69,11 @@ export function FeaturesGrid() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Built for humans and language models
+            A design system you own, end to end
           </h2>
           <p className="mt-3 text-base text-muted-foreground">
-            Four properties that make Gremorie different from a classical
-            component library.
+            The fundamentals of a serious component library, plus a registry and
+            MCP server that make the whole system legible to your tools.
           </p>
         </div>
 

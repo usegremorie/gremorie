@@ -31,21 +31,21 @@ export function Hero() {
         </Badge>
 
         <h1 className="text-balance font-bold text-4xl text-foreground tracking-tight sm:text-5xl lg:text-6xl">
-          The AI-native design system for{' '}
+          The production design system for{' '}
           <span className="text-cyan-600 dark:text-cyan-500">React</span> and{' '}
           <span className="text-rose-500 dark:text-rose-400">Angular</span>
         </h1>
 
         <div className="flex max-w-2xl flex-col gap-3 text-balance text-lg text-muted-foreground leading-relaxed">
           <p>
-            AI-native components and blocks, delivered through an MCP server and
-            a registry. The documentation runs as a chain - design principles
-            into components, components into the blocks built from them - so an
-            LLM reads the whole system.
+            85 primitives, design tokens, and production blocks, built once and
+            shipped to both frameworks at parity. Install from the registry, own
+            the source, customize with your tokens.
           </p>
           <p className="text-base">
-            Designers prototype with the real components through MCP; developers
-            ship the same ones to production.
+            It is AI-native by design: a registry and MCP server make the whole
+            system legible to your tools, so the code you generate is the code
+            you ship.
           </p>
         </div>
 

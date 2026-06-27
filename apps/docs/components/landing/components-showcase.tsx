@@ -120,8 +120,8 @@ export function ComponentsShowcase() {
               85 primitives across 8 categories
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Every primitive is copy-paste. Install with the CLI, own the
-              source, customize with your tokens.
+              From buttons to charts to a full conversation surface. Install
+              from the registry, own the source, customize with your tokens.
             </p>
           </div>
           <Button variant="ghost" asChild>

@@ -126,24 +126,27 @@ function angularCode({
   model,
   theme,
 }: ShowcaseProps): string {
-  // The Angular edition ships the Assistant as the bare <ai-assistant> element
-  // from @gremorie/ng-ai. The composer config (placeholder, mode, model) lives
-  // in the copied block source, so the inputs surface as comments here.
+  // The Angular edition exposes the same composer config as real inputs on the
+  // <ai-assistant> element (initialView / placeholder / defaultMode / defaultModel),
+  // so the snippet mirrors the React tab one-to-one.
   const shell =
     theme !== 'default'
       ? `<!-- Activate the theme on your app root: <html data-theme="${theme}"> -->\n`
       : '';
-  const notes: string[] = [];
-  if (view === 'empty') notes.push('start on the new-chat screen');
+  const attrs: string[] = [];
+  if (view === 'empty') attrs.push('initialView="empty"');
   if (placeholder !== DEFAULTS.placeholder)
-    notes.push(`placeholder: "${placeholder}"`);
-  if (mode !== DEFAULTS.mode) notes.push(`mode: ${mode}`);
-  if (model !== DEFAULTS.model) notes.push(`model: ${model}`);
-  const comment = notes.length ? `<!-- ${notes.join(' · ')} -->\n` : '';
+    attrs.push(`placeholder="${placeholder}"`);
+  if (mode !== DEFAULTS.mode) attrs.push(`defaultMode="${mode}"`);
+  if (model !== DEFAULTS.model) attrs.push(`defaultModel="${model}"`);
+  const tag =
+    attrs.length === 0
+      ? '<ai-assistant />'
+      : `<ai-assistant\n  ${attrs.join('\n  ')}\n/>`;
 
-  return `${shell}// import { Assistant } from '@gremorie/ng-ai';
+  return `${shell}<!-- import { Assistant } from '@gremorie/ng-ai' -->
 
-${comment}<ai-assistant />`;
+${tag}`;
 }
 
 export function AssistantShowcase() {

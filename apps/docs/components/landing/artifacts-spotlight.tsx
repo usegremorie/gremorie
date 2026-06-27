@@ -82,11 +82,12 @@ export function ArtifactsSpotlight() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Generative UI artifacts
+            Artifacts that render real output
           </h2>
           <p className="mt-3 text-base text-muted-foreground">
-            Render structured LLM output as production UI. Schema in, components
-            out. Streaming-aware, type-safe, swappable.
+            Turn structured data and generated code into production components.
+            Schema in, components out, type-safe and streaming-aware. The charts
+            and code blocks below are the same primitives in the registry.
           </p>
         </div>
 
