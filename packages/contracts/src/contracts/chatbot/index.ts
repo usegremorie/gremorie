@@ -1,3 +1,4 @@
+import { assistant } from './assistant.contract';
 import { chainOfThought } from './chain-of-thought.contract';
 import { checkpoint } from './checkpoint.contract';
 import { confirmation } from './confirmation.contract';
@@ -18,6 +19,7 @@ import { tool } from './tool.contract';
 
 /** All `chatbot` (AI Elements) category contracts. */
 export const CHATBOT_CONTRACTS = [
+  assistant,
   chainOfThought,
   checkpoint,
   confirmation,
