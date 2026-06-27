@@ -48,6 +48,7 @@ export const NAV: NavSection[] = [
         label: 'Chatbot',
         icon: Bot,
         items: [
+          'assistant',
           'chain-of-thought',
           'checkpoint',
           'confirmation',
