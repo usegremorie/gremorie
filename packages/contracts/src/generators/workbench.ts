@@ -40,6 +40,9 @@ const NPM_PKG: Record<string, { rx: string; ng: string }> = {
   artifacts: { rx: '@gremorie/rx-artifacts', ng: '@gremorie/ng-artifacts' },
   data: { rx: '@gremorie/rx-data', ng: '@gremorie/ng-data' },
   chatbot: { rx: '@gremorie/rx-ai', ng: '@gremorie/ng-ai' },
+  // Blocks are composed from the AI primitives; both editions live in the
+  // AI bundle packages.
+  blocks: { rx: '@gremorie/rx-ai', ng: '@gremorie/ng-ai' },
   display: { rx: '@gremorie/rx-display', ng: '@gremorie/ng-display' },
   feedback: { rx: '@gremorie/rx-feedback', ng: '@gremorie/ng-feedback' },
   forms: { rx: '@gremorie/rx-forms', ng: '@gremorie/ng-core' },
@@ -82,6 +85,18 @@ function buildCommands(
     rx: '@gremorie/rx-core',
     ng: '@gremorie/ng-core',
   };
+  // Blocks are distributed differently from primitives: React blocks are a
+  // registry `block-<name>` (copy-paste); Angular blocks ship inside the package
+  // (no per-block registry), consumed as the element from the bundle.
+  if (category === 'blocks') {
+    return {
+      rx: {
+        registry: `npx gremorie add block-${name}`,
+        npm: `npm i ${pkg.rx}`,
+      },
+      ng: { registry: `npm i ${pkg.ng}`, npm: `npm i ${pkg.ng}` },
+    };
+  }
   return {
     rx: { registry: `npx gremorie add rx-${name}`, npm: `npm i ${pkg.rx}` },
     ng: { registry: `npx gremorie add ng-${name}`, npm: `npm i ${pkg.ng}` },
