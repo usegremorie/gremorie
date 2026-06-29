@@ -41,7 +41,7 @@ const meta = {
   title: 'Inputs/Selection/Switch',
   component: Switch,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     size: { control: 'inline-radio', options: ['sm', 'default'] },
     checked: { control: 'boolean' },

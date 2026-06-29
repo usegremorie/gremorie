@@ -62,7 +62,10 @@ const preview: Preview = {
     },
   ],
   parameters: {
-    layout: 'centered',
+    // Top-aligned, padded (mirrors the ng storybook). Components render at their
+    // natural width - full-width when they are `w-full`, capped when they carry
+    // a market max-width - instead of being centered in the frame.
+    layout: 'padded',
     controls: {
       matchers: {
         color: /(background|color)$/i,

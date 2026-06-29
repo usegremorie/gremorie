@@ -55,7 +55,7 @@ const meta = {
   title: 'Layout & display/Display/Carousel',
   component: Carousel,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     orientation: {
       control: 'inline-radio',

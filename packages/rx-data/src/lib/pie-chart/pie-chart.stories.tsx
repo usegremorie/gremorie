@@ -46,7 +46,7 @@ const meta = {
   title: 'Layout & display/Data/Pie Chart',
   component: PieChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     donut: { control: 'boolean' },
     showLabels: { control: 'boolean' },
@@ -133,7 +133,7 @@ export const Workbench: Story = {
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),

@@ -73,7 +73,7 @@ const meta = {
   title: 'Inputs/Selection/Select',
   component: Select,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Select>;
 
 export default meta;

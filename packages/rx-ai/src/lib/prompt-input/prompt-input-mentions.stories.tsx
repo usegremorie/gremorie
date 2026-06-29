@@ -51,7 +51,7 @@ const meta = {
   title: 'AI/Chatbot/PromptInput/Mentions',
   component: PromptInputMentions,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <TooltipProvider>

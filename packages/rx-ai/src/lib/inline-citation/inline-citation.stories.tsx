@@ -44,7 +44,7 @@ const meta = {
   title: 'AI/Chatbot/InlineCitation',
   component: InlineCitation,
   tags: ['autodocs'],
-  parameters: { layout: 'centered', controls: { disable: true } },
+  parameters: { layout: 'padded', controls: { disable: true } },
 } satisfies Meta<typeof InlineCitation>;
 
 export default meta;

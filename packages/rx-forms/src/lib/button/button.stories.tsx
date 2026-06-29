@@ -42,7 +42,7 @@ const meta = {
   title: 'Inputs/Buttons/Button',
   component: Button,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { children: 'Button', variant: 'default', size: 'default' },
   argTypes: {
     variant: {

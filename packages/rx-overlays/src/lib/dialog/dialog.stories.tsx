@@ -70,7 +70,7 @@ const meta = {
   title: 'Interaction/Overlays/Dialog',
   component: Dialog,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Dialog>;
 
 export default meta;

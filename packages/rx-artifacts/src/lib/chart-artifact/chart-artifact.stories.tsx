@@ -127,11 +127,11 @@ const meta = {
     onSave: { action: 'save', description: 'More → Save.' },
   },
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
   decorators: [
     (Story) => (
-      <div className="w-[26rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),

@@ -32,7 +32,7 @@ const meta = {
   title: 'Layout & display/Containers/AspectRatio',
   component: AspectRatio,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     ratio: { control: { type: 'number' } },
   },

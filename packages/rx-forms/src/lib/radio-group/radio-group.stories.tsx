@@ -48,7 +48,7 @@ const meta = {
   title: 'Inputs/Selection/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;

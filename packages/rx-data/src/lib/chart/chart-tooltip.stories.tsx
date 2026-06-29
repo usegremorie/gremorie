@@ -47,7 +47,7 @@ import {
 const meta = {
   title: 'Layout & display/Data/Tooltip',
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta;
 
 export default meta;

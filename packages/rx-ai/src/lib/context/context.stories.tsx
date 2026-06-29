@@ -74,7 +74,7 @@ const meta = {
   title: 'AI/Chatbot/Context',
   component: Context,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     usedTokens: { control: 'number' },
     maxTokens: { control: 'number' },

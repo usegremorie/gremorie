@@ -92,7 +92,7 @@ const meta = {
   title: 'Interaction/Overlays/DropdownMenu',
   component: DropdownMenu,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof DropdownMenu>;
 
 export default meta;

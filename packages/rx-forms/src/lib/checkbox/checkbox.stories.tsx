@@ -43,7 +43,7 @@ const meta = {
   title: 'Inputs/Selection/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     checked: { control: 'boolean' },
     disabled: { control: 'boolean' },

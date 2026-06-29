@@ -48,7 +48,7 @@ const meta = {
   title: 'Layout & display/Data/Line Chart',
   component: LineChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     dots: { control: 'boolean' },
     yAxis: { control: 'boolean' },
@@ -60,7 +60,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),
@@ -132,7 +132,7 @@ export const Workbench: Story = {
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),

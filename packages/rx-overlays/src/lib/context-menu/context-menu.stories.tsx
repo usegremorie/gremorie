@@ -80,7 +80,7 @@ const meta = {
   title: 'Interaction/Overlays/ContextMenu',
   component: ContextMenu,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof ContextMenu>;
 
 export default meta;

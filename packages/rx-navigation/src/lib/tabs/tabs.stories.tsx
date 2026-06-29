@@ -55,7 +55,7 @@ const meta = {
   title: 'Interaction/Navigation/Tabs',
   component: Tabs,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <div className="w-[26rem] max-w-full">

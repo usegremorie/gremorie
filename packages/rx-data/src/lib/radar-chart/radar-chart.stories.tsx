@@ -45,7 +45,7 @@ const meta = {
   title: 'Layout & display/Data/Radar Chart',
   component: RadarChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
     tooltip: { control: 'boolean' },
@@ -119,7 +119,7 @@ export const Workbench: Story = {
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),

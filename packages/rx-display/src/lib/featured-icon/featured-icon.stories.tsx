@@ -44,7 +44,7 @@ const meta = {
   title: 'Layout & display/Display/FeaturedIcon',
   component: FeaturedIcon,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: {
     icon: Sparkles,
     color: 'primary',

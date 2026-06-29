@@ -46,14 +46,14 @@ const meta = {
   title: 'Layout & display/Data/Scatter Chart',
   component: ScatterChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     yAxis: { control: 'boolean' },
     tooltip: { control: 'boolean' },
   },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),
@@ -115,7 +115,7 @@ export const Workbench: Story = {
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),

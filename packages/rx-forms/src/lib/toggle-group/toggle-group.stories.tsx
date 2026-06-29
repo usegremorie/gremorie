@@ -57,7 +57,7 @@ const meta = {
   title: 'Inputs/Buttons/ToggleGroup',
   component: ToggleGroup,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { type: 'single' },
   argTypes: {
     variant: { control: 'inline-radio', options: ['default', 'outline'] },

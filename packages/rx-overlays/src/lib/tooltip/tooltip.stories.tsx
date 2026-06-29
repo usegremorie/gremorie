@@ -56,7 +56,7 @@ const meta = {
   title: 'Interaction/Overlays/Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <TooltipProvider>
