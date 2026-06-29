@@ -24,7 +24,7 @@ const meta = {
   title: 'AI/Chatbot/PromptInput/Submit',
   component: PromptInputSubmit,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <TooltipProvider>

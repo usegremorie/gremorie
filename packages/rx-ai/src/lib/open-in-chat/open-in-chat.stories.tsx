@@ -75,7 +75,7 @@ const meta = {
   title: 'AI/Utilities/OpenIn',
   component: OpenIn,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     query: { control: 'text' },
   },

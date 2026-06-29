@@ -43,7 +43,7 @@ const meta = {
   title: 'Inputs/Date/Calendar',
   component: Calendar,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;

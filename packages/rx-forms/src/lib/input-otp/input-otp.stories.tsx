@@ -61,7 +61,7 @@ const meta = {
   title: 'Inputs/Text/InputOTP',
   component: InputOTP,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   // `maxLength` + `children` are required on `OTPInput`; each story supplies its
   // own through `render`, so these meta-level args are just type satisfiers.
   args: { maxLength: 6, children: null },

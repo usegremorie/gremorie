@@ -74,7 +74,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="width: 28rem; max-width: 100%;">
+      <div style="width: 100%;">
         <scatter-chart
           [data]="data"
           [config]="config"

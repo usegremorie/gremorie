@@ -60,7 +60,7 @@ const meta = {
   title: 'Layout & display/Display/Card',
   component: Card,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Card>;
 
 export default meta;

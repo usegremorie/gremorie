@@ -198,7 +198,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="width: 26rem; max-width: 100%;">
+      <div style="width: 100%;">
         <chart-artifact
           [title]="title"
           [description]="description"

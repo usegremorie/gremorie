@@ -62,7 +62,7 @@ const meta = {
   title: 'Layout & display/Display/Avatar',
   component: Avatar,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     size: { control: 'inline-radio', options: ['sm', 'default', 'lg'] },
   },

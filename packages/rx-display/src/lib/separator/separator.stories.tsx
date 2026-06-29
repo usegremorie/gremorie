@@ -34,7 +34,7 @@ const meta = {
   title: 'Layout & display/Display/Separator',
   component: Separator,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     orientation: {
       control: 'inline-radio',

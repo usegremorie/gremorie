@@ -76,7 +76,7 @@ const meta = {
   title: 'Interaction/Overlays/AlertDialog',
   component: AlertDialog,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof AlertDialog>;
 
 export default meta;

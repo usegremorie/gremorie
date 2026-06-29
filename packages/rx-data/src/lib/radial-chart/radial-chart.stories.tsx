@@ -44,7 +44,7 @@ const meta = {
   title: 'Layout & display/Data/Radial Chart',
   component: RadialChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: { tooltip: { control: 'boolean' } },
   decorators: [
     (Story) => (
@@ -105,7 +105,7 @@ export const Workbench: Story = {
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),

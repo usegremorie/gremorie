@@ -74,7 +74,7 @@ const meta = {
   title: 'Interaction/Overlays/Command',
   component: Command,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Command>;
 
 export default meta;
