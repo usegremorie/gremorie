@@ -67,7 +67,7 @@ export const input = defineContract({
     example: '<input type="email" placeholder="you@example.com" />',
   },
   preview: {
-    rx: 'inputs-input--default',
+    rx: 'inputs-text-input--default',
     ng: 'forms-input--workbench',
   },
   tag: { rx: 'Input', ng: 'gn-input' },

@@ -85,8 +85,8 @@ export const toggleGroup = defineContract({
       '<toggle-group type="single" defaultValue="left"><toggle-group-item value="left" /></toggle-group>',
   },
   preview: {
-    rx: 'inputs-toggle-group--multiple',
-    ng: 'forms-toggle-group--workbench',
+    rx: 'inputs-buttons-togglegroup--multiple',
+    ng: 'forms-togglegroup--workbench',
   },
   tag: { rx: 'ToggleGroup', ng: 'gn-toggle-group' },
   example: {
