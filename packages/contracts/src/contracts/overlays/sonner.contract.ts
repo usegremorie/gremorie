@@ -76,7 +76,7 @@ export const sonner = defineContract({
       '// app root\n<Toaster position="bottom-right" />\n// anywhere\ntoast.success("Saved");',
   },
   preview: {
-    rx: 'interaction-overlays-toaster--default',
+    rx: 'interaction-overlays-sonner--default',
     ng: 'overlays-sonner--workbench',
   },
   tag: { rx: 'Toaster', ng: 'gn-sonner' },

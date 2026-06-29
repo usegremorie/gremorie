@@ -78,7 +78,7 @@ export const slider = defineContract({
     example: '<slider defaultValue={[50]} min={0} max={100} />',
   },
   preview: {
-    rx: 'inputs-slider--single',
+    rx: 'inputs-selection-slider--single',
     ng: 'forms-slider--workbench',
   },
   tag: { rx: 'Slider', ng: 'gn-slider' },

@@ -82,8 +82,8 @@ export const inputOtp = defineContract({
       '<input-otp maxLength={6}><input-otp-group>...slots...</input-otp-group></input-otp>',
   },
   preview: {
-    rx: 'inputs-input-otp--six-digits',
-    ng: 'forms-input-otp--workbench',
+    rx: 'inputs-text-inputotp--six-digits',
+    ng: 'forms-inputotp--workbench',
   },
   tag: { rx: 'InputOTP', ng: 'gn-input-otp' },
   example: {

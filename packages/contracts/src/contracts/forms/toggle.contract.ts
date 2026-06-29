@@ -82,7 +82,7 @@ export const toggle = defineContract({
     example: '<toggle aria-label="Bold">B</toggle>',
   },
   preview: {
-    rx: 'inputs-toggle--default',
+    rx: 'inputs-buttons-toggle--default',
     ng: 'forms-toggle--workbench',
   },
   tag: { rx: 'Toggle', ng: 'gn-toggle' },
