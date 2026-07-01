@@ -3,6 +3,7 @@ import { chartArtifact } from './contracts/artifacts/chart-artifact.contract';
 import { ARTIFACTS_CONTRACTS } from './contracts/artifacts';
 import { BLOCKS_CONTRACTS } from './contracts/blocks';
 import { CHART_CONTRACTS } from './contracts/data/charts.contract';
+import { chartTooltip } from './contracts/data/chart-tooltip.contract';
 import { CHATBOT_CONTRACTS } from './contracts/chatbot';
 import { CONTAINERS_CONTRACTS } from './contracts/containers';
 import { DISPLAY_CONTRACTS } from './contracts/display';
@@ -27,6 +28,7 @@ export * from './contracts/data/charts.contract';
 export const CONTRACTS: ComponentContract[] = [
   ...ARTIFACTS_CONTRACTS,
   ...CHART_CONTRACTS,
+  chartTooltip,
   ...FORMS_CONTRACTS,
   ...DISPLAY_CONTRACTS,
   ...OVERLAYS_CONTRACTS,

@@ -163,6 +163,7 @@ export const NAV: NavSection[] = [
           'radar-chart',
           'radial-chart',
           'scatter-chart',
+          'chart-tooltip',
         ],
       },
       {
