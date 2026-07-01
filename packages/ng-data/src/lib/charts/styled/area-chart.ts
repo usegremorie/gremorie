@@ -8,6 +8,7 @@ import { Area } from '../headless/area';
 import { CartesianGrid } from '../headless/cartesian-grid';
 import { ChartFrame } from '../headless/chart-frame';
 import { ChartTooltip, ChartTooltipCard } from '../headless/tooltip';
+import { ChartTooltipContent } from './chart-tooltip-content';
 import { XAxis, YAxis } from '../headless/axis';
 import { formatValue } from '../headless/format';
 import {
@@ -49,6 +50,7 @@ interface TooltipRow {
     ChartFrame,
     ChartTooltip,
     ChartTooltipCard,
+    ChartTooltipContent,
     Area,
     CartesianGrid,
     XAxis,
@@ -144,28 +146,12 @@ interface TooltipRow {
       </svg>
 
       @if (tooltip() && tip.activeIndex() !== null) {
-        <div
+        <chart-tooltip-content
           [chartTooltipCard]="tip"
-          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
-        >
-          <div class="mb-1 font-medium text-popover-foreground">
-            {{ activeName(tip) }}
-          </div>
-          @for (row of tipRows(tip); track row.key) {
-            <div class="flex items-center gap-1.5 text-muted-foreground">
-              <span
-                class="size-2 rounded-[2px]"
-                [style.background]="row.color"
-              ></span>
-              <span>{{ row.label }}</span>
-              <span
-                class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
-              >
-                {{ row.value }}
-              </span>
-            </div>
-          }
-        </div>
+          class="pointer-events-none absolute z-10"
+          [label]="activeName(tip)"
+          [rows]="tipRows(tip)"
+        />
       }
     </div>
 

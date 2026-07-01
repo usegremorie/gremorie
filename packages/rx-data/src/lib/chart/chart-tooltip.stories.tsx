@@ -158,3 +158,43 @@ export const OnLineChart: Story = {
     </ChartContainer>
   ),
 };
+
+/** Workbench — every variant, so the dual-framework workbench shows the full
+ * set on both editions (each is a pinned chart since the React tooltip is
+ * recharts-context-bound). */
+export const Workbench: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          Dot
+        </span>
+        <BarDemo config={MULTI} />
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          Line
+        </span>
+        <BarDemo config={MULTI} indicator="line" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          Dashed
+        </span>
+        <BarDemo config={MULTI} indicator="dashed" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          Hide label
+        </span>
+        <BarDemo config={SINGLE} hideLabel />
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          Hide indicator
+        </span>
+        <BarDemo config={MULTI} hideIndicator />
+      </div>
+    </div>
+  ),
+};

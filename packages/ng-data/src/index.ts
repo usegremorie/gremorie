@@ -19,6 +19,7 @@ export * from './lib/charts/headless/cartesian-grid';
 export * from './lib/charts/headless/tooltip';
 
 // Charts - styled presets
+export * from './lib/charts/styled/chart-tooltip-content';
 export * from './lib/charts/styled/area-chart';
 export * from './lib/charts/styled/line-chart';
 export * from './lib/charts/styled/bar-chart';
