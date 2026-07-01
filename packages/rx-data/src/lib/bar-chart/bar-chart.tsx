@@ -140,10 +140,7 @@ export function BarChart({
           </>
         )}
         {tooltip ? (
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel={perRowFill} />}
-          />
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         ) : null}
         {keys.map((key, i) => (
           <Bar
