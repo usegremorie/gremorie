@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { Bar, type BarRect } from '../headless/bar';
 import { ChartFrame } from '../headless/chart-frame';
-import { ChartTooltip } from '../headless/tooltip';
+import { ChartTooltip, ChartTooltipCard } from '../headless/tooltip';
 import { formatValue } from '../headless/format';
 import {
   paletteColor,
@@ -45,7 +45,7 @@ interface TooltipRow {
  */
 @Component({
   selector: 'bar-chart',
-  imports: [ChartFrame, ChartTooltip, Bar],
+  imports: [ChartFrame, ChartTooltip, ChartTooltipCard, Bar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'bar-chart',
@@ -66,7 +66,12 @@ interface TooltipRow {
         class="aspect-video w-full overflow-visible text-muted-foreground"
       >
         @for (s of series(); track s.key; let i = $index) {
-          <svg:g [bar]="s.key" [radius]="radius()" [horizontal]="horizontal()" #b="bar">
+          <svg:g
+            [bar]="s.key"
+            [radius]="radius()"
+            [horizontal]="horizontal()"
+            #b="bar"
+          >
             @if (i === 0) {
               @for (g of b.gridLines(); track $index) {
                 <svg:line
@@ -130,19 +135,22 @@ interface TooltipRow {
 
       @if (tooltip() && tip.activeIndex() !== null) {
         <div
+          [chartTooltipCard]="tip"
           class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
-          [style.left.px]="tip.pointer().x"
-          [style.top.px]="tip.pointer().y"
-          style="transform: translate(12px, -50%)"
         >
           <div class="mb-1 font-medium text-popover-foreground">
             {{ activeName(tip) }}
           </div>
           @for (row of tipRows(tip); track row.key) {
             <div class="flex items-center gap-1.5 text-muted-foreground">
-              <span class="size-2 rounded-[2px]" [style.background]="row.color"></span>
+              <span
+                class="size-2 rounded-[2px]"
+                [style.background]="row.color"
+              ></span>
               <span>{{ row.label }}</span>
-              <span class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground">
+              <span
+                class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+              >
                 {{ row.value }}
               </span>
             </div>
@@ -153,7 +161,9 @@ interface TooltipRow {
 
     <table class="sr-only">
       <caption>
-        {{ ariaLabel() }}
+        {{
+          ariaLabel()
+        }}
       </caption>
       <thead>
         <tr>
