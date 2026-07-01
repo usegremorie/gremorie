@@ -72,34 +72,12 @@ export const HideIndicator: Story = {
   }),
 };
 
-/** Workbench — every variant stacked, so the dual-framework workbench shows the
- * full set on both editions. */
+/** Workbench — a single args-driven instance the dual-framework workbench drives
+ * via its controls (indicator / hideLabel / hideIndicator). */
 export const Workbench: Story = {
-  render: () => ({
-    props: { rows: ROWS, one: ONE },
-    template: `
-      <div class="flex flex-col gap-4">
-        <div class="flex flex-col gap-1">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground">Dot</span>
-          <chart-tooltip-content class="w-fit" label="February" [rows]="rows" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground">Line</span>
-          <chart-tooltip-content class="w-fit" label="February" indicator="line" [rows]="rows" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground">Dashed</span>
-          <chart-tooltip-content class="w-fit" label="February" indicator="dashed" [rows]="rows" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground">Hide label</span>
-          <chart-tooltip-content class="w-fit" [hideLabel]="true" [rows]="one" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground">Hide indicator</span>
-          <chart-tooltip-content class="w-fit" label="February" [hideIndicator]="true" [rows]="rows" />
-        </div>
-      </div>
-    `,
+  args: { indicator: 'dot', hideLabel: false, hideIndicator: false },
+  render: (args) => ({
+    props: { ...args, rows: ROWS },
+    template: `<div class="relative inline-block"><chart-tooltip-content label="February" [indicator]="indicator" [hideLabel]="hideLabel" [hideIndicator]="hideIndicator" [rows]="rows" /></div>`,
   }),
 };
