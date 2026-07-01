@@ -379,6 +379,10 @@ function getPayloadConfigFromPayload(
 
 export {
   ChartContainer,
+  // Exposed so `ChartTooltipContent` / `ChartLegendContent` can be rendered
+  // standalone (outside a `ChartContainer`) by providing the config directly —
+  // e.g. isolated tooltip previews. Normal chart usage never needs this.
+  ChartContext,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
