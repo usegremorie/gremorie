@@ -37,7 +37,7 @@ export interface ChartTooltipRow {
   host: {
     'data-slot': 'chart-tooltip',
     class:
-      'block min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs text-popover-foreground shadow-md',
+      'block min-w-32 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md',
   },
   template: `
     @if (!hideLabel() && label()) {
@@ -69,7 +69,7 @@ export interface ChartTooltipRow {
         }
         <span>{{ row.label }}</span>
         <span
-          class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+          class="ml-auto pl-3 font-medium tabular-nums text-card-foreground"
         >
           {{ row.value }}
         </span>
