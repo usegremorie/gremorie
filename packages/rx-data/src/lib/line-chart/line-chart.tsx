@@ -74,10 +74,7 @@ export function LineChart({
           <YAxis tickLine={false} axisLine={false} tickMargin={8} width={40} />
         ) : null}
         {tooltip ? (
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel={keys.length <= 1} />}
-          />
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         ) : null}
         {keys.map((key) => (
           <Line
