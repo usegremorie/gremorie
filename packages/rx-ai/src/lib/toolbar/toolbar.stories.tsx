@@ -72,7 +72,7 @@ const meta = {
   title: 'AI/Workflow/Toolbar',
   component: Toolbar,
   tags: ['autodocs'],
-  parameters: { layout: 'centered', controls: { disable: true } },
+  parameters: { layout: 'padded', controls: { disable: true } },
 } satisfies Meta<typeof Toolbar>;
 
 export default meta;

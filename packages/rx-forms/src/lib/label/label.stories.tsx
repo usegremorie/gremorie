@@ -36,7 +36,7 @@ const meta = {
   title: 'Inputs/Text/Label',
   component: Label,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { children: 'Email address' },
 } satisfies Meta<typeof Label>;
 

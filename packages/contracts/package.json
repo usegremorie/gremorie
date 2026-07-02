@@ -1,0 +1,31 @@
+{
+  "name": "@gremorie/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Agnostic component contracts (anatomy + props + guidance) - the single source of truth across the React and Angular editions, Figma, and the MCP. Drives generated prop tables, parity lint, and the workbench.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "ts-morph": "^25.0.0"
+  },
+  "devDependencies": {
+    "@gremorie/eslint-config": "*",
+    "@gremorie/tsconfig": "*",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.0"
+  }
+}

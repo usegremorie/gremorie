@@ -4,6 +4,8 @@ description: 'Keyboard-first command palette built on cmdk. Inline picker for Co
 ---
 
 import { CommandPreview } from '@/components/preview/overlays/command';
+import { CommandDialogPreview } from '@/components/preview/overlays/command-dialog';
+import { CommandGroupsPreview } from '@/components/preview/overlays/command-groups';
 
 ## Overview
 
@@ -170,9 +172,23 @@ For the floating palette pattern, wrap everything in `CommandDialog` and toggle 
 
 ## Variations
 
-### Cmd+K palette
+### Groups with shortcuts
 
-The canonical global launcher. Listen for `Cmd+K` and toggle the dialog.
+An inline palette grouped by intent, with right-aligned shortcut hints and a `CommandEmpty` state when the search returns nothing.
+
+<ComponentPreview name="overlays/command-groups">
+  <CommandGroupsPreview />
+</ComponentPreview>
+
+### Cmd+K dialog
+
+The canonical floating launcher. The trigger below opens `CommandDialog`; `Cmd+K` (or `Ctrl+K`) toggles it too.
+
+<ComponentPreview name="overlays/command-dialog">
+  <CommandDialogPreview />
+</ComponentPreview>
+
+The wiring in code:
 
 ```tsx
 import { useEffect, useState } from 'react';

@@ -4,6 +4,8 @@ description: Single-select group of mutually exclusive options built on Radix Ra
 ---
 
 import { RadioGroupPreview } from '@/components/preview/forms/radio-group';
+import { RadioGroupWithDescriptionPreview } from '@/components/preview/forms/radio-group-with-description';
+import { RadioGroupDisabledPreview } from '@/components/preview/forms/radio-group-disabled';
 
 ## Overview
 
@@ -146,37 +148,21 @@ When options are short and the surrounding context is wide enough, switch to hor
 </RadioGroup>
 ```
 
-### Controlled with description
+### With descriptions
 
-Add a hint paragraph after each label when the choice has consequences worth explaining.
+Add a hint paragraph after each label when the choice has consequences worth explaining. Align the item to the top of the row with `mt-0.5`.
 
-```tsx
-function PlanPicker() {
-  const [plan, setPlan] = React.useState('pro');
-  return (
-    <RadioGroup value={plan} onValueChange={setPlan}>
-      <div className="flex items-start gap-2">
-        <RadioGroupItem id="free" value="free" className="mt-0.5" />
-        <div className="grid gap-1">
-          <Label htmlFor="free">Free</Label>
-          <p className="text-sm text-muted-foreground">
-            3 projects, community support.
-          </p>
-        </div>
-      </div>
-      <div className="flex items-start gap-2">
-        <RadioGroupItem id="pro" value="pro" className="mt-0.5" />
-        <div className="grid gap-1">
-          <Label htmlFor="pro">Pro</Label>
-          <p className="text-sm text-muted-foreground">
-            Unlimited projects, priority support.
-          </p>
-        </div>
-      </div>
-    </RadioGroup>
-  );
-}
-```
+<ComponentPreview name="forms/radio-group-with-description">
+  <RadioGroupWithDescriptionPreview />
+</ComponentPreview>
+
+### Disabled option
+
+Disable a single `RadioGroupItem` to lock out an unavailable choice while keeping the rest of the group interactive. Disabled items are skipped during keyboard navigation.
+
+<ComponentPreview name="forms/radio-group-disabled">
+  <RadioGroupDisabledPreview />
+</ComponentPreview>
 
 ## Accessibility
 

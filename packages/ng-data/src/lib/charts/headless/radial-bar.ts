@@ -46,6 +46,9 @@ export class RadialBar {
     polarLayout(this.ctx.width(), this.ctx.height(), 8),
   );
 
+  /** Center + radius (absolute SVG coords) — for tooltip positioning. */
+  readonly center = computed(() => this.layout());
+
   readonly transform = computed(
     () => `translate(${this.layout().cx},${this.layout().cy})`,
   );

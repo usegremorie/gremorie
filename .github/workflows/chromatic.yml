@@ -1,0 +1,57 @@
+name: Chromatic
+
+# Publishes BOTH Storybooks to Chromatic (which hosts them publicly AND runs
+# visual regression tests). The workbench app embeds the published Storybooks
+# via VITE_RX_BASE / VITE_NG_BASE (set in the Vercel project to the Chromatic
+# branch permalinks). The workbench app itself deploys via Vercel's Git
+# integration, not this workflow.
+#
+# Required repo secrets:
+#   CHROMATIC_RX_TOKEN  - project token for the React Storybook project
+#   CHROMATIC_NG_TOKEN  - project token for the Angular Storybook project
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  rx-storybook:
+    name: React Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Chromatic needs full git history for baselines
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --legacy-peer-deps
+      - run: npx nx build-storybook rx-ai
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_RX_TOKEN }}
+          storybookBuildDir: dist/storybook/rx-ai
+          onlyChanged: true # TurboSnap: only snapshot changed stories (saves quota)
+          exitZeroOnChanges: true # report visual diffs, don't fail the build
+
+  ng-storybook:
+    name: Angular Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --legacy-peer-deps
+      - run: npx nx build-storybook ng-ai
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_NG_TOKEN }}
+          storybookBuildDir: dist/storybook/ng-ai
+          onlyChanged: true
+          exitZeroOnChanges: true

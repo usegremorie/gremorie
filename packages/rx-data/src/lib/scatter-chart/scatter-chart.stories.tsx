@@ -46,14 +46,14 @@ const meta = {
   title: 'Layout & display/Data/Scatter Chart',
   component: ScatterChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     yAxis: { control: 'boolean' },
     tooltip: { control: 'boolean' },
   },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),
@@ -89,4 +89,36 @@ export const Default: Story = {
 /** Two series against the same X. */
 export const Multiple: Story = {
   args: { data: BODY, config: MULTI, xKey: 'weight' },
+};
+
+// Shared with the Angular `Workbench` story (ng-data) — keep byte-identical so
+// the dual-framework workbench renders the same use case on both sides.
+const WORKBENCH_DATA: ChartDatum[] = [
+  { size: 90, price: 180 },
+  { size: 120, price: 250 },
+  { size: 180, price: 410 },
+  { size: 200, price: 460 },
+  { size: 260, price: 590 },
+  { size: 320, price: 720 },
+];
+
+const WORKBENCH_CONFIG: ChartConfig = {
+  price: { label: 'Price ($k)', color: 'var(--chart-1)' },
+};
+
+/**
+ * Workbench preset: listing size vs. price, top-aligned (layout `padded`) at a
+ * fixed 28rem width so the dual-framework workbench renders the IDENTICAL use
+ * case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  decorators: [
+    (Story) => (
+      <div className="w-full">
+        <Story />
+      </div>
+    ),
+  ],
+  args: { data: WORKBENCH_DATA, config: WORKBENCH_CONFIG, xKey: 'size' },
 };

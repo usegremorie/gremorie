@@ -10,6 +10,15 @@ export interface PieSlice {
   value: number;
 }
 
+/** Centroid label position for a slice (relative to the centered `<g>`). */
+export interface PieLabel {
+  x: number;
+  y: number;
+  index: number;
+  name: string;
+  value: number;
+}
+
 /**
  * Computes pie/donut slices on a `<g>` inside a `[chartFrame]` SVG. The slice
  * value is `[pie]` (a data field); the slice name is the frame's `xKey`. Set
@@ -39,12 +48,16 @@ export class Pie {
     polarLayout(this.ctx.width(), this.ctx.height(), 8),
   );
 
+  /** Pie center + radius (absolute SVG coords) — for label/tooltip positioning. */
+  readonly center = computed(() => this.layout());
+
   /** Translate to apply to the host `<g>` so (0,0) is the pie center. */
   readonly transform = computed(
     () => `translate(${this.layout().cx},${this.layout().cy})`,
   );
 
-  readonly slices = computed<PieSlice[]>(() => {
+  /** Arcs + the configured arc generator, shared by `slices` and `labels`. */
+  private readonly geometry = computed(() => {
     const data = this.ctx.data();
     const nameKey = this.ctx.xKey();
     const valueKey = this.valueKey();
@@ -54,11 +67,26 @@ export class Pie {
     const gen = d3Arc<PieArcDatum<number>>()
       .innerRadius(radius * this.innerRadiusRatio())
       .outerRadius(radius);
+    const names = data.map((d) => String(d[nameKey] ?? ''));
+    return { arcs, gen, values, names };
+  });
+
+  readonly slices = computed<PieSlice[]>(() => {
+    const { arcs, gen, values, names } = this.geometry();
     return arcs.map((a, i) => ({
       d: gen(a) ?? '',
       index: i,
-      name: String(data[i]?.[nameKey] ?? ''),
+      name: names[i] ?? '',
       value: values[i],
     }));
+  });
+
+  /** Centroid label positions (relative to the centered `<g>`) for `showLabels`. */
+  readonly labels = computed<PieLabel[]>(() => {
+    const { arcs, gen, values, names } = this.geometry();
+    return arcs.map((a, i) => {
+      const [x, y] = gen.centroid(a);
+      return { x, y, index: i, name: names[i] ?? '', value: values[i] };
+    });
   });
 }

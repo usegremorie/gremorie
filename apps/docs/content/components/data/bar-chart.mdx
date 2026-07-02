@@ -12,6 +12,24 @@ import { BarChartSinglePreview } from '@/components/preview/data/bar-chart-singl
 
 Reach for BarChart when **discrete buckets** matter - revenue by product, errors by service, users by region. For ordered-domain trends prefer [`LineChart`](/components/data/line-chart) or [`AreaChart`](/components/data/area-chart); for two numeric axes prefer [`ScatterChart`](/components/data/scatter-chart).
 
+The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+
+## Anatomy
+
+```
+<bar-chart>
+└─ figure (role="img")                  card surface, aspect-video
+   ├─ svg (chart frame)
+   │  ├─ cartesian grid
+   │  ├─ x axis (category from xKey)
+   │  ├─ y axis (numeric, optional via yAxis)
+   │  ├─ bars, one group per config key   (stacked or grouped)
+   │  └─ value labels (optional via showLabels)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
 ## Preview
 
 <ComponentPreview name="data/bar-chart">
@@ -70,9 +88,32 @@ export function VisitsByMonth() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { BarChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+  selector: 'app-visits-by-month',
+  imports: [BarChart],
+  template: `<bar-chart [data]="data" [config]="config" xKey="month" />`,
+})
+export class VisitsByMonthComponent {
+  readonly data: ChartDatum[] = [
+    { month: 'Jan', desktop: 186, mobile: 80 },
+    { month: 'Feb', desktop: 305, mobile: 200 },
+    { month: 'Mar', desktop: 237, mobile: 120 },
+    { month: 'Apr', desktop: 73, mobile: 190 },
+    { month: 'May', desktop: 209, mobile: 130 },
+    { month: 'Jun', desktop: 214, mobile: 140 },
+  ];
+
+  readonly config: ChartConfig = {
+    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+  };
+}
+```
 </Tab>
 </Tabs>
 
@@ -137,6 +178,10 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
 />
 ```
 
+```html
+<bar-chart [data]="data" [config]="config" xKey="region" />
+```
+
 The default shape. Reach for a single bar series when comparing one metric across buckets.
 
 ### Multi-series side by side
@@ -154,21 +199,53 @@ const config: ChartConfig = {
 <BarChart data={data} config={config} xKey="month" />;
 ```
 
+```html
+<bar-chart [data]="data" [config]="config" xKey="month" />
+```
+
 For comparing two or three series within the same bucket. Bars from different series share the X tick by default; keep the series count short (two or three) before the bars get too thin to read.
 
-### Stacked, horizontal, and labels
+### Stacked
 
-Set `stacked` to stack series within each category, `horizontal` to swap the axes, or `showLabels` to draw a value on each bar:
+Set `stacked` to stack the series within each category instead of grouping them side by side. Use it when the cumulative total per bucket carries meaning.
 
 ```tsx
 <BarChart data={data} config={config} xKey="month" stacked />
+```
+
+```html
+<bar-chart [data]="data" [config]="config" xKey="month" [stacked]="true" />
+```
+
+### Horizontal
+
+Set `horizontal` to swap the axes so the category runs down the Y axis. Reach for it when category labels are long or the bucket count is high.
+
+```tsx
 <BarChart data={data} config={config} xKey="month" horizontal />
+```
+
+```html
+<bar-chart [data]="data" [config]="config" xKey="month" [horizontal]="true" />
+```
+
+### Value labels
+
+Set `showLabels` to draw the value as a label on top of (or beside) each bar, so exact magnitudes read without hovering.
+
+```tsx
 <BarChart data={data} config={config} xKey="month" showLabels />
 ```
 
+```html
+<bar-chart [data]="data" [config]="config" xKey="month" [showLabels]="true" />
+```
+
+Pair `showLabels` with `radius` (default `8`) to soften the bar corners; lower it to `0` for square caps when labels sit flush on top.
+
 ### Per-bar colors
 
-For a single-series chart, give each row its own `fill` to color bars categorically:
+For a single-series chart, give each row its own `fill` to color bars categorically. The per-row `fill` overrides the series color.
 
 ```tsx
 const data: ChartDatum[] = [
@@ -182,6 +259,16 @@ const data: ChartDatum[] = [
   config={{ visitors: { label: 'Visitors' } }}
   xKey="browser"
 />;
+```
+
+```ts
+readonly data: ChartDatum[] = [
+  { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+  { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+  { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+];
+readonly config: ChartConfig = { visitors: { label: 'Visitors' } };
+// <bar-chart [data]="data" [config]="config" xKey="browser" />
 ```
 
 ### Composing with the chart primitive

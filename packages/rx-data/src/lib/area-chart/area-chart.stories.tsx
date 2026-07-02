@@ -48,7 +48,7 @@ const meta = {
   title: 'Layout & display/Data/Area Chart',
   component: AreaChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     stacked: { control: 'boolean' },
     yAxis: { control: 'boolean' },
@@ -60,7 +60,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[28rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),
@@ -105,4 +105,37 @@ export const Linear: Story = {
 /** Step interpolation. */
 export const Step: Story = {
   args: { data: MONTHS, config: SINGLE, xKey: 'month', type: 'step' },
+};
+
+// Shared with the Angular `Workbench` story (ng-data) — keep byte-identical so
+// the dual-framework workbench renders the same use case on both sides.
+const WORKBENCH_DATA: ChartDatum[] = [
+  { month: 'Jan', sales: 186, profit: 80 },
+  { month: 'Feb', sales: 305, profit: 200 },
+  { month: 'Mar', sales: 237, profit: 120 },
+  { month: 'Apr', sales: 173, profit: 90 },
+  { month: 'May', sales: 209, profit: 130 },
+  { month: 'Jun', sales: 264, profit: 140 },
+];
+
+const WORKBENCH_CONFIG: ChartConfig = {
+  sales: { label: 'Sales', color: 'var(--chart-1)' },
+  profit: { label: 'Profit', color: 'var(--chart-2)' },
+};
+
+/**
+ * Workbench preset: monthly sales vs. profit, top-aligned (layout `padded`) at a
+ * fixed 28rem width so the dual-framework workbench renders the IDENTICAL use
+ * case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  decorators: [
+    (Story) => (
+      <div className="w-full">
+        <Story />
+      </div>
+    ),
+  ],
+  args: { data: WORKBENCH_DATA, config: WORKBENCH_CONFIG, xKey: 'month' },
 };

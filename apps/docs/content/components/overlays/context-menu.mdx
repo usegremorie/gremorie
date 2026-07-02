@@ -4,6 +4,7 @@ description: 'Action menu invoked via right-click on a region. Same compound sha
 ---
 
 import { ContextMenuPreview } from '@/components/preview/overlays/context-menu';
+import { ContextMenuSubmenuPreview } from '@/components/preview/overlays/context-menu-submenu';
 
 ## Overview
 
@@ -136,6 +137,14 @@ Pass-throughs over the Radix primitives with `data-slot` attributes.
 4. **Inside content**: same layout vocabulary as `DropdownMenu` (items, groups, separators, shortcuts, submenus).
 
 ## Variations
+
+### Submenu, checkbox, and shortcuts
+
+Right-click the region to open a menu that combines shortcuts, a nested `ContextMenuSub`, a checkbox item, and a destructive action.
+
+<ComponentPreview name="overlays/context-menu-submenu">
+  <ContextMenuSubmenuPreview />
+</ComponentPreview>
 
 ### File browser actions
 

@@ -45,7 +45,7 @@ const meta = {
   title: 'Layout & display/Data/Radar Chart',
   component: RadarChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
     tooltip: { control: 'boolean' },
@@ -92,4 +92,37 @@ export const Multiple: Story = {
 /** Circular grid. */
 export const CircleGrid: Story = {
   args: { data: METRICS, config: SINGLE, xKey: 'metric', gridType: 'circle' },
+};
+
+// Shared with the Angular `Workbench` story (ng-data) — keep byte-identical so
+// the dual-framework workbench renders the same use case on both sides.
+const WORKBENCH_DATA: ChartDatum[] = [
+  { trait: 'Speed', you: 120, team: 110 },
+  { trait: 'Reliability', you: 98, team: 130 },
+  { trait: 'Comfort', you: 86, team: 100 },
+  { trait: 'Safety', you: 99, team: 90 },
+  { trait: 'Efficiency', you: 85, team: 120 },
+  { trait: 'Range', you: 65, team: 85 },
+];
+
+const WORKBENCH_CONFIG: ChartConfig = {
+  you: { label: 'You', color: 'var(--chart-1)' },
+  team: { label: 'Team', color: 'var(--chart-2)' },
+};
+
+/**
+ * Workbench preset: skill traits you vs. team across shared spokes, top-aligned
+ * (layout `padded`) at a fixed 28rem width so the dual-framework workbench
+ * renders the IDENTICAL use case as the Angular `Workbench` story. Keep in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  decorators: [
+    (Story) => (
+      <div className="w-full">
+        <Story />
+      </div>
+    ),
+  ],
+  args: { data: WORKBENCH_DATA, config: WORKBENCH_CONFIG, xKey: 'trait' },
 };

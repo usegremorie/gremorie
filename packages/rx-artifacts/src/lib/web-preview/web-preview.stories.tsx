@@ -61,7 +61,7 @@ const meta = {
   title: 'AI/Code/WebPreview',
   component: WebPreview,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <div className="h-[28rem] w-[40rem] max-w-full">

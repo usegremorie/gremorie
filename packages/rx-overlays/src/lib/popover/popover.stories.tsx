@@ -65,7 +65,7 @@ const meta = {
   title: 'Interaction/Overlays/Popover',
   component: Popover,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Popover>;
 
 export default meta;

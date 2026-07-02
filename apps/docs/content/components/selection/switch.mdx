@@ -4,6 +4,8 @@ description: Immediate-effect on/off toggle built on Radix Switch, with `sm` and
 ---
 
 import { SwitchPreview } from '@/components/preview/forms/switch';
+import { SwitchSizesPreview } from '@/components/preview/forms/switch-sizes';
+import { SwitchDisabledPreview } from '@/components/preview/forms/switch-disabled';
 
 ## Overview
 
@@ -97,16 +99,21 @@ The canonical pattern for settings pages - label on the left, switch on the righ
 </div>
 ```
 
-### Compact `sm` size for toolbars
+### Sizes
 
-Use the smaller preset inside dense surfaces (sidebars, mini-toolbars, table cells).
+Two presets: `sm` for dense surfaces (sidebars, mini-toolbars, table cells) and `default` for standard settings rows.
 
-```tsx
-<div className="flex items-center gap-2">
-  <Switch id="autosave" size="sm" defaultChecked />
-  <Label htmlFor="autosave">Autosave</Label>
-</div>
-```
+<ComponentPreview name="forms/switch-sizes">
+  <SwitchSizesPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` blocks interaction and drops opacity to 50%. The checked state stays visible so users can tell what the locked value is.
+
+<ComponentPreview name="forms/switch-disabled">
+  <SwitchDisabledPreview />
+</ComponentPreview>
 
 ### Controlled with optimistic update
 

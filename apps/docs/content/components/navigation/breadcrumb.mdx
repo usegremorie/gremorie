@@ -4,6 +4,8 @@ description: "Hierarchical trail showing the user's path. Semantic nav with expl
 ---
 
 import { BreadcrumbPreview } from '@/components/preview/navigation/breadcrumb';
+import { BreadcrumbDropdownPreview } from '@/components/preview/navigation/breadcrumb-dropdown';
+import { BreadcrumbSeparatorPreview } from '@/components/preview/navigation/breadcrumb-separator';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -251,23 +253,21 @@ Use for shallow hierarchies (three to four levels) where every ancestor fits on 
 
 Use when the chain is long enough to wrap awkwardly. The ellipsis announces "More" to assistive tech and signals truncation to sighted users.
 
+### With dropdown collapse
+
+<ComponentPreview name="navigation/breadcrumb-dropdown">
+  <BreadcrumbDropdownPreview />
+</ComponentPreview>
+
+Wrap a `<BreadcrumbEllipsis>` in a `DropdownMenu` trigger to make the collapsed middle operable. The menu lists the hidden ancestors so users can jump to any of them.
+
 ### With custom separator
 
-```tsx
-<Breadcrumb>
-  <BreadcrumbList>
-    <BreadcrumbItem>
-      <BreadcrumbLink href="/">Home</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbSeparator>/</BreadcrumbSeparator>
-    <BreadcrumbItem>
-      <BreadcrumbPage>Settings</BreadcrumbPage>
-    </BreadcrumbItem>
-  </BreadcrumbList>
-</Breadcrumb>
-```
+<ComponentPreview name="navigation/breadcrumb-separator">
+  <BreadcrumbSeparatorPreview />
+</ComponentPreview>
 
-Use to match a brand voice. Keep separators short (a single character or icon) so the trail stays scannable.
+Pass children to `<BreadcrumbSeparator>` to swap the default chevron for a slash, dot, or any icon. Keep separators short (a single character or icon) so the trail stays scannable.
 
 ## Accessibility
 

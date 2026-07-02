@@ -4,15 +4,14 @@ import { ArrowRight, Github } from 'lucide-react';
 import Link from 'next/link';
 
 /**
- * Final CTA - reworked per Odo audit.
+ * Final CTA - reworked per Odo audit, then reframed away from AI-hype.
  *
  * Old version was a copy-paste of the hero ("Start building with
- * Gremorie" + same 3 CTAs). New version:
- *  - Pre-headline badge sets the AI-native pitch
- *  - Headline focuses on the differentiator (legibility for LLMs), not
- *    a generic "start building" CTA
- *  - Supporting paragraph names the audience (AI engineers) and the
- *    promise (ship in your next sprint)
+ * Gremorie" + same 3 CTAs). Current version:
+ *  - Pre-headline badge states the open-source / dual-edition fact
+ *  - Headline closes on the core promise: a design system you own,
+ *    shipped to both frameworks - AI is supporting, not the hook
+ *  - Supporting paragraph recaps own-the-code + parity + AI-native
  *  - Two CTAs instead of three - Get Started (primary) and GitHub
  *    (outline). Star count removed for now; we will add it once we have
  *    a live count.
@@ -37,17 +36,18 @@ export function FinalCta() {
             className="size-1.5 rounded-full bg-primary"
             aria-hidden="true"
           />
-          Built by AI engineers, for AI engineers
+          Open source, MIT licensed, React and Angular
         </Badge>
 
         <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-          Stop fighting your design system.
+          A design system you own,
           <br />
-          <span className="text-primary">Make it AI-legible.</span>
+          <span className="text-primary">on both frameworks.</span>
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-          Open source. MCP-ready. Production-grade. Ship a brand-aware UI your
-          LLM can read and your team can own in their next sprint.
+          85 primitives, design tokens, and production blocks, with a registry
+          and MCP server that keep the system legible to your tools. Install
+          from the registry and ship your own UI in your next sprint.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" asChild>

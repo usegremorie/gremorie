@@ -4,16 +4,8 @@ description: 'Styled wrapper around native HTML table. Skin only - bring TanStac
 ---
 
 import { TablePreview } from '@/components/preview/display/table';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableCaption,
-} from '@gremorie/rx-display';
+import { TableCaptionPreview } from '@/components/preview/display/table-caption';
+import { TableWithFooterPreview } from '@/components/preview/display/table-with-footer';
 
 ## Overview
 
@@ -145,120 +137,19 @@ Every cell should be a `TableCell` or `TableHead` - mixing in raw `<td>` or `<th
 
 ### Data table with caption
 
-<div className="rounded-lg border p-6 not-prose">
-  <Table>
-    <TableCaption>Registry inventory by category.</TableCaption>
-    <TableHeader>
-      <TableRow>
-        <TableHead>Item</TableHead>
-        <TableHead>Category</TableHead>
-        <TableHead className="text-right">Deps</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow>
-        <TableCell className="font-mono">rx-message</TableCell>
-        <TableCell>AI</TableCell>
-        <TableCell className="text-right">4</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell className="font-mono">rx-card</TableCell>
-        <TableCell>Display</TableCell>
-        <TableCell className="text-right">0</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell className="font-mono">rx-button</TableCell>
-        <TableCell>Forms</TableCell>
-        <TableCell className="text-right">1</TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
-</div>
+<ComponentPreview name="display/table-caption">
+  <TableCaptionPreview />
+</ComponentPreview>
 
-```tsx
-<Table>
-  <TableCaption>Registry inventory by category.</TableCaption>
-  <TableHeader>
-    <TableRow>
-      <TableHead>Item</TableHead>
-      <TableHead>Category</TableHead>
-      <TableHead className="text-right">Deps</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    <TableRow>
-      <TableCell className="font-mono">rx-message</TableCell>
-      <TableCell>AI</TableCell>
-      <TableCell className="text-right">4</TableCell>
-    </TableRow>
-    {/* ... */}
-  </TableBody>
-</Table>
-```
+Place `TableCaption` as the first child of `Table` (native HTML rule). The table is `caption-bottom`, so it renders below the rows.
 
 ### With footer summary
 
-<div className="rounded-lg border p-6 not-prose">
-  <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead>Invoice</TableHead>
-        <TableHead>Status</TableHead>
-        <TableHead className="text-right">Amount</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow>
-        <TableCell>INV-001</TableCell>
-        <TableCell>Paid</TableCell>
-        <TableCell className="text-right">$250.00</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell>INV-002</TableCell>
-        <TableCell>Pending</TableCell>
-        <TableCell className="text-right">$180.00</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell>INV-003</TableCell>
-        <TableCell>Paid</TableCell>
-        <TableCell className="text-right">$420.00</TableCell>
-      </TableRow>
-    </TableBody>
-    <TableFooter>
-      <TableRow>
-        <TableCell colSpan={2}>Total</TableCell>
-        <TableCell className="text-right">$850.00</TableCell>
-      </TableRow>
-    </TableFooter>
-  </Table>
-</div>
+<ComponentPreview name="display/table-with-footer">
+  <TableWithFooterPreview />
+</ComponentPreview>
 
-```tsx
-<Table>
-  <TableHeader>
-    <TableRow>
-      <TableHead>Invoice</TableHead>
-      <TableHead>Status</TableHead>
-      <TableHead className="text-right">Amount</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    {invoices.map((inv) => (
-      <TableRow key={inv.id}>
-        <TableCell>{inv.id}</TableCell>
-        <TableCell>{inv.status}</TableCell>
-        <TableCell className="text-right">{inv.amount}</TableCell>
-      </TableRow>
-    ))}
-  </TableBody>
-  <TableFooter>
-    <TableRow>
-      <TableCell colSpan={2}>Total</TableCell>
-      <TableCell className="text-right">$850.00</TableCell>
-    </TableRow>
-  </TableFooter>
-</Table>
-```
+`TableFooter` renders as `<tfoot>` with `bg-muted/50 border-t font-medium` - ideal for totals or summary rows. Use `colSpan` to span label columns.
 
 ### Selected row state
 

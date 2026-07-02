@@ -50,7 +50,7 @@ const meta = {
   title: 'Layout & display/Containers/Resizable',
   component: ResizablePanelGroup,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof ResizablePanelGroup>;
 
 export default meta;

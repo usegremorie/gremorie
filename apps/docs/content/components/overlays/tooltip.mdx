@@ -4,6 +4,7 @@ description: 'Short non-essential context shown on hover and keyboard focus. Bui
 ---
 
 import { TooltipPreview } from '@/components/preview/overlays/tooltip';
+import { TooltipSidesPreview } from '@/components/preview/overlays/tooltip-sides';
 
 ## Overview
 
@@ -136,6 +137,14 @@ Wrapped in a Radix `Portal`. The arrow indicator is included automatically.
 4. **`<TooltipContent>`** mounts via Portal with the arrow and the text.
 
 ## Variations
+
+### Sides
+
+`TooltipContent` accepts a `side` prop (`top`, `right`, `bottom`, `left`) and flips automatically when there is no room. Hover or focus each trigger to see the tooltip and its arrow.
+
+<ComponentPreview name="overlays/tooltip-sides">
+  <TooltipSidesPreview />
+</ComponentPreview>
 
 ### Icon button label
 

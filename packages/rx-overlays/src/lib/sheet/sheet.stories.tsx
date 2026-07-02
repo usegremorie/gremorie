@@ -71,7 +71,7 @@ const meta = {
   title: 'Interaction/Overlays/Sheet',
   component: Sheet,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Sheet>;
 
 export default meta;

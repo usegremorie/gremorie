@@ -4,6 +4,9 @@ description: 'Verb-led action menu attached to a trigger. Items, groups, separat
 ---
 
 import { DropdownMenuPreview } from '@/components/preview/overlays/dropdown-menu';
+import { DropdownMenuCheckboxesPreview } from '@/components/preview/overlays/dropdown-menu-checkboxes';
+import { DropdownMenuRadioPreview } from '@/components/preview/overlays/dropdown-menu-radio';
+import { DropdownMenuSubmenuPreview } from '@/components/preview/overlays/dropdown-menu-submenu';
 
 ## Overview
 
@@ -166,6 +169,30 @@ Pass-throughs over the Radix primitives with `data-slot` attributes.
 6. **Submenus** wrap nested `DropdownMenuSub` blocks.
 
 ## Variations
+
+### Submenu with shortcuts and destructive action
+
+The canonical row-actions menu: right-aligned shortcuts, a nested `DropdownMenuSub`, and the destructive variant for delete.
+
+<ComponentPreview name="overlays/dropdown-menu-submenu">
+  <DropdownMenuSubmenuPreview />
+</ComponentPreview>
+
+### Checkbox items
+
+Toggle visible columns or filters without closing the menu. Each `DropdownMenuCheckboxItem` renders its own check indicator.
+
+<ComponentPreview name="overlays/dropdown-menu-checkboxes">
+  <DropdownMenuCheckboxesPreview />
+</ComponentPreview>
+
+### Radio items
+
+Pick a single value from a `DropdownMenuRadioGroup`. The selected item renders an auto-positioned bullet.
+
+<ComponentPreview name="overlays/dropdown-menu-radio">
+  <DropdownMenuRadioPreview />
+</ComponentPreview>
 
 ### Items with shortcuts and destructive action
 

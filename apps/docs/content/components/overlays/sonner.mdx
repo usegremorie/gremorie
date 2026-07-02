@@ -4,6 +4,7 @@ description: 'Transient toast notifications built on sonner. Mount the Toaster o
 ---
 
 import { SonnerPreview } from '@/components/preview/overlays/sonner';
+import { SonnerVariantsPreview } from '@/components/preview/overlays/sonner-variants';
 
 ## Overview
 
@@ -159,6 +160,14 @@ toast.promise(savePost(), {
 4. **`toast.promise`** for any awaitable flow that should communicate progress.
 
 ## Variations
+
+### Toast types
+
+Each button fires a different toast: default, success, error, one with an inline action, and a promise that transitions loading to success.
+
+<ComponentPreview name="overlays/sonner-variants">
+  <SonnerVariantsPreview />
+</ComponentPreview>
 
 ### Success with undo
 

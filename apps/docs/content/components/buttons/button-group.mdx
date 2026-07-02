@@ -4,6 +4,8 @@ description: Cluster of buttons (or selects) joined by a shared border, with opt
 ---
 
 import { ButtonGroupPreview } from '@/components/preview/forms/button-group';
+import { ButtonGroupVerticalPreview } from '@/components/preview/forms/button-group-vertical';
+import { ButtonGroupTextPreview } from '@/components/preview/forms/button-group-text';
 
 ## Overview
 
@@ -118,25 +120,21 @@ Use for related commands. Separators communicate that each action is distinct, e
 </ButtonGroup>
 ```
 
-### Vertical group for sidebars
+### Vertical orientation
 
 Switch `orientation` to stack actions in a compact column - useful for image editors, video players, and any tool palette.
 
-```tsx
-import { Bold, Italic, Underline } from 'lucide-react';
+<ComponentPreview name="forms/button-group-vertical">
+  <ButtonGroupVerticalPreview />
+</ComponentPreview>
 
-<ButtonGroup orientation="vertical">
-  <Button size="icon" variant="outline" aria-label="Bold">
-    <Bold />
-  </Button>
-  <Button size="icon" variant="outline" aria-label="Italic">
-    <Italic />
-  </Button>
-  <Button size="icon" variant="outline" aria-label="Underline">
-    <Underline />
-  </Button>
-</ButtonGroup>;
-```
+### Text label addon
+
+`ButtonGroupText` renders a non-interactive label that shares the group's border, so prefixes and units merge seamlessly with the buttons.
+
+<ComponentPreview name="forms/button-group-text">
+  <ButtonGroupTextPreview />
+</ComponentPreview>
 
 ### Pagination with label text
 

@@ -4,7 +4,7 @@ description: 'Horizontal or vertical visual divider. Decorative by default; opt 
 ---
 
 import { SeparatorPreview } from '@/components/preview/display/separator';
-import { Separator } from '@gremorie/rx-display';
+import { SeparatorVerticalPreview } from '@/components/preview/display/separator-vertical';
 
 ## Overview
 
@@ -90,20 +90,6 @@ For form group dividers that should announce to AT, set `decorative={false}`.
 
 ### Horizontal divider between sections
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="flex flex-col gap-3">
-    <div>
-      <p className="text-sm font-medium">Account</p>
-      <p className="text-xs text-muted-foreground">kalvner@gremorie.dev</p>
-    </div>
-    <Separator />
-    <div>
-      <p className="text-sm font-medium">Workspace</p>
-      <p className="text-xs text-muted-foreground">Gremorie HQ</p>
-    </div>
-  </div>
-</div>
-
 ```tsx
 <div className="flex flex-col gap-3">
   <section>
@@ -118,29 +104,15 @@ For form group dividers that should announce to AT, set `decorative={false}`.
 </div>
 ```
 
+The default horizontal orientation renders `h-px w-full`, dividing stacked sections. This is the most common case and is also shown in the Preview above.
+
 ### Vertical divider in a toolbar
 
-<div className="rounded-lg border p-6 not-prose">
-  <div className="flex items-center gap-3 text-sm">
-    <span>Docs</span>
-    <Separator orientation="vertical" className="h-4" />
-    <span>Registry</span>
-    <Separator orientation="vertical" className="h-4" />
-    <span>MCP</span>
-  </div>
-</div>
+<ComponentPreview name="display/separator-vertical">
+  <SeparatorVerticalPreview />
+</ComponentPreview>
 
-```tsx
-<div className="flex items-center gap-3 text-sm">
-  <span>Docs</span>
-  <Separator orientation="vertical" className="h-4" />
-  <span>Registry</span>
-  <Separator orientation="vertical" className="h-4" />
-  <span>MCP</span>
-</div>
-```
-
-Vertical separators need an explicit height because their default `h-full` only fills a constrained parent.
+Vertical separators need an explicit height (`h-4` here) because their default `h-full` only fills a constrained parent.
 
 ### Semantic separator (decorative=false)
 

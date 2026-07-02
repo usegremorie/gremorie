@@ -64,7 +64,7 @@ const meta = {
   title: 'Inputs/Text/InputGroup',
   component: InputGroup,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof InputGroup>;
 
 export default meta;

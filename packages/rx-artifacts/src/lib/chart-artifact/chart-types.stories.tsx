@@ -27,7 +27,7 @@ const meta = {
   title: 'AI/Code/Chart types',
   component: ChartArtifact,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <div className="w-[26rem] max-w-full">

@@ -46,7 +46,7 @@ const meta = {
   title: 'Inputs/Selection/Slider',
   component: Slider,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     orientation: {
       control: 'inline-radio',

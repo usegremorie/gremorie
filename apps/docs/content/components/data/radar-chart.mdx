@@ -11,6 +11,22 @@ import { RadarChartPreview } from '@/components/preview/data/radar-chart';
 
 Reach for RadarChart when no single dimension is the headline and the **shape of the polygon** carries meaning across the whole set. For comparing one ordered dimension, [`LineChart`](/components/data/line-chart) reads faster. For ranking categories on a single metric, [`BarChart`](/components/data/bar-chart) is more legible.
 
+The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+
+## Anatomy
+
+```
+<radar-chart>
+└─ figure (role="img")                  card surface, aspect-square
+   ├─ svg
+   │  ├─ polar grid (gridType: polygon | circle)
+   │  ├─ angle axis (spokes from xKey)
+   │  └─ radar polygons, one per config key
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
 ## Preview
 
 <ComponentPreview name="data/radar-chart">
@@ -71,9 +87,31 @@ export function PlayerComparison() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { RadarChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+  selector: 'app-player-comparison',
+  imports: [RadarChart],
+  template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
+})
+export class PlayerComparisonComponent {
+  readonly data: ChartDatum[] = [
+    { skill: 'Speed', a: 90, b: 60 },
+    { skill: 'Power', a: 70, b: 80 },
+    { skill: 'Stamina', a: 85, b: 70 },
+    { skill: 'Agility', a: 75, b: 90 },
+    { skill: 'Skill', a: 95, b: 65 },
+  ];
+
+  readonly config: ChartConfig = {
+    a: { label: 'Player A', color: 'var(--chart-1)' },
+    b: { label: 'Player B', color: 'var(--chart-2)' },
+  };
+}
+```
 </Tab>
 </Tabs>
 
@@ -170,7 +208,7 @@ The chart auto-sizes to its parent through `ChartContainer`'s responsive frame, 
 
 ## Variations
 
-### Two-series comparison
+### Multi-series comparison
 
 <ComponentPreview name="data/radar-chart">
   <RadarChartPreview />
@@ -185,7 +223,11 @@ const config: ChartConfig = {
 <RadarChart data={data} config={config} xKey="skill" />;
 ```
 
-The most common shape. Two stroked series let the user compare polygon footprints at a glance.
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" />
+```
+
+The most common shape. Two stroked series let the user compare polygon footprints at a glance. Keep the count at two or three before the overlapping polygons defeat the comparison.
 
 ### Single series profile
 
@@ -197,19 +239,35 @@ The most common shape. Two stroked series let the user compare polygon footprint
 />
 ```
 
+```html
+<radar-chart [data]="data" [config]="config" xKey="dimension" />
+```
+
 For single-subject profiles - one player, one product, one team. A single filled polygon reads cleanly even with five or six spokes.
 
-### Polygon vs circle grid
+### Polygon grid
+
+The default `gridType`. Straight-edged polygon rings track the spokes, emphasizing the per-spoke geometry.
 
 ```tsx
-// Default: straight-edged polygon rings that track the spokes.
 <RadarChart data={data} config={config} xKey="skill" gridType="polygon" />
+```
 
-// Concentric circles, reads like a target.
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" gridType="polygon" />
+```
+
+### Circle grid
+
+Set `gridType` to `"circle"` for concentric circles that read like a target or dartboard, keeping the rings as a neutral radial scale when exact spoke alignment matters less.
+
+```tsx
 <RadarChart data={data} config={config} xKey="skill" gridType="circle" />
 ```
 
-`gridType` swaps the `PolarGrid` shape. Polygon emphasizes the per-spoke geometry; circle keeps the rings as a neutral radial scale.
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" gridType="circle" />
+```
 
 ## Accessibility
 

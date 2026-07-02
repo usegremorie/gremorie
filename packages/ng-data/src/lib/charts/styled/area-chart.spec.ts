@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { AreaChart } from './area-chart';
-import type { ChartConfig, Datum } from '../headless/types';
+import type { ChartConfig, ChartDatum } from '../headless/types';
 
-const DATA: Datum[] = [
+const DATA: ChartDatum[] = [
   { month: 'Jan', sales: 10, profit: 4 },
   { month: 'Feb', sales: 50, profit: 20 },
   { month: 'Mar', sales: 30, profit: 12 },
@@ -34,10 +34,10 @@ describe('AreaChart', () => {
 
   it('exposes role=img with a label built from series + an a11y data table', async () => {
     const fixture = await render();
-    const figure = fixture.nativeElement.querySelector('[role="img"]');
-    expect(figure).toBeTruthy();
-    expect(figure.getAttribute('aria-label')).toContain('Sales');
-    const rows = fixture.nativeElement.querySelectorAll('table tbody tr');
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.getAttribute('role')).toBe('img');
+    expect(host.getAttribute('aria-label')).toContain('Sales');
+    const rows = host.querySelectorAll('table tbody tr');
     expect(rows.length).toBe(DATA.length);
   });
 });

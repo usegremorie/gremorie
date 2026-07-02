@@ -39,7 +39,7 @@ const meta = {
   title: 'Inputs/Text/Textarea',
   component: Textarea,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { placeholder: 'Type your message…' },
   argTypes: { disabled: { control: 'boolean' } },
   render: (args) => <Textarea className="w-80" {...args} />,

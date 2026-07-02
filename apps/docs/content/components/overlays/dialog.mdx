@@ -4,6 +4,7 @@ description: 'Modal overlay anchored at viewport center, built on Radix Dialog w
 ---
 
 import { DialogPreview } from '@/components/preview/overlays/dialog';
+import { DialogFormPreview } from '@/components/preview/overlays/dialog-form';
 
 ## Overview
 
@@ -136,6 +137,14 @@ Pass-through wrappers over their Radix counterparts with `data-slot` attributes.
 5. **Dismissal**: the built-in X covers the common case; supplement with explicit `DialogClose` buttons for destructive or stateful flows.
 
 ## Variations
+
+### Form dialog
+
+Embed form fields in the body. The dialog traps focus while open; Cancel dismisses via `DialogClose`.
+
+<ComponentPreview name="overlays/dialog-form">
+  <DialogFormPreview />
+</ComponentPreview>
 
 ### Confirmation with explicit Cancel
 

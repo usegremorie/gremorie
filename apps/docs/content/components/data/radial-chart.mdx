@@ -11,6 +11,21 @@ import { RadialChartPreview } from '@/components/preview/data/radial-chart';
 
 Reach for RadialChart when you want a **compact, decorative ranking** of three to five items - top categories, leading drivers, ranked metrics in a hero card. For exact comparison [`BarChart`](/components/data/bar-chart) reads faster; for share-of-whole at a glance [`PieChart`](/components/data/pie-chart) is more familiar.
 
+The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+
+## Anatomy
+
+```
+<radial-chart>
+└─ figure (role="img")                  card surface, aspect-square
+   ├─ svg
+   │  └─ concentric bars, one per row
+   │     └─ row fill colored (palette / per-row fill)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend
+   └─ sr-only data table
+```
+
 ## Preview
 
 <ComponentPreview name="data/radial-chart">
@@ -73,9 +88,35 @@ export function TopBrowsers() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { RadialChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+  selector: 'app-top-browsers',
+  imports: [RadialChart],
+  template: `
+    <radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
+  `,
+})
+export class TopBrowsersComponent {
+  readonly data: ChartDatum[] = [
+    { category: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+    { category: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+    { category: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+    { category: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+  ];
+
+  readonly config: ChartConfig = {
+    visitors: { label: 'Visitors' },
+    Chrome: { label: 'Chrome' },
+    Safari: { label: 'Safari' },
+    Firefox: { label: 'Firefox' },
+    Edge: { label: 'Edge' },
+  };
+}
+```
 </Tab>
 </Tabs>
 
@@ -146,6 +187,10 @@ The chart auto-sizes to its parent through `ChartContainer` (recharts `Responsiv
 />
 ```
 
+```html
+<radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
+```
+
 The default. Four bars provide a comfortable visual rhythm without crowding.
 
 ### Top-three highlight
@@ -160,7 +205,41 @@ The default. Four bars provide a comfortable visual rhythm without crowding.
 />
 ```
 
+```html
+<radial-chart
+  class="max-w-xs"
+  [data]="topThree"
+  [config]="config"
+  nameKey="product"
+  dataKey="revenue"
+/>
+```
+
 For top-three callouts in a hero card. Constrain the surface width so the bars stay readable in a tight column.
+
+### No tooltip
+
+Set `tooltip` to `false` for a static, decorative ranking - useful when the bars are labeled elsewhere or the chart is a glanceable hero element rather than an explorable surface.
+
+```tsx
+<RadialChart
+  data={data}
+  config={config}
+  nameKey="category"
+  dataKey="visitors"
+  tooltip={false}
+/>
+```
+
+```html
+<radial-chart
+  [data]="data"
+  [config]="config"
+  nameKey="category"
+  dataKey="visitors"
+  [tooltip]="false"
+/>
+```
 
 ### Custom composition
 

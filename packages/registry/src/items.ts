@@ -467,7 +467,7 @@ export const ITEMS: ItemConfig[] = [
     description:
       'Shiki-highlighted code container with light/dark theme snapshots and an optional copy button. Mirrors the rx-ai implementation (github-light-default / github-dark-default).',
     categories: ['ai', 'code'],
-    packageRoot: 'packages/ng-ai',
+    packageRoot: 'packages/ng-artifacts',
     sourceFiles: [
       'src/lib/code-block/code-block.ts',
       'src/lib/code-block/code-block-copy-button.ts',

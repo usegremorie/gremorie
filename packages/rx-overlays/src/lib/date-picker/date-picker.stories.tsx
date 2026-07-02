@@ -44,7 +44,7 @@ const meta = {
   title: 'Inputs/Date/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },

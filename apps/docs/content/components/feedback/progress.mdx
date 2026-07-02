@@ -4,6 +4,7 @@ description: 'Determinate horizontal progress bar with token-driven track and in
 ---
 
 import { ProgressPreview } from '@/components/preview/feedback/progress';
+import { ProgressValuesPreview } from '@/components/preview/feedback/progress-values';
 import { Progress } from '@gremorie/rx-feedback';
 
 ## Overview
@@ -88,6 +89,14 @@ The root and indicator together. Renders a Radix `Root` styled as a 8 px track p
 3. **Inside an `Alert` or a `Card`**: progress that explains _what_ is loading reads better than progress that floats alone. Wrap with a context line so users know why they are waiting.
 
 ## Variations
+
+### Value labels
+
+<ComponentPreview name="feedback/progress-values">
+  <ProgressValuesPreview />
+</ComponentPreview>
+
+The same bar across the full determinate range - `0`, `33`, `66`, and `100`. Pair every bar with its numeric value so the fill is never silent: at `0` the user sees the task is queued, at `100` that it is done. `value` is clamped between `0` and `max` (default `100`).
 
 ### With label
 

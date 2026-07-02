@@ -89,7 +89,7 @@ const meta = {
   title: 'AI/Chatbot/ModelSelector',
   component: ModelSelector,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof ModelSelector>;
 
 export default meta;

@@ -50,7 +50,7 @@ const meta = {
   title: 'Layout & display/Display/Collapsible',
   component: Collapsible,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     defaultOpen: { control: 'boolean' },
     disabled: { control: 'boolean' },
