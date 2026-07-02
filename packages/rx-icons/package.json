@@ -30,7 +30,7 @@
     "README.md"
   ],
   "peerDependencies": {
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "tslib": "^2.3.0"
