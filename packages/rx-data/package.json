@@ -33,10 +33,10 @@
   ],
   "peerDependencies": {
     "@gremorie/rx-core": ">=0.3.0",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
-    "recharts": "^3.8.0",
+    "recharts": "^3.9.1",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,

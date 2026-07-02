@@ -45,15 +45,15 @@
   ],
   "peerDependencies": {
     "@gremorie/rx-core": ">=0.3.0",
-    "react": "^18 || ^19"
+    "react": "^19.2.7"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.547.0",
-    "radix-ui": "^1.4.3",
+    "radix-ui": "^1.6.1",
     "react-day-picker": "^10.0.0",
-    "react-hook-form": "^7.76.0",
+    "react-hook-form": "^7.80.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
