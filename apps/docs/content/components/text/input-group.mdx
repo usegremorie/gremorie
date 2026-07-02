@@ -4,6 +4,8 @@ description: Composable input layout that wraps Input or Textarea with inline an
 ---
 
 import { InputGroupPreview } from '@/components/preview/forms/input-group';
+import { InputGroupIconPreview } from '@/components/preview/forms/input-group-icon';
+import { InputGroupButtonPreview } from '@/components/preview/forms/input-group-button';
 
 ## Overview
 
@@ -147,18 +149,21 @@ A classic search bar. Leading icon, trailing button.
 </InputGroup>
 ```
 
-### URL field with prefix
+### Leading and trailing icons
 
-The leading addon shows a static label that clicks-through to focus the input.
+Place an `InputGroupAddon` on each side - `inline-start` for a leading icon and `inline-end` for a trailing one. Both click through to focus the input.
 
-```tsx
-<InputGroup>
-  <InputGroupAddon>
-    <InputGroupText>https://</InputGroupText>
-  </InputGroupAddon>
-  <InputGroupInput placeholder="example.com" />
-</InputGroup>
-```
+<ComponentPreview name="forms/input-group-icon">
+  <InputGroupIconPreview />
+</ComponentPreview>
+
+### Prefix label with trailing button
+
+The leading addon shows a static label that clicks-through to focus the input; the trailing addon hosts an `InputGroupButton`.
+
+<ComponentPreview name="forms/input-group-button">
+  <InputGroupButtonPreview />
+</ComponentPreview>
 
 ### Textarea with footer toolbar
 

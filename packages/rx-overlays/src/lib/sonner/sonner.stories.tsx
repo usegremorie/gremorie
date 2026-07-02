@@ -50,7 +50,7 @@ const meta = {
   title: 'Interaction/Overlays/Sonner',
   component: Toaster,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <>

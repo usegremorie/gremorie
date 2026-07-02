@@ -5,12 +5,29 @@ description: 'Parts of a whole, one slice per data row, with optional donut hole
 
 import { PieChartPreview } from '@/components/preview/data/pie-chart';
 import { PieChartDonutPreview } from '@/components/preview/data/pie-chart-donut';
+import { PieChartLabelsPreview } from '@/components/preview/data/pie-chart-labels';
 
 ## Overview
 
 `PieChart` is a recharts chart built on the shadcn `chart` primitive (`ChartContainer`) for **parts of a whole**. Pass tabular `data`, the `nameKey` (the slice label field), and the `dataKey` (the numeric value field). Slice colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip. Pass `donut` for a donut variant with a centered hole.
 
 Reach for PieChart when **proportions matter** and you have **two to six categories** that sum to a meaningful total - traffic share by browser, revenue by tier, allocations by team. For seven or more categories, a [`BarChart`](/components/data/bar-chart) reads faster; for time-series proportions, a stacked [`AreaChart`](/components/data/area-chart) carries more information.
+
+The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+
+## Anatomy
+
+```
+<pie-chart>
+└─ figure (role="img")                  card surface, aspect-square
+   ├─ svg
+   │  ├─ slices, one per row (donut hole when donut)
+   │  │  └─ row fill colored (palette / per-row fill)
+   │  └─ slice labels (optional via showLabels)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend
+   └─ sr-only data table
+```
 
 ## Preview
 
@@ -71,9 +88,37 @@ export function BrowserShare() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```ts
+import { Component } from '@angular/core';
+import { PieChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+  selector: 'app-browser-share',
+  imports: [PieChart],
+  template: `
+    <pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
+  `,
+})
+export class BrowserShareComponent {
+  readonly data: ChartDatum[] = [
+    { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+    { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+    { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+    { browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+    { browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
+  ];
+
+  readonly config: ChartConfig = {
+    visitors: { label: 'Visitors' },
+    Chrome: { label: 'Chrome' },
+    Safari: { label: 'Safari' },
+    Firefox: { label: 'Firefox' },
+    Edge: { label: 'Edge' },
+    Other: { label: 'Other' },
+  };
+}
+```
 </Tab>
 </Tabs>
 
@@ -133,21 +178,41 @@ The chart auto-sizes to its parent through `ChartContainer` (recharts `Responsiv
 
 ### Solid pie
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/pie-chart">
   <PieChartPreview />
-</div>
+</ComponentPreview>
 
-```tsx
-<PieChart data={data} config={config} nameKey="browser" dataKey="visitors" />
+```html
+<pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
 ```
 
 The default. Use when the surrounding surface is small (card, side panel) or when no centered label is needed.
 
 ### Donut variant
 
-<div className="rounded-lg border p-6 not-prose">
+<ComponentPreview name="data/pie-chart-donut">
   <PieChartDonutPreview />
-</div>
+</ComponentPreview>
+
+```html
+<pie-chart
+  [data]="data"
+  [config]="config"
+  nameKey="browser"
+  dataKey="visitors"
+  [donut]="true"
+/>
+```
+
+Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses an `innerRadius` of 60.
+
+### Labels
+
+Set `showLabels` to draw each slice's name inside the slice, so the chart reads without a separate legend.
+
+<ComponentPreview name="data/pie-chart-labels">
+  <PieChartLabelsPreview />
+</ComponentPreview>
 
 ```tsx
 <PieChart
@@ -155,11 +220,21 @@ The default. Use when the surrounding surface is small (card, side panel) or whe
   config={config}
   nameKey="browser"
   dataKey="visitors"
-  donut
+  showLabels
 />
 ```
 
-Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses an `innerRadius` of 60.
+```html
+<pie-chart
+  [data]="data"
+  [config]="config"
+  nameKey="browser"
+  dataKey="visitors"
+  [showLabels]="true"
+/>
+```
+
+Reach for labels when the surface is large enough to hold them and you want the slice names visible at rest. Combine with `donut` for a labeled donut.
 
 ### Custom composition
 

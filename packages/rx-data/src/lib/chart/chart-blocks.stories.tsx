@@ -56,7 +56,7 @@ import {
  */
 const meta = {
   title: 'Layout & display/Data/Blocks (shadcn)',
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
       <div className="w-[24rem] max-w-full">

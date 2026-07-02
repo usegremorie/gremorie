@@ -4,6 +4,7 @@ description: 'Direction-aware sheet (top, bottom, left, right) built on vaul wit
 ---
 
 import { DrawerPreview } from '@/components/preview/overlays/drawer';
+import { DrawerDirectionsPreview } from '@/components/preview/overlays/drawer-directions';
 
 ## Overview
 
@@ -131,6 +132,14 @@ Pass-throughs over the vaul primitives with `data-slot` attributes.
 5. **Dismissal**: drag past the threshold, click overlay, press `Esc`, or call `DrawerClose`.
 
 ## Variations
+
+### Directions
+
+Set the `direction` prop on `Drawer` to slide the panel in from any edge (`top`, `bottom`, `left`, `right`). The gripper handle renders automatically for `bottom`.
+
+<ComponentPreview name="overlays/drawer-directions">
+  <DrawerDirectionsPreview />
+</ComponentPreview>
 
 ### Bottom drawer with form
 

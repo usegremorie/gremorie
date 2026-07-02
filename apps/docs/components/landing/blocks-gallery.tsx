@@ -1,5 +1,4 @@
 import {
-  Badge,
   Card,
   CardDescription,
   CardHeader,
@@ -18,38 +17,31 @@ type BlockShape =
   | 'empty';
 
 /**
- * Each block cycles through chart-1..5 (with chart-1 reused for the 6th).
- * Accent is rendered inline via color-mix so we stay token-driven and
- * theme-aware (chart tokens already remap between light and dark).
- *
- * Adds a `shape` slot per block - drives a small inline SVG mockup that
- * visually previews the block layout. Mockups are intentionally low-detail
- * (rectangles + circles) so they read as schematic, not as final UI -
- * cleaner than a screenshot, cheaper than a screenshot, and they reuse
- * the same chart accent that powers the card halo.
+ * Each block has a `shape` slot driving a small inline SVG mockup that previews
+ * the layout. Mockups are intentionally low-detail (rectangles + circles) so
+ * they read as schematic, not as final UI - and they render monochrome (the
+ * muted-foreground token) so the gallery stays neutral and professional rather
+ * than a rainbow of tinted cards.
  */
 const blocks: ReadonlyArray<{
   name: string;
   category: string;
   description: string;
   href: string;
-  chart: string;
   shape: BlockShape;
 }> = [
   {
     name: 'Sign-in',
     category: 'Auth',
     description: 'Email and password card with OAuth slot.',
-    href: '/blocks#sign-in',
-    chart: 'var(--chart-1)',
+    href: '/blocks/sign-in',
     shape: 'sign-in',
   },
   {
     name: 'Dashboard',
     category: 'Shell',
     description: 'Sidebar plus KPI grid plus chart plus recent activity.',
-    href: '/blocks#dashboard',
-    chart: 'var(--chart-2)',
+    href: '/blocks/dashboard',
     shape: 'dashboard',
   },
   {
@@ -57,31 +49,27 @@ const blocks: ReadonlyArray<{
     category: 'AI',
     description: 'Conversation, reasoning, artifact, sources + a B2B composer.',
     href: '/blocks/assistant',
-    chart: 'var(--primary)',
     shape: 'chat',
   },
   {
     name: 'Settings form',
     category: 'Forms',
     description: 'Multi-section form with save bar and validation.',
-    href: '/blocks#settings',
-    chart: 'var(--chart-4)',
+    href: '/blocks/settings-form',
     shape: 'settings',
   },
   {
     name: 'Marketing hero',
     category: 'Marketing',
     description: 'Hero with CTA, feature grid, social proof.',
-    href: '/blocks#marketing',
-    chart: 'var(--chart-5)',
+    href: '/blocks/marketing-hero',
     shape: 'marketing',
   },
   {
     name: 'Empty state',
     category: 'Patterns',
     description: 'No data, no results, error, permission denied.',
-    href: '/blocks#empty-state',
-    chart: 'var(--chart-3)',
+    href: '/blocks/empty-state',
     shape: 'empty',
   },
 ];
@@ -431,11 +419,11 @@ export function BlocksGallery() {
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Production-ready blocks
+              Blocks, not just primitives
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Compositions of multiple primitives. Install one block, get a
-              wired-up screen. Variations included.
+              Whole screens composed from the primitives. Install one block and
+              get a wired-up layout, variations included, in either framework.
             </p>
           </div>
           <Button variant="ghost" asChild>
@@ -453,36 +441,17 @@ export function BlocksGallery() {
               href={block.href}
               className="group block focus-visible:outline-none"
             >
-              <Card className="relative h-64 justify-between gap-0 overflow-hidden py-0 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:shadow-md group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
-                <div
-                  className="absolute inset-0 -z-10 opacity-50 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{
-                    background: `linear-gradient(to bottom right, color-mix(in oklch, ${block.chart} 18%, transparent), transparent 60%)`,
-                  }}
-                  aria-hidden="true"
-                />
-
-                {/* Mockup region. Fixed height, accent color injected here
-                    so the SVG inherits it via currentColor. */}
-                <div
-                  className="flex h-28 items-center justify-center border-b border-border/40 px-6 transition-colors group-hover:border-border/70"
-                  style={{ color: block.chart }}
-                >
+              <Card className="h-64 justify-between gap-0 overflow-hidden py-0 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
+                {/* Schematic preview - monochrome (muted-foreground via
+                    currentColor) on a subtle muted frame. */}
+                <div className="flex h-28 items-center justify-center border-b bg-muted/30 px-6 text-muted-foreground">
                   <BlockMockup shape={block.shape} />
                 </div>
 
-                <CardHeader className="flex flex-row items-start justify-between gap-2 pt-4">
+                <CardHeader className="gap-1 pt-4 pb-5">
                   <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
                     {block.category}
                   </span>
-                  <Badge
-                    variant="outline"
-                    className="bg-background/80 text-[10px] backdrop-blur"
-                  >
-                    Coming soon
-                  </Badge>
-                </CardHeader>
-                <CardHeader className="gap-1 pb-5">
                   <CardTitle className="text-base">{block.name}</CardTitle>
                   <CardDescription className="text-xs">
                     {block.description}

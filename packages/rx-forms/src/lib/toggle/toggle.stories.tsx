@@ -42,7 +42,7 @@ const meta = {
   title: 'Inputs/Buttons/Toggle',
   component: Toggle,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { children: <Bold />, 'aria-label': 'Toggle bold' },
   argTypes: {
     variant: { control: 'inline-radio', options: ['default', 'outline'] },

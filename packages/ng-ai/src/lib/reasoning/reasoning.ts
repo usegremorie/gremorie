@@ -4,11 +4,13 @@ import {
   computed,
   effect,
   forwardRef,
+  inject,
   InjectionToken,
   input,
   model,
   output,
   signal,
+  untracked,
   ViewEncapsulation,
 } from '@angular/core';
 import { BrnCollapsible } from '@spartan-ng/brain/collapsible';
@@ -43,20 +45,25 @@ const MS_IN_S = 1000;
 @Component({
   selector: 'reasoning',
   standalone: true,
-  imports: [BrnCollapsible],
+  // `brnCollapsible` lives on the HOST (not an inner div) so the
+  // content-projected `<reasoning-trigger>` / `<reasoning-content>` — whose
+  // injector chain runs through this host element — can `inject(BrnCollapsible)`.
+  // An inner `<div brnCollapsible>` is invisible to projected content (projected
+  // nodes keep their declaration-site injector), which threw "Collapsible trigger
+  // can only be used inside a brn-collapsible element".
+  hostDirectives: [BrnCollapsible],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div brnCollapsible [(expanded)]="open">
-      <ng-content />
-    </div>
-  `,
+  template: `<ng-content />`,
   host: {
     '[class]': 'hostClass()',
   },
   providers: [{ provide: REASONING, useExisting: forwardRef(() => Reasoning) }],
 })
 export class Reasoning implements ReasoningState {
+  /** The host BrnCollapsible — the single source of truth for expanded state. */
+  private readonly collapsible = inject(BrnCollapsible, { self: true });
+
   readonly isStreaming = input<boolean>(false);
   readonly defaultOpen = input<boolean>(true);
   readonly open = model<boolean>(true);
@@ -82,6 +89,22 @@ export class Reasoning implements ReasoningState {
   protected readonly hostClass = computed(() => cn('not-prose mb-4 block'));
 
   constructor() {
+    // Mirror the public `open` model onto the host collapsible's `expanded`
+    // (and back), so `[(open)]` keeps working and a trigger click flows through.
+    // `untracked` keeps each effect tracking only its own source signal.
+    effect(() => {
+      const o = this.open();
+      untracked(() => {
+        if (this.collapsible.expanded() !== o) this.collapsible.expanded.set(o);
+      });
+    });
+    effect(() => {
+      const e = this.collapsible.expanded();
+      untracked(() => {
+        if (this.open() !== e) this.open.set(e);
+      });
+    });
+
     // Apply defaultOpen on init.
     effect(() => {
       this.open.set(this.defaultOpen());

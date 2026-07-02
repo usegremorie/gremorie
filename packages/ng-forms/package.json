@@ -1,0 +1,50 @@
+{
+  "name": "@gremorie/ng-forms",
+  "version": "0.1.0",
+  "description": "Form primitives for Angular - Input, Label, Textarea, Checkbox, RadioGroup, Select, Switch, Slider, Toggle, ToggleGroup, ButtonGroup, InputOTP, InputGroup, Calendar, DatePicker and Form. Companion to Spartan-ng. Part of Gremorie.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/ng-forms"
+  },
+  "keywords": [
+    "angular",
+    "ui",
+    "form",
+    "input",
+    "label",
+    "textarea",
+    "checkbox",
+    "radio-group",
+    "select",
+    "switch",
+    "slider",
+    "toggle",
+    "toggle-group",
+    "button-group",
+    "input-otp",
+    "input-group",
+    "calendar",
+    "date-picker",
+    "forms"
+  ],
+  "peerDependencies": {
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@spartan-ng/brain": "^0.0.1-alpha.694",
+    "class-variance-authority": "^0.7.1",
+    "@gremorie/ng-core": ">=0.0.1"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./fesm2022/ng-forms.mjs"
+    }
+  },
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
+}

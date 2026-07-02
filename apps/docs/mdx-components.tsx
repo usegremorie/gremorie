@@ -12,6 +12,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 
 import { ComponentPreview } from '@/components/component-preview';
+import { PropsTable } from '@/components/props-table';
 import { ArtifactPreview } from '@/components/preview/artifacts';
 import { BlockPreview } from '@/components/preview/blocks';
 
@@ -45,6 +46,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ArtifactPreview,
     BlockPreview,
     ComponentPreview,
+    PropsTable,
     ...components,
   };
 }

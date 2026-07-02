@@ -66,7 +66,7 @@ const meta = {
   title: 'Interaction/Overlays/Drawer',
   component: Drawer,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof Drawer>;
 
 export default meta;

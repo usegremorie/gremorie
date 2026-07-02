@@ -4,6 +4,9 @@ description: Coordinated cluster of Toggles - radio-like with `type="single"` or
 ---
 
 import { ToggleGroupPreview } from '@/components/preview/forms/toggle-group';
+import { ToggleGroupMultiplePreview } from '@/components/preview/forms/toggle-group-multiple';
+import { ToggleGroupOutlinePreview } from '@/components/preview/forms/toggle-group-outline';
+import { ToggleGroupSizesPreview } from '@/components/preview/forms/toggle-group-sizes';
 
 ## Overview
 
@@ -134,41 +137,25 @@ import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 
 `type="multiple"` lets users press multiple items (e.g. bold + italic at the same time).
 
-```tsx
-import { Bold, Italic, Underline } from 'lucide-react';
-
-<ToggleGroup type="multiple" defaultValue={['bold']}>
-  <ToggleGroupItem value="bold" aria-label="Bold">
-    <Bold />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="italic" aria-label="Italic">
-    <Italic />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="underline" aria-label="Underline">
-    <Underline />
-  </ToggleGroupItem>
-</ToggleGroup>;
-```
+<ComponentPreview name="forms/toggle-group-multiple">
+  <ToggleGroupMultiplePreview />
+</ComponentPreview>
 
 ### Outline variant with spacing
 
 When the cluster should read as a row of independent buttons rather than one joined unit, use `variant="outline"` plus a positive `spacing` value.
 
-```tsx
-import { List, LayoutGrid, Rows3 } from 'lucide-react';
+<ComponentPreview name="forms/toggle-group-outline">
+  <ToggleGroupOutlinePreview />
+</ComponentPreview>
 
-<ToggleGroup type="single" defaultValue="grid" variant="outline" spacing={1}>
-  <ToggleGroupItem value="list" aria-label="List view">
-    <List />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="grid" aria-label="Grid view">
-    <LayoutGrid />
-  </ToggleGroupItem>
-  <ToggleGroupItem value="board" aria-label="Board view">
-    <Rows3 />
-  </ToggleGroupItem>
-</ToggleGroup>;
-```
+### Sizes
+
+The `size` prop set on the root propagates to every item via context, so the whole cluster scales together. Available presets are `sm`, `default`, and `lg`.
+
+<ComponentPreview name="forms/toggle-group-sizes">
+  <ToggleGroupSizesPreview />
+</ComponentPreview>
 
 ### Controlled selection
 

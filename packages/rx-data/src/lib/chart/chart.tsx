@@ -204,7 +204,7 @@ function ChartTooltipContent({
   return (
     <div
       className={cn(
-        'grid min-w-[8rem] items-start gap-1.5 rounded-sm border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl',
+        'grid min-w-32 items-start gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md',
         className,
       )}
     >
@@ -266,7 +266,7 @@ function ChartTooltipContent({
                         </span>
                       </div>
                       {item.value != null && (
-                        <span className="font-mono font-medium text-foreground tabular-nums">
+                        <span className="font-mono font-medium text-card-foreground tabular-nums">
                           {typeof item.value === 'number'
                             ? item.value.toLocaleString()
                             : String(item.value)}
@@ -379,6 +379,10 @@ function getPayloadConfigFromPayload(
 
 export {
   ChartContainer,
+  // Exposed so `ChartTooltipContent` / `ChartLegendContent` can be rendered
+  // standalone (outside a `ChartContainer`) by providing the config directly —
+  // e.g. isolated tooltip previews. Normal chart usage never needs this.
+  ChartContext,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,

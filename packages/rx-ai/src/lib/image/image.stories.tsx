@@ -42,7 +42,7 @@ const meta = {
   title: 'AI/Utilities/Image',
   component: Image,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     alt: { control: 'text' },
   },

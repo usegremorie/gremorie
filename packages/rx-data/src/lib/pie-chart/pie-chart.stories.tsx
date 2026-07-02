@@ -46,7 +46,7 @@ const meta = {
   title: 'Layout & display/Data/Pie Chart',
   component: PieChart,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     donut: { control: 'boolean' },
     showLabels: { control: 'boolean' },
@@ -110,5 +110,38 @@ export const WithLabels: Story = {
     nameKey: 'browser',
     dataKey: 'visitors',
     showLabels: true,
+  },
+};
+
+// Shared with the Angular `Workbench` story (ng-data) — keep this data array
+// byte-identical so the dual-framework workbench renders the same use case on
+// both sides. (Angular has no `config` input; colors come from each row `fill`.)
+const WORKBENCH_DATA: ChartDatum[] = [
+  { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+  { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+  { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+  { browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+  { browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
+];
+
+/**
+ * Workbench preset: visitors by browser, top-aligned (layout `padded`) at a
+ * fixed 28rem width so the dual-framework workbench renders the IDENTICAL use
+ * case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  decorators: [
+    (Story) => (
+      <div className="w-full">
+        <Story />
+      </div>
+    ),
+  ],
+  args: {
+    data: WORKBENCH_DATA,
+    config: CONFIG,
+    nameKey: 'browser',
+    dataKey: 'visitors',
   },
 };

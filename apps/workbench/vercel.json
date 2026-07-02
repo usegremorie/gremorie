@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd ../.. && npx nx build workbench",
+  "installCommand": "cd ../.. && npm install --legacy-peer-deps",
+  "outputDirectory": "dist",
+  "framework": null
+}

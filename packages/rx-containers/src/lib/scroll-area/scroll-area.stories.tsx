@@ -42,7 +42,7 @@ const meta = {
   title: 'Layout & display/Containers/ScrollArea',
   component: ScrollArea,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof ScrollArea>;
 
 export default meta;

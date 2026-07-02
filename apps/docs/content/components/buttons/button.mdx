@@ -4,6 +4,10 @@ description: Primary click target with six visual variants, eight size presets (
 ---
 
 import { ButtonPreview } from '@/components/preview/forms/button';
+import { ButtonSizesPreview } from '@/components/preview/forms/button-sizes';
+import { ButtonIconPreview } from '@/components/preview/forms/button-icon';
+import { ButtonIconOnlyPreview } from '@/components/preview/forms/button-icon-only';
+import { ButtonDisabledPreview } from '@/components/preview/forms/button-disabled';
 
 ## Overview
 
@@ -99,30 +103,37 @@ Showcase every variant for visual reference. `default` for primary actions, `des
 </div>
 ```
 
+### Sizes
+
+Four footprint presets - `xs`, `sm`, `default`, `lg` - keep dense toolbars and primary CTAs visually consistent. Icon-only square sizes (`icon-xs` through `icon-lg`) are shown below.
+
+<ComponentPreview name="forms/button-sizes">
+  <ButtonSizesPreview />
+</ComponentPreview>
+
 ### Button with leading icon
 
 Drop an icon as a child. CSS auto-sizes it and tightens the horizontal padding via `has-[>svg]:px-3`.
 
-```tsx
-import { Download } from 'lucide-react';
-
-<Button>
-  <Download />
-  Download report
-</Button>;
-```
+<ComponentPreview name="forms/button-icon">
+  <ButtonIconPreview />
+</ComponentPreview>
 
 ### Icon-only button
 
 Use `size="icon"` (or `icon-xs`, `icon-sm`, `icon-lg`) for square buttons. Always pair with an `aria-label` so screen readers announce the action.
 
-```tsx
-import { Trash2 } from 'lucide-react';
+<ComponentPreview name="forms/button-icon-only">
+  <ButtonIconOnlyPreview />
+</ComponentPreview>
 
-<Button size="icon" variant="ghost" aria-label="Delete row">
-  <Trash2 />
-</Button>;
-```
+### Disabled
+
+`disabled` removes the button from the tab order, drops opacity to 50%, and blocks pointer events. It applies across every variant.
+
+<ComponentPreview name="forms/button-disabled">
+  <ButtonDisabledPreview />
+</ComponentPreview>
 
 ### `asChild` for navigation
 

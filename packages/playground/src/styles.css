@@ -2,12 +2,15 @@
 @import '@gremorie/tokens/theme.css';
 
 @source '../../ng-core/src/**/*.{ts,html}';
-@source '../../ng-attachments/src/**/*.{ts,html}';
-@source '../../ng-prompt-input/src/**/*.{ts,html}';
-@source '../../ng-charts/src/**/*.{ts,html}';
 @source '../../ng-ai/src/**/*.{ts,html}';
+@source '../../ng-data/src/**/*.{ts,html}';
+@source '../../ng-containers/src/**/*.{ts,html}';
 @source '../../ng-display/src/**/*.{ts,html}';
 @source '../../ng-feedback/src/**/*.{ts,html}';
+@source '../../ng-artifacts/src/**/*.{ts,html}';
+@source '../../ng-forms/src/**/*.{ts,html}';
+@source '../../ng-overlays/src/**/*.{ts,html}';
+@source '../../ng-navigation/src/**/*.{ts,html}';
 
 html,
 body {

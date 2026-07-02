@@ -50,7 +50,7 @@ const meta = {
   title: 'Inputs/Buttons/ButtonGroup',
   component: ButtonGroup,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     orientation: {
       control: 'inline-radio',

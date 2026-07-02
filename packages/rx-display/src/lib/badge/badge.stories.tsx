@@ -40,7 +40,7 @@ const meta = {
   title: 'Layout & display/Display/Badge',
   component: Badge,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { variant: 'default', children: 'Badge' },
   argTypes: {
     variant: {

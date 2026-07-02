@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ArtifactsSpotlight } from '@/components/landing/artifacts-spotlight';
+import { AssistantShowcase } from '@/components/landing/assistant-showcase';
 import { BlocksGallery } from '@/components/landing/blocks-gallery';
 import { ComponentsShowcase } from '@/components/landing/components-showcase';
 import { FeaturesGrid } from '@/components/landing/features-grid';
@@ -46,6 +47,7 @@ export default function LandingPage() {
     <>
       <main id="main">
         <Hero />
+        <AssistantShowcase />
         <FeaturesGrid />
         <ComponentsShowcase />
         <BlocksGallery />

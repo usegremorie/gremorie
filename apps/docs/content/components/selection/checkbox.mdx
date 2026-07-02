@@ -4,6 +4,9 @@ description: Binary or tri-state selection control built on Radix Checkbox, with
 ---
 
 import { CheckboxPreview } from '@/components/preview/forms/checkbox';
+import { CheckboxStatesPreview } from '@/components/preview/forms/checkbox-states';
+import { CheckboxWithLabelPreview } from '@/components/preview/forms/checkbox-with-label';
+import { CheckboxDisabledPreview } from '@/components/preview/forms/checkbox-disabled';
 
 ## Overview
 
@@ -81,32 +84,21 @@ Forwards all props to `CheckboxPrimitive.Root` and renders a `CheckboxPrimitive.
 
 ## Variations
 
-### Terms acceptance
+### With label and description
 
-The canonical form pattern. Checkbox + Label side by side.
+The canonical form pattern: checkbox, label, and an optional helper line. Clicking the label toggles the control.
 
-```tsx
-<div className="flex items-center gap-2">
-  <Checkbox id="terms" />
-  <Label htmlFor="terms">
-    I accept the{' '}
-    <a href="/terms" className="underline">
-      terms
-    </a>
-  </Label>
-</div>
-```
+<ComponentPreview name="forms/checkbox-with-label">
+  <CheckboxWithLabelPreview />
+</ComponentPreview>
 
-### Default checked
+### States
 
-Use for opt-in defaults like newsletter signup. Always make the default state explicit to users.
+The three canonical states - unchecked, checked, and indeterminate - side by side. Indeterminate renders the dash indicator and announces as "mixed".
 
-```tsx
-<div className="flex items-center gap-2">
-  <Checkbox id="newsletter" defaultChecked />
-  <Label htmlFor="newsletter">Subscribe to the changelog</Label>
-</div>
-```
+<ComponentPreview name="forms/checkbox-states">
+  <CheckboxStatesPreview />
+</ComponentPreview>
 
 ### Indeterminate "select all"
 
@@ -132,16 +124,13 @@ function SelectAll({ items, selected, onChange }) {
 }
 ```
 
-### Disabled with label
+### Disabled
 
-`Label` reads `peer-disabled` and fades automatically when the sibling `peer`-marked checkbox is disabled. Radix's `Checkbox.Root` includes the `peer` class.
+`Label` reads `peer-disabled` and fades automatically when the sibling `peer`-marked checkbox is disabled. Radix's `Checkbox.Root` includes the `peer` class, so both the unchecked and checked locked states stay legible.
 
-```tsx
-<div className="flex items-center gap-2">
-  <Checkbox id="legacy" disabled />
-  <Label htmlFor="legacy">Migrate from legacy account (coming soon)</Label>
-</div>
-```
+<ComponentPreview name="forms/checkbox-disabled">
+  <CheckboxDisabledPreview />
+</ComponentPreview>
 
 ## Accessibility
 

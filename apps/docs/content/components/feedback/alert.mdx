@@ -4,8 +4,9 @@ description: 'Persistent in-flow message anchored to page content with an icon, 
 ---
 
 import { AlertPreview } from '@/components/preview/feedback/alert';
-import { Alert, AlertTitle, AlertDescription } from '@gremorie/rx-feedback';
-import { Info, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { AlertDestructivePreview } from '@/components/preview/feedback/alert-destructive';
+import { AlertWithIconPreview } from '@/components/preview/feedback/alert-with-icon';
+import { AlertTitleOnlyPreview } from '@/components/preview/feedback/alert-title-only';
 
 ## Overview
 
@@ -106,73 +107,36 @@ The grid auto-collapses to a single column when no icon is provided, so a stripp
 
 ## Variations
 
-### Informational
-
-<div className="rounded-lg border p-6 not-prose">
-  <Alert>
-    <Info className="size-4" />
-    <AlertTitle>Heads up</AlertTitle>
-    <AlertDescription>
-      The registry rebuilds on every commit to the main branch.
-    </AlertDescription>
-  </Alert>
-</div>
-
-```tsx
-<Alert>
-  <Info className="size-4" />
-  <AlertTitle>Heads up</AlertTitle>
-  <AlertDescription>
-    The registry rebuilds on every commit to the main branch.
-  </AlertDescription>
-</Alert>
-```
-
-The default intent. Use for context-setting messages that do not need to interrupt the user.
+<Callout type="info">
+  `Alert` ships exactly two CVA variants: `default` and `destructive`. There is
+  no `success`, `warning`, or `info` variant. Express those intents through a
+  leading `lucide-react` icon on the default surface, as shown below - this keeps
+  the visual surface consistent and the API minimal.
+</Callout>
 
 ### Destructive
 
-<div className="rounded-lg border p-6 not-prose">
-  <Alert variant="destructive">
-    <AlertTriangle className="size-4" />
-    <AlertTitle>Something went wrong</AlertTitle>
-    <AlertDescription>
-      Could not reach the upstream registry. Retry shortly.
-    </AlertDescription>
-  </Alert>
-</div>
+<ComponentPreview name="feedback/alert-destructive">
+  <AlertDestructivePreview />
+</ComponentPreview>
 
-```tsx
-<Alert variant="destructive">
-  <AlertTriangle className="size-4" />
-  <AlertTitle>Something went wrong</AlertTitle>
-  <AlertDescription>
-    Could not reach the upstream registry. Retry shortly.
-  </AlertDescription>
-</Alert>
-```
+The only non-default variant. Use for failed writes, broken integrations, and safety boundaries. The tinted description keeps the body readable while still signalling severity.
 
-Use for failed writes, broken integrations, and safety boundaries. The tinted description keeps the body readable while still signalling severity.
+### Intent via icon
 
-### Success via icon
+<ComponentPreview name="feedback/alert-with-icon">
+  <AlertWithIconPreview />
+</ComponentPreview>
 
-<div className="rounded-lg border p-6 not-prose">
-  <Alert>
-    <CheckCircle2 className="size-4" />
-    <AlertTitle>Success</AlertTitle>
-    <AlertDescription>Primitive added to your project.</AlertDescription>
-  </Alert>
-</div>
+Informational, success, and warning intents all reuse the `default` variant and carry their meaning through the leading icon (`Info`, `CheckCircle2`, `AlertTriangle`). Reach for a dedicated colored surface only when you genuinely need destructive emphasis.
 
-```tsx
-<Alert>
-  <CheckCircle2 className="size-4" />
-  <AlertTitle>Success</AlertTitle>
-  <AlertDescription>Primitive added to your project.</AlertDescription>
-</Alert>
-```
+### Title only
 
-Success messages do not need a dedicated variant - the `CheckCircle2` icon plus the default surface carry the intent. The same pattern applies to warnings: lean on `AlertTriangle` plus the default variant rather than a yellow surface.
+<ComponentPreview name="feedback/alert-title-only">
+  <AlertTitleOnlyPreview />
+</ComponentPreview>
+
+Omit `<AlertDescription>` for a single-line status message. The grid collapses cleanly with or without a leading icon, so a terse confirmation reads as one compact row.
 
 ## Accessibility
 

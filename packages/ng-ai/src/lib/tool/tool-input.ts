@@ -5,7 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { CodeBlock } from '../code-block/code-block';
+import { CodeBlock } from '@gremorie/ng-artifacts';
 
 /**
  * ToolInput — labelled JSON block showing the tool's parameters. Mirrors

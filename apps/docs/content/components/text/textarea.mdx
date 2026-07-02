@@ -4,6 +4,9 @@ description: 'Multi-line text field that auto-grows via `field-sizing: content`,
 ---
 
 import { TextareaPreview } from '@/components/preview/forms/textarea';
+import { TextareaWithLabelPreview } from '@/components/preview/forms/textarea-with-label';
+import { TextareaInvalidPreview } from '@/components/preview/forms/textarea-invalid';
+import { TextareaDisabledPreview } from '@/components/preview/forms/textarea-disabled';
 
 ## Overview
 
@@ -82,38 +85,29 @@ Extends all `React.ComponentProps<"textarea">`. Renders with `data-slot="textare
 
 ## Variations
 
-### Bio field with description
+### With label
 
-The canonical comment-style textarea. Include a helper description so users know the expected length.
+The canonical comment-style textarea. Pair it with a `<Label>` linked via `htmlFor` and add a helper description when the expected length matters.
 
-```tsx
-<div className="grid gap-2">
-  <Label htmlFor="bio">Bio</Label>
-  <Textarea id="bio" placeholder="Tell us about yourself..." />
-  <p className="text-sm text-muted-foreground">
-    Max 280 characters. Markdown supported.
-  </p>
-</div>
-```
+<ComponentPreview name="forms/textarea-with-label">
+  <TextareaWithLabelPreview />
+</ComponentPreview>
 
-### Error state
+### Invalid state
 
 `aria-invalid` switches the surface to destructive. Pair with `aria-describedby` pointing at the error so screen readers announce it.
 
-```tsx
-<div className="grid gap-2">
-  <Label htmlFor="msg">Message</Label>
-  <Textarea
-    id="msg"
-    aria-invalid
-    aria-describedby="msg-error"
-    defaultValue="too short"
-  />
-  <p id="msg-error" className="text-sm text-destructive">
-    Message must be at least 20 characters.
-  </p>
-</div>
-```
+<ComponentPreview name="forms/textarea-invalid">
+  <TextareaInvalidPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` removes the field from the tab order and the form payload, drops opacity, and applies `cursor-not-allowed`. For visible-but-locked content prefer `readOnly` (see below).
+
+<ComponentPreview name="forms/textarea-disabled">
+  <TextareaDisabledPreview />
+</ComponentPreview>
 
 ### Chat composer (with InputGroup)
 

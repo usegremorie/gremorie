@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
 import {
   ChartContainer,
+  ChartContext,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
@@ -15,10 +16,11 @@ import {
  * shadcn chart tooltip, wired to Gremorie tokens. It reads the chart `config`
  * (via `useChart`) for labels/colors and renders the hovered series.
  *
- * It is **recharts-context-bound**: you pass it to a recharts `<Tooltip>`
- * (re-exported here as `ChartTooltip`) inside a `<ChartContainer>`. The stories
- * below pin the tooltip open with recharts' `defaultIndex` so every variation is
- * visible without hovering.
+ * It is **recharts-context-bound**: in a chart you pass it to a recharts
+ * `<Tooltip>` (re-exported here as `ChartTooltip`) inside a `<ChartContainer>`.
+ * The variant stories below render just the card (no chart) by supplying the
+ * config through `ChartContext` and a fabricated `payload`; `OnLineChart` shows
+ * it wired to a real chart.
  *
  * ## Variations
  *
@@ -47,7 +49,7 @@ import {
 const meta = {
   title: 'Layout & display/Data/Tooltip',
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta;
 
 export default meta;
@@ -59,68 +61,67 @@ const DATA = [
   { month: 'March', desktop: 237, mobile: 120 },
 ];
 
-const SINGLE: ChartConfig = {
-  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-};
 const MULTI: ChartConfig = {
   desktop: { label: 'Desktop', color: 'var(--chart-1)' },
   mobile: { label: 'Mobile', color: 'var(--chart-2)' },
 };
 
-function BarDemo({
-  config,
-  ...content
-}: {
-  config: ChartConfig;
-} & React.ComponentProps<typeof ChartTooltipContent>) {
-  const keys = Object.keys(config);
+// A fabricated recharts tooltip payload so the real `ChartTooltipContent` can
+// be rendered standalone — the card only, no chart (parity with the Angular
+// `<chart-tooltip-content>` stories). Colors are global chart tokens (they
+// don't depend on ChartContainer's per-series `--color-*` vars).
+const PAYLOAD = [
+  { dataKey: 'desktop', name: 'desktop', value: 305, color: 'var(--chart-1)' },
+  { dataKey: 'mobile', name: 'mobile', value: 200, color: 'var(--chart-2)' },
+];
+const ONE = [PAYLOAD[0]];
+
+/**
+ * Renders the real `ChartTooltipContent` in isolation: we provide the chart
+ * config through `ChartContext` (instead of a `ChartContainer` + recharts tree)
+ * and pin it open with `active` + a fabricated `payload`.
+ */
+function TooltipCard(props: React.ComponentProps<typeof ChartTooltipContent>) {
   return (
-    <ChartContainer config={config} className="h-[220px] w-[22rem]">
-      <BarChart accessibilityLayer data={DATA}>
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="month"
-          tickLine={false}
-          axisLine={false}
-          tickMargin={10}
+    <ChartContext.Provider value={{ config: MULTI }}>
+      {/* inline-block so the card hugs its content instead of stretching to
+          the story width (mirrors the Angular story wrapper). */}
+      <div className="inline-block">
+        <ChartTooltipContent
+          active
+          payload={PAYLOAD as never}
+          label="February"
+          {...props}
         />
-        <ChartTooltip
-          defaultIndex={1}
-          cursor={false}
-          content={<ChartTooltipContent {...content} />}
-        />
-        {keys.map((k) => (
-          <Bar key={k} dataKey={k} fill={`var(--color-${k})`} radius={6} />
-        ))}
-      </BarChart>
-    </ChartContainer>
+      </div>
+    </ChartContext.Provider>
   );
 }
 
 /** Default — dot indicator, with the category header. */
 export const Dot: Story = {
-  render: () => <BarDemo config={MULTI} />,
+  render: () => <TooltipCard />,
 };
 
 /** Line indicator. */
 export const Line_: Story = {
   name: 'Line',
-  render: () => <BarDemo config={MULTI} indicator="line" />,
+  render: () => <TooltipCard indicator="line" />,
 };
 
 /** Dashed indicator. */
 export const Dashed: Story = {
-  render: () => <BarDemo config={MULTI} indicator="dashed" />,
+  render: () => <TooltipCard indicator="dashed" />,
 };
 
 /** Single series with the header hidden (the categorical / shadcn look). */
 export const HideLabel: Story = {
-  render: () => <BarDemo config={SINGLE} hideLabel />,
+  render: () => <TooltipCard hideLabel payload={ONE as never} />,
 };
 
 /** No swatch — text-only rows. */
 export const HideIndicator: Story = {
-  render: () => <BarDemo config={MULTI} hideIndicator />,
+  render: () => <TooltipCard hideIndicator />,
 };
 
 /** On a line chart, pinned open. */
@@ -157,4 +158,21 @@ export const OnLineChart: Story = {
       </LineChart>
     </ChartContainer>
   ),
+};
+
+/** Workbench — a single args-driven card (no chart, just the tooltip) the
+ * dual-framework workbench drives via its controls (indicator / hideLabel /
+ * hideIndicator). */
+export const Workbench: Story = {
+  args: { indicator: 'dot', hideLabel: false, hideIndicator: false },
+  argTypes: {
+    indicator: { control: 'inline-radio', options: ['dot', 'line', 'dashed'] },
+    hideLabel: { control: 'boolean' },
+    hideIndicator: { control: 'boolean' },
+  },
+  render: (args: {
+    indicator?: 'dot' | 'line' | 'dashed';
+    hideLabel?: boolean;
+    hideIndicator?: boolean;
+  }) => <TooltipCard {...args} />,
 };

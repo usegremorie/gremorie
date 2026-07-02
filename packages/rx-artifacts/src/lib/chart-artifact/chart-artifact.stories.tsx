@@ -127,11 +127,11 @@ const meta = {
     onSave: { action: 'save', description: 'More → Save.' },
   },
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
   decorators: [
     (Story) => (
-      <div className="w-[26rem] max-w-full">
+      <div className="w-full">
         <Story />
       </div>
     ),
@@ -175,6 +175,16 @@ export const Default: Story = {
     fileName: 'ratings-by-department',
     numberFormat: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
   },
+};
+
+/**
+ * Workbench preset: the canonical departments dataset, top-aligned (layout
+ * `padded`) at a fixed 26rem width so the dual-framework workbench renders the
+ * IDENTICAL use case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: Default.args,
 };
 
 /**

@@ -4,6 +4,8 @@ description: 'Marketing-site primary nav with rich panels. Hover or focus a trig
 ---
 
 import { NavigationMenuPreview } from '@/components/preview/navigation/navigation-menu';
+import { NavigationMenuLinksPreview } from '@/components/preview/navigation/navigation-menu-links';
+import { NavigationMenuMegaPreview } from '@/components/preview/navigation/navigation-menu-mega';
 
 ## Overview
 
@@ -194,85 +196,19 @@ When `viewport={true}` (default), all content panels share a single sliding cont
 
 ### Simple links
 
-```tsx
-<NavigationMenu>
-  <NavigationMenuList>
-    <NavigationMenuItem>
-      <NavigationMenuLink
-        href="/products"
-        className={navigationMenuTriggerStyle()}
-      >
-        Products
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuLink
-        href="/pricing"
-        className={navigationMenuTriggerStyle()}
-      >
-        Pricing
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuLink href="/docs" className={navigationMenuTriggerStyle()}>
-        Docs
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>
-```
+<ComponentPreview name="navigation/navigation-menu-links">
+  <NavigationMenuLinksPreview />
+</ComponentPreview>
 
-Use as a header bar when every entry is a direct link and no panel is needed.
+Use as a header bar when every entry is a direct link and no panel is needed. Apply `navigationMenuTriggerStyle()` to each `<NavigationMenuLink>` so the bare links match the trigger look.
 
 ### Mega menu with content grid
 
-```tsx
-<NavigationMenu>
-  <NavigationMenuList>
-    <NavigationMenuItem>
-      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
-      <NavigationMenuContent>
-        <ul className="grid w-[500px] grid-cols-2 gap-2 p-4">
-          <li>
-            <NavigationMenuLink href="/ai" className="space-y-1">
-              <div className="font-medium">AI primitives</div>
-              <p className="text-sm text-muted-foreground">
-                Chat, prompt, response, tool.
-              </p>
-            </NavigationMenuLink>
-          </li>
-          <li>
-            <NavigationMenuLink href="/forms" className="space-y-1">
-              <div className="font-medium">Forms</div>
-              <p className="text-sm text-muted-foreground">
-                Inputs, selects, validation.
-              </p>
-            </NavigationMenuLink>
-          </li>
-          <li>
-            <NavigationMenuLink href="/charts" className="space-y-1">
-              <div className="font-medium">Charts</div>
-              <p className="text-sm text-muted-foreground">
-                Sequential, categorical, divergent palettes.
-              </p>
-            </NavigationMenuLink>
-          </li>
-          <li>
-            <NavigationMenuLink href="/navigation" className="space-y-1">
-              <div className="font-medium">Navigation</div>
-              <p className="text-sm text-muted-foreground">
-                Tabs, sidebar, breadcrumb.
-              </p>
-            </NavigationMenuLink>
-          </li>
-        </ul>
-      </NavigationMenuContent>
-    </NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>
-```
+<ComponentPreview name="navigation/navigation-menu-mega">
+  <NavigationMenuMegaPreview />
+</ComponentPreview>
 
-Use as the discovery surface of a marketing site. The two-column grid handles category landings with short descriptions.
+Use as the discovery surface of a marketing site. The two-column grid handles category landings with short descriptions under each link.
 
 ### Inline panels (without viewport)
 

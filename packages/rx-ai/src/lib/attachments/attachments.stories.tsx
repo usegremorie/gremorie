@@ -52,7 +52,7 @@ const meta = {
   title: 'AI/Chatbot/Attachments',
   component: Attachments,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   argTypes: {
     variant: {
       control: 'inline-radio',

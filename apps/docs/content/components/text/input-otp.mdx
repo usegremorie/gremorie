@@ -4,6 +4,9 @@ description: Segmented one-time-password input built on the `input-otp` library,
 ---
 
 import { InputOTPPreview } from '@/components/preview/forms/input-otp';
+import { InputOTPSeparatorPreview } from '@/components/preview/forms/input-otp-separator';
+import { InputOTPPatternPreview } from '@/components/preview/forms/input-otp-pattern';
+import { InputOTPDisabledPreview } from '@/components/preview/forms/input-otp-disabled';
 
 ## Overview
 
@@ -145,35 +148,25 @@ Short PIN code for confirmations. Reduce `maxLength` and the slot count together
 
 Split a six-digit code with a separator for legibility (mirrors how codes are usually presented in emails: "123 456").
 
-```tsx
-<InputOTP maxLength={6}>
-  <InputOTPGroup>
-    <InputOTPSlot index={0} />
-    <InputOTPSlot index={1} />
-    <InputOTPSlot index={2} />
-  </InputOTPGroup>
-  <InputOTPSeparator />
-  <InputOTPGroup>
-    <InputOTPSlot index={3} />
-    <InputOTPSlot index={4} />
-    <InputOTPSlot index={5} />
-  </InputOTPGroup>
-</InputOTP>
-```
+<ComponentPreview name="forms/input-otp-separator">
+  <InputOTPSeparatorPreview />
+</ComponentPreview>
 
 ### Numeric-only pattern
 
 Restrict input to digits via the `pattern` prop. Prevents users from typing letters at all.
 
-```tsx
-<InputOTP maxLength={6} pattern="^[0-9]+$">
-  <InputOTPGroup>
-    {Array.from({ length: 6 }).map((_, i) => (
-      <InputOTPSlot key={i} index={i} />
-    ))}
-  </InputOTPGroup>
-</InputOTP>
-```
+<ComponentPreview name="forms/input-otp-pattern">
+  <InputOTPPatternPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` on the root dims every slot and removes the field from the tab order. The current value stays readable.
+
+<ComponentPreview name="forms/input-otp-disabled">
+  <InputOTPDisabledPreview />
+</ComponentPreview>
 
 ## Accessibility
 

@@ -1,5 +1,5 @@
 import { Separator } from '@gremorie/rx-display';
-import { Award, ServerCog, Sparkles } from 'lucide-react';
+import { Award, Copy, ServerCog } from 'lucide-react';
 
 const numbers = [
   { value: '85', label: 'primitives' },
@@ -10,24 +10,24 @@ const numbers = [
 /**
  * Each quality gets its own accent token (Odo final audit). Previously
  * all 3 used brand-subtle, so the row read as monochrome even though
- * the 3 items are semantically distinct. Now: AI is brand (the flagship
- * tone), MCP server is chart-2 (technical / infra), MIT licensed is
- * chart-4 (warm / human / community).
+ * the 3 items are semantically distinct. Now: own the code uses chart-3
+ * (the copy-paste tone from the features grid), MCP server is brand (the
+ * AI-native pillar), MIT licensed is chart-4 (warm / human / community).
  */
 const qualities = [
   {
-    icon: Sparkles,
-    label: 'AI-native',
-    description: 'Knowledge layer',
-    accent: 'var(--primary)',
-    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
+    icon: Copy,
+    label: 'You own the code',
+    description: 'Copy-paste source',
+    accent: 'var(--chart-3)',
+    accentSubtle: 'color-mix(in oklch, var(--chart-3) 14%, transparent)',
   },
   {
     icon: ServerCog,
-    label: 'MCP server',
-    description: 'Tool included',
-    accent: 'var(--chart-2)',
-    accentSubtle: 'color-mix(in oklch, var(--chart-2) 14%, transparent)',
+    label: 'AI-native',
+    description: 'Registry and MCP',
+    accent: 'var(--primary)',
+    accentSubtle: 'color-mix(in oklch, var(--primary) 12%, transparent)',
   },
   {
     icon: Award,

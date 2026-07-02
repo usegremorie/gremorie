@@ -4,13 +4,7 @@ description: 'Single-section expandable region. The minimal building block for s
 ---
 
 import { CollapsiblePreview } from '@/components/preview/display/collapsible';
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from '@gremorie/rx-display';
-import { Button } from '@gremorie/rx-forms';
-import { ChevronDown } from 'lucide-react';
+import { CollapsibleOpenPreview } from '@/components/preview/display/collapsible-open';
 
 ## Overview
 
@@ -121,34 +115,11 @@ The trigger and content can sit at any depth inside the root - Radix Collapsible
 
 ### Show more toggle
 
-<div className="rounded-lg border p-6 not-prose">
-  <Collapsible className="w-full max-w-md">
-    <CollapsibleTrigger asChild>
-      <Button variant="outline" className="w-full justify-between">
-        Show full bio
-        <ChevronDown className="size-4 transition-transform data-[state=open]:rotate-180" />
-      </Button>
-    </CollapsibleTrigger>
-    <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm text-muted-foreground">
-      Nog is the chief engineer of the Kalvner crew. Implements code, infra, and
-      ships. Backs up before destructive changes. Never commits secrets.
-    </CollapsibleContent>
-  </Collapsible>
-</div>
+<ComponentPreview name="display/collapsible-open">
+  <CollapsibleOpenPreview />
+</ComponentPreview>
 
-```tsx
-<Collapsible>
-  <CollapsibleTrigger asChild>
-    <Button variant="outline" className="w-full justify-between">
-      Show full bio
-      <ChevronDown className="size-4 transition-transform data-[state=open]:rotate-180" />
-    </Button>
-  </CollapsibleTrigger>
-  <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm">
-    Hidden bio content.
-  </CollapsibleContent>
-</Collapsible>
-```
+`defaultOpen` renders the panel expanded on mount. The chevron rotates on `data-[state=open]` so the trigger reflects the current state. Drop `defaultOpen` to start collapsed.
 
 ### Controlled open
 
@@ -166,24 +137,6 @@ const [open, setOpen] = useState(false);
 ```
 
 ### Inline disclosure
-
-<div className="rounded-lg border p-6 not-prose">
-  <p className="text-sm">
-    Gremorie ships 100 primitives across 9 React packages.{' '}
-    <Collapsible className="inline">
-      <CollapsibleTrigger className="text-primary underline">
-        Show breakdown
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <ul className="ml-4 mt-2 list-disc text-xs text-muted-foreground">
-          <li>rx-ai: 12</li>
-          <li>rx-display: 8</li>
-          <li>rx-forms: 14</li>
-        </ul>
-      </CollapsibleContent>
-    </Collapsible>
-  </p>
-</div>
 
 ```tsx
 <p>

@@ -4,6 +4,8 @@ description: Dropdown chooser for short fixed lists - compound primitive built o
 ---
 
 import { SelectPreview } from '@/components/preview/forms/select';
+import { SelectGroupedPreview } from '@/components/preview/forms/select-grouped';
+import { SelectDisabledPreview } from '@/components/preview/forms/select-disabled';
 
 ## Overview
 
@@ -180,26 +182,17 @@ For small fixed lists with no groups.
 
 When items fall into distinct buckets, label and separate them so users can scan.
 
-```tsx
-<Select>
-  <SelectTrigger>
-    <SelectValue placeholder="Pick a region" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectLabel>North America</SelectLabel>
-      <SelectItem value="us-east">US East (Virginia)</SelectItem>
-      <SelectItem value="us-west">US West (Oregon)</SelectItem>
-    </SelectGroup>
-    <SelectSeparator />
-    <SelectGroup>
-      <SelectLabel>Europe</SelectLabel>
-      <SelectItem value="eu-central">EU Central (Frankfurt)</SelectItem>
-      <SelectItem value="eu-west">EU West (Dublin)</SelectItem>
-    </SelectGroup>
-  </SelectContent>
-</Select>
-```
+<ComponentPreview name="forms/select-grouped">
+  <SelectGroupedPreview />
+</ComponentPreview>
+
+### Disabled
+
+Disable the whole control with `disabled` on `Select`, or lock out a single option with `disabled` on `SelectItem`. Disabled items are announced as disabled and skipped by keyboard navigation.
+
+<ComponentPreview name="forms/select-disabled">
+  <SelectDisabledPreview />
+</ComponentPreview>
 
 ### Controlled with form name
 

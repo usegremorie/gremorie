@@ -41,7 +41,7 @@ const meta = {
   title: 'Inputs/Text/Input',
   component: Input,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
   args: { placeholder: 'Type here…' },
   argTypes: {
     type: {

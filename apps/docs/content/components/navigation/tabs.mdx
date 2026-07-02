@@ -4,6 +4,9 @@ description: 'Sibling content panels that share a context. Pill or line variant,
 ---
 
 import { TabsPreview } from '@/components/preview/navigation/tabs';
+import { TabsVerticalPreview } from '@/components/preview/navigation/tabs-vertical';
+import { TabsWithIconsPreview } from '@/components/preview/navigation/tabs-with-icons';
+import { TabsDisabledPreview } from '@/components/preview/navigation/tabs-disabled';
 import {
   Tabs as RxTabs,
   TabsList,
@@ -206,20 +209,27 @@ Use for page-level tabs where the surrounding chrome is already heavy and a pill
 
 ### Vertical orientation
 
-```tsx
-<Tabs defaultValue="account" orientation="vertical" className="flex-row">
-  <TabsList>
-    <TabsTrigger value="account">Account</TabsTrigger>
-    <TabsTrigger value="security">Security</TabsTrigger>
-    <TabsTrigger value="notifications">Notifications</TabsTrigger>
-  </TabsList>
-  <TabsContent value="account">...</TabsContent>
-  <TabsContent value="security">...</TabsContent>
-  <TabsContent value="notifications">...</TabsContent>
-</Tabs>
-```
+<ComponentPreview name="navigation/tabs-vertical">
+  <TabsVerticalPreview />
+</ComponentPreview>
 
-Use for in-panel settings menus. Arrow Up / Down navigate between triggers when `orientation="vertical"`.
+Set `orientation="vertical"` and lay the list and panel side by side with `flex-row`. Use for in-panel settings menus. Arrow Up / Down navigate between triggers when vertical.
+
+### With icons
+
+<ComponentPreview name="navigation/tabs-with-icons">
+  <TabsWithIconsPreview />
+</ComponentPreview>
+
+Drop a `lucide-react` icon before the label inside each trigger. The trigger styles size and space the icon automatically.
+
+### Disabled tab
+
+<ComponentPreview name="navigation/tabs-disabled">
+  <TabsDisabledPreview />
+</ComponentPreview>
+
+Pass `disabled` on a `<TabsTrigger>` to render it inert. Disabled triggers are skipped by arrow-key navigation and dimmed.
 
 ### Controlled value
 

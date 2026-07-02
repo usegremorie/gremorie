@@ -50,7 +50,7 @@ const meta = {
   title: 'Interaction/Overlays/HoverCard',
   component: HoverCard,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: { layout: 'padded' },
 } satisfies Meta<typeof HoverCard>;
 
 export default meta;
