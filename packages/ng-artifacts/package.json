@@ -25,9 +25,9 @@
     "@gremorie/ng-data": ">=0.0.1",
     "@ng-icons/core": "^33.2.2",
     "@ng-icons/lucide": "^33.2.2",
-    "shiki": "^4.0.0",
-    "vite": "^7.0.0",
-    "@nx/vite": "^22.7.2"
+    "@nx/vite": "^22.7.2",
+    "shiki": "^4.3.0",
+    "vite": "^7.0.0"
   },
   "peerDependenciesMeta": {
     "shiki": {
