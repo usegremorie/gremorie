@@ -8,7 +8,6 @@ import { FeaturesGrid } from '@/components/landing/features-grid';
 import { FinalCta } from '@/components/landing/final-cta';
 import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/landing/hero';
-import { McpSection } from '@/components/landing/mcp-section';
 import { ParityProof } from '@/components/landing/parity-proof';
 import { ProofStrip } from '@/components/landing/proof-strip';
 import { ThemePlayground } from '@/components/landing/theme-playground';
@@ -26,17 +25,16 @@ import { i18n } from '@/lib/i18n';
  * Sections, top to bottom (home redesign order: promise, proof of the
  * main claim, product live, argument, inventory, differentiators, close):
  *   1. Hero (pill + tagline + install command + CTAs)
- *   2. Proof strip (single line of numbers)
- *   3. Parity proof (React | Angular tabs over the same Button)
- *   4. Assistant showcase (props / code / live preview)
+ *   2. Assistant showcase, the hero product shot (props / code / preview)
+ *   3. Proof strip (single line of numbers)
+ *   4. Parity proof (React | Angular tabs over the same Button)
  *   5. Features grid (own the code, parity, tokens, AI-native)
  *   6. Components showcase (8 categories with counts)
  *   7. Blocks gallery (5 production blocks)
  *   8. Artifacts spotlight (real ChartArtifact + its code)
- *   9. MCP section (working mcpServers setup)
- *  10. Theme playground (token sliders)
- *  11. Final CTA
- *  12. Footer (3 columns: brand / resources / community + legal)
+ *   9. Theme playground (token sliders)
+ *  10. Final CTA
+ *  11. Footer (3 columns: brand / resources / community + legal)
  */
 export const metadata: Metadata = {
   title: 'Gremorie - the design system for React and Angular',
@@ -62,7 +60,6 @@ export default function LandingPage() {
         <ComponentsShowcase />
         <BlocksGallery />
         <ArtifactsSpotlight />
-        <McpSection />
         <ThemePlayground />
         <FinalCta />
       </main>

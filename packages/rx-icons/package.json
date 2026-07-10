@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-icons",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Gremorie icon library for React - vendored monochrome brand marks (AI providers) in the lucide style.",
   "license": "MIT",
   "repository": {

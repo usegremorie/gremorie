@@ -143,6 +143,8 @@ Drop an icon as a child. CSS auto-sizes it and tightens the horizontal padding v
 
 Use `size="icon"` (or `icon-xs`, `icon-sm`, `icon-lg`) for square buttons. Always pair with an `aria-label` so screen readers announce the action.
 
+When an icon button sits next to another control, match height steps through the size variants (`icon-sm` with a `size="sm"` select or button, `icon` with the defaults) instead of forcing heights with classes. See [Action rows and size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
+
 <ComponentPreview name="forms/button-icon-only">
   <ButtonIconOnlyPreview />
 </ComponentPreview>

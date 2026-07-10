@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/angular",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The complete Angular edition of Gremorie — every component category in one package. The per-category packages remain available for granular installs and the registry.",
   "license": "MIT",
   "repository": {
