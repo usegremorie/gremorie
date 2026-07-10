@@ -1,14 +1,14 @@
 # Cross-framework anatomy contract
 
-> **Source of truth.** This directory defines the *fixed anatomy* every Gremorie
+> **Source of truth.** This directory defines the _fixed anatomy_ every Gremorie
 > component must follow in **both** the React (`rx-*`) and Angular (`ng-*`)
 > editions. The React edition is the reference; the Angular edition must reach
 > **prop/input parity** with it, adapting only the mechanics each framework
 > requires (signal inputs, content projection, host bindings).
 >
-> The rule from `AGENTS.md` applies: the bar is the reference implementation, not
-> "whatever is already in the repo". If an existing Angular component is below
-> this contract, that is a bug to fix, not a pattern to keep.
+> The bar is the reference implementation, not "whatever is already in the repo".
+> If an existing Angular component is below this contract, that is a bug to fix,
+> not a pattern to keep.
 
 ## What "fixed anatomy" means
 
@@ -24,15 +24,15 @@ frameworks:
 
 Adaptation table (how a React concept maps to Angular):
 
-| React (`rx-*`)                       | Angular (`ng-*`)                                                        |
-| ------------------------------------ | ---------------------------------------------------------------------- |
-| `prop?: T` with a default            | `prop = input<T>(default)`                                             |
-| required `prop: T`                   | `prop = input.required<T>()`                                          |
-| `children` / composition             | `<ng-content>` content projection                                      |
-| `onX?: (e) => void` callback         | `x = output<E>()`                                                       |
-| `className`                          | host `class` (card styling moves to the host so consumer classes merge) |
-| `ReactNode` label                    | `string` (or projected content) label                                  |
-| imperative ref method                | public method on the component instance / `exportAs`                    |
+| React (`rx-*`)               | Angular (`ng-*`)                                                        |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| `prop?: T` with a default    | `prop = input<T>(default)`                                              |
+| required `prop: T`           | `prop = input.required<T>()`                                            |
+| `children` / composition     | `<ng-content>` content projection                                       |
+| `onX?: (e) => void` callback | `x = output<E>()`                                                       |
+| `className`                  | host `class` (card styling moves to the host so consumer classes merge) |
+| `ReactNode` label            | `string` (or projected content) label                                   |
+| imperative ref method        | public method on the component instance / `exportAs`                    |
 
 ## Shared data types (charts)
 
@@ -46,9 +46,9 @@ type ChartDatum = Record<string, string | number> & { fill?: string };
 
 /** Per-series label + color. Both optional — parity with the React primitive. */
 interface ChartSeriesConfig {
-  label?: string;        // React allows ReactNode; Angular uses string/projected
-  color?: string;        // CSS color or token, e.g. 'var(--chart-1)'
-  format?: string;       // Angular-only extension: formatter preset ('compact' | 'percent' | 'currency:BRL')
+  label?: string; // React allows ReactNode; Angular uses string/projected
+  color?: string; // CSS color or token, e.g. 'var(--chart-1)'
+  format?: string; // Angular-only extension: formatter preset ('compact' | 'percent' | 'currency:BRL')
 }
 
 /** Maps a data field name to its series config. JSON-serializable (generative-UI ready). */
