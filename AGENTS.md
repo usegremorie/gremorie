@@ -64,9 +64,11 @@ Before claiming something is done:
 - **rx-ai / AI components**: faithful to the official AI Elements source (names,
   subcomponents, variants, behaviour), adapted to Gremorie primitives + tokens.
 - **Storybook**: titles mirror the docs nav (`<Section>/<Category>/<Name>`).
-- **No em dashes** in written content. **Never publish** — the user runs the
-  npm publish AND the production deploy. Install with
-  `npm install --legacy-peer-deps`.
+- **No em dashes** in written content. **Never publish without asking** — an
+  agent may run `npm publish` and production deploys, but ONLY after asking
+  the user and receiving an explicit go-ahead in the conversation for that
+  specific release; prepare everything (versions, builds, dry-run), then stop
+  and ask. Install with `npm install --legacy-peer-deps`.
 - **Git flow**: `develop` is the **Vercel production branch** and is what
   deploys to `www.gremorie.com`. `main` is integration; pushing to `main` only
   builds **preview** deployments (401-protected, not public). To ship to
