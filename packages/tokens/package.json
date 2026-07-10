@@ -30,5 +30,9 @@
   },
   "sideEffects": [
     "*.css"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/usegremorie/gremorie/issues"
+  },
+  "author": "Gremorie (usegremorie)"
 }

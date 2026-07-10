@@ -1,0 +1,12 @@
+# Code owners for usegremorie/gremorie.
+# Every PR requests review from the owner by default. Path-specific rules can be
+# added below the catch-all as the team grows (last matching rule wins).
+
+* @kalvner
+
+# Security-sensitive surfaces — keep an explicit owner so these are never
+# rubber-stamped.
+/.github/workflows/  @kalvner
+/vercel.json         @kalvner
+/scripts/release.mjs @kalvner
+/SECURITY.md         @kalvner
