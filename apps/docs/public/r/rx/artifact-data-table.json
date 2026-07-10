@@ -11,7 +11,9 @@
   ],
   "dependencies": [
     "react",
-    "lucide-react"
+    "lucide-react",
+    "@gremorie/rx-display",
+    "@gremorie/rx-forms"
   ],
   "devDependencies": [],
   "registryDependencies": [

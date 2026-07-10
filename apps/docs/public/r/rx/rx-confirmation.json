@@ -10,7 +10,10 @@
     "chatbot"
   ],
   "dependencies": [
-    "ai"
+    "ai",
+    "@gremorie/rx-core",
+    "@gremorie/rx-feedback",
+    "@gremorie/rx-forms"
   ],
   "devDependencies": [],
   "registryDependencies": [

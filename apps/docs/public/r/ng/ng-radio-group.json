@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-radio-group",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Radio Group (Angular)",
+  "description": "Mutually exclusive choice group built on Spartan-ng brain RadioGroup. Use for 2-7 distinct options. For binary on/off use Switch; for many options use Select. Mirrors React RadioGroup from @gremorie/rx-forms.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/radio-group/radio-group.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnRadio, BrnRadioGroup } from '@spartan-ng/brain/radio-group';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * RadioGroup — single-select group of mutually-exclusive options. Mirrors\n * React `RadioGroup` from `@gremorie/rx-forms`, which wraps\n * `@radix-ui/react-radio-group`.\n *\n * The Angular edition composes the spartan brain `BrnRadioGroup` directive as a\n * `hostDirective` — the Angular equivalent of the Radix RadioGroup `Root`. We\n * use the brain (not a hand-rolled group) because it owns the selected value,\n * roving tabindex (only the active option is in the tab order), arrow-key\n * navigation, and `ControlValueAccessor` — the exact behavioral contract Radix\n * gives the React `Root`, keeping the two editions at parity.\n *\n * ## React → Angular mapping\n *\n * - React `RadioGroup` = our `gn-radio-group`. The `data-slot=\"radio-group\"`\n *   and the `grid gap-3` layout class are on our host. `value` /\n *   `onValueChange`, `name`, `disabled`, `required` are exposed by the brain\n *   directive and surfaced as inputs (`[name]`, `[(value)]`, `[disabled]`,\n *   `[required]`).\n * - React `RadioGroupItem` = our `gn-radio-group-item` (below).\n *\n * @example\n * ```html\n * <gn-radio-group [(value)]=\"plan\">\n *   <gn-radio-group-item value=\"free\" id=\"r1\" />\n *   <gn-radio-group-item value=\"pro\" id=\"r2\" />\n * </gn-radio-group>\n * ```\n */\n@Component({\n  selector: 'gn-radio-group',\n  standalone: true,\n  hostDirectives: [\n    {\n      directive: BrnRadioGroup,\n      inputs: ['name', 'value', 'disabled', 'required'],\n      outputs: ['valueChange'],\n    },\n  ],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'radio-group',\n    class: 'grid gap-3',\n  },\n})\nexport class RadioGroup {}\n\n/**\n * RadioGroupItem — a single option inside a RadioGroup. Mirrors React\n * `RadioGroupItem`, which wraps the Radix RadioGroup `Item` + `Indicator`.\n *\n * Renders the brain `brn-radio` (the Angular equivalent of Radix `Item`). The\n * React `Item` class string (`aspect-square size-4 rounded-full border…`) is\n * applied verbatim to the `brn-radio` host element, which also carries the\n * `data-slot=\"radio-group-item\"`.\n *\n * The indicator: React renders a `CircleIcon` inside a Radix `Indicator` that\n * only mounts when the item is selected. `brn-radio` exposes the `[indicator]`\n * projection slot and toggles a `.brn-radio-checked` class on its host when\n * selected. To stay faithful we project the filled-circle SVG (the lucide\n * `circle` icon, hand-inlined since lucide is unavailable in Angular here) into\n * `[indicator]` and gate its visibility off that host class via the\n * `group-[.brn-radio-checked]:flex hidden` arbitrary variant — visible only\n * when selected, matching React.\n */\n@Component({\n  selector: 'gn-radio-group-item',\n  standalone: true,\n  imports: [BrnRadio],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <brn-radio\n      data-slot=\"radio-group-item\"\n      [class]=\"computedClass()\"\n      [value]=\"value()\"\n      [disabled]=\"disabled()\"\n      [id]=\"id() || undefined\"\n      [aria-label]=\"ariaLabel() || undefined\"\n    >\n      <span\n        indicator\n        data-slot=\"radio-group-indicator\"\n        class=\"relative hidden items-center justify-center group-[.brn-radio-checked]:flex\"\n      >\n        <svg\n          xmlns=\"http://www.w3.org/2000/svg\"\n          class=\"absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-primary\"\n          viewBox=\"0 0 24 24\"\n          fill=\"currentColor\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          aria-hidden=\"true\"\n        >\n          <circle cx=\"12\" cy=\"12\" r=\"10\" />\n        </svg>\n      </span>\n    </brn-radio>\n  `,\n})\nexport class RadioGroupItem {\n  /** The value this item represents. Mirrors React `value` (required). */\n  readonly value = input.required<string>();\n  /** Disable just this option. Mirrors React `disabled`. */\n  readonly disabled = input<boolean>(false);\n  /** Element id (for label association). Mirrors React `id`. */\n  readonly id = input<string>('');\n  /** Accessible label when no visible label exists. Mirrors React `aria-label`. */\n  readonly ariaLabel = input<string>('');\n  /** Extra classes merged via `cn`. Mirrors React `className`. */\n  readonly class = input<string>('');\n\n  /**\n   * The React `RadioGroupItem` class string, verbatim, applied to the brain\n   * `brn-radio` host and merged with any consumer `class`. The leading `group`\n   * (set statically on the element) cooperates with this string so the\n   * indicator can key off `.brn-radio-checked`.\n   */\n  protected readonly computedClass = computed(() =>\n    cn(\n      'group aspect-square size-4 shrink-0 rounded-full border border-input text-primary shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40',\n      this.class(),\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/radio-group/radio-group.ts"
+    },
+    {
+      "path": "src/lib/radio-group/index.ts",
+      "content": "export { RadioGroup, RadioGroupItem } from './radio-group';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/radio-group/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-radio-group.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

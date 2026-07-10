@@ -10,7 +10,9 @@
     "chatbot"
   ],
   "dependencies": [
-    "use-stick-to-bottom"
+    "use-stick-to-bottom",
+    "@gremorie/rx-core",
+    "@gremorie/rx-forms"
   ],
   "devDependencies": [],
   "registryDependencies": [

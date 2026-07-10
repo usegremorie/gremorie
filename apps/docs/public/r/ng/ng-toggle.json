@@ -1,0 +1,42 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-toggle",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Toggle (Angular)",
+  "description": "Two-state press-button built on Spartan-ng brain Toggle. Use for inline formatting controls (bold, italic) or visibility toggles. For multi-option clusters use ToggleGroup. Mirrors React Toggle from @gremorie/rx-forms.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "class-variance-authority",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/toggle/toggle.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  model,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnToggle } from '@spartan-ng/brain/toggle';\nimport { cva, type VariantProps } from 'class-variance-authority';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * `toggleVariants` — the cva used by both `Toggle` and `ToggleGroupItem`.\n * Copied verbatim from React `toggleVariants` in `@gremorie/rx-forms` so the two\n * editions render identical classes. Exported so `ToggleGroupItem` can reuse it\n * (mirrors the React `toggle-group` importing `toggleVariants` from `toggle`).\n */\nexport const toggleVariants = cva(\n  \"inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,box-shadow] outline-none hover:bg-muted hover:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: 'bg-transparent',\n        outline:\n          'border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground',\n      },\n      size: {\n        default: 'h-9 min-w-9 px-2',\n        sm: 'h-8 min-w-8 px-1.5',\n        lg: 'h-10 min-w-10 px-2.5',\n      },\n    },\n    defaultVariants: {\n      variant: 'default',\n      size: 'default',\n    },\n  },\n);\n\nexport type ToggleVariant = NonNullable<\n  VariantProps<typeof toggleVariants>['variant']\n>;\nexport type ToggleSize = NonNullable<\n  VariantProps<typeof toggleVariants>['size']\n>;\n\n/**\n * Toggle — single button with on/off state. Angular parity port of React\n * `Toggle` from `@gremorie/rx-forms`, which wraps Radix `Toggle`.\n *\n * A two-state button (`aria-pressed`) for stateful actions outside of form\n * submission — bold/italic in a text editor, view-mode switches, filter chips.\n *\n * The press behavior is delegated to the spartan brain `BrnToggle` directive\n * (the Angular equivalent of Radix Toggle), which owns `data-state`,\n * `aria-pressed`, `data-disabled` and the click-to-toggle wiring. React's\n * `Toggle` exposes a boolean `pressed`/`onPressedChange`; the brain models it as\n * a `state` of `'on' | 'off'`. We expose the React-shaped boolean `pressed`\n * model and bridge it to the brain `state` via a computed in/out.\n *\n * For form-bound boolean values use Checkbox or Switch. Don't use Toggle as\n * navigation — that's Tab or Link. ToggleGroup is the coordinated multi-button\n * equivalent.\n *\n * Parity with React `Toggle`:\n * - `pressed` (boolean model) ↔ React `pressed`/`onPressedChange`\n * - `variant` ('default'|'outline') ↔ React `variant`\n * - `size` ('default'|'sm'|'lg') ↔ React `size`\n * - `disabled` ↔ React `disabled`\n *\n * @example\n * ```html\n * <gn-toggle [(pressed)]=\"bold\" ariaLabel=\"Toggle bold\">B</gn-toggle>\n * ```\n */\n@Component({\n  selector: 'gn-toggle',\n  standalone: true,\n  imports: [BrnToggle],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      brnToggle\n      data-slot=\"toggle\"\n      [state]=\"state()\"\n      (stateChange)=\"onStateChange($event)\"\n      [disabled]=\"disabled()\"\n      [attr.aria-label]=\"ariaLabel() || null\"\n      [class]=\"toggleClass()\"\n    >\n      <ng-content />\n    </button>\n  `,\n})\nexport class Toggle {\n  /** Visual variant. Mirrors React `variant`. */\n  readonly variant = input<ToggleVariant>('default');\n  /** Size preset. Mirrors React `size`. */\n  readonly size = input<ToggleSize>('default');\n  /** Whether the toggle is disabled. Mirrors React `disabled`. */\n  readonly disabled = input<boolean>(false);\n  /** Accessible label for icon-only toggles. Mirrors React `aria-label`. */\n  readonly ariaLabel = input<string>('');\n  /** Two-way pressed state. Mirrors React `pressed` / `onPressedChange`. */\n  readonly pressed = model<boolean>(false);\n\n  /** Bridges the React-shaped boolean `pressed` to the brain `'on' | 'off'` state. */\n  protected readonly state = computed<'on' | 'off'>(() =>\n    this.pressed() ? 'on' : 'off',\n  );\n\n  protected onStateChange(state: 'on' | 'off'): void {\n    this.pressed.set(state === 'on');\n  }\n\n  protected readonly toggleClass = computed(() =>\n    cn(toggleVariants({ variant: this.variant(), size: this.size() })),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/toggle/toggle.ts"
+    },
+    {
+      "path": "src/lib/toggle/index.ts",
+      "content": "export { Toggle, toggleVariants } from './toggle';\nexport type { ToggleVariant, ToggleSize } from './toggle';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/toggle/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-toggle.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

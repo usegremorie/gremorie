@@ -9,7 +9,8 @@
     "overlays"
   ],
   "dependencies": [
-    "vaul"
+    "vaul",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

@@ -10,7 +10,8 @@
     "utilities"
   ],
   "dependencies": [
-    "ai"
+    "ai",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

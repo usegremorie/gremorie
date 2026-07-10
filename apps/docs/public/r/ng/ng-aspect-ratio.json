@@ -1,0 +1,43 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-aspect-ratio",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Aspect Ratio (Angular)",
+  "description": "Reserves vertical space for media before content loads. Use on responsive images, iframes, video embeds, and skeleton placeholders to prevent cumulative layout shift. Mirrors React AspectRatio from @gremorie/rx-containers.",
+  "categories": [
+    "containers"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/aspect-ratio/aspect-ratio.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * AspectRatio — reserves vertical space for media before content loads.\n * Mirrors React `AspectRatio` from `@gremorie/rx-containers` (which wraps\n * Radix AspectRatio).\n *\n * One-input primitive (`ratio`). Wrap every responsive image, iframe,\n * video embed, or skeleton placeholder so the layout does not jump when\n * the asset settles — it prevents cumulative layout shift (CLS).\n *\n * Implementation note: where Radix uses the legacy `padding-bottom`\n * percentage wrapper, the Angular port uses the native CSS `aspect-ratio`\n * property on a single host element. This keeps the anatomy a single box\n * — so `class` on `<gn-aspect-ratio>` lands on exactly the box Radix\n * forwards `className` to — and lets the projected child fill it with\n * `h-full w-full object-cover` just like the React reference. No\n * `@spartan-ng/brain` primitive exists for aspect ratio.\n *\n * @example\n * ```html\n * <gn-aspect-ratio [ratio]=\"16 / 9\" class=\"overflow-hidden rounded-lg\">\n *   <img src=\"…\" alt=\"…\" class=\"h-full w-full object-cover\" />\n * </gn-aspect-ratio>\n * ```\n */\n@Component({\n  selector: 'gn-aspect-ratio',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'aspect-ratio',\n    class: 'block w-full',\n    '[style.aspect-ratio]': 'ratio()',\n  },\n})\nexport class AspectRatio {\n  /** Width / height ratio (e.g. `16 / 9`, `4 / 3`). Defaults to `1`. */\n  readonly ratio = input<number>(1);\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/aspect-ratio/aspect-ratio.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any scrollable region that should match the Gremorie look and feel - long chat threads, code blocks, virtualised lists.",
+    "whenNotToUse": "Document-level scroll (the browser handles that natively). Or short regions where the native scrollbar is fine.",
+    "bestPractices": [
+      "Wrap the scrollable content in gremorie-scroll-area and set an explicit height on the host.",
+      "Use ScrollAreaImports instead of importing the directive and ngx-scrollbar module separately."
+    ],
+    "antipatterns": [
+      "Setting overflow: scroll on the host and nesting gremorie-scroll-area - they fight each other.",
+      "Using the scroll area for the whole app shell - body scroll is usually the right answer."
+    ],
+    "examples": [
+      {
+        "title": "Chat thread",
+        "code": "<gremorie-scroll-area class=\"h-96\">\n  <gremorie-message *ngFor=\"let m of messages\" [data]=\"m\"></gremorie-message>\n</gremorie-scroll-area>\n"
+      }
+    ]
+  }
+}

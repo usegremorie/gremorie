@@ -9,7 +9,8 @@
     "feedback"
   ],
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

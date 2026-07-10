@@ -10,7 +10,9 @@
     "chatbot"
   ],
   "dependencies": [
-    "@radix-ui/react-use-controllable-state"
+    "@radix-ui/react-use-controllable-state",
+    "@gremorie/rx-core",
+    "@gremorie/rx-display"
   ],
   "devDependencies": [],
   "registryDependencies": [

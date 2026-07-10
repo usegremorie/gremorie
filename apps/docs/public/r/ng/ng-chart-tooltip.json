@@ -1,0 +1,74 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-chart-tooltip",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Chart Tooltip (Angular)",
+  "description": "Standalone chart tooltip card - the floating popover the styled charts show on hover, reusable on its own. Presentational: pass the resolved label (category header) and rows (series); variants mirror React ChartTooltipContent (indicator dot/line/dashed, hideLabel, hideIndicator). Position via the chartTooltip directive from ng-chart.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [
+    "@angular/core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-chart"
+  ],
+  "files": [
+    {
+      "path": "src/lib/charts/styled/chart-tooltip-content.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/** One series row inside the tooltip card. */\nexport interface ChartTooltipRow {\n  key: string;\n  label: string;\n  color: string;\n  value: string;\n}\n\n/**\n * Chart tooltip card — the floating popover the cartesian charts show on hover,\n * as a standalone, reusable component (parity with React `ChartTooltipContent`\n * from `@gremorie/rx-data`). Presentational only: it takes the resolved `label`\n * (category header) and `rows` (series) and renders them; the charts pass those\n * from the `chartTooltip` directive and add positioning via `[chartTooltipCard]`.\n *\n * Variants mirror React: `indicator` ('dot' | 'line' | 'dashed'), `hideLabel`,\n * `hideIndicator`.\n *\n * @example\n * ```html\n * <chart-tooltip-content [chartTooltipCard]=\"tip\" class=\"absolute z-10\"\n *   [label]=\"activeName(tip)\" [rows]=\"tipRows(tip)\" />\n * ```\n */\n@Component({\n  selector: 'chart-tooltip-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    'data-slot': 'chart-tooltip',\n    class:\n      'block min-w-32 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md',\n  },\n  template: `\n    @if (!hideLabel() && label()) {\n      <div class=\"mb-1 font-medium\">{{ label() }}</div>\n    }\n    @for (row of rows(); track row.key) {\n      <div class=\"flex items-center gap-1.5 text-muted-foreground\">\n        @if (!hideIndicator()) {\n          @switch (indicator()) {\n            @case ('line') {\n              <span\n                class=\"h-3 w-1 shrink-0 rounded-[2px]\"\n                [style.background]=\"row.color\"\n              ></span>\n            }\n            @case ('dashed') {\n              <span\n                class=\"h-3 w-0 shrink-0 border-l-2 border-dashed\"\n                [style.borderColor]=\"row.color\"\n              ></span>\n            }\n            @default {\n              <span\n                class=\"size-2 shrink-0 rounded-[2px]\"\n                [style.background]=\"row.color\"\n              ></span>\n            }\n          }\n        }\n        <span>{{ row.label }}</span>\n        <span\n          class=\"ml-auto pl-3 font-medium tabular-nums text-card-foreground\"\n        >\n          {{ row.value }}\n        </span>\n      </div>\n    }\n  `,\n})\nexport class ChartTooltipContent {\n  /** Category header (hidden when `hideLabel`). */\n  readonly label = input<string>('');\n  /** Series rows. */\n  readonly rows = input<readonly ChartTooltipRow[]>([]);\n  /** Swatch style. */\n  readonly indicator = input<'dot' | 'line' | 'dashed'>('dot');\n  /** Drop the category header. */\n  readonly hideLabel = input(false);\n  /** Drop the color swatch. */\n  readonly hideIndicator = input(false);\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/data/charts/chart-tooltip-content.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Dashboards, analytics surfaces, and AI-generated visualisations. Use the styled presets for quick wins; drop down to the headless primitives when you need a bespoke chart.",
+    "whenNotToUse": "A single sparkline inside a metric card - the styled presets carry a chart frame and axes which would be visual noise. Reach for the headless primitives or a plain SVG.",
+    "bestPractices": [
+      "Pick the chart type based on the nature of the data: time series -> area or line; categorical -> bar; composition (<= 5 slices) -> pie; correlation -> scatter.",
+      "Stick to the Gremorie sequential palette for ordinal data and the categorical palette for nominal data.",
+      "When generating charts via AI, always pass tabular data plus a label - never inline arrays."
+    ],
+    "antipatterns": [
+      "Pie chart with more than 5 slices - use a bar chart instead.",
+      "Sequential palette on categorical data - it implies ordering that isn't there.",
+      "Stacked bar to compare both totals and parts - readers can do one or the other, not both."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "data",
+          "type": "ChartData",
+          "required": true,
+          "description": "The dataset, in the shape expected by the chosen chart type."
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "required": false,
+          "description": "Width override. Defaults to the host element width."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "description": "Height override. Defaults to 240."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Area chart with monthly data",
+        "code": "<gremorie-area-chart [data]=\"revenueByMonth\"></gremorie-area-chart>\n"
+      },
+      {
+        "title": "Bar chart, categorical",
+        "code": "<gremorie-bar-chart [data]=\"usersByPlan\"></gremorie-bar-chart>\n"
+      }
+    ]
+  }
+}

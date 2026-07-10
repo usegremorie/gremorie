@@ -1,0 +1,25 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-chart-tooltip",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Chart Tooltip (React)",
+  "description": "ChartTooltip + ChartTooltipContent - the card-surface hover tooltip for the React charts, published as a standalone name. Alias item: the implementation ships inside the rx-chart primitive (chart.tsx), so installing this pulls rx-chart and adds no extra files.",
+  "categories": [
+    "data",
+    "charts"
+  ],
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-chart"
+  ],
+  "files": [],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-chart-tooltip.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

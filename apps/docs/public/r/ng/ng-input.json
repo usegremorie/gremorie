@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-input",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Input (Angular)",
+  "description": "Input primitive for the Angular edition - single-line text field directive that adopts every native HTML `type`. Token-driven visual states. Mirrors React Input from @gremorie/rx-forms.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@angular/forms",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/input/input.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  output,\n  signal,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Input — single-line text field. Mirrors React `Input` from\n * `@gremorie/rx-forms`.\n *\n * Renders a styled native `<input>` that adopts every native HTML `type`\n * (text, email, password, number, search, tel, url, file…). Visual states are\n * token-driven: `border-input` for default, `focus-visible:ring-ring/50` for\n * focus, `aria-invalid:border-destructive` for error. The exact Tailwind class\n * string is copied verbatim from the React `Input`.\n *\n * ## React → Angular mapping\n *\n * React's `Input` IS the `<input>` (it spreads `React.ComponentProps<'input'>`\n * directly onto the element). Angular cannot spread an arbitrary prop bag onto\n * a host, so:\n *\n * - The component selector is `gn-input` and it renders the styled `<input>`\n *   *inside* its template. The `data-slot=\"input\"` and the full class string\n *   live on that inner `<input>`, not on the host — so the host is an invisible\n *   wrapper and the visible control is the native input, matching React 1:1.\n * - React's spread native props become discrete signal `input()`s\n *   (`type`, `placeholder`, `disabled`, `value`, `ariaInvalid`, `id`, `name`).\n * - React's `className` merge maps to a `class` input merged via `cn`.\n * - Two-way value flow is provided through `ControlValueAccessor` (so the\n *   component works with `[(ngModel)]`/reactive forms) plus a `valueChange`\n *   output for template-driven `[(value)]`-style binding.\n *\n * @example\n * ```html\n * <gn-input type=\"email\" placeholder=\"ada@example.com\" [(ngModel)]=\"email\" />\n * ```\n */\n@Component({\n  selector: 'gn-input',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => Input),\n      multi: true,\n    },\n  ],\n  template: `\n    <input\n      data-slot=\"input\"\n      [class]=\"inputClass()\"\n      [type]=\"type()\"\n      [attr.id]=\"id() || null\"\n      [attr.name]=\"name() || null\"\n      [attr.placeholder]=\"placeholder() || null\"\n      [attr.aria-invalid]=\"ariaInvalid() ? 'true' : null\"\n      [disabled]=\"isDisabled()\"\n      [value]=\"model()\"\n      (input)=\"handleInput($event)\"\n      (blur)=\"handleBlur()\"\n    />\n  `,\n})\nexport class Input implements ControlValueAccessor {\n  /** Native input type. Mirrors React `type` (default `'text'`). */\n  readonly type = input<string>('text');\n  /** Placeholder text. Mirrors React `placeholder`. */\n  readonly placeholder = input<string>('');\n  /** Disable interaction. Mirrors React `disabled`. */\n  readonly disabled = input<boolean>(false);\n  /** Initial/controlled value. Mirrors React `value`/`defaultValue`. */\n  readonly value = input<string>('');\n  /** Switches to destructive error styling. Mirrors React `aria-invalid`. */\n  readonly ariaInvalid = input<boolean>(false);\n  /** Element id (for label association). Mirrors React `id`. */\n  readonly id = input<string>('');\n  /** Form control name. Mirrors React `name`. */\n  readonly name = input<string>('');\n  /** Extra classes merged via `cn`. Mirrors React `className`. */\n  readonly class = input<string>('');\n\n  /** Emits the current string value on every keystroke. */\n  readonly valueChange = output<string>();\n\n  /** Internal model: seeded from `value`, then driven by CVA/`(input)`. */\n  protected readonly model = signal('');\n  /** Internal disabled state: `disabled` input OR `setDisabledState`. */\n  protected readonly disabledState = signal(false);\n\n  protected readonly isDisabled = computed(\n    () => this.disabled() || this.disabledState(),\n  );\n\n  protected readonly inputClass = computed(() =>\n    cn(\n      'h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30',\n      'focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',\n      'aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',\n      this.class(),\n    ),\n  );\n\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  constructor() {\n    // Seed the internal model from the `value` input when used statically\n    // (e.g. in templates / stories without ngModel). CVA `writeValue` and\n    // user keystrokes drive it afterwards. Tracks only `value`.\n    effect(() => {\n      const seed = this.value();\n      if (seed) {\n        this.model.set(seed);\n      }\n    });\n  }\n\n  protected handleInput(event: Event): void {\n    const next = (event.target as HTMLInputElement).value;\n    this.model.set(next);\n    this.onChange(next);\n    this.valueChange.emit(next);\n  }\n\n  protected handleBlur(): void {\n    this.onTouched();\n  }\n\n  // --- ControlValueAccessor ---\n\n  writeValue(value: string | null): void {\n    this.model.set(value ?? '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(isDisabled: boolean): void {\n    this.disabledState.set(isDisabled);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/input/input.ts"
+    },
+    {
+      "path": "src/lib/input/index.ts",
+      "content": "export { Input } from './input';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/input/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-input.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

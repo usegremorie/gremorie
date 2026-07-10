@@ -1,0 +1,105 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-confirmation",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Confirmation (Angular)",
+  "description": "Approval prompt for tool calls - ConfirmationRequest, ConfirmationDescription, and ConfirmationActions (Approve / Reject buttons). Designed for human-in-the-loop tool gates - emits approved/rejected with optional reason. Mirrors React Confirmation from @gremorie/rx-ai.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-tool"
+  ],
+  "files": [
+    {
+      "path": "src/lib/confirmation/confirmation.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  forwardRef,\n  inject,\n  InjectionToken,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\nimport type { ToolState } from '../tool/tool.types';\n\n/**\n * Approval payload mirroring the React `ToolUIPartApproval` union: when\n * `approved` is omitted the request is still pending; `true`/`false` carry the\n * decision plus an optional `reason`.\n */\nexport type ToolUIPartApproval =\n  | { id: string; approved?: undefined; reason?: undefined }\n  | { id: string; approved: true; reason?: string }\n  | { id: string; approved: false; reason?: string }\n  | undefined;\n\n/**\n * Confirmation — a tool-approval alert. Mirrors React `Confirmation` from\n * `@gremorie/rx-ai`.\n *\n * React parity:\n * - Shares `{ approval, state }` via context (here `CONFIRMATION`). The root\n *   renders nothing while `approval` is missing or the tool is still in an\n *   `input-streaming` / `input-available` state — identical guard to React.\n * - Sub-components reveal/hide based on `state` + `approval.approved`:\n *   `ConfirmationRequest` (state `approval-requested`), `ConfirmationAccepted`\n *   / `ConfirmationRejected` (response states + decision), `ConfirmationActions`\n *   (state `approval-requested`).\n * - `state` reuses the shared `ToolState` (= AI SDK `ToolUIPart[\"state\"]`).\n *\n * Divergence: React wraps the surface in `Alert` from `rx-feedback`.\n * `@gremorie/ng-feedback` is not a peer of `ng-ai`, so the root reproduces the\n * same `role=\"alert\"` card surface inline — same visual/semantic result without\n * adding a peer dependency.\n */\nexport interface ConfirmationState {\n  approval: () => ToolUIPartApproval;\n  state: () => ToolState;\n}\n\nexport const CONFIRMATION = new InjectionToken<ConfirmationState>(\n  'ConfirmationState',\n);\n\n@Component({\n  selector: 'confirmation',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (visible()) {\n      <div role=\"alert\" [class]=\"alertClass()\">\n        <ng-content />\n      </div>\n    }\n  `,\n  host: { 'data-slot': 'confirmation', class: 'contents' },\n  providers: [\n    { provide: CONFIRMATION, useExisting: forwardRef(() => Confirmation) },\n  ],\n})\nexport class Confirmation implements ConfirmationState {\n  readonly approval = input<ToolUIPartApproval>(undefined);\n  readonly state = input.required<ToolState>();\n  readonly class = input<string>();\n\n  protected readonly visible = computed(() => {\n    const a = this.approval();\n    const s = this.state();\n    if (!a || s === 'input-streaming' || s === 'input-available') {\n      return false;\n    }\n    return true;\n  });\n\n  protected readonly alertClass = computed(() =>\n    cn(\n      'relative flex w-full flex-col gap-2 rounded-lg border px-4 py-3 text-sm',\n      this.class(),\n    ),\n  );\n}\n\n@Component({\n  selector: 'confirmation-title',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'confirmation-title',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ConfirmationTitle {\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn('inline text-sm text-muted-foreground', this.class()),\n  );\n}\n\n@Component({\n  selector: 'confirmation-request',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (show()) {\n      <ng-content />\n    }\n  `,\n  host: { 'data-slot': 'confirmation-request', class: 'contents' },\n})\nexport class ConfirmationRequest {\n  private readonly ctx = inject(CONFIRMATION);\n  protected readonly show = computed(\n    () => this.ctx.state() === 'approval-requested',\n  );\n}\n\n@Component({\n  selector: 'confirmation-accepted',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (show()) {\n      <ng-content />\n    }\n  `,\n  host: { 'data-slot': 'confirmation-accepted', class: 'contents' },\n})\nexport class ConfirmationAccepted {\n  private readonly ctx = inject(CONFIRMATION);\n  protected readonly show = computed(() => {\n    const a = this.ctx.approval();\n    const s = this.ctx.state();\n    return (\n      !!a?.approved &&\n      (s === 'approval-responded' ||\n        s === 'output-denied' ||\n        s === 'output-available')\n    );\n  });\n}\n\n@Component({\n  selector: 'confirmation-rejected',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (show()) {\n      <ng-content />\n    }\n  `,\n  host: { 'data-slot': 'confirmation-rejected', class: 'contents' },\n})\nexport class ConfirmationRejected {\n  private readonly ctx = inject(CONFIRMATION);\n  protected readonly show = computed(() => {\n    const a = this.ctx.approval();\n    const s = this.ctx.state();\n    return (\n      a?.approved === false &&\n      (s === 'approval-responded' ||\n        s === 'output-denied' ||\n        s === 'output-available')\n    );\n  });\n}\n\n@Component({\n  selector: 'confirmation-actions',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (show()) {\n      <div [class]=\"rowClass()\"><ng-content /></div>\n    }\n  `,\n  host: { 'data-slot': 'confirmation-actions', class: 'contents' },\n})\nexport class ConfirmationActions {\n  private readonly ctx = inject(CONFIRMATION);\n  readonly class = input<string>();\n  protected readonly show = computed(\n    () => this.ctx.state() === 'approval-requested',\n  );\n  protected readonly rowClass = computed(() =>\n    cn('flex items-center justify-end gap-2 self-end', this.class()),\n  );\n}\n\n@Component({\n  selector: 'confirmation-action',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button type=\"button\" [disabled]=\"disabled()\" [class]=\"buttonClass()\">\n      <ng-content />\n    </button>\n  `,\n  host: { 'data-slot': 'confirmation-action', class: 'contents' },\n})\nexport class ConfirmationAction {\n  /** Visual variant (React `Button` default is `default`). */\n  readonly variant = input<'default' | 'outline' | 'ghost' | 'secondary'>(\n    'default',\n  );\n  readonly disabled = input<boolean>(false);\n  readonly class = input<string>();\n  protected readonly buttonClass = computed(() => {\n    const variantClass: Record<string, string> = {\n      default: 'bg-primary text-primary-foreground hover:bg-primary/90',\n      outline:\n        'border border-input bg-background hover:bg-accent hover:text-accent-foreground',\n      ghost: 'hover:bg-accent hover:text-accent-foreground',\n      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',\n    };\n    return cn(\n      'inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',\n      variantClass[this.variant()],\n      this.class(),\n    );\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/confirmation/confirmation.ts"
+    },
+    {
+      "path": "src/lib/confirmation/index.ts",
+      "content": "export {\n  Confirmation,\n  ConfirmationTitle,\n  ConfirmationRequest,\n  ConfirmationAccepted,\n  ConfirmationRejected,\n  ConfirmationActions,\n  ConfirmationAction,\n  CONFIRMATION,\n} from './confirmation';\nexport type {\n  ToolUIPartApproval,\n  ConfirmationState,\n} from './confirmation';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/confirmation/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "submitted",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "attachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
+      }
+    ]
+  }
+}

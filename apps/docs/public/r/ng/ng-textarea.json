@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-textarea",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Textarea (Angular)",
+  "description": "Multi-line text field that auto-grows via `field-sizing: content`. Use for free-form input where rows are unknown ahead of time. Mirrors React Textarea from @gremorie/rx-forms.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@angular/forms",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/textarea/textarea.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  output,\n  signal,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Textarea — multi-line text field. Mirrors React `Textarea` from\n * `@gremorie/rx-forms`.\n *\n * Renders a styled native `<textarea>` that uses CSS `field-sizing: content`\n * so the field grows automatically as the user types — no manual `rows` or JS\n * measurement needed in modern browsers. The exact Tailwind class string is\n * copied verbatim from the React `Textarea`.\n *\n * ## React → Angular mapping\n *\n * React's `Textarea` IS the `<textarea>` (it spreads\n * `React.ComponentProps<'textarea'>` directly). Angular cannot spread a prop\n * bag onto a host, so the `gn-textarea` selector renders the styled\n * `<textarea>` *inside* its template, carrying `data-slot=\"textarea\"` and the\n * full class string — the host is an invisible wrapper, the visible control is\n * the native textarea, matching React 1:1.\n *\n * - React's spread native props become discrete signal `input()`s\n *   (`value`, `placeholder`, `disabled`, `ariaInvalid`, `id`, `name`, `rows`).\n * - React's `className` merge → `class` input merged via `cn`.\n * - Two-way value flow via `ControlValueAccessor` (works with `[(ngModel)]`/\n *   reactive forms) plus a `valueChange` output. `rows` is provided as a\n *   discrete escape hatch even though `field-sizing-content` handles growth.\n *\n * @example\n * ```html\n * <gn-textarea placeholder=\"Tell us about yourself…\" [(ngModel)]=\"bio\" />\n * ```\n */\n@Component({\n  selector: 'gn-textarea',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => Textarea),\n      multi: true,\n    },\n  ],\n  template: `\n    <textarea\n      data-slot=\"textarea\"\n      [class]=\"textareaClass()\"\n      [attr.id]=\"id() || null\"\n      [attr.name]=\"name() || null\"\n      [attr.placeholder]=\"placeholder() || null\"\n      [attr.rows]=\"rows() ?? null\"\n      [attr.aria-invalid]=\"ariaInvalid() ? 'true' : null\"\n      [disabled]=\"isDisabled()\"\n      [value]=\"model()\"\n      (input)=\"handleInput($event)\"\n      (blur)=\"handleBlur()\"\n    ></textarea>\n  `,\n})\nexport class Textarea implements ControlValueAccessor {\n  /** Placeholder text. Mirrors React `placeholder`. */\n  readonly placeholder = input<string>('');\n  /** Disable interaction. Mirrors React `disabled`. */\n  readonly disabled = input<boolean>(false);\n  /** Initial/controlled value. Mirrors React `value`/`defaultValue`. */\n  readonly value = input<string>('');\n  /** Switches to destructive error styling. Mirrors React `aria-invalid`. */\n  readonly ariaInvalid = input<boolean>(false);\n  /** Element id (for label association). Mirrors React `id`. */\n  readonly id = input<string>('');\n  /** Form control name. Mirrors React `name`. */\n  readonly name = input<string>('');\n  /** Visible row count. Mirrors React `rows` (optional; defaults to none). */\n  readonly rows = input<number | null>(null);\n  /** Extra classes merged via `cn`. Mirrors React `className`. */\n  readonly class = input<string>('');\n\n  /** Emits the current string value on every keystroke. */\n  readonly valueChange = output<string>();\n\n  /** Internal model: seeded from `value`, then driven by CVA/`(input)`. */\n  protected readonly model = signal('');\n  /** Internal disabled state: `disabled` input OR `setDisabledState`. */\n  protected readonly disabledState = signal(false);\n\n  protected readonly isDisabled = computed(\n    () => this.disabled() || this.disabledState(),\n  );\n\n  protected readonly textareaClass = computed(() =>\n    cn(\n      'flex field-sizing-content min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:ring-destructive/40',\n      this.class(),\n    ),\n  );\n\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  constructor() {\n    // Seed the internal model from the `value` input when used statically\n    // (e.g. in templates / stories without ngModel). CVA `writeValue` and\n    // user keystrokes drive it afterwards. Tracks only `value`.\n    effect(() => {\n      const seed = this.value();\n      if (seed) {\n        this.model.set(seed);\n      }\n    });\n  }\n\n  protected handleInput(event: Event): void {\n    const next = (event.target as HTMLTextAreaElement).value;\n    this.model.set(next);\n    this.onChange(next);\n    this.valueChange.emit(next);\n  }\n\n  protected handleBlur(): void {\n    this.onTouched();\n  }\n\n  // --- ControlValueAccessor ---\n\n  writeValue(value: string | null): void {\n    this.model.set(value ?? '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(isDisabled: boolean): void {\n    this.disabledState.set(isDisabled);\n  }\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/textarea/textarea.ts"
+    },
+    {
+      "path": "src/lib/textarea/index.ts",
+      "content": "export { Textarea } from './textarea';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/textarea/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-textarea.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

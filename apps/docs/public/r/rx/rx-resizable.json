@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "react-resizable-panels",
-    "lucide-react"
+    "lucide-react",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [
