@@ -5,7 +5,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@gremorie/rx-display';
-import { cn } from '@gremorie/rx-core';
+import { cn, safeHttpUrl } from '@gremorie/rx-core';
 import { BookIcon, ChevronDownIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 
@@ -59,10 +59,19 @@ export const SourcesContent = ({
 
 export type SourceProps = ComponentProps<'a'>;
 
+/**
+ * `href` is a model-supplied citation. React renders `href="javascript:…"`
+ * verbatim — it only warns in development — so an unvalidated citation is one
+ * click away from script execution in the host app.
+ *
+ * `safeHttpUrl` yields `undefined` for anything that is not an absolute
+ * http(s) URL. An `<a>` without `href` is inert and unfocusable, so the source
+ * degrades to plain text rather than becoming an attack surface.
+ */
 export const Source = ({ href, title, children, ...props }: SourceProps) => (
   <a
     className="flex items-center gap-2"
-    href={href}
+    href={safeHttpUrl(href)}
     rel="noreferrer"
     target="_blank"
     {...props}
