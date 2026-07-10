@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in a @gremorie/* package or the docs is broken.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do **not** report security vulnerabilities here — see
+        [SECURITY.md](../blob/develop/SECURITY.md) for private disclosure.
+  - type: input
+    id: package
+    attributes:
+      label: Affected package and version
+      placeholder: '@gremorie/rx-ai@0.5.0'
+    validations:
+      required: true
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Edition
+      options:
+        - React (rx-*)
+        - Angular (ng-*)
+        - Docs / site
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: A minimal reproduction (StackBlitz/repo link) helps most.
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      placeholder: framework version, browser, OS, Node version
+    validations:
+      required: true

@@ -33,17 +33,29 @@ feature/* → develop → staging → main
 
 ## Color, tokens & dark mode
 
-Two-tier, class-based. The full rules live in `AGENTS.md` ("Color, tokens & dark
-mode"). The essentials:
+Two-tier, class-based.
 
-- Source of truth: `@gremorie/tokens` (`packages/tokens/styles/theme.css`).
-  Components use **semantic tokens only** (`bg-card`, `text-foreground`, …),
-  never primitives or hardcoded colors.
-- Dark mode is the **`.dark` class**, not `@media (prefers-color-scheme: dark)`.
-  The `dark:` Tailwind variant is bound to that class once, in `theme.css`.
-- **Any new Tailwind entry** (`@import "tailwindcss"`) must import
+- **Source of truth**: `@gremorie/tokens` (`packages/tokens/styles/theme.css`).
+  Layer 1 primitives (`--color-*` scales) feed Layer 2 semantics
+  (`--background`, `--card`, `--primary`, `--input`, `--border`, `--ring`,
+  `--muted`, `--accent`, `--destructive`, `--sidebar-*`, `--chart-*`, …). Named
+  themes opt in via `data-theme="<name>"` and live in `themes/`.
+- **Components consume semantic tokens only** (`bg-card`, `text-foreground`,
+  `border-input`, …). Never reference `--color-*` primitives directly, and never
+  hardcode hex / rgb / hsl / oklch in `className` or `style`. Inline SVG may use
+  `currentColor` or `var(--color-*)`.
+- **Dark mode is the `.dark` class**, not `@media (prefers-color-scheme: dark)`.
+  Tailwind v4's `dark:` variant is bound to that class with
+  `@custom-variant dark (&:where(.dark, .dark *))`, declared once in `theme.css`.
+- **Any new Tailwind entry** (anything with `@import "tailwindcss"`) must import
   `@gremorie/tokens/theme.css` so it inherits the class-based `dark:` variant.
-  Omitting it lets OS dark preference break light surfaces — a shipped bug.
+  Omitting it lets the OS dark preference fire `dark:*` utilities while the token
+  theme stays light — a white surface with dark controls. That exact mismatch
+  shipped as a real bug; treat a new Tailwind entry without the tokens import as
+  broken.
+- **Validate** themes and dark mode via the Storybook Theme/Dark toolbar, not a
+  browser dark-mode extension or forced-dark flag — those re-tint the rendered
+  page and mask the real CSS.
 
 ## Local setup
 
