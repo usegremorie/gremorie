@@ -56,7 +56,6 @@ export const NAV: NavSection[] = [
           'dashboard',
           'sign-in',
           'settings-form',
-          'marketing-hero',
           'empty-state',
         ],
       },
