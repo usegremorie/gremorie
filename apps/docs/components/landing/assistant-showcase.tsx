@@ -221,7 +221,7 @@ export function AssistantShowcase() {
             <div className="space-y-1.5">
               <Label className="text-xs">Mode</Label>
               <Select value={mode} onValueChange={setMode}>
-                <SelectTrigger className="h-8 w-full">
+                <SelectTrigger size="sm" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -237,7 +237,7 @@ export function AssistantShowcase() {
             <div className="space-y-1.5">
               <Label className="text-xs">Model</Label>
               <Select value={model} onValueChange={setModel}>
-                <SelectTrigger className="h-8 w-full">
+                <SelectTrigger size="sm" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -302,9 +302,13 @@ export function AssistantShowcase() {
               <span className="font-semibold text-sm">Preview</span>
               <div className="flex items-center gap-2">
                 <Select value={theme} onValueChange={setTheme}>
+                  {/* size="sm" (h-8) pairs the trigger with the size-8 icon
+                      button beside it - never override the height by class,
+                      the size variant owns it. */}
                   <SelectTrigger
                     aria-label="Preview theme"
-                    className="h-8 w-[8.5rem] gap-1.5 text-xs"
+                    size="sm"
+                    className="w-[8.5rem] gap-1.5 text-xs"
                   >
                     <PaletteIcon className="size-3.5 text-muted-foreground" />
                     <SelectValue />
