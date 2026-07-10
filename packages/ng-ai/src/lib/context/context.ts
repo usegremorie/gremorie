@@ -107,11 +107,15 @@ export class Context implements ContextState {
   template: `
     <ng-content>
       <button type="button" [class]="buttonClass()">
-        <span class="font-medium text-muted-foreground">{{ renderedPercent() }}</span>
+        <span class="font-medium text-muted-foreground">{{
+          renderedPercent()
+        }}</span>
+        <!-- 16px: the React trigger is a Button, whose base class forces
+             inner svgs to size-4. -->
         <svg
           aria-label="Model context usage"
-          height="20"
-          width="20"
+          height="16"
+          width="16"
           role="img"
           [attr.viewBox]="viewBox"
           style="color: currentcolor"
@@ -164,9 +168,11 @@ export class ContextTrigger {
     () => this.circumference * (1 - this.usedPercent()),
   );
   protected readonly renderedPercent = computed(() => pct(this.usedPercent()));
+  // Mirrors the React default trigger: a ghost Button at its default size
+  // (h-9, gap-2, font-medium, px-3 with the gauge svg).
   protected readonly buttonClass = computed(() =>
     cn(
-      'inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
+      'inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground',
       this.class(),
     ),
   );
@@ -202,7 +208,9 @@ export class ContextContent {
     <ng-content>
       <div class="flex items-center justify-between gap-3 text-xs">
         <p>{{ displayPct() }}</p>
-        <p class="font-mono text-muted-foreground">{{ used() }} / {{ total() }}</p>
+        <p class="font-mono text-muted-foreground">
+          {{ used() }} / {{ total() }}
+        </p>
       </div>
       <div class="space-y-2">
         <div class="h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -228,7 +236,9 @@ export class ContextContentHeader {
   protected readonly displayPct = computed(() => pct(this.usedPercent()));
   protected readonly used = computed(() => compact(this.ctx.usedTokens()));
   protected readonly total = computed(() => compact(this.ctx.maxTokens()));
-  protected readonly barWidth = computed(() => this.usedPercent() * PERCENT_MAX);
+  protected readonly barWidth = computed(
+    () => this.usedPercent() * PERCENT_MAX,
+  );
   protected readonly hostClass = computed(() =>
     cn('block w-full space-y-2 p-3', this.class()),
   );
@@ -449,7 +459,9 @@ export class ContextCacheUsage {
     if (!t || !m || !r) {
       return undefined;
     }
-    return usd(r(m, { inputTokens: 0, outputTokens: 0, cachedInputTokens: t }) ?? 0);
+    return usd(
+      r(m, { inputTokens: 0, outputTokens: 0, cachedInputTokens: t }) ?? 0,
+    );
   });
   protected readonly rowClass = computed(() => cn(rowClassBase, this.class()));
 }

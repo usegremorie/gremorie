@@ -66,8 +66,8 @@ export const badge = defineContract({
     example: '<badge variant="secondary">Secondary</badge>',
   },
   preview: {
-    rx: 'layout-display-display-badge--default',
-    ng: 'display-badge--default',
+    rx: 'layout-display-display-badge--workbench',
+    ng: 'layout-display-display-badge--workbench',
   },
   tag: { rx: 'Badge', ng: 'gn-badge' },
   example: { variant: 'default' },

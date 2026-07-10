@@ -213,6 +213,62 @@ export const Error: Story = {
   parameters: { controls: { disable: true } },
 };
 
+/**
+ * Args-driven demo controls for the Workbench story. `state` drives the real
+ * submit status; the booleans are composition toggles (story-level, NOT
+ * component props) mirroring the contract's `demo` block and the Figma boolean
+ * show/hide properties. Defaults match the contract demo defaults so the
+ * no-args render is the same full composition as before.
+ */
+type WorkbenchArgs = {
+  state: ChatStatus;
+  mentions: boolean;
+  contextMeter: boolean;
+  webSearch: boolean;
+  attachments: boolean;
+  voice: boolean;
+  modeSelect: boolean;
+  modelSelect: boolean;
+};
+
+/**
+ * Workbench - responsive preview frame matching the catalog convention.
+ * Renders the full B2B (Gremorie standard) composition - the same surface
+ * the Assistant block ships: @-context mentions + context gauge header,
+ * textarea, and a footer with Mode/Model selects plus web, attach, voice
+ * and submit actions. The composer fills the available width and tracks
+ * the container as it resizes. Same dataset as the Angular Workbench story.
+ *
+ * Driven by the workbench Properties panel via Storybook args: `state` feeds
+ * the submit button status; each boolean toggles one composition section (in
+ * real code you include or omit the subcomponent).
+ */
+export const Workbench: StoryObj<WorkbenchArgs> = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  args: {
+    state: 'ready',
+    mentions: true,
+    contextMeter: true,
+    webSearch: true,
+    attachments: false,
+    voice: true,
+    modeSelect: true,
+    modelSelect: true,
+  },
+  render: (args) => (
+    <B2BPromptInput
+      state={args.state}
+      mentions={args.mentions}
+      contextMeter={args.contextMeter}
+      webSearch={args.webSearch}
+      withAttachments={args.attachments}
+      voice={args.voice}
+      modeSelect={args.modeSelect}
+      modelSelect={args.modelSelect}
+    />
+  ),
+};
+
 // ============================================================================
 // B2B (Gremorie standard) - a business-oriented composition
 // ============================================================================
@@ -313,6 +369,31 @@ const B2B_USAGE: LanguageModelUsage = {
   },
 };
 
+// Sample attachment chips - byte-identical to the Angular Workbench story.
+const B2B_ATTACHMENTS = [
+  {
+    id: 'chart',
+    type: 'file',
+    url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=400&fit=crop',
+    mediaType: 'image/jpeg',
+    filename: 'q3-revenue-chart.png',
+  },
+  {
+    id: 'pdf',
+    type: 'file',
+    url: '',
+    mediaType: 'application/pdf',
+    filename: 'q3-report.pdf',
+  },
+  {
+    id: 'call',
+    type: 'file',
+    url: '',
+    mediaType: 'audio/mpeg',
+    filename: 'earnings-call.mp3',
+  },
+] as const;
+
 // Outlined trigger to match the Button "outline" variant - the default
 // PromptInputSelectTrigger is borderless/ghost, so re-add the border. The fill
 // stays transparent so the control sits flush on the card surface (--card,
@@ -324,133 +405,135 @@ const OUTLINE_TRIGGER =
 const B2BPromptInput = ({
   withAttachments,
   selectedContext,
+  state = 'ready',
+  mentions = true,
+  contextMeter = true,
+  webSearch = true,
+  voice = true,
+  modeSelect = true,
+  modelSelect = true,
 }: {
   withAttachments?: boolean;
   selectedContext?: string[];
+  state?: ChatStatus;
+  mentions?: boolean;
+  contextMeter?: boolean;
+  webSearch?: boolean;
+  voice?: boolean;
+  modeSelect?: boolean;
+  modelSelect?: boolean;
 }) => (
-  <PromptInput
-    className="mx-auto max-w-2xl"
-    globalDrop
-    multiple
-    onSubmit={() => undefined}
-  >
-    <PromptInputHeader>
-      <PromptInputMentions items={B2B_CONTEXT} defaultValue={selectedContext} />
-      <Context
-        maxTokens={200_000}
-        modelId="anthropic:claude-3-5-sonnet"
-        usage={B2B_USAGE}
-        usedTokens={62_600}
-      >
-        <ContextTrigger className="ml-auto" />
-        <ContextContent>
-          <ContextContentHeader />
-          <ContextContentBody>
-            <div className="space-y-1">
-              <ContextInputUsage />
-              <ContextOutputUsage />
-              <ContextReasoningUsage />
-              <ContextCacheUsage />
-            </div>
-          </ContextContentBody>
-          <ContextContentFooter />
-        </ContextContent>
-      </Context>
-    </PromptInputHeader>
+  <PromptInput globalDrop multiple onSubmit={() => undefined}>
+    {(mentions || contextMeter) && (
+      <PromptInputHeader>
+        {mentions && (
+          <PromptInputMentions
+            items={B2B_CONTEXT}
+            defaultValue={selectedContext}
+          />
+        )}
+        {contextMeter && (
+          <Context
+            maxTokens={200_000}
+            modelId="anthropic:claude-3-5-sonnet"
+            usage={B2B_USAGE}
+            usedTokens={62_600}
+          >
+            <ContextTrigger className="ml-auto" />
+            <ContextContent>
+              <ContextContentHeader />
+              <ContextContentBody>
+                <div className="space-y-1">
+                  <ContextInputUsage />
+                  <ContextOutputUsage />
+                  <ContextReasoningUsage />
+                  <ContextCacheUsage />
+                </div>
+              </ContextContentBody>
+              <ContextContentFooter />
+            </ContextContent>
+          </Context>
+        )}
+      </PromptInputHeader>
+    )}
     <PromptInputBody>
       {withAttachments ? (
         <Attachments className="w-full px-3" variant="inline">
-          <PromptInputAttachment
-            data={{
-              id: 'chart',
-              type: 'file',
-              url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=400&fit=crop',
-              mediaType: 'image/jpeg',
-              filename: 'q3-revenue-chart.png',
-            }}
-          />
-          <PromptInputAttachment
-            data={{
-              id: 'pdf',
-              type: 'file',
-              url: '',
-              mediaType: 'application/pdf',
-              filename: 'q3-report.pdf',
-            }}
-          />
-          <PromptInputAttachment
-            data={{
-              id: 'call',
-              type: 'file',
-              url: '',
-              mediaType: 'audio/mpeg',
-              filename: 'earnings-call.mp3',
-            }}
-          />
+          {B2B_ATTACHMENTS.map((attachment) => (
+            <PromptInputAttachment data={attachment} key={attachment.id} />
+          ))}
         </Attachments>
       ) : null}
       <PromptInputTextarea placeholder="What would you like to know?" />
     </PromptInputBody>
     <PromptInputFooter>
       <PromptInputTools className="gap-2">
-        <PromptInputSelect defaultValue="research">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <PromptInputSelectTrigger
-                aria-label="Select mode"
-                className={OUTLINE_TRIGGER}
-                size="sm"
-              >
-                <PromptInputSelectValue placeholder="Mode" />
-              </PromptInputSelectTrigger>
-            </TooltipTrigger>
-            <TooltipContent>Response mode</TooltipContent>
-          </Tooltip>
-          <PromptInputSelectContent>
-            {B2B_MODES.map((mode) => (
-              <PromptInputSelectItem key={mode.id} value={mode.id}>
-                {mode.icon}
-                {mode.label}
-              </PromptInputSelectItem>
-            ))}
-          </PromptInputSelectContent>
-        </PromptInputSelect>
-        <PromptInputSelect defaultValue="claude-sonnet-4-6">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <PromptInputSelectTrigger
-                aria-label="Select model"
-                className={OUTLINE_TRIGGER}
-                size="sm"
-              >
-                <PromptInputSelectValue placeholder="Model" />
-              </PromptInputSelectTrigger>
-            </TooltipTrigger>
-            <TooltipContent>Model</TooltipContent>
-          </Tooltip>
-          <PromptInputSelectContent>
-            {B2B_MODELS.map((model) => (
-              <PromptInputSelectItem key={model.id} value={model.id}>
-                {model.icon}
-                {model.label}
-              </PromptInputSelectItem>
-            ))}
-          </PromptInputSelectContent>
-        </PromptInputSelect>
+        {modeSelect && (
+          <PromptInputSelect defaultValue="research">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <PromptInputSelectTrigger
+                  aria-label="Select mode"
+                  className={OUTLINE_TRIGGER}
+                  size="sm"
+                >
+                  <PromptInputSelectValue placeholder="Mode" />
+                </PromptInputSelectTrigger>
+              </TooltipTrigger>
+              <TooltipContent>Response mode</TooltipContent>
+            </Tooltip>
+            <PromptInputSelectContent>
+              {B2B_MODES.map((mode) => (
+                <PromptInputSelectItem key={mode.id} value={mode.id}>
+                  {mode.icon}
+                  {mode.label}
+                </PromptInputSelectItem>
+              ))}
+            </PromptInputSelectContent>
+          </PromptInputSelect>
+        )}
+        {modelSelect && (
+          <PromptInputSelect defaultValue="claude-sonnet-4-6">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <PromptInputSelectTrigger
+                  aria-label="Select model"
+                  className={OUTLINE_TRIGGER}
+                  size="sm"
+                >
+                  <PromptInputSelectValue placeholder="Model" />
+                </PromptInputSelectTrigger>
+              </TooltipTrigger>
+              <TooltipContent>Model</TooltipContent>
+            </Tooltip>
+            <PromptInputSelectContent>
+              {B2B_MODELS.map((model) => (
+                <PromptInputSelectItem key={model.id} value={model.id}>
+                  {model.icon}
+                  {model.label}
+                </PromptInputSelectItem>
+              ))}
+            </PromptInputSelectContent>
+          </PromptInputSelect>
+        )}
       </PromptInputTools>
       <PromptInputTools className="gap-2">
         <PromptInputTools>
-          <PromptInputButton
-            aria-label="Search the web"
-            tooltip="Search the web"
-          >
-            <GlobeIcon className="size-4" />
-          </PromptInputButton>
+          {webSearch && (
+            <PromptInputButton
+              aria-label="Search the web"
+              tooltip="Search the web"
+            >
+              <GlobeIcon className="size-4" />
+            </PromptInputButton>
+          )}
           <PromptInputAttachButton tooltip="Attach files" />
-          <PromptInputSpeechButton tooltip="Voice input" />
+          {voice && <PromptInputSpeechButton tooltip="Voice input" />}
         </PromptInputTools>
-        <PromptInputSubmit status="ready" tooltip="Send">
-          <ArrowUpIcon className="size-4" />
+        <PromptInputSubmit status={state} tooltip="Send">
+          {/* Custom send glyph only when ready; other states fall back to the
+              status-driven icon (spinner / stop / retry). */}
+          {state === 'ready' ? <ArrowUpIcon className="size-4" /> : null}
         </PromptInputSubmit>
       </PromptInputTools>
     </PromptInputFooter>

@@ -65,8 +65,8 @@ export const inputGroup = defineContract({
       '<input-group><input-group-addon><SearchIcon /></input-group-addon><input-group-input /></input-group>',
   },
   preview: {
-    rx: 'inputs-text-inputgroup--leading-icon',
-    ng: 'forms-inputgroup--workbench',
+    rx: 'inputs-text-inputgroup--workbench',
+    ng: 'inputs-text-inputgroup--workbench',
   },
   tag: { rx: 'InputGroup', ng: 'gn-input-group' },
   // The ng Workbench story renders sub-components with no top-level scalar args,

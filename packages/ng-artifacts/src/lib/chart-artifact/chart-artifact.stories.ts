@@ -56,7 +56,7 @@ const RATINGS = [
 ];
 
 const meta: Meta<ChartArtifact> = {
-  title: 'Artifacts/ChartArtifact',
+  title: 'AI/Code/Chart',
   component: ChartArtifact,
   tags: ['autodocs'],
   render: (args) => ({

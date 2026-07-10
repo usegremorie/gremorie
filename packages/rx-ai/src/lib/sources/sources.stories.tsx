@@ -27,6 +27,35 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (expanded, three sources).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div style={{ width: 420 }}>
+      <Sources open={true}>
+        <SourcesTrigger count={3} />
+        <SourcesContent>
+          <Source
+            href="https://example.com/article-1"
+            title="Compound components in 2024"
+          />
+          <Source
+            href="https://example.com/article-2"
+            title="React patterns deep dive"
+          />
+          <Source
+            href="https://example.com/article-3"
+            title="Slot composition"
+          />
+        </SourcesContent>
+      </Sources>
+    </div>
+  ),
+};
+
 export const Collapsed: Story = {
   render: () => (
     <Sources open={false}>

@@ -16,7 +16,7 @@ import {
  * codes.
  */
 const meta: Meta<InputOtp> = {
-  title: 'Forms/InputOTP',
+  title: 'Inputs/Text/InputOTP',
   component: InputOtp,
   tags: ['autodocs'],
   decorators: [

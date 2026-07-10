@@ -10,9 +10,10 @@ import { Badge } from './badge';
  * the Tool / Task / ChainOfThought stories where Badge is dogfooded.
  */
 const meta: Meta<Badge> = {
-  title: 'Display/Badge',
+  title: 'Layout & display/Display/Badge',
   component: Badge,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
     variant: {
       control: 'select',
@@ -30,6 +31,15 @@ const meta: Meta<Badge> = {
 
 export default meta;
 type Story = StoryObj<Badge>;
+
+/** Workbench — a single badge driven by the variant control. */
+export const Workbench: Story = {
+  args: { variant: 'default' },
+  render: (args) => ({
+    props: args,
+    template: `<gn-badge [variant]="variant">Badge</gn-badge>`,
+  }),
+};
 
 export const Default: Story = {
   args: { variant: 'default' },

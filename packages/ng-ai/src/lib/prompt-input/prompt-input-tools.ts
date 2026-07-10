@@ -19,8 +19,8 @@ import { cn } from '@gremorie/ng-core';
   },
 })
 export class PromptInputTools {
-  // flex-1 lets Tools occupy remaining space inside the toolbar,
-  // which naturally pushes the submit button to the right edge.
-  // flex-wrap keeps items readable on narrow viewports.
-  protected readonly hostClass = cn('flex flex-1 flex-wrap items-center gap-1');
+  // Mirrors React `PromptInputTools` exactly: a hugging flex row. The footer
+  // (justify-between) spaces the left and right groups; Tools itself must NOT
+  // stretch, or the icon cluster drifts away from the submit button.
+  protected readonly hostClass = cn('flex items-center gap-1');
 }

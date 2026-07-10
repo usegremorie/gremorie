@@ -72,6 +72,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — bottom drawer with header, body and footer. */
+export const Workbench: Story = {
+  render: () => (
+    <Drawer direction="bottom">
+      <DrawerTrigger asChild>
+        <Button variant="outline">Open drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Move goal</DrawerTitle>
+          <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+        </DrawerHeader>
+        <div className="px-4 text-sm text-muted-foreground">
+          Drawer body content.
+        </div>
+        <DrawerFooter>
+          <DrawerClose asChild>
+            <Button>Submit</Button>
+          </DrawerClose>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  ),
+};
+
 /** Bottom sheet with a drag handle, header, body and footer. */
 export const Default: Story = {
   render: () => (

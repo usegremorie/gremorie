@@ -34,6 +34,31 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (the expanded task).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { defaultOpen: true },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Task {...args}>
+        <TaskTrigger title="Found 3 files matching 'config'" />
+        <TaskContent>
+          <TaskItem>
+            Searched the workspace for <TaskItemFile>config.ts</TaskItemFile>
+          </TaskItem>
+          <TaskItem>
+            Also found <TaskItemFile>app.config.ts</TaskItemFile> and{' '}
+            <TaskItemFile>vite.config.ts</TaskItemFile>
+          </TaskItem>
+        </TaskContent>
+      </Task>
+    </div>
+  ),
+};
+
 export const Expanded: Story = {
   args: { defaultOpen: true },
   render: (args) => (

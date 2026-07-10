@@ -46,6 +46,25 @@ export const Default: Story = {
 };
 
 /**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (the suggestions row).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => (
+    <div style={{ width: 420 }}>
+      <Suggestions>
+        <Suggestion suggestion="Tell me a joke" />
+        <Suggestion suggestion="Summarize this" />
+        <Suggestion suggestion="Translate to French" />
+        <Suggestion suggestion="Explain like I'm 5" />
+        <Suggestion suggestion="What's next?" />
+      </Suggestions>
+    </div>
+  ),
+};
+
+/**
  * Row - multiple suggestions inside `Suggestions`. The wrapper hides its
  * scrollbar so long lists scroll horizontally without visual noise.
  */

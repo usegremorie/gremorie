@@ -50,9 +50,9 @@ import {
           <docs-code-block lang="bash" code="npm install @gremorie/ng-ai" />
           <docs-prose>
             <p>
-              <code>&#64;usegremorie/gremorie-prompt-input</code> ships the full
-              PromptInput family (10 components). Each component is standalone
-              and tree-shakeable — import only what you use.
+              <code>&#64;gremorie/ng-ai</code> ships the full PromptInput family
+              (10 components). Each component is standalone and tree-shakeable —
+              import only what you use.
             </p>
             <p>
               Peer dependencies (<code>clsx</code>, <code>tailwind-merge</code>)

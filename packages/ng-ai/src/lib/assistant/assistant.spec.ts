@@ -48,7 +48,7 @@ describe('Assistant', () => {
     const fixture = await render();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.getAttribute('data-slot')).toBe('assistant');
-    expect(host.className).toContain('h-[560px]');
+    expect(host.className).toContain('h-[680px]');
   });
 
   it('renders a stick-to-bottom conversation scroll region', async () => {
@@ -69,7 +69,7 @@ describe('Assistant', () => {
     expect(userMessage).not.toBeNull();
     expect(assistantMessage).not.toBeNull();
     expect(userMessage?.textContent).toContain(
-      'What did the team ship this week?',
+      'How did Q3 revenue break down by region?',
     );
   });
 
@@ -91,14 +91,13 @@ describe('Assistant', () => {
     expect(host.querySelector('prompt-input-submit button')).not.toBeNull();
   });
 
-  it('keeps the toolbar as a sibling of the textarea (not nested)', async () => {
+  it('keeps the footer as a sibling of the textarea (not nested)', async () => {
     const fixture = await render();
     const host = fixture.nativeElement as HTMLElement;
-    const toolbar = host.querySelector('prompt-input-toolbar');
-    expect(toolbar).not.toBeNull();
-    // The toolbar must NOT live inside the textarea element (display:contents
+    const footer = host.querySelector('prompt-input-footer');
+    expect(footer).not.toBeNull();
+    // The footer must NOT live inside the textarea element (display:contents
     // gotcha) — it is a direct sibling under prompt-input.
-    expect(toolbar?.closest('prompt-input-textarea')).toBeNull();
-    expect(toolbar?.getAttribute('role')).toBe('toolbar');
+    expect(footer?.closest('prompt-input-textarea')).toBeNull();
   });
 });

@@ -53,8 +53,8 @@ export const table = defineContract({
       '<table><table-header><table-row><table-head>Invoice</table-head><table-head>Amount</table-head></table-row></table-header><table-body><table-row><table-cell>INV001</table-cell><table-cell>$250</table-cell></table-row></table-body></table>',
   },
   preview: {
-    rx: 'layout-display-display-table--default',
-    ng: 'display-table--workbench',
+    rx: 'layout-display-display-table--workbench',
+    ng: 'layout-display-display-table--workbench',
   },
   tag: { rx: 'Table', ng: 'gn-table' },
   // No controllable scalar props (className only); nothing to seed.

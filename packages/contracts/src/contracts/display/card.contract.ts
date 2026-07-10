@@ -51,8 +51,8 @@ export const card = defineContract({
       '<card><card-header><card-title>Notifications</card-title><card-description>You have 3 unread messages.</card-description></card-header><card-content>...</card-content></card>',
   },
   preview: {
-    rx: 'layout-display-display-card--default',
-    ng: 'display-card--default',
+    rx: 'layout-display-display-card--workbench',
+    ng: 'layout-display-display-card--workbench',
   },
   tag: { rx: 'Card', ng: 'gn-card' },
   // No controllable scalar props (className only); nothing to seed.

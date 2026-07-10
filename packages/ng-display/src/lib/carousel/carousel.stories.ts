@@ -15,9 +15,10 @@ import {
  * root + content + item + previous + next.
  */
 const meta: Meta<Carousel> = {
-  title: 'Display/Carousel',
+  title: 'Layout & display/Display/Carousel',
   component: Carousel,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   decorators: [
     moduleMetadata({
       imports: [
@@ -42,6 +43,33 @@ type Story = StoryObj<Carousel>;
 
 const SLIDE =
   'flex aspect-square items-center justify-center rounded-md border bg-card text-3xl font-semibold';
+
+/** Workbench — three slides with prev/next controls at a fixed width. */
+export const Workbench: Story = {
+  args: { orientation: 'horizontal' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <div class="px-12 py-6">
+        <gn-carousel [orientation]="orientation" class="w-56">
+          <gn-carousel-content>
+            <gn-carousel-item>
+              <div class="${SLIDE}">1</div>
+            </gn-carousel-item>
+            <gn-carousel-item>
+              <div class="${SLIDE}">2</div>
+            </gn-carousel-item>
+            <gn-carousel-item>
+              <div class="${SLIDE}">3</div>
+            </gn-carousel-item>
+          </gn-carousel-content>
+          <gn-carousel-previous />
+          <gn-carousel-next />
+        </gn-carousel>
+      </div>
+    `,
+  }),
+};
 
 export const Horizontal: Story = {
   args: { orientation: 'horizontal' },

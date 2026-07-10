@@ -14,7 +14,7 @@ import { Calendar } from './calendar';
 // `disabled` is exposed via the BrnCalendar hostDirective, not a class input, so
 // widen the story type to include it for the controls/args.
 const meta: Meta<Calendar & { disabled: boolean }> = {
-  title: 'Forms/Calendar',
+  title: 'Inputs/Date/Calendar',
   component: Calendar,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Calendar] })],

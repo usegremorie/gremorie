@@ -19,7 +19,7 @@ import {
  * directives applied to native table elements so the DOM stays valid.
  */
 const meta: Meta<Table> = {
-  title: 'Display/Table',
+  title: 'Layout & display/Display/Table',
   component: Table,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

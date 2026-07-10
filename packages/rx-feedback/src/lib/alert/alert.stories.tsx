@@ -63,6 +63,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — informational alert with icon, title and description. */
+export const Workbench: Story = {
+  args: { variant: 'default' },
+  render: (args) => (
+    <Alert {...args} className="max-w-lg">
+      <Info />
+      <AlertTitle>Heads up!</AlertTitle>
+      <AlertDescription>
+        You can configure additional notification channels in your settings.
+      </AlertDescription>
+    </Alert>
+  ),
+};
+
 /** Default informational alert with icon, title and description. */
 export const Default: Story = {
   render: (args) => (

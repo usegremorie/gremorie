@@ -76,8 +76,8 @@ export const tabs = defineContract({
       '<tabs defaultValue="overview"><tabs-list><tabs-trigger value="overview">Overview</tabs-trigger><tabs-trigger value="details">Details</tabs-trigger></tabs-list><tabs-content value="overview">…</tabs-content><tabs-content value="details">…</tabs-content></tabs>',
   },
   preview: {
-    rx: 'interaction-navigation-tabs--default',
-    ng: 'navigation-tabs--workbench',
+    rx: 'interaction-navigation-tabs--workbench',
+    ng: 'interaction-navigation-tabs--workbench',
   },
   tag: { rx: 'Tabs', ng: 'gn-tabs' },
   example: { orientation: 'horizontal', variant: 'default', disabled: false },

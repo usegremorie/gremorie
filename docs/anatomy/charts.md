@@ -8,9 +8,10 @@ a styled SVG. **The rendering engine differs; the public surface does not.**
 Shared rules for all seven:
 
 - **Card surface**: rounded `border bg-card` card with internal padding; the
-  chart fills it via `aspect-video` (cartesian) or `aspect-square max-h-[250px]`
-  (polar). React puts this on `ChartContainer`; Angular puts it on the host so
-  `class` merges.
+  chart fills it via `aspect-video` (cartesian) or an inner `aspect-square`
+  block capped at `max-h-[260px]` (pie, radial) / `max-h-[280px]` (radar) on a
+  full-width card. React puts this on `ChartContainer` (cartesian) or an outer
+  figure div (polar); Angular puts it on the host so `class` merges.
 - **Colors**: each series key resolves to `var(--color-<key>)` from `config`,
   falling back to the cycling palette `--chart-1..5`. Per-row `fill` overrides
   for categorical single-series charts.
@@ -61,44 +62,44 @@ Defaults shown in parentheses. Angular column gives the signal-input signature.
 
 ### AreaChart
 
-| Prop (React)             | Type                                            | Default     | Angular input                                  |
-| ------------------------ | ----------------------------------------------- | ----------- | ---------------------------------------------- |
-| `data`                   | `readonly ChartDatum[]`                         | required    | `data = input.required<readonly ChartDatum[]>()` |
-| `config`                 | `ChartConfig`                                   | required    | `config = input.required<ChartConfig>()`       |
-| `xKey`                   | `string`                                        | required    | `xKey = input.required<string>()`              |
-| `stacked`                | `boolean`                                        | `false`     | `stacked = input(false)`                       |
-| `type`                   | `'natural' \| 'monotone' \| 'linear' \| 'step'` | `'natural'` | `type = input<CurveType>('natural')`           |
-| `yAxis`                  | `boolean`                                        | `true`      | `yAxis = input(true)`                          |
-| `tooltip`                | `boolean`                                        | `true`      | `tooltip = input(true)`                        |
-| `className`              | `string`                                         | —           | host `class`                                   |
+| Prop (React) | Type                                            | Default     | Angular input                                    |
+| ------------ | ----------------------------------------------- | ----------- | ------------------------------------------------ |
+| `data`       | `readonly ChartDatum[]`                         | required    | `data = input.required<readonly ChartDatum[]>()` |
+| `config`     | `ChartConfig`                                   | required    | `config = input.required<ChartConfig>()`         |
+| `xKey`       | `string`                                        | required    | `xKey = input.required<string>()`                |
+| `stacked`    | `boolean`                                       | `false`     | `stacked = input(false)`                         |
+| `type`       | `'natural' \| 'monotone' \| 'linear' \| 'step'` | `'natural'` | `type = input<CurveType>('natural')`             |
+| `yAxis`      | `boolean`                                       | `true`      | `yAxis = input(true)`                            |
+| `tooltip`    | `boolean`                                       | `true`      | `tooltip = input(true)`                          |
+| `className`  | `string`                                        | —           | host `class`                                     |
 
 ### BarChart
 
-| Prop         | Type                    | Default | Angular input                  |
-| ------------ | ----------------------- | ------- | ------------------------------ |
-| `data`       | `readonly ChartDatum[]` | req     | `input.required`               |
-| `config`     | `ChartConfig`           | req     | `input.required`               |
-| `xKey`       | `string`                | req     | `input.required`               |
-| `stacked`    | `boolean`               | `false` | `input(false)`                 |
-| `horizontal` | `boolean`               | `false` | `input(false)`                 |
-| `yAxis`      | `boolean`               | `true`  | `input(true)`                  |
-| `showLabels` | `boolean`               | `false` | `input(false)`                 |
-| `tooltip`    | `boolean`               | `true`  | `input(true)`                  |
-| `radius`     | `number`                | `8`     | `input(8)`                     |
-| `className`  | `string`                | —       | host `class`                   |
+| Prop         | Type                    | Default | Angular input    |
+| ------------ | ----------------------- | ------- | ---------------- |
+| `data`       | `readonly ChartDatum[]` | req     | `input.required` |
+| `config`     | `ChartConfig`           | req     | `input.required` |
+| `xKey`       | `string`                | req     | `input.required` |
+| `stacked`    | `boolean`               | `false` | `input(false)`   |
+| `horizontal` | `boolean`               | `false` | `input(false)`   |
+| `yAxis`      | `boolean`               | `true`  | `input(true)`    |
+| `showLabels` | `boolean`               | `false` | `input(false)`   |
+| `tooltip`    | `boolean`               | `true`  | `input(true)`    |
+| `radius`     | `number`                | `8`     | `input(8)`       |
+| `className`  | `string`                | —       | host `class`     |
 
 ### LineChart
 
-| Prop        | Type                                            | Default     | Angular input                |
-| ----------- | ----------------------------------------------- | ----------- | ---------------------------- |
-| `data`      | `readonly ChartDatum[]`                         | req         | `input.required`             |
-| `config`    | `ChartConfig`                                   | req         | `input.required`             |
-| `xKey`      | `string`                                        | req         | `input.required`             |
-| `type`      | `'natural' \| 'monotone' \| 'linear' \| 'step'` | `'natural'` | `input<CurveType>('natural')`|
-| `dots`      | `boolean`                                        | `false`     | `input(false)`               |
-| `yAxis`     | `boolean`                                        | `true`      | `input(true)`                |
-| `tooltip`   | `boolean`                                        | `true`      | `input(true)`                |
-| `className` | `string`                                         | —           | host `class`                 |
+| Prop        | Type                                            | Default     | Angular input                 |
+| ----------- | ----------------------------------------------- | ----------- | ----------------------------- |
+| `data`      | `readonly ChartDatum[]`                         | req         | `input.required`              |
+| `config`    | `ChartConfig`                                   | req         | `input.required`              |
+| `xKey`      | `string`                                        | req         | `input.required`              |
+| `type`      | `'natural' \| 'monotone' \| 'linear' \| 'step'` | `'natural'` | `input<CurveType>('natural')` |
+| `dots`      | `boolean`                                       | `false`     | `input(false)`                |
+| `yAxis`     | `boolean`                                       | `true`      | `input(true)`                 |
+| `tooltip`   | `boolean`                                       | `true`      | `input(true)`                 |
+| `className` | `string`                                        | —           | host `class`                  |
 
 ### ScatterChart
 
@@ -113,46 +114,46 @@ Defaults shown in parentheses. Angular column gives the signal-input signature.
 
 ### PieChart
 
-| Prop         | Type                    | Default | Angular input                   |
-| ------------ | ----------------------- | ------- | ------------------------------- |
-| `data`       | `readonly ChartDatum[]` | req     | `input.required`                |
-| `nameKey`    | `string`                | req     | `input.required`                |
+| Prop         | Type                    | Default | Angular input                                               |
+| ------------ | ----------------------- | ------- | ----------------------------------------------------------- |
+| `data`       | `readonly ChartDatum[]` | req     | `input.required`                                            |
+| `nameKey`    | `string`                | req     | `input.required`                                            |
 | `dataKey`    | `string`                | req     | `input.required` (was `valueKey` — **rename to `dataKey`**) |
-| `config`     | `ChartConfig`           | `{}`    | `input<ChartConfig>({})`        |
-| `donut`      | `boolean`               | `false` | `input(false)`                  |
-| `showLabels` | `boolean`               | `false` | `input(false)`                  |
-| `tooltip`    | `boolean`               | `true`  | `input(true)`                   |
-| `className`  | `string`                | —       | host `class`                    |
+| `config`     | `ChartConfig`           | `{}`    | `input<ChartConfig>({})`                                    |
+| `donut`      | `boolean`               | `false` | `input(false)`                                              |
+| `showLabels` | `boolean`               | `false` | `input(false)`                                              |
+| `tooltip`    | `boolean`               | `true`  | `input(true)`                                               |
+| `className`  | `string`                | —       | host `class`                                                |
 
 ### RadarChart
 
-| Prop        | Type                    | Default     | Angular input                       |
-| ----------- | ----------------------- | ----------- | ----------------------------------- |
-| `data`      | `readonly ChartDatum[]` | req         | `input.required`                    |
-| `config`    | `ChartConfig`           | req         | `input.required`                    |
-| `xKey`      | `string`                | req         | `input.required`                    |
+| Prop        | Type                    | Default     | Angular input                           |
+| ----------- | ----------------------- | ----------- | --------------------------------------- |
+| `data`      | `readonly ChartDatum[]` | req         | `input.required`                        |
+| `config`    | `ChartConfig`           | req         | `input.required`                        |
+| `xKey`      | `string`                | req         | `input.required`                        |
 | `gridType`  | `'polygon' \| 'circle'` | `'polygon'` | `gridType = input<GridType>('polygon')` |
-| `tooltip`   | `boolean`               | `true`      | `input(true)`                       |
-| `className` | `string`                | —           | host `class`                        |
+| `tooltip`   | `boolean`               | `true`      | `input(true)`                           |
+| `className` | `string`                | —           | host `class`                            |
 
 ### RadialChart
 
-| Prop        | Type                    | Default | Angular input                   |
-| ----------- | ----------------------- | ------- | ------------------------------- |
-| `data`      | `readonly ChartDatum[]` | req     | `input.required`                |
-| `nameKey`   | `string`                | req     | `input.required`                |
+| Prop        | Type                    | Default | Angular input                                               |
+| ----------- | ----------------------- | ------- | ----------------------------------------------------------- |
+| `data`      | `readonly ChartDatum[]` | req     | `input.required`                                            |
+| `nameKey`   | `string`                | req     | `input.required`                                            |
 | `dataKey`   | `string`                | req     | `input.required` (was `valueKey` — **rename to `dataKey`**) |
-| `config`    | `ChartConfig`           | `{}`    | `input<ChartConfig>({})`        |
-| `tooltip`   | `boolean`               | `true`  | `input(true)`                   |
-| `className` | `string`                | —       | host `class`                    |
+| `config`    | `ChartConfig`           | `{}`    | `input<ChartConfig>({})`                                    |
+| `tooltip`   | `boolean`               | `true`  | `input(true)`                                               |
+| `className` | `string`                | —       | host `class`                                                |
 
 ## Notes for the Angular implementation
 
 - `CurveType = 'natural' | 'monotone' | 'linear' | 'step'`,
   `GridType = 'polygon' | 'circle'` — export these from `headless/types`.
 - The **headless layer already exists** (`headless/{shape,bar,area,line,pie,
-  radar,radial-bar,scatter,axis,scales,domain,polar,chart-frame,
-  cartesian-grid,format}.ts`). Parity work is mostly: add curve interpolation to
+radar,radial-bar,scatter,axis,scales,domain,polar,chart-frame,
+cartesian-grid,format}.ts`). Parity work is mostly: add curve interpolation to
   `shape.ts`, stacking to `bar`/`area`, a tooltip overlay, dots, per-row `fill`,
   `radius`, `gridType`, value labels — then wire each new input through the
   styled component.

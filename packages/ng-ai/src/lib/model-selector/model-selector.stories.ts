@@ -21,7 +21,7 @@ import {
  * `@spartan-ng/brain/command` (filter / keyboard nav / selection).
  */
 const meta: Meta<ModelSelector> = {
-  title: 'AI/ModelSelector',
+  title: 'AI/Chatbot/ModelSelector',
   component: ModelSelector,
   tags: ['autodocs'],
   parameters: { controls: { disable: true } },

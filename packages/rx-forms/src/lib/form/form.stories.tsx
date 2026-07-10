@@ -78,6 +78,52 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms` (a single email field with label, description and a
+ * pattern-validated message). Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => {
+    function Demo() {
+      const form = useForm<{ email: string }>({
+        defaultValues: { email: '' },
+        mode: 'onTouched',
+      });
+      return (
+        <Form {...form}>
+          <FormField
+            control={form.control}
+            name="email"
+            rules={{
+              pattern: {
+                value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+                message: 'Please enter a valid email.',
+              },
+            }}
+            render={({ field }) => (
+              <FormItem className="w-80">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="ada@example.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>We'll never share your email.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </Form>
+      );
+    }
+    return <Demo />;
+  },
+};
+
 type SignupValues = {
   username: string;
   email: string;

@@ -92,8 +92,8 @@ export const chainOfThought = defineContract({
       '<chain-of-thought>\n  <chain-of-thought-header />\n  <chain-of-thought-content>\n    <chain-of-thought-step label="Searched the web" status="complete" />\n  </chain-of-thought-content>\n</chain-of-thought>',
   },
   preview: {
-    rx: 'ai-chatbot-chainofthought--simple',
-    ng: 'ai-chainofthought--simple',
+    rx: 'ai-chatbot-chainofthought--workbench',
+    ng: 'ai-chatbot-chainofthought--workbench',
   },
   tag: { rx: 'ChainOfThought', ng: 'chain-of-thought' },
   example: {

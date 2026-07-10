@@ -50,8 +50,8 @@ export const separator = defineContract({
     example: '<separator /> ... <separator orientation="vertical" />',
   },
   preview: {
-    rx: 'layout-display-display-separator--default',
-    ng: 'display-separator--workbench',
+    rx: 'layout-display-display-separator--workbench',
+    ng: 'layout-display-display-separator--workbench',
   },
   tag: { rx: 'Separator', ng: 'gn-separator' },
   example: { orientation: 'horizontal', decorative: true },

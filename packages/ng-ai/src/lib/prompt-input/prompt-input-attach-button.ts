@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,8 +8,14 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
+import type { BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
 import { cva } from 'class-variance-authority';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 import { PromptInput } from './prompt-input';
 
@@ -24,39 +31,59 @@ const buttonClass = cva(
  * `PromptInput` root; the Angular `PromptInput` instead exposes `addFiles()` plus
  * drag/paste intake, so this button owns a local hidden `<input type="file">` and
  * forwards the selection to the parent. Honours the parent's `acceptAttachments`
- * allowlist for the native picker.
+ * allowlist for the native picker. When `tooltip` is set, the button is wrapped
+ * in the styled `gn-tooltip` compound from `@gremorie/ng-overlays`, matching the
+ * React styled Tooltip surface.
  */
 @Component({
   selector: 'prompt-input-attach-button',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BrnTooltip],
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   template: `
-    <button
-      type="button"
-      [class]="buttonClass"
-      aria-label="Attach files"
-      [brnTooltip]="tooltip() ?? null"
-      [tooltipDisabled]="!tooltip()"
-      [position]="side()"
-      (click)="open()"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        class="size-4"
+    <ng-template #btn>
+      <button
+        type="button"
+        [class]="buttonClass"
+        aria-label="Attach files"
+        (click)="open()"
       >
-        <path
-          d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"
-        />
-      </svg>
-    </button>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="size-4"
+        >
+          <path
+            d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"
+          />
+        </svg>
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip [side]="side()">
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
     <input
       #fileInput
       type="file"

@@ -180,6 +180,49 @@ function AppShell({
   );
 }
 
+/**
+ * Workbench preset: a labelled navigation group inside the app shell, framed
+ * at a fixed `min-h-[420px]` bordered provider — the IDENTICAL use case as the
+ * Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <SidebarProvider className="min-h-[420px] rounded-lg border">
+      <Sidebar collapsible="none" className="border-r">
+        <SidebarHeader className="text-sm font-semibold">
+          Acme Inc
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton isActive>Dashboard</SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>Projects</SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>Settings</SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter className="text-xs text-muted-foreground">
+          v1.0.0
+        </SidebarFooter>
+      </Sidebar>
+      <SidebarInset className="p-4">
+        <SidebarTrigger />
+        <p className="mt-2 text-sm text-muted-foreground">Main content area.</p>
+      </SidebarInset>
+    </SidebarProvider>
+  ),
+};
+
 /** A full app shell: provider + sidebar with a labelled group, badges, footer, and an inset. */
 export const Default: Story = {
   render: () => <AppShell />,

@@ -2,10 +2,10 @@ import { defineContract } from '../../types';
 
 /**
  * Button - a clickable button or a link styled as one. React lives in
- * `@gremorie/rx-forms`; Angular currently lives in `@gremorie/ng-core` (a
- * package-layout divergence from React's rx-forms). `ng-core` is not yet
- * Storybook-globbed, so `preview.ng` is omitted until button is either moved to
- * ng-forms (to match React) or ng-core is added to the Storybook globs.
+ * `@gremorie/rx-forms`. The Angular source lives in `@gremorie/ng-core`
+ * (ng-forms depends on ng-core's `cn`/`buttonVariants`, so hosting the source
+ * in ng-forms would be circular) and is re-exported from `@gremorie/ng-forms`,
+ * which mirrors the React package surface and hosts the Storybook stories.
  */
 export const button = defineContract({
   name: 'button',
@@ -74,10 +74,11 @@ export const button = defineContract({
     example:
       '<button variant="outline" size="icon" aria-label="Submit"><ArrowUpIcon /></button>',
   },
-  preview: { rx: 'inputs-buttons-button--default' },
+  preview: {
+    rx: 'inputs-buttons-button--workbench',
+    ng: 'inputs-buttons-button--workbench',
+  },
   tag: { rx: 'Button', ng: 'ai-button' },
-  // No Angular Workbench story exists (button lives in ng-core, not yet
-  // Storybook-globbed), so these seed from the contract's scalar defaults.
   example: {
     variant: 'default',
     size: 'default',

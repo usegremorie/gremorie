@@ -67,8 +67,8 @@ export const suggestion = defineContract({
       '<suggestions>\n  <suggestion value="Summarize this" (selected)="send($event)" />\n</suggestions>',
   },
   preview: {
-    rx: 'ai-chatbot-suggestion--row',
-    ng: 'ai-suggestion--row',
+    rx: 'ai-chatbot-suggestion--workbench',
+    ng: 'ai-chatbot-suggestion--workbench',
   },
   tag: { rx: 'Suggestion', ng: 'suggestion' },
   example: {

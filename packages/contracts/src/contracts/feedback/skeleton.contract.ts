@@ -38,8 +38,8 @@ export const skeleton = defineContract({
     example: '<skeleton className="h-4 w-[250px]" />',
   },
   preview: {
-    rx: 'interaction-feedback-skeleton--default',
-    ng: 'feedback-skeleton--default',
+    rx: 'interaction-feedback-skeleton--workbench',
+    ng: 'interaction-feedback-skeleton--workbench',
   },
   tag: { rx: 'Skeleton', ng: 'gn-skeleton' },
   // No controllable scalar props (className only); nothing to seed.

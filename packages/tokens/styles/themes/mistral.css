@@ -4,13 +4,15 @@
  */
 :root[data-theme='mistral'] {
   --primary: var(--color-orange-600);
-  --primary-foreground: var(--color-gray-50);
+  /* Black on flame orange (5.5:1), matching Mistral's own brand usage;
+     the previous near-white foreground sat at 3.4:1 and failed AA. */
+  --primary-foreground: var(--color-gray-950);
   --accent: var(--color-orange-100);
   --accent-foreground: var(--color-orange-900);
   --ring: var(--color-orange-500);
 
   --sidebar-primary: var(--color-orange-600);
-  --sidebar-primary-foreground: var(--color-gray-50);
+  --sidebar-primary-foreground: var(--color-gray-950);
   --sidebar-ring: var(--color-orange-500);
 
   --chart-1: var(--color-orange-500);
@@ -33,4 +35,13 @@
   --sidebar-primary: var(--color-orange-400);
   --sidebar-primary-foreground: var(--color-gray-950);
   --sidebar-ring: var(--color-orange-400);
+
+  /* Chart series (dark): lighter orange steps so every series clears the 3:1
+     graphical minimum on the dark background. Without these the light-block
+     values win on specificity and leak into dark mode. */
+  --chart-1: var(--color-orange-400);
+  --chart-2: var(--color-orange-200);
+  --chart-3: var(--color-orange-600);
+  --chart-4: var(--color-amber-400);
+  --chart-5: var(--color-red-400);
 }

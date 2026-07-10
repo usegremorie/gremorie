@@ -25,7 +25,7 @@ import {
  * `[content]="content"`.
  */
 const meta: Meta<DropdownMenu> = {
-  title: 'Overlays/DropdownMenu',
+  title: 'Interaction/Overlays/DropdownMenu',
   component: DropdownMenu,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

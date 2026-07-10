@@ -3,14 +3,17 @@
  * Activate with data-theme="claude" on the root element.
  */
 :root[data-theme='claude'] {
-  /* Warm cream surfaces instead of pure neutral. */
-  --background: oklch(0.98 0.008 85);
+  /* Warm oat surfaces, anchored on Anthropic's own light canvas. */
+  --background: oklch(0.965 0.011 92);
   --foreground: var(--color-gray-950);
-  --card: oklch(0.99 0.006 85);
+  --card: oklch(0.985 0.008 92);
   --card-foreground: var(--color-gray-950);
-  --popover: oklch(0.99 0.006 85);
+  --popover: oklch(0.985 0.008 92);
   --popover-foreground: var(--color-gray-950);
 
+  /* Intentional 3.0:1 pair (clay-500 on gray-50), mirroring claude.ai's own
+     primary button; fine for graphical/large-text use. Text-heavy contexts
+     should use clay-600 instead, as --sidebar-primary already does. */
   --primary: var(--color-clay-500);
   --primary-foreground: var(--color-gray-50);
   --secondary: oklch(0.95 0.012 80);
@@ -44,11 +47,12 @@
 }
 
 :root[data-theme='claude'].dark {
-  --background: oklch(0.2 0.01 60);
+  /* The real product's warm charcoal (#262624 family), less red than hue 60. */
+  --background: oklch(0.235 0.006 100);
   --foreground: var(--color-gray-50);
-  --card: oklch(0.24 0.012 60);
+  --card: oklch(0.268 0.005 100);
   --card-foreground: var(--color-gray-50);
-  --popover: oklch(0.24 0.012 60);
+  --popover: oklch(0.268 0.005 100);
   --popover-foreground: var(--color-gray-50);
 
   --primary: var(--color-clay-400);
@@ -71,4 +75,13 @@
   --sidebar-accent-foreground: var(--color-gray-50);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: var(--color-clay-400);
+
+  /* Chart series (dark): lighter clay steps so every series clears the 3:1
+     graphical minimum on the dark background. Without these the light-block
+     values win on specificity and leak into dark mode. */
+  --chart-1: var(--color-clay-400);
+  --chart-2: var(--color-clay-200);
+  --chart-3: var(--color-clay-600);
+  --chart-4: var(--color-taupe-400);
+  --chart-5: var(--color-amber-400);
 }

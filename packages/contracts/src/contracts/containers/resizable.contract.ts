@@ -86,7 +86,7 @@ export const resizable = defineContract({
       '<resizable-panel-group direction="horizontal"><resizable-panel defaultSize={40} minSize={20} /><resizable-handle withHandle /><resizable-panel defaultSize={60} /></resizable-panel-group>',
   },
   preview: {
-    rx: 'layout-display-containers-resizable--horizontal',
+    rx: 'layout-display-containers-resizable--workbench',
     ng: 'layout-display-containers-resizable--workbench',
   },
   // tag.rx is the root panel-group component; ng is the root group selector.

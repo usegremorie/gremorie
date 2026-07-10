@@ -10,7 +10,7 @@ import { ToolbarGroup } from './toolbar-group';
  * grouped subset, pressed-state (toggle), and a vertical orientation.
  */
 const meta: Meta<Toolbar> = {
-  title: 'AI/Toolbar',
+  title: 'AI/Workflow/Toolbar',
   component: Toolbar,
   tags: ['autodocs'],
   decorators: [

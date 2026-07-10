@@ -23,7 +23,7 @@ import {
  * Pass the same `direction` to `<gn-drawer>` (`side`) and `<gn-drawer-content>`.
  */
 const meta: Meta<Drawer> = {
-  title: 'Overlays/Drawer',
+  title: 'Interaction/Overlays/Drawer',
   component: Drawer,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

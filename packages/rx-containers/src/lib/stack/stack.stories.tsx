@@ -62,8 +62,9 @@ const Box = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-/** A default stack — `gap="md"`, stretched children. */
-export const Default: Story = {
+/** Default — `gap="md"`, stretched children; all three knobs are live. */
+export const Workbench: Story = {
+  args: { gap: 'md', align: 'stretch', justify: 'start' },
   render: (args) => (
     <Stack {...args} className="w-64">
       <Box>One</Box>

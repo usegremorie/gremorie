@@ -67,6 +67,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — a single featured icon driven by the variant controls. */
+export const Workbench: Story = {
+  args: {
+    icon: Sparkles,
+    color: 'primary',
+    theme: 'light',
+    size: 'md',
+    shape: 'square',
+  },
+};
+
 export const Default: Story = {};
 
 const COLORS = ['primary', 'gray', 'success', 'error'] as const;

@@ -53,7 +53,7 @@ export const chartTooltip = defineContract({
   },
   preview: {
     rx: 'layout-display-data-tooltip--workbench',
-    ng: 'charts-tooltip--workbench',
+    ng: 'layout-display-data-tooltip--workbench',
   },
   tag: { rx: 'ChartTooltipContent', ng: 'chart-tooltip-content' },
   example: {

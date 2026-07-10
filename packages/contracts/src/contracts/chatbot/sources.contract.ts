@@ -66,8 +66,8 @@ export const sources = defineContract({
       '<sources>\n  <sources-trigger [count]="2" />\n  <sources-content>\n    <source href="https://example.com" title="Example" />\n  </sources-content>\n</sources>',
   },
   preview: {
-    rx: 'ai-chatbot-sources--expanded',
-    ng: 'ai-sources--expanded',
+    rx: 'ai-chatbot-sources--workbench',
+    ng: 'ai-chatbot-sources--workbench',
   },
   tag: { rx: 'Sources', ng: 'sources' },
   example: {

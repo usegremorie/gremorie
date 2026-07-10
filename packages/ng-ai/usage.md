@@ -33,33 +33,35 @@ api:
       default: "'list'"
       description: 'AttachmentList variant - layout for the attachment row/grid.'
   outputs:
-    - name: gremoriePromptSubmit
+    - name: submitted
       payload: PromptInputSubmitEvent
       description: 'Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit.'
-    - name: gremoriePromptAttachmentError
+    - name: attachmentError
       payload: PromptInputAttachmentError
       description: 'Fired when an attachment is rejected (bad MIME, too large, etc.).'
 examples:
   - title: 'Basic chat input'
     code: |
-      <gremorie-prompt-input [(value)]="draft" (gremoriePromptSubmit)="onSubmit($event)">
-        <gremorie-prompt-input-textarea placeholder="Ask anything"></gremorie-prompt-input-textarea>
-        <gremorie-prompt-input-toolbar>
-          <gremorie-prompt-input-submit></gremorie-prompt-input-submit>
-        </gremorie-prompt-input-toolbar>
-      </gremorie-prompt-input>
+      <prompt-input (submitted)="onSubmit($event)">
+        <prompt-input-textarea placeholder="Ask anything"></prompt-input-textarea>
+        <prompt-input-toolbar>
+          <prompt-input-submit></prompt-input-submit>
+        </prompt-input-toolbar>
+      </prompt-input>
   - title: 'Inline attachment list'
     code: |
-      <gremorie-attachment-list variant="inline">
-        <gremorie-attachment-item *ngFor="let a of attachments" [data]="a">
-          <gremorie-attachment-preview></gremorie-attachment-preview>
-          <gremorie-attachment-info>
-            <gremorie-attachment-name></gremorie-attachment-name>
-            <gremorie-attachment-size></gremorie-attachment-size>
-          </gremorie-attachment-info>
-          <gremorie-attachment-remove (remove)="onRemove(a)"></gremorie-attachment-remove>
-        </gremorie-attachment-item>
-      </gremorie-attachment-list>
+      <attachment-list variant="inline">
+        @for (a of attachments; track a.id) {
+          <attachment-item [data]="a" (removed)="onRemove(a)">
+            <attachment-preview></attachment-preview>
+            <attachment-info>
+              <attachment-name></attachment-name>
+              <attachment-size></attachment-size>
+            </attachment-info>
+            <attachment-remove></attachment-remove>
+          </attachment-item>
+        }
+      </attachment-list>
 ---
 
 # AI primitives

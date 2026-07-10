@@ -79,8 +79,8 @@ export const context = defineContract({
       '<context [usedTokens]="42000" [maxTokens]="128000" [usage]="usage" />',
   },
   preview: {
-    rx: 'ai-chatbot-context--default',
-    ng: 'ai-context--workbench',
+    rx: 'ai-chatbot-context--workbench',
+    ng: 'ai-chatbot-context--workbench',
   },
   tag: { rx: 'Context', ng: 'context' },
   example: {

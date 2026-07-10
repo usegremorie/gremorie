@@ -50,8 +50,8 @@ type Story = StoryObj<typeof meta>;
 
 const TAGS = Array.from({ length: 40 }, (_, i) => `v1.2.0-beta.${40 - i}`);
 
-/** Vertical overflow — a long, fixed-height list. */
-export const Vertical: Story = {
+/** Workbench — vertical overflow: a long, fixed-height list. */
+export const Workbench: Story = {
   render: () => (
     <ScrollArea className="h-64 w-56 rounded-md border">
       <div className="p-4">

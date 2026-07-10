@@ -14,9 +14,10 @@ type ProgressArgs = {
 };
 
 const meta: Meta<ProgressArgs> = {
-  title: 'Feedback/Progress',
+  title: 'Interaction/Feedback/Progress',
   component: Progress,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
     value: { control: { type: 'number', min: 0, max: 100, step: 1 } },
     max: { control: { type: 'number', min: 1, max: 100, step: 1 } },
@@ -25,6 +26,15 @@ const meta: Meta<ProgressArgs> = {
 
 export default meta;
 type Story = StoryObj<ProgressArgs>;
+
+/** Workbench — determinate bar at a fixed width, driven by the value control. */
+export const Workbench: Story = {
+  args: { value: 60, max: 100 },
+  render: (args) => ({
+    props: args,
+    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+  }),
+};
 
 export const Default: Story = {
   args: { value: 60, max: 100 },

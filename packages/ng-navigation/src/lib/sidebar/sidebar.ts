@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +15,12 @@ import {
 } from '@angular/core';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 const MOBILE_BREAKPOINT = 768;
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
@@ -182,13 +189,23 @@ const sidebarMenuButtonVariants = cva(
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgTemplateOutlet],
   template: `
+    <!--
+      The projected children are captured ONCE in a template and outlet into
+      whichever branch is active. Angular projects unselected content into the
+      LAST <ng-content> of a template, so declaring one <ng-content /> per
+      branch left the collapsible="none" and mobile branches rendering an
+      EMPTY shell (same technique as SidebarMenuButton below).
+    -->
+    <ng-template #content><ng-content /></ng-template>
+
     @if (collapsible() === 'none') {
       <div
         data-slot="sidebar"
         class="flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground"
       >
-        <ng-content />
+        <ng-container [ngTemplateOutlet]="content" />
       </div>
     } @else if (service.isMobile()) {
       @if (service.openMobile()) {
@@ -208,7 +225,9 @@ const sidebarMenuButtonVariants = cva(
         [style.--sidebar-width]="sidebarWidthMobile"
         [class]="mobileClass()"
       >
-        <div class="flex h-full w-full flex-col"><ng-content /></div>
+        <div class="flex h-full w-full flex-col">
+          <ng-container [ngTemplateOutlet]="content" />
+        </div>
       </div>
     } @else {
       <div
@@ -228,7 +247,7 @@ const sidebarMenuButtonVariants = cva(
             data-slot="sidebar-inner"
             class="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-sm"
           >
-            <ng-content />
+            <ng-container [ngTemplateOutlet]="content" />
           </div>
         </div>
       </div>
@@ -582,9 +601,15 @@ export class SidebarMenuItem {}
  * SidebarMenuButton — the clickable menu entry. Mirrors React
  * `SidebarMenuButton`. Supports `isActive`, `variant`, `size` and a `tooltip`.
  *
- * Divergence vs. React: the collapsed-state `tooltip` is rendered as a native
- * `title` (no Angular Tooltip package yet); the input still accepts the React
- * string contract.
+ * The collapsed-state `tooltip` is the styled `gn-tooltip` compound from
+ * `@gremorie/ng-overlays` (side `right`, like the React edition). React keeps
+ * the `TooltipContent` mounted and toggles its `hidden` attribute unless the
+ * sidebar is collapsed on desktop; here the compound is instantiated under the
+ * same condition (`tooltip` set, state `collapsed`, not mobile), which yields
+ * the same visible behaviour. Divergence vs. React: the trigger wraps the
+ * projected content (icon + label), not the host button itself, so hovering
+ * bare button padding does not open the tooltip; in collapsed icon mode the
+ * projected icon is the hover target.
  */
 @Component({
   selector:
@@ -592,13 +617,34 @@ export class SidebarMenuItem {}
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content />`,
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
+  template: `
+    <ng-template #content><ng-content /></ng-template>
+
+    @if (tooltipVisible()) {
+      <gn-tooltip-provider>
+        <gn-tooltip side="right">
+          <gn-tooltip-trigger class="flex w-full min-w-0 items-center gap-2">
+            <ng-container [ngTemplateOutlet]="content" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="content" />
+    }
+  `,
   host: {
     'data-slot': 'sidebar-menu-button',
     'data-sidebar': 'menu-button',
     '[attr.data-size]': 'size()',
     '[attr.data-active]': 'isActive()',
-    '[attr.title]': 'tooltipTitle()',
     '[class]': 'computedClass()',
   },
 })
@@ -620,12 +666,16 @@ export class SidebarMenuButton {
   /** Tooltip shown when collapsed. Mirrors React `tooltip` (string contract). */
   readonly tooltip = input<string | undefined>(undefined);
 
-  protected readonly tooltipTitle = computed(() =>
-    this.tooltip() &&
-    this.service.state() === 'collapsed' &&
-    !this.service.isMobile()
-      ? this.tooltip()
-      : null,
+  /**
+   * Mirrors React's `hidden={state !== 'collapsed' || isMobile}` on the
+   * `TooltipContent`: the tooltip only surfaces when one is set and the
+   * sidebar is collapsed on desktop.
+   */
+  protected readonly tooltipVisible = computed(
+    () =>
+      Boolean(this.tooltip()) &&
+      this.service.state() === 'collapsed' &&
+      !this.service.isMobile(),
   );
 
   protected readonly computedClass = computed(() =>

@@ -59,8 +59,8 @@ export const openInChat = defineContract({
       '<open-in query="Explain monads"><open-in-trigger /><open-in-content><open-in-chatgpt /><open-in-claude /></open-in-content></open-in>',
   },
   preview: {
-    rx: 'ai-utilities-openin--default',
-    ng: 'ai-openinchat--workbench',
+    rx: 'ai-utilities-openin--workbench',
+    ng: 'ai-utilities-openin--workbench',
   },
   tag: { rx: 'OpenIn', ng: 'open-in' },
   example: {

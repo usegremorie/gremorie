@@ -86,8 +86,8 @@ export const queue = defineContract({
       '<queue>\n  <queue-list>\n    <queue-item>\n      <queue-item-indicator />\n      <queue-item-content>Draft reply</queue-item-content>\n    </queue-item>\n  </queue-list>\n</queue>',
   },
   preview: {
-    rx: 'ai-chatbot-queue--default',
-    ng: 'ai-queue--workbench',
+    rx: 'ai-chatbot-queue--workbench',
+    ng: 'ai-chatbot-queue--workbench',
   },
   tag: { rx: 'Queue', ng: 'queue' },
   example: {

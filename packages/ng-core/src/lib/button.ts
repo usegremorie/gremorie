@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import { cn } from './utils';
+
 /**
  * The Button primitive — used across Gremorie NG components and freely composable
  * by consumers. Exposes 6 visual variants and 4 size presets to keep parity
@@ -20,7 +22,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40',
         outline:
           'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary:
@@ -85,8 +87,11 @@ export class Button {
     return value === null ? null : value ? 'true' : 'false';
   });
 
+  // cn (tailwind-merge) collapses intra-variant conflicts the same way the
+  // React edition's cn() does (e.g. the destructive focus-visible ring
+  // overriding the base ring-ring), keeping the winning classes identical.
   protected readonly buttonClass = computed(() =>
-    buttonVariants({ variant: this.variant(), size: this.size() }),
+    cn(buttonVariants({ variant: this.variant(), size: this.size() })),
   );
 
   handleClick(event: MouseEvent): void {

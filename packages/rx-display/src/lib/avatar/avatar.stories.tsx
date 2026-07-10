@@ -73,6 +73,17 @@ type Story = StoryObj<typeof meta>;
 
 const SRC = 'https://github.com/shadcn.png';
 
+/** Workbench — image with an initials fallback at the chosen size. */
+export const Workbench: Story = {
+  args: { size: 'default' },
+  render: (args) => (
+    <Avatar {...args}>
+      <AvatarImage src={SRC} alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  ),
+};
+
 /** Image with an initials fallback (shown if the image fails to load). */
 export const Default: Story = {
   render: (args) => (

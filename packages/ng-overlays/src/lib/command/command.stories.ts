@@ -24,7 +24,7 @@ import {
  * needs it for filtering, whereas React's cmdk derives it from the item text.
  */
 const meta: Meta<Command> = {
-  title: 'Overlays/Command',
+  title: 'Interaction/Overlays/Command',
   component: Command,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -137,3 +137,25 @@ export const EmptyConsole: Story = {
     </WebPreview>
   ),
 };
+
+/**
+ * Workbench preset: the full preview (reload + URL bar + console) at the fixed
+ * 28x40rem frame, top-aligned (layout `padded`) so the dual-framework workbench
+ * renders the IDENTICAL use case as the Angular `Workbench` story. Keep both in
+ * sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <WebPreview defaultUrl="https://example.com" className="h-full">
+      <WebPreviewNavigation>
+        <WebPreviewNavigationButton tooltip="Reload">
+          <RotateCwIcon className="h-4 w-4" />
+        </WebPreviewNavigationButton>
+        <WebPreviewUrl />
+      </WebPreviewNavigation>
+      <WebPreviewBody />
+      <WebPreviewConsole logs={LOGS} />
+    </WebPreview>
+  ),
+};

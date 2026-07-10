@@ -47,6 +47,31 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench — horizontal divider between two stacked blocks at a fixed width.
+ */
+export const Workbench: Story = {
+  args: { orientation: 'horizontal', decorative: true },
+  render: (args) => (
+    <div className="w-80">
+      <div className="space-y-1">
+        <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
+        <p className="text-sm text-muted-foreground">
+          An open-source UI component library.
+        </p>
+      </div>
+      <Separator {...args} className="my-4" />
+      <div className="flex h-5 items-center gap-4 text-sm">
+        <span>Blog</span>
+        <Separator orientation="vertical" />
+        <span>Docs</span>
+        <Separator orientation="vertical" />
+        <span>Source</span>
+      </div>
+    </div>
+  ),
+};
+
 /** Horizontal divider splitting a heading from its description. */
 export const Default: Story = {
   render: () => (

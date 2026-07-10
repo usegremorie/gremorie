@@ -21,7 +21,7 @@ import {
  * `<ng-template brnHoverCardContent>` (brain idiom).
  */
 const meta: Meta<Context> = {
-  title: 'AI/Context',
+  title: 'AI/Chatbot/Context',
   component: Context,
   tags: ['autodocs'],
   parameters: { controls: { disable: true } },

@@ -35,6 +35,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (the short thread).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => (
+    <div className="h-80 w-96 rounded-lg border">
+      <Conversation>
+        <ConversationContent>
+          <Message from="assistant">
+            <MessageContent>Hey! How can I help?</MessageContent>
+          </Message>
+          <Message from="user">
+            <MessageContent>What&apos;s the weather like?</MessageContent>
+          </Message>
+          <Message from="assistant">
+            <MessageContent>
+              I can&apos;t check the weather, but I can help you find a service
+              that does.
+            </MessageContent>
+          </Message>
+        </ConversationContent>
+      </Conversation>
+    </div>
+  ),
+};
+
 export const Empty: Story = {
   parameters: { controls: { disable: true } },
   render: () => (

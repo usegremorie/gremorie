@@ -28,10 +28,42 @@ describe('Checkpoint', () => {
     expect(checkpoint?.className).toContain('text-muted-foreground');
 
     expect(host.querySelector('gn-separator')).not.toBeNull();
-    expect(host.querySelector('[data-slot="checkpoint-icon"] svg')).not.toBeNull();
+    expect(
+      host.querySelector('[data-slot="checkpoint-icon"] svg'),
+    ).not.toBeNull();
 
     const trigger = host.querySelector('checkpoint-trigger button');
     expect(trigger).not.toBeNull();
     expect(trigger?.textContent).toContain('Checkpoint');
+  });
+
+  it('shows the STYLED tooltip surface on hover (gn-tooltip, not bare brain)', async () => {
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    // The styled compound must be present (regression: checkpoint-trigger
+    // once passed the string to raw brnTooltip, rendering an unstyled
+    // overlay).
+    expect(
+      fixture.nativeElement.querySelector('[data-slot="tooltip-trigger"]'),
+    ).not.toBeNull();
+
+    // The anchor span carries a real box (inline-flex) so the CDK overlay
+    // positions next to the trigger — never `contents` (empty rect).
+    const trigger = fixture.nativeElement.querySelector(
+      '[data-slot="tooltip-trigger"] > span',
+    ) as HTMLElement;
+    expect(trigger.classList.contains('contents')).toBe(false);
+    trigger.dispatchEvent(new MouseEvent('mouseenter'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await new Promise((r) => setTimeout(r, 0));
+    fixture.detectChanges();
+
+    const surface = document.querySelector('[data-slot="tooltip-content"]');
+    expect(surface).not.toBeNull();
+    expect(surface?.className).toContain('bg-popover');
+    expect(surface?.textContent).toContain('Restore');
   });
 });

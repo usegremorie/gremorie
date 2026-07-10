@@ -107,8 +107,8 @@ export const dropdownMenu = defineContract({
       '<DropdownMenu><DropdownMenuTrigger>Open</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>Edit</DropdownMenuItem><DropdownMenuItem variant="destructive">Delete</DropdownMenuItem></DropdownMenuContent></DropdownMenu>',
   },
   preview: {
-    rx: 'interaction-overlays-dropdownmenu--default',
-    ng: 'overlays-dropdownmenu--workbench',
+    rx: 'interaction-overlays-dropdownmenu--workbench',
+    ng: 'interaction-overlays-dropdownmenu--workbench',
   },
   tag: { rx: 'DropdownMenu', ng: 'gn-dropdown-menu' },
   example: {

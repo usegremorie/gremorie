@@ -20,7 +20,7 @@ type CodeBlockArgs = {
 };
 
 const meta: Meta<CodeBlockArgs> = {
-  title: 'Artifacts/CodeBlock',
+  title: 'AI/Code/CodeBlock',
   component: CodeBlock,
   tags: ['autodocs'],
   decorators: [
@@ -133,10 +133,21 @@ export const WithCopyButton: Story = {
   }),
 };
 
+// Shared with the React `Workbench` story (rx-artifacts) - keep byte-identical
+// so the dual-framework workbench highlights the same snippet on both sides.
+const WORKBENCH_CODE = `export function fib(n: number): number {
+  let a = 0;
+  let b = 1;
+  for (let i = 0; i < n; i += 1) {
+    [a, b] = [b, a + b];
+  }
+  return a;
+}`;
+
 /**
- * Workbench preset: the canonical TypeScript snippet with a copy button, at a
- * fixed 32rem width so the dual-framework workbench renders the IDENTICAL use
- * case on both sides. Keep in sync with the React `CodeBlock` workbench preview.
+ * Workbench preset: the shared framework-neutral TypeScript snippet with a copy
+ * button, at a fixed 32rem width so the dual-framework workbench renders the
+ * IDENTICAL use case as the React `Workbench` story. Keep both in sync.
  */
 export const Workbench: Story = {
   parameters: { layout: 'padded', controls: { disable: true } },
@@ -149,7 +160,7 @@ export const Workbench: Story = {
       </div>
     `,
     props: {
-      code: TS_CODE,
+      code: WORKBENCH_CODE,
     },
   }),
 };

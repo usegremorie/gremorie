@@ -9,9 +9,10 @@ import { Spinner } from './spinner';
  * with the right SVG dimension and that `animate-spin` applies.
  */
 const meta: Meta<Spinner> = {
-  title: 'Feedback/Spinner',
+  title: 'Interaction/Feedback/Spinner',
   component: Spinner,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   argTypes: {
     size: {
       control: 'inline-radio',
@@ -22,6 +23,15 @@ const meta: Meta<Spinner> = {
 
 export default meta;
 type Story = StoryObj<Spinner>;
+
+/** Workbench — a single spinner driven by the size control. */
+export const Workbench: Story = {
+  args: { size: 'default' },
+  render: (args) => ({
+    props: args,
+    template: `<gn-spinner [size]="size" />`,
+  }),
+};
 
 export const Default: Story = {
   args: { size: 'default' },

@@ -11,7 +11,7 @@ const DATA: ChartDatum[] = [
 ];
 
 const meta: Meta<PieChart> = {
-  title: 'Charts/PieChart',
+  title: 'Layout & display/Data/Pie Chart',
   component: PieChart,
   tags: ['autodocs'],
   render: (args) => ({

@@ -18,7 +18,7 @@ import {
  * while the source loads and stays on error or missing `src`.
  */
 const meta: Meta<Avatar> = {
-  title: 'Display/Avatar',
+  title: 'Layout & display/Display/Avatar',
   component: Avatar,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

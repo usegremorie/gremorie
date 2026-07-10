@@ -12,7 +12,7 @@ import { Checkbox } from './checkbox';
  * and renders a hand-inlined lucide `check` icon as the indicator.
  */
 const meta: Meta<Checkbox> = {
-  title: 'Forms/Checkbox',
+  title: 'Inputs/Selection/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Checkbox] })],

@@ -17,7 +17,7 @@ import {
  * `state` + `approval`.
  */
 const meta: Meta<Confirmation> = {
-  title: 'AI/Confirmation',
+  title: 'AI/Chatbot/Confirmation',
   component: Confirmation,
   tags: ['autodocs'],
   decorators: [

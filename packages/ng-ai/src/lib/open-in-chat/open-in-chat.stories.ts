@@ -22,7 +22,7 @@ import {
  * so the menu body lives in a `<ng-template brnPopoverContent>`.
  */
 const meta: Meta<OpenIn> = {
-  title: 'AI/OpenInChat',
+  title: 'AI/Utilities/OpenIn',
   component: OpenIn,
   tags: ['autodocs'],
   parameters: { controls: { disable: true } },

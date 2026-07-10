@@ -17,7 +17,7 @@ import {
  * affixes and `gn-button-group-separator` for dividers.
  */
 const meta: Meta<ButtonGroup> = {
-  title: 'Forms/ButtonGroup',
+  title: 'Inputs/Buttons/ButtonGroup',
   component: ButtonGroup,
   tags: ['autodocs'],
   decorators: [

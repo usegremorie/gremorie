@@ -56,8 +56,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Two side-by-side panels with a visible handle. */
-export const Horizontal: Story = {
+/** Two side-by-side panels with a visible handle — drag the grip to resize. */
+export const Workbench: Story = {
   render: () => (
     <ResizablePanelGroup
       direction="horizontal"

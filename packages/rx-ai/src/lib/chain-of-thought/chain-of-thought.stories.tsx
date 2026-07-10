@@ -45,6 +45,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (the simple step list).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { defaultOpen: true },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <ChainOfThought {...args}>
+        <ChainOfThoughtHeader>Searching the docs</ChainOfThoughtHeader>
+        <ChainOfThoughtContent>
+          <ChainOfThoughtStep
+            label="Identifying relevant sources"
+            status="complete"
+          />
+          <ChainOfThoughtStep
+            label="Reading the API reference"
+            status="complete"
+          />
+          <ChainOfThoughtStep label="Composing the answer" status="active" />
+          <ChainOfThoughtStep label="Verifying citations" status="pending" />
+        </ChainOfThoughtContent>
+      </ChainOfThought>
+    </div>
+  ),
+};
+
 export const Simple: Story = {
   args: { defaultOpen: true },
   render: (args) => (

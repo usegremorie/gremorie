@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,9 +6,14 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
 import { Separator } from '@gremorie/ng-display';
 import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 /**
  * Checkpoint — a conversation "save point" row. Mirrors React `Checkpoint`
@@ -88,26 +94,43 @@ export class CheckpointIcon {
 
 /**
  * CheckpointTrigger — ghost/sm button label for the checkpoint. Mirrors
- * React `CheckpointTrigger`. When `tooltip` is set the button gets a
- * BrnTooltip (CDK overlay), mirroring the React Tooltip wrapper.
+ * React `CheckpointTrigger`. When `tooltip` is set, the button is wrapped in
+ * the styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * primitive the React side uses from `@gremorie/rx-overlays`), so the surface
+ * matches the styled tooltip (popover card + arrow), not the bare brain
+ * overlay.
  */
 @Component({
   selector: 'checkpoint-trigger',
   standalone: true,
-  imports: [BrnTooltip],
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button
-      type="button"
-      [disabled]="disabled()"
-      [brnTooltip]="tooltip() ?? null"
-      [tooltipDisabled]="!tooltip()"
-      [position]="position()"
-      [class]="buttonClass()"
-    >
-      <ng-content />
-    </button>
+    <ng-template #btn>
+      <button type="button" [disabled]="disabled()" [class]="buttonClass()">
+        <ng-content />
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip side="bottom">
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
   `,
   host: {
     'data-slot': 'checkpoint-trigger',
@@ -115,7 +138,12 @@ export class CheckpointIcon {
   },
 })
 export class CheckpointTrigger {
-  /** Optional tooltip text (React `tooltip`). Side mirrors React `side="bottom"`. */
+  /**
+   * Optional tooltip text (React `tooltip`). Side mirrors React
+   * `side="bottom"`; React also passes `align="start"`, which the Angular
+   * `gn-tooltip` compound does not expose (brain tooltip positions are
+   * side-only).
+   */
   readonly tooltip = input<string>();
   /** Visual variant (React default `ghost`). */
   readonly variant = input<'ghost' | 'outline' | 'default' | 'secondary'>(
@@ -125,9 +153,6 @@ export class CheckpointTrigger {
   readonly size = input<'sm' | 'md' | 'lg'>('sm');
   readonly disabled = input<boolean>(false);
   readonly class = input<string>();
-
-  // React TooltipContent uses side="bottom" align="start".
-  protected readonly position: () => BrnTooltipPosition = () => 'bottom';
 
   protected readonly buttonClass = computed(() => {
     const sizeClass: Record<'sm' | 'md' | 'lg', string> = {

@@ -14,7 +14,7 @@ import {
  * `BrnCollapsible`. Three parts: root / trigger / content.
  */
 const meta: Meta<Collapsible> = {
-  title: 'Display/Collapsible',
+  title: 'Layout & display/Display/Collapsible',
   component: Collapsible,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
