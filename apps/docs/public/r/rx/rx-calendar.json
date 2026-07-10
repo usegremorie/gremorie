@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "lucide-react",
-    "react-day-picker"
+    "react-day-picker",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

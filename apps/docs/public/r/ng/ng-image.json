@@ -1,0 +1,104 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-image",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Image (Angular)",
+  "description": "Tiny wrapper that renders a model-generated image (base64 + media type) as a data-URI <img>. Use to display generated images returned from image-generation tool output. Mirrors React Image from @gremorie/rx-ai.",
+  "categories": [
+    "ai",
+    "utilities"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/image/image.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Image — renders an AI SDK `Experimental_GeneratedImage` as an `<img>`.\n * Mirrors React `Image` from `@gremorie/rx-ai`.\n *\n * React parity:\n * - The React component spreads `Experimental_GeneratedImage`\n *   (`{ base64, uint8Array, mediaType }`) plus `className` / `alt`, and builds\n *   the `src` as `data:${mediaType};base64,${base64}`. The Angular edition\n *   exposes the same fields as signal inputs.\n * - `uint8Array` is accepted for type parity but unused for the `src` (React\n *   ignores it too — it builds the data URL from `base64`).\n */\n@Component({\n  selector: 'image',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<img [src]=\"src()\" [alt]=\"alt() ?? ''\" [class]=\"imgClass()\" />`,\n  host: {\n    'data-slot': 'image',\n    class: 'contents',\n  },\n})\nexport class Image {\n  /** Base64-encoded image data (mirrors `Experimental_GeneratedImage.base64`). */\n  readonly base64 = input.required<string>();\n  /** Raw bytes (mirrors `Experimental_GeneratedImage.uint8Array`). */\n  readonly uint8Array = input<Uint8Array>();\n  /** MIME type, e.g. `\"image/png\"` (mirrors `Experimental_GeneratedImage.mediaType`). */\n  readonly mediaType = input.required<string>();\n  readonly alt = input<string>();\n  readonly class = input<string>();\n\n  protected readonly src = computed(\n    () => `data:${this.mediaType()};base64,${this.base64()}`,\n  );\n\n  protected readonly imgClass = computed(() =>\n    cn(\n      'h-auto max-w-full overflow-hidden rounded-md',\n      this.class(),\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/image/image.ts"
+    },
+    {
+      "path": "src/lib/image/index.ts",
+      "content": "export { Image } from './image';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/image/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "submitted",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "attachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
+      }
+    ]
+  }
+}

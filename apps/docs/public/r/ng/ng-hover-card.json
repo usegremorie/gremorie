@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-hover-card",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Hover Card (Angular)",
+  "description": "HoverCard primitive built on Spartan-ng brain HoverCard - non-interactive preview pane shown on hover. Use for link previews, profile cards, image teasers. Mirrors React HoverCard from @gremorie/rx-overlays.",
+  "categories": [
+    "overlays"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/hover-card/hover-card.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  BrnHoverCard,\n  BrnHoverCardTrigger,\n} from '@spartan-ng/brain/hover-card';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * HoverCard — preview pane shown on hover (non-interactive). Mirrors React\n * `HoverCard` from `@gremorie/rx-overlays`, which wraps Radix HoverCard.\n *\n * Use to **preview** content the user can fully open with a click — user\n * profile cards on `@mentions`, link previews, image teasers. Never put\n * critical info or interactive controls inside a HoverCard — those belong in\n * a Popover (click-driven, intentional).\n *\n * Anatomy: `gn-hover-card` (root) → `gn-hover-card-trigger` (hover target) +\n * `<ng-template brnHoverCardContent>` wrapping `gn-hover-card-content`.\n *\n * Divergence vs. React/Radix: Radix renders content through a Portal child of\n * the root, and exposes `openDelay`/`closeDelay` on the root plus\n * `align`/`sideOffset` on the content. `@spartan-ng/brain` renders content\n * from a `<ng-template brnHoverCardContent>` referenced by the trigger via\n * `brnHoverCardTriggerFor`, and carries the timing/positioning inputs\n * (`showDelay`, `hideDelay`, `align`, `sideOffset`) on the trigger. The\n * compound content anatomy inside the template is identical.\n *\n * @example\n * ```html\n * <gn-hover-card>\n *   <gn-hover-card-trigger [brnHoverCardTriggerFor]=\"content\">@gremorie</gn-hover-card-trigger>\n *   <ng-template #content brnHoverCardContent>\n *     <gn-hover-card-content>The Gremorie design system.</gn-hover-card-content>\n *   </ng-template>\n * </gn-hover-card>\n * ```\n */\n@Component({\n  selector: 'gn-hover-card',\n  standalone: true,\n  hostDirectives: [BrnHoverCard],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'hover-card',\n    class: 'contents',\n  },\n})\nexport class HoverCard {}\n\n/**\n * HoverCardTrigger — the hover target. Mirrors React `HoverCardTrigger`.\n * Carries the brain `brnHoverCardTrigger` directive and exposes its\n * `brnHoverCardTriggerFor` (the `<ng-template brnHoverCardContent>` ref),\n * `align` and `sideOffset` inputs straight through, so consumers bind them on\n * `gn-hover-card-trigger` directly (same names as React content `align` /\n * `sideOffset`). No re-declaration needed.\n */\n@Component({\n  selector: 'gn-hover-card-trigger',\n  standalone: true,\n  hostDirectives: [\n    {\n      directive: BrnHoverCardTrigger,\n      inputs: ['brnHoverCardTriggerFor', 'align', 'sideOffset'],\n    },\n  ],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'hover-card-trigger',\n  },\n})\nexport class HoverCardTrigger {}\n\n/**\n * HoverCardContent — the styled overlay surface. Mirrors React\n * `HoverCardContent`. Place inside a `<ng-template brnHoverCardContent>`; the\n * brain hover card renders the template into a CDK overlay. Tailwind classes\n * match React verbatim.\n */\n@Component({\n  selector: 'gn-hover-card-content',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'hover-card-content',\n    '[class]': 'hostClass()',\n  },\n})\nexport class HoverCardContent {\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn(\n      'z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',\n      this.class(),\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/hover-card/hover-card.ts"
+    },
+    {
+      "path": "src/lib/hover-card/index.ts",
+      "content": "export { HoverCard, HoverCardTrigger, HoverCardContent } from './hover-card';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/hover-card/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-hover-card.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

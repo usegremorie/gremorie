@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "class-variance-authority",
-    "radix-ui"
+    "radix-ui",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

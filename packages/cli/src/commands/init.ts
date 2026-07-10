@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 
@@ -8,6 +8,7 @@ import {
   detectAngular,
   readPackageJsonDependencies,
 } from '../lib/angular-detect.js';
+import { detectFramework } from '../lib/framework-detect.js';
 import {
   detectPackageManager,
   installCommand,
@@ -27,30 +28,43 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   console.log(kleur.dim(`Working dir: ${cwd}`));
   console.log();
 
-  // 1. Detect Angular
+  // 1. Detect framework (React vs Angular) from package.json.
+  const framework = detectFramework(cwd) ?? 'ng';
+  console.log(
+    kleur.green('✓'),
+    kleur.dim(
+      `Framework: ${framework === 'rx' ? 'React (rx)' : framework === 'ng' ? 'Angular (ng)' : framework}`,
+    ),
+  );
+
   const ctx = detectAngular(cwd);
-  if (!ctx.isAngular) {
-    console.log(
-      kleur.yellow('⚠'),
-      kleur.dim(
-        'No angular.json / workspace.json / nx.json detected. Continuing anyway — make sure this is the right directory.',
-      ),
-    );
-  } else {
-    console.log(
-      kleur.green('✓'),
-      kleur.dim(`Detected workspace file: ${ctx.workspaceFile}`),
-    );
+  if (framework === 'ng') {
+    if (!ctx.isAngular) {
+      console.log(
+        kleur.yellow('⚠'),
+        kleur.dim(
+          'No angular.json / workspace.json / nx.json detected. Continuing anyway — make sure this is the right directory.',
+        ),
+      );
+    } else {
+      console.log(
+        kleur.green('✓'),
+        kleur.dim(`Detected workspace file: ${ctx.workspaceFile}`),
+      );
+    }
   }
 
   // 2. Detect package manager
   const pm = detectPackageManager(cwd);
   console.log(kleur.green('✓'), kleur.dim(`Package manager: ${pm}`));
 
-  // 3. Plan deps to install
+  // 3. Plan deps to install: the framework bundle + tokens (theme.css lives
+  // in @gremorie/tokens) + the class utilities every component relies on.
   const deps = readPackageJsonDependencies(cwd);
+  const corePkg = framework === 'rx' ? '@gremorie/react' : '@gremorie/ng-core';
   const needs: string[] = [];
-  if (!deps['@gremorie/ng-core']) needs.push('@gremorie/ng-core');
+  if (!deps[corePkg]) needs.push(corePkg);
+  if (!deps['@gremorie/tokens']) needs.push('@gremorie/tokens');
   if (!deps['class-variance-authority']) needs.push('class-variance-authority');
   if (!deps['clsx']) needs.push('clsx');
   if (!deps['tailwind-merge']) needs.push('tailwind-merge');
@@ -91,14 +105,19 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   } else {
     const stylesPath = join(cwd, ctx.rootStylesPath);
     const current = readFileSync(stylesPath, 'utf-8');
-    if (
-      current.includes('@gremorie/tokens/theme.css') ||
-      current.includes('@gremorie/ng-core/theme.css')
-    ) {
+    if (current.includes('@gremorie/tokens/theme.css')) {
       console.log(
         kleur.green('✓'),
         kleur.dim(`Theme import already in ${ctx.rootStylesPath}.`),
       );
+    } else if (current.includes('@gremorie/ng-core/theme.css')) {
+      console.log(
+        kleur.yellow('⚠'),
+        kleur.dim(
+          `${ctx.rootStylesPath} imports the legacy @gremorie/ng-core/theme.css. Replace it with:`,
+        ),
+      );
+      console.log(kleur.cyan(`  ${THEME_IMPORT_LINE}`));
     } else if (options.dryRun) {
       console.log(
         kleur.yellow('→'),
@@ -116,14 +135,15 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   }
 
   // 5. Done
+  const exampleItem = framework === 'rx' ? 'rx-button' : 'ng-button';
   console.log();
   console.log(kleur.bold().green('✓ Setup complete.'));
   console.log();
   console.log(kleur.dim('Next step — install a component:'));
-  console.log(`  ${kleur.cyan('gremorie add prompt-input')}`);
+  console.log(`  ${kleur.cyan(`gremorie add ${exampleItem}`)}`);
   console.log();
 
-  if (existsSync(join(cwd, 'angular.json')) === false && !ctx.isAngular) {
+  if (!deps['tailwindcss']) {
     console.log(
       kleur.dim(
         'Note: theme.css uses Tailwind CSS v4. If your project does not have Tailwind installed, run:',

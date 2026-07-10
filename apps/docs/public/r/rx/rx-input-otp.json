@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "input-otp",
-    "lucide-react"
+    "lucide-react",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

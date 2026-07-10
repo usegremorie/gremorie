@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "radix-ui",
-    "react-hook-form"
+    "react-hook-form",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

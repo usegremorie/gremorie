@@ -10,7 +10,9 @@
     "chat"
   ],
   "dependencies": [
-    "@angular/core"
+    "@angular/core",
+    "@gremorie/ng-core",
+    "@gremorie/ng-display"
   ],
   "devDependencies": [],
   "registryDependencies": [
@@ -109,12 +111,12 @@
       ],
       "outputs": [
         {
-          "name": "gremoriePromptSubmit",
+          "name": "submitted",
           "payload": "PromptInputSubmitEvent",
           "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
         },
         {
-          "name": "gremoriePromptAttachmentError",
+          "name": "attachmentError",
           "payload": "PromptInputAttachmentError",
           "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
         }
@@ -123,11 +125,11 @@
     "examples": [
       {
         "title": "Basic chat input",
-        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
       },
       {
         "title": "Inline attachment list",
-        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
       }
     ]
   }

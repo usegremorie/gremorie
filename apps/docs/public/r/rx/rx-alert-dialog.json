@@ -9,7 +9,9 @@
     "overlays"
   ],
   "dependencies": [
-    "radix-ui"
+    "radix-ui",
+    "@gremorie/rx-core",
+    "@gremorie/rx-forms"
   ],
   "devDependencies": [],
   "registryDependencies": [

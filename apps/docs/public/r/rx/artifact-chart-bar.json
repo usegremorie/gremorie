@@ -10,7 +10,9 @@
     "chart"
   ],
   "dependencies": [
-    "react"
+    "react",
+    "@gremorie/rx-data",
+    "@gremorie/rx-display"
   ],
   "devDependencies": [],
   "registryDependencies": [

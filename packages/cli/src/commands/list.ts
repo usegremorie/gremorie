@@ -18,7 +18,9 @@ export async function listCommand(): Promise<void> {
       kleur.red('x'),
       err instanceof Error ? err.message : String(err),
     );
-    process.exit(1);
+    // process.exitCode (not process.exit) so live fetch handles can drain.
+    process.exitCode = 1;
+    return;
   }
 
   if (index.items.length === 0) {

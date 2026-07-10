@@ -9,7 +9,8 @@
     "forms"
   ],
   "dependencies": [
-    "radix-ui"
+    "radix-ui",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

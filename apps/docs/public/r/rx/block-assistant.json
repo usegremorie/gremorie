@@ -12,7 +12,13 @@
   ],
   "dependencies": [
     "react",
-    "lucide-react"
+    "lucide-react",
+    "@gremorie/rx-ai",
+    "@gremorie/rx-artifacts",
+    "@gremorie/rx-core",
+    "@gremorie/rx-forms",
+    "@gremorie/rx-icons",
+    "@gremorie/rx-overlays"
   ],
   "devDependencies": [],
   "registryDependencies": [

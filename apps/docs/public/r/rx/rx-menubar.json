@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "radix-ui",
-    "lucide-react"
+    "lucide-react",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

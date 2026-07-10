@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-slider",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Slider (Angular)",
+  "description": "Range slider built on Spartan-ng brain Slider - single value with step + min/max. Use for continuous values (volume, opacity, price range). Mirrors React Slider from @gremorie/rx-forms.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/slider/slider.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  model,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  BrnSlider,\n  BrnSliderRange,\n  BrnSliderThumb,\n  BrnSliderTrack,\n} from '@spartan-ng/brain/slider';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Slider — continuous numeric input via draggable thumb. Angular parity port of\n * React `Slider` from `@gremorie/rx-forms`, which wraps Radix `Slider`.\n *\n * Single thumb by default; pass a two-element `value` (e.g. `[low, high]`) for a\n * range slider — the template renders one thumb per value via `@for`. Honors\n * `step`, `min`, `max`, and `orientation=\"vertical\"`.\n *\n * The behavior is delegated to the spartan brain `BrnSlider` directive (the\n * Angular equivalent of Radix Slider). `brnSlider` is applied to the **root**\n * element so the projected track/range/thumb directives — whose injector chain\n * runs through the host — resolve their owning `BrnSlider`. The brain already\n * emits `data-slot`, `data-orientation` and `data-disabled` on each part, so we\n * only contribute the React class strings (which key off those data attributes).\n *\n * Use Slider when **approximate position is more useful than exact precision** —\n * volume, brightness, price filters. For exact values use a number Input; for\n * discrete choices prefer RadioGroup or Select. Always show the current value\n * next to the slider.\n *\n * Parity with React `Slider`:\n * - `value` (number[] model) ↔ React `value`/`defaultValue`\n * - `min` (0), `max` (100), `step` ↔ React `min`/`max`/`step`\n * - `disabled` ↔ React Root `disabled`\n * - `orientation` ('horizontal'|'vertical') ↔ React `orientation`\n * - `thumbAriaLabel` (string | string[]) ↔ React `thumbAriaLabel`\n *\n * @example\n * ```html\n * <gn-slider [value]=\"[50]\" [min]=\"0\" [max]=\"100\" thumbAriaLabel=\"Volume\" />\n * <gn-slider [value]=\"[25, 75]\" [thumbAriaLabel]=\"['Minimum', 'Maximum']\" />\n * ```\n */\n@Component({\n  selector: 'gn-slider',\n  standalone: true,\n  imports: [BrnSlider, BrnSliderTrack, BrnSliderRange, BrnSliderThumb],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      brnSlider\n      [value]=\"value()\"\n      [min]=\"min()\"\n      [max]=\"max()\"\n      [step]=\"step()\"\n      [disabled]=\"disabled()\"\n      [orientation]=\"orientation()\"\n      [class]=\"rootClass()\"\n    >\n      <div brnSliderTrack [class]=\"trackClass()\">\n        <div brnSliderRange [class]=\"rangeClass()\"></div>\n      </div>\n      @for (thumb of value(); track $index) {\n        <span\n          brnSliderThumb\n          [attr.aria-label]=\"thumbLabel($index)\"\n          [class]=\"thumbClass()\"\n        ></span>\n      }\n    </div>\n  `,\n})\nexport class Slider {\n  /** The current slider value(s). One thumb is rendered per value. Mirrors React `value`. */\n  readonly value = model<number[]>([0]);\n  /** Minimum allowed value. Mirrors React `min` (default 0). */\n  readonly min = input<number>(0);\n  /** Maximum allowed value. Mirrors React `max` (default 100). */\n  readonly max = input<number>(100);\n  /** Step increment. Mirrors React `step`. */\n  readonly step = input<number>(1);\n  /** Whether the slider is disabled. Mirrors React Root `disabled`. */\n  readonly disabled = input<boolean>(false);\n  /** Slider orientation. Mirrors React `orientation`. */\n  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');\n  /**\n   * Accessible name for each thumb. Pass an array for multi-thumb (range)\n   * sliders. Mirrors React `thumbAriaLabel`. Falls back to a generic\n   * \"Slider thumb {index + 1}\". Required for WCAG SC 4.1.2 when the slider has\n   * no adjacent visible label.\n   */\n  readonly thumbAriaLabel = input<string | string[]>();\n\n  protected thumbLabel(index: number): string {\n    const label = this.thumbAriaLabel();\n    if (Array.isArray(label)) {\n      return label[index] ?? `Slider thumb ${index + 1}`;\n    }\n    if (typeof label === 'string') {\n      return label;\n    }\n    return `Slider thumb ${index + 1}`;\n  }\n\n  protected readonly rootClass = computed(() =>\n    cn(\n      'relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',\n    ),\n  );\n\n  protected readonly trackClass = computed(() =>\n    cn(\n      'relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5',\n    ),\n  );\n\n  protected readonly rangeClass = computed(() =>\n    cn(\n      'absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full',\n    ),\n  );\n\n  protected readonly thumbClass = computed(() =>\n    cn(\n      'block size-4 shrink-0 rounded-full border border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/slider/slider.ts"
+    },
+    {
+      "path": "src/lib/slider/index.ts",
+      "content": "export { Slider } from './slider';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/slider/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-slider.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

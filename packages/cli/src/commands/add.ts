@@ -12,45 +12,105 @@ import {
 
 export interface AddOptions {
   dryRun?: boolean;
-  framework?: RegistryFramework;
+  framework?: string;
+}
+
+/** Normalise friendly aliases to the registry framework labels. */
+function normaliseFramework(fw: string | undefined): RegistryFramework | null {
+  if (!fw) return null;
+  switch (fw.toLowerCase()) {
+    case 'react':
+    case 'rx':
+      return 'rx';
+    case 'angular':
+    case 'ng':
+      return 'ng';
+    case 'vue':
+      return 'vue';
+    case 'svelte':
+    case 'sv':
+      return 'sv';
+    default:
+      return fw as RegistryFramework;
+  }
+}
+
+/**
+ * Infer the framework from the registry item name itself: `rx-*` items are
+ * React, `ng-*` items are Angular, and `block-*` items are React registry
+ * blocks. This beats any package.json heuristic because the name is explicit.
+ */
+function inferFromName(name: string): RegistryFramework | null {
+  if (name.startsWith('rx-')) return 'rx';
+  if (name.startsWith('ng-')) return 'ng';
+  if (name.startsWith('block-')) return 'rx';
+  return null;
+}
+
+interface ResolvedFramework {
+  framework: RegistryFramework;
+  source: 'flag' | 'item prefix' | 'auto-detected' | 'default';
+}
+
+function resolveFramework(
+  name: string,
+  requested: RegistryFramework | null,
+  detected: RegistryFramework | null,
+): ResolvedFramework {
+  if (requested) return { framework: requested, source: 'flag' };
+  const inferred = inferFromName(name);
+  if (inferred) return { framework: inferred, source: 'item prefix' };
+  if (detected) return { framework: detected, source: 'auto-detected' };
+  return { framework: 'ng', source: 'default' };
+}
+
+/** Extract `@gremorie/<pkg>` package names from a source file's imports. */
+function scanGremorieImports(content: string): string[] {
+  const found = new Set<string>();
+  const pattern =
+    /(?:from\s+|import\s*\(\s*|require\s*\(\s*)['"](@gremorie\/[a-z0-9-]+)/g;
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(content)) !== null) {
+    found.add(match[1]);
+  }
+  return [...found];
 }
 
 export async function addCommand(
-  name: string,
+  names: string[],
   options: AddOptions = {},
 ): Promise<void> {
   const cwd = process.cwd();
-  const requested = options.framework;
-  // Treat the legacy alias "react" as "rx" so old scripts keep working.
-  const normalised =
-    requested === ('react' as RegistryFramework) ? 'rx' : requested;
-  const framework: RegistryFramework =
-    normalised ?? detectFramework(cwd) ?? 'ng';
+  const requested = normaliseFramework(options.framework);
+  const detected = detectFramework(cwd);
   const client = createRegistryClient();
 
   console.log();
-  console.log(kleur.bold().cyan(`gremorie add ${name}`));
+  console.log(kleur.bold().cyan(`gremorie add ${names.join(' ')}`));
   console.log(kleur.dim(`  registry:  ${client.baseUrl}`));
-  console.log(
-    kleur.dim(
-      `  framework: ${framework}${options.framework ? '' : ' (auto-detected)'}`,
-    ),
-  );
   console.log(kleur.dim(`  target:    ${cwd}`));
   console.log();
 
-  // 1. Fetch the item plus all transitive registryDependencies.
+  // 1. Fetch every item plus all transitive registryDependencies.
   const ordered: RegistryItem[] = [];
   const seen = new Set<string>();
-  try {
-    await resolve(name, framework, client, ordered, seen);
-  } catch (err) {
-    console.error(
-      kleur.red('x'),
-      err instanceof Error ? err.message : String(err),
-    );
-    process.exit(1);
+  for (const name of names) {
+    const { framework, source } = resolveFramework(name, requested, detected);
+    console.log(kleur.dim(`  ${name}: framework ${framework} (${source})`));
+    try {
+      await resolve(name, framework, client, ordered, seen);
+    } catch (err) {
+      console.error(
+        kleur.red('x'),
+        err instanceof Error ? err.message : String(err),
+      );
+      // Let the event loop drain instead of process.exit(): killing the
+      // process with live fetch handles trips a libuv assertion on Windows.
+      process.exitCode = 1;
+      return;
+    }
   }
+  console.log();
 
   // 2. Aggregate npm dependencies so the user knows what to install.
   const npmDeps = new Set<string>();
@@ -60,7 +120,9 @@ export async function addCommand(
     for (const dep of item.devDependencies ?? []) npmDevDeps.add(dep);
   }
 
-  // 3. Write files (or print what would be written).
+  // 3. Write files (or print what would be written). Also scan the copied
+  // sources for @gremorie/* imports as a safety net, in case the registry
+  // item under-declares its npm dependencies.
   let writtenCount = 0;
   for (const item of ordered) {
     console.log(
@@ -68,6 +130,9 @@ export async function addCommand(
       kleur.dim(`(${item.files.length} files)`),
     );
     for (const file of item.files) {
+      for (const pkg of scanGremorieImports(file.content)) {
+        npmDeps.add(pkg);
+      }
       const dest = join(cwd, file.target ?? file.path);
       if (options.dryRun) {
         console.log(kleur.yellow('  ~'), kleur.dim(file.target ?? file.path));
@@ -93,14 +158,14 @@ export async function addCommand(
   if (npmDeps.size > 0) {
     console.log();
     console.log(kleur.dim('Make sure these npm packages are installed:'));
-    for (const dep of npmDeps) {
+    for (const dep of [...npmDeps].sort()) {
       console.log(`  ${kleur.cyan(dep)}`);
     }
   }
   if (npmDevDeps.size > 0) {
     console.log();
     console.log(kleur.dim('Plus dev dependencies:'));
-    for (const dep of npmDevDeps) {
+    for (const dep of [...npmDevDeps].sort()) {
       console.log(`  ${kleur.cyan(dep)}`);
     }
   }
