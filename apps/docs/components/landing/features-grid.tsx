@@ -22,25 +22,25 @@ const features = [
     icon: Copy,
     title: 'You own the code',
     description:
-      'Install from the registry and the source is yours. No black-box dependency, no version lock. Refactor every line on your own terms.',
+      'Install from the registry and the source lands in your repo. No black box, no version lock. Refactor every line.',
   },
   {
     icon: GitBranch,
-    title: 'React and Angular at parity',
+    title: 'Parity, enforced',
     description:
-      'Both editions ship from the same registry with the same primitives, semantics, and tokens. One design system, two frameworks, no drift.',
+      'React and Angular editions share anatomy, props, and tokens. A contract lint keeps them from drifting apart.',
   },
   {
     icon: Sparkles,
     title: 'Token-driven theming',
     description:
-      'Every primitive is wired to a shared token layer. Restyle the whole system from one place, and themes carry across both frameworks.',
+      'Every primitive reads from a three-layer token system. Change one layer, retheme both frameworks.',
   },
   {
     icon: Brain,
-    title: 'AI-native registry and MCP',
+    title: 'AI-native by design',
     description:
-      'A registry and MCP server expose the system to your tools, so Claude, Cursor, and Codex generate idiomatic UI that matches what you ship.',
+      'The registry and MCP server make the system legible to Claude, Cursor, and Codex, so generated UI matches shipped UI.',
   },
 ];
 
@@ -54,8 +54,8 @@ export function FeaturesGrid() {
             A design system you own, end to end
           </h2>
           <p className="mt-3 text-base text-muted-foreground">
-            The fundamentals of a serious component library, plus a registry and
-            MCP server that make the whole system legible to your tools.
+            The fundamentals of a serious component library, and a registry that
+            machines can read.
           </p>
         </div>
 

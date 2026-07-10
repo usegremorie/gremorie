@@ -8,7 +8,7 @@ import { PromptInputState } from './prompt-input.types';
 const STATES: PromptInputState[] = ['ready', 'submitted', 'streaming', 'error'];
 
 const meta: Meta<PromptInputSubmit> = {
-  title: 'PromptInput/Submit',
+  title: 'AI/Chatbot/PromptInput/Submit',
   component: PromptInputSubmit,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [PromptInput] })],

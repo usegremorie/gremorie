@@ -31,7 +31,7 @@ import {
 type WebPreviewArgs = { defaultUrl: string };
 
 const meta: Meta<WebPreviewArgs> = {
-  title: 'Artifacts/WebPreview',
+  title: 'AI/Code/WebPreview',
   component: WebPreview,
   tags: ['autodocs'],
   decorators: [

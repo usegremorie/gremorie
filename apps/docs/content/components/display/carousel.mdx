@@ -69,9 +69,49 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```bash
+npx gremorie@latest add ng-carousel
+```
+
+```ts
+import { Component } from '@angular/core';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@gremorie/ng-display';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselPrevious,
+    CarouselNext,
+  ],
+  template: `
+    <gn-carousel class="w-full max-w-xs">
+      <gn-carousel-content>
+        @for (slide of slides; track slide) {
+          <gn-carousel-item>
+            <div class="p-1">Slide {{ slide }}</div>
+          </gn-carousel-item>
+        }
+      </gn-carousel-content>
+      <gn-carousel-previous />
+      <gn-carousel-next />
+    </gn-carousel>
+  `,
+})
+export class ExampleComponent {
+  readonly slides = [1, 2, 3, 4, 5];
+}
+```
+
 </Tab>
 </Tabs>
 

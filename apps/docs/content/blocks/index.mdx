@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: 'Production-ready compositions of primitives. Shells, auth, dashboards, chat surfaces, marketing, empty states.'
+description: 'Production-ready compositions of primitives. Shells, auth, dashboards, chat surfaces, empty states.'
 ---
 
 A **block** is a working composition of multiple primitives, shipped
@@ -14,13 +14,13 @@ version through `registryDependencies`.
 
 ## Blocks vs Components vs Artifacts
 
-|             | Components                | Blocks                    | Artifacts                                     |
-| ----------- | ------------------------- | ------------------------- | --------------------------------------------- |
-| **Scope**   | One primitive             | N primitives composed     | One primitive that consumes an LLM schema     |
-| **Example** | `Button`                  | `sign-in` card            | `chart` artifact rendering Recharts from JSON |
-| **Wiring**  | None                      | Layout + state + handlers | Schema parser + streaming renderer            |
-| **Install** | `gremorie add rx-button`  | `gremorie add sign-in`    | `gremorie add rx-chart-artifact`              |
-| **Status**  | Shipping (100 primitives) | Planned                   | Planned                                       |
+|             | Components               | Blocks                       | Artifacts                                     |
+| ----------- | ------------------------ | ---------------------------- | --------------------------------------------- |
+| **Scope**   | One primitive            | N primitives composed        | One primitive that consumes an LLM schema     |
+| **Example** | `Button`                 | `sign-in` card               | `chart` artifact rendering Recharts from JSON |
+| **Wiring**  | None                     | Layout + state + handlers    | Schema parser + streaming renderer            |
+| **Install** | `gremorie add rx-button` | `gremorie add block-sign-in` | `gremorie add rx-chart`                       |
+| **Status**  | Shipping (83 primitives) | Shipping                     | Shipping                                      |
 
 ## Categories
 
@@ -46,10 +46,6 @@ version through `registryDependencies`.
     description="assistant (flagship), inline-chat, command-palette, ai-input-bar"
   />
   <Card
-    title="Marketing"
-    description="hero, feature-grid, pricing, testimonials, faq, cta-section"
-  />
-  <Card
     title="Empty states"
     description="no-results, no-data, error-state, permission-denied, coming-soon"
   />
@@ -66,35 +62,35 @@ preview, the full source, an install command, and a customization
 guide.
 
 <Cards>
-  <Card
+  <BlockCard
     href="/blocks/sign-in"
     title="Sign-in"
     description="Authentication card with GitHub provider plus email and password."
+    block="sign-in"
   />
-  <Card
+  <BlockCard
     href="/blocks/dashboard"
     title="Dashboard"
     description="KPI grid plus chart strip plus transactions table."
+    block="dashboard"
   />
-  <Card
+  <BlockCard
     href="/blocks/assistant"
     title="Assistant"
     description="The flagship chat surface: conversation, reasoning, an inline artifact, sources, and a B2B PromptInput composer."
+    block="assistant"
   />
-  <Card
+  <BlockCard
     href="/blocks/settings-form"
     title="Settings form"
     description="Profile plus Notifications plus Appearance with a sticky save bar."
+    block="settings-form"
   />
-  <Card
-    href="/blocks/marketing-hero"
-    title="Marketing hero"
-    description="Brand-tinted halo, badge, headline, dual CTA, and a window mockup."
-  />
-  <Card
+  <BlockCard
     href="/blocks/empty-state"
     title="Empty state"
     description="Dashed container, centered icon, headline, description, and dual CTA."
+    block="empty-state"
   />
 </Cards>
 

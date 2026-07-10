@@ -44,11 +44,12 @@ type Story = StoryObj<typeof meta>;
 const IMG =
   'https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=800&dpr=2&q=80';
 
-/** A 16/9 widescreen image frame. */
-export const Widescreen: Story = {
-  render: () => (
+/** A live `ratio` knob inside a fixed-width frame. */
+export const Workbench: Story = {
+  args: { ratio: 16 / 9 },
+  render: (args) => (
     <div className="w-80">
-      <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
+      <AspectRatio {...args} className="overflow-hidden rounded-lg">
         <img
           src={IMG}
           alt="Mountain landscape"

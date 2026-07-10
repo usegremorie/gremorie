@@ -109,6 +109,44 @@ const StepList = () => (
   </ul>
 );
 
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { defaultOpen: true, isStreaming: false },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Plan {...args}>
+        <PlanHeader>
+          <div className="space-y-1">
+            <PlanTitle>Refactor the auth flow</PlanTitle>
+            <PlanDescription>
+              Split the monolithic handler into guard, resolver, and store.
+            </PlanDescription>
+          </div>
+          <PlanAction>
+            <PlanTrigger />
+          </PlanAction>
+        </PlanHeader>
+        <PlanContent>
+          <ol className="ml-4 list-decimal space-y-1 text-muted-foreground text-sm">
+            <li>Extract the token refresh into an interceptor.</li>
+            <li>Move session state into a signal store.</li>
+            <li>Add a route guard for protected pages.</li>
+          </ol>
+        </PlanContent>
+        <PlanFooter>
+          <span className="text-muted-foreground text-xs">
+            3 steps · ~2 min
+          </span>
+        </PlanFooter>
+      </Plan>
+    </div>
+  ),
+};
+
 /** A complete plan, expanded, showing its steps. */
 export const Default: Story = {
   args: { defaultOpen: true, isStreaming: false },

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-separator",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Separator (Angular)",
+  "description": "Horizontal or vertical visual divider built on Spartan-ng brain Separator. Use sparingly - prefer spacing for visual grouping; reach for Separator only when a hard line carries semantic meaning. Mirrors React Separator from @gremorie/rx-display.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/separator/separator.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  BrnSeparator,\n  type SeparatorOrientation,\n} from '@spartan-ng/brain/separator';\nimport { cn } from '@gremorie/ng-core';\n\nexport type { SeparatorOrientation };\n\n/**\n * Separator — visual divider between groups of content. Mirrors React\n * `Separator` from `@gremorie/rx-display`, which wraps `@radix-ui/react-separator`.\n *\n * The behavior (the `decorative` flag deciding whether the separator is\n * exposed to AT as `role=\"separator\"` with `aria-orientation`, or hidden as\n * presentational `role=\"none\"`) is delegated to the spartan brain\n * `BrnSeparator` host directive — the Angular equivalent of Radix Separator.\n *\n * Visual is token-driven (`bg-border`) so the separator picks up the active\n * theme automatically. The default `decorative=true` is correct in the vast\n * majority of cases; set `decorative=false` only when the separator carries\n * semantic meaning.\n *\n * @example\n * ```html\n * <gn-separator />\n * <gn-separator orientation=\"vertical\" />\n * <gn-separator [decorative]=\"false\" />\n * ```\n */\n@Component({\n  selector: 'gn-separator',\n  standalone: true,\n  hostDirectives: [\n    {\n      directive: BrnSeparator,\n      inputs: ['orientation', 'decorative'],\n    },\n  ],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: ``,\n  host: {\n    'data-slot': 'separator',\n    '[attr.data-orientation]': 'orientation()',\n    '[class]': 'computedClass()',\n  },\n})\nexport class Separator {\n  readonly orientation = input<SeparatorOrientation>('horizontal');\n  readonly decorative = input<boolean>(true);\n\n  protected readonly computedClass = computed(() =>\n    cn(\n      'shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px',\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/separator/separator.ts"
+    },
+    {
+      "path": "src/lib/separator/index.ts",
+      "content": "export { Separator, type SeparatorOrientation } from './separator';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/separator/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Surfaces grouping related content (Card) and compact status labels (Badge). Companions to Spartan-ng — fill the gap for primitives Spartan-ng doesn't ship.",
+    "whenNotToUse": "Interactive selection chips — those belong to a ToggleGroup primitive, not Badge. Card is not for transient overlays (use a dialog/popover primitive).",
+    "bestPractices": [
+      "Compose Card with its sub-parts (gn-card-header, gn-card-title, gn-card-description, gn-card-content, gn-card-footer) rather than dumping everything into the host.",
+      "Pick the closest semantic Badge variant — outline for neutral metadata, secondary for default counts, destructive for errors.",
+      "Both primitives are token-driven (bg-card, bg-secondary, border-border) so theme changes flow through automatically."
+    ],
+    "antipatterns": [
+      "Hardcoding inline-styled spans/divs to mimic a badge — use Badge with the right variant.",
+      "Reaching into Card sub-classes with className overrides to recolor — add a new variant on the primitive instead."
+    ],
+    "examples": [
+      {
+        "title": "KPI Card",
+        "code": "<gn-card>\n  <gn-card-header>\n    <gn-card-title>Total Revenue</gn-card-title>\n    <gn-card-description>Last 30 days</gn-card-description>\n    <gn-card-action>\n      <gn-badge variant=\"outline\">+12%</gn-badge>\n    </gn-card-action>\n  </gn-card-header>\n  <gn-card-content>$45,231</gn-card-content>\n</gn-card>\n"
+      },
+      {
+        "title": "Status badges",
+        "code": "<gn-badge variant=\"secondary\">Running</gn-badge>\n<gn-badge variant=\"destructive\">Failed</gn-badge>\n<gn-badge variant=\"outline\">Pending</gn-badge>\n"
+      }
+    ]
+  }
+}

@@ -20,7 +20,7 @@
       "path": "src/lib/utils.ts",
       "content": "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]): string {\n  return twMerge(clsx(inputs));\n}\n",
       "type": "registry:lib",
-      "target": "src/app/gremorie/utils/utils.ts"
+      "target": "src/app/gremorie/core/utils.ts"
     }
   ],
   "cssVars": {},

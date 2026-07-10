@@ -8,7 +8,7 @@ import { Image } from './image';
  * `<img>`. Mirrors React `Image` from `@gremorie/rx-ai`.
  */
 const meta: Meta<Image> = {
-  title: 'AI/Image',
+  title: 'AI/Utilities/Image',
   component: Image,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Image] })],

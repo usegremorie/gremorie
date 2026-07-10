@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +13,12 @@ import {
 } from '@angular/core';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 /**
  * One console line rendered by `WebPreviewConsole`. Mirrors React's
@@ -95,25 +102,47 @@ export class WebPreviewNavigation {}
 
 /**
  * Ghost icon button for the toolbar. Parity with React
- * `WebPreviewNavigationButton`. The `tooltip` input is surfaced as the native
- * `title` (and `aria-label`) — ng-artifacts has no Tooltip primitive, so we
- * avoid pulling in ng-overlays for a single label. Disabled + click forward.
+ * `WebPreviewNavigationButton`. When `tooltip` is set, the button is wrapped
+ * in the styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * primitive the React side uses from `@gremorie/rx-overlays`), and the text
+ * doubles as the `aria-label`. Disabled + click forward.
  */
 @Component({
   selector: 'web-preview-navigation-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   host: { 'data-slot': 'web-preview-navigation-button' },
   template: `
-    <button
-      type="button"
-      class="inline-flex size-8 items-center justify-center rounded-md p-0 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
-      [disabled]="disabled()"
-      [attr.title]="tooltip() || null"
-      [attr.aria-label]="tooltip() || null"
-      (click)="clicked.emit($event)"
-    >
-      <ng-content />
-    </button>
+    <ng-template #btn>
+      <button
+        type="button"
+        class="inline-flex size-8 items-center justify-center rounded-md p-0 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+        [disabled]="disabled()"
+        [attr.aria-label]="tooltip() || null"
+        (click)="clicked.emit($event)"
+      >
+        <ng-content />
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip>
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
   `,
 })
 export class WebPreviewNavigationButton {

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-model-selector",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Model Selector (Angular)",
+  "description": "Floating model picker dialog. ModelSelectorTrigger opens a command palette - input, groups, items, shortcuts - built on @spartan-ng/brain command. Use as a Cmd+K-style model switcher above the chat composer. Mirrors React ModelSelector from @gremorie/rx-ai.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/model-selector/model-selector.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  BrnCommand,\n  BrnCommandEmpty,\n  BrnCommandGroup,\n  BrnCommandInput,\n  BrnCommandItem,\n  BrnCommandList,\n  BrnCommandSeparator,\n} from '@spartan-ng/brain/command';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * ModelSelector — a command-palette model picker. Mirrors React\n * `ModelSelector` from `@gremorie/rx-ai`.\n *\n * React parity:\n * - React composes a `Dialog` whose body is a `Command` palette (input + list\n *   + groups + items, with provider logos / names / shortcuts).\n * - Sub-components map 1:1 to the React surface (`ModelSelectorTrigger`,\n *   `ModelSelectorContent`, `ModelSelectorInput`, `ModelSelectorList`,\n *   `ModelSelectorEmpty`, `ModelSelectorGroup`, `ModelSelectorItem`,\n *   `ModelSelectorShortcut`, `ModelSelectorSeparator`, `ModelSelectorLogo`,\n *   `ModelSelectorLogoGroup`, `ModelSelectorName`). `data-slot` names match.\n * - The searchable list is backed by `@spartan-ng/brain/command` directives\n *   (the load-bearing behavior — filtering, keyboard nav, selection).\n *\n * Divergence: React wraps the palette in a Radix `Dialog` overlay. Brain's\n * dialog is an overlay-service primitive that does not compose as a simple\n * inline child; to keep the compound API and a reliable template typecheck,\n * `ModelSelectorContent` renders the same palette inline as a popover-style\n * panel. Consumers needing a true modal can host `<model-selector-content>`\n * inside their own `BrnDialog`. The `ModelSelectorDialog` alias is provided for\n * API parity and renders the same inline panel.\n */\n@Component({\n  selector: 'model-selector',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: { 'data-slot': 'model-selector', class: 'contents' },\n})\nexport class ModelSelector {}\n\n@Component({\n  selector: 'model-selector-trigger',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: { 'data-slot': 'model-selector-trigger', class: 'contents' },\n})\nexport class ModelSelectorTrigger {}\n\n@Component({\n  selector: 'model-selector-content',\n  standalone: true,\n  imports: [BrnCommand],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <h2 class=\"sr-only\">{{ title() }}</h2>\n    <div brnCommand class=\"flex h-full w-full flex-col overflow-hidden\">\n      <ng-content />\n    </div>\n  `,\n  host: {\n    'data-slot': 'model-selector-content',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ModelSelectorContent {\n  /** Accessible dialog title (React `title`, default \"Model Selector\"). */\n  readonly title = input<string>('Model Selector');\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn(\n      'block overflow-hidden rounded-md border bg-popover p-0 text-popover-foreground shadow-md',\n      this.class(),\n    ),\n  );\n}\n\n/** Alias of `ModelSelectorContent` for React `ModelSelectorDialog` parity. */\n@Component({\n  selector: 'model-selector-dialog',\n  standalone: true,\n  imports: [BrnCommand],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div brnCommand class=\"flex h-full w-full flex-col overflow-hidden\">\n      <ng-content />\n    </div>\n  `,\n  host: {\n    'data-slot': 'model-selector-dialog',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ModelSelectorDialog {\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn(\n      'block overflow-hidden rounded-md border bg-popover p-0 text-popover-foreground shadow-md',\n      this.class(),\n    ),\n  );\n}\n\n@Component({\n  selector: 'model-selector-input',\n  standalone: true,\n  imports: [BrnCommandInput],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div class=\"flex items-center border-b px-3\" data-slot=\"command-input-wrapper\">\n      <svg\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n        class=\"mr-2 size-4 shrink-0 opacity-50\"\n      >\n        <circle cx=\"11\" cy=\"11\" r=\"8\" /><path d=\"m21 21-4.3-4.3\" />\n      </svg>\n      <input\n        brnCommandInput\n        [placeholder]=\"placeholder()\"\n        [class]=\"inputClass()\"\n      />\n    </div>\n  `,\n  host: { 'data-slot': 'model-selector-input', class: 'block' },\n})\nexport class ModelSelectorInput {\n  readonly placeholder = input<string>('Search models…');\n  readonly class = input<string>();\n  protected readonly inputClass = computed(() =>\n    cn(\n      'flex h-auto w-full rounded-md bg-transparent py-3.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',\n      this.class(),\n    ),\n  );\n}\n\n@Component({\n  selector: 'model-selector-list',\n  standalone: true,\n  imports: [BrnCommandList],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<div brnCommandList [class]=\"listClass()\"><ng-content /></div>`,\n  host: { 'data-slot': 'model-selector-list', class: 'block' },\n})\nexport class ModelSelectorList {\n  readonly class = input<string>();\n  protected readonly listClass = computed(() =>\n    cn('max-h-[300px] overflow-y-auto overflow-x-hidden', this.class()),\n  );\n}\n\n@Component({\n  selector: 'model-selector-empty',\n  standalone: true,\n  imports: [BrnCommandEmpty],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<div brnCommandEmpty [class]=\"emptyClass()\"><ng-content /></div>`,\n  host: { 'data-slot': 'model-selector-empty', class: 'block' },\n})\nexport class ModelSelectorEmpty {\n  readonly class = input<string>();\n  protected readonly emptyClass = computed(() =>\n    cn('py-6 text-center text-sm', this.class()),\n  );\n}\n\n@Component({\n  selector: 'model-selector-group',\n  standalone: true,\n  imports: [BrnCommandGroup],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<div brnCommandGroup [class]=\"groupClass()\"><ng-content /></div>`,\n  host: { 'data-slot': 'model-selector-group', class: 'block' },\n})\nexport class ModelSelectorGroup {\n  readonly class = input<string>();\n  protected readonly groupClass = computed(() =>\n    cn('overflow-hidden p-1 text-foreground', this.class()),\n  );\n}\n\n@Component({\n  selector: 'model-selector-item',\n  standalone: true,\n  imports: [BrnCommandItem],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      brnCommandItem\n      [value]=\"value()\"\n      [disabled]=\"disabled()\"\n      [class]=\"itemClass()\"\n    >\n      <ng-content />\n    </button>\n  `,\n  host: { 'data-slot': 'model-selector-item', class: 'block' },\n})\nexport class ModelSelectorItem {\n  /** Search value (BrnCommandItem requires a value; React derives it from text). */\n  readonly value = input.required<string>();\n  readonly disabled = input<boolean>(false);\n  readonly class = input<string>();\n  protected readonly itemClass = computed(() =>\n    cn(\n      'relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',\n      this.class(),\n    ),\n  );\n}\n\n@Component({\n  selector: 'model-selector-shortcut',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'model-selector-shortcut',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ModelSelectorShortcut {\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn('ml-auto text-xs tracking-widest text-muted-foreground', this.class()),\n  );\n}\n\n@Component({\n  selector: 'model-selector-separator',\n  standalone: true,\n  imports: [BrnCommandSeparator],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<div brnCommandSeparator [class]=\"sepClass()\"></div>`,\n  host: { 'data-slot': 'model-selector-separator', class: 'block' },\n})\nexport class ModelSelectorSeparator {\n  readonly class = input<string>();\n  protected readonly sepClass = computed(() =>\n    cn('-mx-1 h-px bg-border', this.class()),\n  );\n}\n\n@Component({\n  selector: 'model-selector-logo',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <img\n      [src]=\"src()\"\n      [alt]=\"provider() + ' logo'\"\n      width=\"12\"\n      height=\"12\"\n      [class]=\"imgClass()\"\n    />\n  `,\n  host: { 'data-slot': 'model-selector-logo', class: 'contents' },\n})\nexport class ModelSelectorLogo {\n  /** Provider key (e.g. \"anthropic\"); resolves to models.dev/logos/<provider>.svg. */\n  readonly provider = input.required<string>();\n  readonly class = input<string>();\n  protected readonly src = computed(\n    () => `https://models.dev/logos/${this.provider()}.svg`,\n  );\n  protected readonly imgClass = computed(() =>\n    cn('size-3 dark:invert', this.class()),\n  );\n}\n\n@Component({\n  selector: 'model-selector-logo-group',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'model-selector-logo-group',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ModelSelectorLogoGroup {\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn(\n      '-space-x-1 flex shrink-0 items-center [&>img]:rounded-full [&>img]:bg-background [&>img]:p-px [&>img]:ring-1 dark:[&>img]:bg-foreground',\n      this.class(),\n    ),\n  );\n}\n\n@Component({\n  selector: 'model-selector-name',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'model-selector-name',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ModelSelectorName {\n  readonly class = input<string>();\n  protected readonly hostClass = computed(() =>\n    cn('flex-1 truncate text-left', this.class()),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/model-selector/model-selector.ts"
+    },
+    {
+      "path": "src/lib/model-selector/index.ts",
+      "content": "export {\n  ModelSelector,\n  ModelSelectorTrigger,\n  ModelSelectorContent,\n  ModelSelectorDialog,\n  ModelSelectorInput,\n  ModelSelectorList,\n  ModelSelectorEmpty,\n  ModelSelectorGroup,\n  ModelSelectorItem,\n  ModelSelectorShortcut,\n  ModelSelectorSeparator,\n  ModelSelectorLogo,\n  ModelSelectorLogoGroup,\n  ModelSelectorName,\n} from './model-selector';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/model-selector/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "submitted",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "attachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
+      }
+    ]
+  }
+}

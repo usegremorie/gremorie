@@ -101,6 +101,45 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div style={{ width: 420 }}>
+      <Queue>
+        <QueueList>
+          <QueueItem>
+            <div className="flex items-center gap-2">
+              <QueueItemIndicator />
+              <QueueItemContent>Summarize the PR description</QueueItemContent>
+            </div>
+          </QueueItem>
+          <QueueItem>
+            <div className="flex items-center gap-2">
+              <QueueItemIndicator completed />
+              <QueueItemContent completed>
+                Generate release notes
+              </QueueItemContent>
+            </div>
+            <QueueItemDescription completed>
+              Done · 12s ago
+            </QueueItemDescription>
+          </QueueItem>
+          <QueueItem>
+            <div className="flex items-center gap-2">
+              <QueueItemIndicator />
+              <QueueItemContent>Draft the changelog entry</QueueItemContent>
+            </div>
+          </QueueItem>
+        </QueueList>
+      </Queue>
+    </div>
+  ),
+};
+
 /** A simple queue of pending and completed items. */
 export const Default: Story = {
   render: () => (

@@ -107,8 +107,8 @@ export const command = defineContract({
       '<Command><CommandInput placeholder="Search..." /><CommandList><CommandEmpty>No results.</CommandEmpty><CommandGroup heading="Actions"><CommandItem>New file<CommandShortcut>⌘N</CommandShortcut></CommandItem></CommandGroup></CommandList></Command>',
   },
   preview: {
-    rx: 'interaction-overlays-command--default',
-    ng: 'overlays-command--workbench',
+    rx: 'interaction-overlays-command--workbench',
+    ng: 'interaction-overlays-command--workbench',
   },
   tag: { rx: 'Command', ng: 'gn-command' },
   example: {

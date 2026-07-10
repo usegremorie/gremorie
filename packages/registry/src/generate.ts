@@ -158,13 +158,55 @@ function buildItem(cwd: string, item: ItemConfig): RegistryItem {
     title: item.title,
     description: item.description,
     categories: item.categories,
-    dependencies: item.dependencies,
+    dependencies: withDetectedGremorieDeps(item.dependencies, files),
     devDependencies: item.devDependencies ?? [],
     registryDependencies: item.registryDependencies,
     files,
     cssVars: item.cssVars ?? {},
     usage,
   };
+}
+
+/**
+ * Matches the package name in `import`/`export ... from`, bare side-effect
+ * imports, dynamic `import()` and `require()` specifiers that point at a
+ * `@gremorie/*` package. Captures only the scope + first path segment, so
+ * sub-path imports (`@gremorie/rx-core/foo`) still resolve to the npm name.
+ */
+const GREMORIE_IMPORT_RE =
+  /\b(?:from\s+|import\s+|import\s*\(\s*|require\s*\(\s*)['"](@gremorie\/[a-z0-9-]+)/g;
+
+/**
+ * The copied source is a verbatim copy, so any `@gremorie/*` import it carries
+ * must be installable from npm in the consumer project. Scan every bundled
+ * file at build time and merge the detected packages into the item's declared
+ * npm `dependencies` (deduped; declared order preserved, detected packages
+ * appended sorted). This keeps the emitted item JSON self-contained even when
+ * the hand-maintained config forgets a workspace import.
+ *
+ * Follow-up (option A, shadcn-style): rewrite `@gremorie/rx-core` cn imports
+ * to the locally copied `rx-utils` file and map bundle-entrypoint imports
+ * (e.g. `@gremorie/rx-forms` -> the copied rx-button) to registry items so
+ * consumers do not need the npm packages at all. Until then the rx-utils /
+ * ng-utils copies installed via registryDependencies are not imported by the
+ * copied code (dead files) - the npm packages carry cn().
+ */
+function withDetectedGremorieDeps(
+  declared: string[],
+  files: RegistryFile[],
+): string[] {
+  const detected = new Set<string>();
+  for (const file of files) {
+    if (file.type === 'registry:style') continue;
+    for (const match of file.content.matchAll(GREMORIE_IMPORT_RE)) {
+      detected.add(match[1]);
+    }
+  }
+  const merged = [...declared];
+  for (const pkg of [...detected].sort()) {
+    if (!merged.includes(pkg)) merged.push(pkg);
+  }
+  return merged;
 }
 
 function inferFileType(path: string): RegistryFileType {

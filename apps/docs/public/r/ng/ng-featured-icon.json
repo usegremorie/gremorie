@@ -1,0 +1,56 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-featured-icon",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Featured Icon (Angular)",
+  "description": "Icon inside a styled, themed container - the small badge that anchors a card, artifact, or empty-state header. Variants: color (primary, gray, success, error) x theme (light, solid, outline) x size (sm, md, lg, xl) x shape (square, circle). Mirrors React FeaturedIcon from @gremorie/rx-display.",
+  "categories": [
+    "display",
+    "primitives"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "class-variance-authority"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/featured-icon/featured-icon.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cva, type VariantProps } from 'class-variance-authority';\n\n/**\n * FeaturedIcon variants — mirrors React `FeaturedIcon` from\n * `@gremorie/rx-display` (class strings copied verbatim).\n *\n * Variants: `color` (primary · gray · success · error) × `theme`\n * (light · solid · outline) × `size` (sm · md · lg · xl) × `shape`\n * (square · circle).\n */\nexport const featuredIconVariants = cva(\n  'inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0',\n  {\n    variants: {\n      size: {\n        sm: 'size-8 [&_svg]:size-4',\n        md: 'size-10 [&_svg]:size-5',\n        lg: 'size-12 [&_svg]:size-6',\n        xl: 'size-14 [&_svg]:size-7',\n      },\n      shape: { square: '', circle: 'rounded-full' },\n      theme: { light: '', solid: '', outline: '' },\n      color: { primary: '', gray: '', success: '', error: '' },\n    },\n    compoundVariants: [\n      // Square corner radius scales with size.\n      { shape: 'square', size: 'sm', class: 'rounded-md' },\n      { shape: 'square', size: 'md', class: 'rounded-lg' },\n      { shape: 'square', size: 'lg', class: 'rounded-xl' },\n      { shape: 'square', size: 'xl', class: 'rounded-2xl' },\n      // color × theme.\n      { color: 'primary', theme: 'light', class: 'bg-primary/10 text-primary' },\n      {\n        color: 'primary',\n        theme: 'solid',\n        class: 'bg-primary text-primary-foreground',\n      },\n      {\n        color: 'primary',\n        theme: 'outline',\n        class: 'border border-primary/30 text-primary',\n      },\n      {\n        color: 'gray',\n        theme: 'light',\n        class: 'bg-muted text-muted-foreground',\n      },\n      {\n        color: 'gray',\n        theme: 'solid',\n        class: 'bg-secondary text-secondary-foreground',\n      },\n      {\n        color: 'gray',\n        theme: 'outline',\n        class: 'border border-border text-muted-foreground',\n      },\n      { color: 'success', theme: 'light', class: 'bg-success/10 text-success' },\n      {\n        color: 'success',\n        theme: 'solid',\n        class: 'bg-success text-success-foreground',\n      },\n      {\n        color: 'success',\n        theme: 'outline',\n        class: 'border border-success/30 text-success',\n      },\n      {\n        color: 'error',\n        theme: 'light',\n        class: 'bg-destructive/10 text-destructive',\n      },\n      {\n        color: 'error',\n        theme: 'solid',\n        class: 'bg-destructive text-destructive-foreground',\n      },\n      {\n        color: 'error',\n        theme: 'outline',\n        class: 'border border-destructive/30 text-destructive',\n      },\n    ],\n    defaultVariants: {\n      size: 'md',\n      shape: 'square',\n      theme: 'light',\n      color: 'primary',\n    },\n  },\n);\n\nexport type FeaturedIconSize = NonNullable<\n  VariantProps<typeof featuredIconVariants>['size']\n>;\nexport type FeaturedIconShape = NonNullable<\n  VariantProps<typeof featuredIconVariants>['shape']\n>;\nexport type FeaturedIconTheme = NonNullable<\n  VariantProps<typeof featuredIconVariants>['theme']\n>;\nexport type FeaturedIconColor = NonNullable<\n  VariantProps<typeof featuredIconVariants>['color']\n>;\n\n/**\n * FeaturedIcon — an icon inside a styled, themed container. Mirrors React\n * `FeaturedIcon` from `@gremorie/rx-display`.\n *\n * The small \"badge\" that anchors a card / artifact / empty-state header.\n * Token-driven, so theme + dark mode flow through automatically. Project an\n * SVG glyph as content (React takes a lucide `icon` prop — the Angular\n * edition adapts to content projection since lucide-angular is not a\n * dependency); the container sizes the glyph.\n *\n * @example\n * ```html\n * <gn-featured-icon color=\"success\" theme=\"solid\" size=\"lg\" shape=\"circle\">\n *   <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\">\n *     <path d=\"M20 6 9 17l-5-5\"/>\n *   </svg>\n * </gn-featured-icon>\n * ```\n */\n@Component({\n  selector: 'gn-featured-icon',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'featured-icon',\n    '[attr.data-color]': 'color()',\n    '[attr.data-theme]': 'theme()',\n    '[class]': 'computedClass()',\n  },\n})\nexport class FeaturedIcon {\n  readonly size = input<FeaturedIconSize>('md');\n  readonly shape = input<FeaturedIconShape>('square');\n  readonly theme = input<FeaturedIconTheme>('light');\n  readonly color = input<FeaturedIconColor>('primary');\n\n  protected readonly computedClass = computed(() =>\n    featuredIconVariants({\n      size: this.size(),\n      shape: this.shape(),\n      theme: this.theme(),\n      color: this.color(),\n    }),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/featured-icon/featured-icon.ts"
+    },
+    {
+      "path": "src/lib/featured-icon/index.ts",
+      "content": "export {\n  FeaturedIcon,\n  featuredIconVariants,\n  type FeaturedIconColor,\n  type FeaturedIconShape,\n  type FeaturedIconSize,\n  type FeaturedIconTheme,\n} from './featured-icon';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/featured-icon/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Surfaces grouping related content (Card) and compact status labels (Badge). Companions to Spartan-ng — fill the gap for primitives Spartan-ng doesn't ship.",
+    "whenNotToUse": "Interactive selection chips — those belong to a ToggleGroup primitive, not Badge. Card is not for transient overlays (use a dialog/popover primitive).",
+    "bestPractices": [
+      "Compose Card with its sub-parts (gn-card-header, gn-card-title, gn-card-description, gn-card-content, gn-card-footer) rather than dumping everything into the host.",
+      "Pick the closest semantic Badge variant — outline for neutral metadata, secondary for default counts, destructive for errors.",
+      "Both primitives are token-driven (bg-card, bg-secondary, border-border) so theme changes flow through automatically."
+    ],
+    "antipatterns": [
+      "Hardcoding inline-styled spans/divs to mimic a badge — use Badge with the right variant.",
+      "Reaching into Card sub-classes with className overrides to recolor — add a new variant on the primitive instead."
+    ],
+    "examples": [
+      {
+        "title": "KPI Card",
+        "code": "<gn-card>\n  <gn-card-header>\n    <gn-card-title>Total Revenue</gn-card-title>\n    <gn-card-description>Last 30 days</gn-card-description>\n    <gn-card-action>\n      <gn-badge variant=\"outline\">+12%</gn-badge>\n    </gn-card-action>\n  </gn-card-header>\n  <gn-card-content>$45,231</gn-card-content>\n</gn-card>\n"
+      },
+      {
+        "title": "Status badges",
+        "code": "<gn-badge variant=\"secondary\">Running</gn-badge>\n<gn-badge variant=\"destructive\">Failed</gn-badge>\n<gn-badge variant=\"outline\">Pending</gn-badge>\n"
+      }
+    ]
+  }
+}

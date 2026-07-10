@@ -1,0 +1,42 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-toggle-group",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Toggle Group (Angular)",
+  "description": "Mutually exclusive or multi-select cluster of Toggle items, built on Spartan-ng brain ToggleGroup. Use for inline option pickers (text alignment, view mode, filter chips). Mirrors React ToggleGroup from @gremorie/rx-forms.",
+  "categories": [
+    "forms"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-toggle"
+  ],
+  "files": [
+    {
+      "path": "src/lib/toggle-group/toggle-group.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  inject,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  BrnToggleGroup,\n  BrnToggleGroupItem,\n} from '@spartan-ng/brain/toggle-group';\nimport { cn } from '@gremorie/ng-core';\nimport {\n  toggleVariants,\n  type ToggleSize,\n  type ToggleVariant,\n} from '../toggle/toggle';\n\n/**\n * ToggleGroup — coordinated set of Toggles. Angular parity port of React\n * `ToggleGroup` from `@gremorie/rx-forms`, which wraps Radix `ToggleGroup`.\n *\n * Use `type=\"single\"` for radio-like selection (one pressed at a time) or\n * `type=\"multiple\"` for checkbox-like (any number pressed). `variant`, `size`\n * and `spacing` propagate from the Root to its items.\n *\n * Behavior (selection + roving focus) is delegated to the spartan brain\n * `BrnToggleGroup` directive (the Angular equivalent of Radix ToggleGroup),\n * applied as a `hostDirective` so its `type`/`value`/`nullable`/`disabled`\n * inputs are forwarded transparently. React propagates `variant`/`size`/\n * `spacing` to children via context; Angular has no JSX context, so\n * `ToggleGroupItem` reads them by injecting this parent instead.\n *\n * Use ToggleGroup for **formatting/state** (text alignment, view mode, filter\n * chips). RadioGroup is for form values; Tabs swap full content panels.\n *\n * Parity with React `ToggleGroup`:\n * - `type` ('single'|'multiple') ↔ React `type`\n * - `value` ↔ React `value`\n * - `variant` / `size` / `spacing` ↔ React `variant` / `size` / `spacing`\n * - `disabled` / `nullable` ↔ React Radix Root props\n *\n * @example\n * ```html\n * <gn-toggle-group type=\"single\" variant=\"outline\">\n *   <gn-toggle-group-item value=\"left\" ariaLabel=\"Align left\">L</gn-toggle-group-item>\n *   <gn-toggle-group-item value=\"center\" ariaLabel=\"Align center\">C</gn-toggle-group-item>\n *   <gn-toggle-group-item value=\"right\" ariaLabel=\"Align right\">R</gn-toggle-group-item>\n * </gn-toggle-group>\n * ```\n */\n@Component({\n  selector: 'gn-toggle-group',\n  standalone: true,\n  hostDirectives: [\n    {\n      directive: BrnToggleGroup,\n      inputs: ['type', 'value', 'nullable', 'disabled'],\n      outputs: ['valueChange'],\n    },\n  ],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'toggle-group',\n    '[attr.data-variant]': 'variant()',\n    '[attr.data-size]': 'size()',\n    '[attr.data-spacing]': 'spacing()',\n    '[style.--gap]': 'spacing()',\n    '[class]': 'rootClass()',\n  },\n})\nexport class ToggleGroup {\n  // NOTE: `type`, `value`, `nullable` and `disabled` are NOT redeclared here —\n  // they are exposed on this component's selector by the `BrnToggleGroup`\n  // hostDirective (`inputs: [...]` above) and forwarded straight to the brain,\n  // which owns selection state. We only add the presentational inputs below.\n\n  /** Visual variant propagated to items. Mirrors React `variant`. */\n  readonly variant = input<ToggleVariant>('default');\n  /** Size preset propagated to items. Mirrors React `size`. */\n  readonly size = input<ToggleSize>('default');\n  /** Gap (in spacing units) between items. Mirrors React `spacing` (default 0). */\n  readonly spacing = input<number>(0);\n\n  protected readonly rootClass = computed(() =>\n    cn(\n      'group/toggle-group flex w-fit items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=default]:data-[variant=outline]:shadow-xs',\n    ),\n  );\n}\n\n/**\n * ToggleGroupItem — a single button inside a ToggleGroup. Angular parity port of\n * React `ToggleGroupItem`.\n *\n * Renders a `<button brnToggleGroupItem>` (the brain item directive owns the\n * pressed state and group coordination). `variant`/`size`/`spacing` are read\n * from the parent `ToggleGroup` when present (the Angular stand-in for React\n * context), falling back to this item's own inputs. The class is built from the\n * shared `toggleVariants` cva plus the React item class string.\n */\n@Component({\n  selector: 'gn-toggle-group-item',\n  standalone: true,\n  imports: [BrnToggleGroupItem],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      brnToggleGroupItem\n      data-slot=\"toggle-group-item\"\n      [value]=\"value()\"\n      [disabled]=\"disabled()\"\n      [attr.data-variant]=\"resolvedVariant()\"\n      [attr.data-size]=\"resolvedSize()\"\n      [attr.data-spacing]=\"resolvedSpacing()\"\n      [attr.aria-label]=\"ariaLabel() || null\"\n      [class]=\"itemClass()\"\n    >\n      <ng-content />\n    </button>\n  `,\n})\nexport class ToggleGroupItem {\n  private readonly group = inject(ToggleGroup, { optional: true });\n\n  /** The value this item represents. Mirrors React `value`. */\n  readonly value = input<unknown>();\n  /** Whether the item is disabled. Mirrors React `disabled`. */\n  readonly disabled = input<boolean>(false);\n  /** Accessible label for icon-only items. Mirrors React `aria-label`. */\n  readonly ariaLabel = input<string>('');\n  /** Visual variant fallback when not inside a ToggleGroup. Mirrors React `variant`. */\n  readonly variant = input<ToggleVariant>('default');\n  /** Size fallback when not inside a ToggleGroup. Mirrors React `size`. */\n  readonly size = input<ToggleSize>('default');\n\n  /** Group variant wins (React context precedence), else the item's own input. */\n  protected readonly resolvedVariant = computed<ToggleVariant>(\n    () => this.group?.variant() ?? this.variant(),\n  );\n  protected readonly resolvedSize = computed<ToggleSize>(\n    () => this.group?.size() ?? this.size(),\n  );\n  protected readonly resolvedSpacing = computed<number>(\n    () => this.group?.spacing() ?? 0,\n  );\n\n  protected readonly itemClass = computed(() =>\n    cn(\n      toggleVariants({\n        variant: this.resolvedVariant(),\n        size: this.resolvedSize(),\n      }),\n      'w-auto min-w-0 shrink-0 px-3 focus:z-10 focus-visible:z-10',\n      'data-[spacing=0]:rounded-none data-[spacing=0]:shadow-none data-[spacing=0]:first:rounded-l-md data-[spacing=0]:last:rounded-r-md data-[spacing=0]:data-[variant=outline]:border-l-0 data-[spacing=0]:data-[variant=outline]:first:border-l',\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/toggle-group/toggle-group.ts"
+    },
+    {
+      "path": "src/lib/toggle-group/index.ts",
+      "content": "export { ToggleGroup, ToggleGroupItem } from './toggle-group';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/toggle-group/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use ng-toggle-group.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

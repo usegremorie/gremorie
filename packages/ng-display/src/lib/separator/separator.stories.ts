@@ -9,7 +9,7 @@ import { Separator } from './separator';
  * orientation) is delegated to spartan brain `BrnSeparator`.
  */
 const meta: Meta<Separator> = {
-  title: 'Display/Separator',
+  title: 'Layout & display/Display/Separator',
   component: Separator,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

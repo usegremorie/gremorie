@@ -41,6 +41,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — avatar + two-line caption, a typical list-row placeholder. */
+export const Workbench: Story = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Skeleton className="size-12 rounded-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-3 w-24" />
+      </div>
+    </div>
+  ),
+};
+
 /** A single line. */
 export const Default: Story = {
   render: () => <Skeleton className="h-4 w-[250px]" />,

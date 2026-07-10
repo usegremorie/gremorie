@@ -8,7 +8,9 @@ import { FeaturesGrid } from '@/components/landing/features-grid';
 import { FinalCta } from '@/components/landing/final-cta';
 import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/landing/hero';
-import { StatsBand } from '@/components/landing/stats-band';
+import { McpSection } from '@/components/landing/mcp-section';
+import { ParityProof } from '@/components/landing/parity-proof';
+import { ProofStrip } from '@/components/landing/proof-strip';
 import { ThemePlayground } from '@/components/landing/theme-playground';
 import { i18n } from '@/lib/i18n';
 
@@ -21,21 +23,25 @@ import { i18n } from '@/lib/i18n';
  * The rich 3-column Footer stays inline because HomeLayout does not
  * provide a footer slot by default.
  *
- * Sections, top to bottom:
- *   1. Hero (tagline + CTAs + live chat demo)
- *   2. Features grid (AI-native, Two editions, Copy-paste, MCP-ready)
- *   3. Components showcase (8 categories with counts)
- *   4. Blocks gallery (6 destacked blocks, placeholder)
- *   5. Artifacts spotlight (Chart + Code artifacts)
- *   6. Theme playground (Tweakcn-style sliders)
- *   7. Stats band (primitives, categories, corpus, MCP, MIT)
- *   8. Final CTA (Get Started + docs + GitHub)
- *   9. Footer (3 columns: brand / resources / community + legal)
+ * Sections, top to bottom (home redesign order: promise, proof of the
+ * main claim, product live, argument, inventory, differentiators, close):
+ *   1. Hero (pill + tagline + install command + CTAs)
+ *   2. Proof strip (single line of numbers)
+ *   3. Parity proof (React | Angular tabs over the same Button)
+ *   4. Assistant showcase (props / code / live preview)
+ *   5. Features grid (own the code, parity, tokens, AI-native)
+ *   6. Components showcase (8 categories with counts)
+ *   7. Blocks gallery (5 production blocks)
+ *   8. Artifacts spotlight (real ChartArtifact + its code)
+ *   9. MCP section (working mcpServers setup)
+ *  10. Theme playground (token sliders)
+ *  11. Final CTA
+ *  12. Footer (3 columns: brand / resources / community + legal)
  */
 export const metadata: Metadata = {
-  title: 'Gremorie - the AI-native design system',
+  title: 'Gremorie - the design system for React and Angular',
   description:
-    'Registry + MCP for AI-driven generation. Angular and React, copy-paste components.',
+    '83 copy-paste primitives, tokens, and production blocks at parity across React and Angular. AI-native: registry + MCP server. Open source, MIT.',
 };
 
 export function generateStaticParams() {
@@ -47,13 +53,15 @@ export default function LandingPage() {
     <>
       <main id="main">
         <Hero />
+        <ProofStrip />
+        <ParityProof />
         <AssistantShowcase />
         <FeaturesGrid />
         <ComponentsShowcase />
         <BlocksGallery />
         <ArtifactsSpotlight />
+        <McpSection />
         <ThemePlayground />
-        <StatsBand />
         <FinalCta />
       </main>
       <Footer />

@@ -11,7 +11,10 @@
   ],
   "dependencies": [
     "ai",
-    "streamdown"
+    "streamdown",
+    "@gremorie/rx-core",
+    "@gremorie/rx-forms",
+    "@gremorie/rx-overlays"
   ],
   "devDependencies": [],
   "registryDependencies": [

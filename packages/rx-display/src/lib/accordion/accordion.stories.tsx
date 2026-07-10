@@ -84,6 +84,23 @@ const ITEMS = [
   },
 ];
 
+/** Workbench — single open at a time, first item open by default. */
+export const Workbench: Story = {
+  args: { type: 'single' },
+  render: (args) => (
+    <Accordion {...args} defaultValue="shipping" className="w-96">
+      {ITEMS.map((item) => (
+        <AccordionItem key={item.value} value={item.value}>
+          <AccordionTrigger>{item.q}</AccordionTrigger>
+          <AccordionContent className="text-muted-foreground">
+            {item.a}
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  ),
+};
+
 /** Single open at a time, collapsible — a 3-item FAQ. */
 export const Default: Story = {
   render: () => (

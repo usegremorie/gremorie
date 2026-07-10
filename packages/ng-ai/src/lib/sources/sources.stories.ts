@@ -11,7 +11,7 @@ import { SourcesTrigger } from './sources-trigger';
  * collapsed (default), expanded, and the override of the trigger label.
  */
 const meta: Meta<Sources> = {
-  title: 'AI/Sources',
+  title: 'AI/Chatbot/Sources',
   component: Sources,
   tags: ['autodocs'],
   decorators: [
@@ -23,6 +23,28 @@ const meta: Meta<Sources> = {
 
 export default meta;
 type Story = StoryObj<Sources>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (expanded, three sources).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <sources [open]="true">
+          <sources-trigger [count]="3" />
+          <sources-content>
+            <source href="https://example.com/article-1" title="Compound components in 2024" />
+            <source href="https://example.com/article-2" title="React patterns deep dive" />
+            <source href="https://example.com/article-3" title="Slot composition" />
+          </sources-content>
+        </sources>
+      </div>
+    `,
+  }),
+};
 
 export const Collapsed: Story = {
   render: () => ({

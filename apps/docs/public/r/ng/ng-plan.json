@@ -1,0 +1,107 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-plan",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Plan (Angular)",
+  "description": "Multi-step plan card with Shimmer-marked active step. PlanHeader + PlanTitle + PlanDescription describe the goal; PlanContent lists PlanStep items, each with status. PlanFooter holds CTA buttons (approve / regenerate). Composes Card + Shimmer. Mirrors React Plan from @gremorie/rx-ai.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@gremorie/ng-core",
+    "@gremorie/ng-display"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-card",
+    "ng-shimmer"
+  ],
+  "files": [
+    {
+      "path": "src/lib/plan/plan.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  forwardRef,\n  inject,\n  InjectionToken,\n  input,\n  model,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  Card,\n  CardAction,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from '@gremorie/ng-display';\nimport { cn } from '@gremorie/ng-core';\n\nimport { Shimmer } from '../shimmer/shimmer';\n\n/**\n * Plan — a collapsible Card that presents an agent's proposed plan. Mirrors\n * React `Plan` from `@gremorie/rx-ai`.\n *\n * React parity:\n * - React composes `Collapsible` + `Card` and shares an `isStreaming` flag via\n *   context; `PlanTitle` / `PlanDescription` swap to `<Shimmer>` while\n *   streaming. The Angular edition shares the same `isStreaming` plus the\n *   collapsible open-state through `PLAN` (InjectionToken), mirroring the\n *   self-managed open-state idiom used by `Task` / `Tool` (robust under\n *   content projection — see Reasoning notes).\n * - `data-slot` names match React exactly (`plan`, `plan-header`,\n *   `plan-title`, `plan-description`, `plan-action`, `plan-content`,\n *   `plan-footer`, `plan-trigger`).\n */\nexport interface PlanState {\n  isStreaming: () => boolean;\n  isOpen: () => boolean;\n  setOpen(open: boolean): void;\n  toggle(): void;\n}\n\nexport const PLAN = new InjectionToken<PlanState>('PlanState');\n\n@Component({\n  selector: 'plan',\n  standalone: true,\n  imports: [Card],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <gn-card [class]=\"cardClass()\">\n      <ng-content />\n    </gn-card>\n  `,\n  host: {\n    'data-slot': 'plan',\n    class: 'block',\n    '[attr.data-state]': 'open() ? \"open\" : \"closed\"',\n  },\n  providers: [{ provide: PLAN, useExisting: forwardRef(() => Plan) }],\n})\nexport class Plan implements PlanState {\n  /** Mirrors React `isStreaming` — drives the shimmer on title/description. */\n  readonly isStreaming = input<boolean>(false);\n  /** Mirrors React Collapsible `defaultOpen` via a two-way `open` model. */\n  readonly open = model<boolean>(false);\n  readonly class = input<string>();\n\n  readonly isOpen = () => this.open();\n  setOpen(open: boolean): void {\n    this.open.set(open);\n  }\n  toggle(): void {\n    this.open.update((v) => !v);\n  }\n\n  protected readonly cardClass = computed(() =>\n    cn('shadow-none', this.class()),\n  );\n}\n\n@Component({\n  selector: 'plan-header',\n  standalone: true,\n  imports: [CardHeader],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<gn-card-header [class]=\"headerClass()\"><ng-content /></gn-card-header>`,\n  host: { 'data-slot': 'plan-header', class: 'contents' },\n})\nexport class PlanHeader {\n  readonly class = input<string>();\n  protected readonly headerClass = computed(() =>\n    cn('flex items-start justify-between', this.class()),\n  );\n}\n\n@Component({\n  selector: 'plan-title',\n  standalone: true,\n  imports: [CardTitle, Shimmer],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <gn-card-title>\n      @if (isStreaming()) {\n        <span ngShimmer>{{ children() }}</span>\n      } @else {\n        {{ children() }}\n      }\n    </gn-card-title>\n  `,\n  host: { 'data-slot': 'plan-title', class: 'contents' },\n})\nexport class PlanTitle {\n  private readonly state = inject(PLAN);\n  /** Title text (React `children: string`). */\n  readonly children = input.required<string>();\n  protected readonly isStreaming = computed(() => this.state.isStreaming());\n}\n\n@Component({\n  selector: 'plan-description',\n  standalone: true,\n  imports: [CardDescription, Shimmer],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <gn-card-description [class]=\"descClass()\">\n      @if (isStreaming()) {\n        <span ngShimmer>{{ children() }}</span>\n      } @else {\n        {{ children() }}\n      }\n    </gn-card-description>\n  `,\n  host: { 'data-slot': 'plan-description', class: 'contents' },\n})\nexport class PlanDescription {\n  private readonly state = inject(PLAN);\n  /** Description text (React `children: string`). */\n  readonly children = input.required<string>();\n  readonly class = input<string>();\n  protected readonly isStreaming = computed(() => this.state.isStreaming());\n  protected readonly descClass = computed(() =>\n    cn('text-balance', this.class()),\n  );\n}\n\n@Component({\n  selector: 'plan-action',\n  standalone: true,\n  imports: [CardAction],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<gn-card-action><ng-content /></gn-card-action>`,\n  host: { 'data-slot': 'plan-action', class: 'contents' },\n})\nexport class PlanAction {}\n\n@Component({\n  selector: 'plan-content',\n  standalone: true,\n  imports: [CardContent],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    @if (open()) {\n      <gn-card-content><ng-content /></gn-card-content>\n    }\n  `,\n  host: { 'data-slot': 'plan-content', class: 'contents' },\n})\nexport class PlanContent {\n  private readonly state = inject(PLAN);\n  protected readonly open = computed(() => this.state.isOpen());\n}\n\n@Component({\n  selector: 'plan-footer',\n  standalone: true,\n  imports: [CardFooter],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<gn-card-footer><ng-content /></gn-card-footer>`,\n  host: { 'data-slot': 'plan-footer', class: 'contents' },\n})\nexport class PlanFooter {}\n\n@Component({\n  selector: 'plan-trigger',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button\n      type=\"button\"\n      (click)=\"toggle()\"\n      [attr.aria-expanded]=\"open()\"\n      [class]=\"buttonClass()\"\n    >\n      <svg\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n        class=\"size-4\"\n      >\n        <path d=\"m7 15 5 5 5-5\" />\n        <path d=\"m7 9 5-5 5 5\" />\n      </svg>\n      <span class=\"sr-only\">Toggle plan</span>\n    </button>\n  `,\n  host: { 'data-slot': 'plan-trigger', class: 'contents' },\n})\nexport class PlanTrigger {\n  private readonly state = inject(PLAN);\n  readonly class = input<string>();\n  protected readonly open = computed(() => this.state.isOpen());\n  protected toggle(): void {\n    this.state.toggle();\n  }\n  protected readonly buttonClass = computed(() =>\n    cn(\n      'inline-flex size-8 cursor-pointer items-center justify-center rounded-md text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',\n      this.class(),\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/plan/plan.ts"
+    },
+    {
+      "path": "src/lib/plan/index.ts",
+      "content": "export {\n  Plan,\n  PlanHeader,\n  PlanTitle,\n  PlanDescription,\n  PlanAction,\n  PlanContent,\n  PlanFooter,\n  PlanTrigger,\n  PLAN,\n} from './plan';\nexport type { PlanState } from './plan';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/plan/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "submitted",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "attachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
+      }
+    ]
+  }
+}

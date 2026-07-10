@@ -22,7 +22,7 @@ import {
  * `<ng-template brnSheetContent>`.
  */
 const meta: Meta<Sheet> = {
-  title: 'Overlays/Sheet',
+  title: 'Interaction/Overlays/Sheet',
   component: Sheet,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

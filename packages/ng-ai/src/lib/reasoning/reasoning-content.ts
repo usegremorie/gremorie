@@ -22,7 +22,7 @@ import { BrnCollapsibleContent } from '@spartan-ng/brain/collapsible';
   template: `
     <div
       brnCollapsibleContent
-      class="mt-4 text-sm text-muted-foreground outline-none transition-all data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-2"
+      class="mt-4 text-sm text-muted-foreground outline-none transition-all data-[state=closed]:hidden data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-2"
     >
       @if (text(); as t) {
         <p class="whitespace-pre-wrap">{{ t }}</p>

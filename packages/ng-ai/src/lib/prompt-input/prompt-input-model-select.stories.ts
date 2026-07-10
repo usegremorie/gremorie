@@ -24,7 +24,7 @@ const MODELS: readonly PromptInputModelOption[] = [
 ];
 
 const meta: Meta<PromptInputModelSelect> = {
-  title: 'PromptInput/ModelSelect',
+  title: 'AI/Chatbot/PromptInput/ModelSelect',
   component: PromptInputModelSelect,
   tags: ['autodocs'],
   argTypes: {

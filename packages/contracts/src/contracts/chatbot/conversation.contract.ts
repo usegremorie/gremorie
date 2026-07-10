@@ -77,8 +77,8 @@ export const conversation = defineContract({
       '<conversation>\n  <conversation-content>\n    <!-- <message> items -->\n  </conversation-content>\n  <conversation-scroll-button />\n</conversation>',
   },
   preview: {
-    rx: 'ai-chatbot-conversation--short-thread',
-    ng: 'ai-conversation--short-thread',
+    rx: 'ai-chatbot-conversation--workbench',
+    ng: 'ai-chatbot-conversation--workbench',
   },
   tag: { rx: 'Conversation', ng: 'conversation' },
   example: {

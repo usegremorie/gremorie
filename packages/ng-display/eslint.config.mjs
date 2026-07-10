@@ -43,6 +43,8 @@ export default [
             'gn-collapsible',
             'gn-separator',
             'gn-table',
+            'gn-featured-icon',
+            'gn-item',
           ],
           style: 'kebab-case',
         },

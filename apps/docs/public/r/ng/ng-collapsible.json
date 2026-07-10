@@ -1,0 +1,55 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-collapsible",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Collapsible (Angular)",
+  "description": "Single-section expandable region built on Spartan-ng brain Collapsible. Minimal building block for \"show more\" toggles, sidebar group expand/collapse, inline disclosures. Mirrors React Collapsible from @gremorie/rx-display.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@spartan-ng/brain"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/collapsible/collapsible.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  effect,\n  inject,\n  model,\n  untracked,\n  ViewEncapsulation,\n} from '@angular/core';\nimport {\n  BrnCollapsible,\n  BrnCollapsibleContent,\n  BrnCollapsibleTrigger,\n} from '@spartan-ng/brain/collapsible';\n\n/**\n * Collapsible — single-section expandable region. Mirrors React `Collapsible`\n * from `@gremorie/rx-display`, which wraps `@radix-ui/react-collapsible`.\n *\n * Three parts: `gn-collapsible` (Root), `gn-collapsible-trigger`,\n * `gn-collapsible-content`. The open/close behavior is delegated to the\n * spartan brain `BrnCollapsible` host directive — the Angular equivalent of\n * the Radix Collapsible.\n *\n * Use Collapsible when you have **one** thing that expands. For multiple\n * coordinated sections use Accordion (which is built on this primitive).\n *\n * `brnCollapsible` lives on the HOST (not an inner div) so the\n * content-projected trigger/content directives — whose injector chain runs\n * through this host element — can resolve their owning `BrnCollapsible`.\n *\n * @example\n * ```html\n * <gn-collapsible [(open)]=\"isOpen\">\n *   <gn-collapsible-trigger>Toggle</gn-collapsible-trigger>\n *   <gn-collapsible-content>Hidden content</gn-collapsible-content>\n * </gn-collapsible>\n * ```\n */\n@Component({\n  selector: 'gn-collapsible',\n  standalone: true,\n  hostDirectives: [{ directive: BrnCollapsible, inputs: ['disabled'] }],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'collapsible',\n  },\n})\nexport class Collapsible {\n  /** The host BrnCollapsible — single source of truth for expanded state. */\n  private readonly collapsible = inject(BrnCollapsible, { self: true });\n\n  /** Two-way open state. Mirrors React `open` / `onOpenChange`. */\n  readonly open = model<boolean>(false);\n  /** Uncontrolled initial state. Mirrors React `defaultOpen`. */\n  readonly defaultOpen = model<boolean>(false);\n\n  constructor() {\n    // Apply defaultOpen on init.\n    effect(() => {\n      const d = this.defaultOpen();\n      untracked(() => this.open.set(d));\n    });\n\n    // Mirror public `open` onto host collapsible's `expanded` (and back).\n    effect(() => {\n      const o = this.open();\n      untracked(() => {\n        if (this.collapsible.expanded() !== o) this.collapsible.expanded.set(o);\n      });\n    });\n    effect(() => {\n      const e = this.collapsible.expanded();\n      untracked(() => {\n        if (this.open() !== e) this.open.set(e);\n      });\n    });\n  }\n}\n\n/**\n * CollapsibleTrigger — clickable toggle for the Collapsible. Mirrors React\n * `CollapsibleTrigger`. Renders a `<button>` carrying the brain trigger\n * directive so a click toggles the owning collapsible.\n */\n@Component({\n  selector: 'gn-collapsible-trigger',\n  standalone: true,\n  imports: [BrnCollapsibleTrigger],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <button type=\"button\" brnCollapsibleTrigger data-slot=\"collapsible-trigger\">\n      <ng-content />\n    </button>\n  `,\n})\nexport class CollapsibleTrigger {}\n\n/**\n * CollapsibleContent — the collapsible body. Mirrors React\n * `CollapsibleContent`. The brain content directive measures and animates the\n * region open/closed.\n */\n@Component({\n  selector: 'gn-collapsible-content',\n  standalone: true,\n  imports: [BrnCollapsibleContent],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div brnCollapsibleContent data-slot=\"collapsible-content\">\n      <ng-content />\n    </div>\n  `,\n})\nexport class CollapsibleContent {}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/collapsible/collapsible.ts"
+    },
+    {
+      "path": "src/lib/collapsible/index.ts",
+      "content": "export {\n  Collapsible,\n  CollapsibleContent,\n  CollapsibleTrigger,\n} from './collapsible';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/collapsible/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Surfaces grouping related content (Card) and compact status labels (Badge). Companions to Spartan-ng — fill the gap for primitives Spartan-ng doesn't ship.",
+    "whenNotToUse": "Interactive selection chips — those belong to a ToggleGroup primitive, not Badge. Card is not for transient overlays (use a dialog/popover primitive).",
+    "bestPractices": [
+      "Compose Card with its sub-parts (gn-card-header, gn-card-title, gn-card-description, gn-card-content, gn-card-footer) rather than dumping everything into the host.",
+      "Pick the closest semantic Badge variant — outline for neutral metadata, secondary for default counts, destructive for errors.",
+      "Both primitives are token-driven (bg-card, bg-secondary, border-border) so theme changes flow through automatically."
+    ],
+    "antipatterns": [
+      "Hardcoding inline-styled spans/divs to mimic a badge — use Badge with the right variant.",
+      "Reaching into Card sub-classes with className overrides to recolor — add a new variant on the primitive instead."
+    ],
+    "examples": [
+      {
+        "title": "KPI Card",
+        "code": "<gn-card>\n  <gn-card-header>\n    <gn-card-title>Total Revenue</gn-card-title>\n    <gn-card-description>Last 30 days</gn-card-description>\n    <gn-card-action>\n      <gn-badge variant=\"outline\">+12%</gn-badge>\n    </gn-card-action>\n  </gn-card-header>\n  <gn-card-content>$45,231</gn-card-content>\n</gn-card>\n"
+      },
+      {
+        "title": "Status badges",
+        "code": "<gn-badge variant=\"secondary\">Running</gn-badge>\n<gn-badge variant=\"destructive\">Failed</gn-badge>\n<gn-badge variant=\"outline\">Pending</gn-badge>\n"
+      }
+    ]
+  }
+}

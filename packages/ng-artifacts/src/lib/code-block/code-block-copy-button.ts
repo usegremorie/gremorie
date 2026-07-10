@@ -26,6 +26,7 @@ import { CODE_BLOCK } from './code-block';
   template: `
     <button
       type="button"
+      data-slot="button"
       [class]="buttonClass"
       (click)="copy()"
       aria-label="Copy code"

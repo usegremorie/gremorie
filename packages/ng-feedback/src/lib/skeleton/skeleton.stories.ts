@@ -10,13 +10,29 @@ import { Skeleton } from './skeleton';
  * line, avatar, card, list.
  */
 const meta: Meta<Skeleton> = {
-  title: 'Feedback/Skeleton',
+  title: 'Interaction/Feedback/Skeleton',
   component: Skeleton,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
 };
 
 export default meta;
 type Story = StoryObj<Skeleton>;
+
+/** Workbench — avatar + two-line caption, a typical list-row placeholder. */
+export const Workbench: Story = {
+  render: () => ({
+    template: `
+      <div class="flex items-center gap-3">
+        <gn-skeleton class="size-12 rounded-full" />
+        <div class="space-y-2">
+          <gn-skeleton class="h-4 w-32" />
+          <gn-skeleton class="h-3 w-24" />
+        </div>
+      </div>
+    `,
+  }),
+};
 
 export const Default: Story = {
   render: () => ({

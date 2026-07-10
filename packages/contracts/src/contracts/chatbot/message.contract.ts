@@ -97,8 +97,8 @@ export const message = defineContract({
       '<message from="assistant">\n  <message-content>\n    <message-response [markdown]="text" />\n  </message-content>\n</message>',
   },
   preview: {
-    rx: 'ai-chatbot-message--default',
-    ng: 'ai-message--from-assistant',
+    rx: 'ai-chatbot-message--workbench',
+    ng: 'ai-chatbot-message--workbench',
   },
   tag: { rx: 'Message', ng: 'message' },
   example: {

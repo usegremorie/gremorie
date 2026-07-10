@@ -48,8 +48,8 @@ export const label = defineContract({
     example: '<label htmlFor="email">Email</label>',
   },
   preview: {
-    rx: 'inputs-text-label--default',
-    ng: 'forms-label--workbench',
+    rx: 'inputs-text-label--workbench',
+    ng: 'inputs-text-label--workbench',
   },
   tag: { rx: 'Label', ng: 'gn-label' },
   example: {

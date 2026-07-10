@@ -10,7 +10,7 @@ import { DatePicker } from './date-picker';
  * local `gn-calendar`, and styles the trigger with the ng-core outline button.
  */
 const meta: Meta<DatePicker> = {
-  title: 'Forms/DatePicker',
+  title: 'Inputs/Date/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [DatePicker] })],

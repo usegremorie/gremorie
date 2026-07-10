@@ -36,9 +36,13 @@ describe('bandScale', () => {
 });
 
 describe('niceMax', () => {
-  it('rounds a raw max up to a readable bound', () => {
+  it('rounds a raw max up to the same bound recharts picks for the data', () => {
+    // 305 / 4 intervals -> rough step 76.25 -> step 80 -> bound 320, matching
+    // the React edition's axis (0 / 80 / 160 / 240 / 320) for the same data.
+    expect(niceMax(305)).toBe(320);
+    expect(niceMax(100)).toBe(100); // round maxes stay round (step 25)
     expect(niceMax(87)).toBe(100);
-    expect(niceMax(12)).toBe(20);
+    expect(niceMax(12)).toBe(12);
     expect(niceMax(0)).toBe(1);
   });
 });

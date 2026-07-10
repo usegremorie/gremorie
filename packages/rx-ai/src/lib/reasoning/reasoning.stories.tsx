@@ -33,6 +33,26 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (the done state).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { isStreaming: false, defaultOpen: false, duration: 4 },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Reasoning {...args}>
+        <ReasoningTrigger />
+        <ReasoningContent>
+          Considered three approaches, picked the second one because it composed
+          better with the existing handlers.
+        </ReasoningContent>
+      </Reasoning>
+    </div>
+  ),
+};
+
 export const Streaming: Story = {
   args: { isStreaming: true, defaultOpen: true },
   render: (args) => (

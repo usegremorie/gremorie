@@ -91,6 +91,52 @@ const statusVariant = {
   Unpaid: 'destructive',
 } as const;
 
+const WORKBENCH_INVOICES = [
+  { id: 'INV001', status: 'Paid', method: 'Credit Card', amount: '$250.00' },
+  { id: 'INV002', status: 'Pending', method: 'PayPal', amount: '$150.00' },
+  {
+    id: 'INV003',
+    status: 'Unpaid',
+    method: 'Bank Transfer',
+    amount: '$350.00',
+  },
+];
+
+/** Workbench — a recent-invoices table at a fixed width. */
+export const Workbench: Story = {
+  render: () => (
+    <div className="w-[36rem]">
+      <Table>
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {WORKBENCH_INVOICES.map((invoice) => (
+            <TableRow key={invoice.id}>
+              <TableCell className="font-medium">{invoice.id}</TableCell>
+              <TableCell>{invoice.status}</TableCell>
+              <TableCell>{invoice.method}</TableCell>
+              <TableCell className="text-right">{invoice.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell className="text-right">$750.00</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </div>
+  ),
+};
+
 /** A realistic invoices table with header, body, footer and caption. */
 export const Default: Story = {
   render: () => (

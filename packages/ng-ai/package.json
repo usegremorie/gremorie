@@ -25,6 +25,7 @@
     "@gremorie/ng-artifacts": ">=0.0.1",
     "@gremorie/ng-core": ">=0.0.1",
     "@gremorie/ng-display": ">=0.0.1",
+    "@gremorie/ng-overlays": ">=0.0.1",
     "@nx/vite": "^22.7.2",
     "@spartan-ng/brain": "^0.0.1-alpha.694",
     "class-variance-authority": "^0.7.1",

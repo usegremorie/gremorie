@@ -65,6 +65,19 @@ export function GET() {
   );
   lines.push('');
 
+  lines.push('## Machine interfaces');
+  lines.push('');
+  lines.push(
+    '- MCP server: `POST https://www.gremorie.com/api/mcp` (streamable HTTP). Tools: list_components, search_components, get_component, get_block, get_guidelines.',
+  );
+  lines.push(
+    '- Registry index: https://www.gremorie.com/r/registry.json (every item with name, framework, categories).',
+  );
+  lines.push(
+    '- Registry items: https://www.gremorie.com/r/rx/<item>.json (React) and https://www.gremorie.com/r/ng/<item>.json (Angular). Each item carries full source, dependencies, and target paths.',
+  );
+  lines.push('');
+
   lines.push('## Documentation');
   lines.push('');
   for (const page of source.getPages()) {

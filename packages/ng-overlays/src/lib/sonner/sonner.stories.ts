@@ -11,7 +11,7 @@ import { Sonner, toast } from './sonner';
  * mounts `<gn-sonner />` and a trigger button that calls a `toast` variant.
  */
 const meta: Meta<Sonner> = {
-  title: 'Overlays/Sonner',
+  title: 'Interaction/Overlays/Sonner',
   component: Sonner,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

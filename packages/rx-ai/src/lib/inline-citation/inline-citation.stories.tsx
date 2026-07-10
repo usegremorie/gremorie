@@ -51,6 +51,34 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (the single source).
+ */
+export const Workbench: Story = {
+  render: () => (
+    <div style={{ width: 420 }}>
+      <p className="max-w-md text-sm leading-relaxed">
+        Gremorie ships components, a registry, and an MCP server
+        <InlineCitation>
+          <InlineCitationText> [1]</InlineCitationText>
+          <InlineCitationCard>
+            <InlineCitationCardTrigger sources={['https://gremorie.com']} />
+            <InlineCitationCardBody>
+              <InlineCitationSource
+                title="Gremorie docs"
+                url="https://gremorie.com/docs"
+                description="The AI-native design system: registry + MCP, React and Angular editions."
+              />
+            </InlineCitationCardBody>
+          </InlineCitationCard>
+        </InlineCitation>
+        , for React and Angular.
+      </p>
+    </div>
+  ),
+};
+
+/**
  * Single source - one cited fact, one source. Hover the badge to reveal the
  * source title + url.
  */

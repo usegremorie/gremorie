@@ -1,0 +1,109 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-checkpoint",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Checkpoint (Angular)",
+  "description": "Conversation savepoint marker. Renders a labeled bookmark with Separator on each side, plus a Tooltip explaining the state. Use to indicate revertable points in long agent runs. Mirrors React Checkpoint from @gremorie/rx-ai.",
+  "categories": [
+    "ai",
+    "chatbot"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@angular/common",
+    "@gremorie/ng-core",
+    "@gremorie/ng-display",
+    "@gremorie/ng-overlays"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils",
+    "ng-separator",
+    "ng-tooltip"
+  ],
+  "files": [
+    {
+      "path": "src/lib/checkpoint/checkpoint.ts",
+      "content": "import { NgTemplateOutlet } from '@angular/common';\nimport {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { Separator } from '@gremorie/ng-display';\nimport { cn } from '@gremorie/ng-core';\nimport {\n  Tooltip,\n  TooltipContent,\n  TooltipProvider,\n  TooltipTrigger,\n} from '@gremorie/ng-overlays';\n\n/**\n * Checkpoint — a conversation \"save point\" row. Mirrors React `Checkpoint`\n * from `@gremorie/rx-ai`.\n *\n * Anatomy (React parity):\n * - `<checkpoint>`         → React `Checkpoint` (flex row + trailing `Separator`)\n * - `<checkpoint-icon>`    → React `CheckpointIcon` (default bookmark glyph)\n * - `<checkpoint-trigger>` → React `CheckpointTrigger` (ghost/sm button, optional tooltip)\n *\n * The React `Separator` (rendered after children) becomes the ng-display\n * `gn-separator`. lucide `BookmarkIcon` is unavailable in Angular, so the icon\n * is an inline SVG bookmark matching the lucide path.\n */\n@Component({\n  selector: 'checkpoint',\n  standalone: true,\n  imports: [Separator],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <ng-content />\n    <gn-separator />\n  `,\n  host: {\n    'data-slot': 'checkpoint',\n    '[class]': 'hostClass()',\n  },\n})\nexport class Checkpoint {\n  readonly class = input<string>();\n\n  protected readonly hostClass = computed(() =>\n    cn(\n      'flex items-center gap-0.5 text-muted-foreground overflow-hidden',\n      this.class(),\n    ),\n  );\n}\n\n/**\n * CheckpointIcon — the bookmark glyph. Mirrors React `CheckpointIcon`.\n * Project custom children to override the default bookmark.\n */\n@Component({\n  selector: 'checkpoint-icon',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <ng-content>\n      <svg\n        viewBox=\"0 0 24 24\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        stroke-width=\"2\"\n        stroke-linecap=\"round\"\n        stroke-linejoin=\"round\"\n        aria-hidden=\"true\"\n        [class]=\"iconClass()\"\n      >\n        <path d=\"m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z\" />\n      </svg>\n    </ng-content>\n  `,\n  host: {\n    'data-slot': 'checkpoint-icon',\n    class: 'contents',\n  },\n})\nexport class CheckpointIcon {\n  readonly class = input<string>();\n\n  protected readonly iconClass = computed(() =>\n    cn('size-4 shrink-0', this.class()),\n  );\n}\n\n/**\n * CheckpointTrigger — ghost/sm button label for the checkpoint. Mirrors\n * React `CheckpointTrigger`. When `tooltip` is set, the button is wrapped in\n * the styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same\n * primitive the React side uses from `@gremorie/rx-overlays`), so the surface\n * matches the styled tooltip (popover card + arrow), not the bare brain\n * overlay.\n */\n@Component({\n  selector: 'checkpoint-trigger',\n  standalone: true,\n  imports: [\n    NgTemplateOutlet,\n    Tooltip,\n    TooltipContent,\n    TooltipProvider,\n    TooltipTrigger,\n  ],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <ng-template #btn>\n      <button type=\"button\" [disabled]=\"disabled()\" [class]=\"buttonClass()\">\n        <ng-content />\n      </button>\n    </ng-template>\n\n    @if (tooltip()) {\n      <gn-tooltip-provider>\n        <gn-tooltip side=\"bottom\">\n          <gn-tooltip-trigger>\n            <ng-container [ngTemplateOutlet]=\"btn\" />\n          </gn-tooltip-trigger>\n          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>\n        </gn-tooltip>\n      </gn-tooltip-provider>\n    } @else {\n      <ng-container [ngTemplateOutlet]=\"btn\" />\n    }\n  `,\n  host: {\n    'data-slot': 'checkpoint-trigger',\n    class: 'inline-flex',\n  },\n})\nexport class CheckpointTrigger {\n  /**\n   * Optional tooltip text (React `tooltip`). Side mirrors React\n   * `side=\"bottom\"`; React also passes `align=\"start\"`, which the Angular\n   * `gn-tooltip` compound does not expose (brain tooltip positions are\n   * side-only).\n   */\n  readonly tooltip = input<string>();\n  /** Visual variant (React default `ghost`). */\n  readonly variant = input<'ghost' | 'outline' | 'default' | 'secondary'>(\n    'ghost',\n  );\n  /** Button size (React default `sm`). */\n  readonly size = input<'sm' | 'md' | 'lg'>('sm');\n  readonly disabled = input<boolean>(false);\n  readonly class = input<string>();\n\n  protected readonly buttonClass = computed(() => {\n    const sizeClass: Record<'sm' | 'md' | 'lg', string> = {\n      sm: 'h-8 px-3 text-sm',\n      md: 'h-9 px-4 text-sm',\n      lg: 'h-10 px-5 text-sm',\n    };\n    const variantClass: Record<string, string> = {\n      ghost: 'hover:bg-accent hover:text-accent-foreground',\n      outline:\n        'border border-input bg-background hover:bg-accent hover:text-accent-foreground',\n      default: 'bg-primary text-primary-foreground hover:bg-primary/90',\n      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',\n    };\n    return cn(\n      'inline-flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',\n      sizeClass[this.size()],\n      variantClass[this.variant()],\n      this.class(),\n    );\n  });\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/ai/checkpoint/checkpoint.ts"
+    },
+    {
+      "path": "src/lib/checkpoint/index.ts",
+      "content": "export { Checkpoint, CheckpointIcon, CheckpointTrigger } from './checkpoint';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/ai/checkpoint/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any AI chat surface - prompt input, attachments display, and the composable parts that build an AI conversation UI.",
+    "whenNotToUse": "Plain form inputs unrelated to a conversational AI flow - use ng-core Button + a native textarea instead. Single-file image preview without metadata - use a plain <img> tag plus ng-core.",
+    "bestPractices": [
+      "Always nest a PromptInputTextarea inside PromptInput - the parent owns the state machine.",
+      "Wire PromptInputSubmit as a child element; it picks up state automatically (idle / streaming / error).",
+      "Use PromptInputToolbar for sticky bottom controls (model select, tools menu, submit).",
+      "Compose AttachmentList + AttachmentItem + slot primitives rather than reaching for a god-component.",
+      "Pass AttachmentData objects produced by toAttachmentData() rather than raw Files - it centralises media-type detection."
+    ],
+    "antipatterns": [
+      "Listening to submit on the textarea directly - listen to the parent gremoriePromptSubmit output to receive the full payload.",
+      "Re-implementing the state machine in the host component - drive state by setting state as input or letting the parent compute it.",
+      "Mixing PromptInputSubmit with a custom submit button - the primitive already handles the keyboard contract (Cmd/Ctrl + Enter).",
+      "Rendering attachments without an AttachmentRemove slot when the surface is editable - users expect a way to delete.",
+      "Mixing attachment variants within the same list - inconsistency between items breaks scannability."
+    ],
+    "api": {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Two-way bound textarea value."
+        },
+        {
+          "name": "state",
+          "type": "PromptInputState ('ready' | 'submitted' | 'streaming' | 'error')",
+          "required": false,
+          "default": "'ready'"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "required": false,
+          "default": "'md'"
+        },
+        {
+          "name": "variant",
+          "type": "'grid' | 'inline' | 'list'",
+          "required": false,
+          "default": "'list'",
+          "description": "AttachmentList variant - layout for the attachment row/grid."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "submitted",
+          "payload": "PromptInputSubmitEvent",
+          "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
+        },
+        {
+          "name": "attachmentError",
+          "payload": "PromptInputAttachmentError",
+          "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic chat input",
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
+      },
+      {
+        "title": "Inline attachment list",
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
+      }
+    ]
+  }
+}

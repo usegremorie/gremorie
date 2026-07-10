@@ -56,8 +56,8 @@ export const progress = defineContract({
     example: '<progress value={60} />',
   },
   preview: {
-    rx: 'interaction-feedback-progress--default',
-    ng: 'feedback-progress--default',
+    rx: 'interaction-feedback-progress--workbench',
+    ng: 'interaction-feedback-progress--workbench',
   },
   tag: { rx: 'Progress', ng: 'gn-progress' },
   example: { value: 60, max: 100 },

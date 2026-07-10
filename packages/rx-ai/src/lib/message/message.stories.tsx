@@ -60,6 +60,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (an assistant turn).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { from: 'assistant' },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Message {...args}>
+        <MessageContent>
+          Sure — the three main decisions were: ship the new dashboard by
+          Friday, delay the migration, and revisit the auth flow next sprint.
+        </MessageContent>
+      </Message>
+    </div>
+  ),
+};
+
+/**
  * Default - a full message turn (content plus an actions toolbar). Drive the
  * `from` control to walk the canonical roles user, assistant and system, which
  * change the bubble alignment and tone.

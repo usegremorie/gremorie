@@ -89,8 +89,8 @@ export const accordion = defineContract({
       '<accordion type="single" defaultValue="shipping"><accordion-item value="shipping"><accordion-trigger>How long does shipping take?</accordion-trigger><accordion-content>1-2 business days.</accordion-content></accordion-item></accordion>',
   },
   preview: {
-    rx: 'layout-display-display-accordion--default',
-    ng: 'display-accordion--workbench',
+    rx: 'layout-display-display-accordion--workbench',
+    ng: 'layout-display-display-accordion--workbench',
   },
   tag: { rx: 'Accordion', ng: 'gn-accordion' },
   example: { type: 'single', defaultValue: 'shipping' },

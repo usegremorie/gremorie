@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { PromptInputActionMenu } from './prompt-input-action-menu';
 
 const meta: Meta<PromptInputActionMenu> = {
-  title: 'PromptInput/ActionMenu',
+  title: 'AI/Chatbot/PromptInput/ActionMenu',
   component: PromptInputActionMenu,
   tags: ['autodocs'],
   argTypes: {

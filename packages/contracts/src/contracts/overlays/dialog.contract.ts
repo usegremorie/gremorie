@@ -86,8 +86,8 @@ export const dialog = defineContract({
       '<Dialog><DialogTrigger>Edit</DialogTrigger><DialogContent><DialogHeader><DialogTitle>Edit profile</DialogTitle></DialogHeader><DialogFooter><DialogClose>Cancel</DialogClose></DialogFooter></DialogContent></Dialog>',
   },
   preview: {
-    rx: 'interaction-overlays-dialog--default',
-    ng: 'overlays-dialog--workbench',
+    rx: 'interaction-overlays-dialog--workbench',
+    ng: 'interaction-overlays-dialog--workbench',
   },
   tag: { rx: 'Dialog', ng: 'gn-dialog' },
   example: {

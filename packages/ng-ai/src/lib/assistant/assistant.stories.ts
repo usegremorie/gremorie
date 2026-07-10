@@ -39,7 +39,7 @@ import { Assistant } from './assistant';
  * ```
  */
 const meta: Meta<Assistant> = {
-  title: 'AI/Assistant',
+  title: 'Blocks/Assistant',
   component: Assistant,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Assistant] })],

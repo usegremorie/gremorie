@@ -76,8 +76,8 @@ export const form = defineContract({
       '<form-item><form-label>Email</form-label><input gnFormControl /><form-message /></form-item>',
   },
   preview: {
-    rx: 'inputs-form--signup-form',
-    ng: 'forms-form--workbench',
+    rx: 'inputs-form--workbench',
+    ng: 'inputs-form--workbench',
   },
   tag: { rx: 'FormItem', ng: 'gn-form-item' },
   example: {

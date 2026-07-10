@@ -13,7 +13,7 @@ import { TaskTrigger } from './task-trigger';
  * item types (plain text + file chip).
  */
 const meta: Meta<Task> = {
-  title: 'AI/Task',
+  title: 'AI/Chatbot/Task',
   component: Task,
   tags: ['autodocs'],
   decorators: [
@@ -25,6 +25,31 @@ const meta: Meta<Task> = {
 
 export default meta;
 type Story = StoryObj<Task>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (the expanded task).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <task [open]="true">
+          <task-trigger title="Found 3 files matching 'config'" />
+          <task-content>
+            <task-item>
+              Searched the workspace for <task-item-file>config.ts</task-item-file>
+            </task-item>
+            <task-item>
+              Also found <task-item-file>app.config.ts</task-item-file> and <task-item-file>vite.config.ts</task-item-file>
+            </task-item>
+          </task-content>
+        </task>
+      </div>
+    `,
+  }),
+};
 
 export const Expanded: Story = {
   render: () => ({

@@ -13,7 +13,7 @@ import { Textarea } from './textarea';
  * labels and validation messages.
  */
 const meta: Meta<Textarea> = {
-  title: 'Forms/Textarea',
+  title: 'Inputs/Text/Textarea',
   component: Textarea,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Textarea, Label] })],

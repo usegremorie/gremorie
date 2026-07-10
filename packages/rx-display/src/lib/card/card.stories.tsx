@@ -66,6 +66,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — header + content at a fixed width. */
+export const Workbench: Story = {
+  render: () => (
+    <Card className="w-96">
+      <CardHeader>
+        <CardTitle>Notifications</CardTitle>
+        <CardDescription>You have 3 unread messages.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">
+          Stay updated with the latest activity from your team.
+        </p>
+      </CardContent>
+    </Card>
+  ),
+};
+
 /** A realistic card composed from every part. */
 export const Default: Story = {
   render: () => (

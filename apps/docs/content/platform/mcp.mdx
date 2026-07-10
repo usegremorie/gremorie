@@ -16,7 +16,7 @@ tools to list components, fetch source, and read the corpus on demand.
 
 ## Endpoint
 
-The server runs at [`/api/mcp`](/api/mcp) on this site. It speaks the
+The server runs at `https://www.gremorie.com/api/mcp`. It speaks the
 standard MCP transport (`POST` for tool calls, `SSE` for streams).
 
 ## Tools
@@ -34,13 +34,22 @@ introspects `tools/list` gets the canonical definition.
 
 ## Configuring a client
 
-<Tabs items={["Claude Desktop", "Cursor", "Codex"]}>
+<Tabs items={["Claude Code", "Claude Desktop", "Cursor", "Codex"]}>
+
+```bash tab="Claude Code"
+claude mcp add --transport http gremorie https://www.gremorie.com/api/mcp
+```
 
 ```json tab="Claude Desktop"
+// claude_desktop_config.json - Claude Desktop connects to remote servers
+// through the mcp-remote bridge. Alternatively, add the server without
+// editing files: Settings -> Connectors -> Add custom connector, with the
+// URL https://www.gremorie.com/api/mcp
 {
   "mcpServers": {
     "gremorie": {
-      "url": "https://gremorie.com/api/mcp"
+      "command": "npx",
+      "args": ["mcp-remote", "https://www.gremorie.com/api/mcp"]
     }
   }
 }
@@ -50,21 +59,17 @@ introspects `tools/list` gets the canonical definition.
 {
   "mcpServers": {
     "gremorie": {
-      "url": "https://gremorie.com/api/mcp"
+      "url": "https://www.gremorie.com/api/mcp"
     }
   }
 }
 ```
 
-```json tab="Codex"
-{
-  "mcp_servers": {
-    "gremorie": {
-      "transport": "http",
-      "url": "https://gremorie.com/api/mcp"
-    }
-  }
-}
+```toml tab="Codex"
+# ~/.codex/config.toml
+[mcp_servers.gremorie]
+command = "npx"
+args = ["-y", "mcp-remote", "https://www.gremorie.com/api/mcp"]
 ```
 
 </Tabs>

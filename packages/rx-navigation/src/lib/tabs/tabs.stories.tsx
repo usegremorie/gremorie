@@ -70,6 +70,29 @@ type Story = StoryObj<typeof meta>;
 
 const PANEL = 'mt-2 rounded-md border p-4 text-sm text-muted-foreground';
 
+/**
+ * Workbench preset: pill-style list, first tab active by default, at a fixed
+ * `w-96` width — the IDENTICAL use case as the Angular `Workbench` story. Keep
+ * both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <Tabs orientation="horizontal" defaultValue="overview" className="w-96">
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview" className="text-sm text-muted-foreground">
+        Make changes to your account here.
+      </TabsContent>
+      <TabsContent value="password" className="text-sm text-muted-foreground">
+        Change your password here.
+      </TabsContent>
+    </Tabs>
+  ),
+};
+
 /** The default pill-style list. */
 export const Default: Story = {
   render: () => (

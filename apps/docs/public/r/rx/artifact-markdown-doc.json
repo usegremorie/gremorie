@@ -10,7 +10,8 @@
     "document"
   ],
   "dependencies": [
-    "react"
+    "react",
+    "@gremorie/rx-display"
   ],
   "devDependencies": [],
   "registryDependencies": [

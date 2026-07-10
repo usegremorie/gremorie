@@ -1,0 +1,87 @@
+---
+title: Typography
+description: Famílias de fonte, escala de tamanho com line-height pareada, pesos, leading e tracking — todos primitivos do Tailwind v4.
+---
+
+import {
+  FontFamilyTable,
+  LeadingTable,
+  TrackingTable,
+  TypeSizeTable,
+  TypeWeightTable,
+} from '@/components/token-tables';
+
+Tipografia é onde a hierarquia visual começa. O Gremorie usa a escala
+nativa do Tailwind v4 — **modular, perceptualmente espaçada,
+testada em produção** — e adiciona pares de line-height para que
+você não precise pensar em altura de linha em 90% dos casos.
+
+## Como a escala funciona
+
+Treze stops (`xs` → `9xl`) cobrem desde microcópia (12px) até
+display extremo (128px). A escala **não é geométrica pura** — os
+saltos são maiores no topo (display) e menores na base (UI). Isso
+reflete a realidade: você raramente precisa de "um pouquinho maior
+que 96px", mas frequentemente precisa de "14px ou 16px, depende".
+
+Cada `--text-*` vem com `--text-*--line-height` pareada, calculada
+para resultar em uma altura confortável para aquele tamanho. Se
+você usar `text-base`, ganha line-height de 1.5 automaticamente.
+Se usar `text-4xl`, ganha 1.111 (mais apertado, como heading
+quer).
+
+## Famílias
+
+Gremorie herda o **system stack** do Tailwind v4 — sem fontes baixadas,
+performance máxima. Se quiser trocar para Inter, Geist ou
+qualquer outra, redefina `--font-sans` no arquivo de tema.
+
+<FontFamilyTable />
+
+## Tamanhos
+
+A coluna **Amostra** mostra o caractere "Aa" no tamanho real. A
+**Line-height** ao lado é o que vem pareado por default — você
+pode sobrepor com `leading-*` quando precisar.
+
+<TypeSizeTable />
+
+## Pesos
+
+Nove stops, do `100` (thin) ao `900` (black). System fonts
+geralmente entregam só `400`, `500`, `600`, `700` — os outros
+stops dependem de uma fonte custom estar carregada.
+
+<TypeWeightTable />
+
+## Leading
+
+Quando o line-height pareado não serve (compose de heading
+multilinha, leitura editorial longa), use os tokens
+**standalone**:
+
+<LeadingTable />
+
+## Tracking
+
+Letter-spacing usado conscientemente é um sinal de cuidado
+tipográfico. Use **negative tracking** para apertar displays
+grandes; **positive tracking** para abrir caps e eyebrows.
+
+<TrackingTable />
+
+## Boas práticas
+
+- **Pareie tamanho com weight.** Display usa peso menor (light
+  ou normal) — o tamanho já chama atenção. Body usa peso
+  intermediário (normal ou medium) — peso maior cansa em massa.
+- **Use o line-height pareado** sempre que possível. Ele foi
+  calculado para o tamanho específico.
+- **Tracking negativo** acima de `--text-2xl` corrige o spacing
+  exagerado que fontes geralmente têm em display.
+- **Cuidado com `text-9xl`.** Bonito numa página de portfólio,
+  brutal em qualquer interface de produto. Reserve para hero
+  pages e displays de marca.
+- **Não invente weights.** Se a fonte não tem `font-extralight`,
+  o navegador mostra `font-light` — silenciosamente. Audite o
+  weight sintético que aparece com `font-synthesis`.

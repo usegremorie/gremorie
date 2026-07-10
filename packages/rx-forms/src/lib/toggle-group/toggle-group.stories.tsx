@@ -68,6 +68,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { type: 'single', variant: 'outline', size: 'default', spacing: 0 },
+  render: (args) => (
+    <ToggleGroup {...args}>
+      <ToggleGroupItem value="left" aria-label="Align left">
+        L
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Align center">
+        C
+      </ToggleGroupItem>
+      <ToggleGroupItem value="right" aria-label="Align right">
+        R
+      </ToggleGroupItem>
+    </ToggleGroup>
+  ),
+};
+
 /** Multiple selection — a text-formatting cluster. */
 export const Multiple: Story = {
   render: () => (

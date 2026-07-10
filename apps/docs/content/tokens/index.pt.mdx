@@ -1,15 +1,15 @@
 ---
 title: Visão geral
-description: Os três níveis de tokens da KDS — primitivo, semântico e de gráficos — e como cada um deles é consumido.
+description: Os três níveis de tokens do Gremorie — primitivo, semântico e de gráficos — e como cada um deles é consumido.
 ---
 
-Tokens são o **vocabulário cromático e dimensional** da KDS. Em vez
+Tokens são o **vocabulário cromático e dimensional** do Gremorie. Em vez
 de pintar uma borda como `#E5E5E5` ou definir um padding como
 `16px`, você usa uma palavra do vocabulário — `border` ou `p-4` —
 que aponta para um valor que pode mudar com o tema, com o modo
 escuro, ou simplesmente porque a marca evoluiu.
 
-A KDS organiza esse vocabulário em **três camadas**, cada uma com
+O Gremorie organiza esse vocabulário em **três camadas**, cada uma com
 um papel claro.
 
 ## O modelo de três camadas
@@ -32,6 +32,26 @@ um papel claro.
   />
 </Cards>
 
+O dado flui numa direção só, do valor cru para a intenção e dela
+para a cor de dado:
+
+```text
+┌──────────────────────┐
+│ 1. PRIMITIVE         │  --color-clay-500, --radius-base, --spacing
+│    o que existe      │  valores fixos, invariantes ao modo
+└──────────┬───────────┘
+           │ referenciado via var(--color-*)
+┌──────────▼───────────┐
+│ 2. SEMANTIC          │  --primary, --background, --border
+│    o que significa   │  resolvido por tema (data-theme) e modo (.dark)
+└──────────┬───────────┘
+           │ referenciado via var(--primary) / var(--color-*)
+┌──────────▼───────────┐
+│ 3. CHART             │  cinco esquemas pela forma do dado
+│    como o dado lê    │  sequential, categorical, divergent, status, comparison
+└──────────────────────┘
+```
+
 ### 1. Primitive — o que existe
 
 Os primitivos são **valores crus**, sem opinião. Um `--color-blue-600`
@@ -51,17 +71,10 @@ Os semânticos traduzem primitivos em **intenção**. Em vez de pedir
 quando o tema muda, o foreground troca de primitivo sozinho — e o
 componente não fica sabendo.
 
-É aqui que a Gremorie suporta **quatro temas**, e os modos light/dark
-de cada um. Toda a chrome dos componentes conversa com essa camada:
-
-- [**Default**](/tokens/semantic/colors#theme-default) — baseColor
-  `neutral`. O ponto de partida sem identidade de marca.
-- [**Amber Minimal**](/tokens/semantic/colors#theme-amber-minimal) —
-  paleta importada de tweakcn, dourado/âmbar discreto.
-- [**Amethyst Haze**](/tokens/semantic/colors#theme-amethyst-haze) —
-  paleta importada de tweakcn, ametista/violeta com leve haze.
-- [**Claude**](/tokens/semantic/colors#theme-claude) — paleta
-  inspirada na identidade Claude, terracota quente.
+É aqui que o Gremorie suporta os **seis temas de marca** (Default,
+Claude, ChatGPT, Gemini, Mistral, Perplexity), cada um com modos
+light e dark. Toda a chrome dos componentes conversa com essa
+camada.
 
 ### 3. Chart — porque dado-viz é diferente
 
@@ -71,6 +84,14 @@ azul existe num contexto. Cinco azuis num heatmap precisam ser
 gráfico vivem numa camada própria, com cinco esquemas canônicos —
 Sequential, Categorical, Divergent, Status, Comparison — cada um
 para uma forma específica de dado.
+
+## O que cada seção cobre
+
+| Camada                         | Páginas                                                | O que você encontra                                                |
+| ------------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------ |
+| [Primitive](/tokens/primitive) | Colors, Typography, Spacing, Radius, Shadow, Motion    | Cada valor cru com amostra, token, classe utilitária e caso de uso |
+| [Semantic](/tokens/semantic)   | Colors                                                 | A tabela-verdade intenção-para-primitivo por tema, light e dark    |
+| [Chart](/tokens/chart)         | Sequential, Categorical, Divergent, Status, Comparison | Quando usar cada esquema, seus tokens e a matriz de decisão        |
 
 ## Como ler esta seção
 
@@ -107,7 +128,7 @@ contexto:
 //    que recebem cor como string (ex: Recharts, motion frames inline)
 <rect fill="var(--color-chart-cat-1)" />
 
-// 3. ChartConfig do KDS — usado pelos helpers de tooltip e legenda
+// 3. ChartConfig do Gremorie — usado pelos helpers de tooltip e legenda
 //    do sistema de gráficos
 const config = {
   revenue: { label: "Receita", color: "var(--color-chart-cat-1)" }
@@ -117,7 +138,7 @@ const config = {
 A regra mental é: **se você está pintando um elemento, use classe
 Tailwind**. Se está passando cor como string pra uma API externa
 (SVG, Recharts, animação), use a variável CSS. ChartConfig é caso
-especial — o sistema de gráficos da KDS espera ele.
+especial — o sistema de gráficos do Gremorie espera ele.
 
 ## A regra de ouro
 

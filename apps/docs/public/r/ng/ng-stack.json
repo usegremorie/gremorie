@@ -1,0 +1,48 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-stack",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Stack (Angular)",
+  "description": "Vertical layout primitive - a flex-column container with consistent gap, align, and justify inputs. The right choice for any list flowing top-to-bottom (card contents, form sections, settings rows, vertical menus). Mirrors React Stack from @gremorie/rx-containers.",
+  "categories": [
+    "containers",
+    "layout"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "class-variance-authority",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/stack/stack.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cva, type VariantProps } from 'class-variance-authority';\n\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Stack variants — mirror React `Stack` from `@gremorie/rx-containers`.\n *\n * A `flex flex-col` primitive whose spacing and cross-/main-axis\n * alignment are driven entirely by inputs (no subcomponents). The token\n * scale (`gap`) maps 1:1 to the React reference (0 / 4 / 8 / 16 / 24 / 32\n * / 48 px).\n */\nexport const stackVariants = cva('flex flex-col', {\n  variants: {\n    gap: {\n      none: 'gap-0',\n      xs: 'gap-1',\n      sm: 'gap-2',\n      md: 'gap-4',\n      lg: 'gap-6',\n      xl: 'gap-8',\n      '2xl': 'gap-12',\n    },\n    align: {\n      start: 'items-start',\n      center: 'items-center',\n      end: 'items-end',\n      stretch: 'items-stretch',\n      baseline: 'items-baseline',\n    },\n    justify: {\n      start: 'justify-start',\n      center: 'justify-center',\n      end: 'justify-end',\n      between: 'justify-between',\n      around: 'justify-around',\n      evenly: 'justify-evenly',\n    },\n  },\n  defaultVariants: {\n    gap: 'md',\n    align: 'stretch',\n    justify: 'start',\n  },\n});\n\nexport type StackGap = NonNullable<VariantProps<typeof stackVariants>['gap']>;\nexport type StackAlign = NonNullable<\n  VariantProps<typeof stackVariants>['align']\n>;\nexport type StackJustify = NonNullable<\n  VariantProps<typeof stackVariants>['justify']\n>;\n\n/**\n * Stack — vertical layout primitive. Mirrors React `Stack` from\n * `@gremorie/rx-containers`.\n *\n * A `<div>` configured as `flex flex-col` with consistent `gap`, `align`\n * and `justify` inputs. Reach for Stack any time items flow\n * top-to-bottom: card contents, form sections, settings rows, vertical\n * menus. For row layouts use `Flex`; for two-axis grids use `Grid`; for a\n * one-off styled div use `Box`.\n *\n * @example\n * ```html\n * <gn-stack gap=\"md\" class=\"w-64\">\n *   <div>One</div>\n *   <div>Two</div>\n *   <div>Three</div>\n * </gn-stack>\n * ```\n */\n@Component({\n  selector: 'gn-stack',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<ng-content />`,\n  host: {\n    'data-slot': 'stack',\n    '[class]': 'computedClass()',\n  },\n})\nexport class Stack {\n  readonly gap = input<StackGap>('md');\n  readonly align = input<StackAlign>('stretch');\n  readonly justify = input<StackJustify>('start');\n\n  protected readonly computedClass = computed(() =>\n    cn(\n      stackVariants({\n        gap: this.gap(),\n        align: this.align(),\n        justify: this.justify(),\n      }),\n    ),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/stack/stack.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Any scrollable region that should match the Gremorie look and feel - long chat threads, code blocks, virtualised lists.",
+    "whenNotToUse": "Document-level scroll (the browser handles that natively). Or short regions where the native scrollbar is fine.",
+    "bestPractices": [
+      "Wrap the scrollable content in gremorie-scroll-area and set an explicit height on the host.",
+      "Use ScrollAreaImports instead of importing the directive and ngx-scrollbar module separately."
+    ],
+    "antipatterns": [
+      "Setting overflow: scroll on the host and nesting gremorie-scroll-area - they fight each other.",
+      "Using the scroll area for the whole app shell - body scroll is usually the right answer."
+    ],
+    "examples": [
+      {
+        "title": "Chat thread",
+        "code": "<gremorie-scroll-area class=\"h-96\">\n  <gremorie-message *ngFor=\"let m of messages\" [data]=\"m\"></gremorie-message>\n</gremorie-scroll-area>\n"
+      }
+    ]
+  }
+}

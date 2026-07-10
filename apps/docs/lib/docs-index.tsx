@@ -64,6 +64,10 @@ export function DocsIndex({
   const folder = findTabFolder(tree, url);
   if (!folder) return null;
 
+  // The blocks landing page curates its own gallery (thumbnailed BlockCards in
+  // the MDX), so the auto index would duplicate the same six entries above it.
+  if (/\/blocks$/.test(url)) return null;
+
   const groups: { section: ReactNode | null; items: Entry[] }[] = [];
   let current: { section: ReactNode | null; items: Entry[] } = {
     section: null,

@@ -88,8 +88,8 @@ export const tool = defineContract({
       '<tool>\n  <tool-header type="tool-readFile" state="output-available" />\n  <tool-content>\n    <tool-input [input]="args" />\n    <tool-output [output]="result" />\n  </tool-content>\n</tool>',
   },
   preview: {
-    rx: 'ai-chatbot-tool--playground',
-    ng: 'ai-tool--output-available',
+    rx: 'ai-chatbot-tool--workbench',
+    ng: 'ai-chatbot-tool--workbench',
   },
   tag: { rx: 'Tool', ng: 'tool' },
   example: {

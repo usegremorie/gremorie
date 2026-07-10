@@ -83,8 +83,8 @@ export const checkbox = defineContract({
       '<checkbox id="terms" /> <label htmlFor="terms">Accept terms</label>',
   },
   preview: {
-    rx: 'inputs-selection-checkbox--default',
-    ng: 'forms-checkbox--workbench',
+    rx: 'inputs-selection-checkbox--workbench',
+    ng: 'inputs-selection-checkbox--workbench',
   },
   tag: { rx: 'Checkbox', ng: 'gn-checkbox' },
   example: {

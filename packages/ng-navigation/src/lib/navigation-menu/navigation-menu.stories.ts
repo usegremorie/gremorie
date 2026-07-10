@@ -16,7 +16,7 @@ import {
  * under each trigger.
  */
 const meta: Meta<NavigationMenu> = {
-  title: 'Navigation/NavigationMenu',
+  title: 'Interaction/Navigation/NavigationMenu',
   component: NavigationMenu,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

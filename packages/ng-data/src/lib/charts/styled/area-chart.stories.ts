@@ -6,7 +6,7 @@ const DATA: ChartDatum[] = [
   { month: 'Jan', sales: 186, profit: 80 },
   { month: 'Feb', sales: 305, profit: 200 },
   { month: 'Mar', sales: 237, profit: 120 },
-  { month: 'Apr', sales: 173, profit: 190 },
+  { month: 'Apr', sales: 173, profit: 90 },
   { month: 'May', sales: 209, profit: 130 },
   { month: 'Jun', sales: 264, profit: 140 },
 ];
@@ -17,7 +17,7 @@ const CONFIG: ChartConfig = {
 };
 
 const meta: Meta<AreaChart> = {
-  title: 'Charts/AreaChart',
+  title: 'Layout & display/Data/Area Chart',
   component: AreaChart,
   tags: ['autodocs'],
   render: (args) => ({

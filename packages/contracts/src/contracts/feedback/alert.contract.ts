@@ -48,8 +48,8 @@ export const alert = defineContract({
       '<alert variant="destructive"><XCircle /><alert-title>Payment failed</alert-title><alert-description>Your card was declined.</alert-description></alert>',
   },
   preview: {
-    rx: 'interaction-feedback-alert--default',
-    ng: 'feedback-alert--default',
+    rx: 'interaction-feedback-alert--workbench',
+    ng: 'interaction-feedback-alert--workbench',
   },
   tag: { rx: 'Alert', ng: 'gn-alert' },
   example: { variant: 'default' },

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  forwardRef,
   inject,
   InjectionToken,
   input,
@@ -77,7 +78,9 @@ const ACCORDION_ROOT = new InjectionToken<AccordionRootState>('AccordionRoot');
       useFactory: (root: Accordion): AccordionRootState => ({
         defaultValue: () => root.defaultValue(),
       }),
-      deps: [Accordion],
+      // forwardRef: the provider is declared inside Accordion's own decorator,
+      // and esbuild (Analog/Vite builds) rejects the bare class reference here.
+      deps: [forwardRef(() => Accordion)],
     },
   ],
 })

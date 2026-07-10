@@ -1,0 +1,54 @@
+---
+title: Shadow
+description: Hierarquia de elevação — hairline, card, dropdown, modal, drawer. Sombras são linguagem de Z, não de "deixa bonito".
+---
+
+import { ShadowTable } from '@/components/token-tables';
+
+Sombra em UI **não é decoração — é hierarquia de elevação**. Cada
+nível de sombra corresponde a uma distância do leitor: hairline
+está colado na superfície, card flutua um pouco, modal flutua
+muito. Quando todas as sombras são "igualmente bonitas", você
+perdeu a hierarquia.
+
+## Como a escala funciona
+
+Sete stops de **box-shadow** (`2xs` → `2xl`) cobrem a hierarquia
+de elevação completa. Três stops de **inset-shadow** dão
+profundidade reversa (afundamento, pressed states, wells). Mais
+seis de **drop-shadow** (que aplicam em SVG e elementos com forma
+não-retangular).
+
+A escala segue um princípio claro: **quanto maior o stop, maior a
+distância e mais difusa a sombra**. Isso simula iluminação real —
+um objeto mais alto projeta sombra mais espalhada e suave.
+
+## Box shadow (elevação)
+
+A escala canônica para elementos retangulares — cards, dropdowns,
+popovers, modais.
+
+<ShadowTable />
+
+## Inset shadow (afundamento)
+
+Para inputs rebaixados, áreas de well, ou estados pressed.
+
+<ShadowTable inset={true} />
+
+## Boas práticas
+
+- **Pareie sombra com z-index.** `shadow-sm` em cards no fluxo,
+  `shadow-md` em hover, `shadow-lg` em popovers, `shadow-xl` em
+  modais, `shadow-2xl` em drawers fullscreen.
+- **Em dark mode, sombras pretas raramente funcionam.** O
+  Tailwind v4 mantém as mesmas definições — você pode considerar
+  reduzir a opacidade ou usar inner-glow em vez de drop-shadow no
+  dark.
+- **Não use mais de 3 níveis na mesma tela.** Mais que isso, a
+  hierarquia vira ruído.
+- **Hover de cards estáticos** geralmente sobe um stop:
+  `shadow-sm` → `shadow-md`. É um sinal sutil de "isso é
+  clicável".
+- **Drop-shadow em SVG** dá resultado superior a box-shadow para
+  ícones e ilustrações com forma não-retangular.

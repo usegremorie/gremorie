@@ -9,7 +9,12 @@
     "ai",
     "code"
   ],
-  "dependencies": [],
+  "dependencies": [
+    "@gremorie/rx-core",
+    "@gremorie/rx-display",
+    "@gremorie/rx-forms",
+    "@gremorie/rx-overlays"
+  ],
   "devDependencies": [],
   "registryDependencies": [
     "rx-utils",

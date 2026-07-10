@@ -93,6 +93,33 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: {
+    state: 'approval-requested',
+    approval: { id: 't1' },
+  },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Confirmation {...args}>
+        <ConfirmationRequest>
+          <ConfirmationTitle>
+            Allow the agent to delete <strong>node_modules</strong>?
+          </ConfirmationTitle>
+        </ConfirmationRequest>
+        <ConfirmationActions>
+          <ConfirmationAction variant="outline">Deny</ConfirmationAction>
+          <ConfirmationAction>Allow</ConfirmationAction>
+        </ConfirmationActions>
+      </Confirmation>
+    </div>
+  ),
+};
+
 /** Pending — the user is asked to approve a destructive action. */
 export const Requested: Story = {
   name: 'State: approval-requested',

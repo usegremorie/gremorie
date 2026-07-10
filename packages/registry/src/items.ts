@@ -33,7 +33,9 @@ export const ITEMS: ItemConfig[] = [
     packageRoot: 'packages/ng-core',
     sourceFiles: ['src/lib/utils.ts'],
     assetFiles: ['styles/theme.css'],
-    targetPrefix: 'src/app/gremorie/utils',
+    // Lands at src/app/gremorie/core/utils.ts so ng-button's relative
+    // `./utils` import resolves against the copied file.
+    targetPrefix: 'src/app/gremorie/core',
     srcStrip: 'src/lib/',
     dependencies: ['clsx', 'tailwind-merge'],
     registryDependencies: [],
@@ -47,7 +49,9 @@ export const ITEMS: ItemConfig[] = [
     categories: ['core', 'primitives', 'forms'],
     packageRoot: 'packages/ng-core',
     sourceFiles: ['src/lib/button.ts'],
-    targetPrefix: 'src/app/gremorie/button',
+    // Sibling of ng-utils' copied utils.ts (src/app/gremorie/core/) so the
+    // `./utils` relative import in button.ts resolves.
+    targetPrefix: 'src/app/gremorie/core',
     srcStrip: 'src/lib/',
     dependencies: ['@angular/core', 'class-variance-authority'],
     registryDependencies: ['ng-utils'],
@@ -114,6 +118,41 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/app/gremorie/carousel',
     srcStrip: 'src/lib/carousel/',
     dependencies: ['@angular/core', 'embla-carousel'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-featured-icon',
+    framework: 'ng',
+    title: 'Featured Icon (Angular)',
+    description:
+      'Icon inside a styled, themed container - the small badge that anchors a card, artifact, or empty-state header. Variants: color (primary, gray, success, error) x theme (light, solid, outline) x size (sm, md, lg, xl) x shape (square, circle). Mirrors React FeaturedIcon from @gremorie/rx-display.',
+    categories: ['display', 'primitives'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: [
+      'src/lib/featured-icon/featured-icon.ts',
+      'src/lib/featured-icon/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/featured-icon',
+    srcStrip: 'src/lib/featured-icon/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-item',
+    framework: 'ng',
+    title: 'Item (Angular)',
+    description:
+      'Flexible list-row primitive (compound) - media, title, description, and actions on one line. A single cascading size (lg/md/sm/none) drives media size and title/description typography at once; media variants icon/featured/avatar/image. Mirrors React Item from @gremorie/rx-display.',
+    categories: ['display', 'primitives'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/item/item.ts', 'src/lib/item/index.ts'],
+    targetPrefix: 'src/app/gremorie/item',
+    srcStrip: 'src/lib/item/',
+    dependencies: [
+      '@angular/core',
+      'class-variance-authority',
+      '@spartan-ng/brain',
+    ],
     registryDependencies: ['ng-utils'],
   },
 
@@ -220,10 +259,18 @@ export const ITEMS: ItemConfig[] = [
     sourceFiles: [
       'src/lib/prompt-input/prompt-input.types.ts',
       'src/lib/prompt-input/prompt-input.ts',
+      'src/lib/prompt-input/prompt-input-body.ts',
+      'src/lib/prompt-input/prompt-input-header.ts',
+      'src/lib/prompt-input/prompt-input-footer.ts',
       'src/lib/prompt-input/prompt-input-textarea.ts',
       'src/lib/prompt-input/prompt-input-submit.ts',
+      'src/lib/prompt-input/prompt-input-button.ts',
+      'src/lib/prompt-input/prompt-input-attach-button.ts',
+      'src/lib/prompt-input/prompt-input-speech-button.ts',
       'src/lib/prompt-input/prompt-input-toolbar.ts',
       'src/lib/prompt-input/prompt-input-tools.ts',
+      'src/lib/prompt-input/prompt-input-select.ts',
+      'src/lib/prompt-input/prompt-input-mentions.ts',
       'src/lib/prompt-input/prompt-input-action-menu.ts',
       'src/lib/prompt-input/prompt-input-model-select.ts',
     ],
@@ -233,6 +280,7 @@ export const ITEMS: ItemConfig[] = [
       '@angular/core',
       '@angular/common',
       'class-variance-authority',
+      '@spartan-ng/brain',
     ],
     // ng-utils for cn(); ng-attachments for the relative imports from
     // prompt-input.ts (../attachments/attachment.utils + types). The
@@ -254,6 +302,7 @@ export const ITEMS: ItemConfig[] = [
       'src/lib/message/message-content.ts',
       'src/lib/message/message-avatar.ts',
       'src/lib/message/message-actions.ts',
+      'src/lib/message/message-action.ts',
       'src/lib/message/message-toolbar.ts',
       'src/lib/message/message-attachments.ts',
       'src/lib/message/message-attachment.ts',
@@ -500,6 +549,7 @@ export const ITEMS: ItemConfig[] = [
       'src/lib/charts/headless/axis.ts',
       'src/lib/charts/headless/chart-frame.ts',
       'src/lib/charts/headless/cartesian-grid.ts',
+      'src/lib/charts/headless/tooltip.ts',
       'src/lib/charts/headless/area.ts',
       'src/lib/charts/headless/line.ts',
       'src/lib/charts/headless/bar.ts',
@@ -527,10 +577,11 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/area-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/area-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
-    registryDependencies: ['ng-utils', 'ng-chart'],
+    // ng-chart-tooltip ships the sibling `./chart-tooltip-content` file.
+    registryDependencies: ['ng-utils', 'ng-chart', 'ng-chart-tooltip'],
   },
   {
     name: 'ng-line-chart',
@@ -541,10 +592,11 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/line-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/line-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
-    registryDependencies: ['ng-utils', 'ng-chart'],
+    // ng-chart-tooltip ships the sibling `./chart-tooltip-content` file.
+    registryDependencies: ['ng-utils', 'ng-chart', 'ng-chart-tooltip'],
   },
   {
     name: 'ng-bar-chart',
@@ -555,10 +607,11 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/bar-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/bar-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
-    registryDependencies: ['ng-utils', 'ng-chart'],
+    // ng-chart-tooltip ships the sibling `./chart-tooltip-content` file.
+    registryDependencies: ['ng-utils', 'ng-chart', 'ng-chart-tooltip'],
   },
   {
     name: 'ng-scatter-chart',
@@ -569,7 +622,7 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/scatter-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/scatter-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
     registryDependencies: ['ng-utils', 'ng-chart'],
@@ -583,7 +636,7 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/pie-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/pie-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
     registryDependencies: ['ng-utils', 'ng-chart'],
@@ -597,7 +650,7 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/radar-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/radar-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
     registryDependencies: ['ng-utils', 'ng-chart'],
@@ -611,10 +664,913 @@ export const ITEMS: ItemConfig[] = [
     categories: ['data', 'charts'],
     packageRoot: 'packages/ng-data',
     sourceFiles: ['src/lib/charts/styled/radial-chart.ts'],
-    targetPrefix: 'src/app/gremorie/data/radial-chart',
+    targetPrefix: 'src/app/gremorie/data/charts',
     srcStrip: 'src/lib/charts/styled/',
     dependencies: ['@angular/core'],
     registryDependencies: ['ng-utils', 'ng-chart'],
+  },
+  {
+    name: 'ng-chart-tooltip',
+    framework: 'ng',
+    title: 'Chart Tooltip (Angular)',
+    description:
+      'Standalone chart tooltip card - the floating popover the styled charts show on hover, reusable on its own. Presentational: pass the resolved label (category header) and rows (series); variants mirror React ChartTooltipContent (indicator dot/line/dashed, hideLabel, hideIndicator). Position via the chartTooltip directive from ng-chart.',
+    categories: ['data', 'charts'],
+    packageRoot: 'packages/ng-data',
+    sourceFiles: ['src/lib/charts/styled/chart-tooltip-content.ts'],
+    targetPrefix: 'src/app/gremorie/data/charts',
+    srcStrip: 'src/lib/charts/styled/',
+    dependencies: ['@angular/core'],
+    // ng-chart carries the chartTooltip / chartTooltipCard directives the
+    // card is positioned with in chart contexts.
+    registryDependencies: ['ng-chart'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: forms
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-button-group',
+    framework: 'ng',
+    title: 'Button Group (Angular)',
+    description:
+      'Cluster of related buttons that share a stroke - composable ButtonGroup, ButtonGroupText, ButtonGroupSeparator. Horizontal or vertical, with optional inner separator. Mirrors React ButtonGroup from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/button-group/button-group.ts',
+      'src/lib/button-group/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/button-group',
+    srcStrip: 'src/lib/button-group/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-calendar',
+    framework: 'ng',
+    title: 'Calendar (Angular)',
+    description:
+      'Date grid built on Spartan-ng brain Calendar - single-date selection, month navigation, min/max bounds, full keyboard navigation. Pair with Popover for the canonical DatePicker pattern. Mirrors React Calendar from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/calendar/calendar.ts', 'src/lib/calendar/index.ts'],
+    targetPrefix: 'src/app/gremorie/calendar',
+    srcStrip: 'src/lib/calendar/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-checkbox',
+    framework: 'ng',
+    title: 'Checkbox (Angular)',
+    description:
+      'Binary checkbox built on Spartan-ng brain Checkbox. Use for multi-select lists, terms acceptance, settings toggles. For mutually exclusive choices use RadioGroup; for on/off use Switch. Mirrors React Checkbox from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/checkbox/checkbox.ts', 'src/lib/checkbox/index.ts'],
+    targetPrefix: 'src/app/gremorie/checkbox',
+    srcStrip: 'src/lib/checkbox/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-date-picker',
+    framework: 'ng',
+    title: 'Date Picker (Angular)',
+    description:
+      'Composite of Popover + Calendar with Gremorie defaults - a trigger button showing the formatted date opens the calendar in a Spartan-ng brain popover. Single-mode by default. Mirrors React DatePicker from @gremorie/rx-overlays.',
+    categories: ['forms', 'overlays'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/date-picker/date-picker.ts',
+      'src/lib/date-picker/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/date-picker',
+    srcStrip: 'src/lib/date-picker/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    // ng-calendar ships the `../calendar/calendar` file the relative import
+    // needs; both items live flat under src/app/gremorie/ so it resolves.
+    registryDependencies: ['ng-utils', 'ng-calendar'],
+  },
+  {
+    name: 'ng-form',
+    framework: 'ng',
+    title: 'Form (Angular)',
+    description:
+      'Form field scaffolding for Angular forms - FormItem, FormLabel, FormControl, FormDescription, FormMessage. Wires field state, validation errors, and accessibility attributes. Mirrors React Form (react-hook-form integration) from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/form/form.ts', 'src/lib/form/index.ts'],
+    targetPrefix: 'src/app/gremorie/form',
+    srcStrip: 'src/lib/form/',
+    dependencies: ['@angular/core'],
+    // ng-label ships the `../label/label` file the relative import needs.
+    registryDependencies: ['ng-utils', 'ng-label'],
+  },
+  {
+    name: 'ng-input',
+    framework: 'ng',
+    title: 'Input (Angular)',
+    description:
+      'Input primitive for the Angular edition - single-line text field directive that adopts every native HTML `type`. Token-driven visual states. Mirrors React Input from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/input/input.ts', 'src/lib/input/index.ts'],
+    targetPrefix: 'src/app/gremorie/input',
+    srcStrip: 'src/lib/input/',
+    dependencies: ['@angular/core', '@angular/forms'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-input-group',
+    framework: 'ng',
+    title: 'Input Group (Angular)',
+    description:
+      'Composable input layout - wraps Input or Textarea with inline / block addons (icons, buttons, kbd hints). Drives focus + invalid + disabled states from the inner control. Mirrors React InputGroup from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/input-group/input-group.ts',
+      'src/lib/input-group/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/input-group',
+    srcStrip: 'src/lib/input-group/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-input-otp',
+    framework: 'ng',
+    title: 'Input OTP (Angular)',
+    description:
+      'One-time password input built on Spartan-ng brain InputOtp - keyboard-driven, paste-friendly, slot-based. Use for 2FA codes, magic links, SMS verification. Mirrors React InputOTP from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/input-otp/input-otp.ts',
+      'src/lib/input-otp/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/input-otp',
+    srcStrip: 'src/lib/input-otp/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-label',
+    framework: 'ng',
+    title: 'Label (Angular)',
+    description:
+      'Label primitive for the Angular edition - accessible caption for Input / form controls with disabled-state styling. Mirrors React Label from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/label/label.ts', 'src/lib/label/index.ts'],
+    targetPrefix: 'src/app/gremorie/label',
+    srcStrip: 'src/lib/label/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-radio-group',
+    framework: 'ng',
+    title: 'Radio Group (Angular)',
+    description:
+      'Mutually exclusive choice group built on Spartan-ng brain RadioGroup. Use for 2-7 distinct options. For binary on/off use Switch; for many options use Select. Mirrors React RadioGroup from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/radio-group/radio-group.ts',
+      'src/lib/radio-group/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/radio-group',
+    srcStrip: 'src/lib/radio-group/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-select',
+    framework: 'ng',
+    title: 'Select (Angular)',
+    description:
+      'Select primitive built on Spartan-ng brain Select - portalled, animated listbox with grouped items. For short fixed lists (5-30 options). Mirrors React Select from @gremorie/rx-forms.',
+    categories: ['forms', 'overlays'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/select/select.ts', 'src/lib/select/index.ts'],
+    targetPrefix: 'src/app/gremorie/select',
+    srcStrip: 'src/lib/select/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-slider',
+    framework: 'ng',
+    title: 'Slider (Angular)',
+    description:
+      'Range slider built on Spartan-ng brain Slider - single value with step + min/max. Use for continuous values (volume, opacity, price range). Mirrors React Slider from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/slider/slider.ts', 'src/lib/slider/index.ts'],
+    targetPrefix: 'src/app/gremorie/slider',
+    srcStrip: 'src/lib/slider/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-switch',
+    framework: 'ng',
+    title: 'Switch (Angular)',
+    description:
+      'Binary on/off toggle built on Spartan-ng brain Switch. Use for instant-effect settings (dark mode, notifications). For form fields that need explicit "save", prefer Checkbox. Mirrors React Switch from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/switch/switch.ts', 'src/lib/switch/index.ts'],
+    targetPrefix: 'src/app/gremorie/switch',
+    srcStrip: 'src/lib/switch/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-textarea',
+    framework: 'ng',
+    title: 'Textarea (Angular)',
+    description:
+      'Multi-line text field that auto-grows via `field-sizing: content`. Use for free-form input where rows are unknown ahead of time. Mirrors React Textarea from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/textarea/textarea.ts', 'src/lib/textarea/index.ts'],
+    targetPrefix: 'src/app/gremorie/textarea',
+    srcStrip: 'src/lib/textarea/',
+    dependencies: ['@angular/core', '@angular/forms'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-toggle',
+    framework: 'ng',
+    title: 'Toggle (Angular)',
+    description:
+      'Two-state press-button built on Spartan-ng brain Toggle. Use for inline formatting controls (bold, italic) or visibility toggles. For multi-option clusters use ToggleGroup. Mirrors React Toggle from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/toggle/toggle.ts', 'src/lib/toggle/index.ts'],
+    targetPrefix: 'src/app/gremorie/toggle',
+    srcStrip: 'src/lib/toggle/',
+    dependencies: [
+      '@angular/core',
+      '@spartan-ng/brain',
+      'class-variance-authority',
+    ],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-toggle-group',
+    framework: 'ng',
+    title: 'Toggle Group (Angular)',
+    description:
+      'Mutually exclusive or multi-select cluster of Toggle items, built on Spartan-ng brain ToggleGroup. Use for inline option pickers (text alignment, view mode, filter chips). Mirrors React ToggleGroup from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/toggle-group/toggle-group.ts',
+      'src/lib/toggle-group/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/toggle-group',
+    srcStrip: 'src/lib/toggle-group/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    // ng-toggle ships the `../toggle/toggle` file the relative import needs.
+    registryDependencies: ['ng-utils', 'ng-toggle'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: overlays
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-alert-dialog',
+    framework: 'ng',
+    title: 'Alert Dialog (Angular)',
+    description:
+      'Modal-blocking confirmation dialog built on Spartan-ng brain AlertDialog. Use for destructive confirmations and irreversible actions - the user must choose, no close-on-overlay or close-on-escape. Mirrors React AlertDialog from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: [
+      'src/lib/alert-dialog/alert-dialog.ts',
+      'src/lib/alert-dialog/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/alert-dialog',
+    srcStrip: 'src/lib/alert-dialog/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-command',
+    framework: 'ng',
+    title: 'Command (Angular)',
+    description:
+      'Command palette primitive built on Spartan-ng brain Command - keyboard-first picker with input, list, groups, items and shortcuts, plus the floating Cmd+K dialog variant. Mirrors React Command (cmdk) from @gremorie/rx-overlays.',
+    categories: ['overlays', 'navigation'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/command/command.ts', 'src/lib/command/index.ts'],
+    targetPrefix: 'src/app/gremorie/command',
+    srcStrip: 'src/lib/command/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-context-menu',
+    framework: 'ng',
+    title: 'Context Menu (Angular)',
+    description:
+      'Secondary action menu invoked via right-click, built on Spartan-ng brain menu primitives. Power-user accelerator with the same shape as DropdownMenu (items, groups, separators, sub-menus). Mirrors React ContextMenu from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: [
+      'src/lib/context-menu/context-menu.ts',
+      'src/lib/context-menu/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/context-menu',
+    srcStrip: 'src/lib/context-menu/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-dialog',
+    framework: 'ng',
+    title: 'Dialog (Angular)',
+    description:
+      'Modal overlay anchored at viewport center, built on Spartan-ng brain Dialog. Use for focused decisions or short flows that need to interrupt the user context - confirmations, single-step forms, detail cards. Mirrors React Dialog from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/dialog/dialog.ts', 'src/lib/dialog/index.ts'],
+    targetPrefix: 'src/app/gremorie/dialog',
+    srcStrip: 'src/lib/dialog/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-drawer',
+    framework: 'ng',
+    title: 'Drawer (Angular)',
+    description:
+      'Bottom-up sheet for mobile contexts, built on Spartan-ng brain Sheet with a slide-up animation and drag affordance. Best for mobile confirmations, quick actions, simple forms. Mirrors React Drawer (vaul) from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/drawer/drawer.ts', 'src/lib/drawer/index.ts'],
+    targetPrefix: 'src/app/gremorie/drawer',
+    srcStrip: 'src/lib/drawer/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-dropdown-menu',
+    framework: 'ng',
+    title: 'Dropdown Menu (Angular)',
+    description:
+      'DropdownMenu family built on Spartan-ng brain menu primitives - actions menu with checkbox / radio items, separators, nested submenus, destructive variant. Mirrors React DropdownMenu from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: [
+      'src/lib/dropdown-menu/dropdown-menu.ts',
+      'src/lib/dropdown-menu/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/dropdown-menu',
+    srcStrip: 'src/lib/dropdown-menu/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-hover-card',
+    framework: 'ng',
+    title: 'Hover Card (Angular)',
+    description:
+      'HoverCard primitive built on Spartan-ng brain HoverCard - non-interactive preview pane shown on hover. Use for link previews, profile cards, image teasers. Mirrors React HoverCard from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: [
+      'src/lib/hover-card/hover-card.ts',
+      'src/lib/hover-card/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/hover-card',
+    srcStrip: 'src/lib/hover-card/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-popover',
+    framework: 'ng',
+    title: 'Popover (Angular)',
+    description:
+      'Anchored interactive content overlay built on Spartan-ng brain Popover. Triggers on click and hosts interactive content - date pickers, mini forms, share menus. Distinct from Tooltip (hover-only) and HoverCard (hover previews). Mirrors React Popover from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/popover/popover.ts', 'src/lib/popover/index.ts'],
+    targetPrefix: 'src/app/gremorie/popover',
+    srcStrip: 'src/lib/popover/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-sheet',
+    framework: 'ng',
+    title: 'Sheet (Angular)',
+    description:
+      'Side-anchored panel for longer flows, built on Spartan-ng brain Sheet with a directional slide animation. Use for filters, settings panels, multi-section edit forms. Mirrors React Sheet from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/sheet/sheet.ts', 'src/lib/sheet/index.ts'],
+    targetPrefix: 'src/app/gremorie/sheet',
+    srcStrip: 'src/lib/sheet/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-sonner',
+    framework: 'ng',
+    title: 'Sonner (Angular)',
+    description:
+      'Toast notification root built on Spartan-ng brain Sonner with Gremorie tokens. Mount once at the app root - any descendant can fire a toast without an additional provider. For persistent in-flow messages use Alert; for critical confirmations use AlertDialog. Mirrors React Sonner from @gremorie/rx-overlays.',
+    categories: ['overlays', 'feedback'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/sonner/sonner.ts', 'src/lib/sonner/index.ts'],
+    targetPrefix: 'src/app/gremorie/sonner',
+    srcStrip: 'src/lib/sonner/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-tooltip',
+    framework: 'ng',
+    title: 'Tooltip (Angular)',
+    description:
+      'Short non-essential context on hover/focus, built on Spartan-ng brain Tooltip. Reserve for non-critical supporting information - keyboard shortcuts, icon labels, "what does this do" hints. Mirrors React Tooltip from @gremorie/rx-overlays.',
+    categories: ['overlays'],
+    packageRoot: 'packages/ng-overlays',
+    sourceFiles: ['src/lib/tooltip/tooltip.ts', 'src/lib/tooltip/index.ts'],
+    targetPrefix: 'src/app/gremorie/tooltip',
+    srcStrip: 'src/lib/tooltip/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: navigation
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-breadcrumb',
+    framework: 'ng',
+    title: 'Breadcrumb (Angular)',
+    description:
+      'Hierarchical trail - composable Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis. Use to show the current location within a nested structure. Mirrors React Breadcrumb from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: [
+      'src/lib/breadcrumb/breadcrumb.ts',
+      'src/lib/breadcrumb/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/breadcrumb',
+    srcStrip: 'src/lib/breadcrumb/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-menubar',
+    framework: 'ng',
+    title: 'Menubar (Angular)',
+    description:
+      'Horizontal multi-menu bar - desktop-style File/Edit/View menus with keyboard navigation, sub-menus, checkbox and radio items. Mirrors React Menubar from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: ['src/lib/menubar/menubar.ts', 'src/lib/menubar/index.ts'],
+    targetPrefix: 'src/app/gremorie/menubar',
+    srcStrip: 'src/lib/menubar/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-navigation-menu',
+    framework: 'ng',
+    title: 'Navigation Menu (Angular)',
+    description:
+      'Top-level mega-menu - reveals secondary content panels on hover/focus. Use for site headers with grouped link clusters and feature highlights. Mirrors React NavigationMenu from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: [
+      'src/lib/navigation-menu/navigation-menu.ts',
+      'src/lib/navigation-menu/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/navigation-menu',
+    srcStrip: 'src/lib/navigation-menu/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-pagination',
+    framework: 'ng',
+    title: 'Pagination (Angular)',
+    description:
+      'Page navigation surface - composable Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis. Anchor tags by default; integrates with the Angular router. Mirrors React Pagination from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: [
+      'src/lib/pagination/pagination.ts',
+      'src/lib/pagination/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/pagination',
+    srcStrip: 'src/lib/pagination/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils', 'ng-button'],
+  },
+  {
+    name: 'ng-sidebar',
+    framework: 'ng',
+    title: 'Sidebar (Angular)',
+    description:
+      'Composable app-shell sidebar - provider, Sidebar, SidebarTrigger, SidebarMenu plus mobile drawer integration. Persisted collapsed state, keyboard shortcut, full keyboard navigation. The largest navigation primitive in the registry. Mirrors React Sidebar from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: ['src/lib/sidebar/sidebar.ts', 'src/lib/sidebar/index.ts'],
+    targetPrefix: 'src/app/gremorie/sidebar',
+    srcStrip: 'src/lib/sidebar/',
+    dependencies: [
+      '@angular/core',
+      '@angular/common',
+      'class-variance-authority',
+    ],
+    registryDependencies: ['ng-utils', 'ng-tooltip'],
+  },
+  {
+    name: 'ng-tabs',
+    framework: 'ng',
+    title: 'Tabs (Angular)',
+    description:
+      'Tabbed content switcher built on Spartan-ng brain Tabs - Tabs, TabsList, TabsTrigger, TabsContent. Use for sibling content panels that share a context (settings sections, profile pages). Mirrors React Tabs from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: ['src/lib/tabs/tabs.ts', 'src/lib/tabs/index.ts'],
+    targetPrefix: 'src/app/gremorie/tabs',
+    srcStrip: 'src/lib/tabs/',
+    dependencies: [
+      '@angular/core',
+      '@spartan-ng/brain',
+      'class-variance-authority',
+    ],
+    registryDependencies: ['ng-utils'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: display (batch 2)
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-accordion',
+    framework: 'ng',
+    title: 'Accordion (Angular)',
+    description:
+      'Vertically stacked, coordinated expandable sections built on Spartan-ng brain Accordion. Use when multiple sections share a common rhythm (FAQ, settings groups). For a single expandable region, use Collapsible. Mirrors React Accordion from @gremorie/rx-display.',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: [
+      'src/lib/accordion/accordion.ts',
+      'src/lib/accordion/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/accordion',
+    srcStrip: 'src/lib/accordion/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-avatar',
+    framework: 'ng',
+    title: 'Avatar (Angular)',
+    description:
+      'User identity glyph - image with graceful fallback to initials or icon. Use for user surfaces (header, comments, mention chips, settings). Mirrors React Avatar from @gremorie/rx-display.',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/avatar/avatar.ts', 'src/lib/avatar/index.ts'],
+    targetPrefix: 'src/app/gremorie/avatar',
+    srcStrip: 'src/lib/avatar/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-collapsible',
+    framework: 'ng',
+    title: 'Collapsible (Angular)',
+    description:
+      'Single-section expandable region built on Spartan-ng brain Collapsible. Minimal building block for "show more" toggles, sidebar group expand/collapse, inline disclosures. Mirrors React Collapsible from @gremorie/rx-display.',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: [
+      'src/lib/collapsible/collapsible.ts',
+      'src/lib/collapsible/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/collapsible',
+    srcStrip: 'src/lib/collapsible/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-separator',
+    framework: 'ng',
+    title: 'Separator (Angular)',
+    description:
+      'Horizontal or vertical visual divider built on Spartan-ng brain Separator. Use sparingly - prefer spacing for visual grouping; reach for Separator only when a hard line carries semantic meaning. Mirrors React Separator from @gremorie/rx-display.',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: [
+      'src/lib/separator/separator.ts',
+      'src/lib/separator/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/separator',
+    srcStrip: 'src/lib/separator/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-table',
+    framework: 'ng',
+    title: 'Table (Angular)',
+    description:
+      'Styled wrapper over native HTML `<table>` - composable Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption. Use for tabular data; pair with a data-grid library for sorting, filtering, virtualization. Mirrors React Table from @gremorie/rx-display.',
+    categories: ['display'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: ['src/lib/table/table.ts', 'src/lib/table/index.ts'],
+    targetPrefix: 'src/app/gremorie/table',
+    srcStrip: 'src/lib/table/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: containers (batch 2)
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-aspect-ratio',
+    framework: 'ng',
+    title: 'Aspect Ratio (Angular)',
+    description:
+      'Reserves vertical space for media before content loads. Use on responsive images, iframes, video embeds, and skeleton placeholders to prevent cumulative layout shift. Mirrors React AspectRatio from @gremorie/rx-containers.',
+    categories: ['containers'],
+    packageRoot: 'packages/ng-containers',
+    sourceFiles: ['src/lib/aspect-ratio/aspect-ratio.ts'],
+    targetPrefix: 'src/app/gremorie/aspect-ratio',
+    srcStrip: 'src/lib/aspect-ratio/',
+    dependencies: ['@angular/core'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-resizable',
+    framework: 'ng',
+    title: 'Resizable (Angular)',
+    description:
+      'Split panes with draggable handles built on Spartan-ng brain Resizable. Use for dev tools and pro apps (editors, email clients, file managers); consumer surfaces almost always read better with fixed proportions. Mirrors React Resizable from @gremorie/rx-containers.',
+    categories: ['containers'],
+    packageRoot: 'packages/ng-containers',
+    sourceFiles: ['src/lib/resizable/resizable.ts'],
+    targetPrefix: 'src/app/gremorie/resizable',
+    srcStrip: 'src/lib/resizable/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: [],
+  },
+  {
+    name: 'ng-stack',
+    framework: 'ng',
+    title: 'Stack (Angular)',
+    description:
+      'Vertical layout primitive - a flex-column container with consistent gap, align, and justify inputs. The right choice for any list flowing top-to-bottom (card contents, form sections, settings rows, vertical menus). Mirrors React Stack from @gremorie/rx-containers.',
+    categories: ['containers', 'layout'],
+    packageRoot: 'packages/ng-containers',
+    sourceFiles: ['src/lib/stack/stack.ts'],
+    targetPrefix: 'src/app/gremorie/stack',
+    srcStrip: 'src/lib/stack/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: ['ng-utils'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: artifacts
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-artifact',
+    framework: 'ng',
+    title: 'Artifact (Angular)',
+    description:
+      'Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset. Mirrors React Artifact from @gremorie/rx-artifacts.',
+    categories: ['ai', 'code'],
+    packageRoot: 'packages/ng-artifacts',
+    // index.ts ships too so sibling items (ng-chart-artifact) can resolve
+    // their relative `../artifact/artifact` import in the consumer project;
+    // icons.ts carries the `./icons` import artifact.ts needs.
+    sourceFiles: [
+      'src/lib/artifact/artifact.ts',
+      'src/lib/artifact/icons.ts',
+      'src/lib/artifact/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/artifact',
+    srcStrip: 'src/lib/artifact/',
+    dependencies: ['@angular/core', '@ng-icons/core'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-chart-artifact',
+    framework: 'ng',
+    title: 'Chart Artifact (Angular)',
+    description:
+      'Chart artifact for AI-generated datasets - wraps any of the seven styled charts (bar, area, line, pie, radar, radial, scatter) in the Artifact chrome with a chart/table view toggle and an actions menu. Composes the ng-artifact chrome with the ng-data charts. Mirrors React ChartArtifact from @gremorie/rx-artifacts.',
+    categories: ['ai', 'artifacts', 'charts'],
+    packageRoot: 'packages/ng-artifacts',
+    sourceFiles: ['src/lib/chart-artifact/chart-artifact.ts'],
+    targetPrefix: 'src/app/gremorie/ai/chart-artifact',
+    srcStrip: 'src/lib/chart-artifact/',
+    dependencies: ['@angular/core'],
+    // ng-artifact ships the `../artifact/artifact` file the relative import
+    // needs; the chart imports resolve via the @gremorie/ng-data npm package
+    // (auto-detected at build time).
+    registryDependencies: ['ng-artifact'],
+  },
+  {
+    name: 'ng-web-preview',
+    framework: 'ng',
+    title: 'Web Preview (Angular)',
+    description:
+      'Sandboxed browser preview for AI-generated sites. WebPreviewNavigation has back/forward/refresh, WebPreviewUrl is a navigable input, WebPreviewBody renders a sanitized iframe with the current URL, and WebPreviewConsole shows console logs below. Mirrors React WebPreview from @gremorie/rx-artifacts.',
+    categories: ['ai', 'code'],
+    packageRoot: 'packages/ng-artifacts',
+    sourceFiles: [
+      'src/lib/web-preview/web-preview.ts',
+      'src/lib/web-preview/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/web-preview',
+    srcStrip: 'src/lib/web-preview/',
+    dependencies: [
+      '@angular/core',
+      '@angular/common',
+      '@angular/platform-browser',
+    ],
+    registryDependencies: ['ng-utils', 'ng-tooltip'],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Angular: AI primitives (batch 2)
+  // ---------------------------------------------------------------------------
+  {
+    name: 'ng-checkpoint',
+    framework: 'ng',
+    title: 'Checkpoint (Angular)',
+    description:
+      'Conversation savepoint marker. Renders a labeled bookmark with Separator on each side, plus a Tooltip explaining the state. Use to indicate revertable points in long agent runs. Mirrors React Checkpoint from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/checkpoint/checkpoint.ts',
+      'src/lib/checkpoint/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/checkpoint',
+    srcStrip: 'src/lib/checkpoint/',
+    dependencies: ['@angular/core', '@angular/common'],
+    registryDependencies: ['ng-utils', 'ng-separator', 'ng-tooltip'],
+  },
+  {
+    name: 'ng-confirmation',
+    framework: 'ng',
+    title: 'Confirmation (Angular)',
+    description:
+      'Approval prompt for tool calls - ConfirmationRequest, ConfirmationDescription, and ConfirmationActions (Approve / Reject buttons). Designed for human-in-the-loop tool gates - emits approved/rejected with optional reason. Mirrors React Confirmation from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/confirmation/confirmation.ts',
+      'src/lib/confirmation/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/confirmation',
+    srcStrip: 'src/lib/confirmation/',
+    dependencies: ['@angular/core'],
+    // ng-tool ships the `../tool/tool.types` file the relative import needs;
+    // both items live under src/app/gremorie/ai/ so it resolves.
+    registryDependencies: ['ng-utils', 'ng-tool'],
+  },
+  {
+    name: 'ng-context',
+    framework: 'ng',
+    title: 'Context (Angular)',
+    description:
+      'Token usage display for AI conversations. ContextTrigger shows a circular progress glyph; on hover, ContextContent reveals input/output/total tokens, model max, and cost. Built on @spartan-ng/brain hover-card. Mirrors React Context from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: ['src/lib/context/context.ts', 'src/lib/context/index.ts'],
+    targetPrefix: 'src/app/gremorie/ai/context',
+    srcStrip: 'src/lib/context/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-image',
+    framework: 'ng',
+    title: 'Image (Angular)',
+    description:
+      'Tiny wrapper that renders a model-generated image (base64 + media type) as a data-URI <img>. Use to display generated images returned from image-generation tool output. Mirrors React Image from @gremorie/rx-ai.',
+    categories: ['ai', 'utilities'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: ['src/lib/image/image.ts', 'src/lib/image/index.ts'],
+    targetPrefix: 'src/app/gremorie/ai/image',
+    srcStrip: 'src/lib/image/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-model-selector',
+    framework: 'ng',
+    title: 'Model Selector (Angular)',
+    description:
+      'Floating model picker dialog. ModelSelectorTrigger opens a command palette - input, groups, items, shortcuts - built on @spartan-ng/brain command. Use as a Cmd+K-style model switcher above the chat composer. Mirrors React ModelSelector from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/model-selector/model-selector.ts',
+      'src/lib/model-selector/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/model-selector',
+    srcStrip: 'src/lib/model-selector/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-open-in-chat',
+    framework: 'ng',
+    title: 'Open in Chat (Angular)',
+    description:
+      'Dropdown that opens the current page in an external chat (ChatGPT, Claude, Gemini, T3 Chat, ...). Provides preset providers and accepts custom entries. Built on @spartan-ng/brain popover. Mirrors React OpenInChat from @gremorie/rx-ai.',
+    categories: ['ai', 'utilities'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: [
+      'src/lib/open-in-chat/open-in-chat.ts',
+      'src/lib/open-in-chat/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai/open-in-chat',
+    srcStrip: 'src/lib/open-in-chat/',
+    dependencies: ['@angular/core', '@spartan-ng/brain'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-plan',
+    framework: 'ng',
+    title: 'Plan (Angular)',
+    description:
+      'Multi-step plan card with Shimmer-marked active step. PlanHeader + PlanTitle + PlanDescription describe the goal; PlanContent lists PlanStep items, each with status. PlanFooter holds CTA buttons (approve / regenerate). Composes Card + Shimmer. Mirrors React Plan from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: ['src/lib/plan/plan.ts', 'src/lib/plan/index.ts'],
+    targetPrefix: 'src/app/gremorie/ai/plan',
+    srcStrip: 'src/lib/plan/',
+    dependencies: ['@angular/core'],
+    // ng-shimmer ships the `../shimmer/shimmer` file the relative import
+    // needs; the Card imports resolve via @gremorie/ng-display (npm,
+    // auto-detected).
+    registryDependencies: ['ng-utils', 'ng-card', 'ng-shimmer'],
+  },
+  {
+    name: 'ng-queue',
+    framework: 'ng',
+    title: 'Queue (Angular)',
+    description:
+      'Pending message queue list shown above the prompt input. Each QueueMessage previews text + attachments; the user can dismiss or reorder. Mirrors React Queue from @gremorie/rx-ai.',
+    categories: ['ai', 'chatbot'],
+    packageRoot: 'packages/ng-ai',
+    sourceFiles: ['src/lib/queue/queue.ts', 'src/lib/queue/index.ts'],
+    targetPrefix: 'src/app/gremorie/ai/queue',
+    srcStrip: 'src/lib/queue/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
+    name: 'ng-assistant',
+    framework: 'ng',
+    title: 'Assistant (Angular)',
+    description:
+      'The flagship Gremorie chat surface: a thread/actions header, a streaming conversation with reasoning, an inline generated artifact, plus a floating B2B PromptInput composer (context picker, usage meter, mode/model selectors, attachments and voice). Mirrors the React Assistant block.',
+    categories: ['blocks', 'ai', 'chat'],
+    packageRoot: 'packages/ng-ai',
+    // srcStrip is `src/lib/` (not the component dir) so the sibling
+    // icons/brand-icons.ts file lands at ai/icons/brand-icons.ts and the
+    // `../icons/brand-icons` relative import keeps resolving.
+    sourceFiles: [
+      'src/lib/assistant/assistant.ts',
+      'src/lib/assistant/index.ts',
+      'src/lib/icons/brand-icons.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/ai',
+    srcStrip: 'src/lib/',
+    dependencies: ['@angular/core', '@angular/common', '@spartan-ng/brain'],
+    // The `../message`, `../conversation`, `../context`, `../reasoning` and
+    // `../prompt-input/*` relative imports resolve against the files those
+    // items install under src/app/gremorie/ai/. ChartArtifact resolves via
+    // the @gremorie/ng-artifacts npm package (auto-detected).
+    registryDependencies: [
+      'ng-utils',
+      'ng-context',
+      'ng-conversation',
+      'ng-message',
+      'ng-prompt-input',
+      'ng-reasoning',
+      'ng-chart-artifact',
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -980,6 +1936,20 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: [],
   },
   {
+    name: 'rx-featured-icon',
+    framework: 'rx',
+    title: 'Featured Icon (React)',
+    description:
+      'Icon inside a styled, themed container - the small badge that anchors a card, artifact, or empty-state header. Variants: color (primary, gray, success, error) x theme (light, solid, outline) x size (sm, md, lg, xl) x shape (square, circle). Token-driven so theme and dark mode flow through automatically.',
+    categories: ['display'],
+    packageRoot: 'packages/rx-display',
+    sourceFiles: ['src/lib/featured-icon/featured-icon.tsx'],
+    targetPrefix: 'src/components/gremorie/display/featured-icon',
+    srcStrip: 'src/lib/featured-icon/',
+    dependencies: ['class-variance-authority', 'lucide-react'],
+    registryDependencies: ['rx-utils'],
+  },
+  {
     name: 'rx-item',
     framework: 'rx',
     title: 'Item (React)',
@@ -1125,6 +2095,20 @@ export const ITEMS: ItemConfig[] = [
     targetPrefix: 'src/components/gremorie/feedback/skeleton',
     srcStrip: 'src/lib/skeleton/',
     dependencies: [],
+    registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-spinner',
+    framework: 'rx',
+    title: 'Spinner (React)',
+    description:
+      'Indeterminate loading indicator - rotating Loader2 glyph in three sizes (sm, default, lg). Use when duration is unknown; use Progress when percent complete is known. Mirrors ng-spinner from the Angular edition.',
+    categories: ['feedback'],
+    packageRoot: 'packages/rx-feedback',
+    sourceFiles: ['src/lib/spinner/spinner.tsx'],
+    targetPrefix: 'src/components/gremorie/feedback/spinner',
+    srcStrip: 'src/lib/spinner/',
+    dependencies: ['class-variance-authority', 'lucide-react'],
     registryDependencies: ['rx-utils'],
   },
 
@@ -1682,11 +2666,33 @@ export const ITEMS: ItemConfig[] = [
       'Generic artifact card for AI-generated objects (code, doc, chart, image preview). ArtifactHeader + ArtifactTitle + ArtifactDescription + ArtifactActions + ArtifactAction + ArtifactClose + ArtifactContent. Use as the chrome wrapper for CodeBlock, WebPreview, Image, or any generated asset.',
     categories: ['ai', 'code'],
     packageRoot: 'packages/rx-artifacts',
-    sourceFiles: ['src/lib/artifact/artifact.tsx'],
+    // index.ts ships too so sibling items (rx-chart-artifact) can resolve
+    // their relative `../artifact` barrel import in the consumer project.
+    sourceFiles: ['src/lib/artifact/artifact.tsx', 'src/lib/artifact/index.ts'],
     targetPrefix: 'src/components/gremorie/ai/artifact',
     srcStrip: 'src/lib/artifact/',
     dependencies: [],
     registryDependencies: ['rx-utils', 'rx-button', 'rx-tooltip'],
+  },
+  {
+    name: 'rx-chart-artifact',
+    framework: 'rx',
+    title: 'Chart Artifact (React)',
+    description:
+      'Chart artifact for AI-generated datasets - wraps any of the seven styled charts (bar, area, line, pie, radar, radial, scatter) in the Artifact chrome with a chart/table view toggle, themed FeaturedIcon, and an actions menu (copy, download, refresh). Composes the rx-artifact chrome with the rx-data charts.',
+    categories: ['ai', 'artifacts', 'charts'],
+    packageRoot: 'packages/rx-artifacts',
+    sourceFiles: [
+      'src/lib/chart-artifact/chart-artifact.tsx',
+      'src/lib/chart-artifact/index.ts',
+    ],
+    targetPrefix: 'src/components/gremorie/ai/chart-artifact',
+    srcStrip: 'src/lib/chart-artifact/',
+    dependencies: ['react', 'lucide-react'],
+    // rx-artifact ships the `../artifact` barrel the relative import needs;
+    // the chart + table imports resolve via the @gremorie/rx-data and
+    // @gremorie/rx-display npm packages (auto-detected at build time).
+    registryDependencies: ['rx-artifact'],
   },
   {
     name: 'rx-code-block',
@@ -1883,6 +2889,20 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['rx-utils'],
   },
   {
+    name: 'rx-chart-tooltip',
+    framework: 'rx',
+    title: 'Chart Tooltip (React)',
+    description:
+      'ChartTooltip + ChartTooltipContent - the card-surface hover tooltip for the React charts, published as a standalone name. Alias item: the implementation ships inside the rx-chart primitive (chart.tsx), so installing this pulls rx-chart and adds no extra files.',
+    categories: ['data', 'charts'],
+    packageRoot: 'packages/rx-data',
+    sourceFiles: [],
+    targetPrefix: 'src/components/gremorie/data/chart',
+    srcStrip: 'src/lib/chart/',
+    dependencies: [],
+    registryDependencies: ['rx-chart'],
+  },
+  {
     name: 'rx-area-chart',
     framework: 'rx',
     title: 'Area Chart (React)',
@@ -2075,20 +3095,6 @@ export const ITEMS: ItemConfig[] = [
       'rx-switch',
       'rx-slider',
     ],
-  },
-  {
-    name: 'block-marketing-hero',
-    framework: 'rx',
-    title: 'Marketing hero block',
-    description:
-      'Landing hero: brand-tinted halo, eyebrow Badge, headline with brand-highlighted span, dual CTA, and a window mockup Card.',
-    categories: ['blocks', 'marketing'],
-    packageRoot: 'apps/docs/components/preview/blocks',
-    sourceFiles: ['marketing-hero.tsx'],
-    targetPrefix: 'src/components/gremorie/blocks/marketing-hero',
-    srcStrip: '',
-    dependencies: ['react', 'lucide-react'],
-    registryDependencies: ['rx-utils', 'rx-button', 'rx-card', 'rx-badge'],
   },
   {
     name: 'block-empty-state',

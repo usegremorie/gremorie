@@ -1,11 +1,12 @@
 /**
  * HTTP client for the Gremorie registry.
  *
- * The default base URL is the production site (https://gremorie.com/r). For
- * local development, set `GREMORIE_REGISTRY_URL` to point at a local server
+ * The default base URL is the production site (https://www.gremorie.com/r —
+ * the www host is canonical; the apex 307-redirects to it). For local
+ * development, set `GREMORIE_REGISTRY_URL` to point at a local server
  * (e.g. `http://localhost:5020/r`).
  */
-const DEFAULT_REGISTRY_URL = 'https://gremorie.com/r';
+const DEFAULT_REGISTRY_URL = 'https://www.gremorie.com/r';
 
 export type RegistryItemType =
   | 'registry:component'

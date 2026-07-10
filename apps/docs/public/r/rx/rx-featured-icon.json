@@ -1,0 +1,35 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-featured-icon",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Featured Icon (React)",
+  "description": "Icon inside a styled, themed container - the small badge that anchors a card, artifact, or empty-state header. Variants: color (primary, gray, success, error) x theme (light, solid, outline) x size (sm, md, lg, xl) x shape (square, circle). Token-driven so theme and dark mode flow through automatically.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react",
+    "@gremorie/rx-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/featured-icon/featured-icon.tsx",
+      "content": "import { cva, type VariantProps } from 'class-variance-authority';\nimport type { LucideIcon } from 'lucide-react';\nimport * as React from 'react';\n\nimport { cn } from '@gremorie/rx-core';\n\n/**\n * FeaturedIcon — an icon inside a styled, themed container.\n *\n * The small \"badge\" that anchors a card / artifact / empty-state header.\n * Token-driven, so theme + dark mode flow through automatically. Pass a\n * Lucide `icon` (or any `children`); the container sizes the glyph.\n *\n * Variants: `color` (primary · gray · success · error) × `theme`\n * (light · solid · outline) × `size` (sm · md · lg · xl) × `shape`\n * (square · circle).\n */\nconst featuredIconVariants = cva(\n  'inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0',\n  {\n    variants: {\n      size: {\n        sm: 'size-8 [&_svg]:size-4',\n        md: 'size-10 [&_svg]:size-5',\n        lg: 'size-12 [&_svg]:size-6',\n        xl: 'size-14 [&_svg]:size-7',\n      },\n      shape: { square: '', circle: 'rounded-full' },\n      theme: { light: '', solid: '', outline: '' },\n      color: { primary: '', gray: '', success: '', error: '' },\n    },\n    compoundVariants: [\n      // Square corner radius scales with size.\n      { shape: 'square', size: 'sm', class: 'rounded-md' },\n      { shape: 'square', size: 'md', class: 'rounded-lg' },\n      { shape: 'square', size: 'lg', class: 'rounded-xl' },\n      { shape: 'square', size: 'xl', class: 'rounded-2xl' },\n      // color × theme.\n      { color: 'primary', theme: 'light', class: 'bg-primary/10 text-primary' },\n      {\n        color: 'primary',\n        theme: 'solid',\n        class: 'bg-primary text-primary-foreground',\n      },\n      {\n        color: 'primary',\n        theme: 'outline',\n        class: 'border border-primary/30 text-primary',\n      },\n      {\n        color: 'gray',\n        theme: 'light',\n        class: 'bg-muted text-muted-foreground',\n      },\n      {\n        color: 'gray',\n        theme: 'solid',\n        class: 'bg-secondary text-secondary-foreground',\n      },\n      {\n        color: 'gray',\n        theme: 'outline',\n        class: 'border border-border text-muted-foreground',\n      },\n      { color: 'success', theme: 'light', class: 'bg-success/10 text-success' },\n      {\n        color: 'success',\n        theme: 'solid',\n        class: 'bg-success text-success-foreground',\n      },\n      {\n        color: 'success',\n        theme: 'outline',\n        class: 'border border-success/30 text-success',\n      },\n      {\n        color: 'error',\n        theme: 'light',\n        class: 'bg-destructive/10 text-destructive',\n      },\n      {\n        color: 'error',\n        theme: 'solid',\n        class: 'bg-destructive text-destructive-foreground',\n      },\n      {\n        color: 'error',\n        theme: 'outline',\n        class: 'border border-destructive/30 text-destructive',\n      },\n    ],\n    defaultVariants: {\n      size: 'md',\n      shape: 'square',\n      theme: 'light',\n      color: 'primary',\n    },\n  },\n);\n\nexport type FeaturedIconProps = React.ComponentProps<'span'> &\n  VariantProps<typeof featuredIconVariants> & {\n    /** Lucide icon to render (alternatively pass `children`). */\n    icon?: LucideIcon;\n  };\n\nfunction FeaturedIcon({\n  className,\n  size,\n  shape,\n  theme,\n  color,\n  icon: Icon,\n  children,\n  ...props\n}: FeaturedIconProps) {\n  return (\n    <span\n      data-slot=\"featured-icon\"\n      data-color={color ?? 'primary'}\n      data-theme={theme ?? 'light'}\n      className={cn(\n        featuredIconVariants({ size, shape, theme, color }),\n        className,\n      )}\n      {...props}\n    >\n      {Icon ? <Icon aria-hidden /> : children}\n    </span>\n  );\n}\n\nexport { FeaturedIcon, featuredIconVariants };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/display/featured-icon/featured-icon.tsx"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-featured-icon.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

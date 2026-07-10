@@ -17,7 +17,7 @@ import {
  * `outline` variant and `aria-current="page"`.
  */
 const meta: Meta<Pagination> = {
-  title: 'Navigation/Pagination',
+  title: 'Interaction/Navigation/Pagination',
   component: Pagination,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
@@ -59,6 +59,36 @@ export const Workbench: Story = {
           </gn-pagination-item>
           <gn-pagination-item>
             <gn-pagination-ellipsis />
+          </gn-pagination-item>
+          <gn-pagination-item>
+            <a gn-pagination-next href="#"></a>
+          </gn-pagination-item>
+        </gn-pagination-content>
+      </gn-pagination>
+    `,
+  }),
+};
+
+/**
+ * FirstPage — the first page; `Previous` is disabled via consumer-driven
+ * `aria-disabled` + a passive class.
+ */
+export const FirstPage: Story = {
+  render: () => ({
+    template: `
+      <gn-pagination>
+        <gn-pagination-content>
+          <gn-pagination-item>
+            <a gn-pagination-previous href="#" aria-disabled="true" class="pointer-events-none opacity-50"></a>
+          </gn-pagination-item>
+          <gn-pagination-item>
+            <a gn-pagination-link href="#" [isActive]="true">1</a>
+          </gn-pagination-item>
+          <gn-pagination-item>
+            <a gn-pagination-link href="#">2</a>
+          </gn-pagination-item>
+          <gn-pagination-item>
+            <a gn-pagination-link href="#">3</a>
           </gn-pagination-item>
           <gn-pagination-item>
             <a gn-pagination-next href="#"></a>

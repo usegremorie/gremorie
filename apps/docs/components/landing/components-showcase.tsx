@@ -23,11 +23,11 @@ import Link from 'next/link';
 const categories = [
   {
     name: 'AI',
-    count: 29,
+    count: 23,
     icon: Sparkles,
     slug: 'ai',
     description:
-      'Conversation, Message, PromptInput, Reasoning, Artifact, Canvas.',
+      'Conversation, Message, PromptInput, Reasoning, Artifact, Tool.',
   },
   {
     name: 'Forms',
@@ -45,10 +45,10 @@ const categories = [
   },
   {
     name: 'Display',
-    count: 8,
+    count: 10,
     icon: Eye,
     slug: 'display',
-    description: 'Card, Badge, Avatar, Accordion, Carousel, Table.',
+    description: 'Card, Badge, Avatar, Accordion, Carousel, Table, Item.',
   },
   {
     name: 'Navigation',
@@ -66,18 +66,18 @@ const categories = [
   },
   {
     name: 'Feedback',
-    count: 3,
+    count: 4,
     icon: Bell,
     slug: 'feedback',
-    description: 'Alert, Progress, Skeleton.',
+    description: 'Alert, Progress, Skeleton, Spinner.',
   },
   {
     name: 'Data',
-    count: 7,
+    count: 8,
     icon: BarChart3,
     slug: 'data',
     description:
-      'AreaChart, LineChart, BarChart, ScatterChart, PieChart, RadarChart.',
+      'AreaChart, LineChart, BarChart, ScatterChart, PieChart, RadarChart, RadialChart.',
   },
 ];
 
@@ -94,7 +94,7 @@ export function ComponentsShowcase() {
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              85 primitives across 8 categories
+              83 primitives across 8 categories
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
               From buttons to charts to a full conversation surface. Install

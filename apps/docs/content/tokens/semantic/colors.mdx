@@ -1,79 +1,97 @@
 ---
 title: Colors
-description: Mapeamento intenção → primitivo para os quatro temas KDS, em light e dark mode.
+description: The intent-to-value mapping for the six Gremorie themes, in light and dark mode.
 ---
 
-import { SemanticThemeTable } from '@/components/token-tables';
+import { SemanticThemeTable } from '@/components/semantic-theme-tables';
 
-Tokens semânticos são **intenções** — `primary`, `foreground`,
-`border`. Cada tema preenche essas intenções com primitivos
-diferentes, e cada modo (light / dark) traz seu próprio
-mapeamento. Esta página é a **tabela de verdade** para os quatro
-temas embarcados.
+Semantic tokens are **intents**: `primary`, `foreground`,
+`border`. Each theme fills those intents with different values,
+and each mode (light / dark) brings its own mapping. This page is
+the **truth table** for the six bundled themes: Default, Claude,
+ChatGPT, Gemini, Perplexity and Mistral.
 
-## Como ler as tabelas
+## How to read the tables
 
-- A coluna **Light** mostra a swatch resolvida do primitivo
-  referenciado no estado claro.
-- A coluna **Dark** mostra a swatch resolvida no estado escuro.
-- As colunas **Primitivo** trazem o nome do primitivo apontado
-  via `var(--color-<token>)`.
+- The **Light** and **Dark** columns render the exact declared
+  value as a chip over that theme's own light or dark background,
+  so both are faithful no matter which mode you are reading in.
+- The **Value** columns show what the theme declares: a primitive
+  name (consumed via `var(--color-<token>)`) or, where the theme
+  matches a product surface that has no primitive equivalent, a
+  literal OKLCH value.
+- A `base` badge means the theme does **not** override that token;
+  it inherits the value from the base layer in `theme.css`. That
+  inheritance is the shipped behavior, not an omission.
 
-Se você está auditando um componente que parece "errado" em algum
-tema, comece por aqui — comparar a intenção (e.g. `--primary`) com
-o primitivo apontado em cada tema diz se a inconsistência é da
-chrome do componente ou do mapeamento do tema.
+If you are auditing a component that looks "wrong" in some theme,
+start here. Comparing the intent (e.g. `--primary`) with the value
+it resolves to in each theme tells you whether the inconsistency
+comes from the component chrome or from the theme mapping.
 
-<Callout type="info">
-  As swatches das colunas Light e Dark abaixo só renderizam com fidelidade
-  quando você visualiza no modo correspondente. Se estiver em light mode, as
-  swatches Dark mostram o primitivo como ele aparece **na sua janela atual** —
-  útil para auditar, não para inspecionar o tema dark de fato.
-</Callout>
+<SemanticThemeTable themeId="default" locale="en" />
 
-<SemanticThemeTable themeId="default" />
+<SemanticThemeTable themeId="claude" locale="en" />
 
-<SemanticThemeTable themeId="amber-minimal" />
+<SemanticThemeTable themeId="chatgpt" locale="en" />
 
-<SemanticThemeTable themeId="amethyst-haze" />
+<SemanticThemeTable themeId="gemini" locale="en" />
 
-<SemanticThemeTable themeId="claude" />
+<SemanticThemeTable themeId="perplexity" locale="en" />
 
-## Sobre os tokens de sidebar
+<SemanticThemeTable themeId="mistral" locale="en" />
 
-Os `--sidebar-*` são uma **família paralela** que cobre a chrome
-de navegação lateral. Eles existem porque sidebars são surfaces
-muitas vezes pintadas distintas do `background` (mais escuras,
-mais claras, contrastantes). Manter intenções dedicadas evita o
-truque de "background com tint" que se quebra ao mudar de tema.
+## About the sidebar tokens
 
-## Editando ou adicionando temas
+The `--sidebar-*` tokens are a **parallel family** covering the
+side navigation chrome. They exist because sidebars are surfaces
+often painted differently from `background` (darker, lighter,
+contrasting). Keeping dedicated intents avoids the "tinted
+background" trick that breaks when the theme changes.
 
-A receita curta:
+## About the chart tokens
 
-1. **Crie** um novo arquivo em
-   `packages/kds/src/styles/tokens/semantic/colors-<id>.css`.
-2. **Defina** os dois selectors:
+`--chart-1` through `--chart-5` are the categorical series colors
+consumed by the chart components. Every theme redefines the full
+set in **both** modes: the dark block must re-declare every series
+because the themed light block outranks the base `.dark` selector,
+so a missing dark override would leak the light value into dark
+mode.
+
+## Editing or adding themes
+
+Themes are **override layers** on top of the base semantic layer
+in `packages/tokens/styles/theme.css`. The short recipe:
+
+1. **Create** a new file at
+   `packages/tokens/styles/themes/<id>.css`.
+2. **Define** the two selectors:
+
    ```css
-   [data-theme='<id>'] {
-     /* light */
+   :root[data-theme='<id>'] {
+     /* light overrides */
    }
-   [data-theme='<id>'].dark {
-     /* dark */
+   :root[data-theme='<id>'].dark {
+     /* dark overrides */
    }
    ```
-3. **Preencha** todas as 27 intenções da tabela acima — light e
-   dark — referenciando primitivos via `var(--color-<token>)`.
-4. **Importe** o arquivo no entry CSS principal do KDS.
-5. **Audite** rodando o tema na app e comparando com os
-   componentes principais.
 
-Não é trabalho pequeno — preencher 54 valores (27 × 2) sem que
-nada quebre exige rodar componentes em todos os estados. Por
-isso a KDS embarca apenas quatro temas curados.
+3. **Override only what differs** from the base. An accent theme
+   like Mistral touches a dozen tokens; a full-surface theme like
+   Claude remaps almost everything. Whatever the light block
+   declares, the dark block must re-declare (see the chart note
+   above), because `:root[data-theme]` outranks `.dark`.
+4. **Import** the file at the top of
+   `packages/tokens/styles/theme.css`.
+5. **Audit** by running the theme in the workbench and checking
+   contrast: primary/primary-foreground pairs must clear WCAG AA
+   for text (4.5:1) and chart series must clear 3:1 on the theme
+   background.
 
 <Callout type="warn">
-  **Não digite OKLCH ou hex em arquivos de tema.** Se o primitivo certo não
-  existe, **adicione-o** primeiro em `tokens/primitive/colors.css`. Hardcoded
-  values em temas quebram a cascata.
+  **Reach for primitives first.** Reference the ramps via
+  `var(--color-<token>)` so a primitive edit cascades into every theme. The
+  shipped themes hardcode OKLCH only where they match a product surface that
+  has no primitive equivalent (e.g. the Claude cream background or the Gemini
+  graphite). If your value is reusable, add it as a primitive instead.
 </Callout>

@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
  * for a minimal underline indicator.
  */
 const meta: Meta<Tabs> = {
-  title: 'Navigation/Tabs',
+  title: 'Interaction/Navigation/Tabs',
   component: Tabs,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
@@ -65,6 +65,43 @@ export const Line: Story = {
           <gn-tabs-trigger value="password">Password</gn-tabs-trigger>
         </gn-tabs-list>
         ${PANELS}
+      </gn-tabs>
+    `,
+  }),
+};
+
+/** Vertical — tabs stack on the left of their panels. */
+export const Vertical: Story = {
+  render: () => ({
+    template: `
+      <gn-tabs orientation="vertical" defaultValue="profile">
+        <gn-tabs-list>
+          <gn-tabs-trigger value="profile">Profile</gn-tabs-trigger>
+          <gn-tabs-trigger value="settings">Settings</gn-tabs-trigger>
+        </gn-tabs-list>
+        <gn-tabs-content value="profile" class="rounded-md border p-4 text-sm text-muted-foreground">
+          Your public profile.
+        </gn-tabs-content>
+        <gn-tabs-content value="settings" class="rounded-md border p-4 text-sm text-muted-foreground">
+          Application settings.
+        </gn-tabs-content>
+      </gn-tabs>
+    `,
+  }),
+};
+
+/** DisabledTab — a disabled trigger. */
+export const DisabledTab: Story = {
+  render: () => ({
+    template: `
+      <gn-tabs defaultValue="active" class="w-96">
+        <gn-tabs-list>
+          <gn-tabs-trigger value="active">Active</gn-tabs-trigger>
+          <gn-tabs-trigger value="disabled" [disabled]="true">Disabled</gn-tabs-trigger>
+        </gn-tabs-list>
+        <gn-tabs-content value="active" class="text-sm text-muted-foreground">
+          This tab is selectable.
+        </gn-tabs-content>
       </gn-tabs>
     `,
   }),

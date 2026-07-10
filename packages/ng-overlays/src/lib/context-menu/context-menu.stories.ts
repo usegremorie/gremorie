@@ -25,7 +25,7 @@ import {
  * `<ng-template brnPopoverContent>`.
  */
 const meta: Meta<ContextMenu> = {
-  title: 'Overlays/ContextMenu',
+  title: 'Interaction/Overlays/ContextMenu',
   component: ContextMenu,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

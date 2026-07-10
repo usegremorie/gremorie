@@ -109,8 +109,8 @@ export const sidebar = defineContract({
       '<sidebar-provider><sidebar collapsible="icon"><sidebar-content><sidebar-menu><sidebar-menu-item><sidebar-menu-button isActive>Home</sidebar-menu-button></sidebar-menu-item></sidebar-menu></sidebar-content></sidebar><sidebar-inset><sidebar-trigger />…</sidebar-inset></sidebar-provider>',
   },
   preview: {
-    rx: 'interaction-navigation-sidebar--default',
-    ng: 'navigation-sidebar--workbench',
+    rx: 'interaction-navigation-sidebar--workbench',
+    ng: 'interaction-navigation-sidebar--workbench',
   },
   tag: { rx: 'Sidebar', ng: 'gn-sidebar' },
   example: {

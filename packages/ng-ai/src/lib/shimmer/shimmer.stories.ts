@@ -10,7 +10,7 @@ import { Shimmer } from './shimmer';
  * the directive in isolation + paused state + custom duration.
  */
 const meta: Meta<Shimmer> = {
-  title: 'AI/Shimmer',
+  title: 'AI/Chatbot/Shimmer',
   component: Shimmer,
   tags: ['autodocs'],
   decorators: [
@@ -29,6 +29,23 @@ const meta: Meta<Shimmer> = {
 
 export default meta;
 type Story = StoryObj<Shimmer>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <span ngShimmer [shimmerDuration]="2" [shimmerSpread]="2" class="text-base">
+          Thinking…
+        </span>
+      </div>
+    `,
+  }),
+};
 
 export const Default: Story = {
   args: { shimmerDuration: 2, shimmerSpread: 2, shimmerDisabled: false },

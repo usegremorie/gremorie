@@ -13,7 +13,7 @@ import { Switch } from './switch';
  * `group-data-[size]/switch`.
  */
 const meta: Meta<Switch> = {
-  title: 'Forms/Switch',
+  title: 'Inputs/Selection/Switch',
   component: Switch,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Switch] })],

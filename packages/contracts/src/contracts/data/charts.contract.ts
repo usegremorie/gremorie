@@ -96,8 +96,8 @@ export const areaChart = defineContract({
       '<area-chart [data]="data" [config]="config" xKey="month" [stacked]="true" />',
   },
   preview: {
-    rx: 'layout-display-data-area-chart--default',
-    ng: 'charts-areachart--workbench',
+    rx: 'layout-display-data-area-chart--workbench',
+    ng: 'layout-display-data-area-chart--workbench',
   },
   tag: { rx: 'AreaChart', ng: 'area-chart' },
   example: {
@@ -154,8 +154,8 @@ export const barChart = defineContract({
     example: '<bar-chart [data]="data" [config]="config" xKey="month" />',
   },
   preview: {
-    rx: 'layout-display-data-bar-chart--default',
-    ng: 'charts-barchart--workbench',
+    rx: 'layout-display-data-bar-chart--workbench',
+    ng: 'layout-display-data-bar-chart--workbench',
   },
   tag: { rx: 'BarChart', ng: 'bar-chart' },
   example: {
@@ -197,8 +197,8 @@ export const lineChart = defineContract({
       '<line-chart [data]="data" [config]="config" xKey="month" [dots]="true" />',
   },
   preview: {
-    rx: 'layout-display-data-line-chart--default',
-    ng: 'charts-linechart--workbench',
+    rx: 'layout-display-data-line-chart--workbench',
+    ng: 'layout-display-data-line-chart--workbench',
   },
   tag: { rx: 'LineChart', ng: 'line-chart' },
   example: {
@@ -232,8 +232,8 @@ export const scatterChart = defineContract({
     example: '<scatter-chart [data]="data" [config]="config" xKey="weight" />',
   },
   preview: {
-    rx: 'layout-display-data-scatter-chart--default',
-    ng: 'charts-scatterchart--workbench',
+    rx: 'layout-display-data-scatter-chart--workbench',
+    ng: 'layout-display-data-scatter-chart--workbench',
   },
   tag: { rx: 'ScatterChart', ng: 'scatter-chart' },
   example: {
@@ -292,8 +292,8 @@ export const pieChart = defineContract({
       '<pie-chart [data]="data" nameKey="browser" dataKey="visitors" [donut]="true" />',
   },
   preview: {
-    rx: 'layout-display-data-pie-chart--default',
-    ng: 'charts-piechart--workbench',
+    rx: 'layout-display-data-pie-chart--workbench',
+    ng: 'layout-display-data-pie-chart--workbench',
   },
   tag: { rx: 'PieChart', ng: 'pie-chart' },
   example: {
@@ -338,8 +338,8 @@ export const radarChart = defineContract({
       '<radar-chart [data]="data" [config]="config" xKey="metric" gridType="circle" />',
   },
   preview: {
-    rx: 'layout-display-data-radar-chart--default',
-    ng: 'charts-radarchart--workbench',
+    rx: 'layout-display-data-radar-chart--workbench',
+    ng: 'layout-display-data-radar-chart--workbench',
   },
   tag: { rx: 'RadarChart', ng: 'radar-chart' },
   example: {
@@ -382,8 +382,8 @@ export const radialChart = defineContract({
       '<radial-chart [data]="data" nameKey="browser" dataKey="visitors" />',
   },
   preview: {
-    rx: 'layout-display-data-radial-chart--default',
-    ng: 'charts-radialchart--workbench',
+    rx: 'layout-display-data-radial-chart--workbench',
+    ng: 'layout-display-data-radial-chart--workbench',
   },
   tag: { rx: 'RadialChart', ng: 'radial-chart' },
   example: {

@@ -5,7 +5,7 @@ import { PromptInput } from './prompt-input';
 import { PromptInputTextarea } from './prompt-input-textarea';
 
 const meta: Meta<PromptInputTextarea> = {
-  title: 'PromptInput/Textarea',
+  title: 'AI/Chatbot/PromptInput/Textarea',
   component: PromptInputTextarea,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [PromptInput] })],

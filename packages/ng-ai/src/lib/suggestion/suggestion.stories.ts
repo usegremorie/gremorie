@@ -9,7 +9,7 @@ import { Suggestions } from './suggestions';
  * 3 sizes + the `<suggestions>` row container.
  */
 const meta: Meta<Suggestion> = {
-  title: 'AI/Suggestion',
+  title: 'AI/Chatbot/Suggestion',
   component: Suggestion,
   tags: ['autodocs'],
   decorators: [
@@ -31,6 +31,27 @@ const meta: Meta<Suggestion> = {
 
 export default meta;
 type Story = StoryObj<Suggestion>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (the suggestions row).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <suggestions>
+          <suggestion value="Tell me a joke">Tell me a joke</suggestion>
+          <suggestion value="Summarize this">Summarize this</suggestion>
+          <suggestion value="Translate to French">Translate to French</suggestion>
+          <suggestion value="Explain like I'm 5">Explain like I'm 5</suggestion>
+          <suggestion value="What's next?">What's next?</suggestion>
+        </suggestions>
+      </div>
+    `,
+  }),
+};
 
 export const Default: Story = {
   args: { variant: 'outline', size: 'sm' },

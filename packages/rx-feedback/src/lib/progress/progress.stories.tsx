@@ -45,9 +45,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — determinate bar at a fixed width, driven by the value control. */
+export const Workbench: Story = {
+  args: { value: 60 },
+  render: (args) => (
+    <div className="w-64">
+      <Progress {...args} />
+    </div>
+  ),
+};
+
 /** Interactive — drag the `value` control. */
 export const Default: Story = {
   args: { value: 60 },
+  render: (args) => <Progress {...args} className="w-80" />,
+};
+
+/**
+ * Indeterminate — `value={null}` reports `data-state="indeterminate"` from
+ * Radix. The bar stays at translateX(-100%) (no fill).
+ */
+export const Indeterminate: Story = {
+  args: { value: null },
   render: (args) => <Progress {...args} className="w-80" />,
 };
 

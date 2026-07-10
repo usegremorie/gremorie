@@ -142,6 +142,42 @@ export const Default: Story = {
   render: () => <Picker />,
 };
 
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story; type to filter the list.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div style={{ width: 420 }}>
+      <Command className="rounded-md border">
+        <ModelSelectorInput placeholder="Search models…" />
+        <ModelSelectorList>
+          <ModelSelectorEmpty>No models found.</ModelSelectorEmpty>
+          <ModelSelectorGroup>
+            <ModelSelectorItem value="claude-3-5-sonnet">
+              <ModelSelectorLogo provider="anthropic" />
+              <ModelSelectorName>Claude 3.5 Sonnet</ModelSelectorName>
+              <ModelSelectorShortcut>⌘1</ModelSelectorShortcut>
+            </ModelSelectorItem>
+            <ModelSelectorItem value="gpt-4o">
+              <ModelSelectorLogo provider="openai" />
+              <ModelSelectorName>GPT-4o</ModelSelectorName>
+              <ModelSelectorShortcut>⌘2</ModelSelectorShortcut>
+            </ModelSelectorItem>
+            <ModelSelectorSeparator />
+            <ModelSelectorItem value="gemini-1.5-pro">
+              <ModelSelectorLogo provider="google" />
+              <ModelSelectorName>Gemini 1.5 Pro</ModelSelectorName>
+              <ModelSelectorShortcut>⌘3</ModelSelectorShortcut>
+            </ModelSelectorItem>
+          </ModelSelectorGroup>
+        </ModelSelectorList>
+      </Command>
+    </div>
+  ),
+};
+
 /** The real trigger → dialog flow. Click the button to open the picker. */
 export const WithDialog: Story = {
   render: () => (

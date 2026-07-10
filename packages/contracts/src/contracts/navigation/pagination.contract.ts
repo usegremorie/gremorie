@@ -58,8 +58,8 @@ export const pagination = defineContract({
       '<pagination><pagination-content><pagination-item><pagination-previous href="#" /></pagination-item><pagination-item><pagination-link href="#" isActive>1</pagination-link></pagination-item><pagination-item><pagination-next href="#" /></pagination-item></pagination-content></pagination>',
   },
   preview: {
-    rx: 'interaction-navigation-pagination--default',
-    ng: 'navigation-pagination--workbench',
+    rx: 'interaction-navigation-pagination--workbench',
+    ng: 'interaction-navigation-pagination--workbench',
   },
   tag: { rx: 'Pagination', ng: 'gn-pagination' },
   example: { isActive: false, size: 'icon' },

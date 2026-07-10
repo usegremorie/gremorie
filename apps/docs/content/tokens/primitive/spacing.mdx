@@ -1,21 +1,21 @@
 ---
 title: Spacing
-description: Uma única base (4px) gera toda a escala de espaçamento via calc() do Tailwind v4.
+description: A single base (4px) generates the entire spacing scale through Tailwind v4 calc().
 ---
 
 import { SpacingTable } from '@/components/token-tables';
 
-Espaçamento é o ritmo da interface. É o que diz "esses dois
-elementos andam juntos" e "esse outro é parte de outro grupo" sem
-escrever uma palavra. Em UI, **70% das decisões visuais são
-decisões de spacing** — e fazer isso bem significa parar de
-inventar valores e começar a usar uma escala.
+Spacing is the rhythm of the interface. It is what says "these two
+elements belong together" and "this other one is part of another
+group" without writing a word. In UI, **70% of visual decisions
+are spacing decisions**, and doing it well means you stop
+inventing values and start using a scale.
 
-## Como a escala funciona
+## How the scale works
 
-A KDS herda a estratégia do Tailwind v4: **uma única variável**
-(`--spacing: 0.25rem`, ou seja, 4px) que gera toda a família de
-utilitários via `calc()`.
+Gremorie inherits the Tailwind v4 strategy: **a single variable**
+(`--spacing: 0.25rem`, that is, 4px) generates the entire family
+of utilities through `calc()`.
 
 ```css
 /* Tailwind v4 deriva tudo disso: */
@@ -36,43 +36,44 @@ utilitários via `calc()`.
 } /* 128px */
 ```
 
-A consequência prática: **não há lista de stops** como em radius
-ou shadow. Qualquer multiplicador funciona — `p-7`, `p-13`, `p-50`.
-Em geral seguimos os incrementos `0.5, 1, 1.5, 2, 3, 4, 5, 6, 8,
-10, 12, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 96` que cobrem
-99% dos casos.
+The practical consequence: **there is no list of stops** like in
+radius or shadow. Any multiplier works - `p-7`, `p-13`, `p-50`. In
+general we stick to the increments `0.5, 1, 1.5, 2, 3, 4, 5, 6, 8,
+10, 12, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 96`, which cover
+99% of cases.
 
-## Por que 4px
+## Why 4px
 
-A base de 4px (`0.25rem`) é o **menor incremento útil** em UI:
+The 4px base (`0.25rem`) is the **smallest useful increment** in
+UI:
 
-- Múltiplo de 2 e 4 — encaixa em densidade de pixel comum.
-- Combina bem com line-heights de 16px (default body), 20px
-  (`text-sm`) e 24px (`text-base`).
-- Stops finos (`p-0.5` = 2px) cobrem casos hairline (separadores,
-  bordas).
+- A multiple of 2 and 4, so it fits common pixel densities.
+- It combines well with line-heights of 16px (default body), 20px
+  (`text-sm`) and 24px (`text-base`).
+- Thin stops (`p-0.5` = 2px) cover hairline cases (separators,
+  borders).
 
-Se você precisa rescale o sistema todo para mais denso ou mais
-espaçoso, edite `--spacing` num CSS layer maior — todos os
-utilitários cascateiam.
+If you need to rescale the whole system to be denser or more
+spacious, edit `--spacing` in a higher CSS layer and every
+utility cascades.
 
-## Escala de referência
+## Reference scale
 
-A tabela abaixo mostra um subset representativo. **Qualquer
-multiplicador inteiro** ou fracionário (até a quarto) funciona.
+The table below shows a representative subset. **Any integer
+multiplier**, or fractional down to a quarter, works.
 
 <SpacingTable />
 
-## Boas práticas
+## Best practices
 
-- **4 e 6 são os defaults seguros** para padding interno de UI
-  (`p-4` em cards, `p-6` em containers maiores).
-- **8, 12, 16** para gaps entre elementos relacionados.
-- **20, 24** para gaps entre seções de conteúdo dentro da mesma
+- **4 and 6 are the safe defaults** for internal UI padding
+  (`p-4` on cards, `p-6` on larger containers).
+- **8, 12, 16** for gaps between related elements.
+- **20, 24** for gaps between content sections inside the same
   surface.
-- **64, 80, 96** para gaps entre seções macro em landings.
-- **Não invente**: se você está prestes a usar `padding: 18px`,
-  pergunte se `p-4` (16px) ou `p-5` (20px) não resolveria. A
-  consistência da escala é mais valiosa que o pixel exato.
-- **Use `gap-*` em vez de margens** quando possível — flex/grid
-  com gap é mais previsível que margens cascateando.
+- **64, 80, 96** for gaps between macro sections on landing pages.
+- **Do not invent values.** If you are about to write
+  `padding: 18px`, ask whether `p-4` (16px) or `p-5` (20px) would
+  do. Scale consistency is worth more than the exact pixel.
+- **Prefer `gap-*` over margins** when possible. Flex and grid
+  with gap are more predictable than cascading margins.

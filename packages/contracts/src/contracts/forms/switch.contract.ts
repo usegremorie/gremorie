@@ -77,8 +77,8 @@ export const switchContract = defineContract({
     example: '<switch defaultChecked /> <label>Email alerts</label>',
   },
   preview: {
-    rx: 'inputs-selection-switch--default',
-    ng: 'forms-switch--workbench',
+    rx: 'inputs-selection-switch--workbench',
+    ng: 'inputs-selection-switch--workbench',
   },
   tag: { rx: 'Switch', ng: 'gn-switch' },
   example: {
