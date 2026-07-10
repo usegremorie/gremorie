@@ -17,7 +17,7 @@ import {
  * search results, and with image preview.
  */
 const meta: Meta<ChainOfThought> = {
-  title: 'AI/ChainOfThought',
+  title: 'AI/Chatbot/ChainOfThought',
   component: ChainOfThought,
   tags: ['autodocs'],
   decorators: [
@@ -37,6 +37,29 @@ const meta: Meta<ChainOfThought> = {
 
 export default meta;
 type Story = StoryObj<ChainOfThought>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (the simple step list).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <chain-of-thought [open]="true">
+          <chain-of-thought-header>Searching the docs</chain-of-thought-header>
+          <chain-of-thought-content>
+            <chain-of-thought-step label="Identifying relevant sources" status="complete" />
+            <chain-of-thought-step label="Reading the API reference" status="complete" />
+            <chain-of-thought-step label="Composing the answer" status="active" />
+            <chain-of-thought-step label="Verifying citations" status="pending" />
+          </chain-of-thought-content>
+        </chain-of-thought>
+      </div>
+    `,
+  }),
+};
 
 export const Simple: Story = {
   render: () => ({

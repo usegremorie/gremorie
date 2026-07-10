@@ -87,8 +87,8 @@ export const sheet = defineContract({
       '<Sheet><SheetTrigger>Open</SheetTrigger><SheetContent side="right"><SheetHeader><SheetTitle>Edit</SheetTitle></SheetHeader><SheetFooter><SheetClose>Done</SheetClose></SheetFooter></SheetContent></Sheet>',
   },
   preview: {
-    rx: 'interaction-overlays-sheet--default',
-    ng: 'overlays-sheet--workbench',
+    rx: 'interaction-overlays-sheet--workbench',
+    ng: 'interaction-overlays-sheet--workbench',
   },
   tag: { rx: 'Sheet', ng: 'gn-sheet' },
   example: {

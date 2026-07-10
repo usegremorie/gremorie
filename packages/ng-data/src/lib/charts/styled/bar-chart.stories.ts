@@ -25,7 +25,7 @@ const BROWSERS: ChartDatum[] = [
 ];
 
 const meta: Meta<BarChart> = {
-  title: 'Charts/BarChart',
+  title: 'Layout & display/Data/Bar Chart',
   component: BarChart,
   tags: ['autodocs'],
   render: (args) => ({

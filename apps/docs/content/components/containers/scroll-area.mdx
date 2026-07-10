@@ -63,9 +63,35 @@ export function TagList({ tags }) {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release. The React API will translate to a structural directive plus content projection slots.
-</Callout>
+```bash
+npx gremorie@latest add ng-scroll-area
+```
+
+```ts
+import { Component } from '@angular/core';
+import { ScrollAreaImports } from '@gremorie/ng-containers';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [ScrollAreaImports],
+  template: `
+    <ng-scrollbar gremorie class="h-72 w-48 rounded-md border">
+      <div class="p-4">
+        @for (tag of tags; track tag) {
+          <div class="py-2 text-sm">{{ tag }}</div>
+        }
+      </div>
+    </ng-scrollbar>
+  `,
+})
+export class ExampleComponent {
+  readonly tags = ['v1.2.0-beta.50', 'v1.2.0-beta.49', 'v1.2.0-beta.48'];
+}
+```
+
+The Angular edition is a `gremorie` styling directive applied to ngx-scrollbar's `<ng-scrollbar>` element; `ScrollAreaImports` bundles both.
+
 </Tab>
 </Tabs>
 

@@ -10,7 +10,9 @@
   ],
   "dependencies": [
     "embla-carousel-react",
-    "lucide-react"
+    "lucide-react",
+    "@gremorie/rx-core",
+    "@gremorie/rx-forms"
   ],
   "devDependencies": [],
   "registryDependencies": [

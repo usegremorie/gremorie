@@ -39,6 +39,10 @@ import {
 import { CheckIcon, InfoIcon, MoonIcon, SunIcon, XIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
+// Deep import of the pure data module: the registry barrel re-exports the
+// generator (node:fs/node:path), which cannot enter a browser bundle.
+import { ITEMS } from '@gremorie/registry/dist/items.js';
+
 import { Sidebar } from './sidebar';
 
 /**
@@ -52,6 +56,17 @@ import { Sidebar } from './sidebar';
 // permalinks) via build-time env vars. Same iframe contract either way.
 const RX_BASE = import.meta.env.VITE_RX_BASE ?? 'http://localhost:4401';
 const NG_BASE = import.meta.env.VITE_NG_BASE ?? 'http://localhost:4400';
+
+/**
+ * Angular items that actually exist in the published registry index
+ * (apps/docs/public/r/registry.json, imported at build time). The ng registry
+ * covers only a subset of the contracts, so the manifest gates the
+ * `npx gremorie add ng-*` command on this set: a missing item degrades to the
+ * npm install of the bundle (rendered as a single line by FrameworkColumn).
+ */
+const NG_REGISTRY_ITEMS = new Set(
+  ITEMS.filter((item) => item.framework === 'ng').map((item) => item.name),
+);
 
 /** The Gremorie brand themes, applied via `data-theme` on the root element. */
 const THEMES = [
@@ -132,6 +147,7 @@ function usageCode(
   );
 
   const attrs = entry.controls
+    .filter((c) => !c.demo)
     .map((c) => {
       const v = values[c.name];
       if (v === '' || v === undefined) return null;
@@ -197,7 +213,9 @@ function PropField({
       {meta?.required && (
         <span className="text-[10px] text-rose-500 leading-none">*</span>
       )}
-      {meta?.description && <PropInfo text={meta.description} />}
+      {(meta?.description ?? control.desc) && (
+        <PropInfo text={meta?.description ?? control.desc ?? ''} />
+      )}
     </div>
   );
 
@@ -362,7 +380,13 @@ function FrameworkColumn({
           <span className="font-medium text-[11px] text-muted-foreground uppercase tracking-wide">
             Install
           </span>
-          <PropInfo text="First line copies the component source into your app via the registry; second installs the bundled package from npm." />
+          <PropInfo
+            text={
+              commands.registry === commands.npm
+                ? 'Installs the bundled package from npm (no copy-paste registry item for this edition yet).'
+                : 'First line copies the component source into your app via the registry; second installs the bundled package from npm.'
+            }
+          />
         </div>
         <CodeBlock
           code={
@@ -380,7 +404,10 @@ function FrameworkColumn({
 }
 
 export function App() {
-  const entries = useMemo(() => workbenchManifest(CONTRACTS), []);
+  const entries = useMemo(
+    () => workbenchManifest(CONTRACTS, { ngRegistryItems: NG_REGISTRY_ITEMS }),
+    [],
+  );
   const [name, setName] = useState(entries[0]?.name ?? '');
   const entry = entries.find((e) => e.name === name) ?? entries[0];
   const [values, setValues] = useState<Values>(() => defaults(entry));

@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +8,12 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { cva } from 'class-variance-authority';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 import { PromptInput } from './prompt-input';
 import { PromptInputState } from './prompt-input.types';
@@ -26,8 +33,10 @@ const LABEL_MAP: Record<PromptInputState, string> = {
   error: 'Retry',
 };
 
+// size-8 mirrors the React PromptInputSubmit default (InputGroupButton
+// `icon-sm`), keeping both composers' send buttons the same footprint.
 const submitVariants = cva(
-  'inline-flex size-9 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'inline-flex size-8 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       state: {
@@ -49,58 +58,86 @@ const submitVariants = cva(
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   template: `
-    <button
-      type="button"
-      [class]="buttonClass()"
-      [attr.aria-label]="ariaLabel()"
-      [attr.aria-busy]="isBusy() ? 'true' : null"
-      [attr.data-state]="state()"
-      [disabled]="isDisabled()"
-      (click)="handleClick()"
-    >
-      <ng-content>
-        @if (state() === 'submitted') {
-          <svg
-            class="size-4 animate-spin"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip>
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
+
+    <ng-template #btn>
+      <button
+        type="button"
+        [class]="buttonClass()"
+        [attr.aria-label]="ariaLabel()"
+        [attr.aria-busy]="isBusy() ? 'true' : null"
+        [attr.data-state]="state()"
+        [disabled]="isDisabled()"
+        (click)="handleClick()"
+      >
+        <ng-content>
+          @if (state() === 'submitted') {
+            <svg
+              class="size-4 animate-spin"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-dasharray="20 40"
+              ></circle>
+            </svg>
+          } @else {
+            <svg
+              class="size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
-              stroke-dasharray="20 40"
-            ></circle>
-          </svg>
-        } @else {
-          <svg
-            class="size-4"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path [attr.d]="iconPath()"></path>
-          </svg>
-        }
-      </ng-content>
-    </button>
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path [attr.d]="iconPath()"></path>
+            </svg>
+          }
+        </ng-content>
+      </button>
+    </ng-template>
   `,
 })
 export class PromptInputSubmit {
   protected readonly parent = inject(PromptInput);
 
   readonly disabled = input<boolean>(false);
+
+  /**
+   * Optional hover/focus tooltip. Mirrors React PromptInputSubmit `tooltip`:
+   * when set, the button is wrapped in the styled gn-tooltip compound.
+   */
+  readonly tooltip = input<string | null | undefined>(null);
 
   protected readonly state = computed<PromptInputState>(() =>
     this.parent.state(),

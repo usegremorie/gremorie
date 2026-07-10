@@ -62,6 +62,21 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { orientation: 'horizontal' },
+  render: (args) => (
+    <ButtonGroup {...args}>
+      <Button variant="outline">Prev</Button>
+      <Button variant="outline">Next</Button>
+    </ButtonGroup>
+  ),
+};
+
 /** A simple horizontal group of three buttons. */
 export const Default: Story = {
   render: (args) => (

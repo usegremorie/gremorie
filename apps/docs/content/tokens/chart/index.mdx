@@ -1,0 +1,141 @@
+---
+title: Overview
+description: Five canonical color schemes for data visualization - each for a specific shape of data, grounded in academic work and product DS practice.
+---
+
+Charts do not share the UI's semantic tokens. They have a **layer
+of their own**, with five canonical schemes. The separation is
+not aesthetic - it is technical: each shape of data needs a
+specific chromatic treatment, and mixing them produces wrong
+charts (a sequential gradient applied to nominal categories
+suggests an order that is not there).
+
+This is **layer 3 of 3**: chart tokens reference
+[primitives](/tokens/primitive) and vary per theme like
+[semantic](/tokens/semantic) tokens do. The full picture lives in
+the [three-layer model](/tokens).
+
+## The five schemes
+
+<Cards>
+  <Card
+    title="Sequential"
+    href="/tokens/chart/sequential"
+    description="A single-hue gradient for ordered data - heatmaps, choropleths, intensity."
+  />
+  <Card
+    title="Categorical"
+    href="/tokens/chart/categorical"
+    description="Eight distinct hues for nominal categories - regions, departments, types."
+  />
+  <Card
+    title="Divergent"
+    href="/tokens/chart/divergent"
+    description="Bipolar with a neutral pivot - variation above/below, NPS, sentiment."
+  />
+  <Card
+    title="Status"
+    href="/tokens/chart/status"
+    description="Discrete semantic state - success, warning, error, info, neutral."
+  />
+  <Card
+    title="Comparison"
+    href="/tokens/chart/comparison"
+    description="Highlight-one-mute-the-others - you vs. peers, current vs. baseline."
+  />
+</Cards>
+
+## Why five and not three
+
+The grounding for the first three comes from **ColorBrewer**
+(Cynthia Brewer, Penn State), the canonical dataviz reference
+since the 90s. The other two are contributions from product
+design systems:
+
+- **Status** comes from **Cloudscape (AWS)** and **Carbon (IBM)**,
+  UI systems that had to name state colors for dashboards.
+- **Comparison** is an internal Kalvner DS convention, covering a
+  use case that is everywhere in dashboards (highlight one) but
+  had no canonical name in the literature.
+
+## The decision matrix
+
+To pick the right scheme, start from the **shape of the data**,
+not from taste:
+
+| Shape of the data                                         | Scheme          | Recommended chart type                 |
+| --------------------------------------------------------- | --------------- | -------------------------------------- |
+| Ordered, low to high (density, intensity)                 | **Sequential**  | Heatmap, choropleth, gradient bar      |
+| Nominal without order (regions, departments, types)       | **Categorical** | Bar, Line, multi-series Area, Pie      |
+| Bipolar with a pivot (above/below the mean, variation)    | **Divergent**   | Bar with baseline, correlation matrix  |
+| Discrete state with semantics (success/error/warning)     | **Status**      | KPI tile, health dashboard, alert      |
+| Two groups without semantic poles (current/previous, A/B) | **Comparison**  | Bar / Line with one highlighted series |
+
+See the [Chart](/components/data/chart) page in the UI section for each
+type rendered and the inverse matrix (choosing by the reader's
+question).
+
+## Variation per theme
+
+Chart tokens **change per theme**, not just the UI semantic
+tokens. Each of the six themes (Default, Claude, ChatGPT, Gemini,
+Perplexity, Mistral) overrides the chart variable values in its
+`[data-theme="<id>"]` selector, in both light and dark mode.
+
+That means a chart built with `--color-chart-cat-1` **paints
+differently** depending on the theme active at render time,
+without the component knowing. For the designer, the implication
+is:
+
+- **Do not pick the chart scheme by chromatic taste**; pick it by
+  the shape of the data. The exact color will vary.
+- **Check accessibility across all 4 themes and 8 modes
+  (light/dark)**, not just the default theme. A scheme with OK
+  contrast in Default can fail in Amber.
+- **The 5 schemes keep the same intent** across themes -
+  Sequential is still "ordered by lightness", Status is still
+  "semantic state", and so on. Only the concrete color changes.
+
+The Gremorie Storybook decorators run every chart in each theme x mode
+combination (8 in total), and Chromatic gates each one visually -
+when a combination becomes inaccessible, the build fails.
+
+## Accessibility first
+
+All five schemes were designed with **color-blind safety** at the
+center:
+
+- **Sequential** reads through lightness, not hue.
+- **Divergent** uses Red-Blue, not Red-Green - because Red-Green
+  is inaccessible to 8% of men with color vision deficiency.
+- **Categorical** uses hues that stay perceptually distinct under
+  protanopia, deuteranopia and tritanopia simulation.
+- **Status** must always be paired with a label, icon or pattern -
+  color alone is never the only channel.
+
+<Callout type="warn">
+  **Anti-pattern.** Do not use Red-Yellow-Green (RdYlGn) for Divergent. Gremorie
+  does not ship this scheme, not even as an opt-in. Adapt to Red-Blue (RdBu).
+</Callout>
+
+## How to reference them in components
+
+Chart tokens are bridged into the Tailwind utility generator via
+`@theme inline`. You can consume them in three ways:
+
+```tsx
+// 1. CSS variable direto (recomendado para Recharts)
+<Bar fill="var(--color-chart-cat-1)" />
+
+// 2. Utilitário Tailwind gerado automaticamente
+<rect className="fill-chart-cat-1" />
+
+// 3. ChartConfig do Gremorie (consumido pelos helpers de tooltip / legenda)
+const config = {
+  revenue: { label: "Receita", color: "var(--color-chart-cat-1)" }
+} satisfies ChartConfig;
+```
+
+For the complete charting system - `ChartContainer`, tooltip,
+legend and the six covered types - see
+[Chart](/components/data/chart).

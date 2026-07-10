@@ -85,8 +85,8 @@ export const drawer = defineContract({
       '<Drawer><DrawerTrigger>Open</DrawerTrigger><DrawerContent><DrawerHeader><DrawerTitle>Filters</DrawerTitle></DrawerHeader><DrawerFooter><DrawerClose>Close</DrawerClose></DrawerFooter></DrawerContent></Drawer>',
   },
   preview: {
-    rx: 'interaction-overlays-drawer--default',
-    ng: 'overlays-drawer--workbench',
+    rx: 'interaction-overlays-drawer--workbench',
+    ng: 'interaction-overlays-drawer--workbench',
   },
   tag: { rx: 'Drawer', ng: 'gn-drawer' },
   example: {

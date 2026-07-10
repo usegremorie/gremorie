@@ -1,5 +1,5 @@
 import { defineI18nUI } from 'fumadocs-ui/i18n';
-import { Github, Sparkles } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 import type { BaseLayoutProps, LinkItemType } from 'fumadocs-ui/layouts/shared';
 
@@ -41,11 +41,11 @@ export const { provider } = defineI18nUI(i18n, {
  * filters to icon-only entries; HomeLayout uses the full list.
  */
 
+// Plain text wordmark. The provisional icon mark was removed on purpose:
+// Kal is designing the real Gremorie logo, and until it lands the brand is
+// the wordmark alone (no placeholder glyph).
 export const logo = (
-  <span className="inline-flex items-center gap-2 font-semibold">
-    <Sparkles className="size-4" aria-hidden="true" />
-    Gremorie
-  </span>
+  <span className="inline-flex items-center gap-2 font-semibold">Gremorie</span>
 );
 
 /**
@@ -58,13 +58,19 @@ export const logo = (
  * `aria-hidden` Lucide icon expose the link as a labeled action with a
  * decorative graphic.
  */
-// Section navigation lives in the sidebar tab switcher (auto-generated from the
-// `root: true` folders — Get Started, Corpus, Tokens, Components, Blocks,
-// Artifacts, Platform). We intentionally do NOT duplicate those sections as
-// navbar/sidebar links here: that hardcoded subset was incomplete (4 of 7) and
-// rendered inside every tab's sidebar, which read as "Blocks mixed into Corpus".
-// The navbar keeps brand + search + GitHub only.
+// Primary destinations (home redesign, section 0): Components, Blocks,
+// Tokens, Corpus. Declared with `on: 'nav'` so they render in the top navbar
+// (home + docs) but stay OUT of the docs sidebar menu — the earlier hardcoded
+// sidebar subset rendered inside every tab's sidebar and read as "Blocks mixed
+// into Corpus"; the sidebar keeps its auto-generated `root: true` tabs.
+// Workbench is intentionally absent: the app has no public deployment URL yet
+// (docs/workbench.md still says "<set by your Vercel project>"). Add it here
+// once the workbench ships publicly.
 export const linkItems: LinkItemType[] = [
+  { text: 'Components', url: '/components', on: 'nav' },
+  { text: 'Blocks', url: '/blocks', on: 'nav' },
+  { text: 'Tokens', url: '/tokens', on: 'nav' },
+  { text: 'Corpus', url: '/corpus', on: 'nav' },
   {
     type: 'icon',
     label: 'GitHub',

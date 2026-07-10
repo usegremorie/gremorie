@@ -30,7 +30,7 @@ type DatePickerProps = {
 function DatePicker({
   value,
   onValueChange,
-  placeholder = 'Selecione uma data',
+  placeholder = 'Pick a date',
   disabled,
   className,
 }: DatePickerProps) {

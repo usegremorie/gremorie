@@ -13,7 +13,7 @@ import { Label } from './label';
  * dims automatically when a peer/`group` control is disabled.
  */
 const meta: Meta<Label> = {
-  title: 'Forms/Label',
+  title: 'Inputs/Text/Label',
   component: Label,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Label, Input] })],

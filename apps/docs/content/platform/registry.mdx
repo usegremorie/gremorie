@@ -34,15 +34,18 @@ Each item is a single JSON document with embedded source files:
 ```json
 {
   "name": "rx-button",
-  "type": "registry:ui",
-  "framework": "react",
-  "dependencies": ["@radix-ui/react-slot"],
-  "registryDependencies": ["rx-core"],
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "Button (React)",
+  "categories": ["core", "primitives", "forms"],
+  "dependencies": ["class-variance-authority", "radix-ui"],
+  "registryDependencies": ["rx-utils"],
   "files": [
     {
-      "path": "rx-button/button.tsx",
-      "content": "// component source here",
-      "type": "registry:ui"
+      "path": "src/lib/button/button.tsx",
+      "type": "registry:component",
+      "target": "src/components/gremorie/forms/button/button.tsx",
+      "content": "// component source here"
     }
   ]
 }
@@ -50,7 +53,8 @@ Each item is a single JSON document with embedded source files:
 
 - **`dependencies`** -- npm packages the consumer must install
 - **`registryDependencies`** -- other registry items the CLI must pull in
-- **`files`** -- embedded source written verbatim to the project
+- **`files`** -- embedded source written verbatim to the project; each
+  file's `target` is where the CLI writes it in your repo
 
 ## Consuming the registry yourself
 
@@ -75,9 +79,9 @@ Two editions are published from the same monorepo:
 - **`/r/rx/*`** -- React primitives
 - **`/r/ng/*`** -- Angular primitives
 
-The Angular edition is the active workstream. The React edition is in
-progress; see the [Architecture doc](/platform/architecture) for the
-roadmap.
+The React registry covers the full catalog; the Angular registry is
+still growing. See the [Architecture doc](/platform/architecture) for
+the roadmap.
 
 ## Source
 

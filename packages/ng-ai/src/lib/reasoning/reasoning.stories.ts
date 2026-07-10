@@ -20,7 +20,7 @@ type ReasoningArgs = {
 };
 
 const meta: Meta<ReasoningArgs> = {
-  title: 'AI/Reasoning',
+  title: 'AI/Chatbot/Reasoning',
   component: Reasoning,
   tags: ['autodocs'],
   decorators: [
@@ -38,6 +38,24 @@ const meta: Meta<ReasoningArgs> = {
 
 export default meta;
 type Story = StoryObj<ReasoningArgs>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (the done state).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <reasoning [isStreaming]="false" [defaultOpen]="false" [duration]="4">
+          <reasoning-trigger />
+          <reasoning-content text="Considered three approaches, picked the second one because it composed better with the existing handlers." />
+        </reasoning>
+      </div>
+    `,
+  }),
+};
 
 export const Streaming: Story = {
   args: {

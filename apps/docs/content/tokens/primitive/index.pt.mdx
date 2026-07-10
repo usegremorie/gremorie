@@ -1,0 +1,92 @@
+---
+title: Visão geral
+description: Os primitivos são a fonte da verdade do Gremorie — paletas Tailwind v4 e escalas dimensionais sem semântica.
+---
+
+Os tokens **primitivos** são o vocabulário cru do Gremorie. Eles não
+têm opinião sobre uso: um `--color-blue-600` é apenas um azul
+específico, não um "primary". Um `--radius-lg` são 8 pixels, sem
+papel atribuído. A semântica vem na camada de cima.
+
+Esta é a **camada 1 de 3**: primitivos alimentam as intenções
+[semânticas](/tokens/semantic), que alimentam os esquemas de
+[chart](/tokens/chart). O desenho completo está no
+[modelo de três camadas](/tokens).
+
+## O que vive aqui
+
+Seis grupos, cada um com sua própria página:
+
+<Cards>
+  <Card
+    title="Colors"
+    href="/tokens/primitive/colors"
+    description="27 rampas e 298 stops: as paletas do Tailwind v4 mais cinco rampas sintetizadas para o Gremorie, incluindo a rampa de marca clay."
+  />
+  <Card
+    title="Typography"
+    href="/tokens/primitive/typography"
+    description="Famílias, pesos, tamanhos com line-height pareada, leading e tracking."
+  />
+  <Card
+    title="Spacing"
+    href="/tokens/primitive/spacing"
+    description="Uma única base (4px) que gera toda a escala via calc()."
+  />
+  <Card
+    title="Radius"
+    href="/tokens/primitive/radius"
+    description="Oito stops de border-radius do quase reto ao blob-style."
+  />
+  <Card
+    title="Shadow"
+    href="/tokens/primitive/shadow"
+    description="Hierarquia de elevação: hairline, card, dropdown, modal, drawer."
+  />
+  <Card
+    title="Motion"
+    href="/tokens/primitive/motion"
+    description="Curvas de easing e durações canônicas. Animações bundled do Tailwind."
+  />
+</Cards>
+
+## Por que primitivos vêm primeiro
+
+Quando a marca evolui — uma nova cor entra, o azul fica mais
+saturado, o radius aumenta — a alteração acontece **aqui**.
+Semânticos e tokens de chart referenciam primitivos via
+`var(--color-<token>)`, então a mudança cascateia automaticamente.
+
+Esse é o trade-off importante: ter primitivos ricos significa que
+você nunca está preso a um único tom. Ter primitivos em namespace
+Tailwind nativo significa que `bg-blue-600` simplesmente funciona.
+
+## Quando você toca primitivos
+
+Quase nunca em componentes — esse é o ponto. As exceções são:
+
+- **Marketing e ilustração** que precisam de uma cor específica
+  fora da paleta semântica.
+- **Utilitários estruturais** (gap, padding) onde a escala
+  geométrica é o token: `p-4`, `gap-6`.
+- **Adicionar um novo valor** ao sistema — só acontece aqui.
+
+## Naming agnóstico
+
+Todos os tokens primitivos usam o **namespace nativo do
+Tailwind v4**. Isso tem duas consequências práticas:
+
+1. Utilitários como `bg-amber-500`, `text-slate-700`,
+   `rounded-2xl`, `shadow-md` aparecem automaticamente — sem
+   bridge code.
+2. Os primitivos **sobrescrevem** os defaults do Tailwind. Editar
+   `--color-blue-600` em `colors.css` afeta todo lugar que usa
+   blue-600, em qualquer tema.
+
+<Callout type="info">
+  **Importante.** Não confunda tokens primitivos (camada 1) com tokens
+  semânticos (camada 2). Componentes consomem semânticos na esmagadora maioria
+  dos casos. Os primitivos só entram em cena quando a intenção semântica não
+  cabe — e quando isso acontece, vale parar e perguntar se a intenção deveria
+  virar token semântico novo.
+</Callout>

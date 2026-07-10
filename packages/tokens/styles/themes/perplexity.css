@@ -1,17 +1,19 @@
 /*
- * Perplexity theme: teal/petrol, sober and tight.
+ * Perplexity theme: true turquoise on offblack, sober and tight.
  * Activate with data-theme="perplexity" on the root element.
  */
 :root[data-theme='perplexity'] {
-  --primary: var(--color-teal-700);
-  --primary-foreground: var(--color-gray-50);
+  /* Brand turquoise #20808D. Pure white (gray-0) foreground reaches 4.6:1;
+     gray-50 would sit just under the 4.5:1 text minimum. */
+  --primary: oklch(0.553 0.086 208.5);
+  --primary-foreground: var(--color-gray-0);
   --accent: var(--color-teal-100);
   --accent-foreground: var(--color-teal-900);
-  --ring: var(--color-teal-600);
+  --ring: oklch(0.553 0.086 208.5);
 
-  --sidebar-primary: var(--color-teal-700);
-  --sidebar-primary-foreground: var(--color-gray-50);
-  --sidebar-ring: var(--color-teal-600);
+  --sidebar-primary: oklch(0.553 0.086 208.5);
+  --sidebar-primary-foreground: var(--color-gray-0);
+  --sidebar-ring: oklch(0.553 0.086 208.5);
 
   --chart-1: var(--color-teal-600);
   --chart-2: var(--color-teal-300);
@@ -24,13 +26,28 @@
 }
 
 :root[data-theme='perplexity'].dark {
-  --primary: var(--color-teal-400);
+  /* The real product's offblack (#091717 family). Popover tracks card,
+     as in claude.css, so menus never render darker than the page. */
+  --background: oklch(0.192 0.02 195.6);
+  --card: oklch(0.225 0.018 196);
+  --popover: oklch(0.225 0.018 196);
+
+  --primary: oklch(0.72 0.11 205);
   --primary-foreground: var(--color-gray-950);
   --accent: var(--color-teal-900);
   --accent-foreground: var(--color-teal-50);
-  --ring: var(--color-teal-400);
+  --ring: oklch(0.72 0.11 205);
 
-  --sidebar-primary: var(--color-teal-400);
+  --sidebar-primary: oklch(0.72 0.11 205);
   --sidebar-primary-foreground: var(--color-gray-950);
-  --sidebar-ring: var(--color-teal-400);
+  --sidebar-ring: oklch(0.72 0.11 205);
+
+  /* Chart series (dark): lighter steps of the same hues so every series
+     clears the 3:1 graphical minimum on the dark background. Without these
+     the light-block values win on specificity and leak into dark mode. */
+  --chart-1: var(--color-teal-400);
+  --chart-2: var(--color-teal-200);
+  --chart-3: var(--color-cyan-400);
+  --chart-4: var(--color-sky-400);
+  --chart-5: var(--color-emerald-400);
 }

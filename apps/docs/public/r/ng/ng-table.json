@@ -1,0 +1,57 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "ng-table",
+  "type": "registry:block",
+  "framework": "ng",
+  "title": "Table (Angular)",
+  "description": "Styled wrapper over native HTML `<table>` - composable Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption. Use for tabular data; pair with a data-grid library for sorting, filtering, virtualization. Mirrors React Table from @gremorie/rx-display.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "@angular/core",
+    "@gremorie/ng-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ng-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/table/table.ts",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  Directive,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { cn } from '@gremorie/ng-core';\n\n/**\n * Table — styled wrapper around the native `<table>` element. Mirrors React\n * `Table` from `@gremorie/rx-display`.\n *\n * Brings no behavior — just the skin (rules, hover, padding, typography) over\n * semantic markup. For sorting, filtering, pagination or selection, move up to\n * a DataTable pattern.\n *\n * To keep the table DOM valid, the `gn-table` root renders the overflow\n * container + the real `<table>`, and the sub-parts are **attribute\n * directives** applied to native table elements (`thead`, `tbody`, `tfoot`,\n * `tr`, `th`, `td`, `caption`). This mirrors the React anatomy while emitting\n * standards-compliant table markup.\n *\n * @example\n * ```html\n * <gn-table>\n *   <caption gnTableCaption>Recent invoices</caption>\n *   <thead gnTableHeader>\n *     <tr gnTableRow><th gnTableHead>Invoice</th><th gnTableHead>Amount</th></tr>\n *   </thead>\n *   <tbody gnTableBody>\n *     <tr gnTableRow><td gnTableCell>INV001</td><td gnTableCell>$250</td></tr>\n *   </tbody>\n * </gn-table>\n * ```\n */\n@Component({\n  selector: 'gn-table',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div data-slot=\"table-container\" class=\"relative w-full overflow-x-auto\">\n      <table data-slot=\"table\" [class]=\"computedClass()\">\n        <ng-content />\n      </table>\n    </div>\n  `,\n})\nexport class Table {\n  protected readonly computedClass = computed(() =>\n    cn('w-full caption-bottom text-sm'),\n  );\n}\n\n/** TableHeader — `<thead>`. Mirrors React `TableHeader`. */\n@Directive({\n  selector: 'thead[gnTableHeader]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-header',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableHeader {\n  protected readonly computedClass = computed(() => cn('[&_tr]:border-b'));\n}\n\n/** TableBody — `<tbody>`. Mirrors React `TableBody`. */\n@Directive({\n  selector: 'tbody[gnTableBody]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-body',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableBody {\n  protected readonly computedClass = computed(() =>\n    cn('[&_tr:last-child]:border-0'),\n  );\n}\n\n/** TableFooter — `<tfoot>` (muted, top border). Mirrors React `TableFooter`. */\n@Directive({\n  selector: 'tfoot[gnTableFooter]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-footer',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableFooter {\n  protected readonly computedClass = computed(() =>\n    cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0'),\n  );\n}\n\n/** TableRow — `<tr>` with hover + `data-[state=selected]` styling. Mirrors React `TableRow`. */\n@Directive({\n  selector: 'tr[gnTableRow]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-row',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableRow {\n  protected readonly computedClass = computed(() =>\n    cn(\n      'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',\n    ),\n  );\n}\n\n/** TableHead — `<th>` column header. Mirrors React `TableHead`. */\n@Directive({\n  selector: 'th[gnTableHead]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-head',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableHead {\n  protected readonly computedClass = computed(() =>\n    cn(\n      'text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',\n    ),\n  );\n}\n\n/** TableCell — `<td>` body cell. Mirrors React `TableCell`. */\n@Directive({\n  selector: 'td[gnTableCell]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-cell',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableCell {\n  protected readonly computedClass = computed(() =>\n    cn(\n      'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',\n    ),\n  );\n}\n\n/** TableCaption — `<caption>`, rendered below the table. Mirrors React `TableCaption`. */\n@Directive({\n  selector: 'caption[gnTableCaption]',\n  standalone: true,\n  host: {\n    'data-slot': 'table-caption',\n    '[class]': 'computedClass()',\n  },\n})\nexport class TableCaption {\n  protected readonly computedClass = computed(() =>\n    cn('text-muted-foreground mt-4 text-sm'),\n  );\n}\n",
+      "type": "registry:component",
+      "target": "src/app/gremorie/table/table.ts"
+    },
+    {
+      "path": "src/lib/table/index.ts",
+      "content": "export {\n  Table,\n  TableBody,\n  TableCaption,\n  TableCell,\n  TableFooter,\n  TableHead,\n  TableHeader,\n  TableRow,\n} from './table';\n",
+      "type": "registry:lib",
+      "target": "src/app/gremorie/table/index.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "Surfaces grouping related content (Card) and compact status labels (Badge). Companions to Spartan-ng — fill the gap for primitives Spartan-ng doesn't ship.",
+    "whenNotToUse": "Interactive selection chips — those belong to a ToggleGroup primitive, not Badge. Card is not for transient overlays (use a dialog/popover primitive).",
+    "bestPractices": [
+      "Compose Card with its sub-parts (gn-card-header, gn-card-title, gn-card-description, gn-card-content, gn-card-footer) rather than dumping everything into the host.",
+      "Pick the closest semantic Badge variant — outline for neutral metadata, secondary for default counts, destructive for errors.",
+      "Both primitives are token-driven (bg-card, bg-secondary, border-border) so theme changes flow through automatically."
+    ],
+    "antipatterns": [
+      "Hardcoding inline-styled spans/divs to mimic a badge — use Badge with the right variant.",
+      "Reaching into Card sub-classes with className overrides to recolor — add a new variant on the primitive instead."
+    ],
+    "examples": [
+      {
+        "title": "KPI Card",
+        "code": "<gn-card>\n  <gn-card-header>\n    <gn-card-title>Total Revenue</gn-card-title>\n    <gn-card-description>Last 30 days</gn-card-description>\n    <gn-card-action>\n      <gn-badge variant=\"outline\">+12%</gn-badge>\n    </gn-card-action>\n  </gn-card-header>\n  <gn-card-content>$45,231</gn-card-content>\n</gn-card>\n"
+      },
+      {
+        "title": "Status badges",
+        "code": "<gn-badge variant=\"secondary\">Running</gn-badge>\n<gn-badge variant=\"destructive\">Failed</gn-badge>\n<gn-badge variant=\"outline\">Pending</gn-badge>\n"
+      }
+    ]
+  }
+}

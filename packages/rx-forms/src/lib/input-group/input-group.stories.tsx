@@ -70,6 +70,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <InputGroup className="w-80">
+      <InputGroupAddon>
+        <InputGroupText>https://</InputGroupText>
+      </InputGroupAddon>
+      <InputGroupInput placeholder="example.com" />
+      <InputGroupAddon align="inline-end">
+        <InputGroupButton>Save</InputGroupButton>
+      </InputGroupAddon>
+    </InputGroup>
+  ),
+};
+
 /** Leading icon addon. */
 export const LeadingIcon: Story = {
   render: () => (

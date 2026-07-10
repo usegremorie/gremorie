@@ -1,6 +1,6 @@
 ---
 title: Comparison
-description: Destaque-um-mute-os-outros — você vs pares, atual vs baseline, A/B test.
+description: Highlight-one-mute-the-others - you vs. peers, current vs. baseline, A/B test.
 ---
 
 import {
@@ -9,11 +9,11 @@ import {
 } from '@/components/token-tables';
 import { COMPARISON_SCHEME } from '@/lib/chart-tokens';
 
-**Comparison** é o esquema para o pattern
-**destaque-um-mute-os-outros** — quatro neutros muted + um
-highlight colorido. É a paleta canônica para "você vs seus pares",
-"metric atual vs baseline", A/B test, e qualquer caso onde a
-leitura é "esse aqui versus o resto".
+**Comparison** is the scheme for the
+**highlight-one-mute-the-others** pattern - four muted neutrals
+plus one colored highlight. It is the canonical palette for "you
+vs. your peers", "current metric vs. baseline", A/B tests, and any
+case where the reading is "this one versus the rest".
 
 <ChartSchemeSwatchRow scheme={COMPARISON_SCHEME} />
 
@@ -21,52 +21,55 @@ leitura é "esse aqui versus o resto".
 
 <ChartSchemeTable scheme={COMPARISON_SCHEME} />
 
-## Quando usar
+## When to use
 
-- **Bar chart** com uma categoria em destaque + outras em neutro.
-- **Line chart** "sua semana vs todas as outras em cinza".
-- **Before/after comparisons** com a versão atual em cor.
-- **A/B test results** com a variante vencedora em destaque.
-- **Cohort analysis** focando uma cohort específica vs as demais.
+- **Bar charts** with one highlighted category and the others in
+  neutral.
+- **Line charts** like "your week vs. every other week in gray".
+- **Before/after comparisons** with the current version in color.
+- **A/B test results** with the winning variant highlighted.
+- **Cohort analysis** focusing on one specific cohort vs. the
+  rest.
 
-## Por que existe um esquema só pra isso
+## Why this gets its own scheme
 
-Em DS de produto, esse pattern aparece o tempo inteiro —
-suficientemente para merecer um nome e um conjunto canônico de
-tokens. A literatura clássica (ColorBrewer) não cobre, mas
-qualquer dashboard moderno tem várias instâncias dele.
+In product design systems this pattern shows up constantly -
+often enough to deserve a name and a canonical set of tokens. The
+classic literature (ColorBrewer) does not cover it, but any
+modern dashboard has several instances of it.
 
-A intenção dos quatro stops "mute" não é variedade — é
-**hierarquia visual sutil**. Se todas as séries-fundo forem
-exatamente iguais em peso, elas viram ruído. A escala neutral-700
-→ neutral-300 dá uma diferença discreta de ordem (a primeira
-mute é mais escura, a última mais clara), úteis quando você quer
-indicar uma ordem secundária sem competir com o highlight.
+The intent of the four "mute" stops is not variety - it is
+**subtle visual hierarchy**. If every background series carried
+exactly the same weight, they would turn into noise. The
+neutral-700 to neutral-300 scale gives a discreet sense of order
+(the first mute is darker, the last is lighter), useful when you
+want to signal a secondary order without competing with the
+highlight.
 
-## Quando não usar
+## When not to use
 
-- Você tem **duas séries com peso semântico igual** — use
+- You have **two series with equal semantic weight** - use
   [Categorical](/tokens/chart/categorical).
-- O dado tem **polos bom/ruim** — use
+- The data has **good/bad poles** - use
   [Status](/tokens/chart/status).
-- Dado contínuo bipolar — use
+- Bipolar continuous data - use
   [Divergent](/tokens/chart/divergent).
 
 ## Anti-patterns
 
 <Callout type="warn">
-  Tratar Comparison como "Categorical com 5 cores". A intenção é hierarquia
-  visual, não variedade. Se todas as séries forem coloridas, o destaque some — e
-  você acaba com um Categorical mal calibrado.
+  Treating Comparison as "Categorical with 5 colors". The intent is visual
+  hierarchy, not variety. If every series is colored, the highlight disappears -
+  and you end up with a badly calibrated Categorical.
 </Callout>
 
 <Callout type="warn">
-  Múltiplos highlights no mesmo chart. Comparison é **um-contra-os-outros**. Se
-  você precisa destacar dois, está no território de Categorical (com 2 séries
-  primárias + N de fundo) ou de small multiples.
+  Multiple highlights in the same chart. Comparison is **one-against-the-rest**.
+  If you need to highlight two, you are in Categorical territory (2 primary
+  series + N background ones) or small multiples.
 </Callout>
 
-## Exemplo de consumo
+## Usage example
 
 ```tsx
 import { Bar, BarChart } from 'recharts';

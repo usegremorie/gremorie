@@ -14,6 +14,12 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '../chart/chart';
+import {
+  ChartDataTable,
+  ChartLegendList,
+  paletteColor,
+  seriesViews,
+} from '../chart/chart-data-table';
 import type { ChartDatum } from '../chart/types';
 
 export interface RadarChartProps {
@@ -49,29 +55,54 @@ export function RadarChart({
 }: RadarChartProps) {
   const keys = Object.keys(config).filter((k) => k !== xKey);
   const single = keys.length <= 1;
+  const series = seriesViews(config, keys);
+  const ariaLabel = `Radar chart of ${series
+    .map((s) => s.labelText)
+    .join(', ')} by ${xKey}`;
+  const legend = series.map((s, i) => ({
+    name: s.header,
+    color: config[s.key]?.color ?? paletteColor(i),
+  }));
 
   return (
-    <ChartContainer
-      config={config}
-      className={cn('mx-auto aspect-square max-h-[250px]', className)}
+    <div
+      data-slot="radar-chart"
+      role="img"
+      aria-label={ariaLabel}
+      className={cn(
+        'flex w-full flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground',
+        className,
+      )}
     >
-      <RechartsRadarChart data={data as ChartDatum[]}>
-        {tooltip ? (
-          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        ) : null}
-        <PolarAngleAxis dataKey={xKey} />
-        <PolarGrid gridType={gridType} />
-        {keys.map((key) => (
-          <Radar
-            key={key}
-            dataKey={key}
-            fill={`var(--color-${key})`}
-            fillOpacity={single ? 0.6 : 0}
-            stroke={`var(--color-${key})`}
-            strokeWidth={single ? 0 : 2}
-          />
-        ))}
-      </RechartsRadarChart>
-    </ChartContainer>
+      <ChartContainer
+        config={config}
+        className="mx-auto aspect-square max-h-[280px] w-full"
+      >
+        <RechartsRadarChart data={data as ChartDatum[]}>
+          {tooltip ? (
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          ) : null}
+          <PolarAngleAxis dataKey={xKey} />
+          <PolarGrid gridType={gridType} />
+          {keys.map((key) => (
+            <Radar
+              key={key}
+              dataKey={key}
+              fill={`var(--color-${key})`}
+              fillOpacity={single ? 0.6 : 0}
+              stroke={`var(--color-${key})`}
+              strokeWidth={single ? 0 : 2}
+            />
+          ))}
+        </RechartsRadarChart>
+      </ChartContainer>
+      <ChartLegendList items={legend} />
+      <ChartDataTable
+        caption={ariaLabel}
+        labelKey={xKey}
+        columns={series}
+        data={data}
+      />
+    </div>
   );
 }

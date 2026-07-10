@@ -1,6 +1,6 @@
 ---
 title: Divergent
-description: Bipolar com pivô neutro — variação acima/abaixo, NPS, sentiment.
+description: Bipolar with a neutral pivot - variation above/below, NPS, sentiment.
 ---
 
 import {
@@ -9,14 +9,14 @@ import {
 } from '@/components/token-tables';
 import { DIVERGENT_SCHEME } from '@/lib/chart-tokens';
 
-**Divergent** é o esquema para **dado contínuo bipolar** — quando
-existe um pivô significativo (zero, média, baseline) e os valores
-se distribuem para os dois lados. Sete stops com neutro no meio:
-cool (blue) → neutral → warm (rose).
+**Divergent** is the scheme for **bipolar continuous data** - when
+there is a meaningful pivot (zero, mean, baseline) and values
+spread to both sides. Seven stops with neutral in the middle:
+cool (blue) to neutral to warm (rose).
 
-A escolha de **Red-Blue (RdBu)** em vez de Red-Green (RdYlGn) não
-é estilística — é acessibilidade. **Red-Green é inacessível para
-~8% dos homens** com deficiência de visão de cor.
+Choosing **Red-Blue (RdBu)** over Red-Green (RdYlGn) is not a
+style call - it is accessibility. **Red-Green is inaccessible to
+about 8% of men** with color vision deficiency.
 
 <ChartSchemeSwatchRow scheme={DIVERGENT_SCHEME} />
 
@@ -24,41 +24,42 @@ A escolha de **Red-Blue (RdBu)** em vez de Red-Green (RdYlGn) não
 
 <ChartSchemeTable scheme={DIVERGENT_SCHEME} />
 
-## Quando usar
+## When to use
 
-- **Variação acima/abaixo da média** — KPI vs. baseline,
-  performance regional vs. nacional.
-- **Deviation maps** — quanto cada região se afasta do esperado.
-- **Correlação** ( -1 a +1) — matrizes de correlação estatística.
-- **Survey results** — concordância (concordo ↔ discordo).
-- **Sentiment shift** — variação de humor de NPS, CSAT entre
-  períodos.
+- **Variation above/below the mean** - KPI vs. baseline, regional
+  vs. national performance.
+- **Deviation maps** - how far each region strays from the
+  expected value.
+- **Correlation** (-1 to +1) - statistical correlation matrices.
+- **Survey results** - agreement (agree vs. disagree).
+- **Sentiment shift** - NPS or CSAT mood changes between periods.
 
-## Quando não usar
+## When not to use
 
-Sem **pivô natural** no dado, Divergent vira só "duas cores
-aleatórias". O ponto de referência é o que dá sentido aos polos.
+Without a **natural pivot** in the data, Divergent becomes just
+"two random colors". The reference point is what gives the poles
+their meaning.
 
-Se o dado é nominal sem polos (regiões, tipos), use
-[Categorical](/tokens/chart/categorical). Se é ordenado mas
-sem pivô, use [Sequential](/tokens/chart/sequential).
+If the data is nominal with no poles (regions, types), use
+[Categorical](/tokens/chart/categorical). If it is ordered but has
+no pivot, use [Sequential](/tokens/chart/sequential).
 
 ## Anti-patterns
 
 <Callout type="warn">
-  **Red-Yellow-Green (RdYlGn) — proibido.** A KDS não fornece esse esquema nem
-  como opt-in. Para dados de performance com semântica boa/ruim onde a paleta
-  tradicional pediria vermelho-amarelo-verde, use Divergent (Red-Blue) e
-  adicione ícones ou labels para reforçar a semântica.
+  **Red-Yellow-Green (RdYlGn) - forbidden.** Gremorie does not ship this scheme,
+  not even as an opt-in. For performance data with good/bad semantics where the
+  traditional palette would call for red-yellow-green, use Divergent (Red-Blue)
+  and add icons or labels to reinforce the semantics.
 </Callout>
 
 <Callout type="warn">
-  Usar Divergent quando a métrica não tem pivô claro. Se você se pega
-  justificando "o ponto médio é mais ou menos onde está a maioria dos dados",
-  não há pivô — use Sequential.
+  Using Divergent when the metric has no clear pivot. If you catch yourself
+  arguing "the midpoint is roughly where most of the data sits", there is no
+  pivot - use Sequential.
 </Callout>
 
-## Exemplo de consumo
+## Usage example
 
 ```tsx
 import { Bar, BarChart, ReferenceLine } from 'recharts';

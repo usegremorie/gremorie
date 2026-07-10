@@ -64,6 +64,21 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — default toast on click. */
+export const Workbench: Story = {
+  render: () => (
+    <Button
+      onClick={() =>
+        toast('Event created', {
+          description: 'Monday, January 6 at 9:00 AM',
+        })
+      }
+    >
+      Show toast
+    </Button>
+  ),
+};
+
 /** A row of buttons firing every toast variant. */
 export const Default: Story = {
   render: () => (

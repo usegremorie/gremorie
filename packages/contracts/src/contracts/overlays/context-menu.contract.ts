@@ -87,8 +87,8 @@ export const contextMenu = defineContract({
       '<ContextMenu><ContextMenuTrigger>Right-click me</ContextMenuTrigger><ContextMenuContent><ContextMenuItem>Back</ContextMenuItem><ContextMenuItem variant="destructive">Delete</ContextMenuItem></ContextMenuContent></ContextMenu>',
   },
   preview: {
-    rx: 'interaction-overlays-contextmenu--default',
-    ng: 'overlays-contextmenu--workbench',
+    rx: 'interaction-overlays-contextmenu--workbench',
+    ng: 'interaction-overlays-contextmenu--workbench',
   },
   tag: { rx: 'ContextMenu', ng: 'gn-context-menu' },
   example: {

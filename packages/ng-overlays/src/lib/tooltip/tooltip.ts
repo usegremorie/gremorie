@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   contentChild,
+  forwardRef,
   inject,
   InjectionToken,
   input,
@@ -11,7 +12,10 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnTooltip } from '@spartan-ng/brain/tooltip';
+import {
+  BrnTooltip,
+  provideBrnTooltipDefaultOptions,
+} from '@spartan-ng/brain/tooltip';
 import type { BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
 import { cn } from '@gremorie/ng-core';
 
@@ -55,14 +59,23 @@ import { cn } from '@gremorie/ng-core';
  * ```
  */
 
-/** Context shared from `gn-tooltip` down to its `gn-tooltip-trigger`. */
+/** Context shared from `gn-tooltip` down to its trigger and content parts. */
 interface TooltipRootState {
   readonly content: Signal<TemplateRef<void> | undefined>;
   readonly position: Signal<BrnTooltipPosition>;
   readonly showDelay: Signal<number>;
   readonly hideDelay: Signal<number>;
+  readonly sideOffset: Signal<number>;
 }
 const TOOLTIP_ROOT = new InjectionToken<TooltipRootState>('TooltipRoot');
+
+/**
+ * The brain tooltip positions the overlay a fixed 8px from the trigger (see
+ * `BRN_TOOLTIP_POSITIONS_MAP` in `@spartan-ng/brain/tooltip`); there is no
+ * offset input. The surface compensates with a CSS `translate` so the visual
+ * gap equals the React `sideOffset` (default 4).
+ */
+const BRN_FIXED_OFFSET = 8;
 
 @Component({
   selector: 'gn-tooltip-provider',
@@ -96,11 +109,12 @@ export class TooltipProvider {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template #tpl>
-      <div data-slot="tooltip-content" [class]="contentClass()">
+      <div
+        data-slot="tooltip-content"
+        [class]="contentClass()"
+        [style.translate]="surfaceTranslate()"
+      >
         <ng-content />
-        <span
-          class="z-50 size-2.5 translate-y-[calc(-50%_-_3px)] rotate-45 rounded-[2px] border-r border-b bg-popover fill-popover"
-        ></span>
       </div>
     </ng-template>
   `,
@@ -109,6 +123,8 @@ export class TooltipProvider {
   },
 })
 export class TooltipContent {
+  protected readonly root = inject(TOOLTIP_ROOT, { optional: true });
+
   readonly class = input<string>();
 
   /** The captured surface template, consumed by the parent `gn-tooltip`. */
@@ -120,12 +136,45 @@ export class TooltipContent {
       this.class(),
     ),
   );
+
+  /**
+   * Nudges the surface back toward the trigger so the visual gap equals the
+   * requested `sideOffset` (React parity: 4px) instead of the brain's fixed
+   * 8px. Uses the standalone CSS `translate` property so it composes with the
+   * transform-based enter/exit animations. NOTE: computed from the PREFERRED
+   * side; if the brain flips the panel at a viewport edge the nudge points
+   * the other way (worst case: the 8px gap grows to 12px).
+   */
+  protected readonly surfaceTranslate = computed(() => {
+    const delta = BRN_FIXED_OFFSET - (this.root?.sideOffset() ?? 4);
+    if (delta === 0) {
+      return null;
+    }
+    switch (this.root?.position() ?? 'top') {
+      case 'bottom':
+        return `0 ${-delta}px`;
+      case 'left':
+        return `${delta}px 0`;
+      case 'right':
+        return `${-delta}px 0`;
+      default:
+        return `0 ${delta}px`;
+    }
+  });
 }
 
 /**
  * TooltipTrigger — the hover/focus target carrying the brain `brnTooltip`
  * directive. Mirrors React `TooltipTrigger`. Reads the content template and
  * positioning/timing from the owning `gn-tooltip` and binds them declaratively.
+ *
+ * The inner span carrying `brnTooltip` is the CDK overlay's position origin,
+ * so it MUST produce a real box: `display: contents` elements report an
+ * empty `getBoundingClientRect()`, which pins the tooltip panel to the
+ * viewport corner instead of the trigger. It defaults to `inline-flex`
+ * (visually neutral around the inline icon buttons all current consumers
+ * wrap); block-ish consumers can override via the `class` input, e.g.
+ * `class="flex w-full items-center gap-2 min-w-0"`.
  */
 @Component({
   selector: 'gn-tooltip-trigger',
@@ -139,18 +188,40 @@ export class TooltipContent {
       [position]="root?.position() ?? 'top'"
       [showDelay]="root?.showDelay() ?? 0"
       [hideDelay]="root?.hideDelay() ?? 0"
-      class="contents"
+      [class]="triggerClass()"
     >
       <ng-content />
     </span>
   `,
   host: {
     'data-slot': 'tooltip-trigger',
+    // The host stays out of layout; the inline style keeps `display: contents`
+    // deterministic even if a consumer-provided static class also lands here.
     class: 'contents',
+    style: 'display: contents',
   },
+  providers: [
+    // The brain content component ships its own arrow span + svg polygon.
+    // Both editions are arrowless by design, so hide it here (there is no
+    // input to remove it from the brain template).
+    provideBrnTooltipDefaultOptions({
+      arrowClasses: () => 'hidden',
+      svgClasses: 'hidden',
+    }),
+  ],
 })
 export class TooltipTrigger {
   protected readonly root = inject(TOOLTIP_ROOT, { optional: true });
+
+  /**
+   * Class for the inner element that anchors the overlay. Must keep a real
+   * box (never `contents`). Default `inline-flex` hugs inline triggers.
+   */
+  readonly class = input<string>();
+
+  protected readonly triggerClass = computed(() =>
+    cn('inline-flex', this.class()),
+  );
 }
 
 /**
@@ -176,8 +247,11 @@ export class TooltipTrigger {
         position: root.side,
         showDelay: root.delayDuration,
         hideDelay: root.hideDelay,
+        sideOffset: root.sideOffset,
       }),
-      deps: [Tooltip],
+      // forwardRef: the provider is declared inside Tooltip's own decorator,
+      // and esbuild/AOT (Analog builds) reject the bare class reference here.
+      deps: [forwardRef(() => Tooltip)],
     },
   ],
 })

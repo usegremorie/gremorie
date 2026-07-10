@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,9 +7,15 @@ import {
   output,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
+import type { BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
 import { cva } from 'class-variance-authority';
 import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 const buttonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
@@ -35,29 +42,49 @@ const buttonVariants = cva(
  * PromptInputButton — generic in-composer icon button with an optional tooltip.
  *
  * Mirrors React `PromptInputButton` (rx-ai): a ghost-style action button that
- * projects an icon and, when `tooltip` is set, surfaces it via the Spartan brain
- * `brnTooltip` directive (CDK overlay) — the same affordance the React side gets
- * from its `TooltipProvider`. Reserve the tooltip for non-critical hints.
+ * projects an icon and, when `tooltip` is set, wraps the button in the styled
+ * `gn-tooltip` compound from `@gremorie/ng-overlays` (the same primitive the
+ * React side uses from `@gremorie/rx-overlays`), so the surface matches the
+ * styled tooltip (arrowless popover card), not the bare brain overlay. Reserve
+ * the tooltip for non-critical hints.
  */
 @Component({
   selector: 'prompt-input-button',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BrnTooltip],
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   template: `
-    <button
-      [attr.type]="type()"
-      [class]="buttonClass()"
-      [disabled]="disabled()"
-      [attr.aria-label]="ariaLabel() || null"
-      [brnTooltip]="tooltip() ?? null"
-      [tooltipDisabled]="tooltipDisabledResolved()"
-      [position]="position()"
-      (click)="pressed.emit($event)"
-    >
-      <ng-content />
-    </button>
+    <ng-template #btn>
+      <button
+        [attr.type]="type()"
+        [class]="buttonClass()"
+        [disabled]="disabled()"
+        [attr.aria-label]="ariaLabel() || null"
+        (click)="pressed.emit($event)"
+      >
+        <ng-content />
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip [side]="side()">
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
   `,
 })
 export class PromptInputButton {
@@ -70,19 +97,13 @@ export class PromptInputButton {
   /** Optional hover/focus tooltip text. */
   readonly tooltip = input<string | null | undefined>(null);
 
-  /** Tooltip side (default 'top'). */
+  /** Tooltip side (default 'top', matching the React TooltipContent default). */
   readonly side = input<BrnTooltipPosition>('top');
 
   /** Class overrides merged onto the button. */
   readonly class = input<string>('');
 
   readonly pressed = output<MouseEvent>();
-
-  protected readonly position = computed(() => this.side());
-
-  protected readonly tooltipDisabledResolved = computed(
-    () => !this.tooltip() || this.disabled(),
-  );
 
   protected readonly buttonClass = computed(() =>
     cn(

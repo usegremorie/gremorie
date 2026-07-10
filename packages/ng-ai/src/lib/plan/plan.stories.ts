@@ -18,7 +18,7 @@ import {
  * `isStreaming` is true.
  */
 const meta: Meta<Plan> = {
-  title: 'AI/Plan',
+  title: 'AI/Chatbot/Plan',
   component: Plan,
   tags: ['autodocs'],
   decorators: [

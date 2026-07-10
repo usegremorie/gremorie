@@ -60,8 +60,8 @@ export const buttonGroup = defineContract({
       '<button-group><button>Prev</button><button>Next</button></button-group>',
   },
   preview: {
-    rx: 'inputs-buttons-buttongroup--default',
-    ng: 'forms-buttongroup--workbench',
+    rx: 'inputs-buttons-buttongroup--workbench',
+    ng: 'inputs-buttons-buttongroup--workbench',
   },
   tag: { rx: 'ButtonGroup', ng: 'gn-button-group' },
   example: {

@@ -1,3 +1,10 @@
+// Button (source in @gremorie/ng-core; re-exported here to mirror rx-forms)
+export {
+  Button,
+  buttonVariants,
+  type ButtonSize,
+  type ButtonVariant,
+} from './lib/button';
 // Input
 export { Input } from './lib/input';
 // Label

@@ -9,7 +9,7 @@ import { PromptInputToolbar } from './prompt-input-toolbar';
 import { PromptInputTools } from './prompt-input-tools';
 
 const meta: Meta<PromptInputToolbar> = {
-  title: 'PromptInput/Toolbar',
+  title: 'AI/Chatbot/PromptInput/Toolbar',
   component: PromptInputToolbar,
   tags: ['autodocs'],
   decorators: [

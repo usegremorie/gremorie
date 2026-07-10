@@ -19,7 +19,7 @@ const ROWS: ChartTooltipRow[] = [
 const ONE: ChartTooltipRow[] = [ROWS[0]];
 
 const meta: Meta<ChartTooltipContent> = {
-  title: 'Charts/Tooltip',
+  title: 'Layout & display/Data/Tooltip',
   component: ChartTooltipContent,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

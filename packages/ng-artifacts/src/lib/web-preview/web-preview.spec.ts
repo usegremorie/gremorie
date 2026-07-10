@@ -71,13 +71,40 @@ describe('WebPreview', () => {
     expect(iframe.getAttribute('sandbox')).toContain('allow-scripts');
   });
 
-  it('surfaces the navigation button tooltip as title + aria-label', () => {
+  it('keeps the tooltip text as the button aria-label', () => {
     const host = render().nativeElement as HTMLElement;
     const button = host.querySelector(
       'web-preview-navigation-button button',
     ) as HTMLButtonElement;
-    expect(button.getAttribute('title')).toBe('Reload');
     expect(button.getAttribute('aria-label')).toBe('Reload');
+    expect(button.getAttribute('title')).toBeNull();
+  });
+
+  it('shows the STYLED tooltip surface on hover (gn-tooltip, not native title)', async () => {
+    const fixture = render();
+    await fixture.whenStable();
+    const host = fixture.nativeElement as HTMLElement;
+
+    // Regression: the tooltip once rendered as a native `title` attribute
+    // instead of the styled gn-tooltip compound.
+    expect(host.querySelector('[data-slot="tooltip-trigger"]')).not.toBeNull();
+
+    // The anchor span carries a real box (inline-flex) so the CDK overlay
+    // positions next to the trigger, never `contents` (empty rect).
+    const trigger = host.querySelector(
+      '[data-slot="tooltip-trigger"] > span',
+    ) as HTMLElement;
+    expect(trigger.classList.contains('contents')).toBe(false);
+    trigger.dispatchEvent(new MouseEvent('mouseenter'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await new Promise((r) => setTimeout(r, 0));
+    fixture.detectChanges();
+
+    const surface = document.querySelector('[data-slot="tooltip-content"]');
+    expect(surface).not.toBeNull();
+    expect(surface?.className).toContain('bg-popover');
+    expect(surface?.textContent).toContain('Reload');
   });
 
   it('starts with the console collapsed and expands on toggle', () => {

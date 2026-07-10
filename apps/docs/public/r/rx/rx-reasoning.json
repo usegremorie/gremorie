@@ -11,7 +11,9 @@
   ],
   "dependencies": [
     "@radix-ui/react-use-controllable-state",
-    "streamdown"
+    "streamdown",
+    "@gremorie/rx-core",
+    "@gremorie/rx-display"
   ],
   "devDependencies": [],
   "registryDependencies": [

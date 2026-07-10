@@ -1,6 +1,6 @@
 ---
 title: Categorical
-description: Oito hues perceptualmente distintos para categorias nominais — regiões, departamentos, tipos.
+description: Eight perceptually distinct hues for nominal categories - regions, departments, types.
 ---
 
 import {
@@ -9,11 +9,12 @@ import {
 } from '@/components/token-tables';
 import { CATEGORICAL_SCHEME } from '@/lib/chart-tokens';
 
-**Categorical** é o esquema para **dados nominais sem ordem** —
-quando você compara magnitudes entre categorias que não têm
-relação de "maior/menor". Oito hues perceptualmente distintos,
-mid-stops das paletas Tailwind, escolhidos para se diferenciar
-sob simulação de protanopia, deuteranopia e tritanopia.
+**Categorical** is the scheme for **nominal data without order** -
+when you compare magnitudes across categories that have no
+"greater/smaller" relationship. Eight perceptually distinct hues,
+mid-stops from the Tailwind palettes, chosen to stay
+distinguishable under protanopia, deuteranopia and tritanopia
+simulation.
 
 <ChartSchemeSwatchRow scheme={CATEGORICAL_SCHEME} />
 
@@ -21,52 +22,52 @@ sob simulação de protanopia, deuteranopia e tritanopia.
 
 <ChartSchemeTable scheme={CATEGORICAL_SCHEME} />
 
-## Quando usar
+## When to use
 
-- **Bar charts comparando regiões / produtos / canais** — a
-  comparação é "qual é maior", não "qual vem antes".
-- **Line charts multi-série** — diferentes métricas sobre o
-  mesmo eixo X.
-- **Pie ou donut com até 5 fatias** — acima disso, a leitura
-  desmorona; troque para bar.
-- **Scatter plots** com cor codificando categoria.
+- **Bar charts comparing regions / products / channels** - the
+  comparison is "which is bigger", not "which comes first".
+- **Multi-series line charts** - different metrics over the same
+  X axis.
+- **Pie or donut with up to 5 slices** - beyond that the reading
+  collapses; switch to bars.
+- **Scatter plots** where color encodes the category.
 
-## Por que oito é o teto
+## Why eight is the ceiling
 
-Acima de 8 hues distintos, mesmo paletas bem construídas começam
-a confundir séries. A pesquisa (Brewer, 2003) mostra que humanos
-têm dificuldade crescente em diferenciar cores além desse limite,
-especialmente em pequenas áreas (linhas finas, pontos).
+Above 8 distinct hues, even well built palettes start to blur
+series together. Research (Brewer, 2003) shows humans have
+increasing difficulty telling colors apart beyond that limit,
+especially in small areas (thin lines, dots).
 
-Se você precisa de mais de 8 séries, considere:
+If you need more than 8 series, consider:
 
-1. **Agrupar** o resto em "Outros".
-2. **Small multiples** — uma série por mini-gráfico.
-3. **Visualização diferente** — heatmap, parallel coordinates.
+1. **Grouping** the rest into "Other".
+2. **Small multiples** - one series per mini chart.
+3. **A different visualization** - heatmap, parallel coordinates.
 
-## Quando não usar
+## When not to use
 
-- O dado tem **ordem inerente** (intensidade, gravidade) — use
+- The data has an **inherent order** (intensity, severity) - use
   [Sequential](/tokens/chart/sequential).
-- O dado tem **semântica de estado** (bom/ruim/neutro) — use
+- The data carries **state semantics** (good/bad/neutral) - use
   [Status](/tokens/chart/status).
-- Você tem **uma série em destaque + outras de fundo** — use
+- You have **one highlighted series plus background series** - use
   [Comparison](/tokens/chart/comparison).
 
 ## Anti-patterns
 
 <Callout type="warn">
-  Usar Categorical para mais de 8 séries. As cores começam a se confundir e a
-  leitura desmorona. Refatore para uma das três alternativas acima.
+  Using Categorical for more than 8 series. The colors start blending together
+  and the reading collapses. Refactor to one of the three alternatives above.
 </Callout>
 
 <Callout type="warn">
-  Misturar Categorical com Status no mesmo gráfico ("uma das séries é vermelha
-  porque é a métrica de erro"). Isso polui a leitura — o usuário vai inferir
-  significado em todas as cores.
+  Mixing Categorical with Status in the same chart ("one of the series is red
+  because it is the error metric"). This pollutes the reading - the user will
+  infer meaning in every color.
 </Callout>
 
-## Exemplo de consumo
+## Usage example
 
 ```tsx
 import { Line, LineChart } from 'recharts';

@@ -14,7 +14,7 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
 // `type` is exposed via the BrnToggleGroup hostDirective, not a class input, so
 // widen the story type to include it for the controls/args.
 const meta: Meta<ToggleGroup & { type: 'single' | 'multiple' }> = {
-  title: 'Forms/ToggleGroup',
+  title: 'Inputs/Buttons/ToggleGroup',
   component: ToggleGroup,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [ToggleGroup, ToggleGroupItem] })],

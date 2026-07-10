@@ -59,8 +59,8 @@ export const task = defineContract({
       '<task title="Refactored auth">\n  <task-content>\n    <task-item>Edited <task-item-file>auth.ts</task-item-file></task-item>\n  </task-content>\n</task>',
   },
   preview: {
-    rx: 'ai-chatbot-task--expanded',
-    ng: 'ai-task--expanded',
+    rx: 'ai-chatbot-task--workbench',
+    ng: 'ai-chatbot-task--workbench',
   },
   tag: { rx: 'Task', ng: 'task' },
   example: {

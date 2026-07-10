@@ -78,8 +78,8 @@ export const confirmation = defineContract({
       '<confirmation [state]="state" [approval]="approval">\n  <confirmation-title>Run this command?</confirmation-title>\n  <confirmation-request>\n    <confirmation-actions>\n      <confirmation-action>Approve</confirmation-action>\n    </confirmation-actions>\n  </confirmation-request>\n</confirmation>',
   },
   preview: {
-    rx: 'ai-chatbot-confirmation--requested',
-    ng: 'ai-confirmation--workbench',
+    rx: 'ai-chatbot-confirmation--workbench',
+    ng: 'ai-chatbot-confirmation--workbench',
   },
   tag: { rx: 'Confirmation', ng: 'confirmation' },
   example: {

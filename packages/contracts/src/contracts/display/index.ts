@@ -4,6 +4,8 @@ import { badge } from './badge.contract';
 import { card } from './card.contract';
 import { carousel } from './carousel.contract';
 import { collapsible } from './collapsible.contract';
+import { featuredIcon } from './featured-icon.contract';
+import { item } from './item.contract';
 import { separator } from './separator.contract';
 import { table } from './table.contract';
 
@@ -15,6 +17,8 @@ export const DISPLAY_CONTRACTS = [
   card,
   carousel,
   collapsible,
+  featuredIcon,
+  item,
   separator,
   table,
 ];

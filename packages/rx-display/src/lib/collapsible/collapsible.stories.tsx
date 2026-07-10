@@ -60,6 +60,36 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — a "show more" disclosure inside a fixed-width card. */
+export const Workbench: Story = {
+  render: () => (
+    <Collapsible defaultOpen className="w-80 space-y-2">
+      <div className="flex items-center justify-between gap-4 rounded-md border px-4 py-2">
+        <span className="text-sm font-semibold">
+          @peduarte starred 3 repositories
+        </span>
+        <CollapsibleTrigger asChild>
+          <Button variant="ghost" size="icon" className="size-8">
+            <ChevronsUpDown className="size-4" />
+            <span className="sr-only">Toggle</span>
+          </Button>
+        </CollapsibleTrigger>
+      </div>
+      <div className="rounded-md border px-4 py-2 font-mono text-sm">
+        @radix-ui/primitives
+      </div>
+      <CollapsibleContent className="space-y-2">
+        <div className="rounded-md border px-4 py-2 font-mono text-sm">
+          @radix-ui/colors
+        </div>
+        <div className="rounded-md border px-4 py-2 font-mono text-sm">
+          @stitches/react
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  ),
+};
+
 /** Trigger + content — a "show more" disclosure. */
 export const Default: Story = {
   render: () => (

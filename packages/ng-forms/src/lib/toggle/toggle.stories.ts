@@ -11,7 +11,7 @@ import { Toggle } from './toggle';
  * switches, filter chips. `variant` and `size` mirror the React cva.
  */
 const meta: Meta<Toggle> = {
-  title: 'Forms/Toggle',
+  title: 'Inputs/Buttons/Toggle',
   component: Toggle,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Toggle] })],

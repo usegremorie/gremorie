@@ -17,7 +17,7 @@ import {
  * shortcuts.
  */
 const meta: Meta<Menubar> = {
-  title: 'Navigation/Menubar',
+  title: 'Interaction/Navigation/Menubar',
   component: Menubar,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

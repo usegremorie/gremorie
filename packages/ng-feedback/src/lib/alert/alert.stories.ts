@@ -11,9 +11,10 @@ import { Alert, AlertDescription, AlertTitle } from './alert';
  * plus pure-body usage.
  */
 const meta: Meta<Alert> = {
-  title: 'Feedback/Alert',
+  title: 'Interaction/Feedback/Alert',
   component: Alert,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   decorators: [
     moduleMetadata({
       imports: [Alert, AlertTitle, AlertDescription],
@@ -29,6 +30,27 @@ const meta: Meta<Alert> = {
 
 export default meta;
 type Story = StoryObj<Alert>;
+
+/** Workbench — informational alert with icon, title and description. */
+export const Workbench: Story = {
+  args: { variant: 'default' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <gn-alert [variant]="variant" class="max-w-lg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+        <gn-alert-title>Heads up!</gn-alert-title>
+        <gn-alert-description>
+          You can configure additional notification channels in your settings.
+        </gn-alert-description>
+      </gn-alert>
+    `,
+  }),
+};
 
 export const Default: Story = {
   args: { variant: 'default' },

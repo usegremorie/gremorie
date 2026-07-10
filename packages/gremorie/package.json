@@ -1,0 +1,36 @@
+{
+  "name": "gremorie",
+  "version": "0.4.0",
+  "description": "Unscoped convenience wrapper for the Gremorie CLI. `npx gremorie` delegates to @gremorie/cli.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/gremorie"
+  },
+  "keywords": [
+    "angular",
+    "react",
+    "ai",
+    "ui",
+    "cli"
+  ],
+  "type": "module",
+  "bin": {
+    "gremorie": "./bin/gremorie.js"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "dependencies": {
+    "@gremorie/cli": "^0.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -10,7 +10,10 @@
     "code"
   ],
   "dependencies": [
-    "react"
+    "react",
+    "@gremorie/rx-artifacts",
+    "@gremorie/rx-display",
+    "@gremorie/rx-forms"
   ],
   "devDependencies": [],
   "registryDependencies": [

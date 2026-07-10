@@ -5,7 +5,7 @@ import { Button } from '@gremorie/ng-core';
 import { PromptInputTools } from './prompt-input-tools';
 
 const meta: Meta<PromptInputTools> = {
-  title: 'PromptInput/Tools',
+  title: 'AI/Chatbot/PromptInput/Tools',
   component: PromptInputTools,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Button] })],

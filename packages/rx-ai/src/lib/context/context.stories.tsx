@@ -120,6 +120,44 @@ const Breakdown = () => (
 );
 
 /**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story; hover the meter to reveal
+ * the breakdown.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: {
+    usedTokens: 12_200,
+    maxTokens: 200_000,
+    usage: {
+      inputTokens: 8_200,
+      outputTokens: 1_400,
+      reasoningTokens: 600,
+      cachedInputTokens: 2_000,
+      totalTokens: 12_200,
+      inputTokenDetails: {
+        noCacheTokens: 6_200,
+        cacheReadTokens: 2_000,
+        cacheWriteTokens: 0,
+      },
+      outputTokenDetails: {
+        textTokens: 1_400,
+        reasoningTokens: 600,
+      },
+    },
+    modelId: 'anthropic/claude-3-5-sonnet',
+  },
+  render: (args) => (
+    <div style={{ width: 320 }}>
+      <Context {...args}>
+        <ContextTrigger />
+        <Breakdown />
+      </Context>
+    </div>
+  ),
+};
+
+/**
  * Default usage hovercard. The trigger shows the consumed percentage; hover it
  * (it opens instantly) to see the full breakdown.
  */

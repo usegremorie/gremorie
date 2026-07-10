@@ -88,9 +88,62 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```bash
+npx gremorie@latest add ng-inline-citation
+```
+
+```ts
+import { Component } from '@angular/core';
+import { BrnHoverCardContent } from '@spartan-ng/brain/hover-card';
+import {
+  InlineCitation,
+  InlineCitationText,
+  InlineCitationCard,
+  InlineCitationCardTrigger,
+  InlineCitationCardBody,
+  InlineCitationSource,
+} from '@gremorie/ng-ai';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    InlineCitation,
+    InlineCitationText,
+    InlineCitationCard,
+    InlineCitationCardTrigger,
+    InlineCitationCardBody,
+    InlineCitationSource,
+    BrnHoverCardContent,
+  ],
+  template: `
+    <p>
+      The most common web vulnerability is injection
+      <inline-citation>
+        <inline-citation-text> [1]</inline-citation-text>
+        <inline-citation-card>
+          <inline-citation-card-trigger
+            [sources]="['https://owasp.org/Top10']"
+          />
+          <ng-template brnHoverCardContent>
+            <inline-citation-card-body>
+              <inline-citation-source
+                title="OWASP Top 10"
+                url="https://owasp.org/Top10"
+                description="Standard awareness document for developers and security."
+              />
+            </inline-citation-card-body>
+          </ng-template>
+        </inline-citation-card>
+      </inline-citation>
+    </p>
+  `,
+})
+export class ExampleComponent {}
+```
+
+The hover-card body lives inside an `<ng-template brnHoverCardContent>`, the spartan-ng brain idiom for lazily rendered overlay content.
+
 </Tab>
 </Tabs>
 

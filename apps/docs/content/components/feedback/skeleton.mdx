@@ -56,9 +56,31 @@ export function ProfileSkeleton() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release. The same shape-by-class contract will be exposed as an attribute directive.
-</Callout>
+```bash
+npx gremorie@latest add ng-skeleton
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Skeleton } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-profile-skeleton',
+  standalone: true,
+  imports: [Skeleton],
+  template: `
+    <div class="flex items-center gap-4" aria-busy="true" aria-live="polite">
+      <gn-skeleton class="size-12 rounded-full" />
+      <div class="flex flex-col gap-2">
+        <gn-skeleton class="h-4 w-[200px]" />
+        <gn-skeleton class="h-4 w-[160px]" />
+      </div>
+    </div>
+  `,
+})
+export class ProfileSkeletonComponent {}
+```
+
 </Tab>
 </Tabs>
 

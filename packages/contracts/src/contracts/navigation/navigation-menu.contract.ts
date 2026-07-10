@@ -58,8 +58,8 @@ export const navigationMenu = defineContract({
       '<navigation-menu><navigation-menu-list><navigation-menu-item><navigation-menu-trigger>Products</navigation-menu-trigger><navigation-menu-content><navigation-menu-link href="/a">Analytics</navigation-menu-link></navigation-menu-content></navigation-menu-item></navigation-menu-list></navigation-menu>',
   },
   preview: {
-    rx: 'interaction-navigation-navigationmenu--default',
-    ng: 'navigation-navigationmenu--workbench',
+    rx: 'interaction-navigation-navigationmenu--workbench',
+    ng: 'interaction-navigation-navigationmenu--workbench',
   },
   tag: { rx: 'NavigationMenu', ng: 'gn-navigation-menu' },
   example: { viewport: true },

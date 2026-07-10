@@ -1,0 +1,93 @@
+---
+title: Overview
+description: Primitives are the source of truth - Tailwind v4 palettes and dimensional scales, with no semantics.
+---
+
+**Primitive** tokens are the raw vocabulary of Gremorie. They
+carry no opinion about usage: a `--color-blue-600` is just a
+specific blue, not a "primary". A `--radius-lg` is 8 pixels, with
+no assigned role. Semantics come in the layer above.
+
+This is **layer 1 of 3**: primitives feed
+[semantic](/tokens/semantic) intents, which feed
+[chart](/tokens/chart) schemes. The full picture lives in the
+[three-layer model](/tokens).
+
+## What lives here
+
+Six groups, each with its own page:
+
+<Cards>
+  <Card
+    title="Colors"
+    href="/tokens/primitive/colors"
+    description="27 ramps and 298 stops: the Tailwind v4 palettes plus five ramps synthesized for Gremorie, including the clay brand ramp."
+  />
+  <Card
+    title="Typography"
+    href="/tokens/primitive/typography"
+    description="Families, weights, sizes with paired line-heights, leading and tracking."
+  />
+  <Card
+    title="Spacing"
+    href="/tokens/primitive/spacing"
+    description="A single base (4px) that generates the whole scale via calc()."
+  />
+  <Card
+    title="Radius"
+    href="/tokens/primitive/radius"
+    description="Eight border-radius stops from nearly straight to blob-style."
+  />
+  <Card
+    title="Shadow"
+    href="/tokens/primitive/shadow"
+    description="Elevation hierarchy: hairline, card, dropdown, modal, drawer."
+  />
+  <Card
+    title="Motion"
+    href="/tokens/primitive/motion"
+    description="Easing curves and canonical durations. Tailwind's bundled animations."
+  />
+</Cards>
+
+## Why primitives come first
+
+When the brand evolves - a new color arrives, the blue gets more
+saturated, the radius grows - the change happens **here**.
+Semantic and chart tokens reference primitives via
+`var(--color-<token>)`, so the change cascades automatically.
+
+That is the important trade-off: rich primitives mean you are
+never locked into a single shade. Primitives in the native
+Tailwind namespace mean `bg-blue-600` simply works.
+
+## When you touch primitives
+
+Almost never in components - that is the point. The exceptions
+are:
+
+- **Marketing and illustration** that need a specific color
+  outside the semantic palette.
+- **Structural utilities** (gap, padding) where the geometric
+  scale is the token: `p-4`, `gap-6`.
+- **Adding a new value** to the system - that only happens here.
+
+## Agnostic naming
+
+All primitive tokens use the **native Tailwind v4 namespace**.
+That has two practical consequences:
+
+1. Utilities like `bg-amber-500`, `text-slate-700`,
+   `rounded-2xl` and `shadow-md` show up automatically - no
+   bridge code.
+2. The primitives **override** Tailwind's defaults. Editing
+   `--color-blue-600` in `colors.css` affects every place that
+   uses blue-600, in any theme.
+
+<Callout type="info">
+  **Important.** Do not confuse primitive tokens (layer 1) with semantic tokens
+  (layer 2). Components consume semantics in the overwhelming majority of cases.
+  Primitives only step in when the semantic intent does not fit - and when that
+  happens, it is worth pausing to ask whether the intent should become a new
+  semantic token.
+</Callout>

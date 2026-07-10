@@ -55,9 +55,33 @@ export function UploadProgress({ value }) {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release. The value contract will map directly to a one-way input on a structural directive.
-</Callout>
+```bash
+npx gremorie@latest add ng-progress
+```
+
+```ts
+import { Component, input } from '@angular/core';
+import { Progress } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-upload-progress',
+  standalone: true,
+  imports: [Progress],
+  template: `
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between text-sm text-muted-foreground">
+        <span>Uploading</span>
+        <span>{{ value() }}%</span>
+      </div>
+      <gn-progress [value]="value()" />
+    </div>
+  `,
+})
+export class UploadProgressComponent {
+  readonly value = input<number>(0);
+}
+```
+
 </Tab>
 </Tabs>
 

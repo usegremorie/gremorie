@@ -18,7 +18,7 @@ import {
  * style themselves automatically.
  */
 const meta: Meta<InputGroup> = {
-  title: 'Forms/InputGroup',
+  title: 'Inputs/Text/InputGroup',
   component: InputGroup,
   tags: ['autodocs'],
   decorators: [

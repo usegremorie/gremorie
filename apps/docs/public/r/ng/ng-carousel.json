@@ -10,7 +10,8 @@
   ],
   "dependencies": [
     "@angular/core",
-    "embla-carousel"
+    "embla-carousel",
+    "@gremorie/ng-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

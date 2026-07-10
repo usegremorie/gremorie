@@ -24,7 +24,7 @@ import { Button } from '@gremorie/rx-forms';
  * TooltipProvider              shares one delay timer across all tooltips
  * └─ Tooltip                   Radix root for a single tooltip instance
  *    ├─ TooltipTrigger         the hover/focus anchor element
- *    └─ TooltipContent         portalled bubble with a built-in arrow
+ *    └─ TooltipContent         portalled arrowless bubble
  * ```
  *
  * ## Props
@@ -43,14 +43,14 @@ import { Button } from '@gremorie/rx-forms';
  * | --- | --- |
  * | `TooltipProvider` | Shared delay timer. |
  * | `TooltipTrigger` | Hover/focus anchor. |
- * | `TooltipContent` | Bubble + arrow. |
+ * | `TooltipContent` | Arrowless bubble. |
  *
  * ## Variables (design tokens)
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--foreground` | Bubble background + arrow |
- * | `--background` | Bubble text color |
+ * | `--popover` | Bubble background |
+ * | `--popover-foreground` | Bubble text color |
  */
 const meta = {
   title: 'Interaction/Overlays/Tooltip',
@@ -68,6 +68,20 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+/** Workbench — hover the button to reveal a label. */
+export const Workbench: Story = {
+  render: () => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline">Hover</Button>
+      </TooltipTrigger>
+      <TooltipContent side="top">
+        <p>Add to library</p>
+      </TooltipContent>
+    </Tooltip>
+  ),
+};
 
 /** A simple label on an outline button. */
 export const Default: Story = {

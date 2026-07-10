@@ -11,7 +11,11 @@
   ],
   "dependencies": [
     "ai",
-    "tokenlens"
+    "tokenlens",
+    "@gremorie/rx-core",
+    "@gremorie/rx-feedback",
+    "@gremorie/rx-forms",
+    "@gremorie/rx-overlays"
   ],
   "devDependencies": [],
   "registryDependencies": [

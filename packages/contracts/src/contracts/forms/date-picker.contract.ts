@@ -4,10 +4,12 @@ import { defineContract } from '../../types';
  * DatePicker - a compact trigger button that opens a Calendar in a popover to
  * pick a single date.
  *
- * Edition note: only the Angular edition (`@gremorie/ng-forms`) ships a packaged
- * DatePicker component. In React (`@gremorie/rx-forms`) the same pattern is
- * composed by hand from `Popover` + `Calendar`, so every prop below is marked
- * `adapts.rx = 'compose Popover + Calendar'`.
+ * Edition note: both editions ship a packaged DatePicker, but the package
+ * placement differs. Angular ships it from `@gremorie/ng-forms`; React ships it
+ * from `@gremorie/rx-overlays` (the canonical Popover + Calendar composition),
+ * because it composes Popover from rx-overlays with Calendar/Button from
+ * rx-forms, and rx-overlays already depends on rx-forms - hosting it in
+ * rx-forms would create a circular package dependency.
  */
 export const datePicker = defineContract({
   name: 'date-picker',
@@ -23,33 +25,31 @@ export const datePicker = defineContract({
     {
       name: 'date',
       type: 'Date | undefined',
-      adapts: { rx: 'compose Popover + Calendar', ng: 'model: date (two-way)' },
+      adapts: { rx: 'prop: value', ng: 'model: date (two-way)' },
       desc: 'Selected date.',
     },
     {
       name: 'dateChange',
       type: '(date: Date | undefined) => void',
-      adapts: { rx: 'compose Popover + Calendar', ng: 'output: dateChange' },
+      adapts: { rx: 'prop: onValueChange', ng: 'output: dateChange' },
       desc: 'Fires when the date changes.',
     },
     {
       name: 'placeholder',
       type: 'string',
       default: 'Pick a date',
-      adapts: { rx: 'compose Popover + Calendar' },
       desc: 'Trigger text when no date is selected.',
     },
     {
       name: 'disabled',
       type: 'boolean',
       default: false,
-      adapts: { rx: 'compose Popover + Calendar' },
       desc: 'Disables the trigger.',
     },
     {
       name: 'className',
       type: 'string',
-      adapts: { rx: 'compose Popover + Calendar', ng: 'input: class' },
+      adapts: { ng: 'input: class' },
       desc: 'Merged onto the trigger.',
     },
   ],
@@ -63,13 +63,14 @@ export const datePicker = defineContract({
       { text: 'Selecting a date range or multiple dates', use: 'calendar' },
     ],
     rules: [
-      'Angular ships this as a packaged component; in React, compose Popover + Calendar.',
+      'Angular imports it from @gremorie/ng-forms; React imports it from @gremorie/rx-overlays.',
       'Shows the formatted date once selected, the placeholder otherwise.',
     ],
     example: '<date-picker [(date)]="date" placeholder="Pick a date" />',
   },
   preview: {
-    ng: 'forms-datepicker--workbench',
+    rx: 'inputs-date-datepicker--workbench',
+    ng: 'inputs-date-datepicker--workbench',
   },
   tag: { rx: 'DatePicker', ng: 'gn-date-picker' },
   example: {

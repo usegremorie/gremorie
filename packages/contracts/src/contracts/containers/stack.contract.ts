@@ -65,7 +65,7 @@ export const stack = defineContract({
       '<stack gap="md" className="w-64"><div>One</div><div>Two</div></stack>',
   },
   preview: {
-    rx: 'layout-display-containers-stack--default',
+    rx: 'layout-display-containers-stack--workbench',
     ng: 'layout-display-containers-stack--workbench',
   },
   tag: { rx: 'Stack', ng: 'gn-stack' },

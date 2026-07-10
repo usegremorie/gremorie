@@ -17,7 +17,7 @@ import {
  * (brain has no shared delay context — delay lives per `gn-tooltip`).
  */
 const meta: Meta<Tooltip> = {
-  title: 'Overlays/Tooltip',
+  title: 'Interaction/Overlays/Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

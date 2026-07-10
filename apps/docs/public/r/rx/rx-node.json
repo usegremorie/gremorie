@@ -10,7 +10,9 @@
     "workflow"
   ],
   "dependencies": [
-    "@xyflow/react"
+    "@xyflow/react",
+    "@gremorie/rx-core",
+    "@gremorie/rx-display"
   ],
   "devDependencies": [],
   "registryDependencies": [

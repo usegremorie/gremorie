@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,15 +6,23 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
+import type { BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 /**
  * MessageAction — single icon-button slot inside `<message-actions>`.
  *
  * Mirrors React `MessageAction` (rx-ai): a ghost-style icon button with
- * an optional tooltip. When `tooltip` is set, wraps the button with
- * Spartan-ng `BrnTooltip` directive (CDK overlay-backed) so the user
- * gets the same affordance as the React side.
+ * an optional tooltip. When `tooltip` is set, the button is wrapped in the
+ * styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * primitive the React side uses from `@gremorie/rx-overlays`), so the
+ * surface matches the styled tooltip (popover card + arrow), not the bare
+ * brain overlay.
  *
  * Children are projected as the icon content. `label` is rendered as
  * sr-only text so the button has an accessible name when only an icon
@@ -27,24 +35,43 @@ import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BrnTooltip, NgClass],
+  imports: [
+    NgClass,
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   template: `
-    <button
-      type="button"
-      [disabled]="disabled()"
-      [attr.aria-label]="accessibleName()"
-      [brnTooltip]="tooltip() ?? null"
-      [tooltipDisabled]="tooltipDisabledResolved()"
-      [position]="position()"
-      [ngClass]="buttonClass()"
-    >
-      <ng-content />
-      <span class="sr-only">{{ accessibleName() }}</span>
-    </button>
+    <ng-template #btn>
+      <button
+        type="button"
+        [disabled]="disabled()"
+        [attr.aria-label]="accessibleName()"
+        [ngClass]="buttonClass()"
+      >
+        <ng-content />
+        <span class="sr-only">{{ accessibleName() }}</span>
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip [side]="side()">
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
   `,
 })
 export class MessageAction {
-  /** Optional tooltip text shown on hover/focus via BrnTooltip. */
+  /** Optional tooltip text shown on hover/focus via the styled gn-tooltip. */
   readonly tooltip = input<string | null | undefined>(null);
 
   /** Tooltip side (default 'top'), matches rx-ai TooltipContent side. */
@@ -62,16 +89,8 @@ export class MessageAction {
   /** Button size (default 'icon-sm'). */
   readonly size = input<'icon-sm' | 'icon' | 'sm'>('icon-sm');
 
-  /** Disable tooltip without removing it from the API surface. */
+  /** Disables the button (and with it the tooltip trigger). */
   readonly disabled = input<boolean>(false);
-
-  /** Alias used internally by BrnTooltip directive. */
-  protected readonly position = computed(() => this.side());
-
-  /** Hide tooltip when no text was provided or the button is disabled. */
-  protected readonly tooltipDisabledResolved = computed(
-    () => !this.tooltip() || this.disabled(),
-  );
 
   protected readonly accessibleName = computed(
     () => this.label() ?? this.tooltip() ?? '',

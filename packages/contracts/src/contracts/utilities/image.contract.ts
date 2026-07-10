@@ -56,8 +56,8 @@ export const image = defineContract({
     example: '<image base64="..." mediaType="image/png" alt="Generated art" />',
   },
   preview: {
-    rx: 'ai-utilities-image--default',
-    ng: 'ai-image--workbench',
+    rx: 'ai-utilities-image--workbench',
+    ng: 'ai-utilities-image--workbench',
   },
   tag: { rx: 'Image', ng: 'image' },
   example: {

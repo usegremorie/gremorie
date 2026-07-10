@@ -6,8 +6,8 @@
  * computed values, then a use-case description. Styling uses
  * Fumadocs / KDS utility classes and CSS variables — no client JS.
  */
+import type { PrimitiveColorStop } from './primitive-color-data';
 import type { ChartScheme } from '@/lib/chart-tokens';
-import type { ColorPalette, ColorRow } from '@/lib/primitive-tokens';
 
 import {
   ANIMATIONS,
@@ -18,7 +18,6 @@ import {
   SHADOW_TOKENS,
   SPACING_STEPS,
 } from '@/lib/scale-tokens';
-import { SEMANTIC_THEMES } from '@/lib/semantic-tokens';
 import {
   FONT_FAMILIES,
   LEADINGS,
@@ -45,7 +44,27 @@ function Swatch({ value, square = true }: { value: string; square?: boolean }) {
 
 /* ----------------------------- Color ------------------------------- */
 
-export function ColorPaletteTable({ palette }: { palette: ColorPalette }) {
+/** A ramp table view-model: header copy plus the raw primitive stops. */
+export interface ColorPalette {
+  id: string;
+  name: string;
+  description: string;
+  rows: PrimitiveColorStop[];
+}
+
+const COLOR_TABLE_HEADERS = {
+  pt: { sample: 'Amostra', step: 'Passo', tailwind: 'Classe Tailwind' },
+  en: { sample: 'Sample', step: 'Step', tailwind: 'Tailwind class' },
+} as const;
+
+export function ColorPaletteTable({
+  palette,
+  locale = 'pt',
+}: {
+  palette: ColorPalette;
+  locale?: 'pt' | 'en';
+}) {
+  const headers = COLOR_TABLE_HEADERS[locale];
   return (
     <section className="my-8" id={`palette-${palette.id}`}>
       <h3 className="text-xl font-semibold tracking-tight">{palette.name}</h3>
@@ -59,19 +78,19 @@ export function ColorPaletteTable({ palette }: { palette: ColorPalette }) {
           <thead className="bg-fd-muted/40">
             <tr>
               <th className={TH} style={{ width: '60px' }}>
-                Amostra
+                {headers.sample}
               </th>
               <th className={TH} style={{ width: '70px' }}>
-                Passo
+                {headers.step}
               </th>
               <th className={TH}>CSS Token</th>
-              <th className={TH}>Classe Tailwind</th>
+              <th className={TH}>{headers.tailwind}</th>
               <th className={TH}>OKLCH</th>
               <th className={TH}>HEX</th>
             </tr>
           </thead>
           <tbody>
-            {palette.rows.map((row: ColorRow) => (
+            {palette.rows.map((row: PrimitiveColorStop) => (
               <tr key={row.token} className="hover:bg-fd-muted/20">
                 <td className={TD}>
                   <Swatch value={`var(${row.token})`} />
@@ -448,64 +467,6 @@ export function AnimationTable() {
         </tbody>
       </table>
     </div>
-  );
-}
-
-/* ---------------------------- Semantic ----------------------------- */
-
-export function SemanticThemeTable({ themeId }: { themeId: string }) {
-  const theme = SEMANTIC_THEMES.find((t) => t.id === themeId);
-  if (!theme) {
-    return (
-      <p className="my-4 text-sm text-fd-muted-foreground">
-        Tema desconhecido: <code>{themeId}</code>
-      </p>
-    );
-  }
-  return (
-    <section className="my-8" id={`theme-${theme.id}`}>
-      <h3 className="text-xl font-semibold tracking-tight">{theme.name}</h3>
-      <p className="mt-1 text-sm text-fd-muted-foreground">
-        {theme.description}
-      </p>
-      <p className="mt-2 text-xs text-fd-muted-foreground">
-        <code className="font-mono">--radius</code>: {theme.radius}
-        {' · '}selector{' '}
-        <code className="font-mono">[data-theme=&quot;{theme.id}&quot;]</code>
-      </p>
-      <div className="mt-4 overflow-x-auto rounded-lg border border-fd-border">
-        <table className="w-full border-collapse text-sm">
-          <thead className="bg-fd-muted/40">
-            <tr>
-              <th className={TH} style={{ width: '60px' }}>
-                Light
-              </th>
-              <th className={TH} style={{ width: '60px' }}>
-                Dark
-              </th>
-              <th className={TH}>Token</th>
-              <th className={TH}>Primitivo (light)</th>
-              <th className={TH}>Primitivo (dark)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {theme.rows.map((row) => (
-              <tr key={row.token} className="hover:bg-fd-muted/20">
-                <td className={TD}>
-                  <Swatch value={`var(--color-${row.primitiveLight})`} />
-                </td>
-                <td className={TD}>
-                  <Swatch value={`var(--color-${row.primitiveDark})`} />
-                </td>
-                <td className={`${TD} ${MONO}`}>{row.token}</td>
-                <td className={`${TD} ${MONO_MUTED}`}>{row.primitiveLight}</td>
-                <td className={`${TD} ${MONO_MUTED}`}>{row.primitiveDark}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
   );
 }
 

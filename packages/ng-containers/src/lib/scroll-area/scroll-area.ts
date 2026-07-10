@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { afterNextRender, Directive, ElementRef, inject } from '@angular/core';
 
 /**
  * Gremorie NG ScrollArea — a thin design-system styling layer over ngx-scrollbar's
@@ -29,4 +29,21 @@ import { Directive } from '@angular/core';
     '[style.--scrollbar-thickness]': '7',
   },
 })
-export class ScrollArea {}
+export class ScrollArea {
+  constructor() {
+    // React parity: the RX edition stamps `data-slot="scroll-area-viewport"`
+    // on the Radix Viewport — the element that directly wraps the scrollable
+    // children inside the root. ngx-scrollbar collapses Radix's root/viewport
+    // pair into the host (the host element itself scrolls) and renders a
+    // single inner `<ng-scroll-content>` wrapper around the projected
+    // children, so that wrapper is the structural equivalent and carries the
+    // slot. Stamped after first render because NgScrollbar creates it in its
+    // own template.
+    const host = inject(ElementRef).nativeElement as HTMLElement;
+    afterNextRender(() => {
+      host
+        .querySelector(':scope > ng-scroll-content')
+        ?.setAttribute('data-slot', 'scroll-area-viewport');
+    });
+  }
+}

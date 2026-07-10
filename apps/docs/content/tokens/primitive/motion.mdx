@@ -1,6 +1,6 @@
 ---
 title: Motion
-description: Curvas de easing, durações canônicas e animações bundled — feedback temporal entre estado e estado.
+description: Easing curves, canonical durations and bundled animations - temporal feedback between one state and the next.
 ---
 
 import {
@@ -9,65 +9,65 @@ import {
   EaseTable,
 } from '@/components/token-tables';
 
-Motion é a **gramática temporal** da interface. Quando um botão
-muda de cor instantaneamente, ele parece quebrado. Quando muda
-em 600ms, ele parece preguiçoso. A faixa de 100-300ms é onde a
-percepção humana ressoa com mudança de estado em UI.
+Motion is the **temporal grammar** of the interface. When a button
+changes color instantly, it feels broken. When it changes over
+600ms, it feels lazy. The 100-300ms range is where human
+perception resonates with state change in UI.
 
 ## Transitions vs. animations
 
-Duas famílias de motion, com papéis diferentes:
+Two motion families with different jobs:
 
-- **Transitions** acontecem entre **dois estados** (hover de
-  botão, abertura de drawer, troca de tab). Use `transition-*`
-  - `duration-*` + `ease-*`.
-- **Animations** rodam **continuamente** ou em loop discreto
+- **Transitions** happen between **two states** (button hover,
+  drawer opening, tab switch). Use `transition-*` +
+  `duration-*` + `ease-*`.
+- **Animations** run **continuously** or in a discrete loop
   (loaders, pulses, skeletons). Use `animate-*`.
 
-A regra geral: prefira transitions — elas são **conduzidas pelo
-estado**, então o motion é sempre semanticamente justificável.
-Animations gastam atenção, então use-as quando a continuidade é
-o ponto (loading, pulsando atenção).
+The general rule: prefer transitions - they are **driven by
+state**, so the motion is always semantically justified.
+Animations spend attention, so use them when continuity is the
+point (loading, pulsing for attention).
 
 ## Easing
 
-Três curvas cobrem 95% dos casos. Para o resto (bouncy, elastic,
-overshoot), use a sintaxe arbitrária do Tailwind:
+Three curves cover 95% of cases. For the rest (bouncy, elastic,
+overshoot), use Tailwind's arbitrary syntax:
 `ease-[cubic-bezier(0.34,1.56,0.64,1)]`.
 
 <EaseTable />
 
-## Duração
+## Duration
 
-A KDS não declara variáveis específicas para `duration-*` —
-Tailwind v4 já gera `duration-75`, `duration-100`, etc, que
-escrevem o ms direto. O **default global** (quando nenhum
-duration é especificado em `transition`) é **150ms**, definido por
-`--default-transition-duration`.
+Gremorie does not declare dedicated variables for `duration-*` -
+Tailwind v4 already generates `duration-75`, `duration-100`, and
+so on, which write the milliseconds directly. The **global
+default** (when no duration is specified on `transition`) is
+**150ms**, set by `--default-transition-duration`.
 
 <DurationTable />
 
-## Animações bundled
+## Bundled animations
 
-Tailwind v4 traz quatro animações de uso geral. Você pode
-adicionar mais via `@theme` (em projetos consumidores), mas elas
-cobrem os principais casos.
+Tailwind v4 ships four general-purpose animations. You can add
+more via `@theme` (in consuming projects), but these cover the
+main cases.
 
 <AnimationTable />
 
-## Boas práticas
+## Best practices
 
-- **Use `ease-out` para entradas**, `ease-in` para saídas. É
-  contra-intuitivo, mas combina com a percepção física: objetos
-  desaceleram ao chegar e aceleram ao sair do campo de visão.
-- **150ms é o sweet spot** para transitions de UI. Mais rápido
-  parece glitch, mais devagar parece preguiçoso.
-- **300ms+** é território de animação narrativa — abertura de
-  drawer, transição de página. Acima de 500ms, você está fazendo
-  o usuário esperar.
-- **Respeite `prefers-reduced-motion`.** Nos componentes da KDS,
-  motion crítico (loaders) permanece — mas decorativo
-  (parallax, swooshes) deve ser desabilitado:
+- **Use `ease-out` for entrances** and `ease-in` for exits. It is
+  counter-intuitive, but it matches physical perception: objects
+  decelerate as they arrive and accelerate as they leave the
+  field of view.
+- **150ms is the sweet spot** for UI transitions. Faster looks
+  like a glitch, slower feels lazy.
+- **300ms+** is narrative-animation territory - drawer opening,
+  page transitions. Above 500ms you are making the user wait.
+- **Respect `prefers-reduced-motion`.** In Gremorie components,
+  critical motion (loaders) stays, but decorative motion
+  (parallax, swooshes) should be disabled:
   ```css
   @media (prefers-reduced-motion: reduce) {
     .my-fancy-animation {
@@ -75,6 +75,6 @@ cobrem os principais casos.
     }
   }
   ```
-- **Não anime tudo ao mesmo tempo.** Se uma transition envolve 5
-  propriedades, considere se 2 ou 3 não bastam — motion paralelo
-  vira ruído visual rápido.
+- **Do not animate everything at once.** If a transition touches
+  5 properties, ask whether 2 or 3 would do - parallel motion
+  turns into visual noise fast.

@@ -14,7 +14,7 @@ import { Input } from './input';
  * `aria-invalid`.
  */
 const meta: Meta<Input> = {
-  title: 'Forms/Input',
+  title: 'Inputs/Text/Input',
   component: Input,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Input, Label] })],

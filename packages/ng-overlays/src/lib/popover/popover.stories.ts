@@ -21,7 +21,7 @@ import {
  * Radix's portal model.
  */
 const meta: Meta<Popover> = {
-  title: 'Overlays/Popover',
+  title: 'Interaction/Overlays/Popover',
   component: Popover,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -1,8 +1,123 @@
 ---
 title: Visão geral
-description: Os componentes que o Gremorie distribui via registry — o que fazem, o que liga/desliga, e o contrato com o backend.
+description: O catálogo de componentes do Gremorie - 83 primitivos em 8 categorias, em edições React e Angular, instaláveis via registry ou npm.
 ---
 
-Esta página descreve os **componentes que o Gremorie distribui** (consumíveis
-via CLI e MCP), com todos os recursos — incluindo o que dá pra ligar/desligar — e
-o contrato com qualquer backend de que o componente dependa.
+O Gremorie distribui **83 primitivos de produção**, do dia a dia
+(`Button`, `Dialog`, `Table`) até um vocabulário completo de
+superfícies de IA (`PromptInput`, `Message`, `Reasoning`,
+`Artifact`). Cada componente existe em **duas edições**, React e
+Angular, com a mesma anatomia e o mesmo contrato de props, e todos
+são tematizados inteiramente via [design tokens](/tokens), então a
+sua marca se aplica sem tocar no código do componente.
+
+## As oito categorias
+
+<Cards>
+  <Card
+    title="AI"
+    href="/components/chatbot/prompt-input"
+    description="23 componentes. A superfície de chatbot (PromptInput, Message, Reasoning, Tool), código e artifacts (CodeBlock, Artifact, WebPreview) e utilitários de IA."
+  />
+  <Card
+    title="Forms"
+    href="/components/form"
+    description="17 componentes. O wiring de Form mais todos os inputs: Button, Input, Textarea, Select, Checkbox, Switch, Slider, Calendar, DatePicker."
+  />
+  <Card
+    title="Overlays"
+    href="/components/overlays/dialog"
+    description="11 componentes. Tudo que flutua: Dialog, Sheet, Drawer, Popover, Tooltip, Command, os menus e toasts via Sonner."
+  />
+  <Card
+    title="Display"
+    href="/components/display/accordion"
+    description="10 componentes. Apresentação estática: Card, Table, Badge, Avatar, Accordion, Carousel, Separator."
+  />
+  <Card
+    title="Data"
+    href="/components/data/chart"
+    description="8 componentes. O sistema de gráficos: o core Chart mais os tipos area, bar, line, pie, radar, radial e scatter."
+  />
+  <Card
+    title="Navigation"
+    href="/components/navigation/breadcrumb"
+    description="6 componentes. Orientação: Sidebar, Tabs, Breadcrumb, Menubar, NavigationMenu, Pagination."
+  />
+  <Card
+    title="Containers"
+    href="/components/containers/aspect-ratio"
+    description="4 componentes. Estruturas de layout: AspectRatio, Resizable, ScrollArea, Stack."
+  />
+  <Card
+    title="Feedback"
+    href="/components/feedback/alert"
+    description="4 componentes. Status do sistema: Alert, Progress, Skeleton, Spinner."
+  />
+</Cards>
+
+## Duas edições, um contrato
+
+Cada componente é distribuído numa **edição React** (`rx-*`) e numa
+**edição Angular** (`ng-*`). As duas não são ports de conveniência:
+elas compartilham uma árvore de anatomia fixa e um contrato de
+paridade de props, então um time que conhece o `PromptInput` em
+React lê o template Angular sem reaprender nada. O workbench do
+Gremorie renderiza as duas edições lado a lado para cada componente,
+em cada tema, e é assim que a paridade é validada antes de qualquer
+publicação.
+
+Cada página de componente documenta as duas edições em abas; a
+árvore de anatomia no topo de cada página é compartilhada pelas
+duas.
+
+## Como instalar
+
+Dois caminhos de distribuição. Escolha por projeto, ou misture.
+
+**Registry (você é dono do código).** A CLI copia o código-fonte do
+componente para o seu repositório. Você edita como qualquer outro
+arquivo do seu codebase, e não existe dependência de runtime do
+Gremorie:
+
+```bash
+npx gremorie@latest add rx-button   # edição React
+npx gremorie@latest add ng-button   # edição Angular
+```
+
+**npm (pacote versionado).** Instale a edição completa e importe o
+que precisar. O tree-shaking mantém no bundle só o que você usa:
+
+```bash
+npm i @gremorie/react     # ou @gremorie/angular
+```
+
+```tsx
+import { Button } from '@gremorie/react';
+
+export function Example() {
+  return <Button>Ship it</Button>;
+}
+```
+
+O trade-off: o registry dá controle total e zero lock-in; o npm dá
+uma fonte da verdade versionada e updates via `npm update`. Os
+detalhes de setup dos dois caminhos estão em
+[Installation](/get-started/installation).
+
+## O que cada página entrega
+
+Cada página de componente segue o mesmo formato: uma superfície
+**Preview / Code** ao vivo no topo, a **árvore de anatomia** dos
+subcomponentes, o comando de instalação, a **referência de API**
+completa das duas edições, e notas de acessibilidade e theming. Se
+você procura a camada de julgamento, **quando** usar um botão em vez
+de um link, regras de label, hierarquia, isso vive no
+[corpus de UX](/corpus), não aqui.
+
+## Contribuindo
+
+A régua que todas as páginas acima cumprem está definida no
+[padrão de documentação](/platform/internal/documentation-standard).
+Para adicionar um componente ou melhorar um existente, comece em
+[Contributing](/get-started/contributing).

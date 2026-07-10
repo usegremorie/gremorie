@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
  * Roving tabindex and arrow-key navigation are handled by the brain.
  */
 const meta: Meta<RadioGroup> = {
-  title: 'Forms/RadioGroup',
+  title: 'Inputs/Selection/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [RadioGroup, RadioGroupItem] })],

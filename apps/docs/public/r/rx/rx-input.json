@@ -8,7 +8,9 @@
   "categories": [
     "forms"
   ],
-  "dependencies": [],
+  "dependencies": [
+    "@gremorie/rx-core"
+  ],
   "devDependencies": [],
   "registryDependencies": [
     "rx-utils"

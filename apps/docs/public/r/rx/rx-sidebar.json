@@ -11,7 +11,12 @@
   "dependencies": [
     "radix-ui",
     "lucide-react",
-    "class-variance-authority"
+    "class-variance-authority",
+    "@gremorie/rx-core",
+    "@gremorie/rx-display",
+    "@gremorie/rx-feedback",
+    "@gremorie/rx-forms",
+    "@gremorie/rx-overlays"
   ],
   "devDependencies": [],
   "registryDependencies": [

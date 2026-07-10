@@ -19,9 +19,10 @@ import {
  * with-footer, edge-to-edge.
  */
 const meta: Meta<Card> = {
-  title: 'Display/Card',
+  title: 'Layout & display/Display/Card',
   component: Card,
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
   decorators: [
     moduleMetadata({
       imports: [
@@ -39,6 +40,25 @@ const meta: Meta<Card> = {
 
 export default meta;
 type Story = StoryObj<Card>;
+
+/** Workbench — header + content at a fixed width. */
+export const Workbench: Story = {
+  render: () => ({
+    template: `
+      <gn-card class="w-96">
+        <gn-card-header>
+          <gn-card-title>Notifications</gn-card-title>
+          <gn-card-description>You have 3 unread messages.</gn-card-description>
+        </gn-card-header>
+        <gn-card-content>
+          <p class="text-sm text-muted-foreground">
+            Stay updated with the latest activity from your team.
+          </p>
+        </gn-card-content>
+      </gn-card>
+    `,
+  }),
+};
 
 export const Default: Story = {
   render: () => ({

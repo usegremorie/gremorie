@@ -84,7 +84,7 @@ export function Example() {
 </Tab>
 <Tab value="Angular">
 <Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
+The Angular edition of this component ships from source today (see the workbench for the side-by-side); its registry entry is coming next.
 </Callout>
 </Tab>
 </Tabs>
@@ -140,11 +140,30 @@ Pass-through wrappers over their Radix counterparts with `data-slot` attributes.
 
 ### Form dialog
 
-Embed form fields in the body. The dialog traps focus while open; Cancel dismisses via `DialogClose`.
+Embed form fields directly in the body. The dialog traps focus while open;
+Cancel dismisses via `DialogClose`, and submit closes via state.
 
 <ComponentPreview name="overlays/dialog-form">
   <DialogFormPreview />
 </ComponentPreview>
+
+```tsx
+<DialogContent>
+  <form onSubmit={handleSubmit}>
+    <DialogHeader>
+      <DialogTitle>Invite teammate</DialogTitle>
+      <DialogDescription>They'll get an email invite.</DialogDescription>
+    </DialogHeader>
+    <Field className="my-4">
+      <FieldLabel htmlFor="email">Email</FieldLabel>
+      <Input id="email" type="email" required />
+    </Field>
+    <DialogFooter>
+      <Button type="submit">Send invite</Button>
+    </DialogFooter>
+  </form>
+</DialogContent>
+```
 
 ### Confirmation with explicit Cancel
 
@@ -170,28 +189,6 @@ For destructive but reversible actions, pair the X close with an explicit `Cance
     </DialogFooter>
   </DialogContent>
 </Dialog>
-```
-
-### Form dialog
-
-Embed form fields directly in the body. The dialog handles focus trap; submit closes via state.
-
-```tsx
-<DialogContent>
-  <form onSubmit={handleSubmit}>
-    <DialogHeader>
-      <DialogTitle>Invite teammate</DialogTitle>
-      <DialogDescription>They'll get an email invite.</DialogDescription>
-    </DialogHeader>
-    <Field className="my-4">
-      <FieldLabel htmlFor="email">Email</FieldLabel>
-      <Input id="email" type="email" required />
-    </Field>
-    <DialogFooter>
-      <Button type="submit">Send invite</Button>
-    </DialogFooter>
-  </form>
-</DialogContent>
 ```
 
 ### Without close button

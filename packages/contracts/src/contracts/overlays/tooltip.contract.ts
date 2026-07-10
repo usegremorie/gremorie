@@ -81,8 +81,8 @@ export const tooltip = defineContract({
       '<TooltipProvider><Tooltip><TooltipTrigger>?</TooltipTrigger><TooltipContent>Add to library</TooltipContent></Tooltip></TooltipProvider>',
   },
   preview: {
-    rx: 'interaction-overlays-tooltip--default',
-    ng: 'overlays-tooltip--workbench',
+    rx: 'interaction-overlays-tooltip--workbench',
+    ng: 'interaction-overlays-tooltip--workbench',
   },
   tag: { rx: 'Tooltip', ng: 'gn-tooltip' },
   example: {

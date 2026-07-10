@@ -82,8 +82,8 @@ export const popover = defineContract({
       '<Popover><PopoverTrigger>Open</PopoverTrigger><PopoverContent align="start"><PopoverHeader><PopoverTitle>Dimensions</PopoverTitle></PopoverHeader></PopoverContent></Popover>',
   },
   preview: {
-    rx: 'interaction-overlays-popover--default',
-    ng: 'overlays-popover--workbench',
+    rx: 'interaction-overlays-popover--workbench',
+    ng: 'interaction-overlays-popover--workbench',
   },
   tag: { rx: 'Popover', ng: 'gn-popover' },
   example: {

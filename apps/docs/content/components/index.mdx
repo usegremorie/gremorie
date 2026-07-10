@@ -1,147 +1,119 @@
 ---
 title: Overview
-description: The components Gremorie ships via registry — what they do, what's on / off, and the contract with consumer backends.
+description: The Gremorie component catalog - 83 primitives in 8 categories, shipped as React and Angular editions, installable via registry or npm.
 ---
 
-This page describes the **components that Gremorie ships** (consumable via
-CLI and MCP), all their features (including what can be toggled on / off),
-and the contract with any backend the component depends on.
+Gremorie ships **83 production primitives**, from the everyday
+(`Button`, `Dialog`, `Table`) to a full AI surface vocabulary
+(`PromptInput`, `Message`, `Reasoning`, `Artifact`). Every component
+exists in **two editions**, React and Angular, with the same anatomy
+and the same prop contract, and every one is themed entirely through
+[design tokens](/tokens), so your brand applies without touching
+component code.
 
-> Not to be confused with the [UX corpus](/corpus). The
-> corpus is text knowledge — **when** to use a button versus a link, label
-> rules, hierarchy. This page is the **code** the registry distributes.
+## The eight categories
 
-## Principles
+<Cards>
+  <Card
+    title="AI"
+    href="/components/chatbot/prompt-input"
+    description="23 components. The chatbot surface (PromptInput, Message, Reasoning, Tool), code and artifacts (CodeBlock, Artifact, WebPreview), and AI utilities."
+  />
+  <Card
+    title="Forms"
+    href="/components/form"
+    description="17 components. Form wiring plus every input: Button, Input, Textarea, Select, Checkbox, Switch, Slider, Calendar, DatePicker."
+  />
+  <Card
+    title="Overlays"
+    href="/components/overlays/dialog"
+    description="11 components. Everything that floats: Dialog, Sheet, Drawer, Popover, Tooltip, Command, the menus, and toasts via Sonner."
+  />
+  <Card
+    title="Display"
+    href="/components/display/accordion"
+    description="10 components. Static presentation: Card, Table, Badge, Avatar, Accordion, Carousel, Separator."
+  />
+  <Card
+    title="Data"
+    href="/components/data/chart"
+    description="8 components. The charting system: the Chart core plus area, bar, line, pie, radar, radial, and scatter types."
+  />
+  <Card
+    title="Navigation"
+    href="/components/navigation/breadcrumb"
+    description="6 components. Wayfinding: Sidebar, Tabs, Breadcrumb, Menubar, NavigationMenu, Pagination."
+  />
+  <Card
+    title="Containers"
+    href="/components/containers/aspect-ratio"
+    description="4 components. Layout shells: AspectRatio, Resizable, ScrollArea, Stack."
+  />
+  <Card
+    title="Feedback"
+    href="/components/feedback/alert"
+    description="4 components. System status: Alert, Progress, Skeleton, Spinner."
+  />
+</Cards>
 
-Aligned with the Gremorie [philosophy](/get-started/philosophy) and the
-[architecture](/platform/architecture):
+## Two editions, one contract
 
-- **Imported and editable.** Distribution via **registry** (not closed npm):
-  the CLI copies the **source into the consumer's repo**, who becomes the
-  owner and edits as needed.
-- **Zero lock-in.** The dev takes the component away. No runtime dep on us.
-- **Decoupled tokens.** Client branding applies through tokens (colours,
-  radius, typography) without touching component code.
-- **Toggleable features.** Every "extra" capability (slash commands, chart
-  actions) can be disabled — by composition (don't include the part) or by
-  flag.
+Each component ships as a **React edition** (`rx-*`) and an
+**Angular edition** (`ng-*`). The two are not ports of convenience:
+they share a fixed anatomy tree and prop-parity contract, so a team
+that knows `PromptInput` in React can read the Angular template
+without relearning anything. The Gremorie workbench renders both
+editions side by side for every component, in every theme, which is
+how parity is validated before anything is published.
 
-## Per-component documentation contract
+Every component page documents both editions in tabs; the anatomy
+tree near the top of each page is shared by both.
 
-Every registry component must document:
+## How to install
 
-1. **What it does** — one line.
-2. **Features** — list of what comes included.
-3. **API** — props plus compound subcomponents.
-4. **How to toggle each feature** — composition and / or flags.
-5. **Backend contract** — what the consumer must provide if any (skills +
-   handler for slash commands, for example). ChartArtifact = 100% frontend,
-   no backend.
-6. **With / without examples** for each toggleable feature.
-7. **Live docs** — Fumadocs page (prop table + side-by-side examples) plus
-   Storybook stories with Controls to toggle features live.
+Two distribution paths. Pick per project, or mix.
 
-See the [documentation standard](/platform/internal/documentation-standard)
-for the binary checklist.
+**Registry (you own the source).** The CLI copies the component's
+source into your repo. You edit it like any other file in your
+codebase, and there is no runtime dependency on Gremorie:
 
-## API pattern: composition vs flags
-
-Two ways, combinable.
-
-**Composition (compound - preferred):** turn off by not
-including the part.
-
-```tsx
-<ChartArtifact data={data}>
-  <ChartArtifact.Toolbar>
-    <ChartArtifact.TableToggle />
-    <ChartArtifact.DownloadCsv />
-    {/* no <DownloadImage/> -> the button doesn't render */}
-  </ChartArtifact.Toolbar>
-</ChartArtifact>
+```bash
+npx gremorie@latest add rx-button   # React edition
+npx gremorie@latest add ng-button   # Angular edition
 ```
 
-**Flags (convenience, quick on / off):**
+**npm (versioned package).** Install the full edition and import
+what you need. Tree-shaking keeps only what you use:
 
-```tsx
-<ChartArtifact data={data} actions={{ table: true, csv: false, image: false }} />
-
-<PromptInput onSubmit={fn} />                 {/* no skills -> no slash menu */}
-<PromptInput skills={skills} onSubmit={fn} /> {/* with slash */}
+```bash
+npm i @gremorie/react     # or @gremorie/angular
 ```
 
-Each component's docs show both paths and the **default** (everything on)
-plus how to **opt out**.
+```tsx
+import { Button } from '@gremorie/react';
 
-## Initial catalogue
+export function Example() {
+  return <Button>Ship it</Button>;
+}
+```
 
-Validated in the `up-product` prototype (`apps/web/src/features/iap/`) —
-strong candidates for the first registry items.
+The trade-off: the registry gives you full control and zero lock-in;
+npm gives you one versioned source of truth and updates via
+`npm update`. Setup details for both paths are in
+[Installation](/get-started/installation).
 
-### 1. ChartArtifact — **recommended pilot**
+## What every page gives you
 
-Visualisation card for AI / analytics output.
+Each component page follows the same shape: a live **Preview / Code**
+surface at the top, the **anatomy tree** of its subcomponents, the
+installation command, the full **API reference** for both editions,
+and accessibility and theming notes. If you want the judgment layer,
+**when** to reach for a button versus a link, label rules, hierarchy,
+that lives in the [UX corpus](/corpus), not here.
 
-- **What it does:** renders the artifact (bar / line / pie / radar / table /
-  KPI) with an action toolbar.
-- **Features:** chart / table toggle, **CSV download**, **PNG download**
-  (image), semantic palette system.
-- **Backend:** **none** — 100% frontend. CSV and PNG are client-side (via
-  `html-to-image` or similar). This is why it's the best pilot: it proves
-  the registry + docs flow without the server complication.
-- **Toggleable:** each action (table / CSV / PNG) via compound or flag.
-- **Reference code:** `up-product` ->
-  `apps/web/src/features/iap/artifacts/*` (renderers, `iap-export-csv`,
-  PNG exporter, palettes).
+## Contributing
 
-### 2. PromptInput (with slash commands)
-
-Chat composer in the Claude / Cursor style.
-
-- **What it does:** input with modes, context chips, and an **inline slash
-  menu** (coloured command in the text itself, via a highlight layer).
-- **Features:** slash -> list of "skills / commands" (filter, keyboard
-  navigation, optional auto-detection), context chips, mode selector,
-  attachments.
-- **Backend:** **contract** — the consumer provides the skill list and a
-  handler (`onSubmit` / adapter). The UI is ours; execution is the dev's.
-  Same model as AI Elements: ready primitive, you wire it to your backend.
-- **Toggleable:** slash off (no `skills` -> no menu); chips, modes, and
-  attachments are optional.
-- **Reference code:** `up-product` ->
-  `apps/web/src/features/iap/chat/{chat-prompt-input,skill-slash-menu}.tsx`.
-
-## Distribution
-
-- `registry.json` + per-item JSON -> served by the Gremorie docs site at
-  `/r/...`.
-- Consumption (CLI): `npx gremorie add ng-chart-artifact` -> source lands
-  in the dev's repo.
-- Consumption (AI agent): MCP server reads the same registry and exposes
-  `get_component(name)` / `get_block(name)` / `get_guidelines(topic)` to
-  Claude or Cursor.
-- Versioning (semver), peer deps, a11y, and decoupled theming are part of
-  the "production-ready" bar — see warning below.
-
-> **Extracting is not productising.** Plug-and-play for third parties
-> requires a stable public API, decoupled tokens, tree-shaking, a11y
-> guarantees, docs + examples, and ongoing maintenance. It's a product line,
-> not a weekend extraction. The path: **ChartArtifact first** (frontend
-> only) as proof, then PromptInput (with backend contract).
-
-## Status
-
-Planning. Origin: discussion stemming from the `up-product` iap prototype
-(slash commands + chart card with export). Next concrete step: spec the
-public API of ChartArtifact and the registry item structure.
-
-## Related
-
-- [Architecture](/platform/architecture) — stack, registry,
-  distribution
-- [Documentation standard](/platform/internal/documentation-standard) — the
-  binary checklist every component must satisfy
-- [Storybook structure](/platform/internal/storybook-structure) — the
-  canonical sidebar tree (9 Primitives categories, AI = Chatbot + Code)
-- [Contributing](/get-started/contributing) — how to add a new
-  component
+The bar every page above meets is defined in the
+[documentation standard](/platform/internal/documentation-standard).
+To add a component or improve an existing one, start at
+[Contributing](/get-started/contributing).

@@ -84,8 +84,8 @@ export const menubar = defineContract({
       '<menubar><menubar-menu><menubar-trigger>File</menubar-trigger><menubar-content><menubar-item>New<menubar-shortcut>⌘N</menubar-shortcut></menubar-item></menubar-content></menubar-menu></menubar>',
   },
   preview: {
-    rx: 'interaction-navigation-menubar--default',
-    ng: 'navigation-menubar--workbench',
+    rx: 'interaction-navigation-menubar--workbench',
+    ng: 'interaction-navigation-menubar--workbench',
   },
   tag: { rx: 'Menubar', ng: 'gn-menubar' },
   example: { inset: false, variant: 'default', align: 'start' },

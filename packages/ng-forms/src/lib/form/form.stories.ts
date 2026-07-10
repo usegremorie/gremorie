@@ -20,7 +20,7 @@ import {
  * own reactive / template-driven control.
  */
 const meta: Meta<FormItem> = {
-  title: 'Forms/Form',
+  title: 'Inputs/Form',
   component: FormItem,
   tags: ['autodocs'],
   decorators: [

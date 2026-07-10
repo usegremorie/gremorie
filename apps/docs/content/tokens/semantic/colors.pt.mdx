@@ -1,0 +1,99 @@
+---
+title: Colors
+description: Mapeamento intenção → valor para os seis temas Gremorie, em light e dark mode.
+---
+
+import { SemanticThemeTable } from '@/components/semantic-theme-tables';
+
+Tokens semânticos são **intenções**: `primary`, `foreground`,
+`border`. Cada tema preenche essas intenções com valores
+diferentes, e cada modo (light / dark) traz seu próprio
+mapeamento. Esta página é a **tabela de verdade** para os seis
+temas embarcados: Default, Claude, ChatGPT, Gemini, Perplexity e
+Mistral.
+
+## Como ler as tabelas
+
+- As colunas **Light** e **Dark** renderizam o valor exato
+  declarado como um chip sobre o próprio background light ou dark
+  do tema, então as duas são fiéis independente do modo em que
+  você está lendo.
+- As colunas **Valor** mostram o que o tema declara: um nome de
+  primitivo (consumido via `var(--color-<token>)`) ou, onde o tema
+  espelha uma superfície de produto sem primitivo equivalente, um
+  valor OKLCH literal.
+- O badge `base` indica que o tema **não** sobrescreve aquele
+  token; ele herda o valor da camada base em `theme.css`. Essa
+  herança é o comportamento que embarca, não uma omissão.
+
+Se você está auditando um componente que parece "errado" em algum
+tema, comece por aqui. Comparar a intenção (e.g. `--primary`) com
+o valor resolvido em cada tema diz se a inconsistência é da chrome
+do componente ou do mapeamento do tema.
+
+<SemanticThemeTable themeId="default" locale="pt" />
+
+<SemanticThemeTable themeId="claude" locale="pt" />
+
+<SemanticThemeTable themeId="chatgpt" locale="pt" />
+
+<SemanticThemeTable themeId="gemini" locale="pt" />
+
+<SemanticThemeTable themeId="perplexity" locale="pt" />
+
+<SemanticThemeTable themeId="mistral" locale="pt" />
+
+## Sobre os tokens de sidebar
+
+Os `--sidebar-*` são uma **família paralela** que cobre a chrome
+de navegação lateral. Eles existem porque sidebars são surfaces
+muitas vezes pintadas distintas do `background` (mais escuras,
+mais claras, contrastantes). Manter intenções dedicadas evita o
+truque de "background com tint" que se quebra ao mudar de tema.
+
+## Sobre os tokens de chart
+
+`--chart-1` a `--chart-5` são as cores de série categóricas
+consumidas pelos componentes de chart. Todo tema redefine o
+conjunto completo nos **dois** modos: o bloco dark precisa
+re-declarar cada série porque o bloco light do tema vence o
+seletor `.dark` da base em especificidade, então um override dark
+faltante vazaria o valor light para o dark mode.
+
+## Editando ou adicionando temas
+
+Temas são **camadas de override** sobre a camada semântica base em
+`packages/tokens/styles/theme.css`. A receita curta:
+
+1. **Crie** um novo arquivo em
+   `packages/tokens/styles/themes/<id>.css`.
+2. **Defina** os dois selectors:
+
+   ```css
+   :root[data-theme='<id>'] {
+     /* overrides do light */
+   }
+   :root[data-theme='<id>'].dark {
+     /* overrides do dark */
+   }
+   ```
+
+3. **Sobrescreva apenas o que difere** da base. Um tema de acento
+   como o Mistral toca uma dúzia de tokens; um tema de superfície
+   completa como o Claude remapeia quase tudo. O que o bloco light
+   declarar, o bloco dark precisa re-declarar (veja a nota de
+   chart acima), porque `:root[data-theme]` vence `.dark`.
+4. **Importe** o arquivo no topo de
+   `packages/tokens/styles/theme.css`.
+5. **Audite** rodando o tema no workbench e checando contraste:
+   pares primary/primary-foreground precisam passar WCAG AA para
+   texto (4.5:1) e as séries de chart precisam de 3:1 sobre o
+   background do tema.
+
+<Callout type="warn">
+  **Prefira primitivos.** Referencie as rampas via `var(--color-<token>)` para
+  que um ajuste de primitivo cascateie em todos os temas. Os temas embarcados
+  só hardcodam OKLCH onde espelham uma superfície de produto sem primitivo
+  equivalente (e.g. o creme do Claude ou o grafite do Gemini). Se o seu valor
+  é reutilizável, adicione-o como primitivo.
+</Callout>

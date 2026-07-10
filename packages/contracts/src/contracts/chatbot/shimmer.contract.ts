@@ -69,8 +69,8 @@ export const shimmer = defineContract({
     example: '<span ngShimmer [shimmerDuration]="2">Thinking…</span>',
   },
   preview: {
-    rx: 'ai-chatbot-shimmer--default',
-    ng: 'ai-shimmer--default',
+    rx: 'ai-chatbot-shimmer--workbench',
+    ng: 'ai-chatbot-shimmer--workbench',
   },
   tag: { rx: 'Shimmer', ng: '[ngShimmer]' },
   example: {

@@ -11,7 +11,8 @@
   ],
   "dependencies": [
     "@angular/core",
-    "@spartan-ng/brain"
+    "@spartan-ng/brain",
+    "@gremorie/ng-core"
   ],
   "devDependencies": [],
   "registryDependencies": [
@@ -33,7 +34,7 @@
     },
     {
       "path": "src/lib/reasoning/reasoning-content.ts",
-      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnCollapsibleContent } from '@spartan-ng/brain/collapsible';\n\n/**\n * ReasoningContent — collapsible body that holds the reasoning text.\n *\n * React `ReasoningContent` wraps Streamdown; without that Angular peer this\n * component accepts a plain-text `text` input rendered as preserved\n * whitespace, or any projected children for custom renderers.\n */\n@Component({\n  selector: 'reasoning-content',\n  standalone: true,\n  imports: [BrnCollapsibleContent],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      brnCollapsibleContent\n      class=\"mt-4 text-sm text-muted-foreground outline-none transition-all data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-2\"\n    >\n      @if (text(); as t) {\n        <p class=\"whitespace-pre-wrap\">{{ t }}</p>\n      } @else {\n        <ng-content />\n      }\n    </div>\n  `,\n})\nexport class ReasoningContent {\n  readonly text = input<string>();\n}\n",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  input,\n  ViewEncapsulation,\n} from '@angular/core';\nimport { BrnCollapsibleContent } from '@spartan-ng/brain/collapsible';\n\n/**\n * ReasoningContent — collapsible body that holds the reasoning text.\n *\n * React `ReasoningContent` wraps Streamdown; without that Angular peer this\n * component accepts a plain-text `text` input rendered as preserved\n * whitespace, or any projected children for custom renderers.\n */\n@Component({\n  selector: 'reasoning-content',\n  standalone: true,\n  imports: [BrnCollapsibleContent],\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      brnCollapsibleContent\n      class=\"mt-4 text-sm text-muted-foreground outline-none transition-all data-[state=closed]:hidden data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-2\"\n    >\n      @if (text(); as t) {\n        <p class=\"whitespace-pre-wrap\">{{ t }}</p>\n      } @else {\n        <ng-content />\n      }\n    </div>\n  `,\n})\nexport class ReasoningContent {\n  readonly text = input<string>();\n}\n",
       "type": "registry:component",
       "target": "src/app/gremorie/ai/reasoning/reasoning-content.ts"
     },
@@ -92,12 +93,12 @@
       ],
       "outputs": [
         {
-          "name": "gremoriePromptSubmit",
+          "name": "submitted",
           "payload": "PromptInputSubmitEvent",
           "description": "Fired when the user submits via Cmd/Ctrl+Enter or by clicking PromptInputSubmit."
         },
         {
-          "name": "gremoriePromptAttachmentError",
+          "name": "attachmentError",
           "payload": "PromptInputAttachmentError",
           "description": "Fired when an attachment is rejected (bad MIME, too large, etc.)."
         }
@@ -106,11 +107,11 @@
     "examples": [
       {
         "title": "Basic chat input",
-        "code": "<gremorie-prompt-input [(value)]=\"draft\" (gremoriePromptSubmit)=\"onSubmit($event)\">\n  <gremorie-prompt-input-textarea placeholder=\"Ask anything\"></gremorie-prompt-input-textarea>\n  <gremorie-prompt-input-toolbar>\n    <gremorie-prompt-input-submit></gremorie-prompt-input-submit>\n  </gremorie-prompt-input-toolbar>\n</gremorie-prompt-input>\n"
+        "code": "<prompt-input (submitted)=\"onSubmit($event)\">\n  <prompt-input-textarea placeholder=\"Ask anything\"></prompt-input-textarea>\n  <prompt-input-toolbar>\n    <prompt-input-submit></prompt-input-submit>\n  </prompt-input-toolbar>\n</prompt-input>\n"
       },
       {
         "title": "Inline attachment list",
-        "code": "<gremorie-attachment-list variant=\"inline\">\n  <gremorie-attachment-item *ngFor=\"let a of attachments\" [data]=\"a\">\n    <gremorie-attachment-preview></gremorie-attachment-preview>\n    <gremorie-attachment-info>\n      <gremorie-attachment-name></gremorie-attachment-name>\n      <gremorie-attachment-size></gremorie-attachment-size>\n    </gremorie-attachment-info>\n    <gremorie-attachment-remove (remove)=\"onRemove(a)\"></gremorie-attachment-remove>\n  </gremorie-attachment-item>\n</gremorie-attachment-list>\n"
+        "code": "<attachment-list variant=\"inline\">\n  @for (a of attachments; track a.id) {\n    <attachment-item [data]=\"a\" (removed)=\"onRemove(a)\">\n      <attachment-preview></attachment-preview>\n      <attachment-info>\n        <attachment-name></attachment-name>\n        <attachment-size></attachment-size>\n      </attachment-info>\n      <attachment-remove></attachment-remove>\n    </attachment-item>\n  }\n</attachment-list>\n"
       }
     ]
   }

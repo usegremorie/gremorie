@@ -91,8 +91,8 @@ export const calendar = defineContract({
     example: '<calendar mode="single" selected={date} onSelect={setDate} />',
   },
   preview: {
-    rx: 'inputs-date-calendar--single',
-    ng: 'forms-calendar--workbench',
+    rx: 'inputs-date-calendar--workbench',
+    ng: 'inputs-date-calendar--workbench',
   },
   tag: { rx: 'Calendar', ng: 'gn-calendar' },
   example: {

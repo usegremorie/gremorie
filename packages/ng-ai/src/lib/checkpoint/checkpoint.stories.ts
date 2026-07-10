@@ -8,7 +8,7 @@ import { Checkpoint, CheckpointIcon, CheckpointTrigger } from './checkpoint';
  * Mirrors React `Checkpoint` from `@gremorie/rx-ai`.
  */
 const meta: Meta<Checkpoint> = {
-  title: 'AI/Checkpoint',
+  title: 'AI/Chatbot/Checkpoint',
   component: Checkpoint,
   tags: ['autodocs'],
   decorators: [

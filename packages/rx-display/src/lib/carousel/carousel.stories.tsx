@@ -69,6 +69,29 @@ type Story = StoryObj<typeof meta>;
 
 const SLIDES = [1, 2, 3, 4, 5];
 
+const WORKBENCH_SLIDE =
+  'flex aspect-square items-center justify-center rounded-md border bg-card text-3xl font-semibold';
+
+/** Workbench — three slides with prev/next controls at a fixed width. */
+export const Workbench: Story = {
+  args: { orientation: 'horizontal' },
+  render: (args) => (
+    <div className="px-12 py-6">
+      <Carousel {...args} className="w-56">
+        <CarouselContent>
+          {[1, 2, 3].map((n) => (
+            <CarouselItem key={n}>
+              <div className={WORKBENCH_SLIDE}>{n}</div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
+  ),
+};
+
 /** A basic horizontal carousel with prev/next controls. */
 export const Default: Story = {
   render: () => (

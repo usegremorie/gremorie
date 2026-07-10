@@ -10,7 +10,8 @@
     "chatbot"
   ],
   "dependencies": [
-    "motion"
+    "motion",
+    "@gremorie/rx-core"
   ],
   "devDependencies": [],
   "registryDependencies": [

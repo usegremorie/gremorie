@@ -12,7 +12,7 @@ import { Slider } from './slider';
  * `min`, `max`, `step`, `disabled` and `orientation`.
  */
 const meta: Meta<Slider> = {
-  title: 'Forms/Slider',
+  title: 'Inputs/Selection/Slider',
   component: Slider,
   tags: ['autodocs'],
   decorators: [moduleMetadata({ imports: [Slider] })],

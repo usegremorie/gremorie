@@ -1,7 +1,6 @@
 import { Assistant } from './assistant';
 import { Dashboard } from './dashboard';
 import { EmptyState } from './empty-state';
-import { MarketingHero } from './marketing-hero';
 import { SettingsForm } from './settings-form';
 import { SignIn } from './sign-in';
 
@@ -16,7 +15,6 @@ const blocks = {
   assistant: Assistant,
   'assistant-new-chat': AssistantNewChat,
   'settings-form': SettingsForm,
-  'marketing-hero': MarketingHero,
   'empty-state': EmptyState,
 } as const;
 
