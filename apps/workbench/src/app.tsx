@@ -39,7 +39,9 @@ import {
 import { CheckIcon, InfoIcon, MoonIcon, SunIcon, XIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { ITEMS } from '@gremorie/registry';
+// Deep import of the pure data module: the registry barrel re-exports the
+// generator (node:fs/node:path), which cannot enter a browser bundle.
+import { ITEMS } from '@gremorie/registry/dist/items.js';
 
 import { Sidebar } from './sidebar';
 
