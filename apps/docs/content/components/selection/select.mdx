@@ -108,6 +108,8 @@ The visible button users click to open the listbox.
 
 Renders the trigger surface and a trailing `ChevronDownIcon`.
 
+The size variant owns the trigger height via `data-[size=...]` selectors, so never force a height with `className` - a manual `h-8` on a default-size trigger loses to the variant's `h-9`. Next to an icon `Button`, pair `size="sm"` with `size="icon-sm"` (both 32px) or the defaults with `size="icon"` (both 36px). See [Action rows and size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
+
 ### `<SelectValue>`
 
 | Prop          | Type        | Default | Description                       |
