@@ -29,7 +29,7 @@ export function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(var(--border)_1px,transparent_1px)] opacity-60 [background-size:22px_22px] [mask-image:radial-gradient(ellipse_55%_50%_at_50%_0%,#000_30%,transparent_75%)]"
       />
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center lg:py-28">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-12 text-center lg:pt-28 lg:pb-14">
         <Badge variant="secondary" className="py-1">
           v0 · Open source · MIT
         </Badge>

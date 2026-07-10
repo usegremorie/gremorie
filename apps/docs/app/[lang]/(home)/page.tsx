@@ -53,9 +53,11 @@ export default function LandingPage() {
     <>
       <main id="main">
         <Hero />
+        {/* The hero's product shot: the live Assistant workbench card sits
+            centered right under the hero copy, Linear/Vercel style. */}
+        <AssistantShowcase />
         <ProofStrip />
         <ParityProof />
-        <AssistantShowcase />
         <FeaturesGrid />
         <ComponentsShowcase />
         <BlocksGallery />
