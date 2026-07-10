@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-forms",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Form primitives for Angular - Input, Label, Textarea, Checkbox, RadioGroup, Select, Switch, Slider, Toggle, ToggleGroup, ButtonGroup, InputOTP, InputGroup, Calendar, DatePicker and Form. Companion to Spartan-ng. Part of Gremorie.",
   "license": "MIT",
   "repository": {

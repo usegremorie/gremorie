@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "React core utilities for Gremorie - cn() helper for class name merging.",
   "license": "MIT",
   "repository": {

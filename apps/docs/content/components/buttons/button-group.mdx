@@ -104,6 +104,46 @@ Extends all `React.ComponentProps<"div">`.
 3. **`<ButtonGroupSeparator>`** inserts a visible 1px divider between children that share a border.
 4. **`<ButtonGroupText>`** is the right element for static labels inside the cluster - never use a raw `<span>` or `<div>` since the group expects its children to participate in border merging.
 
+## Action rows and size pairing
+
+An action row is any horizontal cluster of controls: a toolbar, a card header with a select and an icon button, a filter bar. Two layouts exist, and one sizing rule governs both.
+
+### Grouped vs gapped
+
+| Layout          | When                                                                                                                                        | How                                                        |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `<ButtonGroup>` | The actions form ONE unit: segmented modes, copy/paste/cut, pagination. Borders merge, the cluster reads as a single control.               | Wrap the children in `ButtonGroup`; see Composition above. |
+| Gapped row      | The actions are independent: a theme select next to a dark-mode toggle, a search input next to a submit. Each control keeps its own border. | `<div className="flex items-center gap-2">`                |
+
+### The sizing rule
+
+Adjacent controls in a row must share the same height step. Pick the step, then use the matching **size variant** on every control:
+
+| Height        | Button      | Icon Button      | Select      | Input                              |
+| ------------- | ----------- | ---------------- | ----------- | ---------------------------------- |
+| 24px (`h-6`)  | `size="xs"` | `size="icon-xs"` | -           | -                                  |
+| 32px (`h-8`)  | `size="sm"` | `size="icon-sm"` | `size="sm"` | `className="h-8"` (no variant yet) |
+| 36px (`h-9`)  | default     | `size="icon"`    | default     | default                            |
+| 40px (`h-10`) | `size="lg"` | `size="icon-lg"` | -           | -                                  |
+
+**Never override a control's height with a `className` when a size variant exists.** The variant owns the height (Select applies it via `data-[size=...]` selectors), so a manual `h-8` on a default-size trigger loses to the variant's `h-9` and the row misaligns by 4px.
+
+```tsx
+// Wrong: manual height fights the size variant and loses
+<div className="flex items-center gap-2">
+  <SelectTrigger className="h-8 w-36">...</SelectTrigger>  {/* renders 36px */}
+  <Button variant="outline" size="icon-sm">...</Button>     {/* renders 32px */}
+</div>
+
+// Right: same step, matching variants
+<div className="flex items-center gap-2">
+  <SelectTrigger size="sm" className="w-36">...</SelectTrigger>  {/* 32px */}
+  <Button variant="outline" size="icon-sm">...</Button>          {/* 32px */}
+</div>
+```
+
+The same contract applies in the Angular edition: the `size` inputs mirror these variants one to one, so a mixed React and Angular surface stays aligned by construction.
+
 ## Variations
 
 ### Three actions with separators
