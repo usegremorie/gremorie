@@ -8,7 +8,13 @@ export default [
       '@nx/dependency-checks': [
         'error',
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
+          // Specs import dev-only tooling (vitest) that must not leak into the
+          // published dependencies.
+          ignoredFiles: [
+            '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/vitest.config.{js,ts,mts}',
+            '{projectRoot}/**/*.spec.{ts,tsx,js,jsx}',
+          ],
         },
       ],
     },
