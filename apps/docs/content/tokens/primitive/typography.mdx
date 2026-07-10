@@ -1,6 +1,6 @@
 ---
 title: Typography
-description: Famílias de fonte, escala de tamanho com line-height pareada, pesos, leading e tracking — todos primitivos do Tailwind v4.
+description: Font families, a size scale with paired line-heights, weights, leading and tracking - all Tailwind v4 primitives.
 ---
 
 import {
@@ -11,77 +11,78 @@ import {
   TypeWeightTable,
 } from '@/components/token-tables';
 
-Tipografia é onde a hierarquia visual começa. A KDS usa a escala
-nativa do Tailwind v4 — **modular, perceptualmente espaçada,
-testada em produção** — e adiciona pares de line-height para que
-você não precise pensar em altura de linha em 90% dos casos.
+Typography is where visual hierarchy begins. Gremorie uses the native
+Tailwind v4 scale, which is **modular, perceptually spaced, and
+production tested**, and adds line-height pairs so you do not have
+to think about line height in 90% of cases.
 
-## Como a escala funciona
+## How the scale works
 
-Treze stops (`xs` → `9xl`) cobrem desde microcópia (12px) até
-display extremo (128px). A escala **não é geométrica pura** — os
-saltos são maiores no topo (display) e menores na base (UI). Isso
-reflete a realidade: você raramente precisa de "um pouquinho maior
-que 96px", mas frequentemente precisa de "14px ou 16px, depende".
+Thirteen stops (`xs` to `9xl`) cover everything from microcopy
+(12px) to extreme display (128px). The scale is **not purely
+geometric**: the jumps are larger at the top (display) and smaller
+at the base (UI). That mirrors reality: you rarely need "slightly
+bigger than 96px", but you constantly need "14px or 16px,
+depending".
 
-Cada `--text-*` vem com `--text-*--line-height` pareada, calculada
-para resultar em uma altura confortável para aquele tamanho. Se
-você usar `text-base`, ganha line-height de 1.5 automaticamente.
-Se usar `text-4xl`, ganha 1.111 (mais apertado, como heading
-quer).
+Each `--text-*` ships with a paired `--text-*--line-height`,
+calculated to give a comfortable height for that size. Use
+`text-base` and you get a 1.5 line-height automatically. Use
+`text-4xl` and you get 1.111, tighter, the way a heading wants it.
 
-## Famílias
+## Families
 
-KDS herda o **system stack** do Tailwind v4 — sem fontes baixadas,
-performance máxima. Se quiser trocar para Inter, Geist ou
-qualquer outra, redefina `--font-sans` no arquivo de tema.
+Gremorie inherits the Tailwind v4 **system stack**: no downloaded
+fonts, maximum performance. If you want to switch to Inter, Geist
+or anything else, redefine `--font-sans` in the theme file.
 
 <FontFamilyTable />
 
-## Tamanhos
+## Sizes
 
-A coluna **Amostra** mostra o caractere "Aa" no tamanho real. A
-**Line-height** ao lado é o que vem pareado por default — você
-pode sobrepor com `leading-*` quando precisar.
+The **Sample** column shows the characters "Aa" at the actual
+size. The **Line-height** next to it is the paired default; you
+can override it with `leading-*` when needed.
 
 <TypeSizeTable />
 
-## Pesos
+## Weights
 
-Nove stops, do `100` (thin) ao `900` (black). System fonts
-geralmente entregam só `400`, `500`, `600`, `700` — os outros
-stops dependem de uma fonte custom estar carregada.
+Nine stops, from `100` (thin) to `900` (black). System fonts
+usually only ship `400`, `500`, `600` and `700`; the other stops
+depend on a custom font being loaded.
 
 <TypeWeightTable />
 
 ## Leading
 
-Quando o line-height pareado não serve (compose de heading
-multilinha, leitura editorial longa), use os tokens
-**standalone**:
+When the paired line-height does not fit (multi-line heading
+compositions, long editorial reading), use the **standalone**
+tokens:
 
 <LeadingTable />
 
 ## Tracking
 
-Letter-spacing usado conscientemente é um sinal de cuidado
-tipográfico. Use **negative tracking** para apertar displays
-grandes; **positive tracking** para abrir caps e eyebrows.
+Letter-spacing used deliberately is a sign of typographic care.
+Use **negative tracking** to tighten large display text and
+**positive tracking** to open up caps and eyebrows.
 
 <TrackingTable />
 
-## Boas práticas
+## Best practices
 
-- **Pareie tamanho com weight.** Display usa peso menor (light
-  ou normal) — o tamanho já chama atenção. Body usa peso
-  intermediário (normal ou medium) — peso maior cansa em massa.
-- **Use o line-height pareado** sempre que possível. Ele foi
-  calculado para o tamanho específico.
-- **Tracking negativo** acima de `--text-2xl` corrige o spacing
-  exagerado que fontes geralmente têm em display.
-- **Cuidado com `text-9xl`.** Bonito numa página de portfólio,
-  brutal em qualquer interface de produto. Reserve para hero
-  pages e displays de marca.
-- **Não invente weights.** Se a fonte não tem `font-extralight`,
-  o navegador mostra `font-light` — silenciosamente. Audite o
-  weight sintético que aparece com `font-synthesis`.
+- **Pair size with weight.** Display uses a lighter weight (light
+  or normal) because the size already draws attention. Body uses
+  an intermediate weight (normal or medium) because heavier
+  weights tire the eye at scale.
+- **Use the paired line-height** whenever possible. It was
+  calculated for that specific size.
+- **Negative tracking** above `--text-2xl` corrects the
+  exaggerated spacing most fonts show at display sizes.
+- **Be careful with `text-9xl`.** Beautiful on a portfolio page,
+  brutal in any product interface. Reserve it for hero pages and
+  brand displays.
+- **Do not invent weights.** If the font lacks
+  `font-extralight`, the browser silently renders `font-light`.
+  Audit the synthetic weight that shows up with `font-synthesis`.

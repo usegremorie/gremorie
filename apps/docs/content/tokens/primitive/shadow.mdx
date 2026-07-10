@@ -1,54 +1,54 @@
 ---
 title: Shadow
-description: Hierarquia de elevação — hairline, card, dropdown, modal, drawer. Sombras são linguagem de Z, não de "deixa bonito".
+description: Elevation hierarchy - hairline, card, dropdown, modal, drawer. Shadows are a Z language, not a "make it pretty" tool.
 ---
 
 import { ShadowTable } from '@/components/token-tables';
 
-Sombra em UI **não é decoração — é hierarquia de elevação**. Cada
-nível de sombra corresponde a uma distância do leitor: hairline
-está colado na superfície, card flutua um pouco, modal flutua
-muito. Quando todas as sombras são "igualmente bonitas", você
-perdeu a hierarquia.
+Shadow in UI **is not decoration - it is elevation hierarchy**.
+Each shadow level maps to a distance from the reader: hairline
+sits flush with the surface, a card floats a little, a modal
+floats a lot. When every shadow is "equally pretty", the
+hierarchy is gone.
 
-## Como a escala funciona
+## How the scale works
 
-Sete stops de **box-shadow** (`2xs` → `2xl`) cobrem a hierarquia
-de elevação completa. Três stops de **inset-shadow** dão
-profundidade reversa (afundamento, pressed states, wells). Mais
-seis de **drop-shadow** (que aplicam em SVG e elementos com forma
-não-retangular).
+Seven **box-shadow** stops (`2xs` to `2xl`) cover the full
+elevation hierarchy. Three **inset-shadow** stops provide reverse
+depth (sunken areas, pressed states, wells). Six more
+**drop-shadow** stops apply to SVG and elements with
+non-rectangular shapes.
 
-A escala segue um princípio claro: **quanto maior o stop, maior a
-distância e mais difusa a sombra**. Isso simula iluminação real —
-um objeto mais alto projeta sombra mais espalhada e suave.
+The scale follows one clear principle: **the higher the stop, the
+greater the distance and the more diffuse the shadow**. This
+simulates real lighting - a taller object casts a wider, softer
+shadow.
 
-## Box shadow (elevação)
+## Box shadow (elevation)
 
-A escala canônica para elementos retangulares — cards, dropdowns,
-popovers, modais.
+The canonical scale for rectangular elements - cards, dropdowns,
+popovers, modals.
 
 <ShadowTable />
 
-## Inset shadow (afundamento)
+## Inset shadow (depth)
 
-Para inputs rebaixados, áreas de well, ou estados pressed.
+For sunken inputs, well areas, or pressed states.
 
 <ShadowTable inset={true} />
 
-## Boas práticas
+## Best practices
 
-- **Pareie sombra com z-index.** `shadow-sm` em cards no fluxo,
-  `shadow-md` em hover, `shadow-lg` em popovers, `shadow-xl` em
-  modais, `shadow-2xl` em drawers fullscreen.
-- **Em dark mode, sombras pretas raramente funcionam.** O
-  Tailwind v4 mantém as mesmas definições — você pode considerar
-  reduzir a opacidade ou usar inner-glow em vez de drop-shadow no
-  dark.
-- **Não use mais de 3 níveis na mesma tela.** Mais que isso, a
-  hierarquia vira ruído.
-- **Hover de cards estáticos** geralmente sobe um stop:
-  `shadow-sm` → `shadow-md`. É um sinal sutil de "isso é
-  clicável".
-- **Drop-shadow em SVG** dá resultado superior a box-shadow para
-  ícones e ilustrações com forma não-retangular.
+- **Pair shadow with z-index.** `shadow-sm` for in-flow cards,
+  `shadow-md` on hover, `shadow-lg` for popovers, `shadow-xl` for
+  modals, `shadow-2xl` for fullscreen drawers.
+- **In dark mode, black shadows rarely work.** Tailwind v4 keeps
+  the same definitions - consider reducing the opacity or using an
+  inner glow instead of a drop shadow in the dark.
+- **Do not use more than 3 levels on the same screen.** Beyond
+  that, the hierarchy becomes noise.
+- **Hovering a static card** usually moves up one stop:
+  `shadow-sm` to `shadow-md`. It is a subtle "this is clickable"
+  signal.
+- **Drop-shadow on SVG** gives better results than box-shadow for
+  icons and illustrations with non-rectangular shapes.

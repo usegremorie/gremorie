@@ -20,6 +20,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    host: 'https://gremorie.com',
+    sitemap: 'https://www.gremorie.com/sitemap.xml',
+    host: 'https://www.gremorie.com',
   };
 }

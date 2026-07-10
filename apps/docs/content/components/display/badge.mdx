@@ -56,9 +56,30 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```bash
+npx gremorie@latest add ng-badge
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Badge } from '@gremorie/ng-display';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [Badge],
+  template: `
+    <div class="flex flex-wrap items-center gap-2">
+      <gn-badge>Default</gn-badge>
+      <gn-badge variant="secondary">Secondary</gn-badge>
+      <gn-badge variant="outline">Outline</gn-badge>
+      <gn-badge variant="destructive">Destructive</gn-badge>
+    </div>
+  `,
+})
+export class ExampleComponent {}
+```
+
 </Tab>
 </Tabs>
 

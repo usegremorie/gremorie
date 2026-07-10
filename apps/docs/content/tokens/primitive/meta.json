@@ -3,7 +3,8 @@
   "icon": "Layers",
   "description": "The raw vocabulary — Tailwind v4 palettes and dimensional scales, with no semantic meaning yet.",
   "pages": [
-    "visao-geral",
+    "index",
+    "colors",
     "typography",
     "spacing",
     "radius",

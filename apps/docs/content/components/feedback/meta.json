@@ -1,6 +1,6 @@
 {
   "title": "Feedback",
   "icon": "MessageCircle",
-  "description": "Status and progress — alert, progress bar, skeleton loaders.",
-  "pages": ["alert", "progress", "skeleton"]
+  "description": "Status and progress — alert, progress bar, skeleton loaders, spinner.",
+  "pages": ["alert", "progress", "skeleton", "spinner"]
 }

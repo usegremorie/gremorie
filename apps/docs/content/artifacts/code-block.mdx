@@ -6,7 +6,7 @@ description: 'Syntax-highlighted code artifact with copy-to-clipboard, streamed 
 ## Overview
 
 A code artifact for when the model produces source code. Built on the
-`CodeBlock` primitive from `@gremorie/rx-ai` (Shiki under the hood)
+`CodeBlock` primitive from `@gremorie/rx-artifacts` (Shiki under the hood)
 with a `CodeBlockCopyButton` overlay. The model emits `{ code, language,
 filename }`; the artifact handles highlighting, line wrapping, and the
 copy affordance.
@@ -37,7 +37,7 @@ The LLM returns structured output matching this shape:
 ```text
 Card
 ├─ CardHeader            filename + Badge (outline) — artifact type
-└─ CodeBlock             rx-ai primitive (Shiki highlight against `code`)
+└─ CodeBlock             rx-artifacts primitive (Shiki highlight against `code`)
    └─ CodeBlockCopyButton overlay copy-to-clipboard control
 ```
 
@@ -104,7 +104,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@gremorie/rx-display';
-import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-ai';
+import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
 
 const CODE = `import { Button } from "@gremorie/rx-forms";
 
@@ -145,9 +145,60 @@ export function CodeBlockArtifact() {
 
 <Tab value="Angular">
 
-<Callout type="info">
-  Angular edition planned for Phase 5h. Star the repo to track progress.
-</Callout>
+```bash
+npx gremorie@latest add ng-code-block
+```
+
+```ts
+import { Component } from '@angular/core';
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@gremorie/ng-display';
+import { CodeBlock, CodeBlockCopyButton } from '@gremorie/ng-artifacts';
+
+@Component({
+  selector: 'app-code-artifact',
+  standalone: true,
+  imports: [
+    Badge,
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
+    CodeBlock,
+    CodeBlockCopyButton,
+  ],
+  template: `
+    <gn-card class="w-full max-w-2xl">
+      <gn-card-header>
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <gn-card-title>SaveBar.tsx</gn-card-title>
+            <gn-card-description>
+              Streamed code emitted by the model with Shiki highlighting.
+            </gn-card-description>
+          </div>
+          <gn-badge variant="outline">TSX + Shiki</gn-badge>
+        </div>
+      </gn-card-header>
+      <gn-card-content>
+        <code-block [code]="code" language="tsx">
+          <code-block-copy-button />
+        </code-block>
+      </gn-card-content>
+    </gn-card>
+  `,
+})
+export class CodeArtifactComponent {
+  readonly code = 'import { Button } from "@gremorie/rx-forms";';
+}
+```
 
 </Tab>
 

@@ -1,53 +1,68 @@
 ---
 title: Visão geral
-description: Tokens semânticos traduzem primitivos em intenção. É aqui que a KDS suporta múltiplos temas e modo escuro sem que componentes saibam disso.
+description: Tokens semânticos traduzem primitivos em intenção. É aqui que o Gremorie suporta múltiplos temas e modo escuro sem que componentes saibam disso.
 ---
 
 Se primitivos são "que cores existem", os tokens **semânticos** são
 "o que essas cores significam". Em vez de pintar um botão como
-`bg-neutral-900`, você pinta como `bg-primary` — e o
-significado de "primary" muda quando o tema muda.
+`bg-gray-900`, você pinta como `bg-primary`, e o significado de
+"primary" muda quando o tema muda.
+
+Esta é a **camada 2 de 3**: ela consome
+[primitivos](/tokens/primitive) e é consumida pelos componentes e
+pela camada de [chart](/tokens/chart). O desenho completo está no
+[modelo de três camadas](/tokens).
 
 ## A intenção como interface
 
 Toda a chrome dos componentes Gremorie conversa com a
-camada semântica. Ela define um conjunto fixo de **intenções** —
-`background`, `foreground`, `primary`, `border`, `ring`, etc — que
+camada semântica. Ela define um conjunto fixo de **intenções**,
+`background`, `foreground`, `primary`, `border`, `ring`, etc, que
 qualquer tema precisa preencher.
 
 | Intenção                    | O que representa                      |
 | --------------------------- | ------------------------------------- |
 | `background` / `foreground` | Superfície base e texto sobre ela     |
 | `card` / `popover`          | Variações de superfície com elevação  |
-| `primary`                   | A ação principal — botão protagonista |
+| `primary`                   | A ação principal - botão protagonista |
 | `secondary`                 | Ação secundária, baixo contraste      |
 | `muted`                     | Texto e superfícies em segundo plano  |
 | `accent`                    | Hover, seleção, destaque sutil        |
 | `destructive`               | Ações irreversíveis, erro             |
 | `border` / `input` / `ring` | Forms e estado de foco                |
+| `chart-1` ... `chart-5`     | Séries categóricas para charts        |
 | `sidebar-*`                 | Variantes para a chrome de navegação  |
 
-## Quatro temas, dois modos
+## Seis temas, dois modos
 
-A KDS embarca **quatro temas** que cobrem direções estéticas
-distintas:
+O Gremorie embarca **seis temas**. O tema Default é a própria
+camada base; os outros cinco espelham a voz visual dos principais
+produtos de AI:
 
 <Cards>
   <Card
-    title="Default (Neutral)"
-    description="Tema neutro padrão (baseColor neutral). Conservador, profissional, sem identidade de marca."
-  />
-  <Card
-    title="Amber Minimal"
-    description="Brand amber sobre neutros frios. Energia warm-tech, criativo, fitness."
-  />
-  <Card
-    title="Amethyst Haze"
-    description="Lavanda dessaturada sobre mauve. Editorial, contemplativo, AI-first."
+    title="Default"
+    description="A camada base em gray neutro. Conservador, profissional, sem identidade de marca."
   />
   <Card
     title="Claude"
-    description="Stone, taupe, olive e amber. Pegada terrosa, próxima de papel, AI consumer."
+    description="Clay quente (terracota coral) sobre superfícies creme, apoio em taupe, display serifado."
+  />
+  <Card
+    title="ChatGPT"
+    description="Acento emerald sobre superfície grafite flat, de sombras suaves."
+  />
+  <Card
+    title="Gemini"
+    description="Azul Google com rampa de chart azul-para-roxo e o radius mais arredondado."
+  />
+  <Card
+    title="Perplexity"
+    description="Turquesa verdadeiro sobre offblack. Sóbrio, compacto, o menor radius."
+  />
+  <Card
+    title="Mistral"
+    description="Laranja flame com primary preto-sobre-laranja, direto da marca."
   />
 </Cards>
 
@@ -55,11 +70,11 @@ Cada tema entrega **light e dark** independentemente. O switch é
 uma única troca de atributo:
 
 ```html
-<html data-theme="amber-minimal">
-  <!-- light -->
-  <html data-theme="claude" class="dark">
-    <!-- dark -->
-  </html>
+<html data-theme="claude">
+  <!-- Claude, light -->
+</html>
+<html data-theme="gemini" class="dark">
+  <!-- Gemini, dark -->
 </html>
 ```
 
@@ -68,34 +83,40 @@ e o navegador resolve o `var(--primary)` no contexto certo.
 
 ## Como os tokens são definidos
 
-Cada tema é um arquivo CSS em
-`packages/kds/src/styles/tokens/semantic/colors-<id>.css`. Os
-valores **referenciam primitivos** via `var(--color-<token>)`:
+A camada semântica base vive em
+`packages/tokens/styles/theme.css` (`:root` para light, `.dark`
+para dark). Cada tema nomeado é um **arquivo de override** em
+`packages/tokens/styles/themes/<id>.css` que remapeia só o que
+difere, referenciando primitivos via `var(--color-<token>)`:
 
 ```css
-[data-theme='amber-minimal'] {
-  --primary: var(--color-amber-500);
-  --foreground: var(--color-neutral-800);
-  --border: var(--color-gray-200);
+:root[data-theme='mistral'] {
+  --primary: var(--color-orange-600);
+  --primary-foreground: var(--color-gray-950);
+  --accent: var(--color-orange-100);
   /* ... */
 }
 ```
 
-A consequência: se você ajustar o `--color-amber-500` na camada
-primitive, o tema Amber Minimal — e qualquer outro que referencie
-amber-500 — atualiza automaticamente. **Edite uma vez, cascateia.**
+A consequência: ajuste o `--color-orange-600` na camada primitive
+e o tema Mistral, junto com qualquer outro que referencie
+orange-600, atualiza automaticamente. **Edite uma vez, cascateia.**
+Tokens que um tema não sobrescreve resolvem para a camada base,
+então um tema de acento como o Mistral cabe em uma dúzia de linhas
+enquanto um tema de superfície completa como o Claude remapeia
+quase tudo.
 
 ## Para a tabela completa
 
 A página [Colors](/tokens/semantic/colors) tem o mapeamento
-intenção → primitivo (light e dark) para os quatro temas. Use-a
-para entender por que um botão fica âmbar em um tema e cinza em
-outro — e para auditar se o seu próprio tema customizado está
-preenchendo as intenções com primitivos consistentes.
+intenção → valor (light e dark) para os seis temas. Use-a para
+entender por que um botão fica clay em um tema e emerald em outro,
+e para auditar se o seu próprio tema customizado está preenchendo
+as intenções com valores consistentes.
 
 <Callout type="info">
-  **A regra crítica:** semânticos sempre referenciam primitivos via `var(...)`.
-  Nunca digite OKLCH ou hex direto num arquivo de tema. Se o primitivo certo não
-  existe, **adicione um primitivo primeiro** e depois referencie. Isso mantém a
-  cascata íntegra.
+  **A regra de bolso:** referencie primitivos via `var(--color-<token>)`
+  sempre que um servir, para manter a cascata íntegra. Os temas embarcados só
+  hardcodam OKLCH em superfícies espelhadas de produto sem primitivo
+  equivalente.
 </Callout>

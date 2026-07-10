@@ -1,8 +1,121 @@
 ---
 title: Overview
-description: Semantic tokens translate primitives into intent — themes and dark mode without components knowing.
+description: Semantic tokens translate primitives into intent - how Gremorie supports multiple themes and dark mode without components knowing.
 ---
 
-If primitives are "what colors exist", **semantic** tokens are "what those
-colors mean". A button references `--primary`, not a raw blue — so themes and
-dark mode swap underneath without the component changing.
+If primitives are "what colors exist", **semantic** tokens are
+"what those colors mean". Instead of painting a button as
+`bg-gray-900`, you paint it as `bg-primary`, and the meaning of
+"primary" changes when the theme changes.
+
+This is **layer 2 of 3**: it consumes
+[primitives](/tokens/primitive) and is what components (and the
+[chart](/tokens/chart) layer) consume in turn. The full picture
+lives in the [three-layer model](/tokens).
+
+## Intent as the interface
+
+All the chrome of Gremorie components talks to the semantic
+layer. It defines a fixed set of **intents**, `background`,
+`foreground`, `primary`, `border`, `ring`, and so on, that every
+theme must fill.
+
+| Intent                      | What it represents                       |
+| --------------------------- | ---------------------------------------- |
+| `background` / `foreground` | Base surface and the text on top of it   |
+| `card` / `popover`          | Surface variations with elevation        |
+| `primary`                   | The main action - the protagonist button |
+| `secondary`                 | Secondary action, low contrast           |
+| `muted`                     | Background-level text and surfaces       |
+| `accent`                    | Hover, selection, subtle highlight       |
+| `destructive`               | Irreversible actions, errors             |
+| `border` / `input` / `ring` | Forms and focus state                    |
+| `chart-1` ... `chart-5`     | Categorical series for charts            |
+| `sidebar-*`                 | Variants for the navigation chrome       |
+
+## Six themes, two modes
+
+Gremorie ships **six themes**. The Default theme is the base layer
+itself; the other five match the visual voice of the leading AI
+products:
+
+<Cards>
+  <Card
+    title="Default"
+    description="The neutral gray base layer. Conservative, professional, no brand identity."
+  />
+  <Card
+    title="Claude"
+    description="Warm clay (coral terracotta) on cream surfaces, taupe support, serif display."
+  />
+  <Card
+    title="ChatGPT"
+    description="Emerald accent on a flat, low-shadow graphite surface."
+  />
+  <Card
+    title="Gemini"
+    description="Google blue with a blue-to-purple chart ramp and the roundest radius."
+  />
+  <Card
+    title="Perplexity"
+    description="True turquoise on offblack. Sober, tight, the smallest radius."
+  />
+  <Card
+    title="Mistral"
+    description="Flame orange with a black-on-orange primary, straight from the brand."
+  />
+</Cards>
+
+Each theme ships **light and dark** independently. Switching is a
+single attribute change:
+
+```html
+<html data-theme="claude">
+  <!-- Claude, light -->
+</html>
+<html data-theme="gemini" class="dark">
+  <!-- Gemini, dark -->
+</html>
+```
+
+Components do not know which theme is active. They ask for
+`bg-primary`, and the browser resolves `var(--primary)` in the
+right context.
+
+## How the tokens are defined
+
+The base semantic layer lives in
+`packages/tokens/styles/theme.css` (`:root` for light, `.dark` for
+dark). Each named theme is an **override file** at
+`packages/tokens/styles/themes/<id>.css` that remaps only what
+differs, referencing primitives via `var(--color-<token>)`:
+
+```css
+:root[data-theme='mistral'] {
+  --primary: var(--color-orange-600);
+  --primary-foreground: var(--color-gray-950);
+  --accent: var(--color-orange-100);
+  /* ... */
+}
+```
+
+The consequence: adjust `--color-orange-600` in the primitive
+layer and the Mistral theme, along with any other theme
+referencing orange-600, updates automatically. **Edit once, it
+cascades.** Tokens a theme does not override resolve to the base
+layer, so an accent theme like Mistral stays a dozen lines while a
+full-surface theme like Claude remaps almost everything.
+
+## For the full table
+
+The [Colors](/tokens/semantic/colors) page has the intent-to-value
+mapping (light and dark) for the six themes. Use it to understand
+why a button turns clay in one theme and emerald in another, and
+to audit whether your own custom theme is filling the intents with
+consistent values.
+
+<Callout type="info">
+  **The rule of thumb:** reference primitives via `var(--color-<token>)`
+  whenever one fits, so the cascade stays intact. The shipped themes hardcode
+  OKLCH only for product-matched surfaces that have no primitive equivalent.
+</Callout>

@@ -1,6 +1,6 @@
 ---
 title: Status
-description: Estado semântico discreto em charts — sucesso, aviso, erro, info, neutro.
+description: Discrete semantic state in charts - success, warning, error, info, neutral.
 ---
 
 import {
@@ -9,11 +9,11 @@ import {
 } from '@/components/token-tables';
 import { STATUS_SCHEME } from '@/lib/chart-tokens';
 
-**Status** é o esquema para charts que **encodam estado**, não
-quantidade. Cinco tokens com semântica fixa: sucesso, aviso,
-erro, info, neutro. A regra é simples: **se a cor verde no seu
-chart significa "bom"**, você precisa de Status — não de
-Categorical. Misturar gera leitura ambígua.
+**Status** is the scheme for charts that **encode state**, not
+quantity. Five tokens with fixed semantics: success, warning,
+error, info, neutral. The rule is simple: **if green in your
+chart means "good"**, you need Status - not Categorical. Mixing
+them produces ambiguous reading.
 
 <ChartSchemeSwatchRow scheme={STATUS_SCHEME} />
 
@@ -21,54 +21,52 @@ Categorical. Misturar gera leitura ambígua.
 
 <ChartSchemeTable scheme={STATUS_SCHEME} />
 
-## Quando usar
+## When to use
 
-- **Dashboard de saúde de sistemas** — serviços OK / degradados
-  / down.
-- **Traffic-light tiles** — KPIs com semáforo (NPS bands, SLA
-  bands).
-- **Bar charts com semântica** de performance (acima do alvo,
-  no alvo, abaixo).
-- **Alert overlays** — bandas de aviso/crítico em line charts.
+- **System health dashboards** - services OK / degraded / down.
+- **Traffic-light tiles** - KPIs with a traffic light (NPS bands,
+  SLA bands).
+- **Bar charts with performance semantics** (above target, on
+  target, below).
+- **Alert overlays** - warning/critical bands on line charts.
 
-## Por que diferente do Status semântico de UI
+## Why it differs from the UI semantic Status
 
-Os tokens de **chart status** vivem na camada chart, não na
-semântica de UI (`--destructive`, etc). A razão: dataviz precisa
-de um contraste maior para legibilidade em pequenas áreas
-(linhas finas, fatias de pie) — e os matizes específicos para
-chart são levemente diferentes dos usados em chrome de
-componentes.
+The **chart status** tokens live in the chart layer, not in the
+UI semantics (`--destructive`, etc). The reason: dataviz needs
+higher contrast for legibility in small areas (thin lines, pie
+slices), and the chart-specific hues are slightly different from
+the ones used in component chrome.
 
-| Chart token            | UI semantic equivalente | Diferença                                          |
-| ---------------------- | ----------------------- | -------------------------------------------------- |
-| `chart-status-success` | `accent` (verde)        | Chart usa `emerald-600`, UI varia por tema         |
-| `chart-status-error`   | `destructive`           | Chart é canonical `red-600`, `--destructive` varia |
-| `chart-status-warning` | (nenhum)                | UI semantic não tem warning explícito              |
+| Chart token            | UI semantic equivalent | Difference                                           |
+| ---------------------- | ---------------------- | ---------------------------------------------------- |
+| `chart-status-success` | `accent` (green)       | Chart uses `emerald-600`, UI varies per theme        |
+| `chart-status-error`   | `destructive`          | Chart is canonical `red-600`, `--destructive` varies |
+| `chart-status-warning` | (none)                 | UI semantics have no explicit warning                |
 
-## Quando não usar
+## When not to use
 
-Para gráficos **puramente categóricos** (regiões, produtos), use
-[Categorical](/tokens/chart/categorical). Aplicar verde ou
-vermelho a categorias sem semântica polui a leitura — o usuário
-vai inferir "bom/ruim" onde não há.
+For **purely categorical** charts (regions, products), use
+[Categorical](/tokens/chart/categorical). Applying green or red to
+categories with no semantics pollutes the reading - the user will
+infer "good/bad" where there is none.
 
 ## Anti-patterns
 
 <Callout type="warn">
-  Usar Status para gradação contínua. Os cinco tokens são **discretos** —
-  boundaries discretas entre estados. Para gradação, use
-  [Sequential](/tokens/chart/sequential) ou
+  Using Status for continuous gradation. The five tokens are **discrete** - hard
+  boundaries between states. For gradation, use
+  [Sequential](/tokens/chart/sequential) or
   [Divergent](/tokens/chart/divergent).
 </Callout>
 
 <Callout type="warn">
-  **Cor sozinha nunca é o canal único.** Para charts com Status, acompanhe
-  **sempre** com label, ícone ou padrão hatch — o ~8% da população com
-  deficiência de visão de cor depende disso.
+  **Color alone is never the only channel.** For charts using Status, **always**
+  pair it with a label, icon or hatch pattern - the roughly 8% of the population
+  with color vision deficiency depends on it.
 </Callout>
 
-## Exemplo de consumo
+## Usage example
 
 ```tsx
 const statusToken = (severity: 'ok' | 'warning' | 'error' | 'info') =>

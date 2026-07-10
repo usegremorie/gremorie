@@ -62,26 +62,34 @@ export class Example {}
 
 </Tabs>
 
-### Import the stylesheet
+### Set up the styles
 
-Add the stylesheet **once**, in your app's entry file (root `layout.tsx`,
-`main.tsx`, or wherever you load global CSS). It is **pre-compiled** and ships
-the design tokens _and_ every component's styles in one file — so on the npm
-path you do **not** need Tailwind, a `@theme` import, or any `@source` config.
-One import and components render fully styled (brand color, radius, dark mode).
+The two editions handle styling differently on the npm path:
+
+- **React** ships a **pre-compiled** stylesheet with the design tokens _and_
+  every component's styles in one file. Import it once and you do **not** need
+  Tailwind, a `@theme` import, or any `@source` config.
+- **Angular** components emit Tailwind utility classes and ship **no compiled
+  CSS**, so the npm path requires **Tailwind CSS v4** in your project. You
+  import the tokens theme and point Tailwind at the `@gremorie` packages in
+  `node_modules` with an `@source` line, so their utilities are compiled into
+  your CSS.
 
 <Tabs items={["React", "Angular"]}>
 
 ```tsx tab="React"
-// app/layout.tsx (Next.js) or src/main.tsx (Vite)
+// app/layout.tsx (Next.js) or src/main.tsx (Vite) - once, in your app entry
 import '@gremorie/react/styles.css';
 ```
 
 ```css tab="Angular"
-/* src/styles.css — Angular component styles ship with the package; this
-   line adds the design tokens. */
+/* src/styles.css - requires Tailwind CSS v4 */
 @import 'tailwindcss';
-@import '@gremorie/ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';
+
+/* Tailwind v4 ignores node_modules by default; this line makes it scan the
+   Gremorie packages so their utility classes end up in your compiled CSS. */
+@source '../node_modules/@gremorie';
 ```
 
 </Tabs>
@@ -93,18 +101,21 @@ import '@gremorie/react/styles.css';
 </Callout>
 
 <Callout type="info">
-  `@gremorie/react` and `@gremorie/angular` bundle **every component category**
-  (forms, display, overlays, feedback, navigation, containers, data, AI).
-  **Artifacts** (Artifact, CodeBlock, WebPreview) are an optional add-on —
-  install `@gremorie/rx-artifacts` when you need them. Prefer a smaller install?
-  Add a single category instead: `@gremorie/rx-forms`, `@gremorie/rx-display`,
-  `@gremorie/rx-ai`, and so on — each category ships the same pre-compiled
-  `@gremorie/rx-core/styles/globals.css` for its tokens.
+  `@gremorie/react` bundles **every component category** (forms, display,
+  overlays, feedback, navigation, containers, data, AI). `@gremorie/angular`
+  currently bundles **six categories** (core, AI, display, containers, data, and
+  feedback); forms, overlays, navigation, and artifacts ship as separate
+  `@gremorie/ng-*` packages. **Artifacts** (Artifact, CodeBlock, WebPreview) are
+  an optional add-on — install `@gremorie/rx-artifacts` when you need them.
+  Prefer a smaller install? Add a single category instead: `@gremorie/rx-forms`,
+  `@gremorie/rx-display`, `@gremorie/rx-ai`, and so on — each React category
+  ships the same pre-compiled `@gremorie/rx-core/styles/globals.css` for its
+  tokens.
 </Callout>
 
-That is the entire npm setup: install, import the stylesheet, use the
-components. The CLI flow below is the copy-paste alternative where you own the
-source and compile it with your own Tailwind.
+That is the entire npm setup: install, set up the styles, use the components.
+The CLI flow below is the copy-paste alternative where you own the source and
+compile it with your own Tailwind.
 
 ## Copy-paste via the CLI (registry)
 
@@ -115,15 +126,17 @@ project on demand — each one becomes a file you can edit freely.
 
 - **Node.js 20+** for the CLI runtime
 - **Tailwind CSS v4** — required for the copy-paste/registry flow (the source you
-  own is compiled by your Tailwind). The npm path ships pre-compiled CSS and does
-  **not** require Tailwind.
-- An **Angular 18+** project (Spartan-NG compatible) or a **React 19** project (Next.js, Vite, Remix)
+  own is compiled by your Tailwind), and for the Angular npm path. The React npm
+  path ships pre-compiled CSS and does **not** require Tailwind.
+- An **Angular 21+** project or a **React 19** project (Next.js, Vite, Remix)
 
 <Callout type="info">
   Both editions are published: **React** (`@gremorie/react`, `@gremorie/rx-*`)
   and **Angular** (`@gremorie/angular`, `@gremorie/ng-*`). They share the same
   registry schema, tokens, and corpus, so anything you learn here carries
-  across.
+  across. Registry coverage differs today: the React registry covers the full
+  catalog, while the Angular registry is still growing. Run `npx gremorie list`
+  to see what is available per edition.
 </Callout>
 
 ## Steps
@@ -157,8 +170,10 @@ bunx gremorie@latest init
 
 </Tabs>
 
-`init` creates a `gremorie.config.json` at the repo root, registers the
-default output directory, and prints the detected framework.
+`init` detects your package manager, installs the core dependencies
+(the tokens and framework core packages plus `class-variance-authority`,
+`clsx`, and `tailwind-merge`), adds the theme import to your global
+stylesheet, and prints the next steps.
 
 </Step>
 
@@ -175,7 +190,7 @@ must load before anything else.
 ```css tab="Angular"
 /* src/styles.css */
 @import 'tailwindcss';
-@import '@gremorie/ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';
 ```
 
 ```css tab="React"
@@ -211,9 +226,10 @@ npx gremorie@latest add rx-button
 
 </Tabs>
 
-The CLI writes the source to your output directory (default:
-`src/components/gremorie/`), installs any peer deps, and prints the
-import path.
+The CLI writes the source to the item's target path
+(`src/components/gremorie/<category>/<name>/` for React,
+`src/app/gremorie/<name>/` for Angular) and lists the peer packages you
+need to install.
 
 </Step>
 
@@ -225,12 +241,12 @@ import path.
 
 ```ts tab="Angular"
 import { Component } from '@angular/core';
-import { NgButton } from '@/components/gremorie/ng-button';
+import { Button } from './gremorie/button/button';
 
 @Component({
   standalone: true,
-  imports: [NgButton],
-  template: `<ng-button (clicked)="onClick()">Ship it</ng-button>`,
+  imports: [Button],
+  template: `<ai-button (pressedChange)="onClick()">Ship it</ai-button>`,
 })
 export class MyComponent {
   onClick() {
@@ -240,7 +256,7 @@ export class MyComponent {
 ```
 
 ```tsx tab="React"
-import { Button } from '@/components/gremorie/rx-button';
+import { Button } from '@/components/gremorie/forms/button/button';
 
 export function MyComponent() {
   return (

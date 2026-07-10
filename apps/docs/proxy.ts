@@ -35,6 +35,7 @@ function isAgnostic(pathname: string): boolean {
     pathname.startsWith('/api/') ||
     pathname.startsWith('/r/') ||
     pathname === '/llms.txt' ||
+    pathname === '/llms-full.txt' ||
     pathname === '/robots.txt' ||
     pathname === '/sitemap.xml'
   );
@@ -47,12 +48,13 @@ export default function proxy(req: NextRequest, event: NextFetchEvent) {
   // Telemetry on the high-signal paths.
   if (
     pathname === '/llms.txt' ||
+    pathname === '/llms-full.txt' ||
     pathname.startsWith('/r/') ||
     pathname.startsWith('/api/') ||
     pathname.includes('/get-started')
   ) {
     const kind =
-      pathname === '/llms.txt'
+      pathname === '/llms.txt' || pathname === '/llms-full.txt'
         ? 'llms'
         : pathname.startsWith('/r/')
           ? 'registry'

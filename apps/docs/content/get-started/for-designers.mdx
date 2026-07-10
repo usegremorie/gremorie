@@ -1,0 +1,97 @@
+---
+title: For designers
+description: What Gremorie gives a design team - the component vocabulary, the token layers behind Figma styles, six brand themes, and the workbench.
+---
+
+You do not need to read code to work with Gremorie. This page maps
+what you already do in Figma to how the system is actually built, so
+the words you use in a file are the same words engineering ships.
+
+## What Gremorie gives you
+
+Four things, concretely:
+
+1. **A component vocabulary with anatomy trees.** The catalog has
+   [83 components in 8 categories](/components). Every component
+   page opens with an **Anatomy** section: a tree of the real
+   subcomponent names (`PromptInput` contains `Textarea`, `Toolbar`,
+   `Submit`, and so on). Those names are the shared language between
+   your layers panel and the codebase.
+2. **A three-layer token system.** Raw values
+   ([primitive](/tokens/primitive)), intents like `primary` and
+   `border` ([semantic](/tokens/semantic)), and dataviz schemes
+   ([chart](/tokens/chart)). Every color, radius, shadow, and
+   spacing decision in the UI resolves to a named token, never to a
+   loose hex value.
+3. **Six brand themes.** Default, Claude, ChatGPT, Gemini, Mistral,
+   and Perplexity, each in light and dark. A theme is nothing more
+   than a different mapping from intents to primitives, which is
+   exactly what Figma variable modes are.
+4. **The workbench.** A standalone app that renders the React and
+   Angular editions of every component **side by side**, with a
+   theme switcher and per-component demo toggles (show or hide each
+   optional part). It is the fastest way to inspect real states and
+   real spacing without asking anyone to run a branch.
+
+## Mapping Figma styles to tokens
+
+The token layers correspond one-to-one with concepts you already
+use. The examples are real values from the shipped
+`theme.css`:
+
+| Figma concept                             | Gremorie layer                                        | Example                                                                  |
+| ----------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------ |
+| Primitive color variables (the palette)   | [Primitive colors](/tokens/primitive/colors)          | `--color-clay-500` is `#D97757`, Claude's brand color                    |
+| Semantic color variables (aliases)        | [Semantic tokens](/tokens/semantic)                   | `--primary: var(--color-clay-500)` in the Claude theme                   |
+| Variable modes (light / dark)             | The `.dark` class remap                               | `--primary` becomes `clay-400` in Claude dark mode                       |
+| Variable modes (brand A / brand B)        | `data-theme` attribute                                | `data-theme="claude"` versus `data-theme="gemini"`                       |
+| Text styles                               | [Typography primitives](/tokens/primitive/typography) | `--font-sans: 'Inter', ...` plus the size scale with paired line-heights |
+| Effect styles (drop shadows)              | [Shadow primitives](/tokens/primitive/shadow)         | `--shadow-md` for dropdowns, `--shadow-xl` for modals                    |
+| Corner radius values                      | [Radius primitives](/tokens/primitive/radius)         | `--radius-base: 0.625rem`; sm, md, lg, xl derive from it by multiplier   |
+| Auto layout spacing values                | [Spacing scale](/tokens/primitive/spacing)            | `--spacing: 0.25rem` (4px base); a gap of 4 means 16px                   |
+| Component properties (variants, booleans) | The component prop contract                           | `Button` size `sm / md / lg`; optional parts toggle on and off           |
+
+Two habits make the mapping work in practice:
+
+- **Name styles after intents, not values.** A Figma style called
+  `primary` survives a rebrand; one called `terracotta-500` does
+  not. Reserve primitive names for the palette page of your library.
+- **Use modes for theme and mode, not duplicated styles.** Light
+  versus dark and brand versus brand are both mode switches in the
+  system, so model them as variable modes in Figma too.
+
+## Where to find the anatomy
+
+On **every component page**, right after the preview: an Anatomy
+block showing the subcomponent hierarchy as a tree. The same tree
+also renders in the component's Storybook docs, so it never drifts
+from the code. When you build a Figma component for `PromptInput`,
+name the layers after the tree nodes and the handoff conversation
+disappears.
+
+Start with the [PromptInput](/components/chatbot/prompt-input) page
+to see the pattern, then browse the
+[catalog overview](/components) for the rest.
+
+## Suggested first hour
+
+1. Read the [three-layer token model](/tokens) (five minutes, it is
+   the mental model everything else hangs on).
+2. Skim the [primitive colors](/tokens/primitive/colors) page to see
+   the full palette, including the five ramps that are unique to
+   Gremorie.
+3. Open the workbench, pick a component you know well, and flip the
+   theme switcher and the demo toggles to feel how much of the UI is
+   token-driven.
+4. Pick one screen of your product and identify which of the
+   [8 component categories](/components) each element belongs to.
+
+## What is coming for Figma
+
+Figma component libraries that map **1:1 to the component
+contracts** are the planned next step: one Figma component per
+Gremorie component, with the same variant properties and with
+boolean show / hide properties mirroring the workbench demo toggles.
+Until those ship, the anatomy trees plus the token mapping above are
+the source of truth for building your own library on the same
+vocabulary.

@@ -29,13 +29,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-## Preview
-
-<ComponentPreview name="data/pie-chart">
-  <PieChartPreview />
-</ComponentPreview>
-
-## Anatomy
+The React edition composes this surface through the shadcn `chart` primitive:
 
 ```text
 PieChart                          recharts pie / donut on the shadcn chart primitive
@@ -46,6 +40,12 @@ PieChart                          recharts pie / donut on the shadcn chart primi
       └─ Pie                      one slice per row (nameKey + dataKey); innerRadius for donut
          └─ LabelList             optional slice labels (showLabels)
 ```
+
+## Preview
+
+<ComponentPreview name="data/pie-chart">
+  <PieChartPreview />
+</ComponentPreview>
 
 ## Installation
 
@@ -94,31 +94,31 @@ import { PieChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-  selector: 'app-browser-share',
-  imports: [PieChart],
-  template: `
-    <pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
+selector: 'app-browser-share',
+imports: [PieChart],
+template: `     <pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
   `,
 })
 export class BrowserShareComponent {
-  readonly data: ChartDatum[] = [
-    { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
-    { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
-    { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
-    { browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
-    { browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
-  ];
+readonly data: ChartDatum[] = [
+{ browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+{ browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+{ browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+{ browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+{ browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
+];
 
-  readonly config: ChartConfig = {
-    visitors: { label: 'Visitors' },
-    Chrome: { label: 'Chrome' },
-    Safari: { label: 'Safari' },
-    Firefox: { label: 'Firefox' },
-    Edge: { label: 'Edge' },
-    Other: { label: 'Other' },
-  };
+readonly config: ChartConfig = {
+visitors: { label: 'Visitors' },
+Chrome: { label: 'Chrome' },
+Safari: { label: 'Safari' },
+Firefox: { label: 'Firefox' },
+Edge: { label: 'Edge' },
+Other: { label: 'Other' },
+};
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -184,7 +184,7 @@ The chart auto-sizes to its parent through `ChartContainer` (recharts `Responsiv
 
 ```html
 <pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
-```
+````
 
 The default. Use when the surrounding surface is small (card, side panel) or when no centered label is needed.
 
