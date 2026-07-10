@@ -30,8 +30,7 @@
     "@spartan-ng/brain": "^0.0.1-alpha.694",
     "class-variance-authority": "^0.7.1",
     "marked": "^15.0.0",
-    "vite": "^7.0.0",
-    "@angular/platform-browser": "~21.2.0"
+    "vite": "^7.0.0"
   },
   "peerDependenciesMeta": {
     "@spartan-ng/brain": {
