@@ -65,6 +65,30 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * Workbench - featured media + content + trailing badge at a fixed width,
+ * driven by the size / variant / interactive controls.
+ */
+export const Workbench: Story = {
+  args: { size: 'md', variant: 'outline', interactive: false },
+  render: (args) => (
+    <Item {...args} className="w-96">
+      <ItemMedia variant="featured">
+        <Star />
+      </ItemMedia>
+      <ItemContent>
+        <ItemTitle>Starred workspace</ItemTitle>
+        <ItemDescription>
+          Pinned to the top of your sidebar for quick access.
+        </ItemDescription>
+      </ItemContent>
+      <ItemActions>
+        <Badge variant="secondary">Pro</Badge>
+      </ItemActions>
+    </Item>
+  ),
+};
+
+/**
  * Playground - drive `size` and watch the featured media + title + description
  * scale together from the single prop. Toggle `interactive` for the hover state.
  */

@@ -3,13 +3,15 @@
  * Activate with data-theme="chatgpt" on the root element.
  */
 :root[data-theme='chatgpt'] {
-  --primary: var(--color-emerald-600);
+  /* emerald-700 keeps the white foreground at 5.1:1 (AA); emerald-600 sat at
+     3.5:1 and failed the 4.5:1 text minimum. */
+  --primary: var(--color-emerald-700);
   --primary-foreground: var(--color-gray-50);
   --accent: var(--color-emerald-100);
   --accent-foreground: var(--color-emerald-900);
   --ring: var(--color-emerald-500);
 
-  --sidebar-primary: var(--color-emerald-600);
+  --sidebar-primary: var(--color-emerald-700);
   --sidebar-primary-foreground: var(--color-gray-50);
   --sidebar-ring: var(--color-emerald-500);
 
@@ -30,6 +32,12 @@
 }
 
 :root[data-theme='chatgpt'].dark {
+  /* The real product's flat graphite (#212121 family). Popover tracks card,
+     as in claude.css, so menus never render darker than the page. */
+  --background: oklch(0.248 0 0);
+  --card: oklch(0.278 0 0);
+  --popover: oklch(0.278 0 0);
+
   --primary: var(--color-emerald-400);
   --primary-foreground: var(--color-gray-950);
   --accent: var(--color-emerald-900);
@@ -39,4 +47,13 @@
   --sidebar-primary: var(--color-emerald-400);
   --sidebar-primary-foreground: var(--color-gray-950);
   --sidebar-ring: var(--color-emerald-400);
+
+  /* Chart series (dark): lighter steps of the same hues so every series
+     clears the 3:1 graphical minimum on the dark background. Without these
+     the light-block values win on specificity and leak into dark mode. */
+  --chart-1: var(--color-emerald-400);
+  --chart-2: var(--color-emerald-200);
+  --chart-3: var(--color-teal-400);
+  --chart-4: var(--color-green-400);
+  --chart-5: var(--color-cyan-400);
 }

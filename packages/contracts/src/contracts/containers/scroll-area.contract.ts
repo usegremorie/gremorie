@@ -52,7 +52,8 @@ export const scrollArea = defineContract({
       '<scroll-area className="h-64 w-56 rounded-md border"><div className="p-4">…long content…</div></scroll-area>',
   },
   preview: {
-    rx: 'layout-display-containers-scrollarea--vertical',
+    rx: 'layout-display-containers-scrollarea--workbench',
+    ng: 'layout-display-containers-scrollarea--workbench',
   },
   // ng has no standalone host element: it is a directive applied to ngx-scrollbar's
   // <ng-scrollbar> (selector: ng-scrollbar[gremorie]). Live code targets that element.

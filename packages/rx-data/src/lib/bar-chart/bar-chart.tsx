@@ -17,6 +17,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '../chart/chart';
+import { ChartDataTable, seriesViews } from '../chart/chart-data-table';
 import type { ChartDatum } from '../chart/types';
 
 export interface BarChartProps {
@@ -71,6 +72,10 @@ export function BarChart({
   const keys = Object.keys(config).filter((k) => k !== xKey);
   const single = keys.length <= 1;
   const perRowFill = single && data.some((d) => 'fill' in d);
+  const series = seriesViews(config, keys);
+  const ariaLabel = `Bar chart of ${series
+    .map((s) => s.labelText)
+    .join(', ')} by ${xKey}`;
 
   /**
    * Round only the OUTER corners of a stack (so segments don't read as
@@ -90,85 +95,101 @@ export function BarChart({
   };
 
   return (
-    <ChartContainer config={config} className={cn(className)}>
-      <RechartsBarChart
-        accessibilityLayer
-        data={data as ChartDatum[]}
-        layout={horizontal ? 'vertical' : 'horizontal'}
-        margin={{
-          top: showLabels && !horizontal ? 20 : 8,
-          right: 12,
-          left: yAxis && !horizontal ? 0 : 12,
-          bottom: 0,
-        }}
+    <>
+      <ChartContainer
+        role="img"
+        aria-label={ariaLabel}
+        config={config}
+        className={cn(
+          'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
+          className,
+        )}
       >
-        <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
-        {horizontal ? (
-          <>
-            <YAxis
-              dataKey={xKey}
-              type="category"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-            />
-            <XAxis
-              dataKey={keys[0]}
-              type="number"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              hide={!yAxis}
-            />
-          </>
-        ) : (
-          <>
-            <XAxis
-              dataKey={xKey}
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-            />
-            {yAxis ? (
+        <RechartsBarChart
+          accessibilityLayer
+          data={data as ChartDatum[]}
+          layout={horizontal ? 'vertical' : 'horizontal'}
+          margin={{
+            top: showLabels && !horizontal ? 20 : 8,
+            right: 12,
+            left: yAxis && !horizontal ? 0 : 12,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
+          {horizontal ? (
+            <>
               <YAxis
+                dataKey={xKey}
+                type="category"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+              />
+              <XAxis
+                dataKey={keys[0]}
+                type="number"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                width={40}
+                hide={!yAxis}
               />
-            ) : null}
-          </>
-        )}
-        {tooltip ? (
-          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        ) : null}
-        {keys.map((key, i) => (
-          <Bar
-            key={key}
-            dataKey={key}
-            fill={`var(--color-${key})`}
-            radius={segRadius(i)}
-            stackId={stacked ? 'a' : undefined}
-          >
-            {perRowFill
-              ? data.map((d, idx) => (
-                  <Cell
-                    key={idx}
-                    fill={(d.fill as string) ?? `var(--color-${key})`}
-                  />
-                ))
-              : null}
-            {showLabels && (single || i === keys.length - 1) ? (
-              <LabelList
-                position={horizontal ? 'right' : 'top'}
-                offset={8}
-                className="fill-foreground"
-                fontSize={12}
+            </>
+          ) : (
+            <>
+              <XAxis
+                dataKey={xKey}
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
               />
-            ) : null}
-          </Bar>
-        ))}
-      </RechartsBarChart>
-    </ChartContainer>
+              {yAxis ? (
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  width="auto"
+                />
+              ) : null}
+            </>
+          )}
+          {tooltip ? (
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          ) : null}
+          {keys.map((key, i) => (
+            <Bar
+              key={key}
+              dataKey={key}
+              fill={`var(--color-${key})`}
+              radius={segRadius(i)}
+              stackId={stacked ? 'a' : undefined}
+            >
+              {perRowFill
+                ? data.map((d, idx) => (
+                    <Cell
+                      key={idx}
+                      fill={(d.fill as string) ?? `var(--color-${key})`}
+                    />
+                  ))
+                : null}
+              {showLabels && (single || i === keys.length - 1) ? (
+                <LabelList
+                  position={horizontal ? 'right' : 'top'}
+                  offset={8}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              ) : null}
+            </Bar>
+          ))}
+        </RechartsBarChart>
+      </ChartContainer>
+      <ChartDataTable
+        caption={ariaLabel}
+        labelKey={xKey}
+        columns={series}
+        data={data}
+      />
+    </>
   );
 }

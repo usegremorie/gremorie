@@ -61,6 +61,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — a single badge driven by the variant control. */
+export const Workbench: Story = {
+  args: { variant: 'default', children: 'Badge' },
+};
+
 /** Default solid badge. */
 export const Default: Story = {};
 

@@ -13,6 +13,11 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '../chart/chart';
+import {
+  ChartDataTable,
+  ChartLegendList,
+  paletteColor,
+} from '../chart/chart-data-table';
 import type { ChartDatum } from '../chart/types';
 
 export interface RadialChartProps {
@@ -46,25 +51,48 @@ export function RadialChart({
   tooltip = true,
   className,
 }: RadialChartProps) {
+  const ariaLabel = `Radial bar chart of ${dataKey} by ${nameKey}`;
+  const legend = data.map((row, i) => ({
+    name: String(row[nameKey]),
+    color: row.fill ?? paletteColor(i),
+  }));
+
   return (
-    <ChartContainer
-      config={config}
-      className={cn('mx-auto aspect-square max-h-[250px]', className)}
+    <div
+      data-slot="radial-chart"
+      role="img"
+      aria-label={ariaLabel}
+      className={cn(
+        'flex w-full flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground',
+        className,
+      )}
     >
-      <RechartsRadialBarChart
-        data={data as ChartDatum[]}
-        innerRadius={30}
-        outerRadius={110}
+      <ChartContainer
+        config={config}
+        className="mx-auto aspect-square max-h-[260px] w-full"
       >
-        {tooltip ? (
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel nameKey={nameKey} />}
-          />
-        ) : null}
-        <PolarGrid gridType="circle" />
-        <RadialBar dataKey={dataKey} background />
-      </RechartsRadialBarChart>
-    </ChartContainer>
+        <RechartsRadialBarChart
+          data={data as ChartDatum[]}
+          innerRadius={30}
+          outerRadius={110}
+        >
+          {tooltip ? (
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel nameKey={nameKey} />}
+            />
+          ) : null}
+          <PolarGrid gridType="circle" />
+          <RadialBar dataKey={dataKey} background />
+        </RechartsRadialBarChart>
+      </ChartContainer>
+      <ChartLegendList items={legend} />
+      <ChartDataTable
+        caption={ariaLabel}
+        labelKey={nameKey}
+        columns={[{ key: dataKey, header: dataKey }]}
+        data={data}
+      />
+    </div>
   );
 }

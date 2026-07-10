@@ -21,7 +21,7 @@ import {
  * `<ng-template brnDialogContent>` placed within `<gn-dialog>`.
  */
 const meta: Meta<Dialog> = {
-  title: 'Overlays/Dialog',
+  title: 'Interaction/Overlays/Dialog',
   component: Dialog,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

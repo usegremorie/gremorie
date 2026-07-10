@@ -22,7 +22,7 @@ type ToolArgs = {
 };
 
 const meta: Meta<ToolArgs> = {
-  title: 'AI/Tool',
+  title: 'AI/Chatbot/Tool',
   component: Tool,
   tags: ['autodocs'],
   decorators: [
@@ -50,6 +50,27 @@ const meta: Meta<ToolArgs> = {
 
 export default meta;
 type Story = StoryObj<ToolArgs>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (output-available).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <tool [open]="true">
+          <tool-header type="tool-readFile" state="output-available" />
+          <tool-content>
+            <tool-input [input]="{ path: 'README.md' }" />
+            <tool-output [output]="{ content: '# Gremorie\\n\\nAI-native design system.', size: 42 }" />
+          </tool-content>
+        </tool>
+      </div>
+    `,
+  }),
+};
 
 export const InputStreaming: Story = {
   name: 'State: input-streaming',

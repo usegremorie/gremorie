@@ -24,34 +24,46 @@ import {
   PromptInputVariant,
 } from './prompt-input.types';
 
-const containerVariants = cva(
-  'relative flex w-full flex-col rounded-md transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background',
-  {
-    variants: {
-      size: {
-        sm: 'gap-1.5 p-2.5 text-sm',
-        md: 'gap-2 p-3 text-sm',
-        lg: 'gap-3 p-4 text-base',
-      },
-      variant: {
-        default: 'border border-input bg-background',
-        ghost: 'border border-transparent bg-transparent',
-        bordered: 'border-2 border-input bg-background',
-      },
-      state: {
-        ready: '',
-        submitted: '',
-        streaming: '',
-        error: 'border-destructive focus-within:ring-destructive',
-      },
+/**
+ * The React composer card is `InputGroup` (rx-forms) + the rx-ai overrides
+ * `overflow-hidden rounded-xl bg-card dark:bg-card`. The class string below is
+ * the same InputGroup base, with the layout that React derives from
+ * `has-[>[data-align=block-*]]` selectors resolved statically (`h-auto
+ * flex-col items-stretch`) because the Angular column always hosts block
+ * addon rows. Keep it in lock-step with
+ * `packages/rx-forms/src/lib/input-group/input-group.tsx` +
+ * `packages/rx-ai/src/lib/prompt-input/prompt-input.tsx`.
+ */
+const INPUT_GROUP_CARD =
+  'group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 overflow-hidden rounded-xl bg-card dark:bg-card';
+
+const containerVariants = cva(INPUT_GROUP_CARD, {
+  variants: {
+    size: {
+      // `md` is the React reference rendering (no extra text class on the
+      // card; rows and textarea set their own type scale).
+      sm: 'text-sm',
+      md: '',
+      lg: 'text-base',
     },
-    defaultVariants: {
-      size: 'md',
-      variant: 'default',
-      state: 'ready',
+    variant: {
+      default: '',
+      ghost: 'border-transparent bg-transparent shadow-none',
+      bordered: 'border-2',
+    },
+    state: {
+      ready: '',
+      submitted: '',
+      streaming: '',
+      error: 'border-destructive',
     },
   },
-);
+  defaultVariants: {
+    size: 'md',
+    variant: 'default',
+    state: 'ready',
+  },
+});
 
 @Component({
   selector: 'prompt-input',

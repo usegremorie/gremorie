@@ -23,6 +23,7 @@ import { PromptInput } from './prompt-input';
   template: `
     <textarea
       #textarea
+      data-slot="input-group-control"
       [class]="textareaClass()"
       [value]="parent.value()"
       [disabled]="isDisabled()"
@@ -36,6 +37,11 @@ import { PromptInput } from './prompt-input';
       (input)="handleInput($event)"
     ></textarea>
   `,
+  host: {
+    // The textarea itself must be the flex child of the composer column
+    // (React renders it as a direct InputGroup child).
+    class: 'contents',
+  },
 })
 export class PromptInputTextarea implements AfterViewInit, OnDestroy {
   protected readonly parent = inject(PromptInput);
@@ -52,25 +58,26 @@ export class PromptInputTextarea implements AfterViewInit, OnDestroy {
   protected readonly isDisabled = (): boolean =>
     this.parent.disabled() || this.parent.state() === 'submitted';
 
+  // React renders Textarea (rx-forms) + the rx-ai InputGroupTextarea and
+  // PromptInputTextarea overrides. Keep the three strings in lock-step with
+  // `packages/rx-forms/src/lib/textarea/textarea.tsx`,
+  // `packages/rx-forms/src/lib/input-group/input-group.tsx` and
+  // `packages/rx-ai/src/lib/prompt-input/prompt-input.tsx`.
   protected readonly textareaClass = () =>
     cn(
-      'min-h-[2.5rem] w-full resize-none border-0 bg-transparent text-foreground',
-      'placeholder:text-muted-foreground',
-      'focus:outline-none focus-visible:outline-none',
-      'disabled:cursor-not-allowed disabled:opacity-50',
-      'overflow-y-auto',
-      'field-sizing-content',
+      'flex field-sizing-content min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:ring-destructive/40',
+      'flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent',
+      'field-sizing-content max-h-48 min-h-16',
     );
 
   private resizeObserver?: ResizeObserver;
 
   ngAfterViewInit(): void {
-    this.applyMaxHeight();
-    this.autoExpand(); // initial fit
-
-    // Fallback: on browsers without field-sizing, observe value changes
+    // With native `field-sizing: content` the CSS `min-h-16`/`max-h-48` pair
+    // drives sizing (matching React); an inline height would freeze it.
     if (!this.hasFieldSizingSupport()) {
-      // No-op — auto-expand happens on input.
+      this.applyMaxHeight();
+      this.autoExpand(); // initial fit
     }
   }
 
@@ -80,7 +87,9 @@ export class PromptInputTextarea implements AfterViewInit, OnDestroy {
 
   @HostListener('window:resize')
   onResize(): void {
-    this.autoExpand();
+    if (!this.hasFieldSizingSupport()) {
+      this.autoExpand();
+    }
   }
 
   handleInput(event: Event): void {

@@ -17,7 +17,7 @@ import { Message, MessageContent } from '../message';
  * runtime-only; comments call out what to look for.
  */
 const meta: Meta<Conversation> = {
-  title: 'AI/Conversation',
+  title: 'AI/Chatbot/Conversation',
   component: Conversation,
   tags: ['autodocs'],
   decorators: [
@@ -36,6 +36,33 @@ const meta: Meta<Conversation> = {
 
 export default meta;
 type Story = StoryObj<Conversation>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (the short thread).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => ({
+    template: `
+      <div class="h-80 w-96 rounded-lg border">
+        <conversation>
+          <conversation-content>
+            <message from="assistant">
+              <message-content>Hey! How can I help?</message-content>
+            </message>
+            <message from="user">
+              <message-content>What's the weather like?</message-content>
+            </message>
+            <message from="assistant">
+              <message-content>I can't check the weather, but I can help you find a service that does.</message-content>
+            </message>
+          </conversation-content>
+        </conversation>
+      </div>
+    `,
+  }),
+};
 
 export const Empty: Story = {
   render: () => ({

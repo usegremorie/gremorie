@@ -21,7 +21,7 @@ import {
  * `@gremorie/rx-ai`.
  */
 const meta: Meta<Queue> = {
-  title: 'AI/Queue',
+  title: 'AI/Chatbot/Queue',
   component: Queue,
   tags: ['autodocs'],
   decorators: [

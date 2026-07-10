@@ -98,8 +98,8 @@ export const webPreview = defineContract({
       '<web-preview defaultUrl="https://example.com"><web-preview-navigation><web-preview-url /></web-preview-navigation><web-preview-body /></web-preview>',
   },
   preview: {
-    rx: 'ai-code-webpreview--default',
-    ng: 'artifacts-webpreview--workbench',
+    rx: 'ai-code-webpreview--workbench',
+    ng: 'ai-code-webpreview--workbench',
   },
   tag: { rx: 'WebPreview', ng: 'web-preview' },
   example: {

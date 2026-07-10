@@ -28,7 +28,7 @@ import { DatePicker } from './date-picker';
  * | --- | --- | --- | --- |
  * | `value` | `Date` | — | Controlled selected date. |
  * | `onValueChange` | `(date: Date \| undefined) => void` | — | Selection callback. |
- * | `placeholder` | `string` | `"Selecione uma data"` | Empty-state label. |
+ * | `placeholder` | `string` | `"Pick a date"` | Empty-state label. |
  * | `disabled` | `boolean` | `false` | Disables the trigger. |
  * | `className` | `string` | — | Extra trigger classes. |
  *
@@ -55,6 +55,19 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { placeholder: 'Pick a date', disabled: false },
+  render: (args) => {
+    const [date, setDate] = React.useState<Date | undefined>();
+    return <DatePicker {...args} value={date} onValueChange={setDate} />;
+  },
+};
 
 /** Uncontrolled-feeling default with the placeholder visible. */
 export const Default: Story = {

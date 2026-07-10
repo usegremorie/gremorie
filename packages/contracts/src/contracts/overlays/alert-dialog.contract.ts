@@ -87,8 +87,8 @@ export const alertDialog = defineContract({
       '<AlertDialog><AlertDialogTrigger>Delete</AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This cannot be undone.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction variant="destructive">Delete</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>',
   },
   preview: {
-    rx: 'interaction-overlays-alertdialog--default',
-    ng: 'overlays-alertdialog--workbench',
+    rx: 'interaction-overlays-alertdialog--workbench',
+    ng: 'interaction-overlays-alertdialog--workbench',
   },
   tag: { rx: 'AlertDialog', ng: 'gn-alert-dialog' },
   example: {

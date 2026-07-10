@@ -84,8 +84,8 @@ export const modelSelector = defineContract({
       '<model-selector>\n  <model-selector-trigger />\n  <model-selector-content>\n    <model-selector-input />\n    <model-selector-list>\n      <model-selector-item value="gpt-4o">…</model-selector-item>\n    </model-selector-list>\n  </model-selector-content>\n</model-selector>',
   },
   preview: {
-    rx: 'ai-chatbot-modelselector--default',
-    ng: 'ai-modelselector--workbench',
+    rx: 'ai-chatbot-modelselector--workbench',
+    ng: 'ai-chatbot-modelselector--workbench',
   },
   tag: { rx: 'ModelSelector', ng: 'model-selector' },
   example: {

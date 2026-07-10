@@ -58,8 +58,8 @@ export const plan = defineContract({
       '<plan [isStreaming]="streaming">\n  <plan-header>\n    <plan-title>Migration plan</plan-title>\n  </plan-header>\n  <plan-content>…</plan-content>\n</plan>',
   },
   preview: {
-    rx: 'ai-chatbot-plan--default',
-    ng: 'ai-plan--workbench',
+    rx: 'ai-chatbot-plan--workbench',
+    ng: 'ai-chatbot-plan--workbench',
   },
   tag: { rx: 'Plan', ng: 'plan' },
   example: {

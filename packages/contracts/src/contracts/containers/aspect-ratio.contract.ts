@@ -47,7 +47,7 @@ export const aspectRatio = defineContract({
       '<aspect-ratio ratio={16 / 9}><img className="h-full w-full object-cover" /></aspect-ratio>',
   },
   preview: {
-    rx: 'layout-display-containers-aspectratio--widescreen',
+    rx: 'layout-display-containers-aspectratio--workbench',
     ng: 'layout-display-containers-aspectratio--workbench',
   },
   tag: { rx: 'AspectRatio', ng: 'gn-aspect-ratio' },

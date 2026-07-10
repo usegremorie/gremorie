@@ -73,8 +73,8 @@ export const reasoning = defineContract({
       '<reasoning [isStreaming]="streaming">\n  <reasoning-trigger />\n  <reasoning-content [text]="thoughts" />\n</reasoning>',
   },
   preview: {
-    rx: 'ai-chatbot-reasoning--done',
-    ng: 'ai-reasoning--done',
+    rx: 'ai-chatbot-reasoning--workbench',
+    ng: 'ai-chatbot-reasoning--workbench',
   },
   tag: { rx: 'Reasoning', ng: 'reasoning' },
   example: {

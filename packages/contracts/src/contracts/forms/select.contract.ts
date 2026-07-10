@@ -85,8 +85,8 @@ export const select = defineContract({
       '<select><select-trigger><select-value placeholder="Pick one" /></select-trigger><select-content>...</select-content></select>',
   },
   preview: {
-    rx: 'inputs-selection-select--default',
-    ng: 'forms-select--workbench',
+    rx: 'inputs-selection-select--workbench',
+    ng: 'inputs-selection-select--workbench',
   },
   tag: { rx: 'Select', ng: 'gn-select' },
   example: {

@@ -86,6 +86,29 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — right-click the region to open the menu. */
+export const Workbench: Story = {
+  render: () => (
+    <ContextMenu>
+      <ContextMenuTrigger className="flex h-40 w-72 items-center justify-center rounded-md border border-dashed text-sm">
+        Right-click here
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-52">
+        <ContextMenuLabel>Actions</ContextMenuLabel>
+        <ContextMenuSeparator />
+        <ContextMenuItem>
+          Back <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem>
+          Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  ),
+};
+
 const TriggerArea = ({ children }: { children: React.ReactNode }) => (
   <ContextMenu>
     <ContextMenuTrigger className="flex h-40 w-80 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground select-none">

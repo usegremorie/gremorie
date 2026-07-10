@@ -77,6 +77,31 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — right-anchored sheet with header, body and footer. */
+export const Workbench: Story = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Open sheet</Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Edit settings</SheetTitle>
+          <SheetDescription>Adjust your preferences and save.</SheetDescription>
+        </SheetHeader>
+        <div className="flex-1 px-4 text-sm text-muted-foreground">
+          Panel body content.
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button>Save changes</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  ),
+};
+
 /** Default right-side edit panel. */
 export const Default: Story = {
   render: () => (

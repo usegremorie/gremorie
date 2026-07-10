@@ -71,6 +71,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — a small form inside the popover surface. */
+export const Workbench: Story = {
+  render: () => (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Open popover</Button>
+      </PopoverTrigger>
+      <PopoverContent align="center" sideOffset={4}>
+        <PopoverHeader>
+          <PopoverTitle>Dimensions</PopoverTitle>
+          <PopoverDescription>Set the layout dimensions.</PopoverDescription>
+        </PopoverHeader>
+      </PopoverContent>
+    </Popover>
+  ),
+};
+
 /** A small inline settings form inside a popover. */
 export const Default: Story = {
   render: () => (

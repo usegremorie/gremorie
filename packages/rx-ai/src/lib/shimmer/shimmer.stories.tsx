@@ -34,6 +34,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story.
+ */
+export const Workbench: Story = {
+  args: { duration: 2, spread: 2, children: 'Thinking…' },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Shimmer {...args} className="text-base" />
+    </div>
+  ),
+};
+
 export const Default: Story = {
   args: { duration: 2, spread: 2, children: 'Thinking...' },
   render: (args) => <Shimmer {...args} className="text-base" />,

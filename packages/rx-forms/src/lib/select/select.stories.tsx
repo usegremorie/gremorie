@@ -79,6 +79,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { disabled: false },
+  render: (args) => (
+    <Select {...args}>
+      <SelectTrigger className="w-48">
+        <SelectValue placeholder="Pick a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="blueberry">Blueberry</SelectItem>
+        <SelectItem value="grapes">Grapes</SelectItem>
+      </SelectContent>
+    </Select>
+  ),
+};
+
 /** A realistic composed select with a placeholder. */
 export const Default: Story = {
   render: () => (

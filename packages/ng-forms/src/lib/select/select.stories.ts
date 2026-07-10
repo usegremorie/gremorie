@@ -19,7 +19,7 @@ import {
  * type-ahead, arrow-key navigation and the portalled overlay.
  */
 const meta: Meta<Select> = {
-  title: 'Forms/Select',
+  title: 'Inputs/Selection/Select',
   component: Select,
   tags: ['autodocs'],
   decorators: [

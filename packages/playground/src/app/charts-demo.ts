@@ -37,13 +37,13 @@ import type { ChartConfig, Datum } from '@gremorie/ng-data';
         <pie-chart
           [data]="browsers()"
           nameKey="browser"
-          valueKey="visitors"
+          dataKey="visitors"
           [donut]="true"
         />
         <radial-chart
           [data]="browsers()"
           nameKey="browser"
-          valueKey="visitors"
+          dataKey="visitors"
         />
         <radar-chart [data]="metrics()" [config]="duo()" xKey="metric" />
       </div>

@@ -66,6 +66,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div style={{ width: 420 }}>
+      <Checkpoint>
+        <CheckpointTrigger tooltip="Restore to this checkpoint">
+          <CheckpointIcon />
+          Checkpoint
+        </CheckpointTrigger>
+      </Checkpoint>
+    </div>
+  ),
+};
+
 /** Default bookmark marker with a plain trigger. */
 export const Default: Story = {
   render: () => (

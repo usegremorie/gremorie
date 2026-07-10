@@ -17,7 +17,7 @@ const CONFIG: ChartConfig = {
 };
 
 const meta: Meta<LineChart> = {
-  title: 'Charts/LineChart',
+  title: 'Layout & display/Data/Line Chart',
   component: LineChart,
   tags: ['autodocs'],
   render: (args) => ({

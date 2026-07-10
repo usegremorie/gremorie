@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,8 +8,14 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnTooltip, type BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
+import type { BrnTooltipPosition } from '@spartan-ng/brain/tooltip';
 import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 import { PromptInput } from './prompt-input';
 
@@ -55,41 +62,61 @@ const baseClass =
  * transcript is written through `parent.value` instead of dispatching a synthetic
  * input event on a textarea ref. The button self-disables when the browser lacks
  * `SpeechRecognition`. Behaviour parity for capture/append is preserved; review if
- * exact streaming-interim semantics are required.
+ * exact streaming-interim semantics are required. When `tooltip` is set, the
+ * button is wrapped in the styled `gn-tooltip` compound from
+ * `@gremorie/ng-overlays`, matching the React styled Tooltip surface.
  */
 @Component({
   selector: 'prompt-input-speech-button',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BrnTooltip],
+  imports: [
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
   template: `
-    <button
-      type="button"
-      [class]="buttonClass()"
-      aria-label="Toggle voice input"
-      [attr.aria-pressed]="listening()"
-      [disabled]="!supported()"
-      [brnTooltip]="tooltip() ?? null"
-      [tooltipDisabled]="!tooltip()"
-      [position]="side()"
-      (click)="toggle()"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        class="size-4"
+    <ng-template #btn>
+      <button
+        type="button"
+        [class]="buttonClass()"
+        aria-label="Toggle voice input"
+        [attr.aria-pressed]="listening()"
+        [disabled]="!supported()"
+        (click)="toggle()"
       >
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-        <line x1="12" x2="12" y1="19" y2="22" />
-      </svg>
-    </button>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="size-4"
+        >
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+          <line x1="12" x2="12" y1="19" y2="22" />
+        </svg>
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip [side]="side()">
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
   `,
   host: { class: 'inline-flex' },
 })

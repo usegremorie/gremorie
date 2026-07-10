@@ -23,7 +23,7 @@ import {
  * lives inside `<ng-template brnAlertDialogContent>`.
  */
 const meta: Meta<AlertDialog> = {
-  title: 'Overlays/AlertDialog',
+  title: 'Interaction/Overlays/AlertDialog',
   component: AlertDialog,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -55,8 +55,8 @@ export const breadcrumb = defineContract({
       '<breadcrumb><breadcrumb-list><breadcrumb-item><breadcrumb-link href="/">Home</breadcrumb-link></breadcrumb-item><breadcrumb-separator /><breadcrumb-item><breadcrumb-page>Settings</breadcrumb-page></breadcrumb-item></breadcrumb-list></breadcrumb>',
   },
   preview: {
-    rx: 'interaction-navigation-breadcrumb--default',
-    ng: 'navigation-breadcrumb--workbench',
+    rx: 'interaction-navigation-breadcrumb--workbench',
+    ng: 'interaction-navigation-breadcrumb--workbench',
   },
   tag: { rx: 'Breadcrumb', ng: 'gn-breadcrumb' },
   example: { asChild: false },

@@ -77,8 +77,8 @@ export const inlineCitation = defineContract({
       '<inline-citation>\n  <inline-citation-text>the claim</inline-citation-text>\n  <inline-citation-card [sources]="urls">…</inline-citation-card>\n</inline-citation>',
   },
   preview: {
-    rx: 'ai-chatbot-inlinecitation--single-source',
-    ng: 'ai-inlinecitation--single-source',
+    rx: 'ai-chatbot-inlinecitation--workbench',
+    ng: 'ai-chatbot-inlinecitation--workbench',
   },
   tag: { rx: 'InlineCitation', ng: 'inline-citation' },
   example: {

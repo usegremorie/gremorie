@@ -135,8 +135,8 @@ export const chartArtifact = defineContract({
       '<chart-artifact title="Monthly revenue" type="bar" categoryKey="month" valueKey="revenue" [data]="data" />',
   },
   preview: {
-    rx: 'ai-code-chart--default',
-    ng: 'artifacts-chartartifact--workbench',
+    rx: 'ai-code-chart--workbench',
+    ng: 'ai-code-chart--workbench',
   },
   tag: { rx: 'ChartArtifact', ng: 'chart-artifact' },
   example: {

@@ -54,6 +54,31 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { defaultValue: 'comfortable', disabled: false },
+  render: (args) => (
+    <RadioGroup {...args}>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="default" id="r-default" />
+        <Label htmlFor="r-default">Default</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="comfortable" id="r-comfortable" />
+        <Label htmlFor="r-comfortable">Comfortable</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem value="compact" id="r-compact" />
+        <Label htmlFor="r-compact">Compact</Label>
+      </div>
+    </RadioGroup>
+  ),
+};
+
 /** A realistic composed group with labelled options. */
 export const Default: Story = {
   render: () => (

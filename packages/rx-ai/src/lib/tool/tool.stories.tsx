@@ -47,6 +47,31 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * Workbench - fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story (output-available).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { state: 'output-available', type: 'tool-readFile' },
+  render: (args) => (
+    <div style={{ width: 420 }}>
+      <Tool defaultOpen={true}>
+        <ToolHeader {...args} />
+        <ToolContent>
+          <ToolInput input={{ path: 'README.md' }} />
+          <ToolOutput
+            output={{
+              content: '# Gremorie\n\nAI-native design system.',
+              size: 42,
+            }}
+          />
+        </ToolContent>
+      </Tool>
+    </div>
+  ),
+};
+
+/**
  * Playground - a full tool invocation. Drive the `state` control to walk every
  * state in the ToolUIPart union; the status badge and the output (or error)
  * adapt. The body shows the input and, for the output states, the result.

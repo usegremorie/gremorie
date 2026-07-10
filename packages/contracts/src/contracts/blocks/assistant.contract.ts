@@ -86,7 +86,7 @@ export const assistant = defineContract({
   },
   preview: {
     rx: 'blocks-assistant--default',
-    ng: 'ai-assistant--default',
+    ng: 'blocks-assistant--default',
   },
   tag: { rx: 'Assistant', ng: 'ai-assistant' },
   example: {

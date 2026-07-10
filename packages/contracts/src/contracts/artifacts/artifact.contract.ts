@@ -35,7 +35,7 @@ export const artifact = defineContract({
       adapts: {
         ng: 'input: icon (registered lucide name string, e.g. "lucideChartColumn")',
       },
-      desc: 'ArtifactFeaturedIcon glyph.',
+      desc: 'ArtifactFeaturedIcon / ArtifactAction glyph.',
     },
     {
       name: 'color',
@@ -82,7 +82,9 @@ export const artifact = defineContract({
     {
       name: 'tooltip',
       type: 'string',
-      adapts: { ng: 'n/a (ng-artifacts has no Tooltip primitive)' },
+      adapts: {
+        ng: 'input: tooltip (wraps the button in the gn-tooltip compound from @gremorie/ng-overlays)',
+      },
       desc: 'ArtifactAction hover tooltip (also the fallback label).',
     },
     {
@@ -116,8 +118,10 @@ export const artifact = defineContract({
     example:
       '<artifact><artifact-header><artifact-title>Summary</artifact-title></artifact-header><artifact-content>…</artifact-content></artifact>',
   },
-  // NG has no standalone story for the shell itself (only the typed presets
-  // chart-artifact / code-block / web-preview each have their own stories).
+  // NG ships artifact-action (mirrors RX ArtifactAction via the gn-tooltip
+  // compound from @gremorie/ng-overlays) but has no standalone story for the
+  // shell itself (only the typed presets chart-artifact / code-block /
+  // web-preview each have their own stories).
   preview: {
     rx: 'ai-code-artifact--default',
   },

@@ -56,6 +56,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Workbench — hover the trigger to reveal a profile preview. */
+export const Workbench: Story = {
+  render: () => (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <Button variant="link">@gremorie</Button>
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div className="text-sm font-semibold">Gremorie</div>
+        <p className="text-sm text-muted-foreground">
+          An AI native design system.
+        </p>
+      </HoverCardContent>
+    </HoverCard>
+  ),
+};
+
 /** A user profile preview revealed on hover. */
 export const Default: Story = {
   render: () => (

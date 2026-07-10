@@ -48,6 +48,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Workbench preset: renders the IDENTICAL use case as the Angular `Workbench`
+ * story in `ng-forms`. Keep both datasets in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: {
+    placeholder: 'Type your message…',
+    disabled: false,
+    'aria-invalid': false,
+    defaultValue: '',
+  },
+};
+
 /** Empty textarea. */
 export const Default: Story = {};
 

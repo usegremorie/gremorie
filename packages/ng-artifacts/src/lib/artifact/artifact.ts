@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +8,13 @@ import {
   signal,
 } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 import { ARTIFACT_ICONS } from './icons';
 
@@ -53,7 +61,11 @@ export class Artifact {}
 export class ArtifactHeader {}
 
 /** Featured-icon color, mirroring `@gremorie/rx-display`'s `FeaturedIcon`. */
-export type ArtifactFeaturedIconColor = 'primary' | 'gray' | 'success' | 'error';
+export type ArtifactFeaturedIconColor =
+  | 'primary'
+  | 'gray'
+  | 'success'
+  | 'error';
 
 const FEATURED_ICON_COLORS: Record<ArtifactFeaturedIconColor, string> = {
   primary: 'bg-primary/10 text-primary',
@@ -165,6 +177,102 @@ export class ArtifactActionsExpanded {}
   template: `<ng-content />`,
 })
 export class ArtifactActionsCollapsed {}
+
+/**
+ * ArtifactAction — single ghost icon button for the header actions cluster,
+ * with an optional tooltip. Mirrors React `ArtifactAction` (rx-artifacts):
+ * a `Button` (variant `ghost`, size `icon-sm`) tinted `text-muted-foreground
+ * hover:text-foreground`, wrapped in the styled tooltip compound when
+ * `tooltip` is set. The Tailwind classes below are the RX `buttonVariants`
+ * base + `ghost` + `icon-sm` strings verbatim, merged through the same `cn`.
+ *
+ * Host adaptations: the tooltip comes from the `gn-tooltip` compound in
+ * `@gremorie/ng-overlays` (same pattern as ng-ai's `message-action`), and
+ * `icon` is a registered lucide name string (e.g. `'lucideCopy'`) rendered
+ * via `NgIcon` — project custom content instead when no `icon` is given.
+ * `label` (falling back to `tooltip`) renders as sr-only text so the
+ * icon-only button keeps an accessible name, exactly like React.
+ */
+@Component({
+  selector: 'artifact-action',
+  imports: [
+    NgIcon,
+    NgTemplateOutlet,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  ],
+  providers: [provideIcons(ARTIFACT_ICONS)],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { 'data-slot': 'artifact-action', class: 'contents' },
+  template: `
+    <ng-template #btn>
+      <button
+        type="button"
+        data-slot="button"
+        data-variant="ghost"
+        data-size="icon-sm"
+        [disabled]="disabled()"
+        [class]="buttonClass()"
+      >
+        @if (icon(); as iconName) {
+          <ng-icon [name]="iconName" class="text-base" aria-hidden="true" />
+        } @else {
+          <ng-content />
+        }
+        <span class="sr-only">{{ accessibleName() }}</span>
+      </button>
+    </ng-template>
+
+    @if (tooltip()) {
+      <gn-tooltip-provider>
+        <gn-tooltip>
+          <gn-tooltip-trigger>
+            <ng-container [ngTemplateOutlet]="btn" />
+          </gn-tooltip-trigger>
+          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
+        </gn-tooltip>
+      </gn-tooltip-provider>
+    } @else {
+      <ng-container [ngTemplateOutlet]="btn" />
+    }
+  `,
+})
+export class ArtifactAction {
+  /** Tooltip text shown on hover/focus (also the fallback accessible name). */
+  readonly tooltip = input<string | null | undefined>(null);
+
+  /** Accessible label rendered as sr-only inside the button. */
+  readonly label = input<string | null | undefined>(null);
+
+  /** Registered lucide icon name (e.g. `'lucideCopy'`); omit to project content. */
+  readonly icon = input<string | null | undefined>(null);
+
+  /** Disables the button (and with it the tooltip trigger). */
+  readonly disabled = input<boolean>(false);
+
+  /** Extra classes merged onto the button surface. Mirrors React className. */
+  readonly class = input<string>();
+
+  protected readonly accessibleName = computed(
+    () => this.label() || this.tooltip() || '',
+  );
+
+  protected readonly buttonClass = computed(() =>
+    cn(
+      // rx-forms buttonVariants base (verbatim)
+      "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      // variant: ghost (verbatim)
+      'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+      // size: icon-sm (verbatim)
+      'size-8',
+      // ArtifactAction overlay (verbatim)
+      'text-muted-foreground hover:text-foreground',
+      this.class(),
+    ),
+  );
+}
 
 /** One option in an `ArtifactViewToggle`. */
 export interface ArtifactViewOption {
@@ -279,7 +387,11 @@ export type ArtifactMenuEntry = ArtifactMenuItem | 'separator';
               class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm text-popover-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             >
               @if (it.icon) {
-                <ng-icon [name]="it.icon" class="text-base" aria-hidden="true" />
+                <ng-icon
+                  [name]="it.icon"
+                  class="text-base"
+                  aria-hidden="true"
+                />
               }
               <span>{{ it.label }}</span>
             </button>

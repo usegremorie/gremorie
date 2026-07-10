@@ -48,6 +48,7 @@ export const promptInput = defineContract({
       default: 'ready',
       options: ['ready', 'submitted', 'streaming', 'error'],
       adapts: { rx: 'status passed to prompt-input-submit' },
+      control: true,
       desc: 'Composer status; React drives the submit button via its status prop instead.',
     },
     {
@@ -138,8 +139,8 @@ export const promptInput = defineContract({
       '<prompt-input (submitted)="send($event)">\n  <prompt-input-textarea />\n  <prompt-input-toolbar>\n    <prompt-input-tools />\n    <prompt-input-submit />\n  </prompt-input-toolbar>\n</prompt-input>',
   },
   preview: {
-    rx: 'ai-chatbot-promptinput--ready',
-    ng: 'promptinput-container--ready',
+    rx: 'ai-chatbot-promptinput--workbench',
+    ng: 'ai-chatbot-promptinput--workbench',
   },
   tag: { rx: 'PromptInput', ng: 'prompt-input' },
   example: {
@@ -150,5 +151,52 @@ export const promptInput = defineContract({
     submitOnEnter: true,
     placeholder: 'Ask anything…',
   },
+  // Composition demo toggles: story-level switches for the workbench panel and
+  // the Figma boolean show/hide properties. In real code you include or omit
+  // the subcomponent; these are not component props.
+  demo: [
+    {
+      name: 'mentions',
+      type: 'boolean',
+      default: true,
+      desc: 'Composition demo toggle: show the "@ Add context" mentions picker (omit the subcomponent in real code).',
+    },
+    {
+      name: 'contextMeter',
+      type: 'boolean',
+      default: true,
+      desc: 'Composition demo toggle: show the context-window usage pill (omit the subcomponent in real code).',
+    },
+    {
+      name: 'webSearch',
+      type: 'boolean',
+      default: true,
+      desc: 'Composition demo toggle: show the web search button (omit the subcomponent in real code).',
+    },
+    {
+      name: 'attachments',
+      type: 'boolean',
+      default: false,
+      desc: 'Composition demo toggle: show sample attachment chips above the textarea (omit the subcomponent in real code).',
+    },
+    {
+      name: 'voice',
+      type: 'boolean',
+      default: true,
+      desc: 'Composition demo toggle: show the voice input button (omit the subcomponent in real code).',
+    },
+    {
+      name: 'modeSelect',
+      type: 'boolean',
+      default: true,
+      desc: 'Composition demo toggle: show the Mode select (omit the subcomponent in real code).',
+    },
+    {
+      name: 'modelSelect',
+      type: 'boolean',
+      default: true,
+      desc: 'Composition demo toggle: show the Model select (omit the subcomponent in real code).',
+    },
+  ],
   figma: { nodeId: null },
 });

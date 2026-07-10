@@ -17,7 +17,7 @@ const CONFIG: ChartConfig = {
 };
 
 const meta: Meta<RadarChart> = {
-  title: 'Charts/RadarChart',
+  title: 'Layout & display/Data/Radar Chart',
   component: RadarChart,
   tags: ['autodocs'],
   render: (args) => ({

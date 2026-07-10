@@ -113,6 +113,48 @@ const PRODUCTS: FeatureLink[] = [
 ];
 
 /**
+ * Workbench preset: a single trigger revealing a small panel of links — the
+ * IDENTICAL use case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[320px] gap-1 p-2">
+              <li>
+                <NavigationMenuLink href="#">
+                  <div className="font-medium">Analytics</div>
+                  <p className="text-muted-foreground">
+                    Understand your traffic.
+                  </p>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="#">
+                  <div className="font-medium">Storage</div>
+                  <p className="text-muted-foreground">
+                    Fast, durable object storage.
+                  </p>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="#" className={navigationMenuTriggerStyle()}>
+            Pricing
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  ),
+};
+
+/**
  * A header nav with a rich multi-column dropdown panel under "Products" and
  * plain links styled with `navigationMenuTriggerStyle`.
  */

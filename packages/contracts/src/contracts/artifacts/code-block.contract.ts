@@ -4,8 +4,7 @@ import { defineContract } from '../../types';
  * CodeBlock - a Shiki-highlighted code container. Renders light + dark snapshots
  * and shows the right one via the `dark:` variant; an optional copy button reads
  * the raw code from the parent.
- * React: `@gremorie/rx-artifacts`. Angular: `@gremorie/ng-artifacts`
- * (story title `Artifacts/CodeBlock`).
+ * React: `@gremorie/rx-artifacts`. Angular: `@gremorie/ng-artifacts`.
  */
 export const codeBlock = defineContract({
   name: 'code-block',
@@ -83,8 +82,8 @@ export const codeBlock = defineContract({
       '<code-block code="const x = 1;" language="typescript"><code-block-copy-button /></code-block>',
   },
   preview: {
-    rx: 'ai-code-codeblock--type-script',
-    ng: 'artifacts-codeblock--workbench',
+    rx: 'ai-code-codeblock--workbench',
+    ng: 'ai-code-codeblock--workbench',
   },
   tag: { rx: 'CodeBlock', ng: 'code-block' },
   example: {

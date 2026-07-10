@@ -28,7 +28,7 @@ import {
  * idiom); multiple sources compose `gn-carousel` (ng-display) inside the body.
  */
 const meta: Meta<InlineCitation> = {
-  title: 'AI/InlineCitation',
+  title: 'AI/Chatbot/InlineCitation',
   component: InlineCitation,
   tags: ['autodocs'],
   parameters: { controls: { disable: true } },
@@ -55,6 +55,39 @@ const meta: Meta<InlineCitation> = {
 
 export default meta;
 type Story = StoryObj<InlineCitation>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (the single source).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <p class="max-w-md text-sm leading-relaxed">
+          Gremorie ships components, a registry, and an MCP server
+          <inline-citation>
+            <inline-citation-text> [1]</inline-citation-text>
+            <inline-citation-card>
+              <inline-citation-card-trigger [sources]="['https://gremorie.com']" />
+              <ng-template brnHoverCardContent>
+                <inline-citation-card-body>
+                  <inline-citation-source
+                    title="Gremorie docs"
+                    url="https://gremorie.com/docs"
+                    description="The AI-native design system: registry + MCP, React and Angular editions."
+                  />
+                </inline-citation-card-body>
+              </ng-template>
+            </inline-citation-card>
+          </inline-citation>
+          , for React and Angular.
+        </p>
+      </div>
+    `,
+  }),
+};
 
 /**
  * Single source — one cited fact, one source. Hover the badge to reveal the

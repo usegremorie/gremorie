@@ -16,7 +16,7 @@ import {
  * allows several open together.
  */
 const meta: Meta<Accordion> = {
-  title: 'Display/Accordion',
+  title: 'Layout & display/Display/Accordion',
   component: Accordion,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

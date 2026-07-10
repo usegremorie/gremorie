@@ -67,8 +67,8 @@ export const checkpoint = defineContract({
       '<checkpoint>\n  <checkpoint-icon />\n  <checkpoint-trigger tooltip="Restore to here">Checkpoint</checkpoint-trigger>\n</checkpoint>',
   },
   preview: {
-    rx: 'ai-chatbot-checkpoint--default',
-    ng: 'ai-checkpoint--workbench',
+    rx: 'ai-chatbot-checkpoint--workbench',
+    ng: 'ai-chatbot-checkpoint--workbench',
   },
   tag: { rx: 'Checkpoint', ng: 'checkpoint' },
   example: {

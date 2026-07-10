@@ -87,6 +87,33 @@ type Story = StoryObj<typeof meta>;
 const SAMPLE_QUERY =
   'Explain how React Server Components stream HTML to the client.';
 
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the Angular Workbench story; click the trigger to reveal
+ * the provider list.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded' },
+  args: { query: 'Explain monads with a code example' },
+  render: (args) => (
+    <div style={{ width: 360 }}>
+      <OpenIn {...args}>
+        <OpenInTrigger />
+        <OpenInContent>
+          <OpenInLabel>Open in chat</OpenInLabel>
+          <OpenInSeparator />
+          <OpenInChatGPT />
+          <OpenInClaude />
+          <OpenInT3 />
+          <OpenInScira />
+          <OpenInv0 />
+          <OpenInCursor />
+        </OpenInContent>
+      </OpenIn>
+    </div>
+  ),
+};
+
 /** Every provider in one dropdown. Open the menu to see the deep links. */
 export const Default: Story = {
   args: { query: SAMPLE_QUERY, defaultOpen: true },

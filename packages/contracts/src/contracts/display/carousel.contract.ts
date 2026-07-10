@@ -71,8 +71,8 @@ export const carousel = defineContract({
       '<carousel><carousel-content><carousel-item>Slide 1</carousel-item><carousel-item>Slide 2</carousel-item></carousel-content><carousel-previous /><carousel-next /></carousel>',
   },
   preview: {
-    rx: 'layout-display-display-carousel--default',
-    ng: 'display-carousel--horizontal',
+    rx: 'layout-display-display-carousel--workbench',
+    ng: 'layout-display-display-carousel--workbench',
   },
   tag: { rx: 'Carousel', ng: 'gn-carousel' },
   example: { orientation: 'horizontal' },

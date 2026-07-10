@@ -25,7 +25,7 @@ import {
  * the BranchSelector for regenerated alternates.
  */
 const meta: Meta<Message> = {
-  title: 'AI/Message',
+  title: 'AI/Chatbot/Message',
   component: Message,
   tags: ['autodocs'],
   decorators: [
@@ -57,6 +57,26 @@ const meta: Meta<Message> = {
 
 export default meta;
 type Story = StoryObj<Message>;
+
+/**
+ * Workbench — fixed-width preview frame matching the catalog convention.
+ * Same dataset as the React Workbench story (an assistant turn).
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div style="width: 420px;">
+        <message from="assistant">
+          <message-content>
+            Sure — the three main decisions were: ship the new dashboard by Friday,
+            delay the migration, and revisit the auth flow next sprint.
+          </message-content>
+        </message>
+      </div>
+    `,
+  }),
+};
 
 export const FromUser: Story = {
   args: { from: 'user' },

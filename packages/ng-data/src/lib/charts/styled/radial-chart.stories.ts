@@ -11,7 +11,7 @@ const DATA: ChartDatum[] = [
 ];
 
 const meta: Meta<RadialChart> = {
-  title: 'Charts/RadialChart',
+  title: 'Layout & display/Data/Radial Chart',
   component: RadialChart,
   tags: ['autodocs'],
   render: (args) => ({

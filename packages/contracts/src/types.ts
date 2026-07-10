@@ -28,6 +28,28 @@ export interface PropSpec {
    * `{ ng: 'host class' }` for React's `className`.
    */
   adapts?: { rx?: string; ng?: string };
+  /**
+   * Explicit override for the workbench control derivation: `true` includes the
+   * prop as a control even when `adapts` is present; `false` always excludes it.
+   */
+  control?: boolean;
+}
+
+/**
+ * One story-level composition toggle for the workbench Properties panel. Demo
+ * controls are NOT part of the component API: they drive the Workbench story
+ * composition (which optional subcomponents are rendered), so they are excluded
+ * from the docs props tables and from the parity lint. They are also the single
+ * source of truth for the Figma component's boolean show/hide properties (layer
+ * visibility switches): names and defaults must match 1:1 across the code
+ * stories, the workbench panel, and Figma.
+ */
+export interface DemoControlSpec {
+  name: string;
+  type: 'boolean' | 'string';
+  default?: string | number | boolean;
+  options?: string[];
+  desc: string;
 }
 
 /** A "when not to use" entry, optionally pointing at the component to use instead. */
@@ -78,6 +100,12 @@ export interface ComponentContract {
    * the live usage code. Complex props (data arrays, callbacks) are not included.
    */
   example?: Record<string, string | number | boolean>;
+  /**
+   * Story-level composition toggles for the workbench panel (see
+   * {@link DemoControlSpec}). NOT part of the component API; excluded from the
+   * docs props tables and the parity lint.
+   */
+  demo?: DemoControlSpec[];
   /** Optional Figma node id for Code Connect. */
   figma?: { nodeId: string | null };
 }

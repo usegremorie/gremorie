@@ -78,8 +78,8 @@ export const hoverCard = defineContract({
       '<HoverCard><HoverCardTrigger>@ada</HoverCardTrigger><HoverCardContent>Ada Lovelace - first programmer.</HoverCardContent></HoverCard>',
   },
   preview: {
-    rx: 'interaction-overlays-hovercard--default',
-    ng: 'overlays-hovercard--workbench',
+    rx: 'interaction-overlays-hovercard--workbench',
+    ng: 'interaction-overlays-hovercard--workbench',
   },
   tag: { rx: 'HoverCard', ng: 'gn-hover-card' },
   example: {

@@ -69,8 +69,8 @@ export const avatar = defineContract({
       '<avatar size="lg"><avatar-image src="/me.png" alt="Me" /><avatar-fallback>CN</avatar-fallback></avatar>',
   },
   preview: {
-    rx: 'layout-display-display-avatar--default',
-    ng: 'display-avatar--workbench',
+    rx: 'layout-display-display-avatar--workbench',
+    ng: 'layout-display-display-avatar--workbench',
   },
   tag: { rx: 'Avatar', ng: 'gn-avatar' },
   example: {

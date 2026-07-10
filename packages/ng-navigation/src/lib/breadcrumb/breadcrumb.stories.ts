@@ -17,7 +17,7 @@ import {
  * terminates explicitly.
  */
 const meta: Meta<Breadcrumb> = {
-  title: 'Navigation/Breadcrumb',
+  title: 'Interaction/Navigation/Breadcrumb',
   component: Breadcrumb,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

@@ -61,8 +61,8 @@ export const collapsible = defineContract({
       '<collapsible defaultOpen><collapsible-trigger>Toggle</collapsible-trigger><collapsible-content>Hidden content</collapsible-content></collapsible>',
   },
   preview: {
-    rx: 'layout-display-display-collapsible--default',
-    ng: 'display-collapsible--workbench',
+    rx: 'layout-display-display-collapsible--workbench',
+    ng: 'layout-display-display-collapsible--workbench',
   },
   tag: { rx: 'Collapsible', ng: 'gn-collapsible' },
   example: { defaultOpen: true },

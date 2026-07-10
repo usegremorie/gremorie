@@ -50,6 +50,35 @@ export {
   CollapsibleTrigger,
 } from './lib/collapsible';
 
+// FeaturedIcon
+export {
+  FeaturedIcon,
+  featuredIconVariants,
+  type FeaturedIconColor,
+  type FeaturedIconShape,
+  type FeaturedIconSize,
+  type FeaturedIconTheme,
+} from './lib/featured-icon';
+
+// Item
+export {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+  itemMediaVariants,
+  itemVariants,
+  type ItemMediaVariant,
+  type ItemSize,
+  type ItemVariant,
+} from './lib/item';
+
 // Separator
 export { Separator, type SeparatorOrientation } from './lib/separator';
 

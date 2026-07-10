@@ -99,3 +99,30 @@ export const WithCopyButton: Story = {
     </CodeBlock>
   ),
 };
+
+// Shared with the Angular `Workbench` story (ng-artifacts) - keep byte-identical
+// so the dual-framework workbench highlights the same snippet on both sides.
+const WORKBENCH_CODE = `export function fib(n: number): number {
+  let a = 0;
+  let b = 1;
+  for (let i = 0; i < n; i += 1) {
+    [a, b] = [b, a + b];
+  }
+  return a;
+}`;
+
+/**
+ * Workbench preset: the shared framework-neutral TypeScript snippet with a copy
+ * button, at a fixed 32rem width so the dual-framework workbench renders the
+ * IDENTICAL use case as the Angular `Workbench` story. Keep both in sync.
+ */
+export const Workbench: Story = {
+  parameters: { layout: 'padded', controls: { disable: true } },
+  render: () => (
+    <div className="w-[32rem] max-w-full">
+      <CodeBlock code={WORKBENCH_CODE} language="typescript">
+        <CodeBlockCopyButton />
+      </CodeBlock>
+    </div>
+  ),
+};

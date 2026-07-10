@@ -14,7 +14,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from './hover-card';
  * model.
  */
 const meta: Meta<HoverCard> = {
-  title: 'Overlays/HoverCard',
+  title: 'Interaction/Overlays/HoverCard',
   component: HoverCard,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

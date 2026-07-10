@@ -22,7 +22,7 @@ const TWO: ChartConfig = {
 };
 
 const meta: Meta<ScatterChart> = {
-  title: 'Charts/ScatterChart',
+  title: 'Layout & display/Data/Scatter Chart',
   component: ScatterChart,
   tags: ['autodocs'],
   render: (args) => ({
