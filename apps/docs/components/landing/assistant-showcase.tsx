@@ -177,8 +177,14 @@ export function AssistantShowcase() {
 
   return (
     <TooltipProvider>
-      <section className="mx-auto max-w-[88rem] px-6 pb-20">
-        <Card className="grid gap-0 overflow-hidden p-0 lg:grid-cols-[minmax(0,15rem)_minmax(0,22rem)_minmax(0,1fr)]">
+      {/* The hero's product shot: centered, slightly haloed, tucked right
+          under the hero copy like a product screenshot. */}
+      <section className="relative mx-auto max-w-[88rem] px-6 pb-20">
+        <div
+          aria-hidden="true"
+          className="-z-10 pointer-events-none absolute inset-x-0 top-0 mx-auto size-[520px] rounded-full bg-primary/10 blur-[120px]"
+        />
+        <Card className="grid gap-0 overflow-hidden p-0 shadow-lg lg:grid-cols-[minmax(0,15rem)_minmax(0,22rem)_minmax(0,1fr)]">
           {/* Panel 1 - Properties */}
           <div className="flex flex-col gap-4 border-b p-5 lg:border-r lg:border-b-0">
             <h3 className="font-semibold text-sm">Properties</h3>
