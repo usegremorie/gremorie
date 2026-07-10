@@ -24,7 +24,7 @@ stylesheet, **after** the Tailwind import:
 ```css tab="Angular"
 /* src/styles.css */
 @import 'tailwindcss';
-@import '@gremorie/ng-core/styles/theme.css';
+@import '@gremorie/tokens/theme.css';
 ```
 
 ```css tab="React (Next.js)"
@@ -127,22 +127,15 @@ manual class toggle on `<html>`.
   they only reference semantic tokens.
 </Callout>
 
-## Custom output path
+## Output paths
 
-If `src/components/gremorie/` is not where you want the primitives, edit
-`gremorie.config.json`:
+Each registry item declares its own target path, and the CLI writes the
+source there: `src/components/gremorie/<category>/<name>/` for React
+items and `src/app/gremorie/<name>/` for Angular items.
 
-```json
-{
-  "aliases": {
-    "components": "src/ui/gremorie"
-  }
-}
-```
-
-Future `gremorie add` calls write to the new path. Already-installed
-primitives are not moved -- migrate them manually if you change the
-alias.
+The output path is not configurable yet. If you want a different layout,
+move the files after installing and update the imports -- the source is
+yours, so nothing else references those paths.
 
 ## Verification
 

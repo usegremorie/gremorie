@@ -1,9 +1,143 @@
 ---
 title: Overview
-description: The three token layers — primitive, semantic and chart — and how each is consumed.
+description: The three token layers - primitive, semantic and chart - and how each is consumed.
 ---
 
 Tokens are the **chromatic and dimensional vocabulary** of Gremorie. Instead of
-hard-coding a border as `#E5E5E5` or a padding as a magic number, components
-consume named tokens that cascade through three layers — primitive, semantic and
-chart.
+painting a border as `#E5E5E5` or setting a padding to `16px`, you use a word
+from the vocabulary, like `border` or `p-4`, that points to a value that can
+change with the theme, with dark mode, or simply because the brand evolved.
+
+Gremorie organizes that vocabulary in **three layers**, each with a clear job.
+
+## The three-layer model
+
+<Cards>
+  <Card
+    title="Primitive"
+    href="/tokens/primitive"
+    description="The source of truth. Raw Tailwind palettes and scales, and the only place a new value is added."
+  />
+  <Card
+    title="Semantic"
+    href="/tokens/semantic"
+    description="Intent tokens like primary, background, border. They change per theme but always reference primitives."
+  />
+  <Card
+    title="Chart"
+    href="/tokens/chart"
+    description="Five canonical schemes for data visualization. Separated from the UI for technical reasons, not aesthetic ones."
+  />
+</Cards>
+
+Data flows one way, from raw value to intent to data color:
+
+```text
+┌──────────────────────┐
+│ 1. PRIMITIVE         │  --color-clay-500, --radius-base, --spacing
+│    what exists       │  fixed values, mode-invariant
+└──────────┬───────────┘
+           │ referenced via var(--color-*)
+┌──────────▼───────────┐
+│ 2. SEMANTIC          │  --primary, --background, --border
+│    what it means     │  resolved per theme (data-theme) and mode (.dark)
+└──────────┬───────────┘
+           │ referenced via var(--primary) / var(--color-*)
+┌──────────▼───────────┐
+│ 3. CHART             │  five schemes keyed to the shape of the data
+│    how data reads    │  sequential, categorical, divergent, status, comparison
+└──────────────────────┘
+```
+
+Edit a primitive and every theme referencing it updates. Swap the theme and
+every component repaints. Components never skip a layer downward: they consume
+semantics, and semantics consume primitives.
+
+### 1. Primitive, or what exists
+
+Primitives are **raw values** with no opinion. A `--color-blue-600` is just
+"that specific blue". A `--radius-lg` is just a length. They live in the native
+Tailwind v4 namespace (`--color-*`, `--radius-*`, `--shadow-*`, and so on),
+which means utilities like `bg-blue-600` or `rounded-lg` show up automatically,
+with no bridge code.
+
+You rarely touch primitives directly in components. Their job is to **feed**
+the other two layers.
+
+### 2. Semantic, or what those values mean
+
+Semantics translate primitives into **intent**. Instead of asking for
+"the gray-900", the component asks for "the foreground". When the theme
+changes, the foreground swaps primitives on its own and the component never
+finds out.
+
+This is where Gremorie supports its **bundled brand themes**, six in total
+(Default, Claude, ChatGPT, Gemini, Mistral, Perplexity), each with light and
+dark modes. All component chrome talks to this layer.
+
+### 3. Chart, or why dataviz is different
+
+UI colors and chart colors follow different rules. A blue button exists in a
+context. Five blues in a heatmap need to be **ordered by lightness**, not by
+brand. So chart tokens live in their own layer, with five canonical schemes
+(Sequential, Categorical, Divergent, Status, Comparison), each for a specific
+shape of data.
+
+## What each section covers
+
+| Layer                          | Pages                                                  | What you get                                                    |
+| ------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------- |
+| [Primitive](/tokens/primitive) | Colors, Typography, Spacing, Radius, Shadow, Motion    | Every raw value with sample, token, utility class, and use case |
+| [Semantic](/tokens/semantic)   | Colors                                                 | The intent-to-primitive truth table per theme, light and dark   |
+| [Chart](/tokens/chart)         | Sequential, Categorical, Divergent, Status, Comparison | When to use each scheme, its tokens, and the decision matrix    |
+
+## How to read this section
+
+- Styling a **UI surface** (button, card, input)? Go to
+  [Semantic](/tokens/semantic) and find the token with the right intent.
+- Building a **chart**? Go straight to [Chart](/tokens/chart); the right
+  scheme depends on the shape of the data, not on taste.
+- Need an **exact value** (a marketing color outside the system, a specific
+  spacing)? Use [Primitive](/tokens/primitive).
+
+<Callout type="info">
+  **Naming convention.** Primitives use the native Tailwind prefix
+  (`--color-*`, `--radius-*`, `--shadow-*`). Semantics are **unprefixed**
+  (`--primary`, `--foreground`, `--border`) and live in `:root` or
+  `[data-theme="<id>"]`. Chart tokens are bridged into Tailwind utilities via
+  `@theme inline`.
+</Callout>
+
+## How to consume
+
+Three equivalent forms, depending on the context:
+
+```tsx
+// 1. Tailwind utility class, preferred inside components
+<div className="bg-primary text-primary-foreground rounded-lg p-4 shadow-md">
+  A card painted with semantic tokens
+</div>
+
+// 2. CSS variable, for dynamic styles or libraries that take a color
+//    string (Recharts, SVG, inline motion frames)
+<rect fill="var(--color-chart-cat-1)" />
+
+// 3. Gremorie ChartConfig, consumed by the chart tooltip / legend helpers
+const config = {
+  revenue: { label: 'Revenue', color: 'var(--color-chart-cat-1)' },
+} satisfies ChartConfig;
+```
+
+The mental rule: **if you are painting an element, use a Tailwind class**. If
+you are passing a color as a string to an external API, use the CSS variable.
+ChartConfig is the special case the charting system expects.
+
+## The golden rule
+
+> **Components never hardcode a value. Always a token.** If you are about to
+> type `#FF6B6B` or `padding: 14px`, stop. A token probably exists. If it does
+> not, that is a system decision before it is an implementation decision.
+
+The motivation is simple: swapping the theme, adjusting the brand, or improving
+accessibility should each be **a diff in a single file**. When hardcoded values
+leak into components, that "one diff" becomes "review 200 files".

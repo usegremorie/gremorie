@@ -349,7 +349,10 @@ const handler = createMcpHandler(
   },
   // Server options (second arg). Most metadata is on the tools themselves;
   // mcp-handler / the MCP SDK derives capabilities from registered tools.
-  {},
+  // serverInfo overrides the library default so clients see "gremorie".
+  {
+    serverInfo: { name: 'gremorie', version: '0.4.0' },
+  },
   // adapter config — must match the [transport] route position
   {
     basePath: '/api',

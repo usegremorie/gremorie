@@ -8,13 +8,7 @@ import { Button } from '@gremorie/rx-forms';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-type BlockShape =
-  | 'sign-in'
-  | 'dashboard'
-  | 'chat'
-  | 'settings'
-  | 'marketing'
-  | 'empty';
+type BlockShape = 'sign-in' | 'dashboard' | 'chat' | 'settings' | 'empty';
 
 /**
  * Each block has a `shape` slot driving a small inline SVG mockup that previews
@@ -57,13 +51,6 @@ const blocks: ReadonlyArray<{
     description: 'Multi-section form with save bar and validation.',
     href: '/blocks/settings-form',
     shape: 'settings',
-  },
-  {
-    name: 'Marketing hero',
-    category: 'Marketing',
-    description: 'Hero with CTA, feature grid, social proof.',
-    href: '/blocks/marketing-hero',
-    shape: 'marketing',
   },
   {
     name: 'Empty state',
@@ -287,75 +274,6 @@ function BlockMockup({ shape }: { shape: BlockShape }) {
             rx="2"
             fill={stroke}
             opacity="0.9"
-          />
-        </svg>
-      );
-    case 'marketing':
-      return (
-        <svg viewBox="0 0 120 60" className="size-full" aria-hidden="true">
-          <rect
-            x="20"
-            y="8"
-            width="80"
-            height="6"
-            rx="2"
-            fill={stroke}
-            opacity="0.9"
-          />
-          <rect
-            x="28"
-            y="18"
-            width="64"
-            height="3"
-            rx="1"
-            fill={stroke}
-            opacity="0.3"
-          />
-          <rect
-            x="34"
-            y="26"
-            width="22"
-            height="8"
-            rx="2"
-            fill={stroke}
-            opacity="0.9"
-          />
-          <rect
-            x="62"
-            y="26"
-            width="22"
-            height="8"
-            rx="2"
-            fill="none"
-            stroke={stroke}
-            strokeOpacity="0.5"
-          />
-          <rect
-            x="14"
-            y="44"
-            width="28"
-            height="12"
-            rx="2"
-            fill={stroke}
-            opacity="0.2"
-          />
-          <rect
-            x="46"
-            y="44"
-            width="28"
-            height="12"
-            rx="2"
-            fill={stroke}
-            opacity="0.2"
-          />
-          <rect
-            x="78"
-            y="44"
-            width="28"
-            height="12"
-            rx="2"
-            fill={stroke}
-            opacity="0.2"
           />
         </svg>
       );

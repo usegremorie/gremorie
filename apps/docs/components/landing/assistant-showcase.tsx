@@ -2,7 +2,7 @@
 
 import { CodeBlock } from '@gremorie/rx-artifacts';
 import { cn } from '@gremorie/rx-core';
-import { Badge, Card, Separator } from '@gremorie/rx-display';
+import { Card, Separator } from '@gremorie/rx-display';
 import {
   Button,
   Input,
@@ -178,20 +178,6 @@ export function AssistantShowcase() {
   return (
     <TooltipProvider>
       <section className="mx-auto max-w-[88rem] px-6 pb-20">
-        <div className="mx-auto mb-8 max-w-2xl text-center">
-          <Badge variant="secondary" className="mb-3">
-            Flagship block
-          </Badge>
-          <h2 className="text-balance font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-            The Assistant, live
-          </h2>
-          <p className="mt-2 text-balance text-muted-foreground">
-            A complete chat surface in one import - streaming reasoning, an
-            inline chart artifact, sources, and a B2B composer. Tweak the props;
-            the code and the rendered block update together.
-          </p>
-        </div>
-
         <Card className="grid gap-0 overflow-hidden p-0 lg:grid-cols-[minmax(0,15rem)_minmax(0,22rem)_minmax(0,1fr)]">
           {/* Panel 1 - Properties */}
           <div className="flex flex-col gap-4 border-b p-5 lg:border-r lg:border-b-0">

@@ -4,6 +4,9 @@ description: The cornerstone compose surface for any AI chat. A form-rooted stat
 ---
 
 import { PromptInputPreview } from '@/components/preview/ai/prompt-input';
+import { PromptInputMinimalPreview } from '@/components/preview/ai/prompt-input-minimal';
+import { PromptInputAttachmentsPreview } from '@/components/preview/ai/prompt-input-attachments';
+import { PromptInputB2BPreview } from '@/components/preview/ai/prompt-input-b2b';
 
 ## Overview
 
@@ -113,12 +116,12 @@ import {
   standalone: true,
   imports: [PromptInput, PromptInputTextarea, PromptInputToolbar, PromptInputSubmit],
   template: `
-    <gremorie-prompt-input (gremoriePromptSubmit)="send($event)">
-      <gremorie-prompt-input-textarea placeholder="Ask anything" />
-      <gremorie-prompt-input-toolbar>
-        <gremorie-prompt-input-submit [status]="status()" />
-      </gremorie-prompt-input-toolbar>
-    </gremorie-prompt-input>
+    <prompt-input (submitted)="send($event)">
+      <prompt-input-textarea placeholder="Ask anything" />
+      <prompt-input-toolbar>
+        <prompt-input-submit [status]="status()" />
+      </prompt-input-toolbar>
+    </prompt-input>
   `,
 })
 export class ChatBoxComponent {
@@ -214,6 +217,50 @@ export function ChatBox() {
   );
 }
 ```
+
+## Recipes
+
+`PromptInput` is customized by composition, not configuration. There is no
+`showAttachments` or `showVoice` prop, by design (the same contract as Vercel
+AI Elements): every part is a component you include in the tree or leave out.
+To remove the context section, the voice button or the attachments flow, you
+delete the part from your code instead of toggling a flag. The recipes below
+are complete, copyable starting points ordered from the smallest possible
+composer to the full B2B surface.
+
+### Minimal
+
+The smallest valid composition: a body with the textarea and a footer with the
+submit button. The empty `<span />` keeps the footer's `justify-between`
+layout pushing submit to the right. Everything else is opt-in.
+
+<ComponentPreview name="ai/prompt-input-minimal">
+  <PromptInputMinimalPreview />
+</ComponentPreview>
+
+### With attachments
+
+Adds the attach affordance and the chips row. `PromptInputAttachButton` opens
+the file picker, and `PromptInputAttachments` renders one chip per attached
+file (paste and drag-drop funnel into the same list). The standalone
+`Attachments` row seeds the preview with sample files so you can see the chip
+treatment per media type.
+
+<ComponentPreview name="ai/prompt-input-attachments">
+  <PromptInputAttachmentsPreview />
+</ComponentPreview>
+
+### Full B2B
+
+The Gremorie-standard business composition, the same surface the Assistant
+block ships: an `@` add-context command palette plus a token-usage meter in
+the header, Mode and Model selects with provider icons in the footer, and a
+web search / attach / voice icon group next to the submit button. Every
+action carries a tooltip.
+
+<ComponentPreview name="ai/prompt-input-b2b">
+  <PromptInputB2BPreview />
+</ComponentPreview>
 
 ## API
 

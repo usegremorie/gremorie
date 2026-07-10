@@ -11,10 +11,11 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 
 import type { MDXComponents } from 'mdx/types';
 
+import { BlockCard } from '@/components/blocks-gallery/block-card';
 import { ComponentPreview } from '@/components/component-preview';
-import { PropsTable } from '@/components/props-table';
 import { ArtifactPreview } from '@/components/preview/artifacts';
 import { BlockPreview } from '@/components/preview/blocks';
+import { PropsTable } from '@/components/props-table';
 
 /**
  * Global MDX components for the KDS docs site.
@@ -44,6 +45,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Steps,
     TypeTable,
     ArtifactPreview,
+    BlockCard,
     BlockPreview,
     ComponentPreview,
     PropsTable,

@@ -26,13 +26,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-## Preview
-
-<ComponentPreview name="data/radial-chart">
-  <RadialChartPreview />
-</ComponentPreview>
-
-## Anatomy
+The React edition composes this surface through the shadcn `chart` primitive:
 
 ```text
 ChartContainer                     responsive square frame + tooltip label config
@@ -42,6 +36,12 @@ ChartContainer                     responsive square frame + tooltip label confi
    ├─ PolarGrid                    circular grid
    └─ RadialBar                    one bar per row, with a faint background track
 ```
+
+## Preview
+
+<ComponentPreview name="data/radial-chart">
+  <RadialChartPreview />
+</ComponentPreview>
 
 ## Installation
 
@@ -94,29 +94,29 @@ import { RadialChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-  selector: 'app-top-browsers',
-  imports: [RadialChart],
-  template: `
-    <radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
+selector: 'app-top-browsers',
+imports: [RadialChart],
+template: `     <radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
   `,
 })
 export class TopBrowsersComponent {
-  readonly data: ChartDatum[] = [
-    { category: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
-    { category: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
-    { category: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
-    { category: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
-  ];
+readonly data: ChartDatum[] = [
+{ category: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+{ category: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+{ category: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+{ category: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+];
 
-  readonly config: ChartConfig = {
-    visitors: { label: 'Visitors' },
-    Chrome: { label: 'Chrome' },
-    Safari: { label: 'Safari' },
-    Firefox: { label: 'Firefox' },
-    Edge: { label: 'Edge' },
-  };
+readonly config: ChartConfig = {
+visitors: { label: 'Visitors' },
+Chrome: { label: 'Chrome' },
+Safari: { label: 'Safari' },
+Firefox: { label: 'Firefox' },
+Edge: { label: 'Edge' },
+};
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -185,10 +185,15 @@ The chart auto-sizes to its parent through `ChartContainer` (recharts `Responsiv
   nameKey="category"
   dataKey="visitors"
 />
-```
+````
 
 ```html
-<radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
+<radial-chart
+  [data]="data"
+  [config]="config"
+  nameKey="category"
+  dataKey="visitors"
+/>
 ```
 
 The default. Four bars provide a comfortable visual rhythm without crowding.

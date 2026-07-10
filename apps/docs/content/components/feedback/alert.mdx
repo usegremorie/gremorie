@@ -60,9 +60,30 @@ export function RegistryNotice() {
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release. The variant API will map directly to a structural directive plus content projection slots for the icon, title, and description.
-</Callout>
+```bash
+npx gremorie@latest add ng-alert
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Alert, AlertTitle, AlertDescription } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [Alert, AlertTitle, AlertDescription],
+  template: `
+    <gn-alert>
+      <gn-alert-title>Heads up</gn-alert-title>
+      <gn-alert-description>
+        The registry rebuilds on every commit to the main branch.
+      </gn-alert-description>
+    </gn-alert>
+  `,
+})
+export class ExampleComponent {}
+```
+
 </Tab>
 </Tabs>
 
@@ -110,8 +131,8 @@ The grid auto-collapses to a single column when no icon is provided, so a stripp
 <Callout type="info">
   `Alert` ships exactly two CVA variants: `default` and `destructive`. There is
   no `success`, `warning`, or `info` variant. Express those intents through a
-  leading `lucide-react` icon on the default surface, as shown below - this keeps
-  the visual surface consistent and the API minimal.
+  leading `lucide-react` icon on the default surface, as shown below - this
+  keeps the visual surface consistent and the API minimal.
 </Callout>
 
 ### Destructive

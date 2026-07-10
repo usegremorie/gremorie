@@ -1,0 +1,146 @@
+---
+title: Colors
+description: 27 ramps and 298 stops - the Tailwind v4 palettes plus five ramps synthesized for Gremorie, including the clay brand ramp.
+---
+
+import {
+  PrimitiveColorPalettes,
+  PrimitiveRampIndex,
+} from '@/components/primitive-color-palettes';
+
+Gremorie inherits the Tailwind v4 palettes and extends them with
+**five synthesized ramps**: four extra neutrals (`mauve`, `mist`,
+`olive`, `taupe`) and one brand ramp (`clay`, anchored on Claude's
+`#D97757`). Together they form **27 ramps and 298 stops**, every one
+declared in OKLCH in `packages/tokens/styles/theme.css`.
+
+Each stop is intentionally spaced in lightness (perceptually uniform
+in OKLCH space), so `slate-200` and `blue-200` behave the same way
+when used as a surface even though the hues are completely
+different.
+
+## All ramps at a glance
+
+Every ramp, lightest to darkest. Click a row to jump to its full
+table.
+
+<PrimitiveRampIndex />
+
+## How to read the scale
+
+Stops run from **50** (lightest) to **950** (darkest); the `gray`
+ramp adds a **0** stop (pure white) for elevated surfaces in light
+mode. There is no rigid usage rule, but the patterns are strong:
+
+| Range             | Typical use                                    |
+| ----------------- | ---------------------------------------------- |
+| **0, 50, 100**    | Backgrounds, item hover, subtle surfaces       |
+| **200, 300**      | Borders, separators, secondary surfaces        |
+| **400, 500**      | Secondary text, icons, placeholders            |
+| **600, 700**      | Primary text, primary actions, active UI icons |
+| **800, 900, 950** | Headings, dark mode surfaces                   |
+
+These values are **stable**: they only change when the primitive is
+edited in `theme.css`, and when that happens the change cascades to
+every theme that references it.
+
+## How to consume
+
+Three equivalent forms:
+
+```tsx
+// 1. Tailwind utility (generated automatically from the @theme block)
+<div className="bg-blue-600" />
+
+// 2. CSS variable, for APIs that take a color string (SVG, Recharts)
+<div style={{ background: 'var(--color-blue-600)' }} />
+```
+
+```css
+/* 3. Referencing the ramp in a theme file (the only place this is normal) */
+[data-theme='claude'] {
+  --primary: var(--color-clay-500);
+}
+```
+
+Inside a themed component, almost every case should consume a
+**semantic token** (`bg-primary`, `text-foreground`) instead of a
+primitive. Primitives are for marketing surfaces, illustration, and
+feeding the semantic layer. See
+[when you touch primitives](/tokens/primitive#when-you-touch-primitives).
+
+<Callout type="info">
+  **Primitives do not change with the mode.** Unlike semantic tokens, a
+  primitive resolves to the same color in light and dark: `--color-clay-500` is
+  always `#D97757`. Dark mode happens one layer up, when a theme remaps its
+  intents to different primitives under `.dark`.
+</Callout>
+
+<Callout type="info">
+  **HEX is an approximation.** The HEX values below are the sRGB-clamped
+  rendering of the OKLCH source. For saturated stops in fuchsia, lime, and
+  friends, the OKLCH describes colors outside the sRGB gamut; the HEX is the
+  closest in-gamut point, not the exact value. The source of truth is always
+  OKLCH.
+</Callout>
+
+## Neutrals
+
+Nine neutral ramps cover the spectrum from pure gray to temperature
+bias: slate cold, stone warm, mauve violet-pink. Use them for
+chrome, surfaces, text, and backgrounds. Five are stock Tailwind;
+**four are Gremorie synthesized** (`mauve`, `mist`, `olive`,
+`taupe`), created so the themes can map to consistent primitives
+instead of literal OKLCH values.
+
+<PrimitiveColorPalettes group="neutrals" locale="en" />
+
+## Brand
+
+The one ramp that exists for a brand rather than a hue family.
+`clay-500` **is** Claude's brand color, exactly, and the other ten
+stops are derived from it with smooth lightness and chroma that
+peaks mid-ramp.
+
+<PrimitiveColorPalettes group="brand" locale="en" />
+
+## Warm spectrum
+
+Reds, oranges, ambers, yellows, limes, and greens. The range runs
+from critical (`red`, for destructive) to organic (`green`,
+`lime`). `amber` is one of the best warning hues without falling
+into pure-yellow cliche.
+
+<PrimitiveColorPalettes group="warm" locale="en" />
+
+## Cool spectrum
+
+Blue-greens (`emerald`, `teal`), cyan, the blues, and the
+transition into violet. This is the most "digital product" range of
+the palette, where the defaults for links, primary actions, and
+categorical charts live. `emerald` is the usual success hue; `sky`
+is the usual info hue.
+
+<PrimitiveColorPalettes group="cool" locale="en" />
+
+## Accents
+
+Magentas, pinks, and red-pinks for products that want more
+personality. `rose` pairs particularly well with `stone` and
+`taupe`.
+
+<PrimitiveColorPalettes group="accents" locale="en" />
+
+## Good practices
+
+- **Do not use stops 50 to 200 for text** over white: the contrast
+  is insufficient. Use them as surfaces.
+- **Stop 400 is tricky**: good as a visual divider between primary
+  and secondary, dangerous for critical text (the ratio varies a lot
+  between ramps).
+- **Dark mode mirrors, it does not invert**: 950 becomes the
+  background and 50 the foreground. Do not swap the middle stops in
+  logic; pick different primitives in the theme instead.
+- **Five ramps are Gremorie specific** (`mauve`, `mist`, `olive`,
+  `taupe`, `clay`). If you export the system elsewhere, document
+  that these are not stock Tailwind.

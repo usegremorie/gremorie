@@ -2,6 +2,10 @@ import { Separator } from '@gremorie/rx-display';
 import { Github } from 'lucide-react';
 import Link from 'next/link';
 
+// Workbench is intentionally absent from Resources: the workbench app has no
+// public deployment URL yet (docs/workbench.md still says "<set by your Vercel
+// project>"). Add it here, and to the navbar in lib/layout.shared.tsx, once it
+// ships publicly.
 const resourceLinks = [
   { label: 'Get started', href: '/get-started/installation' },
   { label: 'Components', href: '/components' },
@@ -61,9 +65,8 @@ export function Footer() {
               Gremorie
             </p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              The production design system for React and Angular. Copy-paste
-              primitives, design tokens, and blocks, with a registry and MCP
-              server that keep the system legible to your tools.
+              Copy-paste primitives, tokens, and blocks for React and Angular.
+              Open source under MIT, made to be read by humans and machines.
             </p>
             <a
               href="https://github.com/usegremorie/gremorie"

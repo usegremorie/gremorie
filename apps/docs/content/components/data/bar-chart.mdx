@@ -30,13 +30,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-## Preview
-
-<ComponentPreview name="data/bar-chart">
-  <BarChartPreview />
-</ComponentPreview>
-
-## Anatomy
+The React edition composes this surface through the shadcn `chart` primitive:
 
 ```text
 BarChart                       recharts bar chart wired to the chart primitive
@@ -50,6 +44,12 @@ BarChart                       recharts bar chart wired to the chart primitive
 │        ├─ Cell               per-bar fill on a single categorical series
 │        └─ LabelList          optional value drawn on each bar
 ```
+
+## Preview
+
+<ComponentPreview name="data/bar-chart">
+  <BarChartPreview />
+</ComponentPreview>
 
 ## Installation
 
@@ -94,26 +94,27 @@ import { BarChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-  selector: 'app-visits-by-month',
-  imports: [BarChart],
-  template: `<bar-chart [data]="data" [config]="config" xKey="month" />`,
+selector: 'app-visits-by-month',
+imports: [BarChart],
+template: `<bar-chart [data]="data" [config]="config" xKey="month" />`,
 })
 export class VisitsByMonthComponent {
-  readonly data: ChartDatum[] = [
-    { month: 'Jan', desktop: 186, mobile: 80 },
-    { month: 'Feb', desktop: 305, mobile: 200 },
-    { month: 'Mar', desktop: 237, mobile: 120 },
-    { month: 'Apr', desktop: 73, mobile: 190 },
-    { month: 'May', desktop: 209, mobile: 130 },
-    { month: 'Jun', desktop: 214, mobile: 140 },
-  ];
+readonly data: ChartDatum[] = [
+{ month: 'Jan', desktop: 186, mobile: 80 },
+{ month: 'Feb', desktop: 305, mobile: 200 },
+{ month: 'Mar', desktop: 237, mobile: 120 },
+{ month: 'Apr', desktop: 73, mobile: 190 },
+{ month: 'May', desktop: 209, mobile: 130 },
+{ month: 'Jun', desktop: 214, mobile: 140 },
+];
 
-  readonly config: ChartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
-  };
+readonly config: ChartConfig = {
+desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+};
 }
-```
+
+````
 </Tab>
 </Tabs>
 
@@ -176,7 +177,7 @@ The chart auto-sizes to its parent via recharts' `ResponsiveContainer`, so the w
   config={{ revenue: { label: 'Revenue', color: 'var(--chart-1)' } }}
   xKey="region"
 />
-```
+````
 
 ```html
 <bar-chart [data]="data" [config]="config" xKey="region" />

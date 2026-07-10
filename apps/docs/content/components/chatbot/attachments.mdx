@@ -84,9 +84,52 @@ export function Example({
 ```
 </Tab>
 <Tab value="Angular">
-<Callout type="info">
-Angular edition planned for a follow-up release; it mirrors this component's anatomy.
-</Callout>
+```bash
+npx gremorie@latest add ng-attachments
+```
+
+```ts
+import { Component, signal } from '@angular/core';
+import {
+  AttachmentList,
+  AttachmentItem,
+  AttachmentPreview,
+  AttachmentInfo,
+  AttachmentRemove,
+  type AttachmentData,
+} from '@gremorie/ng-ai';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    AttachmentList,
+    AttachmentItem,
+    AttachmentPreview,
+    AttachmentInfo,
+    AttachmentRemove,
+  ],
+  template: `
+    <attachment-list variant="grid">
+      @for (file of files(); track file.id) {
+        <attachment-item [data]="file" (removed)="remove($event)">
+          <attachment-preview />
+          <attachment-info />
+          <attachment-remove />
+        </attachment-item>
+      }
+    </attachment-list>
+  `,
+})
+export class ExampleComponent {
+  readonly files = signal<AttachmentData[]>([]);
+
+  remove(file: AttachmentData) {
+    this.files.update((current) => current.filter((f) => f.id !== file.id));
+  }
+}
+```
+
 </Tab>
 </Tabs>
 

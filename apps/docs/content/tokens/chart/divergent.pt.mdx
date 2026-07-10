@@ -1,0 +1,84 @@
+---
+title: Divergent
+description: Bipolar com pivô neutro — variação acima/abaixo, NPS, sentiment.
+---
+
+import {
+  ChartSchemeSwatchRow,
+  ChartSchemeTable,
+} from '@/components/token-tables';
+import { DIVERGENT_SCHEME } from '@/lib/chart-tokens';
+
+**Divergent** é o esquema para **dado contínuo bipolar** — quando
+existe um pivô significativo (zero, média, baseline) e os valores
+se distribuem para os dois lados. Sete stops com neutro no meio:
+cool (blue) → neutral → warm (rose).
+
+A escolha de **Red-Blue (RdBu)** em vez de Red-Green (RdYlGn) não
+é estilística — é acessibilidade. **Red-Green é inacessível para
+~8% dos homens** com deficiência de visão de cor.
+
+<ChartSchemeSwatchRow scheme={DIVERGENT_SCHEME} />
+
+## Tokens
+
+<ChartSchemeTable scheme={DIVERGENT_SCHEME} />
+
+## Quando usar
+
+- **Variação acima/abaixo da média** — KPI vs. baseline,
+  performance regional vs. nacional.
+- **Deviation maps** — quanto cada região se afasta do esperado.
+- **Correlação** ( -1 a +1) — matrizes de correlação estatística.
+- **Survey results** — concordância (concordo ↔ discordo).
+- **Sentiment shift** — variação de humor de NPS, CSAT entre
+  períodos.
+
+## Quando não usar
+
+Sem **pivô natural** no dado, Divergent vira só "duas cores
+aleatórias". O ponto de referência é o que dá sentido aos polos.
+
+Se o dado é nominal sem polos (regiões, tipos), use
+[Categorical](/tokens/chart/categorical). Se é ordenado mas
+sem pivô, use [Sequential](/tokens/chart/sequential).
+
+## Anti-patterns
+
+<Callout type="warn">
+  **Red-Yellow-Green (RdYlGn) — proibido.** O Gremorie não fornece esse esquema
+  nem como opt-in. Para dados de performance com semântica boa/ruim onde a
+  paleta tradicional pediria vermelho-amarelo-verde, use Divergent (Red-Blue) e
+  adicione ícones ou labels para reforçar a semântica.
+</Callout>
+
+<Callout type="warn">
+  Usar Divergent quando a métrica não tem pivô claro. Se você se pega
+  justificando "o ponto médio é mais ou menos onde está a maioria dos dados",
+  não há pivô — use Sequential.
+</Callout>
+
+## Exemplo de consumo
+
+```tsx
+import { Bar, BarChart, ReferenceLine } from 'recharts';
+
+// Variação % vs baseline. Stops mapeados pela magnitude.
+const tokenForVariation = (delta: number) => {
+  if (delta < -20) return 'div-1'; // strongly negative
+  if (delta < -5) return 'div-2';
+  if (delta < 0) return 'div-3';
+  if (delta === 0) return 'div-4'; // pivot
+  if (delta < 5) return 'div-5';
+  if (delta < 20) return 'div-6';
+  return 'div-7'; // strongly positive
+};
+
+<BarChart data={regions}>
+  <ReferenceLine y={0} stroke="var(--color-chart-div-4)" />
+  <Bar
+    dataKey="delta"
+    fill={(entry) => `var(--color-chart-${tokenForVariation(entry.delta)})`}
+  />
+</BarChart>;
+```

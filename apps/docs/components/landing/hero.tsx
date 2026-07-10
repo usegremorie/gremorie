@@ -3,14 +3,21 @@ import { Button } from '@gremorie/rx-forms';
 import { ArrowRight, Github } from 'lucide-react';
 import Link from 'next/link';
 
+import { InstallCommand } from '@/components/landing/install-command';
+
 /**
- * Landing hero - centered composition (shadcnblocks-style): status pill, the
- * tagline, a two-paragraph subtitle, the CTA hierarchy, and the edition marks,
- * all centered in a single column. The live chat surface that used to sit in a
- * right column now lives below the hero as the Assistant showcase.
+ * Landing hero - centered composition (shadcnblocks-style): version pill, the
+ * parity headline, a one-paragraph subtitle, the install command box, and the
+ * CTA hierarchy, all centered in a single column. The live chat surface lives
+ * below the hero as the Assistant showcase.
  *
- * Dogfood: status pill is rx-display Badge; CTAs are rx-forms Button (asChild
- * wraps Next Link / anchor). The primary halo follows the active theme.
+ * Home redesign, section 1: the pill states version + license (not stage), the
+ * headline leads with the parity claim, and the install box is the immediate
+ * proof of code above the fold. The old "edition marks" row is gone - its
+ * numbers moved to the proof strip right below.
+ *
+ * Dogfood: pill is rx-display Badge; CTAs are rx-forms Button (asChild wraps
+ * Next Link / anchor); the install box composes rx Tabs + Button.
  */
 export function Hero() {
   return (
@@ -23,42 +30,34 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(var(--border)_1px,transparent_1px)] opacity-60 [background-size:22px_22px] [mask-image:radial-gradient(ellipse_55%_50%_at_50%_0%,#000_30%,transparent_75%)]"
       />
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center lg:py-28">
-        <Badge variant="secondary" className="gap-2 py-1">
-          <span
-            className="size-1.5 rounded-full bg-success"
-            aria-hidden="true"
-          />
-          In active development
+        <Badge variant="secondary" className="py-1">
+          v0 · Open source · MIT
         </Badge>
 
         <h1 className="text-balance font-bold text-4xl text-foreground tracking-tight sm:text-5xl lg:text-6xl">
-          The production design system for{' '}
+          One design system.{' '}
           <span className="text-cyan-600 dark:text-cyan-500">React</span> and{' '}
-          <span className="text-rose-500 dark:text-rose-400">Angular</span>
+          <span className="text-rose-500 dark:text-rose-400">Angular</span>, at
+          parity.
         </h1>
 
-        <div className="flex max-w-2xl flex-col gap-3 text-balance text-lg text-muted-foreground leading-relaxed">
-          <p>
-            85 primitives, design tokens, and production blocks, built once and
-            shipped to both frameworks at parity. Install from the registry, own
-            the source, customize with your tokens.
-          </p>
-          <p className="text-base">
-            It is AI-native by design: a registry and MCP server make the whole
-            system legible to your tools, so the code you generate is the code
-            you ship.
-          </p>
-        </div>
+        <p className="max-w-2xl text-balance text-lg text-muted-foreground leading-relaxed">
+          83 copy-paste primitives, tokens, and production blocks, shipped to
+          both frameworks from one registry. Install with one command, own the
+          source, restyle with your tokens.
+        </p>
+
+        <InstallCommand />
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <Link href="/get-started/installation">
-              Get Started
+            <Link href="/components">
+              Browse components
               <ArrowRight aria-hidden="true" />
             </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link href="/components">View Components</Link>
+            <Link href="/get-started/installation">Get started</Link>
           </Button>
           <Button size="lg" variant="ghost" asChild>
             <a
@@ -70,19 +69,6 @@ export function Hero() {
               Star on GitHub
             </a>
           </Button>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-4 text-muted-foreground text-xs">
-          <span>
-            <span className="font-medium text-foreground">85</span> primitives
-          </span>
-          <span>
-            <span className="font-medium text-foreground">React + Angular</span>{' '}
-            editions
-          </span>
-          <span>
-            <span className="font-medium text-foreground">MIT</span> licensed
-          </span>
         </div>
       </div>
     </section>

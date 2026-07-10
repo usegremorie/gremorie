@@ -2,7 +2,6 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 
 import type { ReactNode } from 'react';
 
-import { ThemeSwitchWithFlag } from '@/components/flag-language-switch';
 import { getSection } from '@/lib/get-section';
 import { baseOptions } from '@/lib/layout.shared';
 import { source } from '@/lib/source';
@@ -30,11 +29,10 @@ export default async function Layout({
   const { lang } = await params;
   return (
     <DocsLayout
-      // false = sem o seletor de idioma padrão (texto). O seletor de bandeiras
-      // entra no rodapé, colado antes do toggle de tema, via slots.themeSwitch.
-      // O contexto de locale segue vindo do RootProvider.
+      // false = no visible language selector, on purpose. English is the
+      // default locale; /pt keeps working by direct URL (locale context still
+      // comes from RootProvider — the i18n plumbing is untouched).
       i18n={false}
-      slots={{ themeSwitch: ThemeSwitchWithFlag }}
       {...baseOptions(lang)}
       tree={source.getPageTree(lang)}
       sidebar={{
