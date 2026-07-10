@@ -13,7 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@gremorie/rx-overlays';
-import { cn } from '@gremorie/rx-core';
+import { cn, safeHttpUrl } from '@gremorie/rx-core';
 import { ChevronDownIcon } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -169,6 +169,25 @@ export type WebPreviewBodyProps = ComponentProps<'iframe'> & {
   loading?: ReactNode;
 };
 
+/**
+ * The frame previews untrusted URLs (model-generated or typed into the address
+ * bar), so `allow-same-origin` is deliberately absent.
+ *
+ * `allow-scripts` together with `allow-same-origin` is a documented sandbox
+ * escape: if the framed page shares the embedder's origin it can reach
+ * `window.parent`, remove the `sandbox` attribute and re-load itself
+ * unsandboxed. Rejecting relative URLs (see `safeHttpUrl`) closes the obvious
+ * path, but an absolute URL pointing back at the host origin would still slip
+ * through, so the capability is dropped outright.
+ *
+ * The cost is that framed pages get an opaque origin and therefore no cookies,
+ * `localStorage` or `postMessage` identity. A consumer that knowingly previews
+ * first-party content can restore it — `props` is spread after `sandbox`, so
+ * passing `sandbox=…` overrides this default.
+ */
+const DEFAULT_SANDBOX =
+  'allow-scripts allow-forms allow-popups allow-presentation';
+
 export const WebPreviewBody = ({
   className,
   loading,
@@ -181,8 +200,8 @@ export const WebPreviewBody = ({
     <div className="flex-1">
       <iframe
         className={cn('size-full', className)}
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
-        src={(src ?? url) || undefined}
+        sandbox={DEFAULT_SANDBOX}
+        src={safeHttpUrl(src ?? url)}
         title="Preview"
         {...props}
       />
