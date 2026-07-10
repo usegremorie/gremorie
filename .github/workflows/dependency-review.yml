@@ -1,0 +1,26 @@
+name: Dependency Review
+
+# Fails a PR that adds a dependency with a known vulnerability or a
+# disallowed license, before it ever reaches the lockfile on develop.
+# Complements Dependabot (which acts after merge) by shifting the check left.
+
+on:
+  pull_request:
+    branches: [main, staging, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: Review dependency changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          # MIT-licensed project; keep copyleft out of the dependency graph.
+          deny-licenses: GPL-3.0, AGPL-3.0
