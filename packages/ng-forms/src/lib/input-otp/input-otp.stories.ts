@@ -16,9 +16,12 @@ import {
  * `one-time-code` input and per-slot caret state. Use for 2FA / verification
  * codes.
  */
-const meta: Meta<InputOtp> = {
+// Typed to BrnInputOtp: the consumer element is now `<brn-input-otp gnInputOtp>`
+// and the controllable props (maxLength / disabled) live on the brain element.
+// The gnInputOtp styling directive is applied in every template.
+const meta: Meta<BrnInputOtp> = {
   title: 'Inputs/Text/InputOTP',
-  component: InputOtp,
+  component: BrnInputOtp,
   tags: ['autodocs'],
   decorators: [
     moduleMetadata({
@@ -38,7 +41,7 @@ const meta: Meta<InputOtp> = {
 };
 
 export default meta;
-type Story = StoryObj<InputOtp>;
+type Story = StoryObj<BrnInputOtp>;
 
 /** Interactive workbench — drive the props from the controls panel. */
 export const Workbench: Story = {
