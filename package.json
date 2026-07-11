@@ -34,7 +34,7 @@
     "build-storybook": "nx build-storybook ng-ai",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "build:libs": "nx run-many -t build --projects=cli,ng-core,ng-ai,ng-containers,ng-data,ng-display,ng-feedback,angular,rx-core,rx-ai,rx-artifacts,rx-containers,rx-data,rx-display,rx-feedback,rx-forms,rx-navigation,rx-overlays,react",
+    "build:libs": "nx run-many -t build --projects=cli,react,angular,tokens,rx-core,rx-ai,rx-artifacts,rx-containers,rx-data,rx-display,rx-feedback,rx-forms,rx-icons,rx-navigation,rx-overlays,ng-core,ng-ai,ng-artifacts,ng-containers,ng-data,ng-display,ng-feedback,ng-forms,ng-navigation,ng-overlays",
     "release:dry": "npm run build:libs && node scripts/release.mjs --dry-run",
     "release": "npm run build:libs && node scripts/release.mjs",
     "prepare": "husky"
