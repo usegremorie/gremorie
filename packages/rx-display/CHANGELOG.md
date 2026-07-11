@@ -1,5 +1,7 @@
 # @gremorie/rx-display
 
+## 0.5.1
+
 ## 0.4.0
 
 ### Minor Changes

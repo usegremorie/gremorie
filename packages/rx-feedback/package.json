@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-feedback",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "React feedback primitives for Gremorie - Alert, Progress, Skeleton.",
   "license": "MIT",
   "repository": {
