@@ -1,5 +1,20 @@
 # @gremorie/react
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @gremorie/rx-core@0.5.1
+  - @gremorie/rx-data@0.5.1
+  - @gremorie/rx-ai@0.5.1
+  - @gremorie/rx-display@0.5.1
+  - @gremorie/rx-forms@0.5.1
+  - @gremorie/rx-overlays@0.5.1
+  - @gremorie/rx-feedback@0.5.1
+  - @gremorie/rx-containers@0.5.1
+  - @gremorie/rx-navigation@0.5.1
+
 ## 0.4.0
 
 ### Minor Changes
