@@ -2,14 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  Directive,
   input,
-  model,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnInputOtp, BrnInputOtpSlot } from '@spartan-ng/brain/input-otp';
+import { BrnInputOtpSlot } from '@spartan-ng/brain/input-otp';
 import { cn } from '@gremorie/ng-core';
 
-let inputOtpIdCounter = 0;
+// Re-export the brain OTP component so consumers can use `<brn-input-otp gnInputOtp>`
+// as the container element (see `InputOtp` below for why it is the element).
+export { BrnInputOtp } from '@spartan-ng/brain/input-otp';
 
 /**
  * InputOTP — segmented one-time-passcode input. Mirrors React `InputOTP` from
@@ -26,11 +28,11 @@ let inputOtpIdCounter = 0;
  *
  * ## React → Angular mapping
  *
- * - React `InputOTP` (the `OTPInput`) = our `gn-input-otp`, which carries
- *   `data-slot="input-otp"` and forwards the React `containerClassName`
- *   (`flex items-center gap-2 has-[:disabled]:opacity-50`) to the brain's
- *   container via `[containerStyles]`-adjacent `[class]`. React's `maxLength`
- *   becomes the required `maxLength` input.
+ * - React `InputOTP` (the `OTPInput`) = the brain `<brn-input-otp>` element with
+ *   our `gnInputOtp` directive, which carries `data-slot="input-otp"` and the
+ *   React `containerClassName` (`flex items-center gap-2 has-[:disabled]:opacity-50`).
+ *   React's `maxLength` / `value` / `disabled` map to the brain's own
+ *   `[maxLength]` / `[(value)]` / `[disabled]` inputs on that element.
  * - React `InputOTPGroup` = `gn-input-otp-group` (a `flex items-center` div
  *   carrying `data-slot="input-otp-group"`).
  * - React `InputOTPSlot` = `gn-input-otp-slot`. React reads slot state from
@@ -48,7 +50,7 @@ let inputOtpIdCounter = 0;
  *
  * @example
  * ```html
- * <gn-input-otp [maxLength]="6" [(value)]="code">
+ * <brn-input-otp gnInputOtp [maxLength]="6" [(value)]="code">
  *   <gn-input-otp-group>
  *     <gn-input-otp-slot [index]="0" />
  *     <gn-input-otp-slot [index]="1" />
@@ -60,49 +62,34 @@ let inputOtpIdCounter = 0;
  *     <gn-input-otp-slot [index]="4" />
  *     <gn-input-otp-slot [index]="5" />
  *   </gn-input-otp-group>
- * </gn-input-otp>
+ * </brn-input-otp>
  * ```
  */
-@Component({
-  selector: 'gn-input-otp',
+// InputOtp is a DIRECTIVE applied to the brain's `<brn-input-otp>` element, not
+// a wrapper component. `BrnInputOtp` is a @Component whose OTP-context token is
+// private (not exported by @spartan-ng/brain), so a wrapping `<gn-input-otp>`
+// could not pass that context to `<ng-content>`-projected slots — Angular
+// resolves a projected element's DI from its declaration site, so the slots
+// raised NG0201. Mirrors the spartan reference `hlm-input-otp`
+// (`selector: 'brn-input-otp[hlmInputOtp]'`): the consumer element is
+// `<brn-input-otp gnInputOtp …>`, the slots are its real descendants and resolve
+// the OTP context correctly. The brain owns `maxLength` / `value` (`[(value)]`) /
+// `disabled` / `inputId` inputs directly, at parity with React `InputOTP`'s
+// props on the `OTPInput` element.
+@Directive({
+  selector: 'brn-input-otp[gnInputOtp]',
   standalone: true,
-  imports: [BrnInputOtp],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <brn-input-otp
-      data-slot="input-otp"
-      [class]="containerClass()"
-      [maxLength]="maxLength()"
-      [(value)]="value"
-      [disabled]="disabled()"
-      [inputId]="resolvedInputId()"
-    >
-      <ng-content />
-    </brn-input-otp>
-  `,
+  host: {
+    'data-slot': 'input-otp',
+    '[class]': 'containerClass()',
+  },
 })
 export class InputOtp {
-  /** Number of slots / code length. Mirrors React `maxLength` (required). */
-  readonly maxLength = input.required<number>();
-  /** Two-way code value. Mirrors React `value` / `onChange`. */
-  readonly value = model<string>('');
-  /** Disable interaction. Mirrors React `disabled`. */
-  readonly disabled = input<boolean>(false);
-  /** Id of the hidden input. Mirrors React `id`. */
-  readonly inputId = input<string>('');
   /**
    * Extra classes for the container. Mirrors React `containerClassName`,
    * merged with the verbatim React container class string.
    */
   readonly containerClassName = input<string>('');
-
-  private _generatedId = `gn-input-otp-${++inputOtpIdCounter}`;
-
-  /** Forwards the consumer `inputId` or falls back to a generated one. */
-  protected readonly resolvedInputId = computed(
-    () => this.inputId() || this._generatedId,
-  );
 
   protected readonly containerClass = computed(() =>
     cn(
