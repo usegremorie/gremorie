@@ -28,7 +28,8 @@
       "@gremorie/ng-forms",
       "@gremorie/ng-navigation",
       "@gremorie/ng-overlays",
-      "@gremorie/cli"
+      "@gremorie/cli",
+      "gremorie"
     ]
   ],
   "linked": [],

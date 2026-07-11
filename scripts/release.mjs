@@ -53,7 +53,9 @@ for (const dir of readdirSync(pkgsDir)) {
   if (!existsSync(manifest)) continue;
   const pkg = JSON.parse(readFileSync(manifest, 'utf8'));
   if (pkg.private) continue;
-  if (!pkg.name?.startsWith('@gremorie/')) continue;
+  // Publish the scoped @gremorie/* packages plus the unscoped `gremorie`
+  // launcher (the `npx gremorie` convenience wrapper).
+  if (!pkg.name?.startsWith('@gremorie/') && pkg.name !== 'gremorie') continue;
 
   // Angular libs (ng-packagr) publish from their dist output; detect them by
   // the presence of an ng-package.json. Everything else (React + CLI) ships
