@@ -69,6 +69,14 @@ __screenshots__/
 docs/superpowers/
 /*.png
 
+# Local agent governance stays out of the public repo. A local AGENTS.md may
+# exist for the maintainer's own tooling; it is never committed. Public-facing
+# agents/skills, when added, go under .github/ deliberately (not ignored).
+/AGENTS.md
+
+# Stray smoke-test scratch dir
+/smoke-050/
+
 # Stray TS compile output in src shadows .tsx in bundlers (Vite resolves .js first)
 packages/*/src/**/*.js
 packages/*/src/**/*.js.map
