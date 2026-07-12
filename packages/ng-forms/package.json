@@ -34,15 +34,9 @@
     "@angular/forms": "^21.2.0",
     "@spartan-ng/brain": "^0.0.1-alpha.694",
     "class-variance-authority": "^0.7.1",
-    "@gremorie/ng-core": ">=0.0.1"
+    "@gremorie/ng-core": ">=0.5.1"
   },
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./fesm2022/ng-forms.mjs"
-    }
-  },
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"

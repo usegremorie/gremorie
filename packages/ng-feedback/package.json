@@ -23,12 +23,6 @@
     "class-variance-authority": "^0.7.1"
   },
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./fesm2022/ng-feedback.mjs"
-    }
-  },
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"
