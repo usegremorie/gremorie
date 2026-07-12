@@ -17,7 +17,7 @@
   "files": [
     {
       "path": "src/lib/skeleton/skeleton.ts",
-      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Skeleton — placeholder block for loading states. Mirrors React\n * `Skeleton` from `@gremorie/rx-feedback`.\n *\n * A pulsing rectangle that stands in for content that is still being\n * fetched. Shape it with utility classes (width / height / radius) to\n * match the geometry of the real content — that is the whole point:\n * skeletons reserve layout so there is no shift when the data arrives.\n *\n * The default animation is `animate-pulse`. Users with\n * `prefers-reduced-motion` see the static state — no extra config\n * needed. Use Skeleton as a presentation primitive only; pair with\n * `aria-busy=\"true\"` and `aria-live=\"polite\"` on the surrounding region\n * so screen readers announce the loading state.\n *\n * @example\n * ```html\n * <gn-skeleton class=\"h-4 w-32\" />\n * <gn-skeleton class=\"size-12 rounded-full\" />\n * ```\n */\n@Component({\n  selector: 'gn-skeleton',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: ``,\n  host: {\n    'data-slot': 'skeleton',\n    class: 'block animate-pulse rounded-md bg-accent',\n  },\n})\nexport class Skeleton {}\n",
+      "content": "import {\n  ChangeDetectionStrategy,\n  Component,\n  ViewEncapsulation,\n} from '@angular/core';\n\n/**\n * Skeleton — placeholder block for loading states. Mirrors React\n * `Skeleton` from `@gremorie/rx-feedback`.\n *\n * A pulsing rectangle that stands in for content that is still being\n * fetched. Shape it with utility classes (width / height / radius) to\n * match the geometry of the real content — that is the whole point:\n * skeletons reserve layout so there is no shift when the data arrives.\n *\n * The default animation is `animate-pulse`. Users with\n * `prefers-reduced-motion` see the static state — no extra config\n * needed. Use Skeleton as a presentation primitive only; pair with\n * `aria-busy=\"true\"` and `aria-live=\"polite\"` on the surrounding region\n * so screen readers announce the loading state.\n *\n * @example\n * ```html\n * <gr-skeleton class=\"h-4 w-32\" />\n * <gr-skeleton class=\"size-12 rounded-full\" />\n * ```\n */\n@Component({\n  selector: 'gr-skeleton',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: ``,\n  host: {\n    'data-slot': 'skeleton',\n    class: 'block animate-pulse rounded-md bg-accent',\n  },\n})\nexport class Skeleton {}\n",
       "type": "registry:component",
       "target": "src/app/gremorie/skeleton/skeleton.ts"
     },
@@ -45,19 +45,19 @@
     "examples": [
       {
         "title": "Inline loading",
-        "code": "<button [disabled]=\"loading()\">\n  @if (loading()) { <gn-spinner size=\"sm\" /> }\n  Save\n</button>\n"
+        "code": "<button [disabled]=\"loading()\">\n  @if (loading()) { <gr-spinner size=\"sm\" /> }\n  Save\n</button>\n"
       },
       {
         "title": "Determinate upload progress",
-        "code": "<gn-progress [value]=\"uploadPct()\" />\n<span>{{ uploadPct() }}%</span>\n"
+        "code": "<gr-progress [value]=\"uploadPct()\" />\n<span>{{ uploadPct() }}%</span>\n"
       },
       {
         "title": "Inline alert",
-        "code": "<gn-alert variant=\"destructive\">\n  <gn-alert-title>Saved with errors</gn-alert-title>\n  <gn-alert-description>2 rows failed validation.</gn-alert-description>\n</gn-alert>\n"
+        "code": "<gr-alert variant=\"destructive\">\n  <gr-alert-title>Saved with errors</gr-alert-title>\n  <gr-alert-description>2 rows failed validation.</gr-alert-description>\n</gr-alert>\n"
       },
       {
         "title": "Skeleton placeholder",
-        "code": "<div aria-busy=\"true\" aria-live=\"polite\">\n  <gn-skeleton class=\"h-4 w-32\" />\n  <gn-skeleton class=\"h-4 w-48 mt-2\" />\n</div>\n"
+        "code": "<div aria-busy=\"true\" aria-live=\"polite\">\n  <gr-skeleton class=\"h-4 w-32\" />\n  <gr-skeleton class=\"h-4 w-48 mt-2\" />\n</div>\n"
       }
     ]
   }

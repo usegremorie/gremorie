@@ -16,8 +16,9 @@ and tooling alike.
   Components, blocks, tokens, and guidelines are exposed as registry items
   that an MCP server reads, so language models can generate code that
   matches the system instead of hallucinating.
-- **React edition** (`@gremorie/react-*`) — coming in Phase 5. Will be
-  generated into the same registry the Angular edition uses.
+- **React edition** (`@gremorie/rx-*`) — shipped alongside Angular. Published
+  as per-category `@gremorie/rx-*` packages plus the `@gremorie/react` meta,
+  and generated into the same registry the Angular edition uses.
 - **Documentation site** — this Fumadocs app. Public reference for tokens,
   primitives, patterns, and the guidelines an MCP exposes.
 
@@ -34,12 +35,13 @@ the org (`usegremorie`) and the future domain (`gremorie.com`).
   during Phase 0; rebranded `shadng` → `gremorie` in Phase 1).
 - `kalvner/bridge` — the legacy Kalvner Design System (React + KDS). The
   Fumadocs site, token-engine, and tokens editor were migrated here during
-  Phase 2; the React component package (`@kalvner/kds`) stays in Bridge
-  until Phase 5 re-authors it as `@gremorie/react-*`.
+  Phase 2; the React component package (`@kalvner/kds`) has since been
+  re-authored as the `@gremorie/rx-*` edition in this repo.
 
 ## Reading order
 
-1. **Foundations** — principles, architecture, accessibility, contribution rules.
+1. **Get started & Platform** — philosophy, architecture, accessibility,
+   contribution rules.
 2. **Tokens** — the three-layer token system (primitive, semantic, chart).
 3. **Migration plan** — see `missions/kal/gremorie/architecture/` in the
    Kalvnor vault for the full Phase 0-5 roadmap.

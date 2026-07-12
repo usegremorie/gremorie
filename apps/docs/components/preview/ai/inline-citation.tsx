@@ -17,7 +17,7 @@ export function InlineCitationPreview() {
         <InlineCitationCard>
           <InlineCitationCardTrigger sources={['https://gremorie.com']} />
           <InlineCitationCardBody>
-            <p className="text-sm font-semibold">Phase 5k release notes</p>
+            <p className="text-sm font-semibold">v2.0 release notes</p>
             <p className="text-xs text-muted-foreground">
               gremorie.com/changelog
             </p>
