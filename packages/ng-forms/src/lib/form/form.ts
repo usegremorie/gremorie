@@ -22,38 +22,38 @@ import { Label } from '../label/label';
  * template-driven), so there is no react-hook-form equivalent to wrap. The
  * Angular edition keeps the **structural + ARIA-wiring** contract — which is the
  * part that actually defines the component's anatomy — and lets consumers bind
- * their own `FormGroup` / `ngModel` to the controls inside `gn-form-control`.
+ * their own `FormGroup` / `ngModel` to the controls inside `gr-form-control`.
  *
  * ## React → Angular mapping
  *
- * - React `FormItem` (a `grid gap-2` div that mints a `useId`) = `gn-form-item`,
+ * - React `FormItem` (a `grid gap-2` div that mints a `useId`) = `gr-form-item`,
  *   which generates a stable id and provides it down the tree via a DI token —
  *   the Angular stand-in for `FormItemContext`. From that id it derives the
  *   `…-form-item`, `…-form-item-description` and `…-form-item-message` ids,
  *   exactly like React's `useFormField`.
- * - React `FormLabel` = `gn-form-label` — wraps the `Label`, sets its `for` to
+ * - React `FormLabel` = `gr-form-label` — wraps the `Label`, sets its `for` to
  *   the control id and toggles `data-[error=true]:text-destructive` from the
  *   item's `invalid` input.
  * - React `FormControl` (a Radix `Slot` that injects `id` /
  *   `aria-describedby` / `aria-invalid` onto its single child) = the
- *   `gnFormControl` attribute directive, applied directly to the inner control
- *   (`<gn-input gnFormControl>`), which binds those same attributes from the
+ *   `grFormControl` attribute directive, applied directly to the inner control
+ *   (`<gr-input grFormControl>`), which binds those same attributes from the
  *   item context.
- * - React `FormDescription` / `FormMessage` = `gn-form-description` /
- *   `gn-form-message`. `gn-form-message` only renders when it has content
+ * - React `FormDescription` / `FormMessage` = `gr-form-description` /
+ *   `gr-form-message`. `gr-form-message` only renders when it has content
  *   (matching React's "returns null when empty").
  * - React `Form` (= `FormProvider`) has no markup; in Angular you use a native
- *   `<form [formGroup]>` directly, so no `gn-form` wrapper is needed.
+ *   `<form [formGroup]>` directly, so no `gr-form` wrapper is needed.
  *
  * @example
  * ```html
  * <form [formGroup]="form">
- *   <gn-form-item [invalid]="form.controls.email.invalid && form.controls.email.touched">
- *     <gn-form-label>Email</gn-form-label>
- *     <gn-input gnFormControl formControlName="email" type="email" />
- *     <gn-form-description>We'll never share it.</gn-form-description>
- *     <gn-form-message>Enter a valid email.</gn-form-message>
- *   </gn-form-item>
+ *   <gr-form-item [invalid]="form.controls.email.invalid && form.controls.email.touched">
+ *     <gr-form-label>Email</gr-form-label>
+ *     <gr-input grFormControl formControlName="email" type="email" />
+ *     <gr-form-description>We'll never share it.</gr-form-description>
+ *     <gr-form-message>Enter a valid email.</gr-form-message>
+ *   </gr-form-item>
  * </form>
  * ```
  */
@@ -84,7 +84,7 @@ let formItemId = 0;
  * container that mints a stable id and provides the field context downward.
  */
 @Component({
-  selector: 'gn-form-item',
+  selector: 'gr-form-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -101,7 +101,7 @@ let formItemId = 0;
   ],
 })
 export class FormItem implements FormFieldContext {
-  private readonly _id = `gn-form-${++formItemId}`;
+  private readonly _id = `gr-form-${++formItemId}`;
 
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
@@ -127,20 +127,20 @@ export class FormItem implements FormFieldContext {
  * `for` at the control id, and turns destructive when the field is invalid.
  */
 @Component({
-  selector: 'gn-form-label',
+  selector: 'gr-form-label',
   standalone: true,
   imports: [Label],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <gn-label
+    <gr-label
       data-slot="form-label"
       [for]="field.formItemId()"
       [attr.data-error]="field.invalid() ? 'true' : null"
       [class]="computedClass()"
     >
       <ng-content />
-    </gn-label>
+    </gr-label>
   `,
 })
 export class FormLabel {
@@ -160,7 +160,7 @@ export class FormLabel {
  * (the Radix `Slot`). Apply directly to the inner control.
  */
 @Directive({
-  selector: '[gnFormControl]',
+  selector: '[grFormControl]',
   standalone: true,
   host: {
     'data-slot': 'form-control',
@@ -184,7 +184,7 @@ export class FormControl {
  * `FormDescription` (a muted `<p>` carrying the description id).
  */
 @Component({
-  selector: 'gn-form-description',
+  selector: 'gr-form-description',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -212,7 +212,7 @@ export class FormDescription {
  * projected content, matching React's "returns null when empty".
  */
 @Component({
-  selector: 'gn-form-message',
+  selector: 'gr-form-message',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

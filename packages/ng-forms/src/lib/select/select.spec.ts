@@ -13,15 +13,15 @@ import {
   standalone: true,
   imports: [Select, SelectTrigger, SelectValue, SelectContent, SelectItem],
   template: `
-    <gn-select>
-      <gn-select-trigger>
-        <gn-select-value placeholder="Pick one" />
-      </gn-select-trigger>
-      <gn-select-content>
-        <gn-select-item value="apple">Apple</gn-select-item>
-        <gn-select-item value="banana">Banana</gn-select-item>
-      </gn-select-content>
-    </gn-select>
+    <gr-select>
+      <gr-select-trigger>
+        <gr-select-value placeholder="Pick one" />
+      </gr-select-trigger>
+      <gr-select-content>
+        <gr-select-item value="apple">Apple</gr-select-item>
+        <gr-select-item value="banana">Banana</gr-select-item>
+      </gr-select-content>
+    </gr-select>
   `,
 })
 class Host {}

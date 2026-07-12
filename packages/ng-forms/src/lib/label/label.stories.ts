@@ -28,7 +28,7 @@ export const Workbench: Story = {
   args: { for: '' },
   render: (args) => ({
     props: args,
-    template: `<gn-label [for]="for">Email address</gn-label>`,
+    template: `<gr-label [for]="for">Email address</gr-label>`,
   }),
 };
 
@@ -38,8 +38,8 @@ export const WithInput: Story = {
   render: () => ({
     template: `
       <div class="flex w-72 flex-col gap-2">
-        <gn-label for="email">Email</gn-label>
-        <gn-input id="email" type="email" placeholder="ada@example.com" />
+        <gr-label for="email">Email</gr-label>
+        <gr-input id="email" type="email" placeholder="ada@example.com" />
       </div>
     `,
   }),
@@ -51,8 +51,8 @@ export const Disabled: Story = {
   render: () => ({
     template: `
       <div class="flex items-center gap-2">
-        <gn-input id="disabled-peer" class="peer" [disabled]="true" />
-        <gn-label for="disabled-peer">Unavailable option</gn-label>
+        <gr-input id="disabled-peer" class="peer" [disabled]="true" />
+        <gr-label for="disabled-peer">Unavailable option</gr-label>
       </div>
     `,
   }),

@@ -53,9 +53,9 @@ export const PLAN = new InjectionToken<PlanState>('PlanState');
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <gn-card [class]="cardClass()">
+    <gr-card [class]="cardClass()">
       <ng-content />
-    </gn-card>
+    </gr-card>
   `,
   host: {
     'data-slot': 'plan',
@@ -90,7 +90,9 @@ export class Plan implements PlanState {
   imports: [CardHeader],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<gn-card-header [class]="headerClass()"><ng-content /></gn-card-header>`,
+  template: `<gr-card-header [class]="headerClass()"
+    ><ng-content
+  /></gr-card-header>`,
   host: { 'data-slot': 'plan-header', class: 'contents' },
 })
 export class PlanHeader {
@@ -107,13 +109,13 @@ export class PlanHeader {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <gn-card-title>
+    <gr-card-title>
       @if (isStreaming()) {
         <span ngShimmer>{{ children() }}</span>
       } @else {
         {{ children() }}
       }
-    </gn-card-title>
+    </gr-card-title>
   `,
   host: { 'data-slot': 'plan-title', class: 'contents' },
 })
@@ -131,13 +133,13 @@ export class PlanTitle {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <gn-card-description [class]="descClass()">
+    <gr-card-description [class]="descClass()">
       @if (isStreaming()) {
         <span ngShimmer>{{ children() }}</span>
       } @else {
         {{ children() }}
       }
-    </gn-card-description>
+    </gr-card-description>
   `,
   host: { 'data-slot': 'plan-description', class: 'contents' },
 })
@@ -158,7 +160,7 @@ export class PlanDescription {
   imports: [CardAction],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<gn-card-action><ng-content /></gn-card-action>`,
+  template: `<gr-card-action><ng-content /></gr-card-action>`,
   host: { 'data-slot': 'plan-action', class: 'contents' },
 })
 export class PlanAction {}
@@ -171,7 +173,7 @@ export class PlanAction {}
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (open()) {
-      <gn-card-content><ng-content /></gn-card-content>
+      <gr-card-content><ng-content /></gr-card-content>
     }
   `,
   host: { 'data-slot': 'plan-content', class: 'contents' },
@@ -187,7 +189,7 @@ export class PlanContent {
   imports: [CardFooter],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<gn-card-footer><ng-content /></gn-card-footer>`,
+  template: `<gr-card-footer><ng-content /></gr-card-footer>`,
   host: { 'data-slot': 'plan-footer', class: 'contents' },
 })
 export class PlanFooter {}

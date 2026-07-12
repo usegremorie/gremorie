@@ -32,21 +32,21 @@ import {
     BrnAlertDialogContent,
   ],
   template: `
-    <gn-alert-dialog>
-      <button gn-alert-dialog-trigger>Delete</button>
+    <gr-alert-dialog>
+      <button gr-alert-dialog-trigger>Delete</button>
       <ng-template brnAlertDialogContent>
-        <gn-alert-dialog-content>
-          <gn-alert-dialog-header>
-            <h2 gn-alert-dialog-title>Are you sure?</h2>
-            <p gn-alert-dialog-description>This cannot be undone.</p>
-          </gn-alert-dialog-header>
-          <gn-alert-dialog-footer>
-            <button gn-alert-dialog-cancel>Cancel</button>
-            <button gn-alert-dialog-action variant="destructive">Delete</button>
-          </gn-alert-dialog-footer>
-        </gn-alert-dialog-content>
+        <gr-alert-dialog-content>
+          <gr-alert-dialog-header>
+            <h2 gr-alert-dialog-title>Are you sure?</h2>
+            <p gr-alert-dialog-description>This cannot be undone.</p>
+          </gr-alert-dialog-header>
+          <gr-alert-dialog-footer>
+            <button gr-alert-dialog-cancel>Cancel</button>
+            <button gr-alert-dialog-action variant="destructive">Delete</button>
+          </gr-alert-dialog-footer>
+        </gr-alert-dialog-content>
       </ng-template>
-    </gn-alert-dialog>
+    </gr-alert-dialog>
   `,
 })
 class Host {}

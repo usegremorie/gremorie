@@ -80,7 +80,7 @@ export const item = defineContract({
     rx: 'layout-display-display-item--workbench',
     ng: 'layout-display-display-item--workbench',
   },
-  tag: { rx: 'Item', ng: 'gn-item' },
+  tag: { rx: 'Item', ng: 'gr-item' },
   example: { variant: 'outline', size: 'md', interactive: false },
   figma: { nodeId: null },
 });

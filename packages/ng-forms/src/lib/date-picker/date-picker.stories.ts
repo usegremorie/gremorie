@@ -7,7 +7,7 @@ import { DatePicker } from './date-picker';
  * DatePicker — composite of Popover + Calendar with Gremorie defaults. Angular
  * parity port of React `DatePicker` from `@gremorie/rx-overlays`. Composes the
  * spartan brain `BrnPopover` (portalled overlay + open/close a11y) with the
- * local `gn-calendar`, and styles the trigger with the ng-core outline button.
+ * local `gr-calendar`, and styles the trigger with the ng-core outline button.
  */
 const meta: Meta<DatePicker> = {
   title: 'Inputs/Date/DatePicker',
@@ -33,7 +33,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-date-picker [placeholder]="placeholder" [disabled]="disabled" />
+      <gr-date-picker [placeholder]="placeholder" [disabled]="disabled" />
     `,
   }),
 };
@@ -42,6 +42,6 @@ export const Workbench: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-date-picker [disabled]="true" placeholder="Unavailable" />`,
+    template: `<gr-date-picker [disabled]="true" placeholder="Unavailable" />`,
   }),
 };

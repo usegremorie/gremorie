@@ -16,9 +16,9 @@ import {
  * `one-time-code` input and per-slot caret state. Use for 2FA / verification
  * codes.
  */
-// Typed to BrnInputOtp: the consumer element is now `<brn-input-otp gnInputOtp>`
+// Typed to BrnInputOtp: the consumer element is now `<brn-input-otp grInputOtp>`
 // and the controllable props (maxLength / disabled) live on the brain element.
-// The gnInputOtp styling directive is applied in every template.
+// The grInputOtp styling directive is applied in every template.
 const meta: Meta<BrnInputOtp> = {
   title: 'Inputs/Text/InputOTP',
   component: BrnInputOtp,
@@ -53,18 +53,18 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <brn-input-otp gnInputOtp [maxLength]="maxLength" [disabled]="disabled">
-        <gn-input-otp-group>
-          <gn-input-otp-slot [index]="0" />
-          <gn-input-otp-slot [index]="1" />
-          <gn-input-otp-slot [index]="2" />
-        </gn-input-otp-group>
-        <gn-input-otp-separator />
-        <gn-input-otp-group>
-          <gn-input-otp-slot [index]="3" />
-          <gn-input-otp-slot [index]="4" />
-          <gn-input-otp-slot [index]="5" />
-        </gn-input-otp-group>
+      <brn-input-otp grInputOtp [maxLength]="maxLength" [disabled]="disabled">
+        <gr-input-otp-group>
+          <gr-input-otp-slot [index]="0" />
+          <gr-input-otp-slot [index]="1" />
+          <gr-input-otp-slot [index]="2" />
+        </gr-input-otp-group>
+        <gr-input-otp-separator />
+        <gr-input-otp-group>
+          <gr-input-otp-slot [index]="3" />
+          <gr-input-otp-slot [index]="4" />
+          <gr-input-otp-slot [index]="5" />
+        </gr-input-otp-group>
       </brn-input-otp>
     `,
   }),
@@ -75,13 +75,13 @@ export const FourDigits: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <brn-input-otp gnInputOtp [maxLength]="4">
-        <gn-input-otp-group>
-          <gn-input-otp-slot [index]="0" />
-          <gn-input-otp-slot [index]="1" />
-          <gn-input-otp-slot [index]="2" />
-          <gn-input-otp-slot [index]="3" />
-        </gn-input-otp-group>
+      <brn-input-otp grInputOtp [maxLength]="4">
+        <gr-input-otp-group>
+          <gr-input-otp-slot [index]="0" />
+          <gr-input-otp-slot [index]="1" />
+          <gr-input-otp-slot [index]="2" />
+          <gr-input-otp-slot [index]="3" />
+        </gr-input-otp-group>
       </brn-input-otp>
     `,
   }),
@@ -92,15 +92,15 @@ export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <brn-input-otp gnInputOtp [maxLength]="6" [disabled]="true">
-        <gn-input-otp-group>
-          <gn-input-otp-slot [index]="0" />
-          <gn-input-otp-slot [index]="1" />
-          <gn-input-otp-slot [index]="2" />
-          <gn-input-otp-slot [index]="3" />
-          <gn-input-otp-slot [index]="4" />
-          <gn-input-otp-slot [index]="5" />
-        </gn-input-otp-group>
+      <brn-input-otp grInputOtp [maxLength]="6" [disabled]="true">
+        <gr-input-otp-group>
+          <gr-input-otp-slot [index]="0" />
+          <gr-input-otp-slot [index]="1" />
+          <gr-input-otp-slot [index]="2" />
+          <gr-input-otp-slot [index]="3" />
+          <gr-input-otp-slot [index]="4" />
+          <gr-input-otp-slot [index]="5" />
+        </gr-input-otp-group>
       </brn-input-otp>
     `,
   }),

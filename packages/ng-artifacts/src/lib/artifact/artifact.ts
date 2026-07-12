@@ -186,7 +186,7 @@ export class ArtifactActionsCollapsed {}
  * `tooltip` is set. The Tailwind classes below are the RX `buttonVariants`
  * base + `ghost` + `icon-sm` strings verbatim, merged through the same `cn`.
  *
- * Host adaptations: the tooltip comes from the `gn-tooltip` compound in
+ * Host adaptations: the tooltip comes from the `gr-tooltip` compound in
  * `@gremorie/ng-overlays` (same pattern as ng-ai's `message-action`), and
  * `icon` is a registered lucide name string (e.g. `'lucideCopy'`) rendered
  * via `NgIcon` — project custom content instead when no `icon` is given.
@@ -226,14 +226,14 @@ export class ArtifactActionsCollapsed {}
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip>
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip>
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }

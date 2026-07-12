@@ -74,7 +74,7 @@ export const carousel = defineContract({
     rx: 'layout-display-display-carousel--workbench',
     ng: 'layout-display-display-carousel--workbench',
   },
-  tag: { rx: 'Carousel', ng: 'gn-carousel' },
+  tag: { rx: 'Carousel', ng: 'gr-carousel' },
   example: { orientation: 'horizontal' },
   figma: { nodeId: null },
 });

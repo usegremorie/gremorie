@@ -7,17 +7,17 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
   standalone: true,
   imports: [ToggleGroup, ToggleGroupItem],
   template: `
-    <gn-toggle-group type="single" variant="outline" size="sm">
-      <gn-toggle-group-item value="left" ariaLabel="Left"
-        >L</gn-toggle-group-item
+    <gr-toggle-group type="single" variant="outline" size="sm">
+      <gr-toggle-group-item value="left" ariaLabel="Left"
+        >L</gr-toggle-group-item
       >
-      <gn-toggle-group-item value="center" ariaLabel="Center"
-        >C</gn-toggle-group-item
+      <gr-toggle-group-item value="center" ariaLabel="Center"
+        >C</gr-toggle-group-item
       >
-      <gn-toggle-group-item value="right" ariaLabel="Right"
-        >R</gn-toggle-group-item
+      <gr-toggle-group-item value="right" ariaLabel="Right"
+        >R</gr-toggle-group-item
       >
-    </gn-toggle-group>
+    </gr-toggle-group>
   `,
 })
 class Host {}

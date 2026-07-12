@@ -90,7 +90,7 @@ export const contextMenu = defineContract({
     rx: 'interaction-overlays-contextmenu--workbench',
     ng: 'interaction-overlays-contextmenu--workbench',
   },
-  tag: { rx: 'ContextMenu', ng: 'gn-context-menu' },
+  tag: { rx: 'ContextMenu', ng: 'gr-context-menu' },
   example: {
     modal: true,
     inset: false,

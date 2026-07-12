@@ -38,7 +38,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-switch
+      <gr-switch
         [checked]="checked"
         [size]="size"
         [disabled]="disabled"
@@ -51,7 +51,7 @@ export const Workbench: Story = {
 export const Checked: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-switch [checked]="true" />`,
+    template: `<gr-switch [checked]="true" />`,
   }),
 };
 
@@ -62,10 +62,10 @@ export const Sizes: Story = {
     template: `
       <div class="flex items-center gap-6">
         <label class="flex items-center gap-2 text-sm">
-          <gn-switch size="sm" [checked]="true" /> Small
+          <gr-switch size="sm" [checked]="true" /> Small
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-switch size="default" [checked]="true" /> Default
+          <gr-switch size="default" [checked]="true" /> Default
         </label>
       </div>
     `,
@@ -78,8 +78,8 @@ export const Disabled: Story = {
   render: () => ({
     template: `
       <div class="flex items-center gap-6">
-        <gn-switch [disabled]="true" />
-        <gn-switch [disabled]="true" [checked]="true" />
+        <gr-switch [disabled]="true" />
+        <gr-switch [disabled]="true" [checked]="true" />
       </div>
     `,
   }),

@@ -55,11 +55,11 @@ import { buttonVariants, cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-calendar [(date)]="selected" />
+ * <gr-calendar [(date)]="selected" />
  * ```
  */
 @Component({
-  selector: 'gn-calendar',
+  selector: 'gr-calendar',
   standalone: true,
   providers: [provideNativeDateAdapter()],
   hostDirectives: [

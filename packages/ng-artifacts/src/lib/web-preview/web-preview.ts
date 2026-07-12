@@ -103,7 +103,7 @@ export class WebPreviewNavigation {}
 /**
  * Ghost icon button for the toolbar. Parity with React
  * `WebPreviewNavigationButton`. When `tooltip` is set, the button is wrapped
- * in the styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * in the styled `gr-tooltip` compound from `@gremorie/ng-overlays` (the same
  * primitive the React side uses from `@gremorie/rx-overlays`), and the text
  * doubles as the `aria-label`. Disabled + click forward.
  */
@@ -132,14 +132,14 @@ export class WebPreviewNavigation {}
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip>
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip>
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }

@@ -7,10 +7,10 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
   standalone: true,
   imports: [RadioGroup, RadioGroupItem],
   template: `
-    <gn-radio-group [value]="value">
-      <gn-radio-group-item value="a" id="a" />
-      <gn-radio-group-item value="b" id="b" />
-    </gn-radio-group>
+    <gr-radio-group [value]="value">
+      <gr-radio-group-item value="a" id="a" />
+      <gr-radio-group-item value="b" id="b" />
+    </gr-radio-group>
   `,
 })
 class Host {

@@ -35,9 +35,9 @@ export const Workbench: Story = {
     props: args,
     template: `
       <div class="w-80">
-        <gn-aspect-ratio [ratio]="ratio" class="overflow-hidden rounded-lg">
+        <gr-aspect-ratio [ratio]="ratio" class="overflow-hidden rounded-lg">
           <img src="${IMG}" alt="Mountain landscape" class="h-full w-full object-cover" />
-        </gn-aspect-ratio>
+        </gr-aspect-ratio>
       </div>
     `,
   }),
@@ -49,9 +49,9 @@ export const Square: Story = {
   render: () => ({
     template: `
       <div class="w-64">
-        <gn-aspect-ratio [ratio]="1" class="overflow-hidden rounded-lg">
+        <gr-aspect-ratio [ratio]="1" class="overflow-hidden rounded-lg">
           <img src="${IMG}" alt="Mountain landscape" class="h-full w-full object-cover" />
-        </gn-aspect-ratio>
+        </gr-aspect-ratio>
       </div>
     `,
   }),
@@ -63,9 +63,9 @@ export const Placeholder: Story = {
   render: () => ({
     template: `
       <div class="w-80">
-        <gn-aspect-ratio [ratio]="16 / 9" class="bg-muted flex items-center justify-center rounded-lg">
+        <gr-aspect-ratio [ratio]="16 / 9" class="bg-muted flex items-center justify-center rounded-lg">
           <span class="text-muted-foreground text-sm">16 / 9</span>
-        </gn-aspect-ratio>
+        </gr-aspect-ratio>
       </div>
     `,
   }),

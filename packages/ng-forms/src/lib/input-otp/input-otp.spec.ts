@@ -12,19 +12,19 @@ import {
   standalone: true,
   imports: [InputOtp, InputOtpGroup, InputOtpSlot, InputOtpSeparator],
   template: `
-    <gn-input-otp [maxLength]="6">
-      <gn-input-otp-group>
-        <gn-input-otp-slot [index]="0" />
-        <gn-input-otp-slot [index]="1" />
-        <gn-input-otp-slot [index]="2" />
-      </gn-input-otp-group>
-      <gn-input-otp-separator />
-      <gn-input-otp-group>
-        <gn-input-otp-slot [index]="3" />
-        <gn-input-otp-slot [index]="4" />
-        <gn-input-otp-slot [index]="5" />
-      </gn-input-otp-group>
-    </gn-input-otp>
+    <gr-input-otp [maxLength]="6">
+      <gr-input-otp-group>
+        <gr-input-otp-slot [index]="0" />
+        <gr-input-otp-slot [index]="1" />
+        <gr-input-otp-slot [index]="2" />
+      </gr-input-otp-group>
+      <gr-input-otp-separator />
+      <gr-input-otp-group>
+        <gr-input-otp-slot [index]="3" />
+        <gr-input-otp-slot [index]="4" />
+        <gr-input-otp-slot [index]="5" />
+      </gr-input-otp-group>
+    </gr-input-otp>
   `,
 })
 class Host {}

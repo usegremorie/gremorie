@@ -12,9 +12,9 @@ import {
  * `Tool`. Owns open/close state shared with `ToolHeader` and `ToolContent`.
  *
  * The host surface mirrors React `Tool` (`not-prose mb-4 w-full
- * rounded-md border`) — not `gn-card`, because the React blueprint uses
+ * rounded-md border`) — not `gr-card`, because the React blueprint uses
  * a tighter border + radius than Card. The header badge dogfoods
- * `gn-badge` from `@gremorie/ng-display`.
+ * `gr-badge` from `@gremorie/ng-display`.
  */
 export interface ToolHostState {
   isOpen: () => boolean;

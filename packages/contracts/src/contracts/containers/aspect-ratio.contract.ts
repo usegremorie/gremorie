@@ -50,7 +50,7 @@ export const aspectRatio = defineContract({
     rx: 'layout-display-containers-aspectratio--workbench',
     ng: 'layout-display-containers-aspectratio--workbench',
   },
-  tag: { rx: 'AspectRatio', ng: 'gn-aspect-ratio' },
+  tag: { rx: 'AspectRatio', ng: 'gr-aspect-ratio' },
   example: { ratio: 16 / 9 },
   figma: { nodeId: null },
 });

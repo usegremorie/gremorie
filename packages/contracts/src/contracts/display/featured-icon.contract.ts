@@ -78,7 +78,7 @@ export const featuredIcon = defineContract({
     rx: 'layout-display-display-featuredicon--workbench',
     ng: 'layout-display-display-featuredicon--workbench',
   },
-  tag: { rx: 'FeaturedIcon', ng: 'gn-featured-icon' },
+  tag: { rx: 'FeaturedIcon', ng: 'gr-featured-icon' },
   example: { color: 'primary', theme: 'light', size: 'md', shape: 'square' },
   figma: { nodeId: null },
 });

@@ -92,7 +92,7 @@ export const accordion = defineContract({
     rx: 'layout-display-display-accordion--workbench',
     ng: 'layout-display-display-accordion--workbench',
   },
-  tag: { rx: 'Accordion', ng: 'gn-accordion' },
+  tag: { rx: 'Accordion', ng: 'gr-accordion' },
   example: { type: 'single', defaultValue: 'shipping' },
   figma: { nodeId: null },
 });

@@ -72,7 +72,7 @@ export const avatar = defineContract({
     rx: 'layout-display-display-avatar--workbench',
     ng: 'layout-display-display-avatar--workbench',
   },
-  tag: { rx: 'Avatar', ng: 'gn-avatar' },
+  tag: { rx: 'Avatar', ng: 'gr-avatar' },
   example: {
     size: 'default',
     src: 'https://github.com/shadcn.png',

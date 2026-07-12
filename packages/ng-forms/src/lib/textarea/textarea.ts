@@ -25,7 +25,7 @@ import { cn } from '@gremorie/ng-core';
  *
  * React's `Textarea` IS the `<textarea>` (it spreads
  * `React.ComponentProps<'textarea'>` directly). Angular cannot spread a prop
- * bag onto a host, so the `gn-textarea` selector renders the styled
+ * bag onto a host, so the `gr-textarea` selector renders the styled
  * `<textarea>` *inside* its template, carrying `data-slot="textarea"` and the
  * full class string — the host is an invisible wrapper, the visible control is
  * the native textarea, matching React 1:1.
@@ -39,11 +39,11 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-textarea placeholder="Tell us about yourself…" [(ngModel)]="bio" />
+ * <gr-textarea placeholder="Tell us about yourself…" [(ngModel)]="bio" />
  * ```
  */
 @Component({
-  selector: 'gn-textarea',
+  selector: 'gr-textarea',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

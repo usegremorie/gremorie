@@ -66,18 +66,18 @@ export type ItemSize = NonNullable<VariantProps<typeof itemVariants>['size']>;
  *
  * @example
  * ```html
- * <gn-item variant="outline">
- *   <gn-item-media variant="featured">...</gn-item-media>
- *   <gn-item-content>
- *     <gn-item-title>Starred workspace</gn-item-title>
- *     <gn-item-description>Pinned for quick access.</gn-item-description>
- *   </gn-item-content>
- *   <gn-item-actions>...</gn-item-actions>
- * </gn-item>
+ * <gr-item variant="outline">
+ *   <gr-item-media variant="featured">...</gr-item-media>
+ *   <gr-item-content>
+ *     <gr-item-title>Starred workspace</gr-item-title>
+ *     <gr-item-description>Pinned for quick access.</gr-item-description>
+ *   </gr-item-content>
+ *   <gr-item-actions>...</gr-item-actions>
+ * </gr-item>
  * ```
  */
 @Component({
-  selector: 'gn-item',
+  selector: 'gr-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -148,7 +148,7 @@ export type ItemMediaVariant = NonNullable<
  * `image`) as content.
  */
 @Component({
-  selector: 'gn-item-media',
+  selector: 'gr-item-media',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -172,7 +172,7 @@ export class ItemMedia {
  * `ItemContent`.
  */
 @Component({
-  selector: 'gn-item-content',
+  selector: 'gr-item-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -190,7 +190,7 @@ export class ItemContent {}
  * Typography scales with the root `size` via `group-data` selectors.
  */
 @Component({
-  selector: 'gn-item-title',
+  selector: 'gr-item-title',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -208,7 +208,7 @@ export class ItemTitle {}
  * `ItemDescription`. Its presence drives the taller media cascade.
  */
 @Component({
-  selector: 'gn-item-description',
+  selector: 'gr-item-description',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -226,7 +226,7 @@ export class ItemDescription {}
  * React `ItemActions`.
  */
 @Component({
-  selector: 'gn-item-actions',
+  selector: 'gr-item-actions',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -243,7 +243,7 @@ export class ItemActions {}
  * `ItemHeader`.
  */
 @Component({
-  selector: 'gn-item-header',
+  selector: 'gr-item-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -260,7 +260,7 @@ export class ItemHeader {}
  * `ItemFooter`.
  */
 @Component({
-  selector: 'gn-item-footer',
+  selector: 'gr-item-footer',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -277,7 +277,7 @@ export class ItemFooter {}
  * `ItemGroup`.
  */
 @Component({
-  selector: 'gn-item-group',
+  selector: 'gr-item-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -294,10 +294,10 @@ export class ItemGroup {}
  * ItemSeparator — divider between Items inside an ItemGroup. Mirrors React
  * `ItemSeparator` (a horizontal Separator with `my-0`); the decorative
  * semantics are delegated to the spartan brain `BrnSeparator`, like
- * `gn-separator`.
+ * `gr-separator`.
  */
 @Component({
-  selector: 'gn-item-separator',
+  selector: 'gr-item-separator',
   standalone: true,
   hostDirectives: [
     {

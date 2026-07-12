@@ -25,7 +25,7 @@ import {
  * - `<checkpoint-trigger>` → React `CheckpointTrigger` (ghost/sm button, optional tooltip)
  *
  * The React `Separator` (rendered after children) becomes the ng-display
- * `gn-separator`. lucide `BookmarkIcon` is unavailable in Angular, so the icon
+ * `gr-separator`. lucide `BookmarkIcon` is unavailable in Angular, so the icon
  * is an inline SVG bookmark matching the lucide path.
  */
 @Component({
@@ -36,7 +36,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content />
-    <gn-separator />
+    <gr-separator />
   `,
   host: {
     'data-slot': 'checkpoint',
@@ -95,7 +95,7 @@ export class CheckpointIcon {
 /**
  * CheckpointTrigger — ghost/sm button label for the checkpoint. Mirrors
  * React `CheckpointTrigger`. When `tooltip` is set, the button is wrapped in
- * the styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * the styled `gr-tooltip` compound from `@gremorie/ng-overlays` (the same
  * primitive the React side uses from `@gremorie/rx-overlays`), so the surface
  * matches the styled tooltip (popover card + arrow), not the bare brain
  * overlay.
@@ -120,14 +120,14 @@ export class CheckpointIcon {
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip side="bottom">
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip side="bottom">
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }
@@ -141,7 +141,7 @@ export class CheckpointTrigger {
   /**
    * Optional tooltip text (React `tooltip`). Side mirrors React
    * `side="bottom"`; React also passes `align="start"`, which the Angular
-   * `gn-tooltip` compound does not expose (brain tooltip positions are
+   * `gr-tooltip` compound does not expose (brain tooltip positions are
    * side-only).
    */
   readonly tooltip = input<string>();

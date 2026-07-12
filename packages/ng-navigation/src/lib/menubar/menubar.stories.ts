@@ -43,24 +43,24 @@ type Story = StoryObj<Menubar>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-menubar>
-        <gn-menubar-menu>
-          <gn-menubar-trigger>File</gn-menubar-trigger>
-          <gn-menubar-content>
-            <gn-menubar-item>New Tab <gn-menubar-shortcut>⌘T</gn-menubar-shortcut></gn-menubar-item>
-            <gn-menubar-item>New Window <gn-menubar-shortcut>⌘N</gn-menubar-shortcut></gn-menubar-item>
-            <gn-menubar-separator></gn-menubar-separator>
-            <gn-menubar-item>Print… <gn-menubar-shortcut>⌘P</gn-menubar-shortcut></gn-menubar-item>
-          </gn-menubar-content>
-        </gn-menubar-menu>
-        <gn-menubar-menu>
-          <gn-menubar-trigger>Edit</gn-menubar-trigger>
-          <gn-menubar-content>
-            <gn-menubar-item>Undo <gn-menubar-shortcut>⌘Z</gn-menubar-shortcut></gn-menubar-item>
-            <gn-menubar-item>Redo <gn-menubar-shortcut>⇧⌘Z</gn-menubar-shortcut></gn-menubar-item>
-          </gn-menubar-content>
-        </gn-menubar-menu>
-      </gn-menubar>
+      <gr-menubar>
+        <gr-menubar-menu>
+          <gr-menubar-trigger>File</gr-menubar-trigger>
+          <gr-menubar-content>
+            <gr-menubar-item>New Tab <gr-menubar-shortcut>⌘T</gr-menubar-shortcut></gr-menubar-item>
+            <gr-menubar-item>New Window <gr-menubar-shortcut>⌘N</gr-menubar-shortcut></gr-menubar-item>
+            <gr-menubar-separator></gr-menubar-separator>
+            <gr-menubar-item>Print… <gr-menubar-shortcut>⌘P</gr-menubar-shortcut></gr-menubar-item>
+          </gr-menubar-content>
+        </gr-menubar-menu>
+        <gr-menubar-menu>
+          <gr-menubar-trigger>Edit</gr-menubar-trigger>
+          <gr-menubar-content>
+            <gr-menubar-item>Undo <gr-menubar-shortcut>⌘Z</gr-menubar-shortcut></gr-menubar-item>
+            <gr-menubar-item>Redo <gr-menubar-shortcut>⇧⌘Z</gr-menubar-shortcut></gr-menubar-item>
+          </gr-menubar-content>
+        </gr-menubar-menu>
+      </gr-menubar>
     `,
   }),
 };
@@ -69,16 +69,16 @@ export const Workbench: Story = {
 export const Destructive: Story = {
   render: () => ({
     template: `
-      <gn-menubar>
-        <gn-menubar-menu>
-          <gn-menubar-trigger>Account</gn-menubar-trigger>
-          <gn-menubar-content>
-            <gn-menubar-item>Profile</gn-menubar-item>
-            <gn-menubar-separator></gn-menubar-separator>
-            <gn-menubar-item variant="destructive">Delete account</gn-menubar-item>
-          </gn-menubar-content>
-        </gn-menubar-menu>
-      </gn-menubar>
+      <gr-menubar>
+        <gr-menubar-menu>
+          <gr-menubar-trigger>Account</gr-menubar-trigger>
+          <gr-menubar-content>
+            <gr-menubar-item>Profile</gr-menubar-item>
+            <gr-menubar-separator></gr-menubar-separator>
+            <gr-menubar-item variant="destructive">Delete account</gr-menubar-item>
+          </gr-menubar-content>
+        </gr-menubar-menu>
+      </gr-menubar>
     `,
   }),
 };

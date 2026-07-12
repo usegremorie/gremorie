@@ -22,23 +22,23 @@ import { cn } from '@gremorie/ng-core';
  *
  * ## React → Angular mapping
  *
- * - React `RadioGroup` = our `gn-radio-group`. The `data-slot="radio-group"`
+ * - React `RadioGroup` = our `gr-radio-group`. The `data-slot="radio-group"`
  *   and the `grid gap-3` layout class are on our host. `value` /
  *   `onValueChange`, `name`, `disabled`, `required` are exposed by the brain
  *   directive and surfaced as inputs (`[name]`, `[(value)]`, `[disabled]`,
  *   `[required]`).
- * - React `RadioGroupItem` = our `gn-radio-group-item` (below).
+ * - React `RadioGroupItem` = our `gr-radio-group-item` (below).
  *
  * @example
  * ```html
- * <gn-radio-group [(value)]="plan">
- *   <gn-radio-group-item value="free" id="r1" />
- *   <gn-radio-group-item value="pro" id="r2" />
- * </gn-radio-group>
+ * <gr-radio-group [(value)]="plan">
+ *   <gr-radio-group-item value="free" id="r1" />
+ *   <gr-radio-group-item value="pro" id="r2" />
+ * </gr-radio-group>
  * ```
  */
 @Component({
-  selector: 'gn-radio-group',
+  selector: 'gr-radio-group',
   standalone: true,
   hostDirectives: [
     {
@@ -76,7 +76,7 @@ export class RadioGroup {}
  * when selected, matching React.
  */
 @Component({
-  selector: 'gn-radio-group-item',
+  selector: 'gr-radio-group-item',
   standalone: true,
   imports: [BrnRadio],
   encapsulation: ViewEncapsulation.None,

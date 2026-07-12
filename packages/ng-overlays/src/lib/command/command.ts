@@ -41,10 +41,10 @@ import { cn } from '@gremorie/ng-core';
  * There is no dialog primitive in this package's scope, so `CommandDialog`
  * renders the same palette inline as a popover-style panel with an sr-only
  * title/description (like `ModelSelector`). A true modal would compose
- * `gn-dialog` from the dialog family around `<gn-command>`.
+ * `gr-dialog` from the dialog family around `<gr-command>`.
  */
 @Component({
-  selector: 'gn-command',
+  selector: 'gr-command',
   standalone: true,
   // BrnCommand on the HOST via hostDirectives (not an internal `<div brnCommand>`)
   // so the BrnCommandToken it provides reaches the <ng-content>-projected
@@ -76,7 +76,7 @@ export class Command {
  * description. Divergence alias of `Command` for React `CommandDialog` parity.
  */
 @Component({
-  selector: 'gn-command-dialog',
+  selector: 'gr-command-dialog',
   standalone: true,
   hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
@@ -108,7 +108,7 @@ export class CommandDialog {
 }
 
 @Component({
-  selector: 'gn-command-input',
+  selector: 'gr-command-input',
   standalone: true,
   imports: [BrnCommandInput],
   encapsulation: ViewEncapsulation.None,
@@ -153,7 +153,7 @@ export class CommandInput {
 }
 
 @Component({
-  selector: 'gn-command-list',
+  selector: 'gr-command-list',
   standalone: true,
   imports: [BrnCommandList],
   encapsulation: ViewEncapsulation.None,
@@ -172,7 +172,7 @@ export class CommandList {
 }
 
 @Component({
-  selector: 'gn-command-empty',
+  selector: 'gr-command-empty',
   standalone: true,
   imports: [BrnCommandEmpty],
   encapsulation: ViewEncapsulation.None,
@@ -188,7 +188,7 @@ export class CommandList {
 export class CommandEmpty {}
 
 @Component({
-  selector: 'gn-command-group',
+  selector: 'gr-command-group',
   standalone: true,
   imports: [BrnCommandGroup],
   encapsulation: ViewEncapsulation.None,
@@ -207,7 +207,7 @@ export class CommandGroup {
 }
 
 @Component({
-  selector: 'gn-command-separator',
+  selector: 'gr-command-separator',
   standalone: true,
   imports: [BrnCommandSeparator],
   encapsulation: ViewEncapsulation.None,
@@ -223,7 +223,7 @@ export class CommandSeparator {
 }
 
 @Component({
-  selector: 'gn-command-item',
+  selector: 'gr-command-item',
   standalone: true,
   imports: [BrnCommandItem],
   encapsulation: ViewEncapsulation.None,
@@ -254,7 +254,7 @@ export class CommandItem {
 }
 
 @Component({
-  selector: 'gn-command-shortcut',
+  selector: 'gr-command-shortcut',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

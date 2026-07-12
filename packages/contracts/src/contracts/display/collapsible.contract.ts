@@ -64,7 +64,7 @@ export const collapsible = defineContract({
     rx: 'layout-display-display-collapsible--workbench',
     ng: 'layout-display-display-collapsible--workbench',
   },
-  tag: { rx: 'Collapsible', ng: 'gn-collapsible' },
+  tag: { rx: 'Collapsible', ng: 'gr-collapsible' },
   example: { defaultOpen: true },
   figma: { nodeId: null },
 });

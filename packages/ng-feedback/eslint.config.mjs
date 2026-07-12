@@ -34,7 +34,7 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: ['gn-spinner', 'gn-alert', 'gn-progress', 'gn-skeleton'],
+          prefix: ['gr-spinner', 'gr-alert', 'gr-progress', 'gr-skeleton'],
           style: 'kebab-case',
         },
       ],

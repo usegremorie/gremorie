@@ -20,8 +20,8 @@ import { cn } from '@gremorie/ng-core';
  * critical info or interactive controls inside a HoverCard — those belong in
  * a Popover (click-driven, intentional).
  *
- * Anatomy: `gn-hover-card` (root) → `gn-hover-card-trigger` (hover target) +
- * `<ng-template brnHoverCardContent>` wrapping `gn-hover-card-content`.
+ * Anatomy: `gr-hover-card` (root) → `gr-hover-card-trigger` (hover target) +
+ * `<ng-template brnHoverCardContent>` wrapping `gr-hover-card-content`.
  *
  * Divergence vs. React/Radix: Radix renders content through a Portal child of
  * the root, and exposes `openDelay`/`closeDelay` on the root plus
@@ -33,16 +33,16 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-hover-card>
- *   <gn-hover-card-trigger [brnHoverCardTriggerFor]="content">@gremorie</gn-hover-card-trigger>
+ * <gr-hover-card>
+ *   <gr-hover-card-trigger [brnHoverCardTriggerFor]="content">@gremorie</gr-hover-card-trigger>
  *   <ng-template #content brnHoverCardContent>
- *     <gn-hover-card-content>The Gremorie design system.</gn-hover-card-content>
+ *     <gr-hover-card-content>The Gremorie design system.</gr-hover-card-content>
  *   </ng-template>
- * </gn-hover-card>
+ * </gr-hover-card>
  * ```
  */
 @Component({
-  selector: 'gn-hover-card',
+  selector: 'gr-hover-card',
   standalone: true,
   hostDirectives: [BrnHoverCard],
   encapsulation: ViewEncapsulation.None,
@@ -60,11 +60,11 @@ export class HoverCard {}
  * Carries the brain `brnHoverCardTrigger` directive and exposes its
  * `brnHoverCardTriggerFor` (the `<ng-template brnHoverCardContent>` ref),
  * `align` and `sideOffset` inputs straight through, so consumers bind them on
- * `gn-hover-card-trigger` directly (same names as React content `align` /
+ * `gr-hover-card-trigger` directly (same names as React content `align` /
  * `sideOffset`). No re-declaration needed.
  */
 @Component({
-  selector: 'gn-hover-card-trigger',
+  selector: 'gr-hover-card-trigger',
   standalone: true,
   hostDirectives: [
     {
@@ -88,7 +88,7 @@ export class HoverCardTrigger {}
  * match React verbatim.
  */
 @Component({
-  selector: 'gn-hover-card-content',
+  selector: 'gr-hover-card-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -80,7 +80,7 @@ export const switchContract = defineContract({
     rx: 'inputs-selection-switch--workbench',
     ng: 'inputs-selection-switch--workbench',
   },
-  tag: { rx: 'Switch', ng: 'gn-switch' },
+  tag: { rx: 'Switch', ng: 'gr-switch' },
   example: {
     checked: false,
     size: 'default',
