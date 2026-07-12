@@ -1,6 +1,6 @@
-# Contributing to ShadNG
+# Contributing to Gremorie
 
-Thanks for the interest. ShadNG is in early bootstrapping, so APIs and structure are still moving.
+Thanks for the interest. Gremorie is in early bootstrapping, so APIs and structure are still moving.
 
 ## Ground rules
 
@@ -8,6 +8,21 @@ Thanks for the interest. ShadNG is in early bootstrapping, so APIs and structure
 2. **Accessibility is not optional.** axe-core, keyboard navigation, screen reader, reduced motion, WCAG AA contrast — verified per component.
 3. **Lib stays lean.** Hashbrown, Vercel AI SDK, NgRx and friends are documented integrations — never `peerDependencies`.
 4. **Composition over configuration.** Slots, not 50-prop monsters.
+
+## Naming conventions
+
+- **Packages** are prefixed by edition: `rx-*` for React (`@gremorie/rx-ai`,
+  `@gremorie/rx-forms`, …) and `ng-*` for Angular (`@gremorie/ng-ai`,
+  `@gremorie/ng-forms`, …). Framework-neutral packages have no edition prefix
+  (`@gremorie/tokens`, `@gremorie/contracts`).
+- **Angular component/directive selectors use the `gr-` prefix** (`<gr-command>`,
+  `<gr-card>`, and attribute directives like `grInputOtp`, `[grFormControl]`).
+  `gr` is for **Gr**emorie. We deliberately do **not** use `ng-` — the Angular
+  style guide forbids it because Angular reserves the `ng` prefix for its own
+  framework APIs. (Historically this prefix was `gn-`, `ng` reversed; it was
+  renamed to the clearer `gr-`.)
+- **React components** are PascalCase exports (`<ModelSelector>`), no element
+  prefix — standard JSX.
 
 ## Branch flow
 
