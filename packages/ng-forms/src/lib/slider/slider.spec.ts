@@ -7,7 +7,7 @@ import { Slider } from './slider';
   standalone: true,
   imports: [Slider],
   template: `
-    <gn-slider
+    <gr-slider
       [value]="value()"
       [min]="min()"
       [max]="max()"

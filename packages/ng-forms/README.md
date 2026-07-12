@@ -40,8 +40,8 @@ import { Input, Label } from '@gremorie/ng-forms';
   imports: [Input, Label],
   template: `
     <div class="flex w-72 flex-col gap-2">
-      <gn-label for="email">Email</gn-label>
-      <gn-input id="email" type="email" placeholder="ada@example.com" />
+      <gr-label for="email">Email</gr-label>
+      <gr-input id="email" type="email" placeholder="ada@example.com" />
     </div>
   `,
 })

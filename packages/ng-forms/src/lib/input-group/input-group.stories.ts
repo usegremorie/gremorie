@@ -43,15 +43,15 @@ export const Workbench: Story = {
   parameters: { layout: 'padded' },
   render: () => ({
     template: `
-      <gn-input-group class="w-80">
-        <gn-input-group-addon>
-          <gn-input-group-text>https://</gn-input-group-text>
-        </gn-input-group-addon>
-        <gn-input-group-input placeholder="example.com" />
-        <gn-input-group-addon align="inline-end">
-          <gn-input-group-button>Save</gn-input-group-button>
-        </gn-input-group-addon>
-      </gn-input-group>
+      <gr-input-group class="w-80">
+        <gr-input-group-addon>
+          <gr-input-group-text>https://</gr-input-group-text>
+        </gr-input-group-addon>
+        <gr-input-group-input placeholder="example.com" />
+        <gr-input-group-addon align="inline-end">
+          <gr-input-group-button>Save</gr-input-group-button>
+        </gr-input-group-addon>
+      </gr-input-group>
     `,
   }),
 };
@@ -61,16 +61,16 @@ export const WithIcon: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-input-group class="w-80">
-        <gn-input-group-addon>
+      <gr-input-group class="w-80">
+        <gr-input-group-addon>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
           </svg>
-        </gn-input-group-addon>
-        <gn-input-group-input placeholder="Search…" />
-      </gn-input-group>
+        </gr-input-group-addon>
+        <gr-input-group-input placeholder="Search…" />
+      </gr-input-group>
     `,
   }),
 };
@@ -80,12 +80,12 @@ export const WithTextarea: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-input-group class="w-96">
-        <gn-input-group-textarea placeholder="Write a message…" />
-        <gn-input-group-addon align="block-end" class="border-t">
-          <gn-input-group-button size="sm" variant="default">Send</gn-input-group-button>
-        </gn-input-group-addon>
-      </gn-input-group>
+      <gr-input-group class="w-96">
+        <gr-input-group-textarea placeholder="Write a message…" />
+        <gr-input-group-addon align="block-end" class="border-t">
+          <gr-input-group-button size="sm" variant="default">Send</gr-input-group-button>
+        </gr-input-group-addon>
+      </gr-input-group>
     `,
   }),
 };
@@ -95,12 +95,12 @@ export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-input-group class="w-80">
-        <gn-input-group-addon>
-          <gn-input-group-text>@</gn-input-group-text>
-        </gn-input-group-addon>
-        <gn-input-group-input placeholder="username" [disabled]="true" />
-      </gn-input-group>
+      <gr-input-group class="w-80">
+        <gr-input-group-addon>
+          <gr-input-group-text>@</gr-input-group-text>
+        </gr-input-group-addon>
+        <gr-input-group-input placeholder="username" [disabled]="true" />
+      </gr-input-group>
     `,
   }),
 };

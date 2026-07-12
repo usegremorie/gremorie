@@ -37,15 +37,15 @@ type Story = StoryObj<HoverCard>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-hover-card>
-        <gn-hover-card-trigger [brnHoverCardTriggerFor]="content" class="underline">&#64;gremorie</gn-hover-card-trigger>
+      <gr-hover-card>
+        <gr-hover-card-trigger [brnHoverCardTriggerFor]="content" class="underline">&#64;gremorie</gr-hover-card-trigger>
         <ng-template #content="brnHoverCardContent" brnHoverCardContent>
-          <gn-hover-card-content>
+          <gr-hover-card-content>
             <div class="text-sm font-semibold">Gremorie</div>
             <p class="text-sm text-muted-foreground">An AI native design system.</p>
-          </gn-hover-card-content>
+          </gr-hover-card-content>
         </ng-template>
-      </gn-hover-card>
+      </gr-hover-card>
     `,
   }),
 };
@@ -54,14 +54,14 @@ export const Workbench: Story = {
 export const LinkPreview: Story = {
   render: () => ({
     template: `
-      <gn-hover-card>
-        <gn-hover-card-trigger [brnHoverCardTriggerFor]="content" class="underline">gremorie.com</gn-hover-card-trigger>
+      <gr-hover-card>
+        <gr-hover-card-trigger [brnHoverCardTriggerFor]="content" class="underline">gremorie.com</gr-hover-card-trigger>
         <ng-template #content="brnHoverCardContent" brnHoverCardContent>
-          <gn-hover-card-content>
+          <gr-hover-card-content>
             <p class="text-sm">Full documentation, components and tokens.</p>
-          </gn-hover-card-content>
+          </gr-hover-card-content>
         </ng-template>
-      </gn-hover-card>
+      </gr-hover-card>
     `,
   }),
 };

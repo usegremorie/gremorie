@@ -44,7 +44,7 @@ const SETTINGS = `
 /**
  * Item — flexible list-row primitive (compound).
  *
- * Mirrors React `Item`. One `size` on `gn-item` cascades to the media size
+ * Mirrors React `Item`. One `size` on `gr-item` cascades to the media size
  * AND the title/description typography via `data-size` + `group-data`, so a
  * single input scales the whole row. The `icon` media variant is the only
  * fixed size (24px).
@@ -94,20 +94,20 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-item [size]="size" [variant]="variant" [interactive]="interactive" class="w-96">
-        <gn-item-media variant="featured">
+      <gr-item [size]="size" [variant]="variant" [interactive]="interactive" class="w-96">
+        <gr-item-media variant="featured">
           ${STAR}
-        </gn-item-media>
-        <gn-item-content>
-          <gn-item-title>Starred workspace</gn-item-title>
-          <gn-item-description>
+        </gr-item-media>
+        <gr-item-content>
+          <gr-item-title>Starred workspace</gr-item-title>
+          <gr-item-description>
             Pinned to the top of your sidebar for quick access.
-          </gn-item-description>
-        </gn-item-content>
-        <gn-item-actions>
-          <gn-badge variant="secondary">Pro</gn-badge>
-        </gn-item-actions>
-      </gn-item>
+          </gr-item-description>
+        </gr-item-content>
+        <gr-item-actions>
+          <gr-badge variant="secondary">Pro</gr-badge>
+        </gr-item-actions>
+      </gr-item>
     `,
   }),
 };
@@ -121,15 +121,15 @@ export const Sizes: Story = {
     template: `
       <div class="flex max-w-md flex-col gap-3">
         @for (size of ['lg', 'md', 'sm']; track size) {
-          <gn-item [size]="size" variant="outline">
-            <gn-item-media variant="featured">
+          <gr-item [size]="size" variant="outline">
+            <gr-item-media variant="featured">
               ${SETTINGS}
-            </gn-item-media>
-            <gn-item-content>
-              <gn-item-title>Size {{ size }}</gn-item-title>
-              <gn-item-description>Media and text scale together.</gn-item-description>
-            </gn-item-content>
-          </gn-item>
+            </gr-item-media>
+            <gr-item-content>
+              <gr-item-title>Size {{ size }}</gr-item-title>
+              <gr-item-description>Media and text scale together.</gr-item-description>
+            </gr-item-content>
+          </gr-item>
         }
       </div>
     `,
@@ -145,42 +145,42 @@ export const Variants: Story = {
   render: () => ({
     template: `
       <div class="flex max-w-md flex-col gap-3">
-        <gn-item variant="outline">
-          <gn-item-media variant="icon">
+        <gr-item variant="outline">
+          <gr-item-media variant="icon">
             ${BELL}
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>icon</gn-item-title>
-            <gn-item-description>Bare 24px glyph, no container.</gn-item-description>
-          </gn-item-content>
-        </gn-item>
-        <gn-item variant="outline">
-          <gn-item-media variant="featured">
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>icon</gr-item-title>
+            <gr-item-description>Bare 24px glyph, no container.</gr-item-description>
+          </gr-item-content>
+        </gr-item>
+        <gr-item variant="outline">
+          <gr-item-media variant="featured">
             ${BELL}
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>featured</gn-item-title>
-            <gn-item-description>Muted square with a centered glyph.</gn-item-description>
-          </gn-item-content>
-        </gn-item>
-        <gn-item variant="outline">
-          <gn-item-media variant="avatar">
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>featured</gr-item-title>
+            <gr-item-description>Muted square with a centered glyph.</gr-item-description>
+          </gr-item-content>
+        </gr-item>
+        <gr-item variant="outline">
+          <gr-item-media variant="avatar">
             <img alt="" src="${IMG}" />
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>avatar</gn-item-title>
-            <gn-item-description>Round, image cover-cropped.</gn-item-description>
-          </gn-item-content>
-        </gn-item>
-        <gn-item variant="outline">
-          <gn-item-media variant="image">
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>avatar</gr-item-title>
+            <gr-item-description>Round, image cover-cropped.</gr-item-description>
+          </gr-item-content>
+        </gr-item>
+        <gr-item variant="outline">
+          <gr-item-media variant="image">
             <img alt="" src="${IMG}" />
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>image</gn-item-title>
-            <gn-item-description>Rounded thumbnail.</gn-item-description>
-          </gn-item-content>
-        </gn-item>
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>image</gr-item-title>
+            <gr-item-description>Rounded thumbnail.</gr-item-description>
+          </gr-item-content>
+        </gr-item>
       </div>
     `,
   }),
@@ -195,24 +195,24 @@ export const Interactive: Story = {
   render: () => ({
     template: `
       <div class="flex max-w-md flex-col gap-3">
-        <gn-item [interactive]="true" variant="outline">
-          <gn-item-media variant="featured">
+        <gr-item [interactive]="true" variant="outline">
+          <gr-item-media variant="featured">
             ${STAR}
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>interactive</gn-item-title>
-            <gn-item-description>Hover me - cursor + accent background.</gn-item-description>
-          </gn-item-content>
-        </gn-item>
-        <gn-item variant="outline">
-          <gn-item-media variant="featured">
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>interactive</gr-item-title>
+            <gr-item-description>Hover me - cursor + accent background.</gr-item-description>
+          </gr-item-content>
+        </gr-item>
+        <gr-item variant="outline">
+          <gr-item-media variant="featured">
             ${STAR}
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>static</gn-item-title>
-            <gn-item-description>No hover affordance.</gn-item-description>
-          </gn-item-content>
-        </gn-item>
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>static</gr-item-title>
+            <gr-item-description>No hover affordance.</gr-item-description>
+          </gr-item-content>
+        </gr-item>
       </div>
     `,
   }),
@@ -225,25 +225,25 @@ export const Group: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-item-group class="max-w-md rounded-lg border">
-        <gn-item size="sm">
-          <gn-item-media variant="icon">
+      <gr-item-group class="max-w-md rounded-lg border">
+        <gr-item size="sm">
+          <gr-item-media variant="icon">
             ${FILE_TEXT}
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>report-q3.pdf</gn-item-title>
-          </gn-item-content>
-        </gn-item>
-        <gn-item-separator />
-        <gn-item size="sm">
-          <gn-item-media variant="icon">
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>report-q3.pdf</gr-item-title>
+          </gr-item-content>
+        </gr-item>
+        <gr-item-separator />
+        <gr-item size="sm">
+          <gr-item-media variant="icon">
             ${FILE_TEXT}
-          </gn-item-media>
-          <gn-item-content>
-            <gn-item-title>report-q4.pdf</gn-item-title>
-          </gn-item-content>
-        </gn-item>
-      </gn-item-group>
+          </gr-item-media>
+          <gr-item-content>
+            <gr-item-title>report-q4.pdf</gr-item-title>
+          </gr-item-content>
+        </gr-item>
+      </gr-item-group>
     `,
   }),
 };

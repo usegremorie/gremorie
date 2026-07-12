@@ -56,28 +56,28 @@ type Story = StoryObj<DropdownMenu>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-dropdown-menu>
-        <gn-dropdown-menu-trigger [content]="content"
+      <gr-dropdown-menu>
+        <gr-dropdown-menu-trigger [content]="content"
           class="inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open menu
-        </gn-dropdown-menu-trigger>
+        </gr-dropdown-menu-trigger>
         <ng-template #content>
           <ng-template brnPopoverContent>
-            <gn-dropdown-menu-content class="w-56">
-              <gn-dropdown-menu-label>My Account</gn-dropdown-menu-label>
-              <gn-dropdown-menu-separator />
-              <gn-dropdown-menu-item>
-                Profile <gn-dropdown-menu-shortcut>⇧⌘P</gn-dropdown-menu-shortcut>
-              </gn-dropdown-menu-item>
-              <gn-dropdown-menu-item>
-                Settings <gn-dropdown-menu-shortcut>⌘S</gn-dropdown-menu-shortcut>
-              </gn-dropdown-menu-item>
-              <gn-dropdown-menu-separator />
-              <gn-dropdown-menu-item variant="destructive">Delete</gn-dropdown-menu-item>
-            </gn-dropdown-menu-content>
+            <gr-dropdown-menu-content class="w-56">
+              <gr-dropdown-menu-label>My Account</gr-dropdown-menu-label>
+              <gr-dropdown-menu-separator />
+              <gr-dropdown-menu-item>
+                Profile <gr-dropdown-menu-shortcut>⇧⌘P</gr-dropdown-menu-shortcut>
+              </gr-dropdown-menu-item>
+              <gr-dropdown-menu-item>
+                Settings <gr-dropdown-menu-shortcut>⌘S</gr-dropdown-menu-shortcut>
+              </gr-dropdown-menu-item>
+              <gr-dropdown-menu-separator />
+              <gr-dropdown-menu-item variant="destructive">Delete</gr-dropdown-menu-item>
+            </gr-dropdown-menu-content>
           </ng-template>
         </ng-template>
-      </gn-dropdown-menu>
+      </gr-dropdown-menu>
     `,
   }),
 };
@@ -86,26 +86,26 @@ export const Workbench: Story = {
 export const CheckboxAndRadio: Story = {
   render: () => ({
     template: `
-      <gn-dropdown-menu>
-        <gn-dropdown-menu-trigger [content]="content"
+      <gr-dropdown-menu>
+        <gr-dropdown-menu-trigger [content]="content"
           class="inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           View options
-        </gn-dropdown-menu-trigger>
+        </gr-dropdown-menu-trigger>
         <ng-template #content>
           <ng-template brnPopoverContent>
-            <gn-dropdown-menu-content class="w-56">
-              <gn-dropdown-menu-label>Appearance</gn-dropdown-menu-label>
-              <gn-dropdown-menu-checkbox-item [checked]="true">Status Bar</gn-dropdown-menu-checkbox-item>
-              <gn-dropdown-menu-checkbox-item>Activity Bar</gn-dropdown-menu-checkbox-item>
-              <gn-dropdown-menu-separator />
-              <gn-dropdown-menu-radio-group>
-                <gn-dropdown-menu-radio-item [checked]="true">Top</gn-dropdown-menu-radio-item>
-                <gn-dropdown-menu-radio-item>Bottom</gn-dropdown-menu-radio-item>
-              </gn-dropdown-menu-radio-group>
-            </gn-dropdown-menu-content>
+            <gr-dropdown-menu-content class="w-56">
+              <gr-dropdown-menu-label>Appearance</gr-dropdown-menu-label>
+              <gr-dropdown-menu-checkbox-item [checked]="true">Status Bar</gr-dropdown-menu-checkbox-item>
+              <gr-dropdown-menu-checkbox-item>Activity Bar</gr-dropdown-menu-checkbox-item>
+              <gr-dropdown-menu-separator />
+              <gr-dropdown-menu-radio-group>
+                <gr-dropdown-menu-radio-item [checked]="true">Top</gr-dropdown-menu-radio-item>
+                <gr-dropdown-menu-radio-item>Bottom</gr-dropdown-menu-radio-item>
+              </gr-dropdown-menu-radio-group>
+            </gr-dropdown-menu-content>
           </ng-template>
         </ng-template>
-      </gn-dropdown-menu>
+      </gr-dropdown-menu>
     `,
   }),
 };

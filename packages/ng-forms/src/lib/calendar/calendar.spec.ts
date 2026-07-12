@@ -6,7 +6,7 @@ import { Calendar } from './calendar';
 @Component({
   standalone: true,
   imports: [Calendar],
-  template: `<gn-calendar />`,
+  template: `<gr-calendar />`,
 })
 class Host {}
 

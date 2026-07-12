@@ -83,7 +83,7 @@ export const artifact = defineContract({
       name: 'tooltip',
       type: 'string',
       adapts: {
-        ng: 'input: tooltip (wraps the button in the gn-tooltip compound from @gremorie/ng-overlays)',
+        ng: 'input: tooltip (wraps the button in the gr-tooltip compound from @gremorie/ng-overlays)',
       },
       desc: 'ArtifactAction hover tooltip (also the fallback label).',
     },
@@ -118,7 +118,7 @@ export const artifact = defineContract({
     example:
       '<artifact><artifact-header><artifact-title>Summary</artifact-title></artifact-header><artifact-content>…</artifact-content></artifact>',
   },
-  // NG ships artifact-action (mirrors RX ArtifactAction via the gn-tooltip
+  // NG ships artifact-action (mirrors RX ArtifactAction via the gr-tooltip
   // compound from @gremorie/ng-overlays) but has no standalone story for the
   // shell itself (only the typed presets chart-artifact / code-block /
   // web-preview each have their own stories).

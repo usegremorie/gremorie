@@ -8,14 +8,14 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from './hover-card';
   standalone: true,
   imports: [HoverCard, HoverCardTrigger, HoverCardContent, BrnHoverCardContent],
   template: `
-    <gn-hover-card>
-      <gn-hover-card-trigger [brnHoverCardTriggerFor]="content"
-        >Hover me</gn-hover-card-trigger
+    <gr-hover-card>
+      <gr-hover-card-trigger [brnHoverCardTriggerFor]="content"
+        >Hover me</gr-hover-card-trigger
       >
       <ng-template #content="brnHoverCardContent" brnHoverCardContent>
-        <gn-hover-card-content>Preview</gn-hover-card-content>
+        <gr-hover-card-content>Preview</gr-hover-card-content>
       </ng-template>
-    </gn-hover-card>
+    </gr-hover-card>
   `,
 })
 class Host {}

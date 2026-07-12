@@ -54,17 +54,17 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-popover [align]="align" [sideOffset]="sideOffset">
-        <gn-popover-trigger [content]="content">Open popover</gn-popover-trigger>
+      <gr-popover [align]="align" [sideOffset]="sideOffset">
+        <gr-popover-trigger [content]="content">Open popover</gr-popover-trigger>
         <ng-template #content brnPopoverContent>
-          <gn-popover-content>
-            <gn-popover-header>
-              <gn-popover-title>Dimensions</gn-popover-title>
-              <gn-popover-description>Set the layout dimensions.</gn-popover-description>
-            </gn-popover-header>
-          </gn-popover-content>
+          <gr-popover-content>
+            <gr-popover-header>
+              <gr-popover-title>Dimensions</gr-popover-title>
+              <gr-popover-description>Set the layout dimensions.</gr-popover-description>
+            </gr-popover-header>
+          </gr-popover-content>
         </ng-template>
-      </gn-popover>
+      </gr-popover>
     `,
   }),
 };
@@ -73,17 +73,17 @@ export const Workbench: Story = {
 export const AlignStart: Story = {
   render: () => ({
     template: `
-      <gn-popover align="start">
-        <gn-popover-trigger [content]="content">Start aligned</gn-popover-trigger>
+      <gr-popover align="start">
+        <gr-popover-trigger [content]="content">Start aligned</gr-popover-trigger>
         <ng-template #content brnPopoverContent>
-          <gn-popover-content>
-            <gn-popover-header>
-              <gn-popover-title>Aligned start</gn-popover-title>
-              <gn-popover-description>The content hugs the start edge.</gn-popover-description>
-            </gn-popover-header>
-          </gn-popover-content>
+          <gr-popover-content>
+            <gr-popover-header>
+              <gr-popover-title>Aligned start</gr-popover-title>
+              <gr-popover-description>The content hugs the start edge.</gr-popover-description>
+            </gr-popover-header>
+          </gr-popover-content>
         </ng-template>
-      </gn-popover>
+      </gr-popover>
     `,
   }),
 };

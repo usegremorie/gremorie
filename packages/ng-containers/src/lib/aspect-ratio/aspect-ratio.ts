@@ -17,20 +17,20 @@ import {
  * Implementation note: where Radix uses the legacy `padding-bottom`
  * percentage wrapper, the Angular port uses the native CSS `aspect-ratio`
  * property on a single host element. This keeps the anatomy a single box
- * — so `class` on `<gn-aspect-ratio>` lands on exactly the box Radix
+ * — so `class` on `<gr-aspect-ratio>` lands on exactly the box Radix
  * forwards `className` to — and lets the projected child fill it with
  * `h-full w-full object-cover` just like the React reference. No
  * `@spartan-ng/brain` primitive exists for aspect ratio.
  *
  * @example
  * ```html
- * <gn-aspect-ratio [ratio]="16 / 9" class="overflow-hidden rounded-lg">
+ * <gr-aspect-ratio [ratio]="16 / 9" class="overflow-hidden rounded-lg">
  *   <img src="…" alt="…" class="h-full w-full object-cover" />
- * </gn-aspect-ratio>
+ * </gr-aspect-ratio>
  * ```
  */
 @Component({
-  selector: 'gn-aspect-ratio',
+  selector: 'gr-aspect-ratio',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

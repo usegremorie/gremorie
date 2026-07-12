@@ -23,19 +23,19 @@ import {
     MenubarShortcut,
   ],
   template: `
-    <gn-menubar>
-      <gn-menubar-menu>
-        <gn-menubar-trigger>File</gn-menubar-trigger>
-        <gn-menubar-content>
-          <gn-menubar-item
+    <gr-menubar>
+      <gr-menubar-menu>
+        <gr-menubar-trigger>File</gr-menubar-trigger>
+        <gr-menubar-content>
+          <gr-menubar-item
             >New Tab
-            <gn-menubar-shortcut>⌘T</gn-menubar-shortcut></gn-menubar-item
+            <gr-menubar-shortcut>⌘T</gr-menubar-shortcut></gr-menubar-item
           >
-          <gn-menubar-separator></gn-menubar-separator>
-          <gn-menubar-item>Print</gn-menubar-item>
-        </gn-menubar-content>
-      </gn-menubar-menu>
-    </gn-menubar>
+          <gr-menubar-separator></gr-menubar-separator>
+          <gr-menubar-item>Print</gr-menubar-item>
+        </gr-menubar-content>
+      </gr-menubar-menu>
+    </gr-menubar>
   `,
 })
 class Host {}

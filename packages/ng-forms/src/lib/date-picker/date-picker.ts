@@ -22,7 +22,7 @@ import { Calendar } from '../calendar/calendar';
  * ready-to-use wrapper, saving boilerplate. React composes its `Popover` +
  * `Calendar`; the Angular edition composes the spartan brain `BrnPopover`
  * (which owns the portalled, positioned overlay + open/close a11y) with the
- * local `gn-calendar`, and styles the trigger with the ng-core `buttonVariants`
+ * local `gr-calendar`, and styles the trigger with the ng-core `buttonVariants`
  * (`variant: 'outline'`) exactly as React styles its `Button`.
  *
  * Single-date selection by default. The trigger shows the selected date (ISO
@@ -31,18 +31,18 @@ import { Calendar } from '../calendar/calendar';
  * ## React → Angular mapping
  *
  * - React `value` / `onValueChange` = the `date` two-way model, forwarded to
- *   the inner `gn-calendar`'s `[(date)]`.
+ *   the inner `gr-calendar`'s `[(date)]`.
  * - React `placeholder` / `disabled` / `className` map 1:1.
  * - React's `format(value, 'PP')` label → an ISO date string (no date-fns dep);
  *   consumers wanting a localized label can project their own trigger text.
  *
  * @example
  * ```html
- * <gn-date-picker [(date)]="due" placeholder="Pick a date" />
+ * <gr-date-picker [(date)]="due" placeholder="Pick a date" />
  * ```
  */
 @Component({
-  selector: 'gn-date-picker',
+  selector: 'gr-date-picker',
   standalone: true,
   imports: [BrnPopover, BrnPopoverTrigger, BrnPopoverContent, Calendar],
   encapsulation: ViewEncapsulation.None,
@@ -82,7 +82,7 @@ import { Calendar } from '../calendar/calendar';
         <div
           class="w-auto rounded-md border bg-popover p-0 text-popover-foreground shadow-md"
         >
-          <gn-calendar [(date)]="date" />
+          <gr-calendar [(date)]="date" />
         </div>
       </ng-template>
     </brn-popover>

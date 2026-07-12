@@ -20,7 +20,7 @@ import {
  * spartan brain `BrnSheet`, locked to the requested `direction` via the brain
  * `side` input. Native drag-to-dismiss gestures from vaul are not reproduced,
  * but the directional layout and bottom-only drag-handle visual match React.
- * Pass the same `direction` to `<gn-drawer>` (`side`) and `<gn-drawer-content>`.
+ * Pass the same `direction` to `<gr-drawer>` (`side`) and `<gr-drawer-content>`.
  */
 const meta: Meta<Drawer> = {
   title: 'Interaction/Overlays/Drawer',
@@ -51,28 +51,28 @@ type Story = StoryObj<Drawer>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-drawer side="bottom">
-        <button gn-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-drawer side="bottom">
+        <button gr-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open drawer
         </button>
         <ng-template brnSheetContent>
-          <gn-drawer-content direction="bottom">
-            <gn-drawer-header>
-              <h2 gn-drawer-title>Move goal</h2>
-              <p gn-drawer-description>Set your daily activity goal.</p>
-            </gn-drawer-header>
+          <gr-drawer-content direction="bottom">
+            <gr-drawer-header>
+              <h2 gr-drawer-title>Move goal</h2>
+              <p gr-drawer-description>Set your daily activity goal.</p>
+            </gr-drawer-header>
             <div class="px-4 text-sm text-muted-foreground">Drawer body content.</div>
-            <gn-drawer-footer>
-              <button gn-drawer-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+            <gr-drawer-footer>
+              <button gr-drawer-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Submit
               </button>
-              <button gn-drawer-close class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+              <button gr-drawer-close class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
                 Cancel
               </button>
-            </gn-drawer-footer>
-          </gn-drawer-content>
+            </gr-drawer-footer>
+          </gr-drawer-content>
         </ng-template>
-      </gn-drawer>
+      </gr-drawer>
     `,
   }),
 };
@@ -81,19 +81,19 @@ export const Workbench: Story = {
 export const Right: Story = {
   render: () => ({
     template: `
-      <gn-drawer side="right">
-        <button gn-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-drawer side="right">
+        <button gr-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open from right
         </button>
         <ng-template brnSheetContent>
-          <gn-drawer-content direction="right">
-            <gn-drawer-header>
-              <h2 gn-drawer-title>Details</h2>
-              <p gn-drawer-description>Side-anchored drawer panel.</p>
-            </gn-drawer-header>
-          </gn-drawer-content>
+          <gr-drawer-content direction="right">
+            <gr-drawer-header>
+              <h2 gr-drawer-title>Details</h2>
+              <p gr-drawer-description>Side-anchored drawer panel.</p>
+            </gr-drawer-header>
+          </gr-drawer-content>
         </ng-template>
-      </gn-drawer>
+      </gr-drawer>
     `,
   }),
 };

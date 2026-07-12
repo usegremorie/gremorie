@@ -19,7 +19,7 @@ import {
 
 /**
  * Sidebar — composable app-shell sidebar. Mirrors React `Sidebar`. Wrap every
- * usage (including each story) in a `gn-sidebar-provider`, which owns the
+ * usage (including each story) in a `gr-sidebar-provider`, which owns the
  * collapsible state.
  */
 const meta: Meta<Sidebar> = {
@@ -55,34 +55,34 @@ type Story = StoryObj<Sidebar>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-sidebar-provider class="min-h-[420px] rounded-lg border">
-        <gn-sidebar collapsible="none" class="border-r">
-          <gn-sidebar-header class="text-sm font-semibold">Acme Inc</gn-sidebar-header>
-          <gn-sidebar-content>
-            <gn-sidebar-group>
-              <gn-sidebar-group-label>Platform</gn-sidebar-group-label>
-              <gn-sidebar-group-content>
-                <ul gn-sidebar-menu>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button [isActive]="true">Dashboard</button>
+      <gr-sidebar-provider class="min-h-[420px] rounded-lg border">
+        <gr-sidebar collapsible="none" class="border-r">
+          <gr-sidebar-header class="text-sm font-semibold">Acme Inc</gr-sidebar-header>
+          <gr-sidebar-content>
+            <gr-sidebar-group>
+              <gr-sidebar-group-label>Platform</gr-sidebar-group-label>
+              <gr-sidebar-group-content>
+                <ul gr-sidebar-menu>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button [isActive]="true">Dashboard</button>
                   </li>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Projects</button>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Projects</button>
                   </li>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Settings</button>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Settings</button>
                   </li>
                 </ul>
-              </gn-sidebar-group-content>
-            </gn-sidebar-group>
-          </gn-sidebar-content>
-          <gn-sidebar-footer class="text-xs text-muted-foreground">v1.0.0</gn-sidebar-footer>
-        </gn-sidebar>
-        <gn-sidebar-inset class="p-4">
-          <gn-sidebar-trigger></gn-sidebar-trigger>
+              </gr-sidebar-group-content>
+            </gr-sidebar-group>
+          </gr-sidebar-content>
+          <gr-sidebar-footer class="text-xs text-muted-foreground">v1.0.0</gr-sidebar-footer>
+        </gr-sidebar>
+        <gr-sidebar-inset class="p-4">
+          <gr-sidebar-trigger></gr-sidebar-trigger>
           <p class="mt-2 text-sm text-muted-foreground">Main content area.</p>
-        </gn-sidebar-inset>
-      </gn-sidebar-provider>
+        </gr-sidebar-inset>
+      </gr-sidebar-provider>
     `,
   }),
 };
@@ -91,33 +91,33 @@ export const Workbench: Story = {
 export const IconCollapsible: Story = {
   render: () => ({
     template: `
-      <gn-sidebar-provider class="min-h-[420px] rounded-lg border">
-        <gn-sidebar collapsible="icon" class="border-r">
-          <gn-sidebar-header class="text-sm font-semibold">Acme Inc</gn-sidebar-header>
-          <gn-sidebar-content>
-            <gn-sidebar-group>
-              <gn-sidebar-group-label>Platform</gn-sidebar-group-label>
-              <gn-sidebar-group-content>
-                <ul gn-sidebar-menu>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button [isActive]="true">Dashboard</button>
+      <gr-sidebar-provider class="min-h-[420px] rounded-lg border">
+        <gr-sidebar collapsible="icon" class="border-r">
+          <gr-sidebar-header class="text-sm font-semibold">Acme Inc</gr-sidebar-header>
+          <gr-sidebar-content>
+            <gr-sidebar-group>
+              <gr-sidebar-group-label>Platform</gr-sidebar-group-label>
+              <gr-sidebar-group-content>
+                <ul gr-sidebar-menu>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button [isActive]="true">Dashboard</button>
                   </li>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Projects</button>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Projects</button>
                   </li>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Settings</button>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Settings</button>
                   </li>
                 </ul>
-              </gn-sidebar-group-content>
-            </gn-sidebar-group>
-          </gn-sidebar-content>
-        </gn-sidebar>
-        <gn-sidebar-inset class="p-4">
-          <gn-sidebar-trigger></gn-sidebar-trigger>
+              </gr-sidebar-group-content>
+            </gr-sidebar-group>
+          </gr-sidebar-content>
+        </gr-sidebar>
+        <gr-sidebar-inset class="p-4">
+          <gr-sidebar-trigger></gr-sidebar-trigger>
           <p class="mt-2 text-sm text-muted-foreground">Main content area.</p>
-        </gn-sidebar-inset>
-      </gn-sidebar-provider>
+        </gr-sidebar-inset>
+      </gr-sidebar-provider>
     `,
   }),
 };
@@ -126,27 +126,27 @@ export const IconCollapsible: Story = {
 export const Floating: Story = {
   render: () => ({
     template: `
-      <gn-sidebar-provider class="min-h-[420px] rounded-lg border">
-        <gn-sidebar collapsible="none" variant="floating">
-          <gn-sidebar-content>
-            <gn-sidebar-group>
-              <gn-sidebar-group-content>
-                <ul gn-sidebar-menu>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Home</button>
+      <gr-sidebar-provider class="min-h-[420px] rounded-lg border">
+        <gr-sidebar collapsible="none" variant="floating">
+          <gr-sidebar-content>
+            <gr-sidebar-group>
+              <gr-sidebar-group-content>
+                <ul gr-sidebar-menu>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Home</button>
                   </li>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Inbox</button>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Inbox</button>
                   </li>
                 </ul>
-              </gn-sidebar-group-content>
-            </gn-sidebar-group>
-          </gn-sidebar-content>
-        </gn-sidebar>
-        <gn-sidebar-inset class="p-4">
-          <gn-sidebar-trigger></gn-sidebar-trigger>
-        </gn-sidebar-inset>
-      </gn-sidebar-provider>
+              </gr-sidebar-group-content>
+            </gr-sidebar-group>
+          </gr-sidebar-content>
+        </gr-sidebar>
+        <gr-sidebar-inset class="p-4">
+          <gr-sidebar-trigger></gr-sidebar-trigger>
+        </gr-sidebar-inset>
+      </gr-sidebar-provider>
     `,
   }),
 };
@@ -155,28 +155,28 @@ export const Floating: Story = {
 export const Inset: Story = {
   render: () => ({
     template: `
-      <gn-sidebar-provider class="min-h-[420px] rounded-lg border">
-        <gn-sidebar collapsible="icon" variant="inset">
-          <gn-sidebar-content>
-            <gn-sidebar-group>
-              <gn-sidebar-group-content>
-                <ul gn-sidebar-menu>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button [isActive]="true">Home</button>
+      <gr-sidebar-provider class="min-h-[420px] rounded-lg border">
+        <gr-sidebar collapsible="icon" variant="inset">
+          <gr-sidebar-content>
+            <gr-sidebar-group>
+              <gr-sidebar-group-content>
+                <ul gr-sidebar-menu>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button [isActive]="true">Home</button>
                   </li>
-                  <li gn-sidebar-menu-item>
-                    <button gn-sidebar-menu-button>Inbox</button>
+                  <li gr-sidebar-menu-item>
+                    <button gr-sidebar-menu-button>Inbox</button>
                   </li>
                 </ul>
-              </gn-sidebar-group-content>
-            </gn-sidebar-group>
-          </gn-sidebar-content>
-        </gn-sidebar>
-        <gn-sidebar-inset class="p-4">
-          <gn-sidebar-trigger></gn-sidebar-trigger>
+              </gr-sidebar-group-content>
+            </gr-sidebar-group>
+          </gr-sidebar-content>
+        </gr-sidebar>
+        <gr-sidebar-inset class="p-4">
+          <gr-sidebar-trigger></gr-sidebar-trigger>
           <p class="mt-2 text-sm text-muted-foreground">Main content area.</p>
-        </gn-sidebar-inset>
-      </gn-sidebar-provider>
+        </gr-sidebar-inset>
+      </gr-sidebar-provider>
     `,
   }),
 };

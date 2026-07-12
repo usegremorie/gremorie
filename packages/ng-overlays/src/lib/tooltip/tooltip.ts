@@ -29,8 +29,8 @@ import { cn } from '@gremorie/ng-core';
  * trigger holds focus. Critical info belongs visibly in the layout.
  *
  * Anatomy (compound parts kept for API parity with React/Radix):
- * `gn-tooltip-provider` → `gn-tooltip` (root) → `gn-tooltip-trigger`
- * (the hover/focus target) + `gn-tooltip-content` (the styled surface,
+ * `gr-tooltip-provider` → `gr-tooltip` (root) → `gr-tooltip-trigger`
+ * (the hover/focus target) + `gr-tooltip-content` (the styled surface,
  * projected as a template).
  *
  * Divergence vs. React/Radix: Radix is a compound of Provider/Root/Trigger/
@@ -39,27 +39,27 @@ import { cn } from '@gremorie/ng-core';
  * the content (string or `TemplateRef`) is passed via the `brnTooltip` input,
  * and timing is configured per-directive via `showDelay`/`hideDelay`. To keep
  * the React API surface, this edition provides all four compound parts:
- * `gn-tooltip-provider` is a no-op pass-through container (there is no shared
- * delay context to host — delay lives per `gn-tooltip`), `gn-tooltip` shares
- * the projected `gn-tooltip-content` template + positioning/timing with its
- * `gn-tooltip-trigger` through a small context token, and the trigger binds
+ * `gr-tooltip-provider` is a no-op pass-through container (there is no shared
+ * delay context to host — delay lives per `gr-tooltip`), `gr-tooltip` shares
+ * the projected `gr-tooltip-content` template + positioning/timing with its
+ * `gr-tooltip-trigger` through a small context token, and the trigger binds
  * them declaratively onto the brain `brnTooltip` directive. The React
  * `tooltip-content` Tailwind classes are applied verbatim to the surface.
  *
  * @example
  * ```html
- * <gn-tooltip-provider>
- *   <gn-tooltip>
- *     <gn-tooltip-trigger>
+ * <gr-tooltip-provider>
+ *   <gr-tooltip>
+ *     <gr-tooltip-trigger>
  *       <button type="button">Hover</button>
- *     </gn-tooltip-trigger>
- *     <gn-tooltip-content>Add to library</gn-tooltip-content>
- *   </gn-tooltip>
- * </gn-tooltip-provider>
+ *     </gr-tooltip-trigger>
+ *     <gr-tooltip-content>Add to library</gr-tooltip-content>
+ *   </gr-tooltip>
+ * </gr-tooltip-provider>
  * ```
  */
 
-/** Context shared from `gn-tooltip` down to its trigger and content parts. */
+/** Context shared from `gr-tooltip` down to its trigger and content parts. */
 interface TooltipRootState {
   readonly content: Signal<TemplateRef<void> | undefined>;
   readonly position: Signal<BrnTooltipPosition>;
@@ -78,7 +78,7 @@ const TOOLTIP_ROOT = new InjectionToken<TooltipRootState>('TooltipRoot');
 const BRN_FIXED_OFFSET = 8;
 
 @Component({
-  selector: 'gn-tooltip-provider',
+  selector: 'gr-tooltip-provider',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -91,7 +91,7 @@ const BRN_FIXED_OFFSET = 8;
 export class TooltipProvider {
   /**
    * Mirrors React `delayDuration`. Brain has no shared delay context, so this
-   * is documented for parity but applied per-`gn-tooltip` via `delayDuration`.
+   * is documented for parity but applied per-`gr-tooltip` via `delayDuration`.
    */
   readonly delayDuration = input<number>(0);
 }
@@ -103,7 +103,7 @@ export class TooltipProvider {
  * to the rendered wrapper verbatim.
  */
 @Component({
-  selector: 'gn-tooltip-content',
+  selector: 'gr-tooltip-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -127,7 +127,7 @@ export class TooltipContent {
 
   readonly class = input<string>();
 
-  /** The captured surface template, consumed by the parent `gn-tooltip`. */
+  /** The captured surface template, consumed by the parent `gr-tooltip`. */
   @ViewChild('tpl', { static: true }) readonly template!: TemplateRef<void>;
 
   protected readonly contentClass = computed(() =>
@@ -166,7 +166,7 @@ export class TooltipContent {
 /**
  * TooltipTrigger — the hover/focus target carrying the brain `brnTooltip`
  * directive. Mirrors React `TooltipTrigger`. Reads the content template and
- * positioning/timing from the owning `gn-tooltip` and binds them declaratively.
+ * positioning/timing from the owning `gr-tooltip` and binds them declaratively.
  *
  * The inner span carrying `brnTooltip` is the CDK overlay's position origin,
  * so it MUST produce a real box: `display: contents` elements report an
@@ -177,7 +177,7 @@ export class TooltipContent {
  * `class="flex w-full items-center gap-2 min-w-0"`.
  */
 @Component({
-  selector: 'gn-tooltip-trigger',
+  selector: 'gr-tooltip-trigger',
   standalone: true,
   imports: [BrnTooltip],
   encapsulation: ViewEncapsulation.None,
@@ -225,12 +225,12 @@ export class TooltipTrigger {
 }
 
 /**
- * Tooltip — the root that shares the projected `gn-tooltip-content` template
- * and positioning/timing with its `gn-tooltip-trigger`. Mirrors React
+ * Tooltip — the root that shares the projected `gr-tooltip-content` template
+ * and positioning/timing with its `gr-tooltip-trigger`. Mirrors React
  * `Tooltip`.
  */
 @Component({
-  selector: 'gn-tooltip',
+  selector: 'gr-tooltip',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -23,17 +23,17 @@ import {
     BrnPopoverContent,
   ],
   template: `
-    <gn-popover>
-      <gn-popover-trigger [content]="content">Open</gn-popover-trigger>
+    <gr-popover>
+      <gr-popover-trigger [content]="content">Open</gr-popover-trigger>
       <ng-template #content brnPopoverContent>
-        <gn-popover-content>
-          <gn-popover-header>
-            <gn-popover-title>Title</gn-popover-title>
-            <gn-popover-description>Body</gn-popover-description>
-          </gn-popover-header>
-        </gn-popover-content>
+        <gr-popover-content>
+          <gr-popover-header>
+            <gr-popover-title>Title</gr-popover-title>
+            <gr-popover-description>Body</gr-popover-description>
+          </gr-popover-header>
+        </gr-popover-content>
       </ng-template>
-    </gn-popover>
+    </gr-popover>
   `,
 })
 class Host {}

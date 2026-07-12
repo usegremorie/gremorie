@@ -17,7 +17,7 @@ import {
  * Sheet — side-anchored panel for longer flows. Mirrors React `Sheet`.
  *
  * Behavior delegated to spartan brain `BrnSheet`. The slide direction lives on
- * the `<gn-sheet>` root (`side`); pass the same `side` to `<gn-sheet-content>`
+ * the `<gr-sheet>` root (`side`); pass the same `side` to `<gr-sheet-content>`
  * for the matching layout classes. Panel markup lives inside
  * `<ng-template brnSheetContent>`.
  */
@@ -51,27 +51,27 @@ type Story = StoryObj<Sheet>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-sheet side="right">
-        <button gn-sheet-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-sheet side="right">
+        <button gr-sheet-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open sheet
         </button>
         <ng-template brnSheetContent>
-          <gn-sheet-content side="right">
-            <gn-sheet-header>
-              <h2 gn-sheet-title>Edit settings</h2>
-              <p gn-sheet-description>Adjust your preferences and save.</p>
-            </gn-sheet-header>
+          <gr-sheet-content side="right">
+            <gr-sheet-header>
+              <h2 gr-sheet-title>Edit settings</h2>
+              <p gr-sheet-description>Adjust your preferences and save.</p>
+            </gr-sheet-header>
             <div class="flex-1 px-4 text-sm text-muted-foreground">
               Panel body content.
             </div>
-            <gn-sheet-footer>
-              <button gn-sheet-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+            <gr-sheet-footer>
+              <button gr-sheet-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Save changes
               </button>
-            </gn-sheet-footer>
-          </gn-sheet-content>
+            </gr-sheet-footer>
+          </gr-sheet-content>
         </ng-template>
-      </gn-sheet>
+      </gr-sheet>
     `,
   }),
 };
@@ -80,19 +80,19 @@ export const Workbench: Story = {
 export const Left: Story = {
   render: () => ({
     template: `
-      <gn-sheet side="left">
-        <button gn-sheet-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-sheet side="left">
+        <button gr-sheet-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open menu
         </button>
         <ng-template brnSheetContent>
-          <gn-sheet-content side="left">
-            <gn-sheet-header>
-              <h2 gn-sheet-title>Navigation</h2>
-              <p gn-sheet-description>Jump to a section.</p>
-            </gn-sheet-header>
-          </gn-sheet-content>
+          <gr-sheet-content side="left">
+            <gr-sheet-header>
+              <h2 gr-sheet-title>Navigation</h2>
+              <p gr-sheet-description>Jump to a section.</p>
+            </gr-sheet-header>
+          </gr-sheet-content>
         </ng-template>
-      </gn-sheet>
+      </gr-sheet>
     `,
   }),
 };
@@ -101,19 +101,19 @@ export const Left: Story = {
 export const Bottom: Story = {
   render: () => ({
     template: `
-      <gn-sheet side="bottom">
-        <button gn-sheet-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-sheet side="bottom">
+        <button gr-sheet-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open from bottom
         </button>
         <ng-template brnSheetContent>
-          <gn-sheet-content side="bottom">
-            <gn-sheet-header>
-              <h2 gn-sheet-title>Quick actions</h2>
-              <p gn-sheet-description>Pick an action below.</p>
-            </gn-sheet-header>
-          </gn-sheet-content>
+          <gr-sheet-content side="bottom">
+            <gr-sheet-header>
+              <h2 gr-sheet-title>Quick actions</h2>
+              <p gr-sheet-description>Pick an action below.</p>
+            </gr-sheet-header>
+          </gr-sheet-content>
         </ng-template>
-      </gn-sheet>
+      </gr-sheet>
     `,
   }),
 };

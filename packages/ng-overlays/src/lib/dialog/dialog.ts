@@ -23,40 +23,40 @@ import { cn } from '@gremorie/ng-core';
  * context — confirmations, single-step forms, detail cards. For longer flows
  * use Sheet; for inline contextual content use Popover.
  *
- * Anatomy: `gn-dialog` (root, hosts `brnDialog`) → `gn-dialog-trigger`
+ * Anatomy: `gr-dialog` (root, hosts `brnDialog`) → `gr-dialog-trigger`
  * (`<button brnDialogTrigger>`) + `<ng-template brnDialogContent>` wrapping
- * `gn-dialog-content` (the styled panel) → `gn-dialog-header` /
- * `gn-dialog-footer` / `gn-dialog-title` / `gn-dialog-description` /
- * `gn-dialog-close`.
+ * `gr-dialog-content` (the styled panel) → `gr-dialog-header` /
+ * `gr-dialog-footer` / `gr-dialog-title` / `gr-dialog-description` /
+ * `gr-dialog-close`.
  *
  * Divergence vs. React/Radix: Radix renders content through a portal that is a
  * direct child of the JSX tree, so React composes `DialogContent` inline.
  * `@spartan-ng/brain` renders content from a `<ng-template brnDialogContent>`
  * into a CDK overlay — so the consumer wraps the panel markup in that template
  * (see `@example`). `DialogPortal` / `DialogOverlay` are not exposed as Angular
- * parts: the brain `BrnDialog` owns the backdrop/overlay, and `gn-dialog-content`
+ * parts: the brain `BrnDialog` owns the backdrop/overlay, and `gr-dialog-content`
  * carries the overlay panel classes (the React overlay's `bg-black/50` backdrop
  * is the brain default backdrop). The internal close button is rendered eagerly
- * inside `gn-dialog-content` when `showCloseButton` is true, matching React.
+ * inside `gr-dialog-content` when `showCloseButton` is true, matching React.
  *
  * @example
  * ```html
- * <gn-dialog>
- *   <button gn-dialog-trigger>Open</button>
+ * <gr-dialog>
+ *   <button gr-dialog-trigger>Open</button>
  *   <ng-template brnDialogContent>
- *     <gn-dialog-content>
- *       <gn-dialog-header>
- *         <h2 gn-dialog-title>Title</h2>
- *         <p gn-dialog-description>Description</p>
- *       </gn-dialog-header>
- *       <gn-dialog-footer />
- *     </gn-dialog-content>
+ *     <gr-dialog-content>
+ *       <gr-dialog-header>
+ *         <h2 gr-dialog-title>Title</h2>
+ *         <p gr-dialog-description>Description</p>
+ *       </gr-dialog-header>
+ *       <gr-dialog-footer />
+ *     </gr-dialog-content>
  *   </ng-template>
- * </gn-dialog>
+ * </gr-dialog>
  * ```
  */
 @Component({
-  selector: 'gn-dialog',
+  selector: 'gr-dialog',
   standalone: true,
   hostDirectives: [{ directive: BrnDialog, inputs: ['closeOnBackdropClick'] }],
   encapsulation: ViewEncapsulation.None,
@@ -71,7 +71,7 @@ export class Dialog {}
  * `<button brnDialogTrigger>` that resolves the ancestor `BrnDialog` via DI.
  */
 @Component({
-  selector: 'gn-dialog-trigger, button[gn-dialog-trigger]',
+  selector: 'gr-dialog-trigger, button[gr-dialog-trigger]',
   standalone: true,
   hostDirectives: [BrnDialogTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -88,7 +88,7 @@ export class DialogTrigger {}
  * `brnDialogClose`.
  */
 @Component({
-  selector: 'gn-dialog-content',
+  selector: 'gr-dialog-content',
   standalone: true,
   imports: [BrnDialogClose],
   encapsulation: ViewEncapsulation.None,
@@ -137,7 +137,7 @@ export class DialogContent {
 
 /** DialogHeader — vertical stack for title + description. Mirrors React `DialogHeader`. */
 @Component({
-  selector: 'gn-dialog-header',
+  selector: 'gr-dialog-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -160,7 +160,7 @@ export class DialogHeader {
  * `brnDialogClose` (React delegates this to the Button primitive).
  */
 @Component({
-  selector: 'gn-dialog-footer',
+  selector: 'gr-dialog-footer',
   standalone: true,
   imports: [BrnDialogClose],
   encapsulation: ViewEncapsulation.None,
@@ -193,7 +193,7 @@ export class DialogFooter {
 
 /** DialogTitle — accessible heading. Mirrors React `DialogTitle`. */
 @Component({
-  selector: 'gn-dialog-title, [gn-dialog-title]',
+  selector: 'gr-dialog-title, [gr-dialog-title]',
   standalone: true,
   hostDirectives: [BrnDialogTitle],
   encapsulation: ViewEncapsulation.None,
@@ -213,7 +213,7 @@ export class DialogTitle {
 
 /** DialogDescription — supporting copy. Mirrors React `DialogDescription`. */
 @Component({
-  selector: 'gn-dialog-description, [gn-dialog-description]',
+  selector: 'gr-dialog-description, [gr-dialog-description]',
   standalone: true,
   hostDirectives: [BrnDialogDescription],
   encapsulation: ViewEncapsulation.None,
@@ -236,7 +236,7 @@ export class DialogDescription {
  * `<button brnDialogClose>` for consumer-placed close actions.
  */
 @Component({
-  selector: 'gn-dialog-close, button[gn-dialog-close]',
+  selector: 'gr-dialog-close, button[gr-dialog-close]',
   standalone: true,
   hostDirectives: [BrnDialogClose],
   encapsulation: ViewEncapsulation.None,

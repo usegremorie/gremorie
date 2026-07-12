@@ -40,7 +40,7 @@ export const drawer = defineContract({
       default: 'bottom',
       options: ['top', 'right', 'bottom', 'left'],
       adapts: {
-        ng: 'direction on gn-drawer-content (+ side on gn-drawer root)',
+        ng: 'direction on gr-drawer-content (+ side on gr-drawer root)',
       },
       desc: 'Which edge the drawer slides in from.',
     },
@@ -79,7 +79,7 @@ export const drawer = defineContract({
     rules: [
       'DrawerTrigger opens the drawer on click; it closes on overlay click, Escape, or (React) drag-down.',
       'React uses vaul, which adds drag-to-dismiss, momentum, and shouldScaleBackground; the Angular edition is built on the brain BrnSheet and has no vaul drag physics - it renders a static handle and sets data-vaul-drawer-direction for class parity.',
-      'Angular renders the panel from a `<ng-template brnSheetContent>`; pass direction to gn-drawer-content (and the matching side to the gn-drawer root).',
+      'Angular renders the panel from a `<ng-template brnSheetContent>`; pass direction to gr-drawer-content (and the matching side to the gr-drawer root).',
     ],
     example:
       '<Drawer><DrawerTrigger>Open</DrawerTrigger><DrawerContent><DrawerHeader><DrawerTitle>Filters</DrawerTitle></DrawerHeader><DrawerFooter><DrawerClose>Close</DrawerClose></DrawerFooter></DrawerContent></Drawer>',
@@ -88,7 +88,7 @@ export const drawer = defineContract({
     rx: 'interaction-overlays-drawer--workbench',
     ng: 'interaction-overlays-drawer--workbench',
   },
-  tag: { rx: 'Drawer', ng: 'gn-drawer' },
+  tag: { rx: 'Drawer', ng: 'gr-drawer' },
   example: {
     defaultOpen: false,
     direction: 'bottom',

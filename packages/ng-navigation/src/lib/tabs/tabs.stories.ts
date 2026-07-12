@@ -30,12 +30,12 @@ export default meta;
 type Story = StoryObj<Tabs>;
 
 const PANELS = `
-  <gn-tabs-content value="overview" class="text-sm text-muted-foreground">
+  <gr-tabs-content value="overview" class="text-sm text-muted-foreground">
     Make changes to your account here.
-  </gn-tabs-content>
-  <gn-tabs-content value="password" class="text-sm text-muted-foreground">
+  </gr-tabs-content>
+  <gr-tabs-content value="password" class="text-sm text-muted-foreground">
     Change your password here.
-  </gn-tabs-content>
+  </gr-tabs-content>
 `;
 
 /** Workbench — pill-style list, first tab active by default. */
@@ -44,13 +44,13 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-tabs [orientation]="orientation" defaultValue="overview" class="w-96">
-        <gn-tabs-list>
-          <gn-tabs-trigger value="overview">Overview</gn-tabs-trigger>
-          <gn-tabs-trigger value="password">Password</gn-tabs-trigger>
-        </gn-tabs-list>
+      <gr-tabs [orientation]="orientation" defaultValue="overview" class="w-96">
+        <gr-tabs-list>
+          <gr-tabs-trigger value="overview">Overview</gr-tabs-trigger>
+          <gr-tabs-trigger value="password">Password</gr-tabs-trigger>
+        </gr-tabs-list>
         ${PANELS}
-      </gn-tabs>
+      </gr-tabs>
     `,
   }),
 };
@@ -59,13 +59,13 @@ export const Workbench: Story = {
 export const Line: Story = {
   render: () => ({
     template: `
-      <gn-tabs defaultValue="overview" class="w-96">
-        <gn-tabs-list variant="line">
-          <gn-tabs-trigger value="overview">Overview</gn-tabs-trigger>
-          <gn-tabs-trigger value="password">Password</gn-tabs-trigger>
-        </gn-tabs-list>
+      <gr-tabs defaultValue="overview" class="w-96">
+        <gr-tabs-list variant="line">
+          <gr-tabs-trigger value="overview">Overview</gr-tabs-trigger>
+          <gr-tabs-trigger value="password">Password</gr-tabs-trigger>
+        </gr-tabs-list>
         ${PANELS}
-      </gn-tabs>
+      </gr-tabs>
     `,
   }),
 };
@@ -74,18 +74,18 @@ export const Line: Story = {
 export const Vertical: Story = {
   render: () => ({
     template: `
-      <gn-tabs orientation="vertical" defaultValue="profile">
-        <gn-tabs-list>
-          <gn-tabs-trigger value="profile">Profile</gn-tabs-trigger>
-          <gn-tabs-trigger value="settings">Settings</gn-tabs-trigger>
-        </gn-tabs-list>
-        <gn-tabs-content value="profile" class="rounded-md border p-4 text-sm text-muted-foreground">
+      <gr-tabs orientation="vertical" defaultValue="profile">
+        <gr-tabs-list>
+          <gr-tabs-trigger value="profile">Profile</gr-tabs-trigger>
+          <gr-tabs-trigger value="settings">Settings</gr-tabs-trigger>
+        </gr-tabs-list>
+        <gr-tabs-content value="profile" class="rounded-md border p-4 text-sm text-muted-foreground">
           Your public profile.
-        </gn-tabs-content>
-        <gn-tabs-content value="settings" class="rounded-md border p-4 text-sm text-muted-foreground">
+        </gr-tabs-content>
+        <gr-tabs-content value="settings" class="rounded-md border p-4 text-sm text-muted-foreground">
           Application settings.
-        </gn-tabs-content>
-      </gn-tabs>
+        </gr-tabs-content>
+      </gr-tabs>
     `,
   }),
 };
@@ -94,15 +94,15 @@ export const Vertical: Story = {
 export const DisabledTab: Story = {
   render: () => ({
     template: `
-      <gn-tabs defaultValue="active" class="w-96">
-        <gn-tabs-list>
-          <gn-tabs-trigger value="active">Active</gn-tabs-trigger>
-          <gn-tabs-trigger value="disabled" [disabled]="true">Disabled</gn-tabs-trigger>
-        </gn-tabs-list>
-        <gn-tabs-content value="active" class="text-sm text-muted-foreground">
+      <gr-tabs defaultValue="active" class="w-96">
+        <gr-tabs-list>
+          <gr-tabs-trigger value="active">Active</gr-tabs-trigger>
+          <gr-tabs-trigger value="disabled" [disabled]="true">Disabled</gr-tabs-trigger>
+        </gr-tabs-list>
+        <gr-tabs-content value="active" class="text-sm text-muted-foreground">
           This tab is selectable.
-        </gn-tabs-content>
-      </gn-tabs>
+        </gr-tabs-content>
+      </gr-tabs>
     `,
   }),
 };

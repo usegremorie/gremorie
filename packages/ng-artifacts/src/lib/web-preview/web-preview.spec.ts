@@ -82,13 +82,13 @@ describe('WebPreview', () => {
     expect(button.getAttribute('title')).toBeNull();
   });
 
-  it('shows the STYLED tooltip surface on hover (gn-tooltip, not native title)', async () => {
+  it('shows the STYLED tooltip surface on hover (gr-tooltip, not native title)', async () => {
     const fixture = render();
     await fixture.whenStable();
     const host = fixture.nativeElement as HTMLElement;
 
     // Regression: the tooltip once rendered as a native `title` attribute
-    // instead of the styled gn-tooltip compound.
+    // instead of the styled gr-tooltip compound.
     expect(host.querySelector('[data-slot="tooltip-trigger"]')).not.toBeNull();
 
     // The anchor span carries a real box (inline-flex) so the CDK overlay

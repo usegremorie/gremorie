@@ -26,36 +26,36 @@ type SheetSide = 'top' | 'right' | 'bottom' | 'left';
  * Popover. `right` is the default; `left` for navigation; `bottom` for mobile;
  * `top` for global notifications.
  *
- * Anatomy: `gn-sheet` (root, hosts `brnSheet`, takes `side`) →
- * `gn-sheet-trigger` + `<ng-template brnSheetContent>` wrapping
- * `gn-sheet-content` (the styled panel) → `gn-sheet-header` / `gn-sheet-footer`
- * / `gn-sheet-title` / `gn-sheet-description` / `gn-sheet-close`.
+ * Anatomy: `gr-sheet` (root, hosts `brnSheet`, takes `side`) →
+ * `gr-sheet-trigger` + `<ng-template brnSheetContent>` wrapping
+ * `gr-sheet-content` (the styled panel) → `gr-sheet-header` / `gr-sheet-footer`
+ * / `gr-sheet-title` / `gr-sheet-description` / `gr-sheet-close`.
  *
  * Divergence vs. React/Radix: brain renders content from a
  * `<ng-template brnSheetContent>` into a CDK overlay. The slide direction lives
  * on the brain `BrnSheet` root (`side` input) — React keeps `side` on
- * `SheetContent`. For class parity, `gn-sheet-content` also takes a `side`
+ * `SheetContent`. For class parity, `gr-sheet-content` also takes a `side`
  * input (default `right`) that drives the per-side Tailwind classes verbatim;
- * pass the same `side` to `gn-sheet` so the animation matches. `SheetPortal` /
+ * pass the same `side` to `gr-sheet` so the animation matches. `SheetPortal` /
  * `SheetOverlay` are not exposed as Angular parts (brain owns them).
  *
  * @example
  * ```html
- * <gn-sheet side="right">
- *   <button gn-sheet-trigger>Open</button>
+ * <gr-sheet side="right">
+ *   <button gr-sheet-trigger>Open</button>
  *   <ng-template brnSheetContent>
- *     <gn-sheet-content side="right">
- *       <gn-sheet-header>
- *         <h2 gn-sheet-title>Title</h2>
- *         <p gn-sheet-description>Description</p>
- *       </gn-sheet-header>
- *     </gn-sheet-content>
+ *     <gr-sheet-content side="right">
+ *       <gr-sheet-header>
+ *         <h2 gr-sheet-title>Title</h2>
+ *         <p gr-sheet-description>Description</p>
+ *       </gr-sheet-header>
+ *     </gr-sheet-content>
  *   </ng-template>
- * </gn-sheet>
+ * </gr-sheet>
  * ```
  */
 @Component({
-  selector: 'gn-sheet',
+  selector: 'gr-sheet',
   standalone: true,
   hostDirectives: [{ directive: BrnSheet, inputs: ['side'] }],
   encapsulation: ViewEncapsulation.None,
@@ -70,7 +70,7 @@ export class Sheet {}
  * `<button brnSheetTrigger>` that resolves the ancestor `BrnSheet` via DI.
  */
 @Component({
-  selector: 'gn-sheet-trigger, button[gn-sheet-trigger]',
+  selector: 'gr-sheet-trigger, button[gr-sheet-trigger]',
   standalone: true,
   hostDirectives: [BrnSheetTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -86,7 +86,7 @@ export class SheetTrigger {}
  * (default) it renders the lucide `X` close button wired to `brnSheetClose`.
  */
 @Component({
-  selector: 'gn-sheet-content',
+  selector: 'gr-sheet-content',
   standalone: true,
   imports: [BrnSheetClose],
   encapsulation: ViewEncapsulation.None,
@@ -146,7 +146,7 @@ export class SheetContent {
 
 /** SheetHeader — title/description stack. Mirrors React `SheetHeader`. */
 @Component({
-  selector: 'gn-sheet-header',
+  selector: 'gr-sheet-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -165,7 +165,7 @@ export class SheetHeader {
 
 /** SheetFooter — bottom-anchored action row. Mirrors React `SheetFooter`. */
 @Component({
-  selector: 'gn-sheet-footer',
+  selector: 'gr-sheet-footer',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -184,7 +184,7 @@ export class SheetFooter {
 
 /** SheetTitle — accessible heading. Mirrors React `SheetTitle`. */
 @Component({
-  selector: 'gn-sheet-title, [gn-sheet-title]',
+  selector: 'gr-sheet-title, [gr-sheet-title]',
   standalone: true,
   hostDirectives: [BrnSheetTitle],
   encapsulation: ViewEncapsulation.None,
@@ -204,7 +204,7 @@ export class SheetTitle {
 
 /** SheetDescription — supporting copy. Mirrors React `SheetDescription`. */
 @Component({
-  selector: 'gn-sheet-description, [gn-sheet-description]',
+  selector: 'gr-sheet-description, [gr-sheet-description]',
   standalone: true,
   hostDirectives: [BrnSheetDescription],
   encapsulation: ViewEncapsulation.None,
@@ -227,7 +227,7 @@ export class SheetDescription {
  * `<button brnSheetClose>` for consumer-placed close actions.
  */
 @Component({
-  selector: 'gn-sheet-close, button[gn-sheet-close]',
+  selector: 'gr-sheet-close, button[gr-sheet-close]',
   standalone: true,
   hostDirectives: [BrnSheetClose],
   encapsulation: ViewEncapsulation.None,

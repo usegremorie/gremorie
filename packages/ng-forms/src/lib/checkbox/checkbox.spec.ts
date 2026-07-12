@@ -6,7 +6,7 @@ import { Checkbox } from './checkbox';
 @Component({
   standalone: true,
   imports: [Checkbox],
-  template: `<gn-checkbox [checked]="checked()" [disabled]="disabled()" />`,
+  template: `<gr-checkbox [checked]="checked()" [disabled]="disabled()" />`,
 })
 class Host {
   checked = signal<boolean | 'indeterminate'>(false);

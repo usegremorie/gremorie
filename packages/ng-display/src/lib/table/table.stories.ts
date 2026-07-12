@@ -47,43 +47,43 @@ export const Workbench: Story = {
   render: () => ({
     template: `
       <div class="w-[36rem]">
-        <gn-table>
-          <caption gnTableCaption>A list of your recent invoices.</caption>
-          <thead gnTableHeader>
-            <tr gnTableRow>
-              <th gnTableHead>Invoice</th>
-              <th gnTableHead>Status</th>
-              <th gnTableHead>Method</th>
-              <th gnTableHead class="text-right">Amount</th>
+        <gr-table>
+          <caption grTableCaption>A list of your recent invoices.</caption>
+          <thead grTableHeader>
+            <tr grTableRow>
+              <th grTableHead>Invoice</th>
+              <th grTableHead>Status</th>
+              <th grTableHead>Method</th>
+              <th grTableHead class="text-right">Amount</th>
             </tr>
           </thead>
-          <tbody gnTableBody>
-            <tr gnTableRow>
-              <td gnTableCell class="font-medium">INV001</td>
-              <td gnTableCell>Paid</td>
-              <td gnTableCell>Credit Card</td>
-              <td gnTableCell class="text-right">$250.00</td>
+          <tbody grTableBody>
+            <tr grTableRow>
+              <td grTableCell class="font-medium">INV001</td>
+              <td grTableCell>Paid</td>
+              <td grTableCell>Credit Card</td>
+              <td grTableCell class="text-right">$250.00</td>
             </tr>
-            <tr gnTableRow>
-              <td gnTableCell class="font-medium">INV002</td>
-              <td gnTableCell>Pending</td>
-              <td gnTableCell>PayPal</td>
-              <td gnTableCell class="text-right">$150.00</td>
+            <tr grTableRow>
+              <td grTableCell class="font-medium">INV002</td>
+              <td grTableCell>Pending</td>
+              <td grTableCell>PayPal</td>
+              <td grTableCell class="text-right">$150.00</td>
             </tr>
-            <tr gnTableRow>
-              <td gnTableCell class="font-medium">INV003</td>
-              <td gnTableCell>Unpaid</td>
-              <td gnTableCell>Bank Transfer</td>
-              <td gnTableCell class="text-right">$350.00</td>
+            <tr grTableRow>
+              <td grTableCell class="font-medium">INV003</td>
+              <td grTableCell>Unpaid</td>
+              <td grTableCell>Bank Transfer</td>
+              <td grTableCell class="text-right">$350.00</td>
             </tr>
           </tbody>
-          <tfoot gnTableFooter>
-            <tr gnTableRow>
-              <td gnTableCell colspan="3">Total</td>
-              <td gnTableCell class="text-right">$750.00</td>
+          <tfoot grTableFooter>
+            <tr grTableRow>
+              <td grTableCell colspan="3">Total</td>
+              <td grTableCell class="text-right">$750.00</td>
             </tr>
           </tfoot>
-        </gn-table>
+        </gr-table>
       </div>
     `,
   }),
@@ -94,18 +94,18 @@ export const Simple: Story = {
   render: () => ({
     template: `
       <div class="w-96">
-        <gn-table>
-          <thead gnTableHeader>
-            <tr gnTableRow>
-              <th gnTableHead>Name</th>
-              <th gnTableHead>Role</th>
+        <gr-table>
+          <thead grTableHeader>
+            <tr grTableRow>
+              <th grTableHead>Name</th>
+              <th grTableHead>Role</th>
             </tr>
           </thead>
-          <tbody gnTableBody>
-            <tr gnTableRow><td gnTableCell>Ada Lovelace</td><td gnTableCell>Engineer</td></tr>
-            <tr gnTableRow><td gnTableCell>Alan Turing</td><td gnTableCell>Scientist</td></tr>
+          <tbody grTableBody>
+            <tr grTableRow><td grTableCell>Ada Lovelace</td><td grTableCell>Engineer</td></tr>
+            <tr grTableRow><td grTableCell>Alan Turing</td><td grTableCell>Scientist</td></tr>
           </tbody>
-        </gn-table>
+        </gr-table>
       </div>
     `,
   }),
@@ -116,13 +116,13 @@ export const SelectedRow: Story = {
   render: () => ({
     template: `
       <div class="w-96">
-        <gn-table>
-          <tbody gnTableBody>
-            <tr gnTableRow><td gnTableCell>Row one</td></tr>
-            <tr gnTableRow data-state="selected"><td gnTableCell>Row two (selected)</td></tr>
-            <tr gnTableRow><td gnTableCell>Row three</td></tr>
+        <gr-table>
+          <tbody grTableBody>
+            <tr grTableRow><td grTableCell>Row one</td></tr>
+            <tr grTableRow data-state="selected"><td grTableCell>Row two (selected)</td></tr>
+            <tr grTableRow><td grTableCell>Row three</td></tr>
           </tbody>
-        </gn-table>
+        </gr-table>
       </div>
     `,
   }),

@@ -61,7 +61,7 @@ export const inputOtp = defineContract({
       name: 'index',
       type: 'number',
       required: true,
-      adapts: { rx: 'on <InputOTPSlot>', ng: 'on <gn-input-otp-slot>' },
+      adapts: { rx: 'on <InputOTPSlot>', ng: 'on <gr-input-otp-slot>' },
       desc: 'Which slot a given input-otp-slot renders (on the slot sub-component).',
     },
   ],
@@ -85,7 +85,7 @@ export const inputOtp = defineContract({
     rx: 'inputs-text-inputotp--workbench',
     ng: 'inputs-text-inputotp--workbench',
   },
-  tag: { rx: 'InputOTP', ng: 'gn-input-otp' },
+  tag: { rx: 'InputOTP', ng: 'gr-input-otp' },
   example: {
     maxLength: 6,
     disabled: false,

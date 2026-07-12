@@ -71,15 +71,15 @@ export type StackJustify = NonNullable<
  *
  * @example
  * ```html
- * <gn-stack gap="md" class="w-64">
+ * <gr-stack gap="md" class="w-64">
  *   <div>One</div>
  *   <div>Two</div>
  *   <div>Three</div>
- * </gn-stack>
+ * </gr-stack>
  * ```
  */
 @Component({
-  selector: 'gn-stack',
+  selector: 'gr-stack',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

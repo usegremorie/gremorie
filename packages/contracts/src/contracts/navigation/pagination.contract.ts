@@ -61,7 +61,7 @@ export const pagination = defineContract({
     rx: 'interaction-navigation-pagination--workbench',
     ng: 'interaction-navigation-pagination--workbench',
   },
-  tag: { rx: 'Pagination', ng: 'gn-pagination' },
+  tag: { rx: 'Pagination', ng: 'gr-pagination' },
   example: { isActive: false, size: 'icon' },
   figma: { nodeId: null },
 });

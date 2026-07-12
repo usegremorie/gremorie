@@ -6,7 +6,7 @@ import { Sonner, toast } from './sonner';
 @Component({
   standalone: true,
   imports: [Sonner],
-  template: `<gn-sonner [theme]="theme" />`,
+  template: `<gr-sonner [theme]="theme" />`,
 })
 class Host {
   theme: 'light' | 'dark' | 'system' = 'light';
@@ -22,7 +22,7 @@ describe('Sonner', () => {
 
   it('renders the brn-sonner-toaster host with the toaster data-slot', () => {
     const host = render().nativeElement as HTMLElement;
-    // The gn-sonner host carries the data-slot; the brain toaster mounts inside.
+    // The gr-sonner host carries the data-slot; the brain toaster mounts inside.
     expect(host.querySelector('[data-slot="sonner"]')).not.toBeNull();
     expect(host.querySelector('brn-sonner-toaster')).not.toBeNull();
   });

@@ -6,7 +6,7 @@ import { AspectRatio } from './aspect-ratio';
 @Component({
   standalone: true,
   imports: [AspectRatio],
-  template: `<gn-aspect-ratio [ratio]="ratio"><img alt="" /></gn-aspect-ratio>`,
+  template: `<gr-aspect-ratio [ratio]="ratio"><img alt="" /></gr-aspect-ratio>`,
 })
 class Host {
   ratio = 16 / 9;

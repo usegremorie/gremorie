@@ -53,16 +53,16 @@ export type BadgeVariant = NonNullable<
  *
  * @example
  * ```html
- * <gn-badge>Default</gn-badge>
- * <gn-badge variant="secondary">Secondary</gn-badge>
- * <gn-badge variant="destructive">Destructive</gn-badge>
- * <gn-badge variant="outline">Outline</gn-badge>
- * <gn-badge variant="ghost">Ghost</gn-badge>
- * <gn-badge variant="link">Link</gn-badge>
+ * <gr-badge>Default</gr-badge>
+ * <gr-badge variant="secondary">Secondary</gr-badge>
+ * <gr-badge variant="destructive">Destructive</gr-badge>
+ * <gr-badge variant="outline">Outline</gr-badge>
+ * <gr-badge variant="ghost">Ghost</gr-badge>
+ * <gr-badge variant="link">Link</gr-badge>
  * ```
  */
 @Component({
-  selector: 'gn-badge',
+  selector: 'gr-badge',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

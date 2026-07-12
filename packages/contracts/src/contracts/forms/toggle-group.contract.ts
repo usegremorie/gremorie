@@ -88,7 +88,7 @@ export const toggleGroup = defineContract({
     rx: 'inputs-buttons-togglegroup--workbench',
     ng: 'inputs-buttons-togglegroup--workbench',
   },
-  tag: { rx: 'ToggleGroup', ng: 'gn-toggle-group' },
+  tag: { rx: 'ToggleGroup', ng: 'gr-toggle-group' },
   example: {
     type: 'single',
     variant: 'outline',

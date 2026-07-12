@@ -112,7 +112,7 @@ export const sidebar = defineContract({
     rx: 'interaction-navigation-sidebar--workbench',
     ng: 'interaction-navigation-sidebar--workbench',
   },
-  tag: { rx: 'Sidebar', ng: 'gn-sidebar' },
+  tag: { rx: 'Sidebar', ng: 'gr-sidebar' },
   example: {
     side: 'left',
     variant: 'sidebar',
