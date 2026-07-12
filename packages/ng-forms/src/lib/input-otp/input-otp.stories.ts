@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 
 import {
+  BrnInputOtp,
   InputOtp,
   InputOtpGroup,
   InputOtpSeparator,
@@ -15,13 +16,22 @@ import {
  * `one-time-code` input and per-slot caret state. Use for 2FA / verification
  * codes.
  */
-const meta: Meta<InputOtp> = {
+// Typed to BrnInputOtp: the consumer element is now `<brn-input-otp gnInputOtp>`
+// and the controllable props (maxLength / disabled) live on the brain element.
+// The gnInputOtp styling directive is applied in every template.
+const meta: Meta<BrnInputOtp> = {
   title: 'Inputs/Text/InputOTP',
-  component: InputOtp,
+  component: BrnInputOtp,
   tags: ['autodocs'],
   decorators: [
     moduleMetadata({
-      imports: [InputOtp, InputOtpGroup, InputOtpSlot, InputOtpSeparator],
+      imports: [
+        BrnInputOtp,
+        InputOtp,
+        InputOtpGroup,
+        InputOtpSlot,
+        InputOtpSeparator,
+      ],
     }),
   ],
   argTypes: {
@@ -31,7 +41,7 @@ const meta: Meta<InputOtp> = {
 };
 
 export default meta;
-type Story = StoryObj<InputOtp>;
+type Story = StoryObj<BrnInputOtp>;
 
 /** Interactive workbench — drive the props from the controls panel. */
 export const Workbench: Story = {
@@ -43,7 +53,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-input-otp [maxLength]="maxLength" [disabled]="disabled">
+      <brn-input-otp gnInputOtp [maxLength]="maxLength" [disabled]="disabled">
         <gn-input-otp-group>
           <gn-input-otp-slot [index]="0" />
           <gn-input-otp-slot [index]="1" />
@@ -55,7 +65,7 @@ export const Workbench: Story = {
           <gn-input-otp-slot [index]="4" />
           <gn-input-otp-slot [index]="5" />
         </gn-input-otp-group>
-      </gn-input-otp>
+      </brn-input-otp>
     `,
   }),
 };
@@ -65,14 +75,14 @@ export const FourDigits: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-input-otp [maxLength]="4">
+      <brn-input-otp gnInputOtp [maxLength]="4">
         <gn-input-otp-group>
           <gn-input-otp-slot [index]="0" />
           <gn-input-otp-slot [index]="1" />
           <gn-input-otp-slot [index]="2" />
           <gn-input-otp-slot [index]="3" />
         </gn-input-otp-group>
-      </gn-input-otp>
+      </brn-input-otp>
     `,
   }),
 };
@@ -82,7 +92,7 @@ export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-input-otp [maxLength]="6" [disabled]="true">
+      <brn-input-otp gnInputOtp [maxLength]="6" [disabled]="true">
         <gn-input-otp-group>
           <gn-input-otp-slot [index]="0" />
           <gn-input-otp-slot [index]="1" />
@@ -91,7 +101,7 @@ export const Disabled: Story = {
           <gn-input-otp-slot [index]="4" />
           <gn-input-otp-slot [index]="5" />
         </gn-input-otp-group>
-      </gn-input-otp>
+      </brn-input-otp>
     `,
   }),
 };

@@ -46,13 +46,14 @@ import { cn } from '@gremorie/ng-core';
 @Component({
   selector: 'gn-command',
   standalone: true,
-  imports: [BrnCommand],
+  // BrnCommand on the HOST via hostDirectives (not an internal `<div brnCommand>`)
+  // so the BrnCommandToken it provides reaches the <ng-content>-projected
+  // children (input/list/group/item/empty). On an internal div the projected
+  // children can't see it → NG0201. Mirrors the spartan reference `hlm-command`.
+  hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div
-    brnCommand
-    class="flex h-full w-full flex-col overflow-hidden"
-  >
+  template: `<div class="flex h-full w-full flex-col overflow-hidden">
     <ng-content />
   </div>`,
   host: {
@@ -77,14 +78,13 @@ export class Command {
 @Component({
   selector: 'gn-command-dialog',
   standalone: true,
-  imports: [BrnCommand],
+  hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2 class="sr-only">{{ title() }}</h2>
     <p class="sr-only">{{ description() }}</p>
     <div
-      brnCommand
       class="flex h-full w-full flex-col overflow-hidden **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
     >
       <ng-content />
@@ -177,7 +177,10 @@ export class CommandList {
   imports: [BrnCommandEmpty],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div brnCommandEmpty class="py-6 text-center text-sm">
+  // brnCommandEmpty is STRUCTURAL (injects TemplateRef, renders only when the
+  // list has no visible items) — must use the `*` prefix, not a plain attribute
+  // on a <div>, which raised NG0201 (No provider for TemplateRef).
+  template: `<div *brnCommandEmpty class="py-6 text-center text-sm">
     <ng-content />
   </div>`,
   host: { 'data-slot': 'command-empty', class: 'block' },

@@ -62,12 +62,12 @@ export class ModelSelectorTrigger {}
 @Component({
   selector: 'model-selector-content',
   standalone: true,
-  imports: [BrnCommand],
+  hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2 class="sr-only">{{ title() }}</h2>
-    <div brnCommand class="flex h-full w-full flex-col overflow-hidden">
+    <div class="flex h-full w-full flex-col overflow-hidden">
       <ng-content />
     </div>
   `,
@@ -92,11 +92,11 @@ export class ModelSelectorContent {
 @Component({
   selector: 'model-selector-dialog',
   standalone: true,
-  imports: [BrnCommand],
+  hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div brnCommand class="flex h-full w-full flex-col overflow-hidden">
+    <div class="flex h-full w-full flex-col overflow-hidden">
       <ng-content />
     </div>
   `,
@@ -122,7 +122,10 @@ export class ModelSelectorDialog {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex items-center border-b px-3" data-slot="command-input-wrapper">
+    <div
+      class="flex items-center border-b px-3"
+      data-slot="command-input-wrapper"
+    >
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -133,7 +136,8 @@ export class ModelSelectorDialog {
         aria-hidden="true"
         class="mr-2 size-4 shrink-0 opacity-50"
       >
-        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
       </svg>
       <input
         brnCommandInput
@@ -177,7 +181,12 @@ export class ModelSelectorList {
   imports: [BrnCommandEmpty],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div brnCommandEmpty [class]="emptyClass()"><ng-content /></div>`,
+  // brnCommandEmpty is a STRUCTURAL directive (it injects TemplateRef and
+  // renders only when the list has no visible items). It must be used with the
+  // `*` prefix on an ng-template — `<div brnCommandEmpty>` raised NG0201 (No
+  // provider for TemplateRef). Mirrors the spartan reference usage
+  // `<div *brnCommandEmpty hlmCommandEmpty>`.
+  template: `<div *brnCommandEmpty [class]="emptyClass()"><ng-content /></div>`,
   host: { 'data-slot': 'model-selector-empty', class: 'block' },
 })
 export class ModelSelectorEmpty {
