@@ -32,13 +32,13 @@
     "README.md"
   ],
   "peerDependencies": {
-    "@gremorie/rx-containers": ">=0.3.0",
-    "@gremorie/rx-core": ">=0.3.0",
-    "@gremorie/rx-display": ">=0.3.0",
-    "@gremorie/rx-feedback": ">=0.3.0",
-    "@gremorie/rx-forms": ">=0.3.0",
-    "@gremorie/rx-overlays": ">=0.3.0",
-    "@gremorie/rx-artifacts": ">=0.3.0",
+    "@gremorie/rx-containers": ">=0.5.1",
+    "@gremorie/rx-core": ">=0.5.1",
+    "@gremorie/rx-display": ">=0.5.1",
+    "@gremorie/rx-feedback": ">=0.5.1",
+    "@gremorie/rx-forms": ">=0.5.1",
+    "@gremorie/rx-overlays": ">=0.5.1",
+    "@gremorie/rx-artifacts": ">=0.5.1",
     "react": "^18 || ^19"
   },
   "dependencies": {

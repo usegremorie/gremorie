@@ -19,24 +19,13 @@
   "peerDependencies": {
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0",
-    "@gremorie/ng-artifacts": ">=0.0.1",
-    "@gremorie/ng-core": ">=0.0.1",
-    "@gremorie/ng-display": ">=0.0.1",
-    "@gremorie/ng-overlays": ">=0.0.1",
+    "@gremorie/ng-artifacts": ">=0.5.1",
+    "@gremorie/ng-core": ">=0.5.1",
+    "@gremorie/ng-display": ">=0.5.1",
+    "@gremorie/ng-overlays": ">=0.5.1",
     "@spartan-ng/brain": "^0.0.1-alpha.694",
     "class-variance-authority": "^0.7.1",
     "marked": "^15.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@spartan-ng/brain": {
-      "optional": false
-    },
-    "@angular/cdk": {
-      "optional": false
-    },
-    "marked": {
-      "optional": false
-    }
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",

@@ -10,7 +10,6 @@
   },
   "keywords": [
     "angular",
-    "ai",
     "ui",
     "tokens",
     "button"
@@ -24,12 +23,6 @@
   "sideEffects": [
     "**/*.css"
   ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./fesm2022/ng-core.mjs"
-    }
-  },
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"

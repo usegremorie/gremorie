@@ -124,7 +124,7 @@ export const MultiSourceCarousel: Story = {
           'Serving the corpus to LLMs over the Model Context Protocol.',
       },
       {
-        title: 'Phase 5k release notes',
+        title: 'v2.0 release notes',
         url: 'https://gremorie.com/changelog',
         description: '100 primitives across 9 packages, editions in parity.',
       },
