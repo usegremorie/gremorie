@@ -19,9 +19,9 @@
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
-    "@gremorie/ng-core": ">=0.0.1",
-    "@gremorie/ng-data": ">=0.0.1",
-    "@gremorie/ng-overlays": ">=0.0.1",
+    "@gremorie/ng-core": ">=0.5.1",
+    "@gremorie/ng-data": ">=0.5.1",
+    "@gremorie/ng-overlays": ">=0.5.1",
     "@ng-icons/core": "^33.2.2",
     "@ng-icons/lucide": "^33.2.2",
     "shiki": "^4.0.0"
