@@ -32,7 +32,7 @@ const buttonClass = cva(
  * drag/paste intake, so this button owns a local hidden `<input type="file">` and
  * forwards the selection to the parent. Honours the parent's `acceptAttachments`
  * allowlist for the native picker. When `tooltip` is set, the button is wrapped
- * in the styled `gn-tooltip` compound from `@gremorie/ng-overlays`, matching the
+ * in the styled `gr-tooltip` compound from `@gremorie/ng-overlays`, matching the
  * React styled Tooltip surface.
  */
 @Component({
@@ -73,14 +73,14 @@ const buttonClass = cva(
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip [side]="side()">
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip [side]="side()">
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }

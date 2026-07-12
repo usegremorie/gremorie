@@ -42,14 +42,14 @@ export class AvatarService {
  *
  * @example
  * ```html
- * <gn-avatar size="lg">
- *   <gn-avatar-image src="/me.png" alt="Me" />
- *   <gn-avatar-fallback>CN</gn-avatar-fallback>
- * </gn-avatar>
+ * <gr-avatar size="lg">
+ *   <gr-avatar-image src="/me.png" alt="Me" />
+ *   <gr-avatar-fallback>CN</gr-avatar-fallback>
+ * </gr-avatar>
  * ```
  */
 @Component({
-  selector: 'gn-avatar',
+  selector: 'gr-avatar',
   standalone: true,
   providers: [AvatarService],
   encapsulation: ViewEncapsulation.None,
@@ -77,7 +77,7 @@ export class Avatar {
  * the source loads; reports load/error to the shared `AvatarService`.
  */
 @Component({
-  selector: 'gn-avatar-image',
+  selector: 'gr-avatar-image',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -127,7 +127,7 @@ export class AvatarImage {
  * Mirrors React `AvatarFallback`.
  */
 @Component({
-  selector: 'gn-avatar-fallback',
+  selector: 'gr-avatar-fallback',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -154,7 +154,7 @@ export class AvatarFallback {
  * `AvatarBadge`. Sizes track the parent Avatar via `group-data-[size=…]`.
  */
 @Component({
-  selector: 'gn-avatar-badge',
+  selector: 'gr-avatar-badge',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -180,7 +180,7 @@ export class AvatarBadge {
  * `AvatarGroup`.
  */
 @Component({
-  selector: 'gn-avatar-group',
+  selector: 'gr-avatar-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -202,7 +202,7 @@ export class AvatarGroup {
  * AvatarGroupCount — the "+N" overflow chip. Mirrors React `AvatarGroupCount`.
  */
 @Component({
-  selector: 'gn-avatar-group-count',
+  selector: 'gr-avatar-group-count',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

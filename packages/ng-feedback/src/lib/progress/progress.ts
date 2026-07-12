@@ -26,13 +26,13 @@ import {
  *
  * @example
  * ```html
- * <gn-progress [value]="60" />
- * <gn-progress [value]="null" />
- * <gn-progress [value]="3" [max]="5" />
+ * <gr-progress [value]="60" />
+ * <gr-progress [value]="null" />
+ * <gr-progress [value]="3" [max]="5" />
  * ```
  */
 @Component({
-  selector: 'gn-progress',
+  selector: 'gr-progress',
   standalone: true,
   hostDirectives: [
     {

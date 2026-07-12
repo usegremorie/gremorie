@@ -40,13 +40,13 @@ export class MenubarService {
 }
 
 /**
- * Per-menu state shared between a `gn-menubar-menu`, its trigger and its
+ * Per-menu state shared between a `gr-menubar-menu`, its trigger and its
  * content so they resolve the same id.
  */
 @Injectable()
 export class MenubarMenuState {
   private static _counter = 0;
-  readonly id = `gn-menubar-menu-${MenubarMenuState._counter++}`;
+  readonly id = `gr-menubar-menu-${MenubarMenuState._counter++}`;
 }
 
 /**
@@ -59,7 +59,7 @@ export class MenubarMenuState {
  * (DropdownMenu or NavigationMenu) win.
  *
  * Supports nested submenus, checkbox items, radio items and keyboard
- * shortcuts via `gn-menubar-shortcut`.
+ * shortcuts via `gr-menubar-shortcut`.
  *
  * Divergence vs. React/Radix: there is no spartan brain `menu` primitive, so
  * open/close is driven by `MenubarService` (a small Angular DI controller)
@@ -68,7 +68,7 @@ export class MenubarMenuState {
  * a `checked` model.
  */
 @Component({
-  selector: 'gn-menubar',
+  selector: 'gr-menubar',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -87,7 +87,7 @@ export class Menubar {}
  * `MenubarMenu`. Provides its own id to the trigger and content.
  */
 @Component({
-  selector: 'gn-menubar-menu',
+  selector: 'gr-menubar-menu',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -105,7 +105,7 @@ export class MenubarMenu {}
  * `data-state` and toggles the shared open state.
  */
 @Component({
-  selector: 'gn-menubar-trigger',
+  selector: 'gr-menubar-trigger',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -148,7 +148,7 @@ export class MenubarTrigger {
  * `MenubarContent`. Shown only while its menu is open.
  */
 @Component({
-  selector: 'gn-menubar-content',
+  selector: 'gr-menubar-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -180,7 +180,7 @@ export class MenubarContent {
  * MenubarGroup — semantic grouping of items. Mirrors React `MenubarGroup`.
  */
 @Component({
-  selector: 'gn-menubar-group',
+  selector: 'gr-menubar-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -196,7 +196,7 @@ export class MenubarGroup {}
  * MenubarRadioGroup — groups radio items. Mirrors React `MenubarRadioGroup`.
  */
 @Component({
-  selector: 'gn-menubar-radio-group',
+  selector: 'gr-menubar-radio-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -213,7 +213,7 @@ export class MenubarRadioGroup {}
  * `inset` (left padding for alignment) and a `destructive` variant.
  */
 @Component({
-  selector: 'gn-menubar-item',
+  selector: 'gr-menubar-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -244,7 +244,7 @@ export class MenubarItem {
  * React `MenubarCheckboxItem`. `checked` is a two-way model.
  */
 @Component({
-  selector: 'gn-menubar-checkbox-item',
+  selector: 'gr-menubar-checkbox-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -297,7 +297,7 @@ export class MenubarCheckboxItem {
  * `MenubarRadioItem`.
  */
 @Component({
-  selector: 'gn-menubar-radio-item',
+  selector: 'gr-menubar-radio-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -344,7 +344,7 @@ export class MenubarRadioItem {
  * `MenubarLabel`.
  */
 @Component({
-  selector: 'gn-menubar-label',
+  selector: 'gr-menubar-label',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -369,7 +369,7 @@ export class MenubarLabel {
  * `MenubarSeparator`.
  */
 @Component({
-  selector: 'gn-menubar-separator',
+  selector: 'gr-menubar-separator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -387,7 +387,7 @@ export class MenubarSeparator {}
  * `MenubarShortcut`.
  */
 @Component({
-  selector: 'gn-menubar-shortcut',
+  selector: 'gr-menubar-shortcut',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -403,7 +403,7 @@ export class MenubarShortcut {}
  * MenubarSub — a nested submenu wrapper. Mirrors React `MenubarSub`.
  */
 @Component({
-  selector: 'gn-menubar-sub',
+  selector: 'gr-menubar-sub',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -425,7 +425,7 @@ export class MenubarSub {
  * React `MenubarSubTrigger`.
  */
 @Component({
-  selector: 'gn-menubar-sub-trigger',
+  selector: 'gr-menubar-sub-trigger',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -466,10 +466,10 @@ export class MenubarSubTrigger {
 
 /**
  * MenubarSubContent — the nested submenu panel. Mirrors React
- * `MenubarSubContent`. Shown while its parent `gn-menubar-sub` is hovered.
+ * `MenubarSubContent`. Shown while its parent `gr-menubar-sub` is hovered.
  */
 @Component({
-  selector: 'gn-menubar-sub-content',
+  selector: 'gr-menubar-sub-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

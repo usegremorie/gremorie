@@ -14,7 +14,7 @@ import {
  * it is the **same in both editions**, only the import / tag syntax differs.
  *
  * - **React** — `@gremorie/rx-artifacts` → `<ChartArtifact … />`
- * - **Angular** — `@gremorie/ng-artifacts` → `<gn-chart-artifact … />` (planned)
+ * - **Angular** — `@gremorie/ng-artifacts` → `<gr-chart-artifact … />` (planned)
  *
  * It is a thin **preset** of the generic `Artifact` shell that **embeds any of
  * the styled chart primitives** (bar, area, line, pie, radar, radial, scatter)

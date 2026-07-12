@@ -30,21 +30,21 @@ import {
  *
  * @example
  * ```html
- * <gn-resizable-panel-group direction="horizontal" class="h-48 w-96 rounded-lg border">
- *   <gn-resizable-panel [defaultSize]="40" [minSize]="20">…</gn-resizable-panel>
- *   <gn-resizable-handle withHandle />
- *   <gn-resizable-panel [defaultSize]="60">…</gn-resizable-panel>
- * </gn-resizable-panel-group>
+ * <gr-resizable-panel-group direction="horizontal" class="h-48 w-96 rounded-lg border">
+ *   <gr-resizable-panel [defaultSize]="40" [minSize]="20">…</gr-resizable-panel>
+ *   <gr-resizable-handle withHandle />
+ *   <gr-resizable-panel [defaultSize]="60">…</gr-resizable-panel>
+ * </gr-resizable-panel-group>
  * ```
  */
 @Component({
-  selector: 'gn-resizable-panel-group',
+  selector: 'gr-resizable-panel-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // BrnResizableGroup carries `direction`, `layout`, `dragStart`/`dragEnd`
   // etc. through to the host so consumers bind them directly on
-  // <gn-resizable-panel-group>, matching react-resizable-panels' Group API.
+  // <gr-resizable-panel-group>, matching react-resizable-panels' Group API.
   hostDirectives: [
     {
       directive: BrnResizableGroup,
@@ -68,7 +68,7 @@ export class ResizablePanelGroup {}
  * allows the panel to collapse fully.
  */
 @Component({
-  selector: 'gn-resizable-panel',
+  selector: 'gr-resizable-panel',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -93,7 +93,7 @@ export class ResizablePanel {}
  * divider between vertical/horizontal exactly as in React.
  */
 @Component({
-  selector: 'gn-resizable-handle',
+  selector: 'gr-resizable-handle',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

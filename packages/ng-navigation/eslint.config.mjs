@@ -42,12 +42,12 @@ export default [
         {
           type: 'element',
           prefix: [
-            'gn-breadcrumb',
-            'gn-pagination',
-            'gn-tabs',
-            'gn-navigation-menu',
-            'gn-menubar',
-            'gn-sidebar',
+            'gr-breadcrumb',
+            'gr-pagination',
+            'gr-tabs',
+            'gr-navigation-menu',
+            'gr-menubar',
+            'gr-sidebar',
           ],
           style: 'kebab-case',
         },

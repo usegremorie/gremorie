@@ -63,7 +63,7 @@ export const buttonGroup = defineContract({
     rx: 'inputs-buttons-buttongroup--workbench',
     ng: 'inputs-buttons-buttongroup--workbench',
   },
-  tag: { rx: 'ButtonGroup', ng: 'gn-button-group' },
+  tag: { rx: 'ButtonGroup', ng: 'gr-button-group' },
   example: {
     orientation: 'horizontal',
   },

@@ -21,12 +21,12 @@ import {
  *
  * @example
  * ```html
- * <gn-skeleton class="h-4 w-32" />
- * <gn-skeleton class="size-12 rounded-full" />
+ * <gr-skeleton class="h-4 w-32" />
+ * <gr-skeleton class="size-12 rounded-full" />
  * ```
  */
 @Component({
-  selector: 'gn-skeleton',
+  selector: 'gr-skeleton',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -50,10 +50,10 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-avatar [size]="size">
-        <gn-avatar-image src="${SRC}" alt="@shadcn" />
-        <gn-avatar-fallback>CN</gn-avatar-fallback>
-      </gn-avatar>
+      <gr-avatar [size]="size">
+        <gr-avatar-image src="${SRC}" alt="@shadcn" />
+        <gr-avatar-fallback>CN</gr-avatar-fallback>
+      </gr-avatar>
     `,
   }),
 };
@@ -62,9 +62,9 @@ export const Workbench: Story = {
 export const Fallback: Story = {
   render: () => ({
     template: `
-      <gn-avatar>
-        <gn-avatar-fallback>BK</gn-avatar-fallback>
-      </gn-avatar>
+      <gr-avatar>
+        <gr-avatar-fallback>BK</gr-avatar-fallback>
+      </gr-avatar>
     `,
   }),
 };
@@ -74,9 +74,9 @@ export const Sizes: Story = {
   render: () => ({
     template: `
       <div class="flex items-end gap-4">
-        <gn-avatar size="sm"><gn-avatar-image src="${SRC}" alt="@shadcn" /><gn-avatar-fallback>CN</gn-avatar-fallback></gn-avatar>
-        <gn-avatar size="default"><gn-avatar-image src="${SRC}" alt="@shadcn" /><gn-avatar-fallback>CN</gn-avatar-fallback></gn-avatar>
-        <gn-avatar size="lg"><gn-avatar-image src="${SRC}" alt="@shadcn" /><gn-avatar-fallback>CN</gn-avatar-fallback></gn-avatar>
+        <gr-avatar size="sm"><gr-avatar-image src="${SRC}" alt="@shadcn" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
+        <gr-avatar size="default"><gr-avatar-image src="${SRC}" alt="@shadcn" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
+        <gr-avatar size="lg"><gr-avatar-image src="${SRC}" alt="@shadcn" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
       </div>
     `,
   }),
@@ -86,13 +86,13 @@ export const Sizes: Story = {
 export const WithBadge: Story = {
   render: () => ({
     template: `
-      <gn-avatar size="lg">
-        <gn-avatar-image src="${SRC}" alt="@shadcn" />
-        <gn-avatar-fallback>CN</gn-avatar-fallback>
-        <gn-avatar-badge class="bg-success">
+      <gr-avatar size="lg">
+        <gr-avatar-image src="${SRC}" alt="@shadcn" />
+        <gr-avatar-fallback>CN</gr-avatar-fallback>
+        <gr-avatar-badge class="bg-success">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-        </gn-avatar-badge>
-      </gn-avatar>
+        </gr-avatar-badge>
+      </gr-avatar>
     `,
   }),
 };
@@ -101,12 +101,12 @@ export const WithBadge: Story = {
 export const Group: Story = {
   render: () => ({
     template: `
-      <gn-avatar-group>
-        <gn-avatar><gn-avatar-fallback>AB</gn-avatar-fallback></gn-avatar>
-        <gn-avatar><gn-avatar-fallback>CD</gn-avatar-fallback></gn-avatar>
-        <gn-avatar><gn-avatar-fallback>EF</gn-avatar-fallback></gn-avatar>
-        <gn-avatar-group-count>+5</gn-avatar-group-count>
-      </gn-avatar-group>
+      <gr-avatar-group>
+        <gr-avatar><gr-avatar-fallback>AB</gr-avatar-fallback></gr-avatar>
+        <gr-avatar><gr-avatar-fallback>CD</gr-avatar-fallback></gr-avatar>
+        <gr-avatar><gr-avatar-fallback>EF</gr-avatar-fallback></gr-avatar>
+        <gr-avatar-group-count>+5</gr-avatar-group-count>
+      </gr-avatar-group>
     `,
   }),
 };

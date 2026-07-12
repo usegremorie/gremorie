@@ -16,7 +16,7 @@ import { cn } from '@gremorie/ng-core';
  * Right-click is a power-user accelerator — never the only path to an action.
  * Same shape as DropdownMenu (items, groups, separators, sub-menus, checkbox /
  * radio variants). Anchors to a region rather than a trigger button — wrap the
- * region in `<gn-context-menu-trigger>`.
+ * region in `<gr-context-menu-trigger>`.
  *
  * React parity:
  * - Every Radix sub-component is reproduced 1:1 with the same `data-slot` names
@@ -47,7 +47,7 @@ import { cn } from '@gremorie/ng-core';
  * `data-slot` names and class strings.
  */
 @Component({
-  selector: 'gn-context-menu',
+  selector: 'gr-context-menu',
   standalone: true,
   hostDirectives: [BrnPopover],
   encapsulation: ViewEncapsulation.None,
@@ -58,7 +58,7 @@ import { cn } from '@gremorie/ng-core';
 export class ContextMenu {}
 
 @Component({
-  selector: 'gn-context-menu-trigger',
+  selector: 'gr-context-menu-trigger',
   standalone: true,
   imports: [BrnPopoverTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -89,7 +89,7 @@ export class ContextMenuTrigger {
 }
 
 @Component({
-  selector: 'gn-context-menu-portal',
+  selector: 'gr-context-menu-portal',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -99,7 +99,7 @@ export class ContextMenuTrigger {
 export class ContextMenuPortal {}
 
 @Component({
-  selector: 'gn-context-menu-content',
+  selector: 'gr-context-menu-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -120,7 +120,7 @@ export class ContextMenuContent {
 }
 
 @Component({
-  selector: 'gn-context-menu-group',
+  selector: 'gr-context-menu-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -130,7 +130,7 @@ export class ContextMenuContent {
 export class ContextMenuGroup {}
 
 @Component({
-  selector: 'gn-context-menu-item',
+  selector: 'gr-context-menu-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -155,7 +155,7 @@ export class ContextMenuItem {
 }
 
 @Component({
-  selector: 'gn-context-menu-checkbox-item',
+  selector: 'gr-context-menu-checkbox-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -199,7 +199,7 @@ export class ContextMenuCheckboxItem {
 }
 
 @Component({
-  selector: 'gn-context-menu-radio-group',
+  selector: 'gr-context-menu-radio-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -213,7 +213,7 @@ export class ContextMenuCheckboxItem {
 export class ContextMenuRadioGroup {}
 
 @Component({
-  selector: 'gn-context-menu-radio-item',
+  selector: 'gr-context-menu-radio-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -253,7 +253,7 @@ export class ContextMenuRadioItem {
 }
 
 @Component({
-  selector: 'gn-context-menu-label',
+  selector: 'gr-context-menu-label',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -276,7 +276,7 @@ export class ContextMenuLabel {
 }
 
 @Component({
-  selector: 'gn-context-menu-separator',
+  selector: 'gr-context-menu-separator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -295,7 +295,7 @@ export class ContextMenuSeparator {
 }
 
 @Component({
-  selector: 'gn-context-menu-shortcut',
+  selector: 'gr-context-menu-shortcut',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -313,7 +313,7 @@ export class ContextMenuShortcut {
 }
 
 @Component({
-  selector: 'gn-context-menu-sub',
+  selector: 'gr-context-menu-sub',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -323,7 +323,7 @@ export class ContextMenuShortcut {
 export class ContextMenuSub {}
 
 @Component({
-  selector: 'gn-context-menu-sub-trigger',
+  selector: 'gr-context-menu-sub-trigger',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -360,7 +360,7 @@ export class ContextMenuSubTrigger {
 }
 
 @Component({
-  selector: 'gn-context-menu-sub-content',
+  selector: 'gr-context-menu-sub-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

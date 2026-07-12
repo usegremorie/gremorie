@@ -53,17 +53,17 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-select [disabled]="disabled">
-        <gn-select-trigger class="w-48">
-          <gn-select-value placeholder="Pick a fruit" />
-        </gn-select-trigger>
-        <gn-select-content>
-          <gn-select-item value="apple">Apple</gn-select-item>
-          <gn-select-item value="banana">Banana</gn-select-item>
-          <gn-select-item value="blueberry">Blueberry</gn-select-item>
-          <gn-select-item value="grapes">Grapes</gn-select-item>
-        </gn-select-content>
-      </gn-select>
+      <gr-select [disabled]="disabled">
+        <gr-select-trigger class="w-48">
+          <gr-select-value placeholder="Pick a fruit" />
+        </gr-select-trigger>
+        <gr-select-content>
+          <gr-select-item value="apple">Apple</gr-select-item>
+          <gr-select-item value="banana">Banana</gr-select-item>
+          <gr-select-item value="blueberry">Blueberry</gr-select-item>
+          <gr-select-item value="grapes">Grapes</gr-select-item>
+        </gr-select-content>
+      </gr-select>
     `,
   }),
 };
@@ -73,24 +73,24 @@ export const Grouped: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-select>
-        <gn-select-trigger class="w-56">
-          <gn-select-value placeholder="Select a timezone" />
-        </gn-select-trigger>
-        <gn-select-content>
-          <gn-select-group>
-            <gn-select-label>North America</gn-select-label>
-            <gn-select-item value="est">Eastern (EST)</gn-select-item>
-            <gn-select-item value="pst">Pacific (PST)</gn-select-item>
-          </gn-select-group>
-          <gn-select-separator />
-          <gn-select-group>
-            <gn-select-label>Europe</gn-select-label>
-            <gn-select-item value="gmt">Greenwich (GMT)</gn-select-item>
-            <gn-select-item value="cet">Central European (CET)</gn-select-item>
-          </gn-select-group>
-        </gn-select-content>
-      </gn-select>
+      <gr-select>
+        <gr-select-trigger class="w-56">
+          <gr-select-value placeholder="Select a timezone" />
+        </gr-select-trigger>
+        <gr-select-content>
+          <gr-select-group>
+            <gr-select-label>North America</gr-select-label>
+            <gr-select-item value="est">Eastern (EST)</gr-select-item>
+            <gr-select-item value="pst">Pacific (PST)</gr-select-item>
+          </gr-select-group>
+          <gr-select-separator />
+          <gr-select-group>
+            <gr-select-label>Europe</gr-select-label>
+            <gr-select-item value="gmt">Greenwich (GMT)</gr-select-item>
+            <gr-select-item value="cet">Central European (CET)</gr-select-item>
+          </gr-select-group>
+        </gr-select-content>
+      </gr-select>
     `,
   }),
 };
@@ -100,16 +100,16 @@ export const Small: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-select>
-        <gn-select-trigger size="sm" class="w-40">
-          <gn-select-value placeholder="Size" />
-        </gn-select-trigger>
-        <gn-select-content>
-          <gn-select-item value="s">Small</gn-select-item>
-          <gn-select-item value="m">Medium</gn-select-item>
-          <gn-select-item value="l">Large</gn-select-item>
-        </gn-select-content>
-      </gn-select>
+      <gr-select>
+        <gr-select-trigger size="sm" class="w-40">
+          <gr-select-value placeholder="Size" />
+        </gr-select-trigger>
+        <gr-select-content>
+          <gr-select-item value="s">Small</gr-select-item>
+          <gr-select-item value="m">Medium</gr-select-item>
+          <gr-select-item value="l">Large</gr-select-item>
+        </gr-select-content>
+      </gr-select>
     `,
   }),
 };
@@ -119,14 +119,14 @@ export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-select [disabled]="true">
-        <gn-select-trigger class="w-48">
-          <gn-select-value placeholder="Unavailable" />
-        </gn-select-trigger>
-        <gn-select-content>
-          <gn-select-item value="a">A</gn-select-item>
-        </gn-select-content>
-      </gn-select>
+      <gr-select [disabled]="true">
+        <gr-select-trigger class="w-48">
+          <gr-select-value placeholder="Unavailable" />
+        </gr-select-trigger>
+        <gr-select-content>
+          <gr-select-item value="a">A</gr-select-item>
+        </gr-select-content>
+      </gr-select>
     `,
   }),
 };

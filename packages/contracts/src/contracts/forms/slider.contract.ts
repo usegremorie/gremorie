@@ -81,7 +81,7 @@ export const slider = defineContract({
     rx: 'inputs-selection-slider--workbench',
     ng: 'inputs-selection-slider--workbench',
   },
-  tag: { rx: 'Slider', ng: 'gn-slider' },
+  tag: { rx: 'Slider', ng: 'gr-slider' },
   example: {
     min: 0,
     max: 100,

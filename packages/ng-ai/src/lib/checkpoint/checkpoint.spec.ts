@@ -27,7 +27,7 @@ describe('Checkpoint', () => {
     expect(checkpoint?.getAttribute('data-slot')).toBe('checkpoint');
     expect(checkpoint?.className).toContain('text-muted-foreground');
 
-    expect(host.querySelector('gn-separator')).not.toBeNull();
+    expect(host.querySelector('gr-separator')).not.toBeNull();
     expect(
       host.querySelector('[data-slot="checkpoint-icon"] svg'),
     ).not.toBeNull();
@@ -37,7 +37,7 @@ describe('Checkpoint', () => {
     expect(trigger?.textContent).toContain('Checkpoint');
   });
 
-  it('shows the STYLED tooltip surface on hover (gn-tooltip, not bare brain)', async () => {
+  it('shows the STYLED tooltip surface on hover (gr-tooltip, not bare brain)', async () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
     await fixture.whenStable();

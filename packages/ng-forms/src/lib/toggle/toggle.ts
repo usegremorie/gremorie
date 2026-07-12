@@ -71,11 +71,11 @@ export type ToggleSize = NonNullable<
  *
  * @example
  * ```html
- * <gn-toggle [(pressed)]="bold" ariaLabel="Toggle bold">B</gn-toggle>
+ * <gr-toggle [(pressed)]="bold" ariaLabel="Toggle bold">B</gr-toggle>
  * ```
  */
 @Component({
-  selector: 'gn-toggle',
+  selector: 'gr-toggle',
   standalone: true,
   imports: [BrnToggle],
   encapsulation: ViewEncapsulation.None,

@@ -7,14 +7,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
   standalone: true,
   imports: [Tabs, TabsList, TabsTrigger, TabsContent],
   template: `
-    <gn-tabs defaultValue="a">
-      <gn-tabs-list>
-        <gn-tabs-trigger value="a">First</gn-tabs-trigger>
-        <gn-tabs-trigger value="b">Second</gn-tabs-trigger>
-      </gn-tabs-list>
-      <gn-tabs-content value="a">First body</gn-tabs-content>
-      <gn-tabs-content value="b">Second body</gn-tabs-content>
-    </gn-tabs>
+    <gr-tabs defaultValue="a">
+      <gr-tabs-list>
+        <gr-tabs-trigger value="a">First</gr-tabs-trigger>
+        <gr-tabs-trigger value="b">Second</gr-tabs-trigger>
+      </gr-tabs-list>
+      <gr-tabs-content value="a">First body</gr-tabs-content>
+      <gr-tabs-content value="b">Second body</gr-tabs-content>
+    </gr-tabs>
   `,
 })
 class Host {}

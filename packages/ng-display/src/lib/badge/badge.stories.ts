@@ -37,7 +37,7 @@ export const Workbench: Story = {
   args: { variant: 'default' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Badge</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Badge</gr-badge>`,
   }),
 };
 
@@ -45,7 +45,7 @@ export const Default: Story = {
   args: { variant: 'default' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Default</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Default</gr-badge>`,
   }),
 };
 
@@ -53,7 +53,7 @@ export const Secondary: Story = {
   args: { variant: 'secondary' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Secondary</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Secondary</gr-badge>`,
   }),
 };
 
@@ -61,7 +61,7 @@ export const Destructive: Story = {
   args: { variant: 'destructive' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Destructive</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Destructive</gr-badge>`,
   }),
 };
 
@@ -69,7 +69,7 @@ export const Outline: Story = {
   args: { variant: 'outline' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Outline</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Outline</gr-badge>`,
   }),
 };
 
@@ -77,7 +77,7 @@ export const Ghost: Story = {
   args: { variant: 'ghost' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Ghost</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Ghost</gr-badge>`,
   }),
 };
 
@@ -86,7 +86,7 @@ export const LinkVariant: Story = {
   args: { variant: 'link' },
   render: (args) => ({
     props: args,
-    template: `<gn-badge [variant]="variant">Link</gn-badge>`,
+    template: `<gr-badge [variant]="variant">Link</gr-badge>`,
   }),
 };
 
@@ -100,12 +100,12 @@ export const AllVariants: Story = {
   render: () => ({
     template: `
       <div class="flex flex-wrap items-center gap-2">
-        <gn-badge variant="default">Default</gn-badge>
-        <gn-badge variant="secondary">Secondary</gn-badge>
-        <gn-badge variant="destructive">Destructive</gn-badge>
-        <gn-badge variant="outline">Outline</gn-badge>
-        <gn-badge variant="ghost">Ghost</gn-badge>
-        <gn-badge variant="link">Link</gn-badge>
+        <gr-badge variant="default">Default</gr-badge>
+        <gr-badge variant="secondary">Secondary</gr-badge>
+        <gr-badge variant="destructive">Destructive</gr-badge>
+        <gr-badge variant="outline">Outline</gr-badge>
+        <gr-badge variant="ghost">Ghost</gr-badge>
+        <gr-badge variant="link">Link</gr-badge>
       </div>
     `,
   }),
@@ -119,20 +119,20 @@ export const WithIcon: Story = {
   render: () => ({
     template: `
       <div class="flex flex-wrap items-center gap-2">
-        <gn-badge variant="default">
+        <gr-badge variant="default">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20 6 9 17l-5-5"/>
           </svg>
           Verified
-        </gn-badge>
-        <gn-badge variant="destructive">
+        </gr-badge>
+        <gr-badge variant="destructive">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <line x1="12" y1="8" x2="12" y2="12"/>
             <line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
           Error
-        </gn-badge>
+        </gr-badge>
       </div>
     `,
   }),

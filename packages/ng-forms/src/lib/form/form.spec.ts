@@ -21,12 +21,12 @@ import {
     Input,
   ],
   template: `
-    <gn-form-item [invalid]="invalid()">
-      <gn-form-label>Email</gn-form-label>
-      <gn-input gnFormControl type="email" />
-      <gn-form-description>Helper</gn-form-description>
-      <gn-form-message>{{ message() }}</gn-form-message>
-    </gn-form-item>
+    <gr-form-item [invalid]="invalid()">
+      <gr-form-label>Email</gr-form-label>
+      <gr-input grFormControl type="email" />
+      <gr-form-description>Helper</gr-form-description>
+      <gr-form-message>{{ message() }}</gr-form-message>
+    </gr-form-item>
   `,
 })
 class Host {

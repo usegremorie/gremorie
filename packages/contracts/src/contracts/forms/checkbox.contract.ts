@@ -86,7 +86,7 @@ export const checkbox = defineContract({
     rx: 'inputs-selection-checkbox--workbench',
     ng: 'inputs-selection-checkbox--workbench',
   },
-  tag: { rx: 'Checkbox', ng: 'gn-checkbox' },
+  tag: { rx: 'Checkbox', ng: 'gr-checkbox' },
   example: {
     checked: false,
     disabled: false,

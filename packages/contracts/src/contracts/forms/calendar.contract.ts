@@ -94,7 +94,7 @@ export const calendar = defineContract({
     rx: 'inputs-date-calendar--workbench',
     ng: 'inputs-date-calendar--workbench',
   },
-  tag: { rx: 'Calendar', ng: 'gn-calendar' },
+  tag: { rx: 'Calendar', ng: 'gr-calendar' },
   example: {
     disabled: false,
   },

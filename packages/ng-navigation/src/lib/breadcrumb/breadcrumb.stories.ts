@@ -13,7 +13,7 @@ import {
 
 /**
  * Breadcrumb — hierarchical trail. Mirrors React `Breadcrumb`. Plain semantic
- * markup; the current page renders as `gn-breadcrumb-page` so the trail
+ * markup; the current page renders as `gr-breadcrumb-page` so the trail
  * terminates explicitly.
  */
 const meta: Meta<Breadcrumb> = {
@@ -43,44 +43,44 @@ type Story = StoryObj<Breadcrumb>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-breadcrumb>
-        <gn-breadcrumb-list>
-          <gn-breadcrumb-item>
-            <a gn-breadcrumb-link href="#">Home</a>
-          </gn-breadcrumb-item>
-          <gn-breadcrumb-separator />
-          <gn-breadcrumb-item>
-            <a gn-breadcrumb-link href="#">Components</a>
-          </gn-breadcrumb-item>
-          <gn-breadcrumb-separator />
-          <gn-breadcrumb-item>
-            <gn-breadcrumb-page>Breadcrumb</gn-breadcrumb-page>
-          </gn-breadcrumb-item>
-        </gn-breadcrumb-list>
-      </gn-breadcrumb>
+      <gr-breadcrumb>
+        <gr-breadcrumb-list>
+          <gr-breadcrumb-item>
+            <a gr-breadcrumb-link href="#">Home</a>
+          </gr-breadcrumb-item>
+          <gr-breadcrumb-separator />
+          <gr-breadcrumb-item>
+            <a gr-breadcrumb-link href="#">Components</a>
+          </gr-breadcrumb-item>
+          <gr-breadcrumb-separator />
+          <gr-breadcrumb-item>
+            <gr-breadcrumb-page>Breadcrumb</gr-breadcrumb-page>
+          </gr-breadcrumb-item>
+        </gr-breadcrumb-list>
+      </gr-breadcrumb>
     `,
   }),
 };
 
-/** WithEllipsis — collapsed middle segments via `gn-breadcrumb-ellipsis`. */
+/** WithEllipsis — collapsed middle segments via `gr-breadcrumb-ellipsis`. */
 export const WithEllipsis: Story = {
   render: () => ({
     template: `
-      <gn-breadcrumb>
-        <gn-breadcrumb-list>
-          <gn-breadcrumb-item>
-            <a gn-breadcrumb-link href="#">Home</a>
-          </gn-breadcrumb-item>
-          <gn-breadcrumb-separator />
-          <gn-breadcrumb-item>
-            <gn-breadcrumb-ellipsis />
-          </gn-breadcrumb-item>
-          <gn-breadcrumb-separator />
-          <gn-breadcrumb-item>
-            <gn-breadcrumb-page>Settings</gn-breadcrumb-page>
-          </gn-breadcrumb-item>
-        </gn-breadcrumb-list>
-      </gn-breadcrumb>
+      <gr-breadcrumb>
+        <gr-breadcrumb-list>
+          <gr-breadcrumb-item>
+            <a gr-breadcrumb-link href="#">Home</a>
+          </gr-breadcrumb-item>
+          <gr-breadcrumb-separator />
+          <gr-breadcrumb-item>
+            <gr-breadcrumb-ellipsis />
+          </gr-breadcrumb-item>
+          <gr-breadcrumb-separator />
+          <gr-breadcrumb-item>
+            <gr-breadcrumb-page>Settings</gr-breadcrumb-page>
+          </gr-breadcrumb-item>
+        </gr-breadcrumb-list>
+      </gr-breadcrumb>
     `,
   }),
 };

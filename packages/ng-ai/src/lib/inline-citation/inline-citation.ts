@@ -19,13 +19,13 @@ import { Badge } from '@gremorie/ng-display';
  * - `inline-citation`        — inline wrapper span
  * - `inline-citation-text`   — the cited text span
  * - `inline-citation-card`   — host of `@spartan-ng/brain` BrnHoverCard
- * - `inline-citation-card-trigger` — `gn-badge` (ng-display) + BrnHoverCardTrigger
+ * - `inline-citation-card-trigger` — `gr-badge` (ng-display) + BrnHoverCardTrigger
  * - `inline-citation-card-body`    — styled popover surface (brain is headless)
  * - `inline-citation-source` / `inline-citation-quote` — presentational
  *
  * Brain idiom (deviation from React): the hover-card content must live in a
  * `<ng-template brnHoverCardContent>`, so the consumer wraps the body in that
- * template. For multiple sources, compose `gn-carousel` (from ng-display)
+ * template. For multiple sources, compose `gr-carousel` (from ng-display)
  * inside the body — React used a Carousel here too.
  *
  * @example
@@ -94,10 +94,10 @@ export class InlineCitationCard {}
   imports: [Badge],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<gn-badge
+  template: `<gr-badge
     variant="secondary"
     class="ml-1 cursor-default rounded-full"
-    >{{ label() }}</gn-badge
+    >{{ label() }}</gr-badge
   >`,
   host: {
     'data-slot': 'inline-citation-card-trigger',

@@ -123,15 +123,15 @@ export type FeaturedIconColor = NonNullable<
  *
  * @example
  * ```html
- * <gn-featured-icon color="success" theme="solid" size="lg" shape="circle">
+ * <gr-featured-icon color="success" theme="solid" size="lg" shape="circle">
  *   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
  *     <path d="M20 6 9 17l-5-5"/>
  *   </svg>
- * </gn-featured-icon>
+ * </gr-featured-icon>
  * ```
  */
 @Component({
-  selector: 'gn-featured-icon',
+  selector: 'gr-featured-icon',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

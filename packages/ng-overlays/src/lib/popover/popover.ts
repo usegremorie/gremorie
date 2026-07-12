@@ -19,10 +19,10 @@ import { cn } from '@gremorie/ng-core';
  * content is too long for a popover or warrants blocking the page, escalate
  * to Dialog or Sheet.
  *
- * Anatomy: `gn-popover` (root) → `gn-popover-trigger` (the button) +
- * `<ng-template brnPopoverContent>` wrapping `gn-popover-content` (the styled
- * surface). Optional parts: `gn-popover-anchor`, `gn-popover-header`,
- * `gn-popover-title`, `gn-popover-description`.
+ * Anatomy: `gr-popover` (root) → `gr-popover-trigger` (the button) +
+ * `<ng-template brnPopoverContent>` wrapping `gr-popover-content` (the styled
+ * surface). Optional parts: `gr-popover-anchor`, `gr-popover-header`,
+ * `gr-popover-title`, `gr-popover-description`.
  *
  * Divergence vs. React/Radix: Radix renders content through a Portal child of
  * the root. `@spartan-ng/brain`'s popover renders its content from a
@@ -32,21 +32,21 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-popover>
- *   <gn-popover-trigger [content]="content">Open</gn-popover-trigger>
+ * <gr-popover>
+ *   <gr-popover-trigger [content]="content">Open</gr-popover-trigger>
  *   <ng-template #content brnPopoverContent>
- *     <gn-popover-content>
- *       <gn-popover-header>
- *         <gn-popover-title>Dimensions</gn-popover-title>
- *         <gn-popover-description>Set the layout.</gn-popover-description>
- *       </gn-popover-header>
- *     </gn-popover-content>
+ *     <gr-popover-content>
+ *       <gr-popover-header>
+ *         <gr-popover-title>Dimensions</gr-popover-title>
+ *         <gr-popover-description>Set the layout.</gr-popover-description>
+ *       </gr-popover-header>
+ *     </gr-popover-content>
  *   </ng-template>
- * </gn-popover>
+ * </gr-popover>
  * ```
  */
 @Component({
-  selector: 'gn-popover',
+  selector: 'gr-popover',
   standalone: true,
   hostDirectives: [
     { directive: BrnPopover, inputs: ['align', 'sideOffset', 'offsetX'] },
@@ -63,7 +63,7 @@ export class Popover {
   // `align` ('start' | 'center' | 'end'), `sideOffset` (number) and `offsetX`
   // (number) are exposed straight from the `BrnPopover` host directive (same
   // names as React `align` / `sideOffset`), so consumers bind them on
-  // `gn-popover` directly. No re-declaration needed.
+  // `gr-popover` directly. No re-declaration needed.
 }
 
 /**
@@ -72,7 +72,7 @@ export class Popover {
  * `<ng-template brnPopoverContent>` ref as a required `content` input.
  */
 @Component({
-  selector: 'gn-popover-trigger',
+  selector: 'gr-popover-trigger',
   standalone: true,
   imports: [BrnPopoverTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -99,7 +99,7 @@ export class PopoverTrigger {
  * the template into a CDK overlay. Tailwind classes match React verbatim.
  */
 @Component({
-  selector: 'gn-popover-content',
+  selector: 'gr-popover-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -123,7 +123,7 @@ export class PopoverContent {
  * PopoverAnchor — optional positioning anchor. Mirrors React `PopoverAnchor`.
  */
 @Component({
-  selector: 'gn-popover-anchor',
+  selector: 'gr-popover-anchor',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -139,7 +139,7 @@ export class PopoverAnchor {}
  * PopoverHeader — title/description grouping. Mirrors React `PopoverHeader`.
  */
 @Component({
-  selector: 'gn-popover-header',
+  selector: 'gr-popover-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -160,7 +160,7 @@ export class PopoverHeader {
  * PopoverTitle — the popover heading. Mirrors React `PopoverTitle`.
  */
 @Component({
-  selector: 'gn-popover-title',
+  selector: 'gr-popover-title',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -182,7 +182,7 @@ export class PopoverTitle {
  * `PopoverDescription`.
  */
 @Component({
-  selector: 'gn-popover-description',
+  selector: 'gr-popover-description',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

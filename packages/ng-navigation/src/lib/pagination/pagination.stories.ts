@@ -43,28 +43,28 @@ type Story = StoryObj<Pagination>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-pagination>
-        <gn-pagination-content>
-          <gn-pagination-item>
-            <a gn-pagination-previous href="#"></a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#">1</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#" [isActive]="true">2</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#">3</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <gn-pagination-ellipsis />
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-next href="#"></a>
-          </gn-pagination-item>
-        </gn-pagination-content>
-      </gn-pagination>
+      <gr-pagination>
+        <gr-pagination-content>
+          <gr-pagination-item>
+            <a gr-pagination-previous href="#"></a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#">1</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#" [isActive]="true">2</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#">3</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <gr-pagination-ellipsis />
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-next href="#"></a>
+          </gr-pagination-item>
+        </gr-pagination-content>
+      </gr-pagination>
     `,
   }),
 };
@@ -76,25 +76,25 @@ export const Workbench: Story = {
 export const FirstPage: Story = {
   render: () => ({
     template: `
-      <gn-pagination>
-        <gn-pagination-content>
-          <gn-pagination-item>
-            <a gn-pagination-previous href="#" aria-disabled="true" class="pointer-events-none opacity-50"></a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#" [isActive]="true">1</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#">2</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#">3</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-next href="#"></a>
-          </gn-pagination-item>
-        </gn-pagination-content>
-      </gn-pagination>
+      <gr-pagination>
+        <gr-pagination-content>
+          <gr-pagination-item>
+            <a gr-pagination-previous href="#" aria-disabled="true" class="pointer-events-none opacity-50"></a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#" [isActive]="true">1</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#">2</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#">3</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-next href="#"></a>
+          </gr-pagination-item>
+        </gr-pagination-content>
+      </gr-pagination>
     `,
   }),
 };
@@ -103,19 +103,19 @@ export const FirstPage: Story = {
 export const Compact: Story = {
   render: () => ({
     template: `
-      <gn-pagination>
-        <gn-pagination-content>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#" [isActive]="true">1</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#">2</a>
-          </gn-pagination-item>
-          <gn-pagination-item>
-            <a gn-pagination-link href="#">3</a>
-          </gn-pagination-item>
-        </gn-pagination-content>
-      </gn-pagination>
+      <gr-pagination>
+        <gr-pagination-content>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#" [isActive]="true">1</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#">2</a>
+          </gr-pagination-item>
+          <gr-pagination-item>
+            <a gr-pagination-link href="#">3</a>
+          </gr-pagination-item>
+        </gr-pagination-content>
+      </gr-pagination>
     `,
   }),
 };

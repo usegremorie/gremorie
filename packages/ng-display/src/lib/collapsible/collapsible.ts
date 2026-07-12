@@ -17,8 +17,8 @@ import {
  * Collapsible — single-section expandable region. Mirrors React `Collapsible`
  * from `@gremorie/rx-display`, which wraps `@radix-ui/react-collapsible`.
  *
- * Three parts: `gn-collapsible` (Root), `gn-collapsible-trigger`,
- * `gn-collapsible-content`. The open/close behavior is delegated to the
+ * Three parts: `gr-collapsible` (Root), `gr-collapsible-trigger`,
+ * `gr-collapsible-content`. The open/close behavior is delegated to the
  * spartan brain `BrnCollapsible` host directive — the Angular equivalent of
  * the Radix Collapsible.
  *
@@ -31,14 +31,14 @@ import {
  *
  * @example
  * ```html
- * <gn-collapsible [(open)]="isOpen">
- *   <gn-collapsible-trigger>Toggle</gn-collapsible-trigger>
- *   <gn-collapsible-content>Hidden content</gn-collapsible-content>
- * </gn-collapsible>
+ * <gr-collapsible [(open)]="isOpen">
+ *   <gr-collapsible-trigger>Toggle</gr-collapsible-trigger>
+ *   <gr-collapsible-content>Hidden content</gr-collapsible-content>
+ * </gr-collapsible>
  * ```
  */
 @Component({
-  selector: 'gn-collapsible',
+  selector: 'gr-collapsible',
   standalone: true,
   hostDirectives: [{ directive: BrnCollapsible, inputs: ['disabled'] }],
   encapsulation: ViewEncapsulation.None,
@@ -86,7 +86,7 @@ export class Collapsible {
  * directive so a click toggles the owning collapsible.
  */
 @Component({
-  selector: 'gn-collapsible-trigger',
+  selector: 'gr-collapsible-trigger',
   standalone: true,
   imports: [BrnCollapsibleTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -105,7 +105,7 @@ export class CollapsibleTrigger {}
  * region open/closed.
  */
 @Component({
-  selector: 'gn-collapsible-content',
+  selector: 'gr-collapsible-content',
   standalone: true,
   imports: [BrnCollapsibleContent],
   encapsulation: ViewEncapsulation.None,

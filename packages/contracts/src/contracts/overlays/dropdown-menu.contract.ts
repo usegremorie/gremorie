@@ -110,7 +110,7 @@ export const dropdownMenu = defineContract({
     rx: 'interaction-overlays-dropdownmenu--workbench',
     ng: 'interaction-overlays-dropdownmenu--workbench',
   },
-  tag: { rx: 'DropdownMenu', ng: 'gn-dropdown-menu' },
+  tag: { rx: 'DropdownMenu', ng: 'gr-dropdown-menu' },
   example: {
     defaultOpen: false,
     modal: true,

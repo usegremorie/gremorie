@@ -23,9 +23,9 @@ import {
  * InlineCitation — footnote citation that hovers into a source card
  * (Angular edition). Mirrors React `InlineCitation` from `@gremorie/rx-ai`.
  *
- * Built on `@spartan-ng/brain` BrnHoverCard + `gn-badge` (ng-display). The
+ * Built on `@spartan-ng/brain` BrnHoverCard + `gr-badge` (ng-display). The
  * hover-card content lives in a `<ng-template brnHoverCardContent>` (brain
- * idiom); multiple sources compose `gn-carousel` (ng-display) inside the body.
+ * idiom); multiple sources compose `gr-carousel` (ng-display) inside the body.
  */
 const meta: Meta<InlineCitation> = {
   title: 'AI/Chatbot/InlineCitation',
@@ -121,7 +121,7 @@ export const SingleSource: Story = {
 
 /**
  * Multi-source carousel — several sources behind one citation. The body
- * composes `gn-carousel` (ng-display) with one slide per source.
+ * composes `gr-carousel` (ng-display) with one slide per source.
  */
 export const MultiSourceCarousel: Story = {
   render: () => ({
@@ -136,33 +136,33 @@ export const MultiSourceCarousel: Story = {
             />
             <ng-template brnHoverCardContent>
               <inline-citation-card-body>
-                <gn-carousel class="w-full">
-                  <gn-carousel-content>
-                    <gn-carousel-item class="p-4 pl-8">
+                <gr-carousel class="w-full">
+                  <gr-carousel-content>
+                    <gr-carousel-item class="p-4 pl-8">
                       <inline-citation-source
                         title="Registry README"
                         url="https://gremorie.com/docs/registry"
                         description="How the registry resolves dependencies and writes source."
                       />
-                    </gn-carousel-item>
-                    <gn-carousel-item class="p-4 pl-8">
+                    </gr-carousel-item>
+                    <gr-carousel-item class="p-4 pl-8">
                       <inline-citation-source
                         title="MCP server guide"
                         url="https://gremorie.com/docs/mcp"
                         description="Serving the corpus to LLMs over the Model Context Protocol."
                       />
-                    </gn-carousel-item>
-                    <gn-carousel-item class="p-4 pl-8">
+                    </gr-carousel-item>
+                    <gr-carousel-item class="p-4 pl-8">
                       <inline-citation-source
                         title="Phase 5k release notes"
                         url="https://gremorie.com/changelog"
                         description="100 primitives across 9 packages, editions in parity."
                       />
-                    </gn-carousel-item>
-                  </gn-carousel-content>
-                  <gn-carousel-previous />
-                  <gn-carousel-next />
-                </gn-carousel>
+                    </gr-carousel-item>
+                  </gr-carousel-content>
+                  <gr-carousel-previous />
+                  <gr-carousel-next />
+                </gr-carousel>
               </inline-citation-card-body>
             </ng-template>
           </inline-citation-card>

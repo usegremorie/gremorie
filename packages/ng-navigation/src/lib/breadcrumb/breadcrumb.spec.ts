@@ -23,17 +23,17 @@ import {
     BreadcrumbEllipsis,
   ],
   template: `
-    <gn-breadcrumb>
-      <gn-breadcrumb-list>
-        <gn-breadcrumb-item>
-          <a gn-breadcrumb-link href="#">Home</a>
-        </gn-breadcrumb-item>
-        <gn-breadcrumb-separator />
-        <gn-breadcrumb-item>
-          <gn-breadcrumb-page>Current</gn-breadcrumb-page>
-        </gn-breadcrumb-item>
-      </gn-breadcrumb-list>
-    </gn-breadcrumb>
+    <gr-breadcrumb>
+      <gr-breadcrumb-list>
+        <gr-breadcrumb-item>
+          <a gr-breadcrumb-link href="#">Home</a>
+        </gr-breadcrumb-item>
+        <gr-breadcrumb-separator />
+        <gr-breadcrumb-item>
+          <gr-breadcrumb-page>Current</gr-breadcrumb-page>
+        </gr-breadcrumb-item>
+      </gr-breadcrumb-list>
+    </gr-breadcrumb>
   `,
 })
 class Host {}

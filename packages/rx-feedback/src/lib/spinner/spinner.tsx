@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@gremorie/rx-core';
 
 /**
- * Spinner size variants. Matches the Angular companion (`gn-spinner`).
+ * Spinner size variants. Matches the Angular companion (`gr-spinner`).
  */
 const spinnerVariants = cva('animate-spin', {
   variants: {

@@ -334,9 +334,9 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
             <prompt-input-tools class="gap-2">
               @if (modeSelect) {
               <prompt-input-select [value]="'research'">
-                <gn-tooltip-provider>
-                  <gn-tooltip>
-                    <gn-tooltip-trigger>
+                <gr-tooltip-provider>
+                  <gr-tooltip>
+                    <gr-tooltip-trigger>
                       <prompt-input-select-trigger
                         ariaLabel="Select mode"
                         size="sm"
@@ -344,10 +344,10 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
                       >
                         <prompt-input-select-value placeholder="Mode" />
                       </prompt-input-select-trigger>
-                    </gn-tooltip-trigger>
-                    <gn-tooltip-content>Response mode</gn-tooltip-content>
-                  </gn-tooltip>
-                </gn-tooltip-provider>
+                    </gr-tooltip-trigger>
+                    <gr-tooltip-content>Response mode</gr-tooltip-content>
+                  </gr-tooltip>
+                </gr-tooltip-provider>
                 <prompt-input-select-content>
                   @for (mode of modes; track mode.id) {
                     <prompt-input-select-item
@@ -443,9 +443,9 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
 
               @if (modelSelect) {
               <prompt-input-select [value]="'claude-sonnet-4-6'">
-                <gn-tooltip-provider>
-                  <gn-tooltip>
-                    <gn-tooltip-trigger>
+                <gr-tooltip-provider>
+                  <gr-tooltip>
+                    <gr-tooltip-trigger>
                       <prompt-input-select-trigger
                         ariaLabel="Select model"
                         size="sm"
@@ -453,10 +453,10 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
                       >
                         <prompt-input-select-value placeholder="Model" />
                       </prompt-input-select-trigger>
-                    </gn-tooltip-trigger>
-                    <gn-tooltip-content>Model</gn-tooltip-content>
-                  </gn-tooltip>
-                </gn-tooltip-provider>
+                    </gr-tooltip-trigger>
+                    <gr-tooltip-content>Model</gr-tooltip-content>
+                  </gr-tooltip>
+                </gr-tooltip-provider>
                 <prompt-input-select-content>
                   @for (model of models; track model.id) {
                     <prompt-input-select-item

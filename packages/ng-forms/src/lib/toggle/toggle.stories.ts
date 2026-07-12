@@ -38,7 +38,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-toggle
+      <gr-toggle
         [variant]="variant"
         [size]="size"
         [disabled]="disabled"
@@ -46,7 +46,7 @@ export const Workbench: Story = {
         [ariaLabel]="ariaLabel"
       >
         <span class="italic font-serif">I</span>
-      </gn-toggle>
+      </gr-toggle>
     `,
   }),
 };
@@ -56,9 +56,9 @@ export const Outline: Story = {
   parameters: { layout: 'padded' },
   render: () => ({
     template: `
-      <gn-toggle variant="outline" ariaLabel="Toggle bold">
+      <gr-toggle variant="outline" ariaLabel="Toggle bold">
         <span class="font-bold">B</span>
-      </gn-toggle>
+      </gr-toggle>
     `,
   }),
 };

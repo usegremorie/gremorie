@@ -32,7 +32,7 @@ export const Workbench: Story = {
   args: { value: 60, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -40,7 +40,7 @@ export const Default: Story = {
   args: { value: 60, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -48,7 +48,7 @@ export const Zero: Story = {
   args: { value: 0, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -56,7 +56,7 @@ export const Quarter: Story = {
   args: { value: 25, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -64,7 +64,7 @@ export const Half: Story = {
   args: { value: 50, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -72,7 +72,7 @@ export const Complete: Story = {
   args: { value: 100, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -84,7 +84,7 @@ export const Indeterminate: Story = {
   args: { value: null, max: 100 },
   render: (args) => ({
     props: args,
-    template: `<div class="w-64"><gn-progress [value]="value" [max]="max" /></div>`,
+    template: `<div class="w-64"><gr-progress [value]="value" [max]="max" /></div>`,
   }),
 };
 
@@ -98,7 +98,7 @@ export const CustomMax: Story = {
     props: args,
     template: `
       <div class="w-64 space-y-2">
-        <gn-progress [value]="value" [max]="max" />
+        <gr-progress [value]="value" [max]="max" />
         <p class="text-xs text-muted-foreground">Step {{ value }} of {{ max }}</p>
       </div>
     `,
@@ -115,23 +115,23 @@ export const Sweep: Story = {
       <div class="w-64 space-y-3">
         <div>
           <p class="mb-1 text-xs text-muted-foreground">0%</p>
-          <gn-progress [value]="0" />
+          <gr-progress [value]="0" />
         </div>
         <div>
           <p class="mb-1 text-xs text-muted-foreground">25%</p>
-          <gn-progress [value]="25" />
+          <gr-progress [value]="25" />
         </div>
         <div>
           <p class="mb-1 text-xs text-muted-foreground">50%</p>
-          <gn-progress [value]="50" />
+          <gr-progress [value]="50" />
         </div>
         <div>
           <p class="mb-1 text-xs text-muted-foreground">75%</p>
-          <gn-progress [value]="75" />
+          <gr-progress [value]="75" />
         </div>
         <div>
           <p class="mb-1 text-xs text-muted-foreground">100%</p>
-          <gn-progress [value]="100" />
+          <gr-progress [value]="100" />
         </div>
       </div>
     `,

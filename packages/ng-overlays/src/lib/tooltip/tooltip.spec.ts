@@ -12,14 +12,14 @@ import {
   standalone: true,
   imports: [Tooltip, TooltipProvider, TooltipTrigger, TooltipContent],
   template: `
-    <gn-tooltip-provider>
-      <gn-tooltip>
-        <gn-tooltip-trigger>
+    <gr-tooltip-provider>
+      <gr-tooltip>
+        <gr-tooltip-trigger>
           <button type="button">Hover</button>
-        </gn-tooltip-trigger>
-        <gn-tooltip-content>Label</gn-tooltip-content>
-      </gn-tooltip>
-    </gn-tooltip-provider>
+        </gr-tooltip-trigger>
+        <gr-tooltip-content>Label</gr-tooltip-content>
+      </gr-tooltip>
+    </gr-tooltip-provider>
   `,
 })
 class Host {}

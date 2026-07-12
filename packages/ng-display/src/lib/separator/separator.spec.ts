@@ -6,7 +6,7 @@ import { Separator } from './separator';
 @Component({
   standalone: true,
   imports: [Separator],
-  template: `<gn-separator
+  template: `<gr-separator
     [orientation]="orientation"
     [decorative]="decorative"
   />`,

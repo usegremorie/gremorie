@@ -44,7 +44,7 @@ import { cn } from '@gremorie/ng-core';
  * require a second popover composed by the consumer.
  */
 @Component({
-  selector: 'gn-dropdown-menu',
+  selector: 'gr-dropdown-menu',
   standalone: true,
   hostDirectives: [BrnPopover],
   encapsulation: ViewEncapsulation.None,
@@ -55,7 +55,7 @@ import { cn } from '@gremorie/ng-core';
 export class DropdownMenu {}
 
 @Component({
-  selector: 'gn-dropdown-menu-portal',
+  selector: 'gr-dropdown-menu-portal',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,7 +65,7 @@ export class DropdownMenu {}
 export class DropdownMenuPortal {}
 
 @Component({
-  selector: 'gn-dropdown-menu-trigger',
+  selector: 'gr-dropdown-menu-trigger',
   standalone: true,
   imports: [BrnPopoverTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -85,7 +85,7 @@ export class DropdownMenuTrigger {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-content',
+  selector: 'gr-dropdown-menu-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -106,7 +106,7 @@ export class DropdownMenuContent {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-group',
+  selector: 'gr-dropdown-menu-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -120,7 +120,7 @@ export class DropdownMenuContent {
 export class DropdownMenuGroup {}
 
 @Component({
-  selector: 'gn-dropdown-menu-item',
+  selector: 'gr-dropdown-menu-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -145,7 +145,7 @@ export class DropdownMenuItem {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-checkbox-item',
+  selector: 'gr-dropdown-menu-checkbox-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -189,7 +189,7 @@ export class DropdownMenuCheckboxItem {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-radio-group',
+  selector: 'gr-dropdown-menu-radio-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -203,7 +203,7 @@ export class DropdownMenuCheckboxItem {
 export class DropdownMenuRadioGroup {}
 
 @Component({
-  selector: 'gn-dropdown-menu-radio-item',
+  selector: 'gr-dropdown-menu-radio-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -243,7 +243,7 @@ export class DropdownMenuRadioItem {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-label',
+  selector: 'gr-dropdown-menu-label',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -263,7 +263,7 @@ export class DropdownMenuLabel {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-separator',
+  selector: 'gr-dropdown-menu-separator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -282,7 +282,7 @@ export class DropdownMenuSeparator {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-shortcut',
+  selector: 'gr-dropdown-menu-shortcut',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -300,7 +300,7 @@ export class DropdownMenuShortcut {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-sub',
+  selector: 'gr-dropdown-menu-sub',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -310,7 +310,7 @@ export class DropdownMenuShortcut {
 export class DropdownMenuSub {}
 
 @Component({
-  selector: 'gn-dropdown-menu-sub-trigger',
+  selector: 'gr-dropdown-menu-sub-trigger',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -347,7 +347,7 @@ export class DropdownMenuSubTrigger {
 }
 
 @Component({
-  selector: 'gn-dropdown-menu-sub-content',
+  selector: 'gr-dropdown-menu-sub-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -23,29 +23,29 @@ import { buttonVariants, cn, type ButtonVariant } from '@gremorie/ng-core';
  *
  * ## React → Angular mapping
  *
- * - React `InputGroup` (a `role="group"` div) = our `gn-input-group` host.
- * - React `InputGroupAddon` = `gn-input-group-addon`, with the `align` cva and
+ * - React `InputGroup` (a `role="group"` div) = our `gr-input-group` host.
+ * - React `InputGroupAddon` = `gr-input-group-addon`, with the `align` cva and
  *   the click-to-focus behaviour (clicking the addon focuses the inner input,
  *   unless a button was clicked) preserved.
- * - React `InputGroupButton` = `gn-input-group-button`, wrapping the ng-core
+ * - React `InputGroupButton` = `gr-input-group-button`, wrapping the ng-core
  *   `Button` with the size cva.
- * - React `InputGroupText` = `gn-input-group-text`.
- * - React `InputGroupInput` / `InputGroupTextarea` = `gn-input-group-input` /
- *   `gn-input-group-textarea`, wrapping the ng-forms `Input` / `Textarea` with
+ * - React `InputGroupText` = `gr-input-group-text`.
+ * - React `InputGroupInput` / `InputGroupTextarea` = `gr-input-group-input` /
+ *   `gr-input-group-textarea`, wrapping the ng-forms `Input` / `Textarea` with
  *   `data-slot="input-group-control"` and the borderless override classes.
  *
  * @example
  * ```html
- * <gn-input-group>
- *   <gn-input-group-input placeholder="Search…" />
- *   <gn-input-group-addon align="inline-end">
- *     <gn-input-group-button>Go</gn-input-group-button>
- *   </gn-input-group-addon>
- * </gn-input-group>
+ * <gr-input-group>
+ *   <gr-input-group-input placeholder="Search…" />
+ *   <gr-input-group-addon align="inline-end">
+ *     <gr-input-group-button>Go</gr-input-group-button>
+ *   </gr-input-group-addon>
+ * </gr-input-group>
  * ```
  */
 @Component({
-  selector: 'gn-input-group',
+  selector: 'gr-input-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -108,7 +108,7 @@ const inputGroupAddonVariants = cva(
  * inner input (unless a button was the target), matching React's `onClick`.
  */
 @Component({
-  selector: 'gn-input-group-addon',
+  selector: 'gr-input-group-addon',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -170,7 +170,7 @@ const inputGroupButtonVariants = cva(
  * `className` merge hook. Defaults to the `ghost` variant and `xs` size.
  */
 @Component({
-  selector: 'gn-input-group-button',
+  selector: 'gr-input-group-button',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -212,7 +212,7 @@ export class InputGroupButton {
  * `InputGroupText` (a styled `<span>`).
  */
 @Component({
-  selector: 'gn-input-group-text',
+  selector: 'gr-input-group-text',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -238,17 +238,17 @@ export class InputGroupText {
  * group container owns the chrome. Mirrors React `InputGroupInput`.
  *
  * **Faithful divergence:** React's `InputGroupInput` renders the `Input`
- * component, which in React *is* the native `<input>`. The Angular `gn-input`
+ * component, which in React *is* the native `<input>`. The Angular `gr-input`
  * wraps the native input inside a host element, which would break the parent
  * group's `> input` child selectors and the
  * `has-[[data-slot=input-group-control]:focus-visible]` focus ring. So this
  * control renders the native `<input>` directly — carrying
  * `data-slot="input-group-control"` and the same base + override classes as
- * `gn-input` — keeping it a direct `<input>` child of the group, exactly as
+ * `gr-input` — keeping it a direct `<input>` child of the group, exactly as
  * React produces.
  */
 @Component({
-  selector: 'gn-input-group-input',
+  selector: 'gr-input-group-input',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -302,7 +302,7 @@ export class InputGroupInput {
  * target.
  */
 @Component({
-  selector: 'gn-input-group-textarea',
+  selector: 'gr-input-group-textarea',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

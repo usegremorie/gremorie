@@ -11,10 +11,10 @@ import {
   standalone: true,
   imports: [Collapsible, CollapsibleTrigger, CollapsibleContent],
   template: `
-    <gn-collapsible [defaultOpen]="defaultOpen">
-      <gn-collapsible-trigger>Toggle</gn-collapsible-trigger>
-      <gn-collapsible-content>Hidden</gn-collapsible-content>
-    </gn-collapsible>
+    <gr-collapsible [defaultOpen]="defaultOpen">
+      <gr-collapsible-trigger>Toggle</gr-collapsible-trigger>
+      <gr-collapsible-content>Hidden</gr-collapsible-content>
+    </gr-collapsible>
   `,
 })
 class Host {

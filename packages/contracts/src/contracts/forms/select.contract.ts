@@ -49,7 +49,7 @@ export const select = defineContract({
     {
       name: 'placeholder',
       type: 'string',
-      adapts: { rx: 'on <SelectValue>', ng: 'on <gn-select-value>' },
+      adapts: { rx: 'on <SelectValue>', ng: 'on <gr-select-value>' },
       desc: 'Text shown when nothing is selected (on the value sub-component).',
     },
     {
@@ -57,7 +57,7 @@ export const select = defineContract({
       type: 'SelectSize',
       default: 'default',
       options: ['sm', 'default'],
-      adapts: { rx: 'on <SelectTrigger>', ng: 'on <gn-select-trigger>' },
+      adapts: { rx: 'on <SelectTrigger>', ng: 'on <gr-select-trigger>' },
       desc: 'Trigger height (on the trigger sub-component).',
     },
     {
@@ -88,7 +88,7 @@ export const select = defineContract({
     rx: 'inputs-selection-select--workbench',
     ng: 'inputs-selection-select--workbench',
   },
-  tag: { rx: 'Select', ng: 'gn-select' },
+  tag: { rx: 'Select', ng: 'gr-select' },
   example: {
     disabled: false,
   },

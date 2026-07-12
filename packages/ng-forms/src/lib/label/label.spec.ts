@@ -6,7 +6,7 @@ import { Label } from './label';
 @Component({
   standalone: true,
   imports: [Label],
-  template: `<gn-label for="email">Email</gn-label>`,
+  template: `<gr-label for="email">Email</gr-label>`,
 })
 class Host {}
 

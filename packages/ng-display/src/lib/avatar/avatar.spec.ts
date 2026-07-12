@@ -7,10 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from './avatar';
   standalone: true,
   imports: [Avatar, AvatarImage, AvatarFallback],
   template: `
-    <gn-avatar [size]="size">
-      <gn-avatar-image [src]="src" alt="me" />
-      <gn-avatar-fallback>CN</gn-avatar-fallback>
-    </gn-avatar>
+    <gr-avatar [size]="size">
+      <gr-avatar-image [src]="src" alt="me" />
+      <gr-avatar-fallback>CN</gr-avatar-fallback>
+    </gr-avatar>
   `,
 })
 class Host {

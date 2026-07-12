@@ -38,7 +38,7 @@ const STATE_BADGE_COLORS: Record<ToolState, string> = {
  * prop (the AI SDK tool name, e.g. `"tool-readFile"`); the default title is
  * derived by stripping the `"tool-"` prefix.
  *
- * The state badge dogfoods `gn-badge` from `@gremorie/ng-display`
+ * The state badge dogfoods `gr-badge` from `@gremorie/ng-display`
  * (variant `secondary`) instead of an inline-styled span — matches the
  * React blueprint which also wraps the state in a `Badge` with
  * `variant="secondary"`.
@@ -75,7 +75,7 @@ const STATE_BADGE_COLORS: Record<ToolState, string> = {
           />
         </svg>
         <span class="font-medium text-sm">{{ resolvedTitle() }}</span>
-        <gn-badge variant="secondary" class="gap-1.5">
+        <gr-badge variant="secondary" class="gap-1.5">
           <span [class]="badgeColor()">
             @switch (state()) {
               @case ('input-streaming') {
@@ -176,7 +176,7 @@ const STATE_BADGE_COLORS: Record<ToolState, string> = {
             }
           </span>
           {{ stateLabel() }}
-        </gn-badge>
+        </gr-badge>
       </div>
       <svg
         width="16"

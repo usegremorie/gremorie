@@ -46,7 +46,7 @@ export const Workbench: Story = {
     props: args,
     template: `
       <div class="w-80">
-        <gn-slider
+        <gr-slider
           [value]="value"
           [min]="min"
           [max]="max"
@@ -66,7 +66,7 @@ export const Range: Story = {
   render: () => ({
     template: `
       <div class="w-80">
-        <gn-slider [value]="[25, 75]" [thumbAriaLabel]="['Minimum', 'Maximum']" />
+        <gr-slider [value]="[25, 75]" [thumbAriaLabel]="['Minimum', 'Maximum']" />
       </div>
     `,
   }),
@@ -78,7 +78,7 @@ export const Vertical: Story = {
   render: () => ({
     template: `
       <div class="h-44">
-        <gn-slider [value]="[40]" orientation="vertical" thumbAriaLabel="Level" />
+        <gr-slider [value]="[40]" orientation="vertical" thumbAriaLabel="Level" />
       </div>
     `,
   }),

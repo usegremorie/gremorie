@@ -19,15 +19,15 @@ import {
     InputGroupText,
   ],
   template: `
-    <gn-input-group>
-      <gn-input-group-addon>
-        <gn-input-group-text>https://</gn-input-group-text>
-      </gn-input-group-addon>
-      <gn-input-group-input placeholder="example.com" />
-      <gn-input-group-addon align="inline-end">
-        <gn-input-group-button>Go</gn-input-group-button>
-      </gn-input-group-addon>
-    </gn-input-group>
+    <gr-input-group>
+      <gr-input-group-addon>
+        <gr-input-group-text>https://</gr-input-group-text>
+      </gr-input-group-addon>
+      <gr-input-group-input placeholder="example.com" />
+      <gr-input-group-addon align="inline-end">
+        <gr-input-group-button>Go</gr-input-group-button>
+      </gr-input-group-addon>
+    </gr-input-group>
   `,
 })
 class Host {}
