@@ -27,12 +27,13 @@ Thanks for the interest. Gremorie is in early bootstrapping, so APIs and structu
 ## Branch flow
 
 ```
-feature/* → develop → staging → main
+feature/* → develop  (production)
 ```
 
-- `develop` — active integration. PRs target here.
-- `staging` — pre-release validation. Promoted from `develop` when a phase is ready.
-- `main` — released. Tagged versions only.
+- `develop` — default branch and production deploy (www.gremorie.com). PRs
+  target here; merging deploys production.
+- `main` — protected (auth-gated) preview builds.
+- `staging` — pre-release validation.
 
 ## Quality gates (PR cannot merge without)
 

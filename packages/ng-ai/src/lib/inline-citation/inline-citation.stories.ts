@@ -154,7 +154,7 @@ export const MultiSourceCarousel: Story = {
                     </gr-carousel-item>
                     <gr-carousel-item class="p-4 pl-8">
                       <inline-citation-source
-                        title="Phase 5k release notes"
+                        title="v2.0 release notes"
                         url="https://gremorie.com/changelog"
                         description="100 primitives across 9 packages, editions in parity."
                       />

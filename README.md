@@ -50,8 +50,15 @@ gremorie/
 |   +-- playground/                 # Angular demo app (visual smoke tests)
 |   +-- ng-core/                    # @gremorie/ng-core (Angular cross-category utilities, Button)
 |   +-- ng-ai/                      # @gremorie/ng-ai (PromptInput, Attachments)
-|   +-- ng-containers/              # @gremorie/ng-containers (ScrollArea, ...)
+|   +-- ng-artifacts/               # @gremorie/ng-artifacts (Artifact, ChartArtifact, WebPreview)
+|   +-- ng-containers/              # @gremorie/ng-containers (ScrollArea, Resizable, ...)
 |   +-- ng-data/                    # @gremorie/ng-data (Charts on D3)
+|   +-- ng-display/                 # @gremorie/ng-display (Card, Table, Avatar, ...)
+|   +-- ng-feedback/                # @gremorie/ng-feedback (Alert, Progress, Skeleton)
+|   +-- ng-forms/                   # @gremorie/ng-forms (Button, Input, Select, InputOTP, ...)
+|   +-- ng-navigation/              # @gremorie/ng-navigation (Sidebar, Tabs, ...)
+|   +-- ng-overlays/                # @gremorie/ng-overlays (Dialog, Popover, Command, ...)
+|   +-- angular/                    # @gremorie/angular (Angular meta-package)
 |   +-- rx-core/                    # @gremorie/rx-core (React utilities, cn)
 |   +-- rx-ai/                      # @gremorie/rx-ai (React AI primitives)
 |   +-- rx-forms/                   # @gremorie/rx-forms (Button, Input, Select, ...)
@@ -61,6 +68,10 @@ gremorie/
 |   +-- rx-overlays/                # @gremorie/rx-overlays (Dialog, Popover, ...)
 |   +-- rx-containers/              # @gremorie/rx-containers (ScrollArea, Resizable)
 |   +-- rx-data/                    # @gremorie/rx-data (Charts)
+|   +-- rx-artifacts/               # @gremorie/rx-artifacts (Artifact, ChartArtifact, WebPreview)
+|   +-- react/                      # @gremorie/react (React meta-package)
+|   +-- tokens/                     # @gremorie/tokens (framework-neutral design tokens)
+|   +-- contracts/                  # @gremorie/contracts (cross-framework parity contracts)
 |   +-- registry/                   # @gremorie/registry (registry items + schema)
 |   +-- token-engine/               # @gremorie/token-engine
 |   +-- cli/                        # @gremorie/cli (`npx gremorie init/add/list`)
@@ -73,9 +84,9 @@ gremorie/
 
 ## Branches
 
-- `main` - production / latest release
-- `staging` - pre-release validation
-- `develop` - active integration (default branch on GitHub)
+- `develop` - default branch and production deploy (www.gremorie.com). PRs target here.
+- `main` - protected (auth-gated) preview builds.
+- `staging` - pre-release validation.
 
 ## Quickstart (dev)
 
