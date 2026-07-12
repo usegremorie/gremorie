@@ -48,15 +48,15 @@ export type ButtonGroupOrientation = NonNullable<
  *
  * @example
  * ```html
- * <gn-button-group>
+ * <gr-button-group>
  *   <button class="...">Prev</button>
- *   <gn-button-group-separator />
+ *   <gr-button-group-separator />
  *   <button class="...">Next</button>
- * </gn-button-group>
+ * </gr-button-group>
  * ```
  */
 @Component({
-  selector: 'gn-button-group',
+  selector: 'gr-button-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -83,7 +83,7 @@ export class ButtonGroup {
  * of React `ButtonGroupText`.
  */
 @Component({
-  selector: 'gn-button-group-text',
+  selector: 'gr-button-group-text',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -105,7 +105,7 @@ export class ButtonGroupText {}
  * - `orientation` ('horizontal'|'vertical') ↔ React `orientation` (default 'vertical')
  */
 @Component({
-  selector: 'gn-button-group-separator',
+  selector: 'gr-button-group-separator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

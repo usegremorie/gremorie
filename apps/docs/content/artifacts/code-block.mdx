@@ -175,24 +175,24 @@ import { CodeBlock, CodeBlockCopyButton } from '@gremorie/ng-artifacts';
     CodeBlockCopyButton,
   ],
   template: `
-    <gn-card class="w-full max-w-2xl">
-      <gn-card-header>
+    <gr-card class="w-full max-w-2xl">
+      <gr-card-header>
         <div class="flex items-center justify-between gap-2">
           <div>
-            <gn-card-title>SaveBar.tsx</gn-card-title>
-            <gn-card-description>
+            <gr-card-title>SaveBar.tsx</gr-card-title>
+            <gr-card-description>
               Streamed code emitted by the model with Shiki highlighting.
-            </gn-card-description>
+            </gr-card-description>
           </div>
-          <gn-badge variant="outline">TSX + Shiki</gn-badge>
+          <gr-badge variant="outline">TSX + Shiki</gr-badge>
         </div>
-      </gn-card-header>
-      <gn-card-content>
+      </gr-card-header>
+      <gr-card-content>
         <code-block [code]="code" language="tsx">
           <code-block-copy-button />
         </code-block>
-      </gn-card-content>
-    </gn-card>
+      </gr-card-content>
+    </gr-card>
   `,
 })
 export class CodeArtifactComponent {

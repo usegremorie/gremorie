@@ -15,7 +15,7 @@ import { cn } from '@gremorie/ng-core';
  * semantic markup. For sorting, filtering, pagination or selection, move up to
  * a DataTable pattern.
  *
- * To keep the table DOM valid, the `gn-table` root renders the overflow
+ * To keep the table DOM valid, the `gr-table` root renders the overflow
  * container + the real `<table>`, and the sub-parts are **attribute
  * directives** applied to native table elements (`thead`, `tbody`, `tfoot`,
  * `tr`, `th`, `td`, `caption`). This mirrors the React anatomy while emitting
@@ -23,19 +23,19 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-table>
- *   <caption gnTableCaption>Recent invoices</caption>
- *   <thead gnTableHeader>
- *     <tr gnTableRow><th gnTableHead>Invoice</th><th gnTableHead>Amount</th></tr>
+ * <gr-table>
+ *   <caption grTableCaption>Recent invoices</caption>
+ *   <thead grTableHeader>
+ *     <tr grTableRow><th grTableHead>Invoice</th><th grTableHead>Amount</th></tr>
  *   </thead>
- *   <tbody gnTableBody>
- *     <tr gnTableRow><td gnTableCell>INV001</td><td gnTableCell>$250</td></tr>
+ *   <tbody grTableBody>
+ *     <tr grTableRow><td grTableCell>INV001</td><td grTableCell>$250</td></tr>
  *   </tbody>
- * </gn-table>
+ * </gr-table>
  * ```
  */
 @Component({
-  selector: 'gn-table',
+  selector: 'gr-table',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,7 +55,7 @@ export class Table {
 
 /** TableHeader — `<thead>`. Mirrors React `TableHeader`. */
 @Directive({
-  selector: 'thead[gnTableHeader]',
+  selector: 'thead[grTableHeader]',
   standalone: true,
   host: {
     'data-slot': 'table-header',
@@ -68,7 +68,7 @@ export class TableHeader {
 
 /** TableBody — `<tbody>`. Mirrors React `TableBody`. */
 @Directive({
-  selector: 'tbody[gnTableBody]',
+  selector: 'tbody[grTableBody]',
   standalone: true,
   host: {
     'data-slot': 'table-body',
@@ -83,7 +83,7 @@ export class TableBody {
 
 /** TableFooter — `<tfoot>` (muted, top border). Mirrors React `TableFooter`. */
 @Directive({
-  selector: 'tfoot[gnTableFooter]',
+  selector: 'tfoot[grTableFooter]',
   standalone: true,
   host: {
     'data-slot': 'table-footer',
@@ -98,7 +98,7 @@ export class TableFooter {
 
 /** TableRow — `<tr>` with hover + `data-[state=selected]` styling. Mirrors React `TableRow`. */
 @Directive({
-  selector: 'tr[gnTableRow]',
+  selector: 'tr[grTableRow]',
   standalone: true,
   host: {
     'data-slot': 'table-row',
@@ -115,7 +115,7 @@ export class TableRow {
 
 /** TableHead — `<th>` column header. Mirrors React `TableHead`. */
 @Directive({
-  selector: 'th[gnTableHead]',
+  selector: 'th[grTableHead]',
   standalone: true,
   host: {
     'data-slot': 'table-head',
@@ -132,7 +132,7 @@ export class TableHead {
 
 /** TableCell — `<td>` body cell. Mirrors React `TableCell`. */
 @Directive({
-  selector: 'td[gnTableCell]',
+  selector: 'td[grTableCell]',
   standalone: true,
   host: {
     'data-slot': 'table-cell',
@@ -149,7 +149,7 @@ export class TableCell {
 
 /** TableCaption — `<caption>`, rendered below the table. Mirrors React `TableCaption`. */
 @Directive({
-  selector: 'caption[gnTableCaption]',
+  selector: 'caption[grTableCaption]',
   standalone: true,
   host: {
     'data-slot': 'table-caption',

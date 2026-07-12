@@ -7,7 +7,7 @@ import { Switch, type SwitchSize } from './switch';
   standalone: true,
   imports: [Switch],
   template: `
-    <gn-switch [checked]="checked()" [size]="size()" [disabled]="disabled()" />
+    <gr-switch [checked]="checked()" [size]="size()" [disabled]="disabled()" />
   `,
 })
 class Host {
@@ -48,7 +48,7 @@ describe('Switch', () => {
   it('reflects size on the host via data-size', () => {
     const fixture = render();
     const el = (fixture.nativeElement as HTMLElement).querySelector(
-      'gn-switch',
+      'gr-switch',
     );
     expect(el?.getAttribute('data-size')).toBe('default');
 

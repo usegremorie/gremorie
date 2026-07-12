@@ -26,8 +26,8 @@ import { cn } from '@gremorie/ng-core';
  * Carousel — horizontally (or vertically) scrollable slide region. Mirrors
  * React `Carousel` from `@gremorie/rx-display`, which follows the shadcn/ui
  * pattern built on Embla. Five parts:
- * `gn-carousel` (root), `gn-carousel-content`, `gn-carousel-item`,
- * `gn-carousel-previous`, `gn-carousel-next`.
+ * `gr-carousel` (root), `gr-carousel-content`, `gr-carousel-item`,
+ * `gr-carousel-previous`, `gr-carousel-next`.
  *
  * The React edition uses `embla-carousel-react`; this Angular edition wraps
  * the framework-agnostic `embla-carousel` core directly. State (api, orientation,
@@ -39,14 +39,14 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-carousel>
- *   <gn-carousel-content>
- *     <gn-carousel-item>Slide 1</gn-carousel-item>
- *     <gn-carousel-item>Slide 2</gn-carousel-item>
- *   </gn-carousel-content>
- *   <gn-carousel-previous />
- *   <gn-carousel-next />
- * </gn-carousel>
+ * <gr-carousel>
+ *   <gr-carousel-content>
+ *     <gr-carousel-item>Slide 1</gr-carousel-item>
+ *     <gr-carousel-item>Slide 2</gr-carousel-item>
+ *   </gr-carousel-content>
+ *   <gr-carousel-previous />
+ *   <gr-carousel-next />
+ * </gr-carousel>
  * ```
  */
 export type CarouselOrientation = 'horizontal' | 'vertical';
@@ -85,7 +85,7 @@ export class CarouselService {
 }
 
 @Component({
-  selector: 'gn-carousel',
+  selector: 'gr-carousel',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -126,7 +126,7 @@ export class Carousel {
 }
 
 @Component({
-  selector: 'gn-carousel-content',
+  selector: 'gr-carousel-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -165,7 +165,7 @@ export class CarouselContent implements AfterViewInit, OnDestroy {
 }
 
 @Component({
-  selector: 'gn-carousel-item',
+  selector: 'gr-carousel-item',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -188,7 +188,7 @@ export class CarouselItem {
 }
 
 @Component({
-  selector: 'gn-carousel-previous',
+  selector: 'gr-carousel-previous',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -230,7 +230,7 @@ export class CarouselPrevious {
 }
 
 @Component({
-  selector: 'gn-carousel-next',
+  selector: 'gr-carousel-next',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

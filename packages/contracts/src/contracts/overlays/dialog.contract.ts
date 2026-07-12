@@ -80,7 +80,7 @@ export const dialog = defineContract({
     rules: [
       'DialogTrigger is required - the dialog opens on click of the trigger.',
       'Closes on overlay click and Escape (set modal to keep the page behind inert).',
-      'Angular renders the panel from a `<ng-template brnDialogContent>` inside `<gn-dialog>` (CDK overlay), whereas React composes DialogContent inline through a Radix portal; DialogPortal/DialogOverlay are not separate Angular parts (the brain owns the backdrop).',
+      'Angular renders the panel from a `<ng-template brnDialogContent>` inside `<gr-dialog>` (CDK overlay), whereas React composes DialogContent inline through a Radix portal; DialogPortal/DialogOverlay are not separate Angular parts (the brain owns the backdrop).',
     ],
     example:
       '<Dialog><DialogTrigger>Edit</DialogTrigger><DialogContent><DialogHeader><DialogTitle>Edit profile</DialogTitle></DialogHeader><DialogFooter><DialogClose>Cancel</DialogClose></DialogFooter></DialogContent></Dialog>',
@@ -89,7 +89,7 @@ export const dialog = defineContract({
     rx: 'interaction-overlays-dialog--workbench',
     ng: 'interaction-overlays-dialog--workbench',
   },
-  tag: { rx: 'Dialog', ng: 'gn-dialog' },
+  tag: { rx: 'Dialog', ng: 'gr-dialog' },
   example: {
     defaultOpen: false,
     modal: true,

@@ -43,14 +43,14 @@ import {
   standalone: true,
   imports: [Card, CardHeader, CardTitle, CardContent, Badge],
   template: `
-    <gn-card class="max-w-sm">
-      <gn-card-header>
-        <gn-card-title>Welcome</gn-card-title>
-      </gn-card-header>
-      <gn-card-content>
-        <gn-badge variant="secondary">New</gn-badge>
-      </gn-card-content>
-    </gn-card>
+    <gr-card class="max-w-sm">
+      <gr-card-header>
+        <gr-card-title>Welcome</gr-card-title>
+      </gr-card-header>
+      <gr-card-content>
+        <gr-badge variant="secondary">New</gr-badge>
+      </gr-card-content>
+    </gr-card>
   `,
 })
 export class ExampleComponent {}
@@ -58,16 +58,16 @@ export class ExampleComponent {}
 
 ## Components
 
-- `Card` (selector: `gn-card`) with `CardHeader` (`gn-card-header`),
-  `CardTitle` (`gn-card-title`), `CardDescription` (`gn-card-description`),
-  `CardAction` (`gn-card-action`), `CardContent` (`gn-card-content`), and
-  `CardFooter` (`gn-card-footer`).
-- `Badge` (selector: `gn-badge`) with `badgeVariants` and the `BadgeVariant`
+- `Card` (selector: `gr-card`) with `CardHeader` (`gr-card-header`),
+  `CardTitle` (`gr-card-title`), `CardDescription` (`gr-card-description`),
+  `CardAction` (`gr-card-action`), `CardContent` (`gr-card-content`), and
+  `CardFooter` (`gr-card-footer`).
+- `Badge` (selector: `gr-badge`) with `badgeVariants` and the `BadgeVariant`
   type.
-- `Carousel` (selector: `gn-carousel`) with `CarouselContent`
-  (`gn-carousel-content`), `CarouselItem` (`gn-carousel-item`),
-  `CarouselPrevious` (`gn-carousel-previous`), and `CarouselNext`
-  (`gn-carousel-next`), plus the `CarouselService` and `CarouselOrientation`
+- `Carousel` (selector: `gr-carousel`) with `CarouselContent`
+  (`gr-carousel-content`), `CarouselItem` (`gr-carousel-item`),
+  `CarouselPrevious` (`gr-carousel-previous`), and `CarouselNext`
+  (`gr-carousel-next`), plus the `CarouselService` and `CarouselOrientation`
   type.
 
 ## License

@@ -49,11 +49,11 @@ export type CheckedState = boolean | 'indeterminate';
  *
  * @example
  * ```html
- * <gn-checkbox [(checked)]="agreed" id="terms" />
+ * <gr-checkbox [(checked)]="agreed" id="terms" />
  * ```
  */
 @Component({
-  selector: 'gn-checkbox',
+  selector: 'gr-checkbox',
   standalone: true,
   imports: [BrnCheckbox],
   encapsulation: ViewEncapsulation.None,

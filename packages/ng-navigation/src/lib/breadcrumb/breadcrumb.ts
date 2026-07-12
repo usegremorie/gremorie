@@ -12,31 +12,31 @@ import {
  * dependency-free for SSR and accessibility. Use only on **deep hierarchies**
  * (≥3 levels); flat sites pay the noise cost without a payoff.
  *
- * The current page renders as `gn-breadcrumb-page` (not a link) so the trail
+ * The current page renders as `gr-breadcrumb-page` (not a link) so the trail
  * terminates explicitly. For collapsed middle segments use
- * `gn-breadcrumb-ellipsis` paired with a Popover or DropdownMenu.
+ * `gr-breadcrumb-ellipsis` paired with a Popover or DropdownMenu.
  *
- * Anatomy: `gn-breadcrumb` (nav) → `gn-breadcrumb-list` (ol) →
- * `gn-breadcrumb-item` (li) → `gn-breadcrumb-link` (a) / `gn-breadcrumb-page`
- * (current), with `gn-breadcrumb-separator` and `gn-breadcrumb-ellipsis`.
+ * Anatomy: `gr-breadcrumb` (nav) → `gr-breadcrumb-list` (ol) →
+ * `gr-breadcrumb-item` (li) → `gr-breadcrumb-link` (a) / `gr-breadcrumb-page`
+ * (current), with `gr-breadcrumb-separator` and `gr-breadcrumb-ellipsis`.
  *
  * @example
  * ```html
- * <gn-breadcrumb>
- *   <gn-breadcrumb-list>
- *     <gn-breadcrumb-item>
- *       <gn-breadcrumb-link href="/">Home</gn-breadcrumb-link>
- *     </gn-breadcrumb-item>
- *     <gn-breadcrumb-separator />
- *     <gn-breadcrumb-item>
- *       <gn-breadcrumb-page>Settings</gn-breadcrumb-page>
- *     </gn-breadcrumb-item>
- *   </gn-breadcrumb-list>
- * </gn-breadcrumb>
+ * <gr-breadcrumb>
+ *   <gr-breadcrumb-list>
+ *     <gr-breadcrumb-item>
+ *       <gr-breadcrumb-link href="/">Home</gr-breadcrumb-link>
+ *     </gr-breadcrumb-item>
+ *     <gr-breadcrumb-separator />
+ *     <gr-breadcrumb-item>
+ *       <gr-breadcrumb-page>Settings</gr-breadcrumb-page>
+ *     </gr-breadcrumb-item>
+ *   </gr-breadcrumb-list>
+ * </gr-breadcrumb>
  * ```
  */
 @Component({
-  selector: 'gn-breadcrumb',
+  selector: 'gr-breadcrumb',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,11 +50,11 @@ export class Breadcrumb {}
 
 /**
  * BreadcrumbList — the ordered list of segments. Mirrors React
- * `BreadcrumbList`. Renders the host as an `<ol>` (use `gn-breadcrumb-list`
+ * `BreadcrumbList`. Renders the host as an `<ol>` (use `gr-breadcrumb-list`
  * on an `<ol>` is not needed — the host carries the list styling).
  */
 @Component({
-  selector: 'gn-breadcrumb-list, ol[gn-breadcrumb-list]',
+  selector: 'gr-breadcrumb-list, ol[gr-breadcrumb-list]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,7 +71,7 @@ export class BreadcrumbList {}
  * BreadcrumbItem — one segment wrapper. Mirrors React `BreadcrumbItem`.
  */
 @Component({
-  selector: 'gn-breadcrumb-item, li[gn-breadcrumb-item]',
+  selector: 'gr-breadcrumb-item, li[gr-breadcrumb-item]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -86,11 +86,11 @@ export class BreadcrumbItem {}
 /**
  * BreadcrumbLink — a navigable ancestor segment. Mirrors React
  * `BreadcrumbLink`. The React edition supports `asChild`; in Angular project
- * an `<a>` (or any element) with the `gn-breadcrumb-link` attribute selector
+ * an `<a>` (or any element) with the `gr-breadcrumb-link` attribute selector
  * to compose with router links.
  */
 @Component({
-  selector: 'gn-breadcrumb-link, a[gn-breadcrumb-link]',
+  selector: 'gr-breadcrumb-link, a[gr-breadcrumb-link]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -108,7 +108,7 @@ export class BreadcrumbLink {}
  * `aria-current="page"` so the trail terminates explicitly.
  */
 @Component({
-  selector: 'gn-breadcrumb-page',
+  selector: 'gr-breadcrumb-page',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -129,7 +129,7 @@ export class BreadcrumbPage {}
  * projected.
  */
 @Component({
-  selector: 'gn-breadcrumb-separator, li[gn-breadcrumb-separator]',
+  selector: 'gr-breadcrumb-separator, li[gr-breadcrumb-separator]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -163,7 +163,7 @@ export class BreadcrumbSeparator {}
  * hidden segments.
  */
 @Component({
-  selector: 'gn-breadcrumb-ellipsis',
+  selector: 'gr-breadcrumb-ellipsis',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

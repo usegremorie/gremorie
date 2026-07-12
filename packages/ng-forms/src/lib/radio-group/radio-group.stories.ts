@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
  * `@radix-ui/react-radio-group`; Angular composes the spartan brain
  * `BrnRadioGroup` + `brn-radio`).
  *
- * Compound API: `gn-radio-group` (Root) + `gn-radio-group-item` (option).
+ * Compound API: `gr-radio-group` (Root) + `gr-radio-group-item` (option).
  * Roving tabindex and arrow-key navigation are handled by the brain.
  */
 const meta: Meta<RadioGroup> = {
@@ -32,17 +32,17 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-radio-group [value]="value" [disabled]="disabled">
+      <gr-radio-group [value]="value" [disabled]="disabled">
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="default" id="r-default" /> Default
+          <gr-radio-group-item value="default" id="r-default" /> Default
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="comfortable" id="r-comfortable" /> Comfortable
+          <gr-radio-group-item value="comfortable" id="r-comfortable" /> Comfortable
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="compact" id="r-compact" /> Compact
+          <gr-radio-group-item value="compact" id="r-compact" /> Compact
         </label>
-      </gn-radio-group>
+      </gr-radio-group>
     `,
   }),
 };
@@ -52,14 +52,14 @@ export const Checked: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-radio-group value="pro">
+      <gr-radio-group value="pro">
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="free" id="c-free" /> Free
+          <gr-radio-group-item value="free" id="c-free" /> Free
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="pro" id="c-pro" /> Pro
+          <gr-radio-group-item value="pro" id="c-pro" /> Pro
         </label>
-      </gn-radio-group>
+      </gr-radio-group>
     `,
   }),
 };
@@ -69,14 +69,14 @@ export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-radio-group value="a" [disabled]="true">
+      <gr-radio-group value="a" [disabled]="true">
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="a" id="d-a" /> Selected, disabled
+          <gr-radio-group-item value="a" id="d-a" /> Selected, disabled
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-radio-group-item value="b" id="d-b" /> Unselected, disabled
+          <gr-radio-group-item value="b" id="d-b" /> Unselected, disabled
         </label>
-      </gn-radio-group>
+      </gr-radio-group>
     `,
   }),
 };

@@ -53,26 +53,26 @@ type Story = StoryObj<AlertDialog>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-alert-dialog>
-        <button gn-alert-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md bg-destructive px-4 text-sm font-medium text-destructive-foreground hover:bg-destructive/90">
+      <gr-alert-dialog>
+        <button gr-alert-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md bg-destructive px-4 text-sm font-medium text-destructive-foreground hover:bg-destructive/90">
           Delete account
         </button>
         <ng-template brnAlertDialogContent>
-          <gn-alert-dialog-content>
-            <gn-alert-dialog-header>
-              <h2 gn-alert-dialog-title>Are you absolutely sure?</h2>
-              <p gn-alert-dialog-description>
+          <gr-alert-dialog-content>
+            <gr-alert-dialog-header>
+              <h2 gr-alert-dialog-title>Are you absolutely sure?</h2>
+              <p gr-alert-dialog-description>
                 This action cannot be undone. This will permanently delete your
                 account and remove your data from our servers.
               </p>
-            </gn-alert-dialog-header>
-            <gn-alert-dialog-footer>
-              <button gn-alert-dialog-cancel>Cancel</button>
-              <button gn-alert-dialog-action variant="destructive">Delete</button>
-            </gn-alert-dialog-footer>
-          </gn-alert-dialog-content>
+            </gr-alert-dialog-header>
+            <gr-alert-dialog-footer>
+              <button gr-alert-dialog-cancel>Cancel</button>
+              <button gr-alert-dialog-action variant="destructive">Delete</button>
+            </gr-alert-dialog-footer>
+          </gr-alert-dialog-content>
         </ng-template>
-      </gn-alert-dialog>
+      </gr-alert-dialog>
     `,
   }),
 };
@@ -81,29 +81,29 @@ export const Workbench: Story = {
 export const Small: Story = {
   render: () => ({
     template: `
-      <gn-alert-dialog>
-        <button gn-alert-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-alert-dialog>
+        <button gr-alert-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Confirm
         </button>
         <ng-template brnAlertDialogContent>
-          <gn-alert-dialog-content size="sm">
-            <gn-alert-dialog-header>
-              <gn-alert-dialog-media>
+          <gr-alert-dialog-content size="sm">
+            <gr-alert-dialog-header>
+              <gr-alert-dialog-media>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
                   <path d="M12 9v4" /><path d="M12 17h.01" />
                 </svg>
-              </gn-alert-dialog-media>
-              <h2 gn-alert-dialog-title>Discard changes?</h2>
-              <p gn-alert-dialog-description>Your edits will be lost.</p>
-            </gn-alert-dialog-header>
-            <gn-alert-dialog-footer>
-              <button gn-alert-dialog-cancel>Keep</button>
-              <button gn-alert-dialog-action>Discard</button>
-            </gn-alert-dialog-footer>
-          </gn-alert-dialog-content>
+              </gr-alert-dialog-media>
+              <h2 gr-alert-dialog-title>Discard changes?</h2>
+              <p gr-alert-dialog-description>Your edits will be lost.</p>
+            </gr-alert-dialog-header>
+            <gr-alert-dialog-footer>
+              <button gr-alert-dialog-cancel>Keep</button>
+              <button gr-alert-dialog-action>Discard</button>
+            </gr-alert-dialog-footer>
+          </gr-alert-dialog-content>
         </ng-template>
-      </gn-alert-dialog>
+      </gr-alert-dialog>
     `,
   }),
 };

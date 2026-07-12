@@ -6,8 +6,8 @@ import { Stack } from './stack';
 @Component({
   standalone: true,
   imports: [Stack],
-  template: `<gn-stack [gap]="gap" [align]="align" [justify]="justify"
-    ><span>child</span></gn-stack
+  template: `<gr-stack [gap]="gap" [align]="align" [justify]="justify"
+    ><span>child</span></gr-stack
   >`,
 })
 class Host {

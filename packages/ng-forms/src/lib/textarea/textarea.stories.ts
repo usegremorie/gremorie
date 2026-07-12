@@ -38,7 +38,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-textarea
+      <gr-textarea
         class="w-80"
         [placeholder]="placeholder"
         [disabled]="disabled"
@@ -55,8 +55,8 @@ export const WithLabel: Story = {
   render: () => ({
     template: `
       <div class="flex w-80 flex-col gap-2">
-        <gn-label for="bio">Bio</gn-label>
-        <gn-textarea id="bio" placeholder="Tell us about yourself…" />
+        <gr-label for="bio">Bio</gr-label>
+        <gr-textarea id="bio" placeholder="Tell us about yourself…" />
       </div>
     `,
   }),
@@ -66,7 +66,7 @@ export const WithLabel: Story = {
 export const Invalid: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-textarea class="w-80" [ariaInvalid]="true" value="Too short" />`,
+    template: `<gr-textarea class="w-80" [ariaInvalid]="true" value="Too short" />`,
   }),
 };
 
@@ -74,6 +74,6 @@ export const Invalid: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-textarea class="w-80" [disabled]="true" value="Read only content" />`,
+    template: `<gr-textarea class="w-80" [disabled]="true" value="Read only content" />`,
   }),
 };

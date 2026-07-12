@@ -37,17 +37,17 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-alert [variant]="variant" class="max-w-lg">
+      <gr-alert [variant]="variant" class="max-w-lg">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/>
           <path d="M12 16v-4"/>
           <path d="M12 8h.01"/>
         </svg>
-        <gn-alert-title>Heads up!</gn-alert-title>
-        <gn-alert-description>
+        <gr-alert-title>Heads up!</gr-alert-title>
+        <gr-alert-description>
           You can configure additional notification channels in your settings.
-        </gn-alert-description>
-      </gn-alert>
+        </gr-alert-description>
+      </gr-alert>
     `,
   }),
 };
@@ -57,12 +57,12 @@ export const Default: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-alert [variant]="variant">
-        <gn-alert-title>Heads up!</gn-alert-title>
-        <gn-alert-description>
+      <gr-alert [variant]="variant">
+        <gr-alert-title>Heads up!</gr-alert-title>
+        <gr-alert-description>
           You can configure additional notification channels in your settings.
-        </gn-alert-description>
-      </gn-alert>
+        </gr-alert-description>
+      </gr-alert>
     `,
   }),
 };
@@ -72,17 +72,17 @@ export const DefaultWithIcon: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-alert [variant]="variant">
+      <gr-alert [variant]="variant">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/>
           <path d="M12 16v-4"/>
           <path d="M12 8h.01"/>
         </svg>
-        <gn-alert-title>Heads up!</gn-alert-title>
-        <gn-alert-description>
+        <gr-alert-title>Heads up!</gr-alert-title>
+        <gr-alert-description>
           You can configure additional notification channels in your settings.
-        </gn-alert-description>
-      </gn-alert>
+        </gr-alert-description>
+      </gr-alert>
     `,
   }),
 };
@@ -92,12 +92,12 @@ export const Destructive: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-alert [variant]="variant">
-        <gn-alert-title>Something went wrong</gn-alert-title>
-        <gn-alert-description>
+      <gr-alert [variant]="variant">
+        <gr-alert-title>Something went wrong</gr-alert-title>
+        <gr-alert-description>
           We could not save your changes. Please try again.
-        </gn-alert-description>
-      </gn-alert>
+        </gr-alert-description>
+      </gr-alert>
     `,
   }),
 };
@@ -107,17 +107,17 @@ export const DestructiveWithIcon: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-alert [variant]="variant">
+      <gr-alert [variant]="variant">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/>
           <line x1="12" y1="8" x2="12" y2="12"/>
           <line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
-        <gn-alert-title>Error</gn-alert-title>
-        <gn-alert-description>
+        <gr-alert-title>Error</gr-alert-title>
+        <gr-alert-description>
           The deployment failed. Check the logs for details.
-        </gn-alert-description>
-      </gn-alert>
+        </gr-alert-description>
+      </gr-alert>
     `,
   }),
 };
@@ -129,12 +129,12 @@ export const TitleOnly: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `
-      <gn-alert>
+      <gr-alert>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M20 6 9 17l-5-5"/>
         </svg>
-        <gn-alert-title>Changes saved successfully.</gn-alert-title>
-      </gn-alert>
+        <gr-alert-title>Changes saved successfully.</gr-alert-title>
+      </gr-alert>
     `,
   }),
 };

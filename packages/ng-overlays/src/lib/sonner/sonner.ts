@@ -44,7 +44,7 @@ import { BrnSonnerToaster, toast } from '@spartan-ng/brain/sonner';
  *
  * @example
  * ```html
- * <gn-sonner />
+ * <gr-sonner />
  * <button (click)="notify()">Save</button>
  * ```
  * ```ts
@@ -53,7 +53,7 @@ import { BrnSonnerToaster, toast } from '@spartan-ng/brain/sonner';
  * ```
  */
 @Component({
-  selector: 'gn-sonner',
+  selector: 'gr-sonner',
   standalone: true,
   imports: [BrnSonnerToaster],
   encapsulation: ViewEncapsulation.None,

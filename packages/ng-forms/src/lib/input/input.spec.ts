@@ -7,7 +7,7 @@ import { Input } from './input';
   standalone: true,
   imports: [Input],
   template: `
-    <gn-input
+    <gr-input
       [type]="type()"
       [placeholder]="placeholder()"
       [value]="value()"

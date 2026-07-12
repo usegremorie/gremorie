@@ -8,7 +8,7 @@ import { Sonner, toast } from './sonner';
  *
  * Mirrors React `Toaster` (wraps `sonner`). Behavior delegated to spartan brain
  * `BrnSonnerToaster`. Mount once; fire `toast()` from anywhere. Each story
- * mounts `<gn-sonner />` and a trigger button that calls a `toast` variant.
+ * mounts `<gr-sonner />` and a trigger button that calls a `toast` variant.
  */
 const meta: Meta<Sonner> = {
   title: 'Interaction/Overlays/Sonner',
@@ -42,7 +42,7 @@ export const Workbench: Story = {
         }),
     },
     template: `
-      <gn-sonner [theme]="theme" />
+      <gr-sonner [theme]="theme" />
       <button type="button" class="${TRIGGER_CLASS}" (click)="fire()">
         Show toast
       </button>
@@ -55,7 +55,7 @@ export const Success: Story = {
   render: () => ({
     props: { fire: () => toast.success('Profile saved') },
     template: `
-      <gn-sonner />
+      <gr-sonner />
       <button type="button" class="${TRIGGER_CLASS}" (click)="fire()">
         Show success
       </button>
@@ -74,7 +74,7 @@ export const Error: Story = {
         }),
     },
     template: `
-      <gn-sonner />
+      <gr-sonner />
       <button type="button" class="${TRIGGER_CLASS}" (click)="fire()">
         Show error
       </button>

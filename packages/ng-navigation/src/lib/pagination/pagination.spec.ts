@@ -23,29 +23,29 @@ import {
     PaginationEllipsis,
   ],
   template: `
-    <gn-pagination>
-      <gn-pagination-content>
-        <gn-pagination-item>
+    <gr-pagination>
+      <gr-pagination-content>
+        <gr-pagination-item>
           <a
-            gn-pagination-previous
+            gr-pagination-previous
             href="#"
             aria-label="Go to previous page"
           ></a>
-        </gn-pagination-item>
-        <gn-pagination-item>
-          <a gn-pagination-link href="#">1</a>
-        </gn-pagination-item>
-        <gn-pagination-item>
-          <a gn-pagination-link href="#" [isActive]="true">2</a>
-        </gn-pagination-item>
-        <gn-pagination-item>
-          <gn-pagination-ellipsis />
-        </gn-pagination-item>
-        <gn-pagination-item>
-          <a gn-pagination-next href="#" aria-label="Go to next page"></a>
-        </gn-pagination-item>
-      </gn-pagination-content>
-    </gn-pagination>
+        </gr-pagination-item>
+        <gr-pagination-item>
+          <a gr-pagination-link href="#">1</a>
+        </gr-pagination-item>
+        <gr-pagination-item>
+          <a gr-pagination-link href="#" [isActive]="true">2</a>
+        </gr-pagination-item>
+        <gr-pagination-item>
+          <gr-pagination-ellipsis />
+        </gr-pagination-item>
+        <gr-pagination-item>
+          <a gr-pagination-next href="#" aria-label="Go to next page"></a>
+        </gr-pagination-item>
+      </gr-pagination-content>
+    </gr-pagination>
   `,
 })
 class Host {}

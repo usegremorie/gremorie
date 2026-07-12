@@ -30,7 +30,7 @@ describe('PromptInputButton', () => {
     expect(button.getAttribute('aria-label')).toBe('Attach a file');
   });
 
-  it('shows the STYLED tooltip surface on hover (gn-tooltip, not bare brain)', async () => {
+  it('shows the STYLED tooltip surface on hover (gr-tooltip, not bare brain)', async () => {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
     await fixture.whenStable();

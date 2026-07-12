@@ -4,7 +4,7 @@ import { defineContract } from '../../types';
  * Table - a styled wrapper around the native `<table>` element. Skin only
  * (rules, hover, padding, typography); no behavior.
  * React: `@gremorie/rx-display` (styled <table> subcomponents).
- * Angular: `@gremorie/ng-display` (`gn-table` host + attribute directives on
+ * Angular: `@gremorie/ng-display` (`gr-table` host + attribute directives on
  * native thead/tbody/tfoot/tr/th/td/caption to keep table DOM valid).
  */
 export const table = defineContract({
@@ -46,7 +46,7 @@ export const table = defineContract({
     ],
     rules: [
       'Brings no behavior — it is purely the skin over semantic <table> markup.',
-      'Angular applies the sub-parts as attribute directives on native elements (thead[gnTableHeader], tr[gnTableRow], td[gnTableCell], ...) to emit valid table DOM.',
+      'Angular applies the sub-parts as attribute directives on native elements (thead[grTableHeader], tr[grTableRow], td[grTableCell], ...) to emit valid table DOM.',
       'Selected rows are styled via data-[state=selected] on the row.',
     ],
     example:
@@ -56,7 +56,7 @@ export const table = defineContract({
     rx: 'layout-display-display-table--workbench',
     ng: 'layout-display-display-table--workbench',
   },
-  tag: { rx: 'Table', ng: 'gn-table' },
+  tag: { rx: 'Table', ng: 'gr-table' },
   // No controllable scalar props (className only); nothing to seed.
   example: {},
   figma: { nodeId: null },

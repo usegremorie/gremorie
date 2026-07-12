@@ -20,7 +20,7 @@ import {
 import { cn } from '@gremorie/ng-core';
 
 /**
- * Provides the root's `defaultValue` to descendant `gn-accordion-item`s so
+ * Provides the root's `defaultValue` to descendant `gr-accordion-item`s so
  * each item can decide whether it should start opened — bridging React's
  * string-`value` model onto spartan brain's per-item `isOpened` flag.
  */
@@ -37,8 +37,8 @@ const ACCORDION_ROOT = new InjectionToken<AccordionRootState>('AccordionRoot');
  * Use `type="single"` for one-open-at-a-time (FAQ, settings groups);
  * `type="multiple"` when several sections may stay open at once.
  *
- * Anatomy: `gn-accordion` (root) → `gn-accordion-item` (one section, keyed by
- * `value`) → `gn-accordion-trigger` (header + chevron) + `gn-accordion-content`
+ * Anatomy: `gr-accordion` (root) → `gr-accordion-item` (one section, keyed by
+ * `value`) → `gr-accordion-trigger` (header + chevron) + `gr-accordion-content`
  * (animated body).
  *
  * The `brnAccordion` directive lives on the HOST so content-projected
@@ -52,16 +52,16 @@ const ACCORDION_ROOT = new InjectionToken<AccordionRootState>('AccordionRoot');
  *
  * @example
  * ```html
- * <gn-accordion type="single" defaultValue="a" class="w-96">
- *   <gn-accordion-item value="a">
- *     <gn-accordion-trigger>Question</gn-accordion-trigger>
- *     <gn-accordion-content>Answer</gn-accordion-content>
- *   </gn-accordion-item>
- * </gn-accordion>
+ * <gr-accordion type="single" defaultValue="a" class="w-96">
+ *   <gr-accordion-item value="a">
+ *     <gr-accordion-trigger>Question</gr-accordion-trigger>
+ *     <gr-accordion-content>Answer</gr-accordion-content>
+ *   </gr-accordion-item>
+ * </gr-accordion>
  * ```
  */
 @Component({
-  selector: 'gn-accordion',
+  selector: 'gr-accordion',
   standalone: true,
   hostDirectives: [
     { directive: BrnAccordion, inputs: ['type', 'orientation'] },
@@ -97,7 +97,7 @@ export class Accordion {
  * `defaultValue` and binds it to the host directive.
  */
 @Component({
-  selector: 'gn-accordion-item',
+  selector: 'gr-accordion-item',
   standalone: true,
   hostDirectives: [{ directive: BrnAccordionItem, inputs: ['disabled'] }],
   encapsulation: ViewEncapsulation.None,
@@ -150,7 +150,7 @@ export class AccordionItem implements AfterViewInit {
  * inside a `brnAccordionHeader` wrapper as the brain primitive requires.
  */
 @Component({
-  selector: 'gn-accordion-trigger',
+  selector: 'gr-accordion-trigger',
   standalone: true,
   imports: [BrnAccordionTrigger, BrnAccordionHeader],
   encapsulation: ViewEncapsulation.None,
@@ -187,7 +187,7 @@ export class AccordionTrigger {}
  * `AccordionContent`. The brain content directive measures and animates it.
  */
 @Component({
-  selector: 'gn-accordion-content',
+  selector: 'gr-accordion-content',
   standalone: true,
   imports: [BrnAccordionContent],
   encapsulation: ViewEncapsulation.None,

@@ -29,13 +29,13 @@ export type { SeparatorOrientation };
  *
  * @example
  * ```html
- * <gn-separator />
- * <gn-separator orientation="vertical" />
- * <gn-separator [decorative]="false" />
+ * <gr-separator />
+ * <gr-separator orientation="vertical" />
+ * <gr-separator [decorative]="false" />
  * ```
  */
 @Component({
-  selector: 'gn-separator',
+  selector: 'gr-separator',
   standalone: true,
   hostDirectives: [
     {

@@ -9,7 +9,7 @@ import {
 import { BrnInputOtpSlot } from '@spartan-ng/brain/input-otp';
 import { cn } from '@gremorie/ng-core';
 
-// Re-export the brain OTP component so consumers can use `<brn-input-otp gnInputOtp>`
+// Re-export the brain OTP component so consumers can use `<brn-input-otp grInputOtp>`
 // as the container element (see `InputOtp` below for why it is the element).
 export { BrnInputOtp } from '@spartan-ng/brain/input-otp';
 
@@ -29,20 +29,20 @@ export { BrnInputOtp } from '@spartan-ng/brain/input-otp';
  * ## React → Angular mapping
  *
  * - React `InputOTP` (the `OTPInput`) = the brain `<brn-input-otp>` element with
- *   our `gnInputOtp` directive, which carries `data-slot="input-otp"` and the
+ *   our `grInputOtp` directive, which carries `data-slot="input-otp"` and the
  *   React `containerClassName` (`flex items-center gap-2 has-[:disabled]:opacity-50`).
  *   React's `maxLength` / `value` / `disabled` map to the brain's own
  *   `[maxLength]` / `[(value)]` / `[disabled]` inputs on that element.
- * - React `InputOTPGroup` = `gn-input-otp-group` (a `flex items-center` div
+ * - React `InputOTPGroup` = `gr-input-otp-group` (a `flex items-center` div
  *   carrying `data-slot="input-otp-group"`).
- * - React `InputOTPSlot` = `gn-input-otp-slot`. React reads slot state from
+ * - React `InputOTPSlot` = `gr-input-otp-slot`. React reads slot state from
  *   `OTPInputContext`; the brain's `brn-input-otp-slot` already reads it from
  *   the parent `BrnInputOtp` by `index`, renders `{{char}}`, sets
  *   `data-active` on its host, and projects the fake caret only when
  *   `hasFakeCaret`. So we render `<brn-input-otp-slot [index]>` and forward the
  *   React slot class string (which keys off `data-[active=true]`) to it,
  *   projecting the blinking-caret element.
- * - React `InputOTPSeparator` = `gn-input-otp-separator` — a
+ * - React `InputOTPSeparator` = `gr-input-otp-separator` — a
  *   `role="separator"` carrying the lucide `minus` icon (hand-inlined SVG).
  *
  * Use for 2FA, email/SMS verification codes. Do not use for passwords or
@@ -50,34 +50,34 @@ export { BrnInputOtp } from '@spartan-ng/brain/input-otp';
  *
  * @example
  * ```html
- * <brn-input-otp gnInputOtp [maxLength]="6" [(value)]="code">
- *   <gn-input-otp-group>
- *     <gn-input-otp-slot [index]="0" />
- *     <gn-input-otp-slot [index]="1" />
- *     <gn-input-otp-slot [index]="2" />
- *   </gn-input-otp-group>
- *   <gn-input-otp-separator />
- *   <gn-input-otp-group>
- *     <gn-input-otp-slot [index]="3" />
- *     <gn-input-otp-slot [index]="4" />
- *     <gn-input-otp-slot [index]="5" />
- *   </gn-input-otp-group>
+ * <brn-input-otp grInputOtp [maxLength]="6" [(value)]="code">
+ *   <gr-input-otp-group>
+ *     <gr-input-otp-slot [index]="0" />
+ *     <gr-input-otp-slot [index]="1" />
+ *     <gr-input-otp-slot [index]="2" />
+ *   </gr-input-otp-group>
+ *   <gr-input-otp-separator />
+ *   <gr-input-otp-group>
+ *     <gr-input-otp-slot [index]="3" />
+ *     <gr-input-otp-slot [index]="4" />
+ *     <gr-input-otp-slot [index]="5" />
+ *   </gr-input-otp-group>
  * </brn-input-otp>
  * ```
  */
 // InputOtp is a DIRECTIVE applied to the brain's `<brn-input-otp>` element, not
 // a wrapper component. `BrnInputOtp` is a @Component whose OTP-context token is
-// private (not exported by @spartan-ng/brain), so a wrapping `<gn-input-otp>`
+// private (not exported by @spartan-ng/brain), so a wrapping `<gr-input-otp>`
 // could not pass that context to `<ng-content>`-projected slots — Angular
 // resolves a projected element's DI from its declaration site, so the slots
 // raised NG0201. Mirrors the spartan reference `hlm-input-otp`
 // (`selector: 'brn-input-otp[hlmInputOtp]'`): the consumer element is
-// `<brn-input-otp gnInputOtp …>`, the slots are its real descendants and resolve
+// `<brn-input-otp grInputOtp …>`, the slots are its real descendants and resolve
 // the OTP context correctly. The brain owns `maxLength` / `value` (`[(value)]`) /
 // `disabled` / `inputId` inputs directly, at parity with React `InputOTP`'s
 // props on the `OTPInput` element.
 @Directive({
-  selector: 'brn-input-otp[gnInputOtp]',
+  selector: 'brn-input-otp[grInputOtp]',
   standalone: true,
   host: {
     'data-slot': 'input-otp',
@@ -104,7 +104,7 @@ export class InputOtp {
  * `InputOTPGroup` (a `flex items-center` div).
  */
 @Component({
-  selector: 'gn-input-otp-group',
+  selector: 'gr-input-otp-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -133,7 +133,7 @@ export class InputOtpGroup {
  * caret element is projected.
  */
 @Component({
-  selector: 'gn-input-otp-slot',
+  selector: 'gr-input-otp-slot',
   standalone: true,
   imports: [BrnInputOtpSlot],
   encapsulation: ViewEncapsulation.None,
@@ -176,7 +176,7 @@ export class InputOtpSlot {
  * hand-inlined as SVG (lucide is unavailable in Angular here).
  */
 @Component({
-  selector: 'gn-input-otp-separator',
+  selector: 'gr-input-otp-separator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

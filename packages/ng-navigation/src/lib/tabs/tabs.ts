@@ -30,8 +30,8 @@ import { cn } from '@gremorie/ng-core';
  * Code/Preview, Overview/Details. For cross-section navigation use Sidebar or
  * NavigationMenu; for filters or formatting choices use ToggleGroup.
  *
- * Anatomy: `gn-tabs` (root) → `gn-tabs-list` (variant pill/line) →
- * `gn-tabs-trigger value="…"` + `gn-tabs-content value="…"`.
+ * Anatomy: `gr-tabs` (root) → `gr-tabs-list` (variant pill/line) →
+ * `gr-tabs-trigger value="…"` + `gr-tabs-content value="…"`.
  *
  * Divergence vs. React/Radix: Radix's root `defaultValue` (uncontrolled) and
  * `value`/`onValueChange` (controlled) collapse onto brain's single `activeTab`
@@ -41,18 +41,18 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-tabs defaultValue="overview" class="w-96">
- *   <gn-tabs-list>
- *     <gn-tabs-trigger value="overview">Overview</gn-tabs-trigger>
- *     <gn-tabs-trigger value="details">Details</gn-tabs-trigger>
- *   </gn-tabs-list>
- *   <gn-tabs-content value="overview">…</gn-tabs-content>
- *   <gn-tabs-content value="details">…</gn-tabs-content>
- * </gn-tabs>
+ * <gr-tabs defaultValue="overview" class="w-96">
+ *   <gr-tabs-list>
+ *     <gr-tabs-trigger value="overview">Overview</gr-tabs-trigger>
+ *     <gr-tabs-trigger value="details">Details</gr-tabs-trigger>
+ *   </gr-tabs-list>
+ *   <gr-tabs-content value="overview">…</gr-tabs-content>
+ *   <gr-tabs-content value="details">…</gr-tabs-content>
+ * </gr-tabs>
  * ```
  */
 @Component({
-  selector: 'gn-tabs',
+  selector: 'gr-tabs',
   standalone: true,
   hostDirectives: [{ directive: BrnTabs, inputs: ['orientation'] }],
   encapsulation: ViewEncapsulation.None,
@@ -113,7 +113,7 @@ const tabsListVariants = cva(
  * `variant` switches between the pill (`default`) and minimal `line` look.
  */
 @Component({
-  selector: 'gn-tabs-list',
+  selector: 'gr-tabs-list',
   standalone: true,
   hostDirectives: [BrnTabsList],
   encapsulation: ViewEncapsulation.None,
@@ -143,7 +143,7 @@ export class TabsList {
  * state; brain matches it to its content by the `value` string.
  */
 @Component({
-  selector: 'gn-tabs-trigger',
+  selector: 'gr-tabs-trigger',
   standalone: true,
   imports: [BrnTabsTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -164,7 +164,7 @@ export class TabsList {
   },
 })
 export class TabsTrigger {
-  /** Unique key matching a `gn-tabs-content`. Mirrors React `value`. */
+  /** Unique key matching a `gr-tabs-content`. Mirrors React `value`. */
   readonly value = input.required<string>();
   /** Whether the tab is disabled. Mirrors React `disabled`. */
   readonly disabled = input<boolean>(false);
@@ -184,7 +184,7 @@ export class TabsTrigger {
  * `TabsContent`. Brain shows/hides it based on the active trigger.
  */
 @Component({
-  selector: 'gn-tabs-content',
+  selector: 'gr-tabs-content',
   standalone: true,
   imports: [BrnTabsContent],
   encapsulation: ViewEncapsulation.None,
@@ -203,7 +203,7 @@ export class TabsTrigger {
   },
 })
 export class TabsContent {
-  /** Key matching a `gn-tabs-trigger`. Mirrors React `value`. */
+  /** Key matching a `gr-tabs-trigger`. Mirrors React `value`. */
   readonly value = input.required<string>();
 }
 

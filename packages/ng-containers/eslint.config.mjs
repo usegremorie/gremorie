@@ -37,9 +37,9 @@ export default [
           prefix: [
             'scroll-area',
             'container',
-            'gn-stack',
-            'gn-aspect-ratio',
-            'gn-resizable',
+            'gr-stack',
+            'gr-aspect-ratio',
+            'gr-resizable',
           ],
           style: 'kebab-case',
         },

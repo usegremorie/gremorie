@@ -27,24 +27,24 @@ import {
     SidebarTrigger,
   ],
   template: `
-    <gn-sidebar-provider>
-      <gn-sidebar collapsible="none">
-        <gn-sidebar-content>
-          <gn-sidebar-group>
-            <gn-sidebar-group-content>
-              <ul gn-sidebar-menu>
-                <li gn-sidebar-menu-item>
-                  <button gn-sidebar-menu-button [isActive]="true">
+    <gr-sidebar-provider>
+      <gr-sidebar collapsible="none">
+        <gr-sidebar-content>
+          <gr-sidebar-group>
+            <gr-sidebar-group-content>
+              <ul gr-sidebar-menu>
+                <li gr-sidebar-menu-item>
+                  <button gr-sidebar-menu-button [isActive]="true">
                     Dashboard
                   </button>
                 </li>
               </ul>
-            </gn-sidebar-group-content>
-          </gn-sidebar-group>
-        </gn-sidebar-content>
-      </gn-sidebar>
-      <gn-sidebar-trigger></gn-sidebar-trigger>
-    </gn-sidebar-provider>
+            </gr-sidebar-group-content>
+          </gr-sidebar-group>
+        </gr-sidebar-content>
+      </gr-sidebar>
+      <gr-sidebar-trigger></gr-sidebar-trigger>
+    </gr-sidebar-provider>
   `,
 })
 class Host {}
@@ -62,23 +62,23 @@ class Host {}
     SidebarMenuButton,
   ],
   template: `
-    <gn-sidebar-provider [open]="open">
-      <gn-sidebar collapsible="icon">
-        <gn-sidebar-content>
-          <gn-sidebar-group>
-            <gn-sidebar-group-content>
-              <ul gn-sidebar-menu>
-                <li gn-sidebar-menu-item>
-                  <button gn-sidebar-menu-button tooltip="Dashboard">
+    <gr-sidebar-provider [open]="open">
+      <gr-sidebar collapsible="icon">
+        <gr-sidebar-content>
+          <gr-sidebar-group>
+            <gr-sidebar-group-content>
+              <ul gr-sidebar-menu>
+                <li gr-sidebar-menu-item>
+                  <button gr-sidebar-menu-button tooltip="Dashboard">
                     <span>Dashboard</span>
                   </button>
                 </li>
               </ul>
-            </gn-sidebar-group-content>
-          </gn-sidebar-group>
-        </gn-sidebar-content>
-      </gn-sidebar>
-    </gn-sidebar-provider>
+            </gr-sidebar-group-content>
+          </gr-sidebar-group>
+        </gr-sidebar-content>
+      </gr-sidebar>
+    </gr-sidebar-provider>
   `,
 })
 class TooltipHost {
@@ -112,7 +112,7 @@ describe('Sidebar', () => {
     expect(trigger?.tagName.toLowerCase()).toBe('button');
   });
 
-  it('shows the STYLED tooltip surface on hover when collapsed (gn-tooltip, not native title)', async () => {
+  it('shows the STYLED tooltip surface on hover when collapsed (gr-tooltip, not native title)', async () => {
     TestBed.configureTestingModule({ imports: [TooltipHost] });
     const fixture = TestBed.createComponent(TooltipHost);
     fixture.detectChanges();
@@ -121,7 +121,7 @@ describe('Sidebar', () => {
     const host = fixture.nativeElement as HTMLElement;
 
     // Regression: the collapsed tooltip once rendered as a native `title`
-    // attribute instead of the styled gn-tooltip compound.
+    // attribute instead of the styled gr-tooltip compound.
     const button = host.querySelector('[data-slot="sidebar-menu-button"]');
     expect(button?.getAttribute('title')).toBeNull();
     expect(host.querySelector('[data-slot="tooltip-trigger"]')).not.toBeNull();

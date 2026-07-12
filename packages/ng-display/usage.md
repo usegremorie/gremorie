@@ -2,7 +2,7 @@
 whenToUse: "Surfaces grouping related content (Card) and compact status labels (Badge). Companions to Spartan-ng — fill the gap for primitives Spartan-ng doesn't ship."
 whenNotToUse: 'Interactive selection chips — those belong to a ToggleGroup primitive, not Badge. Card is not for transient overlays (use a dialog/popover primitive).'
 bestPractices:
-  - 'Compose Card with its sub-parts (gn-card-header, gn-card-title, gn-card-description, gn-card-content, gn-card-footer) rather than dumping everything into the host.'
+  - 'Compose Card with its sub-parts (gr-card-header, gr-card-title, gr-card-description, gr-card-content, gr-card-footer) rather than dumping everything into the host.'
   - 'Pick the closest semantic Badge variant — outline for neutral metadata, secondary for default counts, destructive for errors.'
   - 'Both primitives are token-driven (bg-card, bg-secondary, border-border) so theme changes flow through automatically.'
 antipatterns:
@@ -11,21 +11,21 @@ antipatterns:
 examples:
   - title: 'KPI Card'
     code: |
-      <gn-card>
-        <gn-card-header>
-          <gn-card-title>Total Revenue</gn-card-title>
-          <gn-card-description>Last 30 days</gn-card-description>
-          <gn-card-action>
-            <gn-badge variant="outline">+12%</gn-badge>
-          </gn-card-action>
-        </gn-card-header>
-        <gn-card-content>$45,231</gn-card-content>
-      </gn-card>
+      <gr-card>
+        <gr-card-header>
+          <gr-card-title>Total Revenue</gr-card-title>
+          <gr-card-description>Last 30 days</gr-card-description>
+          <gr-card-action>
+            <gr-badge variant="outline">+12%</gr-badge>
+          </gr-card-action>
+        </gr-card-header>
+        <gr-card-content>$45,231</gr-card-content>
+      </gr-card>
   - title: 'Status badges'
     code: |
-      <gn-badge variant="secondary">Running</gn-badge>
-      <gn-badge variant="destructive">Failed</gn-badge>
-      <gn-badge variant="outline">Pending</gn-badge>
+      <gr-badge variant="secondary">Running</gr-badge>
+      <gr-badge variant="destructive">Failed</gr-badge>
+      <gr-badge variant="outline">Pending</gr-badge>
 ---
 
 # Display
