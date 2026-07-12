@@ -24,7 +24,7 @@
     "@gremorie/ng-overlays": ">=0.5.1",
     "@ng-icons/core": "^33.2.2",
     "@ng-icons/lucide": "^33.2.2",
-    "shiki": "^4.0.0"
+    "shiki": "^4.3.1"
   },
   "peerDependenciesMeta": {
     "shiki": {

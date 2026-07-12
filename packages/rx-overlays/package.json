@@ -46,9 +46,9 @@
   },
   "dependencies": {
     "cmdk": "^1.1.1",
-    "date-fns": "^4.3.0",
+    "date-fns": "^4.4.0",
     "lucide-react": "^0.547.0",
-    "radix-ui": "^1.4.3",
+    "radix-ui": "^1.6.2",
     "sonner": "^2.0.0",
     "tslib": "^2.3.0",
     "vaul": "^1.1.2"
