@@ -1,0 +1,265 @@
+---
+title: Assistant
+description: 'A superfície de chat carro-chefe da Gremorie — uma conversa em streaming com reasoning, um ChartArtifact inline e sources, um composer PromptInput B2B flutuante, e um estado inicial de new-chat. Totalmente composto.'
+---
+
+## Visão geral
+
+O Assistant é o block carro-chefe da Gremorie: uma superfície de chat completa e
+production-ready em um único import. Ele entrega **duas superfícies** conduzidas
+pelo chat switcher do header:
+
+- **Conversation** (`filled`) — um log de mensagens em streaming: o reasoning do
+  assistant, a resposta, um **`ChartArtifact`** inline (toggle chart ⇄ table com
+  downloads funcionais), ações por resposta e **Sources**, branches de resposta,
+  e ações de hover na mensagem do usuário.
+- **New chat** (`empty`) — o estado inicial: uma boas-vindas centralizada sobre o
+  mesmo composer, antes de existir uma conversa.
+
+Ambas compartilham o **composer `PromptInput` B2B flutuante** — `@`-mentions para
+contexto, um medidor `Context` de uso de tokens, seletores de mode e model, busca
+na web, anexos, voz, e um submit ciente do status. A conversa rola atrás do
+composer e sob o header, dissolvendo por fades suaves; a scrollbar só aparece
+enquanto se rola.
+
+O block entrega um mock local autocontido para que rode de ponta a ponta no
+momento em que você o instala — faça a fiação de `onSubmit` ao seu AI SDK (ou
+qualquer endpoint de streaming) para torná-lo real.
+
+<Callout type="info">
+  Isto é um **block** — um ponto de partida totalmente composto que você é dono.
+  `gremorie add block-assistant` copia o source para a sua app; você então o
+  edita (troca o mock data, faz a fiação do seu endpoint) em vez de consumir uma
+  API de props fixa.
+</Callout>
+
+## Preview
+
+### Conversation
+
+<BlockPreview name="assistant" />
+
+### New chat
+
+<BlockPreview name="assistant-new-chat" />
+
+## Estados
+
+Uma única prop `initialView` escolhe a superfície inicial, e o chat switcher do
+header alterna entre elas em runtime.
+
+| Estado            | Como você chega até ele                                                                                          |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `filled` (padrão) | A conversa ao vivo. Alcançada no load, ao enviar uma mensagem, ou ao escolher um chat recente no menu do header. |
+| `empty`           | O início de new-chat. Alcançado via **New chat** no menu do header, ou definindo `initialView="empty"`.          |
+
+```tsx
+// Start on the conversation (default)
+<Assistant />
+
+// Start on the new-chat screen
+<Assistant initialView="empty" />
+```
+
+Enviar uma mensagem ou clicar em uma sugestão rápida a partir do estado empty leva
+o usuário para dentro da conversa; escolher um chat recente retorna a ela.
+
+## Anatomia
+
+```text
+Assistant                          data-size'd card; flips between two views
+├─ header                          thread switcher + actions (DropdownMenu · Button)
+│                                  New chat → empty · recent chat → filled
+├─ Conversation (filled)           auto-scroll log; scrollbar reveals only while scrolling
+│  └─ ConversationContent
+│     ├─ Message (user)
+│     │  ├─ MessageContent
+│     │  └─ MessageToolbar          hover actions: MessageActions (Copy · Edit)
+│     └─ Message (assistant)
+│        └─ MessageBranch
+│           ├─ MessageBranchContent
+│           │  ├─ Reasoning
+│           │  ├─ MessageResponse
+│           │  └─ ChartArtifact     inline chart with chart/table toggle + downloads
+│           └─ MessageToolbar        MessageActions (left) · Sources + MessageBranchSelector (right)
+├─ start (empty)                    centered welcome heading over the composer
+└─ PromptInput                      floating B2B composer (see Prompt Input)
+   ├─ PromptInputHeader            PromptInputMentions + Context usage meter
+   ├─ PromptInputBody → PromptInputTextarea
+   └─ PromptInputFooter            mode/model selects · web · attach · voice · submit
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-assistant
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-assistant
+```
+
+</Tab>
+
+</Tabs>
+
+## Uso
+
+Renderize-o diretamente — ele funciona imediatamente no mock incluído:
+
+```tsx
+import { Assistant } from '@/components/assistant';
+
+export default function Page() {
+  return <Assistant />;
+}
+```
+
+Para torná-lo real, substitua o mock `handleSubmit` no source instalado pela sua
+chamada do AI SDK e alimente as partes em streaming para dentro da conversa:
+
+```tsx
+import { useChat } from '@ai-sdk/react';
+
+// inside the block, swap the local mock for:
+const { messages, sendMessage, status } = useChat();
+
+const handleSubmit = (message: PromptInputMessage) => {
+  if (!message.text.trim()) return;
+  sendMessage({ text: message.text });
+};
+
+// then map `messages` onto <Message>/<MessageResponse>, drive <PromptInputSubmit
+// status={status} />, and stream <Reasoning isStreaming> while it runs.
+```
+
+## API
+
+O block é um template composto, então a superfície que você ajusta é
+majoritariamente seu source. A única prop que ele expõe:
+
+### `<Assistant>`
+
+| Prop          | Type                  | Default    | Description                                                                       |
+| ------------- | --------------------- | ---------- | --------------------------------------------------------------------------------- |
+| `initialView` | `'filled' \| 'empty'` | `'filled'` | Qual superfície renderizar primeiro — a conversa ao vivo ou o início de new-chat. |
+
+```ts
+export type AssistantView = 'filled' | 'empty';
+```
+
+Todo o resto (ações do header, a conversa mock, presets de mode/model, itens de
+contexto) vive no source instalado e foi feito para ser editado.
+
+## Composição
+
+O block compõe (condensado — o source completo e executável se instala via o CLI
+acima):
+
+```tsx
+<TooltipProvider>
+  {/* AssistantHeader — thread switcher + actions; New chat toggles the view */}
+  <Conversation>
+    <ConversationContent>
+      <Message from="user">…</Message>
+      <Message from="assistant">
+        <MessageBranch>
+          <MessageBranchContent>
+            <Reasoning />
+            <MessageResponse />
+            <ChartArtifact />{' '}
+            {/* inline chart: chart/table toggle + downloads */}
+          </MessageBranchContent>
+          <MessageToolbar>
+            {/* MessageActions (left) · Sources + branch selector (right) */}
+          </MessageToolbar>
+        </MessageBranch>
+      </Message>
+    </ConversationContent>
+  </Conversation>
+
+  {/* AssistantComposer — the floating B2B PromptInput (shared by both states) */}
+  <PromptInput>
+    <PromptInputHeader>
+      <PromptInputMentions />
+      <Context>
+        <ContextTrigger />
+        <ContextContent>{/* usage breakdown + cost */}</ContextContent>
+      </Context>
+    </PromptInputHeader>
+    <PromptInputBody>
+      <PromptInputTextarea />
+    </PromptInputBody>
+    <PromptInputFooter>
+      <PromptInputTools>{/* mode + model selects */}</PromptInputTools>
+      <PromptInputTools className="gap-2">
+        <PromptInputTools>{/* search · attach · voice */}</PromptInputTools>
+        <PromptInputSubmit />
+      </PromptInputTools>
+    </PromptInputFooter>
+  </PromptInput>
+</TooltipProvider>
+```
+
+## Customização
+
+- **Fiação do modelo** — substitua o mock `handleSubmit` pelo `sendMessage` do AI
+  SDK (ou seu endpoint de streaming) e conduza `PromptInputSubmit
+status={status}`.
+- **Stream reasoning** — renderize `Reasoning` com `isStreaming` enquanto o modelo
+  pensa; ele auto-colapsa ao concluir.
+- **Trocar o artifact** — o `ChartArtifact` inline é um preset; encaixe qualquer
+  artifact (code, table, document) dentro de `MessageBranchContent`.
+- **Ajustar o composer** — ajuste os itens de `PromptInputMentions`, os presets de
+  mode/model, e o medidor de uso `Context`. Veja [Prompt Input](/components/chatbot/prompt-input).
+- **Sources** — o botão Sources por resposta fica na barra de ações; aponte-o para
+  as suas citações recuperadas.
+- **Conteúdo do new-chat** — edite o heading de boas-vindas e as sugestões rápidas
+  na branch `empty`.
+- **Markdown por streaming do servidor** — `MessageResponse` (Streamdown) já
+  renderiza markdown; alimente-o com o texto em streaming.
+
+## Acessibilidade
+
+- O switcher do header, as ações de resposta e os controles do composer são botões
+  de verdade com labels/tooltips; os que são só ícone carregam texto `aria-label`
+  / `sr-only`.
+- A conversa é uma região `role="log"` (via `Conversation`) para que a tecnologia
+  assistiva anuncie novas mensagens conforme elas fazem streaming.
+- Os estilos de focus usam o token `ring`; as ações de hover na mensagem do usuário
+  também aparecem no `:focus-within` para usuários de teclado.
+- A cor vem inteiramente de tokens semânticos, então o contraste se mantém entre os
+  temas e o dark mode (o card declara `text-card-foreground`).
+
+## Relacionados
+
+- [Conversation](/components/chatbot/conversation)
+- [Message](/components/chatbot/message)
+- [Reasoning](/components/chatbot/reasoning)
+- [Prompt Input](/components/chatbot/prompt-input)
+- [Attachments](/components/chatbot/attachments)
+- [Chart Artifact](/artifacts/chart-artifact)

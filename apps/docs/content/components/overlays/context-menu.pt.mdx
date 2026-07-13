@@ -1,0 +1,226 @@
+---
+title: Context Menu
+description: 'Menu de ações invocado por clique direito sobre uma região. Mesmo formato compound do DropdownMenu, ancorado a uma área alvo.'
+---
+
+import { ContextMenuPreview } from '@/components/preview/overlays/context-menu';
+import { ContextMenuSubmenuPreview } from '@/components/preview/overlays/context-menu-submenu';
+
+## Visão geral
+
+`ContextMenu` é um acelerador para usuários avançados. O clique direito é invisível para quem não foi ensinado sobre ele (a maioria dos usuários de touch; muitos usuários web hoje), então trate este menu como um atalho aditivo, nunca como o único caminho para uma ação. Toda opção mostrada aqui também deve ser alcançável por um botão, `DropdownMenu` ou atalho de teclado em outro lugar da UI.
+
+O compound espelha o `DropdownMenu` exatamente: itens, grupos, separadores, submenus, variantes de checkbox ou radio, shortcuts. A única diferença é o trigger: `ContextMenuTrigger` envolve uma região, e o menu abre na posição do cursor no clique direito.
+
+## Preview
+
+<ComponentPreview name="overlays/context-menu">
+  <ContextMenuPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ContextMenu                       raiz Radix, detém o estado de abertura
+├─ ContextMenuTrigger             região que responde ao clique direito
+└─ ContextMenuContent             superfície de menu em portal
+   ├─ ContextMenuGroup            agrupa itens relacionados
+   ├─ ContextMenuItem             linha de ação (variant default | destructive, inset)
+   │  └─ ContextMenuShortcut      dica de teclado alinhada à direita
+   ├─ ContextMenuCheckboxItem     item alternável
+   ├─ ContextMenuRadioGroup       container de escolha única
+   │  └─ ContextMenuRadioItem     item de escolha única
+   ├─ ContextMenuLabel            rótulo de seção não interativo
+   ├─ ContextMenuSeparator        divisor
+   └─ ContextMenuSub              submenu aninhado
+      ├─ ContextMenuSubTrigger    linha que abre o submenu
+      └─ ContextMenuSubContent    superfície de menu aninhado
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-context-menu ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-context-menu ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-context-menu ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-context-menu ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div className="flex h-32 w-full items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+          Right-click here
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem>Copy</ContextMenuItem>
+        <ContextMenuItem>Paste</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem>Delete</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ContextMenu>`
+
+Estende o Radix `ContextMenu.Root`. API controlada padrão (`onOpenChange`, `modal`).
+
+### `<ContextMenuTrigger>`
+
+Envolve a região que deve responder ao clique direito. Por padrão renderiza um `<span>`; use `asChild` para encaminhar estilos a um elemento alvo.
+
+### `<ContextMenuContent>`
+
+Mesmo formato do `DropdownMenuContent`. Envolvido em um `Portal` do Radix. Posiciona-se no cursor na abertura.
+
+### `<ContextMenuItem>`
+
+| Prop       | Type                         | Default     | Description                                                          |
+| ---------- | ---------------------------- | ----------- | -------------------------------------------------------------------- |
+| `inset`    | `boolean`                    | `false`     | Adiciona `pl-8` para o item alinhar com as linhas de checkbox/radio. |
+| `variant`  | `"default" \| "destructive"` | `"default"` | Troca a cor do texto e do ícone para o token destructive.            |
+| `disabled` | `boolean`                    | `false`     | Desabilita a interação; renderiza a 50% de opacidade.                |
+
+### `<ContextMenuCheckboxItem>`, `<ContextMenuRadioGroup>`, `<ContextMenuRadioItem>`
+
+Mesma semântica dos equivalentes no `DropdownMenu`. Os indicadores renderizam automaticamente no slot esquerdo posicionado de forma absoluta.
+
+### `<ContextMenuLabel>`, `<ContextMenuSeparator>`, `<ContextMenuShortcut>`
+
+Helpers não interativos idênticos aos do `DropdownMenu`.
+
+### `<ContextMenuSub>` + `<ContextMenuSubTrigger>` + `<ContextMenuSubContent>`
+
+Padrão de submenu aninhado. O sub-trigger renderiza um chevron auto-posicionado.
+
+### `<ContextMenuPortal>`, `<ContextMenuGroup>`
+
+Pass-throughs sobre os primitivos do Radix com atributos `data-slot`.
+
+## Composição
+
+1. **`<ContextMenu>`** detém o estado de aberto/fechado.
+2. **`<ContextMenuTrigger>`** envolve a região; o clique direito em qualquer ponto dela abre o menu.
+3. **`<ContextMenuContent>`** monta via Portal na posição do cursor.
+4. **Dentro do content**: mesmo vocabulário de layout do `DropdownMenu` (itens, grupos, separadores, shortcuts, submenus).
+
+## Variações
+
+### Submenu, checkbox e shortcuts
+
+Clique com o botão direito na região para abrir um menu que combina shortcuts, um `ContextMenuSub` aninhado, um item de checkbox e uma ação destrutiva.
+
+<ComponentPreview name="overlays/context-menu-submenu">
+  <ContextMenuSubmenuPreview />
+</ComponentPreview>
+
+### Ações de navegador de arquivos
+
+Clique com o botão direito em uma linha de arquivo para expor mover, renomear e excluir.
+
+```tsx
+<ContextMenu>
+  <ContextMenuTrigger asChild>
+    <tr>
+      <td>Report.pdf</td>
+      <td>2.4 MB</td>
+    </tr>
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Open</ContextMenuItem>
+    <ContextMenuItem>Rename</ContextMenuItem>
+    <ContextMenuSub>
+      <ContextMenuSubTrigger>Move to</ContextMenuSubTrigger>
+      <ContextMenuSubContent>
+        <ContextMenuItem>Reports</ContextMenuItem>
+        <ContextMenuItem>Archive</ContextMenuItem>
+      </ContextMenuSubContent>
+    </ContextMenuSub>
+    <ContextMenuSeparator />
+    <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+### Ferramentas de canvas com shortcuts
+
+Shortcuts para usuários avançados em um app criativo. Emparelhe cada item com seu equivalente de teclado.
+
+```tsx
+<ContextMenuContent>
+  <ContextMenuItem>
+    Copy
+    <ContextMenuShortcut>⌘C</ContextMenuShortcut>
+  </ContextMenuItem>
+  <ContextMenuItem>
+    Paste
+    <ContextMenuShortcut>⌘V</ContextMenuShortcut>
+  </ContextMenuItem>
+  <ContextMenuSeparator />
+  <ContextMenuCheckboxItem checked={snap}>Snap to grid</ContextMenuCheckboxItem>
+</ContextMenuContent>
+```
+
+### Contexto por célula com radio group
+
+Alterne o alinhamento dentro de uma célula de tabela.
+
+```tsx
+<ContextMenuContent>
+  <ContextMenuLabel>Align</ContextMenuLabel>
+  <ContextMenuSeparator />
+  <ContextMenuRadioGroup value={align} onValueChange={setAlign}>
+    <ContextMenuRadioItem value="left">Left</ContextMenuRadioItem>
+    <ContextMenuRadioItem value="center">Center</ContextMenuRadioItem>
+    <ContextMenuRadioItem value="right">Right</ContextMenuRadioItem>
+  </ContextMenuRadioGroup>
+</ContextMenuContent>
+```
+
+## Acessibilidade
+
+- **Trigger**: abre no clique direito e na tecla `Menu` (Windows). O long-press não é um gesto web padrão, então usuários de touch não verão o menu por padrão.
+- **Apenas aditivo**: nunca coloque uma ação exclusivamente atrás de um context menu. Forneça um botão visível ou equivalente em `DropdownMenu`.
+- **Role**: `role="menu"` no content, `role="menuitem"` nos itens, `role="menuitemcheckbox"` e `role="menuitemradio"` nas variantes com estado.
+- **Teclado**: as setas navegam; `Enter` e `Space` ativam; o type-ahead salta para itens que começam com a letra digitada; `Esc` fecha.
+- **Submenus**: `→` abre, `←` fecha.
+- **Gestão de foco**: o foco entra no menu na abertura e retorna à região do trigger ao fechar.
+- **Reduced motion**: as animações de abrir/fechar respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Dropdown Menu](/components/overlays/dropdown-menu) - mesmo compound, acionado por um botão visível.
+- [Popover](/components/overlays/popover) - overlay interativo não-menu ancorado a um trigger.
+- [Tooltip](/components/overlays/tooltip) - dica de hover, nunca um menu.

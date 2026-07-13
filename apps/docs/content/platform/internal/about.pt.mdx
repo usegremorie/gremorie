@@ -1,0 +1,47 @@
+---
+title: Sobre o Gremorie
+description: O que é o Gremorie, por que ele existe e o que ele entrega.
+---
+
+**Gremorie** é um design system AI-native. A tese: um design system é
+mais valioso quando é uma **memória compartilhada** — legível para humanos, agentes de IA
+e tooling por igual.
+
+## O que é entregue
+
+- **Edição Angular** (`@gremorie/ng-*`) — construída sobre primitives Spartan-NG,
+  entregue como fonte instalável via a CLI `gremorie add` em vez de um
+  pacote npm pré-construído.
+- **Registry + servidor MCP** — o canal de distribuição e a interface de IA.
+  Componentes, blocks, tokens e guidelines são expostos como itens de registry
+  que um servidor MCP lê, para que modelos de linguagem possam gerar código que
+  combina com o sistema em vez de alucinar.
+- **Edição React** (`@gremorie/rx-*`) — entregue ao lado do Angular. Publicada
+  como pacotes por categoria `@gremorie/rx-*` mais o meta `@gremorie/react`,
+  e gerada no mesmo registry que a edição Angular usa.
+- **Site de documentação** — este app Fumadocs. Referência pública para tokens,
+  primitives, patterns e as guidelines que um MCP expõe.
+
+## Por que "Gremorie"
+
+Um grimório é um livro de referência de fórmulas. Um design system é o mesmo: uma
+referência para as fórmulas que fazem um produto parecer coerente. Grafar o
+nome com um `e` dá à engine um handle memorável que mapeia limpo para
+a org (`usegremorie`) e o domínio futuro (`gremorie.com`).
+
+## Repos e histórico
+
+- `usegremorie/gremorie` — este monorepo (transferido de `kalvner/shadng`
+  durante a Fase 0; rebrand de `shadng` → `gremorie` na Fase 1).
+- `kalvner/bridge` — o legado Kalvner Design System (React + KDS). O
+  site Fumadocs, o token-engine e o editor de tokens foram migrados para cá durante
+  a Fase 2; o pacote de componentes React (`@kalvner/kds`) desde então foi
+  reescrito como a edição `@gremorie/rx-*` neste repo.
+
+## Ordem de leitura
+
+1. **Get started & Platform** — filosofia, arquitetura, acessibilidade,
+   regras de contribuição.
+2. **Tokens** — o sistema de tokens de três camadas (primitive, semantic, chart).
+3. **Plano de migração** — veja `missions/kal/gremorie/architecture/` no
+   vault Kalvnor para o roadmap completo das Fases 0-5.

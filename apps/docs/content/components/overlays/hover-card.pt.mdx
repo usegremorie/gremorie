@@ -1,0 +1,190 @@
+---
+title: Hover Card
+description: 'Painel de preview acionado por hover para conteúdo rico não crítico. Construído sobre o Radix HoverCard.'
+---
+
+import { HoverCardPreview } from '@/components/preview/overlays/hover-card';
+
+## Visão geral
+
+`HoverCard` mostra um preview rico quando o usuário passa o cursor sobre uma âncora (link, nome, abreviação). Use-o para conteúdo que o usuário pode abrir por completo com um clique mas que talvez queira apenas espiar antes: cards de perfil de usuário em `@mentions`, previews de link, teasers de documento ou imagem.
+
+Nunca coloque informação crítica ou controles interativos dentro de um `HoverCard`. O hover é não confiável (usuários de touch não o têm; usuários de teclado só veem o card enquanto o foco se mantém) e o preview deveria ser não essencial. Conteúdo interativo pertence a um `Popover`; rótulos de texto simples pertencem a um `Tooltip`.
+
+## Preview
+
+<ComponentPreview name="overlays/hover-card">
+  <HoverCardPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+HoverCard                  raiz Radix que gerencia o timing de abrir/fechar no hover
+├─ HoverCardTrigger        elemento que revela o card no hover/focus
+└─ HoverCardContent        superfície de preview em portal (align, sideOffset)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-hover-card ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-hover-card ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-hover-card ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-hover-card ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <Button variant="link">@gremorie</Button>
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div className="text-sm">
+          <strong>Gremorie</strong>
+          <p className="mt-1 text-muted-foreground">
+            AI-native design system. Registry + MCP first.
+          </p>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<HoverCard>`
+
+Estende o Radix `HoverCard.Root`. Props notáveis:
+
+| Prop           | Type                      | Default | Description                                                   |
+| -------------- | ------------------------- | ------- | ------------------------------------------------------------- |
+| `open`         | `boolean`                 | -       | Estado de abertura controlado.                                |
+| `defaultOpen`  | `boolean`                 | `false` | Estado de abertura inicial quando não controlado.             |
+| `onOpenChange` | `(open: boolean) => void` | -       | Disparado quando o estado de abertura muda.                   |
+| `openDelay`    | `number`                  | `700`   | Atraso em milissegundos antes de abrir no hover.              |
+| `closeDelay`   | `number`                  | `300`   | Atraso em milissegundos antes de fechar após o ponteiro sair. |
+
+### `<HoverCardTrigger>`
+
+Estende o Radix `HoverCard.Trigger`. Emparelhe com `asChild` para encaminhar estilos a um link, botão ou qualquer âncora inline.
+
+### `<HoverCardContent>`
+
+| Prop         | Type                                     | Default    | Description                                                |
+| ------------ | ---------------------------------------- | ---------- | ---------------------------------------------------------- |
+| `align`      | `"start" \| "center" \| "end"`           | `"center"` | Alinhamento relativo ao eixo do trigger.                   |
+| `sideOffset` | `number`                                 | `4`        | Espaçamento em pixels entre trigger e content.             |
+| `side`       | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Lado preferido; vira automaticamente quando não há espaço. |
+
+A superfície padrão é `w-64`, com padding `p-4`. Envolvida em um `Portal` do Radix. Todas as demais props do Radix `HoverCard.Content` são encaminhadas.
+
+## Composição
+
+1. **`<HoverCard>`** detém o estado de hover. Ajuste o timing com `openDelay` / `closeDelay`.
+2. **`<HoverCardTrigger asChild>`** envolve o elemento âncora (tipicamente um link inline ou um nome).
+3. **`<HoverCardContent>`** monta via Portal, ancorado ao trigger, com fade e zoom in.
+4. **Dentro do content**: qualquer preview não interativo - avatar + bio, teaser de imagem, snippet de doc.
+
+## Variações
+
+### Preview de perfil de usuário
+
+O clássico hover card de `@mention`. Acionado ao passar o cursor sobre um link para o perfil do usuário.
+
+```tsx
+<HoverCard>
+  <HoverCardTrigger asChild>
+    <a href="/users/kalvner" className="font-medium underline">
+      @kalvner
+    </a>
+  </HoverCardTrigger>
+  <HoverCardContent className="w-72">
+    <div className="flex gap-3">
+      <Avatar>
+        <AvatarImage src="/avatars/kalvner.png" />
+        <AvatarFallback>BK</AvatarFallback>
+      </Avatar>
+      <div className="space-y-1">
+        <h4 className="text-sm font-semibold">Bruno Kalvner</h4>
+        <p className="text-xs text-muted-foreground">
+          Designer and engineer. Maintains Gremorie.
+        </p>
+      </div>
+    </div>
+  </HoverCardContent>
+</HoverCard>
+```
+
+### Preview de link
+
+Mostre metadados de um link externo antes de o usuário clicar.
+
+```tsx
+<HoverCard openDelay={400}>
+  <HoverCardTrigger asChild>
+    <a href="https://gremorie.com" className="underline">
+      gremorie.com
+    </a>
+  </HoverCardTrigger>
+  <HoverCardContent>
+    <h4 className="text-sm font-semibold">Gremorie</h4>
+    <p className="text-xs text-muted-foreground">
+      Registry-driven, MCP-first design system for React and Angular.
+    </p>
+  </HoverCardContent>
+</HoverCard>
+```
+
+### Teaser rápido de imagem
+
+Use para espiar media antes de comprometer-se com um visualizador em tela cheia.
+
+```tsx
+<HoverCard openDelay={200} closeDelay={100}>
+  <HoverCardTrigger asChild>
+    <button>Preview thumbnail</button>
+  </HoverCardTrigger>
+  <HoverCardContent className="w-80 p-2">
+    <img src="/teaser.jpg" alt="Teaser" className="rounded-md" />
+  </HoverCardContent>
+</HoverCard>
+```
+
+## Acessibilidade
+
+- **Trigger**: hover do ponteiro e foco do teclado ambos abrem o card.
+- **Teclado**: dar foco ao trigger o abre; tirar o foco o fecha; `Esc` fecha quando o foco está dentro.
+- **Não para conteúdo crítico**: usuários de touch podem nunca ver o card. Mantenha o conteúdo suplementar.
+- **`aria-controls`** é ligado automaticamente entre trigger e content.
+- **Sem focus trap**: o ponteiro pode sair naturalmente; ao fechar nada é retornado, porque o trigger nunca perdeu o foco por padrão.
+- **Reduced motion**: as animações de abrir/fechar respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Popover](/components/overlays/popover) - overlay interativo dirigido por clique.
+- [Tooltip](/components/overlays/tooltip) - rótulo de texto apenas em hover para ícones e shortcuts.
+- [Dialog](/components/overlays/dialog) - modal centralizado para fluxos de foco total.

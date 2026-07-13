@@ -1,0 +1,230 @@
+---
+title: Artifact
+description: Chrome de card genérico para objetos gerados por IA. O wrapper em volta de código, docs, charts, imagens e qualquer outro asset que o modelo produz.
+---
+
+import { ArtifactPreview } from '@/components/preview/ai/artifact';
+
+## Visão geral
+
+`Artifact` é a casca estrutural dentro da qual todo objeto gerado por IA vive: um card com borda, um header muted (título + descrição + ações), um affordance `ArtifactClose` e um corpo `ArtifactContent` que rola independentemente.
+
+Ele é intencionalmente agnóstico sobre o que vai dentro de `ArtifactContent`. Componha com `CodeBlock` para artefatos de código, `WebPreview` para HTML ao vivo, `Image` para imagens geradas, ou sua própria árvore React para charts e documentos ricos. A superfície do header permanece consistente entre os tipos de artefato para que os usuários aprendam o chrome uma vez.
+
+## Preview
+
+<ComponentPreview name="ai/artifact">
+  <ArtifactPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Artifact                       rounded, bordered card root
+├─ ArtifactHeader              muted header strip
+│  ├─ ArtifactFeaturedIcon     badge anchoring the header (wraps FeaturedIcon)
+│  ├─ ArtifactHeading          flex column for title + description
+│  │  ├─ ArtifactTitle         single-line heading (truncates)
+│  │  └─ ArtifactDescription   single-line supporting text (truncates)
+│  └─ ArtifactActions          right-aligned action cluster
+│     ├─ ArtifactAction        ghost icon button (optional tooltip)
+│     ├─ ArtifactViewToggle    segmented view switch (chart ⇄ table, …)
+│     ├─ ArtifactMenu          icon-triggered dropdown of items
+│     └─ ArtifactClose         X button
+└─ ArtifactContent             scrollable body slot
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-artifact ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-artifact ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-artifact ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-artifact ```</Tab>
+</Tabs>
+
+Traz `rx-forms` (para `Button`) e `rx-overlays` (para `Tooltip`) para que `ArtifactAction` funcione out of the box.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Artifact,
+  ArtifactActions,
+  ArtifactClose,
+  ArtifactContent,
+  ArtifactDescription,
+  ArtifactHeader,
+  ArtifactTitle,
+} from "@gremorie/rx-artifacts";
+
+export function Example() {
+  return (
+    <Artifact>
+      <ArtifactHeader>
+        <ArtifactTitle>Landing page hero</ArtifactTitle>
+        <ArtifactDescription>3 sections</ArtifactDescription>
+        <ArtifactActions>
+          <ArtifactClose onClick={dismiss} />
+        </ArtifactActions>
+      </ArtifactHeader>
+      <ArtifactContent>{children}</ArtifactContent>
+    </Artifact>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Artifact>`
+
+| Prop        | Type     | Default | Descrição                                                                        |
+| ----------- | -------- | ------- | -------------------------------------------------------------------------------- |
+| `className` | `string` | -       | Classes extras no `div` raiz. Útil para dimensionamento (`max-w-2xl`, `h-full`). |
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`. Chrome padrão: borda arredondada, shadow-sm, flex column vertical.
+
+### `<ArtifactHeader>`
+
+Flex row com border-bottom e fundo muted. Coloque `ArtifactTitle` + `ArtifactDescription` à esquerda, `ArtifactActions` à direita.
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`.
+
+### `<ArtifactTitle>` / `<ArtifactDescription>`
+
+Elementos `<p>` simples. O título é `text-sm font-medium`, a descrição é `text-sm text-muted-foreground`.
+
+Estende todos os `HTMLAttributes<HTMLParagraphElement>`.
+
+### `<ArtifactActions>`
+
+Container flex (`gap-1`) para botões de ação. Coloque `ArtifactAction` e `ArtifactClose` dentro.
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`.
+
+### `<ArtifactAction>`
+
+| Prop       | Type            | Default   | Descrição                                                                                              |
+| ---------- | --------------- | --------- | ------------------------------------------------------------------------------------------------------ |
+| `tooltip`  | `string`        | -         | Quando definido, envolve o botão em um `Tooltip` e fornece o label. Serve também como texto `sr-only`. |
+| `label`    | `string`        | -         | Label acessível explícito. Sobrescreve `tooltip` para o texto sr-only.                                 |
+| `icon`     | `LucideIcon`    | -         | Conveniência para ações apenas de ícone. Renderiza o ícone em `size-4`.                                |
+| `variant`  | `ButtonVariant` | `"ghost"` | Encaminhado ao `Button` subjacente.                                                                    |
+| `size`     | `ButtonSize`    | `"sm"`    | Encaminhado ao `Button` subjacente.                                                                    |
+| `children` | `ReactNode`     | -         | Recai para `icon` quando `children` está ausente.                                                      |
+
+Quando `tooltip` é definido, a ação se envolve em um `TooltipProvider` + `Tooltip`. Se sua página já tem um `TooltipProvider` na raiz, esse aninhamento é inofensivo (o Radix de-duplica).
+
+### `<ArtifactClose>`
+
+`ArtifactAction` especializado com um `XIcon` embutido. Carrega `aria-label="Close"` via span `sr-only`.
+
+| Prop       | Type            | Default     | Descrição                                                            |
+| ---------- | --------------- | ----------- | -------------------------------------------------------------------- |
+| `children` | `ReactNode`     | `<XIcon />` | Sobrescreve o ícone se você precisa de um glyph de fechar diferente. |
+| `variant`  | `ButtonVariant` | `"ghost"`   | Encaminhado ao `Button`.                                             |
+| `size`     | `ButtonSize`    | `"sm"`      | Encaminhado ao `Button`.                                             |
+
+### `<ArtifactContent>`
+
+Corpo rolável (`overflow-auto p-4`) com `flex-1` para que preencha a altura restante. Coloque qualquer node dentro.
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`.
+
+## Composição
+
+1. **`<Artifact>`** é a casca do card. Define `flex-col` + `overflow-hidden` para que o header fique fixo enquanto o conteúdo rola.
+2. **`<ArtifactHeader>`** é a linha superior muted. Use para comunicar o que é o artefato, com descrição e ações finais opcionais.
+3. **`<ArtifactActions>`** + **`<ArtifactAction>`** + **`<ArtifactClose>`** ficam no slot final do header.
+4. **`<ArtifactContent>`** é dono do corpo. Componha com qualquer outro primitive do Gremorie (`CodeBlock`, `WebPreview`, `Image`, `Chart`, etc.).
+
+## Variações
+
+### Artefato de código
+
+O caso mais comum: renderizar a saída de código do modelo com números de linha e cópia.
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>signin.tsx</ArtifactTitle>
+    <ArtifactActions>
+      <ArtifactAction tooltip="Open in editor" icon={ExternalLinkIcon} />
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <CodeBlock code={generated} language="tsx" showLineNumbers>
+      <CodeBlockCopyButton />
+    </CodeBlock>
+  </ArtifactContent>
+</Artifact>
+```
+
+### Preview web ao vivo
+
+Use `WebPreview` dentro para um artefato executável. O header explica o que o usuário está vendo.
+
+```tsx
+<Artifact className="h-[480px]">
+  <ArtifactHeader>
+    <ArtifactTitle>Landing page</ArtifactTitle>
+    <ArtifactDescription>Live preview</ArtifactDescription>
+    <ArtifactActions>
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent className="p-0">
+    <WebPreview defaultUrl="/preview/landing">
+      <WebPreviewNavigation>
+        <WebPreviewUrl />
+      </WebPreviewNavigation>
+      <WebPreviewBody src="/preview/landing" />
+    </WebPreview>
+  </ArtifactContent>
+</Artifact>
+```
+
+### Artefato de imagem gerada
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>chart.png</ArtifactTitle>
+    <ArtifactActions>
+      <ArtifactAction
+        tooltip="Download"
+        icon={DownloadIcon}
+        onClick={download}
+      />
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <Image base64={imageBase64} mediaType="image/png" alt="Generated chart" />
+  </ArtifactContent>
+</Artifact>
+```
+
+## Acessibilidade
+
+- **Teclado**: Todas as ações são `Button`s reais, então a ordem de Tab é natural e Enter / Space as ativam.
+- **ARIA**: `ArtifactClose` distribui um label `sr-only` "Close" para que o X apenas de ícone seja anunciado. `ArtifactAction` usa `tooltip` / `label` para definir o nome acessível em botões apenas de ícone.
+- **Tooltip**: Quando `tooltip` é fornecido, o botão é envolvido em um `Tooltip` + `TooltipProvider`. Se você tem um `TooltipProvider` global mais acima na árvore, o provider aninhado é um no-op.
+- **Ordem de foco**: As ações do header permanecem na ordem do documento para que leitores de tela anunciem título -> descrição -> ações, correspondendo à ordem visual.
+
+## Relacionados
+
+- [Code Block](/components/code/code-block) - o conteúdo mais comum dentro de um artefato
+- [Web Preview](/components/code/web-preview) - preview de HTML ao vivo dentro de um artefato
+- [Image](/components/utilities/image) - superfície de imagem base64 para imagens geradas por IA
+- [Tool](/components/chatbot/tool) - chrome colapsável similar, mas para chamadas de ferramenta em vez de artefatos

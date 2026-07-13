@@ -1,0 +1,583 @@
+---
+title: PromptInput
+description: A superfície de composição fundamental de qualquer chat de IA. Uma máquina de estados enraizada em form com textarea auto-redimensionável, chips de attachment, action menu, entrada por voz, seletor de modelo e um botão de submit orientado por status.
+---
+
+import { PromptInputPreview } from '@/components/preview/ai/prompt-input';
+import { PromptInputMinimalPreview } from '@/components/preview/ai/prompt-input-minimal';
+import { PromptInputAttachmentsPreview } from '@/components/preview/ai/prompt-input-attachments';
+import { PromptInputB2BPreview } from '@/components/preview/ai/prompt-input-b2b';
+
+## Visão geral
+
+`PromptInput` é o maior primitive em `@gremorie/rx-ai`. É uma máquina de estados enraizada em `<form>` que compõe um `InputGroup` do `@gremorie/rx-forms` (textarea + addons renderizados como uma única superfície coesa) com o conjunto completo de affordances de input de chat: attachments de arquivo com previews em hover card, um action menu, um botão de speech-to-text, um seletor de modelo, botões de ação dentro do input e um botão de submit orientado por status cujo ícone alterna entre seta / spinner / stop / X dependendo do estado do chat.
+
+O estado é gerenciado em três camadas:
+
+1. **Auto-gerenciado** (padrão). Tudo vive dentro de `PromptInput`. Passe `onSubmit` e pronto.
+2. **Elevado por provider** via `PromptInputProvider`. Expõe `usePromptInputController()` para ler ou mutar o texto e os attachments de qualquer lugar na árvore.
+3. **Textarea controlada**. O `textInput.value` / `textInput.setInput` do provider dirigem `PromptInputTextarea` automaticamente quando o provider está presente.
+
+O componente também carrega um contrato de teclado imposto: Enter submete, Shift+Enter quebra linha, Backspace numa textarea vazia remove o último attachment, colar com arquivos anexa automaticamente, eventos de composição IME são honrados. O submit é conectado via `form.requestSubmit()` para que a validação de form HTML ainda se aplique.
+
+## Preview
+
+<ComponentPreview name="ai/prompt-input">
+  <PromptInputPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+PromptInput
+├─ PromptInputHeader
+│  ├─ PromptInputMentions          picker de add-context com @
+│  └─ Context                      medidor de uso de tokens
+├─ PromptInputBody
+│  ├─ PromptInputAttachments       opcional
+│  └─ PromptInputTextarea
+└─ PromptInputFooter
+   ├─ PromptInputTools             esquerda · mode + model
+   │  ├─ PromptInputSelect         mode
+   │  └─ PromptInputSelect         model
+   └─ PromptInputTools             direita
+      ├─ PromptInputButton         busca na web
+      ├─ PromptInputAttachButton   anexar
+      ├─ PromptInputSpeechButton   voz
+      └─ PromptInputSubmit         enviar
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-prompt-input ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-prompt-input ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-prompt-input ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-prompt-input ```
+  </Tab>
+</Tabs>
+
+Traz `rx-forms` (família InputGroup + Button + Select), `rx-overlays` (DropdownMenu + HoverCard + Tooltip), `rx-display` (Command + Dialog) e `rx-core` (o helper `cn`) como dependências de registry.
+
+## Uso
+
+### Mínimo
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  type ChatStatus,
+  PromptInput,
+  PromptInputBody,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+} from "@gremorie/rx-ai";
+
+export function ChatBox() {
+  const [status, setStatus] = useState<ChatStatus>("ready");
+
+return (
+
+<PromptInput onSubmit={(message) => send(message.text, message.files)}>
+<PromptInputBody>
+<PromptInputTextarea placeholder="Ask anything" />
+</PromptInputBody>
+<PromptInputFooter>
+<span />
+<PromptInputSubmit status={status} />
+</PromptInputFooter>
+</PromptInput>
+);
+}
+
+````
+</Tab>
+<Tab value="Angular">
+```ts
+import {
+  PromptInput,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputToolbar,
+} from "@gremorie/ng-ai";
+
+@Component({
+  selector: "app-chat-box",
+  standalone: true,
+  imports: [PromptInput, PromptInputTextarea, PromptInputToolbar, PromptInputSubmit],
+  template: `
+    <prompt-input (submitted)="send($event)">
+      <prompt-input-textarea placeholder="Ask anything" />
+      <prompt-input-toolbar>
+        <prompt-input-submit [status]="status()" />
+      </prompt-input-toolbar>
+    </prompt-input>
+  `,
+})
+export class ChatBoxComponent {
+  status = signal<ChatStatus>("ready");
+}
+````
+
+</Tab>
+</Tabs>
+
+### Completo
+
+```tsx
+'use client';
+
+import { useRef, useState } from 'react';
+import {
+  type ChatStatus,
+  PromptInput,
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuTrigger,
+  PromptInputAttachment,
+  PromptInputAttachments,
+  PromptInputBody,
+  PromptInputButton,
+  PromptInputFooter,
+  PromptInputSelect,
+  PromptInputSelectContent,
+  PromptInputSelectItem,
+  PromptInputSelectTrigger,
+  PromptInputSelectValue,
+  PromptInputSpeechButton,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputTools,
+} from '@gremorie/rx-ai';
+import { GlobeIcon } from 'lucide-react';
+
+const models = [
+  { id: 'gpt-4o', label: 'GPT-4o' },
+  { id: 'claude-4.5', label: 'Claude 4.5' },
+];
+
+export function ChatBox() {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [status, setStatus] = useState<ChatStatus>('ready');
+  const [model, setModel] = useState('gpt-4o');
+
+  return (
+    <PromptInput
+      accept="image/*"
+      multiple
+      maxFileSize={5_000_000}
+      onSubmit={(message) => send(message.text, message.files)}
+    >
+      <PromptInputBody>
+        <PromptInputAttachments>
+          {(file) => <PromptInputAttachment data={file} />}
+        </PromptInputAttachments>
+        <PromptInputTextarea ref={textareaRef} placeholder="Ask anything" />
+      </PromptInputBody>
+      <PromptInputFooter>
+        <PromptInputTools>
+          <PromptInputActionMenu>
+            <PromptInputActionMenuTrigger aria-label="Add attachment" />
+            <PromptInputActionMenuContent>
+              <PromptInputActionAddAttachments />
+            </PromptInputActionMenuContent>
+          </PromptInputActionMenu>
+          <PromptInputSpeechButton textareaRef={textareaRef} />
+          <PromptInputButton aria-label="Search the web">
+            <GlobeIcon />
+            Web
+          </PromptInputButton>
+          <PromptInputSelect value={model} onValueChange={setModel}>
+            <PromptInputSelectTrigger>
+              <PromptInputSelectValue placeholder="Model" />
+            </PromptInputSelectTrigger>
+            <PromptInputSelectContent>
+              {models.map((m) => (
+                <PromptInputSelectItem key={m.id} value={m.id}>
+                  {m.label}
+                </PromptInputSelectItem>
+              ))}
+            </PromptInputSelectContent>
+          </PromptInputSelect>
+        </PromptInputTools>
+        <PromptInputSubmit status={status} />
+      </PromptInputFooter>
+    </PromptInput>
+  );
+}
+```
+
+## Receitas
+
+`PromptInput` é customizado por composição, não por configuração. Não existe
+uma prop `showAttachments` ou `showVoice`, por design (o mesmo contrato do Vercel
+AI Elements): cada parte é um componente que você inclui na árvore ou deixa de fora.
+Para remover a seção de context, o botão de voz ou o fluxo de attachments, você
+deleta a parte do seu código em vez de alternar uma flag. As receitas abaixo
+são pontos de partida completos e copiáveis, ordenados do menor composer possível
+até a superfície B2B completa.
+
+### Mínimo
+
+A menor composição válida: um body com a textarea e um footer com o
+botão de submit. O `<span />` vazio mantém o layout `justify-between` do footer
+empurrando o submit para a direita. Todo o resto é opt-in.
+
+<ComponentPreview name="ai/prompt-input-minimal">
+  <PromptInputMinimalPreview />
+</ComponentPreview>
+
+### Com attachments
+
+Adiciona o affordance de anexar e a linha de chips. `PromptInputAttachButton` abre
+o file picker, e `PromptInputAttachments` renderiza um chip por arquivo anexado
+(colar e arrastar-e-soltar convergem para a mesma lista). A linha standalone
+`Attachments` semeia o preview com arquivos de exemplo para que você veja o tratamento
+do chip por tipo de mídia.
+
+<ComponentPreview name="ai/prompt-input-attachments">
+  <PromptInputAttachmentsPreview />
+</ComponentPreview>
+
+### B2B completo
+
+A composição business padrão da Gremorie, a mesma superfície que o bloco
+Assistant distribui: um command palette de add-context com `@` mais um medidor de
+uso de tokens no header, selects de Mode e Model com ícones de provider no footer, e
+um grupo de ícones de busca na web / anexar / voz ao lado do botão de submit. Cada
+ação carrega um tooltip.
+
+<ComponentPreview name="ai/prompt-input-b2b">
+  <PromptInputB2BPreview />
+</ComponentPreview>
+
+## API
+
+### Tipos
+
+| Type                 | Shape                                                                 | Description                                                                          |
+| -------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `ChatStatus`         | `"ready" \| "submitted" \| "streaming" \| "error"`                    | Os estados do ciclo de vida aos quais `PromptInputSubmit` reage.                     |
+| `FileUIPart`         | `{ type: "file"; url: string; mediaType: string; filename?: string }` | O shape de file part do Vercel AI SDK. Exportado aqui por conveniência.              |
+| `AttachmentFile`     | `FileUIPart & { id: string }`                                         | Representação interna que adiciona um ID estável. Usada pelo context de attachments. |
+| `PromptInputMessage` | `{ text: string; files: FileUIPart[] }`                               | O que `onSubmit` recebe.                                                             |
+
+### `<PromptInput>`
+
+O form raiz. Gerencia attachments, drag-drop de arquivos e o ciclo de vida do submit. Use um pai `PromptInputProvider` para elevar o estado para fora.
+
+| Prop              | Type                                                                                   | Default | Description                                                                                                             |
+| ----------------- | -------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `onSubmit`        | `(message: PromptInputMessage, event: FormEvent) => void \| Promise<void>`             | -       | **Obrigatório.** Dispara no submit do form (tecla Enter, clique em Submit ou `requestSubmit`).                          |
+| `accept`          | `string`                                                                               | -       | Padrão MIME separado por vírgulas (`"image/*,application/pdf"`). Valida arquivos colados e soltos.                      |
+| `multiple`        | `boolean`                                                                              | -       | Permite mais de um arquivo por seleção.                                                                                 |
+| `globalDrop`      | `boolean`                                                                              | `false` | Quando true, aceita drops em qualquer lugar do documento. O escopo padrão é o elemento form.                            |
+| `syncHiddenInput` | `boolean`                                                                              | `false` | Limpa o input de arquivo oculto quando a lista de attachments vai a 0. Útil para re-selecionar o mesmo nome de arquivo. |
+| `maxFiles`        | `number`                                                                               | -       | Limite no total de attachments. Arquivos extras disparam `onError({ code: "max_files" })`.                              |
+| `maxFileSize`     | `number`                                                                               | -       | Limite de bytes por arquivo. Arquivos acima do limite disparam `onError({ code: "max_file_size" })`.                    |
+| `onError`         | `(err: { code: "max_files" \| "max_file_size" \| "accept"; message: string }) => void` | -       | Dispara quando a validação rejeita arquivos.                                                                            |
+| `className`       | `string`                                                                               | -       | Classes extras no `InputGroup` subjacente.                                                                              |
+| `children`        | `ReactNode`                                                                            | -       | Tipicamente `PromptInputBody` e seus descendentes.                                                                      |
+
+### `<PromptInputProvider>`
+
+Provider opcional que eleva o estado de texto e attachment acima de `PromptInput`. Envolva sua árvore uma vez perto da raiz, e então qualquer descendente pode usar `usePromptInputController()` ou `useProviderAttachments()`.
+
+| Prop           | Type        | Default | Description                                  |
+| -------------- | ----------- | ------- | -------------------------------------------- |
+| `initialInput` | `string`    | `""`    | Valor semente para a textarea controlada.    |
+| `children`     | `ReactNode` | -       | A árvore que deve observar o estado elevado. |
+
+### `<PromptInputBody>` / `<PromptInputHeader>` / `<PromptInputFooter>` / `<PromptInputTools>`
+
+Primitives de layout.
+
+- `PromptInputBody` envolve os children em `display: contents` para que fluam diretamente para dentro do `InputGroup`.
+- `PromptInputHeader` é um `InputGroupAddon` fixado em `align="block-end"` com `order-first flex-wrap gap-1`. Use para toolbars no estilo header (acima da textarea).
+- `PromptInputFooter` é um `InputGroupAddon` fixado em `align="block-end"` com `justify-between gap-1`. Casa padrão para tools + submit.
+- `PromptInputTools` é uma linha `flex items-center gap-1` feita para viver dentro do footer.
+
+Todos estendem as props do elemento DOM subjacente.
+
+### `<PromptInputTextarea>`
+
+O composer. Auto-redimensiona entre `min-h-16` e `max-h-48`. `name="message"` padrão para que serialize como o campo de texto do form.
+
+| Prop                 | Type              | Default                          | Description                                                                                                           |
+| -------------------- | ----------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `placeholder`        | `string`          | `"What would you like to know?"` | Texto de placeholder.                                                                                                 |
+| `value` / `onChange` | props controladas | -                                | Quando fornecidas, a textarea é totalmente controlada. Caso contrário, o text input do provider a dirige (se houver). |
+
+Contrato de teclado embutido:
+
+| Key                           | Behavior                                                   |
+| ----------------------------- | ---------------------------------------------------------- |
+| `Enter`                       | `requestSubmit()` (ignorado se o Submit está desabilitado) |
+| `Shift+Enter`                 | Quebra de linha                                            |
+| `Backspace` na textarea vazia | Remove o attachment mais recente                           |
+| Composição IME                | Enter é ignorado durante a composição                      |
+| Colar com arquivos            | Anexa arquivos automaticamente                             |
+
+### `<PromptInputAttachments>` / `<PromptInputAttachment>`
+
+| Component                | Purpose                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `PromptInputAttachments` | Container que renderiza um child por attachment via function child. Não renderiza nada quando a lista está vazia. |
+| `PromptInputAttachment`  | Um único chip com um preview em hover card (thumbnail de imagem ou ícone de clipe) e um botão de remoção.         |
+
+`PromptInputAttachments`:
+
+| Prop        | Type                                        | Default | Description                        |
+| ----------- | ------------------------------------------- | ------- | ---------------------------------- |
+| `children`  | `(attachment: AttachmentFile) => ReactNode` | -       | **Obrigatório.** Função de render. |
+| `className` | `string`                                    | -       | Classes extras no wrapper.         |
+
+`PromptInputAttachment`:
+
+| Prop        | Type             | Default | Description                                 |
+| ----------- | ---------------- | ------- | ------------------------------------------- |
+| `data`      | `AttachmentFile` | -       | **Obrigatório.** O attachment a renderizar. |
+| `className` | `string`         | -       | Classes extras no chip.                     |
+
+### `<PromptInputButton>` / `<PromptInputSubmit>`
+
+`PromptInputButton` envolve `InputGroupButton`. Escolhe `size="icon-sm"` para ícones de child único e `size="sm"` para ícone+label, a menos que você defina `size` explicitamente. `variant="ghost"` padrão.
+
+`PromptInputSubmit` é um `InputGroupButton` orientado por status cujo ícone depende de `status`:
+
+| `status`      | Icon                    | Behavior                                                      |
+| ------------- | ----------------------- | ------------------------------------------------------------- |
+| `"ready"`     | `CornerDownLeftIcon`    | Submete ao clicar. Desabilitado quando a textarea está vazia. |
+| `"submitted"` | `Loader2Icon` (girando) | Desabilitado.                                                 |
+| `"streaming"` | `SquareIcon`            | Clique para parar a geração (o host conecta o handler).       |
+| `"error"`     | `XIcon`                 | Clique para tentar de novo (o host conecta o handler).        |
+| `undefined`   | `CornerDownLeftIcon`    | Igual a `"ready"`.                                            |
+
+Carrega `aria-label="Submit"`.
+
+### Família action menu
+
+`PromptInputActionMenu`, `PromptInputActionMenuTrigger`, `PromptInputActionMenuContent` e `PromptInputActionMenuItem` são wrappers finos em torno de `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent` e `DropdownMenuItem`. O trigger tem como padrão um `PromptInputButton` com um `PlusIcon`.
+
+`PromptInputActionAddAttachments` é um `DropdownMenuItem` pré-conectado que chama `attachments.openFileDialog()` ao selecionar. Label padrão: `"Add photos or files"`. Aceita uma prop `label` para sobrescrever.
+
+### `<PromptInputSpeechButton>`
+
+Toggle da Web Speech API.
+
+| Prop                    | Type                                     | Default   | Description                                                          |
+| ----------------------- | ---------------------------------------- | --------- | -------------------------------------------------------------------- |
+| `textareaRef`           | `RefObject<HTMLTextAreaElement \| null>` | -         | Quando fornecido, o texto transcrito é anexado ao valor da textarea. |
+| `onTranscriptionChange` | `(text: string) => void`                 | -         | Dispara sempre que um transcript final é anexado.                    |
+| `lang`                  | `string`                                 | `"en-US"` | Tag de idioma BCP-47 passada para `SpeechRecognition`.               |
+
+Carrega `aria-label="Toggle voice input"`. Desabilitado quando nem `SpeechRecognition` nem `webkitSpeechRecognition` está disponível. Anima uma superfície accent pulsante enquanto escuta.
+
+### Família `<PromptInputSelect>`
+
+Wrappers em torno de `Select` do `@gremorie/rx-forms` (`PromptInputSelect`, `PromptInputSelectTrigger`, `PromptInputSelectContent`, `PromptInputSelectItem`, `PromptInputSelectValue`). O trigger é re-estilizado para parecer inline dentro da linha de input (sem borda, fundo transparente, foreground muted).
+
+### Família `<PromptInputHoverCard>`
+
+`PromptInputHoverCard`, `PromptInputHoverCardTrigger`, `PromptInputHoverCardContent`. `HoverCard` do `@gremorie/rx-overlays` com `openDelay` e `closeDelay` padronizados em 0 para que os previews pareçam instantâneos. O content tem como padrão `align="start"`. Usado internamente por `PromptInputAttachment`.
+
+### Família `<PromptInputCommand>`
+
+`PromptInputCommand`, `PromptInputCommandInput`, `PromptInputCommandList`, `PromptInputCommandEmpty`, `PromptInputCommandGroup`, `PromptInputCommandItem`, `PromptInputCommandSeparator`. Wrappers finos em torno dos primitives do `Command` palette.
+
+`PromptInputCommandDialog` é o palette flutuante Cmd+K - o mesmo `Command` palette dentro de um `Dialog` para uso como launcher global.
+
+### Família `<PromptInputTabs*>`
+
+`PromptInputTabsList`, `PromptInputTab`, `PromptInputTabLabel`, `PromptInputTabBody`, `PromptInputTabItem`. Painéis com abas leves e sem estado para uso dentro de menus e dropdowns. São containers estilizados - traga seu próprio estado de seleção.
+
+### Hooks
+
+| Hook                          | Purpose                                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `usePromptInputController()`  | Lê ou muta o valor do text input e os attachments. Lança erro se não houver pai `PromptInputProvider`.                                      |
+| `useProviderAttachments()`    | Lê o estado de attachment elevado ao provider. Lança erro se não houver pai `PromptInputProvider`.                                          |
+| `usePromptInputAttachments()` | Lê o estado de attachment do `PromptInput` mais próximo. Usado dentro de descendentes como `PromptInputTextarea` e `PromptInputAttachment`. |
+
+## Composição
+
+```
+PromptInput (raiz <form>, máquina de estados + drag-drop + wrapper InputGroup)
+  PromptInputBody (display: contents, envolve apenas os attachments + textarea)
+    PromptInputAttachments (lista de chips com render-prop, oculta quando vazia)
+      PromptInputAttachment (chip + preview HoverCard + botão de remoção)
+    PromptInputTextarea (auto-resize, Enter submete, Shift+Enter quebra linha)
+  PromptInputHeader (opcional, irmão do Body, renderiza acima da textarea)
+  PromptInputFooter (casa padrão para tools + submit, irmão do Body)
+    PromptInputTools (esquerda, botões de ação)
+      PromptInputActionMenu (trigger de dropdown + content + items)
+        PromptInputActionAddAttachments (item pré-conectado)
+      PromptInputSpeechButton (toggle Web Speech)
+      PromptInputButton (ações customizadas - busca na web, etc.)
+      PromptInputSelect (seletor de modelo)
+    PromptInputSubmit (direita, ícone orientado por status)
+```
+
+> [!important]
+> `PromptInputHeader` e `PromptInputFooter` devem ser irmãos de
+> `PromptInputBody`, não aninhados dentro dele. `PromptInputBody` é `display: contents`,
+> e o `InputGroup` subjacente só muda para seu layout de coluna empilhada quando
+> um addon `data-align="block-end"` é seu filho direto. Um footer aninhado dentro do
+> Body de contents não é um filho direto, então o group permanece uma única linha e a
+> textarea colapsa em uma barra fina.
+
+### Como as partes se encaixam
+
+1. **Wrapping do InputGroup**: A raiz React envolve o conteúdo do `<form>` em um `InputGroup` do `@gremorie/rx-forms`. Isso te dá uma única superfície arredondada com estados de focus, invalid e disabled compartilhados entre a textarea e cada addon.
+2. **Addons alinhados por bloco**: `PromptInputHeader` e `PromptInputFooter` são ambos `InputGroupAddon align="block-end"`. Eles renderizam abaixo da textarea visualmente, mas participam do focus ring do group.
+3. **Dimensionamento**: Cada botão de toolbar escolhe `xs`, `sm`, `icon-xs` ou `icon-sm` para combinar com a altura do group automaticamente. `PromptInputButton` escolhe `icon-sm` quando tem um único child e `sm` quando tem ícone+label, a menos que você sobrescreva.
+4. **Context de estado de attachment**: `PromptInput` (ou `PromptInputProvider` quando presente) provê o context de attachments que `PromptInputAttachments`, `PromptInputAttachment` e `PromptInputActionAddAttachments` todos leem. Adicionar via action menu, colar, drag-drop ou `attachments.add(files)` tudo converge para a mesma lista.
+
+## Variações
+
+### Estado elevado via Provider
+
+Use `PromptInputProvider` para compartilhar o valor da textarea e os attachments com irmãos (por exemplo, um painel de sugestões que quer escrever no input).
+
+```tsx
+import { PromptInputProvider, usePromptInputController } from '@gremorie/rx-ai';
+
+function SuggestionRow() {
+  const { textInput } = usePromptInputController();
+  return (
+    <Button onClick={() => textInput.setInput('Summarize this thread')}>
+      Insert suggestion
+    </Button>
+  );
+}
+
+export function ComposerExample() {
+  return (
+    <PromptInputProvider initialInput="">
+      <SuggestionRow />
+      <PromptInput onSubmit={handle}>
+        <PromptInputBody>
+          <PromptInputTextarea />
+        </PromptInputBody>
+        <PromptInputFooter>
+          <span />
+          <PromptInputSubmit />
+        </PromptInputFooter>
+      </PromptInput>
+    </PromptInputProvider>
+  );
+}
+```
+
+### Attachments de imagem restritos
+
+Rejeite tudo exceto imagens e limite em 5 MB.
+
+```tsx
+<PromptInput
+  accept="image/*"
+  multiple
+  maxFiles={4}
+  maxFileSize={5_000_000}
+  onError={(err) => toast.error(err.message)}
+  onSubmit={handle}
+>
+  {/* ... */}
+</PromptInput>
+```
+
+### Zona de drop global
+
+Aceite arquivos soltos em qualquer lugar da página.
+
+```tsx
+<PromptInput globalDrop accept="image/*" onSubmit={handle}>
+  {/* ... */}
+</PromptInput>
+```
+
+### Com command palette Cmd+K
+
+Combine o composer inline com um launcher global usando `PromptInputCommandDialog`.
+
+```tsx
+const [open, setOpen] = useState(false);
+
+useEffect(() => {
+  const handler = (e: KeyboardEvent) => {
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      setOpen((v) => !v);
+    }
+  };
+  document.addEventListener('keydown', handler);
+  return () => document.removeEventListener('keydown', handler);
+}, []);
+
+<PromptInputCommandDialog open={open} onOpenChange={setOpen}>
+  <PromptInputCommandInput placeholder="Type a command..." />
+  <PromptInputCommandList>
+    <PromptInputCommandEmpty>No results.</PromptInputCommandEmpty>
+    <PromptInputCommandGroup heading="Actions">
+      <PromptInputCommandItem>New chat</PromptInputCommandItem>
+      <PromptInputCommandItem>Clear history</PromptInputCommandItem>
+    </PromptInputCommandGroup>
+  </PromptInputCommandList>
+</PromptInputCommandDialog>;
+```
+
+### Status de streaming
+
+Conecte `status` ao seu estado de rede para alternar o Submit entre seta, spinner e stop.
+
+```tsx
+const [status, setStatus] = useState<ChatStatus>('ready');
+
+async function send(message: PromptInputMessage) {
+  setStatus('submitted');
+  try {
+    await streamResponse(message, {
+      onStreamStart: () => setStatus('streaming'),
+      onComplete: () => setStatus('ready'),
+    });
+  } catch {
+    setStatus('error');
+  }
+}
+
+<PromptInputSubmit
+  status={status}
+  onClick={status === 'streaming' ? stop : undefined}
+/>;
+```
+
+## Acessibilidade
+
+- **Semântica de `<form>` real**: `PromptInput` renderiza um `<form>`, então Enter submete via `form.requestSubmit()`. A validação de form HTML ainda roda - atributos nativos `required` / `pattern` funcionam em qualquer campo dentro.
+- **`aria-label` do Submit**: `PromptInputSubmit` sempre carrega `aria-label="Submit"`. Se sua localização difere, sobrescreva via sua própria composição de `Button`.
+- **Contrato de teclado** (documentado acima e imposto no código): Enter submete, Shift+Enter insere uma quebra de linha, Backspace na textarea vazia remove o attachment mais recente. A flag de composição IME (`onCompositionStart` / `onCompositionEnd`) suprime o Enter enquanto se compõe input CJK.
+- **Degradação do botão de speech**: Quando a Web Speech API está ausente, `PromptInputSpeechButton` é desabilitado em vez de oculto. `aria-label="Toggle voice input"` permanece no botão desabilitado para que leitores de tela possam descrever o que está indisponível.
+- **Remoção de attachment**: O botão de remoção de cada chip carrega `aria-label="Remove attachment"` mais um span `sr-only` "Remove".
+- **Tools que precisam de tooltips**: `PromptInputButton`s apenas com ícone exigem um `aria-label`. Não há tooltip embutido, então envolva cada um em `Tooltip` do `@gremorie/rx-overlays` quando quiser uma dica em hover.
+- **Anúncio de status**: Quando `status` muda, considere anunciar o novo estado via uma região `aria-live` separada no app host - a troca de ícone do Submit sozinha é silenciosa para leitores de tela.
+- **Focus visível**: A superfície do `InputGroup` dirige o focus ring. Não remova os outlines.
+- **Movimento reduzido**: A animação de pulso do botão de speech e o spinner do submit respeitam `prefers-reduced-motion` via as variantes `motion-reduce:` padrão do Tailwind (aplique manualmente a adições customizadas).
+
+## Relacionados
+
+- [Message](/components/chatbot/message) - o turno do assistant / usuário renderizado acima deste composer
+- [Conversation](/components/chatbot/conversation) - a superfície rolável que hospeda tanto as mensagens quanto este composer
+- [Model Selector](/components/chatbot/model-selector) - seletor de modelo standalone alternativo se você não quiser inline
+- [Suggestion](/components/chatbot/suggestion) - prompts prontos que os usuários podem clicar para semear a textarea
+- [Open in Chat](/components/utilities/open-in-chat) - passe a query atual para um chat externo

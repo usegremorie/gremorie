@@ -1,0 +1,97 @@
+---
+title: For designers
+description: O que o Gremorie dá a um time de design - o vocabulário de componentes, as camadas de token por trás dos estilos do Figma, seis temas de marca, e o workbench.
+---
+
+Você não precisa ler código para trabalhar com o Gremorie. Esta página mapeia
+o que você já faz no Figma para como o sistema é de fato construído, para que
+as palavras que você usa em um arquivo sejam as mesmas palavras que a engenharia entrega.
+
+## O que o Gremorie te dá
+
+Quatro coisas, concretamente:
+
+1. **Um vocabulário de componentes com anatomy trees.** O catálogo tem
+   [83 componentes em 8 categorias](/components). Toda página de
+   componente abre com uma seção **Anatomy**: uma árvore dos nomes reais
+   dos subcomponentes (`PromptInput` contém `Textarea`, `Toolbar`,
+   `Submit`, e assim por diante). Esses nomes são a linguagem compartilhada entre
+   o seu painel de layers e o codebase.
+2. **Um sistema de token de três camadas.** Valores crus
+   ([primitive](/tokens/primitive)), intents como `primary` e
+   `border` ([semantic](/tokens/semantic)), e esquemas de dataviz
+   ([chart](/tokens/chart)). Toda decisão de cor, radius, shadow e
+   spacing na UI resolve para um token nomeado, nunca para um
+   valor hex solto.
+3. **Seis temas de marca.** Default, Claude, ChatGPT, Gemini, Mistral
+   e Perplexity, cada um em light e dark. Um tema não é nada mais
+   do que um mapeamento diferente de intents para primitives, que é
+   exatamente o que os modos de variável do Figma são.
+4. **O workbench.** Um app standalone que renderiza as edições React e
+   Angular de todo componente **lado a lado**, com um
+   theme switcher e toggles de demo por componente (mostrar ou esconder cada
+   parte opcional). É a forma mais rápida de inspecionar states reais e
+   spacing real sem pedir a ninguém que rode uma branch.
+
+## Mapeando estilos do Figma para tokens
+
+As camadas de token correspondem um-para-um com conceitos que você já
+usa. Os exemplos são valores reais do
+`theme.css` publicado:
+
+| Conceito do Figma                         | Camada Gremorie                                       | Exemplo                                                                        |
+| ----------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Variáveis de cor primitive (a paleta)     | [Primitive colors](/tokens/primitive/colors)          | `--color-clay-500` é `#D97757`, a cor de marca do Claude                       |
+| Variáveis de cor semantic (aliases)       | [Semantic tokens](/tokens/semantic)                   | `--primary: var(--color-clay-500)` no tema Claude                              |
+| Modos de variável (light / dark)          | O remapeamento da classe `.dark`                      | `--primary` vira `clay-400` no modo dark do Claude                             |
+| Modos de variável (marca A / marca B)     | Atributo `data-theme`                                 | `data-theme="claude"` versus `data-theme="gemini"`                             |
+| Text styles                               | [Typography primitives](/tokens/primitive/typography) | `--font-sans: 'Inter', ...` mais a escala de tamanho com line-heights pareados |
+| Effect styles (drop shadows)              | [Shadow primitives](/tokens/primitive/shadow)         | `--shadow-md` para dropdowns, `--shadow-xl` para modals                        |
+| Valores de corner radius                  | [Radius primitives](/tokens/primitive/radius)         | `--radius-base: 0.625rem`; sm, md, lg, xl derivam dele por multiplicador       |
+| Valores de spacing do auto layout         | [Spacing scale](/tokens/primitive/spacing)            | `--spacing: 0.25rem` (base de 4px); um gap de 4 significa 16px                 |
+| Component properties (variants, booleans) | O contrato de props do componente                     | `Button` size `sm / md / lg`; partes opcionais ligam e desligam                |
+
+Dois hábitos fazem o mapeamento funcionar na prática:
+
+- **Nomeie estilos pelos intents, não pelos valores.** Um estilo do Figma chamado
+  `primary` sobrevive a um rebrand; um chamado `terracotta-500` não
+  sobrevive. Reserve nomes primitive para a página da paleta da sua biblioteca.
+- **Use modos para tema e modo, não estilos duplicados.** Light
+  versus dark e marca versus marca são ambos trocas de modo no
+  sistema, então modele-os como modos de variável no Figma também.
+
+## Onde encontrar a anatomia
+
+Em **toda página de componente**, logo depois do preview: um bloco
+Anatomy mostrando a hierarquia de subcomponentes como uma árvore. A mesma árvore
+também renderiza nas docs do Storybook do componente, então ela nunca desvia
+do código. Quando você constrói um componente Figma para o `PromptInput`,
+nomeie os layers pelos nós da árvore e a conversa de handoff
+desaparece.
+
+Comece pela página do [PromptInput](/components/chatbot/prompt-input)
+para ver o padrão, depois navegue pela
+[visão geral do catálogo](/components) para o resto.
+
+## Primeira hora sugerida
+
+1. Leia o [modelo de token de três camadas](/tokens) (cinco minutos, é
+   o modelo mental do qual tudo o mais depende).
+2. Dê uma olhada na página de [primitive colors](/tokens/primitive/colors) para ver
+   a paleta completa, incluindo as cinco rampas que são exclusivas do
+   Gremorie.
+3. Abra o workbench, escolha um componente que você conhece bem, e alterne o
+   theme switcher e os toggles de demo para sentir quanto da UI é
+   dirigido por token.
+4. Escolha uma tela do seu produto e identifique a qual das
+   [8 categorias de componente](/components) cada elemento pertence.
+
+## O que vem para o Figma
+
+Bibliotecas de componentes do Figma que mapeiam **1:1 para os contratos
+de componente** são o próximo passo planejado: um componente Figma por
+componente Gremorie, com as mesmas variant properties e com
+boolean properties de show / hide espelhando os toggles de demo do workbench.
+Até isso ser publicado, os anatomy trees mais o mapeamento de token acima são
+a fonte da verdade para construir a sua própria biblioteca no mesmo
+vocabulário.

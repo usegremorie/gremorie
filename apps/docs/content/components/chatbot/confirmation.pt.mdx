@@ -1,0 +1,215 @@
+---
+title: Confirmation
+description: Prompt de aprovação human-in-the-loop para chamadas de tool, com estados de request, aprovado e rejeitado orientados pelo estado da tool.
+---
+
+import { ConfirmationRequestPreview } from '@/components/preview/ai/confirmation-request';
+import { ConfirmationApprovedPreview } from '@/components/preview/ai/confirmation-approved';
+import { ConfirmationRejectedPreview } from '@/components/preview/ai/confirmation-rejected';
+
+## Visão geral
+
+`Confirmation` bloqueia uma chamada de tool até que o usuário aprove ou rejeite. Ele envolve um `Alert` e expõe três componentes de slot (`ConfirmationRequest`, `ConfirmationAccepted`, `ConfirmationRejected`) que se mostram ou ocultam automaticamente com base no estado do `ToolUIPart` do AI SDK e no veredito de aprovação.
+
+Use para operações irreversíveis (deletes, pagamentos, deploys, write-to-prod) onde o usuário precisa confirmar antes da tool executar.
+
+## Preview
+
+### Solicitando aprovação
+
+<ComponentPreview name="ai/confirmation-request">
+  <ConfirmationRequestPreview />
+</ComponentPreview>
+
+### Aprovado
+
+<ComponentPreview name="ai/confirmation-approved">
+  <ConfirmationApprovedPreview />
+</ComponentPreview>
+
+### Rejeitado
+
+<div className="rounded-lg border p-6 not-prose">
+  <ConfirmationRejectedPreview />
+</div>
+
+## Anatomia
+
+```text
+Confirmation
+├─ ConfirmationTitle
+├─ ConfirmationRequest      mostrado enquanto pendente
+├─ ConfirmationActions
+│  └─ ConfirmationAction    botões de aceitar / rejeitar
+├─ ConfirmationAccepted     mostrado quando aprovado
+└─ ConfirmationRejected     mostrado quando rejeitado
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-confirmation ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-confirmation ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-confirmation ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-confirmation ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Confirmation,
+  ConfirmationTitle,
+  ConfirmationRequest,
+  ConfirmationAccepted,
+  ConfirmationRejected,
+  ConfirmationActions,
+  ConfirmationAction,
+} from "@gremorie/rx-ai";
+
+export function Example({ state, approval, approve, reject }) {
+  return (
+    <Confirmation state={state} approval={approval}>
+      <ConfirmationTitle>Run delete_records on production?</ConfirmationTitle>
+      <ConfirmationRequest>
+        <ConfirmationActions>
+          <ConfirmationAction variant="outline" onClick={reject}>
+            Reject
+          </ConfirmationAction>
+          <ConfirmationAction onClick={approve}>Approve</ConfirmationAction>
+        </ConfirmationActions>
+      </ConfirmationRequest>
+      <ConfirmationAccepted>Tool executed.</ConfirmationAccepted>
+      <ConfirmationRejected>Tool blocked.</ConfirmationRejected>
+    </Confirmation>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente é distribuída a partir do source hoje (veja o workbench para o lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Confirmation>`
+
+| Prop       | Type                                                  | Default | Description                                                                                                                                    |
+| ---------- | ----------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `state`    | `ToolUIPart["state"]`                                 | -       | Estado obrigatório da chamada de tool vindo do AI SDK. O componente retorna `null` enquanto o estado é `input-streaming` ou `input-available`. |
+| `approval` | `{ id: string; approved?: boolean; reason?: string }` | -       | Payload de aprovação obrigatório. Determina qual slot é renderizado.                                                                           |
+
+Estende `ComponentProps<typeof Alert>`.
+
+### `<ConfirmationTitle>`
+
+Renderiza um `AlertDescription` inline. Use para o texto do prompt.
+
+### `<ConfirmationRequest>` / `<ConfirmationAccepted>` / `<ConfirmationRejected>`
+
+| Component              | Renderiza quando                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| `ConfirmationRequest`  | `state === "approval-requested"`                                                                       |
+| `ConfirmationAccepted` | `approval.approved === true` e o estado é `approval-responded`, `output-denied` ou `output-available`  |
+| `ConfirmationRejected` | `approval.approved === false` e o estado é `approval-responded`, `output-denied` ou `output-available` |
+
+Cada um aceita `children: ReactNode`.
+
+### `<ConfirmationActions>` / `<ConfirmationAction>`
+
+| Prop       | Type        | Default | Description                                                            |
+| ---------- | ----------- | ------- | ---------------------------------------------------------------------- |
+| `children` | `ReactNode` | -       | Botões de ação. O container só renderiza durante `approval-requested`. |
+
+`ConfirmationAction` estende as props de `Button` com um size padrão menor (`h-8 px-3 text-sm`).
+
+### `useConfirmation()`
+
+Hook que retorna `{ approval, state }`. Lança erro quando usado fora de `<Confirmation>`. Útil para slots customizados.
+
+## Composição
+
+1. **`<Confirmation>`** envolve um `Alert` e provê o context de estado.
+2. **`<ConfirmationTitle>`** é a pergunta em destaque.
+3. **`<ConfirmationRequest>`** mostra apenas enquanto a aprovação está pendente. Coloque as ações dentro.
+4. **`<ConfirmationActions>` + `<ConfirmationAction>`** são os botões de Approve / Reject.
+5. **`<ConfirmationAccepted>` / `<ConfirmationRejected>`** mostram o resultado resolvido.
+
+## Variações
+
+### Alert de três estados
+
+Renderize cada slot para que o mesmo JSX sirva todo o ciclo de vida.
+
+```tsx
+<Confirmation state={state} approval={approval}>
+  <ConfirmationTitle>Charge $499 to the saved card?</ConfirmationTitle>
+  <ConfirmationRequest>
+    <ConfirmationActions>
+      <ConfirmationAction variant="outline" onClick={reject}>
+        Cancel
+      </ConfirmationAction>
+      <ConfirmationAction onClick={approve}>Charge</ConfirmationAction>
+    </ConfirmationActions>
+  </ConfirmationRequest>
+  <ConfirmationAccepted>Card charged successfully.</ConfirmationAccepted>
+  <ConfirmationRejected>Charge cancelled.</ConfirmationRejected>
+</Confirmation>
+```
+
+### Variant destrutiva
+
+Use variants de Alert e um botão de ação destrutivo para sinalizar severidade.
+
+```tsx
+<Confirmation state={state} approval={approval} variant="destructive">
+  <ConfirmationTitle>Permanently delete 1,204 records?</ConfirmationTitle>
+  <ConfirmationRequest>
+    <ConfirmationActions>
+      <ConfirmationAction variant="outline" onClick={reject}>
+        Keep them
+      </ConfirmationAction>
+      <ConfirmationAction variant="destructive" onClick={approve}>
+        Delete
+      </ConfirmationAction>
+    </ConfirmationActions>
+  </ConfirmationRequest>
+</Confirmation>
+```
+
+### Aprovação com motivo
+
+Exiba o motivo da rejeição capturado em `approval.reason`.
+
+```tsx
+<Confirmation state={state} approval={approval}>
+  <ConfirmationTitle>Deploy to production?</ConfirmationTitle>
+  <ConfirmationRejected>
+    <p>Deploy blocked. Reason: {approval?.reason ?? 'no reason given'}.</p>
+  </ConfirmationRejected>
+</Confirmation>
+```
+
+## Acessibilidade
+
+- **Teclado**: botões de ação participam da ordem de tab e respondem a Enter / Space.
+- **ARIA**: o `Alert` subjacente expõe `role="alert"` para que leitores de tela anunciem o prompt quando ele aparece.
+- **Leitores de tela**: cada slot usa texto semântico, então o texto de request, aceito e rejeitado é lido sequencialmente conforme o estado transiciona.
+- **Gestão de foco**: quando o prompt monta, mova o foco programaticamente para a ação primária para que usuários de teclado possam confirmar sem procurar por ela.
+
+## Relacionados
+
+- [Tool](/components/chatbot/tool) - a superfície de chamada de tool que este primitive protege
+- [Plan](/components/chatbot/plan) - quando a aprovação é para um plano de múltiplos passos em vez de uma única chamada de tool
+- [Message](/components/chatbot/message) - a superfície de conversa que hospeda a confirmation

@@ -1,0 +1,294 @@
+---
+title: Line Chart
+description: 'Tendência sobre um domínio ordenado, um traço por série, com cor por variáveis de chart.'
+---
+
+import { LineChartPreview } from '@/components/preview/data/line-chart';
+import { LineChartSinglePreview } from '@/components/preview/data/line-chart-single';
+
+## Visão geral
+
+`LineChart` é um gráfico recharts conectado aos design tokens do Gremorie através do primitive `chart` do shadcn (`ChartContainer`) para **linhas de tendência sobre uma categoria ordenada**. Passe `data` tabular, um `config` serializável que mapeia cada campo de valor para um `label` mais uma `color`, e o `xKey` que nomeia o campo de categoria. `ChartContainer` injeta a cor de cada série como `var(--color-<key>)`, e o recharts renderiza o cartesian grid, os ticks dos eixos e os paths traçados por série. Passe `type` para escolher a curva de interpolação ou `dots` para marcar cada ponto.
+
+Use LineChart quando **forma e direção** são o destaque - conversão mês a mês, usuários ativos semanais, deploys por dia. Use [`AreaChart`](/components/data/area-chart) quando a magnitude preenchida é a história; use [`BarChart`](/components/data/bar-chart) para comparações discretas de categoria; use [`ScatterChart`](/components/data/scatter-chart) quando o eixo X é ele mesmo numérico e contínuo.
+
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+
+## Anatomia
+
+```
+<line-chart>
+└─ figure (role="img")                  card surface, aspect-video
+   ├─ svg (chart frame)
+   │  ├─ cartesian grid
+   │  ├─ x axis (category from xKey)
+   │  ├─ y axis (numeric, optional via yAxis)
+   │  ├─ stroked lines, one per config key
+   │  └─ dots (optional via dots)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
+A edição React compõe esta superfície através do primitive `chart` do shadcn:
+
+```text
+LineChart                       styled wrapper; one Line per config entry
+└─ ChartContainer               responsive frame; injects --color-<key> from config
+   ├─ CartesianGrid             horizontal rules
+   ├─ XAxis                     category axis
+   ├─ YAxis                     numeric axis (optional, yAxis)
+   ├─ ChartTooltip              hover card
+   │  └─ ChartTooltipContent    token-styled tooltip body
+   └─ Line                      one per series; 2px stroke; optional dots
+```
+
+## Preview
+
+<ComponentPreview name="data/line-chart">
+  <LineChartPreview />
+</ComponentPreview>
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-line-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-line-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-line-chart ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-line-chart ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { LineChart } from "@gremorie/rx-data";
+import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
+
+const data: ChartDatum[] = [
+{ month: "Jan", desktop: 186, mobile: 80 },
+{ month: "Feb", desktop: 305, mobile: 200 },
+{ month: "Mar", desktop: 237, mobile: 120 },
+{ month: "Apr", desktop: 73, mobile: 190 },
+{ month: "May", desktop: 209, mobile: 130 },
+{ month: "Jun", desktop: 214, mobile: 140 },
+];
+
+const config: ChartConfig = {
+desktop: { label: "Desktop", color: "var(--chart-1)" },
+mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+export function MonthlyTrend() {
+  return <LineChart data={data} config={config} xKey="month" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from '@angular/core';
+import { LineChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+selector: 'app-monthly-trend',
+imports: [LineChart],
+template: `<line-chart [data]="data" [config]="config" xKey="month" />`,
+})
+export class MonthlyTrendComponent {
+readonly data: ChartDatum[] = [
+{ month: 'Jan', desktop: 186, mobile: 80 },
+{ month: 'Feb', desktop: 305, mobile: 200 },
+{ month: 'Mar', desktop: 237, mobile: 120 },
+{ month: 'Apr', desktop: 73, mobile: 190 },
+{ month: 'May', desktop: 209, mobile: 130 },
+{ month: 'Jun', desktop: 214, mobile: 140 },
+];
+
+readonly config: ChartConfig = {
+desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+};
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<LineChart>`
+
+O wrapper estilizado. Renderiza um div `ChartContainer` envolvendo um `<LineChart>` do recharts (com `accessibilityLayer` habilitado): um cartesian grid, eixo X, e uma `<Line>` traçada por série no `config`, cada uma traçada com `var(--color-<key>)`.
+
+| Prop        | Type                                            | Default     | Descrição                                                                                                                                                                                      |
+| ----------- | ----------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `data`      | `readonly ChartDatum[]`                         | -           | Dados tabulares. Cada linha mapeia chaves string para valores numéricos ou de categoria. A coluna em `xKey` é a categoria; toda chave em `config` deve existir em cada linha como valor numérico.                   |
+| `config`    | `ChartConfig`                                   | -           | Mapeia cada chave de série para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`; `ChartContainer` a expõe como `var(--color-<key>)`. |
+| `xKey`      | `string`                                        | -           | Nome do campo de categoria em cada linha. Determina os ticks do eixo X.                                                                                                                                 |
+| `type`      | `"natural" \| "monotone" \| "linear" \| "step"` | `"natural"` | Curva de interpolação para as linhas.                                                                                                                                                               |
+| `dots`      | `boolean`                                       | `false`     | Renderiza um marcador em cada ponto de dado.                                                                                                                                                              |
+| `yAxis`     | `boolean`                                       | `true`      | Renderiza o eixo Y numérico. Defina como `false` para uma linha minimalista, sem eixo (estilo sparkline).                                                                                                       |
+| `tooltip`   | `boolean`                                       | `true`      | Mostra o tooltip de hover.                                                                                                                                                                          |
+| `className` | `string`                                        | -           | Mesclado no `ChartContainer`. Use para escapes de dimensionamento; o estilo empacotado já fornece uma superfície de card arredondada mais aspect ratio.                                                    |
+
+### Exports do primitive chart
+
+`@gremorie/rx-data` reexporta o primitive `chart` do shadcn para que você possa compor gráficos customizados. Envolva recharts cru (`Line`, `Area`, `Bar`, `CartesianGrid`, `XAxis`, `YAxis`) dentro de `ChartContainer`:
+
+| Export                                 | Papel                                                                                                  |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `ChartContainer`                       | Fornece o contexto do chart, o frame responsivo e injeta as CSS vars `--color-<key>` a partir do `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Tooltip de hover estilizado por token.                                                                           |
+| `ChartLegend` / `ChartLegendContent`   | Legenda estilizada por token.                                                                                  |
+| `useChart`                             | Hook que retorna o `ChartConfig` ativo a partir do contexto.                                                 |
+
+### Types
+
+| Type          | Shape                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart.           |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série. |
+
+## Composição
+
+1. **Escolha o `xKey`** primeiro - a categoria ordenada que corre ao longo da base.
+2. **Escreva o `config`** mapeando cada campo de valor para um label e uma cor orientada por token. Os tokens de cor (`--chart-1` até `--chart-5`) já codificam contraste legível entre temas claro e escuro.
+3. **Passe `data`** como um array de records.
+4. **Para layouts customizados** (larguras de traço diferentes, uma legenda customizada, séries mistas), componha recharts cru dentro de `<ChartContainer>` (veja [Compondo com o primitive chart](#composing-with-the-chart-primitive)).
+
+O chart se auto-dimensiona ao pai via `ResponsiveContainer` do recharts, então a superfície envolvente controla a largura. A classe padrão no `ChartContainer` fixa o chart em `aspect-video` para uma forma de card estável.
+
+## Variações
+
+### Série única
+
+<div className="rounded-lg border p-6 not-prose">
+  <LineChartSinglePreview />
+</div>
+
+```tsx
+<LineChart
+  data={data}
+  config={{ signups: { label: 'Sign-ups', color: 'var(--chart-1)' } }}
+  xKey="week"
+/>
+````
+
+```html
+<line-chart [data]="data" [config]="config" xKey="week" />
+```
+
+A forma padrão. Use uma linha única quando a história é a trajetória de uma métrica.
+
+### Comparação multi-série
+
+<div className="rounded-lg border p-6 not-prose">
+  <LineChartPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+};
+
+<LineChart data={data} config={config} xKey="month" />;
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" />
+```
+
+Para comparação de forma a forma entre coortes. Mantenha a contagem abaixo de cinco linhas antes que um [`ScatterChart`](/components/data/scatter-chart) ou um layout de small-multiples leia melhor.
+
+### Dots
+
+Defina `dots` para renderizar um marcador em cada ponto de dado. Use quando os dados são esparsos e você quer que cada leitura seja individualmente clicável / legível.
+
+```tsx
+<LineChart data={data} config={config} xKey="month" dots />
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" [dots]="true" />
+```
+
+### Tipo de curva
+
+Defina `type` para escolher a curva de interpolação - `"natural"` (padrão), `"monotone"`, `"linear"` (segmentos retos) ou `"step"` (bordas em degrau). Use `"linear"` para ler pontos de inflexão exatos; use `"step"` para mudanças de estado discretas.
+
+```tsx
+<LineChart data={data} config={config} xKey="month" type="monotone" />
+<LineChart data={data} config={config} xKey="month" type="step" />
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" type="monotone" />
+<line-chart [data]="data" [config]="config" xKey="month" type="step" />
+```
+
+### Sem eixo
+
+Defina `yAxis` como `false` para remover o eixo numérico e obter uma linha minimalista, estilo sparkline, que se apoia no tooltip para valores exatos.
+
+```tsx
+<LineChart data={data} config={config} xKey="month" yAxis={false} />
+```
+
+```html
+<line-chart [data]="data" [config]="config" xKey="month" [yAxis]="false" />
+```
+
+### Compondo com o primitive chart
+
+Quando você precisa de controle total, pule o `LineChart` e componha recharts cru dentro de `ChartContainer`. O container continua injetando suas cores de token e o estilo do tooltip.
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@gremorie/rx-data';
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+
+<ChartContainer config={config}>
+  <LineChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
+    <CartesianGrid vertical={false} />
+    <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+    <Line
+      dataKey="desktop"
+      type="natural"
+      stroke="var(--color-desktop)"
+      strokeWidth={2}
+      dot={false}
+    />
+    <Line
+      dataKey="mobile"
+      type="natural"
+      stroke="var(--color-mobile)"
+      strokeWidth={2}
+      dot={false}
+    />
+  </LineChart>
+</ChartContainer>;
+```
+
+Componha recharts cru quando você precisa de traços mais grossos, segmentos tracejados, uma linha de referência ou uma legenda customizada. `ChartContainer` é dono do frame responsivo e das vars de cor de token.
+
+## Acessibilidade
+
+- **Accessibility layer**: o `accessibilityLayer` do recharts está habilitado, fornecendo navegação por teclado e anúncios de screen reader para os pontos de dados.
+- **Contraste de token**: os tokens `--chart-1` até `--chart-5` são ajustados para contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
+- **Elemento container**: o wrapper renderiza um div `ChartContainer` com as cores das séries aplicadas como CSS variables.
+- **Sem UI de streaming**: os charts não implementam um affordance de append por streaming. Para dados ao vivo, throttle as atualizações do pai ou renderize dentro de um boundary `useDeferredValue`.
+
+## Relacionados
+
+- [AreaChart](/components/data/area-chart) - mesmos eixos, preenchido sob a curva, quando a magnitude é a história.
+- [BarChart](/components/data/bar-chart) - categorias discretas em vez de um domínio ordenado.
+- [ScatterChart](/components/data/scatter-chart) - X e Y independentes quando o eixo X é numérico.

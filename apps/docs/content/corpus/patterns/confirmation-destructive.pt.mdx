@@ -1,0 +1,130 @@
+---
+title: Confirmation for destructive actions
+description: 'Quando confirmar, quando tornar recuperável e como formular o dialog. Evite perguntar duas vezes para ações seguras.'
+related: rx-alert-dialog, rx-dialog, rx-toast, rx-button
+tags: [patterns, destructive, confirmation, undo]
+---
+
+## TL;DR
+
+Prefira **undo** a **confirm**. Confirme apenas quando a ação é irreversível, de stakes altos ou afeta outros. Quando você confirma, o dialog declara o que está acontecendo (no título), o que não pode ser desfeito (na descrição) e o verbo destrutivo no button destrutivo.
+
+## A regra
+
+1. **Default para undo, não confirm.** A maioria das ações (archive, hide, deselect, mark as read) é reversível pelo próximo clique. Substitua um dialog de confirmação por um toast que diz "Item archived" + uma ação "Undo".
+2. **Confirme quando o custo do erro supera a fricção de perguntar.** Deletar um workspace inteiro, revogar uma chave, enviar um pagamento irreversível, publicar conteúdo público - estes merecem uma confirmação. "Hide this row" não.
+3. **O título declara a ação; a descrição declara a consequência.** "Delete project?" é o título. "All data and members will lose access. This cannot be undone." é a descrição. Não enterre a consequência.
+4. **Verbo destrutivo no button destrutivo.** Não "Yes" / "OK". "Delete project", "Revoke access", "Discard changes". O usuário lê o label do button, não o texto do dialog.
+5. **Ação segura à esquerda, baixa ênfase.** A ação destrutiva fica à direita e usa a variant destructive. Isso corresponde ao instinto de escape do usuário (o button da esquerda é o seguro).
+6. **Para ações especialmente perigosas, exija digitação.** "Type DELETE to confirm" ou "Type the project name to confirm". Isso força uma pausa deliberada e previne o clique por reflexo.
+
+## Por que
+
+Confirmações modais são imposto de interrupção. Cada uma treina o usuário a dispensá-las mais rápido, então a próxima é ainda menos eficaz. Na terceira "Are you sure?", usuários clicam "Yes" sem ler. A proteção decaiu.
+
+Undo respeita o tempo e a competência do usuário: reconhece que erros acontecem e oferece uma reversão de baixa fricção. O "undo send" do Gmail dentro de 30 segundos pega mais erros do que um prompt "Are you sure?" jamais pegou.
+
+Reserve confirmações para casos em que undo é tecnicamente impossível (um registro foi deletado de um terceiro, um pagamento foi processado, um email foi enviado a 10.000 pessoas). Nesses casos, a confirmação é uma pausa deliberada, não paranoia.
+
+O #5 de Nielsen (prevenção de erro por design) prefere a arquitetura de sistema que previne o erro, não o prompt que pede ao usuário para conferir duas vezes.
+
+## Como aplicar
+
+### Faça: undo via toast para ações reversíveis
+
+```tsx
+function archiveItem(id) {
+  performArchive(id);
+  toast('Item archived', {
+    action: {
+      label: 'Undo',
+      onClick: () => restoreItem(id),
+    },
+  });
+}
+```
+
+A ação acontece imediatamente. O usuário tem ~5 segundos para desfazer. Sem dialog, sem interrupção.
+
+### Faça: dialog de confirmação para ações irreversíveis
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete project</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Delete &ldquo;Marketing site&rdquo;?</AlertDialogTitle>
+      <AlertDialogDescription>
+        All data, members, and integrations tied to this project will be
+        permanently removed. This cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Keep project</AlertDialogCancel>
+      <AlertDialogAction asChild>
+        <Button variant="destructive">Delete project</Button>
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+O título é a pergunta, em termos concretos. A descrição declara a consequência. Os buttons são verbos.
+
+### Faça: type-to-confirm para ações catastróficas
+
+```tsx
+<Field>
+  <FieldLabel>Type <strong>marketing-site</strong> to confirm</FieldLabel>
+  <Input value={input} onChange={(e) => setInput(e.target.value)} />
+</Field>
+<Button variant="destructive" disabled={input !== "marketing-site"}>
+  Delete forever
+</Button>
+```
+
+Para exclusão de conta, destruição de workspace, exports irreversíveis. A fricção é intencional.
+
+### Não faça: "Are you sure?" sem consequência
+
+```
+Are you sure you want to remove this row?
+[Cancel]  [OK]
+```
+
+O usuário não sabe a consequência e "OK" não lhe diz nada. Se a linha é recuperável, pule o dialog inteiramente; toast + undo. Se não é, use o dialog destrutivo estruturado.
+
+### Não faça: perguntar duas vezes
+
+```
+Are you sure?
+> Yes, I am sure.
+Really sure?
+> Yes.
+```
+
+O segundo prompt não adiciona segurança; adiciona irritação. Escolha uma barreira (confirm, ou type-to-confirm) e confie nela.
+
+## Mudanças não salvas
+
+Um caso específico: o usuário navega para fora com input não salvo. Dois padrões:
+
+1. **Bloqueie a navegação** com uma confirmação: "You have unsaved changes. Discard them?" A ação destrutiva é "Discard"; a ação segura é "Keep editing".
+2. **Auto-save com indicador de status.** O indicador "Saving..." / "Saved" remove a pergunta. Usado por Notion, Linear, Figma.
+
+Prefira auto-save quando viável. O dialog "discard?" é aceitável quando o auto-save é tecnicamente difícil (editores offline ricos) ou quando o usuário está em modo de rascunho.
+
+## Contra-casos
+
+- **Wizards multi-step** podem confirmar na saída porque perder o progresso de 8 etapas é mais custoso do que a mudança de um único campo. Combine com auto-save quando possível.
+- **Ações em massa** ("Delete 47 items?") merecem uma confirmação porque a magnitude do erro escala com a seleção. O número vai no título.
+- **Fim de sessões de login** ("Log out?") geralmente são seguras de desfazer (fazer login de novo) mas ainda assim são confirmadas porque a consequência não é clara para usuários menos técnicos. Aceitável; mantenha o dialog curto.
+
+## Fontes
+
+- Nielsen Norman Group: "Confirmation Dialogs Can Prevent User Errors - If Not Overused" (https://www.nngroup.com/articles/confirmation-dialog/)
+- Cooper, Reimann, Cronin, "About Face: The Essentials of Interaction Design" (4th ed., 2014): sobre undo em vez de confirm.
+- Apple Human Interface Guidelines: alerts.
+- Material Design: destructive actions.

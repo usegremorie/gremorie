@@ -1,0 +1,552 @@
+---
+title: Sidebar
+description: 'Sidebar de app-shell componível com estado persistido, colapso só de ícones, drawer mobile e uma API composta de 24 peças.'
+---
+
+import { SidebarPreview } from '@/components/preview/navigation/sidebar';
+import { SidebarFloatingPreview } from '@/components/preview/navigation/sidebar-floating';
+
+## Visão geral
+
+`Sidebar` é o primitivo de navegação pilar do registry: uma sidebar de app-shell componível com regiões de header / content / footer, estado colapsado persistido (via cookie), atalho de teclado (`Cmd` / `Ctrl` + `B`), modo de colapso só de ícones com fallbacks de tooltip, drawer mobile automático via [Sheet](/components/overlays/sheet), e 24 subcomponentes que compõem em menus de nav, badges, actions, skeletons e sub-menus.
+
+Use a Sidebar quando **a aplicação tem mais de uma tela cheia de navegação** - workspaces, seções de configuração, categorias de content. O primitivo é dono do chrome de layout (o rail, o gap, a área main inset) para que quem chama foque na estrutura do menu. Para nav de site de marketing use [NavigationMenu](/components/navigation/navigation-menu); para troca de seção dentro da página use [Tabs](/components/navigation/tabs).
+
+## Preview
+
+<ComponentPreview name="navigation/sidebar">
+  <SidebarPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+SidebarProvider                 context + CSS width vars + Cmd/Ctrl+B shortcut
+├─ Sidebar                      the panel; variant / side / collapsible
+│  ├─ SidebarHeader             top region (brand, switcher, search)
+│  │  └─ SidebarInput           sidebar-density input
+│  ├─ SidebarContent            scrollable middle region
+│  │  ├─ SidebarGroup           a labelled section block
+│  │  │  ├─ SidebarGroupLabel        small uppercase section label
+│  │  │  ├─ SidebarGroupAction       action button in the group header
+│  │  │  ├─ SidebarGroupContent      group body; hosts the menu
+│  │  │  │  └─ SidebarMenu            <ul> of nav rows
+│  │  │  │     └─ SidebarMenuItem     <li> row wrapper
+│  │  │  │        ├─ SidebarMenuButton    the clickable nav entry
+│  │  │  │        ├─ SidebarMenuAction    per-row action button
+│  │  │  │        ├─ SidebarMenuBadge     count / status slot
+│  │  │  │        ├─ SidebarMenuSkeleton  loading placeholder row
+│  │  │  │        └─ SidebarMenuSub       <ul> of sub-items
+│  │  │  │           └─ SidebarMenuSubItem    sub-row <li> wrapper
+│  │  │  │              └─ SidebarMenuSubButton  nested link row
+│  │  │  └─ SidebarSeparator         rule between regions / groups
+│  ├─ SidebarFooter             bottom region (user menu, actions)
+│  └─ SidebarRail               thin grab handle to toggle
+└─ SidebarInset                 main content area beside the sidebar
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-sidebar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-sidebar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-sidebar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-sidebar ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { HomeIcon, InboxIcon, SettingsIcon } from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@gremorie/rx-navigation";
+
+export function AppShell() {
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>Workspace</SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Home">
+                    <HomeIcon />
+                    <span>Home</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Inbox">
+                    <InboxIcon />
+                    <span>Inbox</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Settings">
+                    <SettingsIcon />
+                    <span>Settings</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <header className="flex items-center gap-2 border-b p-4">
+          <SidebarTrigger />
+          <h1 className="font-semibold">Page title</h1>
+        </header>
+        <main className="p-6">...</main>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+<Callout type="warn">
+**Envolva cada story do Storybook e cada preview das docs no seu próprio `<SidebarProvider>`.** Um provider global montado em `apps/docs` conflitaria com a sidebar do Fumadocs.
+</Callout>
+
+## API
+
+O primitivo Sidebar expõe 24 exports mais um hook `useSidebar()`. A API é organizada por papel: container de estado, frame raiz, regiões estruturais, blocos de grupo, itens de menu, sub-menus e controles auxiliares.
+
+### Container de estado
+
+#### `<SidebarProvider>`
+
+O provider de context que é dono do estado de aberto / colapsado, do estado mobile-open, do atalho de teclado e da persistência em cookie. Toda subárvore que usa Sidebar deve ser envolvida.
+
+| Prop           | Type                      | Default | Description                                                                                             |
+| -------------- | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| `defaultOpen`  | `boolean`                 | `true`  | Estado inicial de aberto quando não controlado. Lido de um cookie server-side para persistência em SSR. |
+| `open`         | `boolean`                 | -       | Estado de aberto controlado.                                                                            |
+| `onOpenChange` | `(open: boolean) => void` | -       | Dispara quando o estado de aberto muda.                                                                 |
+| `style`        | `React.CSSProperties`     | -       | Mesclado no wrapper. Use para sobrescrever `--sidebar-width` / `--sidebar-width-icon`.                  |
+| `className`    | `string`                  | -       | Classes extras para o wrapper.                                                                          |
+
+O provider grava `sidebar_state=<true|false>` num cookie de 7 dias a cada mudança, então o estado colapsado sobrevive a reloads.
+
+#### `useSidebar()`
+
+Hook que expõe o valor do context. Lança um erro se chamado fora de um `<SidebarProvider>`.
+
+```ts
+const {
+  state, // "expanded" | "collapsed"
+  open, // boolean
+  setOpen, // (open: boolean) => void
+  openMobile, // boolean
+  setOpenMobile, // (open: boolean) => void
+  isMobile, // boolean (true below md breakpoint)
+  toggleSidebar, // () => void (toggles desktop or mobile depending on viewport)
+} = useSidebar();
+```
+
+### Frame raiz
+
+#### `<Sidebar>`
+
+O shell da sidebar. Escolhe entre três caminhos de renderização automaticamente: um painel estático (`collapsible="none"`), uma sidebar desktop com o layout de rail + gap + container, ou um `<Sheet>` mobile.
+
+| Prop          | Type                                 | Default       | Description                                                                                                                                                                                         |
+| ------------- | ------------------------------------ | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `side`        | `"left" \| "right"`                  | `"left"`      | Em qual borda do viewport a sidebar acopla.                                                                                                                                                         |
+| `variant`     | `"sidebar" \| "floating" \| "inset"` | `"sidebar"`   | `"sidebar"` é rente à borda com um border. `"floating"` é um card arredondado com sombra. `"inset"` é uma sidebar rente pareada com `<SidebarInset>` para renderizar a área main dentro de um card. |
+| `collapsible` | `"offcanvas" \| "icon" \| "none"`    | `"offcanvas"` | `"offcanvas"` desliza a sidebar inteira para fora. `"icon"` colapsa para a largura só de ícones (3 rem). `"none"` desabilita o colapso e sempre renderiza aberta.                                   |
+
+#### `<SidebarTrigger>`
+
+O botão de toggle. Envolve o `<Button variant="ghost" size="icon">` de Forms com um ícone `PanelLeft` e um label "Toggle Sidebar" visualmente oculto. Encaminha `onClick` para quem chama poder encadear analytics.
+
+| Prop       | Type                                  | Default | Description                          |
+| ---------- | ------------------------------------- | ------- | ------------------------------------ |
+| `...props` | `React.ComponentProps<typeof Button>` | -       | Encaminhado para o botão subjacente. |
+
+#### `<SidebarRail>`
+
+Uma alça fina de agarrar ao longo da borda interna da sidebar. Clique para alternar. Oculta no mobile, oculta quando `collapsible="none"`, oculta no estado colapsado `offcanvas`.
+
+#### `<SidebarInset>`
+
+A área `<main>` pareada com a sidebar. Com `variant="inset"`, renderiza o main como um card arredondado com inset das bordas do viewport. Use no lugar de um `<main>` simples quando você quiser que o chrome visual combine com as variants floating / inset.
+
+### Regiões estruturais
+
+| Component            | Role                                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `<SidebarHeader>`    | Região do topo da sidebar. Renderiza `flex flex-col gap-2 p-2`. Coloque a marca, o switcher de workspace ou um input de busca aqui.  |
+| `<SidebarContent>`   | Região do meio scrollável. Renderiza `flex min-h-0 flex-1 flex-col gap-2 overflow-auto`. Hospeda um ou mais blocos `<SidebarGroup>`. |
+| `<SidebarFooter>`    | Região de baixo. Renderiza `flex flex-col gap-2 p-2`. Coloque o menu do usuário, o toggle de tema ou ações rápidas aqui.             |
+| `<SidebarSeparator>` | Um `<Separator>` estilizado com `mx-2 w-auto bg-sidebar-border` para uso entre regiões.                                              |
+| `<SidebarInput>`     | O `<Input>` de Forms estilizado para a densidade da sidebar (`h-8`, sombra transparente).                                            |
+
+### Blocos de grupo
+
+| Component               | Role                                                                                                                                                                                                |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<SidebarGroup>`        | Um bloco lógico dentro de `<SidebarContent>`. Renderiza `relative flex w-full min-w-0 flex-col p-2`.                                                                                                |
+| `<SidebarGroupLabel>`   | Um pequeno label maiúsculo no topo de um grupo. Oculto automaticamente no estado colapsado `collapsible="icon"`. Suporta `asChild`.                                                                 |
+| `<SidebarGroupAction>`  | Um botão de action posicionado absolutamente no topo-direito de um label de grupo (ex.: um "+" para adicionar um novo projeto). Oculto no estado colapsado `collapsible="icon"`. Suporta `asChild`. |
+| `<SidebarGroupContent>` | O corpo do grupo. Hospeda um `<SidebarMenu>`.                                                                                                                                                       |
+
+### Itens de menu
+
+#### `<SidebarMenu>` e `<SidebarMenuItem>`
+
+`<SidebarMenu>` é um `<ul>` de itens. `<SidebarMenuItem>` é o wrapper `<li>` que é dono do estado de hover e focus via a classe `group/menu-item`.
+
+#### `<SidebarMenuButton>`
+
+A entrada de menu clicável. Envolve um `<button>` (ou qualquer elemento via `asChild`).
+
+| Prop       | Type                            | Default     | Description                                                                                                                                                                                                 |
+| ---------- | ------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `asChild`  | `boolean`                       | `false`     | Quando `true`, delega a renderização ao único filho (use com o `Link` do framework).                                                                                                                        |
+| `isActive` | `boolean`                       | `false`     | Marca a página atual; estiliza via `data-active="true"`.                                                                                                                                                    |
+| `variant`  | `"default" \| "outline"`        | `"default"` | `"outline"` adiciona um ring de 1 px (com tint de background para ler contra fundos complexos).                                                                                                             |
+| `size`     | `"default" \| "sm" \| "lg"`     | `"default"` | `"default"` tem 32 px de altura, `"sm"` 28 px, `"lg"` 48 px (compacta, densa e linha de marca respectivamente).                                                                                             |
+| `tooltip`  | `string \| TooltipContentProps` | -           | Quando definido e a sidebar está no estado colapsado só de ícones, o botão é envolvido num `<Tooltip>` mostrando este content no hover. Obrigatório para menus só de ícones manterem os labels alcançáveis. |
+
+#### `<SidebarMenuAction>`
+
+Um botão pequeno posicionado absolutamente no topo-direito de um item de menu (ex.: um ellipsis para abrir um context menu). Oculto no estado colapsado só de ícones.
+
+| Prop          | Type      | Default | Description                                                    |
+| ------------- | --------- | ------- | -------------------------------------------------------------- |
+| `asChild`     | `boolean` | `false` | Delega a um único filho.                                       |
+| `showOnHover` | `boolean` | `false` | Quando `true`, visível apenas no hover, focus ou quando ativo. |
+
+#### `<SidebarMenuBadge>`
+
+Um badge numérico ou de status pequeno posicionado absolutamente na linha do menu. Oculto no estado colapsado só de ícones.
+
+| Prop       | Type                          | Default | Description              |
+| ---------- | ----------------------------- | ------- | ------------------------ |
+| `...props` | `React.ComponentProps<"div">` | -       | Atributos padrão de div. |
+
+#### `<SidebarMenuSkeleton>`
+
+Uma linha placeholder que combina com a altura do `<SidebarMenuButton>`. Use durante carregamentos iniciais de dados. A largura é randomizada entre 50 por cento e 90 por cento para que uma pilha de skeletons pareça natural.
+
+| Prop       | Type      | Default | Description                                                            |
+| ---------- | --------- | ------- | ---------------------------------------------------------------------- |
+| `showIcon` | `boolean` | `false` | Quando `true`, renderiza um skeleton quadrado no slot de ícone também. |
+
+### Sub-menus
+
+| Component                | Role                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------- |
+| `<SidebarMenuSub>`       | Um `<ul>` de sub-itens. Oculto no estado colapsado só de ícones.                |
+| `<SidebarMenuSubItem>`   | Um wrapper `<li>` para sub-itens.                                               |
+| `<SidebarMenuSubButton>` | Uma linha de 28 px estilizada para aninhamento; renderiza um `<a>` por default. |
+
+Props de `SidebarMenuSubButton`:
+
+| Prop       | Type           | Default | Description                                              |
+| ---------- | -------------- | ------- | -------------------------------------------------------- |
+| `asChild`  | `boolean`      | `false` | Delega a um único filho (use com o `Link` do framework). |
+| `isActive` | `boolean`      | `false` | Marca a localização atual.                               |
+| `size`     | `"sm" \| "md"` | `"md"`  | `"sm"` é texto de 12 px; `"md"` é texto de 14 px.        |
+
+## Composição
+
+Uma árvore típica de Sidebar tem esta aparência:
+
+```tsx
+<SidebarProvider>
+  <Sidebar>
+    <SidebarHeader>{/* Brand or workspace switcher */}</SidebarHeader>
+
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip="Home">
+                <HomeIcon />
+                <span>Home</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip="Inbox">
+                <InboxIcon />
+                <span>Inbox</span>
+              </SidebarMenuButton>
+              <SidebarMenuBadge>12</SidebarMenuBadge>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+
+      <SidebarSeparator />
+
+      <SidebarGroup>
+        <SidebarGroupLabel>Projects</SidebarGroupLabel>
+        <SidebarGroupAction>
+          <PlusIcon />
+        </SidebarGroupAction>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {projects.map((p) => (
+              <SidebarMenuItem key={p.id}>
+                <SidebarMenuButton tooltip={p.name}>{p.name}</SidebarMenuButton>
+                <SidebarMenuSub>
+                  {p.sections.map((s) => (
+                    <SidebarMenuSubItem key={s.id}>
+                      <SidebarMenuSubButton href={s.href}>
+                        {s.name}
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+
+    <SidebarFooter>{/* User menu, theme toggle */}</SidebarFooter>
+
+    <SidebarRail />
+  </Sidebar>
+
+  <SidebarInset>
+    <header>
+      <SidebarTrigger />
+      ...
+    </header>
+    <main>...</main>
+  </SidebarInset>
+</SidebarProvider>
+```
+
+O provider é dono do estado. O frame raiz é dono do chrome de layout. As regiões, grupos e peças de menu são a superfície de composição do consumidor.
+
+## Variações
+
+### Sidebar básica
+
+```tsx
+<SidebarProvider>
+  <Sidebar>
+    <SidebarHeader>
+      <span className="font-semibold">My App</span>
+    </SidebarHeader>
+    <SidebarContent>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton>
+            <HomeIcon />
+            <span>Home</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton>
+            <InboxIcon />
+            <span>Inbox</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarContent>
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger />
+    <main>...</main>
+  </SidebarInset>
+</SidebarProvider>
+```
+
+Use como a sidebar mínima viável: marca no header, menu de itens de topo, main inset.
+
+### Com grupos, badges e actions
+
+```tsx
+<SidebarContent>
+  <SidebarGroup>
+    <SidebarGroupLabel>Mail</SidebarGroupLabel>
+    <SidebarGroupContent>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton isActive>
+            <InboxIcon />
+            <span>Inbox</span>
+          </SidebarMenuButton>
+          <SidebarMenuBadge>12</SidebarMenuBadge>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton>
+            <ArchiveIcon />
+            <span>Archive</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarGroupContent>
+  </SidebarGroup>
+
+  <SidebarGroup>
+    <SidebarGroupLabel>Labels</SidebarGroupLabel>
+    <SidebarGroupAction aria-label="Add label">
+      <PlusIcon />
+    </SidebarGroupAction>
+    <SidebarGroupContent>
+      <SidebarMenu>
+        {labels.map((label) => (
+          <SidebarMenuItem key={label.id}>
+            <SidebarMenuButton>{label.name}</SidebarMenuButton>
+            <SidebarMenuAction showOnHover>
+              <MoreHorizontalIcon />
+            </SidebarMenuAction>
+          </SidebarMenuItem>
+        ))}
+      </SidebarMenu>
+    </SidebarGroupContent>
+  </SidebarGroup>
+</SidebarContent>
+```
+
+Use quando a sidebar carrega navegação categorizada com affordances por grupo (adicionar, contagem) e actions por linha.
+
+### Modo colapso de ícones
+
+```tsx
+<SidebarProvider>
+  <Sidebar collapsible="icon">
+    <SidebarContent>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="Home">
+            <HomeIcon />
+            <span>Home</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="Settings">
+            <SettingsIcon />
+            <span>Settings</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarContent>
+  </Sidebar>
+</SidebarProvider>
+```
+
+Use quando a sidebar deve colapsar para a largura só de ícones (3 rem) em vez de deslizar off-canvas. A prop `tooltip` em `<SidebarMenuButton>` é **obrigatória** neste modo - ela expõe o label num tooltip alinhado ao lado quando colapsado.
+
+### Variant floating
+
+<ComponentPreview name="navigation/sidebar-floating">
+  <SidebarFloatingPreview />
+</ComponentPreview>
+
+Passe `variant="floating"` para destacar o painel da borda do viewport com um border arredondado e sombra. Ela combina naturalmente com `collapsible="icon"`. As outras variants são `"sidebar"` (default, rente à borda) e `"inset"` (que empurra o `<SidebarInset>` pareado para dentro como um card arredondado).
+
+### Com sub-menus
+
+```tsx
+<SidebarMenuItem>
+  <SidebarMenuButton>
+    <FolderIcon />
+    <span>Projects</span>
+  </SidebarMenuButton>
+  <SidebarMenuSub>
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton href="/projects/alpha">Alpha</SidebarMenuSubButton>
+    </SidebarMenuSubItem>
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton href="/projects/beta" isActive>
+        Beta
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton href="/projects/gamma">Gamma</SidebarMenuSubButton>
+    </SidebarMenuSubItem>
+  </SidebarMenuSub>
+</SidebarMenuItem>
+```
+
+Use para navegação de dois níveis - uma lista de projetos com seções, um grupo de configurações com sub-páginas. Sub-menus se auto-ocultam no modo colapsado só de ícones.
+
+### Estado controlado com hidratação por cookie
+
+```tsx
+function AppShell({ defaultOpen }: { defaultOpen: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  useEffect(() => {
+    // sync to cookie / server preference if desired
+  }, [open]);
+
+  return (
+    <SidebarProvider open={open} onOpenChange={setOpen}>
+      <Sidebar>...</Sidebar>
+      <SidebarInset>...</SidebarInset>
+    </SidebarProvider>
+  );
+}
+
+// Server: read the sidebar_state cookie and pass as defaultOpen.
+```
+
+Use quando o resto do app precisa observar ou sobrescrever o estado da sidebar (analytics, layouts multi-painel).
+
+### Controles cientes de mobile
+
+```tsx
+function MyHeader() {
+  const { isMobile, toggleSidebar, state } = useSidebar();
+
+  return (
+    <header className="flex items-center gap-2">
+      <SidebarTrigger />
+      {!isMobile && <span>State: {state}</span>}
+    </header>
+  );
+}
+```
+
+Use para ramificar a UI conforme o viewport. Abaixo de `md` (768 px) `isMobile` é `true` e `toggleSidebar` abre / fecha o `<Sheet>` mobile em vez do painel desktop.
+
+## Acessibilidade
+
+- **Contrato do provider**: `useSidebar()` lança um erro quando chamado fora de `<SidebarProvider>`, expondo o requisito de wiring já na primeira renderização.
+- **Rotulagem do trigger**: `<SidebarTrigger>` carrega um label "Toggle Sidebar" visualmente oculto. O rail (`<SidebarRail>`) carrega `aria-label="Toggle Sidebar"` e `title="Toggle Sidebar"`; ele é removido da ordem de tab (`tabIndex={-1}`) porque o botão trigger é o ponto de entrada descobrível por teclado.
+- **Atalho de teclado**: `Cmd` + `B` (Mac) ou `Ctrl` + `B` (Windows / Linux) alterna a sidebar globalmente. O atalho é adicionado ao `window` enquanto um provider está montado e removido no unmount. Documente o atalho na superfície de ajuda do seu app.
+- **Drawer mobile**: abaixo de 768 px a sidebar renderiza dentro de um `<Sheet>` com um `<SheetTitle>Sidebar</SheetTitle>` e `<SheetDescription>` (ambos `sr-only`) para que usuários de leitor de tela recebam um anúncio de dialog adequado.
+- **Tooltips no modo só de ícones**: quando `collapsible="icon"` está colapsado, `<SidebarMenuButton>` envolve seu content num `<Tooltip>` alinhado ao lado oposto (`side="right"` para uma sidebar acoplada à esquerda). Forneça `tooltip="..."` em cada botão de menu no modo de ícones - do contrário os usuários veem ícones sem labels.
+- **Estado ativo**: `isActive` em `<SidebarMenuButton>` e `<SidebarMenuSubButton>` define `data-active="true"` para estilização; combine com `aria-current="page"` (via o elemento de link host quando usando `asChild`).
+- **Persistência em cookie**: o cookie `sidebar_state` tem `path=/` e `max-age=7 days`. O cookie não é sensível para segurança, mas documente-o na sua divulgação de privacidade se você lista cookies.
+
+## Relacionados
+
+- [Sheet](/components/overlays/sheet) - o primitivo de dialog sobre o qual a Sidebar é montada no mobile.
+- [NavigationMenu](/components/navigation/navigation-menu) - nav primária de site de marketing.
+- [Tabs](/components/navigation/tabs) - troca de seção dentro da página, não navegação de app-shell.
+- [Tooltip](/components/overlays/tooltip) - expõe labels no modo colapsado só de ícones.

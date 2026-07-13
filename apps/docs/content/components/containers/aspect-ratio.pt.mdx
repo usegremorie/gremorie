@@ -1,0 +1,165 @@
+---
+title: Aspect Ratio
+description: 'Reserve espaço vertical responsivo para que a mídia nunca cause layout shift.'
+---
+
+import { AspectRatioPreview } from '@/components/preview/containers/aspect-ratio';
+import { AspectRatio } from '@gremorie/rx-containers';
+
+## Visão geral
+
+`AspectRatio` é um primitive de layout de uma prop que trava uma box em uma proporção numérica em qualquer largura de viewport. Coloque-o ao redor de qualquer imagem, iframe, embed de vídeo ou skeleton e o layout ao redor reserva o slot certo antes do asset pintar, eliminando os hits de Cumulative Layout Shift.
+
+Recorra ao AspectRatio sempre que a **altura de um filho for derivada de sua largura**: covers de hero, thumbnails de card, vídeo estilo oEmbed, iframes de mapa, previews de imagem OG. Para mídia de pixel fixo ou skeletons de curta duração onde você já conhece ambas as dimensões, CSS puro basta.
+
+## Preview
+
+<ComponentPreview name="containers/aspect-ratio">
+  <AspectRatioPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+AspectRatio   box cuja altura é derivada de sua largura e da prop `ratio`; seu filho a preenche (`h-full w-full object-cover`)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-aspect-ratio ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-aspect-ratio ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-aspect-ratio ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-aspect-ratio ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { AspectRatio } from "@gremorie/rx-containers";
+
+export function Cover() {
+  return (
+    <AspectRatio ratio={16 / 9} className="bg-muted">
+      <img
+        src="/cover.jpg"
+        alt="Cover artwork"
+        className="size-full rounded-md object-cover"
+      />
+    </AspectRatio>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<AspectRatio>`
+
+Renderiza um `<div>` estilizado pelo Radix para manter `width / height = ratio` em qualquer breakpoint. O elemento filho deve se dimensionar com `size-full` (ou `width: 100%; height: 100%`) para preencher a box reservada.
+
+| Prop       | Type                          | Default | Description                                                                                                                                                                |
+| ---------- | ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ratio`    | `number`                      | `1`     | Aspect ratio expresso como largura dividida por altura. Use `16 / 9` para vídeo landscape, `4 / 3` para vídeo legado, `1` para quadrado, `3 / 4` para posters em portrait. |
+| `asChild`  | `boolean`                     | `false` | Quando `true`, mescla as props no único elemento filho via Radix `Slot` em vez de renderizar um `div` extra.                                                               |
+| `...props` | `React.ComponentProps<"div">` | -       | Atributos padrão de div incluindo `className` e `style`.                                                                                                                   |
+
+## Composição
+
+1. **`<AspectRatio>`** envolve um único filho e reserva a proporção.
+2. **O filho** (imagem, iframe, vídeo, skeleton) deve preencher a box reservada: `className="size-full object-cover"` no `<img>`, `className="size-full"` em iframes e vídeos.
+3. **Dentro de um Card**, coloque o AspectRatio no topo do `<CardContent>` para que o cover fique rente à borda do card.
+
+O wrapper resolve a matemática via padding-bottom mais posicionamento absoluto. Os filhos renderizam dentro de um contexto empilhado, então overlays absolutos (badges, gradientes) compõem naturalmente sem wrappers extras.
+
+## Variações
+
+### Cover de vídeo com object-fit
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-sm">
+    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-md bg-muted">
+      <div className="flex size-full items-center justify-center text-sm text-muted-foreground">
+        16 : 9 video slot
+      </div>
+    </AspectRatio>
+  </div>
+</div>
+
+```tsx
+<AspectRatio ratio={16 / 9} className="overflow-hidden rounded-md bg-muted">
+  <img
+    src="/poster.jpg"
+    alt="Episode 12 poster"
+    className="size-full object-cover"
+  />
+</AspectRatio>
+```
+
+Use `object-cover` no `<img>` para recortar as bordas que excedem a proporção reservada. Use `object-contain` quando a imagem precisar ser visível por completo, mesmo que deixe espaço em branco dentro da box.
+
+### Tile de avatar quadrado
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-[120px]">
+    <AspectRatio ratio={1} className="rounded-full bg-muted">
+      <div className="flex size-full items-center justify-center text-xs font-medium text-muted-foreground">
+        1 : 1
+      </div>
+    </AspectRatio>
+  </div>
+</div>
+
+```tsx
+<AspectRatio ratio={1} className="rounded-full bg-muted">
+  <img src="/avatar.jpg" alt="Mila Tasic" className="size-full object-cover" />
+</AspectRatio>
+```
+
+Use `ratio={1}` mais `rounded-full` para tiles de avatar que escalam fluidamente dentro de células de grid.
+
+### Placeholder de skeleton
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="max-w-md">
+    <AspectRatio
+      ratio={16 / 9}
+      className="animate-pulse rounded-md bg-accent"
+    />
+  </div>
+</div>
+
+```tsx
+<AspectRatio ratio={16 / 9} className="rounded-md">
+  <Skeleton className="size-full" />
+</AspectRatio>
+```
+
+Use o mesmo `ratio` no skeleton de carregamento e no asset final para que haja zero layout shift quando o asset pintar. Veja [Skeleton](/components/feedback/skeleton).
+
+## Acessibilidade
+
+- **Apenas apresentação**: `AspectRatio` é um primitive de layout e não renderiza nenhum role próprio. Qualquer semântica pertence ao filho (`<img>`, `<iframe>`, `<video>`).
+- **Sempre rotule a mídia**: passe um `alt` real para imagens, um `title` para iframes e `aria-label` para vídeos. `alt=""` vazio só é aceitável para covers decorativos que acompanham texto adjacente.
+- **Sem superfície de teclado**: o wrapper não é focável. Filhos focáveis (links, controles de vídeo) mantêm sua ordem de tabulação nativa.
+- **Nenhum movimento injetado**: o primitive não adiciona nenhuma animação, então usuários com `prefers-reduced-motion` veem o que quer que o filho renderize.
+
+## Relacionados
+
+- [Card](/components/display/card) - o host mais comum para um cover em AspectRatio.
+- [Skeleton](/components/feedback/skeleton) - combine com AspectRatio para reservar espaço durante o fetch.
+- [ScrollArea](/components/containers/scroll-area) - primitive irmão para faixas de mídia com scroll horizontal.

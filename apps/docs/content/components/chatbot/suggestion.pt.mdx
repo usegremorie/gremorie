@@ -1,0 +1,178 @@
+---
+title: Suggestion
+description: Linha rolável horizontal de pills de sugestão de prompt - o padrão canônico de "quick replies" para chat.
+---
+
+import { SuggestionPreview } from '@/components/preview/ai/suggestion';
+
+## Visão geral
+
+`Suggestion` é o botão pill que os usuários tocam para enviar um prompt pré-escrito sem digitar. `Suggestions` é a linha rolável horizontalmente que os hospeda. Juntos, formam o padrão "quick replies" padrão usado depois que o assistant propõe opções ou no início de uma thread vazia.
+
+Use-os no estado vazio de `Conversation`, depois de uma pergunta de esclarecimento do assistant, ou como uma toolbar persistente de prompts comuns.
+
+## Preview
+
+<ComponentPreview name="ai/suggestion">
+  <SuggestionPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Suggestions       container da linha
+└─ Suggestion     chip clicável (um por sugestão)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-suggestion ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-suggestion ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-suggestion ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-suggestion ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Suggestions, Suggestion } from "@gremorie/rx-ai";
+
+export function Example({ onPick }) {
+  return (
+    <Suggestions>
+      <Suggestion suggestion="Summarize this PDF" onClick={onPick} />
+      <Suggestion suggestion="What changed last week?" onClick={onPick} />
+      <Suggestion suggestion="Draft a reply to this email" onClick={onPick} />
+    </Suggestions>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import { Suggestion, Suggestions } from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Suggestions, Suggestion],
+template: `     <suggestions>
+      @for (s of items; track s) {
+        <suggestion [value]="s" (selected)="onSelect($event)">{{ s }}</suggestion>
+      }
+    </suggestions>
+  `,
+})
+export class ExampleComponent {
+readonly items = ["Tell me a joke", "Summarize this", "Translate to French"];
+
+onSelect(value: string): void {
+console.log("picked", value);
+}
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<Suggestions>`
+
+Linha rolável horizontalmente construída sobre `ScrollArea`. Os children ficam em uma única linha e o overflow rola horizontalmente; a scrollbar é oculta por padrão.
+
+Estende `ComponentProps<typeof ScrollArea>`.
+
+### `<Suggestion>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `suggestion` | `string` | - | Obrigatório. O prompt pré-escrito enviado para `onClick` quando o pill é tocado. |
+| `onClick` | `(suggestion: string) => void` | - | Handler de clique. Recebe `suggestion` (não o evento React). |
+| `variant` | `ButtonVariant` | `"outline"` | Encaminhado para o `Button` subjacente. |
+| `size` | `ButtonSize` | `"sm"` | Encaminhado para o `Button` subjacente. |
+| `children` | `ReactNode` | - | Opcional. Sobrescreve o label visível (`suggestion` continua sendo o que é enviado no clique). |
+
+Estende `ComponentProps<typeof Button>` (menos `onClick`).
+
+## Composição
+
+1. **`<Suggestions>`** é a linha que rola horizontalmente.
+2. **`<Suggestion>`** é um pill arredondado - o prompt pré-escrito.
+
+## Variações
+
+### Linha de quick replies
+
+O padrão canônico: uma faixa horizontal de prompts acima do prompt input.
+
+```tsx
+<Suggestions>
+  {suggestions.map((s) => (
+    <Suggestion key={s} suggestion={s} onClick={sendPrompt} />
+  ))}
+</Suggestions>
+````
+
+### Hero de estado vazio
+
+Coloque suggestions dentro de `ConversationEmptyState` para convidar ao primeiro prompt.
+
+```tsx
+<ConversationEmptyState title="Ask anything" description="Or try one of these:">
+  <Suggestions>
+    <Suggestion suggestion="What's on my calendar today?" onClick={send} />
+    <Suggestion suggestion="Summarize yesterday's standup" onClick={send} />
+    <Suggestion suggestion="Draft a project update" onClick={send} />
+  </Suggestions>
+</ConversationEmptyState>
+```
+
+### Label customizado vs prompt enviado
+
+Mostre um label curto visualmente, mas envie um prompt mais longo e totalmente especificado no clique.
+
+```tsx
+<Suggestion
+  suggestion="Summarize the last 10 PRs merged into main with focus on bug fixes."
+  onClick={send}
+>
+  Summarize PRs
+</Suggestion>
+```
+
+### Desabilitado durante o streaming
+
+Desabilite a linha enquanto o assistant ainda está respondendo.
+
+```tsx
+<Suggestions>
+  {suggestions.map((s) => (
+    <Suggestion
+      key={s}
+      suggestion={s}
+      onClick={send}
+      disabled={status === 'streaming'}
+    />
+  ))}
+</Suggestions>
+```
+
+## Acessibilidade
+
+- **Teclado**: cada `Suggestion` é um `Button` de verdade, focável e ativado por Enter / Space.
+- **ARIA**: quando `children` sobrescreve o label visível, garanta que o texto visível ainda seja descritivo (ou forneça `aria-label` se o pill for apenas ícone).
+- **Leitores de tela**: a linha é rolável mas é lida na ordem do documento, então leitores de tela percorrem cada opção.
+- **Gestão de foco**: a scrollbar horizontal oculta não rouba o foco; usuários de teclado podem dar Tab pelos pills naturalmente.
+
+## Relacionados
+
+- [Conversation](/components/chatbot/conversation) - pai típico da linha de suggestions no estado vazio
+- [PromptInput](/components/chatbot/prompt-input) - o input abaixo das suggestions
+- [Message](/components/chatbot/message) - turnos do assistant que frequentemente terminam com uma pergunta de esclarecimento + linha de suggestions

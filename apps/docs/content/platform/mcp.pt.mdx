@@ -1,0 +1,124 @@
+---
+title: Servidor MCP
+description: 'O diferencial AI-native: tools que permitem que LLMs consultem o registry e o corpus ao gerar UI.'
+---
+
+O servidor MCP do Gremorie expõe o registry e o corpus para modelos de
+linguagem via o [Model Context Protocol](https://modelcontextprotocol.io).
+Claude, Cursor, Codex e qualquer outro cliente compatível com MCP podem chamar suas
+tools para listar componentes, buscar a fonte e ler o corpus sob demanda.
+
+<Callout type="info">
+  Este é o diferencial do Gremorie. Um design system tradicional documenta a si
+  mesmo para humanos; o Gremorie documenta a si mesmo tanto para humanos quanto
+  para LLMs, estruturalmente, através do registry e da camada MCP.
+</Callout>
+
+## Endpoint
+
+O servidor roda em `https://www.gremorie.com/api/mcp`. Ele fala o
+transporte MCP padrão (`POST` para chamadas de tool, `SSE` para streams).
+
+## Tools
+
+| Tool                         | Propósito                                                 |
+| ---------------------------- | --------------------------------------------------------- |
+| `list_components(category?)` | Enumera primitives, opcionalmente filtrados por categoria |
+| `search_components(query)`   | Busca por substring + fuzzy pelo registry                 |
+| `get_component(name)`        | Fonte completa mais doc de uso de um primitive            |
+| `get_block(name)`            | Uma composição com wiring (ex.: `assistant`)              |
+| `get_guidelines(topic?)`     | Lê artigos do corpus (heurísticas, patterns, UX writing)  |
+
+O schema completo é servido pelo próprio servidor MCP; qualquer cliente que
+introspecte `tools/list` obtém a definição canônica.
+
+## Configurando um cliente
+
+<Tabs items={["Claude Code", "Claude Desktop", "Cursor", "Codex"]}>
+
+```bash tab="Claude Code"
+claude mcp add --transport http gremorie https://www.gremorie.com/api/mcp
+```
+
+```json tab="Claude Desktop"
+// claude_desktop_config.json - Claude Desktop connects to remote servers
+// through the mcp-remote bridge. Alternatively, add the server without
+// editing files: Settings -> Connectors -> Add custom connector, with the
+// URL https://www.gremorie.com/api/mcp
+{
+  "mcpServers": {
+    "gremorie": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://www.gremorie.com/api/mcp"]
+    }
+  }
+}
+```
+
+```json tab="Cursor"
+{
+  "mcpServers": {
+    "gremorie": {
+      "url": "https://www.gremorie.com/api/mcp"
+    }
+  }
+}
+```
+
+```toml tab="Codex"
+# ~/.codex/config.toml
+[mcp_servers.gremorie]
+command = "npx"
+args = ["-y", "mcp-remote", "https://www.gremorie.com/api/mcp"]
+```
+
+</Tabs>
+
+Depois de reiniciar o cliente, as tools do Gremorie aparecem no inventário de
+tools do modelo e podem ser invocadas por requisições em linguagem natural como
+"add a chat surface to my React project".
+
+## Como um LLM usa isso
+
+Um fluxo típico:
+
+<Steps>
+
+<Step>O usuário pede: "Build me a chat surface with streaming."</Step>
+
+<Step>
+  O modelo chama `search_components("chat")` e recebe de volta
+  `rx-prompt-input`, `rx-conversation`, `rx-message`.
+</Step>
+
+<Step>
+  O modelo chama `get_component("rx-prompt-input")` e lê a fonte, as props e as
+  notas de acessibilidade do item do registry.
+</Step>
+
+<Step>
+  O modelo chama `get_guidelines("loading-empty-error")` do corpus e aprende o
+  pattern de loading-state do Gremorie.
+</Step>
+
+<Step>
+  O modelo escreve código que usa as APIs reais dos componentes e os patterns
+  certos -- sem alucinação, sem nomes de prop desatualizados.
+</Step>
+
+</Steps>
+
+## Por que importa
+
+LLMs treinados em código público genérico emitem código de componente
+plausível mas errado: nomes de prop de versões antigas, shapes de edição incompatíveis,
+wiring de acessibilidade faltando. A camada MCP fecha essa lacuna entregando
+ao modelo a fonte **atual** e as guidelines **canônicas** sob
+demanda.
+
+## Fonte
+
+A rota vive em
+[`apps/docs/app/api/[transport]/route.ts`](https://github.com/usegremorie/gremorie/tree/develop/apps/docs/app/api).
+Ela lê o registry como um módulo de servidor e serve requisições MCP pelo
+mesmo domínio do site de docs -- sem deployment separado.

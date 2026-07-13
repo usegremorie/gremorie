@@ -1,0 +1,107 @@
+---
+title: Nielsen's 10 Usability Heuristics
+description: 'Os dez princípios gerais para design de interação. Aplique como checklist ao revisar fluxos.'
+related: rx-button, rx-dialog, rx-form, rx-toast, rx-progress, rx-skeleton
+tags: [heuristics, usability, review, principles]
+---
+
+## TL;DR
+
+Dez heurísticas, formuladas por Jakob Nielsen em 1994 e refinadas desde então. São critérios de revisão, não leis: quando algo parece errado em uma interface, confira contra estas e você geralmente encontra a violação. Use-as em design reviews e ao explicar tradeoffs.
+
+## A regra
+
+Aplique cada heurística como uma pergunta durante a revisão.
+
+### 1. Visibilidade do status do sistema
+
+O sistema conta ao usuário o que está acontecendo por meio de feedback apropriado dentro de um tempo razoável.
+
+**Confira:** Há um indicador de loading? O form reconhece a submissão? Uma ação destrutiva confirma antes e depois? A URL reflete o estado atual para que um refresh o restaure?
+
+### 2. Correspondência entre o sistema e o mundo real
+
+Fale a linguagem do usuário. Palavras, frases, conceitos familiares ao usuário; não termos orientados ao sistema.
+
+**Confira:** "Member" é chamado de "Member" em todo lugar, ou é "User" num lugar e "Account" em outro? As datas estão no locale do usuário? Erros técnicos são traduzidos ("Network connection lost", não "ETIMEDOUT")?
+
+### 3. Controle e liberdade do usuário
+
+Usuários frequentemente escolhem funções por engano. Ofereça uma "saída de emergência" claramente marcada para deixar o estado indesejado.
+
+**Confira:** O usuário consegue desfazer? Cancelar? Fechar um dialog com Escape ou um botão de fechar visível? Voltar?
+
+### 4. Consistência e padrões
+
+Usuários não deveriam ter que se perguntar se palavras, situações ou ações diferentes significam a mesma coisa. Siga convenções de plataforma e do setor.
+
+**Confira:** As ações primárias estão sempre posicionadas da mesma forma (à direita nos footers, à direita nos forms)? Coisas parecidas usam o mesmo component (modal para decisões, sheet para fluxos)? Os ícones são usados de forma consistente (lixeira para delete, nunca para archive)?
+
+### 5. Prevenção de erro
+
+Melhor do que boas mensagens de erro é um design cuidadoso que previne os problemas de ocorrerem.
+
+**Confira:** Ações destrutivas são confirmadas? Campos dependentes são validados juntos (para que o usuário não confirme um intervalo de datas que termina antes de começar)? Defaults perigosos são evitados?
+
+### 6. Reconhecimento em vez de memória
+
+Minimize a carga de memória do usuário tornando objetos, ações e opções visíveis.
+
+**Confira:** Itens usados recentemente são revelados? O filtro atual está visível (chips, linha de resumo) para que o usuário não precise lembrá-lo? Os labels dos campos estão visíveis (não apenas placeholders)?
+
+### 7. Flexibilidade e eficiência de uso
+
+Aceleradores podem acelerar a interação para o usuário experiente. Permita que usuários personalizem ações frequentes.
+
+**Confira:** Há atalhos de teclado para as ações mais comuns? O usuário consegue salvar uma view, um filtro ou um conjunto de preferências? O sistema sai do caminho para power users enquanto permanece descobrível para os novos?
+
+### 8. Design estético e minimalista
+
+Diálogos não deveriam conter informação irrelevante ou raramente necessária. Cada unidade extra de informação compete com a relevante.
+
+**Confira:** Há texto explicativo que ninguém lê? Há métricas no dashboard que ninguém usa? Três seções poderiam ser uma?
+
+### 9. Ajude os usuários a reconhecer, diagnosticar e se recuperar de erros
+
+Mensagens de erro deveriam ser expressas em linguagem simples, indicar o problema com precisão e sugerir uma solução de forma construtiva.
+
+**Confira:** A mensagem de erro nomeia o campo? Declara o que está errado? Sugere uma correção? Está perto de onde o problema está (não no topo, longe do campo)?
+
+### 10. Ajuda e documentação
+
+Mesmo que seja melhor se o sistema puder ser usado sem documentação, pode ser necessário fornecer ajuda e documentação. Tal informação deve ser fácil de buscar, focada na tarefa do usuário e concisa.
+
+**Confira:** A ajuda está no contexto onde é necessária (um tooltip `(?)` ao lado de um campo confuso), ou apenas em uma central de ajuda separada? Exemplos são mostrados ("e.g. 2024-12-31") em inputs de data?
+
+## Por que
+
+As heurísticas descrevem como humanos interagem com sistemas, não preferências estéticas prescritivas. Elas preveem onde os usuários vão falhar antes de o teste descobrir. Nielsen e Molich as derivaram de uma meta-análise de estudos de usabilidade em 1990; mais de trinta anos de testes de acompanhamento não invalidaram nenhuma das dez.
+
+Em design review, as heurísticas dão um vocabulário: "isto viola o #5 - a ação destrutiva está a um clique de distância sem confirmação" é mais acionável do que "me sinto desconfortável com esse botão de delete".
+
+## Como aplicar
+
+### Faça: use como checklist de revisão
+
+Ao revisar um novo fluxo, percorra cada heurística. Pergunte "onde está o status do sistema?" antes de assumir que há um. "Qual é a saída de emergência?" A maioria das violações é encontrada perguntando, não inspecionando.
+
+### Faça: combine com a revisão de affordances
+
+Combine heurísticas com um inventário de controles. Para cada elemento interativo na tela, confira contra o #4 (consistente), o #6 (reconhecível) e o #9 (caminho de erro claro).
+
+### Não faça: tratá-las como regras a aplicar cegamente
+
+A regra #8 (minimalista) às vezes conflita com a regra #6 (reconhecimento). Um dashboard pode precisar de chips de métrica extras para satisfazer o #6 mesmo que pudessem ser escondidos pelo #8. As heurísticas são prompts de revisão; tradeoffs são conscientes.
+
+## Contra-casos
+
+- **Ferramentas profissionais especializadas** (CAD, terminal, IDE) deliberadamente violam o #6 (reconhecimento em vez de memória) porque seus usuários investiram na memória como vantagem de velocidade. Atalhos de teclado no vim são irreconhecíveis; esse é o ponto.
+- **Páginas de marketing** às vezes violam o #1 (visibilidade do status) por efeitos estéticos de loading. Aceitável onde os stakes são baixos (a página é informativa), inaceitável em uma UI de produto.
+- **Fluxos de onboarding** frequentemente violam o #3 (controle do usuário) ao guiar o usuário por um caminho forçado. Aceitável desde que um "skip" exista e o usuário possa voltar.
+
+## Fontes
+
+- Nielsen, J. (1994). "Enhancing the explanatory power of usability heuristics." Proceedings of CHI'94.
+- Nielsen Norman Group: "10 Usability Heuristics for User Interface Design" (https://www.nngroup.com/articles/ten-usability-heuristics/)
+- Molich & Nielsen (1990). "Improving a human-computer dialogue."
+- Norman, "The Design of Everyday Things" (2013): sobre signifiers e feedback.

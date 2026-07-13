@@ -1,0 +1,284 @@
+---
+title: Radar Chart
+description: 'Compare séries entre múltiplos eixos que compartilham um único domínio radial.'
+---
+
+import { RadarChartPreview } from '@/components/preview/data/radar-chart';
+
+## Visão geral
+
+`RadarChart` é o wrapper estilizado sobre o `RadarChart` do recharts, composto sobre o primitive `chart` do shadcn (`ChartContainer`). Cada linha de dados (`xKey`) se torna um raio no grid polar; cada entrada em `config` se torna um polígono fechado que compartilha um único máximo radial. Use quando você tem **três a sete dimensões** que devem ser avaliadas juntas - perfis de habilidade, scores de satisfação, análise de gap de capacidade.
+
+Use RadarChart quando nenhuma dimensão única é o destaque e a **forma do polígono** carrega significado por todo o conjunto. Para comparar uma dimensão ordenada, [`LineChart`](/components/data/line-chart) lê mais rápido. Para ranquear categorias em uma única métrica, [`BarChart`](/components/data/bar-chart) é mais legível.
+
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+
+## Anatomia
+
+```
+<radar-chart>
+└─ figure (role="img")                  card surface, aspect-square
+   ├─ svg
+   │  ├─ polar grid (gridType: polygon | circle)
+   │  ├─ angle axis (spokes from xKey)
+   │  └─ radar polygons, one per config key
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
+A edição React compõe esta superfície através do primitive `chart` do shadcn:
+
+```text
+RadarChart
+└─ ChartContainer            responsive square frame + injects --color-<key>
+   └─ RadarChart (recharts)  polar plot area over the angular axis (xKey)
+      ├─ ChartTooltip        hover card (ChartTooltipContent)
+      ├─ PolarAngleAxis      spoke labels (xKey)
+      ├─ PolarGrid           polygon or circular grid (gridType)
+      └─ Radar               one polygon per series
+```
+
+## Preview
+
+<ComponentPreview name="data/radar-chart">
+  <RadarChartPreview />
+</ComponentPreview>
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-radar-chart ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-radar-chart ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-radar-chart ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-radar-chart ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { RadarChart } from "@gremorie/rx-data";
+import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
+
+const data: ChartDatum[] = [
+{ skill: "Speed", a: 90, b: 60 },
+{ skill: "Power", a: 70, b: 80 },
+{ skill: "Stamina", a: 85, b: 70 },
+{ skill: "Agility", a: 75, b: 90 },
+{ skill: "Skill", a: 95, b: 65 },
+];
+
+const config: ChartConfig = {
+a: { label: "Player A", color: "var(--chart-1)" },
+b: { label: "Player B", color: "var(--chart-2)" },
+};
+
+export function PlayerComparison() {
+  return <RadarChart data={data} config={config} xKey="skill" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from '@angular/core';
+import { RadarChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+selector: 'app-player-comparison',
+imports: [RadarChart],
+template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
+})
+export class PlayerComparisonComponent {
+readonly data: ChartDatum[] = [
+{ skill: 'Speed', a: 90, b: 60 },
+{ skill: 'Power', a: 70, b: 80 },
+{ skill: 'Stamina', a: 85, b: 70 },
+{ skill: 'Agility', a: 75, b: 90 },
+{ skill: 'Skill', a: 95, b: 65 },
+];
+
+readonly config: ChartConfig = {
+a: { label: 'Player A', color: 'var(--chart-1)' },
+b: { label: 'Player B', color: 'var(--chart-2)' },
+};
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<RadarChart>`
+
+O wrapper estilizado sobre o `RadarChart` do recharts, composto sobre `ChartContainer`. Renderiza o frame responsivo, um `PolarGrid`, o `PolarAngleAxis` (labels dos raios), um tooltip opcional e um `<Radar>` por chave de `config` colorido com `var(--color-<key>)`.
+
+| Prop        | Type                    | Default     | Descrição                                                                                                                                                                                                       |
+| ----------- | ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `ChartDatum[]`          | -           | Dados tabulares. Uma linha por raio. Cada linha carrega o label do raio em `xKey` mais um valor numérico por chave de `config`.                                                                                              |
+| `config`    | `ChartConfig`           | -           | Mapeia cada chave de série para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`. `ChartContainer` injeta cada uma como uma CSS variable `var(--color-<key>)`. |
+| `xKey`      | `string`                | -           | Nome do campo do raio (ângulo) em cada linha. Determina os labels do `PolarAngleAxis` ao redor do perímetro.                                                                                                             |
+| `gridType`  | `"polygon" \| "circle"` | `"polygon"` | Forma dos anéis do `PolarGrid` - polígono de bordas retas (padrão) ou círculos concêntricos.                                                                                                                          |
+| `tooltip`   | `boolean`               | `true`      | Alterna o tooltip de hover.                                                                                                                                                                                        |
+| `className` | `string`                | -           | Mesclado no `ChartContainer`. O estilo empacotado centraliza o gráfico com um aspect quadrado.                                                                                                                       |
+
+### Compondo com o primitive chart
+
+Para controle total, componha recharts diretamente dentro de `ChartContainer` usando os primitives exportados. Isso espelha o [bloco de radar oficial do shadcn](https://ui.shadcn.com/charts/radar).
+
+| Export                | Papel                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| `ChartContainer`      | Frame responsivo; injeta as vars `--color-<key>` por série a partir do `config`. |
+| `ChartTooltip`        | Reexport do `Tooltip` do recharts; combine com `ChartTooltipContent`.           |
+| `ChartTooltipContent` | Corpo de tooltip estilizado.                                                     |
+| `ChartLegend`         | Reexport do `Legend` do recharts; combine com `ChartLegendContent`.             |
+| `ChartLegendContent`  | Corpo de legenda estilizado.                                                      |
+| `useChart`            | Hook para ler o `config` ativo dentro de um child customizado.                  |
+
+### Types
+
+| Type          | Shape                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart.           |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série. |
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from '@gremorie/rx-data';
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
+
+const config = {
+  a: { label: 'Player A', color: 'var(--chart-1)' },
+  b: { label: 'Player B', color: 'var(--chart-2)' },
+} satisfies ChartConfig;
+
+export function Example({ data }: { data: ChartDatum[] }) {
+  return (
+    <ChartContainer
+      config={config}
+      className="mx-auto aspect-square max-h-[250px]"
+    >
+      <RadarChart accessibilityLayer data={data}>
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <PolarAngleAxis dataKey="skill" />
+        <PolarGrid gridType="polygon" />
+        <Radar
+          dataKey="a"
+          fill="var(--color-a)"
+          fillOpacity={0}
+          stroke="var(--color-a)"
+          strokeWidth={2}
+        />
+        <Radar
+          dataKey="b"
+          fill="var(--color-b)"
+          fillOpacity={0}
+          stroke="var(--color-b)"
+          strokeWidth={2}
+        />
+      </RadarChart>
+    </ChartContainer>
+  );
+}
+````
+
+Desça a este nível para traços tracejados, preenchimentos de gradiente, dots marcadores nas interseções dos raios ou uma legenda customizada via `ChartLegend` + `ChartLegendContent`.
+
+## Composição
+
+1. **Escolha o `xKey`** - o campo de label do raio. Três a sete raios é o ponto ideal; menos e você obtém um triângulo que esconde a forma, mais e os eixos se aglomeram.
+2. **Escreva o `config`** com no máximo três séries. Os polígonos permanecem legíveis quando traçados; quatro ou mais ficam difíceis de ler.
+3. **Ordene os raios consistentemente** entre gráficos na mesma superfície para que os usuários possam comparar formas por memória muscular.
+4. **Escolha o `gridType`** - `polygon` (padrão) segue a geometria dos raios; `circle` lê como um alvo/dartboard quando o alinhamento exato dos raios importa menos.
+
+O chart se auto-dimensiona ao pai através do frame responsivo do `ChartContainer`, com um aspect quadrado para que os polígonos permaneçam simétricos.
+
+## Variações
+
+### Comparação multi-série
+
+<ComponentPreview name="data/radar-chart">
+  <RadarChartPreview />
+</ComponentPreview>
+
+```tsx
+const config: ChartConfig = {
+  a: { label: 'Player A', color: 'var(--chart-1)' },
+  b: { label: 'Player B', color: 'var(--chart-2)' },
+};
+
+<RadarChart data={data} config={config} xKey="skill" />;
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" />
+```
+
+A forma mais comum. Duas séries traçadas deixam o usuário comparar as pegadas dos polígonos num relance. Mantenha a contagem em duas ou três antes que os polígonos sobrepostos derrotem a comparação.
+
+### Perfil de série única
+
+```tsx
+<RadarChart
+  data={data}
+  config={{ score: { label: 'Score', color: 'var(--chart-1)' } }}
+  xKey="dimension"
+/>
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="dimension" />
+```
+
+Para perfis de sujeito único - um jogador, um produto, um time. Um único polígono preenchido lê limpo mesmo com cinco ou seis raios.
+
+### Grid de polígono
+
+O `gridType` padrão. Anéis de polígono de bordas retas seguem os raios, enfatizando a geometria por raio.
+
+```tsx
+<RadarChart data={data} config={config} xKey="skill" gridType="polygon" />
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" gridType="polygon" />
+```
+
+### Grid de círculo
+
+Defina `gridType` como `"circle"` para círculos concêntricos que leem como um alvo ou dartboard, mantendo os anéis como uma escala radial neutra quando o alinhamento exato dos raios importa menos.
+
+```tsx
+<RadarChart data={data} config={config} xKey="skill" gridType="circle" />
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" gridType="circle" />
+```
+
+## Acessibilidade
+
+- o `accessibilityLayer` do recharts adiciona navegação por teclado e anúncios de screen reader para as séries plotadas.
+- os tokens `--chart-1` até `--chart-5` vêm com contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
+- **Labels dos raios**: cada tick do `PolarAngleAxis` é renderizado como `<text>` SVG ao redor do polígono, mantendo o mapeamento cor-para-série legível junto com o tooltip.
+- **Limite as séries**: mantenha a contagem em duas ou três. Quatro ou mais polígonos sobrepostos derrotam o objetivo visual de comparação de forma.
+
+## Relacionados
+
+- [LineChart](/components/data/line-chart) - use uma linha quando uma dimensão ordenada é o destaque.
+- [BarChart](/components/data/bar-chart) - use barras quando ranquear categorias em uma única métrica.
+- [RadialChart](/components/data/radial-chart) - layout polar irmão quando as categorias devem ser mostradas como arcos concêntricos.

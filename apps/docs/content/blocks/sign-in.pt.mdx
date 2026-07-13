@@ -1,0 +1,180 @@
+---
+title: Sign-in
+description: 'Card de autenticação com provider GitHub mais email e senha. Encaixe na rota de auth e faça a fiação ao seu backend.'
+---
+
+## Visão geral
+
+Uma superfície de sign-in focada composta de `Card`, `Button`, `Separator`,
+`Label` e `Input`. O card emoldura um botão de provider social acima de um
+divisor e um grupo de campos de email/senha, com um submit primary e um
+link de sign-up no footer.
+
+Use este block como ponto de partida para qualquer rota de auth. Troque o
+botão GitHub por qualquer provider OAuth, ou empilhe múltiplos providers acima
+do divisor.
+
+## Preview
+
+<BlockPreview name="sign-in" />
+
+## Anatomia
+
+```text
+SignIn
+└─ Card
+   ├─ CardHeader           CardTitle (Welcome back) + CardDescription
+   ├─ CardContent
+   │  ├─ Button outline    GitHub provider (lucide icon)
+   │  ├─ Separator         "or" divider
+   │  ├─ Label + Input     email
+   │  └─ Label + Input     password (+ Forgot password link)
+   └─ CardFooter           Button (Sign in) + "Create one" link
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add block-sign-in
+```
+
+</Tab>
+
+</Tabs>
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Separator,
+} from '@gremorie/rx-display';
+import { Button, Input, Label } from '@gremorie/rx-forms';
+import { Github } from 'lucide-react';
+
+export function SignIn() {
+  return (
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Welcome back</CardTitle>
+        <CardDescription>Sign in to your Gremorie account</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Button variant="outline" className="w-full">
+          <Github aria-hidden="true" />
+          Continue with GitHub
+        </Button>
+        <div className="relative flex items-center">
+          <Separator className="flex-1" />
+          <span className="mx-3 text-xs uppercase tracking-wider text-muted-foreground">
+            or
+          </span>
+          <Separator className="flex-1" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="signin-email">Email</Label>
+          <Input
+            id="signin-email"
+            type="email"
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="signin-password">Password</Label>
+            <a
+              href="#"
+              className="text-xs text-muted-foreground underline-offset-4 hover:underline"
+            >
+              Forgot password?
+            </a>
+          </div>
+          <Input
+            id="signin-password"
+            type="password"
+            autoComplete="current-password"
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-3">
+        <Button className="w-full">Sign in</Button>
+        <p className="text-center text-xs text-muted-foreground">
+          Don&apos;t have an account?{' '}
+          <a
+            href="#"
+            className="text-foreground underline-offset-4 hover:underline"
+          >
+            Create one
+          </a>
+        </p>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  A edição Angular deste componente está planejada; a edição React está
+  production-ready hoje.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Customização
+
+- Empilhe providers OAuth adicionais acima do divisor (Google, GitLab, SSO)
+- Troque o botão GitHub por um botão de passkey quando o WebAuthn estiver conectado
+- Adicione um checkbox "Remember me" entre o campo de senha e o submit
+- Substitua as âncoras por um link de router do seu framework (Next.js, TanStack)
+
+## Relacionados
+
+- [Button](/components/buttons/button)
+- [Card](/components/display/card)
+- [Input](/components/text/input)

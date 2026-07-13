@@ -1,0 +1,243 @@
+---
+title: Alert Dialog
+description: 'Dialog de confirmação interruptivo. Bloqueia a UI, não fecha ao clicar no overlay e exige uma Action ou Cancel explícita.'
+---
+
+import { AlertDialogPreview } from '@/components/preview/overlays/alert-dialog';
+import { AlertDialogDestructivePreview } from '@/components/preview/overlays/alert-dialog-destructive';
+
+## Visão geral
+
+`AlertDialog` é o primo interruptivo do `Dialog`. É modal-bloqueante por padrão, o usuário não consegue dispensá-lo clicando no overlay, e ele força uma escolha explícita via `AlertDialogAction` ou `AlertDialogCancel`. Reserve-o para momentos em que não fazer nada seria errado: confirmações destrutivas, ações irreversíveis, exclusão de conta, confirmações de pagamento.
+
+Se o seu dialog é informativo, dispensável ou parte de um fluxo rotineiro, use `Dialog`.
+
+## Preview
+
+<ComponentPreview name="overlays/alert-dialog">
+  <AlertDialogPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+AlertDialog                       Raiz Radix que mantém o estado de abertura.
+├─ AlertDialogTrigger             Elemento que abre o dialog.
+└─ AlertDialogContent             Painel centralizado em portal (size default | sm).
+   ├─ AlertDialogHeader           Agrupa media, título e descrição.
+   │  ├─ AlertDialogMedia         Container de ícone opcional acima do título.
+   │  ├─ AlertDialogTitle         Título acessível.
+   │  └─ AlertDialogDescription   Texto do corpo.
+   └─ AlertDialogFooter           Linha de ações.
+      ├─ AlertDialogCancel        Botão de dispensar (variant="outline").
+      └─ AlertDialogAction        Botão de confirmar (variant="default").
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-alert-dialog ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-alert-dialog ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-alert-dialog ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-alert-dialog ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">Delete project</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<AlertDialog>`
+
+Estende o Radix `AlertDialog.Root`. Mesma API controlada do `Dialog` (`open`, `defaultOpen`, `onOpenChange`).
+
+### `<AlertDialogContent>`
+
+| Prop   | Type                | Default     | Description                                                                                          |
+| ------ | ------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
+| `size` | `"default" \| "sm"` | `"default"` | Variante compacta. `sm` limita a largura a `max-w-xs` e troca o footer para um grid de duas colunas. |
+
+Envolve o Radix `AlertDialog.Content` em um Portal com o overlay. Não tem botão X de fechar embutido, por design.
+
+### `<AlertDialogAction>`
+
+| Prop      | Type                | Default     | Description                                                                                   |
+| --------- | ------------------- | ----------- | --------------------------------------------------------------------------------------------- |
+| `variant` | `Button["variant"]` | `"default"` | Encaminhado para o `Button` que o envolve. Use `"destructive"` para confirmações de exclusão. |
+| `size`    | `Button["size"]`    | `"default"` | Encaminhado para o `Button` que o envolve.                                                    |
+
+Renderiza um `Button` com `asChild` envolvendo um Radix `AlertDialog.Action`. Fecha o dialog e executa o seu handler.
+
+### `<AlertDialogCancel>`
+
+| Prop      | Type                | Default     | Description                                |
+| --------- | ------------------- | ----------- | ------------------------------------------ |
+| `variant` | `Button["variant"]` | `"outline"` | Encaminhado para o `Button` que o envolve. |
+| `size`    | `Button["size"]`    | `"default"` | Encaminhado para o `Button` que o envolve. |
+
+Fecha o dialog e devolve o foco para o trigger.
+
+### `<AlertDialogHeader>`, `<AlertDialogFooter>`, `<AlertDialogTitle>`, `<AlertDialogDescription>`
+
+Mesmo formato dos equivalentes no `Dialog`. O header é centralizado no mobile, alinhado à esquerda a partir de `sm+`. O footer é `flex-col-reverse` no mobile, `flex-row justify-end` em `sm+` (ou um grid de duas colunas quando `size="sm"`).
+
+### `<AlertDialogMedia>`
+
+Container de ícone opcional acima do texto do header. Bloco quadrado `size-16` com fundo muted; auto-dimensiona qualquer SVG filho para `size-8`.
+
+```tsx
+<AlertDialogHeader>
+  <AlertDialogMedia>
+    <TrashIcon />
+  </AlertDialogMedia>
+  <AlertDialogTitle>Delete project?</AlertDialogTitle>
+</AlertDialogHeader>
+```
+
+### `<AlertDialogTrigger>`, `<AlertDialogOverlay>`, `<AlertDialogPortal>`
+
+Pass-throughs sobre os primitivos do Radix com atributos `data-slot`.
+
+## Composição
+
+1. **`<AlertDialog>`** detém o estado de aberto/fechado.
+2. **`<AlertDialogTrigger asChild>`** envolve a ação que o abre.
+3. **`<AlertDialogContent>`** monta via Portal com um overlay não dispensável.
+4. **Header** carrega título e descrição (ambos exigidos pelo Radix).
+5. **Footer** deve incluir pelo menos um entre `AlertDialogAction` e `AlertDialogCancel`.
+6. **`AlertDialogMedia` opcional** para um ícone que enquadra a confirmação visualmente.
+
+## Variações
+
+### Confirmação destrutiva
+
+O formato mais comum. Cancel usa a variante outline, action usa `destructive`. Não há dispensa pelo overlay nem botão X de fechar, então o usuário é obrigado a escolher.
+
+<ComponentPreview name="overlays/alert-dialog-destructive">
+  <AlertDialogDestructivePreview />
+</ComponentPreview>
+
+O mesmo padrão em código:
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete account</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Delete account?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This permanently removes your account and all data. There is no undo.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction variant="destructive" onClick={handleDelete}>
+        Delete account
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+### Compacto com ícone de media
+
+Use `size="sm"` para confirmações mais enxutas e adicione um ícone para suavizar o tom.
+
+```tsx
+<AlertDialogContent size="sm">
+  <AlertDialogHeader>
+    <AlertDialogMedia>
+      <ArchiveIcon />
+    </AlertDialogMedia>
+    <AlertDialogTitle>Archive 12 items?</AlertDialogTitle>
+    <AlertDialogDescription>
+      You can restore them within 30 days.
+    </AlertDialogDescription>
+  </AlertDialogHeader>
+  <AlertDialogFooter>
+    <AlertDialogCancel>Cancel</AlertDialogCancel>
+    <AlertDialogAction>Archive</AlertDialogAction>
+  </AlertDialogFooter>
+</AlertDialogContent>
+```
+
+### Ação irreversível com consentimento nomeado
+
+Para confirmações de alto risco, repita o verbo da ação no botão primário para que a escolha seja inequívoca.
+
+```tsx
+<AlertDialogFooter>
+  <AlertDialogCancel>Keep project</AlertDialogCancel>
+  <AlertDialogAction variant="destructive">
+    Delete project forever
+  </AlertDialogAction>
+</AlertDialogFooter>
+```
+
+## Acessibilidade
+
+- **Role**: `role="alertdialog"` com `aria-modal="true"`. Leitores de tela anunciam de forma mais assertiva do que um dialog comum.
+- **Teclado**: `Esc` fecha pelo caminho de cancel; `Tab` circula apenas entre Cancel e Action; o focus trap está ativo.
+- **Gestão de foco**: o foco vai para o botão Cancel na abertura (padrão do Radix para alert dialogs) e retorna ao trigger ao fechar.
+- **Sem dispensa por overlay**: clicar no overlay não faz nada. O usuário precisa escolher explicitamente.
+- **Sem botão X de fechar**: por design, para evitar a dispensa acidental de escolhas com consequências.
+- **Description**: vinculada via `aria-describedby`. Tanto `AlertDialogTitle` quanto `AlertDialogDescription` são exigidos pelo Radix.
+
+## Relacionados
+
+- [Dialog](/components/overlays/dialog) - modal não interruptivo para fluxos rotineiros.
+- [Sheet](/components/overlays/sheet) - painel lateral para fluxos mais longos.
+- [Sonner](/components/overlays/sonner) - toast não bloqueante para confirmações leves e undo.

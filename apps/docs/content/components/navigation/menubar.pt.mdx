@@ -1,0 +1,272 @@
+---
+title: Menubar
+description: 'Barra de múltiplos menus horizontal no estilo de app desktop. File, Edit, View, Help com submenus, checkboxes, radios e atalhos.'
+---
+
+import { MenubarPreview } from '@/components/preview/navigation/menubar';
+import { MenubarShortcutsPreview } from '@/components/preview/navigation/menubar-shortcuts';
+import { MenubarSubmenuPreview } from '@/components/preview/navigation/menubar-submenu';
+
+## Visão geral
+
+`Menubar` é o primitivo de barra de menus de app desktop: vários menus dispostos lado a lado (File, Edit, View, Help), cada um abrindo um dropdown de itens, checkboxes, radios e submenus aninhados. Construído sobre o Radix Menubar, ele implementa o contrato de teclado entre menus que os usuários esperam de menus nativos - uma vez que um menu está aberto, as setas caminham para o próximo sem reapertar o trigger.
+
+Use o Menubar quando **você está emulando uma aplicação desktop** - editores de código, planilhas, editores de imagem, IDEs. Para todo o resto - nav de site, menus de ação de botão único, painéis de configuração - use [NavigationMenu](/components/navigation/navigation-menu) ou [DropdownMenu](/components/overlays/dropdown-menu).
+
+## Preview
+
+<ComponentPreview name="navigation/menubar">
+  <MenubarPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Menubar
+└─ MenubarMenu                      one top-level menu (File, Edit, …)
+   ├─ MenubarTrigger                clickable label that opens the menu
+   └─ MenubarContent                portaled dropdown panel
+      ├─ MenubarItem                command row (inset / destructive variants)
+      │  └─ MenubarShortcut         right-aligned keyboard hint
+      ├─ MenubarCheckboxItem        toggleable item with a check indicator
+      ├─ MenubarRadioGroup          single-choice group
+      │  └─ MenubarRadioItem        one radio option with a dot indicator
+      ├─ MenubarLabel               non-interactive group header
+      ├─ MenubarSeparator           1px divider between groups
+      └─ MenubarSub                 nested submenu
+         ├─ MenubarSubTrigger       row that opens the submenu
+         └─ MenubarSubContent       the submenu panel
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-menubar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-menubar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-menubar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-menubar ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@gremorie/rx-navigation";
+
+export function AppMenubar() {
+  return (
+    <Menubar>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            New file <MenubarShortcut>CtrlN</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>Open...</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>
+            Save <MenubarShortcut>CtrlS</MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Undo</MenubarItem>
+          <MenubarItem>Redo</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Menubar>`
+
+Container raiz. Envolve o `Menubar.Root` do Radix. Renderiza uma barra horizontal `flex h-9 items-center gap-1 rounded-md border bg-background p-1 shadow-xs`.
+
+| Prop            | Type                      | Default | Description                                          |
+| --------------- | ------------------------- | ------- | ---------------------------------------------------- |
+| `defaultValue`  | `string`                  | -       | Menu inicialmente aberto, não controlado.            |
+| `value`         | `string`                  | -       | Menu aberto controlado.                              |
+| `onValueChange` | `(value: string) => void` | -       | Dispara quando o menu aberto muda.                   |
+| `dir`           | `"ltr" \| "rtl"`          | `"ltr"` | Direção de leitura.                                  |
+| `loop`          | `boolean`                 | `true`  | Se o foco do teclado dá a volta nas pontas da barra. |
+
+### `<MenubarMenu>`
+
+Um único menu (trigger mais content). Envolve o `Menubar.Menu` do Radix.
+
+| Prop    | Type     | Default | Description                                          |
+| ------- | -------- | ------- | ---------------------------------------------------- |
+| `value` | `string` | -       | Identificador usado pelo `value` controlado do Root. |
+
+### `<MenubarTrigger>`
+
+O botão da barra que abre o menu. Envolve o `Menubar.Trigger` do Radix.
+
+| Prop       | Type      | Default | Description              |
+| ---------- | --------- | ------- | ------------------------ |
+| `disabled` | `boolean` | `false` | Desabilita este trigger. |
+
+### `<MenubarContent>`
+
+O painel de dropdown. Envolve o `Menubar.Content` do Radix dentro de um `MenubarPortal`.
+
+| Prop          | Type                                     | Default    | Description                                           |
+| ------------- | ---------------------------------------- | ---------- | ----------------------------------------------------- |
+| `align`       | `"start" \| "center" \| "end"`           | `"start"`  | Alinhamento horizontal relativo ao trigger.           |
+| `alignOffset` | `number`                                 | `-4`       | Offset em pixels da borda de alinhamento.             |
+| `sideOffset`  | `number`                                 | `8`        | Distância em pixels entre o trigger e o content.      |
+| `side`        | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Lado preferido.                                       |
+| `loop`        | `boolean`                                | `true`     | Se o foco do teclado dá a volta nas pontas do painel. |
+
+### `<MenubarItem>`
+
+Um item de ação padrão.
+
+| Prop       | Type                         | Default     | Description                                                                                |
+| ---------- | ---------------------------- | ----------- | ------------------------------------------------------------------------------------------ |
+| `inset`    | `boolean`                    | `false`     | Quando `true`, adiciona padding à esquerda para o item alinhar com itens checkbox / radio. |
+| `variant`  | `"default" \| "destructive"` | `"default"` | `"destructive"` pinta o item e seu ícone no token destructive.                             |
+| `disabled` | `boolean`                    | `false`     | Desabilita este item.                                                                      |
+| `onSelect` | `(event: Event) => void`     | -           | Dispara na ativação. Chame `event.preventDefault()` para manter o menu aberto.             |
+
+### `<MenubarCheckboxItem>`
+
+Um item de toggle renderizado com um indicador de check à frente.
+
+| Prop              | Type                         | Default | Description                   |
+| ----------------- | ---------------------------- | ------- | ----------------------------- |
+| `checked`         | `boolean \| "indeterminate"` | `false` | Estado atual.                 |
+| `onCheckedChange` | `(checked: boolean) => void` | -       | Dispara quando o estado muda. |
+| `disabled`        | `boolean`                    | `false` | Desabilita este item.         |
+
+### `<MenubarRadioGroup>` e `<MenubarRadioItem>`
+
+Um conjunto de radios renderizado com um indicador de ponto à frente.
+
+| Component    | Prop            | Type                      | Description                                   |
+| ------------ | --------------- | ------------------------- | --------------------------------------------- |
+| `RadioGroup` | `value`         | `string`                  | Valor selecionado controlado.                 |
+| `RadioGroup` | `onValueChange` | `(value: string) => void` | Dispara quando o valor selecionado muda.      |
+| `RadioItem`  | `value`         | `string`                  | Obrigatório. Corresponde ao `value` do grupo. |
+| `RadioItem`  | `disabled`      | `boolean`                 | Desabilita este item.                         |
+
+### `<MenubarLabel>`
+
+Um header não interativo dentro de um painel de content.
+
+| Prop    | Type      | Default | Description                                                                         |
+| ------- | --------- | ------- | ----------------------------------------------------------------------------------- |
+| `inset` | `boolean` | `false` | Quando `true`, adiciona padding à esquerda para alinhar com itens checkbox / radio. |
+
+### `<MenubarSeparator>`
+
+Um divisor horizontal de 1 px com `-mx-1 my-1` para estender por todo o padding do painel.
+
+### `<MenubarShortcut>`
+
+Um `<span>` alinhado à direita para a dica de atalho de teclado. Estilizado com `ml-auto text-xs tracking-widest text-muted-foreground`.
+
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Atributos padrão de span. |
+
+### `<MenubarSub>`, `<MenubarSubTrigger>`, `<MenubarSubContent>`
+
+Submenus aninhados. O sub-trigger acrescenta automaticamente um chevron apontando para a direita.
+
+| Component    | Prop           | Type                      | Description                                                          |
+| ------------ | -------------- | ------------------------- | -------------------------------------------------------------------- |
+| `Sub`        | `defaultOpen`  | `boolean`                 | Estado inicial de aberto, não controlado.                            |
+| `Sub`        | `open`         | `boolean`                 | Estado de aberto controlado.                                         |
+| `Sub`        | `onOpenChange` | `(open: boolean) => void` | Dispara quando o sub abre ou fecha.                                  |
+| `SubTrigger` | `inset`        | `boolean`                 | Adiciona padding à esquerda para alinhar com itens checkbox / radio. |
+| `SubTrigger` | `disabled`     | `boolean`                 | Desabilita o sub-trigger.                                            |
+
+### `<MenubarGroup>` e `<MenubarPortal>`
+
+`MenubarGroup` é um wrapper de agrupamento lógico (sem estilo); `MenubarPortal` é o portal que o Radix usa para montar content (já usado internamente por `<MenubarContent>`).
+
+## Composição
+
+1. **`<Menubar>`** é a barra horizontal.
+2. **Cada menu** é um `<MenubarMenu>` contendo um `<MenubarTrigger>` e um `<MenubarContent>`.
+3. **Dentro do content**: uma mistura de `<MenubarItem>`, `<MenubarCheckboxItem>`, `<MenubarRadioGroup>` (com filhos `<MenubarRadioItem>`), `<MenubarLabel>`, `<MenubarSeparator>` e `<MenubarSub>` para menus aninhados.
+4. **Cada item de ação** pode carregar um `<MenubarShortcut>` ao final para a dica de teclado.
+
+O contrato de teclado entre menus é o que distingue o Menubar de uma fileira de DropdownMenus independentes: uma vez que um menu está aberto, `ArrowLeft` / `ArrowRight` caminham direto para o content do menu anterior / próximo, sem fechar e reabrir manualmente.
+
+## Variações
+
+### File / Edit / View com atalhos
+
+<ComponentPreview name="navigation/menubar-shortcuts">
+  <MenubarShortcutsPreview />
+</ComponentPreview>
+
+Use como a barra do topo da janela em apps no estilo de editor. Cada menu agrupa comandos relacionados, e `<MenubarShortcut>` renderiza a dica de teclado alinhada à direita. O texto do atalho é só visual - conecte os bindings reais no seu próprio handler.
+
+### Com itens checkbox e radio
+
+```tsx
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>View</MenubarTrigger>
+    <MenubarContent>
+      <MenubarCheckboxItem checked>Always show bookmarks</MenubarCheckboxItem>
+      <MenubarCheckboxItem>Show full URL</MenubarCheckboxItem>
+      <MenubarSeparator />
+      <MenubarLabel inset>Density</MenubarLabel>
+      <MenubarRadioGroup value="comfortable">
+        <MenubarRadioItem value="compact">Compact</MenubarRadioItem>
+        <MenubarRadioItem value="comfortable">Comfortable</MenubarRadioItem>
+        <MenubarRadioItem value="spacious">Spacious</MenubarRadioItem>
+      </MenubarRadioGroup>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+
+Use para expor preferências de view persistentes. Itens checkbox alternam de forma independente; itens radio escolhem um de N.
+
+### Submenus aninhados
+
+<ComponentPreview name="navigation/menubar-submenu">
+  <MenubarSubmenuPreview />
+</ComponentPreview>
+
+Use com moderação. Submenus são valiosos para agrupamento (Open recent, Export as, Theme), mas aninhamento profundo prejudica a descoberta. `<MenubarSubTrigger>` acrescenta um chevron apontando para a direita automaticamente.
+
+## Acessibilidade
+
+- **Padrão WAI-ARIA Menubar**: a raiz carrega `role="menubar"`; triggers carregam `role="menuitem"` com `aria-haspopup="menu"` e `aria-expanded`; painéis de content carregam `role="menu"`; itens carregam `role="menuitem"`, `role="menuitemcheckbox"` ou `role="menuitemradio"` conforme o caso.
+- **Teclado entre menus**: `Tab` entra na barra; `ArrowLeft` / `ArrowRight` caminham entre triggers (e continuam caminhando entre os contents dos menus abertos); `ArrowDown` / `Enter` abrem o trigger ativo; `ArrowUp` / `ArrowDown` movem entre itens dentro do content; `ArrowRight` abre um sub-trigger; `ArrowLeft` fecha um sub; `Escape` fecha o menu aberto e devolve o foco para o trigger.
+- **Type-ahead**: o Radix suporta type-ahead pela primeira letra dentro de cada menu, então digitar "S" pula para o primeiro item começando com S.
+- **Dicas de atalho**: `<MenubarShortcut>` é só visual. Conecte os bindings de teclado reais fora do componente (seu próprio handler a nível de documento).
+- **Itens desabilitados**: renderizam com `aria-disabled="true"` e são pulados na navegação por setas.
+
+## Relacionados
+
+- [DropdownMenu](/components/overlays/dropdown-menu) - menu de ação de trigger único.
+- [NavigationMenu](/components/navigation/navigation-menu) - nav primária de site de marketing.
+- [ContextMenu](/components/overlays/context-menu) - menu de ação por clique direito.
