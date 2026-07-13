@@ -1,0 +1,236 @@
+---
+title: Task
+description: Bloco de tarefa recolhível para uma ação de agente - título no trigger, lista de itens com badges de arquivo inline no corpo.
+---
+
+import { TaskCollapsedPreview } from '@/components/preview/ai/task-collapsed';
+import { TaskExpandedPreview } from '@/components/preview/ai/task-expanded';
+
+## Visão geral
+
+`Task` é a unidade granular do trabalho de agente. Onde [Plan](/components/chatbot/plan) descreve todo o plano de múltiplos passos e [Chain of Thought](/components/chatbot/chain-of-thought) mostra o reasoning passo a passo, `Task` representa uma única tarefa nomeada com suas ações específicas e os arquivos que ela tocou.
+
+Use quando o agente está editando uma codebase, navegando por uma árvore de documentação, ou de outra forma fazendo trabalho concreto no nível de arquivo que o usuário quer inspecionar ou auditar.
+
+## Preview
+
+### Recolhido
+
+<ComponentPreview name="ai/task-collapsed">
+  <TaskCollapsedPreview />
+</ComponentPreview>
+
+### Expandido
+
+<ComponentPreview name="ai/task-expanded">
+  <TaskExpandedPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Task
+├─ TaskTrigger          header (ícone + título + chevron)
+└─ TaskContent
+   └─ TaskItem          uma linha por passo
+      └─ TaskItemFile   chip de arquivo (opcional)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-task ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-task ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-task ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-task ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile } from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <Task>
+      <TaskTrigger title="Refactor router" />
+      <TaskContent>
+        <TaskItem>
+          Edited <TaskItemFile>app/router.tsx</TaskItemFile>
+        </TaskItem>
+        <TaskItem>
+          Renamed <TaskItemFile>app/routes/(legacy)</TaskItemFile> to <TaskItemFile>app/routes/(deprecated)</TaskItemFile>
+        </TaskItem>
+      </TaskContent>
+    </Task>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import {
+  Task,
+  TaskTrigger,
+  TaskContent,
+  TaskItem,
+  TaskItemFile,
+} from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile],
+template: `     <task [open]="true">
+      <task-trigger title="Refactor router" />
+      <task-content>
+        <task-item>
+          Edited <task-item-file>app/router.ts</task-item-file>
+        </task-item>
+        <task-item>
+          Renamed <task-item-file>routes/legacy.ts</task-item-file> to
+          <task-item-file>routes/deprecated.ts</task-item-file>
+        </task-item>
+      </task-content>
+    </task>
+  `,
+})
+export class ExampleComponent {}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<Task>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `defaultOpen` | `boolean` | `true` | Estado de abertura inicial não controlado. |
+| `open` | `boolean` | - | Estado de abertura controlado. |
+| `onOpenChange` | `(open: boolean) => void` | - | Notificação quando o usuário alterna. |
+
+Estende `ComponentProps<typeof Collapsible>`.
+
+### `<TaskTrigger>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | - | Obrigatório. Exibido no trigger padrão. |
+| `children` | `ReactNode` | - | Opcional. Substitui completamente o layout padrão de ícone de busca + título + chevron. |
+
+Estende `ComponentProps<typeof CollapsibleTrigger>`.
+
+### `<TaskContent>`
+
+Corpo recolhível. Envolve os children em um recuo com borda à esquerda para que os itens sejam lidos como uma sub-thread.
+
+Estende `ComponentProps<typeof CollapsibleContent>`.
+
+### `<TaskItem>`
+
+Uma linha de ação. Texto livre + badges `TaskItemFile` inline.
+
+Estende `ComponentProps<"div">`.
+
+### `<TaskItemFile>`
+
+Badge de nome de arquivo inline - pill pequeno arredondado com fundo secondary. Use para destacar o arquivo que a ação tocou.
+
+Estende `ComponentProps<"div">`.
+
+## Composição
+
+1. **`<Task>`** detém o estado do collapsible.
+2. **`<TaskTrigger>`** é o handle - ícone + título + chevron por padrão.
+3. **`<TaskContent>`** é o corpo recuado com borda vertical.
+4. **`<TaskItem>`** é uma linha de ação.
+5. **`<TaskItemFile>`** é um badge de arquivo inline dentro de um item.
+
+## Variações
+
+### Log de edição no nível de arquivo
+
+Uso padrão - o agente reporta os arquivos que tocou.
+
+```tsx
+<Task>
+  <TaskTrigger title="Refactor router" />
+  <TaskContent>
+    <TaskItem>
+      Read <TaskItemFile>app/router.tsx</TaskItemFile>
+    </TaskItem>
+    <TaskItem>
+      Edited <TaskItemFile>app/router.tsx</TaskItemFile> (12 insertions, 4 deletions)
+    </TaskItem>
+    <TaskItem>
+      Ran tests in <TaskItemFile>app/router.test.tsx</TaskItemFile>
+    </TaskItem>
+  </TaskContent>
+</Task>
+````
+
+### Trigger customizado
+
+Sobrescreva o ícone + título padrão para expor um badge de status ou estado em execução.
+
+```tsx
+<Task>
+  <TaskTrigger title="Migrate database">
+    <div className="flex w-full items-center gap-2 text-sm">
+      <Loader2Icon className="size-4 animate-spin" />
+      Migrating database (3 of 7 steps)
+      <ChevronDownIcon className="ml-auto size-4" />
+    </div>
+  </TaskTrigger>
+  <TaskContent>...</TaskContent>
+</Task>
+```
+
+### Tasks empilhadas sob um plano
+
+Coloque múltiplos irmãos `Task` dentro de `PlanContent` para um detalhamento por passo.
+
+```tsx
+<Plan defaultOpen>
+  <PlanHeader>
+    <PlanTitle>Ship the new pricing page</PlanTitle>
+    <PlanDescription>3 tasks</PlanDescription>
+  </PlanHeader>
+  <PlanContent>
+    <Task>
+      <TaskTrigger title="Update copy" />
+      <TaskContent>
+        <TaskItem>
+          Edited <TaskItemFile>app/pricing/page.tsx</TaskItemFile>
+        </TaskItem>
+      </TaskContent>
+    </Task>
+    <Task defaultOpen={false}>
+      <TaskTrigger title="Add A/B test" />
+      <TaskContent>
+        <TaskItem>
+          Created <TaskItemFile>lib/experiments/pricing.ts</TaskItemFile>
+        </TaskItem>
+      </TaskContent>
+    </Task>
+  </PlanContent>
+</Plan>
+```
+
+## Acessibilidade
+
+- **Teclado**: `TaskTrigger` é um `CollapsibleTrigger`, alternando com Enter / Space.
+- **ARIA**: o Radix Collapsible conecta `aria-expanded` / `aria-controls` automaticamente. O chevron padrão gira via `data-state` para dar uma pista visual de aberto / fechado.
+- **Leitores de tela**: a prop title vira o label do trigger, então a task é anunciada com um nome significativo. Mantenha o texto de `TaskItem` descritivo para que as ações de arquivo sejam lidas naturalmente.
+- **Movimento reduzido**: abrir / fechar usa animações data-state do Tailwind e respeita `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Plan](/components/chatbot/plan) - o plano multi-task que hospeda as tasks
+- [Chain of Thought](/components/chatbot/chain-of-thought) - reasoning por passo dentro de uma task
+- [Confirmation](/components/chatbot/confirmation) - portão de aprovação antes de executar uma task destrutiva

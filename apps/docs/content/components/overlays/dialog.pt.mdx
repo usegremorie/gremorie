@@ -1,0 +1,218 @@
+---
+title: Dialog
+description: 'Overlay modal ancorado no centro da viewport, construído sobre o Radix Dialog com header, footer e botão de fechar embutido.'
+---
+
+import { DialogPreview } from '@/components/preview/overlays/dialog';
+import { DialogFormPreview } from '@/components/preview/overlays/dialog-form';
+
+## Visão geral
+
+`Dialog` é o primitivo certo para decisões focadas ou fluxos curtos que precisam interromper o contexto do usuário: confirmações, formulários de um passo, cards de detalhe. Ele vem com overlay, content, header, footer, title, description e um botão de fechar embutido. Para fluxos mais longos que não precisam de foco total use `Sheet`; para conteúdo contextual inline use `Popover`.
+
+O botão de fechar vem ativo por padrão. Defina `showCloseButton={false}` quando o dialog renderiza a própria affordance de dispensa, ou passe `showCloseButton` no `DialogFooter` para injetar ali um botão "Close" estilizado.
+
+## Preview
+
+<ComponentPreview name="overlays/dialog">
+  <DialogPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Dialog                       raiz Radix que mantém o estado de abertura
+├─ DialogTrigger             elemento que abre o dialog
+└─ DialogContent             painel centralizado em portal com overlay + botão de fechar
+   ├─ DialogHeader           envolve título + descrição
+   │  ├─ DialogTitle         título acessível
+   │  └─ DialogDescription   texto do corpo acessível
+   └─ DialogFooter           linha de ações (botão de fechar embutido opcional)
+      └─ DialogClose         fecha o dialog a partir de qualquer descendente
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-dialog ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-dialog ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-dialog ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-dialog ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Open dialog</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Dialog>`
+
+| Prop           | Type                      | Default | Description                                       |
+| -------------- | ------------------------- | ------- | ------------------------------------------------- |
+| `open`         | `boolean`                 | -       | Estado de abertura controlado.                    |
+| `defaultOpen`  | `boolean`                 | `false` | Estado de abertura inicial quando não controlado. |
+| `onOpenChange` | `(open: boolean) => void` | -       | Disparado quando o estado de abertura muda.       |
+| `modal`        | `boolean`                 | `true`  | Desabilita a interação externa enquanto aberto.   |
+
+Estende o Radix `Dialog.Root`. Não renderiza DOM por si só.
+
+### `<DialogTrigger>`
+
+Estende o Radix `Dialog.Trigger`. Emparelhe com `asChild` para encaminhar estilos a um `Button` ou qualquer trigger customizado.
+
+### `<DialogContent>`
+
+| Prop              | Type      | Default | Description                                                                                             |
+| ----------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| `showCloseButton` | `boolean` | `true`  | Renderiza o botão X de fechar no canto superior direito. Desative ao fornecer uma dispensa customizada. |
+
+Envolve o Radix `Dialog.Content` dentro de um Portal com o overlay. Centralizado em 50/50, limitado a `sm:max-w-lg`, com abertura/fechamento animados.
+
+### `<DialogHeader>`, `<DialogFooter>`
+
+Containers de layout simples (`div`). O header empilha título e descrição; o footer é `flex-col-reverse` no mobile, `flex-row` justify-end em `sm+`.
+
+`DialogFooter` aceita `showCloseButton` (`boolean`, default `false`), que acrescenta um botão "Close" outline estilizado ligado ao `DialogClose`.
+
+### `<DialogTitle>`, `<DialogDescription>`
+
+Mapeiam para o Radix `Dialog.Title` e `Dialog.Description`. Ambos são exigidos pelo Radix; renderize com `className="sr-only"` se precisar ocultá-los visualmente.
+
+### `<DialogClose>`, `<DialogOverlay>`, `<DialogPortal>`
+
+Wrappers pass-through sobre os equivalentes do Radix com atributos `data-slot`. Use `DialogClose asChild` para dispensar a partir de qualquer botão customizado dentro do content.
+
+## Composição
+
+1. **`<Dialog>`** detém o estado de aberto/fechado.
+2. **`<DialogTrigger asChild>`** envolve qualquer elemento focável (tipicamente um `Button`).
+3. **`<DialogContent>`** monta via Portal, desenha o overlay e renderiza o card centralizado.
+4. **Dentro do content**: header (título + descrição), corpo, footer (cancel + ação primária).
+5. **Dispensa**: o X embutido cobre o caso comum; complemente com botões `DialogClose` explícitos para fluxos destrutivos ou com estado.
+
+## Variações
+
+### Dialog de formulário
+
+Embuta campos de formulário diretamente no corpo. O dialog prende o foco enquanto aberto;
+Cancel dispensa via `DialogClose`, e o submit fecha via estado.
+
+<ComponentPreview name="overlays/dialog-form">
+  <DialogFormPreview />
+</ComponentPreview>
+
+```tsx
+<DialogContent>
+  <form onSubmit={handleSubmit}>
+    <DialogHeader>
+      <DialogTitle>Invite teammate</DialogTitle>
+      <DialogDescription>They'll get an email invite.</DialogDescription>
+    </DialogHeader>
+    <Field className="my-4">
+      <FieldLabel htmlFor="email">Email</FieldLabel>
+      <Input id="email" type="email" required />
+    </Field>
+    <DialogFooter>
+      <Button type="submit">Send invite</Button>
+    </DialogFooter>
+  </form>
+</DialogContent>
+```
+
+### Confirmação com Cancel explícito
+
+Para ações destrutivas mas reversíveis, emparelhe o X de fechar com um `Cancel` explícito ao lado do `Delete` primário.
+
+```tsx
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="destructive">Delete project</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Delete project?</DialogTitle>
+      <DialogDescription>
+        All tasks, comments and attachments will be removed.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DialogClose>
+      <Button variant="destructive">Delete</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+### Sem botão de fechar
+
+Oculte o X quando o dialog é totalmente dirigido pelo footer (ex.: wizard multi-passo onde back/next gerenciam a progressão).
+
+```tsx
+<DialogContent showCloseButton={false}>
+  {/* Custom step header here */}
+</DialogContent>
+```
+
+## Acessibilidade
+
+- **Role**: `role="dialog"` com `aria-modal="true"` (prop `modal` padrão).
+- **Teclado**: `Esc` fecha; `Tab` circula o foco dentro do content; `Shift+Tab` circula para trás; o foco fica preso enquanto aberto.
+- **Gestão de foco**: o foco vai para o primeiro elemento focável na abertura e retorna ao trigger ao fechar.
+- **Title**: `DialogTitle` é obrigatório; sem ele o Radix loga um aviso. Use `sr-only` para ocultar visualmente.
+- **Description**: liga ao content via `aria-describedby` automaticamente.
+- **Reduced motion**: as animações de abrir/fechar respeitam `prefers-reduced-motion` via as utilidades animate do Tailwind subjacentes.
+
+## Relacionados
+
+- [Alert Dialog](/components/overlays/alert-dialog) - confirmação interruptiva que exige uma ação explícita.
+- [Sheet](/components/overlays/sheet) - painel lateral para fluxos mais longos.
+- [Drawer](/components/overlays/drawer) - bottom sheet mobile com dispensa por gesto.
+- [Popover](/components/overlays/popover) - overlay inline ancorado para UI contextual.

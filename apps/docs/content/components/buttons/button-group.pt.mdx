@@ -1,0 +1,209 @@
+---
+title: Button Group
+description: Cluster de buttons (ou selects) unidos por uma borda compartilhada, com separadores e texto de label opcionais.
+---
+
+import { ButtonGroupPreview } from '@/components/preview/forms/button-group';
+import { ButtonGroupVerticalPreview } from '@/components/preview/forms/button-group-vertical';
+import { ButtonGroupTextPreview } from '@/components/preview/forms/button-group-text';
+
+## Visão geral
+
+`ButtonGroup` une vários `Button` irmãos em uma única unidade visual neutralizando as bordas internas e arredondando apenas o primeiro e o último filho. Use para ações relacionadas que compartilham um contexto: copiar / colar / recortar, alinhamento, modos de visualização, paginação.
+
+Também aceita triggers de `Select` e `ButtonGroupText`, então você pode misturar labels e controles na mesma linha com borda compartilhada. `ButtonGroupSeparator` adiciona uma linha fina entre grupos quando você precisa de uma pausa visual.
+
+## Preview
+
+<ComponentPreview name="forms/button-group">
+  <ButtonGroupPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ButtonGroup                  wrapper flex com role="group" que funde seus filhos
+├─ ButtonGroupText           segmento de texto/label não interativo (addon muted)
+└─ ButtonGroupSeparator      Radix Separator fino entre segmentos
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-button-group ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-button-group ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-button-group ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-button-group ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Button,
+  ButtonGroup,
+  ButtonGroupSeparator,
+} from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <ButtonGroup>
+      <Button variant="outline">Copy</Button>
+      <ButtonGroupSeparator />
+      <Button variant="outline">Paste</Button>
+    </ButtonGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ButtonGroup>`
+
+| Prop          | Type                         | Default        | Description                                                                                                                 |
+| ------------- | ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Dispõe os filhos lado a lado ou empilhados. As bordas se adaptam: horizontal remove `border-l`, vertical remove `border-t`. |
+
+Estende todos os `React.ComponentProps<"div">`. Sempre renderizado com `role="group"` e `data-slot="button-group"`.
+
+### `<ButtonGroupSeparator>`
+
+| Prop          | Type                         | Default      | Description                                                                                     |
+| ------------- | ---------------------------- | ------------ | ----------------------------------------------------------------------------------------------- |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` | Direção do `Separator` do Radix. Por padrão, uma linha vertical de 1px para grupos horizontais. |
+
+Encapsula `@radix-ui/react-separator`. Decorativo (flag `decorative` forçada), então não é anunciado para leitores de tela.
+
+### `<ButtonGroupText>`
+
+| Prop      | Type      | Default | Description                                                                                                                                           |
+| --------- | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `asChild` | `boolean` | `false` | Renderiza como `Slot.Root` para que o primeiro filho receba a superfície muted/com borda. Use para labels não interativos (ex. "of 12", uma unidade). |
+
+Estende todos os `React.ComponentProps<"div">`.
+
+## Composição
+
+1. **`<ButtonGroup>`** remove as bordas internas e arredonda apenas o primeiro / último filho via seletores CSS de irmãos.
+2. **Os filhos podem ser**: `<Button>`, triggers de `<Select>` (quando envolvidos em `SelectTrigger`), ou `<ButtonGroupText>` para labels.
+3. **`<ButtonGroupSeparator>`** insere um divisor visível de 1px entre filhos que compartilham uma borda.
+4. **`<ButtonGroupText>`** é o elemento certo para labels estáticos dentro do cluster - nunca use um `<span>` ou `<div>` cru, já que o grupo espera que seus filhos participem da fusão de bordas.
+
+## Action rows e pareamento de tamanho
+
+Uma action row é qualquer cluster horizontal de controles: uma toolbar, o header de um card com um select e um icon button, uma barra de filtros. Existem dois layouts, e uma única regra de tamanho governa ambos.
+
+### Agrupado vs. com gap
+
+| Layout          | When                                                                                                                                                             | How                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `<ButtonGroup>` | As ações formam UMA unidade: modos segmentados, copiar/colar/recortar, paginação. As bordas se fundem, o cluster é lido como um único controle.                  | Envolva os filhos em `ButtonGroup`; veja Composição acima. |
+| Row com gap     | As ações são independentes: um select de tema ao lado de um toggle de dark mode, um input de busca ao lado de um submit. Cada controle mantém sua própria borda. | `<div className="flex items-center gap-2">`                |
+
+### A regra de tamanho
+
+Controles adjacentes em uma row precisam compartilhar o mesmo passo de altura. Escolha o passo e então use a **size variant** correspondente em cada controle:
+
+| Height        | Button      | Icon Button      | Select      | Input                                 |
+| ------------- | ----------- | ---------------- | ----------- | ------------------------------------- |
+| 24px (`h-6`)  | `size="xs"` | `size="icon-xs"` | -           | -                                     |
+| 32px (`h-8`)  | `size="sm"` | `size="icon-sm"` | `size="sm"` | `className="h-8"` (ainda sem variant) |
+| 36px (`h-9`)  | default     | `size="icon"`    | default     | default                               |
+| 40px (`h-10`) | `size="lg"` | `size="icon-lg"` | -           | -                                     |
+
+**Nunca sobrescreva a altura de um controle com uma `className` quando existe uma size variant.** A variant é dona da altura (o Select a aplica via seletores `data-[size=...]`), então um `h-8` manual em um trigger de tamanho default perde para o `h-9` da variant e a row desalinha em 4px.
+
+```tsx
+// Wrong: manual height fights the size variant and loses
+<div className="flex items-center gap-2">
+  <SelectTrigger className="h-8 w-36">...</SelectTrigger>  {/* renders 36px */}
+  <Button variant="outline" size="icon-sm">...</Button>     {/* renders 32px */}
+</div>
+
+// Right: same step, matching variants
+<div className="flex items-center gap-2">
+  <SelectTrigger size="sm" className="w-36">...</SelectTrigger>  {/* 32px */}
+  <Button variant="outline" size="icon-sm">...</Button>          {/* 32px */}
+</div>
+```
+
+O mesmo contrato vale na edição Angular: os inputs de `size` espelham essas variants uma a uma, então uma superfície mista de React e Angular permanece alinhada por construção.
+
+## Variações
+
+### Três ações com separadores
+
+Use para comandos relacionados. Os separadores comunicam que cada ação é distinta, mesmo que compartilhem uma superfície visual.
+
+```tsx
+<ButtonGroup>
+  <Button variant="outline">Copy</Button>
+  <ButtonGroupSeparator />
+  <Button variant="outline">Paste</Button>
+  <ButtonGroupSeparator />
+  <Button variant="outline">Cut</Button>
+</ButtonGroup>
+```
+
+### Orientação vertical
+
+Troque `orientation` para empilhar ações em uma coluna compacta - útil para editores de imagem, players de vídeo e qualquer paleta de ferramentas.
+
+<ComponentPreview name="forms/button-group-vertical">
+  <ButtonGroupVerticalPreview />
+</ComponentPreview>
+
+### Addon de label de texto
+
+`ButtonGroupText` renderiza um label não interativo que compartilha a borda do grupo, então prefixos e unidades se fundem perfeitamente com os buttons.
+
+<ComponentPreview name="forms/button-group-text">
+  <ButtonGroupTextPreview />
+</ComponentPreview>
+
+### Paginação com texto de label
+
+Combine `ButtonGroupText` com botões de seta. O texto permanece não interativo mas herda a superfície do grupo.
+
+```tsx
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+<ButtonGroup>
+  <Button variant="outline" size="icon" aria-label="Previous page">
+    <ChevronLeft />
+  </Button>
+  <ButtonGroupText>Page 3 of 12</ButtonGroupText>
+  <Button variant="outline" size="icon" aria-label="Next page">
+    <ChevronRight />
+  </Button>
+</ButtonGroup>;
+```
+
+## Acessibilidade
+
+- **Semântica de grupo**: o wrapper renderiza `role="group"`. Forneça `aria-label` (ou `aria-labelledby`) para que leitores de tela anunciem o que o cluster representa.
+- **Teclado**: cada filho permanece um elemento focável independente. `Tab` e `Shift+Tab` navegam entre eles; não há roving tabindex (use `ToggleGroup` se você quiser isso).
+- **Focus**: o filho focado se eleva acima dos irmãos (`z-10`) para que o focus ring nunca seja cortado pela borda do button adjacente.
+- **Separadores**: renderizados como decorativos, então não aparecem na árvore de acessibilidade.
+
+## Relacionados
+
+- [Button](/components/buttons/button) - o bloco de construção
+- [Toggle Group](/components/buttons/toggle-group) - a mesma ideia visual mas com estado `aria-pressed` coordenado e roving tabindex
+- [Input Group](/components/text/input-group) - o equivalente de input + addon
+- [Select](/components/selection/select) - permitido dentro de `ButtonGroup` quando você precisa de um dropdown trigger no cluster

@@ -1,0 +1,185 @@
+---
+title: Toolbar
+description: Barra de ações flutuante por nó dentro de um Canvas. Ancorada abaixo do nó selecionado, expõe ações contextuais como editar, duplicar e deletar.
+---
+
+import { ToolbarPreview } from '@/components/preview/ai/toolbar';
+
+## Visão geral
+
+`Toolbar` é uma skin fina da Gremorie sobre o `NodeToolbar` de `@xyflow/react`. Ele renderiza uma pequena linha flutuante de ações que aparece ao lado de um nó quando o nó está selecionado (ou sempre, dependendo de `isVisible`).
+
+Coloque-o dentro do corpo de um `<Node>`. O xyflow o posiciona em relação ao nó automaticamente (usando `Position.Bottom` por padrão) e o reposiciona conforme o nó se move ou o canvas dá pan. O chrome é intencionalmente mínimo: uma borda arredondada, fundo claro e uma linha flex `gap-1` que segura os botões que você quiser.
+
+Use-o para as affordances de workflow mais comuns: editar, duplicar, deletar, configurar. Para controles mais elaborados que devem estar sempre visíveis (como zoom e fit no nível do canvas), recorra a [`Controls`](/components/workflow/controls).
+
+## Preview
+
+<ComponentPreview name="ai/toolbar">
+  <ToolbarPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Toolbar   node action toolbar — leaf primitive (rendered on a Canvas node)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-toolbar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-toolbar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-toolbar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-toolbar ```</Tab>
+</Tabs>
+
+Requer `@xyflow/react` como peer dependency. Já é uma dep transitiva da família workflow, então instalar `rx-canvas`, `rx-node` ou qualquer outro primitivo de workflow já a traz junto.
+
+Importe o stylesheet do xyflow uma vez no entry da app:
+
+```ts
+import '@xyflow/react/dist/style.css';
+```
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Node, NodeContent, Toolbar } from "@gremorie/rx-ai";
+import { Button } from "@gremorie/rx-forms";
+import { PencilIcon, TrashIcon } from "lucide-react";
+
+export function StartNode({ data, ...props }) {
+  return (
+    <Node {...props} handles={{ target: false, source: true }}>
+      <Toolbar>
+        <Button size="icon" variant="ghost" aria-label="Edit">
+          <PencilIcon className="size-4" />
+        </Button>
+        <Button size="icon" variant="ghost" aria-label="Delete">
+          <TrashIcon className="size-4" />
+        </Button>
+      </Toolbar>
+      <NodeContent>{data.label}</NodeContent>
+    </Node>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarButton,
+} from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Toolbar, ToolbarGroup, ToolbarButton],
+template: `     <toolbar>
+      <toolbar-group ariaLabel="Formatting">
+        <toolbar-button [pressed]="bold" ariaLabel="Bold" (clicked)="bold = !bold">
+          <span class="font-bold">B</span>
+        </toolbar-button>
+        <toolbar-button ariaLabel="Italic">
+          <span class="italic">I</span>
+        </toolbar-button>
+      </toolbar-group>
+    </toolbar>
+  `,
+})
+export class ExampleComponent {
+bold = false;
+}
+
+````
+
+> O `<toolbar>` do Angular é o primitivo genérico (uma `<div role="toolbar">`). Combine-o com `@xyflow/angular` no nível da app se você precisar de um toolbar ancorado no canvas.
+</Tab>
+</Tabs>
+
+## API
+
+### `<Toolbar>`
+
+Envolve o `NodeToolbar` de `@xyflow/react`. Todas as props de `NodeToolbar` são encaminhadas.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `position` | `Position` | `Position.Bottom` | Lado de ancoragem. A Gremorie sobrescreve o default do xyflow para bottom. |
+| `isVisible` | `boolean` | controlado pelo xyflow | Força visível independentemente do estado de seleção. |
+| `offset` | `number` | `10` | Distância (px) da borda do nó. |
+| `nodeId` | `string \| string[]` | nó pai | Vincula a um nó específico quando renderizado fora de um. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alinhamento ao longo da borda escolhida. |
+| `className` | `string` | - | Classes extras na superfície do toolbar. |
+
+Chrome padrão: `flex items-center gap-1 rounded-sm border bg-background p-1.5`.
+
+## Composição
+
+1. **`<Toolbar>`** vive dentro de um `<Node>`. O xyflow infere o ID do nó a partir do contexto `NodeProps` ao redor, então você normalmente não passa `nodeId` manualmente.
+2. **Os children** costumam ser `Button size="icon"` de `@gremorie/rx-forms`. Cada botão precisa do seu próprio `aria-label` porque são só ícone.
+3. **A visibilidade** segue a seleção do nó por padrão. Clique no nó e o toolbar surge; clique em qualquer outro lugar e ele desaparece.
+4. Para controles no nível do canvas (zoom in, zoom out, fit view), use [`Controls`](/components/workflow/controls), que ancora em um canto do canvas.
+
+## Variações
+
+### Só editar e deletar
+
+O toolbar mínimo padrão. Visível apenas quando o nó está selecionado.
+
+```tsx
+<Toolbar>
+  <Button size="icon" variant="ghost" aria-label="Edit">
+    <PencilIcon className="size-4" />
+  </Button>
+  <Button size="icon" variant="ghost" aria-label="Delete">
+    <TrashIcon className="size-4" />
+  </Button>
+</Toolbar>
+````
+
+### Sempre visível
+
+Passe `isVisible` para manter o toolbar montado independentemente da seleção. Útil para affordances de "drag handle" em fluxos read-only.
+
+```tsx
+<Toolbar isVisible>
+  <Button size="icon" variant="ghost" aria-label="Drag">
+    <GripVerticalIcon className="size-4" />
+  </Button>
+</Toolbar>
+```
+
+### Ancorado no topo
+
+Sobrescreva `position` quando a região do canvas abaixo do nó estiver cheia demais.
+
+```tsx
+import { Position } from '@xyflow/react';
+
+<Toolbar position={Position.Top}>
+  <Button size="icon" variant="ghost" aria-label="Configure">
+    <SettingsIcon className="size-4" />
+  </Button>
+</Toolbar>;
+```
+
+## Acessibilidade
+
+- **Keyboard**: os botões são `Button`s de verdade, então a ordem de tab segue o DOM e Enter / Space os ativam. Selecionar um nó com o teclado (depois que o canvas está focado) também expõe seu toolbar.
+- **Botões só de ícone exigem `aria-label`**: não há tooltip embutido nas ações do `Toolbar`. Ou forneça `aria-label` diretamente ou envolva cada botão em um `Tooltip` + `TooltipTrigger` de `@gremorie/rx-overlays`.
+- **Reduced motion**: a animação de posicionamento do xyflow é puramente baseada em transform. Respeite as preferências do usuário com `@media (prefers-reduced-motion: reduce)` se você adicionar transições custom.
+- **Screen readers**: como o toolbar aparece na seleção, anuncie a seleção do nó via `aria-live` (ou dependa dos eventos de seleção do xyflow) para que a tecnologia assistiva saiba que novas ações estão disponíveis.
+
+## Relacionados
+
+- [Canvas](/components/workflow/canvas) - a superfície xyflow que hospeda nós e seus toolbars
+- [Node](/components/workflow/node) - o elemento host de um `Toolbar`
+- [Controls](/components/workflow/controls) - controles no nível do canvas ancorados em um canto
+- [Panel](/components/workflow/panel) - um panel flutuante para overlays maiores no canvas

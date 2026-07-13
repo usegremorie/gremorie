@@ -1,0 +1,66 @@
+---
+title: Philosophy
+description: As decisões inegociáveis contra as quais todo componente, padrão e página do Gremorie é avaliado.
+---
+
+As decisões abaixo são inegociáveis. Todo componente, padrão
+e página no Gremorie é avaliado contra estes princípios.
+
+## Tokens sobre valores
+
+Se você se pegar digitando um código hex ou um literal oklch em um
+arquivo de componente, pare. Use um token semantic (`--primary`,
+`--foreground`, etc.) — esses resolvem para o tema ativo, em light
+ou dark, automaticamente. Componentes que fazem hardcode de valores parecem bem
+em um tema e quebrados em três.
+
+## Composição sobre configuração
+
+Uma API `<Button variant="primary" size="lg" leftIcon={...} loading>`
+incha rápido. Prefira compound components e slotted children
+onde eles são um encaixe natural:
+
+```tsx
+<Button>
+  <Button.Icon>
+    <Spinner />
+  </Button.Icon>
+  <Button.Label>Saving</Button.Label>
+</Button>
+```
+
+O padrão de composição mantém a API pequena e deixa os consumidores
+saírem do formato prescrito quando precisam. Veja a
+skill `composition-patterns` para o toolkit completo.
+
+## Acessibilidade é obrigatória, não opcional
+
+Todo componente é entregue com navegação por teclado documentada, atributos
+ARIA e comportamento de screen-reader — veja a seção "Accessibility" de cada página
+MDX. O alvo é **WCAG 2.2 AA** no mínimo. Componentes de AI
+adicionalmente exigem live regions e gerenciamento explícito de focus.
+
+## Server-friendly por default (edição React)
+
+Quando a edição React chegar, os componentes vão por default funcionar em React Server
+Components. Qualquer coisa que precise de `"use client"` é documentada como tal. State,
+refs e effects são opt-in via subcomponentes, não o default.
+
+## Distribuído por registry, legível por AI
+
+O Gremorie é distribuído via um registry (lido pela CLI `gremorie` e por um servidor
+MCP), não um pacote npm clássico. Componentes são entregues como source instalável para que
+os consumidores possuam o código que instalam — e para que um modelo de linguagem possa ler o
+registry e gerar saída que corresponde ao sistema em vez de alucinar.
+
+## O site de referência é o spec
+
+Se um comportamento não está documentado no MDX do componente ou mostrado nas
+suas stories, ele não existe. PRs que adicionam comportamento sem
+atualizar as docs são rejeitados.
+
+## Aceite escolhas chatas
+
+Onde o Radix, o Tailwind ou o ecossistema upstream tem um default sensato,
+adote-o. Primitives construídos sob medida são reservados para necessidades genuínas de produto.
+Reinventar a roda é um imposto sobre todo futuro contribuidor.

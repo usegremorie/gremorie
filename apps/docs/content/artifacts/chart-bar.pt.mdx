@@ -1,0 +1,221 @@
+---
+title: Chart (bar)
+description: 'Artifact de bar chart que renderiza um dataset schema-driven emitido pelo modelo.'
+---
+
+## Visão geral
+
+Um artifact de chart que transforma um pequeno payload JSON em um bar chart de
+verdade. O modelo emite um array de linhas `{ category, value }` mais uma config
+que nomeia a série e a vincula a uma cor de token de chart. O artifact valida o
+payload, renderiza um `BarChart` de `@gremorie/rx-data` e expõe uma table de
+dados acessível para leitores de tela.
+
+Este é o exemplo canônico de "schema in, UI out" — o modelo desenha o dataset,
+o artifact cuida dos eixos, ticks, layout e acessibilidade.
+
+## Preview
+
+<ArtifactPreview name="chart-bar" />
+
+## Schema
+
+O LLM retorna output estruturado que segue este shape:
+
+```ts
+{
+  type: "chart-bar",
+  data: Array<{ category: string; value: number }>,
+  config: { xKey: string; yKey: string; label: string },
+}
+```
+
+## Anatomia
+
+```text
+Card
+├─ CardHeader            CardTitle + Badge (outline) — artifact type
+├─ BarChart (rx-data)    renders the dataset; ChartConfig maps value key → label + color token
+└─ schema preview card   exposes the contract for inspection
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-chart-bar
+```
+
+</Tab>
+
+</Tabs>
+
+## Exemplos de prompt
+
+Prompts de exemplo que produzem output válido para este artifact:
+
+- "Me mostre a receita do Q3 por região como um bar chart."
+- "Compare usuários ativos mensais dos últimos 6 meses."
+- "Plote a contagem de tickets por bucket de prioridade."
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@gremorie/rx-display';
+import { BarChart, type ChartConfig, type ChartDatum } from '@gremorie/rx-data';
+
+const SCHEMA = `{
+  type: "chart-bar",
+  data: Array<{ category: string; value: number }>,
+  config: { xKey: string; yKey: string; label: string },
+}`;
+
+const DATA: ChartDatum[] = [
+  { category: 'Q1', value: 42000 },
+  { category: 'Q2', value: 51000 },
+  { category: 'Q3', value: 48000 },
+  { category: 'Q4', value: 62000 },
+];
+
+const CONFIG: ChartConfig = {
+  value: { label: 'Revenue', color: 'var(--chart-1)' },
+};
+
+export function ChartBar() {
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <CardTitle>Quarterly revenue</CardTitle>
+              <CardDescription>
+                Generated from a chart schema returned by the LLM.
+              </CardDescription>
+            </div>
+            <Badge variant="outline">JSON Schema</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <BarChart data={DATA} config={CONFIG} xKey="category" />
+        </CardContent>
+      </Card>
+      <Card className="bg-muted/30">
+        <CardHeader>
+          <CardTitle className="text-sm">Schema</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <pre className="overflow-x-auto text-xs font-mono text-muted-foreground">
+            {SCHEMA}
+          </pre>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+A edição Angular entrega o shell `ChartArtifact` de `@gremorie/ng-artifacts`,
+que envolve qualquer chart `@gremorie/ng-data` com um toggle chart ⇄ table e
+downloads PNG / CSV, além da mesma table de dados acessível:
+
+```ts
+import { Component } from '@angular/core';
+import { ChartArtifact } from '@gremorie/ng-artifacts';
+
+@Component({
+  selector: 'app-chart-bar',
+  imports: [ChartArtifact],
+  template: `
+    <chart-artifact
+      title="Quarterly revenue"
+      description="Generated from a chart schema returned by the LLM."
+      type="bar"
+      categoryKey="category"
+      valueKey="value"
+      valueLabel="Revenue"
+      [data]="data"
+    />
+  `,
+})
+export class ChartBarComponent {
+  readonly data = [
+    { category: 'Q1', value: 42000 },
+    { category: 'Q2', value: 51000 },
+    { category: 'Q3', value: 48000 },
+    { category: 'Q4', value: 62000 },
+  ];
+}
+```
+
+Passe `type` (`bar | area | line | pie | radar | radial | scatter`) para trocar o
+chart embutido, ou um array `valueKey` para multi-série. O shell espelha o
+`ChartArtifact` do React input por input.
+
+</Tab>
+
+</Tabs>
+
+## Props do ChartArtifact
+
+Gerado a partir do contrato de componente agnóstico (`@gremorie/contracts`), então
+as edições React e Angular e esta table nunca divergem:
+
+<PropsTable for="chart-artifact" />
+
+## Comportamento de streaming
+
+<Callout type="info">
+  Este artifact renderiza depois que o payload JSON é parseado. Payloads
+  parciais são adiados até `data` ser um array válido — o chart nunca renderiza
+  meio dataset.
+</Callout>
+
+## Relacionados
+
+- [BarChart](/components/data/bar-chart)
+- [Artifacts overview](/artifacts)

@@ -1,0 +1,289 @@
+---
+title: Area Chart
+description: 'Quantidade cumulativa sobre um domínio ordenado, preenchida sob a curva e com cor por token de série.'
+---
+
+import { AreaChartPreview } from '@/components/preview/data/area-chart';
+import { AreaChartSinglePreview } from '@/components/preview/data/area-chart-single';
+
+## Visão geral
+
+`AreaChart` é um gráfico recharts conectado aos design tokens do Gremorie através do primitive `chart` do shadcn (`ChartContainer`) para **área preenchida sobre uma categoria ordenada**. Passe `data` tabular, um `config` serializável que mapeia cada campo de valor para um `label` mais uma `color`, e o `xKey` que nomeia o campo de categoria. `ChartContainer` injeta a cor de cada série como `var(--color-<key>)`, e o recharts renderiza o cartesian grid, os ticks dos eixos e os paths preenchidos por série. Passe `stacked` para empilhar as séries ou `type` para escolher a curva de interpolação.
+
+Use AreaChart quando a **magnitude** de uma série importa tanto quanto sua tendência - tráfego por mês, receita por semana, contagem de erros por dia. Para comparação pura de forma sem ênfase na magnitude, prefira [`LineChart`](/components/data/line-chart); para comparações discretas de categoria-vs-categoria, prefira [`BarChart`](/components/data/bar-chart).
+
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+
+## Anatomia
+
+```
+<area-chart>
+└─ figure (role="img")                  card surface, aspect-video
+   ├─ svg (chart frame)
+   │  ├─ cartesian grid
+   │  ├─ x axis (category from xKey)
+   │  ├─ y axis (numeric, optional via yAxis)
+   │  └─ filled areas, one per config key  (stacked or overlaid)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
+A edição React compõe esta superfície através do primitive `chart` do shadcn:
+
+```text
+ChartContainer                  responsive frame + injects --color-<key> from config
+└─ AreaChart                    recharts area chart (accessibilityLayer)
+   ├─ CartesianGrid             horizontal rules
+   ├─ XAxis                     category axis
+   ├─ YAxis                     numeric axis (when yAxis)
+   ├─ ChartTooltip              hover card
+   │  └─ ChartTooltipContent    tooltip body
+   └─ Area                      one per series; 40% fill, full stroke
+```
+
+## Preview
+
+<ComponentPreview name="data/area-chart">
+  <AreaChartPreview />
+</ComponentPreview>
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-area-chart ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { AreaChart } from "@gremorie/rx-data";
+import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
+
+const data: ChartDatum[] = [
+{ month: "Jan", desktop: 186, mobile: 80 },
+{ month: "Feb", desktop: 305, mobile: 200 },
+{ month: "Mar", desktop: 237, mobile: 120 },
+{ month: "Apr", desktop: 73, mobile: 190 },
+{ month: "May", desktop: 209, mobile: 130 },
+{ month: "Jun", desktop: 214, mobile: 140 },
+];
+
+const config: ChartConfig = {
+desktop: { label: "Desktop", color: "var(--chart-1)" },
+mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+export function MonthlyVisitors() {
+  return <AreaChart data={data} config={config} xKey="month" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from '@angular/core';
+import { AreaChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+selector: 'app-monthly-visitors',
+imports: [AreaChart],
+template: `<area-chart [data]="data" [config]="config" xKey="month" />`,
+})
+export class MonthlyVisitorsComponent {
+readonly data: ChartDatum[] = [
+{ month: 'Jan', desktop: 186, mobile: 80 },
+{ month: 'Feb', desktop: 305, mobile: 200 },
+{ month: 'Mar', desktop: 237, mobile: 120 },
+{ month: 'Apr', desktop: 73, mobile: 190 },
+{ month: 'May', desktop: 209, mobile: 130 },
+{ month: 'Jun', desktop: 214, mobile: 140 },
+];
+
+readonly config: ChartConfig = {
+desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+};
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<AreaChart>`
+
+O wrapper estilizado. Renderiza um div `ChartContainer` envolvendo um `<AreaChart>` do recharts (com `accessibilityLayer` habilitado): um cartesian grid, eixo X, e um `<Area>` preenchido por série no `config`, cada um preenchido e traçado com `var(--color-<key>)`.
+
+| Prop        | Type                                            | Default     | Descrição                                                                                                                                                                                       |
+| ----------- | ----------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `data`      | `readonly ChartDatum[]`                         | -           | Dados tabulares. Cada linha é um record de chaves string para valores numéricos ou de categoria. A coluna em `xKey` é a categoria; toda chave em `config` deve existir em cada linha como valor numérico.       |
+| `config`    | `ChartConfig`                                   | -           | Mapeia cada chave de série para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`; `ChartContainer` a expõe como `var(--color-<key>)`. |
+| `xKey`      | `string`                                        | -           | Nome do campo de categoria em cada linha. Determina os ticks do eixo X.                                                                                                                                 |
+| `stacked`   | `boolean`                                       | `false`     | Empilha as séries em vez de sobrepô-las.                                                                                                                                                     |
+| `type`      | `"natural" \| "monotone" \| "linear" \| "step"` | `"natural"` | Curva de interpolação para as áreas.                                                                                                                                                               |
+| `yAxis`     | `boolean`                                       | `true`      | Renderiza o eixo Y numérico. Defina como `false` para uma área minimalista, sem eixo (estilo sparkline).                                                                                       |
+| `tooltip`   | `boolean`                                       | `true`      | Mostra o tooltip de hover.                                                                                                                                                                          |
+| `className` | `string`                                        | -           | Mesclado no `ChartContainer`. Use para escapes de dimensionamento; o estilo empacotado já fornece uma superfície de card arredondada mais o aspect ratio.                                                    |
+
+### Exports do primitive chart
+
+`@gremorie/rx-data` reexporta o primitive `chart` do shadcn para que você possa compor gráficos customizados. Envolva recharts cru (`Area`, `Bar`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) dentro de `ChartContainer`:
+
+| Export                                 | Papel                                                                                                  |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `ChartContainer`                       | Fornece o contexto do chart, o frame responsivo e injeta as CSS vars `--color-<key>` a partir do `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Tooltip de hover estilizado por token.                                                                           |
+| `ChartLegend` / `ChartLegendContent`   | Legenda estilizada por token.                                                                                  |
+| `useChart`                             | Hook que retorna o `ChartConfig` ativo a partir do contexto.                                                 |
+
+### Types
+
+| Type          | Shape                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart.           |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série. |
+
+## Composição
+
+1. **Escolha o `xKey`** primeiro - a categoria que corre ao longo da base (meses, semanas, números de versão).
+2. **Escreva o `config`** mapeando cada campo de valor para um label e uma cor orientada por token. Os tokens `--chart-1` até `--chart-5` já codificam contraste legível entre temas claro e escuro.
+3. **Passe `data`** como um array de records.
+4. **Para layouts customizados** (densidade de grid diferente, uma legenda customizada, séries mistas), componha recharts cru dentro de `<ChartContainer>` (veja [Compondo com o primitive chart](#composing-with-the-chart-primitive)).
+
+O chart se auto-dimensiona ao pai via `ResponsiveContainer` do recharts, então a superfície envolvente controla a largura. A classe padrão no `ChartContainer` fixa o chart em `aspect-video` para uma forma de card estável.
+
+## Variações
+
+### Série única
+
+<ComponentPreview name="data/area-chart-single">
+  <AreaChartSinglePreview />
+</ComponentPreview>
+
+```tsx
+<AreaChart
+  data={data}
+  config={{ visits: { label: 'Visits', color: 'var(--chart-1)' } }}
+  xKey="month"
+/>
+````
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" />
+```
+
+A forma padrão. Use uma área única quando uma métrica é o destaque.
+
+### Multi-série
+
+<div className="rounded-lg border p-6 not-prose">
+  <AreaChartPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  desktop: { label: 'Desktop', color: 'var(--chart-1)' },
+  mobile: { label: 'Mobile', color: 'var(--chart-2)' },
+};
+
+<AreaChart data={data} config={config} xKey="month" />;
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" />
+```
+
+Para comparação lado a lado. As áreas se sobrepõem com `fillOpacity` em 0.4 para que a série inferior continue visível atrás da superior. Limite a três séries antes de recorrer ao [`LineChart`](/components/data/line-chart).
+
+### Empilhado
+
+Defina `stacked` para dispor as séries em camadas, de modo que cada área fique sobre a de baixo e a silhueta seja lida como um total cumulativo.
+
+```tsx
+<AreaChart data={data} config={config} xKey="month" stacked />
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" [stacked]="true" />
+```
+
+### Tipo de curva
+
+Defina `type` para escolher a curva de interpolação - `"natural"` (padrão), `"monotone"`, `"linear"` (segmentos retos) ou `"step"` (bordas em degrau). Use `"linear"` para ler pontos de inflexão exatos; use `"step"` para mudanças de estado discretas.
+
+```tsx
+<AreaChart data={data} config={config} xKey="month" type="linear" />
+<AreaChart data={data} config={config} xKey="month" type="step" />
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" type="linear" />
+<area-chart [data]="data" [config]="config" xKey="month" type="step" />
+```
+
+### Sem eixo
+
+Defina `yAxis` como `false` para remover o eixo numérico e obter uma área minimalista, estilo sparkline, que se apoia no tooltip para valores exatos.
+
+```tsx
+<AreaChart data={data} config={config} xKey="month" yAxis={false} />
+```
+
+```html
+<area-chart [data]="data" [config]="config" xKey="month" [yAxis]="false" />
+```
+
+### Compondo com o primitive chart
+
+Quando você precisa de controle total, pule o `AreaChart` e componha recharts cru dentro de `ChartContainer`. O container continua injetando suas cores de token e o estilo do tooltip.
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@gremorie/rx-data';
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+
+<ChartContainer config={config}>
+  <AreaChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
+    <CartesianGrid vertical={false} />
+    <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+    <ChartTooltip
+      cursor={false}
+      content={<ChartTooltipContent indicator="dot" />}
+    />
+    <Area
+      dataKey="desktop"
+      type="natural"
+      fill="var(--color-desktop)"
+      fillOpacity={0.4}
+      stroke="var(--color-desktop)"
+    />
+  </AreaChart>
+</ChartContainer>;
+```
+
+Componha recharts cru quando a superfície precisa de um aspect diferente, uma linha de referência ou uma legenda customizada. `ChartContainer` é dono do frame responsivo e das vars de cor de token.
+
+## Acessibilidade
+
+- **Accessibility layer**: o `accessibilityLayer` do recharts está habilitado, fornecendo navegação por teclado e anúncios de screen reader para os pontos de dados.
+- **Contraste de token**: os tokens `--chart-1` até `--chart-5` são ajustados para contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
+- **Elemento container**: o wrapper renderiza um div `ChartContainer` com as cores das séries aplicadas como CSS variables.
+- **Sem UI de streaming**: os charts não implementam um affordance de append por streaming. Para dados ao vivo, renderize o chart dentro de um boundary `useDeferredValue` ou throttle as atualizações do pai a um orçamento de frame sustentável.
+
+## Relacionados
+
+- [LineChart](/components/data/line-chart) - mesmos eixos, sem preenchimento, quando a forma importa mais que a magnitude.
+- [BarChart](/components/data/bar-chart) - categorias discretas em vez de um domínio ordenado.
+- [ScatterChart](/components/data/scatter-chart) - X e Y independentes quando o eixo X é ele mesmo numérico.

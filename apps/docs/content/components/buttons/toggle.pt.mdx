@@ -1,0 +1,177 @@
+---
+title: Toggle
+description: Press-button de dois estados (`aria-pressed`) construído sobre o Radix Toggle, para ações com estado como formatação de texto e modos de visualização.
+---
+
+import { TogglePreview } from '@/components/preview/forms/toggle';
+import { ToggleOutlinePreview } from '@/components/preview/forms/toggle-outline';
+import { ToggleSizesPreview } from '@/components/preview/forms/toggle-sizes';
+import { ToggleDisabledPreview } from '@/components/preview/forms/toggle-disabled';
+
+## Visão geral
+
+`Toggle` é construído sobre `@radix-ui/react-toggle`. Um press-button de dois estados (`aria-pressed`) para ações com estado **fora** do submit de formulário - bold / italic em um editor de texto, chaves de modo de visualização, filter chips.
+
+Para valores booleanos vinculados a formulário use `Checkbox` ou `Switch`. Não use Toggle como navegação - isso é `Tab` ou `Link`. `ToggleGroup` é o equivalente coordenado de múltiplos buttons quando você tem vários toggles relacionados.
+
+## Preview
+
+<ComponentPreview name="forms/toggle">
+  <TogglePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Toggle   único button de dois estados (aria-pressed) estilizado por toggleVariants; data-[state=on] pinta o look ativo
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-toggle ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-toggle ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-toggle ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-toggle ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Toggle } from "@gremorie/rx-forms";
+import { Bold } from "lucide-react";
+
+export function Example() {
+  return (
+    <Toggle aria-label="Bold">
+      <Bold />
+    </Toggle>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Toggle>`
+
+| Prop              | Type                         | Default     | Description                                                                            |
+| ----------------- | ---------------------------- | ----------- | -------------------------------------------------------------------------------------- |
+| `pressed`         | `boolean`                    | -           | Estado pressed controlado.                                                             |
+| `defaultPressed`  | `boolean`                    | -           | Estado inicial não controlado.                                                         |
+| `onPressedChange` | `(pressed: boolean) => void` | -           | Dispara quando o usuário alterna.                                                      |
+| `disabled`        | `boolean`                    | `false`     | Desabilita a interação.                                                                |
+| `variant`         | `"default" \| "outline"`     | `"default"` | `default` é transparente; `outline` adiciona uma borda para uso standalone em toolbar. |
+| `size`            | `"default" \| "sm" \| "lg"`  | `"default"` | Preset de footprint.                                                                   |
+
+Encaminha para `TogglePrimitive.Root`. O estado pressed é espelhado via `data-state` (`on` / `off`), que controla o background de acento.
+
+### `toggleVariants`
+
+Factory CVA exportada. Reutilizada por `ToggleGroupItem` para que os filhos herdem a mesma superfície via context.
+
+```tsx
+import { toggleVariants } from '@gremorie/rx-forms';
+
+<div className={toggleVariants({ variant: 'outline', size: 'sm' })}>
+  Custom host
+</div>;
+```
+
+## Composição
+
+1. **`<Toggle>`** é uma folha. Sempre forneça `aria-label` para toggles icon-only.
+2. **Os filhos são tipicamente ícones** (formatação, modo de visualização). Para texto + ícone, siga o mesmo padrão do `Button`.
+3. **Use `<ToggleGroup>`** quando você tem 2-5 toggles relacionados que devem se comportar como um conjunto coordenado.
+
+## Variações
+
+### Toggle de formatação icon-only
+
+O padrão canônico de editor de texto. Sempre combine com `aria-label`.
+
+```tsx
+import { Bold } from 'lucide-react';
+
+<Toggle aria-label="Bold">
+  <Bold />
+</Toggle>;
+```
+
+### Pressed por padrão
+
+Para toggles cujo estado padrão deve ser "on" (ex. indicador de autosave, um filtro aplicado).
+
+```tsx
+import { Italic } from 'lucide-react';
+
+<Toggle aria-label="Italic" defaultPressed>
+  <Italic />
+</Toggle>;
+```
+
+### Variant outline
+
+Quando o toggle fica sozinho (não dentro de um `ToggleGroup`), a variant `outline` adiciona um limite visível para que seja lido como um controle interativo em superfícies planas.
+
+<ComponentPreview name="forms/toggle-outline">
+  <ToggleOutlinePreview />
+</ComponentPreview>
+
+### Tamanhos
+
+Três presets de footprint - `sm`, `default`, `lg` - mantêm os toggles alinhados com controles vizinhos em uma toolbar.
+
+<ComponentPreview name="forms/toggle-sizes">
+  <ToggleSizesPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` remove o toggle da ordem de tabulação e reduz sua opacidade. O estado pressed continua visível para que os usuários vejam o que estava ativo.
+
+<ComponentPreview name="forms/toggle-disabled">
+  <ToggleDisabledPreview />
+</ComponentPreview>
+
+### Controlado com efeito
+
+Vincule o estado pressed ao seu estado de editor / visualização.
+
+```tsx
+function BoldToggle({ editor }) {
+  const isBold = editor.isActive('bold');
+  return (
+    <Toggle
+      aria-label="Bold"
+      pressed={isBold}
+      onPressedChange={(pressed) => editor.chain().focus().toggleBold().run()}
+    >
+      <Bold />
+    </Toggle>
+  );
+}
+```
+
+## Acessibilidade
+
+- **ARIA**: o Radix renderiza `role="button"` com `aria-pressed` refletindo o estado (`true` / `false`).
+- **Teclado**: `Space` e `Enter` alternam o button; `Tab` / `Shift+Tab` movem o foco.
+- **Focus**: focus-visible ring de 3px controlado por `focus-visible:ring-ring/50`.
+- **Icon-only**: sempre forneça `aria-label`. Sem ele, leitores de tela anunciam o toggle sem nome.
+- **Distinção de Switch / Checkbox**: Toggle é para **ações com estado** (aplicar um formato, mudar uma visualização). Switch e Checkbox são para **valores com estado** (uma configuração, um campo de formulário). O tratamento visual difere porque o modelo mental difere.
+
+## Relacionados
+
+- [Toggle Group](/components/buttons/toggle-group) - cluster coordenado de toggles
+- [Button](/components/buttons/button) - irmão de ação única sem estado
+- [Switch](/components/selection/switch) - configuração booleana (efeito imediato)
+- [Checkbox](/components/selection/checkbox) - valor de formulário booleano (no submit)

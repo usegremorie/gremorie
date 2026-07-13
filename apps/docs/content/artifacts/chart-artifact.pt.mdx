@@ -1,0 +1,186 @@
+---
+title: Chart Artifact
+description: 'O preset Chart do shell de artifact — embute qualquer chart do rx-data com um toggle chart ⇄ table funcional e downloads PNG / CSV.'
+---
+
+## Visão geral
+
+`ChartArtifact` é o **preset Chart** do shell genérico [`Artifact`](/components/code/artifact). Ele embute qualquer um dos primitivos de chart estilizados de `@gremorie/rx-data` — bar, area, line, pie, radar, radial ou scatter — dentro do card de artifact, com um toggle chart ⇄ table embutido e downloads. Como ele embute os primitivos de chart reais, qualquer mudança neles se reflete aqui automaticamente.
+
+O modelo emite um pequeno dataset tabular mais as chaves que mapeiam colunas para o chart; o artifact renderiza o chart, constrói uma table **wide** acessível (uma coluna por série de valor, então charts multi-série mantêm todos os valores) e faz a fiação das ações do header. Charts categóricos de série única (bar / pie / radial) colorem uma linha por fatia; charts multi-série (line / area / radar / scatter) colorem por coluna. O header colapsa suas ações em um único menu em cards estreitos.
+
+## Preview
+
+<ArtifactPreview name="chart-artifact" />
+
+## Schema
+
+O LLM retorna output estruturado que segue este shape:
+
+```ts
+{
+  title: string,
+  description?: string,
+  type?: "bar" | "area" | "line" | "pie" | "radar" | "radial" | "scatter",
+  data: Array<Record<string, string | number>>,
+  categoryKey: string,
+  valueKey: string | Array<{ key: string; label?: string; color?: string }>,
+}
+```
+
+## Anatomia
+
+```text
+Artifact                       generic artifact card shell
+├─ ArtifactHeader
+│  ├─ ArtifactFeaturedIcon     leading featured icon (color = accent)
+│  ├─ ArtifactHeading          ArtifactTitle + optional ArtifactDescription
+│  └─ ArtifactActions
+│     ├─ ArtifactViewToggle    chart ⇄ table switch (always visible)
+│     ├─ ArtifactActionsExpanded   wide card: Download menu + More menu
+│     └─ ArtifactActionsCollapsed  narrow card: single Actions menu
+└─ ArtifactContent
+   ├─ <rx-data chart>          bar · area · line · pie · radar · radial · scatter
+   └─ Table                    wide table — one column per value series (table view)
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-chart
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-chart
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-chart
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-chart
+```
+
+</Tab>
+
+</Tabs>
+
+Compõe o shell `Artifact` (`rx-artifact`), os primitivos de chart (`rx-data`) e a `Table` (`rx-display`).
+
+## Exemplos de prompt
+
+Prompts de exemplo que produzem output válido para este artifact:
+
+- "Faça um chart de visitantes por canal de aquisição nos últimos 30 dias."
+- "Plote a receita mensal de desktop e mobile como um line chart."
+- "Mostre pontuações de capacidade em seis dimensões como um radar chart."
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import { ChartArtifact } from '@gremorie/rx-artifacts';
+import { TrendingUpIcon } from 'lucide-react';
+
+const data = [
+  { channel: 'Organic', visitors: 4200 },
+  { channel: 'Referral', visitors: 3100 },
+  { channel: 'Social', visitors: 2400 },
+  { channel: 'Email', visitors: 1800 },
+  { channel: 'Paid', visitors: 1200 },
+];
+
+export function VisitorsByChannel() {
+  return (
+    <ChartArtifact
+      title="Visitors by channel"
+      description="Last 30 days · toggle to inspect the table or download."
+      icon={TrendingUpIcon}
+      type="bar"
+      data={data}
+      categoryKey="channel"
+      valueKey="visitors"
+      categoryLabel="Channel"
+      valueLabel="Visitors"
+      fileName="visitors-by-channel"
+    />
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  A edição Angular deste componente hoje é distribuída a partir do source (veja
+  o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Props
+
+| Prop            | Type                                                                     | Default       | Description                                                                       |
+| --------------- | ------------------------------------------------------------------------ | ------------- | --------------------------------------------------------------------------------- |
+| `title`         | `string`                                                                 | -             | Título de linha única.                                                            |
+| `description`   | `string`                                                                 | -             | Texto de apoio opcional (trunca).                                                 |
+| `data`          | `Array<Record<string, string \| number>>`                                | -             | Linhas tabulares — um objeto por categoria / ponto.                               |
+| `type`          | `"bar" \| "area" \| "line" \| "pie" \| "radar" \| "radial" \| "scatter"` | `"bar"`       | Qual primitivo de chart embutir.                                                  |
+| `categoryKey`   | `string`                                                                 | -             | Campo de categoria / X (primeira coluna da table).                                |
+| `valueKey`      | `string \| ChartArtifactSeries[]`                                        | -             | Uma série de valor (string) ou várias (array). Cada uma vira uma coluna da table. |
+| `categoryLabel` | `string`                                                                 | title-cased   | Label de header para a coluna de categoria.                                       |
+| `valueLabel`    | `string`                                                                 | title-cased   | Label para uma única série de valor (ignorado quando `valueKey` é um array).      |
+| `defaultView`   | `"chart" \| "table"`                                                     | `"chart"`     | Qual view aparece primeiro.                                                       |
+| `numberFormat`  | `Intl.NumberFormatOptions`                                               | -             | Formatação de valor para table + CSV + tooltip.                                   |
+| `fileName`      | `string`                                                                 | `"chart"`     | Nome base para o PNG / CSV baixado.                                               |
+| `icon`          | `LucideIcon`                                                             | `ChartColumn` | Ícone em destaque no header.                                                      |
+| `accent`        | `"primary" \| "gray" \| "success" \| "error"`                            | `"primary"`   | Cor do ícone em destaque.                                                         |
+| `onRegenerate`  | `() => void`                                                             | -             | Ligado ao item de menu "Regenerate".                                              |
+| `onSave`        | `() => void`                                                             | -             | Ligado ao item de menu "Save".                                                    |
+
+## Downloads
+
+O menu **Download** do header (ou o menu **Actions** colapsado em cards estreitos) expõe:
+
+- **Image (PNG)** — rasteriza o SVG do chart ao vivo em 2× inlineando os computed styles em um clone, então o export combina com o tema na tela. Se a view atual é a table, ele troca para a view de chart primeiro e depois exporta.
+- **Data (CSV)** — serializa a table wide (coluna de categoria + uma coluna por série) com quoting adequado.
+- **Copy values** — copia valores separados por tab para o clipboard para colar em uma planilha.
+
+## Comportamento de streaming
+
+<Callout type="info">
+  Como todo artifact, este renderiza depois que o dataset é um array válido —
+  payloads parciais são adiados, então o chart nunca desenha meio dataset.
+</Callout>
+
+## Relacionados
+
+- [Artifact](/components/code/artifact) - o shell genérico sobre o qual este preset é construído.
+- [Chart](/components/data/chart) - o primitivo base sobre o qual os charts embutidos são compostos.
+- [Bar Chart](/components/data/bar-chart) - o tipo de chart embutido padrão.
+- [Artifacts overview](/artifacts)

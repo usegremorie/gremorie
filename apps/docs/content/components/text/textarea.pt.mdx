@@ -1,0 +1,164 @@
+---
+title: Textarea
+description: 'Campo de texto multi-linha que cresce automaticamente via `field-sizing: content`, com os mesmos estados de focus e erro controlados por token do Input.'
+---
+
+import { TextareaPreview } from '@/components/preview/forms/textarea';
+import { TextareaWithLabelPreview } from '@/components/preview/forms/textarea-with-label';
+import { TextareaInvalidPreview } from '@/components/preview/forms/textarea-invalid';
+import { TextareaDisabledPreview } from '@/components/preview/forms/textarea-disabled';
+
+## Visão geral
+
+`Textarea` é um wrapper estilizado fino ao redor do `<textarea>` nativo. Ele usa `field-sizing: content` para que o campo cresça automaticamente conforme o usuário digita - sem malabarismo de `rows`, sem medição de altura via JS, sem dança de resize handle.
+
+Os estados visuais combinam exatamente com o `Input`: `border-input` para o padrão, `focus-visible:ring-ring/50` para focus, `aria-invalid:border-destructive` para erro. A altura mínima é `min-h-16` para que textareas vazias sempre pareçam superfícies multi-linha.
+
+## Preview
+
+<ComponentPreview name="forms/textarea">
+  <TextareaPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Textarea   único <textarea> estilizado, min-h-16, crescendo automaticamente via field-sizing: content
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-textarea ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-textarea ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-textarea ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-textarea ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Label, Textarea } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="bio">Bio</Label>
+      <Textarea id="bio" placeholder="Tell us about yourself..." />
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Textarea>`
+
+| Prop           | Type      | Default | Description                                                                                                                                            |
+| -------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `rows`         | `number`  | -       | Dica para as rows visíveis iniciais. Menos crítica aqui já que `field-sizing: content` sobrescreve o dimensionamento estático quando o usuário digita. |
+| `disabled`     | `boolean` | `false` | Desabilita a interação. Aplica `cursor-not-allowed` e `opacity-50`.                                                                                    |
+| `aria-invalid` | `boolean` | -       | Quando `true`, troca a borda e o focus ring para o token destructive.                                                                                  |
+
+Estende todos os `React.ComponentProps<"textarea">`. Renderiza com `data-slot="textarea"`.
+
+<Callout type="info">
+  **Auto-grow via `field-sizing: content`** é suportado no Chromium 123+ e no
+  Firefox 128+. Para browsers mais antigos, a textarea ainda funciona mas não
+  faz auto-resize; passe `rows` para definir uma altura estática razoável.
+</Callout>
+
+## Composição
+
+1. **`<Textarea>`** é um primitive folha. Combine com `<Label>` para acessibilidade.
+2. **Para compositores multilinha** com toolbars ou buttons de submit, envolva com `<InputGroup>` e use `<InputGroupTextarea>` em vez disso, depois adicione um `<InputGroupAddon align="block-end">` para o footer.
+3. **Para react-hook-form**, envolva com `<FormField>` + `<FormControl>` para conectar automaticamente as relações ARIA.
+
+## Variações
+
+### Com label
+
+A textarea canônica estilo comentário. Combine-a com um `<Label>` vinculado via `htmlFor` e adicione uma description auxiliar quando o tamanho esperado importa.
+
+<ComponentPreview name="forms/textarea-with-label">
+  <TextareaWithLabelPreview />
+</ComponentPreview>
+
+### Estado invalid
+
+`aria-invalid` troca a superfície para destructive. Combine com `aria-describedby` apontando para o erro para que leitores de tela o anunciem.
+
+<ComponentPreview name="forms/textarea-invalid">
+  <TextareaInvalidPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` remove o campo da ordem de tabulação e do payload do formulário, reduz a opacidade e aplica `cursor-not-allowed`. Para conteúdo visível-mas-travado prefira `readOnly` (veja abaixo).
+
+<ComponentPreview name="forms/textarea-disabled">
+  <TextareaDisabledPreview />
+</ComponentPreview>
+
+### Compositor de chat (com InputGroup)
+
+Para superfícies de compositor com um button de envio embaixo, use `InputGroup` + `InputGroupTextarea` + `align="block-end"`.
+
+```tsx
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from '@gremorie/rx-forms';
+import { Send } from 'lucide-react';
+
+<InputGroup>
+  <InputGroupTextarea placeholder="Write a message..." />
+  <InputGroupAddon align="block-end">
+    <InputGroupButton size="sm" variant="default" className="ml-auto">
+      <Send />
+      Send
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>;
+```
+
+### Read-only
+
+Use `readOnly` (não `disabled`) quando o conteúdo deve ser visível e selecionável mas não editável - ex. exibir SQL gerado ou uma nota salva.
+
+```tsx
+<div className="grid gap-2">
+  <Label htmlFor="generated-sql">Generated SQL</Label>
+  <Textarea
+    id="generated-sql"
+    readOnly
+    value="SELECT * FROM users WHERE created_at > '2026-01-01';"
+  />
+</div>
+```
+
+## Acessibilidade
+
+- **Labels**: toda textarea precisa de um `<Label>` associado via `htmlFor` combinando com o `id` da textarea, ou de um `aria-label` explícito.
+- **Focus**: focus-visible ring de 3px controlado por `focus-visible:ring-ring/50` - aparece apenas para usuários de teclado.
+- **Validação**: combine `aria-invalid="true"` com `aria-describedby` apontando para a mensagem de erro.
+- **Disabled vs read-only**: `disabled` remove o campo da ordem de tabulação e do payload do formulário. `readOnly` o mantém tabulável, selecionável e submetível - prefira-o para conteúdo somente de exibição.
+- **Auto-grow**: `field-sizing: content` mantém o cursor visível sem scroll manual quando a textarea excede o viewport.
+
+## Relacionados
+
+- [Input](/components/text/input) - contraparte de linha única
+- [Label](/components/text/label) - o companheiro canônico
+- [Input Group](/components/text/input-group) - envolva com toolbar de footer para compositores
+- [Form](/components/form) - conecta Textarea ao react-hook-form com helpers de ARIA

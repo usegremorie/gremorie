@@ -1,0 +1,176 @@
+---
+title: Accordion
+description: 'Pilha vertical de seções expansíveis. Uma ou várias abertas ao mesmo tempo, com navegação por teclado embutida.'
+---
+
+import { AccordionPreview } from '@/components/preview/display/accordion';
+import { AccordionMultiplePreview } from '@/components/preview/display/accordion-multiple';
+import { AccordionDisabledPreview } from '@/components/preview/display/accordion-disabled';
+
+## Visão geral
+
+`Accordion` é o primitivo de disclosure coordenado: uma pilha vertical de seções onde o leitor expande e recolhe para revelar conteúdo no lugar. Construído sobre o Radix Accordion, ele oferece dois modos via `type`: `"single"` (um aberto por vez, opcionalmente com `collapsible` para que o item aberto também possa fechar) e `"multiple"` (qualquer quantidade aberta simultaneamente).
+
+Use o Accordion quando os **irmãos devem permanecer visíveis** - o contexto vertical é preservado, então o leitor consegue escanear os títulos sem perder o lugar. Quando você quer trocas completas de contexto, use Tabs. Não aninhe mais de dois níveis; profundidade além disso vira caça ao tesouro.
+
+Para um único toggle isolado de "mostrar mais", prefira [Collapsible](/components/display/collapsible) - é o bloco de construção sobre o qual o Accordion é composto.
+
+## Preview
+
+<ComponentPreview name="display/accordion">
+  <AccordionPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Accordion                  the Radix Root; carries type + collapsible
+└─ AccordionItem           one section, identified by value
+   ├─ AccordionTrigger     the clickable header (renders the chevron)
+   └─ AccordionContent     the collapsible body (animated open/close)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-accordion ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-accordion ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-accordion ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-accordion ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <Accordion type="single" collapsible defaultValue="item-1">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>What is the registry?</AccordionTrigger>
+        <AccordionContent>
+          The single source of truth for Gremorie primitives.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>What does the MCP server do?</AccordionTrigger>
+        <AccordionContent>
+          Exposes the registry as MCP tools.
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Accordion>`
+
+Envolve o `Accordion.Root` do Radix.
+
+| Prop            | Type                                  | Default      | Description                                                                                       |
+| --------------- | ------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------- |
+| `type`          | `"single" \| "multiple"`              | -            | Obrigatório. `"single"` deixa um item aberto por vez; `"multiple"` deixa qualquer número aberto.  |
+| `collapsible`   | `boolean`                             | `false`      | Só com `type="single"`. Quando `true`, clicar no item aberto o fecha.                             |
+| `value`         | `string \| string[]`                  | -            | Valor(es) controlado(s) do(s) item(ns) aberto(s). `string` para single, `string[]` para multiple. |
+| `defaultValue`  | `string \| string[]`                  | -            | Default não controlado.                                                                           |
+| `onValueChange` | `(value: string \| string[]) => void` | -            | Dispara quando um item abre ou fecha.                                                             |
+| `disabled`      | `boolean`                             | `false`      | Desabilita todos os itens.                                                                        |
+| `orientation`   | `"vertical" \| "horizontal"`          | `"vertical"` | Afeta a navegação por teclado (setas).                                                            |
+| `dir`           | `"ltr" \| "rtl"`                      | `"ltr"`      | Direção de leitura.                                                                               |
+
+### `<AccordionItem>`
+
+Uma única seção. Envolve o `Accordion.Item` do Radix.
+
+| Prop       | Type      | Default | Description                                                                             |
+| ---------- | --------- | ------- | --------------------------------------------------------------------------------------- |
+| `value`    | `string`  | -       | Obrigatório. Identificador único - é o que `value` / `defaultValue` no Root referencia. |
+| `disabled` | `boolean` | `false` | Desabilita este item específico.                                                        |
+
+Renderiza com `border-b last:border-b-0` para empilhamento limpo.
+
+### `<AccordionTrigger>`
+
+O header clicável. Envolve o `Accordion.Trigger` do Radix dentro de um `Accordion.Header` para a semântica correta. Inclui um ícone `ChevronDown` que gira 180 graus quando o item abre (`[&[data-state=open]>svg]:rotate-180`).
+
+| Prop        | Type     | Default | Description                        |
+| ----------- | -------- | ------- | ---------------------------------- |
+| `className` | `string` | -       | Classes extras mescladas via `cn`. |
+
+### `<AccordionContent>`
+
+O painel de conteúdo colapsável. Anima ao abrir e fechar usando `data-[state=closed]:animate-accordion-up` e `data-[state=open]:animate-accordion-down`. Envolve o conteúdo em uma `div` interna com `pt-0 pb-4`.
+
+## Composição
+
+1. **`<Accordion>`** detém o estado (`type`, `value` controlado ou `defaultValue` não controlado).
+2. **Um ou mais `<AccordionItem>`** com props `value` únicos.
+3. **Dentro de cada item**: um `<AccordionTrigger>` (o header) seguido de `<AccordionContent>` (o corpo).
+
+O Trigger renderiza dentro de um `Accordion.Header` interno para que a semântica de heading fique correta - você não precisa envolver o trigger no seu próprio `<h3>`.
+
+## Variações
+
+### Várias seções abertas
+
+<ComponentPreview name="display/accordion-multiple">
+  <AccordionMultiplePreview />
+</ComponentPreview>
+
+Com `type="multiple"`, qualquer número de itens pode ficar aberto ao mesmo tempo. Passe um array para `defaultValue` para abrir vários no load - útil para release notes ou detalhamentos de features.
+
+### Item desabilitado
+
+<ComponentPreview name="display/accordion-disabled">
+  <AccordionDisabledPreview />
+</ComponentPreview>
+
+Defina `disabled` em um `AccordionItem` individual para travá-lo. Triggers desabilitados renderizam com `aria-disabled="true"` e são pulados durante a navegação por setas.
+
+### Valor controlado
+
+```tsx
+const [open, setOpen] = useState<string>('billing');
+
+<Accordion type="single" collapsible value={open} onValueChange={setOpen}>
+  <AccordionItem value="account">
+    <AccordionTrigger>Account</AccordionTrigger>
+    <AccordionContent>...</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="billing">
+    <AccordionTrigger>Billing</AccordionTrigger>
+    <AccordionContent>...</AccordionContent>
+  </AccordionItem>
+</Accordion>;
+```
+
+## Acessibilidade
+
+- **Padrão WAI-ARIA Accordion**: o Radix define `role="region"` em cada painel de conteúdo com `aria-labelledby` apontando para seu trigger; o trigger recebe `aria-expanded` e `aria-controls`.
+- **Teclado**: `Tab` move entre triggers; `Space` ou `Enter` alterna o trigger em foco; `ArrowDown` / `ArrowUp` navegam entre triggers (dão a volta nas pontas). `Home` e `End` pulam para o primeiro e o último.
+- **Headings**: cada trigger é envolvido em um `Accordion.Header` interno (renderiza como `<h3>` por padrão) para que leitores de tela anunciem a seção como um heading.
+- **Itens desabilitados**: renderizam com `aria-disabled="true"` e são pulados durante a navegação por setas.
+- **Reduced motion**: as animações usam seletores `data-[state]` com queries `prefers-reduced-motion` herdadas da config de keyframes.
+
+## Relacionados
+
+- [Collapsible](/components/display/collapsible) - o bloco de construção de seção única sobre o qual o Accordion é composto.
+- [Tabs](/components/navigation/tabs) - use quando o leitor deve trocar de contexto em vez de navegar entre irmãos.
+- [Card](/components/display/card) - host comum para um Accordion dentro de um painel de configurações.

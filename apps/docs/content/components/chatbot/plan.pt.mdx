@@ -1,0 +1,230 @@
+---
+title: Plan
+description: Card de plano recolhível com título marcado por shimmer durante o streaming e um corpo expansível para passos e ações.
+---
+
+import { PlanCollapsedPreview } from '@/components/preview/ai/plan-collapsed';
+import { PlanExpandedPreview } from '@/components/preview/ai/plan-expanded';
+import { PlanStreamingPreview } from '@/components/preview/ai/plan-streaming';
+
+## Visão geral
+
+`Plan` é um `Card` recolhível que expõe o plano do assistente antes de ele executar. O título e a descrição passam pelo `Shimmer` enquanto `isStreaming` é true, e então se assentam em texto estático quando o plano é final. Um toggle no header expande ou recolhe o corpo para que os usuários possam dar uma olhada ou auditar.
+
+Use para qualquer fluxo onde o modelo propõe um plano antes de agir (agentes de múltiplos passos, bots de deploy, codegen). Para ícones de status granulares por passo e citações de busca, coloque [Chain of Thought](/components/chatbot/chain-of-thought) ou [Task](/components/chatbot/task) dentro de `PlanContent`.
+
+## Preview
+
+### Recolhido
+
+<ComponentPreview name="ai/plan-collapsed">
+  <PlanCollapsedPreview />
+</ComponentPreview>
+
+### Expandido
+
+<ComponentPreview name="ai/plan-expanded">
+  <PlanExpandedPreview />
+</ComponentPreview>
+
+### Streaming
+
+<ComponentPreview name="ai/plan-streaming">
+  <PlanStreamingPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Plan
+├─ PlanHeader
+│  ├─ PlanTitle         (faz shimmer durante o streaming)
+│  ├─ PlanDescription
+│  └─ PlanAction        slot superior direito
+├─ PlanTrigger          toggle de chevron
+├─ PlanContent          corpo recolhível
+└─ PlanFooter
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-plan ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-plan ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-plan ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-plan ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Plan,
+  PlanHeader,
+  PlanTitle,
+  PlanDescription,
+  PlanContent,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <Plan defaultOpen>
+      <PlanHeader>
+        <PlanTitle>Generate landing page</PlanTitle>
+        <PlanDescription>3 steps - 12s estimated</PlanDescription>
+      </PlanHeader>
+      <PlanContent>
+        Hero, features, CTA section composed from rx-display and rx-forms.
+      </PlanContent>
+    </Plan>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente é distribuída a partir do source hoje (veja o workbench para o lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Plan>`
+
+| Prop           | Type                      | Default | Description                                                                           |
+| -------------- | ------------------------- | ------- | ------------------------------------------------------------------------------------- |
+| `isStreaming`  | `boolean`                 | `false` | Enquanto true, `PlanTitle` e `PlanDescription` são renderizados através do `Shimmer`. |
+| `open`         | `boolean`                 | -       | Estado de abertura controlado.                                                        |
+| `defaultOpen`  | `boolean`                 | -       | Estado de abertura inicial não controlado.                                            |
+| `onOpenChange` | `(open: boolean) => void` | -       | Notificação quando o usuário alterna.                                                 |
+
+Estende `ComponentProps<typeof Collapsible>`. Envolve um `Card` internamente e remove sua sombra.
+
+### `<PlanHeader>`
+
+`CardHeader` com layout horizontal (`items-start justify-between`). Coloque `PlanTitle`, `PlanDescription` e (opcionalmente) `PlanAction` dentro.
+
+### `<PlanTitle>`
+
+| Prop       | Type     | Default | Description                                                            |
+| ---------- | -------- | ------- | ---------------------------------------------------------------------- |
+| `children` | `string` | -       | String obrigatória (para que o `Shimmer` possa aplicar por caractere). |
+
+Envolve `CardTitle`.
+
+### `<PlanDescription>`
+
+| Prop       | Type     | Default | Description                                  |
+| ---------- | -------- | ------- | -------------------------------------------- |
+| `children` | `string` | -       | String obrigatória para o efeito de shimmer. |
+
+Envolve `CardDescription`.
+
+### `<PlanAction>`
+
+Slot `CardAction` para um botão de ação customizado no header (por exemplo, "Regenerate plan").
+
+### `<PlanTrigger>`
+
+Botão de toggle. Por padrão renderiza um botão de ícone ghost com `ChevronsUpDownIcon` e um label sr-only "Toggle plan".
+
+Encaminha as props de `CollapsibleTrigger` via `asChild`.
+
+### `<PlanContent>`
+
+O corpo recolhível. Envolve `CardContent` dentro de `CollapsibleContent`.
+
+### `<PlanFooter>`
+
+`CardFooter`. Use para linhas de "Approve", "Regenerate", "Cancel".
+
+## Composição
+
+1. **`<Plan>`** envolve tudo como um card + collapsible.
+2. **`<PlanHeader>`** carrega título, descrição e (opcionalmente) ação / trigger.
+3. **`<PlanTitle>` + `<PlanDescription>`** são os campos de texto cientes do streaming.
+4. **`<PlanTrigger>`** é o handle de toggle opcional (use `PlanAction` para outros botões).
+5. **`<PlanContent>`** é o corpo expansível. Componha `ChainOfThought`, `Task`, markdown puro ou sub-componentes aqui dentro.
+6. **`<PlanFooter>`** é a linha de ação na base.
+
+## Variações
+
+### Plano com corpo recolhível e footer
+
+O padrão padrão: título no topo, detalhe expansível, approve / regenerate na base.
+
+```tsx
+<Plan defaultOpen>
+  <PlanHeader>
+    <PlanTitle>Migrate database to Postgres 16</PlanTitle>
+    <PlanDescription>4 steps - 8 min estimated</PlanDescription>
+    <PlanTrigger />
+  </PlanHeader>
+  <PlanContent>
+    <ChainOfThought defaultOpen>
+      <ChainOfThoughtHeader>Plan</ChainOfThoughtHeader>
+      <ChainOfThoughtContent>
+        <ChainOfThoughtStep status="complete" label="Snapshot current DB" />
+        <ChainOfThoughtStep status="active" label="Run pg_upgrade" />
+        <ChainOfThoughtStep status="pending" label="Switch DNS" />
+        <ChainOfThoughtStep status="pending" label="Verify replication" />
+      </ChainOfThoughtContent>
+    </ChainOfThought>
+  </PlanContent>
+  <PlanFooter>
+    <Button variant="outline">Regenerate</Button>
+    <Button>Run plan</Button>
+  </PlanFooter>
+</Plan>
+```
+
+### Plano com streaming
+
+Use enquanto o próprio plano está sendo gerado. Título e descrição fazem shimmer até `isStreaming` voltar.
+
+```tsx
+<Plan defaultOpen isStreaming>
+  <PlanHeader>
+    <PlanTitle>Composing the layout</PlanTitle>
+    <PlanDescription>Streaming response from the model...</PlanDescription>
+  </PlanHeader>
+  <PlanContent>Resolving primitives required for this composition.</PlanContent>
+</Plan>
+```
+
+### Plano com ação customizada
+
+Substitua o trigger padrão por um botão de regenerar via `PlanAction`.
+
+```tsx
+<Plan defaultOpen>
+  <PlanHeader>
+    <PlanTitle>Outline the talk</PlanTitle>
+    <PlanDescription>5 sections - 30 min</PlanDescription>
+    <PlanAction>
+      <Button size="sm" variant="ghost" onClick={regenerate}>
+        <RefreshIcon className="size-4" />
+        Regenerate
+      </Button>
+    </PlanAction>
+  </PlanHeader>
+  <PlanContent>...</PlanContent>
+</Plan>
+```
+
+## Acessibilidade
+
+- **Teclado**: `PlanTrigger` é um `CollapsibleTrigger`, alternando com Enter / Space e participando da ordem de Tab.
+- **ARIA**: o Radix Collapsible conecta `aria-expanded` e `aria-controls` automaticamente. O `PlanTrigger` padrão traz um label sr-only "Toggle plan" para que o botão apenas com ícone ainda anuncie.
+- **Leitores de tela**: título e descrição ficam em slots semânticos de Card, então um plano é anunciado como um único bloco com título + texto de apoio.
+- **Movimento reduzido**: recolher / expandir usa animações data-state do Tailwind e respeita `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Chain of Thought](/components/chatbot/chain-of-thought) - status por passo dentro do corpo do plano
+- [Task](/components/chatbot/task) - detalhamento no nível de arquivo para um único passo
+- [Confirmation](/components/chatbot/confirmation) - prompt de aprovação antes de executar o plano
+- [Shimmer](/components/chatbot/shimmer) - o efeito de texto com streaming usado por `PlanTitle` / `PlanDescription`

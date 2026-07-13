@@ -1,0 +1,292 @@
+---
+title: Inline Citation
+description: Citação inline no estilo nota de rodapé que abre em hover num carrossel multi-fonte com título, URL, descrição e citação.
+---
+
+import { InlineCitationPreview } from '@/components/preview/ai/inline-citation';
+
+## Visão geral
+
+`InlineCitation` é o padrão de nota de rodapé inline para respostas de IA. Ele envolve o trecho citado com um trigger `Badge` que condensa o hostname da fonte; no hover, um `HoverCard` abre com um `Carousel` de cards de fonte (título, URL, descrição e uma citação destacada opcional).
+
+Use para citações que pertencem a uma frase específica dentro do texto do assistente. Para uma lista global de "fontes usadas" no fim de um turno, use [Sources](/components/chatbot/sources).
+
+## Preview
+
+<ComponentPreview name="ai/inline-citation">
+  <InlineCitationPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+InlineCitation
+├─ InlineCitationText             o trecho citado
+└─ InlineCitationCard             hover card
+   ├─ InlineCitationCardTrigger   badge de hostname
+   └─ InlineCitationCardBody
+      ├─ InlineCitationSource
+      ├─ InlineCitationQuote
+      └─ InlineCitationCarousel   quando múltiplas fontes
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-inline-citation ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-inline-citation ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-inline-citation ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-inline-citation ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  InlineCitation,
+  InlineCitationText,
+  InlineCitationCard,
+  InlineCitationCardTrigger,
+  InlineCitationCardBody,
+  InlineCitationCarousel,
+  InlineCitationCarouselContent,
+  InlineCitationCarouselItem,
+  InlineCitationSource,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <InlineCitation>
+      <InlineCitationText>The OWASP Top 10 lists injection first.</InlineCitationText>
+      <InlineCitationCard>
+        <InlineCitationCardTrigger sources={["https://owasp.org/Top10"]} />
+        <InlineCitationCardBody>
+          <InlineCitationCarousel>
+            <InlineCitationCarouselContent>
+              <InlineCitationCarouselItem>
+                <InlineCitationSource
+                  title="OWASP Top 10"
+                  url="https://owasp.org/Top10"
+                  description="Standard awareness document for developers and security."
+                />
+              </InlineCitationCarouselItem>
+            </InlineCitationCarouselContent>
+          </InlineCitationCarousel>
+        </InlineCitationCardBody>
+      </InlineCitationCard>
+    </InlineCitation>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-inline-citation
+```
+
+```ts
+import { Component } from '@angular/core';
+import { BrnHoverCardContent } from '@spartan-ng/brain/hover-card';
+import {
+  InlineCitation,
+  InlineCitationText,
+  InlineCitationCard,
+  InlineCitationCardTrigger,
+  InlineCitationCardBody,
+  InlineCitationSource,
+} from '@gremorie/ng-ai';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    InlineCitation,
+    InlineCitationText,
+    InlineCitationCard,
+    InlineCitationCardTrigger,
+    InlineCitationCardBody,
+    InlineCitationSource,
+    BrnHoverCardContent,
+  ],
+  template: `
+    <p>
+      The most common web vulnerability is injection
+      <inline-citation>
+        <inline-citation-text> [1]</inline-citation-text>
+        <inline-citation-card>
+          <inline-citation-card-trigger
+            [sources]="['https://owasp.org/Top10']"
+          />
+          <ng-template brnHoverCardContent>
+            <inline-citation-card-body>
+              <inline-citation-source
+                title="OWASP Top 10"
+                url="https://owasp.org/Top10"
+                description="Standard awareness document for developers and security."
+              />
+            </inline-citation-card-body>
+          </ng-template>
+        </inline-citation-card>
+      </inline-citation>
+    </p>
+  `,
+})
+export class ExampleComponent {}
+```
+
+O corpo do hover-card fica dentro de um `<ng-template brnHoverCardContent>`, o idiom do spartan-ng brain para conteúdo de overlay renderizado sob demanda.
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<InlineCitation>`
+
+Wrapper de grupo. Adiciona uma className `group` para que o texto citado possa herdar o estilo de hover.
+
+Estende `ComponentProps<"span">`.
+
+### `<InlineCitationText>`
+
+Span que envolve a frase citada. Herda um fundo sutil `bg-accent` no hover do grupo para que o usuário veja exatamente o que está citado.
+
+### `<InlineCitationCard>`
+
+Raiz do hover card com `openDelay={0}` e `closeDelay={0}`.
+
+Estende `ComponentProps<typeof HoverCard>`.
+
+### `<InlineCitationCardTrigger>`
+
+| Prop      | Type       | Default | Description                                                                                        |
+| --------- | ---------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `sources` | `string[]` | -       | Obrigatório. URLs citadas. O trigger renderiza o primeiro hostname mais um badge de overflow `+N`. |
+
+Renderiza um `Badge` secondary (pill).
+
+### `<InlineCitationCardBody>`
+
+Conteúdo do hover card. Largura reservada de 320px, sem padding.
+
+Estende `ComponentProps<typeof HoverCardContent>`.
+
+### Sub-componentes de carrossel
+
+| Component                       | Papel                                                |
+| ------------------------------- | ---------------------------------------------------- |
+| `InlineCitationCarousel`        | Wrapper `Carousel` que expõe sua API via context.    |
+| `InlineCitationCarouselContent` | Container dos slides do carrossel.                   |
+| `InlineCitationCarouselItem`    | Um slide (`p-4 pl-8`).                               |
+| `InlineCitationCarouselHeader`  | Faixa de header com prev / next + índice.            |
+| `InlineCitationCarouselIndex`   | Label de atual / total (`1/3`).                      |
+| `InlineCitationCarouselPrev`    | Botão de fonte anterior com `aria-label="Previous"`. |
+| `InlineCitationCarouselNext`    | Botão de próxima fonte com `aria-label="Next"`.      |
+
+### `<InlineCitationSource>`
+
+| Prop          | Type        | Default | Description                                                      |
+| ------------- | ----------- | ------- | ---------------------------------------------------------------- |
+| `title`       | `string`    | -       | Título da fonte (truncado em 1 linha).                           |
+| `url`         | `string`    | -       | URL da fonte (truncada, muted).                                  |
+| `description` | `string`    | -       | Trecho (limitado a 3 linhas).                                    |
+| `children`    | `ReactNode` | -       | Conteúdo extra opcional (por exemplo, um `InlineCitationQuote`). |
+
+### `<InlineCitationQuote>`
+
+Blockquote em itálico com uma borda esquerda muted. Use para citações destacadas dentro de um `InlineCitationSource`.
+
+## Composição
+
+1. **`<InlineCitation>`** envolve a frase citada e seu trigger como um grupo.
+2. **`<InlineCitationText>`** é o texto citado visível.
+3. **`<InlineCitationCard>` + `<InlineCitationCardTrigger>`** é o badge com um preview em hover.
+4. **`<InlineCitationCardBody>`** abre o hover card.
+5. **`<InlineCitationCarousel>` + items** renderizam uma fonte por slide.
+6. **`<InlineCitationSource>` + `<InlineCitationQuote>`** estruturam cada slide.
+
+## Variações
+
+### Fonte única
+
+O caso mais simples: uma URL atrás de um badge.
+
+```tsx
+<InlineCitation>
+  <InlineCitationText>Vercel's edge runtime is V8 based.</InlineCitationText>
+  <InlineCitationCard>
+    <InlineCitationCardTrigger sources={['https://vercel.com/docs/edge']} />
+    <InlineCitationCardBody>
+      <InlineCitationCarousel>
+        <InlineCitationCarouselContent>
+          <InlineCitationCarouselItem>
+            <InlineCitationSource
+              title="Edge Runtime"
+              url="https://vercel.com/docs/edge"
+              description="Run code close to your users with low latency."
+            />
+          </InlineCitationCarouselItem>
+        </InlineCitationCarouselContent>
+      </InlineCitationCarousel>
+    </InlineCitationCardBody>
+  </InlineCitationCard>
+</InlineCitation>
+```
+
+### Carrossel multi-fonte
+
+Quando várias URLs embasam a mesma afirmação, renderize-as como irmãs; o trigger mostra `+N` para o overflow.
+
+```tsx
+<InlineCitationCardTrigger sources={[urlA, urlB, urlC]} />
+<InlineCitationCardBody>
+  <InlineCitationCarousel>
+    <InlineCitationCarouselHeader>
+      <InlineCitationCarouselPrev />
+      <InlineCitationCarouselIndex />
+      <InlineCitationCarouselNext />
+    </InlineCitationCarouselHeader>
+    <InlineCitationCarouselContent>
+      {sources.map((s) => (
+        <InlineCitationCarouselItem key={s.url}>
+          <InlineCitationSource title={s.title} url={s.url} description={s.snippet} />
+        </InlineCitationCarouselItem>
+      ))}
+    </InlineCitationCarouselContent>
+  </InlineCitationCarousel>
+</InlineCitationCardBody>
+```
+
+### Fonte com citação destacada
+
+Inclua a passagem exata em que o modelo se apoiou para o embasamento.
+
+```tsx
+<InlineCitationSource title="WCAG 2.2" url={url} description="...">
+  <InlineCitationQuote>
+    "Authentication processes that rely on cognitive function tests must have an
+    alternative."
+  </InlineCitationQuote>
+</InlineCitationSource>
+```
+
+## Acessibilidade
+
+- **Teclado**: o badge é um trigger focável (via Radix Hover Card), então o card abre no focus. Os botões prev / next do carrossel são `<button>`s de verdade com `aria-label="Previous"` / `aria-label="Next"`.
+- **ARIA**: o hover card conecta `aria-haspopup` e a gestão de foco automaticamente; o índice do carrossel é lido como conteúdo textual para leitores de tela.
+- **Leitores de tela**: mantenha as props de `InlineCitationSource` preenchidas (especialmente `title` e `url`) para que a fonte seja anunciada mesmo sem o preview em hover.
+- **Gestão de foco**: pressionar Esc fecha o card e retorna o foco ao badge; Tab continua do badge para o próximo elemento inline.
+
+## Relacionados
+
+- [Sources](/components/chatbot/sources) - painel global de "fontes usadas" de um turno
+- [Message](/components/chatbot/message) - o turno do assistente que hospeda a citação
+- [Chain of Thought](/components/chatbot/chain-of-thought) - compartilha o padrão de resultados de busca para citações no nível de passo

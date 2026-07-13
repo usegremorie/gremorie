@@ -1,0 +1,154 @@
+---
+title: Toast vs modal vs banner
+description: 'Três superfícies de feedback, três níveis de stakes. Escolha pela severidade e por quão bloqueante a mensagem precisa ser.'
+related: rx-sonner, rx-alert-dialog, rx-dialog, rx-alert
+tags: [feedback, toast, modal, banner, severity]
+---
+
+## TL;DR
+
+Escolha pelos **stakes** (baixo / médio / alto) e por quão **bloqueante** a mensagem precisa ser.
+
+- **Toast** = stakes baixos, transitório, não-bloqueante. Reconhece uma ação.
+- **Banner** = stakes médios, persistente, não-bloqueante. Comunica uma condição que precisa de consciência, não de uma decisão.
+- **Modal dialog** = stakes altos, bloqueante, exige resposta. Confirma ou pergunta.
+
+Erre nisso e você ou interrompe o usuário à toa (modal para um toast de salvamento) ou deixa de revelar algo importante (toast para uma falha de cobrança).
+
+## A regra
+
+### Toast
+
+Para **reconhecimentos transitórios** de uma ação que o usuário acabou de iniciar.
+
+- **Gatilho**: uma ação bem-sucedida ou falha que o usuário acabou de executar.
+- **Visibilidade**: 3-5 segundos, dispensável.
+- **Posição**: tipicamente inferior-direita ou superior-direita; consistente em todo o app.
+- **Conteúdo**: no máximo 1-2 frases. Opcionalmente um undo ou link de detalhe.
+- **Severidade**: success, info, warning. **Não** para erros fatais (o usuário precisa de mais do que um pop-up de 4 segundos).
+- **Empilhamento**: no máximo 3-5 visíveis de cada vez; os mais antigos entram na fila ou se auto-dispensam.
+
+### Banner
+
+Para **condições persistentes** que o usuário precisa saber, mas sobre as quais não precisa agir de imediato.
+
+- **Gatilho**: um estado do sistema (assinatura expirando, conta em trial, feature indisponível, ambiente é staging).
+- **Visibilidade**: permanece até a condição se resolver ou o usuário dispensar.
+- **Posição**: topo da superfície (acima do cabeçalho), ou restrito a uma seção (acima de uma tabela).
+- **Conteúdo**: uma frase, opcionalmente um link para agir ("Renew subscription").
+- **Severidade**: info, warning, às vezes destructive (um aviso permanente de conta).
+- **Dispensável**: sim, geralmente; alguns banners (avisos de segurança, conta suspensa) não deveriam ser dispensáveis.
+
+### Modal dialog
+
+Para **eventos bloqueantes que precisam de uma decisão**.
+
+- **Gatilho**: uma confirmação destrutiva, uma etapa de setup obrigatória, um erro grave que impede continuar.
+- **Visibilidade**: bloqueia até o usuário responder.
+- **Conteúdo**: título (a pergunta), descrição (a consequência), 1-3 ações.
+- **Severidade**: média-a-alta. Use apenas quando o usuário precisar responder antes de continuar.
+
+## Por que
+
+Cada superfície treina os usuários a esperar um tipo diferente de atenção. Toasts são ruído de fundo que o usuário só olha de relance; modals são interrupções que exigem ação; banners são condições ambientais ("estou em staging", "meu trial expira em 3 dias").
+
+Se uma falha de cobrança aparece como um toast de 4 segundos, o usuário a perde - o sistema não comunicou um estado de stakes altos. Se um salvamento bem-sucedido dispara um modal, o usuário o dispensa sem ler - o sistema os treinou a ignorar modals.
+
+Severidade não é só sobre cor ou ícone: é sobre quão persistente e bloqueante a superfície é. Um toast de "warning" que some em 4 segundos é funcionalmente diferente de um banner de "warning" que fica por duas semanas.
+
+## Como aplicar
+
+### Faça: toast para confirmação de ação
+
+```tsx
+function handleSave() {
+  saveSettings();
+  toast.success('Settings saved');
+}
+```
+
+O usuário fez a coisa; o toast reconhece. Nenhuma decisão necessária.
+
+### Faça: banner para uma condição de nível de conta
+
+```tsx
+<Banner variant="warning">
+  Your trial expires in 3 days.
+  <Button variant="link">Upgrade now</Button>
+</Banner>
+```
+
+Persistente, nível de consciência. Fica até o trial ser atualizado ou expirar.
+
+### Faça: modal para confirmação destrutiva
+
+```tsx
+<AlertDialog>
+  <AlertDialogContent>
+    <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
+    <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete workspace</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+Decisão necessária, irreversível. O bloqueio é justificado.
+
+### Não faça: toast para uma falha de cobrança
+
+```tsx
+toast.error('Payment failed');
+```
+
+O usuário pisca e perde. Falhas de pagamento precisam de um banner ("Your last payment failed. Update your card") ou uma rota para uma página de cobrança.
+
+### Não faça: modal para um reconhecimento de salvamento
+
+```tsx
+<Dialog>
+  <DialogContent>
+    <DialogTitle>Settings saved</DialogTitle>
+    <Button>OK</Button>
+  </DialogContent>
+</Dialog>
+```
+
+O usuário clicou em salvar; ele espera que esteja salvo. Um toast basta.
+
+### Não faça: banner para um evento transitório
+
+```tsx
+<Banner>You uploaded 1 file successfully.</Banner>
+```
+
+Isso é material de toast. Um banner sugere permanência.
+
+## Uma tabela rápida de severidade
+
+| Severidade          | Stakes                                         | Persistente? | Bloqueante? | Superfície        |
+| ------------------- | ---------------------------------------------- | ------------ | ----------- | ----------------- |
+| Info, low           | Reconhecer uma ação                            | Não          | Não         | Toast             |
+| Success             | Confirmar que uma ação deu certo               | Não          | Não         | Toast             |
+| Warning, transient  | Ação parcialmente bem-sucedida ou com ressalva | Não          | Não         | Toast             |
+| Warning, persistent | Condição que o usuário deveria conhecer        | Sim          | Não         | Banner            |
+| Error, transient    | Ação falhou mas recuperável                    | Não          | Não         | Toast (com retry) |
+| Error, persistent   | Sistema está em estado quebrado                | Sim          | Não         | Banner            |
+| Error, blocking     | Ação é impossível até ser resolvida            | Sim          | Sim         | Modal             |
+| Decision required   | Ação destrutiva ou irreversível                | Sim          | Sim         | Modal             |
+
+## Contra-casos
+
+- **Feedback inline perto da ação** (mensagem de erro no nível do form, estado de loading no nível do button) muitas vezes é melhor do que qualquer um destes três. Prefira inline em vez de toast quando o feedback está atrelado a um controle específico.
+- **Notificações de nível de sistema** (notificações do navegador, email) estão fora do escopo aqui; este artigo é sobre superfícies dentro do produto.
+- **Alertas críticos de segurança** (conta comprometida) podem justificar um modal não-dispensável mesmo que isso viole a regra "não interrompa desnecessariamente". Os stakes justificam.
+- **Banners de onboarding** ("Welcome! Here is a quick tour.") são uma variante de banner-com-conteúdo-de-modal; considere um padrão de tour guiado no lugar.
+
+## Fontes
+
+- Nielsen Norman Group: "Notifications and Toasts" (https://www.nngroup.com/articles/toast-notifications/)
+- Nielsen Norman Group: "Modal & Nonmodal Dialogs" (https://www.nngroup.com/articles/modal-nonmodal-dialog/)
+- Material Design: snackbars e dialogs.
+- Apple Human Interface Guidelines: alerts e banners.

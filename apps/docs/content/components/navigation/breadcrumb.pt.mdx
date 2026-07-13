@@ -1,0 +1,284 @@
+---
+title: Breadcrumb
+description: 'Trilha hierárquica mostrando o caminho do usuário. Nav semântico com página terminal explícita e collapse opcional.'
+---
+
+import { BreadcrumbPreview } from '@/components/preview/navigation/breadcrumb';
+import { BreadcrumbDropdownPreview } from '@/components/preview/navigation/breadcrumb-dropdown';
+import { BreadcrumbSeparatorPreview } from '@/components/preview/navigation/breadcrumb-separator';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from '@gremorie/rx-navigation';
+
+## Visão geral
+
+`Breadcrumb` é o primitive de trilha hierárquica: um `<nav>` envolvendo uma lista ordenada que mostra onde o usuário está no site ou app, um segmento por ancestral. A trilha termina explicitamente com `<BreadcrumbPage>` (um span sem link carregando `aria-current="page"`), tornando a localização atual inequívoca tanto para leitores quanto para leitores de tela.
+
+Use Breadcrumb apenas em **hierarquias profundas (três níveis ou mais)**. Sites planos pagam o custo de ruído visual sem retorno. Quando o meio de uma trilha longa sobrecarrega o layout, colapse-o com `<BreadcrumbEllipsis>` combinado com um [Popover](/components/overlays/popover) ou [DropdownMenu](/components/overlays/dropdown-menu) listando os segmentos ocultos.
+
+## Preview
+
+<ComponentPreview name="navigation/breadcrumb">
+  <BreadcrumbPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Breadcrumb                     wrapper <nav aria-label="breadcrumb">
+└─ BreadcrumbList              linha de segmentos <ol>
+   ├─ BreadcrumbItem           uma célula de segmento
+   │  ├─ BreadcrumbLink        link de ancestral navegável (asChild troca a tag)
+   │  ├─ BreadcrumbPage        página atual terminal (não é link)
+   │  └─ BreadcrumbEllipsis    indicador de meio colapsado, combinado com um menu
+   └─ BreadcrumbSeparator      divisor entre segmentos (por padrão um chevron)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-breadcrumb ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-breadcrumb ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-breadcrumb ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-breadcrumb ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@gremorie/rx-navigation";
+
+export function DocsCrumbs() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/docs/components">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o comparativo lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Breadcrumb>`
+
+Renderiza um `<nav aria-label="breadcrumb">`.
+
+| Prop       | Type                          | Default | Description                                                                      |
+| ---------- | ----------------------------- | ------- | -------------------------------------------------------------------------------- |
+| `...props` | `React.ComponentProps<"nav">` | -       | Atributos padrão de nav. O `aria-label="breadcrumb"` é definido automaticamente. |
+
+### `<BreadcrumbList>`
+
+Renderiza um `<ol>` com flex-wrap e um gap sutil.
+
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"ol">` | -       | Atributos padrão de ol. |
+
+### `<BreadcrumbItem>`
+
+Renderiza um `<li>` com `inline-flex items-center gap-1.5`.
+
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"li">` | -       | Atributos padrão de li. |
+
+### `<BreadcrumbLink>`
+
+O segmento de ancestral clicável. Renderiza um `<a>` por padrão; passe `asChild` para delegar a renderização a um componente de rota (Next.js `Link`, React Router `Link`).
+
+| Prop       | Type                        | Default | Description                                                                                                    |
+| ---------- | --------------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `asChild`  | `boolean`                   | `false` | Quando `true`, renderiza no único elemento filho via `Slot` do Radix. Use com componentes `Link` de framework. |
+| `...props` | `React.ComponentProps<"a">` | -       | Atributos padrão de anchor, incluindo `href`.                                                                  |
+
+### `<BreadcrumbPage>`
+
+O segmento terminal - a página atual. Renderiza um `<span>` com `role="link"`, `aria-disabled="true"` e `aria-current="page"`. Não é interativo.
+
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Atributos padrão de span. |
+
+### `<BreadcrumbSeparator>`
+
+O divisor visual entre segmentos. Renderiza um `<li role="presentation" aria-hidden="true">` contendo um `ChevronRight` por padrão. Sobrescreva passando children.
+
+| Prop       | Type                         | Default            | Description                                                            |
+| ---------- | ---------------------------- | ------------------ | ---------------------------------------------------------------------- |
+| `children` | `React.ReactNode`            | `<ChevronRight />` | Conteúdo de separador customizado (ex. uma barra, um ícone diferente). |
+| `...props` | `React.ComponentProps<"li">` | -                  | Atributos padrão de li.                                                |
+
+### `<BreadcrumbEllipsis>`
+
+Placeholder para segmentos do meio colapsados. Renderiza um quadrado de 36 por 36 px contendo um ícone `MoreHorizontal` e um label "More" visualmente oculto. Envolva dentro de um trigger de `Popover` ou `DropdownMenu` para revelar os segmentos ocultos.
+
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Atributos padrão de span. |
+
+## Composição
+
+1. **`<Breadcrumb>`** é o landmark nav semântico.
+2. **`<BreadcrumbList>`** é a lista ordenada de segmentos.
+3. **Cada segmento** é um `<BreadcrumbItem>`, alternando com `<BreadcrumbSeparator>`.
+4. **Ancestrais** usam `<BreadcrumbLink>`; a **página atual** usa `<BreadcrumbPage>` (nunca um link).
+5. **Segmentos do meio colapsados** viram `<BreadcrumbEllipsis>`, opcionalmente como o trigger de um overlay listando os itens ocultos.
+
+Separadores são irmãos dos itens dentro da lista, não filhos dos itens, então os leitores de tela percorrem a trilha de forma limpa.
+
+## Variações
+
+### Cadeia simples
+
+<div className="rounded-lg border p-6 not-prose">
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Home</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Settings</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>Account</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</div>
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/settings">Settings</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Account</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+Use para hierarquias rasas (três a quatro níveis) onde cada ancestral cabe em uma única linha.
+
+### Com collapse por ellipsis
+
+<div className="rounded-lg border p-6 not-prose">
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Docs</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbEllipsis />
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Components</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</div>
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbEllipsis />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/docs/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+Use quando a cadeia é longa o bastante para quebrar de forma estranha. O ellipsis anuncia "More" para a tecnologia assistiva e sinaliza truncamento para usuários videntes.
+
+### Com collapse por dropdown
+
+<ComponentPreview name="navigation/breadcrumb-dropdown">
+  <BreadcrumbDropdownPreview />
+</ComponentPreview>
+
+Envolva um `<BreadcrumbEllipsis>` em um trigger de `DropdownMenu` para tornar o meio colapsado operável. O menu lista os ancestrais ocultos para que os usuários possam pular para qualquer um deles.
+
+### Com separador customizado
+
+<ComponentPreview name="navigation/breadcrumb-separator">
+  <BreadcrumbSeparatorPreview />
+</ComponentPreview>
+
+Passe children para `<BreadcrumbSeparator>` para trocar o chevron padrão por uma barra, ponto ou qualquer ícone. Mantenha os separadores curtos (um único caractere ou ícone) para que a trilha continue escaneável.
+
+## Acessibilidade
+
+- **Landmark**: o `<nav>` externo carrega `aria-label="breadcrumb"`, tornando a trilha um landmark descobrível para usuários de leitor de tela.
+- **Página atual**: `<BreadcrumbPage>` define `aria-current="page"` para que a tecnologia assistiva anuncie a localização do usuário explicitamente. Nunca envolva a página atual em `<BreadcrumbLink>`.
+- **Separadores**: `<BreadcrumbSeparator>` é `aria-hidden="true"` e `role="presentation"` - a trilha é lida como "Docs, Components, Breadcrumb" sem os chevrons.
+- **Ellipsis**: `<BreadcrumbEllipsis>` expõe um label "More" visualmente oculto para que os leitores de tela anunciem o segmento colapsado. Envolva-o em um trigger de `Popover` ou `DropdownMenu` para torná-lo operável.
+- **Teclado**: os links são alcançáveis em ordem com `Tab`. A página atual não é focável.
+
+## Relacionados
+
+- [NavigationMenu](/components/navigation/navigation-menu) - navegação primária do site com painéis ricos, não um rastro de volta.
+- [Tabs](/components/navigation/tabs) - painéis de conteúdo irmãos dentro de uma página.
+- [Popover](/components/overlays/popover) - host comum para um menu de collapse por ellipsis.

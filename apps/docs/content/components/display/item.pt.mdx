@@ -1,0 +1,179 @@
+---
+title: Item
+description: 'Primitive flexível de linha de lista — mídia, título, descrição e ações em uma linha, com um único size em cascata que dirige a linha inteira.'
+---
+
+import { ItemPreview } from '@/components/preview/display/item';
+
+## Visão geral
+
+`Item` é o primitive composto de linha de lista: um slot de mídia, um bloco de título/descrição e um slot de ações finais, dispostos em uma linha. Adaptado do shadcn/ui para uma **cascata de `size` único** — o `size` que você define no `Item` (`lg`, `md`, `sm` ou `none`) dirige o tamanho da mídia _e_ a tipografia de título/descrição de uma vez através de seletores `data-size` + `group-data`, então nenhuma sub-parte repete medidas.
+
+A altura da mídia acompanha o bloco de texto: com uma descrição ela é mais alta (lg 40 · md 36 · sm 32px), sem uma ela combina com o título (lg/md 20 · sm 16px). A variante de mídia `icon` é a única de tamanho fixo — um glyph nu de 24px; `featured`, `avatar` e `image` seguem a cascata. Use `variant` (`default`, `outline`, `muted`) para a superfície, `interactive` para o affordance de hover, e `asChild` para renderizar a linha como um link ou botão.
+
+## Preview
+
+<ComponentPreview name="display/item">
+  <ItemPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ItemGroup                  role="list" column wrapping rows
+├─ Item                    one row; size cascades to media + text (variant · interactive · asChild)
+│  ├─ ItemMedia            leading media — variant icon · featured · avatar · image
+│  ├─ ItemContent          flex column holding title + description
+│  │  ├─ ItemTitle         row heading; size-driven typography
+│  │  └─ ItemDescription   muted supporting text (line-clamped)
+│  ├─ ItemActions          trailing controls (buttons, chevrons)
+│  ├─ ItemHeader           full-basis top row (optional)
+│  └─ ItemFooter           full-basis bottom row (optional)
+└─ ItemSeparator           divider between rows (wraps Separator)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-item ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-item ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-item ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-item ```</Tab>
+</Tabs>
+
+Traz `rx-separator` (para `ItemSeparator`) como dependência de registry.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from "@gremorie/rx-display";
+import { FolderIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <ItemGroup>
+      <Item interactive>
+        <ItemMedia variant="icon">
+          <FolderIcon />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>Design tokens</ItemTitle>
+          <ItemDescription>Colors, spacing, radius.</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <button type="button">Open</button>
+        </ItemActions>
+      </Item>
+      <ItemSeparator />
+    </ItemGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Item>`
+
+| Prop          | Type                                | Default     | Descrição                                                                                                       |
+| ------------- | ----------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------- |
+| `variant`     | `"default" \| "outline" \| "muted"` | `"default"` | Superfície: transparente, com borda ou preenchimento muted.                                                     |
+| `size`        | `"lg" \| "md" \| "sm" \| "none"`    | `"md"`      | Cascateia para o tamanho da mídia + tipografia de título/descrição. `none` remove padding/gap (para `asChild`). |
+| `interactive` | `boolean`                           | `false`     | Adiciona cursor pointer + fundo de hover.                                                                       |
+| `asChild`     | `boolean`                           | `false`     | Renderiza a linha como seu único child (ex. um `<a>` ou `Link` de framework) via `Slot` do Radix.               |
+| `className`   | `string`                            | -           | Classes extras.                                                                                                 |
+
+### `<ItemMedia>`
+
+| Prop      | Type                                          | Default  | Descrição                                                                                                                                                              |
+| --------- | --------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant` | `"icon" \| "featured" \| "avatar" \| "image"` | `"icon"` | `icon` = glyph fixo de 24px; `featured` = tile com borda; `avatar` = redondo; `image` = arredondado. `featured`/`avatar`/`image` seguem a cascata de `size` do `Item`. |
+
+### `<ItemContent>` / `<ItemTitle>` / `<ItemDescription>`
+
+`ItemContent` é a flex column. `ItemTitle` é o heading dirigido pelo size. `ItemDescription` é o texto de apoio muted e com line-clamp. Todos aceitam as props padrão do elemento mais `className`.
+
+### `<ItemActions>` / `<ItemHeader>` / `<ItemFooter>`
+
+`ItemActions` é o cluster de controles finais. `ItemHeader` e `ItemFooter` ocupam a largura total da linha (`basis-full`) para layouts empilhados. Todos aceitam as props padrão de `div` mais `className`.
+
+### `<ItemGroup>` / `<ItemSeparator>`
+
+`ItemGroup` é a flex column com `role="list"`. `ItemSeparator` envolve `Separator` (horizontal) com margens colapsadas para dividir linhas.
+
+## Composição
+
+1. **`<ItemGroup>`** envolve uma lista de linhas e fornece o role `list`.
+2. **`<Item>`** define `size`/`variant`/`interactive` uma vez; tudo dentro segue.
+3. **`<ItemMedia>`** lidera com um ícone, tile featured, avatar ou imagem.
+4. **`<ItemContent>`** contém `ItemTitle` (+ `ItemDescription` opcional).
+5. **`<ItemActions>`** finaliza com botões ou um chevron.
+6. **`<ItemSeparator>`** divide linhas quando você quer linhas rígidas em vez de espaçamento.
+
+## Variações
+
+### Sizes
+
+O `size` no `Item` cascateia para mídia e tipografia — sem dimensionamento por parte.
+
+```tsx
+<Item size="sm">…</Item>
+<Item size="md">…</Item>
+<Item size="lg">…</Item>
+```
+
+### Variantes de mídia
+
+```tsx
+<ItemMedia variant="icon"><FolderIcon /></ItemMedia>
+<ItemMedia variant="featured"><FileTextIcon /></ItemMedia>
+<ItemMedia variant="avatar"><img src={src} alt="" /></ItemMedia>
+<ItemMedia variant="image"><img src={src} alt="" /></ItemMedia>
+```
+
+### Como link (asChild)
+
+Renderize a linha inteira como uma âncora para que a superfície inteira seja clicável.
+
+```tsx
+<Item asChild interactive>
+  <a href="/components/display/item">
+    <ItemMedia variant="icon">
+      <FileTextIcon />
+    </ItemMedia>
+    <ItemContent>
+      <ItemTitle>Documentation</ItemTitle>
+    </ItemContent>
+  </a>
+</Item>
+```
+
+## Acessibilidade
+
+- **Semântica de lista**: `ItemGroup` carrega `role="list"`, então a tecnologia assistiva anuncia as linhas como uma lista.
+- **Links de linha inteira**: com `asChild` + um `<a>`/`<button>`, a semântica nativa se aplica — ring de foco, ativação por teclado e anúncio de link/botão.
+- **Ring de foco**: `Item` tem um ring focus-visible visível, então usuários de teclado veem a linha ativa.
+- **Clamp de descrição**: `ItemDescription` faz line-clamp para duas linhas; mantenha info crítica no título para que nunca seja truncada.
+
+## Relacionados
+
+- [Card](/components/display/card) - superfície mais pesada para conteúdo agrupado com seu próprio header/footer.
+- [Featured Icon](/components/display/featured-icon) - o tratamento por trás da variante de mídia `featured`.
+- [Separator](/components/display/separator) - o divisor que `ItemSeparator` envolve.

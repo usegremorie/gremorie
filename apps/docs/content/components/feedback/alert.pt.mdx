@@ -1,0 +1,174 @@
+---
+title: Alert
+description: 'Mensagem persistente in-flow ancorada ao conteúdo da página com um ícone, título e description.'
+---
+
+import { AlertPreview } from '@/components/preview/feedback/alert';
+import { AlertDestructivePreview } from '@/components/preview/feedback/alert-destructive';
+import { AlertWithIconPreview } from '@/components/preview/feedback/alert-with-icon';
+import { AlertTitleOnlyPreview } from '@/components/preview/feedback/alert-title-only';
+
+## Visão geral
+
+`Alert` é o **primitive de feedback in-flow**: uma mensagem persistente ancorada dentro do fluxo da página, distinta do `Toast` (transitório, flutuante) e de um banner que atravessa a página. Use-o para trazer à tona informação que o usuário precisa ler no contexto antes de agir sobre a UI ao redor - um resumo de erro de todo o formulário, uma dica sobre uma configuração, uma confirmação de que uma escrita assíncrona acabou de concluir.
+
+A API do Alert permanece deliberadamente pequena. As variants são entregues apenas como `default` e `destructive` - transmita a intenção (info, sucesso, aviso, perigo) por meio de um ícone à esquerda do `lucide-react` em vez de introduzir mais variants. Isso mantém a superfície visual consistente e a API mínima.
+
+## Preview
+
+<ComponentPreview name="feedback/alert">
+  <AlertPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Alert                  container com borda; passe um ícone como primeiro filho para reivindicar a coluna à esquerda
+├─ <icon>              glyph opcional do lucide-react à esquerda (Info, CheckCircle2, TriangleAlert, XCircle)
+├─ AlertTitle          o headline
+└─ AlertDescription    o texto do corpo
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-alert ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-alert ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-alert ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-alert ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Alert, AlertTitle, AlertDescription } from "@gremorie/rx-feedback";
+import { Info } from "lucide-react";
+
+export function RegistryNotice() {
+  return (
+    <Alert>
+      <Info className="size-4" />
+      <AlertTitle>Heads up</AlertTitle>
+      <AlertDescription>
+        The registry rebuilds on every commit to the main branch.
+      </AlertDescription>
+    </Alert>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-alert
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Alert, AlertTitle, AlertDescription } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [Alert, AlertTitle, AlertDescription],
+  template: `
+    <gr-alert>
+      <gr-alert-title>Heads up</gr-alert-title>
+      <gr-alert-description>
+        The registry rebuilds on every commit to the main branch.
+      </gr-alert-description>
+    </gr-alert>
+  `,
+})
+export class ExampleComponent {}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Alert>`
+
+A raiz. Renderiza um `<div role="alert">` estilizado como um grid de duas colunas: um slot de ícone opcional de 16 px à esquerda e um stack de título mais description à direita. A coluna do ícone colapsa quando nenhum filho `<svg>` está presente.
+
+| Prop        | Type                          | Default     | Description                                                                                                                         |
+| ----------- | ----------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`   | `"default" \| "destructive"`  | `"default"` | Intenção visual. `default` usa tokens de superfície de card; `destructive` usa a cor de texto destructive e tinge a description.    |
+| `className` | `string`                      | -           | Classes extras mescladas após as classes de variant. Use para escape hatches de spacing, não para mudar o tratamento da superfície. |
+| `...props`  | `React.ComponentProps<"div">` | -           | Atributos padrão de div. O `role="alert"` é definido automaticamente; não o sobrescreva.                                            |
+
+### `<AlertTitle>`
+
+Renderiza um `<div>` para o headline. Fica na segunda coluna do grid, com line-clamp de uma linha por padrão para que um título longo não possa empurrar o ícone para fora do alinhamento.
+
+| Prop        | Type                          | Default | Description                                         |
+| ----------- | ----------------------------- | ------- | --------------------------------------------------- |
+| `className` | `string`                      | -       | Classes extras mescladas após as classes de título. |
+| `...props`  | `React.ComponentProps<"div">` | -       | Atributos padrão de div.                            |
+
+### `<AlertDescription>`
+
+Renderiza um `<div>` para o corpo. Herda foreground muted na variant default, troca para uma cor destructive tingida na variant destructive via o seletor `data-slot`.
+
+| Prop        | Type                          | Default | Description                                                                                   |
+| ----------- | ----------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `className` | `string`                      | -       | Classes extras mescladas após as classes de description.                                      |
+| `...props`  | `React.ComponentProps<"div">` | -       | Atributos padrão de div incluindo `<p>` aninhado (que recebe um leading relaxado por padrão). |
+
+## Composição
+
+1. **`<Alert>`** é o grid raiz. Escolha a variant primeiro - destructive apenas quando uma ação falhou ou uma fronteira de segurança está sendo cruzada.
+2. **Um ícone** (qualquer glyph do `lucide-react` com `className="size-4"`) é o primeiro filho. O grid auto-detecta o SVG e reserva a coluna do ícone.
+3. **`<AlertTitle>`** é o headline. Mantenha-o curto (uma linha); o line-clamp evita quebras acidentais.
+4. **`<AlertDescription>`** é o corpo. Uma frase é ideal; dois parágrafos é o limite superior antes de a mensagem pertencer a um Dialog.
+
+O grid auto-colapsa para uma única coluna quando nenhum ícone é fornecido, então um alert reduzido (apenas título mais description) ainda renderiza limpo.
+
+## Variações
+
+<Callout type="info">
+  `Alert` entrega exatamente duas variants CVA: `default` e `destructive`. Não
+  há variant `success`, `warning` ou `info`. Expresse essas intenções por meio
+  de um ícone do `lucide-react` à esquerda na superfície default, como mostrado
+  abaixo - isso mantém a superfície visual consistente e a API mínima.
+</Callout>
+
+### Destructive
+
+<ComponentPreview name="feedback/alert-destructive">
+  <AlertDestructivePreview />
+</ComponentPreview>
+
+A única variant não-default. Use para escritas que falharam, integrações quebradas e fronteiras de segurança. A description tingida mantém o corpo legível enquanto ainda sinaliza a severidade.
+
+### Intenção via ícone
+
+<ComponentPreview name="feedback/alert-with-icon">
+  <AlertWithIconPreview />
+</ComponentPreview>
+
+Intenções informativa, de sucesso e de aviso todas reutilizam a variant `default` e carregam seu significado por meio do ícone à esquerda (`Info`, `CheckCircle2`, `AlertTriangle`). Recorra a uma superfície colorida dedicada apenas quando você genuinamente precisar de ênfase destructive.
+
+### Somente título
+
+<ComponentPreview name="feedback/alert-title-only">
+  <AlertTitleOnlyPreview />
+</ComponentPreview>
+
+Omita `<AlertDescription>` para uma mensagem de status de uma linha. O grid colapsa limpo com ou sem um ícone à esquerda, então uma confirmação sucinta é lida como uma única row compacta.
+
+## Acessibilidade
+
+- **Role e anúncio**: a raiz carrega `role="alert"`, então a tecnologia assistiva anuncia a mensagem conforme ela aparece no DOM. Monte alerts condicionalmente no evento que os produziu, não avidamente no carregamento da página.
+- **Acoplamento de título e description**: título e description vivem na mesma célula do grid para que sejam anunciados como um bloco; não é preciso conectar `aria-describedby` à mão.
+- **Ícones são decorativos**: o ícone à esquerda não carrega carga semântica. A intenção é transmitida pela variant e pelo título - o ícone apenas a reforça para usuários com visão. Deixe-o como SVG puro (sem `aria-label`).
+- **Cor nunca é o único canal**: a intenção destructive vem com uma superfície de título dedicada mais um ícone reconhecível, satisfazendo a WCAG 1.4.1 Use of Color.
+- **Nenhum movimento injetado**: o primitive não tem animação de entrada ou saída. Combine com um wrapper de movimento se você quiser um fade ou slide na montagem.
+
+## Relacionados
+
+- [Toast](/components/overlays/sonner) - recorra ao Toast para confirmações transitórias e flutuantes que não precisam persistir no fluxo.
+- [Dialog](/components/overlays/dialog) - recorra ao Dialog quando o usuário precisa responder antes de prosseguir.
+- [Skeleton](/components/feedback/skeleton) - primitive de feedback irmão para estados de carregamento.
