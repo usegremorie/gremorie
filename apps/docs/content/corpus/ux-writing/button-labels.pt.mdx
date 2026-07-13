@@ -1,0 +1,98 @@
+---
+title: Button labels
+description: "1-3 palavras, imperativo, contextual. Verbo + objeto. Nunca 'OK', 'Submit' ou 'Click here'."
+related: rx-button, ng-button, rx-dialog, rx-form
+tags: [ux-writing, labels, microcopy, buttons]
+---
+
+## TL;DR
+
+Um label de button tem 1-3 palavras, começa com um verbo e nomeia a ação resultante. "Save changes" ganha de "Save". "Save" ganha de "OK". "Confirm" ganha de nada. Teste lendo o label fora de contexto: o usuário deveria conseguir adivinhar o que acontece antes de clicar.
+
+## A regra
+
+1. **Verbo + objeto.** Modo imperativo. "Send invitation" não "Invitation". "Delete project" não "Confirm delete".
+2. **1 palavra se o objeto é óbvio, 2-3 se a ação é ambígua.** "Save" sozinho é ok em uma página de configurações onde uma coisa está sendo salva. "Save changes" é mais claro em um dialog onde o usuário também poderia descartar ou duplicar. Além de 3 palavras, o button se perde e a superfície está pedindo demais.
+3. **Corresponda à intenção do usuário, não ao processo do sistema.** "Sign up", "Get started", "Try it free" ganham de "Submit". O usuário está se cadastrando; o form está sendo submetido como efeito colateral.
+4. **Mesma ação, mesmo label, em todo lugar.** Se "Add member" é o label no dialog, o button da linha na tabela é "Add member", não "New member".
+5. **Evite "OK", "Submit", "Yes", "No", "Click here".** Eles não dizem nada ao usuário sobre a consequência. Substitua pela ação real.
+6. **Corresponda o verbo destrutivo à ação.** "Delete project", "Remove member", "Revoke access", "Discard draft". Cada um tem uma história de recuperação diferente; o verbo sinaliza qual.
+
+## Por que
+
+O label é a última coisa que o usuário lê antes de se comprometer. Se é genérico, o usuário tem que lembrar em qual form está (carga cognitiva). Se é preciso, o label confirma a ação e o usuário pode prosseguir sem uma segunda passada no form.
+
+Verbos imperativos funcionam porque respondem à pergunta do usuário: "o que acontece quando eu clicar?" Labels com substantivos ("Confirmation", "Settings") criam ambiguidade - isto é um button ou um heading? "Click here" é a violação canônica: força o usuário a ler o texto ao redor para saber o que "here" é.
+
+Consistência entre superfícies importa porque usuários aprendem por repetição. Se a mesma ação tem três labels em três lugares, o usuário relê cada um para verificar que significam a mesma coisa.
+
+## Como aplicar
+
+### Faça: nomeie o resultado
+
+```tsx
+<Button>Save changes</Button>
+<Button variant="destructive">Delete project</Button>
+<Button variant="outline">Cancel</Button>
+```
+
+O usuário sabe o que está fazendo antes de clicar.
+
+### Faça: uma única palavra quando o objeto é óbvio
+
+```tsx
+{
+  /* In a settings panel that only saves one thing */
+}
+<Button>Save</Button>;
+```
+
+Há apenas uma coisa para salvar aqui. Adicionar "changes" seria redundante.
+
+### Não faça: "OK" / "Submit" / "Yes"
+
+```tsx
+<Button>OK</Button>
+<Button>Submit</Button>
+<Button>Yes</Button>
+```
+
+Fora de contexto, nenhum destes explica a ação. "OK" especialmente: OK para quê?
+
+### Não faça: pergunta como label
+
+```tsx
+<Button>Want to delete?</Button>
+```
+
+A pergunta vai no título ou na descrição. O button é a resposta.
+
+### Não faça: substantivo como label
+
+```tsx
+<Button>Confirmation</Button>
+```
+
+Isto se lê como um heading, não um button. Substitua por "Confirm purchase" ou "Confirm delete".
+
+### Cancel vs go back vs close
+
+Estes três não são intercambiáveis:
+
+- **Cancel** = descartar trabalho em andamento (um form sendo preenchido).
+- **Go back** = navegar para a etapa anterior (em um wizard).
+- **Close** = dispensar um painel não-modal ou view de detalhe sem perder o estado.
+
+## Contra-casos
+
+- **Buttons só de ícone** carregam o verbo no `aria-label` e no tooltip. O ícone é o label visual; a regra ainda se aplica (label = verbo + objeto).
+- **CTAs de marketing** podem usar fraseado mais emocional ("Get started free", "See the demo"). A regra de 1-3 palavras ainda se mantém em boa parte; às vezes 4 palavras são aceitáveis em marketing, onde os stakes são diferentes.
+- **Yes/No apenas em confirmações de escopo trivial** (um prompt de nível de sistema "Quit?") é aceitável mas raro. Dentro de uma UI de produto, substitua pela ação.
+- **Internacionalização** pode forçar labels mais longos em alguns idiomas (alemão). A regra de 1-3 palavras é para a string de origem; tradutores ajustam.
+
+## Fontes
+
+- Nielsen Norman Group: "Better Button Labels: The 4 Rules for Calls to Action" (https://www.nngroup.com/articles/cta-button-labels/)
+- Nielsen Norman Group: "Beware Generic Phrases on Buttons and Links" (https://www.nngroup.com/articles/avoid-generic-cta/)
+- Krug, "Don't Make Me Think" (2014): sobre labels de link e button.
+- Apple Human Interface Guidelines: button labels.

@@ -1,0 +1,140 @@
+---
+title: Label
+description: Primitive de label acessível construído sobre o Radix Label - associa-se a qualquer controle via `htmlFor`, propaga o estado disabled via seletores peer.
+---
+
+import { LabelPreview } from '@/components/preview/forms/label';
+import { LabelRequiredPreview } from '@/components/preview/forms/label-required';
+
+## Visão geral
+
+`Label` é um wrapper estilizado fino ao redor de `@radix-ui/react-label`. Ele associa um label de texto a um controle de formulário via `htmlFor` para que clicar no label foque (ou ative) o controle, e leitores de tela anunciem o label quando o controle recebe focus.
+
+Use-o para todo controle de formulário que ainda não carrega um label embutido - inputs, selects, switches, checkboxes, radio groups, sliders. Para labels em contexto de formulário, prefira `<FormLabel>` do componente `Form`, que conecta `htmlFor` automaticamente via `useFormField`.
+
+## Preview
+
+<ComponentPreview name="forms/label">
+  <LabelPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Label   única row Radix Label.Root; pequeno, peso médio, não selecionável
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-label ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-label ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-label ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-label ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Input, Label } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="display-name">Display name</Label>
+      <Input id="display-name" />
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Label>`
+
+| Prop      | Type     | Default | Description                                                                                    |
+| --------- | -------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `htmlFor` | `string` | -       | O `id` do controle associado. Obrigatório para click-to-focus e associação com leitor de tela. |
+
+Estende todas as props do `Root` de `@radix-ui/react-label` (que ele próprio estende os atributos de `<label>`). Renderiza com `data-slot="label"`.
+
+As classes base aplicam `font-medium`, `text-sm`, `leading-none`, e `select-none`. O estado disabled propaga de duas formas:
+
+- `peer-disabled:cursor-not-allowed peer-disabled:opacity-50` - esmaece o label quando um controle irmão marcado com `.peer` está disabled (Radix Checkbox / Switch renderizam com `peer` por padrão).
+- `group-data-[disabled=true]:opacity-50` - esmaece o label quando um ancestral tem `data-disabled="true"` (usado por `Field` / `FormItem`).
+
+## Composição
+
+1. **Combine todo controle de formulário com um `<Label>`** a menos que o controle já tenha um nome acessível visível (ex. um button icon-only com `aria-label`).
+2. **Use `htmlFor` combinando com o `id` do controle** para que o browser cuide do click-to-focus e leitores de tela anunciem o label no focus.
+3. **Dentro de um `<Form>`**, use `<FormLabel>` em vez disso - ele puxa o `id` do `useFormField` para que você nunca tenha que declará-lo manualmente.
+
+## Variações
+
+### Marcador de campo obrigatório
+
+O padrão canônico: label acima do controle com `gap-2`, mais um asterisco destructive para sinalizar um campo obrigatório. Sempre combine o marcador visual com `required` (ou `aria-required`) no controle para que leitores de tela também o anunciem.
+
+<ComponentPreview name="forms/label-required">
+  <LabelRequiredPreview />
+</ComponentPreview>
+
+### Label ao lado de um checkbox
+
+Para checkboxes e switches, o label vai no lado inline-end para que clicá-lo ative o controle.
+
+```tsx
+<div className="flex items-center gap-2">
+  <Checkbox id="tos" />
+  <Label htmlFor="tos">I accept the terms of service</Label>
+</div>
+```
+
+### Label com dica auxiliar
+
+Combine com uma description na mesma row quando o label é curto e você quer rows de formulário compactas.
+
+```tsx
+<div className="grid gap-1">
+  <div className="flex items-center justify-between">
+    <Label htmlFor="api-key">API key</Label>
+    <span className="text-xs text-muted-foreground">Optional</span>
+  </div>
+  <Input id="api-key" placeholder="sk-..." />
+</div>
+```
+
+### Controle disabled esmaece o label
+
+O label desbota automaticamente quando seu peer está disabled - sem malabarismo manual de classes.
+
+```tsx
+<div className="flex items-center gap-2">
+  <Switch id="notifications" disabled className="peer" />
+  <Label htmlFor="notifications">Push notifications</Label>
+</div>
+```
+
+## Acessibilidade
+
+- **Click-to-focus**: clicar no label foca (ou, para checkboxes / radios / switches, alterna) o controle cujo `id` combina com `htmlFor`.
+- **Leitores de tela**: o label se torna o nome acessível do controle via a associação implícita `<label for>`.
+- **Herança de disabled**: os seletores `peer-disabled` e `group-data-[disabled=true]` mantêm o tratamento visual em sincronia com o estado do controle.
+- **Indicadores de obrigatório**: anexe um asterisco visível dentro do label, mas também marque o controle com `aria-required="true"` - leitores de tela ignoram o asterisco por si só.
+
+## Relacionados
+
+- [Input](/components/text/input) - o controle companheiro mais comum
+- [Form](/components/form) - use `FormLabel` para pular a fiação manual de `htmlFor`
+- [Checkbox](/components/selection/checkbox) - combine com Label para o padrão "accept terms"
+- [Switch](/components/selection/switch) - mesmo padrão que o Checkbox
+- [Radio Group](/components/selection/radio-group) - um Label por opção

@@ -1,0 +1,263 @@
+---
+title: Tabs
+description: 'Painéis de content irmãos que compartilham um context. Variant pill ou line, horizontal ou vertical, com navegação por teclado completa.'
+---
+
+import { TabsPreview } from '@/components/preview/navigation/tabs';
+import { TabsVerticalPreview } from '@/components/preview/navigation/tabs-vertical';
+import { TabsWithIconsPreview } from '@/components/preview/navigation/tabs-with-icons';
+import { TabsDisabledPreview } from '@/components/preview/navigation/tabs-disabled';
+import {
+  Tabs as RxTabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from '@gremorie/rx-navigation';
+
+## Visão geral
+
+`Tabs` é o switcher canônico de content irmão: um container, várias views mutuamente exclusivas dentro dele. Construído sobre o Radix Tabs, ele oferece duas aparências de list via a prop `variant` em `TabsList` - um pill `default` (background arredondado) e um `line` minimalista (único underline no trigger ativo).
+
+Use as Tabs quando **as views vivem no mesmo escopo** - Profile / Billing / API keys, ou Code / Preview para um único exemplo. Para navegação entre seções (páginas diferentes, áreas diferentes de um app), use [NavigationMenu](/components/navigation/navigation-menu) ou [Sidebar](/components/navigation/sidebar). Para filtros que combinam, use ToggleGroup.
+
+## Preview
+
+<ComponentPreview name="navigation/tabs">
+  <TabsPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Tabs                  the Radix root; carries value / orientation
+├─ TabsList           the trigger track; variant default (pill) or line
+│  └─ TabsTrigger     one selectable tab
+└─ TabsContent        the panel shown for the active tab
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-tabs ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-tabs ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-tabs ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-tabs ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@gremorie/rx-navigation";
+
+export function AccountTabs() {
+  return (
+    <Tabs defaultValue="profile">
+      <TabsList>
+        <TabsTrigger value="profile">Profile</TabsTrigger>
+        <TabsTrigger value="billing">Billing</TabsTrigger>
+        <TabsTrigger value="api">API keys</TabsTrigger>
+      </TabsList>
+      <TabsContent value="profile">Profile fields...</TabsContent>
+      <TabsContent value="billing">Billing details...</TabsContent>
+      <TabsContent value="api">API keys list...</TabsContent>
+    </Tabs>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Tabs>`
+
+Container raiz. Envolve o `Tabs.Root` do Radix.
+
+| Prop             | Type                         | Default        | Description                                                                              |
+| ---------------- | ---------------------------- | -------------- | ---------------------------------------------------------------------------------------- |
+| `defaultValue`   | `string`                     | -              | Tab ativa inicial, não controlada.                                                       |
+| `value`          | `string`                     | -              | Tab ativa controlada.                                                                    |
+| `onValueChange`  | `(value: string) => void`    | -              | Dispara quando a tab ativa muda.                                                         |
+| `orientation`    | `"horizontal" \| "vertical"` | `"horizontal"` | Afeta a navegação por teclado e o layout. Vertical dispõe a list e o painel lado a lado. |
+| `dir`            | `"ltr" \| "rtl"`             | `"ltr"`        | Direção de leitura para navegação por setas.                                             |
+| `activationMode` | `"automatic" \| "manual"`    | `"automatic"`  | `"automatic"` ativa uma tab no focus; `"manual"` exige Enter ou Space.                   |
+
+### `<TabsList>`
+
+Container para os triggers. Envolve o `Tabs.List` do Radix.
+
+| Prop      | Type                  | Default     | Description                                                                                                                            |
+| --------- | --------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant` | `"default" \| "line"` | `"default"` | `"default"` é uma list pill com background muted arredondado. `"line"` é transparente com um único underline embaixo no trigger ativo. |
+| `loop`    | `boolean`             | `true`      | Se o foco do teclado dá a volta nas pontas.                                                                                            |
+
+### `<TabsTrigger>`
+
+A tab clicável. Envolve o `Tabs.Trigger` do Radix.
+
+| Prop       | Type      | Default | Description                                                          |
+| ---------- | --------- | ------- | -------------------------------------------------------------------- |
+| `value`    | `string`  | -       | Obrigatório. Corresponde ao value do `<TabsContent>` correspondente. |
+| `disabled` | `boolean` | `false` | Desabilita este trigger.                                             |
+
+### `<TabsContent>`
+
+O painel revelado quando seu trigger está ativo. Envolve o `Tabs.Content` do Radix.
+
+| Prop         | Type      | Default | Description                                                       |
+| ------------ | --------- | ------- | ----------------------------------------------------------------- |
+| `value`      | `string`  | -       | Obrigatório. Corresponde ao value de um `<TabsTrigger>`.          |
+| `forceMount` | `boolean` | `false` | Força o painel no DOM mesmo quando inativo (útil para animações). |
+
+## Composição
+
+1. **`<Tabs>`** é dono do value ativo (controlado ou não controlado).
+2. **`<TabsList>`** envolve os triggers. A prop `variant` vive aqui, não no Root.
+3. **Um ou mais `<TabsTrigger>`** com props `value` únicos vão dentro da list.
+4. **Painéis `<TabsContent>`** são irmãos da list (não dentro dela), cada um com um `value` que corresponde a um trigger.
+
+Renderize os triggers dentro de `<TabsList>` apenas - colocá-los fora quebra o contrato de navegação por teclado.
+
+## Variações
+
+### List pill (default)
+
+<div className="rounded-lg border p-6 not-prose">
+  <RxTabs defaultValue="profile">
+    <TabsList>
+      <TabsTrigger value="profile">Profile</TabsTrigger>
+      <TabsTrigger value="billing">Billing</TabsTrigger>
+      <TabsTrigger value="api">API keys</TabsTrigger>
+    </TabsList>
+    <TabsContent value="profile" className="mt-4 text-sm text-muted-foreground">
+      Profile fields...
+    </TabsContent>
+    <TabsContent value="billing" className="mt-4 text-sm text-muted-foreground">
+      Billing details...
+    </TabsContent>
+    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">
+      API keys list...
+    </TabsContent>
+  </RxTabs>
+</div>
+
+```tsx
+<Tabs defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+    <TabsTrigger value="api">API keys</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">Profile fields...</TabsContent>
+  <TabsContent value="billing">Billing details...</TabsContent>
+  <TabsContent value="api">API keys list...</TabsContent>
+</Tabs>
+```
+
+Use quando as tabs ficam dentro de um card ou painel e precisam de uma aparência clara e contida.
+
+### List line
+
+<div className="rounded-lg border p-6 not-prose">
+  <RxTabs defaultValue="overview">
+    <TabsList variant="line">
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="usage">Usage</TabsTrigger>
+      <TabsTrigger value="api">API</TabsTrigger>
+    </TabsList>
+    <TabsContent
+      value="overview"
+      className="mt-4 text-sm text-muted-foreground"
+    >
+      High-level summary.
+    </TabsContent>
+    <TabsContent value="usage" className="mt-4 text-sm text-muted-foreground">
+      Code patterns.
+    </TabsContent>
+    <TabsContent value="api" className="mt-4 text-sm text-muted-foreground">
+      Prop tables.
+    </TabsContent>
+  </RxTabs>
+</div>
+
+```tsx
+<Tabs defaultValue="overview">
+  <TabsList variant="line">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="usage">Usage</TabsTrigger>
+    <TabsTrigger value="api">API</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">High-level summary.</TabsContent>
+  <TabsContent value="usage">Code patterns.</TabsContent>
+  <TabsContent value="api">Prop tables.</TabsContent>
+</Tabs>
+```
+
+Use para tabs a nível de página onde o chrome ao redor já é pesado e um pill competiria visualmente.
+
+### Orientação vertical
+
+<ComponentPreview name="navigation/tabs-vertical">
+  <TabsVerticalPreview />
+</ComponentPreview>
+
+Defina `orientation="vertical"` e disponha a list e o painel lado a lado com `flex-row`. Use para menus de configuração dentro de painel. Arrow Up / Down navegam entre triggers quando vertical.
+
+### Com ícones
+
+<ComponentPreview name="navigation/tabs-with-icons">
+  <TabsWithIconsPreview />
+</ComponentPreview>
+
+Coloque um ícone `lucide-react` antes do label dentro de cada trigger. Os estilos do trigger dimensionam e espaçam o ícone automaticamente.
+
+### Tab desabilitada
+
+<ComponentPreview name="navigation/tabs-disabled">
+  <TabsDisabledPreview />
+</ComponentPreview>
+
+Passe `disabled` num `<TabsTrigger>` para renderizá-lo inerte. Triggers desabilitados são pulados na navegação por setas e ficam esmaecidos.
+
+### Valor controlado
+
+```tsx
+const [tab, setTab] = useState('profile');
+
+<Tabs value={tab} onValueChange={setTab}>
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">...</TabsContent>
+  <TabsContent value="billing">...</TabsContent>
+</Tabs>;
+```
+
+Use quando a tab ativa deve sincronizar com estado da URL, um router ou um wizard de formulário.
+
+## Acessibilidade
+
+- **Padrão WAI-ARIA Tabs**: a list renderiza como `role="tablist"`, cada trigger como `role="tab"` com `aria-selected` e `aria-controls`, cada painel como `role="tabpanel"` com `aria-labelledby`.
+- **Teclado**: `Tab` entra na list e pousa no trigger ativo; `ArrowLeft` / `ArrowRight` (ou `ArrowUp` / `ArrowDown` quando vertical) navegam entre triggers; `Home` / `End` pulam para o primeiro / último; `Tab` de novo sai da list e pousa no painel ativo.
+- **Modo de ativação**: com `activationMode="automatic"` (default), focar um trigger ativa seu painel. Defina `activationMode="manual"` quando os painéis carregam content pesado e você quer que os usuários apertem `Enter` ou `Space` para confirmar.
+- **Triggers desabilitados**: renderizam com `aria-disabled="true"` e são pulados na navegação por setas.
+- **Focus visible**: o trigger ativo mantém um focus ring visível; o painel em si usa `outline-none` e depende dos seus filhos para gerenciar o focus.
+
+## Relacionados
+
+- [NavigationMenu](/components/navigation/navigation-menu) - navegação entre seções com painéis ricos, não content irmão.
+- [Sidebar](/components/navigation/sidebar) - navegação de app-shell por muitas áreas.
+- [ToggleGroup](/components/buttons/toggle-group) - escolhas mutuamente exclusivas que não são containers de view.

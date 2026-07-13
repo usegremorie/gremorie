@@ -1,0 +1,309 @@
+---
+title: Pie Chart
+description: 'Partes de um todo, uma fatia por linha de dados, com furo de donut opcional e cores orientadas por token.'
+---
+
+import { PieChartPreview } from '@/components/preview/data/pie-chart';
+import { PieChartDonutPreview } from '@/components/preview/data/pie-chart-donut';
+import { PieChartLabelsPreview } from '@/components/preview/data/pie-chart-labels';
+
+## Visão geral
+
+`PieChart` é um gráfico recharts construído sobre o primitive `chart` do shadcn (`ChartContainer`) para **partes de um todo**. Passe `data` tabular, o `nameKey` (o campo de label da fatia) e o `dataKey` (o campo de valor numérico). As cores das fatias vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`), e um `config` opcional fornece os labels mostrados no tooltip. Passe `donut` para uma variante de donut com furo centralizado.
+
+Use PieChart quando **proporções importam** e você tem **duas a seis categorias** que somam um total significativo - share de tráfego por browser, receita por tier, alocações por time. Para sete ou mais categorias, um [`BarChart`](/components/data/bar-chart) lê mais rápido; para proporções em série temporal, um [`AreaChart`](/components/data/area-chart) empilhado carrega mais informação.
+
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+
+## Anatomia
+
+```
+<pie-chart>
+└─ figure (role="img")                  card surface, aspect-square
+   ├─ svg
+   │  ├─ slices, one per row (donut hole when donut)
+   │  │  └─ row fill colored (palette / per-row fill)
+   │  └─ slice labels (optional via showLabels)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend
+   └─ sr-only data table
+```
+
+A edição React compõe esta superfície através do primitive `chart` do shadcn:
+
+```text
+PieChart                          recharts pie / donut on the shadcn chart primitive
+└─ ChartContainer                 responsive square frame + tooltip label config
+   └─ RechartsPieChart            recharts pie surface
+      ├─ ChartTooltip             hover card
+      │  └─ ChartTooltipContent   themed tooltip body
+      └─ Pie                      one slice per row (nameKey + dataKey); innerRadius for donut
+         └─ LabelList             optional slice labels (showLabels)
+```
+
+## Preview
+
+<ComponentPreview name="data/pie-chart">
+  <PieChartPreview />
+</ComponentPreview>
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-pie-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-pie-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-pie-chart ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-pie-chart ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { PieChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
+
+const data: ChartDatum[] = [
+{ browser: "Chrome", visitors: 275, fill: "var(--chart-1)" },
+{ browser: "Safari", visitors: 200, fill: "var(--chart-2)" },
+{ browser: "Firefox", visitors: 187, fill: "var(--chart-3)" },
+{ browser: "Edge", visitors: 173, fill: "var(--chart-4)" },
+{ browser: "Other", visitors: 90, fill: "var(--chart-5)" },
+];
+
+const config: ChartConfig = {
+visitors: { label: "Visitors" },
+Chrome: { label: "Chrome" },
+Safari: { label: "Safari" },
+Firefox: { label: "Firefox" },
+Edge: { label: "Edge" },
+Other: { label: "Other" },
+};
+
+export function BrowserShare() {
+  return (
+    <PieChart data={data} config={config} nameKey="browser" dataKey="visitors" />
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from '@angular/core';
+import { PieChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+selector: 'app-browser-share',
+imports: [PieChart],
+template: `     <pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
+  `,
+})
+export class BrowserShareComponent {
+readonly data: ChartDatum[] = [
+{ browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+{ browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+{ browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+{ browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+{ browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
+];
+
+readonly config: ChartConfig = {
+visitors: { label: 'Visitors' },
+Chrome: { label: 'Chrome' },
+Safari: { label: 'Safari' },
+Firefox: { label: 'Firefox' },
+Edge: { label: 'Edge' },
+Other: { label: 'Other' },
+};
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<PieChart>`
+
+Um pie/donut recharts composto dentro do primitive `chart` do shadcn (`ChartContainer`). As cores das fatias vêm do `fill` de cada linha; o `config` opcional fornece os labels mostrados no tooltip.
+
+| Prop         | Type                    | Default | Descrição                                                                                                                                                          |
+| ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`       | `readonly ChartDatum[]` | -       | Dados tabulares. Uma linha por fatia. Cada linha precisa de um campo string em `nameKey`, um campo numérico em `dataKey` e um `fill` para a cor da fatia (ex. `var(--chart-1)`). |
+| `nameKey`    | `string`                | -       | Nome do campo de label da fatia. Usado para resolver o label do tooltip.                                                                                                    |
+| `dataKey`    | `string`                | -       | Nome do campo de valor numérico. As fatias são dimensionadas proporcionalmente à sua soma.                                                                                         |
+| `config`     | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de fatia (e chave de valor). Alimenta os labels do tooltip.                                                                             |
+| `donut`      | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (`innerRadius` 60) para produzir um gráfico de donut.                                                                                 |
+| `showLabels` | `boolean`               | `false` | Quando `true`, desenha o nome de cada fatia dentro da fatia via `LabelList` do recharts.                                                                                      |
+| `tooltip`    | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                                  |
+| `className`  | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                        |
+
+### Primitives de chart para composição customizada
+
+Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart do shadcn, todos reexportados de `@gremorie/rx-data`. Isso espelha o bloco de pie oficial do shadcn ([ui.shadcn.com/charts/pie](https://ui.shadcn.com/charts/pie)).
+
+| Export                                 | Papel                                                                              |
+| -------------------------------------- | --------------------------------------------------------------------------------- |
+| `ChartContainer`                       | Frame responsivo; injeta as CSS vars de cor por chave (`--color-<key>`) a partir do `config`. |
+| `ChartTooltip` / `ChartTooltipContent` | Hover card e seu conteúdo temático.                                                |
+| `ChartLegend` / `ChartLegendContent`   | Legenda opcional e seu conteúdo temático.                                           |
+| `useChart`                             | Hook que retorna o `config` ativo a partir do contexto (use dentro de children customizados).     |
+| `PieChart`, `Pie`, `Cell`, `Label`     | Primitives recharts crus compostos dentro de `ChartContainer`.                         |
+
+### Types
+
+| Type          | Shape                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart; o `fill` define a cor por fatia. |
+| `ChartConfig` | Mapa de chave → `{ label?, icon?, color? }`; fornece labels de tooltip/legenda (e cores opcionais).                  |
+
+<Callout type="info">
+  As cores das fatias vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`),
+  não do `config`. O `config` opcional mapeia cada nome de fatia para um `{label}` e
+  alimenta os labels mostrados no tooltip.
+</Callout>
+
+## Composição
+
+1. **Escolha `nameKey` e `dataKey`** - a coluna de label e a coluna numérica. Ambas devem existir em cada linha.
+2. **Defina um `fill` por linha** - aponte cada linha para um token `--chart-*` (ex. `fill: "var(--chart-1)"`). É daqui que vêm as cores das fatias.
+3. **Adicione um `config`** mapeando cada nome de fatia (e a chave de valor) para um `{ label }` para que o tooltip leia limpo.
+4. **Ordene as linhas por magnitude** antes de passá-las. A maior fatia deve ficar na âncora de 12 horas para que o olho a leia primeiro.
+5. **Alterne `donut`** quando você quer embutir um total ou label no centro, ou quando o card ao redor é grande o suficiente para que uma pie sólida pareça pesada demais.
+
+O chart se auto-dimensiona ao pai através do `ChartContainer` (`ResponsiveContainer` do recharts). O frame força `aspect-square` para que as fatias permaneçam circulares.
+
+## Variações
+
+### Pie sólida
+
+<ComponentPreview name="data/pie-chart">
+  <PieChartPreview />
+</ComponentPreview>
+
+```html
+<pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
+````
+
+O padrão. Use quando a superfície ao redor é pequena (card, painel lateral) ou quando nenhum label centralizado é necessário.
+
+### Variante donut
+
+<ComponentPreview name="data/pie-chart-donut">
+  <PieChartDonutPreview />
+</ComponentPreview>
+
+```html
+<pie-chart
+  [data]="data"
+  [config]="config"
+  nameKey="browser"
+  dataKey="visitors"
+  [donut]="true"
+/>
+```
+
+Use quando você quer embutir um total ou label no centro do gráfico, ou quando uma pie sólida parece pesada demais em uma superfície grande. O furo usa um `innerRadius` de 60.
+
+### Labels
+
+Defina `showLabels` para desenhar o nome de cada fatia dentro da fatia, para que o gráfico leia sem uma legenda separada.
+
+<ComponentPreview name="data/pie-chart-labels">
+  <PieChartLabelsPreview />
+</ComponentPreview>
+
+```tsx
+<PieChart
+  data={data}
+  config={config}
+  nameKey="browser"
+  dataKey="visitors"
+  showLabels
+/>
+```
+
+```html
+<pie-chart
+  [data]="data"
+  [config]="config"
+  nameKey="browser"
+  dataKey="visitors"
+  [showLabels]="true"
+/>
+```
+
+Use labels quando a superfície é grande o suficiente para acomodá-los e você quer os nomes das fatias visíveis em repouso. Combine com `donut` para um donut com labels.
+
+### Composição customizada
+
+Quando você precisa de cores por fatia explícitas, preenchimentos de gradiente, um label central ou uma legenda customizada, componha recharts cru dentro de `ChartContainer`. Isso espelha o bloco de pie oficial do shadcn.
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from '@gremorie/rx-data';
+import { Cell, Pie, PieChart } from 'recharts';
+
+export function ExplicitColorPie({
+  data,
+  config,
+  nameKey,
+  dataKey,
+  colorByName,
+}: {
+  data: ChartDatum[];
+  config: ChartConfig;
+  nameKey: string;
+  dataKey: string;
+  colorByName: Record<string, string>;
+}) {
+  return (
+    <ChartContainer
+      config={config}
+      className="mx-auto aspect-square max-h-[260px]"
+    >
+      <PieChart>
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent nameKey={nameKey} hideLabel />}
+        />
+        <Pie
+          data={data}
+          dataKey={dataKey}
+          nameKey={nameKey}
+          stroke="var(--background)"
+          strokeWidth={2}
+        >
+          {data.map((row) => (
+            <Cell
+              key={String(row[nameKey])}
+              fill={colorByName[String(row[nameKey])]}
+            />
+          ))}
+        </Pie>
+      </PieChart>
+    </ChartContainer>
+  );
+}
+```
+
+Você também pode pular o `<Cell>` inteiramente e definir `fill` diretamente em cada linha de `data` - o wrapper faz exatamente isso.
+
+## Acessibilidade
+
+- **Accessibility layer**: o `accessibilityLayer` do recharts fornece navegação por teclado e anúncios de screen reader para os dados do gráfico.
+- **Contraste de token**: os tokens `--chart-1` até `--chart-5` vêm com contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
+- **Separação de fatias**: trace as fatias com a cor do fundo (veja o exemplo de composição customizada) para que fatias adjacentes permaneçam distinguíveis para usuários com deficiências de visão de cores mesmo quando as cores são próximas.
+- **Limite a contagem de fatias**: acima de seis fatias, uma pie fica difícil de ler. Use [`BarChart`](/components/data/bar-chart) em vez disso.
+
+## Relacionados
+
+- [BarChart](/components/data/bar-chart) - use BarChart quando você tem mais de seis categorias ou quer comparação exata de valores.
+- [RadialChart](/components/data/radial-chart) - layout polar irmão quando as categorias devem ser mostradas como arcos concêntricos em vez de fatias.
+- [AreaChart](/components/data/area-chart) - use um AreaChart empilhado quando as proporções também precisam variar ao longo do tempo.

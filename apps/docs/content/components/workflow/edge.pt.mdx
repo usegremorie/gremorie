@@ -1,0 +1,174 @@
+---
+title: Edge
+description: Variantes de edge para um Canvas. Temporary (simple-bezier tracejado) e Animated (ponto fluindo ao longo de um bezier). Registre ambos via a prop edgeTypes.
+---
+
+import { EdgePreview } from '@/components/preview/ai/edge';
+
+## Visão geral
+
+`Edge` é um objeto namespace que entrega dois componentes de edge production-ready para workflows do xyflow:
+
+- **`Edge.Temporary`** - um path simple-bezier tracejado tingido com `var(--color-ring)`. Use-o para representar conexões em curso ou especulativas que ainda não foram confirmadas.
+- **`Edge.Animated`** - um path bezier padrão com um pequeno círculo na cor primary que anima ao longo dele via `<animateMotion>`. Use-o para representar fluxo de dados ao vivo entre nós (streaming de tokens, traces de observabilidade, passagem de mensagens entre agentes).
+
+Ambas as variantes são componentes React que seguem o contrato `EdgeProps` do xyflow. Você os registra no `Canvas` através da prop `edgeTypes` e depois os referencia por chave ao construir os dados do edge.
+
+## Preview
+
+<ComponentPreview name="ai/edge">
+  <EdgePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Edge                  custom React Flow edge
+├─ Edge.Temporary     dashed provisional edge
+└─ Edge.Animated      solid edge with a traveling dot
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-edge ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-edge ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-edge ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-edge ```</Tab>
+</Tabs>
+
+Requer `@xyflow/react`.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Canvas, Edge } from "@gremorie/rx-ai";
+
+const edgeTypes = {
+temporary: Edge.Temporary,
+animated: Edge.Animated,
+};
+
+const edges = [
+{ id: "e1", source: "1", target: "2", type: "animated" },
+{ id: "e2", source: "2", target: "3", type: "temporary" },
+];
+
+export function Workflow() {
+  return (
+    <Canvas nodes={nodes} edges={edges} edgeTypes={edgeTypes}>
+      {/* ... */}
+    </Canvas>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente está planejada; a edição React está production-ready hoje.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `Edge.Temporary`
+
+Um edge simple-bezier tracejado. Renderiza `BaseEdge` com `stroke-1 stroke-ring` e `strokeDasharray: "5, 5"`.
+
+Aceita as `EdgeProps` padrão de `@xyflow/react`:
+
+| Prop                                | Type       | Description                                                |
+| ----------------------------------- | ---------- | ---------------------------------------------------------- |
+| `id`                                | `string`   | ID do edge. Encaminhado ao `<path id>` do SVG.             |
+| `sourceX` / `sourceY`               | `number`   | Coordenadas do handle de origem (fornecidas pelo xyflow).  |
+| `targetX` / `targetY`               | `number`   | Coordenadas do handle de destino (fornecidas pelo xyflow). |
+| `sourcePosition` / `targetPosition` | `Position` | Lados dos handles. Usados por `getSimpleBezierPath`.       |
+
+Você não chama essas props por conta própria - o xyflow as encaminha automaticamente.
+
+### `Edge.Animated`
+
+Um edge bezier com um círculo (`fill="var(--primary)"`, `r="4"`) animando ao longo do path via `<animateMotion>` (loop de 2 segundos). Resolve as coordenadas reais do handle lendo dados de `InternalNode` para que a animação alinhe com os handles renderizados mesmo após a movimentação do nó.
+
+Retorna `null` se o nó de origem ou de destino ainda não tiver hidratado através de `useInternalNode`.
+
+Aceita as `EdgeProps` padrão:
+
+| Prop        | Type            | Description                                |
+| ----------- | --------------- | ------------------------------------------ |
+| `id`        | `string`        | ID do edge.                                |
+| `source`    | `string`        | ID do nó de origem.                        |
+| `target`    | `string`        | ID do nó de destino.                       |
+| `markerEnd` | `string`        | URL de marcador de ponta de seta opcional. |
+| `style`     | `CSSProperties` | Encaminhado para `BaseEdge`.               |
+
+Helpers internos:
+
+- `getHandleCoordsByPosition(node, position)` - resolve as coordenadas absolutas do handle a partir de `node.internals`.
+- `getEdgeParams(source, target)` - calcula os pontos de origem e destino usando `Position.Right` -> `Position.Left`.
+
+A variante `Animated` é hardcoded para uma direção de fluxo da esquerda para a direita (origem à direita de um nó, destino à esquerda do próximo).
+
+## Composição
+
+1. **`<Canvas>`** detém o registro `edgeTypes`. Passe `Edge.Temporary` e `Edge.Animated` indexados por qualquer nome que você queira usar nos dados do edge.
+2. **Os dados do edge** carregam `type: "temporary"` ou `type: "animated"` (ou sua chave custom) por edge. O xyflow escolhe o componente correspondente.
+3. **Overrides de estilo** fluem pela prop `style` em cada entrada de edge, ou via CSS mirando `.react-flow__edge[data-id="..."]`.
+
+## Variações
+
+### Conexão especulativa
+
+Mostre um `Edge.Temporary` tracejado enquanto o usuário ainda está configurando a conexão, depois troque para um edge sólido assim que confirmado.
+
+```tsx
+const edges = [{ id: 'draft-1', source: 'a', target: 'b', type: 'temporary' }];
+```
+
+### Fluxo de mensagens de agente ao vivo
+
+Use `Edge.Animated` para visualizar mensagens fluindo entre agentes em um grafo multi-agente.
+
+```tsx
+const edges = [
+  { id: 'trace-1', source: 'planner', target: 'tools', type: 'animated' },
+  { id: 'trace-2', source: 'tools', target: 'synthesizer', type: 'animated' },
+];
+```
+
+### Misture com edges padrão do xyflow
+
+Os tipos de edge embutidos do xyflow continuam registrados. Combine-os com as variantes da Gremorie para ter variedade.
+
+```tsx
+const edgeTypes = {
+  temporary: Edge.Temporary,
+  animated: Edge.Animated,
+  // built-ins: "default", "straight", "step", "smoothstep", "simplebezier"
+};
+```
+
+## Acessibilidade
+
+- **Paridade ponteiro / teclado**: o xyflow permite selecionar edges com clique e suporta deleção por teclado (Backspace / Delete) quando o edge tem foco. Ambas as variantes são elementos SVG de verdade, então o foco funciona.
+- **Reduced motion**: `Edge.Animated` usa `<animateMotion>` do SVG. Envolva com CSS para desabilitar a animação para usuários que preferem reduced motion:
+
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    .react-flow__edge animateMotion {
+      display: none;
+    }
+  }
+  ```
+
+- **Contraste de cor**: `var(--color-ring)` (traço do Temporary) e `var(--primary)` (ponto do Animated) devem atingir 3:1 para UI não textual. Os tokens da Gremorie cumprem isso em ambos os temas - reverifique se você trocar para uma paleta custom.
+- **Screen readers**: por padrão, os edges não carregam nome acessível. Se a relação importa para usuários de tecnologia assistiva, forneça `aria-label` no `Canvas` que os envolve ou use a config de `aria-labels` do xyflow.
+
+## Relacionados
+
+- [Canvas](/components/workflow/canvas) - a superfície que hospeda edges via `edgeTypes`
+- [Connection](/components/workflow/connection) - a linha de arraste em progresso mostrada antes de um edge ser confirmado
+- [Node](/components/workflow/node) - a origem e o destino de todo edge

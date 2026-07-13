@@ -1,0 +1,170 @@
+---
+title: Avatar
+description: 'Retrato de usuário ou entidade com fallback de imagem gracioso. Tamanhos, badges de presença e grupos sobrepostos.'
+---
+
+import { AvatarPreview } from '@/components/preview/display/avatar';
+import { AvatarFallbackPreview } from '@/components/preview/display/avatar-fallback';
+import { AvatarSizesPreview } from '@/components/preview/display/avatar-sizes';
+import { AvatarGroupPreview } from '@/components/preview/display/avatar-group';
+import { AvatarBadgePreview } from '@/components/preview/display/avatar-badge';
+
+## Visão geral
+
+`Avatar` é o primitivo de retrato de usuário ou entidade. Ele envolve o Radix Avatar, que cuida do ciclo de carregamento da imagem para você: enquanto a fonte carrega, o `AvatarFallback` renderiza; se o load falhar ou o `src` estiver ausente, o fallback permanece. O Avatar nunca renderiza como imagem quebrada ou círculo vazio.
+
+Três tamanhos são oferecidos na raiz (`sm`, `default`, `lg`) e se propagam para os subcomponentes via `data-size`. Para composições mais ricas, adicione `AvatarBadge` para um ponto de presença ou indicador de status, e use `AvatarGroup` mais `AvatarGroupCount` para pilhas sobrepostas.
+
+## Preview
+
+<ComponentPreview name="display/avatar">
+  <AvatarPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Avatar                  root circle; sets size via data-size
+├─ AvatarImage          the portrait; hidden until loaded
+├─ AvatarFallback       initials/icon shown while loading or on error
+└─ AvatarBadge          small status dot anchored bottom-right
+AvatarGroup             overlapping -space-x-2 stack of Avatars
+├─ Avatar               each stacked portrait (see above)
+└─ AvatarGroupCount     "+N" overflow chip
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-avatar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-avatar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-avatar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-avatar ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <Avatar>
+      <AvatarImage src="https://github.com/kalvner.png" alt="@kalvner" />
+      <AvatarFallback>KA</AvatarFallback>
+    </Avatar>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Avatar>`
+
+Container raiz. Envolve o `Avatar.Root` do Radix.
+
+| Prop        | Type                        | Default     | Description                                                                                                   |
+| ----------- | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------- |
+| `size`      | `"sm" \| "default" \| "lg"` | `"default"` | Define as dimensões da raiz (`size-6`, `size-8`, `size-10`) e propaga para os subcomponentes via `data-size`. |
+| `className` | `string`                    | -           | Classes extras. Use para sobrescrever o `size-*` padrão quando precisar de um tamanho intermediário ou maior. |
+
+Para tamanhos além do `lg`, passe um `size-12` explícito ou maior via `className`.
+
+### `<AvatarImage>`
+
+A imagem. Envolve o `Avatar.Image` do Radix. Repassa todas as props de `img`, incluindo `src`, `alt`, `onLoadingStatusChange`.
+
+| Prop  | Type     | Default | Description                                          |
+| ----- | -------- | ------- | ---------------------------------------------------- |
+| `src` | `string` | -       | URL da imagem. Obrigatória para a imagem renderizar. |
+| `alt` | `string` | -       | Texto alternativo. Obrigatório para acessibilidade.  |
+
+### `<AvatarFallback>`
+
+O conteúdo de fallback (tipicamente iniciais). Envolve o `Avatar.Fallback` do Radix.
+
+| Prop      | Type     | Default | Description                                                                       |
+| --------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `delayMs` | `number` | -       | Atrasa a renderização do fallback para evitar um flash enquanto a imagem carrega. |
+
+### `<AvatarBadge>`
+
+Ponto de presença ou indicador de status. Posiciona-se de forma absoluta no canto inferior direito do Avatar, com um ring que combina com o fundo da página.
+
+Os tamanhos se adaptam automaticamente ao `data-size` do Avatar pai - o badge permanece proporcional.
+
+### `<AvatarGroup>`
+
+Container para Avatars sobrepostos. Aplica `-space-x-2` e um ring de 2px em cada Avatar filho para que eles se leiam como uma pilha.
+
+### `<AvatarGroupCount>`
+
+Indicador "+N" ao final para Avatars ocultos em um grupo. Herda o tamanho do grupo pelos seletores `group-has-data-[size=*]/avatar-group`.
+
+## Composição
+
+1. **`<Avatar>`** é o container - sempre renderiza um círculo.
+2. **Dentro do Avatar**: coloque `<AvatarImage>` primeiro, depois `<AvatarFallback>` como rede de segurança. Ambos devem ser irmãos; o Radix coordena o ciclo de vida.
+3. **`<AvatarBadge>`** é opcional e posicionado de forma absoluta - coloque-o como último filho do `Avatar`.
+4. **Grupos**: envolva vários `Avatar`s em `<AvatarGroup>` e termine com `<AvatarGroupCount>` se houver overflow.
+
+## Variações
+
+### Tamanhos
+
+<ComponentPreview name="display/avatar-sizes">
+  <AvatarSizesPreview />
+</ComponentPreview>
+
+Três tamanhos são oferecidos na raiz: `sm` (`size-6`), `default` (`size-8`) e `lg` (`size-10`). O tamanho se propaga para os subcomponentes via `data-size`.
+
+### Só fallback
+
+<ComponentPreview name="display/avatar-fallback">
+  <AvatarFallbackPreview />
+</ComponentPreview>
+
+Quando a fonte da imagem está ausente ou falha ao carregar, o `AvatarFallback` renderiza automaticamente - tipicamente iniciais. O Avatar nunca mostra uma imagem quebrada.
+
+### Grupo sobreposto
+
+<ComponentPreview name="display/avatar-group">
+  <AvatarGroupPreview />
+</ComponentPreview>
+
+O `AvatarGroup` aplica `-space-x-2` e um ring de fundo para que os avatares se leiam como uma pilha. Termine com `AvatarGroupCount` para mostrar o overflow.
+
+### Com badge de presença
+
+<ComponentPreview name="display/avatar-badge">
+  <AvatarBadgePreview />
+</ComponentPreview>
+
+O `AvatarBadge` posiciona-se de forma absoluta no canto inferior direito e adapta seu tamanho ao `data-size` do Avatar pai.
+
+## Acessibilidade
+
+- **`AvatarImage` exige `alt`**: passe o nome do usuário ou entidade. Leitores de tela anunciam o alt; o fallback fica oculto da AT enquanto a imagem está presente.
+- **Conteúdo de fallback**: quando a imagem falha, o texto de fallback (tipicamente iniciais) vira o label anunciado. Mantenha-o significativo - "KA" é anunciado como "K A"; use o nome completo em `aria-label` na raiz do Avatar se as iniciais forem muito enigmáticas.
+- **Uso decorativo**: quando um Avatar é puramente decorativo (ex. em uma ilustração de marketing), passe `alt=""` no `AvatarImage` e adicione `aria-hidden="true"` na raiz do Avatar para que a AT o ignore.
+- **Badges de presença**: `AvatarBadge` é um `<span>` sem semântica. Transmita a presença pelo contexto (ex. um tooltip irmão ou texto), não só pela cor.
+- **Contagens de grupo**: `AvatarGroupCount` é anunciado como "+3" ou o que você colocar dentro - envolva com um texto como "e mais 3" para uma saída mais clara no leitor de tela.
+
+## Relacionados
+
+- [Badge](/components/display/badge) - pill de status inline (primitivo separado do `AvatarBadge`).
+- [Tooltip](/components/overlays/tooltip) - combina com o Avatar para revelar o nome completo no hover.
+- [Card](/components/display/card) - host típico para avatar mais nome em cards de perfil.

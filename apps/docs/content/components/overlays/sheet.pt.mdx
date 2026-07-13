@@ -1,0 +1,202 @@
+---
+title: Sheet
+description: 'Painel ancorado à lateral para fluxos mais longos, construído sobre o Radix Dialog com slide-in direcional a partir de qualquer borda.'
+---
+
+import { SheetPreview } from '@/components/preview/overlays/sheet';
+import { SheetSidesPreview } from '@/components/preview/overlays/sheet-sides';
+
+## Visão geral
+
+`Sheet` é um Radix Dialog estilizado como painel lateral. Use-o para conteúdo que não merece foco total como um `Dialog`, mas é rico demais para um `Popover`: bandejas de filtro, painéis de detalhe, configurações multi-seção, menus de navegação no mobile. A direção do slide é configurável por lado (`top`, `right`, `bottom`, `left`).
+
+Para a ergonomia de desktop, prefira `right` (painéis de filtro e detalhe). `left` é convencional para navegação. Em breakpoints mobile, o `Drawer` costuma encaixar melhor porque adiciona gestos nativos de drag-to-dismiss.
+
+## Preview
+
+<ComponentPreview name="overlays/sheet">
+  <SheetPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Sheet                          raiz Radix que mantém o estado de abertura
+├─ SheetTrigger                elemento que abre o sheet
+└─ SheetContent                painel deslizante em portal (side, showCloseButton)
+   ├─ SheetHeader              envolve título + descrição
+   │  ├─ SheetTitle            headline
+   │  └─ SheetDescription      texto do corpo
+   ├─ SheetClose               fecha o sheet
+   └─ SheetFooter              linha de ações inferior
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-sheet ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-sheet ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-sheet ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-sheet ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Open filters</Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Filters</SheetTitle>
+          <SheetDescription>
+            Narrow down the registry by category and edition.
+          </SheetDescription>
+        </SheetHeader>
+        {/* filter controls */}
+      </SheetContent>
+    </Sheet>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Sheet>`
+
+Estende o Radix `Dialog.Root`. Mesma API controlada do `Dialog` (`open`, `defaultOpen`, `onOpenChange`, `modal`).
+
+### `<SheetContent>`
+
+| Prop              | Type                                     | Default   | Description                                                     |
+| ----------------- | ---------------------------------------- | --------- | --------------------------------------------------------------- |
+| `side`            | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Borda contra a qual o sheet encaixa e a partir da qual desliza. |
+| `showCloseButton` | `boolean`                                | `true`    | Renderiza o botão X de fechar no canto superior direito.        |
+
+Envolve o Radix `Dialog.Content` em um Portal com o overlay. A largura e a altura se adaptam à `side`:
+
+- `right` / `left`: altura total, `w-3/4` limitado a `sm:max-w-sm`.
+- `top` / `bottom`: largura total, `h-auto`.
+
+### `<SheetHeader>`, `<SheetFooter>`
+
+Containers de layout com padding `p-4`. O header empilha título e descrição; o footer empurra para a parte inferior (`mt-auto`) com `gap-2`.
+
+### `<SheetTitle>`, `<SheetDescription>`
+
+Mapeiam para o Radix `Dialog.Title` e `Dialog.Description`. Ambos são exigidos pelo Radix; renderize com `className="sr-only"` se visualmente ocultos.
+
+### `<SheetTrigger>`, `<SheetClose>`, `<SheetOverlay>`, `<SheetPortal>`
+
+Pass-throughs sobre os primitivos do Radix com atributos `data-slot`.
+
+## Composição
+
+1. **`<Sheet>`** detém o estado de aberto/fechado.
+2. **`<SheetTrigger asChild>`** envolve o elemento focável que o abre.
+3. **`<SheetContent side="right">`** monta via Portal, desenha o overlay, desliza a partir da borda escolhida.
+4. **Header** carrega título e descrição; o corpo guarda o conteúdo principal; o footer fixa as ações primárias na parte inferior.
+5. **Dispensa**: clique no overlay, pressione `Esc`, clique no X (`showCloseButton`) ou chame `SheetClose`.
+
+## Variações
+
+### Lados
+
+`SheetContent` desliza a partir de qualquer borda via a prop `side` (`top`, `right`, `bottom`, `left`). Cada trigger abaixo abre o sheet a partir de uma borda diferente.
+
+<ComponentPreview name="overlays/sheet-sides">
+  <SheetSidesPreview />
+</ComponentPreview>
+
+### Painel de filtros à direita
+
+O padrão canônico de desktop. Formulário de filtro fixo, corpo com scroll, apply/reset no footer.
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Filters</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Filters</SheetTitle>
+    </SheetHeader>
+    <div className="flex-1 overflow-auto px-4">{/* filter form */}</div>
+    <SheetFooter>
+      <Button variant="outline">Reset</Button>
+      <Button>Apply</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+```
+
+### Drawer de navegação à esquerda
+
+Emparelhe com um trigger de hambúrguer no mobile para a navegação primária.
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Open menu">
+      <MenuIcon />
+    </Button>
+  </SheetTrigger>
+  <SheetContent side="left">
+    <SheetHeader>
+      <SheetTitle>Navigation</SheetTitle>
+    </SheetHeader>
+    <nav className="px-4">{/* nav links */}</nav>
+  </SheetContent>
+</Sheet>
+```
+
+### Painel de notificações inferior
+
+Use `side="bottom"` para painéis transitórios que não merecem um modal centralizado (status do sistema, atividade recente).
+
+```tsx
+<SheetContent side="bottom">
+  <SheetHeader>
+    <SheetTitle>Recent activity</SheetTitle>
+  </SheetHeader>
+  {/* activity feed */}
+</SheetContent>
+```
+
+## Acessibilidade
+
+- **Role**: `role="dialog"` com `aria-modal="true"` (prop `modal` padrão).
+- **Teclado**: `Esc` fecha; `Tab` circula o foco dentro do content; o foco fica preso enquanto aberto.
+- **Gestão de foco**: o foco vai para o primeiro elemento focável na abertura e retorna ao trigger ao fechar.
+- **Title**: `SheetTitle` é obrigatório; sem ele o Radix loga um aviso. Use `sr-only` se precisar ocultá-lo visualmente.
+- **Description**: liga ao content via `aria-describedby` automaticamente.
+- **Reduced motion**: as animações de slide respeitam `prefers-reduced-motion` via as utilidades animate do Tailwind subjacentes.
+
+## Relacionados
+
+- [Drawer](/components/overlays/drawer) - bottom sheet baseado em vaul com drag-to-dismiss para mobile.
+- [Dialog](/components/overlays/dialog) - modal centralizado para decisões focadas.
+- [Popover](/components/overlays/popover) - overlay inline ancorado para pequenas UI contextuais.
+- [Navigation Menu](/components/navigation/navigation-menu) - navegação de nível superior que não faz overlay.

@@ -1,0 +1,137 @@
+---
+title: Spinner
+description: 'Indicador de carregamento indeterminado - um único glyph rotativo que cabe em qualquer lugar que texto caiba.'
+---
+
+import { SpinnerPreview } from '@/components/preview/feedback/spinner';
+import { SpinnerInlinePreview } from '@/components/preview/feedback/spinner-inline';
+
+## Visão geral
+
+`Spinner` é o **primitive de carregamento indeterminado**: um único glyph rotativo (a geometria do `Loader2` do lucide) para trabalho em andamento de duração desconhecida. Por ser apenas um glyph, ele vive em qualquer lugar que texto caiba - inline ao lado de um label, dentro de um button enquanto uma request está pendente, em um empty state.
+
+Recorra ao Spinner quando você não consegue dizer quanto tempo a espera vai levar. Quando o percentual concluído é conhecido, use [Progress](/components/feedback/progress); quando você está reservando layout para a forma do conteúdo em carregamento, use [Skeleton](/components/feedback/skeleton). Mantenha-o pequeno e local - um spinner de página inteira geralmente é um layout de Skeleton no lugar.
+
+## Preview
+
+<ComponentPreview name="feedback/spinner">
+  <SpinnerPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Spinner   único glyph Loader2 rotativo (role="status", aria-live="polite", aria-label="Loading")
+```
+
+## Instalação
+
+<Tabs items={['npm', 'registry']}>
+<Tab value="npm">
+```bash
+# React
+npm i @gremorie/rx-feedback
+
+# Angular
+
+npm i @gremorie/ng-feedback
+
+````
+</Tab>
+<Tab value="registry">
+```bash
+npx gremorie@latest add ng-spinner
+````
+
+<Callout type="info">
+  A edição Angular é entregue como o item de registry `ng-spinner`. A edição React
+  instala a partir do pacote npm `@gremorie/rx-feedback`; um item de registry
+  standalone ainda não foi publicado.
+</Callout>
+</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Spinner } from "@gremorie/rx-feedback";
+
+export function LoadingRow() {
+  return (
+    <p className="flex items-center gap-2 text-sm text-muted-foreground">
+      <Spinner size="sm" />
+      Loading conversations...
+    </p>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-spinner
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Spinner } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-loading-row',
+  standalone: true,
+  imports: [Spinner],
+  template: `
+    <p class="flex items-center gap-2 text-sm text-muted-foreground">
+      <gr-spinner size="sm" />
+      Loading conversations...
+    </p>
+  `,
+})
+export class LoadingRowComponent {}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Spinner>`
+
+React renderiza o `Loader2Icon` do lucide com `animate-spin`; Angular (`<gr-spinner>`) renderiza um SVG inline com a mesma geometria. A superfície pública é idêntica em ambas as edições.
+
+| Prop        | Type                          | Default     | Description                                                                                               |
+| ----------- | ----------------------------- | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `size`      | `"sm" \| "default" \| "lg"`   | `"default"` | Tamanho do glyph: 12 / 16 / 24 px.                                                                        |
+| `className` | `string`                      | -           | Classes extras, ex. uma cor de texto. No Angular isso mapeia para o `class` do host.                      |
+| `...props`  | `React.ComponentProps<"svg">` | -           | Atributos padrão de SVG (edição React). `role`, `aria-live`, e `aria-label` já estão definidos para você. |
+
+## Composição
+
+1. **O glyph traça `currentColor`**, então ele se tinge com a cor de texto ao redor - defina `text-muted-foreground` (ou qualquer token de texto) no Spinner ou em seu pai e o glyph acompanha.
+2. **Inline com texto**: combine `size="sm"` com um label curto ("Loading conversations...") dentro de uma flex row. O glyph se alinha como um ícone à esquerda.
+3. **Dentro de um button**: coloque um Spinner antes do label enquanto uma request está em andamento; desabilite o button ao mesmo tempo para que o estado pendente seja lido como um único sinal.
+4. **Empty states**: centralize um Spinner `size="lg"` enquanto a primeira página de dados carrega, depois troque pelo conteúdo real ou por um bloco de empty state.
+
+## Variações
+
+### Inline com texto
+
+<ComponentPreview name="feedback/spinner-inline">
+  <SpinnerInlinePreview />
+</ComponentPreview>
+
+A forma mais comum: um pequeno glyph ao lado de um label de status curto. O label carrega o significado; o glyph carrega o movimento.
+
+## Acessibilidade
+
+- **Anunciado de imediato**: o componente define `role="status"`, `aria-live="polite"`, e `aria-label="Loading"`, então leitores de tela anunciam o estado pendente sem fiação extra.
+- **Um anúncio por região**: quando vários elementos carregam juntos, prefira um Spinner (ou uma região `aria-busy`) em vez de muitos, para que a tecnologia assistiva receba um único status em vez de tagarelice repetida.
+- **Movimento reduzido**: a rotação usa o `animate-spin` do Tailwind, que respeita `prefers-reduced-motion` via o override global do projeto.
+- **Contraste de cor**: o glyph herda `currentColor`; mantenha a cor de texto ao redor em contraste AA e o Spinner acompanha.
+
+## Relacionados
+
+- [Progress](/components/feedback/progress) - recorra ao Progress quando o percentual concluído é conhecido.
+- [Skeleton](/components/feedback/skeleton) - recorra ao Skeleton quando você está reservando layout para a forma do conteúdo em carregamento.
+- [Alert](/components/feedback/alert) - recorra ao Alert quando a superfície precisa explicar _por que_ o usuário está esperando.

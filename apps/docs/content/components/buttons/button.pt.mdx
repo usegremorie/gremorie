@@ -1,0 +1,185 @@
+---
+title: Button
+description: Alvo de clique primário com seis variants visuais, oito presets de tamanho (incluindo icon-only), e um escape hatch `asChild` para renderização polimórfica.
+---
+
+import { ButtonPreview } from '@/components/preview/forms/button';
+import { ButtonSizesPreview } from '@/components/preview/forms/button-sizes';
+import { ButtonIconPreview } from '@/components/preview/forms/button-icon';
+import { ButtonIconOnlyPreview } from '@/components/preview/forms/button-icon-only';
+import { ButtonDisabledPreview } from '@/components/preview/forms/button-disabled';
+
+## Visão geral
+
+`Button` é o primitive interativo fundamental. Uma única factory CVA controla sua superfície visual (`variant`) e footprint (`size`), então qualquer combinação é uma mudança de uma prop. Use para qualquer ação direta do usuário: submit, confirmar, navegar, dispensar, disparar.
+
+Quando a ação precisa renderizar como um link, item de lista, ou qualquer host que não seja um button, defina `asChild` e o Radix Slot vai encaminhar todos os estilos e props do button para o primeiro filho.
+
+## Preview
+
+<ComponentPreview name="forms/button">
+  <ButtonPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Button   único <button> (ou filho asChild) estilizado por buttonVariants; filhos SVG são auto-dimensionados para size-4
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-button ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-button ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-button ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-button ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+
+export function Example() {
+  return <Button onClick={handleClick}>Save changes</Button>;
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-button
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Button } from '@gremorie/ng-forms';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [Button],
+  template: `<ai-button (pressedChange)="handleClick()"
+    >Save changes</ai-button
+  >`,
+})
+export class ExampleComponent {
+  handleClick() {
+    // ...
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Button>`
+
+| Prop       | Type                                                                                 | Default     | Description                                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------ | ----------- | -------------------------------------------------------------------------------------------------------------------- |
+| `variant`  | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"`        | `"default"` | Tratamento visual.                                                                                                   |
+| `size`     | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Preset de footprint. Tamanhos de icon são quadrados (`size-*`) sem padding horizontal.                               |
+| `asChild`  | `boolean`                                                                            | `false`     | Quando `true`, renderiza via Radix `Slot.Root`; o primeiro filho recebe todos os estilos, props e eventos do button. |
+| `disabled` | `boolean`                                                                            | `false`     | Atributo HTML padrão. Adiciona `pointer-events-none` e `opacity-50`.                                                 |
+
+Estende todos os `React.ComponentProps<"button">`. Encaminha um `data-slot="button"`, `data-variant` e `data-size` para composição downstream (ex. `ButtonGroup`, `InputGroup`).
+
+### `buttonVariants`
+
+Factory CVA exportada para que outros primitives possam reutilizar a superfície do button sem renderizar um `<button>` de verdade. As setas de navegação do `Calendar` e o `InputGroupButton` a consomem diretamente.
+
+```tsx
+import { buttonVariants } from '@gremorie/rx-forms';
+
+<a className={buttonVariants({ variant: 'outline', size: 'sm' })} href="/docs">
+  Read more
+</a>;
+```
+
+## Composição
+
+1. **`<Button>`** é a folha. Ele é dono de sua superfície visual e acessibilidade (`disabled`, focus ring, `aria-invalid`).
+2. **Ícones internos** são auto-dimensionados via CSS (`[&_svg:not([class*='size-'])]:size-4`) e recebem `pointer-events-none` para que o button permaneça o alvo de clique.
+3. **`asChild`** deixa você manter o tratamento visual enquanto renderiza como `<a>`, `<Link>`, `<NavLink>`, ou qualquer outro elemento host.
+
+## Variações
+
+### Todas as variants
+
+Mostra cada variant como referência visual. `default` para ações primárias, `destructive` para as irreversíveis, `outline` e `secondary` para irmãos com menos ênfase, `ghost` para hosts estilo toolbar, `link` para navegação inline que deve parecer prosa.
+
+```tsx
+<div className="flex flex-wrap gap-3">
+  <Button>Default</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="link">Link</Button>
+  <Button variant="destructive">Destructive</Button>
+</div>
+```
+
+### Tamanhos
+
+Quatro presets de footprint - `xs`, `sm`, `default`, `lg` - mantêm toolbars densas e CTAs primários visualmente consistentes. Tamanhos quadrados icon-only (`icon-xs` até `icon-lg`) são mostrados abaixo.
+
+<ComponentPreview name="forms/button-sizes">
+  <ButtonSizesPreview />
+</ComponentPreview>
+
+### Button com ícone à esquerda
+
+Coloque um ícone como filho. O CSS o auto-dimensiona e aperta o padding horizontal via `has-[>svg]:px-3`.
+
+<ComponentPreview name="forms/button-icon">
+  <ButtonIconPreview />
+</ComponentPreview>
+
+### Button icon-only
+
+Use `size="icon"` (ou `icon-xs`, `icon-sm`, `icon-lg`) para buttons quadrados. Sempre combine com um `aria-label` para que leitores de tela anunciem a ação.
+
+Quando um icon button fica ao lado de outro controle, iguale os passos de altura pelas size variants (`icon-sm` com um select ou button `size="sm"`, `icon` com os defaults) em vez de forçar alturas com classes. Veja [Action rows e pareamento de tamanho](/components/buttons/button-group#action-rows-and-size-pairing).
+
+<ComponentPreview name="forms/button-icon-only">
+  <ButtonIconOnlyPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` remove o button da ordem de tabulação, reduz a opacidade para 50% e bloqueia eventos de ponteiro. Aplica-se a todas as variants.
+
+<ComponentPreview name="forms/button-disabled">
+  <ButtonDisabledPreview />
+</ComponentPreview>
+
+### `asChild` para navegação
+
+Renderize os estilos do button em um `<Link>` ou `<a>` para que a semântica do elemento combine com o destino (`router.push` no clique, middle-click funcionando, href amigável para SEO).
+
+```tsx
+import Link from 'next/link';
+
+<Button asChild>
+  <Link href="/dashboard">Open dashboard</Link>
+</Button>;
+```
+
+## Acessibilidade
+
+- **Teclado**: o `<button>` nativo aceita `Enter` e `Space`. `asChild` preserva qualquer semântica que o elemento host fornecer.
+- **Focus**: ring de 3px controlado por `focus-visible:ring-ring/50`, então aparece apenas para navegação por teclado, nunca no clique.
+- **Disabled**: `disabled` remove o elemento da ordem de tabulação, reduz a opacidade para 50% e aplica `pointer-events-none` para que o button também não possa ser ativado pelo mouse.
+- **Invalid**: `aria-invalid="true"` troca o focus ring para o token destructive.
+- **Icon-only**: sempre forneça `aria-label`. Sem ele, leitores de tela anunciam o button sem nome.
+
+## Relacionados
+
+- [Button Group](/components/buttons/button-group) - une vários buttons em um único cluster com borda compartilhada
+- [Input Group](/components/text/input-group) - embute `InputGroupButton` dentro de um input
+- [Toggle](/components/buttons/toggle) - button de dois estados (`aria-pressed`) para ações com estado
+- [Field](/components/form) - compõe Button com `FormControl` para affordances de submit

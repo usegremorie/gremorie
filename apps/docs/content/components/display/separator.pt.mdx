@@ -1,0 +1,144 @@
+---
+title: Separator
+description: 'Divisor visual horizontal ou vertical. Decorativo por padrão; opte pela separação semântica quando necessário.'
+---
+
+import { SeparatorPreview } from '@/components/preview/display/separator';
+import { SeparatorVerticalPreview } from '@/components/preview/display/separator-vertical';
+
+## Visão geral
+
+`Separator` é o primitive de divisor de linha fina: uma régua horizontal entre seções, uma régua vertical entre itens de toolbar, uma divisão interna de card entre header e conteúdo. Ele envolve o Radix Separator para que a flag `decorative` controle se a linha é exposta à tecnologia assistiva (`role="separator"` com `aria-orientation`) ou escondida como apresentação (`role="none"`).
+
+O padrão `decorative={true}` é a escolha certa na grande maioria dos casos - separadores raramente carregam significado semântico. Mude para `decorative={false}` apenas quando o divisor fica entre duas seções tipo lista que você quer que os leitores de tela anunciem.
+
+## Preview
+
+<ComponentPreview name="display/separator">
+  <SeparatorPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Separator   single token-driven 1px line (bg-border); fills width when horizontal, height when vertical
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-separator ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-separator ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-separator ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-separator ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Separator } from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-sm font-medium">Gremorie</p>
+      <p className="text-xs text-muted-foreground">AI-native design system</p>
+      <Separator className="my-2" />
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <span>Docs</span>
+        <Separator orientation="vertical" className="h-4" />
+        <span>Registry</span>
+      </div>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Separator>`
+
+Estende o Radix `Separator.Root`.
+
+| Prop          | Type                         | Default        | Descrição                                                                                                                                                                |
+| ------------- | ---------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direção da linha. Horizontal renderiza `h-px w-full`; vertical renderiza `w-px h-full`.                                                                                  |
+| `decorative`  | `boolean`                    | `true`         | Quando `true`, o separador fica escondido da AT (`role="none"`). Quando `false`, a AT o anuncia com `role="separator"` e `aria-orientation`.                             |
+| `className`   | `string`                     | -              | Classes extras. Para separadores verticais, defina uma altura explícita (`h-4`, `h-6`, etc.) - o padrão `h-full` só funciona dentro de um pai flex com altura conhecida. |
+
+Todas as outras props de `div` são encaminhadas.
+
+## Composição
+
+Separator é um componente folha. As duas alavancas são `orientation` e `decorative`. Há dois padrões de host comuns:
+
+1. **Dentro de uma pilha vertical** (ex. entre seções em um card): separador horizontal, decorativo por padrão.
+2. **Dentro de uma flex row horizontal** (ex. uma toolbar): separador vertical com uma altura explícita (`h-4` para texto inline, `h-6` para botões).
+
+Para divisores de grupo de form que devem anunciar à AT, defina `decorative={false}`.
+
+## Variações
+
+### Divisor horizontal entre seções
+
+```tsx
+<div className="flex flex-col gap-3">
+  <section>
+    <p className="text-sm font-medium">Account</p>
+    <p className="text-xs text-muted-foreground">kalvner@gremorie.dev</p>
+  </section>
+  <Separator />
+  <section>
+    <p className="text-sm font-medium">Workspace</p>
+    <p className="text-xs text-muted-foreground">Gremorie HQ</p>
+  </section>
+</div>
+```
+
+A orientação horizontal padrão renderiza `h-px w-full`, dividindo seções empilhadas. Este é o caso mais comum e é também mostrado no Preview acima.
+
+### Divisor vertical em uma toolbar
+
+<ComponentPreview name="display/separator-vertical">
+  <SeparatorVerticalPreview />
+</ComponentPreview>
+
+Separadores verticais precisam de uma altura explícita (`h-4` aqui) porque seu padrão `h-full` só preenche um pai restrito.
+
+### Separador semântico (decorative=false)
+
+```tsx
+<section>
+  <h2>Recent activity</h2>
+  <ul>...</ul>
+</section>
+<Separator decorative={false} />
+<section>
+  <h2>Archived</h2>
+  <ul>...</ul>
+</section>
+```
+
+Use `decorative={false}` apenas quando o divisor transmite estrutura que usuários de AT perderiam de outra forma - tipicamente entre duas seções tipo lista de peso igual.
+
+## Acessibilidade
+
+- **Decorativo por padrão**: `decorative={true}` renderiza `role="none"`, então a AT pula o separador inteiramente. Isso é correto para a maioria dos divisores visuais.
+- **Separadores semânticos**: `decorative={false}` renderiza `role="separator"` com `aria-orientation`. Use com moderação - prefira headings ou elementos de landmark (`<section>`, `<nav>`) para estrutura real.
+- **Contraste de cor**: Separator usa `bg-border`, uma cor orientada por token. Se você sobrescreve com uma cor customizada, garanta pelo menos 3:1 de contraste contra o fundo para uso não decorativo.
+- **Separadores verticais**: quando a flex row pai não tem uma altura clara (ex. apenas texto inline), passe `className="h-4"` ou similar para que o divisor realmente renderize.
+
+## Relacionados
+
+- [Card](/components/display/card) - hospeda separadores internos entre header, content e footer.
+- [Sidebar](/components/navigation/sidebar) - separadores entre grupos de nav.
+- [Dropdown Menu](/components/overlays/dropdown-menu) - separadores entre grupos de menu (usa seu próprio `DropdownMenuSeparator`).

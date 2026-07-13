@@ -1,0 +1,161 @@
+---
+title: Badge
+description: 'Label compacto para status, contagens e tags. Seis variantes, asChild opcional para badges estilo link.'
+---
+
+import { BadgePreview } from '@/components/preview/display/badge';
+import { BadgeVariantsPreview } from '@/components/preview/display/badge-variants';
+import { BadgeStatusPreview } from '@/components/preview/display/badge-status';
+import { BadgeLinkPreview } from '@/components/preview/display/badge-link';
+import { BadgeCountPreview } from '@/components/preview/display/badge-count';
+
+## Visão geral
+
+`Badge` é o primitive de label estático: uma pílula pequena e arredondada para status ("Active", "Pending"), contagens ("12", "99+"), tags ("AI", "Beta") ou marcadores de categoria. Ele renderiza como um `<span>` por padrão - ou qualquer elemento via `asChild` - e é intencionalmente não interativo. Para chips selecionáveis, use `ToggleGroup`; para badges clicáveis que linkam para algum lugar, use `asChild` para compor com um `<a>` ou um componente `Link`.
+
+Seis variantes são distribuídas por padrão: `default` (primary preenchido), `secondary`, `destructive`, `outline`, `ghost` e `link`. Os estados de hover só se aplicam quando o Badge é renderizado como âncora (via o padrão de seletor `[a&]:hover:...`), então as variantes estáticas permanecem verdadeiramente estáticas.
+
+## Preview
+
+<ComponentPreview name="display/badge">
+  <BadgePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Badge   rounded, bordered pill wrapping text and/or a leading size-3 icon
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-badge ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-badge ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-badge ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-badge ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Badge } from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="outline">Outline</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-badge
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Badge } from '@gremorie/ng-display';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [Badge],
+  template: `
+    <div class="flex flex-wrap items-center gap-2">
+      <gr-badge>Default</gr-badge>
+      <gr-badge variant="secondary">Secondary</gr-badge>
+      <gr-badge variant="outline">Outline</gr-badge>
+      <gr-badge variant="destructive">Destructive</gr-badge>
+    </div>
+  `,
+})
+export class ExampleComponent {}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Badge>`
+
+| Prop        | Type                                                                          | Default     | Descrição                                                                                                                                                                 |
+| ----------- | ----------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`   | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Estilo visual. `default` é primary preenchido; `outline` mostra apenas uma borda; `ghost` é invisível até ser renderizado como âncora; `link` estiliza como texto inline. |
+| `asChild`   | `boolean`                                                                     | `false`     | Quando `true`, renderiza o child imediato via `Slot` do Radix e mescla todas as classes nele. Use para envolver um `<a>` ou `Link` de framework.                          |
+| `className` | `string`                                                                      | -           | Classes extras mescladas via `cn`.                                                                                                                                        |
+
+Todas as outras props de `span` são encaminhadas.
+
+A função CVA `badgeVariants` também é exportada, então você pode compor os estilos do Badge em um elemento customizado sem usar o próprio Badge:
+
+```tsx
+import { badgeVariants } from '@gremorie/rx-display';
+
+<a href="/docs" className={badgeVariants({ variant: 'outline' })}>
+  Docs
+</a>;
+```
+
+## Composição
+
+Badge é um componente folha - não tem sub-partes. As duas alavancas de composição são:
+
+1. **`variant`** para trocar o tratamento visual.
+2. **`asChild`** para renderizar os estilos do Badge em um elemento diferente (tipicamente uma âncora ou link de framework).
+
+Ícones compõem naturalmente: coloque um SVG dentro do Badge e o CSS da variante cuida do dimensionamento (`[&>svg]:size-3`).
+
+## Variações
+
+### Todas as variantes
+
+<ComponentPreview name="display/badge-variants">
+  <BadgeVariantsPreview />
+</ComponentPreview>
+
+Todas as seis variantes lado a lado: `default` (primary preenchido), `secondary`, `destructive`, `outline`, `ghost` e `link`. `ghost` lê como texto simples até ser renderizado como âncora.
+
+### Indicador de status
+
+<ComponentPreview name="display/badge-status">
+  <BadgeStatusPreview />
+</ComponentPreview>
+
+Combine um ícone com texto para que o status leia claramente sem depender apenas da cor. Ícones dentro do Badge se dimensionam automaticamente via `[&>svg]:size-3`.
+
+### Badge como link (asChild)
+
+<ComponentPreview name="display/badge-link">
+  <BadgeLinkPreview />
+</ComponentPreview>
+
+Estilos de hover se ativam automaticamente quando o Badge renderiza como âncora - é o que os seletores `[a&]:hover:...` fazem internamente.
+
+### Badge de contagem
+
+<ComponentPreview name="display/badge-count">
+  <BadgeCountPreview />
+</ComponentPreview>
+
+## Acessibilidade
+
+- **Estático por padrão**: o Badge renderiza um `<span>` e não tem role. Leitores de tela anunciam seu conteúdo de texto como texto inline.
+- **Atualizações de status**: quando o conteúdo de um Badge muda dinamicamente (ex. uma contagem que atualiza ao vivo), envolva um pai em uma região `aria-live="polite"` para que a tecnologia assistiva anuncie a mudança.
+- **Significado só por cor não basta**: use ícones ou texto além da cor da variante para que usuários que não conseguem perceber cor ainda recebam a mensagem ("Active" mais um ícone de check, não só uma pílula verde).
+- **Badges interativos**: ao renderizar como âncora via `asChild`, a semântica nativa da âncora se aplica - foco, Enter para ativar, anúncio de screen reader como link.
+- **`aria-invalid`**: o Badge estiliza `aria-invalid={true}` automaticamente com borda e ring destructive - útil quando o Badge é parte de um campo de form.
+
+## Relacionados
+
+- [Card](/components/display/card) - host frequente para Badge via `CardAction`.
+- [Avatar](/components/display/avatar) - combina com `AvatarBadge` para dots de presença.
+- [Alert](/components/feedback/alert) - para status não inline que precisa de mais espaço.

@@ -1,0 +1,170 @@
+---
+title: Image
+description: Renderiza uma Experimental_GeneratedImage base64 do Vercel AI SDK como um img inline com data-URI e defaults de chrome sensatos.
+---
+
+import { ImagePreview } from '@/components/preview/ai/image';
+
+## Visão geral
+
+`Image` é a superfície para imagens geradas por modelo. Aceita uma `Experimental_GeneratedImage` do pacote `ai` da Vercel (string base64 + media type) e a renderiza como um único `<img>` com um src data URI, uma borda `rounded-md` padrão e `max-w-full` para manter os layouts seguros.
+
+Não há fetch, nem fluxo de signed URL, nem lógica de decode no cliente - quando o AI SDK te entrega a part, o base64 já está pronto. O único trabalho deste primitivo é renderizá-lo de forma consistente em artifacts, mensagens de chat e dashboards.
+
+Use-o dentro de `Artifact` para artifacts só de imagem, dentro de `MessageContent` para respostas inline, ou standalone onde quer que uma imagem gerada apareça na sua UI.
+
+## Preview
+
+<ComponentPreview name="ai/image">
+  <ImagePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Image   renderiza uma part de imagem base64 — primitivo folha (sem subcomponentes)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-image ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-image ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-image ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-image ```</Tab>
+</Tabs>
+
+Traz os tipos do pacote `ai` como peer dependency.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Image } from "@gremorie/rx-ai";
+
+export function Example({ image }) {
+  return (
+    <Image
+      base64={image.base64}
+      mediaType={image.mediaType}
+      alt="Bar chart of weekly conversions"
+    />
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Image>`
+
+Estende `Experimental_GeneratedImage` do pacote `ai`.
+
+| Prop         | Type         | Default | Description                                                                                                                |
+| ------------ | ------------ | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `base64`     | `string`     | -       | **Obrigatório.** Os dados da imagem codificados em base64. Usado para construir a URI `data:`.                             |
+| `mediaType`  | `string`     | -       | **Obrigatório.** Mime type (`"image/png"`, `"image/jpeg"`, `"image/webp"`, ...). Usado no prefixo da URI `data:`.          |
+| `uint8Array` | `Uint8Array` | -       | Encaminhado de `Experimental_GeneratedImage` mas ignorado pelo renderer. A data URI é construída a partir de `base64`.     |
+| `alt`        | `string`     | -       | **Obrigatório para a11y.** Descrição do conteúdo da imagem. Passe uma descrição factual curta, não `"AI generated image"`. |
+| `className`  | `string`     | -       | Classes extras no `<img>`. Mescladas com o padrão `h-auto max-w-full overflow-hidden rounded-md`.                          |
+
+Todos os demais atributos de `<img>` fluem através (ex.: `width`, `height`, `loading`, `decoding`, `style`).
+
+## Composição
+
+1. **Renderize com a part do AI SDK**. O formato `Experimental_GeneratedImage` é o que o SDK te entrega em mensagens `image-part`.
+2. **Dentro de `Artifact`** quando a imagem é o próprio artifact.
+3. **Dentro de `MessageContent`** quando a imagem é conteúdo inline em uma resposta de chat.
+4. **Com dimensionamento** via `className` (`size-32`, `max-w-md`) ou props `width` / `height` explícitas para estabilidade de layout.
+
+## Variações
+
+### Chart gerado inline dentro de uma mensagem
+
+Insira a imagem dentro de `MessageContent` ao lado de texto e citações.
+
+```tsx
+<Message from="assistant">
+  <MessageContent>
+    <MessageResponse>Here is the weekly conversion trend:</MessageResponse>
+    <Image
+      base64={chart.base64}
+      mediaType={chart.mediaType}
+      alt="Weekly conversion bar chart, 23% up vs. previous week"
+    />
+  </MessageContent>
+</Message>
+```
+
+### Artifact só de imagem com ação de download
+
+```tsx
+<Artifact>
+  <ArtifactHeader>
+    <ArtifactTitle>logo.png</ArtifactTitle>
+    <ArtifactActions>
+      <ArtifactAction
+        tooltip="Download"
+        icon={DownloadIcon}
+        onClick={download}
+      />
+      <ArtifactClose />
+    </ArtifactActions>
+  </ArtifactHeader>
+  <ArtifactContent>
+    <Image
+      base64={logo.base64}
+      mediaType={logo.mediaType}
+      alt="Generated logo"
+    />
+  </ArtifactContent>
+</Artifact>
+```
+
+### Dimensões restritas
+
+Quando o layout precisa de um tamanho fixo de imagem, passe dimensões explícitas.
+
+```tsx
+<Image
+  base64={image.base64}
+  mediaType={image.mediaType}
+  alt="Thumbnail preview"
+  width={120}
+  height={120}
+  className="size-30 object-cover"
+/>
+```
+
+### Lazy load abaixo da dobra
+
+```tsx
+<Image
+  base64={image.base64}
+  mediaType={image.mediaType}
+  alt="..."
+  loading="lazy"
+  decoding="async"
+/>
+```
+
+## Acessibilidade
+
+- **Sempre forneça `alt`**: não há fallback embutido. Passe uma descrição factual do que a imagem contém - para um chart, resuma a tendência em palavras; para um logo, nomeie a marca.
+- **Imagens decorativas**: se a imagem for puramente decorativa, passe `alt=""` (não omita) para que os leitores de tela a pulem de forma limpa.
+- **Sem estado de loading por padrão**: imagens base64 renderizam de forma síncrona, então o padrão típico de "loading shimmer" não se aplica. Se você fizer streaming da imagem (raro para output do AI SDK), renderize um `Skeleton` ao lado de um `Image` deferido.
+- **Reduced motion**: não há animação. Respeite as preferências do usuário apenas se você envolver a imagem na sua própria transição.
+- **Contraste de cor**: quando a imagem carrega texto (ex.: um chart gerado), verifique de forma independente que o texto renderizado passa no contraste para conteúdo embutido - o primitivo não consegue inspecionar os bytes.
+
+## Relacionados
+
+- [Artifact](/components/code/artifact) - o chrome de card ao redor de artifacts de imagem
+- [Message](/components/chatbot/message) - o turno de chat que pode incluir uma imagem inline
+- [Open in Chat](/components/utilities/open-in-chat) - envia uma imagem gerada de volta para a conversa

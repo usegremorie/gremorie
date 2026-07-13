@@ -1,0 +1,231 @@
+---
+title: Conversation
+description: Container com scroll-to-bottom que mantém a mensagem mais recente à vista enquanto o conteúdo faz streaming.
+---
+
+import { ConversationPreview } from '@/components/preview/ai/conversation';
+import { ConversationEmptyPreview } from '@/components/preview/ai/conversation-empty';
+
+## Visão geral
+
+`Conversation` é a casca externa de qualquer superfície de chat. Ele envolve `use-stick-to-bottom` para que a posição do scroll siga as novas mensagens conforme elas chegam, e então sai do caminho no momento em que o usuário rola para cima para ler o histórico. O `ConversationScrollButton` correspondente flutua para trazer o usuário de volta ao fim sob demanda.
+
+Use como pai de qualquer stream de `Message`. Use `ConversationEmptyState` para o caso de zero mensagens.
+
+## Preview
+
+### Padrão
+
+<ComponentPreview name="ai/conversation">
+  <ConversationPreview />
+</ComponentPreview>
+
+### Estado vazio
+
+<ComponentPreview name="ai/conversation-empty">
+  <ConversationEmptyPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Conversation
+├─ ConversationContent
+│  ├─ ConversationEmptyState   mostrado quando vazio
+│  └─ Message …                as mensagens (veja Message)
+└─ ConversationScrollButton    scroll-to-bottom
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-conversation ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-conversation ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-conversation ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-conversation ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <Conversation>
+      <ConversationContent>
+        {messages.map((m) => (
+          <Message key={m.id} from={m.role}>
+            <MessageContent>{m.text}</MessageContent>
+          </Message>
+        ))}
+      </ConversationContent>
+      <ConversationScrollButton />
+    </Conversation>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component, signal } from "@angular/core";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+  Message,
+  MessageContent,
+} from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [
+Conversation,
+ConversationContent,
+ConversationScrollButton,
+Message,
+MessageContent,
+],
+template: `     <conversation class="h-96 w-full">
+      <conversation-content>
+        @for (m of messages(); track m.id) {
+          <message [from]="m.role">
+            <message-content>{{ m.text }}</message-content>
+          </message>
+        }
+      </conversation-content>
+      <conversation-scroll-button />
+    </conversation>
+  `,
+})
+export class ExampleComponent {
+readonly messages = signal<Array<{ id: string; role: "user" | "assistant"; text: string }>>([]);
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<Conversation>`
+
+Encaminha todas as props de `StickToBottom` do `use-stick-to-bottom`. O comportamento sticky é pré-configurado (`initial="smooth"`, `resize="smooth"`) e o elemento carrega `role="log"` para tecnologias assistivas.
+
+### `<ConversationContent>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Classes extras no conteúdo com scroll. |
+
+Renderiza dentro de `StickToBottom.Content`. Adiciona uma pilha flex vertical com `gap-8` e `p-4`.
+
+### `<ConversationScrollButton>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `className` | `string` | - | Classes extras no botão. |
+
+Encaminha todas as props de `Button`. Só renderiza quando o usuário rolou para longe do fim; clicar rola de volta suavemente.
+
+### `<ConversationEmptyState>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | `"No messages yet"` | Título renderizado quando não há conteúdo. |
+| `description` | `string` | `"Start a conversation to see messages here"` | Texto de apoio abaixo do título. |
+| `icon` | `ReactNode` | - | Ícone opcional acima do título. |
+| `children` | `ReactNode` | - | Quando fornecido, substitui completamente o layout padrão de título / descrição. |
+
+## Composição
+
+1. **`<Conversation>`** detém o container de scroll e o role `log`.
+2. **`<ConversationContent>`** é a coluna flex interna onde os irmãos `Message` vivem.
+3. **`<ConversationScrollButton>`** flutua dentro da conversa, mostrado somente enquanto o usuário não está no fim.
+4. **`<ConversationEmptyState>`** pode substituir `ConversationContent` (ou ser renderizado como irmão) quando não há nada para mostrar.
+
+## Variações
+
+### Conversa com streaming padrão
+
+O caso de 90%: alimente as mensagens e deixe `Conversation` manter a mais recente à vista.
+
+```tsx
+<Conversation className="h-[600px]">
+  <ConversationContent>
+    {messages.map((m) => (
+      <Message key={m.id} from={m.role}>
+        <MessageContent>
+          <MessageResponse>{m.text}</MessageResponse>
+        </MessageContent>
+      </Message>
+    ))}
+  </ConversationContent>
+  <ConversationScrollButton />
+</Conversation>
+````
+
+### Estado vazio antes da primeira mensagem
+
+Mostre isto em uma thread nova para convidar ao primeiro prompt.
+
+```tsx
+<Conversation className="h-[600px]">
+  {messages.length === 0 ? (
+    <ConversationEmptyState
+      icon={<MessageCircleIcon className="size-8" />}
+      title="Ask anything"
+      description="The assistant will answer with sources and a plan."
+    />
+  ) : (
+    <ConversationContent>
+      {messages.map((m) => (
+        <Message key={m.id} from={m.role}>
+          <MessageContent>{m.text}</MessageContent>
+        </Message>
+      ))}
+    </ConversationContent>
+  )}
+  <ConversationScrollButton />
+</Conversation>
+```
+
+### Corpo de estado vazio customizado
+
+Use `children` para controlar totalmente o layout vazio mantendo o container centralizado.
+
+```tsx
+<ConversationEmptyState>
+  <div className="space-y-3 text-center">
+    <h3 className="font-medium">Welcome back</h3>
+    <p className="text-muted-foreground text-sm">Pick up where you left off.</p>
+    <Button variant="outline">Resume thread</Button>
+  </div>
+</ConversationEmptyState>
+```
+
+## Acessibilidade
+
+- **Teclado**: teclas padrão de scroll (Page Up / Page Down, setas, Home / End) funcionam no container de scroll.
+- **ARIA**: a raiz tem `role="log"`, o que sinaliza às tecnologias assistivas que novas entradas são anexadas no fim e devem ser anunciadas conforme chegam.
+- **Leitores de tela**: o estado vazio usa título semântico + parágrafo para ser anunciado como um único bloco, não como texto espalhado.
+- **Gestão de foco**: `ConversationScrollButton` só monta enquanto há para onde rolar, então não rouba a ordem de Tab em uma visão totalmente rolada.
+
+## Relacionados
+
+- [Message](/components/chatbot/message) - turno atômico renderizado dentro de `ConversationContent`
+- [PromptInput](/components/chatbot/prompt-input) - doca de input tipicamente renderizada abaixo da conversa
+- [Suggestion](/components/chatbot/suggestion) - chips de quick-reply que frequentemente acompanham o estado vazio

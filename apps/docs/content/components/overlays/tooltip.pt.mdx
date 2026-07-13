@@ -1,0 +1,212 @@
+---
+title: Tooltip
+description: 'Contexto curto e não essencial mostrado no hover e no foco de teclado. Construído sobre o Radix Tooltip com uma seta embutida.'
+---
+
+import { TooltipPreview } from '@/components/preview/overlays/tooltip';
+import { TooltipSidesPreview } from '@/components/preview/overlays/tooltip-sides';
+
+## Visão geral
+
+`Tooltip` é para informação de apoio não crítica: atalhos de teclado, rótulos de botão de ícone, dicas de "o que isso faz". Sempre envolva a raiz da aplicação em um único `TooltipProvider` para que cada tooltip compartilhe um timer de delay e eles não apareçam e desapareçam fora de sincronia.
+
+Tooltips não são para informação crítica. Usuários de touch podem não conseguir acioná-los; usuários de teclado só veem um enquanto o trigger mantém o foco. Se o usuário precisa lê-lo, renderize-o visivelmente no layout. Para previews ricos, use `HoverCard`. Para conteúdo interativo, use `Popover`.
+
+O `TooltipContent` renderiza a própria seta automaticamente.
+
+## Preview
+
+<ComponentPreview name="overlays/tooltip">
+  <TooltipPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+TooltipProvider              compartilha um timer de delay entre todos os tooltips
+└─ Tooltip                   raiz Radix para uma única instância de tooltip
+   ├─ TooltipTrigger         o elemento âncora de hover/focus
+   └─ TooltipContent         balão em portal com uma seta embutida
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-tooltip ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-tooltip ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-tooltip ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-tooltip ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">Hover me</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Adds an item to the registry</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+```
+
+Monte um único `TooltipProvider` na raiz do seu app para que cada tooltip compartilhe o mesmo timing:
+
+```tsx
+// app/layout.tsx
+import { TooltipProvider } from '@gremorie/rx-overlays';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<TooltipProvider>`
+
+| Prop                      | Type      | Default | Description                                                                |
+| ------------------------- | --------- | ------- | -------------------------------------------------------------------------- |
+| `delayDuration`           | `number`  | `0`     | Delay padrão em milissegundos antes de os tooltips abrirem.                |
+| `skipDelayDuration`       | `number`  | `300`   | Tempo que o usuário tem após fechar um tooltip para abrir outro sem delay. |
+| `disableHoverableContent` | `boolean` | `false` | Quando `true`, os tooltips fecham assim que o ponteiro sai do trigger.     |
+
+Monte uma vez na raiz da aplicação. Todos os tooltips compartilham seus timers.
+
+### `<Tooltip>`
+
+Estende o Radix `Tooltip.Root`. Props notáveis:
+
+| Prop            | Type                      | Default           | Description                                       |
+| --------------- | ------------------------- | ----------------- | ------------------------------------------------- |
+| `open`          | `boolean`                 | -                 | Estado de abertura controlado.                    |
+| `defaultOpen`   | `boolean`                 | `false`           | Estado de abertura inicial quando não controlado. |
+| `onOpenChange`  | `(open: boolean) => void` | -                 | Disparado quando o estado de abertura muda.       |
+| `delayDuration` | `number`                  | herda do provider | Override do delay por tooltip.                    |
+
+### `<TooltipTrigger>`
+
+Estende o Radix `Tooltip.Trigger`. Emparelhe com `asChild` para encaminhar estilos a um `Button` ou qualquer elemento focável.
+
+### `<TooltipContent>`
+
+| Prop         | Type                                     | Default    | Description                                                |
+| ------------ | ---------------------------------------- | ---------- | ---------------------------------------------------------- |
+| `sideOffset` | `number`                                 | `0`        | Espaçamento em pixels entre trigger e content.             |
+| `side`       | `"top" \| "right" \| "bottom" \| "left"` | `"top"`    | Lado preferido; vira automaticamente quando não há espaço. |
+| `align`      | `"start" \| "center" \| "end"`           | `"center"` | Alinhamento relativo ao eixo do trigger.                   |
+
+Envolvido em um `Portal` do Radix. O indicador de seta é incluído automaticamente.
+
+## Composição
+
+1. **`<TooltipProvider>`** na raiz do app define o delay global.
+2. **`<Tooltip>`** detém o estado de abertura de uma instância de tooltip.
+3. **`<TooltipTrigger asChild>`** envolve um elemento focável (botão, link, botão de ícone).
+4. **`<TooltipContent>`** monta via Portal com a seta e o texto.
+
+## Variações
+
+### Lados
+
+`TooltipContent` aceita uma prop `side` (`top`, `right`, `bottom`, `left`) e vira automaticamente quando não há espaço. Passe o cursor ou foque cada trigger para ver o tooltip e sua seta.
+
+<ComponentPreview name="overlays/tooltip-sides">
+  <TooltipSidesPreview />
+</ComponentPreview>
+
+### Rótulo de botão de ícone
+
+O uso mais comum. Combina com a regra de acessibilidade de que todo botão só de ícone precisa de uma affordance de rótulo visível.
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Copy link">
+      <CopyIcon />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Copy link</TooltipContent>
+</Tooltip>
+```
+
+### Dica de atalho de teclado
+
+Emparelhe com `Kbd` para expor atalhos em toolbars densas.
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Save">
+      <SaveIcon />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>
+    Save <Kbd className="ml-1">⌘S</Kbd>
+  </TooltipContent>
+</Tooltip>
+```
+
+### Side e offset customizados
+
+Coloque tooltips acima de uma linha para evitar cobrir a linha seguinte.
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Delete">
+      <Trash2Icon />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent side="top" sideOffset={6}>
+    Delete row
+  </TooltipContent>
+</Tooltip>
+```
+
+## Acessibilidade
+
+- **Provider obrigatório**: o `TooltipProvider` é obrigatório na raiz; sem ele o Radix lança erro.
+- **Trigger**: hover do ponteiro e foco do teclado ambos abrem o tooltip.
+- **Teclado**: dar foco ao trigger o abre; tirar o foco o fecha; `Esc` fecha quando aberto.
+- **Não substitui rótulos visíveis**: botões só de ícone também devem carregar um `aria-label`. O tooltip é a dica visual; o `aria-label` é o nome para o leitor de tela.
+- **`aria-describedby`**: ligado automaticamente entre trigger e content.
+- **Touch**: os tooltips não aparecem em touch, por design. Mantenha seu conteúdo não crítico.
+- **Reduced motion**: as animações de abrir/fechar respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Hover Card](/components/overlays/hover-card) - preview rico apenas em hover para conteúdo não crítico.
+- [Popover](/components/overlays/popover) - overlay interativo dirigido por clique.
+- [Button](/components/buttons/button) - o trigger de tooltip mais comum.

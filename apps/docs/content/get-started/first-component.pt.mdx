@@ -1,0 +1,186 @@
+---
+title: Your first component
+description: 'Tutorial de cinco minutos: construa uma chat surface funcional a partir de três primitives.'
+---
+
+Este tutorial conecta três primitives de AI do Gremorie -- `PromptInput`,
+`Conversation` e `Message` -- em uma chat surface funcional. Você vai
+terminar com uma UI que aceita um prompt, exibe a mensagem do usuário e
+faz streaming da resposta de um modelo.
+
+<Callout type="info">
+  Esta é a composição carro-chefe do Gremorie. Os mesmos três primitives
+  alimentam o block de chat surface planejado em [Blocks](/blocks).
+</Callout>
+
+## Objetivo
+
+Uma chat surface onde:
+
+- O usuário digita um prompt e o submete
+- A mensagem do usuário renderiza na conversation
+- Uma mensagem de AI faz streaming de volta como resposta
+
+De ponta a ponta, em cinco minutos.
+
+## Passos
+
+<Steps>
+
+<Step>
+
+### Adicione os primitives
+
+<Tabs items={["Angular", "React"]}>
+
+```bash tab="Angular"
+npx gremorie@latest add ng-prompt-input ng-conversation ng-message
+```
+
+```bash tab="React"
+npx gremorie@latest add rx-prompt-input rx-conversation rx-message
+```
+
+</Tabs>
+
+A CLI resolve as dependências cruzadas entre itens (cada primitive depende de
+`*-core` para os tokens e o utilitário `cn`), puxa elas também, e escreve
+tudo em `src/components/gremorie/`.
+
+</Step>
+
+<Step>
+
+### Componha a surface
+
+<Tabs items={["Angular", "React"]}>
+
+```ts tab="Angular"
+import { Component, signal } from '@angular/core';
+import { NgConversation } from '@/components/gremorie/ng-conversation';
+import { NgMessage } from '@/components/gremorie/ng-message';
+import { NgPromptInput } from '@/components/gremorie/ng-prompt-input';
+
+interface Msg {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+@Component({
+  standalone: true,
+  imports: [NgConversation, NgMessage, NgPromptInput],
+  template: `
+    <ng-conversation>
+      @for (m of messages(); track $index) {
+        <ng-message [role]="m.role">{{ m.content }}</ng-message>
+      }
+    </ng-conversation>
+    <ng-prompt-input (submit)="onSubmit($event)" />
+  `,
+})
+export class ChatComponent {
+  messages = signal<Msg[]>([]);
+  onSubmit(text: string) {
+    this.messages.update((m) => [...m, { role: 'user', content: text }]);
+    // wire your backend here
+  }
+}
+```
+
+```tsx tab="React"
+'use client';
+import { useState } from 'react';
+import { Conversation } from '@/components/gremorie/rx-conversation';
+import { Message } from '@/components/gremorie/rx-message';
+import { PromptInput } from '@/components/gremorie/rx-prompt-input';
+
+type Msg = { role: 'user' | 'assistant'; content: string };
+
+export function Chat() {
+  const [messages, setMessages] = useState<Msg[]>([]);
+  return (
+    <>
+      <Conversation>
+        {messages.map((m, i) => (
+          <Message key={i} role={m.role}>
+            {m.content}
+          </Message>
+        ))}
+      </Conversation>
+      <PromptInput
+        onSubmit={(text) => {
+          setMessages((prev) => [...prev, { role: 'user', content: text }]);
+          // wire your backend here
+        }}
+      />
+    </>
+  );
+}
+```
+
+</Tabs>
+
+</Step>
+
+<Step>
+
+### Conecte um backend
+
+Os primitives são agnósticos de transporte. Conecte-os ao que você usar:
+o AI SDK, uma Server Action, um endpoint de streaming próprio seu.
+
+```ts
+// Minimal handler -- replace with your real model call
+async function handleSubmit(text: string) {
+  setMessages((prev) => [...prev, { role: 'user', content: text }]);
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    body: JSON.stringify({ message: text }),
+  });
+  const data = await response.json();
+  setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
+}
+```
+
+Para respostas com streaming, troque o `fetch` por um streaming reader e
+anexe os tokens à mensagem do assistant conforme eles chegam.
+
+</Step>
+
+<Step>
+
+### Rode
+
+<Tabs items={["Angular", "React"]}>
+
+```bash tab="Angular"
+nx serve my-app
+```
+
+```bash tab="React"
+pnpm dev
+```
+
+</Tabs>
+
+Abra a página, digite um prompt, aperte Enter. O balão do usuário cai na
+conversation, seu backend responde, o balão do assistant se junta a ele.
+
+</Step>
+
+</Steps>
+
+<Callout type="tip">
+  Veja a conexão completa no [Assistant block](/blocks/assistant) -- ele
+  empacota um SDK de streaming, attachments e renderização de tool-calls.
+</Callout>
+
+## O que você aprendeu
+
+- Primitives instalam como source via a CLI
+- Composição sobre configuração: três componentes pequenos formam uma surface
+- O mesmo formato funciona em Angular e React porque o registry é a
+  fonte da verdade
+
+Em seguida, veja [Project setup](/get-started/project-setup) para configuração
+avançada (path aliases, troca de tema, overrides de token custom).

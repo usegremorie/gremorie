@@ -1,0 +1,256 @@
+---
+title: Queue
+description: Lista de fila de mensagens pendentes, mostrada acima do prompt input, com seções recolhíveis opcionais para todos e turnos em fila.
+---
+
+import { QueuePreview } from '@/components/preview/ai/queue';
+import { QueueSectionedPreview } from '@/components/preview/ai/queue-sectioned';
+
+## Visão geral
+
+`Queue` é a doca que expõe o que o assistente tem em fila. Ele renderiza uma lista vertical de itens (turnos de usuário em fila, todos pendentes, arquivos anexados) acima do prompt input, com seções recolhíveis opcionais para agrupá-los por status.
+
+Use quando o usuário disparou vários prompts em sequência, quando o agente está no meio de uma tarefa com uma lista conhecida de passos restantes, ou quando arquivos estão preparados para o próximo turno.
+
+## Preview
+
+### Padrão
+
+<ComponentPreview name="ai/queue">
+  <QueuePreview />
+</ComponentPreview>
+
+### Com seções
+
+<ComponentPreview name="ai/queue-sectioned">
+  <QueueSectionedPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Queue
+└─ QueueList
+   └─ QueueSection                grupo recolhível
+      ├─ QueueSectionTrigger
+      │  └─ QueueSectionLabel      ícone + contagem
+      └─ QueueSectionContent
+         └─ QueueItem              um por mensagem em fila
+            ├─ QueueItemIndicator
+            ├─ QueueItemContent → QueueItemDescription
+            ├─ QueueItemAttachment → QueueItemImage / QueueItemFile
+            └─ QueueItemActions → QueueItemAction
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-queue ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-queue ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Queue,
+  QueueList,
+  QueueItem,
+  QueueItemIndicator,
+  QueueItemContent,
+} from "@gremorie/rx-ai";
+
+export function Example({ todos }) {
+  return (
+    <Queue>
+      <QueueList>
+        {todos.map((todo) => (
+          <QueueItem key={todo.id}>
+            <QueueItemIndicator completed={todo.status === "completed"} />
+            <QueueItemContent completed={todo.status === "completed"}>
+              {todo.title}
+            </QueueItemContent>
+          </QueueItem>
+        ))}
+      </QueueList>
+    </Queue>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente é distribuída a partir do source hoje (veja o workbench para o lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Queue>`
+
+Superfície de card externa. Borda arredondada + sombra leve. Estende `ComponentProps<"div">`.
+
+### `<QueueList>`
+
+`ScrollArea` limitada em `max-h-40`. Envolve os children em `<ul>`. Estende `ComponentProps<typeof ScrollArea>`.
+
+### `<QueueItem>`
+
+`<li>` com fundo em hover. Estende `ComponentProps<"li">`.
+
+### `<QueueItemIndicator>`
+
+| Prop        | Type      | Default | Description                                          |
+| ----------- | --------- | ------- | ---------------------------------------------------- |
+| `completed` | `boolean` | `false` | Quando true, o ponto se preenche com um fundo muted. |
+
+Ponto de status pequeno.
+
+### `<QueueItemContent>` / `<QueueItemDescription>`
+
+| Prop        | Type      | Default | Description                              |
+| ----------- | --------- | ------- | ---------------------------------------- |
+| `completed` | `boolean` | `false` | Quando true, aplica cor muted + tachado. |
+
+`QueueItemContent` é a linha principal (truncada em 1 linha). `QueueItemDescription` adiciona uma sub-linha.
+
+### `<QueueItemActions>` / `<QueueItemAction>`
+
+Linha de ação revelada em hover. `QueueItemAction` estende um `Button` de ícone ghost com transição de opacidade.
+
+### `<QueueItemAttachment>` / `<QueueItemImage>` / `<QueueItemFile>`
+
+Linha de attachment dentro de um item. `QueueItemImage` é um thumbnail de 32x32; `QueueItemFile` é um badge de clipe com nome de arquivo truncado.
+
+### API com seções
+
+Para filas com seções:
+
+| Component             | Role                                                                                     |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `QueueSection`        | Container `Collapsible`, `defaultOpen` true.                                             |
+| `QueueSectionTrigger` | Header da seção (um `button` que alterna).                                               |
+| `QueueSectionLabel`   | Dentro do trigger - chevron + ícone + contagem + label. Props: `count`, `label`, `icon`. |
+| `QueueSectionContent` | O corpo expandido.                                                                       |
+
+### Tipos
+
+`QueueMessage`, `QueueMessagePart`, `QueueTodo` são exportados como type helpers.
+
+## Composição
+
+1. **`<Queue>`** é o card externo.
+2. **`<QueueList>`** envolve uma `<ul>` rolável.
+3. **`<QueueItem>`** é uma entrada, com `<QueueItemIndicator>` + `<QueueItemContent>` (+ descrição, ações, attachments opcionais).
+4. **`<QueueSection>` + `<QueueSectionTrigger>` + `<QueueSectionLabel>` + `<QueueSectionContent>`** agrupam itens em grupos recolhíveis (por exemplo, "Pending", "Completed").
+
+## Variações
+
+### Lista de todos
+
+O caso mais comum: uma lista plana de todos pendentes e concluídos com tachado na conclusão.
+
+```tsx
+<Queue>
+  <QueueList>
+    {todos.map((todo) => (
+      <QueueItem key={todo.id}>
+        <QueueItemIndicator completed={todo.status === 'completed'} />
+        <QueueItemContent completed={todo.status === 'completed'}>
+          {todo.title}
+        </QueueItemContent>
+        {todo.description ? (
+          <QueueItemDescription completed={todo.status === 'completed'}>
+            {todo.description}
+          </QueueItemDescription>
+        ) : null}
+      </QueueItem>
+    ))}
+  </QueueList>
+</Queue>
+```
+
+### Com seções por status
+
+Agrupe os todos em uma seção "Pending" e uma "Completed", recolhíveis independentemente.
+
+```tsx
+<Queue>
+  <QueueSection>
+    <QueueSectionTrigger>
+      <QueueSectionLabel
+        count={pending.length}
+        label="pending"
+        icon={<CircleIcon className="size-3.5" />}
+      />
+    </QueueSectionTrigger>
+    <QueueSectionContent>
+      <QueueList>
+        {pending.map((t) => (
+          <QueueItem key={t.id}>
+            <QueueItemIndicator />
+            <QueueItemContent>{t.title}</QueueItemContent>
+          </QueueItem>
+        ))}
+      </QueueList>
+    </QueueSectionContent>
+  </QueueSection>
+  <QueueSection defaultOpen={false}>
+    <QueueSectionTrigger>
+      <QueueSectionLabel
+        count={completed.length}
+        label="completed"
+        icon={<CheckIcon className="size-3.5" />}
+      />
+    </QueueSectionTrigger>
+    <QueueSectionContent>
+      <QueueList>
+        {completed.map((t) => (
+          <QueueItem key={t.id}>
+            <QueueItemIndicator completed />
+            <QueueItemContent completed>{t.title}</QueueItemContent>
+          </QueueItem>
+        ))}
+      </QueueList>
+    </QueueSectionContent>
+  </QueueSection>
+</Queue>
+```
+
+### Fila com attachments e ações em hover
+
+Prepare arquivos junto com a mensagem em fila; revele Delete no hover.
+
+```tsx
+<QueueItem>
+  <QueueItemIndicator />
+  <QueueItemContent>Summarize the attached docs</QueueItemContent>
+  <QueueItemAttachment>
+    <QueueItemImage src="/screenshots/a.png" />
+    <QueueItemFile>specs.pdf</QueueItemFile>
+  </QueueItemAttachment>
+  <QueueItemActions>
+    <QueueItemAction onClick={remove} aria-label="Remove from queue">
+      <XIcon className="size-3" />
+    </QueueItemAction>
+  </QueueItemActions>
+</QueueItem>
+```
+
+## Acessibilidade
+
+- **Teclado**: os triggers de seção são `<button>`s de verdade e alternam com Enter / Space. As ações de item herdam o comportamento de teclado de `Button`.
+- **ARIA**: `QueueSection` (Radix Collapsible) conecta `aria-expanded` / `aria-controls` no trigger e `data-state` no content.
+- **Leitores de tela**: `QueueItemIndicator` é decorativo; o anúncio vem de `QueueItemContent` (e `QueueItemDescription`). Forneça `aria-label` em `QueueItemAction` para botões apenas com ícone.
+- **Gestão de foco**: ações que só aparecem em hover se tornam focáveis via Tab; a transição de opacidade é puramente visual.
+
+## Relacionados
+
+- [PromptInput](/components/chatbot/prompt-input) - fica abaixo da fila
+- [Suggestion](/components/chatbot/suggestion) - chips de quick-reply para a fila vazia
+- [Task](/components/chatbot/task) - detalhamento por tarefa quando um item se expande em sub-passos
