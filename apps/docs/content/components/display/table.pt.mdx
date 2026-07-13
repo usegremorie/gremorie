@@ -1,0 +1,179 @@
+---
+title: Table
+description: 'Wrapper estilizado em volta da table HTML nativa. Apenas skin - traga o TanStack Table para ordenação, filtragem e paginação.'
+---
+
+import { TablePreview } from '@/components/preview/display/table';
+import { TableCaptionPreview } from '@/components/preview/display/table-caption';
+import { TableWithFooterPreview } from '@/components/preview/display/table-with-footer';
+
+## Visão geral
+
+`Table` é intencionalmente um skin, não um comportamento. Oito peças - `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption` - renderizam como `table`, `thead`, `tbody`, `tfoot`, `tr`, `th`, `td` e `caption` nativos com padding, bordas e hover consistentes. A semântica nativa permanece intacta, então leitores de tela e tecnologia assistiva tratam a marcação como uma table de dados real.
+
+Para ordenação, filtragem, paginação, seleção de linha ou virtualização, componha Table com `@tanstack/react-table` (o **padrão DataTable** na camada de Patterns). O primitive em si nunca tenta ser um data grid - esse lock-in vive na camada de pattern.
+
+## Preview
+
+<ComponentPreview name="display/table">
+  <TablePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Table                       wraps <table> in an overflow container
+├─ TableCaption             <caption>, rendered below the table
+├─ TableHeader              <thead>
+│  └─ TableRow              <tr> with hover + data-[state=selected]
+│     └─ TableHead          <th> column header
+├─ TableBody                <tbody>
+│  └─ TableRow              <tr> with hover + data-[state=selected]
+│     └─ TableCell          <td> body cell
+└─ TableFooter              <tfoot> (muted, top border)
+   └─ TableRow              <tr> with hover + data-[state=selected]
+      └─ TableCell          <td> summary cell
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-table ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-table ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-table ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-table ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Item</TableHead>
+          <TableHead>Category</TableHead>
+          <TableHead className="text-right">Deps</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell className="font-mono">rx-card</TableCell>
+          <TableCell>Display</TableCell>
+          <TableCell className="text-right">0</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Table>`
+
+Envolve a `<table>` nativa em um container `div.relative.w-full.overflow-x-auto` para scroll horizontal em viewports estreitas. A própria table é `w-full caption-bottom text-sm`.
+
+Todas as props de `<table>` são encaminhadas.
+
+### `<TableHeader>`
+
+Renderiza como `<thead>`. Adiciona `[&_tr]:border-b` para que a linha embaixo do header sempre mostre o divisor.
+
+### `<TableBody>`
+
+Renderiza como `<tbody>`. Remove a borda final na última linha via `[&_tr:last-child]:border-0`.
+
+### `<TableFooter>`
+
+Renderiza como `<tfoot>`. Estilizado com `bg-muted/50 border-t font-medium` para linhas de soma ou linhas de resumo.
+
+### `<TableRow>`
+
+Renderiza como `<tr>` com `hover:bg-muted/50` (sensação interativa sem reivindicar interatividade), `data-[state=selected]:bg-muted` (funciona com o estado de seleção do TanStack Table) e `border-b transition-colors`.
+
+### `<TableHead>`
+
+Renderiza como `<th>`. Padrões: `h-10 px-2 text-left align-middle font-medium whitespace-nowrap`. Combina com `[role=checkbox]` para colunas de seleção.
+
+### `<TableCell>`
+
+Renderiza como `<td>`. Padrões: `p-2 align-middle whitespace-nowrap`. As mesmas acomodações de checkbox que `TableHead`.
+
+### `<TableCaption>`
+
+Renderiza como `<caption>`. Padrões: `text-muted-foreground mt-4 text-sm`. A table pai é `caption-bottom`, então a caption aparece abaixo da table por padrão.
+
+## Composição
+
+1. **`<Table>`** envolve tudo. Sempre inclua isto - o container de overflow é o que impede viewports estreitas de quebrar.
+2. **`<TableCaption>`** (opcional) descreve o conteúdo da table. Coloque como o **primeiro child** de `Table` - regra nativa do HTML, mesmo que renderize visualmente na base.
+3. **`<TableHeader>`** contém uma `<TableRow>` de células `<TableHead>`.
+4. **`<TableBody>`** contém as linhas de dados.
+5. **`<TableFooter>`** (opcional) contém totais, somas ou linhas de resumo.
+
+Toda célula deve ser um `TableCell` ou `TableHead` - misturar `<td>` ou `<th>` crus funciona mas pula o tratamento consistente de padding e borda.
+
+## Variações
+
+### Data table com caption
+
+<ComponentPreview name="display/table-caption">
+  <TableCaptionPreview />
+</ComponentPreview>
+
+Coloque `TableCaption` como o primeiro child de `Table` (regra nativa do HTML). A table é `caption-bottom`, então ela renderiza abaixo das linhas.
+
+### Com resumo no footer
+
+<ComponentPreview name="display/table-with-footer">
+  <TableWithFooterPreview />
+</ComponentPreview>
+
+`TableFooter` renderiza como `<tfoot>` com `bg-muted/50 border-t font-medium` - ideal para totais ou linhas de resumo. Use `colSpan` para abranger colunas de label.
+
+### Estado de linha selecionada
+
+```tsx
+<TableRow data-state={selected ? 'selected' : undefined}>
+  <TableCell>...</TableCell>
+</TableRow>
+```
+
+O estilo `data-[state=selected]:bg-muted` é captado automaticamente. O TanStack Table define este atributo de graça quando você usa seu modelo de seleção de linha.
+
+## Acessibilidade
+
+- **Semântica nativa**: cada parte renderiza como um elemento HTML real (`table`, `thead`, `tbody`, `th`, `td`, `caption`), então leitores de tela anunciam as relações de linha e coluna corretamente. Nenhum ARIA necessário para tables estáticas.
+- **Captions**: use `TableCaption` para resumir o conteúdo da table em uma linha ("Registry inventory by category"). Coloque como o primeiro child de `Table` - requisito nativo do HTML.
+- **Escopo de coluna**: para tables com headers de linha, adicione `scope="row"` na célula mais à esquerda e `scope="col"` nas células de header. Ambos são atributos nativos que você passa através de `TableHead` / `TableCell`.
+- **Colunas de seleção**: quando uma linha tem um checkbox, os estilos inline `[&:has([role=checkbox])]:pr-0` e `[&>[role=checkbox]]:translate-y-[2px]` alinham o checkbox corretamente. Use um `role="checkbox"` real ou um primitive `Checkbox`.
+- **Colunas ordenáveis**: a ordenação ARIA (`aria-sort="ascending" \| "descending" \| "none"`) pertence ao `TableHead`. Conecte-a na camada de pattern DataTable.
+- **Headers sticky**: o CSS nativo `position: sticky` funciona em `<th>` dentro de `<thead>`. Adicione `className="sticky top-0 bg-background"` para headers travados no scroll.
+- **Scroll de overflow**: o wrapper `div.overflow-x-auto` permite scroll horizontal em viewports estreitas - adicione `tabIndex={0}` e `role="region"` no wrapper se você precisa de scroll por teclado.
+
+## Relacionados
+
+- [Card](/components/display/card) - host comum para uma Table dentro de um tile de dashboard.
+- [Pagination](/components/navigation/pagination) - combina com Table para views paginadas.
+- [Checkbox](/components/selection/checkbox) - coloque em colunas de seleção.
+- **Padrão DataTable** (camada de Patterns) - compõe Table com TanStack Table para ordenação, filtragem, paginação e seleção.

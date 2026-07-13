@@ -1,0 +1,220 @@
+---
+title: Open in Chat
+description: Dropdown que passa a query atual para um chat externo. Vem com botões pré-conectados para ChatGPT, Claude, Scira, T3, v0 e Cursor, além de itens genéricos para provedores customizados.
+---
+
+import { OpenInPreview } from '@/components/preview/ai/open-in';
+
+## Visão geral
+
+`OpenIn` permite que os usuários continuem uma conversa no chat externo de sua preferência. É um `DropdownMenu` que carrega uma única string `query` no contexto e expõe itens por provedor que renderizam um link `<a>` rotulado com o ícone da marca correspondente e um `ExternalLinkIcon`.
+
+O arquivo do componente vem com URL builders para sete provedores (GitHub, Scira, ChatGPT, Claude, T3, v0, Cursor) e exporta componentes React para seis deles. Use-os diretamente via `OpenInChatGPT`, `OpenInClaude`, `OpenInT3`, `OpenInScira`, `OpenInv0` e `OpenInCursor` - ou componha um `OpenInItem` genérico para qualquer destino customizado.
+
+Todos os links abrem em uma nova aba com `rel="noopener"`.
+
+## Preview
+
+<ComponentPreview name="ai/open-in">
+  <OpenInPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+OpenIn
+├─ OpenInTrigger   botão "Open in…"
+└─ OpenInContent   menu
+   ├─ OpenInLabel · OpenInSeparator
+   ├─ OpenInItem    linha de alvo genérico
+   └─ presets       OpenInChatGPT · OpenInClaude · OpenInCursor · OpenInv0 · OpenInScira · OpenInT3
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-open-in-chat ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-open-in-chat ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-open-in-chat ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-open-in-chat ```
+  </Tab>
+</Tabs>
+
+Traz `rx-overlays` (para o `DropdownMenu`) e `rx-forms` (para o `Button`).
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  OpenIn,
+  OpenInChatGPT,
+  OpenInClaude,
+  OpenInContent,
+  OpenInCursor,
+  OpenInLabel,
+  OpenInScira,
+  OpenInSeparator,
+  OpenInT3,
+  OpenInTrigger,
+  OpenInv0,
+} from "@gremorie/rx-ai";
+
+export function Example({ question }) {
+  return (
+    <OpenIn query={question}>
+      <OpenInTrigger />
+      <OpenInContent>
+        <OpenInLabel>Continue in</OpenInLabel>
+        <OpenInSeparator />
+        <OpenInChatGPT />
+        <OpenInClaude />
+        <OpenInT3 />
+        <OpenInScira />
+        <OpenInv0 />
+        <OpenInCursor />
+      </OpenInContent>
+    </OpenIn>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<OpenIn>`
+
+| Prop    | Type     | Default | Description                                                                                                                                |
+| ------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `query` | `string` | -       | **Obrigatório.** O texto passado para cada provedor. O ChatGPT o recebe como param `prompt`, o Claude como `q`, o Cursor como `text`, etc. |
+
+Estende todas as props do `DropdownMenu`. Fornece o `OpenInContext` com `{ query }` a todos os descendentes.
+
+### `<OpenInTrigger>`
+
+Envolve o `DropdownMenuTrigger` com `asChild`. Quando `children` é omitido, renderiza um `Button variant="outline"` padrão com o texto "Open in chat" e um ícone chevron-down.
+
+| Prop       | Type        | Default        | Description                                                    |
+| ---------- | ----------- | -------------- | -------------------------------------------------------------- |
+| `children` | `ReactNode` | default Button | Substitui o trigger inteiro. Passe qualquer elemento clicável. |
+
+### `<OpenInContent>`
+
+`DropdownMenuContent` fixado em `align="start"` e `w-[240px]`. Estende todas as props do `DropdownMenuContent`.
+
+### `<OpenInItem>` / `<OpenInLabel>` / `<OpenInSeparator>`
+
+Wrappers pass-through ao redor de `DropdownMenuItem`, `DropdownMenuLabel` e `DropdownMenuSeparator`. APIs idênticas.
+
+### Itens por provedor
+
+Cada um exporta um `DropdownMenuItem` que renderiza o ícone da marca, o título e o `ExternalLinkIcon`. Todos aceitam as mesmas props de `DropdownMenuItem`.
+
+| Component         | URL pattern                                    | Query param |
+| ----------------- | ---------------------------------------------- | ----------- |
+| `<OpenInChatGPT>` | `https://chatgpt.com/?hints=search&prompt=...` | `prompt`    |
+| `<OpenInClaude>`  | `https://claude.ai/new?q=...`                  | `q`         |
+| `<OpenInT3>`      | `https://t3.chat/new?q=...`                    | `q`         |
+| `<OpenInScira>`   | `https://scira.ai/?q=...`                      | `q`         |
+| `<OpenInv0>`      | `https://v0.app?q=...`                         | `q`         |
+| `<OpenInCursor>`  | `https://cursor.com/link/prompt?text=...`      | `text`      |
+
+O GitHub é configurado internamente (`providers.github`) mas não há um componente exportado para ele - se você precisar de um item "Open in GitHub", componha-o manualmente com `OpenInItem` e um `<a href>` apontando para a URL do seu repo.
+
+## Composição
+
+1. **`<OpenIn>`** define a query compartilhada. Coloque-o onde a pergunta está disponível - tipicamente dentro da toolbar de ações de uma `Message` ou abaixo de uma Conversation.
+2. **`<OpenInTrigger>`** é a affordance que o usuário clica. Use o Button padrão para o visual padrão "Open in chat", ou passe children para triggers customizados (botões de ícone, links inline).
+3. **`<OpenInContent>`** guarda os itens do menu. Adicione `OpenInLabel` e `OpenInSeparator` para agrupamento visual.
+4. **Itens por provedor** renderizam em qualquer ordem. Cure a lista para casar com o seu público (devs provavelmente querem Cursor e v0; consumidores provavelmente só ChatGPT e Claude).
+
+## Variações
+
+### Trigger de ícone inline
+
+Substitua o Button padrão por um trigger de ícone menor que encaixa dentro de uma toolbar de mensagem.
+
+```tsx
+<OpenIn query={question}>
+  <OpenInTrigger>
+    <Button variant="ghost" size="icon" aria-label="Open in external chat">
+      <ExternalLinkIcon className="size-4" />
+    </Button>
+  </OpenInTrigger>
+  <OpenInContent>
+    <OpenInChatGPT />
+    <OpenInClaude />
+  </OpenInContent>
+</OpenIn>
+```
+
+### Lista curada com foco em devs
+
+Lidere com Cursor e v0 para públicos técnicos.
+
+```tsx
+<OpenIn query={prompt}>
+  <OpenInTrigger />
+  <OpenInContent>
+    <OpenInLabel>Continue building</OpenInLabel>
+    <OpenInSeparator />
+    <OpenInCursor />
+    <OpenInv0 />
+    <OpenInSeparator />
+    <OpenInLabel>Or chat</OpenInLabel>
+    <OpenInSeparator />
+    <OpenInChatGPT />
+    <OpenInClaude />
+  </OpenInContent>
+</OpenIn>
+```
+
+### Provedor customizado via `OpenInItem`
+
+Componha um destino customizado usando o `OpenInItem` puro.
+
+```tsx
+import { ExternalLinkIcon } from 'lucide-react';
+
+function OpenInPerplexity() {
+  return (
+    <OpenInItem asChild>
+      <a
+        href={`https://perplexity.ai/?q=${encodeURIComponent(query)}`}
+        rel="noopener"
+        target="_blank"
+        className="flex items-center gap-2"
+      >
+        <span className="shrink-0">{/* Perplexity icon */}</span>
+        <span className="flex-1">Open in Perplexity</span>
+        <ExternalLinkIcon className="size-4 shrink-0" />
+      </a>
+    </OpenInItem>
+  );
+}
+```
+
+## Acessibilidade
+
+- **Teclado**: `OpenInTrigger` é um `DropdownMenuTrigger`, então Tab o foca e Enter / Space abre o menu. As setas navegam pelos itens; Enter ativa o link focado.
+- **Sinal de link externo**: cada item por provedor renderiza um `ExternalLinkIcon` para que os usuários saibam que estão saindo da página. O `<a>` carrega `target="_blank"` e `rel="noopener"`.
+- **Ícones**: cada SVG de marca tem um elemento `<title>` ("GitHub", "OpenAI", "Claude", "v0", "Cursor", "Scira AI") para que os leitores de tela anunciem o destino. O T3 recorre ao `MessageCircleIcon` genérico.
+- **Rótulos do trigger**: o trigger padrão diz "Open in chat" mais um chevron. Para triggers só de ícone (veja Variações), forneça `aria-label`.
+
+## Relacionados
+
+- [Conversation](/components/chatbot/conversation) - a superfície onde a conversa vive antes de ser passada adiante
+- [Message](/components/chatbot/message) - o turno que tipicamente hospeda esta affordance
+- [Suggestion](/components/chatbot/suggestion) - a direção inversa: prompts sugeridos para iniciar uma nova conversa

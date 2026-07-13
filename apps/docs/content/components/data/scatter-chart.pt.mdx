@@ -1,0 +1,281 @@
+---
+title: Scatter Chart
+description: 'Correlação entre um campo X numérico e uma ou mais séries Y, plotada como dots coloridos.'
+---
+
+import { ScatterChartPreview } from '@/components/preview/data/scatter-chart';
+import { ScatterChartMultiPreview } from '@/components/preview/data/scatter-chart-multi';
+
+## Visão geral
+
+`ScatterChart` é o wrapper estilizado sobre o `ScatterChart` do recharts, composto sobre o primitive `chart` do shadcn (`ChartContainer`). O `xKey` é um campo numérico (eixo X linear); cada entrada em `config` é uma série Y numérica. O gráfico conecta o cartesian grid, os eixos X e Y numéricos, um tooltip opcional e um conjunto de dots por série.
+
+Use ScatterChart quando você precisa revelar **correlação, densidade ou outliers** - tempo de resposta vs tamanho do payload, taxa de conversão vs tráfego, runtime vs input. Para tendências de categoria ordenada use [`LineChart`](/components/data/line-chart) ou [`AreaChart`](/components/data/area-chart); para comparação de categoria discreta use [`BarChart`](/components/data/bar-chart).
+
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+
+## Anatomia
+
+```
+<scatter-chart>
+└─ figure (role="img")                  card surface, aspect-video
+   ├─ svg (chart frame)
+   │  ├─ cartesian grid
+   │  ├─ x axis (numeric from xKey)
+   │  ├─ y axis (numeric, optional via yAxis)
+   │  └─ points, one set per config key
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend (when config has >1 series)
+   └─ sr-only data table
+```
+
+A edição React compõe esta superfície através do primitive `chart` do shadcn:
+
+```text
+ChartContainer                      responsive frame + injects --color-<key>
+└─ ScatterChart                     recharts scatter plot area
+   ├─ CartesianGrid                 full grid
+   ├─ XAxis                         numeric X (linear)
+   ├─ YAxis                         numeric Y (linear)
+   ├─ ChartTooltip                  hover card
+   │  └─ ChartTooltipContent        styled tooltip body
+   └─ Scatter                       one set of dots per series
+```
+
+## Preview
+
+<ComponentPreview name="data/scatter-chart">
+  <ScatterChartPreview />
+</ComponentPreview>
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-scatter-chart ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-scatter-chart ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-scatter-chart ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-scatter-chart ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { ScatterChart } from "@gremorie/rx-data";
+import type { ChartConfig, ChartDatum } from "@gremorie/rx-data";
+
+const data: ChartDatum[] = [
+{ x: 30, y: 100 },
+{ x: 50, y: 200 },
+{ x: 70, y: 150 },
+{ x: 90, y: 250 },
+{ x: 110, y: 175 },
+{ x: 130, y: 300 },
+];
+
+const config: ChartConfig = {
+y: { label: "Value", color: "var(--chart-1)" },
+};
+
+export function CorrelationChart() {
+  return <ScatterChart data={data} config={config} xKey="x" />;
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from '@angular/core';
+import { ScatterChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+selector: 'app-correlation-chart',
+imports: [ScatterChart],
+template: `<scatter-chart [data]="data" [config]="config" xKey="x" />`,
+})
+export class CorrelationChartComponent {
+readonly data: ChartDatum[] = [
+{ x: 30, y: 100 },
+{ x: 50, y: 200 },
+{ x: 70, y: 150 },
+{ x: 90, y: 250 },
+{ x: 110, y: 175 },
+{ x: 130, y: 300 },
+];
+
+readonly config: ChartConfig = {
+y: { label: 'Value', color: 'var(--chart-1)' },
+};
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<ScatterChart>`
+
+O wrapper estilizado sobre o `ScatterChart` do recharts, composto sobre `ChartContainer`. Renderiza o frame responsivo, um cartesian grid, os eixos X e Y numéricos, um tooltip opcional e um `<Scatter>` por chave de `config` colorido com `var(--color-<key>)`.
+
+| Prop        | Type           | Default | Descrição                                                                                                                                                                                                         |
+| ----------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `ChartDatum[]` | -       | Dados tabulares. Cada linha carrega o valor numérico de `xKey` mais um valor numérico por chave de `config`.                                                                                                    |
+| `config`    | `ChartConfig`  | -       | Mapeia cada chave de série Y para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`. `ChartContainer` injeta cada uma como uma CSS variable `var(--color-<key>)`. |
+| `xKey`      | `string`       | -       | Nome do campo **numérico** em cada linha usado como eixo X. Linear, não categórico.                                                                                                                              |
+| `yAxis`     | `boolean`      | `true`  | Renderiza o eixo Y numérico. Defina como `false` para um scatter minimalista, sem eixo.                                                                                                                          |
+| `tooltip`   | `boolean`      | `true`  | Alterna o tooltip de hover.                                                                                                                                                                                          |
+| `className` | `string`       | -       | Mesclado no `ChartContainer`.                                                                                                                                                                                   |
+
+### Compondo com o primitive chart
+
+Para controle total, componha recharts diretamente dentro de `ChartContainer` usando os primitives exportados. O shadcn não distribui bloco de scatter, mas a composição segue o mesmo padrão dos [outros blocos de chart do shadcn](https://ui.shadcn.com/charts).
+
+| Export                | Papel                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| `ChartContainer`      | Frame responsivo; injeta as vars `--color-<key>` por série a partir do `config`. |
+| `ChartTooltip`        | Reexport do `Tooltip` do recharts; combine com `ChartTooltipContent`.           |
+| `ChartTooltipContent` | Corpo de tooltip estilizado.                                                     |
+| `ChartLegend`         | Reexport do `Legend` do recharts; combine com `ChartLegendContent`.             |
+| `ChartLegendContent`  | Corpo de legenda estilizado.                                                      |
+| `useChart`            | Hook para ler o `config` ativo dentro de um child customizado.                  |
+
+### Types
+
+| Type          | Shape                                                                                                                       |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart; o `fill` opcional define uma cor por ponto. |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série.                                   |
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from '@gremorie/rx-data';
+import { CartesianGrid, Scatter, ScatterChart, XAxis, YAxis } from 'recharts';
+
+const config = {
+  y: { label: 'Value', color: 'var(--chart-1)' },
+} satisfies ChartConfig;
+
+export function Example({ data }: { data: ChartDatum[] }) {
+  return (
+    <ChartContainer config={config}>
+      <ScatterChart
+        accessibilityLayer
+        margin={{ left: 12, right: 12, top: 8, bottom: 8 }}
+      >
+        <CartesianGrid />
+        <XAxis
+          dataKey="x"
+          type="number"
+          name="x"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
+        <YAxis
+          type="number"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          width={40}
+        />
+        <ChartTooltip
+          cursor={{ strokeDasharray: '3 3' }}
+          content={<ChartTooltipContent />}
+        />
+        <Scatter name="y" dataKey="y" fill="var(--color-y)" />
+      </ScatterChart>
+    </ChartContainer>
+  );
+}
+````
+
+Desça a este nível para bubble charts (tamanho codificado por um terceiro campo), coloração por ponto via o `fill` da linha, overlays de jitter ou uma legenda customizada via `ChartLegend` + `ChartLegendContent`.
+
+## Composição
+
+1. **O `xKey` deve ser numérico**. Ambos os eixos usam `type="number"` do recharts, então a escala X é linear, não uma band scale.
+2. **Cada entrada de `config`** se torna um conjunto `<Scatter>` de dots, colorido por sua variável `var(--color-<key>)`. O domínio Y compartilhado auto-inclui todas as séries.
+3. **Cor por ponto** é possível definindo um campo `fill` em linhas individuais de `ChartDatum`; o recharts o lê sobre a cor da série.
+4. **Mantenha a contagem de séries baixa** - duas ou três antes que os dots fiquem densos demais para ler uns contra os outros.
+
+O chart se auto-dimensiona ao pai através do frame responsivo do `ChartContainer`.
+
+## Variações
+
+### Série única
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScatterChartPreview />
+</div>
+
+```tsx
+<ScatterChart
+  data={data}
+  config={{ y: { label: 'Value', color: 'var(--chart-1)' } }}
+  xKey="x"
+/>
+```
+
+```html
+<scatter-chart [data]="data" [config]="config" xKey="x" />
+```
+
+A forma padrão. Use uma série única quando revelar correlação ou densidade entre um par de eixos numéricos.
+
+### Multi-série
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScatterChartMultiPreview />
+</div>
+
+```tsx
+const config: ChartConfig = {
+  height: { label: 'Median', color: 'var(--chart-1)' },
+  max: { label: 'Max', color: 'var(--chart-2)' },
+};
+
+<ScatterChart data={data} config={config} xKey="weight" />;
+```
+
+```html
+<scatter-chart [data]="data" [config]="config" xKey="weight" />
+```
+
+Para comparar duas distribuições contra o mesmo eixo X. Os tokens de cor carregam a distinção de série; mantenha a contagem em duas ou três antes que os dots fiquem densos demais para ler.
+
+### Sem eixo
+
+Defina `yAxis` como `false` para remover o eixo Y numérico e obter um scatter minimalista, sem eixo, que se apoia no tooltip para valores exatos.
+
+```tsx
+<ScatterChart data={data} config={config} xKey="x" yAxis={false} />
+```
+
+```html
+<scatter-chart [data]="data" [config]="config" xKey="x" [yAxis]="false" />
+```
+
+## Acessibilidade
+
+- o `accessibilityLayer` do recharts adiciona navegação por teclado e anúncios de screen reader para as séries plotadas.
+- os tokens `--chart-1` até `--chart-5` vêm com contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
+- **Ressalva de densidade**: scatter plots densos podem esconder outliers atrás de clusters. Defina um `fillOpacity` mais baixo em um `<Scatter>` customizado ou aplique um leve jitter para manter os pontos individuais legíveis.
+
+## Relacionados
+
+- [LineChart](/components/data/line-chart) - use LineChart quando o eixo X são categorias ordenadas, não numérico.
+- [BarChart](/components/data/bar-chart) - comparação de categoria discreta.
+- [AreaChart](/components/data/area-chart) - magnitude preenchida sobre um domínio ordenado.

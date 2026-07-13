@@ -1,0 +1,99 @@
+---
+title: Acessibilidade
+description: Metas WCAG 2.2 AA, regras de contraste e requisitos de a11y por componente.
+---
+
+O KDS mira **WCAG 2.2 AA** no mínimo em todo componente. Níveis mais
+altos (AAA) são buscados onde não conflitam com metas de
+produto, particularmente em contraste de texto e movimento.
+
+## Inegociáveis
+
+Todo componente DEVE documentar e entregar:
+
+1. **Navegação por teclado** — todo elemento interativo alcançável
+   via Tab, ativável via Enter / Space (ou a tecla apropriada por
+   ARIA Authoring Practices Guide).
+2. **Indicador de foco visível** — tokens de ring (`--ring`) estilizados por
+   tema; nunca `outline: none` sem uma substituição.
+3. **Semântica ARIA** — roles, names e states corretos. Elementos
+   decorativos `aria-hidden`; botões só de ícone recebem `aria-label`.
+4. **Anúncios de screen-reader** — conteúdo dinâmico usa
+   regiões `aria-live` onde apropriado; loading states têm
+   labels acessíveis.
+5. **Significado independente de cor** — nunca depender só de cor
+   (WCAG 1.4.1). Indicadores de status pareiam cor com texto + ícone.
+6. **Movimento reduzido** — respeitar `prefers-reduced-motion`; transições
+   mais curtas que 100ms ou não essenciais desabilitadas quando definido.
+
+## Metas de contraste
+
+| Surface       | Texto de corpo | Texto grande | UI não-textual |
+| ------------- | -------------- | ------------ | -------------- |
+| Temas claros  | ≥ 4.5:1        | ≥ 3:1        | ≥ 3:1          |
+| Temas escuros | ≥ 4.5:1        | ≥ 3:1        | ≥ 3:1          |
+
+Ambas as variantes clara e escura de todo tema são validadas. Temas
+que caem abaixo do limiar são rejeitados — corrija as referências de
+primitive antes do merge.
+
+## MDX por componente
+
+O MDX de todo componente inclui uma seção **Accessibility**
+cobrindo:
+
+- Mapa de teclado (tabela key → comportamento)
+- Atributos ARIA (quais, quando, por quê)
+- Comportamento de screen-reader (anúncios, mudanças de state)
+- Gerenciamento de foco (para onde o foco vai ao abrir/fechar)
+- Contraste de cor (verificado ou referenciado)
+- Touch targets (≥ 44×44 pixels CSS)
+- Sensibilidade a movimento (animações condicionadas a `prefers-reduced-motion`)
+
+Se algum desses não se aplica a um componente específico, o MDX
+diz por quê — silêncio não é resposta.
+
+## Componentes de IA — regras extras
+
+Componentes em `Primitives/AI/*` têm requisitos de acessibilidade
+mais rígidos porque sua saída é dinâmica e fácil de perder com
+um screen reader:
+
+- **Live regions são obrigatórias** — a saída em streaming deve ser
+  anunciada. `aria-live="polite"` para não urgente, `aria-live="assertive"`
+  para erros.
+- **Gerenciamento de foco no streaming** — o foco não deve escapar para
+  conteúdo recém-renderizado a menos que o usuário o tenha iniciado.
+- **Cancelamento deve ser alcançável** — ações de abort/cancel em
+  respostas em streaming são de primeira classe, não escondidas.
+- **UI de reasoning** — colapsada por padrão; abrir não rouba
+  o foco da resposta principal.
+- **Links de citação** — toda citação tem um contexto textual, não
+  só um número.
+
+Veja a skill `storybook-component-doc/rules/ai-components.md` para
+o checklist completo aplicado a todo componente de IA antes do merge.
+
+## Testes
+
+- **axe-core** roda em toda story via o addon `@storybook/addon-a11y`
+  (adicionado na Fase 2).
+- **Passe manual por teclado** faz parte do checklist de review de todo
+  componente — nenhum PR é entregue sem um.
+- **Smoke test de screen reader** com no mínimo NVDA + macOS VoiceOver
+  para componentes de IA (porque o comportamento dinâmico é o modo de
+  falha).
+
+## O que o KDS não faz por você
+
+O KDS te dá blocos acessíveis. Ele não consegue tornar sua
+**página** acessível sozinho:
+
+- Hierarquia de headings é sua responsabilidade
+- Labels de formulário e associação de erro é sua responsabilidade
+- Landmarks de nível de página (`<main>`, `<nav>`, etc.) são sua
+  responsabilidade
+- Ordem de leitura em layouts custom é sua responsabilidade
+
+Use as seções **Patterns** e **Layouts** — elas implementam o
+scaffolding de nível de página de forma acessível para que você não precise.

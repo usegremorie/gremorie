@@ -1,0 +1,263 @@
+---
+title: Select
+description: Escolhedor dropdown para listas fixas curtas - primitivo composto construído sobre o Radix Select com content portaled, animado e ciente de scroll.
+---
+
+import { SelectPreview } from '@/components/preview/forms/select';
+import { SelectGroupedPreview } from '@/components/preview/forms/select-grouped';
+import { SelectDisabledPreview } from '@/components/preview/forms/select-disabled';
+
+## Visão geral
+
+`Select` é um primitivo composto construído sobre `@radix-ui/react-select`. O trigger permanece no fluxo da página, enquanto a listbox é portalada para `document.body`, animada, e faz scroll automaticamente quando transborda. Use-o para listas fixas curtas onde o usuário escolhe exatamente um valor.
+
+Para listas mais longas que ~10 itens, use um `Combobox` para que os usuários possam digitar para filtrar. Para valores booleanos use `Switch` ou `Checkbox`. Para 2-5 opções mutuamente exclusivas onde affordances de ícone fazem sentido, use `ToggleGroup` com `type="single"`.
+
+## Preview
+
+<ComponentPreview name="forms/select">
+  <SelectPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Select                       root, owns the value (value / onValueChange)
+├─ SelectTrigger             the visible button (size = sm | default)
+│  └─ SelectValue            renders the selected value / placeholder
+└─ SelectContent             the portalled, scrollable listbox
+   ├─ SelectScrollUpButton   scroll-up affordance (auto-included)
+   ├─ SelectGroup            grouped section
+   │  ├─ SelectLabel         non-selectable group heading
+   │  └─ SelectItem          one option (check indicator when selected)
+   ├─ SelectSeparator        divider between groups
+   └─ SelectScrollDownButton scroll-down affordance (auto-included)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-select ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-select ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-select ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-select ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <Select>
+      <SelectTrigger>
+        <SelectValue placeholder="Pick a primitive" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="message">Message</SelectItem>
+        <SelectItem value="reasoning">Reasoning</SelectItem>
+        <SelectItem value="tool">Tool</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Select>`
+
+Provider raiz. Dono do valor selecionado e do estado de aberto.
+
+| Prop            | Type                      | Default | Description                                                                     |
+| --------------- | ------------------------- | ------- | ------------------------------------------------------------------------------- |
+| `value`         | `string`                  | -       | Valor controlado.                                                               |
+| `defaultValue`  | `string`                  | -       | Valor inicial não controlado.                                                   |
+| `onValueChange` | `(value: string) => void` | -       | Dispara quando o usuário escolhe uma opção.                                     |
+| `open`          | `boolean`                 | -       | Estado de aberto controlado.                                                    |
+| `onOpenChange`  | `(open: boolean) => void` | -       | Dispara quando a listbox abre ou fecha.                                         |
+| `disabled`      | `boolean`                 | `false` | Desabilita o trigger.                                                           |
+| `name`          | `string`                  | -       | Nome do campo de formulário; envia o valor selecionado com o `<form>` ao redor. |
+| `required`      | `boolean`                 | `false` | Marca o input de formulário subjacente como obrigatório.                        |
+
+Encaminha para `SelectPrimitive.Root`.
+
+### `<SelectTrigger>`
+
+O botão visível que os usuários clicam para abrir a listbox.
+
+| Prop   | Type                | Default     | Description                      |
+| ------ | ------------------- | ----------- | -------------------------------- |
+| `size` | `"sm" \| "default"` | `"default"` | `sm` é `h-8`; `default` é `h-9`. |
+
+Renderiza a superfície do trigger e um `ChevronDownIcon` ao final.
+
+A variant de size é dona da altura do trigger via seletores `data-[size=...]`, então nunca force uma altura com `className` - um `h-8` manual num trigger de size default perde para o `h-9` da variant. Ao lado de um `Button` de ícone, pareie `size="sm"` com `size="icon-sm"` (ambos 32px) ou os defaults com `size="icon"` (ambos 36px). Veja [Action rows e size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
+
+### `<SelectValue>`
+
+| Prop          | Type        | Default | Description                            |
+| ------------- | ----------- | ------- | -------------------------------------- |
+| `placeholder` | `ReactNode` | -       | Renderizado quando o valor está vazio. |
+
+Lê do context `Select` pai e renderiza o valor atual.
+
+### `<SelectContent>`
+
+A listbox portalada. Anima ao entrar / sair e respeita `--radix-select-content-available-height`.
+
+| Prop         | Type                           | Default          | Description                                                                                                   |
+| ------------ | ------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| `position`   | `"item-aligned" \| "popper"`   | `"item-aligned"` | `item-aligned` combina o item selecionado com o trigger; `popper` flutua abaixo do trigger como um `Popover`. |
+| `align`      | `"start" \| "center" \| "end"` | `"center"`       | Alinhamento do popover no eixo cruzado.                                                                       |
+| `sideOffset` | `number`                       | `0`              | Distância entre trigger e content.                                                                            |
+
+Envolve `SelectScrollUpButton` + `SelectPrimitive.Viewport` + `SelectScrollDownButton` para que listas longas façam scroll naturalmente.
+
+### `<SelectItem>`
+
+| Prop       | Type      | Default | Description                                              |
+| ---------- | --------- | ------- | -------------------------------------------------------- |
+| `value`    | `string`  | -       | O valor reportado de volta ao `Select` pai. Obrigatório. |
+| `disabled` | `boolean` | `false` | Quando `true`, remove o item do conjunto ativo.          |
+
+Renderiza um indicador `CheckIcon` (visível apenas quando selecionado) e os filhos como o texto do item.
+
+### `<SelectGroup>` + `<SelectLabel>`
+
+Agrupa itens relacionados sob um label não selecionável. Sempre renderize `SelectItem` dentro de um `SelectGroup`.
+
+### `<SelectSeparator>`
+
+Linha decorativa de 1px entre grupos.
+
+### `<SelectScrollUpButton>` / `<SelectScrollDownButton>`
+
+Auto-incluídos pelo `SelectContent`, então você normalmente não os renderiza diretamente. Aparecem quando a listbox é mais alta que o viewport.
+
+## Composição
+
+1. **`<Select>`** é o context raiz.
+2. **`<SelectTrigger>` + `<SelectValue>`** é o affordance visível que o usuário clica.
+3. **`<SelectContent>`** é a listbox portalada - envolve um Viewport com botões de scroll.
+4. **`<SelectItem>` sempre vai dentro de `<SelectGroup>`** - é assim que o Radix anuncia o agrupamento para a tecnologia assistiva. Se sua lista não tem grupos lógicos, envolva todos os itens num único `<SelectGroup>` default mesmo assim.
+5. **`<SelectLabel>`** nomeia um grupo; `<SelectSeparator>` divide grupos.
+
+## Variações
+
+### Lista simples
+
+Para listas fixas pequenas sem grupos.
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Pick a primitive" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectItem value="message">Message</SelectItem>
+      <SelectItem value="reasoning">Reasoning</SelectItem>
+      <SelectItem value="tool">Tool</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>
+```
+
+### Agrupado com labels e separator
+
+Quando os itens caem em baldes distintos, rotule e separe-os para que os usuários possam escanear.
+
+<ComponentPreview name="forms/select-grouped">
+  <SelectGroupedPreview />
+</ComponentPreview>
+
+### Disabled
+
+Desabilite o controle inteiro com `disabled` em `Select`, ou trave uma única opção com `disabled` em `SelectItem`. Itens desabilitados são anunciados como disabled e pulados pela navegação por teclado.
+
+<ComponentPreview name="forms/select-disabled">
+  <SelectDisabledPreview />
+</ComponentPreview>
+
+### Controlado com name de formulário
+
+Para envio de formulário. `name` faz o valor participar do payload do `<form>` ao redor.
+
+```tsx
+function ControlledSelect() {
+  const [model, setModel] = React.useState('opus');
+  return (
+    <Select value={model} onValueChange={setModel} name="model">
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="opus">Claude Opus</SelectItem>
+          <SelectItem value="sonnet">Claude Sonnet</SelectItem>
+          <SelectItem value="haiku">Claude Haiku</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+```
+
+### Posição popper
+
+Mude para `position="popper"` quando a listbox deve flutuar abaixo do trigger (em vez de alinhar o item selecionado com o trigger). Útil para listas muito longas ou quando o trigger fica perto do topo da página.
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Choose..." />
+  </SelectTrigger>
+  <SelectContent position="popper" sideOffset={4}>
+    <SelectGroup>
+      {longList.map((item) => (
+        <SelectItem key={item.value} value={item.value}>
+          {item.label}
+        </SelectItem>
+      ))}
+    </SelectGroup>
+  </SelectContent>
+</Select>
+```
+
+## Acessibilidade
+
+- **Padrão ARIA combobox**: o Radix conecta toda a dança de `role="combobox"` + `aria-expanded` + `aria-controls` + listbox / option.
+- **Teclado**:
+  - `Space` / `Enter` / `ArrowDown` abre a listbox a partir do trigger.
+  - `ArrowUp` / `ArrowDown` move entre itens.
+  - `Home` / `End` pulam para o primeiro / último item.
+  - Digitar caracteres realiza busca typeahead.
+  - `Esc` fecha a listbox sem mudar o valor.
+- **Focus**: o trigger recebe um focus-visible ring de 3px; a listbox aberta devolve o foco ao trigger ao fechar.
+- **Scroll**: listas longas mostram botões de scroll-up / scroll-down automaticamente. Apontar para eles auto-scrolla; apertar `Enter` ou clicá-los scrolla em passos.
+- **Itens desabilitados** são anunciados como disabled e pulados pela navegação por teclado.
+- **Portal**: a listbox é portalada para `document.body`, então ela escapa do clipping de overflow do pai sem você optar por isso.
+
+## Relacionados
+
+- [Button Group](/components/buttons/button-group) - misture `SelectTrigger` com `Button`s no mesmo cluster
+- [Toggle Group](/components/buttons/toggle-group) - single-select liderado por ícone para 2-5 opções
+- [Radio Group](/components/selection/radio-group) - single-select liderado por label que sempre mostra todas as opções
+- [Form](/components/form) - conecte o Select no react-hook-form via `FormField` + `Controller`

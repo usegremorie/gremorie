@@ -1,0 +1,207 @@
+---
+title: Data table
+description: 'Artifact de table filtrável que renderiza linhas JSON com ordenação e busca.'
+---
+
+## Visão geral
+
+Um artifact de dados para quando o modelo produz resultados tabulares. Emite
+`{ columns, rows }`; o artifact renderiza o primitivo `Table` de
+`@gremorie/rx-display`, faz a fiação de um filtro `Input` no topo e
+aplica formatação de status via `Badge`.
+
+Este artifact é o que você quer sempre que o modelo "busca uma lista" —
+membros do time, transações, resultados de busca — e precisa expô-los
+com uma table de verdade e acessível.
+
+## Preview
+
+<ArtifactPreview name="data-table" />
+
+## Schema
+
+O LLM retorna output estruturado que segue este shape:
+
+```ts
+{
+  type: "data-table",
+  columns: Array<{ key: string; label: string; format?: "badge" | "mono" }>,
+  rows: Array<Record<string, string | number>>,
+}
+```
+
+## Anatomia
+
+```text
+Card
+├─ CardHeader            title + Badge + filter Input (lucide Search icon)
+└─ Table                 rx-display
+   ├─ TableHeader
+   └─ TableBody          rows with status Badge; empty-row fallback when filtered out
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-data-table
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-data-table
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-data-table
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-data-table
+```
+
+</Tab>
+
+</Tabs>
+
+## Exemplos de prompt
+
+Prompts de exemplo que produzem output válido para este artifact:
+
+- "Liste os 5 principais clientes por receita com seu plano e status."
+- "Me mostre os membros do meu time com seu papel e última atividade."
+- "Exiba os 10 tickets de suporte mais recentes com prioridade."
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import { useState } from 'react';
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@gremorie/rx-display';
+import { Input } from '@gremorie/rx-forms';
+import { Search } from 'lucide-react';
+
+type Row = {
+  id: string;
+  name: string;
+  role: string;
+  status: 'Active' | 'Invited' | 'Suspended';
+};
+
+const ROWS: Row[] = [
+  { id: 'U-001', name: 'Olivia Martin', role: 'Owner', status: 'Active' },
+  // ...
+];
+
+export function DataTable() {
+  const [query, setQuery] = useState('');
+  const filtered = ROWS.filter((r) =>
+    r.name.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-3">
+          <CardTitle>Team members</CardTitle>
+          <Badge variant="outline">JSON rows</Badge>
+        </div>
+        <div className="relative mt-2">
+          <Search
+            className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <Input
+            placeholder="Filter members..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="pl-8"
+          />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell className="font-mono text-xs">{row.id}</TableCell>
+                <TableCell className="font-medium">{row.name}</TableCell>
+                <TableCell>{row.role}</TableCell>
+                <TableCell>
+                  <Badge variant="default">{row.status}</Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  A edição Angular deste componente está planejada; a edição React está
+  production-ready hoje.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Comportamento de streaming
+
+<Callout type="info">
+  Este artifact renderiza depois que o payload JSON é parseado. Adições de linha
+  por streaming são bufferizadas e descarregadas em lotes para evitar
+  travamentos em conjuntos de resultados longos.
+</Callout>
+
+## Relacionados
+
+- [Table](/components/display/table)
+- [Input](/components/text/input)
+- [Artifacts overview](/artifacts)

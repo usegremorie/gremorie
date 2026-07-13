@@ -1,0 +1,301 @@
+---
+title: Command
+description: 'Command palette keyboard-first construída sobre cmdk. Picker inline para padrões de Combobox ou dialog flutuante Cmd+K para navegação global.'
+---
+
+import { CommandPreview } from '@/components/preview/overlays/command';
+import { CommandDialogPreview } from '@/components/preview/overlays/command-dialog';
+import { CommandGroupsPreview } from '@/components/preview/overlays/command-groups';
+
+## Visão geral
+
+`Command` é o primitivo certo para pickers keyboard-first e command palettes: selects buscáveis inline (Combobox), launchers de ação, buscadores de arquivos ou docs. Use `Command` diretamente quando a palette vive no lugar (tipicamente dentro de um `Popover` para o padrão de Combobox); use `CommandDialog` para o padrão canônico de palette flutuante Cmd+K usado por GitHub, Linear, Vercel e Notion.
+
+Sempre inclua uma dica de teclado no placeholder do input ("Type a command or search..."), feche com `Escape`, dê foco ao input na abertura e agrupe os itens por intenção (Navigation, Actions, Recent).
+
+## Preview
+
+<ComponentPreview name="overlays/command">
+  <CommandPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Command                       container raiz da lista cmdk
+├─ CommandInput               campo de busca com lupa à esquerda
+└─ CommandList                região de resultados com scroll
+   ├─ CommandEmpty            mensagem exibida quando nada corresponde
+   ├─ CommandGroup            cluster de itens com rótulo
+   │  └─ CommandItem          uma linha selecionável
+   │     └─ CommandShortcut   dica de teclado alinhada à direita
+   └─ CommandSeparator        divisor entre grupos
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-command ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-command ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-command ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-command ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Command className="rounded-lg border max-w-md">
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Suggestions">
+          <CommandItem>Calendar</CommandItem>
+          <CommandItem>Search emoji</CommandItem>
+          <CommandItem>Calculator</CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Settings">
+          <CommandItem>Profile</CommandItem>
+          <CommandItem>Billing</CommandItem>
+          <CommandItem>Settings</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Command>`
+
+Estende o root `Command` do `cmdk`. Props notáveis:
+
+| Prop            | Type                                                             | Default             | Description                                                              |
+| --------------- | ---------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------ |
+| `value`         | `string`                                                         | -                   | Valor do item selecionado controlado.                                    |
+| `onValueChange` | `(value: string) => void`                                        | -                   | Disparado quando a seleção muda via setas ou input.                      |
+| `shouldFilter`  | `boolean`                                                        | `true`              | Desative para controlar a filtragem você mesmo (ex.: busca no servidor). |
+| `filter`        | `(value: string, search: string, keywords?: string[]) => number` | default fuzzy match | Scoring de filtro customizado (retorne `0` para ocultar).                |
+| `loop`          | `boolean`                                                        | `false`             | Faz a navegação por setas dar a volta do último ao primeiro item.        |
+
+Todas as demais props do `Command` do cmdk são encaminhadas.
+
+### `<CommandInput>`
+
+Input de busca que dirige a filtragem. Envolvido em uma flex row com um ícone de busca à esquerda.
+
+| Prop            | Type                      | Default | Description                    |
+| --------------- | ------------------------- | ------- | ------------------------------ |
+| `value`         | `string`                  | -       | Valor do input controlado.     |
+| `onValueChange` | `(value: string) => void` | -       | Disparado quando o input muda. |
+
+Estende o `Command.Input` do `cmdk`.
+
+### `<CommandList>`
+
+Container com scroll para os resultados. Limitado a `max-h-[300px]` com `scroll-py-1`. Estende o `Command.List` do `cmdk`.
+
+### `<CommandEmpty>`
+
+Renderizado quando nenhum item corresponde à busca atual. Coloque dentro do `CommandList`, antes de qualquer grupo.
+
+### `<CommandGroup>`
+
+Grupo de itens com um heading opcional.
+
+| Prop      | Type                  | Default | Description                      |
+| --------- | --------------------- | ------- | -------------------------------- |
+| `heading` | `string \| ReactNode` | -       | Título de seção acima dos itens. |
+
+Estende o `Command.Group` do `cmdk`.
+
+### `<CommandItem>`
+
+| Prop       | Type                      | Default      | Description                                            |
+| ---------- | ------------------------- | ------------ | ------------------------------------------------------ |
+| `value`    | `string`                  | text content | Valor interno usado para filtragem e seleção.          |
+| `onSelect` | `(value: string) => void` | -            | Disparado quando o item é ativado (`Enter` ou clique). |
+| `disabled` | `boolean`                 | `false`      | Desabilita a interação; renderiza a 50% de opacidade.  |
+| `keywords` | `string[]`                | `[]`         | Termos extras que casam com este item na filtragem.    |
+
+### `<CommandSeparator>`
+
+Divisor fino `bg-border` entre grupos. Ocultado automaticamente quando a filtragem remove os grupos vizinhos.
+
+### `<CommandShortcut>`
+
+`<span>` alinhado à direita para dicas de teclado dentro dos itens (ex.: `⌘N`). Helper de layout puro.
+
+### `<CommandDialog>`
+
+Envolve `Command` em um `Dialog` para o padrão canônico de palette Cmd+K.
+
+| Prop              | Type      | Default                            | Description                                         |
+| ----------------- | --------- | ---------------------------------- | --------------------------------------------------- |
+| `title`           | `string`  | `"Command Palette"`                | Título para leitor de tela (visualmente oculto).    |
+| `description`     | `string`  | `"Search for a command to run..."` | Descrição para leitor de tela (visualmente oculta). |
+| `showCloseButton` | `boolean` | `true`                             | Renderiza o botão X de fechar no dialog.            |
+
+Todas as demais props do `Dialog` (`open`, `onOpenChange`, etc.) são encaminhadas.
+
+## Composição
+
+1. **`<Command>`** detém o estado de busca e a lógica de filtragem.
+2. **`<CommandInput>`** fica no topo como a busca controlada.
+3. **`<CommandList>`** guarda os resultados.
+4. **Dentro da lista**: `CommandEmpty` (estado sem resultados) seguido de um ou mais blocos `CommandGroup`. `CommandSeparator` divide os grupos.
+5. **Itens**: cada `CommandItem` expõe `onSelect`; adicione `CommandShortcut` para dicas de teclado.
+
+Para o padrão de palette flutuante, envolva tudo em `CommandDialog` e alterne a prop `open` no `Cmd+K`.
+
+## Variações
+
+### Grupos com shortcuts
+
+Uma palette inline agrupada por intenção, com dicas de shortcut alinhadas à direita e um estado `CommandEmpty` quando a busca não retorna nada.
+
+<ComponentPreview name="overlays/command-groups">
+  <CommandGroupsPreview />
+</ComponentPreview>
+
+### Dialog Cmd+K
+
+O launcher flutuante canônico. O trigger abaixo abre o `CommandDialog`; `Cmd+K` (ou `Ctrl+K`) também o alterna.
+
+<ComponentPreview name="overlays/command-dialog">
+  <CommandDialogPreview />
+</ComponentPreview>
+
+A ligação em código:
+
+```tsx
+import { useEffect, useState } from 'react';
+
+export function CommandPalette() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((v) => !v);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  return (
+    <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandInput placeholder="Search docs, run commands..." />
+      <CommandList>
+        <CommandEmpty>No results.</CommandEmpty>
+        <CommandGroup heading="Navigate">
+          <CommandItem onSelect={() => goto('/inbox')}>
+            Inbox
+            <CommandShortcut>G I</CommandShortcut>
+          </CommandItem>
+          <CommandItem onSelect={() => goto('/projects')}>
+            Projects
+            <CommandShortcut>G P</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
+  );
+}
+```
+
+### Padrão de Combobox
+
+Combine `Command` com `Popover` para um picker buscável inline.
+
+```tsx
+<Popover open={open} onOpenChange={setOpen}>
+  <PopoverTrigger asChild>
+    <Button variant="outline" role="combobox" aria-expanded={open}>
+      {value || 'Select framework...'}
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-[240px] p-0">
+    <Command>
+      <CommandInput placeholder="Search framework..." />
+      <CommandList>
+        <CommandEmpty>No framework found.</CommandEmpty>
+        <CommandGroup>
+          {frameworks.map((f) => (
+            <CommandItem key={f.value} value={f.value} onSelect={onSelect}>
+              {f.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  </PopoverContent>
+</Popover>
+```
+
+### Busca no servidor
+
+Desative a filtragem no cliente e dirija a lista a partir de uma query.
+
+```tsx
+<Command shouldFilter={false}>
+  <CommandInput
+    value={query}
+    onValueChange={setQuery}
+    placeholder="Search..."
+  />
+  <CommandList>
+    {loading && <CommandEmpty>Loading...</CommandEmpty>}
+    {!loading && results.length === 0 && (
+      <CommandEmpty>No results.</CommandEmpty>
+    )}
+    <CommandGroup>
+      {results.map((r) => (
+        <CommandItem key={r.id} onSelect={() => open(r.id)}>
+          {r.title}
+        </CommandItem>
+      ))}
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
+
+## Acessibilidade
+
+- **Role**: padrão ARIA combobox - o input é `role="combobox"`, a lista é `role="listbox"`, os itens são `role="option"`.
+- **Teclado**: `↑`/`↓` movem entre os itens; `Enter` ativa o item selecionado; digite para filtrar; `Esc` fecha quando dentro de `CommandDialog`.
+- **Gestão de foco**: o foco fica retido no input; a seleção da lista é anunciada via `aria-selected` (não movendo o foco).
+- **`CommandDialog`** herda toda a acessibilidade do `Dialog` (focus trap, modal, retorno de foco ao fechar).
+- **Título e descrição**: para o `CommandDialog`, ambos ficam visualmente ocultos mas disponíveis a leitores de tela via Radix `Dialog`.
+- **Estado vazio**: `CommandEmpty` anuncia "No results" de forma polite para que usuários de tecnologia assistiva saibam que a busca não retornou nada.
+- **Reduced motion**: as animações do dialog respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Dialog](/components/overlays/dialog) - o modal base que o `CommandDialog` envolve.
+- [Popover](/components/overlays/popover) - host para o padrão de Combobox.
+- [Dropdown Menu](/components/overlays/dropdown-menu) - menu de ações mais simples, sem busca.

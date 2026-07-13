@@ -1,0 +1,140 @@
+---
+title: Shimmer
+description: Efeito de shimmer de texto animado que desliza um gradiente pelos caracteres - a pista universal de "o modelo está trabalhando".
+---
+
+import { ShimmerPreview } from '@/components/preview/ai/shimmer';
+
+## Visão geral
+
+`Shimmer` é o affordance de texto com streaming. Ele envolve uma string em um elemento `motion` que anima um gradiente horizontal pelos caracteres, dando à saída do modelo uma leve lavagem de "loading" sem spinners. É o mesmo primitive usado internamente por `Reasoning`, `Plan` e `Suggestion` quando precisam indicar streaming.
+
+Use para texto de status efêmero - "Thinking...", "Generating response...", "Loading..." - em lugares onde um spinner pareceria desajeitado.
+
+## Preview
+
+<ComponentPreview name="ai/shimmer">
+  <ShimmerPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Shimmer   varredura de gradiente animada sobre o texto — primitive folha (sem subcomponentes)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-shimmer ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-shimmer ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-shimmer ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-shimmer ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Shimmer } from "@gremorie/rx-ai";
+
+export function Example() {
+  return <Shimmer>Thinking...</Shimmer>;
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import { Shimmer } from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Shimmer],
+template: `<span ngShimmer>Thinking...</span>`,
+})
+export class ExampleComponent {}
+
+````
+
+> A versão Angular é uma diretiva (`[ngShimmer]`) em vez de um componente. Aplique-a a qualquer elemento com conteúdo de texto; o spread auto-escala com a contagem de caracteres, espelhando a implementação React.
+</Tab>
+</Tabs>
+
+## API
+
+### `<Shimmer>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `string` | - | Obrigatório. O texto para fazer shimmer. A string é obrigatória para que o spread possa escalar com a contagem de caracteres. |
+| `as` | `ElementType` | `"p"` | Sobrescreve o elemento renderizado (por exemplo, `"span"` para inline dentro de uma frase). |
+| `className` | `string` | - | Classes extras. |
+| `duration` | `number` | `2` | Segundos por ciclo. Menor = shimmer mais rápido. |
+| `spread` | `number` | `2` | Multiplicador sobre o spread do gradiente (por caractere). Menor = lavagem mais apertada. |
+
+Memoizado com `React.memo`.
+
+## Composição
+
+`Shimmer` é um único primitive. Coloque-o em qualquer lugar onde uma string caberia; ele herda a fonte e a cor ao redor automaticamente.
+
+## Variações
+
+### Dica de loading
+
+O caso de 90%: uma string de status curta.
+
+```tsx
+<Shimmer>Generating response...</Shimmer>
+````
+
+### Inline dentro de uma frase
+
+Renderize como `span` para fazer shimmer em uma única palavra dentro de um parágrafo normal.
+
+```tsx
+<p>
+  The assistant is <Shimmer as="span">thinking</Shimmer> about your request.
+</p>
+```
+
+### Shimmer mais rápido e apertado
+
+Para labels mais curtos onde os 2s padrão parecem lentos.
+
+```tsx
+<Shimmer duration={1} spread={1}>
+  Reasoning
+</Shimmer>
+```
+
+### Override do trigger de reasoning
+
+Um uso comum - injetar Shimmer em `ReasoningTrigger` via `getThinkingMessage` para localizar ou rebrandar o label.
+
+```tsx
+<Reasoning isStreaming>
+  <ReasoningTrigger
+    getThinkingMessage={(streaming) =>
+      streaming ? <Shimmer>Pensando...</Shimmer> : null
+    }
+  />
+  <ReasoningContent>{thinking}</ReasoningContent>
+</Reasoning>
+```
+
+## Acessibilidade
+
+- **Teclado**: sem interação - `Shimmer` é um elemento de texto estático.
+- **ARIA**: o conteúdo de texto é preservado no DOM (sem ofuscação), então leitores de tela o anunciam normalmente.
+- **Leitores de tela**: mantenha o label semanticamente significativo ("Thinking", "Loading", "Generating response"). Evite strings apenas decorativas.
+- **Movimento reduzido**: a animação usa Framer Motion. Honre `prefers-reduced-motion: reduce` trocando o shimmer por um label estático no call site, ou envolvendo com uma checagem de media query.
+
+## Relacionados
+
+- [Reasoning](/components/chatbot/reasoning) - usa `Shimmer` internamente durante o streaming
+- [Plan](/components/chatbot/plan) - usa `Shimmer` no título e na descrição durante o streaming
+- [Suggestion](/components/chatbot/suggestion) - quick-replies que frequentemente acompanham um label com shimmer

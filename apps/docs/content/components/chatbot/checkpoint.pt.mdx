@@ -1,0 +1,164 @@
+---
+title: Checkpoint
+description: Marcador de savepoint da conversa - um bookmark rotulado na timeline com um tooltip opcional descrevendo o estado capturado.
+---
+
+import { CheckpointPreview } from '@/components/preview/ai/checkpoint';
+import { CheckpointTooltipPreview } from '@/components/preview/ai/checkpoint-tooltip';
+
+## Visão geral
+
+`Checkpoint` marca um ponto notável em uma conversa - um estado salvo, a raiz de um branch, um snapshot manual. Visualmente ele fica entre duas mensagens como um ícone pequeno (e um label opcional) seguido de um separador horizontal, então lê como um divisor na timeline.
+
+Use quando o usuário pode fazer branch, restaurar ou retroceder a partir deste ponto. Combine o trigger com um tooltip que explique o que o savepoint representa.
+
+## Preview
+
+### Apenas ícone
+
+<ComponentPreview name="ai/checkpoint">
+  <CheckpointPreview />
+</ComponentPreview>
+
+### Com label
+
+<ComponentPreview name="ai/checkpoint-tooltip">
+  <CheckpointTooltipPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Checkpoint
+├─ CheckpointIcon      marcador (bookmark padrão)
+└─ CheckpointTrigger   label do botão (tooltip opcional)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-checkpoint ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-checkpoint ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-checkpoint ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-checkpoint ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Checkpoint, CheckpointTrigger } from "@gremorie/rx-ai";
+import { TooltipProvider } from "@gremorie/rx-overlays";
+import { GitBranch } from "lucide-react";
+
+export function Example() {
+  return (
+    <TooltipProvider>
+      <Checkpoint>
+        <CheckpointTrigger tooltip="Branch from here">
+          <GitBranch className="size-4" />
+        </CheckpointTrigger>
+      </Checkpoint>
+    </TooltipProvider>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente é distribuída a partir do source hoje (veja o workbench para o lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Checkpoint>`
+
+O container da linha. Renderiza seus children seguidos de um `Separator`, então o checkpoint divide visualmente a timeline.
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`.
+
+### `<CheckpointIcon>`
+
+| Prop       | Type        | Default | Description                                                        |
+| ---------- | ----------- | ------- | ------------------------------------------------------------------ |
+| `children` | `ReactNode` | -       | Quando fornecido, substitui completamente o `BookmarkIcon` padrão. |
+
+Encaminha todas as `LucideProps` para o ícone padrão (size, stroke, etc.).
+
+### `<CheckpointTrigger>`
+
+| Prop       | Type            | Default   | Description                                                                               |
+| ---------- | --------------- | --------- | ----------------------------------------------------------------------------------------- |
+| `tooltip`  | `string`        | -         | Texto do tooltip. Quando definido, o trigger é envolvido em `Tooltip` / `TooltipContent`. |
+| `variant`  | `ButtonVariant` | `"ghost"` | Encaminhado para o `Button` subjacente.                                                   |
+| `size`     | `ButtonSize`    | `"sm"`    | Encaminhado para o `Button` subjacente.                                                   |
+| `children` | `ReactNode`     | -         | Ícone, label ou ambos.                                                                    |
+
+<Callout type="info">
+  `CheckpointTrigger` depende de `TooltipProvider`. Garanta que haja um presente
+  mais acima na árvore.
+</Callout>
+
+## Composição
+
+1. **`<Checkpoint>`** é o wrapper da linha que termina em um `Separator`.
+2. **`<CheckpointIcon>`** renderiza um ícone inicial (o `BookmarkIcon` padrão ou qualquer ícone Lucide).
+3. **`<CheckpointTrigger>`** é o handle acionável (botão com tooltip e label opcionais).
+
+## Variações
+
+### Marcador de branch apenas com ícone
+
+A forma mínima - um único ícone entre mensagens, com um tooltip para explicar a ação.
+
+```tsx
+<Checkpoint>
+  <CheckpointTrigger tooltip="Branch from here">
+    <GitBranch className="size-4" />
+  </CheckpointTrigger>
+</Checkpoint>
+```
+
+### Savepoint com label
+
+Combine ícone e label dentro do trigger para um marcador mais descobrível.
+
+```tsx
+<Checkpoint>
+  <CheckpointTrigger tooltip="Restore this state">
+    <GitBranch className="size-4" />
+    Checkpoint
+  </CheckpointTrigger>
+</Checkpoint>
+```
+
+### Ícone customizado
+
+Use `CheckpointIcon` para um marcador estático e combine com um `CheckpointTrigger` para a ação.
+
+```tsx
+<Checkpoint>
+  <CheckpointIcon>
+    <FlagIcon className="size-4" />
+  </CheckpointIcon>
+  <CheckpointTrigger tooltip="Restart from this point">Reset</CheckpointTrigger>
+</Checkpoint>
+```
+
+## Acessibilidade
+
+- **Teclado**: `CheckpointTrigger` é um `Button` de verdade, focável na timeline e ativado por Enter / Space.
+- **ARIA**: quando `tooltip` está definido, o Radix Tooltip conecta `aria-describedby` do trigger para o conteúdo do tooltip automaticamente.
+- **Leitores de tela**: mantenha o label do trigger ou o tooltip explícito ("Branch from here", "Restore this state") para que checkpoints apenas com ícone ainda anunciem seu propósito.
+- **Gestão de foco**: o `Separator` final é decorativo e não focável, então a ordem de Tab move-se limpamente de um checkpoint para o próximo.
+
+## Relacionados
+
+- [Conversation](/components/chatbot/conversation) - a timeline que hospeda checkpoints entre mensagens
+- [Message](/components/chatbot/message) - os turnos delimitados por checkpoints
+- [Confirmation](/components/chatbot/confirmation) - padrão de confirmação acionável para operações irreversíveis

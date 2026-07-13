@@ -1,0 +1,221 @@
+---
+title: Drawer
+description: 'Sheet ciente de direção (top, bottom, left, right) construído sobre o vaul com gestos nativos de drag-to-dismiss.'
+---
+
+import { DrawerPreview } from '@/components/preview/overlays/drawer';
+import { DrawerDirectionsPreview } from '@/components/preview/overlays/drawer-directions';
+
+## Visão geral
+
+`Drawer` é um overlay baseado em vaul que desliza a partir de qualquer borda e suporta drag-to-dismiss nativo com momentum. É o primitivo certo para contextos mobile: ações rápidas, formulários simples, action sheets. Em viewports `md+` prefira `Dialog` (decisão focada) ou `Sheet` (fluxo lateral mais longo), já que a ergonomia de desktop não recompensa bottom sheets.
+
+O padrão recomendado é responsivo: `Drawer` abaixo de `md`, `Dialog` ou `Sheet` acima. Configure com a prop `direction` no próprio `Drawer`.
+
+## Preview
+
+<ComponentPreview name="overlays/drawer">
+  <DrawerPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Drawer                     raiz vaul que mantém o estado de abertura + direção
+├─ DrawerTrigger           elemento que abre o drawer
+└─ DrawerContent           painel em portal com uma alça de arraste (bottom)
+   ├─ DrawerHeader         envolve título + descrição
+   │  ├─ DrawerTitle           título acessível
+   │  └─ DrawerDescription     texto do corpo acessível
+   └─ DrawerFooter         linha de ações inferior
+      └─ DrawerClose       fecha o drawer
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-drawer ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-drawer ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-drawer ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-drawer ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Open drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Move to archive</DrawerTitle>
+          <DrawerDescription>
+            Archived items can be restored within 30 days.
+          </DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button>Archive</Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Drawer>`
+
+Estende o vaul `Drawer.Root`. Props notáveis:
+
+| Prop                    | Type                                     | Default    | Description                                                                                          |
+| ----------------------- | ---------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
+| `direction`             | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Borda a partir da qual o drawer desliza.                                                             |
+| `open`                  | `boolean`                                | -          | Estado de abertura controlado.                                                                       |
+| `defaultOpen`           | `boolean`                                | `false`    | Estado de abertura inicial quando não controlado.                                                    |
+| `onOpenChange`          | `(open: boolean) => void`                | -          | Disparado quando o estado de abertura muda.                                                          |
+| `shouldScaleBackground` | `boolean`                                | -          | Aplica uma escala sutil aos irmãos do drawer (visual iOS). Requer `[vaul-drawer-wrapper]` em um pai. |
+| `snapPoints`            | `(string \| number)[]`                   | -          | Posições de repouso (ex.: `[0.4, 0.8, 1]`).                                                          |
+| `activeSnapPoint`       | `string \| number \| null`               | -          | Snap point controlado.                                                                               |
+| `onAnimationEnd`        | `(open: boolean) => void`                | -          | Disparado após o arraste/animação assentar.                                                          |
+| `modal`                 | `boolean`                                | `true`     | Desabilita a interação externa enquanto aberto.                                                      |
+
+Todas as demais props do vaul `Drawer.Root` são encaminhadas.
+
+### `<DrawerContent>`
+
+Envolve o vaul `Drawer.Content` com o overlay e um Portal. O layout se adapta à `direction`:
+
+- `bottom` (padrão): encaixa na parte inferior, com topo arredondado, mostra a alça do gripper.
+- `top`: encaixa no topo, com base arredondada.
+- `right` / `left`: painel lateral de altura total, `w-3/4` limitado a `sm:max-w-sm`.
+
+A alça horizontal do gripper é renderizada automaticamente para `direction="bottom"`.
+
+### `<DrawerHeader>`, `<DrawerFooter>`, `<DrawerTitle>`, `<DrawerDescription>`
+
+Containers de layout com defaults amigáveis ao vaul: o header é centralizado para as direções `top`/`bottom` e alinhado à esquerda em `md+`; o footer se fixa na parte inferior do content.
+
+### `<DrawerTrigger>`, `<DrawerClose>`, `<DrawerOverlay>`, `<DrawerPortal>`
+
+Pass-throughs sobre os primitivos do vaul com atributos `data-slot`.
+
+## Composição
+
+1. **`<Drawer>`** detém o estado de aberto/fechado e o handling de gestos. Defina `direction` aqui.
+2. **`<DrawerTrigger asChild>`** envolve o elemento focável que o abre.
+3. **`<DrawerContent>`** monta via Portal, desenha o overlay, anima a partir da borda escolhida.
+4. **Header** guarda o título e a descrição; o footer guarda as ações primárias.
+5. **Dispensa**: arraste além do threshold, clique no overlay, pressione `Esc` ou chame `DrawerClose`.
+
+## Variações
+
+### Direções
+
+Defina a prop `direction` no `Drawer` para deslizar o painel a partir de qualquer borda (`top`, `bottom`, `left`, `right`). A alça do gripper renderiza automaticamente para `bottom`.
+
+<ComponentPreview name="overlays/drawer-directions">
+  <DrawerDirectionsPreview />
+</ComponentPreview>
+
+### Bottom drawer com formulário
+
+O padrão mobile canônico. Formulário rápido, ação primária no footer.
+
+```tsx
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button>New note</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>New note</DrawerTitle>
+      <DrawerDescription>Add a quick note to this project.</DrawerDescription>
+    </DrawerHeader>
+    <div className="px-4">
+      <Textarea placeholder="Type something..." />
+    </div>
+    <DrawerFooter>
+      <Button>Save note</Button>
+      <DrawerClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+### Drawer lateral direito
+
+Troque para um painel lateral para navegação secundária de desktop ou bandejas de filtro.
+
+```tsx
+<Drawer direction="right">
+  <DrawerTrigger asChild>
+    <Button variant="outline">Filters</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Filters</DrawerTitle>
+    </DrawerHeader>
+    {/* Filter controls */}
+  </DrawerContent>
+</Drawer>
+```
+
+### Snap points
+
+As posições de repouso deixam o drawer assentar em 40% e então expandir para a altura total. Útil para previews que podem ser expandidos.
+
+```tsx
+const [snap, setSnap] = useState<number | string | null>(0.4);
+
+<Drawer
+  snapPoints={[0.4, 1]}
+  activeSnapPoint={snap}
+  setActiveSnapPoint={setSnap}
+>
+  <DrawerTrigger asChild>
+    <Button>Preview</Button>
+  </DrawerTrigger>
+  <DrawerContent>{/* content scales between 40% and 100% */}</DrawerContent>
+</Drawer>;
+```
+
+## Acessibilidade
+
+- **Role**: `role="dialog"` com `aria-modal="true"`.
+- **Teclado**: `Esc` fecha; `Tab` circula o foco dentro do content; o foco fica preso enquanto aberto.
+- **Gestão de foco**: o foco entra no drawer na abertura e retorna ao trigger ao fechar.
+- **Title**: `DrawerTitle` é exigido para o anúncio em leitor de tela (use `sr-only` se precisar ocultá-lo visualmente).
+- **Dispensa por gesto**: o drag-to-dismiss é equivalente ao `Esc` via teclado. Usuários de tecnologia assistiva não são penalizados.
+- **Reduced motion**: as animações de arraste respeitam `prefers-reduced-motion`; o vaul recorre a transições instantâneas.
+
+## Relacionados
+
+- [Sheet](/components/overlays/sheet) - painel lateral baseado em Radix sem gestos de arraste (amigável a desktop).
+- [Dialog](/components/overlays/dialog) - modal centralizado para decisões focadas.
+- [Popover](/components/overlays/popover) - overlay inline ancorado para pequenas UI contextuais.

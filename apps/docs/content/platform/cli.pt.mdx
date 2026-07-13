@@ -1,0 +1,107 @@
+---
+title: Gremorie CLI
+description: 'Instala itens do registry no seu projeto. Um binário, três comandos.'
+---
+
+A CLI do Gremorie é como os primitives chegam no seu projeto. Ela lê o
+[registry](/platform/registry), resolve dependências cross-item,
+detecta o seu framework e escreve a fonte onde você espera.
+
+Ela **não** baixa um pacote. Os arquivos passam a ser seus: edite-os,
+seja dono deles, faça commit deles.
+
+## Instalação
+
+A CLI roda pelo seu package runner. Nenhuma instalação global é necessária.
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+```bash tab="npm"
+npx gremorie@latest <command>
+```
+
+```bash tab="pnpm"
+pnpm dlx gremorie@latest <command>
+```
+
+```bash tab="yarn"
+yarn dlx gremorie@latest <command>
+```
+
+```bash tab="bun"
+bunx gremorie@latest <command>
+```
+
+</Tabs>
+
+## Comandos
+
+### `init`
+
+Inicializa o Gremorie em um projeto. Detecta o seu package manager, instala
+as dependências core (os pacotes de tokens e de core do framework mais
+`class-variance-authority`, `clsx` e `tailwind-merge`), adiciona o
+import do tema ao seu stylesheet global e imprime os próximos passos.
+
+```bash
+npx gremorie@latest init
+```
+
+Flags:
+
+- `--dry-run` -- imprime o que seria instalado e escrito sem
+  tocar em nada
+
+### `add <items...>`
+
+Instala um ou mais itens do registry, mais quaisquer dependências cross-item.
+
+```bash
+npx gremorie@latest add ng-prompt-input ng-conversation ng-message
+```
+
+Flags:
+
+- `--framework <angular|react>` -- sobrescreve a detecção (ex.: instalar um
+  primitive React em um projeto que a CLI rotulou como Angular)
+- `--dry-run` -- imprime os arquivos que seriam escritos sem escrevê-los
+
+### `list`
+
+Imprime todo primitive disponível no registry, agrupado por categoria.
+
+```bash
+npx gremorie@latest list
+```
+
+Use isto para descobrir o que é entregável hoje. A saída espelha o
+[catálogo de Components](/components).
+
+## Auto-detecção de framework
+
+Quando você roda `add` sem `--framework`, a CLI inspeciona o seu
+`package.json`:
+
+- `@angular/core` presente -> edição Angular (`ng-*`)
+- `react` presente -> edição React (`rx-*`)
+- Ambos presentes (ex.: monorepo) -> a CLI pergunta qual
+
+Você pode passar `--framework` para pular o prompt em CI ou scripts.
+
+## Caminhos de saída
+
+Cada item do registry declara o seu próprio caminho de destino, e a CLI escreve a
+fonte lá:
+
+- **Itens React** -- `src/components/gremorie/<category>/<name>/`
+  (ex.: `src/components/gremorie/forms/button/button.tsx`)
+- **Itens Angular** -- `src/app/gremorie/<name>/`
+  (ex.: `src/app/gremorie/button/button.ts`)
+
+Os arquivos passam a fazer parte do seu projeto; mova-os e atualize os imports
+se preferir um layout diferente.
+
+## Fonte
+
+A fonte da CLI vive em [packages/cli](https://github.com/usegremorie/gremorie/tree/develop/packages/cli)
+no GitHub. PRs são bem-vindos -- veja [Contributing](/get-started/contributing).

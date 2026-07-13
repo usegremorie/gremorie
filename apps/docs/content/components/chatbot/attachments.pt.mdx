@@ -1,0 +1,258 @@
+---
+title: Attachments
+description: Renderiza arquivos e documentos de origem anexados a um turno de chat — thumbnails em grid, chips inline ou uma lista detalhada, com previews em hover e remoção.
+---
+
+import { AttachmentsPreview } from '@/components/preview/ai/attachments';
+
+## Visão geral
+
+`Attachments` renderiza os arquivos e documentos de origem vinculados a um turno de chat — imagens, PDFs, áudio, vídeo ou fontes citadas. É um primitive composto e orientado por contexto: o container `Attachments` define a `variant` (`grid`, `inline` ou `list`), e cada filho `Attachment` lê essa variant para se organizar, escolher seu ícone de mídia e dimensionar seu preview. Inclua apenas as sub-partes que você precisa (`AttachmentPreview`, `AttachmentInfo`, `AttachmentRemove`).
+
+Cada `Attachment` recebe um `AttachmentData` — um `FileUIPart` ou `SourceDocumentUIPart` do pacote `ai`, mais um `id`. A categoria de mídia (image / video / audio / document / source) é inferida a partir de `mediaType`, então o ícone e o preview corretos são renderizados sem config extra. Passe `onRemove` para exibir o botão de remoção; omita e o botão não renderiza nada.
+
+## Preview
+
+<ComponentPreview name="ai/attachments">
+  <AttachmentsPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Attachments                    container; define a variant (grid · inline · list) via context
+└─ Attachment                  um arquivo/fonte; lê a variant, infere a categoria de mídia
+   ├─ AttachmentPreview        thumbnail (image/video) ou ícone de categoria de mídia
+   ├─ AttachmentInfo           nome do arquivo + tipo de mídia opcional (oculto no grid)
+   ├─ AttachmentRemove         botão de remoção (renderiza só quando onRemove está definido)
+   ├─ AttachmentHoverCard      wrapper opcional de preview em hover
+   │  ├─ AttachmentHoverCardTrigger
+   │  └─ AttachmentHoverCardContent
+   └─ AttachmentEmpty          mensagem de estado vazio
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-attachments ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-attachments ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-attachments ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-attachments ```
+  </Tab>
+</Tabs>
+
+Traz `rx-forms` (para `Button`) e `rx-overlays` (para `HoverCard`) como dependências de registry, mais o pacote `ai` para os tipos de attachment.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Attachment,
+  AttachmentInfo,
+  AttachmentPreview,
+  AttachmentRemove,
+  Attachments,
+  type AttachmentData,
+} from "@gremorie/rx-ai";
+
+export function Example({
+  files,
+  remove,
+}: {
+  files: AttachmentData[];
+  remove: (id: string) => void;
+}) {
+  return (
+    <Attachments variant="inline">
+      {files.map((data) => (
+        <Attachment key={data.id} data={data} onRemove={() => remove(data.id)}>
+          <AttachmentPreview />
+          <AttachmentInfo />
+          <AttachmentRemove />
+        </Attachment>
+      ))}
+    </Attachments>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-attachments
+```
+
+```ts
+import { Component, signal } from '@angular/core';
+import {
+  AttachmentList,
+  AttachmentItem,
+  AttachmentPreview,
+  AttachmentInfo,
+  AttachmentRemove,
+  type AttachmentData,
+} from '@gremorie/ng-ai';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    AttachmentList,
+    AttachmentItem,
+    AttachmentPreview,
+    AttachmentInfo,
+    AttachmentRemove,
+  ],
+  template: `
+    <attachment-list variant="grid">
+      @for (file of files(); track file.id) {
+        <attachment-item [data]="file" (removed)="remove($event)">
+          <attachment-preview />
+          <attachment-info />
+          <attachment-remove />
+        </attachment-item>
+      }
+    </attachment-list>
+  `,
+})
+export class ExampleComponent {
+  readonly files = signal<AttachmentData[]>([]);
+
+  remove(file: AttachmentData) {
+    this.files.update((current) => current.filter((f) => f.id !== file.id));
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Attachments>`
+
+| Prop        | Type                           | Default  | Description                                                                                    |
+| ----------- | ------------------------------ | -------- | ---------------------------------------------------------------------------------------------- |
+| `variant`   | `"grid" \| "inline" \| "list"` | `"grid"` | Modo de layout compartilhado com cada filho via context. `grid` flutua para o fim (`ml-auto`). |
+| `className` | `string`                       | -        | Classes extras no container.                                                                   |
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`. Provê o context de attachments.
+
+### `<Attachment>`
+
+| Prop        | Type             | Default | Description                                                                  |
+| ----------- | ---------------- | ------- | ---------------------------------------------------------------------------- |
+| `data`      | `AttachmentData` | -       | Um `FileUIPart` ou `SourceDocumentUIPart` com um `id`.                       |
+| `onRemove`  | `() => void`     | -       | Quando definido, `AttachmentRemove` renderiza um botão de remoção funcional. |
+| `className` | `string`         | -       | Classes extras no item.                                                      |
+
+Provê o context por item (`data`, `mediaCategory` inferido, `onRemove`, `variant`).
+
+### `<AttachmentPreview>`
+
+| Prop           | Type        | Default | Description                                                                 |
+| -------------- | ----------- | ------- | --------------------------------------------------------------------------- |
+| `fallbackIcon` | `ReactNode` | -       | Sobrescreve o ícone de categoria de mídia mostrado quando não há thumbnail. |
+| `className`    | `string`    | -       | Classes extras na caixa de preview.                                         |
+
+Renderiza um `<img>` para imagens, um `<video>` para vídeos, caso contrário o ícone de categoria de mídia.
+
+### `<AttachmentInfo>`
+
+| Prop            | Type      | Default | Description                                              |
+| --------------- | --------- | ------- | -------------------------------------------------------- |
+| `showMediaType` | `boolean` | `false` | Renderiza o `mediaType` bruto abaixo do nome do arquivo. |
+| `className`     | `string`  | -       | Classes extras.                                          |
+
+Retorna `null` na variant `grid` (apenas thumbnails).
+
+### `<AttachmentRemove>`
+
+| Prop    | Type     | Default    | Description                                 |
+| ------- | -------- | ---------- | ------------------------------------------- |
+| `label` | `string` | `"Remove"` | Label acessível (`aria-label` + `sr-only`). |
+
+Estende todas as props de `Button`. Renderiza `null` a menos que o `Attachment` pai tenha `onRemove`. Interrompe a propagação do clique para que remover não dispare o item.
+
+### `<AttachmentHoverCard>` / `<AttachmentHoverCardTrigger>` / `<AttachmentHoverCardContent>`
+
+Wrappers finos sobre `HoverCard` do `@gremorie/rx-overlays`, pré-ajustados para previews de attachment (delay zero de abrir/fechar, `align="start"`, padding compacto). Use para mostrar um preview grande no hover.
+
+### `<AttachmentEmpty>`
+
+Placeholder centralizado em tom muted. Padrão é `"No attachments"`; passe `children` para sobrescrever.
+
+## Composição
+
+1. **`<Attachments>`** escolhe o layout via `variant` e o compartilha pelo context.
+2. **`<Attachment>`** envolve um arquivo/fonte e infere sua categoria de mídia a partir de `mediaType`.
+3. **`<AttachmentPreview>`** mostra o thumbnail ou o ícone de mídia.
+4. **`<AttachmentInfo>`** adiciona o nome do arquivo (e o tipo de mídia opcional) para `inline` / `list`.
+5. **`<AttachmentRemove>`** aparece só quando `onRemove` está conectado.
+
+## Variações
+
+### Grid (thumbnails)
+
+O padrão. Thumbnails quadrados que flutuam para a borda final — ideal acima de um `PromptInput`.
+
+```tsx
+<Attachments variant="grid">
+  {files.map((data) => (
+    <Attachment key={data.id} data={data} onRemove={() => remove(data.id)}>
+      <AttachmentPreview />
+      <AttachmentRemove />
+    </Attachment>
+  ))}
+</Attachments>
+```
+
+### Inline (chips)
+
+Chips compactos com um ícone pequeno e o nome do arquivo — bons dentro de um balão de mensagem.
+
+```tsx
+<Attachments variant="inline">
+  {files.map((data) => (
+    <Attachment key={data.id} data={data}>
+      <AttachmentPreview />
+      <AttachmentInfo />
+    </Attachment>
+  ))}
+</Attachments>
+```
+
+### List (linhas detalhadas)
+
+Linhas de largura total com um preview maior, nome do arquivo e tipo de mídia — bom para uma superfície de revisão.
+
+```tsx
+<Attachments variant="list">
+  {files.map((data) => (
+    <Attachment key={data.id} data={data} onRemove={() => remove(data.id)}>
+      <AttachmentPreview />
+      <AttachmentInfo showMediaType />
+      <AttachmentRemove />
+    </Attachment>
+  ))}
+</Attachments>
+```
+
+## Acessibilidade
+
+- **Botão de remoção**: `AttachmentRemove` carrega um `aria-label` (padrão `"Remove"`) mais um label `sr-only`, então o controle apenas com ícone é anunciado.
+- **Imagens**: previews definem o `alt` como o nome do arquivo (com fallback para `"Image"`), então leitores de tela descrevem o thumbnail.
+- **Isolamento de clique**: remover interrompe a propagação, então uma linha de attachment interativa não é também disparada quando o usuário a remove.
+- **Estado vazio**: `AttachmentEmpty` renderiza texto de verdade, então uma região de attachments vazia não é uma lacuna silenciosa.
+
+## Relacionados
+
+- [PromptInput](/components/chatbot/prompt-input) - a doca de input acima da qual os attachments são preparados
+- [Message](/components/chatbot/message) - attachments frequentemente renderizam dentro de um turno de mensagem
+- [Sources](/components/chatbot/sources) - documentos de origem citados, um conceito irmão

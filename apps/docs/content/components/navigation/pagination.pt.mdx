@@ -1,0 +1,293 @@
+---
+title: Pagination
+description: 'Navegação página a página com bookmark. Nav semântica com previous, next, links de página e ellipsis.'
+---
+
+import { PaginationPreview } from '@/components/preview/navigation/pagination';
+import { PaginationSimpleRangePreview } from '@/components/preview/navigation/pagination-simple-range';
+import { PaginationWithEllipsisPreview } from '@/components/preview/navigation/pagination-with-ellipsis';
+import { PaginationDisabledEdgesPreview } from '@/components/preview/navigation/pagination-disabled-edges';
+
+## Visão geral
+
+`Pagination` é o primitivo de navegação página a página com bookmark: um `<nav>` envolvendo uma lista não ordenada de links `<a>` estilizados como botões. Cada página tem uma URL estável, a página ativa é marcada com `aria-current="page"`, e os controles ao redor (`Previous`, `Next`, `Ellipsis`) compõem no clássico padrão 1...4 5 6 ...20.
+
+Use o Pagination quando **as URLs devem ser compartilháveis, a ordem estável importa, e os usuários precisam voltar a uma posição específica** - resultados de busca, arquivos, logs de auditoria. Para feeds sem noção de "página 7" use scroll infinito ou load-more. O primitivo é intencionalmente headless quanto à matemática de páginas: ele não auto-detecta primeira ou última; quem chama conecta `aria-disabled` e click handlers nos links de prev / next.
+
+## Preview
+
+<ComponentPreview name="navigation/pagination">
+  <PaginationPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Pagination                  <nav aria-label="pagination"> wrapper
+└─ PaginationContent        the <ul> row of controls
+   └─ PaginationItem        one <li> cell wrapping a control
+      ├─ PaginationLink     page-number link; isActive marks the current page
+      ├─ PaginationPrevious labelled previous-page control
+      ├─ PaginationNext     labelled next-page control
+      └─ PaginationEllipsis gap indicator for skipped page ranges
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-pagination ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-pagination ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-pagination ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-pagination ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from "@gremorie/rx-navigation";
+
+export function SearchPagination() {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="?page=1" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="?page=1">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="?page=2" isActive>
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="?page=3">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="?page=3" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Pagination>`
+
+Renderiza um `<nav role="navigation" aria-label="pagination">` centrado no eixo da página.
+
+| Prop       | Type                          | Default | Description                                                          |
+| ---------- | ----------------------------- | ------- | -------------------------------------------------------------------- |
+| `...props` | `React.ComponentProps<"nav">` | -       | Atributos padrão de nav. Label e role são definidos automaticamente. |
+
+### `<PaginationContent>`
+
+Renderiza um `<ul>` com `flex flex-row items-center gap-1`.
+
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"ul">` | -       | Atributos padrão de ul. |
+
+### `<PaginationItem>`
+
+Renderiza um `<li>` simples. O envelopamento em lista é essencial para a semântica; não pule.
+
+| Prop       | Type                         | Default | Description             |
+| ---------- | ---------------------------- | ------- | ----------------------- |
+| `...props` | `React.ComponentProps<"li">` | -       | Atributos padrão de li. |
+
+### `<PaginationLink>`
+
+O link de página clicável. Renderiza um `<a>` estilizado com `buttonVariants` de `@gremorie/rx-forms`.
+
+| Prop       | Type                                  | Default  | Description                                                                                                                   |
+| ---------- | ------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `isActive` | `boolean`                             | `false`  | Quando `true`, define `aria-current="page"` e troca a variant do botão para `outline`. Caso contrário renderiza como `ghost`. |
+| `size`     | `"default" \| "sm" \| "lg" \| "icon"` | `"icon"` | Encaminhado para o `buttonVariants` subjacente. Números de página usam `"icon"` por default para ficarem num grid quadrado.   |
+| `...props` | `React.ComponentProps<"a">`           | -        | Atributos padrão de âncora, incluindo `href`.                                                                                 |
+
+### `<PaginationPrevious>`
+
+Wrapper de conveniência em torno de `<PaginationLink>` que renderiza um `ChevronLeft` mais um label "Previous" (o label fica oculto abaixo do breakpoint `sm` para manter o controle compacto no mobile). Define `aria-label="Go to previous page"` e `size="default"`.
+
+| Prop       | Type                                          | Default | Description                                                                            |
+| ---------- | --------------------------------------------- | ------- | -------------------------------------------------------------------------------------- |
+| `...props` | `React.ComponentProps<typeof PaginationLink>` | -       | Mesma forma que `PaginationLink`. Passe `href` e quaisquer outros atributos de âncora. |
+
+### `<PaginationNext>`
+
+Espelho de `PaginationPrevious`: label "Next" mais `ChevronRight`. Define `aria-label="Go to next page"` e `size="default"`.
+
+| Prop       | Type                                          | Default | Description                       |
+| ---------- | --------------------------------------------- | ------- | --------------------------------- |
+| `...props` | `React.ComponentProps<typeof PaginationLink>` | -       | Mesma forma que `PaginationLink`. |
+
+### `<PaginationEllipsis>`
+
+Renderiza um `<span aria-hidden>` quadrado contendo um ícone `MoreHorizontal` e um label "More pages" visualmente oculto.
+
+| Prop       | Type                           | Default | Description               |
+| ---------- | ------------------------------ | ------- | ------------------------- |
+| `...props` | `React.ComponentProps<"span">` | -       | Atributos padrão de span. |
+
+## Composição
+
+1. **`<Pagination>`** é o landmark nav com o label de paginação.
+2. **`<PaginationContent>`** é a lista de controles.
+3. **`<PaginationItem>`** envolve cada controle para que a lista leia como itens.
+4. **Números de página** usam `<PaginationLink>`, com a página atual passando `isActive`.
+5. **As pontas** usam `<PaginationPrevious>` e `<PaginationNext>`.
+6. **Gaps** são visualizados com `<PaginationEllipsis>` entre páginas não adjacentes.
+
+O primitivo não é dono da matemática de páginas. Quem chama calcula quais números de página, ellipses e estados desabilitados renderizar com base em `currentPage`, `totalPages` e o tamanho de janela desejado.
+
+## Variações
+
+### Range simples
+
+<ComponentPreview name="navigation/pagination-simple-range">
+  <PaginationSimpleRangePreview />
+</ComponentPreview>
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="?page=1" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=1">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=2" isActive>
+        2
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=3">3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="?page=3" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Use quando a contagem total de páginas cabe confortavelmente sem truncar (abaixo de dez).
+
+### Com ellipsis
+
+<ComponentPreview name="navigation/pagination-with-ellipsis">
+  <PaginationWithEllipsisPreview />
+</ComponentPreview>
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="?page=4" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=1">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=4">4</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=5" isActive>
+        5
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=6">6</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=20">20</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="?page=6" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Use para ranges longos. Mantenha a primeira e a última ancoradas, mostre uma janela em torno da página atual e elida os gaps.
+
+### Pontas desabilitadas nos limites
+
+<ComponentPreview name="navigation/pagination-disabled-edges">
+  <PaginationDisabledEdgesPreview />
+</ComponentPreview>
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious
+        href="#"
+        aria-disabled
+        tabIndex={-1}
+        className="pointer-events-none opacity-50"
+      />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=1" isActive>
+        1
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="?page=2">2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="?page=2" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Use na página 1 (previous) ou na última página (next). O primitivo não auto-detecta limites - aplique `aria-disabled`, `tabIndex={-1}` e uma classe passiva na ponta afetada.
+
+## Acessibilidade
+
+- **Landmark**: o `<nav>` externo carrega `role="navigation"` e `aria-label="pagination"`, expondo o conjunto de controles como um landmark descobrível.
+- **Página atual**: `<PaginationLink isActive>` define `aria-current="page"` para que leitores de tela anunciem a posição do usuário. Combine `isActive` com a variant `outline` (default) para uma pista visível.
+- **Controles de ponta**: `<PaginationPrevious>` e `<PaginationNext>` vêm com `aria-label="Go to previous page"` / `"Go to next page"`. O label visível "Previous" / "Next" fica oculto abaixo do breakpoint `sm`, mas o aria-label mantém a tecnologia assistiva informada.
+- **Ellipsis**: `<PaginationEllipsis>` é `aria-hidden` e expõe um label "More pages" visualmente oculto.
+- **Estados de limite**: quem chama é responsável por `aria-disabled="true"` e `tabIndex={-1}` em prev / next na primeira e última páginas, além de uma classe `pointer-events-none opacity-50` (ou equivalente) para que o controle fique visivelmente inerte.
+
+## Relacionados
+
+- [Breadcrumb](/components/navigation/breadcrumb) - trilha hierárquica, não navegação página a página.
+- [Tabs](/components/navigation/tabs) - content irmão dentro de um container.
+- [Button](/components/buttons/button) - a fonte de estilo subjacente via `buttonVariants`.

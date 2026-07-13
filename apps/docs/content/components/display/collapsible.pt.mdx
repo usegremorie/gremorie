@@ -1,0 +1,165 @@
+---
+title: Collapsible
+description: 'Região expansível de seção única. O bloco de construção mínimo para toggles de mostrar-mais e disclosures inline.'
+---
+
+import { CollapsiblePreview } from '@/components/preview/display/collapsible';
+import { CollapsibleOpenPreview } from '@/components/preview/display/collapsible-open';
+
+## Visão geral
+
+`Collapsible` é o primitivo de disclosure mais simples: um trigger, um painel, um estado aberto/fechado. Três partes - `Collapsible` (Root), `CollapsibleTrigger`, `CollapsibleContent` - envolvem o Radix Collapsible.
+
+Use o Collapsible quando você tem **uma** coisa que expande: o toggle "mais detalhes" de um card, o expand/collapse de um grupo na sidebar, um disclosure inline dentro de um texto longo. Quando você tem múltiplas seções coordenadas que compartilham navegação por teclado e a invariante de um-aberto, use [Accordion](/components/display/accordion) - o Accordion é construído sobre os mesmos primitivos, mas coordena um grupo.
+
+## Preview
+
+<ComponentPreview name="display/collapsible">
+  <CollapsiblePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Collapsible                  the Radix Root (holds open / onOpenChange)
+├─ CollapsibleTrigger        the toggle (pass asChild to use your own button)
+└─ CollapsibleContent        the region revealed when open
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-collapsible ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-collapsible ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-collapsible ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-collapsible ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <Collapsible>
+      <CollapsibleTrigger asChild>
+        <Button variant="outline">Toggle details</Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="mt-2 rounded-md border p-4 text-sm">
+        Hidden content revealed when the trigger fires.
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Collapsible>`
+
+Envolve o `Collapsible.Root` do Radix.
+
+| Prop           | Type                      | Default | Description                          |
+| -------------- | ------------------------- | ------- | ------------------------------------ |
+| `open`         | `boolean`                 | -       | Estado aberto controlado.            |
+| `defaultOpen`  | `boolean`                 | `false` | Default não controlado.              |
+| `onOpenChange` | `(open: boolean) => void` | -       | Dispara quando o estado aberto muda. |
+| `disabled`     | `boolean`                 | `false` | Impede o trigger de disparar.        |
+
+### `<CollapsibleTrigger>`
+
+O elemento clicável que alterna o painel. Envolve o `Collapsible.Trigger` do Radix.
+
+| Prop      | Type      | Default | Description                                                                                     |
+| --------- | --------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `asChild` | `boolean` | `false` | Quando `true`, renderiza o filho imediato como o trigger (padrão típico: envolver um `Button`). |
+
+Quando `asChild` é usado, o filho recebe `aria-expanded`, `aria-controls` e o handler de clique.
+
+### `<CollapsibleContent>`
+
+O painel que abre e fecha. Envolve o `Collapsible.Content` do Radix. Expõe o atributo `data-state="open" \| "closed"` para que você possa animar via seu próprio CSS ou keyframes do Tailwind.
+
+O `CollapsibleContent` do Gremorie não vem com animações padrão - adicione `animate-collapsible-down` / `animate-collapsible-up` se quiser o reveal padrão, ou componha o seu próprio com seletores `data-[state]`.
+
+## Composição
+
+1. **`<Collapsible>`** detém o estado aberto/fechado.
+2. **`<CollapsibleTrigger>`** fica dentro - tipicamente envolvendo um `Button` via `asChild`.
+3. **`<CollapsibleContent>`** guarda o conteúdo oculto. Estilize como quiser; o Radix define `hidden` quando fechado e `data-state="open"` quando aberto.
+
+O trigger e o conteúdo podem ficar em qualquer profundidade dentro da raiz - o Radix Collapsible coordena via contexto, não pela ordem do DOM.
+
+## Variações
+
+### Toggle mostrar mais
+
+<ComponentPreview name="display/collapsible-open">
+  <CollapsibleOpenPreview />
+</ComponentPreview>
+
+`defaultOpen` renderiza o painel expandido no mount. O chevron gira em `data-[state=open]` para que o trigger reflita o estado atual. Remova `defaultOpen` para começar recolhido.
+
+### Aberto controlado
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Collapsible open={open} onOpenChange={setOpen}>
+  <CollapsibleTrigger asChild>
+    <Button>{open ? 'Hide' : 'Show'} advanced settings</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <SettingsPanel />
+  </CollapsibleContent>
+</Collapsible>;
+```
+
+### Disclosure inline
+
+```tsx
+<p>
+  Gremorie ships 83 primitives.{' '}
+  <Collapsible className="inline">
+    <CollapsibleTrigger>Show breakdown</CollapsibleTrigger>
+    <CollapsibleContent>
+      <ul>...</ul>
+    </CollapsibleContent>
+  </Collapsible>
+</p>
+```
+
+## Acessibilidade
+
+- **ARIA**: o trigger recebe `aria-expanded` (true/false) e `aria-controls` apontando para o painel de conteúdo; o painel de conteúdo fica `hidden` quando fechado.
+- **Teclado**: `Space` ou `Enter` no trigger alterna o painel. Semântica padrão de `<button>` ao usar `asChild` com um `Button`.
+- **Foco**: o foco permanece no trigger entre as alternâncias. O conteúdo não tem focus-trap - o leitor pode dar Tab por ele quando aberto.
+- **Animação**: use seletores `data-[state=open]` e `data-[state=closed]` para que os reveals respeitem `prefers-reduced-motion` via seus próprios keyframes.
+- **Estado desabilitado**: `disabled={true}` na raiz desabilita o trigger e o remove da ordem de tabulação.
+
+## Relacionados
+
+- [Accordion](/components/display/accordion) - múltiplos disclosures coordenados com estado compartilhado.
+- [Card](/components/display/card) - host típico para um toggle "mostrar mais" de Collapsible.
+- [Sidebar](/components/navigation/sidebar) - usa Collapsible para expand/collapse de grupos.

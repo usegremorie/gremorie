@@ -1,0 +1,215 @@
+---
+title: Popover
+description: 'Overlay ancorado, dirigido por clique, para conteúdo contextual interativo. Construído sobre o Radix Popover.'
+---
+
+import { PopoverPreview } from '@/components/preview/overlays/popover';
+import { PopoverFormPreview } from '@/components/preview/overlays/popover-form';
+
+## Visão geral
+
+`Popover` é o primitivo certo para conteúdo ancorado que responde a um clique intencional: date pickers, color pickers, mini formulários, menus de compartilhamento, ações inline de compartilhar/curtir. É distinto do `Tooltip` (apenas hover, apenas texto, nunca interativo) e do `HoverCard` (previews apenas em hover de conteúdo não crítico). Quando o conteúdo é muito longo ou justifica bloquear a página, escale para `Dialog` ou `Sheet`.
+
+A superfície padrão é `w-72`, com padding `p-4`, com um transform-origin dirigido pelo Radix para que a animação de abertura pareça ancorada ao trigger.
+
+## Preview
+
+<ComponentPreview name="overlays/popover">
+  <PopoverPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Popover                       raiz Radix que mantém o estado de abertura
+├─ PopoverTrigger             abre o popover no clique
+├─ PopoverAnchor              âncora alternativa de posicionamento
+└─ PopoverContent             superfície em portal (align, sideOffset)
+   └─ PopoverHeader           envolve título + descrição
+      ├─ PopoverTitle         heading
+      └─ PopoverDescription   texto de apoio
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-popover ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-popover ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-popover ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-popover ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Open</Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <p className="text-sm">Anchored interactive content.</p>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Popover>`
+
+Estende o Radix `Popover.Root`. Props notáveis:
+
+| Prop           | Type                      | Default | Description                                                  |
+| -------------- | ------------------------- | ------- | ------------------------------------------------------------ |
+| `open`         | `boolean`                 | -       | Estado de abertura controlado.                               |
+| `defaultOpen`  | `boolean`                 | `false` | Estado de abertura inicial quando não controlado.            |
+| `onOpenChange` | `(open: boolean) => void` | -       | Disparado quando o estado de abertura muda.                  |
+| `modal`        | `boolean`                 | `false` | Quando `true`, trava o scroll do body e a interação externa. |
+
+### `<PopoverTrigger>`
+
+Estende o Radix `Popover.Trigger`. Emparelhe com `asChild` para encaminhar estilos a um `Button` ou qualquer trigger customizado.
+
+### `<PopoverContent>`
+
+| Prop               | Type                                     | Default    | Description                                                |
+| ------------------ | ---------------------------------------- | ---------- | ---------------------------------------------------------- |
+| `align`            | `"start" \| "center" \| "end"`           | `"center"` | Alinhamento relativo ao eixo do trigger.                   |
+| `sideOffset`       | `number`                                 | `4`        | Espaçamento em pixels entre trigger e content.             |
+| `side`             | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Lado preferido; vira automaticamente quando não há espaço. |
+| `alignOffset`      | `number`                                 | `0`        | Offset ao longo do eixo de alinhamento.                    |
+| `avoidCollisions`  | `boolean`                                | `true`     | Reposiciona automaticamente para permanecer na viewport.   |
+| `collisionPadding` | `number \| object`                       | `0`        | Distância das bordas da viewport a manter.                 |
+
+Envolvido em um `Portal` do Radix. Todas as demais props do Radix `Popover.Content` são encaminhadas.
+
+### `<PopoverAnchor>`
+
+Opcional. Ancora o content a um elemento diferente do trigger. Útil quando a âncora visual e o alvo do clique não são o mesmo elemento.
+
+```tsx
+<Popover>
+  <PopoverAnchor asChild>
+    <span>Visual anchor</span>
+  </PopoverAnchor>
+  <PopoverTrigger asChild>
+    <Button>Click me</Button>
+  </PopoverTrigger>
+  <PopoverContent>Anchored to the span, not the button.</PopoverContent>
+</Popover>
+```
+
+### `<PopoverHeader>`, `<PopoverTitle>`, `<PopoverDescription>`
+
+Helpers de layout opcionais. O header empilha título e descrição; o título é `font-medium`; a descrição é `text-muted-foreground`.
+
+## Composição
+
+1. **`<Popover>`** detém o estado de aberto/fechado.
+2. **`<PopoverTrigger asChild>`** envolve o elemento focável que o abre.
+3. **`<PopoverContent>`** monta via Portal, ancorado ao trigger (ou ao `PopoverAnchor`).
+4. **Dentro do content**: qualquer UI interativa - formulários, listas de comandos, color pickers, sliders.
+5. **Dispensa**: clique fora, pressione `Esc` ou feche programaticamente.
+
+## Variações
+
+### Popover de formulário
+
+Um mini formulário ancorado ao trigger. O popover permanece aberto enquanto o usuário edita os inputs.
+
+<ComponentPreview name="overlays/popover-form">
+  <PopoverFormPreview />
+</ComponentPreview>
+
+### Popover de configurações
+
+Mini formulário com header. Permanece aberto enquanto o usuário alterna preferências.
+
+```tsx
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Quick settings</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle>Quick settings</PopoverTitle>
+      <PopoverDescription>
+        Tweak preferences for this session.
+      </PopoverDescription>
+    </PopoverHeader>
+    <div className="mt-3 flex flex-col gap-3">
+      <Field>
+        <FieldLabel htmlFor="theme">Theme</FieldLabel>
+        <Select id="theme" defaultValue="system">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System</option>
+        </Select>
+      </Field>
+    </div>
+  </PopoverContent>
+</Popover>
+```
+
+### Alinhado ao fim do trigger
+
+Alinhe o popover à direita sob um ícone de toolbar para que ele não estoure a viewport.
+
+```tsx
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="More">
+      <MoreHorizontalIcon />
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent align="end" sideOffset={8}>
+    {/* menu content */}
+  </PopoverContent>
+</Popover>
+```
+
+### Com âncora customizada
+
+Use `PopoverAnchor` para desacoplar a âncora visual do alvo do clique (comum em UIs dirigidas por seleção, onde um trecho destacado abre o popover).
+
+```tsx
+<Popover open={open} onOpenChange={setOpen}>
+  <PopoverAnchor virtualRef={selectionRef} />
+  <PopoverContent>Formatting toolbar</PopoverContent>
+</Popover>
+```
+
+## Acessibilidade
+
+- **Role**: `role="dialog"` para o content (padrão do Radix).
+- **Teclado**: `Esc` fecha; `Tab` circula o foco dentro do content; clicar fora fecha (configurável).
+- **Gestão de foco**: o foco entra no content na abertura e retorna ao trigger ao fechar.
+- **Clique fora**: fecha por padrão. Desative via `onInteractOutside` se o popover precisar persistir.
+- **`aria-expanded`**: definido no trigger automaticamente; `aria-controls` liga ao id do content.
+- **Reduced motion**: as animações de abrir/fechar respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Tooltip](/components/overlays/tooltip) - rótulo de texto apenas em hover, não interativo.
+- [Hover Card](/components/overlays/hover-card) - preview rico apenas em hover, não interativo.
+- [Dropdown Menu](/components/overlays/dropdown-menu) - popover com semântica de menu e navegação por setas.
+- [Dialog](/components/overlays/dialog) - modal bloqueante quando o conteúdo é grande ou crítico demais.

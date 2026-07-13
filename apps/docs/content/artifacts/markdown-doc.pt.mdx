@@ -1,0 +1,153 @@
+---
+title: Markdown document
+description: 'Markdown por streaming renderizado com tipografia prose e um header de documento.'
+---
+
+## Visão geral
+
+Um artifact de documento para quando o modelo produz prosa mais longa.
+O modelo emite `{ title, body }` onde `body` é Markdown; o
+artifact o renderiza dentro de um Card com tipografia `prose` afinada para
+a paleta da Gremorie, incluindo dark mode via `prose-invert`.
+
+Use este artifact para relatórios de status, resumos, notas de reunião e
+qualquer output longform estruturado que o modelo gere.
+
+## Preview
+
+<ArtifactPreview name="markdown-doc" />
+
+## Schema
+
+O LLM retorna output estruturado que segue este shape:
+
+```ts
+{
+  type: "markdown-doc",
+  title: string,
+  body: string,        // CommonMark markdown
+  filename?: string,
+}
+```
+
+## Anatomia
+
+```text
+Card
+├─ CardHeader            CardTitle + filename + Badge (outline)
+└─ article.prose         typography wrapper (dark:prose-invert) over rendered Markdown
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-markdown-doc
+```
+
+</Tab>
+
+</Tabs>
+
+## Exemplos de prompt
+
+Prompts de exemplo que produzem output válido para este artifact:
+
+- "Escreva um relatório de status semanal para o time de plataforma."
+- "Resuma este transcrito como uma nota de reunião com action items."
+- "Rascunhe release notes para a v2.1 do design system."
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@gremorie/rx-display';
+
+export function MarkdownDoc() {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>weekly-status.md</CardTitle>
+            <CardDescription>
+              Rendered from streamed Markdown returned by the LLM.
+            </CardDescription>
+          </div>
+          <Badge variant="outline">Markdown</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <article className="prose prose-sm max-w-none dark:prose-invert">
+          {/* In production, parse markdown body to HTML/JSX here */}
+        </article>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  A edição Angular deste componente está planejada; a edição React está
+  production-ready hoje.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Comportamento de streaming
+
+<Callout type="info">
+  Este artifact renderiza em streaming. Conforme os tokens de Markdown chegam, o
+  documento cresce de cima para baixo. Headings, listas e blockquotes surgem no
+  lugar conforme são parseados, sem flash entre os estados.
+</Callout>
+
+## Relacionados
+
+- [Card](/components/display/card)
+- [Artifacts overview](/artifacts)

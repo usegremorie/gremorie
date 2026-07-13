@@ -1,0 +1,184 @@
+---
+title: Input OTP
+description: Input de one-time-password segmentado construído sobre a biblioteca `input-otp`, com paste-to-fill, autocomplete e gerenciamento de focus entre slots.
+---
+
+import { InputOTPPreview } from '@/components/preview/forms/input-otp';
+import { InputOTPSeparatorPreview } from '@/components/preview/forms/input-otp-separator';
+import { InputOTPPatternPreview } from '@/components/preview/forms/input-otp-pattern';
+import { InputOTPDisabledPreview } from '@/components/preview/forms/input-otp-disabled';
+
+## Visão geral
+
+`InputOTP` renderiza uma row de slots de caractere único que se comportam como um único `<input>` subjacente. Construído sobre o `input-otp`, ele cuida do movimento de caret entre slots, do paste-to-fill, e do `autocomplete="one-time-code"` do browser para que códigos de SMS / e-mail se auto-preencham em plataformas suportadas.
+
+Use para 2FA, verificação de e-mail, confirmação por SMS - qualquer código efêmero que o usuário digita ou cola. Não o use para senhas ou PINs persistentes; esses precisam de um `Input` normal com `type="password"`.
+
+## Preview
+
+<ComponentPreview name="forms/input-otp">
+  <InputOTPPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+InputOTP                       OTPInput oculto dono do value + maxLength
+├─ InputOTPGroup               cluster visual de slots contíguos
+│  └─ InputOTPSlot             uma célula de caractere (lê seu char pelo index)
+├─ InputOTPSeparator           um divisor MinusIcon entre grupos
+└─ InputOTPGroup               outro cluster (códigos divididos 3 + 3)
+   └─ InputOTPSlot             uma célula de caractere
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-input-otp ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-input-otp ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-input-otp ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-input-otp ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <InputOTP maxLength={6}>
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<InputOTP>`
+
+| Prop                 | Type                      | Default | Description                                                              |
+| -------------------- | ------------------------- | ------- | ------------------------------------------------------------------------ |
+| `maxLength`          | `number`                  | -       | Número total de slots. Obrigatório.                                      |
+| `value`              | `string`                  | -       | Valor controlado.                                                        |
+| `onChange`           | `(value: string) => void` | -       | Dispara a cada tecla digitada e paste.                                   |
+| `pattern`            | `RegExp \| string`        | -       | Restringe os caracteres permitidos (ex. `^[0-9]+$` para apenas dígitos). |
+| `containerClassName` | `string`                  | -       | Classes aplicadas à row wrapper, não ao input subjacente.                |
+| `className`          | `string`                  | -       | Classes aplicadas ao input subjacente (mantido visualmente oculto).      |
+
+Estende todos os `React.ComponentProps<typeof OTPInput>` do `input-otp`. Renderiza com `autocomplete="one-time-code"` por padrão para que o browser ofereça o autofill de códigos SMS em dispositivos suportados.
+
+### `<InputOTPGroup>`
+
+Cluster visual de `InputOTPSlot`s. Adiciona `flex items-center` e permite dividir códigos em pedaços (ex. 3 + 3) renderizando múltiplos grupos separados por `<InputOTPSeparator />`.
+
+Estende todos os `React.ComponentProps<"div">`.
+
+### `<InputOTPSlot>`
+
+| Prop    | Type     | Default | Description                                        |
+| ------- | -------- | ------- | -------------------------------------------------- |
+| `index` | `number` | -       | Posição no valor subjacente (base 0). Obrigatório. |
+
+Lê o char ativo, o estado de focus, e a posição do caret falso do `OTPInputContext` e renderiza o visual correspondente.
+
+### `<InputOTPSeparator>`
+
+`<div role="separator">` decorativo renderizando um ícone de menos. Use entre grupos.
+
+## Composição
+
+1. **`<InputOTP>`** é a raiz controlada - dono do `value`, `maxLength`, e do input oculto subjacente.
+2. **`<InputOTPGroup>`** é um cluster visual. Você pode renderizar múltiplos por `InputOTP` e separá-los com `<InputOTPSeparator />`.
+3. **`<InputOTPSlot index={n} />`** é uma célula de caractere. Os slots leem seu estado do `OTPInputContext` compartilhado com base em seu index.
+
+## Variações
+
+### Código de seis dígitos (grupo único)
+
+O padrão mais comum para 2FA. `maxLength={6}` e seis slots dentro de um grupo.
+
+```tsx
+<InputOTP maxLength={6}>
+  <InputOTPGroup>
+    {Array.from({ length: 6 }).map((_, i) => (
+      <InputOTPSlot key={i} index={i} />
+    ))}
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### PIN de quatro dígitos
+
+Código PIN curto para confirmações. Reduza `maxLength` e a contagem de slots juntos.
+
+```tsx
+<InputOTP maxLength={4}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+    <InputOTPSlot index={3} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Agrupado 3 + 3 com separador
+
+Divida um código de seis dígitos com um separador para legibilidade (espelha como os códigos são geralmente apresentados em e-mails: "123 456").
+
+<ComponentPreview name="forms/input-otp-separator">
+  <InputOTPSeparatorPreview />
+</ComponentPreview>
+
+### Pattern apenas numérico
+
+Restrinja a entrada a dígitos via a prop `pattern`. Impede que os usuários digitem letras de qualquer forma.
+
+<ComponentPreview name="forms/input-otp-pattern">
+  <InputOTPPatternPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` na raiz esmaece cada slot e remove o campo da ordem de tabulação. O valor atual permanece legível.
+
+<ComponentPreview name="forms/input-otp-disabled">
+  <InputOTPDisabledPreview />
+</ComponentPreview>
+
+## Acessibilidade
+
+- **Um único input acessível**: nos bastidores, o `input-otp` renderiza um elemento `<input>` que é dono do value, type, name, e da associação de label. Leitores de tela veem um campo, não seis.
+- **Autocomplete**: `autocomplete="one-time-code"` deixa iOS, Android e browsers modernos oferecerem o auto-fill de SMS.
+- **Navegação por teclado**: digitar move o caret para frente; `Backspace` limpa e volta; as setas navegam entre os slots; a seleção-para-paste espalha os caracteres pelos slots.
+- **Paste-to-fill**: colar um código completo em qualquer slot distribui os caracteres por todos os slots em ordem.
+- **Slot ativo**: o slot focado renderiza um caret piscante (`animate-caret-blink`) e um focus ring, para que os usuários sempre vejam onde a próxima tecla vai cair.
+- **Estado invalid**: `aria-invalid="true"` na raiz troca a borda de cada slot para o token destructive.
+
+## Relacionados
+
+- [Input](/components/text/input) - o campo de texto de linha única canônico
+- [Form](/components/form) - conecte o OTP ao react-hook-form para fluxos de verificação
+- [Button](/components/buttons/button) - o típico trigger "Verify" embaixo do OTP

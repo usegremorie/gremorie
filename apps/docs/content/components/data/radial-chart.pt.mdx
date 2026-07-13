@@ -1,0 +1,305 @@
+---
+title: Radial Chart
+description: 'Barras radiais concêntricas - um anel por linha de dados com varredura proporcional ao valor.'
+---
+
+import { RadialChartPreview } from '@/components/preview/data/radial-chart';
+
+## Visão geral
+
+`RadialChart` é um gráfico recharts construído sobre o primitive `chart` do shadcn (`ChartContainer`) para **barras polares concêntricas**. Cada linha de dados produz uma barra ao redor do centro do gráfico; cada barra varre proporcionalmente ao seu valor de `dataKey`. As cores das barras vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`), e um `config` opcional fornece os labels mostrados no tooltip.
+
+Use RadialChart quando você quer um **ranking compacto e decorativo** de três a cinco itens - categorias principais, drivers líderes, métricas ranqueadas em um hero card. Para comparação exata [`BarChart`](/components/data/bar-chart) lê mais rápido; para share-of-whole num relance [`PieChart`](/components/data/pie-chart) é mais familiar.
+
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+
+## Anatomia
+
+```
+<radial-chart>
+└─ figure (role="img")                  card surface, aspect-square
+   ├─ svg
+   │  └─ concentric bars, one per row
+   │     └─ row fill colored (palette / per-row fill)
+   ├─ tooltip overlay (optional via tooltip)
+   ├─ legend
+   └─ sr-only data table
+```
+
+A edição React compõe esta superfície através do primitive `chart` do shadcn:
+
+```text
+ChartContainer                     responsive square frame + tooltip label config
+└─ RadialBarChart                  recharts polar plot area
+   ├─ ChartTooltip                 hover card
+   │  └─ ChartTooltipContent       themed tooltip body
+   ├─ PolarGrid                    circular grid
+   └─ RadialBar                    one bar per row, with a faint background track
+```
+
+## Preview
+
+<ComponentPreview name="data/radial-chart">
+  <RadialChartPreview />
+</ComponentPreview>
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-radial-chart ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-radial-chart ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-radial-chart ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-radial-chart ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { RadialChart, type ChartConfig, type ChartDatum } from "@gremorie/rx-data";
+
+const data: ChartDatum[] = [
+{ category: "Chrome", visitors: 275, fill: "var(--chart-1)" },
+{ category: "Safari", visitors: 200, fill: "var(--chart-2)" },
+{ category: "Firefox", visitors: 187, fill: "var(--chart-3)" },
+{ category: "Edge", visitors: 173, fill: "var(--chart-4)" },
+];
+
+const config: ChartConfig = {
+visitors: { label: "Visitors" },
+Chrome: { label: "Chrome" },
+Safari: { label: "Safari" },
+Firefox: { label: "Firefox" },
+Edge: { label: "Edge" },
+};
+
+export function TopBrowsers() {
+  return (
+    <RadialChart data={data} config={config} nameKey="category" dataKey="visitors" />
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from '@angular/core';
+import { RadialChart } from '@gremorie/ng-data';
+import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
+
+@Component({
+selector: 'app-top-browsers',
+imports: [RadialChart],
+template: `     <radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
+  `,
+})
+export class TopBrowsersComponent {
+readonly data: ChartDatum[] = [
+{ category: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+{ category: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+{ category: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+{ category: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+];
+
+readonly config: ChartConfig = {
+visitors: { label: 'Visitors' },
+Chrome: { label: 'Chrome' },
+Safari: { label: 'Safari' },
+Firefox: { label: 'Firefox' },
+Edge: { label: 'Edge' },
+};
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<RadialChart>`
+
+Um gráfico de barras radiais recharts composto dentro do primitive `chart` do shadcn (`ChartContainer`). Uma barra concêntrica por linha; as cores das barras vêm do `fill` de cada linha, e o `config` opcional fornece os labels mostrados no tooltip.
+
+| Prop        | Type                    | Default | Descrição                                                                                                                                                      |
+| ----------- | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `readonly ChartDatum[]` | -       | Dados tabulares. Uma linha por barra. Cada linha precisa de um campo string em `nameKey`, um campo numérico em `dataKey` e um `fill` para a cor da barra (ex. `var(--chart-1)`). |
+| `nameKey`   | `string`                | -       | Nome do campo de label de categoria. Usado para resolver o label do tooltip.                                                                                             |
+| `dataKey`   | `string`                | -       | Nome do campo de valor numérico. A varredura de cada barra é proporcional a este valor em relação ao máximo entre as linhas.                                            |
+| `config`    | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de categoria (e chave de valor). Alimenta os labels do tooltip.                                                                      |
+| `tooltip`   | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                              |
+| `className` | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                    |
+
+### Primitives de chart para composição customizada
+
+Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart do shadcn, todos reexportados de `@gremorie/rx-data`. Isso espelha o bloco radial oficial do shadcn ([ui.shadcn.com/charts/radial](https://ui.shadcn.com/charts/radial)).
+
+| Export                                              | Papel                                                                              |
+| --------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ChartContainer`                                    | Frame responsivo; injeta as CSS vars de cor por chave (`--color-<key>`) a partir do `config`. |
+| `ChartTooltip` / `ChartTooltipContent`              | Hover card e seu conteúdo temático.                                                |
+| `ChartLegend` / `ChartLegendContent`                | Legenda opcional e seu conteúdo temático.                                           |
+| `useChart`                                          | Hook que retorna o `config` ativo a partir do contexto (use dentro de children customizados).     |
+| `RadialBarChart`, `RadialBar`, `PolarGrid`, `Label` | Primitives recharts crus compostos dentro de `ChartContainer`.                         |
+
+### Types
+
+| Type          | Shape                                                                                                          |
+| ------------- | -------------------------------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart; o `fill` define a cor por barra. |
+| `ChartConfig` | Mapa de chave → `{ label?, icon?, color? }`; fornece labels de tooltip/legenda (e cores opcionais).                |
+
+<Callout type="info">
+  As cores das barras vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`),
+  não do `config`. O `config` opcional mapeia cada nome de categoria para um `{label}`
+  e alimenta os labels mostrados no tooltip.
+</Callout>
+
+## Composição
+
+1. **Escolha `nameKey` e `dataKey`** - a coluna de label e a coluna numérica. Ambas devem existir em cada linha.
+2. **Defina um `fill` por linha** - aponte cada linha para um token `--chart-*` (ex. `fill: "var(--chart-1)"`). É daqui que vêm as cores das barras.
+3. **Adicione um `config`** mapeando cada nome de categoria (e a chave de valor) para um `{ label }` para que o tooltip leia limpo.
+4. **Ordene as linhas por magnitude**. O maior valor fica na barra externa; o menor na mais interna. O raio decrescente reforça o ranking visualmente.
+5. **Limite a contagem de linhas** a três a cinco. Seis ou mais barras ficam visualmente ruidosas e perdem o sinal de ranking.
+
+O chart se auto-dimensiona ao pai através do `ChartContainer` (`ResponsiveContainer` do recharts). O frame força `aspect-square` para que as barras permaneçam circulares.
+
+## Variações
+
+### Ranking padrão
+
+<ComponentPreview name="data/radial-chart">
+  <RadialChartPreview />
+</ComponentPreview>
+
+```tsx
+<RadialChart
+  data={data}
+  config={config}
+  nameKey="category"
+  dataKey="visitors"
+/>
+````
+
+```html
+<radial-chart
+  [data]="data"
+  [config]="config"
+  nameKey="category"
+  dataKey="visitors"
+/>
+```
+
+O padrão. Quatro barras fornecem um ritmo visual confortável sem aglomerar.
+
+### Destaque top três
+
+```tsx
+<RadialChart
+  data={topThree}
+  config={config}
+  nameKey="product"
+  dataKey="revenue"
+  className="max-w-xs"
+/>
+```
+
+```html
+<radial-chart
+  class="max-w-xs"
+  [data]="topThree"
+  [config]="config"
+  nameKey="product"
+  dataKey="revenue"
+/>
+```
+
+Para callouts de top três em um hero card. Restrinja a largura da superfície para que as barras permaneçam legíveis em uma coluna apertada.
+
+### Sem tooltip
+
+Defina `tooltip` como `false` para um ranking estático e decorativo - útil quando as barras são rotuladas em outro lugar ou o gráfico é um elemento de hero de leitura rápida em vez de uma superfície explorável.
+
+```tsx
+<RadialChart
+  data={data}
+  config={config}
+  nameKey="category"
+  dataKey="visitors"
+  tooltip={false}
+/>
+```
+
+```html
+<radial-chart
+  [data]="data"
+  [config]="config"
+  nameKey="category"
+  dataKey="visitors"
+  [tooltip]="false"
+/>
+```
+
+### Composição customizada
+
+Quando você precisa de um tratamento de track diferente, preenchimentos de gradiente, um label central ou uma legenda, componha recharts cru dentro de `ChartContainer`. Isso espelha o bloco radial oficial do shadcn.
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  type ChartDatum,
+} from '@gremorie/rx-data';
+import { PolarGrid, RadialBar, RadialBarChart } from 'recharts';
+
+export function ExplicitColorRadial({
+  data,
+  config,
+  nameKey,
+  dataKey,
+}: {
+  data: ChartDatum[];
+  config: ChartConfig;
+  nameKey: string;
+  dataKey: string;
+}) {
+  return (
+    <ChartContainer
+      config={config}
+      className="mx-auto aspect-square max-h-[260px]"
+    >
+      <RadialBarChart data={data} innerRadius={30} outerRadius={110}>
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent nameKey={nameKey} hideLabel />}
+        />
+        <PolarGrid gridType="circle" />
+        <RadialBar dataKey={dataKey} background />
+      </RadialBarChart>
+    </ChartContainer>
+  );
+}
+```
+
+As cores das barras vêm do `fill` de cada linha; ajuste `innerRadius` / `outerRadius` ou troque o tratamento do `PolarGrid` para um look diferente.
+
+## Acessibilidade
+
+- **Accessibility layer**: o `accessibilityLayer` do recharts fornece navegação por teclado e anúncios de screen reader para os dados do gráfico.
+- **Contraste de token**: os tokens `--chart-1` até `--chart-5` vêm com contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
+- **Contraste do track**: o track de fundo fraco atrás de cada barra (`background` do recharts) define o anel sem competir com o preenchimento.
+- **Limite a contagem de barras**: mais de cinco barras fica difícil de escanear. Use [`BarChart`](/components/data/bar-chart) quando mais linhas são necessárias.
+
+## Relacionados
+
+- [PieChart](/components/data/pie-chart) - layout polar irmão para share-of-whole em vez de ranking.
+- [BarChart](/components/data/bar-chart) - use barras quando você tem mais de cinco itens ou precisa de comparação exata.
+- [RadarChart](/components/data/radar-chart) - layout polar irmão para comparação de perfil multi-eixo.
