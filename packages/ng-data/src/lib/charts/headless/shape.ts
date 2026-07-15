@@ -88,7 +88,9 @@ export function roundedRectPath(
   radii: CornerRadii,
 ): string {
   const lim = Math.min(w, h) / 2;
-  const [tl, tr, br, bl] = radii.map((r) => Math.max(0, Math.min(r, lim))) as CornerRadii;
+  const [tl, tr, br, bl] = radii.map((r) =>
+    Math.max(0, Math.min(r, lim)),
+  ) as CornerRadii;
   return (
     `M${x + tl},${y}` +
     `H${x + w - tr}` +

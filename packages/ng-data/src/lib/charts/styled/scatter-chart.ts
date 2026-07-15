@@ -132,9 +132,14 @@ interface ActivePoint {
             {{ xKey() }}: {{ activeX() }}
           </div>
           <div class="flex items-center gap-1.5 text-muted-foreground">
-            <span class="size-2 rounded-[2px]" [style.background]="activeSeries()?.color"></span>
+            <span
+              class="size-2 rounded-[2px]"
+              [style.background]="activeSeries()?.color"
+            ></span>
             <span>{{ activeSeries()?.label }}</span>
-            <span class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground">
+            <span
+              class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+            >
               {{ activeValue() }}
             </span>
           </div>
@@ -144,7 +149,9 @@ interface ActivePoint {
 
     <table class="sr-only">
       <caption>
-        {{ ariaLabel() }}
+        {{
+          ariaLabel()
+        }}
       </caption>
       <thead>
         <tr>
@@ -208,7 +215,10 @@ export class ScatterChart {
     const a = this.active();
     const s = this.activeSeries();
     if (!a || !s) return '';
-    return formatValue(Number(this.data()[a.pi]?.[s.key] ?? 0), s.format || 'number');
+    return formatValue(
+      Number(this.data()[a.pi]?.[s.key] ?? 0),
+      s.format || 'number',
+    );
   });
 
   readonly ariaLabel = computed(

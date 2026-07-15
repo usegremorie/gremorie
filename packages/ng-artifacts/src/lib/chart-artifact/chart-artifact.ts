@@ -43,13 +43,7 @@ export type ChartArtifactColor = 'primary' | 'gray' | 'success' | 'error';
 
 /** Which chart primitive the artifact embeds. */
 export type ChartArtifactType =
-  | 'bar'
-  | 'area'
-  | 'line'
-  | 'pie'
-  | 'radar'
-  | 'radial'
-  | 'scatter';
+  'bar' | 'area' | 'line' | 'pie' | 'radar' | 'radial' | 'scatter';
 
 export interface ChartArtifactSeries {
   /** Data field for this series. */

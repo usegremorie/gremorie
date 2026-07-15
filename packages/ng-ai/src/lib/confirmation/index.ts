@@ -8,7 +8,4 @@ export {
   ConfirmationAction,
   CONFIRMATION,
 } from './confirmation';
-export type {
-  ToolUIPartApproval,
-  ConfirmationState,
-} from './confirmation';
+export type { ToolUIPartApproval, ConfirmationState } from './confirmation';

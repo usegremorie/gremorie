@@ -45,9 +45,6 @@ export class Image {
   );
 
   protected readonly imgClass = computed(() =>
-    cn(
-      'h-auto max-w-full overflow-hidden rounded-md',
-      this.class(),
-    ),
+    cn('h-auto max-w-full overflow-hidden rounded-md', this.class()),
   );
 }
