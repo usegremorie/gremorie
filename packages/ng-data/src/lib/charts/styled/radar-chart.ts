@@ -127,12 +127,19 @@ interface SeriesView {
           [style.left.px]="active()!.lx"
           [style.top.px]="active()!.ly"
         >
-          <div class="mb-1 font-medium text-popover-foreground">{{ activeLabel() }}</div>
+          <div class="mb-1 font-medium text-popover-foreground">
+            {{ activeLabel() }}
+          </div>
           @for (row of tipRows(active()!.i); track row.key) {
             <div class="flex items-center gap-1.5 text-muted-foreground">
-              <span class="size-2 rounded-[2px]" [style.background]="row.color"></span>
+              <span
+                class="size-2 rounded-[2px]"
+                [style.background]="row.color"
+              ></span>
               <span>{{ row.label }}</span>
-              <span class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground">
+              <span
+                class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+              >
                 {{ row.value }}
               </span>
             </div>
@@ -145,7 +152,10 @@ interface SeriesView {
       >
         @for (s of series(); track s.key) {
           <li class="flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[2px]" [style.background]="s.color"></span>
+            <span
+              class="size-2.5 rounded-[2px]"
+              [style.background]="s.color"
+            ></span>
             {{ s.label }}
           </li>
         }
@@ -153,7 +163,9 @@ interface SeriesView {
 
       <table class="sr-only">
         <caption>
-          {{ ariaLabel() }}
+          {{
+            ariaLabel()
+          }}
         </caption>
         <thead>
           <tr>

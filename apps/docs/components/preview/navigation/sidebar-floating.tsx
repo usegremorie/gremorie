@@ -14,12 +14,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@gremorie/rx-navigation';
-import {
-  CalendarIcon,
-  HomeIcon,
-  InboxIcon,
-  SettingsIcon,
-} from 'lucide-react';
+import { CalendarIcon, HomeIcon, InboxIcon, SettingsIcon } from 'lucide-react';
 
 const SIDEBAR_NAV: { title: string; icon: typeof HomeIcon }[] = [
   { title: 'Home', icon: HomeIcon },
@@ -52,7 +47,10 @@ export function SidebarFloatingPreview() {
                 <SidebarMenu>
                   {SIDEBAR_NAV.map((item, i) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton isActive={i === 0} tooltip={item.title}>
+                      <SidebarMenuButton
+                        isActive={i === 0}
+                        tooltip={item.title}
+                      >
                         <item.icon />
                         <span>{item.title}</span>
                       </SidebarMenuButton>
