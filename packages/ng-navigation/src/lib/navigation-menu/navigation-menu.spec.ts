@@ -21,16 +21,16 @@ import {
     NavigationMenuLink,
   ],
   template: `
-    <gn-navigation-menu>
-      <gn-navigation-menu-list>
-        <gn-navigation-menu-item>
-          <gn-navigation-menu-trigger>Products</gn-navigation-menu-trigger>
-          <gn-navigation-menu-content>
-            <a gn-navigation-menu-link href="#">Analytics</a>
-          </gn-navigation-menu-content>
-        </gn-navigation-menu-item>
-      </gn-navigation-menu-list>
-    </gn-navigation-menu>
+    <gr-navigation-menu>
+      <gr-navigation-menu-list>
+        <gr-navigation-menu-item>
+          <gr-navigation-menu-trigger>Products</gr-navigation-menu-trigger>
+          <gr-navigation-menu-content>
+            <a gr-navigation-menu-link href="#">Analytics</a>
+          </gr-navigation-menu-content>
+        </gr-navigation-menu-item>
+      </gr-navigation-menu-list>
+    </gr-navigation-menu>
   `,
 })
 class Host {}

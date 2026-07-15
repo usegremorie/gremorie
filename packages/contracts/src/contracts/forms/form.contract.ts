@@ -43,7 +43,7 @@ export const form = defineContract({
       default: false,
       adapts: {
         rx: 'derived from react-hook-form',
-        ng: 'input: invalid on <gn-form-item>',
+        ng: 'input: invalid on <gr-form-item>',
       },
       desc: 'Error state of the field (React derives it; Angular takes it as an input).',
     },
@@ -69,17 +69,17 @@ export const form = defineContract({
     ],
     rules: [
       'Wrap each field in form-item; it provides the id/aria context to label, control, description, and message.',
-      'React: drive state with react-hook-form (Form + FormField). Angular: use a native <form [formGroup]> and pass [invalid] to gn-form-item.',
+      'React: drive state with react-hook-form (Form + FormField). Angular: use a native <form [formGroup]> and pass [invalid] to gr-form-item.',
       'form-message hides itself when there is no error/content.',
     ],
     example:
-      '<form-item><form-label>Email</form-label><input gnFormControl /><form-message /></form-item>',
+      '<form-item><form-label>Email</form-label><input grFormControl /><form-message /></form-item>',
   },
   preview: {
     rx: 'inputs-form--workbench',
     ng: 'inputs-form--workbench',
   },
-  tag: { rx: 'FormItem', ng: 'gn-form-item' },
+  tag: { rx: 'FormItem', ng: 'gr-form-item' },
   example: {
     invalid: false,
   },

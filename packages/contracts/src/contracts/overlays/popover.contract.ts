@@ -85,7 +85,7 @@ export const popover = defineContract({
     rx: 'interaction-overlays-popover--workbench',
     ng: 'interaction-overlays-popover--workbench',
   },
-  tag: { rx: 'Popover', ng: 'gn-popover' },
+  tag: { rx: 'Popover', ng: 'gr-popover' },
   example: {
     defaultOpen: false,
     modal: false,

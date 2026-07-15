@@ -20,12 +20,12 @@ import { buttonVariants, cn, type ButtonSize } from '@gremorie/ng-core';
  * `aria-disabled` and a passive class as appropriate. The primitive does not
  * auto-detect first/last.
  *
- * Anatomy: `gn-pagination` (nav) → `gn-pagination-content` (ul) →
- * `gn-pagination-item` (li) → `gn-pagination-link` (a), with
- * `gn-pagination-previous`, `gn-pagination-next` and `gn-pagination-ellipsis`.
+ * Anatomy: `gr-pagination` (nav) → `gr-pagination-content` (ul) →
+ * `gr-pagination-item` (li) → `gr-pagination-link` (a), with
+ * `gr-pagination-previous`, `gr-pagination-next` and `gr-pagination-ellipsis`.
  */
 @Component({
-  selector: 'gn-pagination',
+  selector: 'gr-pagination',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,7 +44,7 @@ export class Pagination {}
  * `PaginationContent`.
  */
 @Component({
-  selector: 'gn-pagination-content, ul[gn-pagination-content]',
+  selector: 'gr-pagination-content, ul[gr-pagination-content]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,7 +60,7 @@ export class PaginationContent {}
  * PaginationItem — one list item. Mirrors React `PaginationItem`.
  */
 @Component({
-  selector: 'gn-pagination-item, li[gn-pagination-item]',
+  selector: 'gr-pagination-item, li[gr-pagination-item]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,7 +77,7 @@ export class PaginationItem {}
  * `aria-current="page"`); otherwise it renders as a `ghost` button.
  */
 @Component({
-  selector: 'gn-pagination-link, a[gn-pagination-link]',
+  selector: 'gr-pagination-link, a[gr-pagination-link]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -110,7 +110,7 @@ export class PaginationLink {
  * `PaginationPrevious`.
  */
 @Component({
-  selector: 'gn-pagination-previous, a[gn-pagination-previous]',
+  selector: 'gr-pagination-previous, a[gr-pagination-previous]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -147,7 +147,7 @@ export class PaginationPrevious {
  * PaginationNext — the "Go to next page" link. Mirrors React `PaginationNext`.
  */
 @Component({
-  selector: 'gn-pagination-next, a[gn-pagination-next]',
+  selector: 'gr-pagination-next, a[gr-pagination-next]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -185,7 +185,7 @@ export class PaginationNext {
  * `PaginationEllipsis`.
  */
 @Component({
-  selector: 'gn-pagination-ellipsis',
+  selector: 'gr-pagination-ellipsis',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

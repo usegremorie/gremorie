@@ -46,11 +46,11 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-stack [gap]="gap" [align]="align" [justify]="justify" class="w-64">
+      <gr-stack [gap]="gap" [align]="align" [justify]="justify" class="w-64">
         <div class="${BOX}">One</div>
         <div class="${BOX}">Two</div>
         <div class="${BOX}">Three</div>
-      </gn-stack>
+      </gr-stack>
     `,
   }),
 };
@@ -64,11 +64,11 @@ export const Gaps: Story = {
         @for (gap of ['none','sm','md','lg','xl']; track gap) {
           <div>
             <div class="text-muted-foreground mb-2 text-xs">gap={{ gap }}</div>
-            <gn-stack [gap]="gap" class="w-24">
+            <gr-stack [gap]="gap" class="w-24">
               <div class="${BOX}">1</div>
               <div class="${BOX}">2</div>
               <div class="${BOX}">3</div>
-            </gn-stack>
+            </gr-stack>
           </div>
         }
       </div>
@@ -85,10 +85,10 @@ export const Align: Story = {
         @for (align of ['start','center','end','stretch']; track align) {
           <div>
             <div class="text-muted-foreground mb-2 text-xs">align={{ align }}</div>
-            <gn-stack [align]="align" gap="sm" class="bg-card w-40 rounded-md border p-2">
+            <gr-stack [align]="align" gap="sm" class="bg-card w-40 rounded-md border p-2">
               <div class="${BOX}">Short</div>
               <div class="${BOX}">A longer item</div>
-            </gn-stack>
+            </gr-stack>
           </div>
         }
       </div>
@@ -105,11 +105,11 @@ export const Justify: Story = {
         @for (justify of ['start','center','end','between']; track justify) {
           <div>
             <div class="text-muted-foreground mb-2 text-xs">justify={{ justify }}</div>
-            <gn-stack [justify]="justify" class="bg-card h-48 w-28 rounded-md border p-2">
+            <gr-stack [justify]="justify" class="bg-card h-48 w-28 rounded-md border p-2">
               <div class="${BOX}">1</div>
               <div class="${BOX}">2</div>
               <div class="${BOX}">3</div>
-            </gn-stack>
+            </gr-stack>
           </div>
         }
       </div>

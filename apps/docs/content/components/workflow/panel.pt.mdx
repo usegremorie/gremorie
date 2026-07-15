@@ -1,0 +1,149 @@
+---
+title: Panel
+description: Overlay de canto flutuante dentro de um Canvas. Superfície de card com borda pré-tematizada para controles no nível do canvas, indicadores de status ou widgets contextuais.
+---
+
+import { PanelPreview } from '@/components/preview/ai/panel';
+
+## Visão geral
+
+`Panel` é uma skin da Gremorie sobre o primitivo `Panel` do xyflow. Ele ancora em um canto da viewport do `Canvas` e permanece fixo conforme o canvas dá pan e zoom - o que o torna a superfície certa para controles no nível do canvas (salvar, exportar, ações de layout), indicadores de status (agente raciocinando, estado de deploy) ou widgets contextuais que devem estar sempre alcançáveis.
+
+O chrome da Gremorie adiciona uma margem `m-4`, uma borda arredondada, uma superfície `bg-card` e padding `p-1` para que o panel se leia como um tile autocontido em vez de conteúdo cru flutuando sobre o workflow.
+
+Para barras de ação por nó, use [`Toolbar`](/components/workflow/toolbar). Para controles de zoom e fit, use [`Controls`](/components/workflow/controls). `Panel` cobre o resto.
+
+## Preview
+
+<ComponentPreview name="ai/panel">
+  <PanelPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Panel   docked overlay container — leaf (rendered inside Canvas)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-panel ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-panel ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-panel ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-panel ```</Tab>
+</Tabs>
+
+Requer `@xyflow/react`.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Canvas, Panel } from "@gremorie/rx-ai";
+import { Button } from "@gremorie/rx-forms";
+
+export function Workflow() {
+  return (
+    <Canvas nodes={nodes} edges={edges}>
+      <Panel position="top-right">
+        <Button size="sm" onClick={save}>Save</Button>
+      </Panel>
+    </Canvas>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente está planejada; a edição React está production-ready hoje.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Panel>`
+
+Encaminha todas as `PanelProps` de `@xyflow/react`. O wrapper da Gremorie só adiciona chrome.
+
+| Prop        | Type                                                                                              | Default      | Description                                                  |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------ |
+| `position`  | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"top-left"` | Canto ao qual o panel ancora. Default do xyflow.             |
+| `children`  | `ReactNode`                                                                                       | -            | Conteúdo do panel. Botões, pills de status, mini-forms, etc. |
+| `className` | `string`                                                                                          | -            | Classes extras. Mescladas com o chrome padrão via `cn`.      |
+
+Chrome padrão: `m-4 overflow-hidden rounded-md border bg-card p-1`.
+
+## Composição
+
+1. **`<Canvas>`** é o pai. Múltiplos `Panel`s podem coexistir - um por canto / lado.
+2. **O conteúdo** é livre. Solte botões, dropdowns, pills de status, mini-forms, ou qualquer outra coisa.
+3. **Para panels densos**, considere aumentar o padding via `className="p-3"`. O `p-1` padrão é afinado para linhas de um único botão de ícone.
+
+## Variações
+
+### Ações de salvar / publicar
+
+Uma linha curta de botões no canto superior direito que sobrevive a qualquer pan e zoom do canvas.
+
+```tsx
+<Panel position="top-right" className="flex gap-2 p-2">
+  <Button size="sm" variant="outline" onClick={discard}>
+    Discard
+  </Button>
+  <Button size="sm" onClick={save}>
+    Save
+  </Button>
+</Panel>
+```
+
+### Indicador de status
+
+Pill de status no canto superior esquerdo que espelha o estado de execução do agente.
+
+```tsx
+<Panel position="top-left" className="px-3 py-2">
+  <div className="flex items-center gap-2 text-xs font-medium">
+    <span className="size-2 animate-pulse rounded-full bg-emerald-500" />
+    Agent running
+  </div>
+</Panel>
+```
+
+### Barra de inserção no bottom-center
+
+Para uma affordance de "solte um novo nó aqui", coloque um único botão no bottom-center.
+
+```tsx
+<Panel position="bottom-center" className="px-3 py-2">
+  <Button size="sm" onClick={addStep}>
+    <PlusIcon className="size-4" />
+    Add step
+  </Button>
+</Panel>
+```
+
+### Mini-form / busca
+
+Componha com primitivos de formulário para affordances de busca inline ou edição rápida.
+
+```tsx
+<Panel position="top-left" className="p-2">
+  <Input className="w-48" placeholder="Search nodes..." />
+</Panel>
+```
+
+## Acessibilidade
+
+- **Keyboard**: o conteúdo do Panel é React comum. A ordem de tab segue o DOM. Os children devem carregar seus próprios labels (`aria-label`, `aria-describedby`) conforme necessário.
+- **Focus visible**: a superfície do Panel não captura foco por si só. Seus children capturam.
+- **Screen readers**: um Panel fixado no canto não tem um role de região embutido. Se o panel hospeda um status crítico do workflow, envolva-o em uma `<section aria-label="...">` (ou passe `role="region"` + `aria-label` diretamente).
+- **Reduced motion**: não há animação na superfície. Transições custom que você adicionar via `className` devem respeitar `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Canvas](/components/workflow/canvas) - a superfície que hospeda panels
+- [Controls](/components/workflow/controls) - controles de zoom e fit ancorados no canvas
+- [Toolbar](/components/workflow/toolbar) - barra de ações por nó ancorada na seleção

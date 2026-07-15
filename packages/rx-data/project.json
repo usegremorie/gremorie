@@ -16,6 +16,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/rx-data",
+        "command": "vitest run"
+      }
     }
   }
 }

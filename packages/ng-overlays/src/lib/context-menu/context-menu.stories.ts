@@ -56,28 +56,28 @@ type Story = StoryObj<ContextMenu>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-context-menu>
-        <gn-context-menu-trigger [content]="content"
+      <gr-context-menu>
+        <gr-context-menu-trigger [content]="content"
           class="flex h-40 w-72 items-center justify-center rounded-md border border-dashed text-sm">
           Right-click here
-        </gn-context-menu-trigger>
+        </gr-context-menu-trigger>
         <ng-template #content>
           <ng-template brnPopoverContent>
-            <gn-context-menu-content class="w-52">
-              <gn-context-menu-label>Actions</gn-context-menu-label>
-              <gn-context-menu-separator />
-              <gn-context-menu-item>
-                Back <gn-context-menu-shortcut>⌘[</gn-context-menu-shortcut>
-              </gn-context-menu-item>
-              <gn-context-menu-item>
-                Forward <gn-context-menu-shortcut>⌘]</gn-context-menu-shortcut>
-              </gn-context-menu-item>
-              <gn-context-menu-separator />
-              <gn-context-menu-item variant="destructive">Delete</gn-context-menu-item>
-            </gn-context-menu-content>
+            <gr-context-menu-content class="w-52">
+              <gr-context-menu-label>Actions</gr-context-menu-label>
+              <gr-context-menu-separator />
+              <gr-context-menu-item>
+                Back <gr-context-menu-shortcut>⌘[</gr-context-menu-shortcut>
+              </gr-context-menu-item>
+              <gr-context-menu-item>
+                Forward <gr-context-menu-shortcut>⌘]</gr-context-menu-shortcut>
+              </gr-context-menu-item>
+              <gr-context-menu-separator />
+              <gr-context-menu-item variant="destructive">Delete</gr-context-menu-item>
+            </gr-context-menu-content>
           </ng-template>
         </ng-template>
-      </gn-context-menu>
+      </gr-context-menu>
     `,
   }),
 };
@@ -86,25 +86,25 @@ export const Workbench: Story = {
 export const CheckboxAndRadio: Story = {
   render: () => ({
     template: `
-      <gn-context-menu>
-        <gn-context-menu-trigger [content]="content"
+      <gr-context-menu>
+        <gr-context-menu-trigger [content]="content"
           class="flex h-40 w-72 items-center justify-center rounded-md border border-dashed text-sm">
           Right-click here
-        </gn-context-menu-trigger>
+        </gr-context-menu-trigger>
         <ng-template #content>
           <ng-template brnPopoverContent>
-            <gn-context-menu-content class="w-52">
-              <gn-context-menu-checkbox-item [checked]="true">Show Bookmarks</gn-context-menu-checkbox-item>
-              <gn-context-menu-checkbox-item>Show Full URLs</gn-context-menu-checkbox-item>
-              <gn-context-menu-separator />
-              <gn-context-menu-radio-group>
-                <gn-context-menu-radio-item [checked]="true">Pedro</gn-context-menu-radio-item>
-                <gn-context-menu-radio-item>Colm</gn-context-menu-radio-item>
-              </gn-context-menu-radio-group>
-            </gn-context-menu-content>
+            <gr-context-menu-content class="w-52">
+              <gr-context-menu-checkbox-item [checked]="true">Show Bookmarks</gr-context-menu-checkbox-item>
+              <gr-context-menu-checkbox-item>Show Full URLs</gr-context-menu-checkbox-item>
+              <gr-context-menu-separator />
+              <gr-context-menu-radio-group>
+                <gr-context-menu-radio-item [checked]="true">Pedro</gr-context-menu-radio-item>
+                <gr-context-menu-radio-item>Colm</gr-context-menu-radio-item>
+              </gr-context-menu-radio-group>
+            </gr-context-menu-content>
           </ng-template>
         </ng-template>
-      </gn-context-menu>
+      </gr-context-menu>
     `,
   }),
 };

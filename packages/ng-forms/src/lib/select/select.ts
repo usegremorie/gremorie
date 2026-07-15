@@ -42,37 +42,37 @@ export type SelectSize = 'sm' | 'default';
  *
  * ## React → Angular mapping (compound 1:1)
  *
- * - React `Select` (`Root`) = `gn-select`, which hosts the `BrnPopover` element
+ * - React `Select` (`Root`) = `gr-select`, which hosts the `BrnPopover` element
  *   and applies `brnSelect` to it via host directives so the value lives on the
  *   root and the popover owns open/close. `data-slot="select"` on the host.
- * - React `SelectTrigger` = `gn-select-trigger` — a `<button>` carrying both
+ * - React `SelectTrigger` = `gr-select-trigger` — a `<button>` carrying both
  *   `brnSelectTrigger` and `brnPopoverTrigger`, with the verbatim React trigger
  *   class string and `data-size`. The trailing chevron (lucide `chevron-down`,
  *   hand-inlined) is rendered after the projected value.
- * - React `SelectValue` = `gn-select-value` — `brnSelectValue` renders the
+ * - React `SelectValue` = `gr-select-value` — `brnSelectValue` renders the
  *   selected label or the `placeholder`.
- * - React `SelectContent` = `gn-select-content` — a `brnPopoverContent`
+ * - React `SelectContent` = `gr-select-content` — a `brnPopoverContent`
  *   template wrapping a `brnSelectContent` div with the verbatim popover class
  *   string and the scroll-up/down affordances.
  * - React `SelectItem` / `SelectGroup` / `SelectLabel` / `SelectSeparator` =
- *   the matching `gn-select-*` wrappers over the brain item/group/label/
+ *   the matching `gr-select-*` wrappers over the brain item/group/label/
  *   separator directives, each forwarding the verbatim React class string.
  *
  * @example
  * ```html
- * <gn-select [(value)]="fruit">
- *   <gn-select-trigger class="w-48">
- *     <gn-select-value placeholder="Pick a fruit" />
- *   </gn-select-trigger>
- *   <gn-select-content>
- *     <gn-select-item value="apple">Apple</gn-select-item>
- *     <gn-select-item value="banana">Banana</gn-select-item>
- *   </gn-select-content>
- * </gn-select>
+ * <gr-select [(value)]="fruit">
+ *   <gr-select-trigger class="w-48">
+ *     <gr-select-value placeholder="Pick a fruit" />
+ *   </gr-select-trigger>
+ *   <gr-select-content>
+ *     <gr-select-item value="apple">Apple</gr-select-item>
+ *     <gr-select-item value="banana">Banana</gr-select-item>
+ *   </gr-select-content>
+ * </gr-select>
  * ```
  */
 @Component({
-  selector: 'gn-select',
+  selector: 'gr-select',
   standalone: true,
   hostDirectives: [
     BrnPopover,
@@ -93,7 +93,7 @@ export class Select {
   // `value` and `disabled` are exposed on this selector by the `BrnSelect` host
   // directive (`inputs: [...]`) and owned by the brain — so a two-way
   // `[(value)]` and a `valueChange` output work transparently. The placeholder
-  // lives on `gn-select-value` (the brain `BrnSelectValue` `placeholder`
+  // lives on `gr-select-value` (the brain `BrnSelectValue` `placeholder`
   // input), matching React's `SelectValue placeholder`. The `BrnPopover` host
   // directive supplies the ancestor popover that `BrnSelect`, the trigger
   // (`brnPopoverTrigger`) and the content (`brnPopoverContent`) resolve — it
@@ -106,7 +106,7 @@ export class Select {
  * `SelectTrigger`.
  */
 @Component({
-  selector: 'gn-select-trigger',
+  selector: 'gr-select-trigger',
   standalone: true,
   imports: [BrnSelectTrigger, BrnPopoverTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -156,7 +156,7 @@ export class SelectTrigger {
  * `SelectValue`.
  */
 @Component({
-  selector: 'gn-select-value',
+  selector: 'gr-select-value',
   standalone: true,
   imports: [BrnSelectValue],
   encapsulation: ViewEncapsulation.None,
@@ -177,7 +177,7 @@ export class SelectValue {
  * `SelectContent`.
  */
 @Component({
-  selector: 'gn-select-content',
+  selector: 'gr-select-content',
   standalone: true,
   imports: [
     BrnPopoverContent,
@@ -261,7 +261,7 @@ export class SelectContent {
  * needed; selection stays the single source of truth in the brain.
  */
 @Component({
-  selector: 'gn-select-item',
+  selector: 'gr-select-item',
   standalone: true,
   imports: [BrnSelectItem],
   encapsulation: ViewEncapsulation.None,
@@ -317,7 +317,7 @@ export class SelectItem {
  * SelectGroup — a labelled section of options. Mirrors React `SelectGroup`.
  */
 @Component({
-  selector: 'gn-select-group',
+  selector: 'gr-select-group',
   standalone: true,
   imports: [BrnSelectGroup],
   encapsulation: ViewEncapsulation.None,
@@ -330,7 +330,7 @@ export class SelectGroup {}
  * SelectLabel — the heading for a SelectGroup. Mirrors React `SelectLabel`.
  */
 @Component({
-  selector: 'gn-select-label',
+  selector: 'gr-select-label',
   standalone: true,
   imports: [BrnSelectLabel],
   encapsulation: ViewEncapsulation.None,
@@ -356,7 +356,7 @@ export class SelectLabel {
  * SelectSeparator — a divider between groups. Mirrors React `SelectSeparator`.
  */
 @Component({
-  selector: 'gn-select-separator',
+  selector: 'gr-select-separator',
   standalone: true,
   imports: [BrnSelectSeparator],
   encapsulation: ViewEncapsulation.None,

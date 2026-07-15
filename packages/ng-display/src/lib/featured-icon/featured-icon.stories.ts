@@ -64,9 +64,9 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-featured-icon [color]="color" [theme]="theme" [size]="size" [shape]="shape">
+      <gr-featured-icon [color]="color" [theme]="theme" [size]="size" [shape]="shape">
         ${SPARKLES}
-      </gn-featured-icon>
+      </gr-featured-icon>
     `,
   }),
 };
@@ -76,9 +76,9 @@ export const Default: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-featured-icon [color]="color" [theme]="theme" [size]="size" [shape]="shape">
+      <gr-featured-icon [color]="color" [theme]="theme" [size]="size" [shape]="shape">
         ${SPARKLES}
-      </gn-featured-icon>
+      </gr-featured-icon>
     `,
   }),
 };
@@ -93,9 +93,9 @@ export const Themes: Story = {
           <div class="flex items-center gap-4">
             <span class="w-16 text-xs text-muted-foreground capitalize">{{ theme }}</span>
             @for (color of ['primary', 'gray', 'success', 'error']; track color) {
-              <gn-featured-icon [color]="color" [theme]="theme">
+              <gr-featured-icon [color]="color" [theme]="theme">
                 ${SPARKLES}
-              </gn-featured-icon>
+              </gr-featured-icon>
             }
           </div>
         }
@@ -111,9 +111,9 @@ export const Sizes: Story = {
     template: `
       <div class="flex items-end gap-4">
         @for (size of ['sm', 'md', 'lg', 'xl']; track size) {
-          <gn-featured-icon [size]="size">
+          <gr-featured-icon [size]="size">
             ${CHART}
-          </gn-featured-icon>
+          </gr-featured-icon>
         }
       </div>
     `,
@@ -126,8 +126,8 @@ export const Shapes: Story = {
   render: () => ({
     template: `
       <div class="flex items-center gap-4">
-        <gn-featured-icon shape="square" size="lg">${BELL}</gn-featured-icon>
-        <gn-featured-icon shape="circle" size="lg">${BELL}</gn-featured-icon>
+        <gr-featured-icon shape="square" size="lg">${BELL}</gr-featured-icon>
+        <gr-featured-icon shape="circle" size="lg">${BELL}</gr-featured-icon>
       </div>
     `,
   }),
@@ -139,10 +139,10 @@ export const Semantic: Story = {
   render: () => ({
     template: `
       <div class="flex items-center gap-4">
-        <gn-featured-icon color="success">${CHECK}</gn-featured-icon>
-        <gn-featured-icon color="error">${TRIANGLE_ALERT}</gn-featured-icon>
-        <gn-featured-icon color="primary">${CHART}</gn-featured-icon>
-        <gn-featured-icon color="gray">${BELL}</gn-featured-icon>
+        <gr-featured-icon color="success">${CHECK}</gr-featured-icon>
+        <gr-featured-icon color="error">${TRIANGLE_ALERT}</gr-featured-icon>
+        <gr-featured-icon color="primary">${CHART}</gr-featured-icon>
+        <gr-featured-icon color="gray">${BELL}</gr-featured-icon>
       </div>
     `,
   }),

@@ -72,7 +72,7 @@ export const datePicker = defineContract({
     rx: 'inputs-date-datepicker--workbench',
     ng: 'inputs-date-datepicker--workbench',
   },
-  tag: { rx: 'DatePicker', ng: 'gn-date-picker' },
+  tag: { rx: 'DatePicker', ng: 'gr-date-picker' },
   example: {
     placeholder: 'Pick a date',
     disabled: false,

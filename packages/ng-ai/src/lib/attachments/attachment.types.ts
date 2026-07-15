@@ -24,9 +24,4 @@ export interface AttachmentData {
 export type AttachmentVariant = 'grid' | 'inline' | 'list';
 
 export type AttachmentMediaCategory =
-  | 'image'
-  | 'video'
-  | 'audio'
-  | 'document'
-  | 'source'
-  | 'unknown';
+  'image' | 'video' | 'audio' | 'document' | 'source' | 'unknown';

@@ -62,17 +62,17 @@ import {
     DialogClose,
   ],
   template: `
-    <gn-dialog #dialog>
-      <button [gnDialogTriggerFor]="dialog">Open</button>
-      <ng-template gnDialogContent>
-        <gn-dialog-content>
-          <gn-dialog-header>
-            <gn-dialog-title>Edit profile</gn-dialog-title>
-            <gn-dialog-description>Make changes here.</gn-dialog-description>
-          </gn-dialog-header>
-        </gn-dialog-content>
+    <gr-dialog #dialog>
+      <button [grDialogTriggerFor]="dialog">Open</button>
+      <ng-template grDialogContent>
+        <gr-dialog-content>
+          <gr-dialog-header>
+            <gr-dialog-title>Edit profile</gr-dialog-title>
+            <gr-dialog-description>Make changes here.</gr-dialog-description>
+          </gr-dialog-header>
+        </gr-dialog-content>
       </ng-template>
-    </gn-dialog>
+    </gr-dialog>
   `,
 })
 export class ExampleComponent {}

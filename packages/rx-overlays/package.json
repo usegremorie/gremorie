@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-overlays",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "React overlay primitives for Gremorie - Dialog, Sheet, Popover, Tooltip, DropdownMenu, HoverCard, Command, AlertDialog, ContextMenu, Drawer, Sonner, DatePicker.",
   "license": "MIT",
   "repository": {
@@ -40,8 +40,8 @@
     "README.md"
   ],
   "peerDependencies": {
-    "@gremorie/rx-core": ">=0.3.0",
-    "@gremorie/rx-forms": ">=0.3.0",
+    "@gremorie/rx-core": ">=0.5.1",
+    "@gremorie/rx-forms": ">=0.5.1",
     "react": "^18 || ^19"
   },
   "dependencies": {
@@ -57,5 +57,9 @@
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/usegremorie/gremorie/issues"
+  },
+  "author": "Gremorie (https://github.com/usegremorie)"
 }

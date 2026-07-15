@@ -27,17 +27,17 @@ core theme once in your global `styles.css`:
 
 ## Components
 
-- `Breadcrumb` (selector: `gn-breadcrumb`) with `BreadcrumbList`,
+- `Breadcrumb` (selector: `gr-breadcrumb`) with `BreadcrumbList`,
   `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator`,
   and `BreadcrumbEllipsis`.
-- `Menubar` (selector: `gn-menubar`) with its menu/trigger/content/item parts.
-- `NavigationMenu` (selector: `gn-navigation-menu`) with list/item/trigger/
+- `Menubar` (selector: `gr-menubar`) with its menu/trigger/content/item parts.
+- `NavigationMenu` (selector: `gr-navigation-menu`) with list/item/trigger/
   content/link/indicator/viewport parts.
-- `Pagination` (selector: `gn-pagination`) with content/item/link/previous/
+- `Pagination` (selector: `gr-pagination`) with content/item/link/previous/
   next/ellipsis parts.
-- `Sidebar` (selector: `gn-sidebar`) — the composable app-shell sidebar with
-  20+ parts, wrapped in a `gn-sidebar-provider`.
-- `Tabs` (selector: `gn-tabs`) with list/trigger/content parts.
+- `Sidebar` (selector: `gr-sidebar`) — the composable app-shell sidebar with
+  20+ parts, wrapped in a `gr-sidebar-provider`.
+- `Tabs` (selector: `gr-tabs`) with list/trigger/content parts.
 
 ## License
 

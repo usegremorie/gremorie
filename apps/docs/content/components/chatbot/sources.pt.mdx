@@ -1,0 +1,183 @@
+---
+title: Sources
+description: Painel recolhível de "fontes usadas" para respostas RAG, com um trigger mostrando a contagem e uma lista de links Source.
+---
+
+import { SourcesPreview } from '@/components/preview/ai/sources';
+
+## Visão geral
+
+`Sources` é o painel global de citações de um turno do assistant. Onde [InlineCitation](/components/chatbot/inline-citation) anexa uma citação a uma frase específica, `Sources` lista cada documento em que a resposta se apoiou, recolhido por padrão com um resumo de contagem ("Used 4 sources").
+
+Use sob a resposta do assistant (tipicamente dentro de `MessageContent` depois de `MessageResponse`) para fluxos de RAG, busca na web e embasamento em documentos.
+
+## Preview
+
+<ComponentPreview name="ai/sources">
+  <SourcesPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Sources
+├─ SourcesTrigger   toggle "Used N sources"
+└─ SourcesContent
+   └─ Source         um link citado por fonte
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-sources ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-sources ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-sources ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-sources ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Sources, SourcesTrigger, SourcesContent, Source } from "@gremorie/rx-ai";
+
+export function Example({ sources }) {
+  return (
+    <Sources>
+      <SourcesTrigger count={sources.length} />
+      <SourcesContent>
+        {sources.map((s) => (
+          <Source key={s.url} href={s.url} title={s.title} />
+        ))}
+      </SourcesContent>
+    </Sources>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component, input } from "@angular/core";
+import {
+  Sources,
+  SourcesTrigger,
+  SourcesContent,
+  Source,
+} from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Sources, SourcesTrigger, SourcesContent, Source],
+template: `     <sources>
+      <sources-trigger [count]="sources().length" />
+      <sources-content>
+        @for (s of sources(); track s.url) {
+          <source [href]="s.url" [title]="s.title" />
+        }
+      </sources-content>
+    </sources>
+  `,
+})
+export class ExampleComponent {
+readonly sources = input<Array<{ url: string; title: string }>>([]);
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<Sources>`
+
+Envolve `Collapsible`. Estende `ComponentProps<"div">`. Aplica `not-prose`, cor accent, texto menor.
+
+### `<SourcesTrigger>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `count` | `number` | - | Obrigatório. Usado no label padrão ("Used N sources"). |
+| `children` | `ReactNode` | - | Opcional. Substitui completamente o label + chevron padrão. |
+
+Estende `ComponentProps<typeof CollapsibleTrigger>`.
+
+### `<SourcesContent>`
+
+Corpo recolhível com animação de slide-in / fade-in.
+
+Estende `ComponentProps<typeof CollapsibleContent>`.
+
+### `<Source>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | - | Obrigatório. URL da fonte. Abre em uma nova aba com `rel="noreferrer"`. |
+| `title` | `string` | - | Título da fonte (renderizado ao lado do ícone de livro por padrão). |
+| `children` | `ReactNode` | - | Opcional. Substitui completamente o ícone + título padrão (use para favicons customizados, trechos, etc). |
+
+Renderiza como `<a>`.
+
+## Composição
+
+1. **`<Sources>`** detém o estado do collapsible.
+2. **`<SourcesTrigger>`** é o toggle ("Used 4 sources" + chevron).
+3. **`<SourcesContent>`** é o corpo expandido.
+4. **`<Source>`** é uma citação. Empilhe quantas forem necessárias.
+
+## Variações
+
+### Lista padrão
+
+O caso de 90%: ícone de livro + título, abre externamente.
+
+```tsx
+<Sources>
+  <SourcesTrigger count={sources.length} />
+  <SourcesContent>
+    {sources.map((s) => (
+      <Source key={s.url} href={s.url} title={s.title} />
+    ))}
+  </SourcesContent>
+</Sources>
+````
+
+### Fonte customizada com favicon
+
+Substitua o conteúdo padrão por `Source` para mostrar o favicon do site e o hostname.
+
+```tsx
+<Source href={s.url}>
+  <img
+    src={`https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}`}
+    alt=""
+    className="size-4"
+  />
+  <span className="block font-medium">{new URL(s.url).hostname}</span>
+</Source>
+```
+
+### Texto de trigger customizado
+
+Substitua o label de contagem por texto customizado (localização, badges de modo, etc.).
+
+```tsx
+<SourcesTrigger count={sources.length}>
+  <p className="font-medium">{sources.length} fontes referenciadas</p>
+  <ChevronDownIcon className="h-4 w-4" />
+</SourcesTrigger>
+```
+
+## Acessibilidade
+
+- **Teclado**: o trigger é um `CollapsibleTrigger`, alternando com Enter / Space.
+- **ARIA**: o Radix Collapsible conecta `aria-expanded` / `aria-controls`. `Source` é um `<a>` de verdade, então anuncia como um link.
+- **Leitores de tela**: links externos abrem com `target="_blank" rel="noreferrer"`. Mantenha `title` preenchido para que o texto do link seja significativo (não apenas "clique aqui").
+- **Movimento reduzido**: animações de abrir / fechar são orientadas por data-state e respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [InlineCitation](/components/chatbot/inline-citation) - citações no nível de frase dentro da resposta
+- [Message](/components/chatbot/message) - turno do assistant que tipicamente hospeda o painel de sources
+- [Chain of Thought](/components/chatbot/chain-of-thought) - hits de busca por passo durante o reasoning

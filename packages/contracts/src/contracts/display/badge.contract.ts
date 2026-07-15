@@ -69,7 +69,7 @@ export const badge = defineContract({
     rx: 'layout-display-display-badge--workbench',
     ng: 'layout-display-display-badge--workbench',
   },
-  tag: { rx: 'Badge', ng: 'gn-badge' },
+  tag: { rx: 'Badge', ng: 'gr-badge' },
   example: { variant: 'default' },
   figma: { nodeId: null },
 });

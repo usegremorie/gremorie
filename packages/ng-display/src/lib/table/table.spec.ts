@@ -23,21 +23,21 @@ import {
     TableCaption,
   ],
   template: `
-    <gn-table>
-      <caption gnTableCaption>
+    <gr-table>
+      <caption grTableCaption>
         Cap
       </caption>
-      <thead gnTableHeader>
-        <tr gnTableRow>
-          <th gnTableHead>Name</th>
+      <thead grTableHeader>
+        <tr grTableRow>
+          <th grTableHead>Name</th>
         </tr>
       </thead>
-      <tbody gnTableBody>
-        <tr gnTableRow>
-          <td gnTableCell>Ada</td>
+      <tbody grTableBody>
+        <tr grTableRow>
+          <td grTableCell>Ada</td>
         </tr>
       </tbody>
-    </gn-table>
+    </gr-table>
   `,
 })
 class Host {}

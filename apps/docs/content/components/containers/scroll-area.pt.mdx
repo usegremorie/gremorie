@@ -1,0 +1,207 @@
+---
+title: Scroll Area
+description: 'Container de scroll temável com scrollbars consistentes entre browsers e sistemas operacionais.'
+---
+
+import { ScrollAreaPreview } from '@/components/preview/containers/scroll-area';
+import { ScrollArea, ScrollBar } from '@gremorie/rx-containers';
+
+## Visão geral
+
+`ScrollArea` é um wrapper baseado em Radix que troca a scrollbar nativa por um overlay estilizado que você controla via tokens. Use-o quando a scrollbar padrão do SO entraria em conflito com a superfície ao redor: um card com cantos arredondados, um dark theme no macOS onde a barra nativa desbota, uma sidebar que precisa da barra rente ao chrome da marca.
+
+Para overflow do dia a dia dentro do body ou de um painel genérico, **o scroll nativo ainda é a resposta certa**. O ScrollArea custa um wrapper extra e um event handler, então recorra a ele apenas quando o look-and-feel padrão quebraria a superfície.
+
+## Preview
+
+<ComponentPreview name="containers/scroll-area">
+  <ScrollAreaPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ScrollArea              root: viewport + uma ScrollBar vertical padrão + corner
+└─ ScrollBar            uma scrollbar estilizada; monte uma explicitamente por eixo que você precisar
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-scroll-area ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-scroll-area ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-scroll-area ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-scroll-area ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { ScrollArea } from "@gremorie/rx-containers";
+
+export function TagList({ tags }) {
+  return (
+    <ScrollArea className="h-72 w-48 rounded-md border">
+      <div className="p-4">
+        {tags.map((tag) => (
+          <div key={tag} className="py-2 text-sm">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-scroll-area
+```
+
+```ts
+import { Component } from '@angular/core';
+import { ScrollAreaImports } from '@gremorie/ng-containers';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [ScrollAreaImports],
+  template: `
+    <ng-scrollbar gremorie class="h-72 w-48 rounded-md border">
+      <div class="p-4">
+        @for (tag of tags; track tag) {
+          <div class="py-2 text-sm">{{ tag }}</div>
+        }
+      </div>
+    </ng-scrollbar>
+  `,
+})
+export class ExampleComponent {
+  readonly tags = ['v1.2.0-beta.50', 'v1.2.0-beta.49', 'v1.2.0-beta.48'];
+}
+```
+
+A edição Angular é uma diretiva de estilização `gremorie` aplicada ao elemento `<ng-scrollbar>` do ngx-scrollbar; `ScrollAreaImports` agrupa ambos.
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<ScrollArea>`
+
+A raiz e o ponto de entrada mais comum. Compõe um `Root` do Radix com um `Viewport` para o conteúdo scrollável, uma `ScrollBar` vertical auto-montada, e um `Corner` para a interseção inferior-direita. Passe os filhos diretamente - eles acabam dentro do viewport.
+
+| Prop              | Type                                                    | Default   | Description                                                                                                                                                                      |
+| ----------------- | ------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `className`       | `string`                                                | -         | Aplicado à raiz. A raiz precisa declarar uma `height` fixa (e opcionalmente uma `width`) para que o scroll seja ativado.                                                         |
+| `type`            | `"auto" \| "always" \| "scroll" \| "hover"`             | `"hover"` | Comportamento de visibilidade da scrollbar. `hover` mostra no hover, `scroll` mostra durante o scroll e depois some, `always` a mantém visível, `auto` combina com a plataforma. |
+| `scrollHideDelay` | `number`                                                | `600`     | Milissegundos antes de a scrollbar sumir quando `type="scroll"` ou `type="hover"`.                                                                                               |
+| `dir`             | `"ltr" \| "rtl"`                                        | herdado   | Direção de leitura. Inverte a posição da scrollbar quando definido como `rtl`.                                                                                                   |
+| `...props`        | `React.ComponentProps<typeof ScrollAreaPrimitive.Root>` | -         | Todos os atributos de Root do Radix.                                                                                                                                             |
+
+### `<ScrollBar>`
+
+O track estilizado mais o thumb. A raiz monta uma barra vertical automaticamente. Monte uma segunda `ScrollBar` com `orientation="horizontal"` sempre que o conteúdo der scroll lateral.
+
+| Prop          | Type                                                                   | Default      | Description                                                                                                     |
+| ------------- | ---------------------------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------- |
+| `orientation` | `"vertical" \| "horizontal"`                                           | `"vertical"` | Qual eixo a barra controla. Monte uma por eixo.                                                                 |
+| `className`   | `string`                                                               | -            | Aplicado ao elemento da scrollbar. O dimensionamento de touch-target vem do primitive; sobrescreva com cuidado. |
+| `...props`    | `React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>` | -            | Todos os atributos de Scrollbar do Radix.                                                                       |
+
+## Composição
+
+1. **`<ScrollArea>`** é o container. Dê a ele uma altura (`h-72`, `max-h-96`, etc.) e uma borda arredondada opcional para combinar com o card ao redor.
+2. **Os filhos** ficam dentro de um viewport automático que preenche a raiz e arredonda com `rounded-[inherit]` para que o conteúdo com scroll não vaze além da borda.
+3. **`<ScrollBar orientation="horizontal" />`** é adicionado como irmão sempre que o conteúdo der scroll horizontal.
+4. O **corner** entre duas scrollbars é renderizado automaticamente.
+
+A raiz encapsula a estilização de focus: quando o viewport recebe focus de teclado, o focus ring usa `focus-visible:ring-ring/50` para que a superfície de scroll seja ela própria um alvo descobrível.
+
+## Variações
+
+### Scroll vertical dentro de um card
+
+<div className="rounded-lg border p-6 not-prose">
+  <ScrollArea className="h-40 w-full max-w-sm rounded-md border p-4">
+    <div className="flex flex-col gap-2 text-sm">
+      <div>Engineering</div>
+      <div>Design</div>
+      <div>Product</div>
+      <div>Marketing</div>
+      <div>Operations</div>
+      <div>Finance</div>
+      <div>Legal</div>
+      <div>People</div>
+      <div>Security</div>
+      <div>Data</div>
+    </div>
+  </ScrollArea>
+</div>
+
+```tsx
+<ScrollArea className="h-72 w-full rounded-md border p-4">
+  <div className="flex flex-col gap-2 text-sm">
+    {teams.map((team) => (
+      <div key={team.id}>{team.name}</div>
+    ))}
+  </div>
+</ScrollArea>
+```
+
+A forma mais comum. O `type="hover"` padrão mantém a scrollbar quieta até o usuário se aproximar.
+
+### Faixa horizontal
+
+```tsx
+<ScrollArea className="w-full whitespace-nowrap rounded-md border">
+  <div className="flex w-max gap-3 p-4">
+    {covers.map((cover) => (
+      <figure key={cover.id} className="shrink-0">
+        <img
+          src={cover.src}
+          alt={cover.alt}
+          className="h-32 w-48 rounded-md object-cover"
+        />
+      </figure>
+    ))}
+  </div>
+  <ScrollBar orientation="horizontal" />
+</ScrollArea>
+```
+
+Para faixas estilo carrossel. Monte a barra horizontal explicitamente e envolva a row em `w-max` para que ela possa transbordar o container.
+
+### Scrollbar sempre visível para blocos de código
+
+```tsx
+<ScrollArea type="always" className="h-72 w-full rounded-md border bg-muted">
+  <pre className="p-4 text-sm">{snippet}</pre>
+</ScrollArea>
+```
+
+Use `type="always"` quando a ausência de uma scrollbar sugeriria que o conteúdo cabe, mesmo quando não cabe - comum com blocos de código e saída longa de log.
+
+## Acessibilidade
+
+- **Semântica nativa preservada**: o viewport mantém o scroll de `overflow`, então o scroll por teclado (PageUp/PageDown, setas, Home/End) funciona sem fiação extra.
+- **Superfície focável**: o viewport define `outline-none` mais `focus-visible:ring-[3px] focus-visible:ring-ring/50` para que usuários navegando por `Tab` recebam um ring claro quando a região de scroll recebe focus.
+- **Arraste por ponteiro**: o thumb é arrastável com o ponteiro. Usuários de touch recebem o momentum scrolling nativo no próprio viewport.
+- **Leitores de tela**: o Radix expõe a scrollbar com os roles apropriados. Forneça um `aria-label` significativo na raiz se a superfície de scroll precisar de um anúncio próprio (ex. `"Team list"`).
+- **Movimento reduzido**: o comportamento de scroll respeita `prefers-reduced-motion` via o scroll subjacente do browser, incluindo as pistas de smooth-scroll.
+
+## Relacionados
+
+- [Resizable](/components/containers/resizable) - primitive de layout irmão quando o usuário deve controlar o tamanho do painel, não apenas dar scroll nele.
+- [Card](/components/display/card) - o host canônico para um ScrollArea restrito.
+- [Table](/components/display/table) - tabelas grandes frequentemente vivem dentro de um ScrollArea com uma barra horizontal.

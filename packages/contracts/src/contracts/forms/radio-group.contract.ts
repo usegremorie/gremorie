@@ -74,7 +74,7 @@ export const radioGroup = defineContract({
     rx: 'inputs-selection-radiogroup--workbench',
     ng: 'inputs-selection-radiogroup--workbench',
   },
-  tag: { rx: 'RadioGroup', ng: 'gn-radio-group' },
+  tag: { rx: 'RadioGroup', ng: 'gr-radio-group' },
   example: {
     value: 'comfortable',
     disabled: false,

@@ -1,0 +1,164 @@
+---
+title: Chart
+description: 'A fundação sobre a qual todo gráfico Gremorie é composto — ChartContainer, ChartTooltip e ChartLegend, um wrapper do recharts ciente de tokens.'
+---
+
+import { ChartPreview } from '@/components/preview/data/chart';
+
+## Visão geral
+
+`Chart` é o primitive de fundação sobre o qual todo gráfico `rx-*` é composto. Portado do wrapper recharts consagrado do shadcn/ui e adaptado aos tokens do Gremorie, ele fornece as peças em que você envolve recharts cru: `ChartContainer` (frame responsivo + CSS vars de cor por série), `ChartTooltip` / `ChartTooltipContent` (o hover card) e `ChartLegend` / `ChartLegendContent` (a legenda). O hook `useChart` retorna o `ChartConfig` ativo a partir do contexto.
+
+Normalmente você recorre a um gráfico pronto — [`BarChart`](/components/data/bar-chart), [`LineChart`](/components/data/line-chart), [`AreaChart`](/components/data/area-chart) e o resto são wrappers finos sobre este primitive. Desça direto para `Chart` quando precisar de controle total: linhas de referência extras, uma legenda customizada, séries mistas ou um tipo de recharts que os wrappers não cobrem. `ChartContainer` continua injetando suas cores de token como `var(--color-<key>)` e estiliza o tooltip, então você só escreve os recharts que realmente precisa.
+
+## Preview
+
+<ComponentPreview name="data/chart">
+  <ChartPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ChartContainer                 responsive frame; injects --color-<key> from config; provides chart context
+├─ ChartStyle                  emits the per-series CSS color vars (light + dark)
+└─ ResponsiveContainer         recharts responsive wrapper
+   └─ <recharts chart>         your BarChart / LineChart / etc.
+      ├─ ChartTooltip          recharts Tooltip
+      │  └─ ChartTooltipContent  token-styled tooltip body
+      └─ ChartLegend           recharts Legend
+         └─ ChartLegendContent   token-styled legend body
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-chart ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-chart ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-chart ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-chart ```</Tab>
+</Tabs>
+
+Traz o `recharts`. Todo outro primitive de chart (`rx-bar-chart`, `rx-line-chart`, …) depende deste.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@gremorie/rx-data";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+
+const config: ChartConfig = {
+desktop: { label: "Desktop", color: "var(--chart-1)" },
+mobile: { label: "Mobile", color: "var(--chart-2)" },
+};
+
+export function Example({ data }: { data: Record<string, string | number>[] }) {
+  return (
+    <ChartContainer config={config}>
+      <BarChart accessibilityLayer data={data}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={10} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={8} />
+      </BarChart>
+    </ChartContainer>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+Os charts Angular (`ng-*`) espelham esta anatomia e estrutura. Um primitive `ng-chart` standalone é distribuído junto com eles.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ChartContainer>`
+
+| Prop               | Type                           | Default        | Descrição                                                                                         |
+| ------------------ | ------------------------------ | -------------- | ------------------------------------------------------------------------------------------------- |
+| `config`           | `ChartConfig`                  | -              | Mapa `{ label, color, icon }` por série. Cada `color` é exposta como `var(--color-<key>)`.        |
+| `children`         | `ResponsiveContainer children` | -              | Um único elemento de chart recharts.                                                              |
+| `id`               | `string`                       | auto           | Id estável usado para escopar as CSS vars de cor injetadas.                                       |
+| `initialDimension` | `{ width; height }`            | `{ 320, 200 }` | Tamanho inicial antes do container responsivo medir.                                              |
+| `className`        | `string`                       | -              | Classes extras; a classe base fixa `aspect-video` e o estilo de token dos ticks/grid do recharts. |
+
+Fornece o contexto do chart. Renderiza `ChartStyle` + um `ResponsiveContainer` do recharts.
+
+### `<ChartTooltip>` / `<ChartTooltipContent>`
+
+`ChartTooltip` é o `Tooltip` do recharts. `ChartTooltipContent` é o corpo estilizado por token.
+
+| Prop (Content)  | Type                          | Default | Descrição                                                |
+| --------------- | ----------------------------- | ------- | -------------------------------------------------------- |
+| `indicator`     | `"dot" \| "line" \| "dashed"` | `"dot"` | Estilo do swatch de série.                               |
+| `hideLabel`     | `boolean`                     | `false` | Esconde a linha do label de categoria.                   |
+| `hideIndicator` | `boolean`                     | `false` | Esconde o swatch de cor por série.                       |
+| `nameKey`       | `string`                      | -       | Sobrescreve a chave usada para resolver o nome da série. |
+| `labelKey`      | `string`                      | -       | Sobrescreve a chave usada para resolver o label.         |
+
+### `<ChartLegend>` / `<ChartLegendContent>`
+
+`ChartLegend` é o `Legend` do recharts. `ChartLegendContent` é o corpo estilizado por token.
+
+| Prop (Content)  | Type                | Default    | Descrição                                      |
+| --------------- | ------------------- | ---------- | ---------------------------------------------- |
+| `hideIcon`      | `boolean`           | `false`    | Esconde o ícone/swatch por série.              |
+| `nameKey`       | `string`            | -          | Sobrescreve a chave usada para resolver nomes. |
+| `verticalAlign` | `"top" \| "bottom"` | `"bottom"` | Lado do padding para a legenda.                |
+
+### `useChart()`
+
+Hook que retorna `{ config }` do `ChartContainer` mais próximo. Lança erro se usado fora de um.
+
+### Types
+
+| Type          | Shape                                                                                              |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| `ChartConfig` | `Record<string, { label?: ReactNode; icon?: ComponentType } & ({ color?: string } \| { theme }) >` |
+
+## Composição
+
+1. **Escreva o `config`** — uma entrada por série com um `label` e uma cor de token (`var(--chart-1)`…).
+2. **Envolva o recharts em `<ChartContainer config={config}>`** — ele injeta `var(--color-<key>)` e dimensiona o frame.
+3. **Referencie as cores como `var(--color-<key>)`** no `fill`/`stroke` de `Bar`/`Area`/`Line`.
+4. **Adicione `<ChartTooltip content={<ChartTooltipContent />} />`** e, se necessário, `<ChartLegend content={<ChartLegendContent />} />`.
+
+## Variações
+
+### Indicador de tooltip customizado
+
+```tsx
+<ChartTooltip content={<ChartTooltipContent indicator="line" />} />
+```
+
+### Legenda no topo
+
+```tsx
+<ChartLegend verticalAlign="top" content={<ChartLegendContent />} />
+```
+
+## Acessibilidade
+
+- **Accessibility layer**: habilite o `accessibilityLayer` do recharts no seu chart para navegação por teclado e anúncios de screen reader dos pontos de dados.
+- **Contraste de token**: os tokens `--chart-1` até `--chart-5` vêm com contraste AA contra a superfície do card em ambos os temas.
+- **Cor não é o único sinal**: combine as cores das séries com labels no tooltip e na legenda para que o significado sobreviva sem cor.
+
+## Relacionados
+
+- [Bar Chart](/components/data/bar-chart) - o wrapper categórico construído sobre este primitive.
+- [Line Chart](/components/data/line-chart) - tendências de domínio ordenado.
+- [Area Chart](/components/data/area-chart) - magnitude preenchida sobre um domínio ordenado.

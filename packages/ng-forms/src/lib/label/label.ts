@@ -27,12 +27,12 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-label for="email">Email</gn-label>
- * <gn-input id="email" type="email" />
+ * <gr-label for="email">Email</gr-label>
+ * <gr-input id="email" type="email" />
  * ```
  */
 @Component({
-  selector: 'gn-label',
+  selector: 'gr-label',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

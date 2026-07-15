@@ -51,7 +51,7 @@ export const label = defineContract({
     rx: 'inputs-text-label--workbench',
     ng: 'inputs-text-label--workbench',
   },
-  tag: { rx: 'Label', ng: 'gn-label' },
+  tag: { rx: 'Label', ng: 'gr-label' },
   example: {
     htmlFor: '',
   },

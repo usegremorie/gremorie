@@ -18,7 +18,7 @@ import {
  *
  * Mirrors React `Dialog`. Behavior delegated to spartan brain `BrnDialog`
  * (CDK overlay). The panel markup lives inside a
- * `<ng-template brnDialogContent>` placed within `<gn-dialog>`.
+ * `<ng-template brnDialogContent>` placed within `<gr-dialog>`.
  */
 const meta: Meta<Dialog> = {
   title: 'Interaction/Overlays/Dialog',
@@ -49,25 +49,25 @@ type Story = StoryObj<Dialog>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-dialog>
-        <button gn-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-dialog>
+        <button gr-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Edit profile
         </button>
         <ng-template brnDialogContent>
-          <gn-dialog-content>
-            <gn-dialog-header>
-              <h2 gn-dialog-title>Edit profile</h2>
-              <p gn-dialog-description>
+          <gr-dialog-content>
+            <gr-dialog-header>
+              <h2 gr-dialog-title>Edit profile</h2>
+              <p gr-dialog-description>
                 Make changes to your profile here. Click save when you're done.
               </p>
-            </gn-dialog-header>
+            </gr-dialog-header>
             <div class="grid gap-3 text-sm text-muted-foreground">
               Form fields go here.
             </div>
-            <gn-dialog-footer [showCloseButton]="true" />
-          </gn-dialog-content>
+            <gr-dialog-footer [showCloseButton]="true" />
+          </gr-dialog-content>
         </ng-template>
-      </gn-dialog>
+      </gr-dialog>
     `,
   }),
 };
@@ -76,24 +76,24 @@ export const Workbench: Story = {
 export const WithoutCloseButton: Story = {
   render: () => ({
     template: `
-      <gn-dialog>
-        <button gn-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
+      <gr-dialog>
+        <button gr-dialog-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open
         </button>
         <ng-template brnDialogContent>
-          <gn-dialog-content [showCloseButton]="false">
-            <gn-dialog-header>
-              <h2 gn-dialog-title>No corner close</h2>
-              <p gn-dialog-description>Use the footer button to dismiss.</p>
-            </gn-dialog-header>
-            <gn-dialog-footer>
-              <button gn-dialog-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+          <gr-dialog-content [showCloseButton]="false">
+            <gr-dialog-header>
+              <h2 gr-dialog-title>No corner close</h2>
+              <p gr-dialog-description>Use the footer button to dismiss.</p>
+            </gr-dialog-header>
+            <gr-dialog-footer>
+              <button gr-dialog-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Done
               </button>
-            </gn-dialog-footer>
-          </gn-dialog-content>
+            </gr-dialog-footer>
+          </gr-dialog-content>
         </ng-template>
-      </gn-dialog>
+      </gr-dialog>
     `,
   }),
 };

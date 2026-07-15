@@ -21,7 +21,7 @@ export const tooltip = defineContract({
       type: 'number',
       default: 0,
       adapts: {
-        ng: 'delayDuration on gn-tooltip-provider (pass-through) and gn-tooltip',
+        ng: 'delayDuration on gr-tooltip-provider (pass-through) and gr-tooltip',
       },
       desc: 'TooltipProvider: ms hover delay before the tooltip opens.',
     },
@@ -41,20 +41,20 @@ export const tooltip = defineContract({
       type: "'top' | 'right' | 'bottom' | 'left'",
       default: 'top',
       options: ['top', 'right', 'bottom', 'left'],
-      adapts: { ng: 'side on gn-tooltip' },
+      adapts: { ng: 'side on gr-tooltip' },
       desc: 'TooltipContent: which side of the trigger to render on.',
     },
     {
       name: 'sideOffset',
       type: 'number',
       default: 4,
-      adapts: { ng: 'sideOffset on gn-tooltip' },
+      adapts: { ng: 'sideOffset on gr-tooltip' },
       desc: 'TooltipContent: gap between trigger and label.',
     },
     {
       name: 'className',
       type: 'string',
-      adapts: { ng: 'class input on gn-tooltip-content' },
+      adapts: { ng: 'class input on gr-tooltip-content' },
       desc: 'Merged onto the content label.',
     },
   ],
@@ -75,7 +75,7 @@ export const tooltip = defineContract({
     rules: [
       'Opens on hover and on keyboard focus of TooltipTrigger; never put interactive elements inside the content.',
       'Wrap the app (or a region) in a single TooltipProvider so the open delay is shared.',
-      'Angular collapses Radix Provider/Root/Trigger/Content onto the brain `brnTooltip` directive: gn-tooltip-provider is a no-op pass-through, and side/delay live on gn-tooltip (the trigger reads them via context).',
+      'Angular collapses Radix Provider/Root/Trigger/Content onto the brain `brnTooltip` directive: gr-tooltip-provider is a no-op pass-through, and side/delay live on gr-tooltip (the trigger reads them via context).',
     ],
     example:
       '<TooltipProvider><Tooltip><TooltipTrigger>?</TooltipTrigger><TooltipContent>Add to library</TooltipContent></Tooltip></TooltipProvider>',
@@ -84,7 +84,7 @@ export const tooltip = defineContract({
     rx: 'interaction-overlays-tooltip--workbench',
     ng: 'interaction-overlays-tooltip--workbench',
   },
-  tag: { rx: 'Tooltip', ng: 'gn-tooltip' },
+  tag: { rx: 'Tooltip', ng: 'gr-tooltip' },
   example: {
     delayDuration: 0,
     defaultOpen: false,

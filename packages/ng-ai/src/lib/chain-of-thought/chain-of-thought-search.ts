@@ -26,7 +26,7 @@ export class ChainOfThoughtSearchResults {}
  * ChainOfThoughtSearchResult — small badge for one search result. Mirrors
  * React `ChainOfThoughtSearchResult` (which renders a `Badge` variant).
  *
- * Dogfoods `gn-badge` (variant `secondary`) from `@gremorie/ng-display`
+ * Dogfoods `gr-badge` (variant `secondary`) from `@gremorie/ng-display`
  * with a tighter corner radius and lighter weight to match the React
  * blueprint (which passes `gap-1 px-2 py-0.5 font-normal` to Badge).
  */
@@ -37,9 +37,9 @@ export class ChainOfThoughtSearchResults {}
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <gn-badge variant="secondary" class="rounded-md font-normal">
+    <gr-badge variant="secondary" class="rounded-md font-normal">
       <ng-content />
-    </gn-badge>
+    </gr-badge>
   `,
   host: {
     class: 'inline-flex',

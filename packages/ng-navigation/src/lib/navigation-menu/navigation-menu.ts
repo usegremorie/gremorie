@@ -46,7 +46,7 @@ export class NavigationMenuService {
  * `viewport` is true.
  */
 @Component({
-  selector: 'gn-navigation-menu-viewport',
+  selector: 'gr-navigation-menu-viewport',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -76,11 +76,11 @@ const navigationMenuTriggerStyle = cva(
  * multi-column dropdowns under each trigger. For app-internal nav use Sidebar
  * or Tabs; for action menus use Menubar.
  *
- * Anatomy: `gn-navigation-menu` (root, renders a `gn-navigation-menu-viewport`
- * when `viewport` is true) → `gn-navigation-menu-list` →
- * `gn-navigation-menu-item` → `gn-navigation-menu-trigger` +
- * `gn-navigation-menu-content`, with `gn-navigation-menu-link` and
- * `gn-navigation-menu-indicator`.
+ * Anatomy: `gr-navigation-menu` (root, renders a `gr-navigation-menu-viewport`
+ * when `viewport` is true) → `gr-navigation-menu-list` →
+ * `gr-navigation-menu-item` → `gr-navigation-menu-trigger` +
+ * `gr-navigation-menu-content`, with `gr-navigation-menu-link` and
+ * `gr-navigation-menu-indicator`.
  *
  * Divergence vs. React/Radix: the open/close state is driven by the
  * `NavigationMenuService` (a small Angular DI controller) rather than Radix's
@@ -89,7 +89,7 @@ const navigationMenuTriggerStyle = cva(
  * `data-slot` names, variants and classes match the React edition.
  */
 @Component({
-  selector: 'gn-navigation-menu',
+  selector: 'gr-navigation-menu',
   standalone: true,
   imports: [NavigationMenuViewport],
   encapsulation: ViewEncapsulation.None,
@@ -98,7 +98,7 @@ const navigationMenuTriggerStyle = cva(
   template: `
     <ng-content />
     @if (viewport()) {
-      <gn-navigation-menu-viewport />
+      <gr-navigation-menu-viewport />
     }
   `,
   host: {
@@ -123,7 +123,7 @@ export class NavigationMenu {
  * `NavigationMenuList`.
  */
 @Component({
-  selector: 'gn-navigation-menu-list, ul[gn-navigation-menu-list]',
+  selector: 'gr-navigation-menu-list, ul[gr-navigation-menu-list]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -140,7 +140,7 @@ export class NavigationMenuList {}
  * `NavigationMenuItem`. Holds a stable id used to key the open state.
  */
 @Component({
-  selector: 'gn-navigation-menu-item, li[gn-navigation-menu-item]',
+  selector: 'gr-navigation-menu-item, li[gr-navigation-menu-item]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -153,7 +153,7 @@ export class NavigationMenuList {}
 export class NavigationMenuItem {
   private static _counter = 0;
   /** Stable id shared with this item's trigger and content. */
-  readonly id = `gn-navigation-menu-item-${NavigationMenuItem._counter++}`;
+  readonly id = `gr-navigation-menu-item-${NavigationMenuItem._counter++}`;
 }
 
 /**
@@ -162,7 +162,7 @@ export class NavigationMenuItem {
  * open state and reflects `data-state`.
  */
 @Component({
-  selector: 'gn-navigation-menu-trigger',
+  selector: 'gr-navigation-menu-trigger',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -220,7 +220,7 @@ export class NavigationMenuTrigger {
  * viewport-on/off layout classes.
  */
 @Component({
-  selector: 'gn-navigation-menu-content',
+  selector: 'gr-navigation-menu-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -259,7 +259,7 @@ export class NavigationMenuContent {
  * link). Mirrors React `NavigationMenuLink`. `active` flags the current page.
  */
 @Component({
-  selector: 'gn-navigation-menu-link, a[gn-navigation-menu-link]',
+  selector: 'gr-navigation-menu-link, a[gr-navigation-menu-link]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -286,7 +286,7 @@ export class NavigationMenuLink {
  * Mirrors React `NavigationMenuIndicator`.
  */
 @Component({
-  selector: 'gn-navigation-menu-indicator',
+  selector: 'gr-navigation-menu-indicator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

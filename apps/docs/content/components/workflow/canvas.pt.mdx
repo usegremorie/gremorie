@@ -1,0 +1,188 @@
+---
+title: Canvas
+description: Superfície ReactFlow para workflows visuais e grafos de agentes. Pré-configurada para pan-on-scroll, seleção por arraste e deleção com Backspace / Delete.
+---
+
+import { CanvasPreview } from '@/components/preview/ai/canvas';
+
+## Visão geral
+
+`Canvas` é um wrapper fino da Gremorie em torno do `ReactFlow` de `@xyflow/react`. Ele define os defaults que a Gremorie espera para canvases de workflow de IA: `panOnScroll`, `selectionOnDrag`, `fitView` no primeiro render, deleção vinculada a `Backspace` e `Delete`, e um `Background` no tom da sidebar.
+
+Use-o para qualquer superfície de nós e edges: editores de fluxo de agentes, visualizações de grafo de prompt, construtores de pipeline, roteamento de LLM em múltiplas etapas. Componha com `Node`, `Edge`, `Connection`, `Controls`, `Panel` e `Toolbar` da mesma família.
+
+O stylesheet do xyflow é importado no nível do módulo (`@xyflow/react/dist/style.css`), então os projetos consumidores não precisam gerenciá-lo manualmente - embora importá-lo uma vez no entry da app ainda seja recomendado para evitar surpresas de ordem de execução.
+
+## Preview
+
+<ComponentPreview name="ai/canvas">
+  <CanvasPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Canvas                    React Flow viewport
+├─ Node …                 nodeTypes (custom renderers)
+├─ Edge …                 edgeTypes (Edge.Temporary · Edge.Animated)
+├─ Connection             in-progress connection line
+└─ overlays (children)    Panel · Controls · Toolbar
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-canvas ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-canvas ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-canvas ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-canvas ```</Tab>
+</Tabs>
+
+Requer `@xyflow/react` como peer dependency.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { useNodesState, useEdgesState } from "@xyflow/react";
+import {
+  Canvas,
+  Controls,
+  Panel,
+  Node,
+  NodeContent,
+  NodeHeader,
+  NodeTitle,
+} from "@gremorie/rx-ai";
+
+const nodeTypes = { card: (props) => (
+
+  <Node {...props} handles={{ target: true, source: true }}>
+    <NodeHeader>
+      <NodeTitle>{props.data.label}</NodeTitle>
+    </NodeHeader>
+    <NodeContent>{props.data.body}</NodeContent>
+  </Node>
+)};
+
+export function Workflow() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+
+return (
+
+<div className="h-[480px] w-full">
+<Canvas
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+      >
+<Controls />
+<Panel position="top-right">Workflow tools</Panel>
+</Canvas>
+</div>
+);
+}
+
+````
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente está planejada; a edição React está production-ready hoje.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Canvas>`
+
+Encaminha todas as `ReactFlowProps` de `@xyflow/react`. O wrapper da Gremorie define estes defaults (qualquer prop que você passe os sobrescreve):
+
+| Default | Value | Why |
+|---|---|---|
+| `deleteKeyCode` | `["Backspace", "Delete"]` | Usuários de Mac e Windows conseguem deletar a seleção. |
+| `fitView` | `true` | No mount, dá zoom e pan para que todos os nós fiquem visíveis. |
+| `panOnDrag` | `false` | Arrastar o canvas seleciona em vez de dar pan. |
+| `panOnScroll` | `true` | Scroll de dois dedos no trackpad / roda dá pan na view. |
+| `selectionOnDrag` | `true` | Arrastar a partir de espaço vazio desenha uma caixa de seleção. |
+| `zoomOnDoubleClick` | `false` | Duplo clique fica reservado para ações no nível do nó. |
+
+Renderiza um `Background` com `bgColor="var(--sidebar)"` para que o canvas combine com o shell ao redor.
+
+`children` são renderizados dentro do `ReactFlow`. Use este slot para `Controls`, `Panel`, `MiniMap`, etc.
+
+## Composição
+
+1. **`<Canvas>`** detém a superfície. Passe `nodes`, `edges`, `nodeTypes`, `edgeTypes` e os change handlers do xyflow.
+2. **Node types custom** são componentes React que renderizam `Node` de `@gremorie/rx-ai` com seus handles.
+3. **`<Controls>`**, **`<Panel>`**, **`<Toolbar>`** são children que ficam sobre o canvas.
+4. **`<Connection>`** é a linha que segue o cursor enquanto o usuário arrasta a partir de um handle - passe-a via a prop `connectionLineComponent` do xyflow.
+
+## Variações
+
+### Viewer read-only
+
+Para visualizar um fluxo estático (por exemplo, um trace de agente), desabilite as interações.
+
+```tsx
+<Canvas
+  nodes={trace.nodes}
+  edges={trace.edges}
+  nodesDraggable={false}
+  nodesConnectable={false}
+  elementsSelectable={false}
+>
+  <Controls showInteractive={false} />
+</Canvas>
+````
+
+### Editor com connection line custom
+
+Combine com [`Connection`](/components/workflow/connection) para um preview de conexão no tema da Gremorie.
+
+```tsx
+import { Connection } from '@gremorie/rx-ai';
+
+<Canvas
+  nodes={nodes}
+  edges={edges}
+  connectionLineComponent={Connection}
+  onConnect={onConnect}
+>
+  <Controls />
+</Canvas>;
+```
+
+### Com minimap e overlay de panel
+
+```tsx
+import { MiniMap } from '@xyflow/react';
+
+<Canvas nodes={nodes} edges={edges}>
+  <Controls />
+  <Panel position="top-left">
+    <p className="text-xs font-medium">Agent graph</p>
+  </Panel>
+  <MiniMap pannable zoomable />
+</Canvas>;
+```
+
+## Acessibilidade
+
+- **Keyboard**: o xyflow traz um modelo de teclado documentado - Tab foca o canvas, depois as setas movem os nós selecionados; Backspace / Delete os removem. A caixa de seleção ainda exige input de ponteiro. Para paridade total de teclado, forneça atalhos no nível do `Panel`.
+- **Focus visible**: o xyflow expõe seu próprio focus ring no canvas. Não sobrescreva `outline: none` na raiz.
+- **Reduced motion**: as animações de pan e zoom respeitam `prefers-reduced-motion` via o tratamento interno do xyflow. Animações de edge custom (por exemplo, a classe `animated` do `Connection`) devem ser envolvidas nos seus próprios overrides de `@media (prefers-reduced-motion: reduce)`.
+- **Screen readers**: os nós são renderizados como DOM puro. Garanta que o conteúdo de cada nó tenha texto significativo (não só ícones) e adicione `aria-label` aos children interativos dentro do `Node`.
+
+## Relacionados
+
+- [Node](/components/workflow/node) - nó em formato de card usado dentro do Canvas
+- [Edge](/components/workflow/edge) - componente de edge com tema
+- [Connection](/components/workflow/connection) - linha de conexão em progresso durante o arraste
+- [Controls](/components/workflow/controls) - controles de zoom e fit ancorados em um canto
+- [Panel](/components/workflow/panel) - overlay flutuante ancorado a um canto do canvas
+- [Toolbar](/components/workflow/toolbar) - barra de ações flutuante por nó

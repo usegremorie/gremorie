@@ -51,21 +51,21 @@ export const Workbench: Story = {
     props: args,
     template: `
       <div class="px-12 py-6">
-        <gn-carousel [orientation]="orientation" class="w-56">
-          <gn-carousel-content>
-            <gn-carousel-item>
+        <gr-carousel [orientation]="orientation" class="w-56">
+          <gr-carousel-content>
+            <gr-carousel-item>
               <div class="${SLIDE}">1</div>
-            </gn-carousel-item>
-            <gn-carousel-item>
+            </gr-carousel-item>
+            <gr-carousel-item>
               <div class="${SLIDE}">2</div>
-            </gn-carousel-item>
-            <gn-carousel-item>
+            </gr-carousel-item>
+            <gr-carousel-item>
               <div class="${SLIDE}">3</div>
-            </gn-carousel-item>
-          </gn-carousel-content>
-          <gn-carousel-previous />
-          <gn-carousel-next />
-        </gn-carousel>
+            </gr-carousel-item>
+          </gr-carousel-content>
+          <gr-carousel-previous />
+          <gr-carousel-next />
+        </gr-carousel>
       </div>
     `,
   }),
@@ -77,21 +77,21 @@ export const Horizontal: Story = {
     props: args,
     template: `
       <div class="px-12 py-6">
-        <gn-carousel [orientation]="orientation" class="w-56">
-          <gn-carousel-content>
-            <gn-carousel-item>
+        <gr-carousel [orientation]="orientation" class="w-56">
+          <gr-carousel-content>
+            <gr-carousel-item>
               <div class="${SLIDE}">1</div>
-            </gn-carousel-item>
-            <gn-carousel-item>
+            </gr-carousel-item>
+            <gr-carousel-item>
               <div class="${SLIDE}">2</div>
-            </gn-carousel-item>
-            <gn-carousel-item>
+            </gr-carousel-item>
+            <gr-carousel-item>
               <div class="${SLIDE}">3</div>
-            </gn-carousel-item>
-          </gn-carousel-content>
-          <gn-carousel-previous />
-          <gn-carousel-next />
-        </gn-carousel>
+            </gr-carousel-item>
+          </gr-carousel-content>
+          <gr-carousel-previous />
+          <gr-carousel-next />
+        </gr-carousel>
       </div>
     `,
   }),
@@ -104,21 +104,21 @@ export const Vertical: Story = {
     props: args,
     template: `
       <div class="px-6 py-12">
-        <gn-carousel [orientation]="orientation" class="w-40">
-          <gn-carousel-content class="h-40">
-            <gn-carousel-item>
+        <gr-carousel [orientation]="orientation" class="w-40">
+          <gr-carousel-content class="h-40">
+            <gr-carousel-item>
               <div class="${SLIDE}">1</div>
-            </gn-carousel-item>
-            <gn-carousel-item>
+            </gr-carousel-item>
+            <gr-carousel-item>
               <div class="${SLIDE}">2</div>
-            </gn-carousel-item>
-            <gn-carousel-item>
+            </gr-carousel-item>
+            <gr-carousel-item>
               <div class="${SLIDE}">3</div>
-            </gn-carousel-item>
-          </gn-carousel-content>
-          <gn-carousel-previous />
-          <gn-carousel-next />
-        </gn-carousel>
+            </gr-carousel-item>
+          </gr-carousel-content>
+          <gr-carousel-previous />
+          <gr-carousel-next />
+        </gr-carousel>
       </div>
     `,
   }),

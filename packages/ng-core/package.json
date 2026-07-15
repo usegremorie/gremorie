@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-core",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Gremorie Angular core: shared utilities and the Button primitive. Design tokens live in @gremorie/tokens.",
   "license": "MIT",
   "repository": {
@@ -10,7 +10,6 @@
   },
   "keywords": [
     "angular",
-    "ai",
     "ui",
     "tokens",
     "button"
@@ -24,14 +23,12 @@
   "sideEffects": [
     "**/*.css"
   ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./fesm2022/ng-core.mjs"
-    }
-  },
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/usegremorie/gremorie/issues"
+  },
+  "author": "Gremorie (https://github.com/usegremorie)"
 }

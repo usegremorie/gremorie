@@ -94,17 +94,17 @@ import {
     CarouselNext,
   ],
   template: `
-    <gn-carousel class="w-full max-w-xs">
-      <gn-carousel-content>
+    <gr-carousel class="w-full max-w-xs">
+      <gr-carousel-content>
         @for (slide of slides; track slide) {
-          <gn-carousel-item>
+          <gr-carousel-item>
             <div class="p-1">Slide {{ slide }}</div>
-          </gn-carousel-item>
+          </gr-carousel-item>
         }
-      </gn-carousel-content>
-      <gn-carousel-previous />
-      <gn-carousel-next />
-    </gn-carousel>
+      </gr-carousel-content>
+      <gr-carousel-previous />
+      <gr-carousel-next />
+    </gr-carousel>
   `,
 })
 export class ExampleComponent {

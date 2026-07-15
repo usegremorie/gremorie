@@ -1,0 +1,179 @@
+---
+title: Calculator
+description: 'Artifact interativo de tool-call com gerenciamento de estado e exibição de resultado.'
+---
+
+## Visão geral
+
+Um artifact interativo para tool calls que precisam de uma UI rápida. O modelo
+emite `{ a, b, op }`; o artifact renderiza inputs editáveis, um toggle de
+operador e um resultado ao vivo. O usuário pode ajustar os valores sem fazer
+um round-trip de volta ao modelo.
+
+Este artifact demonstra o extremo stateful do espectro — a maioria dos
+artifacts renderiza uma vez, mas widgets interativos mantêm seu próprio estado
+depois que o payload inicial chega.
+
+## Preview
+
+<ArtifactPreview name="calculator" />
+
+## Schema
+
+O LLM retorna output estruturado que segue este shape:
+
+```ts
+{
+  type: "calculator",
+  a: number,
+  b: number,
+  op: "+" | "-" | "*" | "/",
+}
+```
+
+## Anatomia
+
+```text
+Card
+├─ CardHeader            CardTitle + type Badge
+├─ number input pair     Label + Input[type=number] (A, B)
+├─ operator toggle       Button per operator (aria-pressed)
+├─ result row            muted strip with the computed value
+└─ reset                 ghost Button restoring defaults
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-calculator
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-calculator
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-calculator
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-calculator
+```
+
+</Tab>
+
+</Tabs>
+
+## Exemplos de prompt
+
+Prompts de exemplo que produzem output válido para este artifact:
+
+- "Me ajuda a calcular uma gorjeta — começa com 48 e 12 e me deixa ajustar."
+- "Solta uma calculadora com 100 dividido por 4."
+- "Preciso multiplicar uns números rápido — abre uma calculadora."
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import { useState } from 'react';
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@gremorie/rx-display';
+import { Button, Input, Label } from '@gremorie/rx-forms';
+import { RotateCcw } from 'lucide-react';
+
+type Op = '+' | '-' | '*' | '/';
+
+function compute(a: number, b: number, op: Op): number {
+  switch (op) {
+    case '+':
+      return a + b;
+    case '-':
+      return a - b;
+    case '*':
+      return a * b;
+    case '/':
+      return b === 0 ? NaN : a / b;
+  }
+}
+
+export function Calculator() {
+  const [a, setA] = useState(48);
+  const [b, setB] = useState(12);
+  const [op, setOp] = useState<Op>('+');
+  const result = compute(a, b, op);
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>Quick calculator</CardTitle>
+            <CardDescription>
+              Interactive widget generated from a tool call.
+            </CardDescription>
+          </div>
+          <Badge variant="outline">Tool widget</Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        {/* Inputs, operator toggle, result, reset... */}
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  A edição Angular deste componente está planejada; a edição React está
+  production-ready hoje.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Comportamento de streaming
+
+<Callout type="info">
+  Este artifact renderiza depois que o payload é parseado, e então assume seu
+  próprio estado. O modelo semeia os valores iniciais; o usuário conduz tudo que
+  vem depois. Tool calls subsequentes podem re-semear.
+</Callout>
+
+## Relacionados
+
+- [Input](/components/text/input)
+- [Button](/components/buttons/button)
+- [Artifacts overview](/artifacts)

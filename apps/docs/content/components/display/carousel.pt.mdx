@@ -1,0 +1,227 @@
+---
+title: Carousel
+description: 'Região de slides rolável horizontal ou vertical construída sobre Embla. Toque, drag, teclado, plugins.'
+---
+
+import { CarouselPreview } from '@/components/preview/display/carousel';
+import { CarouselSizesPreview } from '@/components/preview/display/carousel-sizes';
+import { CarouselVerticalPreview } from '@/components/preview/display/carousel-vertical';
+
+## Visão geral
+
+`Carousel` é o primitive de conteúdo deslizante: uma região de slides que rola horizontalmente (padrão) ou verticalmente, com drag, toque, setas de teclado e plugins opcionais (autoplay, wheel, fade). Construído sobre o [Embla Carousel](https://www.embla-carousel.com/), ele expõe uma API controlada via `setApi` para que você possa ler estado (slide atual, can-scroll-prev/next) e chamar métodos (`scrollTo`, `scrollNext`) de fora.
+
+Carousels escondem o conteúdo além do primeiro slide - use apenas quando a ordem importa menos que a presença (galerias, depoimentos, logos de parceiros). Para conteúdo priorizado, prefira uma lista vertical. Sempre combine controles de seta com navegação por teclado; qualquer auto-rotação deve ser pausável.
+
+## Preview
+
+<ComponentPreview name="display/carousel">
+  <CarouselPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Carousel                       Embla root + context provider (orientation, opts, plugins)
+├─ CarouselContent             overflow viewport + flex track
+│  └─ CarouselItem             a single slide (basis-full by default)
+├─ CarouselPrevious            previous-slide arrow button, auto-disabled at the start
+└─ CarouselNext                next-slide arrow button, auto-disabled at the end
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-carousel ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-carousel ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-carousel ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-carousel ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <Carousel className="w-full max-w-sm">
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <CarouselItem key={i}>
+            <div className="p-1">Slide {i + 1}</div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-carousel
+```
+
+```ts
+import { Component } from '@angular/core';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@gremorie/ng-display';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselPrevious,
+    CarouselNext,
+  ],
+  template: `
+    <gr-carousel class="w-full max-w-xs">
+      <gr-carousel-content>
+        @for (slide of slides; track slide) {
+          <gr-carousel-item>
+            <div class="p-1">Slide {{ slide }}</div>
+          </gr-carousel-item>
+        }
+      </gr-carousel-content>
+      <gr-carousel-previous />
+      <gr-carousel-next />
+    </gr-carousel>
+  `,
+})
+export class ExampleComponent {
+  readonly slides = [1, 2, 3, 4, 5];
+}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Carousel>`
+
+Container raiz. Configura o Embla, expõe o contexto para `CarouselContent`, `CarouselItem`, `CarouselPrevious` e `CarouselNext`.
+
+| Prop          | Type                         | Default        | Descrição                                                                                                                                                                                 |
+| ------------- | ---------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `opts`        | `EmblaOptionsType`           | -              | Opções do Embla. Chaves comuns: `align: "start" \| "center" \| "end"`, `loop: boolean`, `dragFree: boolean`. Veja a [documentação do Embla](https://www.embla-carousel.com/api/options/). |
+| `plugins`     | `EmblaPluginType[]`          | -              | Plugins do Embla. Comuns: `Autoplay`, `WheelGestures`, `ClassNames`, `Fade`.                                                                                                              |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Define o `axis` do Embla e estiliza `CarouselContent` e as posições das setas de acordo.                                                                                                  |
+| `setApi`      | `(api: CarouselApi) => void` | -              | Recebe a instância da API do Embla uma vez inicializada. Use para controlar o carousel de fora (chame `api.scrollTo(2)`, leia `api.selectedScrollSnap()`).                                |
+| `className`   | `string`                     | -              | Classes extras no `div` raiz.                                                                                                                                                             |
+
+A raiz renderiza com `role="region"` e `aria-roledescription="carousel"` para que a AT o anuncie corretamente.
+
+### `<CarouselContent>`
+
+O track de rolagem do viewport. Estrutura interna: um `div.overflow-hidden` externo (o viewport) mais um track flex interno. Usa `-ml-4` (horizontal) ou `-mt-4 flex-col` (vertical) para compensar o padding esquerdo/superior por item.
+
+### `<CarouselItem>`
+
+Um único slide. Renderiza com `role="group"` e `aria-roledescription="slide"`. Por padrão cada slide ocupa `basis-full` (um slide por view); mude `basis-1/2`, `basis-1/3`, etc. no `className` para mostrar vários slides de uma vez.
+
+### `<CarouselPrevious>` e `<CarouselNext>`
+
+Botões de seta pré-estilizados (construídos sobre `Button` de `@gremorie/rx-forms` com `variant="outline"` e `size="icon"`). Auto-desabilitam quando não há slide anterior/seguinte. Posicionam-se absolutamente fora do carousel (`-left-12` / `-right-12`).
+
+| Prop        | Type                | Default     | Descrição                                                        |
+| ----------- | ------------------- | ----------- | ---------------------------------------------------------------- |
+| `variant`   | herdado de `Button` | `"outline"` | Estilo visual.                                                   |
+| `size`      | herdado de `Button` | `"icon"`    | Token de tamanho.                                                |
+| `className` | `string`            | -           | Classes extras - úteis quando a posição padrão `-left-12` corta. |
+
+Todas as outras props de `Button` são encaminhadas.
+
+### `CarouselApi`
+
+Alias de tipo para a API do Embla. Use com `setApi`:
+
+```tsx
+const [api, setApi] = useState<CarouselApi | null>(null);
+
+useEffect(() => {
+  if (!api) return;
+  api.on('select', () => {
+    console.log('Current slide:', api.selectedScrollSnap());
+  });
+}, [api]);
+
+<Carousel setApi={setApi}>...</Carousel>;
+```
+
+## Composição
+
+1. **`<Carousel>`** é dono do Embla e fornece o contexto.
+2. **`<CarouselContent>`** é o track de rolagem. Wrapper obrigatório em volta dos itens.
+3. **`<CarouselItem>`** é cada slide. Customize `basis-*` para views multi-slide.
+4. **`<CarouselPrevious>` / `<CarouselNext>`** são opcionais mas recomendados para usuários de teclado e mouse.
+
+O Carousel registra um handler `keydown` na raiz que rola no `ArrowLeft` / `ArrowRight` independentemente de onde o foco está dentro.
+
+## Variações
+
+### View multi-slide
+
+<ComponentPreview name="display/carousel-sizes">
+  <CarouselSizesPreview />
+</ComponentPreview>
+
+Cada `CarouselItem` tem padrão `basis-full` (um slide por view). Defina `basis-1/2`, `basis-1/3`, etc. para mostrar vários slides de uma vez, e combine `opts={{ align: 'start' }}` para que o track alinhe limpo.
+
+### Carousel vertical
+
+<ComponentPreview name="display/carousel-vertical">
+  <CarouselVerticalPreview />
+</ComponentPreview>
+
+Quando `orientation="vertical"`, defina uma altura explícita no `CarouselContent` interno - o Embla precisa de dimensões limitadas no eixo de rolagem. Os controles de seta se reposicionam para o topo e a base automaticamente.
+
+### Com plugin do Embla (autoplay)
+
+```tsx
+import Autoplay from 'embla-carousel-autoplay';
+
+<Carousel
+  plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
+  opts={{ loop: true }}
+>
+  <CarouselContent>...</CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>;
+```
+
+`stopOnInteraction: true` é inegociável - usuários que interagem com o carousel não devem tê-lo continuando a se mover sob eles.
+
+## Acessibilidade
+
+- **Roles**: a raiz é `role="region"` com `aria-roledescription="carousel"`; cada slide é `role="group"` com `aria-roledescription="slide"`. Adicione um `aria-label` na raiz identificando o que o carousel mostra ("Customer testimonials", "Product gallery").
+- **Teclado**: `ArrowLeft` e `ArrowRight` rolam entre slides (tratado pela captura de `keydown` da raiz). `Tab` move o foco pelos controles de seta e por qualquer conteúdo focável dentro dos slides.
+- **Controles de seta**: `CarouselPrevious` e `CarouselNext` vêm com texto visualmente escondido ("Previous slide", "Next slide") para que usuários de AT saibam o que cada botão faz. Eles auto-desabilitam quando não há mais slides disponíveis.
+- **Auto-rotação**: se você usa `Autoplay`, sempre passe `stopOnInteraction: true` e garanta que usuários de `prefers-reduced-motion` recebam uma experiência estática (pule o plugin inteiramente ou defina `delay: 0`).
+- **Anúncios ao vivo**: para galerias onde o slide ativo muda de significado, envolva uma região irmã `aria-live="polite"` que anuncia o título do slide atual.
+
+## Relacionados
+
+- [Card](/components/display/card) - conteúdo de slide frequente.
+- [Tabs](/components/navigation/tabs) - use quando os slides representam contextos distintos que os usuários navegam deliberadamente em vez de folhear.
+- [Embla Carousel docs](https://www.embla-carousel.com/) - referência completa de plugins e opções.

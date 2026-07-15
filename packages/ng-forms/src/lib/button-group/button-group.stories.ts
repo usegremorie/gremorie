@@ -13,8 +13,8 @@ import {
  * control. Angular parity port of React `ButtonGroup` from `@gremorie/rx-forms`.
  *
  * Pure layout (no brain). `orientation` strips the inner radii/borders so the
- * children read as a single unit. Compose with `gn-button-group-text` for inline
- * affixes and `gn-button-group-separator` for dividers.
+ * children read as a single unit. Compose with `gr-button-group-text` for inline
+ * affixes and `gr-button-group-separator` for dividers.
  */
 const meta: Meta<ButtonGroup> = {
   title: 'Inputs/Buttons/ButtonGroup',
@@ -44,10 +44,10 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-button-group [orientation]="orientation">
+      <gr-button-group [orientation]="orientation">
         <ai-button variant="outline">Prev</ai-button>
         <ai-button variant="outline">Next</ai-button>
-      </gn-button-group>
+      </gr-button-group>
     `,
   }),
 };
@@ -57,12 +57,12 @@ export const WithTextAndSeparator: Story = {
   parameters: { layout: 'padded' },
   render: () => ({
     template: `
-      <gn-button-group>
-        <gn-button-group-text>https://</gn-button-group-text>
+      <gr-button-group>
+        <gr-button-group-text>https://</gr-button-group-text>
         <ai-button variant="outline">gremorie.com</ai-button>
-        <gn-button-group-separator />
+        <gr-button-group-separator />
         <ai-button variant="outline">Copy</ai-button>
-      </gn-button-group>
+      </gr-button-group>
     `,
   }),
 };
@@ -72,11 +72,11 @@ export const Vertical: Story = {
   parameters: { layout: 'padded' },
   render: () => ({
     template: `
-      <gn-button-group orientation="vertical">
+      <gr-button-group orientation="vertical">
         <ai-button variant="outline">Top</ai-button>
         <ai-button variant="outline">Middle</ai-button>
         <ai-button variant="outline">Bottom</ai-button>
-      </gn-button-group>
+      </gr-button-group>
     `,
   }),
 };

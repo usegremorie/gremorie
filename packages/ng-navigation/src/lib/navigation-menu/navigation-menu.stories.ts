@@ -41,32 +41,32 @@ type Story = StoryObj<NavigationMenu>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-navigation-menu>
-        <gn-navigation-menu-list>
-          <gn-navigation-menu-item>
-            <gn-navigation-menu-trigger>Products</gn-navigation-menu-trigger>
-            <gn-navigation-menu-content>
+      <gr-navigation-menu>
+        <gr-navigation-menu-list>
+          <gr-navigation-menu-item>
+            <gr-navigation-menu-trigger>Products</gr-navigation-menu-trigger>
+            <gr-navigation-menu-content>
               <ul class="grid w-[320px] gap-1 p-2">
                 <li>
-                  <a gn-navigation-menu-link href="#">
+                  <a gr-navigation-menu-link href="#">
                     <div class="font-medium">Analytics</div>
                     <p class="text-muted-foreground">Understand your traffic.</p>
                   </a>
                 </li>
                 <li>
-                  <a gn-navigation-menu-link href="#">
+                  <a gr-navigation-menu-link href="#">
                     <div class="font-medium">Storage</div>
                     <p class="text-muted-foreground">Fast, durable object storage.</p>
                   </a>
                 </li>
               </ul>
-            </gn-navigation-menu-content>
-          </gn-navigation-menu-item>
-          <gn-navigation-menu-item>
-            <a gn-navigation-menu-link href="#" class="px-4 py-2">Pricing</a>
-          </gn-navigation-menu-item>
-        </gn-navigation-menu-list>
-      </gn-navigation-menu>
+            </gr-navigation-menu-content>
+          </gr-navigation-menu-item>
+          <gr-navigation-menu-item>
+            <a gr-navigation-menu-link href="#" class="px-4 py-2">Pricing</a>
+          </gr-navigation-menu-item>
+        </gr-navigation-menu-list>
+      </gr-navigation-menu>
     `,
   }),
 };
@@ -75,19 +75,19 @@ export const Workbench: Story = {
 export const WithoutViewport: Story = {
   render: () => ({
     template: `
-      <gn-navigation-menu [viewport]="false">
-        <gn-navigation-menu-list>
-          <gn-navigation-menu-item>
-            <gn-navigation-menu-trigger>Solutions</gn-navigation-menu-trigger>
-            <gn-navigation-menu-content>
+      <gr-navigation-menu [viewport]="false">
+        <gr-navigation-menu-list>
+          <gr-navigation-menu-item>
+            <gr-navigation-menu-trigger>Solutions</gr-navigation-menu-trigger>
+            <gr-navigation-menu-content>
               <ul class="grid w-[260px] gap-1 p-2">
-                <li><a gn-navigation-menu-link href="#">For startups</a></li>
-                <li><a gn-navigation-menu-link href="#">For enterprise</a></li>
+                <li><a gr-navigation-menu-link href="#">For startups</a></li>
+                <li><a gr-navigation-menu-link href="#">For enterprise</a></li>
               </ul>
-            </gn-navigation-menu-content>
-          </gn-navigation-menu-item>
-        </gn-navigation-menu-list>
-      </gn-navigation-menu>
+            </gr-navigation-menu-content>
+          </gr-navigation-menu-item>
+        </gr-navigation-menu-list>
+      </gr-navigation-menu>
     `,
   }),
 };

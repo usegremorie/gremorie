@@ -1,0 +1,185 @@
+---
+title: Radio Group
+description: Grupo de single-select de opções mutuamente exclusivas construído sobre o Radix RadioGroup, com roving tabindex e navegação por setas.
+---
+
+import { RadioGroupPreview } from '@/components/preview/forms/radio-group';
+import { RadioGroupWithDescriptionPreview } from '@/components/preview/forms/radio-group-with-description';
+import { RadioGroupDisabledPreview } from '@/components/preview/forms/radio-group-disabled';
+
+## Visão geral
+
+`RadioGroup` renderiza um conjunto de opções mutuamente exclusivas. Construído sobre `@radix-ui/react-radio-group`, a raiz é dona do valor selecionado e cada `RadioGroupItem` representa uma escolha. Limite as opções visíveis a cinco - além disso, prefira `Select` para eficiência de espaço vertical.
+
+O primitivo do Radix cuida do padrão de roving tabindex (só a opção selecionada fica na ordem de tab) e da navegação por setas automaticamente. Você não precisa conectar `onKeyDown` ou `tabIndex` manualmente.
+
+## Preview
+
+<ComponentPreview name="forms/radio-group">
+  <RadioGroupPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+RadioGroup               the Root, a grid gap-3 owning the value
+└─ RadioGroupItem        one circular option (value required); pair with a Label
+   └─ Indicator          filled CircleIcon dot, shown only when selected
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-radio-group ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-radio-group ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-radio-group ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-radio-group ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Label, RadioGroup, RadioGroupItem } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <RadioGroup defaultValue="react">
+      <div className="flex items-center gap-2">
+        <RadioGroupItem id="rg-react" value="react" />
+        <Label htmlFor="rg-react">React</Label>
+      </div>
+      <div className="flex items-center gap-2">
+        <RadioGroupItem id="rg-ng" value="angular" />
+        <Label htmlFor="rg-ng">Angular</Label>
+      </div>
+    </RadioGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<RadioGroup>`
+
+| Prop            | Type                         | Default      | Description                                                    |
+| --------------- | ---------------------------- | ------------ | -------------------------------------------------------------- |
+| `value`         | `string`                     | -            | Valor selecionado controlado.                                  |
+| `defaultValue`  | `string`                     | -            | Valor inicial não controlado.                                  |
+| `onValueChange` | `(value: string) => void`    | -            | Dispara quando o usuário seleciona outra opção.                |
+| `disabled`      | `boolean`                    | `false`      | Desabilita o grupo inteiro.                                    |
+| `required`      | `boolean`                    | `false`      | Marca o grupo como obrigatório para envio de formulário.       |
+| `name`          | `string`                     | -            | Nome do campo de formulário.                                   |
+| `orientation`   | `"horizontal" \| "vertical"` | `"vertical"` | Afeta a direção da navegação por setas.                        |
+| `loop`          | `boolean`                    | `true`       | Quando `true`, as setas dão a volta da última para a primeira. |
+
+Encaminha para `RadioGroupPrimitive.Root`. Renderiza como um CSS Grid com `gap-3` por default; sobrescreva `className` para layout customizado.
+
+### `<RadioGroupItem>`
+
+| Prop       | Type      | Default | Description                                     |
+| ---------- | --------- | ------- | ----------------------------------------------- |
+| `value`    | `string`  | -       | O valor reportado de volta ao pai. Obrigatório. |
+| `disabled` | `boolean` | `false` | Desabilita esta opção específica.               |
+
+Renderiza um alvo circular com o indicador `CircleIcon` visível apenas quando selecionado. Carrega `data-slot="radio-group-item"`.
+
+## Composição
+
+1. **`<RadioGroup>`** é o context raiz. Ele é dono do valor selecionado e da orientação.
+2. **Cada `<RadioGroupItem>` é pareado com um `<Label>`** via `htmlFor` correspondendo ao `id` do item. O label é o affordance que a maioria dos usuários clica.
+3. **Para integração com formulário**, envolva com `<FormField>` + `<FormControl>` para que o wiring de ARIA e a validação se propaguem.
+
+## Variações
+
+### Lista vertical (default)
+
+O padrão canônico para 2-5 opções. Layout vertical facilita a leitura.
+
+```tsx
+<RadioGroup defaultValue="monthly">
+  <div className="flex items-center gap-2">
+    <RadioGroupItem id="monthly" value="monthly" />
+    <Label htmlFor="monthly">Monthly billing</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem id="yearly" value="yearly" />
+    <Label htmlFor="yearly">Yearly billing</Label>
+  </div>
+</RadioGroup>
+```
+
+### Horizontal para labels curtos
+
+Quando as opções são curtas e o context ao redor é largo o suficiente, mude para orientação horizontal.
+
+```tsx
+<RadioGroup
+  defaultValue="left"
+  orientation="horizontal"
+  className="flex flex-row gap-4"
+>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem id="left" value="left" />
+    <Label htmlFor="left">Left</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem id="center" value="center" />
+    <Label htmlFor="center">Center</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem id="right" value="right" />
+    <Label htmlFor="right">Right</Label>
+  </div>
+</RadioGroup>
+```
+
+### Com descrições
+
+Adicione um parágrafo de hint após cada label quando a escolha tem consequências que valem explicar. Alinhe o item ao topo da linha com `mt-0.5`.
+
+<ComponentPreview name="forms/radio-group-with-description">
+  <RadioGroupWithDescriptionPreview />
+</ComponentPreview>
+
+### Opção desabilitada
+
+Desabilite um único `RadioGroupItem` para travar uma escolha indisponível enquanto mantém o resto do grupo interativo. Itens desabilitados são pulados durante a navegação por teclado.
+
+<ComponentPreview name="forms/radio-group-disabled">
+  <RadioGroupDisabledPreview />
+</ComponentPreview>
+
+## Acessibilidade
+
+- **Padrão ARIA radiogroup**: a raiz carrega `role="radiogroup"`; cada item carrega `role="radio"` com `aria-checked` refletindo o estado.
+- **Roving tabindex**: apenas o item selecionado (ou o primeiro, se nenhum estiver selecionado) fica na ordem de tab. `Tab` sai do grupo; as setas movem dentro dele.
+- **Teclado**:
+  - `ArrowDown` / `ArrowRight` move para a próxima opção (e a seleciona).
+  - `ArrowUp` / `ArrowLeft` move para a opção anterior.
+  - `Home` / `End` pulam para o primeiro / último.
+  - `Space` seleciona a opção em foco quando nenhuma está selecionada.
+- **Loop**: as setas dão a volta por default. Passe `loop={false}` se seu design espera comportamento de limite.
+- **Itens desabilitados** são pulados durante a navegação por teclado.
+
+## Relacionados
+
+- [Checkbox](/components/selection/checkbox) - irmão de multi-select
+- [Select](/components/selection/select) - alternativa dropdown para listas mais longas
+- [Toggle Group](/components/buttons/toggle-group) - single-select liderado por ícone para toolbars compactas
+- [Label](/components/text/label) - o companheiro canônico
+- [Form](/components/form) - conecte o RadioGroup no react-hook-form

@@ -52,14 +52,14 @@ import {
   standalone: true,
   imports: [Button, Card, CardHeader, CardTitle, CardContent],
   template: `
-    <gn-card class="max-w-sm">
-      <gn-card-header>
-        <gn-card-title>Welcome</gn-card-title>
-      </gn-card-header>
-      <gn-card-content>
+    <gr-card class="max-w-sm">
+      <gr-card-header>
+        <gr-card-title>Welcome</gr-card-title>
+      </gr-card-header>
+      <gr-card-content>
         <ai-button>Get started</ai-button>
-      </gn-card-content>
-    </gn-card>
+      </gr-card-content>
+    </gr-card>
   `,
 })
 export class ExampleComponent {}

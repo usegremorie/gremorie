@@ -1,0 +1,133 @@
+---
+title: Grouping and spacing
+description: 'Princípios de Gestalt aplicados a UI de produto. Proximidade, similaridade e espaço em branco dizem ao olho o que pertence junto.'
+related: rx-card, rx-separator, rx-stack, rx-field-group
+tags: [visual-hierarchy, gestalt, spacing, layout]
+---
+
+## TL;DR
+
+O olho agrupa elementos por **proximidade** e **similaridade** antes de ler qualquer texto. Espaço em branco é uma ferramenta estrutural, não decoração. Itens relacionados ficam próximos; itens não relacionados ficam afastados; o tratamento visual (tamanho, peso, cor) comunica prioridade. Acerte o espaçamento e o resto do design fica 80% mais fácil.
+
+## A regra
+
+### Proximidade
+
+Itens que pertencem juntos ficam visualmente próximos; itens que não pertencem ficam visualmente afastados.
+
+- **Campos relacionados ficam entre 8-16px** um do outro (label-para-input, input-para-texto-de-ajuda).
+- **Seções de um form ficam 32-48px afastadas**. O intervalo sinaliza "tópico diferente".
+- **Superfícies diferentes (cards) ficam 16-24px afastadas**. O intervalo sinaliza "objeto diferente".
+- **Margens de página são maiores ainda** (48-96px no desktop) para que o conteúdo tenha espaço para respirar.
+
+### Similaridade
+
+Itens com o mesmo tratamento visual são lidos como pertencentes à mesma categoria.
+
+- **Mesmo tipo, mesmo formato.** Todos os buttons primários parecem idênticos em todo o app. Todas as ações secundárias parecem idênticas.
+- **Mesmo papel, mesma estilização.** Todos os erros são vermelhos e usam o mesmo ícone. Todas as mensagens de sucesso compartilham o tratamento.
+- **Hierarquia via passos consistentes.** Se o h1 é 32px / 600, o h2 é 24px / 600 - não 26px / 500 num lugar e 28px / 700 em outro.
+
+### Fechamento e continuidade
+
+O olho preenche formas que são sugeridas mas não desenhadas. Um card com um fundo sutil define uma região sem precisar de uma borda dura. Uma linha de avatares com alinhamento vertical consistente se lê como um grupo mesmo sem um wrapper.
+
+### Espaço em branco é estrutural
+
+Espaço em branco (área vazia entre elementos) é a ferramenta de agrupamento mais forte. Ele não precisa ser preenchido. Uma página com espaço em branco generoso é escaneada mais rápido do que uma página lotada de conteúdo porque o olho consegue encontrar a próxima coisa que lhe interessa.
+
+- **Intervalos entre seções são 2-3x maiores do que intervalos dentro de seções.** Se os itens dentro de uma seção estão 12px afastados, as seções em si estão 24-36px afastadas.
+- **Elementos acima da dobra ganham mais espaço.** Cada unidade de atenção custa mais ali.
+- **Clusters apertados comunicam densidade** (tabelas de dados, dashboards). Clusters soltos comunicam calma (configurações, onboarding). Escolha pela intenção da superfície.
+
+## Por que
+
+A psicologia de Gestalt (Wertheimer, Koffka, Kohler, anos 1920) estabeleceu que humanos percebem grupos antes de elementos individuais. Proximidade, similaridade, fechamento e continuidade são pré-cognitivos: acontecem antes da leitura consciente. Um designer que luta contra esses princípios faz o usuário trabalhar mais.
+
+Uma falha comum: uma página de configurações com cada seção a 16px de distância. O usuário não consegue dizer onde uma seção termina e a próxima começa. A correção não é uma linha separadora - é dobrar o intervalo entre as seções. O olho faz o trabalho.
+
+A falha oposta: cada item em uma lista a 48px de distância sem relação. O usuário percebe uma lista de objetos isolados, não uma lista de um tipo. Apertar para 12-16px revela a estrutura.
+
+Espaço em branco é contraintuitivo para iniciantes porque parece área desperdiçada. Mas a atenção do usuário é o recurso escasso; o espaço em branco a compra de volta.
+
+## Como aplicar
+
+### Faça: proximidade em um form
+
+```tsx
+<form className="space-y-8">
+  <section className="space-y-4">
+    <h3>Personal information</h3>
+    <div className="space-y-2">
+      <Label>Full name</Label>
+      <Input />
+      <FieldDescription>As it appears on your ID.</FieldDescription>
+    </div>
+    <div className="space-y-2">
+      <Label>Email</Label>
+      <Input type="email" />
+    </div>
+  </section>
+
+  <section className="space-y-4">
+    <h3>Billing address</h3>
+    {/* fields */}
+  </section>
+</form>
+```
+
+Dentro de um campo: 8px (label, input, ajuda). Dentro de uma seção: 16px (entre campos). Entre seções: 32px. O olho encontra os limites das seções sem ajuda.
+
+### Faça: similaridade por tratamento consistente
+
+Todos os headings de seção compartilham o mesmo tamanho, peso e cor. Todos os inputs têm a mesma altura. Todas as ações primárias são a mesma variant. Um usuário escaneando a página lê a estrutura em milissegundos.
+
+### Não faça: espaçamento igual através de limites
+
+```tsx
+<div className="space-y-4">
+  <Label>Name</Label>
+  <Input />
+  <h3>Address</h3>
+  <Label>Street</Label>
+  <Input />
+</div>
+```
+
+Intervalos iguais em todo lugar significam que o usuário não tem pista visual de onde a seção "Personal" termina e a seção "Address" começa. O h3 tem que fazer o trabalho sozinho; ele não deveria ter que fazer.
+
+### Não faça: bordas demais
+
+```tsx
+<div className="border rounded-md p-4">
+  <h3 className="border-b pb-2 mb-2">Section</h3>
+  <div className="border rounded-md p-2">{/* ... */}</div>
+</div>
+```
+
+Bordas dentro de bordas criam ruído visual. Espaço em branco sozinho (intervalo maior entre o h3 da seção e o conteúdo) faz o mesmo trabalho com menos tinta. Reserve bordas para casos em que contraste e agrupamento não dão conta.
+
+## Modos de densidade
+
+Superfícies diferentes querem densidades diferentes:
+
+- **Dashboards, tabelas de dados**: densidade alta. Reduza o espaçamento vertical para 4-8px. O usuário está escaneando muitos itens.
+- **Configurações, forms**: densidade média. 12-16px dentro das seções, 32px entre seções.
+- **Onboarding, marketing**: densidade baixa. Espaço em branco generoso, headings grandes. O usuário está lendo com cuidado.
+
+Ajuste de forma uniforme dentro de uma superfície. Trocar de densidade no meio da página é desconcertante.
+
+## Contra-casos
+
+- **UIs de dados densas** (terminais financeiros, visualizadores de log) violam o "espaço em branco generoso" intencionalmente. Profissionais esperam densidade e a valorizam. Aceitável para ferramentas de especialista.
+- **Mobile** tem menos espaço e deve comprimir o espaçamento proporcionalmente. As proporções (dentro vs entre) deveriam se manter; os valores absolutos encolhem.
+- **Cards em um grid** podem ter intervalos pequenos (8-12px) porque o próprio card fornece o limite de agrupamento. Os cards são os grupos; o intervalo do grid os separa.
+- **Informação que é genuinamente plana** (uma lista de 20 contatos, todos no mesmo nível) não se beneficia de agrupamento artificial. Mantenha o espaçamento uniforme.
+
+## Fontes
+
+- Wertheimer, M. (1923). "Laws of organization in perceptual forms" - texto fundador da psicologia de Gestalt.
+- Norman, "The Design of Everyday Things" (2013): sobre percepção visual e agrupamento.
+- Nielsen Norman Group: "The Importance of Visual Hierarchy" (https://www.nngroup.com/articles/visual-hierarchy-ux-definition/)
+- Tufte, "The Visual Display of Quantitative Information" (1983): sobre data ink ratio e espaço em branco.
+- Material Design: guidelines de espaçamento e layout.

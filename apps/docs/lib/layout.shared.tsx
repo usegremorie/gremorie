@@ -11,22 +11,22 @@ import { i18n } from '@/lib/i18n';
  * Portuguese overrides the visible UI labels. Page CONTENT is translated via
  * `*.pt.mdx` files, not here.
  */
+// fumadocs ≥16: `defineI18nUI`'s second arg is the per-locale translation map
+// directly (`Partial<Record<lang, …>>`), no longer wrapped in `{ translations }`.
 export const { provider } = defineI18nUI(i18n, {
-  translations: {
-    en: { displayName: 'English' },
-    pt: {
-      displayName: 'Português',
-      search: 'Buscar',
-      searchNoResult: 'Nenhum resultado',
-      toc: 'Nesta página',
-      tocNoHeadings: 'Sem títulos',
-      lastUpdate: 'Última atualização',
-      chooseLanguage: 'Idioma',
-      nextPage: 'Próximo',
-      previousPage: 'Anterior',
-      chooseTheme: 'Tema',
-      editOnGithub: 'Editar no GitHub',
-    },
+  en: { displayName: 'English' },
+  pt: {
+    displayName: 'Português',
+    search: 'Buscar',
+    searchNoResult: 'Nenhum resultado',
+    toc: 'Nesta página',
+    tocNoHeadings: 'Sem títulos',
+    lastUpdate: 'Última atualização',
+    chooseLanguage: 'Idioma',
+    nextPage: 'Próximo',
+    previousPage: 'Anterior',
+    chooseTheme: 'Tema',
+    editOnGithub: 'Editar no GitHub',
   },
 });
 

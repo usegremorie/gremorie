@@ -91,7 +91,7 @@ export interface ComponentContract {
   /**
    * The component's identifier per edition, for generating live usage code:
    * `rx` is the React component name (PascalCase, e.g. `'ChartArtifact'`); `ng`
-   * is the Angular element selector (e.g. `'chart-artifact'` or `'gn-input'`).
+   * is the Angular element selector (e.g. `'chart-artifact'` or `'gr-input'`).
    */
   tag?: { rx?: string; ng?: string };
   /**

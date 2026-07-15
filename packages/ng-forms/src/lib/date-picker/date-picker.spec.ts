@@ -6,7 +6,7 @@ import { DatePicker } from './date-picker';
 @Component({
   standalone: true,
   imports: [DatePicker],
-  template: `<gn-date-picker placeholder="Pick a date" />`,
+  template: `<gr-date-picker placeholder="Pick a date" />`,
 })
 class Host {}
 

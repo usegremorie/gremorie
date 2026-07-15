@@ -1,0 +1,140 @@
+---
+title: Input
+description: Campo de texto de linha única que adota todo `type` nativo do HTML e expõe estados de focus, erro e disabled controlados por token.
+---
+
+import { InputPreview } from '@/components/preview/forms/input';
+import { InputWithLabelPreview } from '@/components/preview/forms/input-with-label';
+import { InputInvalidPreview } from '@/components/preview/forms/input-invalid';
+import { InputFilePreview } from '@/components/preview/forms/input-file';
+import { InputDisabledPreview } from '@/components/preview/forms/input-disabled';
+
+## Visão geral
+
+`Input` é um wrapper estilizado fino ao redor do elemento `<input>` nativo. Passe qualquer `type` do HTML (`text`, `email`, `password`, `number`, `search`, `tel`, `url`, `file`, `date`...) e a semântica do browser, a validação e o teclado virtual vêm todos de graça.
+
+Todos os estados visuais são controlados por token: `border-input` para o padrão, `focus-visible:ring-ring/50` para focus de teclado, e `aria-invalid:border-destructive` para erro. Não há variants - inputs devem parecer iguais em todo lugar para que os usuários possam prever seu comportamento.
+
+## Preview
+
+<ComponentPreview name="forms/input">
+  <InputPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Input   único elemento <input> nativo estilizado (primitive folha)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-input ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-input ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-input ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-input ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Input, Label } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <div className="grid gap-2">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" type="email" placeholder="you@example.com" />
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Input>`
+
+| Prop           | Type      | Default  | Description                                                                                                                        |
+| -------------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `type`         | `string`  | `"text"` | Qualquer tipo de input nativo do HTML. Controla o teclado, a validação e a UI da plataforma (ex. date picker, diálogo de arquivo). |
+| `disabled`     | `boolean` | `false`  | Desabilita a interação. Aplica `pointer-events-none` e `opacity-50`.                                                               |
+| `aria-invalid` | `boolean` | -        | Quando `true`, troca a borda e o focus ring para o token destructive.                                                              |
+
+Estende todos os `React.ComponentProps<"input">`. Renderiza com `data-slot="input"` para que o `InputGroup` pai possa controlar os estados de focus e erro de todo o grupo.
+
+## Composição
+
+1. **`<Input>`** é um primitive folha. Combine-o com um `<Label>` (vinculado via `htmlFor` / `id`) para que cliques e interações de leitor de tela foquem o campo.
+2. **Para ícones ou buttons de prefixo/sufixo**, envolva-o com `<InputGroup>` e use `<InputGroupInput>` em vez de `<Input>` para que o grupo possa controlar os estados de focus compartilhados.
+3. **Para uso vinculado a formulário**, envolva-o em um `<FormField>` + `<FormControl>` para que labels, descriptions e mensagens de erro conectem automaticamente as relações ARIA.
+
+## Variações
+
+### Com label
+
+O padrão canônico. `type="email"` dispara o teclado de e-mail no mobile e habilita a validação nativa do browser. Combine cada input com um `<Label>` vinculado via `htmlFor`.
+
+<ComponentPreview name="forms/input-with-label">
+  <InputWithLabelPreview />
+</ComponentPreview>
+
+### Input numérico com min/max
+
+`type="number"` mostra o teclado numérico no mobile e aceita `min`, `max`, `step` para validação do browser.
+
+```tsx
+<div className="grid gap-2">
+  <Label htmlFor="quantity">Quantity</Label>
+  <Input id="quantity" type="number" min={1} max={99} defaultValue={1} />
+</div>
+```
+
+### Estado invalid
+
+Controle `aria-invalid` a partir da sua biblioteca de validação e aponte `aria-describedby` para o texto de erro. O ring e a borda destructive vêm de graça.
+
+<ComponentPreview name="forms/input-invalid">
+  <InputInvalidPreview />
+</ComponentPreview>
+
+### Input de arquivo
+
+`type="file"` renderiza o picker nativo. Os seletores internos `file:` estilizam o trigger em formato de button.
+
+<ComponentPreview name="forms/input-file">
+  <InputFilePreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` remove o input da ordem de tabulação, bloqueia eventos de ponteiro e reduz a opacidade para 50%.
+
+<ComponentPreview name="forms/input-disabled">
+  <InputDisabledPreview />
+</ComponentPreview>
+
+## Acessibilidade
+
+- **Labels**: todo input precisa de um `<Label>` associado (via `htmlFor` combinando com o `id` do input) ou de um `aria-label` explícito.
+- **Focus**: focus-visible ring de 3px controlado por `focus-visible:ring-ring/50`, então aparece apenas para usuários de teclado.
+- **Validação**: combine `aria-invalid="true"` com `aria-describedby` apontando para a mensagem de erro para que leitores de tela anunciem a falha quando o focus entra no campo.
+- **Disabled**: `disabled` remove o input da ordem de tabulação e impede a ativação, incluindo focus emitido por JavaScript.
+- **Autocomplete**: respeite as convenções da plataforma definindo `autoComplete="email"`, `"current-password"`, `"one-time-code"`, etc.
+
+## Relacionados
+
+- [Label](/components/text/label) - o primitive de label acessível
+- [Input Group](/components/text/input-group) - envolva Input com ícones, buttons ou dicas de kbd
+- [Textarea](/components/text/textarea) - contraparte multi-linha
+- [Form](/components/form) - conecta Input ao react-hook-form com helpers de ARIA
+- [Input OTP](/components/text/input-otp) - input segmentado para códigos de uso único

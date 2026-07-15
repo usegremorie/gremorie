@@ -35,7 +35,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-calendar class="rounded-md border" [disabled]="disabled" />
+      <gr-calendar class="rounded-md border" [disabled]="disabled" />
     `,
   }),
 };
@@ -44,7 +44,7 @@ export const Workbench: Story = {
 export const Bordered: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-calendar class="rounded-md border" />`,
+    template: `<gr-calendar class="rounded-md border" />`,
   }),
 };
 
@@ -52,6 +52,6 @@ export const Bordered: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-calendar class="rounded-md border" [disabled]="true" />`,
+    template: `<gr-calendar class="rounded-md border" [disabled]="true" />`,
   }),
 };

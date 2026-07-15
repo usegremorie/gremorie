@@ -11,13 +11,13 @@ import {
   standalone: true,
   imports: [ResizablePanelGroup, ResizablePanel, ResizableHandle],
   template: `
-    <gn-resizable-panel-group [direction]="direction">
-      <gn-resizable-panel [defaultSize]="40" [minSize]="20"
-        >A</gn-resizable-panel
+    <gr-resizable-panel-group [direction]="direction">
+      <gr-resizable-panel [defaultSize]="40" [minSize]="20"
+        >A</gr-resizable-panel
       >
-      <gn-resizable-handle [withHandle]="withHandle" />
-      <gn-resizable-panel [defaultSize]="60">B</gn-resizable-panel>
-    </gn-resizable-panel-group>
+      <gr-resizable-handle [withHandle]="withHandle" />
+      <gr-resizable-panel [defaultSize]="60">B</gr-resizable-panel>
+    </gr-resizable-panel-group>
   `,
 })
 class Host {

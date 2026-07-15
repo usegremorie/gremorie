@@ -7,7 +7,7 @@ import { Toggle } from './toggle';
   standalone: true,
   imports: [Toggle],
   template: `
-    <gn-toggle
+    <gr-toggle
       [variant]="variant()"
       [size]="size()"
       [disabled]="disabled()"
@@ -15,7 +15,7 @@ import { Toggle } from './toggle';
       ariaLabel="Toggle"
     >
       Aa
-    </gn-toggle>
+    </gr-toggle>
   `,
 })
 class Host {

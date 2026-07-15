@@ -7,7 +7,13 @@ describe('CONTRACTS', () => {
     expect(c).toBeTruthy();
     const names = c!.props.map((p) => p.name);
     expect(names).toEqual(
-      expect.arrayContaining(['title', 'data', 'type', 'categoryKey', 'valueKey']),
+      expect.arrayContaining([
+        'title',
+        'data',
+        'type',
+        'categoryKey',
+        'valueKey',
+      ]),
     );
     expect(c!.guidance.whenNotToUse?.length).toBeGreaterThan(0);
   });

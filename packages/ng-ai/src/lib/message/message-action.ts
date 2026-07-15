@@ -19,7 +19,7 @@ import {
  *
  * Mirrors React `MessageAction` (rx-ai): a ghost-style icon button with
  * an optional tooltip. When `tooltip` is set, the button is wrapped in the
- * styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * styled `gr-tooltip` compound from `@gremorie/ng-overlays` (the same
  * primitive the React side uses from `@gremorie/rx-overlays`), so the
  * surface matches the styled tooltip (popover card + arrow), not the bare
  * brain overlay.
@@ -57,21 +57,21 @@ import {
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip [side]="side()">
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip [side]="side()">
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }
   `,
 })
 export class MessageAction {
-  /** Optional tooltip text shown on hover/focus via the styled gn-tooltip. */
+  /** Optional tooltip text shown on hover/focus via the styled gr-tooltip. */
   readonly tooltip = input<string | null | undefined>(null);
 
   /** Tooltip side (default 'top'), matches rx-ai TooltipContent side. */

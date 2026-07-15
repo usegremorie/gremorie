@@ -29,18 +29,18 @@ import {
     BrnSheetContent,
   ],
   template: `
-    <gn-drawer side="bottom">
-      <button gn-drawer-trigger>Open</button>
+    <gr-drawer side="bottom">
+      <button gr-drawer-trigger>Open</button>
       <ng-template brnSheetContent>
-        <gn-drawer-content direction="bottom">
-          <gn-drawer-header>
-            <h2 gn-drawer-title>Move goal</h2>
-            <p gn-drawer-description>Set your daily activity goal.</p>
-          </gn-drawer-header>
-          <gn-drawer-footer />
-        </gn-drawer-content>
+        <gr-drawer-content direction="bottom">
+          <gr-drawer-header>
+            <h2 gr-drawer-title>Move goal</h2>
+            <p gr-drawer-description>Set your daily activity goal.</p>
+          </gr-drawer-header>
+          <gr-drawer-footer />
+        </gr-drawer-content>
       </ng-template>
-    </gn-drawer>
+    </gr-drawer>
   `,
 })
 class Host {}

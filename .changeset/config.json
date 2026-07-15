@@ -17,13 +17,19 @@
       "@gremorie/rx-data",
       "@gremorie/rx-navigation",
       "@gremorie/rx-icons",
+      "@gremorie/tokens",
       "@gremorie/ng-core",
       "@gremorie/ng-ai",
+      "@gremorie/ng-artifacts",
       "@gremorie/ng-display",
       "@gremorie/ng-containers",
       "@gremorie/ng-data",
       "@gremorie/ng-feedback",
-      "@gremorie/cli"
+      "@gremorie/ng-forms",
+      "@gremorie/ng-navigation",
+      "@gremorie/ng-overlays",
+      "@gremorie/cli",
+      "gremorie"
     ]
   ],
   "linked": [],

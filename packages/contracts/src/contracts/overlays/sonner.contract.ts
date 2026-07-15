@@ -79,7 +79,7 @@ export const sonner = defineContract({
     rx: 'interaction-overlays-sonner--workbench',
     ng: 'interaction-overlays-sonner--workbench',
   },
-  tag: { rx: 'Toaster', ng: 'gn-sonner' },
+  tag: { rx: 'Toaster', ng: 'gr-sonner' },
   example: {
     theme: 'system',
     position: 'bottom-right',

@@ -70,7 +70,7 @@ export const input = defineContract({
     rx: 'inputs-text-input--workbench',
     ng: 'inputs-text-input--workbench',
   },
-  tag: { rx: 'Input', ng: 'gn-input' },
+  tag: { rx: 'Input', ng: 'gr-input' },
   example: {
     type: 'text',
     placeholder: 'Type here…',

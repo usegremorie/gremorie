@@ -41,7 +41,7 @@ export const skeleton = defineContract({
     rx: 'interaction-feedback-skeleton--workbench',
     ng: 'interaction-feedback-skeleton--workbench',
   },
-  tag: { rx: 'Skeleton', ng: 'gn-skeleton' },
+  tag: { rx: 'Skeleton', ng: 'gr-skeleton' },
   // No controllable scalar props (className only); nothing to seed.
   example: {},
   figma: { nodeId: null },

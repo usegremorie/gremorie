@@ -1,0 +1,282 @@
+---
+title: Dropdown Menu
+description: 'Menu de ações liderado por verbos, atrelado a um trigger. Itens, grupos, separadores, itens de checkbox ou radio, submenus e dicas de shortcut alinhadas à direita.'
+---
+
+import { DropdownMenuPreview } from '@/components/preview/overlays/dropdown-menu';
+import { DropdownMenuCheckboxesPreview } from '@/components/preview/overlays/dropdown-menu-checkboxes';
+import { DropdownMenuRadioPreview } from '@/components/preview/overlays/dropdown-menu-radio';
+import { DropdownMenuSubmenuPreview } from '@/components/preview/overlays/dropdown-menu-submenu';
+
+## Visão geral
+
+`DropdownMenu` é o primitivo certo para ações: Edit, Delete, Duplicate, Open in new tab. É distinto do `Select`, que guarda valores (USA, Brazil, Japan). Quando os itens do menu se leem como verbos, este é o primitivo certo.
+
+O compound expõe tudo o que o Radix oferece: itens com variante destructive, itens de checkbox e radio com indicadores auto-renderizados, seções agrupadas, separadores, submenus e um helper de shortcut que alinha o texto à direita.
+
+## Preview
+
+<ComponentPreview name="overlays/dropdown-menu">
+  <DropdownMenuPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+DropdownMenu                       Raiz que mantém o estado de abertura
+├─ DropdownMenuTrigger             Elemento que abre o menu
+└─ DropdownMenuContent             Superfície em portal (sideOffset default 4)
+   ├─ DropdownMenuLabel            Rótulo de seção não interativo
+   ├─ DropdownMenuSeparator        Divisor
+   ├─ DropdownMenuGroup            Agrupa itens relacionados
+   │  └─ DropdownMenuItem          Linha de ação (variant default | destructive, inset)
+   ├─ DropdownMenuCheckboxItem     Item alternável
+   ├─ DropdownMenuRadioGroup       Container de escolha única
+   │  └─ DropdownMenuRadioItem     Item de escolha única
+   ├─ DropdownMenuSub              Submenu aninhado
+   │  ├─ DropdownMenuSubTrigger    Abre o submenu
+   │  └─ DropdownMenuSubContent    Superfície do submenu
+   └─ DropdownMenuShortcut         Dica de teclado alinhada à direita
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-dropdown-menu ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-dropdown-menu ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-dropdown-menu ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-dropdown-menu ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Button } from "@gremorie/rx-forms";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@gremorie/rx-overlays";
+
+export function Example() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Actions</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Open in chat</DropdownMenuItem>
+        <DropdownMenuItem>Copy URL</DropdownMenuItem>
+        <DropdownMenuItem>Export</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<DropdownMenu>`
+
+Estende o Radix `DropdownMenu.Root`. API controlada padrão (`open`, `defaultOpen`, `onOpenChange`, `modal`).
+
+### `<DropdownMenuTrigger>`
+
+Estende o Radix `DropdownMenu.Trigger`. Use `asChild` para encaminhar estilos a um `Button` ou qualquer trigger customizado.
+
+### `<DropdownMenuContent>`
+
+| Prop         | Type                                     | Default    | Description                                    |
+| ------------ | ---------------------------------------- | ---------- | ---------------------------------------------- |
+| `sideOffset` | `number`                                 | `4`        | Espaçamento em pixels entre trigger e content. |
+| `side`       | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Lado preferido; vira automaticamente.          |
+| `align`      | `"start" \| "center" \| "end"`           | `"center"` | Alinhamento relativo ao eixo do trigger.       |
+
+Envolvido em um `Portal` do Radix. Limitado a `--radix-dropdown-menu-content-available-height`, com scroll, `min-w-[8rem]`.
+
+### `<DropdownMenuItem>`
+
+| Prop       | Type                         | Default     | Description                                                             |
+| ---------- | ---------------------------- | ----------- | ----------------------------------------------------------------------- |
+| `inset`    | `boolean`                    | `false`     | Adiciona `pl-8` para o item alinhar com as linhas de checkbox/radio.    |
+| `variant`  | `"default" \| "destructive"` | `"default"` | `destructive` troca a cor do texto e do ícone para o token destructive. |
+| `disabled` | `boolean`                    | `false`     | Desabilita a interação; renderiza a 50% de opacidade.                   |
+
+### `<DropdownMenuCheckboxItem>`
+
+| Prop              | Type                         | Default | Description                |
+| ----------------- | ---------------------------- | ------- | -------------------------- |
+| `checked`         | `boolean \| "indeterminate"` | -       | Estado checked controlado. |
+| `onCheckedChange` | `(checked: boolean) => void` | -       | Disparado ao alternar.     |
+
+Renderiza um ícone de check posicionado de forma absoluta à esquerda quando marcado.
+
+### `<DropdownMenuRadioGroup>` + `<DropdownMenuRadioItem>`
+
+Emparelhe um grupo com um ou mais itens de radio. O grupo detém o `value` e o `onValueChange`. Cada item de radio renderiza um bullet auto-posicionado quando selecionado.
+
+### `<DropdownMenuLabel>`
+
+Heading de seção não interativo.
+
+| Prop    | Type      | Default | Description                                                |
+| ------- | --------- | ------- | ---------------------------------------------------------- |
+| `inset` | `boolean` | `false` | Adiciona `pl-8` para alinhar com as linhas de check/radio. |
+
+### `<DropdownMenuSeparator>`
+
+Divisor fino `bg-border` com margem negativa para abranger o padding do menu.
+
+### `<DropdownMenuShortcut>`
+
+Um `<span>` alinhado à direita para dicas de teclado (`⌘C`, `⇧⌫`). Helper de layout puro; sem lógica Radix.
+
+### `<DropdownMenuSub>` + `<DropdownMenuSubTrigger>` + `<DropdownMenuSubContent>`
+
+Submenu aninhado. O sub-trigger renderiza um chevron auto-posicionado à direita. O sub-content abre ao lado do trigger.
+
+### `<DropdownMenuPortal>`, `<DropdownMenuGroup>`
+
+Pass-throughs sobre os primitivos do Radix com atributos `data-slot`.
+
+## Composição
+
+1. **`<DropdownMenu>`** detém o estado de aberto/fechado.
+2. **`<DropdownMenuTrigger asChild>`** envolve um `Button` ou botão de ícone.
+3. **`<DropdownMenuContent>`** monta via Portal ancorado ao trigger.
+4. **Dentro do content**: agrupe itens com `DropdownMenuGroup`, rotule seções com `DropdownMenuLabel`, divida com `DropdownMenuSeparator`.
+5. **Shortcuts** ficam na borda direita via `DropdownMenuShortcut`.
+6. **Submenus** envolvem blocos aninhados de `DropdownMenuSub`.
+
+## Variações
+
+### Submenu com shortcuts e ação destrutiva
+
+O menu canônico de ações de linha: shortcuts alinhados à direita, um `DropdownMenuSub` aninhado e a variante destructive para delete.
+
+<ComponentPreview name="overlays/dropdown-menu-submenu">
+  <DropdownMenuSubmenuPreview />
+</ComponentPreview>
+
+### Itens de checkbox
+
+Alterne colunas ou filtros visíveis sem fechar o menu. Cada `DropdownMenuCheckboxItem` renderiza seu próprio indicador de check.
+
+<ComponentPreview name="overlays/dropdown-menu-checkboxes">
+  <DropdownMenuCheckboxesPreview />
+</ComponentPreview>
+
+### Itens de radio
+
+Escolha um único valor de um `DropdownMenuRadioGroup`. O item selecionado renderiza um bullet auto-posicionado.
+
+<ComponentPreview name="overlays/dropdown-menu-radio">
+  <DropdownMenuRadioPreview />
+</ComponentPreview>
+
+### Itens com shortcuts e ação destrutiva
+
+O menu canônico de ações de linha. Note os shortcuts alinhados à direita e a variante destructive para delete.
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="ghost" size="icon" aria-label="Row actions">
+      <MoreHorizontalIcon />
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end">
+    <DropdownMenuItem>
+      <PencilIcon /> Edit
+      <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      <CopyIcon /> Duplicate
+      <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">
+      <Trash2Icon /> Delete
+      <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Itens de checkbox
+
+Alterne colunas ou filtros visíveis sem fechar o menu.
+
+```tsx
+<DropdownMenuContent>
+  <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+  <DropdownMenuSeparator />
+  <DropdownMenuCheckboxItem
+    checked={cols.name}
+    onCheckedChange={toggle('name')}
+  >
+    Name
+  </DropdownMenuCheckboxItem>
+  <DropdownMenuCheckboxItem
+    checked={cols.email}
+    onCheckedChange={toggle('email')}
+  >
+    Email
+  </DropdownMenuCheckboxItem>
+</DropdownMenuContent>
+```
+
+### Submenu
+
+Aninhe ações secundárias dentro de um sub-trigger.
+
+```tsx
+<DropdownMenuContent>
+  <DropdownMenuItem>Open</DropdownMenuItem>
+  <DropdownMenuSub>
+    <DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>
+    <DropdownMenuSubContent>
+      <DropdownMenuItem>Copy link</DropdownMenuItem>
+      <DropdownMenuItem>Email</DropdownMenuItem>
+      <DropdownMenuItem>Embed</DropdownMenuItem>
+    </DropdownMenuSubContent>
+  </DropdownMenuSub>
+</DropdownMenuContent>
+```
+
+## Acessibilidade
+
+- **Role**: `role="menu"` no content, `role="menuitem"` nos itens, `role="menuitemcheckbox"` e `role="menuitemradio"` nas variantes com estado.
+- **Teclado**: as setas navegam; `Enter` e `Space` ativam; o type-ahead salta para itens que começam com a letra digitada; `Esc` fecha; `Tab` fecha e continua o foco na página.
+- **Submenus**: `→` abre, `←` fecha.
+- **Gestão de foco**: o foco entra no menu na abertura e retorna ao trigger ao fechar.
+- **`aria-expanded`** é definido no trigger automaticamente; `aria-controls` liga ao id do content.
+- **Variante destructive**: apenas dica visual; emparelhe com confirmação (`AlertDialog`) se a ação for irreversível.
+- **Reduced motion**: as animações de abrir/fechar respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Context Menu](/components/overlays/context-menu) - mesmo compound, acionado por clique direito em uma região.
+- [Select](/components/selection/select) - picker liderado por valores (países, status), não por ações.
+- [Popover](/components/overlays/popover) - overlay ancorado genérico quando os itens não seguem a semântica de menu.
+- [Command](/components/overlays/command) - lista de comandos buscável para usuários avançados.

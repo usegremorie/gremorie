@@ -1,0 +1,189 @@
+---
+title: Form (schema)
+description: 'Artifact de formulário gerado a partir de um JSON Schema de campos, com validação e submit.'
+---
+
+## Visão geral
+
+Um artifact de formulário para quando o modelo desenha o formulário na hora.
+Emite um JSON schema de campos (`text`, `email`, `checkbox`, etc.); o
+artifact mapeia cada campo para o primitivo `rx-forms` certo (`Input`,
+`Checkbox`, `Label`) e faz a fiação do submit.
+
+Este é o artifact para intake adaptativo — fluxos de onboarding, surveys,
+ou qualquer caso em que as perguntas dependem do que o modelo acabou de aprender
+sobre o usuário.
+
+## Preview
+
+<ArtifactPreview name="form-schema" />
+
+## Schema
+
+O LLM retorna output estruturado que segue este shape:
+
+```ts
+{
+  type: "form-schema",
+  fields: Array<{
+    type: "text" | "email" | "checkbox" | "number";
+    name: string;
+    label: string;
+    required?: boolean;
+    placeholder?: string;
+  }>,
+  submitLabel?: string,
+}
+```
+
+## Anatomia
+
+```text
+Card
+├─ CardHeader            CardTitle + Badge
+├─ field row             Label + control, rendered per field (Input / Checkbox from `type`)
+├─ Button (submit)       full-width, transient confirmation
+└─ schema preview        exposes the JSON contract for inspection
+```
+
+## Instalação
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npx gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add artifact-form-schema
+```
+
+</Tab>
+
+</Tabs>
+
+## Exemplos de prompt
+
+Prompts de exemplo que produzem output válido para este artifact:
+
+- "Peça ao usuário a empresa, o email de trabalho e o opt-in de newsletter."
+- "Construa um formulário de cadastro de 3 perguntas para o programa beta."
+- "Gere um formulário de feedback com avaliação, comentário e opt-in de contato."
+
+## Código
+
+<Tabs items={["React", "Angular"]}>
+
+<Tab value="React">
+
+```tsx
+'use client';
+
+import { useState } from 'react';
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@gremorie/rx-display';
+import { Button, Checkbox, Input, Label } from '@gremorie/rx-forms';
+
+export function FormSchema() {
+  const [submitted, setSubmitted] = useState(false);
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>Generated form</CardTitle>
+            <CardDescription>
+              Built from a 3-field schema returned by the LLM.
+            </CardDescription>
+          </div>
+          <Badge variant="outline">Field schema</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSubmitted(true);
+            setTimeout(() => setSubmitted(false), 2000);
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="fs-company">Company name</Label>
+            <Input id="fs-company" required />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="fs-email">Work email</Label>
+            <Input id="fs-email" type="email" required />
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="fs-newsletter" />
+            <Label htmlFor="fs-newsletter" className="text-sm font-normal">
+              Subscribe to monthly updates
+            </Label>
+          </div>
+          <Button type="submit" className="w-full">
+            {submitted ? 'Sent!' : 'Submit'}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="Angular">
+
+<Callout type="info">
+  A edição Angular deste componente está planejada; a edição React está
+  production-ready hoje.
+</Callout>
+
+</Tab>
+
+</Tabs>
+
+## Comportamento de streaming
+
+<Callout type="info">
+  Este artifact renderiza depois que o schema de campos é parseado. Os campos
+  aparecem todos de uma vez para preservar o layout do formulário; parses
+  parciais são bufferizados.
+</Callout>
+
+## Relacionados
+
+- [Input](/components/text/input)
+- [Checkbox](/components/selection/checkbox)
+- [Label](/components/text/label)
+- [Artifacts overview](/artifacts)

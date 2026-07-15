@@ -1,0 +1,206 @@
+---
+title: Node
+description: Primitivo de nó baseado em card para o Canvas. Envolve o Card da Gremorie com Handles xyflow de target / source e uma composição header / content / footer que combina com o resto do design system.
+---
+
+import { NodePreview } from '@/components/preview/ai/node';
+
+## Visão geral
+
+`Node` é o vértice em formato de card que você coloca dentro de um `Canvas`. Ele compõe um `Card` de `@gremorie/rx-display` com `Handle`s do xyflow à esquerda (target) e à direita (source), e então expõe a mesma composição `Header` / `Title` / `Description` / `Action` / `Content` / `Footer` de um `Card` comum.
+
+O wrapper customiza o `Card` para o contexto de canvas: remove o padding padrão para que os handles alinhem de forma limpa, estreita a largura para `w-sm`, e skina o header e o footer com uma superfície secondary para que se leiam distintos do corpo do conteúdo.
+
+Use-o como a base para todo tipo de nó custom. Combine com `Toolbar` para ações ancoradas na seleção, `Edge` para conectar nós, e `Connection` para arrastes em progresso.
+
+## Preview
+
+<ComponentPreview name="ai/node">
+  <NodePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Node
+├─ NodeHeader
+│  ├─ NodeTitle
+│  ├─ NodeDescription
+│  └─ NodeAction      top-right slot
+├─ NodeContent        body
+└─ NodeFooter
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-node ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-node ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-node ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-node ```</Tab>
+</Tabs>
+
+Traz `rx-display` (para o `Card`) como dependência de registry. Requer `@xyflow/react` como peer.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Node,
+  NodeAction,
+  NodeContent,
+  NodeDescription,
+  NodeFooter,
+  NodeHeader,
+  NodeTitle,
+} from "@gremorie/rx-ai";
+import { Button } from "@gremorie/rx-forms";
+import { PlayIcon } from "lucide-react";
+
+const AgentNode = (props) => (
+
+<Node {...props} handles={{ target: true, source: true }}>
+  <NodeHeader>
+    <NodeTitle>{props.data.name}</NodeTitle>
+    <NodeDescription>{props.data.model}</NodeDescription>
+    <NodeAction>
+      <Button size="icon" variant="ghost" aria-label="Run">
+        <PlayIcon className="size-4" />
+      </Button>
+    </NodeAction>
+  </NodeHeader>
+  <NodeContent>{props.data.prompt}</NodeContent>
+  <NodeFooter>{props.data.tokenCount} tokens</NodeFooter>
+</Node>
+);
+
+const nodeTypes = { agent: AgentNode };
+
+````
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente está planejada; a edição React está production-ready hoje.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Node>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `handles` | `{ target: boolean; source: boolean }` | - | **Obrigatório.** Quais lados do nó expõem handles de conexão. `target` adiciona um handle à esquerda, `source` adiciona um handle à direita. |
+| `className` | `string` | - | Classes extras no `Card` subjacente. |
+
+Estende todas as props de `Card` de `@gremorie/rx-display`. Renderiza o Card com `gap-0 rounded-md p-0` e a classe `node-container` para mira no nível do canvas. O xyflow encaminha props de seleção / arraste automaticamente quando usado dentro de uma entrada `nodeTypes` registrada.
+
+### `<NodeHeader>`
+
+Header com border-bottom, fundo secondary e padding apertado `p-3!`. Hospeda o título, a descrição e a ação à direita.
+
+Estende todas as props de `CardHeader`.
+
+### `<NodeTitle>` / `<NodeDescription>` / `<NodeAction>`
+
+Wrappers pass-through em torno de `CardTitle`, `CardDescription` e `CardAction`. APIs idênticas - existem para que a identidade visual se mantenha consistente entre as edições e para que os consumidores possam trocar as implementações sem mexer em cada tipo de nó.
+
+### `<NodeContent>`
+
+Slot de corpo com padding `p-3`. Estende todas as props de `CardContent`.
+
+### `<NodeFooter>`
+
+Footer com border-top, fundo secondary e padding `p-3!`. Espelha `NodeHeader`.
+
+Estende todas as props de `CardFooter`.
+
+## Composição
+
+1. **Registre o tipo de nó** no `Canvas` via a prop `nodeTypes`. A chave (por exemplo, `"agent"`) é o que os dados do edge referenciam como `type`.
+2. **Dentro do nó**, declare a config `handles` para que o xyflow saiba onde as conexões podem cair.
+3. **Componha com Header / Content / Footer** para combinar com o resto da Gremorie. O header e o footer no tom secondary criam separação visual natural do corpo.
+4. **Adicione um `Toolbar`** para ações ancoradas na seleção (editar, deletar, configurar). Para ações permanentes dentro do card, use `NodeAction` no header.
+
+## Variações
+
+### Nó só de entrada (ponto de partida)
+
+Apenas handle de source - sem conexões de entrada.
+
+```tsx
+const StartNode = (props) => (
+  <Node {...props} handles={{ target: false, source: true }}>
+    <NodeContent>Start</NodeContent>
+  </Node>
+);
+````
+
+### Nó só de saída (terminal)
+
+Apenas handle de target - sem conexões de saída.
+
+```tsx
+const EndNode = (props) => (
+  <Node {...props} handles={{ target: true, source: false }}>
+    <NodeContent>End</NodeContent>
+  </Node>
+);
+```
+
+### Card completo com header, action e footer
+
+Um nó de agente completo com metadados no header, prompt no corpo, status no footer e uma ação de executar.
+
+```tsx
+<Node {...props} handles={{ target: true, source: true }}>
+  <NodeHeader>
+    <NodeTitle>{props.data.name}</NodeTitle>
+    <NodeDescription>{props.data.model}</NodeDescription>
+    <NodeAction>
+      <Button size="icon" variant="ghost" aria-label="Run">
+        <PlayIcon className="size-4" />
+      </Button>
+    </NodeAction>
+  </NodeHeader>
+  <NodeContent>{props.data.prompt}</NodeContent>
+  <NodeFooter>{props.data.tokenCount} tokens</NodeFooter>
+</Node>
+```
+
+### Nó com toolbar ancorado na seleção
+
+Combine com `Toolbar` para ações que só aparecem quando o nó está selecionado.
+
+```tsx
+<Node {...props} handles={{ target: true, source: true }}>
+  <Toolbar>
+    <Button size="icon" variant="ghost" aria-label="Edit">
+      <PencilIcon className="size-4" />
+    </Button>
+    <Button size="icon" variant="ghost" aria-label="Delete">
+      <TrashIcon className="size-4" />
+    </Button>
+  </Toolbar>
+  <NodeContent>{props.data.label}</NodeContent>
+</Node>
+```
+
+## Acessibilidade
+
+- **Keyboard**: o xyflow cuida da seleção do nó e do movimento por setas quando o canvas tem foco. Children interativos (`NodeAction`, botões de `Toolbar`) precisam dos seus próprios `aria-label`s, já que costumam ser só ícone.
+- **Semântica**: um `Node` renderiza como um `<div>` (via `Card`). Quando o nó representa algo semanticamente importante (um agente, uma tool), exponha esse papel via `aria-label` no próprio `Card` ou no `NodeTitle`.
+- **Handles**: o `Handle` do xyflow é um pequeno círculo-alvo sem nome acessível. Se o seu fluxo é para ser navegado com tecnologia assistiva, forneça `aria-label`s descrevendo que tipo de conexão o handle aceita ("Aceita input de mensagem").
+- **Contraste de cor**: o fundo secondary no `NodeHeader` e no `NodeFooter` atinge 4.5:1 contra o token de foreground em ambos os temas da Gremorie. Reverifique se você customizar os tokens.
+- **Focus visible**: não remova o focus ring padrão do xyflow em nós selecionados - usuários de navegação por teclado dependem dele.
+
+## Relacionados
+
+- [Canvas](/components/workflow/canvas) - a superfície onde os nós vivem
+- [Edge](/components/workflow/edge) - as linhas que conectam os handles dos nós
+- [Connection](/components/workflow/connection) - a linha de arraste em progresso entre handles
+- [Toolbar](/components/workflow/toolbar) - barra de ações ancorada na seleção de um nó
+- [Panel](/components/workflow/panel) - overlay no canto do canvas para ações não específicas de nó

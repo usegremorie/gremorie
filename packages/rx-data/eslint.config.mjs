@@ -8,11 +8,14 @@ export default [
       '@nx/dependency-checks': [
         'error',
         {
-          // Stories import dev-only tooling (@storybook/react, recharts demos)
-          // that must not leak into the published peerDependencies.
+          // Stories and specs import dev-only tooling (@storybook/react,
+          // vitest, react-dom/server, @vitejs/plugin-react) that must not leak
+          // into the published peerDependencies.
           ignoredFiles: [
             '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/vitest.config.{js,ts,mts}',
             '{projectRoot}/**/*.stories.{ts,tsx,js,jsx}',
+            '{projectRoot}/**/*.spec.{ts,tsx,js,jsx}',
           ],
         },
       ],

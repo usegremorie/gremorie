@@ -1,0 +1,284 @@
+---
+title: Installation
+description: 'Adicione o Gremorie ao seu projeto Angular ou React em quatro passos.'
+---
+
+O Gremorie é distribuído de **duas formas** — escolha a que se encaixa no seu projeto:
+
+1. **Como pacotes npm** (versionados) — `npm i @gremorie/react`. O código vive
+   em `node_modules` e você recebe atualizações com `npm update`. Melhor quando você quer
+   uma fonte da verdade compartilhada entre projetos.
+2. **Como source via o registry** (copy-paste) — `npx gremorie add <name>`.
+   Cada primitive vira um arquivo que você possui e pode editar. Melhor quando você quer controle
+   total sobre o código.
+
+## Instalar como pacote (npm)
+
+O começo mais rápido: instale a edição completa em um pacote e importe qualquer
+primitive. O tree-shaking mantém só o que você usa no bundle final.
+
+<Tabs items={["React", "Angular"]}>
+
+```bash tab="React"
+npm i @gremorie/react
+```
+
+```bash tab="Angular"
+npm i @gremorie/angular
+```
+
+</Tabs>
+
+Depois importe os componentes diretamente do pacote:
+
+<Tabs items={["React", "Angular"]}>
+
+```tsx tab="React"
+import { Button, Card, CardHeader, CardTitle } from '@gremorie/react';
+
+export function Example() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Hello, Gremorie</CardTitle>
+      </CardHeader>
+      <Button>Ship it</Button>
+    </Card>
+  );
+}
+```
+
+```ts tab="Angular"
+import { Component } from '@angular/core';
+import { Badge } from '@gremorie/angular';
+
+@Component({
+  standalone: true,
+  imports: [Badge],
+  template: `<gr-badge>New</gr-badge>`,
+})
+export class Example {}
+```
+
+</Tabs>
+
+### Configure os estilos
+
+As duas edições lidam com estilização de forma diferente no caminho npm:
+
+- **React** entrega uma stylesheet **pré-compilada** com os design tokens _e_
+  os estilos de cada componente em um único arquivo. Importe uma vez e você **não** precisa
+  de Tailwind, de um import `@theme`, nem de qualquer config `@source`.
+- **Angular** emite classes utilitárias do Tailwind e não entrega **nenhum CSS
+  compilado**, então o caminho npm requer **Tailwind CSS v4** no seu projeto. Você
+  importa o theme dos tokens e aponta o Tailwind para os pacotes `@gremorie` em
+  `node_modules` com uma linha `@source`, para que os utilitários deles sejam compilados no
+  seu CSS.
+
+<Tabs items={["React", "Angular"]}>
+
+```tsx tab="React"
+// app/layout.tsx (Next.js) or src/main.tsx (Vite) - once, in your app entry
+import '@gremorie/react/styles.css';
+```
+
+```css tab="Angular"
+/* src/styles.css - requires Tailwind CSS v4 */
+@import 'tailwindcss';
+@import '@gremorie/tokens/theme.css';
+
+/* Tailwind v4 ignores node_modules by default; this line makes it scan the
+   Gremorie packages so their utility classes end up in your compiled CSS. */
+@source '../node_modules/@gremorie';
+```
+
+</Tabs>
+
+<Callout type="info">
+  **Next.js App Router:** os componentes do Gremorie são interativos (eles usam
+  React context e state), então renderize-os a partir de um **Client Component**
+  — adicione `"use client"` no topo do arquivo (ou de um pai) que os usa.
+</Callout>
+
+<Callout type="info">
+  `@gremorie/react` empacota **todas as categorias de componente** (forms,
+  display, overlays, feedback, navigation, containers, data, AI).
+  `@gremorie/angular` atualmente empacota **seis categorias** (core, AI,
+  display, containers, data e feedback); forms, overlays, navigation e artifacts
+  são entregues como pacotes `@gremorie/ng-*` separados. **Artifacts**
+  (Artifact, CodeBlock, WebPreview) são um add-on opcional — instale
+  `@gremorie/rx-artifacts` quando você precisar deles. Prefere uma instalação
+  menor? Adicione uma única categoria em vez disso: `@gremorie/rx-forms`,
+  `@gremorie/rx-display`, `@gremorie/rx-ai`, e assim por diante — cada categoria
+  React entrega o mesmo `@gremorie/rx-core/styles/globals.css` pré-compilado
+  para os seus tokens.
+</Callout>
+
+Esse é o setup npm inteiro: instale, configure os estilos, use os componentes.
+O fluxo da CLI abaixo é a alternativa copy-paste em que você possui o source e
+o compila com o seu próprio Tailwind.
+
+## Copy-paste via a CLI (registry)
+
+Prefere possuir o source? Instale a CLI e puxe primitives para o seu
+projeto sob demanda — cada um vira um arquivo que você pode editar livremente.
+
+## Pré-requisitos
+
+- **Node.js 20+** para o runtime da CLI
+- **Tailwind CSS v4** — necessário para o fluxo copy-paste/registry (o source que você
+  possui é compilado pelo seu Tailwind), e para o caminho npm do Angular. O caminho npm do React
+  entrega CSS pré-compilado e **não** requer Tailwind.
+- Um projeto **Angular 21+** ou um projeto **React 19** (Next.js, Vite, Remix)
+
+<Callout type="info">
+  Ambas as edições são publicadas: **React** (`@gremorie/react`,
+  `@gremorie/rx-*`) e **Angular** (`@gremorie/angular`, `@gremorie/ng-*`). Elas
+  compartilham o mesmo schema de registry, tokens e corpus, então tudo o que
+  você aprende aqui vale para as duas. A cobertura do registry difere hoje: o
+  registry React cobre o catálogo completo, enquanto o registry Angular ainda
+  está crescendo. Rode `npx gremorie list` para ver o que está disponível por
+  edição.
+</Callout>
+
+## Passos
+
+<Steps>
+
+<Step>
+
+### Rode a CLI no seu projeto
+
+A CLI lê o framework do seu projeto a partir do `package.json` e escreve
+primitives para um caminho default sensato. Nenhuma instalação global necessária.
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+```bash tab="npm"
+npx gremorie@latest init
+```
+
+```bash tab="pnpm"
+pnpm dlx gremorie@latest init
+```
+
+```bash tab="yarn"
+yarn dlx gremorie@latest init
+```
+
+```bash tab="bun"
+bunx gremorie@latest init
+```
+
+</Tabs>
+
+O `init` detecta o seu gerenciador de pacotes, instala as dependências core
+(os pacotes de tokens e de core do framework mais `class-variance-authority`,
+`clsx` e `tailwind-merge`), adiciona o import do theme à sua stylesheet
+global, e imprime os próximos passos.
+
+</Step>
+
+<Step>
+
+### Importe os tokens
+
+Os tokens do Gremorie cascateiam por três camadas (primitive, semantic, chart).
+A camada semantic é a única que os componentes referenciam diretamente, então ela
+deve carregar antes de qualquer outra coisa.
+
+<Tabs items={["Angular", "React"]}>
+
+```css tab="Angular"
+/* src/styles.css */
+@import 'tailwindcss';
+@import '@gremorie/tokens/theme.css';
+```
+
+```css tab="React"
+/* app/globals.css */
+@import 'tailwindcss';
+@import '@gremorie/rx-core/styles/globals.css';
+```
+
+</Tabs>
+
+O import declara `--primary`, `--foreground`, `--background` e a
+paleta de chart como variáveis CSS. Trocar o `data-theme` no `<html>`
+atualiza todo componente no lugar.
+
+</Step>
+
+<Step>
+
+### Adicione seu primeiro primitive
+
+Escolha qualquer coisa do [catálogo de Components](/components).
+`Button` é o menor exemplo útil.
+
+<Tabs items={["Angular", "React"]}>
+
+```bash tab="Angular"
+npx gremorie@latest add ng-button
+```
+
+```bash tab="React"
+npx gremorie@latest add rx-button
+```
+
+</Tabs>
+
+A CLI escreve o source para o caminho de destino do item
+(`src/components/gremorie/<category>/<name>/` para React,
+`src/app/gremorie/<name>/` para Angular) e lista os peer packages que você
+precisa instalar.
+
+</Step>
+
+<Step>
+
+### Use
+
+<Tabs items={["Angular", "React"]}>
+
+```ts tab="Angular"
+import { Component } from '@angular/core';
+import { Button } from './gremorie/button/button';
+
+@Component({
+  standalone: true,
+  imports: [Button],
+  template: `<ai-button (pressedChange)="onClick()">Ship it</ai-button>`,
+})
+export class MyComponent {
+  onClick() {
+    console.log('Hello, Gremorie.');
+  }
+}
+```
+
+```tsx tab="React"
+import { Button } from '@/components/gremorie/forms/button/button';
+
+export function MyComponent() {
+  return (
+    <Button onClick={() => console.log('Hello, Gremorie.')}>Ship it</Button>
+  );
+}
+```
+
+</Tabs>
+
+</Step>
+
+</Steps>
+
+## Verificação
+
+Se o button renderizar estilizado (arredondado, com a cor primary da marca na
+variant default), a instalação está funcionando de ponta a ponta: CLI -> source ->
+tokens -> render.
+
+Para o próximo passo, veja [Your first component](/get-started/first-component)
+para um tutorial completo de cinco minutos que conecta três primitives em uma chat
+surface.

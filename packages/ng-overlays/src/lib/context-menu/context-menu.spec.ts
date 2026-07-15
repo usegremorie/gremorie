@@ -32,28 +32,28 @@ import {
     ContextMenuShortcut,
   ],
   template: `
-    <gn-context-menu>
-      <gn-context-menu-content>
-        <gn-context-menu-label>Actions</gn-context-menu-label>
-        <gn-context-menu-separator />
-        <gn-context-menu-group>
-          <gn-context-menu-item>
-            Back <gn-context-menu-shortcut>⌘[</gn-context-menu-shortcut>
-          </gn-context-menu-item>
-          <gn-context-menu-item variant="destructive" [inset]="true"
-            >Delete</gn-context-menu-item
+    <gr-context-menu>
+      <gr-context-menu-content>
+        <gr-context-menu-label>Actions</gr-context-menu-label>
+        <gr-context-menu-separator />
+        <gr-context-menu-group>
+          <gr-context-menu-item>
+            Back <gr-context-menu-shortcut>⌘[</gr-context-menu-shortcut>
+          </gr-context-menu-item>
+          <gr-context-menu-item variant="destructive" [inset]="true"
+            >Delete</gr-context-menu-item
           >
-        </gn-context-menu-group>
-        <gn-context-menu-checkbox-item [checked]="true"
-          >Toggle</gn-context-menu-checkbox-item
+        </gr-context-menu-group>
+        <gr-context-menu-checkbox-item [checked]="true"
+          >Toggle</gr-context-menu-checkbox-item
         >
-        <gn-context-menu-radio-group>
-          <gn-context-menu-radio-item [checked]="true"
-            >One</gn-context-menu-radio-item
+        <gr-context-menu-radio-group>
+          <gr-context-menu-radio-item [checked]="true"
+            >One</gr-context-menu-radio-item
           >
-        </gn-context-menu-radio-group>
-      </gn-context-menu-content>
-    </gn-context-menu>
+        </gr-context-menu-radio-group>
+      </gr-context-menu-content>
+    </gr-context-menu>
   `,
 })
 class Host {}

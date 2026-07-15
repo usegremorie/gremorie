@@ -1,6 +1,6 @@
-# Contributing to ShadNG
+# Contributing to Gremorie
 
-Thanks for the interest. ShadNG is in early bootstrapping, so APIs and structure are still moving.
+Thanks for the interest. Gremorie is in early bootstrapping, so APIs and structure are still moving.
 
 ## Ground rules
 
@@ -9,15 +9,31 @@ Thanks for the interest. ShadNG is in early bootstrapping, so APIs and structure
 3. **Lib stays lean.** Hashbrown, Vercel AI SDK, NgRx and friends are documented integrations — never `peerDependencies`.
 4. **Composition over configuration.** Slots, not 50-prop monsters.
 
+## Naming conventions
+
+- **Packages** are prefixed by edition: `rx-*` for React (`@gremorie/rx-ai`,
+  `@gremorie/rx-forms`, …) and `ng-*` for Angular (`@gremorie/ng-ai`,
+  `@gremorie/ng-forms`, …). Framework-neutral packages have no edition prefix
+  (`@gremorie/tokens`, `@gremorie/contracts`).
+- **Angular component/directive selectors use the `gr-` prefix** (`<gr-command>`,
+  `<gr-card>`, and attribute directives like `grInputOtp`, `[grFormControl]`).
+  `gr` is for **Gr**emorie. We deliberately do **not** use `ng-` — the Angular
+  style guide forbids it because Angular reserves the `ng` prefix for its own
+  framework APIs. (Historically this prefix was `gn-`, `ng` reversed; it was
+  renamed to the clearer `gr-`.)
+- **React components** are PascalCase exports (`<ModelSelector>`), no element
+  prefix — standard JSX.
+
 ## Branch flow
 
 ```
-feature/* → develop → staging → main
+feature/* → develop  (production)
 ```
 
-- `develop` — active integration. PRs target here.
-- `staging` — pre-release validation. Promoted from `develop` when a phase is ready.
-- `main` — released. Tagged versions only.
+- `develop` — default branch and production deploy (www.gremorie.com). PRs
+  target here; merging deploys production.
+- `main` — protected (auth-gated) preview builds.
+- `staging` — pre-release validation.
 
 ## Quality gates (PR cannot merge without)
 
@@ -33,17 +49,29 @@ feature/* → develop → staging → main
 
 ## Color, tokens & dark mode
 
-Two-tier, class-based. The full rules live in `AGENTS.md` ("Color, tokens & dark
-mode"). The essentials:
+Two-tier, class-based.
 
-- Source of truth: `@gremorie/tokens` (`packages/tokens/styles/theme.css`).
-  Components use **semantic tokens only** (`bg-card`, `text-foreground`, …),
-  never primitives or hardcoded colors.
-- Dark mode is the **`.dark` class**, not `@media (prefers-color-scheme: dark)`.
-  The `dark:` Tailwind variant is bound to that class once, in `theme.css`.
-- **Any new Tailwind entry** (`@import "tailwindcss"`) must import
+- **Source of truth**: `@gremorie/tokens` (`packages/tokens/styles/theme.css`).
+  Layer 1 primitives (`--color-*` scales) feed Layer 2 semantics
+  (`--background`, `--card`, `--primary`, `--input`, `--border`, `--ring`,
+  `--muted`, `--accent`, `--destructive`, `--sidebar-*`, `--chart-*`, …). Named
+  themes opt in via `data-theme="<name>"` and live in `themes/`.
+- **Components consume semantic tokens only** (`bg-card`, `text-foreground`,
+  `border-input`, …). Never reference `--color-*` primitives directly, and never
+  hardcode hex / rgb / hsl / oklch in `className` or `style`. Inline SVG may use
+  `currentColor` or `var(--color-*)`.
+- **Dark mode is the `.dark` class**, not `@media (prefers-color-scheme: dark)`.
+  Tailwind v4's `dark:` variant is bound to that class with
+  `@custom-variant dark (&:where(.dark, .dark *))`, declared once in `theme.css`.
+- **Any new Tailwind entry** (anything with `@import "tailwindcss"`) must import
   `@gremorie/tokens/theme.css` so it inherits the class-based `dark:` variant.
-  Omitting it lets OS dark preference break light surfaces — a shipped bug.
+  Omitting it lets the OS dark preference fire `dark:*` utilities while the token
+  theme stays light — a white surface with dark controls. That exact mismatch
+  shipped as a real bug; treat a new Tailwind entry without the tokens import as
+  broken.
+- **Validate** themes and dark mode via the Storybook Theme/Dark toolbar, not a
+  browser dark-mode extension or forced-dark flag — those re-tint the rendered
+  page and mask the real CSS.
 
 ## Local setup
 

@@ -1,0 +1,199 @@
+---
+title: Toggle Group
+description: Cluster coordenado de Toggles - tipo radio com `type="single"` ou tipo checkbox com `type="multiple"`, com sizing e variant compartilhados via context.
+---
+
+import { ToggleGroupPreview } from '@/components/preview/forms/toggle-group';
+import { ToggleGroupMultiplePreview } from '@/components/preview/forms/toggle-group-multiple';
+import { ToggleGroupOutlinePreview } from '@/components/preview/forms/toggle-group-outline';
+import { ToggleGroupSizesPreview } from '@/components/preview/forms/toggle-group-sizes';
+
+## Visão geral
+
+`ToggleGroup` é um conjunto coordenado de buttons estilo `Toggle`. Use `type="single"` para comportamento tipo radio (um pressionado por vez) ou `type="multiple"` para tipo checkbox (qualquer número pressionado). Tamanhos e variants propagam da raiz para cada `ToggleGroupItem` via context, então o cluster sempre parece coerente.
+
+Use ToggleGroup para **estado de formatação e visualização** (alinhamento de texto, modo de visualização, filter chips) - liderado por ícone, efeito visual imediato. `RadioGroup` é para valores de formulário (liderado por label, capturado no submit); `Tabs` trocam painéis de conteúdo inteiros em vez de aplicar um estado.
+
+## Preview
+
+<ComponentPreview name="forms/toggle-group">
+  <ToggleGroupPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ToggleGroup                 o Root; é dono de type, variant, size, spacing e os compartilha via context
+└─ ToggleGroupItem          um toggle button; herda a estilização do Root
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-toggle-group ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-toggle-group ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-toggle-group ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-toggle-group ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@gremorie/rx-forms";
+import { Bold, Italic, Underline } from "lucide-react";
+
+export function Example() {
+  return (
+    <ToggleGroup type="single" defaultValue="bold">
+      <ToggleGroupItem value="bold" aria-label="Bold">
+        <Bold />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="italic" aria-label="Italic">
+        <Italic />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="underline" aria-label="Underline">
+        <Underline />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ToggleGroup>`
+
+| Prop            | Type                                  | Default     | Description                                                                                                                                              |
+| --------------- | ------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`          | `"single" \| "multiple"`              | -           | `single` força um item pressionado; `multiple` permite qualquer número. Obrigatório.                                                                     |
+| `value`         | `string \| string[]`                  | -           | Valor controlado. String única para `type="single"`, array para `type="multiple"`.                                                                       |
+| `defaultValue`  | `string \| string[]`                  | -           | Valor inicial não controlado.                                                                                                                            |
+| `onValueChange` | `(value: string \| string[]) => void` | -           | Dispara quando a seleção muda.                                                                                                                           |
+| `disabled`      | `boolean`                             | `false`     | Desabilita o grupo inteiro.                                                                                                                              |
+| `variant`       | `"default" \| "outline"`              | `"default"` | Encaminhado para cada item via context.                                                                                                                  |
+| `size`          | `"default" \| "sm" \| "lg"`           | `"default"` | Encaminhado para cada item via context.                                                                                                                  |
+| `spacing`       | `number`                              | `0`         | Gap entre itens em unidades de spacing. `0` os une com uma borda compartilhada (estilo button-group); valores positivos os separam em buttons distintos. |
+| `rovingFocus`   | `boolean`                             | `true`      | Habilita roving tabindex (default do Radix).                                                                                                             |
+| `loop`          | `boolean`                             | `true`      | Setas dão a volta.                                                                                                                                       |
+
+Encaminha para `ToggleGroupPrimitive.Root`. Envolve os filhos em um `ToggleGroupContext` interno para que `ToggleGroupItem` herde `variant`, `size` e `spacing`.
+
+### `<ToggleGroupItem>`
+
+| Prop       | Type                        | Default          | Description                                          |
+| ---------- | --------------------------- | ---------------- | ---------------------------------------------------- |
+| `value`    | `string`                    | -                | O valor reportado de volta ao pai. Obrigatório.      |
+| `disabled` | `boolean`                   | `false`          | Desabilita este item específico.                     |
+| `variant`  | `"default" \| "outline"`    | herdado do grupo | Sobrescreve a variant do grupo para este item. Raro. |
+| `size`     | `"default" \| "sm" \| "lg"` | herdado do grupo | Sobrescreve o size do grupo para este item. Raro.    |
+
+O item lê de `ToggleGroupContext` antes de recorrer às suas próprias props, então o grupo sempre vence a menos que explicitamente sobrescrito.
+
+## Composição
+
+1. **`<ToggleGroup>`** é o context raiz. Defina `type`, `variant`, `size` e `spacing` uma vez.
+2. **`<ToggleGroupItem>` sempre dentro de `<ToggleGroup>`** - ele depende do context para a estilização.
+3. **Os filhos são tipicamente ícones**. Para texto + ícone, siga o padrão do `Button`.
+4. **`spacing={0}` (default)** une os itens com uma borda compartilhada como `ButtonGroup`. `spacing` positivo os mantém como buttons distintos com gaps.
+
+## Variações
+
+### Formatação de texto (single)
+
+O padrão canônico. `type="single"` para comportamento tipo radio.
+
+```tsx
+import { AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+
+<ToggleGroup type="single" defaultValue="left">
+  <ToggleGroupItem value="left" aria-label="Align left">
+    <AlignLeft />
+  </ToggleGroupItem>
+  <ToggleGroupItem value="center" aria-label="Align center">
+    <AlignCenter />
+  </ToggleGroupItem>
+  <ToggleGroupItem value="right" aria-label="Align right">
+    <AlignRight />
+  </ToggleGroupItem>
+</ToggleGroup>;
+```
+
+### Formatação multi-select
+
+`type="multiple"` deixa os usuários pressionarem múltiplos itens (ex. bold + italic ao mesmo tempo).
+
+<ComponentPreview name="forms/toggle-group-multiple">
+  <ToggleGroupMultiplePreview />
+</ComponentPreview>
+
+### Variant outline com spacing
+
+Quando o cluster deve ser lido como uma row de buttons independentes em vez de uma unidade unida, use `variant="outline"` mais um valor positivo de `spacing`.
+
+<ComponentPreview name="forms/toggle-group-outline">
+  <ToggleGroupOutlinePreview />
+</ComponentPreview>
+
+### Tamanhos
+
+A prop `size` definida na raiz propaga para cada item via context, então o cluster inteiro escala junto. Os presets disponíveis são `sm`, `default` e `lg`.
+
+<ComponentPreview name="forms/toggle-group-sizes">
+  <ToggleGroupSizesPreview />
+</ComponentPreview>
+
+### Seleção controlada
+
+Controle o cluster a partir de estado externo - útil para filter chips ancorados em URL search params.
+
+```tsx
+function FilterChips() {
+  const [filters, setFilters] = React.useState<string[]>([]);
+  return (
+    <ToggleGroup
+      type="multiple"
+      value={filters}
+      onValueChange={setFilters}
+      variant="outline"
+    >
+      <ToggleGroupItem value="open">Open</ToggleGroupItem>
+      <ToggleGroupItem value="closed">Closed</ToggleGroupItem>
+      <ToggleGroupItem value="merged">Merged</ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## Acessibilidade
+
+- **Semântica de grupo**: renderizado com `role="group"`. Os itens carregam o `role="radio"` apropriado (para `type="single"`) ou `role="button"` com `aria-pressed` (para `type="multiple"`).
+- **Roving tabindex**: apenas um item está na ordem de tabulação por vez. `Tab` sai do grupo; as setas navegam dentro.
+- **Teclado**:
+  - `Tab` entra e sai do grupo.
+  - `ArrowLeft` / `ArrowRight` (ou `ArrowUp` / `ArrowDown`) navegam entre os itens.
+  - `Home` / `End` saltam para o primeiro / último.
+  - `Space` / `Enter` alternam o item focado.
+- **Loop**: as setas dão a volta por padrão. Passe `loop={false}` para desabilitar.
+- **Itens icon-only**: sempre forneça `aria-label` em cada item. O próprio grupo também pode carregar `aria-label` para nomear o cluster inteiro.
+
+## Relacionados
+
+- [Toggle](/components/buttons/toggle) - o primitive de button único subjacente
+- [Button Group](/components/buttons/button-group) - primo visual sem estado coordenado
+- [Radio Group](/components/selection/radio-group) - single-select liderado por label para valores de formulário
+- [Tabs](/components/navigation/tabs) - troca painéis de conteúdo inteiros (modelo mental diferente)

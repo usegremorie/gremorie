@@ -27,19 +27,19 @@ import {
     CommandShortcut,
   ],
   template: `
-    <gn-command>
-      <gn-command-input placeholder="Search..." />
-      <gn-command-list>
-        <gn-command-empty>No results found.</gn-command-empty>
-        <gn-command-group>
-          <gn-command-item value="calendar">Calendar</gn-command-item>
-          <gn-command-item value="search">
-            Search <gn-command-shortcut>⌘S</gn-command-shortcut>
-          </gn-command-item>
-        </gn-command-group>
-        <gn-command-separator />
-      </gn-command-list>
-    </gn-command>
+    <gr-command>
+      <gr-command-input placeholder="Search..." />
+      <gr-command-list>
+        <gr-command-empty>No results found.</gr-command-empty>
+        <gr-command-group>
+          <gr-command-item value="calendar">Calendar</gr-command-item>
+          <gr-command-item value="search">
+            Search <gr-command-shortcut>⌘S</gr-command-shortcut>
+          </gr-command-item>
+        </gr-command-group>
+        <gr-command-separator />
+      </gr-command-list>
+    </gr-command>
   `,
 })
 class Host {}

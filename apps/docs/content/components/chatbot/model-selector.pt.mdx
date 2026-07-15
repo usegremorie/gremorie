@@ -1,0 +1,235 @@
+---
+title: Model Selector
+description: Seletor de modelo no estilo Cmd+K construído sobre Dialog + Command, com logos de provider e teclas de atalho.
+---
+
+import { ModelSelectorPreview } from '@/components/preview/ai/model-selector';
+
+## Visão geral
+
+`ModelSelector` é um seletor de modelo flutuante. Ele envolve um `Command` palette com um `Dialog` para que os usuários possam buscar, filtrar e selecionar um modelo de uma lista longa. Helpers como `ModelSelectorLogo` e `ModelSelectorLogoGroup` puxam ícones de provider do `models.dev`, então uma lista longa de modelos do OpenRouter ou AI Gateway pode ser navegada visualmente.
+
+Use como a troca de modelo na casca do chat - seja como um botão discreto na toolbar ou como um atalho global Cmd+K.
+
+## Preview
+
+<ComponentPreview name="ai/model-selector">
+  <ModelSelectorPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ModelSelector
+├─ ModelSelectorTrigger          modelo selecionado (logo + nome)
+└─ ModelSelectorContent          command palette (popover ou dialog)
+   ├─ ModelSelectorInput         busca
+   ├─ ModelSelectorEmpty
+   └─ ModelSelectorList
+      └─ ModelSelectorGroup       por provider
+         └─ ModelSelectorItem     logo + nome + atalho
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-model-selector ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-model-selector ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-model-selector ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-model-selector ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ModelSelector,
+  ModelSelectorTrigger,
+  ModelSelectorContent,
+  ModelSelectorInput,
+  ModelSelectorList,
+  ModelSelectorGroup,
+  ModelSelectorItem,
+  ModelSelectorLogo,
+  ModelSelectorName,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <ModelSelector>
+      <ModelSelectorTrigger>{currentModel}</ModelSelectorTrigger>
+      <ModelSelectorContent title="Choose a model">
+        <ModelSelectorInput placeholder="Search models..." />
+        <ModelSelectorList>
+          <ModelSelectorGroup heading="Frontier">
+            <ModelSelectorItem value="anthropic/claude-opus-4">
+              <ModelSelectorLogo provider="anthropic" />
+              <ModelSelectorName>Claude Opus 4</ModelSelectorName>
+            </ModelSelectorItem>
+          </ModelSelectorGroup>
+        </ModelSelectorList>
+      </ModelSelectorContent>
+    </ModelSelector>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente é distribuída a partir do source hoje (veja o workbench para o lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ModelSelector>`
+
+Envolve `Dialog`. Use `open` / `onOpenChange` para estado controlado.
+
+Estende `ComponentProps<typeof Dialog>`.
+
+### `<ModelSelectorTrigger>`
+
+`DialogTrigger`. Use `asChild` para compor com qualquer botão.
+
+### `<ModelSelectorContent>`
+
+| Prop    | Type        | Default            | Description                           |
+| ------- | ----------- | ------------------ | ------------------------------------- |
+| `title` | `ReactNode` | `"Model Selector"` | Título acessível (sr-only) do dialog. |
+
+`DialogContent` com padding zero e um `Command` dentro.
+
+### Sub-componentes de Command
+
+Esses wrappers finos encaminham as props de `Command*`:
+
+| Component                | Envolve                                          |
+| ------------------------ | ------------------------------------------------ |
+| `ModelSelectorDialog`    | `CommandDialog` (modo dialog Cmd+K completo)     |
+| `ModelSelectorInput`     | `CommandInput` (mais alto `py-3.5`)              |
+| `ModelSelectorList`      | `CommandList`                                    |
+| `ModelSelectorEmpty`     | `CommandEmpty`                                   |
+| `ModelSelectorGroup`     | `CommandGroup` (aceita `heading`)                |
+| `ModelSelectorItem`      | `CommandItem`                                    |
+| `ModelSelectorSeparator` | `CommandSeparator`                               |
+| `ModelSelectorShortcut`  | `CommandShortcut` (para dicas no estilo `Cmd+1`) |
+
+### `<ModelSelectorLogo>`
+
+| Prop       | Type     | Default | Description                                                                                                                                                  |
+| ---------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `provider` | `string` | -       | Obrigatório. Puxado de `models.dev/logos/{provider}.svg`. Cobre a maioria dos principais providers (anthropic, openai, google, mistral, deepseek, xai, ...). |
+
+Renderizado como um `img` minúsculo (12 x 12), invertido no dark mode.
+
+### `<ModelSelectorLogoGroup>`
+
+Envolve múltiplos `ModelSelectorLogo`s com espaçamento negativo para sobrepô-los (útil para routers que abrangem vários providers).
+
+### `<ModelSelectorName>`
+
+`span` com `flex-1 truncate text-left`. Use para o nome do modelo dentro de um item.
+
+## Composição
+
+1. **`<ModelSelector>`** detém o estado do dialog.
+2. **`<ModelSelectorTrigger>`** é o handle da toolbar.
+3. **`<ModelSelectorContent>`** é o corpo do dialog que hospeda um `Command`.
+4. **`<ModelSelectorInput>` + `<ModelSelectorList>` + `<ModelSelectorGroup>` + `<ModelSelectorItem>`** formam a lista buscável.
+5. **`<ModelSelectorLogo>` / `<ModelSelectorName>` / `<ModelSelectorShortcut>`** estruturam cada item.
+
+## Variações
+
+### Lista agrupada com atalhos
+
+Agrupe por provider; exponha `Cmd+1`, `Cmd+2`, etc. para as escolhas do topo.
+
+```tsx
+<ModelSelectorContent title="Switch model">
+  <ModelSelectorInput placeholder="Search..." />
+  <ModelSelectorList>
+    <ModelSelectorGroup heading="Pinned">
+      <ModelSelectorItem value="anthropic/claude-opus-4">
+        <ModelSelectorLogo provider="anthropic" />
+        <ModelSelectorName>Claude Opus 4</ModelSelectorName>
+        <ModelSelectorShortcut>1</ModelSelectorShortcut>
+      </ModelSelectorItem>
+      <ModelSelectorItem value="openai/gpt-5">
+        <ModelSelectorLogo provider="openai" />
+        <ModelSelectorName>GPT-5</ModelSelectorName>
+        <ModelSelectorShortcut>2</ModelSelectorShortcut>
+      </ModelSelectorItem>
+    </ModelSelectorGroup>
+    <ModelSelectorSeparator />
+    <ModelSelectorGroup heading="All models">
+      {models.map((m) => (
+        <ModelSelectorItem key={m.id} value={m.id}>
+          <ModelSelectorLogo provider={m.provider} />
+          <ModelSelectorName>{m.name}</ModelSelectorName>
+        </ModelSelectorItem>
+      ))}
+    </ModelSelectorGroup>
+  </ModelSelectorList>
+</ModelSelectorContent>
+```
+
+### Itens de router com logos sobrepostos
+
+Para agregadores (OpenRouter, AI Gateway), mostre cada provider por trás do router em um grupo de logos.
+
+```tsx
+<ModelSelectorItem value="openrouter/anthropic/claude-opus-4">
+  <ModelSelectorLogoGroup>
+    <ModelSelectorLogo provider="openrouter" />
+    <ModelSelectorLogo provider="anthropic" />
+  </ModelSelectorLogoGroup>
+  <ModelSelectorName>OpenRouter - Claude Opus 4</ModelSelectorName>
+</ModelSelectorItem>
+```
+
+### Dialog global Cmd+K
+
+Use `ModelSelectorDialog` (envolve `CommandDialog`) para um seletor de modelo totalmente destacado, invocado pelo teclado.
+
+```tsx
+const [open, setOpen] = useState(false);
+
+useEffect(() => {
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      setOpen((o) => !o);
+    }
+  };
+  window.addEventListener('keydown', onKey);
+  return () => window.removeEventListener('keydown', onKey);
+}, []);
+
+<ModelSelectorDialog open={open} onOpenChange={setOpen}>
+  <ModelSelectorInput placeholder="Switch model..." />
+  <ModelSelectorList>{/* items */}</ModelSelectorList>
+</ModelSelectorDialog>;
+```
+
+## Acessibilidade
+
+- **Teclado**: o Command palette trata Arrow Up / Down para navegação, Enter para selecionar, Esc para fechar. O trigger participa da ordem normal de Tab.
+- **ARIA**: `ModelSelectorContent` sempre renderiza um `DialogTitle` (sr-only por padrão) para que o dialog tenha um nome acessível. As imagens de `ModelSelectorLogo` carregam um `alt` no formato `"{provider} logo"`.
+- **Leitores de tela**: mantenha `ModelSelectorName` preenchido para que cada item anuncie com o nome do modelo; o logo é tratado como suplementar.
+- **Gestão de foco**: o Dialog prende o foco enquanto aberto e o retorna ao trigger no fechamento.
+
+## Relacionados
+
+- [PromptInput](/components/chatbot/prompt-input) - host típico do trigger de modelo
+- [Context](/components/chatbot/context) - combine com o selector para mostrar o usage do modelo atual
+- [OpenInChat](/components/utilities/open-in-chat) - variante de kickoff que inclui pré-seleção de modelo

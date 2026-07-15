@@ -42,12 +42,12 @@ import {
   standalone: true,
   imports: [Alert, AlertTitle, AlertDescription, Spinner],
   template: `
-    <gn-alert variant="default">
-      <gn-alert-title>Heads up</gn-alert-title>
-      <gn-alert-description>Your changes were saved.</gn-alert-description>
-    </gn-alert>
+    <gr-alert variant="default">
+      <gr-alert-title>Heads up</gr-alert-title>
+      <gr-alert-description>Your changes were saved.</gr-alert-description>
+    </gr-alert>
 
-    <gn-spinner size="sm" />
+    <gr-spinner size="sm" />
   `,
 })
 export class ExampleComponent {}
@@ -55,12 +55,12 @@ export class ExampleComponent {}
 
 ## Components
 
-- `Spinner` (selector: `gn-spinner`) with the `SpinnerSize` type.
-- `Alert` (selector: `gn-alert`) with `AlertTitle` (`gn-alert-title`) and
-  `AlertDescription` (`gn-alert-description`), plus `alertVariants` and the
+- `Spinner` (selector: `gr-spinner`) with the `SpinnerSize` type.
+- `Alert` (selector: `gr-alert`) with `AlertTitle` (`gr-alert-title`) and
+  `AlertDescription` (`gr-alert-description`), plus `alertVariants` and the
   `AlertVariant` type.
-- `Progress` (selector: `gn-progress`).
-- `Skeleton` (selector: `gn-skeleton`).
+- `Progress` (selector: `gr-progress`).
+- `Skeleton` (selector: `gr-skeleton`).
 
 ## License
 

@@ -38,12 +38,12 @@ export const Workbench: Story = {
           <h4 class="text-sm font-medium leading-none">Radix Primitives</h4>
           <p class="text-sm text-muted-foreground">An open-source UI component library.</p>
         </div>
-        <gn-separator [orientation]="orientation" [decorative]="decorative" class="my-4" />
+        <gr-separator [orientation]="orientation" [decorative]="decorative" class="my-4" />
         <div class="flex h-5 items-center gap-4 text-sm">
           <span>Blog</span>
-          <gn-separator orientation="vertical" />
+          <gr-separator orientation="vertical" />
           <span>Docs</span>
-          <gn-separator orientation="vertical" />
+          <gr-separator orientation="vertical" />
           <span>Source</span>
         </div>
       </div>
@@ -57,7 +57,7 @@ export const Horizontal: Story = {
     template: `
       <div class="w-80">
         <p class="text-sm">Above</p>
-        <gn-separator class="my-4" />
+        <gr-separator class="my-4" />
         <p class="text-sm">Below</p>
       </div>
     `,
@@ -70,9 +70,9 @@ export const Vertical: Story = {
     template: `
       <div class="flex h-5 items-center gap-4 text-sm">
         <span>One</span>
-        <gn-separator orientation="vertical" />
+        <gr-separator orientation="vertical" />
         <span>Two</span>
-        <gn-separator orientation="vertical" />
+        <gr-separator orientation="vertical" />
         <span>Three</span>
       </div>
     `,

@@ -43,12 +43,12 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-slider [value]="[50]" [min]="0" [max]="100" thumbAriaLabel="Volume" />
- * <gn-slider [value]="[25, 75]" [thumbAriaLabel]="['Minimum', 'Maximum']" />
+ * <gr-slider [value]="[50]" [min]="0" [max]="100" thumbAriaLabel="Volume" />
+ * <gr-slider [value]="[25, 75]" [thumbAriaLabel]="['Minimum', 'Maximum']" />
  * ```
  */
 @Component({
-  selector: 'gn-slider',
+  selector: 'gr-slider',
   standalone: true,
   imports: [BrnSlider, BrnSliderTrack, BrnSliderRange, BrnSliderThumb],
   encapsulation: ViewEncapsulation.None,
