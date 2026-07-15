@@ -62,10 +62,7 @@ export class ArtifactHeader {}
 
 /** Featured-icon color, mirroring `@gremorie/rx-display`'s `FeaturedIcon`. */
 export type ArtifactFeaturedIconColor =
-  | 'primary'
-  | 'gray'
-  | 'success'
-  | 'error';
+  'primary' | 'gray' | 'success' | 'error';
 
 const FEATURED_ICON_COLORS: Record<ArtifactFeaturedIconColor, string> = {
   primary: 'bg-primary/10 text-primary',
