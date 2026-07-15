@@ -13,26 +13,17 @@ export function NavigationMenuLinksPreview() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            href="#"
-            className={navigationMenuTriggerStyle()}
-          >
+          <NavigationMenuLink href="#" className={navigationMenuTriggerStyle()}>
             Products
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            href="#"
-            className={navigationMenuTriggerStyle()}
-          >
+          <NavigationMenuLink href="#" className={navigationMenuTriggerStyle()}>
             Pricing
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            href="#"
-            className={navigationMenuTriggerStyle()}
-          >
+          <NavigationMenuLink href="#" className={navigationMenuTriggerStyle()}>
             Docs
           </NavigationMenuLink>
         </NavigationMenuItem>
