@@ -21,9 +21,7 @@ export function TooltipSidesPreview() {
                 {side}
               </Button>
             </TooltipTrigger>
-            <TooltipContent side={side}>
-              Tooltip on the {side}
-            </TooltipContent>
+            <TooltipContent side={side}>Tooltip on the {side}</TooltipContent>
           </Tooltip>
         ))}
       </div>

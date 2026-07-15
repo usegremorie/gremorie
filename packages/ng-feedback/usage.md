@@ -13,24 +13,24 @@ examples:
   - title: 'Inline loading'
     code: |
       <button [disabled]="loading()">
-        @if (loading()) { <gn-spinner size="sm" /> }
+        @if (loading()) { <gr-spinner size="sm" /> }
         Save
       </button>
   - title: 'Determinate upload progress'
     code: |
-      <gn-progress [value]="uploadPct()" />
+      <gr-progress [value]="uploadPct()" />
       <span>{{ uploadPct() }}%</span>
   - title: 'Inline alert'
     code: |
-      <gn-alert variant="destructive">
-        <gn-alert-title>Saved with errors</gn-alert-title>
-        <gn-alert-description>2 rows failed validation.</gn-alert-description>
-      </gn-alert>
+      <gr-alert variant="destructive">
+        <gr-alert-title>Saved with errors</gr-alert-title>
+        <gr-alert-description>2 rows failed validation.</gr-alert-description>
+      </gr-alert>
   - title: 'Skeleton placeholder'
     code: |
       <div aria-busy="true" aria-live="polite">
-        <gn-skeleton class="h-4 w-32" />
-        <gn-skeleton class="h-4 w-48 mt-2" />
+        <gr-skeleton class="h-4 w-32" />
+        <gr-skeleton class="h-4 w-48 mt-2" />
       </div>
 ---
 

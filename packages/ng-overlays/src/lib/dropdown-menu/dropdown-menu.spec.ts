@@ -33,28 +33,28 @@ import {
     DropdownMenuShortcut,
   ],
   template: `
-    <gn-dropdown-menu>
-      <gn-dropdown-menu-content>
-        <gn-dropdown-menu-label>Account</gn-dropdown-menu-label>
-        <gn-dropdown-menu-separator />
-        <gn-dropdown-menu-group>
-          <gn-dropdown-menu-item>
-            Edit <gn-dropdown-menu-shortcut>⌘E</gn-dropdown-menu-shortcut>
-          </gn-dropdown-menu-item>
-          <gn-dropdown-menu-item variant="destructive" [inset]="true"
-            >Delete</gn-dropdown-menu-item
+    <gr-dropdown-menu>
+      <gr-dropdown-menu-content>
+        <gr-dropdown-menu-label>Account</gr-dropdown-menu-label>
+        <gr-dropdown-menu-separator />
+        <gr-dropdown-menu-group>
+          <gr-dropdown-menu-item>
+            Edit <gr-dropdown-menu-shortcut>⌘E</gr-dropdown-menu-shortcut>
+          </gr-dropdown-menu-item>
+          <gr-dropdown-menu-item variant="destructive" [inset]="true"
+            >Delete</gr-dropdown-menu-item
           >
-        </gn-dropdown-menu-group>
-        <gn-dropdown-menu-checkbox-item [checked]="true"
-          >Toggle</gn-dropdown-menu-checkbox-item
+        </gr-dropdown-menu-group>
+        <gr-dropdown-menu-checkbox-item [checked]="true"
+          >Toggle</gr-dropdown-menu-checkbox-item
         >
-        <gn-dropdown-menu-radio-group>
-          <gn-dropdown-menu-radio-item [checked]="true"
-            >One</gn-dropdown-menu-radio-item
+        <gr-dropdown-menu-radio-group>
+          <gr-dropdown-menu-radio-item [checked]="true"
+            >One</gr-dropdown-menu-radio-item
           >
-        </gn-dropdown-menu-radio-group>
-      </gn-dropdown-menu-content>
-    </gn-dropdown-menu>
+        </gr-dropdown-menu-radio-group>
+      </gr-dropdown-menu-content>
+    </gr-dropdown-menu>
   `,
 })
 class Host {}

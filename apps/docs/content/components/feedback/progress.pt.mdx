@@ -1,0 +1,195 @@
+---
+title: Progress
+description: 'Barra de progresso horizontal determinada com track e indicator controlados por token.'
+---
+
+import { ProgressPreview } from '@/components/preview/feedback/progress';
+import { ProgressValuesPreview } from '@/components/preview/feedback/progress-values';
+import { Progress } from '@gremorie/rx-feedback';
+
+## Visão geral
+
+`Progress` é o **primitive de progresso determinado**: uma barra horizontal que preenche de 0 a 100 por cento conforme uma tarefa de longa duração avança. Envolve o Radix Progress para que a semântica subjacente de `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, e `role="progressbar"` seja tratada para você.
+
+Use Progress quando o **percentual concluído é conhecido**: uploads com contagem de bytes, formulários multi-step com steps explícitos, batch jobs reportando do servidor. Para durações desconhecidas, recorra ao `Skeleton` ou a um spinner - mostrar uma barra determinada que não correlaciona de fato com o progresso é pior do que não ter barra nenhuma.
+
+## Preview
+
+<ComponentPreview name="feedback/progress">
+  <ProgressPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Progress   um track arredondado contendo um indicator preenchido transladado por value%
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-progress ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-progress ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-progress ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-progress ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Progress } from "@gremorie/rx-feedback";
+
+export function UploadProgress({ value }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between text-sm text-muted-foreground">
+        <span>Uploading</span>
+        <span>{value}%</span>
+      </div>
+      <Progress value={value} />
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-progress
+```
+
+```ts
+import { Component, input } from '@angular/core';
+import { Progress } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-upload-progress',
+  standalone: true,
+  imports: [Progress],
+  template: `
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between text-sm text-muted-foreground">
+        <span>Uploading</span>
+        <span>{{ value() }}%</span>
+      </div>
+      <gr-progress [value]="value()" />
+    </div>
+  `,
+})
+export class UploadProgressComponent {
+  readonly value = input<number>(0);
+}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Progress>`
+
+A raiz e o indicator juntos. Renderiza um `Root` do Radix estilizado como um track de 8 px mais um `Indicator` que translada horizontalmente com base no `value`. Os slots de track e indicator são expostos via `data-slot="progress"` e `data-slot="progress-indicator"`.
+
+| Prop            | Type                                                  | Default     | Description                                                                                                                                                                                               |
+| --------------- | ----------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`         | `number \| null`                                      | -           | Valor atual, 0 a 100. Controla a translação do indicator. Defina como `null` para entrar no estado indeterminado (o indicator para de responder ao value e você assume o controle via uma classe custom). |
+| `max`           | `number`                                              | `100`       | Limite superior. A maioria dos callers deixa isso em 100 e passa uma porcentagem; passe um `max` diferente (ex. bytes de arquivo) apenas quando o valor de origem estiver naturalmente nesse range.       |
+| `getValueLabel` | `(value: number, max: number) => string`              | percentagem | Gerador de label custom para `aria-valuetext`. Sobrescreva para localizar ("42 percent") ou para expor unidades ("3 of 8 steps").                                                                         |
+| `className`     | `string`                                              | -           | Aplicado ao track raiz. Sobrescreva a altura com cuidado - 8 px (`h-2`) combina com o resto da superfície.                                                                                                |
+| `...props`      | `React.ComponentProps<typeof ProgressPrimitive.Root>` | -           | Todos os atributos de Root do Radix.                                                                                                                                                                      |
+
+<Callout type="warn">
+  O indicator empacotado é determinado. Para construir uma variant
+  indeterminada, passe `value={null}` e adicione uma classe custom no indicator
+  (ou faça fork do componente) para animar uma stripe em movimento. Mostrar uma
+  barra indeterminada com um value animado falso é um anti-pattern de
+  tracking-por-ilusão.
+</Callout>
+
+## Composição
+
+1. **`<Progress value={n} />`** é o componente inteiro - não há um slot `<ProgressIndicator>` separado para compor no call site.
+2. **Combine com um label**: uma barra silenciosa deixa o usuário adivinhando. Monte um pequeno `<span>` acima ou ao lado dela com a porcentagem, a contagem de steps, ou o progresso em bytes.
+3. **Dentro de um `Alert` ou de um `Card`**: um progress que explica _o que_ está carregando é lido melhor do que um progress que flutua sozinho. Envolva com uma linha de contexto para que os usuários saibam por que estão esperando.
+
+## Variações
+
+### Labels de valor
+
+<ComponentPreview name="feedback/progress-values">
+  <ProgressValuesPreview />
+</ComponentPreview>
+
+A mesma barra por todo o range determinado - `0`, `33`, `66`, e `100`. Combine cada barra com seu valor numérico para que o preenchimento nunca seja silencioso: em `0` o usuário vê que a tarefa está na fila, em `100` que ela está pronta. `value` é limitado entre `0` e `max` (default `100`).
+
+### Com label
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex max-w-md flex-col gap-2">
+    <div className="flex justify-between text-sm">
+      <span>Uploading invoice.pdf</span>
+      <span className="text-muted-foreground">66%</span>
+    </div>
+    <Progress value={66} />
+  </div>
+</div>
+
+```tsx
+<div className="flex flex-col gap-2">
+  <div className="flex justify-between text-sm">
+    <span>Uploading {file.name}</span>
+    <span className="text-muted-foreground">{value}%</span>
+  </div>
+  <Progress value={value} />
+</div>
+```
+
+A forma default para qualquer tarefa de longa duração com um total conhecido. Mantenha o texto do valor perto da barra para que os dois sejam lidos como um único widget.
+
+### Steps empilhados
+
+<div className="rounded-lg border p-6 not-prose">
+  <div className="flex max-w-md flex-col gap-3">
+    <Progress value={25} />
+    <Progress value={50} />
+    <Progress value={75} />
+    <Progress value={100} />
+  </div>
+</div>
+
+```tsx
+{
+  steps.map((step) => <Progress key={step.id} value={step.percent} />);
+}
+```
+
+Para tarefas multi-stream (uploads paralelos, batch jobs reportando progresso por item). Combine cada row com um label por row fora da barra.
+
+### Barra fina dentro do header de um card
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Sync</CardTitle>
+    <Progress value={value} className="h-1" />
+  </CardHeader>
+  <CardContent>{content}</CardContent>
+</Card>
+```
+
+Reduza a altura para `h-1` quando a barra fica no topo de um card como uma lasca sutil de progresso em vez de uma superfície primária.
+
+## Acessibilidade
+
+- **Role e valor**: o Radix define `role="progressbar"`, `aria-valuemin="0"`, `aria-valuemax="{max}"`, e `aria-valuenow="{value}"` automaticamente. Leitores de tela anunciam a porcentagem a cada mudança.
+- **Label de valor**: sobrescreva `getValueLabel` para anúncios localizados ou unidades não percentuais. O default é do estilo `"{value}/{max}"`.
+- **Nenhuma interação por teclado**: Progress é não interativo. Se você precisa de um scrubber arrastável, recorra ao `Slider`.
+- **Estado indeterminado**: passe `value={null}` para remover `aria-valuenow` para que a tecnologia assistiva anuncie a tarefa como em progresso sem um número enganoso.
+- **Movimento reduzido**: o indicator usa `transition-all` para preenchimentos suaves. Usuários com `prefers-reduced-motion: reduce` recebem automaticamente o override global de movimento - nenhuma config extra necessária.
+
+## Relacionados
+
+- [Skeleton](/components/feedback/skeleton) - recorra ao Skeleton para fetches de duração desconhecida sem valor determinado.
+- [Alert](/components/feedback/alert) - primitive de feedback irmão para mensagens de contexto enquanto o progresso corre.
+- [Slider](/components/selection/slider) - primitive irmão com um thumb arrastável quando o usuário controla o valor.

@@ -28,18 +28,18 @@ import {
     BrnSheetContent,
   ],
   template: `
-    <gn-sheet side="right">
-      <button gn-sheet-trigger>Open sheet</button>
+    <gr-sheet side="right">
+      <button gr-sheet-trigger>Open sheet</button>
       <ng-template brnSheetContent>
-        <gn-sheet-content side="right">
-          <gn-sheet-header>
-            <h2 gn-sheet-title>Edit settings</h2>
-            <p gn-sheet-description>Adjust your preferences.</p>
-          </gn-sheet-header>
-          <gn-sheet-footer />
-        </gn-sheet-content>
+        <gr-sheet-content side="right">
+          <gr-sheet-header>
+            <h2 gr-sheet-title>Edit settings</h2>
+            <p gr-sheet-description>Adjust your preferences.</p>
+          </gr-sheet-header>
+          <gr-sheet-footer />
+        </gr-sheet-content>
       </ng-template>
-    </gn-sheet>
+    </gr-sheet>
   `,
 })
 class Host {}

@@ -111,7 +111,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Carousel (Angular)',
     description:
-      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gn-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).',
+      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).',
     categories: ['display'],
     packageRoot: 'packages/ng-display',
     sourceFiles: ['src/lib/carousel/carousel.ts', 'src/lib/carousel/index.ts'],
@@ -394,7 +394,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Inline Citation (Angular)',
     description:
-      'Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gn-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.',
+      'Footnote-style inline citation marker. Hover reveals a hover-card with the source detail; multiple sources compose a Carousel. Built on @spartan-ng/brain hover-card plus gr-badge. Composes InlineCitation, InlineCitationText, InlineCitationCard (Trigger/Body), InlineCitationSource and InlineCitationQuote. Mirrors React InlineCitation from @gremorie/rx-ai.',
     categories: ['ai', 'chatbot'],
     packageRoot: 'packages/ng-ai',
     sourceFiles: [

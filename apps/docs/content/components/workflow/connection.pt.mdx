@@ -1,0 +1,152 @@
+---
+title: Connection
+description: Linha de conexão em curva bezier para arrastes de edge em progresso. Passe para a prop connectionLineComponent do ReactFlow para previews no tema da Gremorie.
+---
+
+import { ConnectionPreview } from '@/components/preview/ai/connection';
+
+## Visão geral
+
+`Connection` é a linha de preview ao vivo que segue o cursor enquanto o usuário arrasta de um `Handle` de origem até um destino. É um `ConnectionLineComponent` de `@xyflow/react`, renderizado como uma curva bezier com um pequeno círculo no destino para que os usuários vejam exatamente onde o edge vai cair.
+
+O path usa `var(--color-ring)` para o traço e um círculo preenchido de branco na ponta do cursor, então a conexão combina visualmente com os estados de focus da Gremorie. A classe `animated` no path habilita os traços fluindo do xyflow (sobrescreva ou remova via CSS se quiser uma linha estática).
+
+Use-a passando o próprio componente (não uma instância) para o `Canvas` através da prop `connectionLineComponent` do ReactFlow.
+
+## Preview
+
+<ComponentPreview name="ai/connection">
+  <ConnectionPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Connection   provisional connection line — leaf (Canvas's connectionLineComponent)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-connection ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-connection ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-connection ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-connection ```
+  </Tab>
+</Tabs>
+
+Requer `@xyflow/react`.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Canvas, Connection } from "@gremorie/rx-ai";
+
+export function Workflow() {
+  return (
+    <Canvas
+      nodes={nodes}
+      edges={edges}
+      connectionLineComponent={Connection}
+      onConnect={onConnect}
+    >
+      {/* ... */}
+    </Canvas>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente está planejada; a edição React está production-ready hoje.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Connection>`
+
+Um `ConnectionLineComponent` de `@xyflow/react`. O xyflow passa as props automaticamente quando o usuário começa a arrastar de um handle.
+
+| Prop    | Type     | Description                                   |
+| ------- | -------- | --------------------------------------------- |
+| `fromX` | `number` | Coordenada X de origem (a posição do handle). |
+| `fromY` | `number` | Coordenada Y de origem.                       |
+| `toX`   | `number` | Coordenada X do cursor.                       |
+| `toY`   | `number` | Coordenada Y do cursor.                       |
+
+Renderiza:
+
+- Um `<path>` com `class="animated"`, `stroke="var(--color-ring)"` e uma curva bezier cujos pontos de controle ficam no ponto médio entre origem e destino.
+- Um `<circle>` no cursor (`fill="#fff"`, `stroke="var(--color-ring)"`, `r={3}`) para que a ponta fique visível contra qualquer fundo.
+
+Constante interna: `HALF = 0.5` (a razão do ponto de controle ao longo do eixo X).
+
+## Composição
+
+1. **`<Canvas>`** declara a superfície e aceita `connectionLineComponent` como prop. Passe o próprio `Connection` (não JSX) - o xyflow o instancia durante um arraste.
+2. **Componentes `<Handle>`** em cada `Node` definem os pontos de conexão. O xyflow renderiza `Connection` automaticamente sempre que um arraste começa a partir de um deles.
+3. O arraste é confirmado via `onConnect`, momento em que você normalmente dispara uma ação que adiciona um novo edge ao estado `edges`.
+
+## Variações
+
+### Linha animada padrão
+
+O visual out-of-the-box: traço animado, ponta com círculo branco.
+
+```tsx
+<Canvas connectionLineComponent={Connection} />
+```
+
+### Linha estática via override de CSS
+
+Remova a animação de traço se preferir um visual mais calmo.
+
+```css
+.react-flow__connectionline .animated {
+  animation: none;
+  stroke-dasharray: none;
+}
+```
+
+### Linha com tema custom
+
+Se você precisa de uma cor de traço diferente (por exemplo, destructive ao passar por cima de uma zona de "deletar edge"), envolva `Connection` no seu próprio componente.
+
+```tsx
+import type { ConnectionLineComponent } from '@xyflow/react';
+
+const DestructiveConnection: ConnectionLineComponent = (props) => (
+  <g style={{ filter: 'drop-shadow(0 0 4px var(--color-destructive))' }}>
+    <Connection {...props} />
+  </g>
+);
+
+<Canvas connectionLineComponent={DestructiveConnection} />;
+```
+
+## Acessibilidade
+
+- **Somente ponteiro por design**: a renderização de Connection está vinculada a um arraste de mouse / toque. O xyflow atualmente não expõe um modo de criação de edge por teclado.
+- **Reduced motion**: a classe `animated` adiciona um efeito de marching-ants via CSS. Respeite as preferências do usuário desabilitando a animação:
+
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    .react-flow__connectionline .animated {
+      animation: none;
+    }
+  }
+  ```
+
+- **Contraste de cor**: `var(--color-ring)` contra o fundo do canvas deve atingir 3:1 para componentes de UI não textuais. O token da Gremorie já cumpre isso, mas verifique se você trocar de tema.
+- **Anúncio do alvo de soltura**: para ajudar usuários de leitor de tela a entender onde uma conexão cairia, adicione `aria-label` a cada `Handle` de destino descrevendo que tipo de conexão ele aceita.
+
+## Relacionados
+
+- [Canvas](/components/workflow/canvas) - a superfície que consome `connectionLineComponent`
+- [Edge](/components/workflow/edge) - o edge persistido que substitui a conexão em progresso ao soltar
+- [Node](/components/workflow/node) - hospeda os handles onde as conexões começam e terminam

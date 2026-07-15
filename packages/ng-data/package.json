@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-data",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Data visualisation primitives for Angular - charts on D3. Part of Gremorie.",
   "license": "MIT",
   "repository": {
@@ -10,26 +10,24 @@
   },
   "keywords": [
     "angular",
-    "ai",
     "ui",
     "charts",
     "dataviz",
     "d3"
   ],
   "peerDependencies": {
-    "@analogjs/vite-plugin-angular": "^2.5.3",
-    "@analogjs/vitest-angular": "^2.5.3",
-    "@angular/compiler": "^21.2.0",
     "@angular/core": "^21.2.0",
     "d3-format": "^3.1.2",
     "d3-scale": "^4.0.2",
-    "d3-shape": "^3.2.0",
-    "vite": "^7.0.0",
-    "@nx/vite": "^22.7.2"
+    "d3-shape": "^3.2.0"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/usegremorie/gremorie/issues"
+  },
+  "author": "Gremorie (https://github.com/usegremorie)"
 }

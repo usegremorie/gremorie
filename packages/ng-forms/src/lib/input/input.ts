@@ -28,7 +28,7 @@ import { cn } from '@gremorie/ng-core';
  * directly onto the element). Angular cannot spread an arbitrary prop bag onto
  * a host, so:
  *
- * - The component selector is `gn-input` and it renders the styled `<input>`
+ * - The component selector is `gr-input` and it renders the styled `<input>`
  *   *inside* its template. The `data-slot="input"` and the full class string
  *   live on that inner `<input>`, not on the host — so the host is an invisible
  *   wrapper and the visible control is the native input, matching React 1:1.
@@ -41,11 +41,11 @@ import { cn } from '@gremorie/ng-core';
  *
  * @example
  * ```html
- * <gn-input type="email" placeholder="ada@example.com" [(ngModel)]="email" />
+ * <gr-input type="email" placeholder="ada@example.com" [(ngModel)]="email" />
  * ```
  */
 @Component({
-  selector: 'gn-input',
+  selector: 'gr-input',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

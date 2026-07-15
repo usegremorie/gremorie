@@ -1,0 +1,149 @@
+---
+title: Skeleton
+description: 'Bloco placeholder pulsante que reserva espaço de layout enquanto o conteúdo carrega.'
+---
+
+import { SkeletonPreview } from '@/components/preview/feedback/skeleton';
+import { SkeletonAvatarPreview } from '@/components/preview/feedback/skeleton-avatar';
+import { SkeletonCardPreview } from '@/components/preview/feedback/skeleton-card';
+import { SkeletonListPreview } from '@/components/preview/feedback/skeleton-list';
+
+## Visão geral
+
+`Skeleton` é o **primitive de placeholder de carregamento**: um bloco pulsante que você molda com largura e altura para combinar com a geometria do conteúdo real por baixo. O ponto não é a animação - é reservar o slot de layout para que não haja **nenhum shift** quando os dados chegam.
+
+Recorra ao Skeleton em toda superfície assíncrona onde o layout depende da resposta: avatar mais nome mais texto secundário, um cover de card, uma row em uma lista, um gráfico. Pule-o para operações in-flow com duração conhecida - use `Progress` ali - e para estados pendentes curtos de aperto de button - use um Spinner dentro do button.
+
+## Preview
+
+<ComponentPreview name="feedback/skeleton">
+  <SkeletonPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Skeleton   um único bloco pulsante e arredondado dimensionado por seu className
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-skeleton ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-skeleton ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-skeleton ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-skeleton ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Skeleton } from "@gremorie/rx-feedback";
+
+export function ProfileSkeleton() {
+  return (
+    <div className="flex items-center gap-4" aria-busy="true" aria-live="polite">
+      <Skeleton className="size-12 rounded-full" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-[200px]" />
+        <Skeleton className="h-4 w-[160px]" />
+      </div>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-skeleton
+```
+
+```ts
+import { Component } from '@angular/core';
+import { Skeleton } from '@gremorie/ng-feedback';
+
+@Component({
+  selector: 'app-profile-skeleton',
+  standalone: true,
+  imports: [Skeleton],
+  template: `
+    <div class="flex items-center gap-4" aria-busy="true" aria-live="polite">
+      <gr-skeleton class="size-12 rounded-full" />
+      <div class="flex flex-col gap-2">
+        <gr-skeleton class="h-4 w-[200px]" />
+        <gr-skeleton class="h-4 w-[160px]" />
+      </div>
+    </div>
+  `,
+})
+export class ProfileSkeletonComponent {}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Skeleton>`
+
+Renderiza um `<div>` estilizado com `animate-pulse rounded-md bg-accent`. Molde o elemento com classes utilitárias de largura e altura que combinem com o conteúdo por baixo.
+
+| Prop        | Type                          | Default | Description                                                                                                                                                                                                              |
+| ----------- | ----------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `className` | `string`                      | -       | A API inteira. Defina largura e altura (`size-12`, `h-4 w-[200px]`), sobrescreva o raio (`rounded-full` para avatares), ou mude a superfície (`bg-muted`) quando a superfície accent padrão entra em conflito com o pai. |
+| `...props`  | `React.ComponentProps<"div">` | -       | Atributos padrão de div. O componente em si não adiciona nenhum role; a semântica pertence à região ao redor.                                                                                                            |
+
+<Callout type="info">
+  A animação padrão usa o `animate-pulse` do Tailwind. Usuários com
+  `prefers-reduced-motion: reduce` recebem automaticamente o estado estático - o
+  projeto entrega um override global de movimento, sem config por componente
+  necessária.
+</Callout>
+
+## Composição
+
+1. **`<Skeleton>`** é um único elemento sem filhos. Molde-o com `className`; aninhe vários para placeholders compostos (avatar mais nome mais linha secundária).
+2. **Combine com a geometria real**: um círculo de 12 px, uma linha de texto de 16 px, uma coluna de 200 px. Quanto mais perto a forma do placeholder está do conteúdo final, menos o usuário nota quando ele é trocado.
+3. **Dentro de um `AspectRatio`**: combine Skeleton com um `AspectRatio` para reservar o espaço da imagem de cover sem calcular dimensões à mão. Veja [AspectRatio](/components/containers/aspect-ratio).
+4. **Por row de lista vs. card inteiro**: renderize uma row de Skeleton por contagem de item esperado em vez de um único bloco grande - placeholders com grão de row parecem mais honestos e param de piscar quando os dados chegam progressivamente.
+
+## Variações
+
+### Avatar mais texto
+
+<ComponentPreview name="feedback/skeleton-avatar">
+  <SkeletonAvatarPreview />
+</ComponentPreview>
+
+O placeholder padrão de perfil de usuário: um avatar circular ao lado de duas linhas curtas de texto. Duas linhas parecem honestas; três é o limite superior antes de o placeholder começar a piscar com dados reais.
+
+### Placeholder de card
+
+<ComponentPreview name="feedback/skeleton-card">
+  <SkeletonCardPreview />
+</ComponentPreview>
+
+Para layouts de card-grid. Use `aspect-video` no Skeleton do cover para que a altura do placeholder combine com o que o `<img>` real vai reservar, depois afunile as duas linhas de texto para `w-3/4` e `w-1/2` para que o bloco seja lido como um heading mais subtexto.
+
+### Rows de lista
+
+<ComponentPreview name="feedback/skeleton-list">
+  <SkeletonListPreview />
+</ComponentPreview>
+
+Renderize uma row por item esperado em vez de um único bloco grande. Use uma contagem fixa que combine com o tamanho de página típico (5-10 rows). Exagerar parece throughput falso; subestimar causa um pulo quando mais rows chegam.
+
+## Acessibilidade
+
+- **Apenas apresentação**: Skeleton em si não renderiza nenhum role e nenhum label. É um placeholder visual.
+- **Marque a região de carregamento**: envolva os placeholders em um container com `aria-busy="true"` (a região está carregando) e `aria-live="polite"` (anuncie a troca quando o conteúdo chega) para que leitores de tela recebam um único anúncio em vez de tagarelice repetida em cada elemento pulsante.
+- **Movimento reduzido**: `animate-pulse` respeita `prefers-reduced-motion` via o override global do projeto - usuários que optam por não ter movimento veem um estado estático, não um piscante.
+- **Superfície controlada por token**: `bg-accent` se adapta a temas claro e escuro automaticamente. Sobrescreva para `bg-muted` quando o placeholder precisa ficar sobre uma superfície de card mais escura.
+
+## Relacionados
+
+- [Progress](/components/feedback/progress) - recorra ao Progress quando o percentual concluído é conhecido.
+- [Alert](/components/feedback/alert) - recorra ao Alert quando a superfície precisa explicar _por que_ o usuário está esperando.
+- [AspectRatio](/components/containers/aspect-ratio) - combine com Skeleton para reservar o espaço da imagem de cover sem calcular dimensões à mão.

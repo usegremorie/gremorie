@@ -1,0 +1,174 @@
+---
+title: Slider
+description: Input numérico contínuo via thumb arrastável - único ou range, horizontal ou vertical, com uma extensão `thumbAriaLabel` para acessibilidade multi-thumb.
+---
+
+import { SliderPreview } from '@/components/preview/forms/slider';
+import { SliderRangePreview } from '@/components/preview/forms/slider-range';
+import { SliderStepsPreview } from '@/components/preview/forms/slider-steps';
+import { SliderDisabledPreview } from '@/components/preview/forms/slider-disabled';
+
+## Visão geral
+
+`Slider` envolve `@radix-ui/react-slider`. Thumb único por default; passe `defaultValue={[low, high]}` (ou `value`) para um slider de range. Respeita `step`, `min`, `max` e `orientation="vertical"`.
+
+Use o Slider quando **a posição aproximada é mais útil que a precisão exata** - volume, brilho, filtros de preço. Para valores exatos use um `Input` numérico. Para escolhas discretas, prefira `RadioGroup` ou `Select`. Sempre mostre o valor atual ao lado do slider; sliders silenciosos confundem os usuários.
+
+## Preview
+
+<ComponentPreview name="forms/slider">
+  <SliderPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Slider                  Root; wraps Radix Slider.Root
+├─ Track                track background
+│  └─ Range             filled portion of the track
+└─ Thumb                one draggable handle per value
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-slider ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-slider ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-slider ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-slider ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Slider } from "@gremorie/rx-forms";
+
+export function Example() {
+  return <Slider defaultValue={[40]} max={100} step={1} />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Slider>`
+
+| Prop             | Type                         | Default        | Description                                                                                                                                                                                                                                    |
+| ---------------- | ---------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`          | `number[]`                   | -              | Valor(es) controlado(s). Um número para thumb único; dois para range.                                                                                                                                                                          |
+| `defaultValue`   | `number[]`                   | `[min, max]`   | Valor(es) inicial(is) não controlado(s).                                                                                                                                                                                                       |
+| `onValueChange`  | `(value: number[]) => void`  | -              | Dispara a cada passo do arrasto.                                                                                                                                                                                                               |
+| `onValueCommit`  | `(value: number[]) => void`  | -              | Dispara quando o usuário solta o thumb (útil para commits de rede).                                                                                                                                                                            |
+| `min`            | `number`                     | `0`            | Valor mínimo.                                                                                                                                                                                                                                  |
+| `max`            | `number`                     | `100`          | Valor máximo.                                                                                                                                                                                                                                  |
+| `step`           | `number`                     | `1`            | Incremento entre valores permitidos.                                                                                                                                                                                                           |
+| `orientation`    | `"horizontal" \| "vertical"` | `"horizontal"` | Sliders verticais usam `min-h-44` por default para terem algo por onde arrastar.                                                                                                                                                               |
+| `disabled`       | `boolean`                    | `false`        | Desabilita a interação.                                                                                                                                                                                                                        |
+| `name`           | `string`                     | -              | Nome do campo de formulário.                                                                                                                                                                                                                   |
+| `thumbAriaLabel` | `string \| string[]`         | -              | **Extensão Gremorie** (não no default do shadcn). Nome acessível para cada thumb. Passe um array para sliders de range, ex.: `["Minimum price", "Maximum price"]`. Obrigatório para WCAG 4.1.2 quando o slider não tem um `<Label>` adjacente. |
+| `aria-label`     | `string`                     | -              | Serve de fallback para os labels de thumb quando `thumbAriaLabel` não está definido.                                                                                                                                                           |
+
+Encaminha para `SliderPrimitive.Root`. Renderiza `SliderPrimitive.Track`, `SliderPrimitive.Range` e um `SliderPrimitive.Thumb` por valor.
+
+<Callout type="info">
+  **`thumbAriaLabel` é uma adição do Gremorie** ao Slider padrão do shadcn. Sem
+  ele, sliders de range anunciam dois thumbs sem nome e falham no WCAG 4.1.2
+  (Name, Role, Value). Sempre defina-o para sliders de range / multi-thumb.
+</Callout>
+
+## Composição
+
+1. **`<Slider>`** é um primitivo folha que renderiza track + range + um thumb por valor.
+2. **Pareie com um `<Label>`** (associado via `aria-labelledby` se não existir alvo de `htmlFor`) ou defina `aria-label` diretamente na raiz.
+3. **Mostre o valor atual** ao lado do slider - os usuários esperam uma leitura numérica para confirmar onde estão.
+4. **Para uso vinculado a formulário**, envolva com `<FormField>` + `<FormControl>` e converta o valor de array de volta para um número (ou array) para o schema do seu formulário.
+
+## Variações
+
+### Thumb único
+
+O padrão canônico. Mostre o valor ao lado.
+
+```tsx
+function Volume() {
+  const [value, setValue] = React.useState([40]);
+  return (
+    <div className="grid gap-2">
+      <div className="flex items-center justify-between">
+        <Label>Volume</Label>
+        <span className="text-sm tabular-nums text-muted-foreground">
+          {value[0]}%
+        </span>
+      </div>
+      <Slider
+        value={value}
+        onValueChange={setValue}
+        max={100}
+        step={1}
+        aria-label="Volume"
+      />
+    </div>
+  );
+}
+```
+
+### Slider de range
+
+Passe dois valores para `defaultValue` (ou `value`). Sempre defina `thumbAriaLabel` como um array para que cada thumb tenha um nome único.
+
+<ComponentPreview name="forms/slider-range">
+  <SliderRangePreview />
+</ComponentPreview>
+
+### Slider com steps
+
+Use um `step` maior para snapar em valores discretos como quantidade, rating ou tamanho de fonte.
+
+<ComponentPreview name="forms/slider-steps">
+  <SliderStepsPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` remove os thumbs da ordem de tab e cai a opacidade para 50%.
+
+<ComponentPreview name="forms/slider-disabled">
+  <SliderDisabledPreview />
+</ComponentPreview>
+
+### Orientação vertical
+
+Útil para controles de mídia, color pickers ou qualquer UI onde o espaço horizontal é precioso.
+
+```tsx
+<div className="h-44">
+  <Slider defaultValue={[60]} orientation="vertical" aria-label="Brightness" />
+</div>
+```
+
+## Acessibilidade
+
+- **ARIA**: cada thumb é um `role="slider"` com `aria-valuemin`, `aria-valuemax`, `aria-valuenow` e `aria-orientation` definidos pelo Radix.
+- **Teclado**:
+  - `ArrowLeft` / `ArrowDown` decrementam por `step`.
+  - `ArrowRight` / `ArrowUp` incrementam por `step`.
+  - `PageDown` / `PageUp` mudam por incrementos maiores (tipicamente 10x step).
+  - `Home` pula para `min`; `End` pula para `max`.
+- **Multi-thumb**: cada thumb é focável independentemente; o Radix impede os thumbs de se cruzarem.
+- **`thumbAriaLabel`**: defina-o para qualquer slider de range / multi-thumb para que cada thumb anuncie um nome específico. Sem ele, os leitores de tela caem para o `aria-label` da raiz, e depois para um genérico "Slider thumb 1".
+- **Disabled**: `data-disabled` remove os thumbs da ordem de tab e cai a opacidade para 50%.
+- **Sempre mostre o valor**: exiba visualmente o valor atual para que todos os usuários (não só os de leitor de tela) recebam o mesmo feedback.
+
+## Relacionados
+
+- [Input](/components/text/input) - use para valores numéricos exatos
+- [Form](/components/form) - conecte o Slider no react-hook-form
+- [Label](/components/text/label) - o companheiro canônico

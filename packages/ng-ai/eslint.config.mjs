@@ -11,7 +11,16 @@ export default [
       '@nx/dependency-checks': [
         'error',
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
+          // Build/test scaffolding is not part of the published package's
+          // dependency contract, so its imports (vite, @nx/vite, @analogjs/*,
+          // @angular/compiler for JIT TestBed) must not force those build-only
+          // tools into peerDependencies. Consumers get a compiled library and
+          // never run this config or these tests.
+          ignoredFiles: [
+            '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/vite.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/src/test-setup.ts',
+          ],
         },
       ],
     },

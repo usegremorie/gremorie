@@ -36,28 +36,33 @@ The generic `Artifact` shell parts (must exist in `ng-artifacts` too):
 
 ## Public surface (prop ⇄ input parity)
 
-| Prop (React)   | Type                                                                    | Default       | Angular                                          |
-| -------------- | ----------------------------------------------------------------------- | ------------- | ------------------------------------------------ |
-| `title`        | `string`                                                                | required      | `input.required<string>()`                       |
-| `description`  | `string`                                                                | —             | `input<string>()`                                |
-| `data`         | `ChartArtifactDatum[]` (`Record<string, string \| number>`)             | required      | `input.required`                                 |
-| `type`         | `'bar'\|'area'\|'line'\|'pie'\|'radar'\|'radial'\|'scatter'`            | `'bar'`       | `input<ChartArtifactType>('bar')`                |
-| `categoryKey`  | `string`                                                                 | required      | `input.required`                                 |
-| `valueKey`     | `string \| ChartArtifactSeries[]`                                       | required      | `input.required`                                 |
-| `categoryLabel`| `string`                                                                 | title-cased   | `input<string>()`                                |
-| `valueLabel`   | `string`                                                                 | title-cased   | `input<string>()`                                |
-| `defaultView`  | `'chart' \| 'table'`                                                     | `'chart'`     | `input<ChartArtifactView>('chart')`              |
-| `numberFormat` | `Intl.NumberFormatOptions`                                              | —             | `input<Intl.NumberFormatOptions>()`              |
-| `fileName`     | `string`                                                                 | `'chart'`     | `input('chart')`                                 |
-| `icon`         | icon component                                                           | chart-column  | `input<...>()` (`@ng-icons/lucide`)              |
-| `accent`       | `'primary'\|'gray'\|'success'\|'error'`                                  | `'primary'`   | `input<ChartArtifactColor>('primary')`           |
-| `className`    | `string`                                                                 | —             | host `class`                                     |
-| `onRegenerate` | `() => void`                                                             | —             | `regenerate = output<void>()`                    |
-| `onSave`       | `() => void`                                                             | —             | `save = output<void>()`                          |
+| Prop (React)    | Type                                                         | Default      | Angular                                |
+| --------------- | ------------------------------------------------------------ | ------------ | -------------------------------------- |
+| `title`         | `string`                                                     | required     | `input.required<string>()`             |
+| `description`   | `string`                                                     | —            | `input<string>()`                      |
+| `data`          | `ChartArtifactDatum[]` (`Record<string, string \| number>`)  | required     | `input.required`                       |
+| `type`          | `'bar'\|'area'\|'line'\|'pie'\|'radar'\|'radial'\|'scatter'` | `'bar'`      | `input<ChartArtifactType>('bar')`      |
+| `categoryKey`   | `string`                                                     | required     | `input.required`                       |
+| `valueKey`      | `string \| ChartArtifactSeries[]`                            | required     | `input.required`                       |
+| `categoryLabel` | `string`                                                     | title-cased  | `input<string>()`                      |
+| `valueLabel`    | `string`                                                     | title-cased  | `input<string>()`                      |
+| `defaultView`   | `'chart' \| 'table'`                                         | `'chart'`    | `input<ChartArtifactView>('chart')`    |
+| `numberFormat`  | `Intl.NumberFormatOptions`                                   | —            | `input<Intl.NumberFormatOptions>()`    |
+| `fileName`      | `string`                                                     | `'chart'`    | `input('chart')`                       |
+| `icon`          | icon component                                               | chart-column | `input<...>()` (`@ng-icons/lucide`)    |
+| `accent`        | `'primary'\|'gray'\|'success'\|'error'`                      | `'primary'`  | `input<ChartArtifactColor>('primary')` |
+| `className`     | `string`                                                     | —            | host `class`                           |
+| `onRegenerate`  | `() => void`                                                 | —            | `regenerate = output<void>()`          |
+| `onSave`        | `() => void`                                                 | —            | `save = output<void>()`                |
 
 ```ts
-interface ChartArtifactSeries { key: string; label?: string; color?: string }
-type ChartArtifactType = 'bar' | 'area' | 'line' | 'pie' | 'radar' | 'radial' | 'scatter';
+interface ChartArtifactSeries {
+  key: string;
+  label?: string;
+  color?: string;
+}
+type ChartArtifactType =
+  'bar' | 'area' | 'line' | 'pie' | 'radar' | 'radial' | 'scatter';
 type ChartArtifactView = 'chart' | 'table';
 type ChartArtifactColor = 'primary' | 'gray' | 'success' | 'error';
 ```

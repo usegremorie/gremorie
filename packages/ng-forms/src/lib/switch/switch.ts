@@ -25,7 +25,7 @@ export type SwitchSize = 'sm' | 'default';
  *
  * ## React → Angular mapping
  *
- * - React `Switch` = our `gn-switch`. `data-slot="switch"` is on our host. The
+ * - React `Switch` = our `gr-switch`. `data-slot="switch"` is on our host. The
  *   brain renders its own inner `<button role="switch">` and applies `[class]`
  *   + `data-state` to *that button*, so the React Root **visual** class string
  *   (track background / border / shape, which key off `data-[state=…]`) is
@@ -45,11 +45,11 @@ export type SwitchSize = 'sm' | 'default';
  *
  * @example
  * ```html
- * <gn-switch [(checked)]="notifications" id="notify" />
+ * <gr-switch [(checked)]="notifications" id="notify" />
  * ```
  */
 @Component({
-  selector: 'gn-switch',
+  selector: 'gr-switch',
   standalone: true,
   imports: [BrnSwitch, BrnSwitchThumb],
   encapsulation: ViewEncapsulation.None,

@@ -28,18 +28,18 @@ import {
     BrnDialogContent,
   ],
   template: `
-    <gn-dialog>
-      <button gn-dialog-trigger>Open</button>
+    <gr-dialog>
+      <button gr-dialog-trigger>Open</button>
       <ng-template brnDialogContent>
-        <gn-dialog-content>
-          <gn-dialog-header>
-            <h2 gn-dialog-title>Title</h2>
-            <p gn-dialog-description>Description</p>
-          </gn-dialog-header>
-          <gn-dialog-footer />
-        </gn-dialog-content>
+        <gr-dialog-content>
+          <gr-dialog-header>
+            <h2 gr-dialog-title>Title</h2>
+            <p gr-dialog-description>Description</p>
+          </gr-dialog-header>
+          <gr-dialog-footer />
+        </gr-dialog-content>
       </ng-template>
-    </gn-dialog>
+    </gr-dialog>
   `,
 })
 class Host {}

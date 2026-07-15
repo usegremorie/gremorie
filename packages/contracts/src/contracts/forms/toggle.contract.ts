@@ -85,7 +85,7 @@ export const toggle = defineContract({
     rx: 'inputs-buttons-toggle--workbench',
     ng: 'inputs-buttons-toggle--workbench',
   },
-  tag: { rx: 'Toggle', ng: 'gn-toggle' },
+  tag: { rx: 'Toggle', ng: 'gr-toggle' },
   example: {
     pressed: false,
     variant: 'default',

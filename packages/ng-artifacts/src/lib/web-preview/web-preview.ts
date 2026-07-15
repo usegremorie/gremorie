@@ -12,7 +12,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
-import { cn } from '@gremorie/ng-core';
+import { cn, safeHttpUrl } from '@gremorie/ng-core';
 import {
   Tooltip,
   TooltipContent,
@@ -103,7 +103,7 @@ export class WebPreviewNavigation {}
 /**
  * Ghost icon button for the toolbar. Parity with React
  * `WebPreviewNavigationButton`. When `tooltip` is set, the button is wrapped
- * in the styled `gn-tooltip` compound from `@gremorie/ng-overlays` (the same
+ * in the styled `gr-tooltip` compound from `@gremorie/ng-overlays` (the same
  * primitive the React side uses from `@gremorie/rx-overlays`), and the text
  * doubles as the `aria-label`. Disabled + click forward.
  */
@@ -132,14 +132,14 @@ export class WebPreviewNavigation {}
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip>
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip>
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }
@@ -200,6 +200,19 @@ export class WebPreviewUrl {
  * The sandboxed `<iframe>`. Uses the shared URL unless `src` is set. Parity with
  * React `WebPreviewBody`. The optional `loading` slot is projected after the
  * iframe.
+ *
+ * ## Security
+ *
+ * The frame previews untrusted URLs, so the sandbox deliberately omits
+ * `allow-same-origin`. Combined with `allow-scripts` it is a documented escape:
+ * a framed page on the embedder's origin can reach `window.parent`, strip the
+ * `sandbox` attribute and re-load itself unsandboxed. `safeHttpUrl` already
+ * rejects relative URLs, but an absolute URL aimed at the host origin would
+ * still slip through, so the capability is dropped outright.
+ *
+ * The `sandbox` value is a static attribute, not a binding: Angular forbids a
+ * bound `sandbox` on an iframe (NG0910) precisely to stop it being weakened at
+ * runtime. That constraint is a feature here, not a limitation.
  */
 @Component({
   selector: 'web-preview-body',
@@ -209,14 +222,14 @@ export class WebPreviewUrl {
     @if (safeSrc(); as src) {
       <iframe
         [class]="iframeClass"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
+        sandbox="allow-scripts allow-forms allow-popups allow-presentation"
         [src]="src"
         title="Preview"
       ></iframe>
     } @else {
       <iframe
         [class]="iframeClass"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"
+        sandbox="allow-scripts allow-forms allow-popups allow-presentation"
         title="Preview"
       ></iframe>
     }
@@ -235,12 +248,13 @@ export class WebPreviewBody {
 
   /**
    * Angular blocks dynamic `[src]` on an iframe unless the value is an
-   * explicitly-trusted resource URL (NG0904). React assigns the raw string;
-   * here we mark the resolved URL trusted. Empty URL → no iframe src (matches
-   * React's `src || undefined`).
+   * explicitly-trusted resource URL (NG0904), and `bypassSecurityTrustResourceUrl`
+   * disables the sanitizer for whatever it is handed. It is therefore only ever
+   * handed a URL that `safeHttpUrl` has already validated as absolute http(s);
+   * anything else yields no `src` at all.
    */
   protected readonly safeSrc = (): SafeResourceUrl | null => {
-    const url = this.resolvedSrc();
+    const url = safeHttpUrl(this.resolvedSrc());
     return url ? this.sanitizer.bypassSecurityTrustResourceUrl(url) : null;
   };
 }

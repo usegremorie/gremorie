@@ -52,7 +52,7 @@ export const spinner = defineContract({
     rx: 'interaction-feedback-spinner--workbench',
     ng: 'interaction-feedback-spinner--workbench',
   },
-  tag: { rx: 'Spinner', ng: 'gn-spinner' },
+  tag: { rx: 'Spinner', ng: 'gr-spinner' },
   example: { size: 'default' },
   figma: { nodeId: null },
 });

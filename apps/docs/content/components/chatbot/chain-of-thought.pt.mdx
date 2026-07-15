@@ -1,0 +1,233 @@
+---
+title: Chain of Thought
+description: Visualizador de raciocínio passo a passo com ícones de status, resultados de busca aninhados e evidência de imagem inline.
+---
+
+import { ChainOfThoughtPreview } from '@/components/preview/ai/chain-of-thought';
+import { ChainOfThoughtSearchPreview } from '@/components/preview/ai/chain-of-thought-search';
+
+## Visão geral
+
+`Chain of Thought` é o primo estruturado de `Reasoning`. Use quando você consegue quebrar o trabalho do modelo em passos discretos (`pending`, `active`, `complete`) e quer que cada passo carregue seu próprio label, descrição e evidência aninhada (badges de hits de busca, screenshots, saídas intermediárias).
+
+Ele é recolhível por padrão para que a resposta continue sendo o foco, mas expandir revela a trilha.
+
+## Preview
+
+### Padrão
+
+<ComponentPreview name="ai/chain-of-thought">
+  <ChainOfThoughtPreview />
+</ComponentPreview>
+
+### Com contexto de busca
+
+<ComponentPreview name="ai/chain-of-thought-search">
+  <ChainOfThoughtSearchPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ChainOfThought
+├─ ChainOfThoughtHeader
+└─ ChainOfThoughtStep              um por passo de raciocínio
+   ├─ ChainOfThoughtContent
+   ├─ ChainOfThoughtSearchResults
+   │  └─ ChainOfThoughtSearchResult
+   └─ ChainOfThoughtImage
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-chain-of-thought ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-chain-of-thought ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-chain-of-thought ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-chain-of-thought ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ChainOfThought,
+  ChainOfThoughtHeader,
+  ChainOfThoughtContent,
+  ChainOfThoughtStep,
+} from "@gremorie/rx-ai";
+
+export function Example() {
+  return (
+    <ChainOfThought>
+      <ChainOfThoughtHeader />
+      <ChainOfThoughtContent>
+        <ChainOfThoughtStep status="complete" label="Inspected files" />
+        <ChainOfThoughtStep status="active" label="Running tests" />
+      </ChainOfThoughtContent>
+    </ChainOfThought>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component } from "@angular/core";
+import {
+  ChainOfThought,
+  ChainOfThoughtHeader,
+  ChainOfThoughtContent,
+  ChainOfThoughtStep,
+} from "@gremorie/ng-ai";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [
+ChainOfThought,
+ChainOfThoughtHeader,
+ChainOfThoughtContent,
+ChainOfThoughtStep,
+],
+template: `     <chain-of-thought [open]="true">
+      <chain-of-thought-header>Searching the docs</chain-of-thought-header>
+      <chain-of-thought-content>
+        <chain-of-thought-step status="complete" label="Inspected files" />
+        <chain-of-thought-step status="active" label="Running tests" />
+      </chain-of-thought-content>
+    </chain-of-thought>
+  `,
+})
+export class ExampleComponent {}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<ChainOfThought>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | - | Estado de abertura controlado. |
+| `defaultOpen` | `boolean` | `false` | Estado de abertura inicial não controlado. |
+| `onOpenChange` | `(open: boolean) => void` | - | Notificação quando o usuário expande ou recolhe. |
+
+Estende `ComponentProps<"div">`.
+
+### `<ChainOfThoughtHeader>`
+
+Renderiza o ícone de cérebro + label + chevron e alterna o painel. Children (string ou node) substituem o label padrão "Chain of Thought".
+
+### `<ChainOfThoughtContent>`
+
+O corpo recolhível. Children renderizam somente quando expandido (sem animação quando fechado).
+
+### `<ChainOfThoughtStep>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `icon` | `LucideIcon` | `DotIcon` | Ícone inicial do passo. |
+| `label` | `ReactNode` | - | Título obrigatório do passo. |
+| `description` | `ReactNode` | - | Sub-linha opcional em texto muted. |
+| `status` | `"complete" \| "active" \| "pending"` | `"complete"` | Controla a cor do texto (muted, foreground, muted/50). |
+| `children` | `ReactNode` | - | Evidência aninhada (resultados de busca, imagem, code block). |
+
+### `<ChainOfThoughtSearchResults>` / `<ChainOfThoughtSearchResult>`
+
+Envolvem uma linha de chips de hit estilizados como `Badge`. `ChainOfThoughtSearchResult` estende as props de `Badge`.
+
+### `<ChainOfThoughtImage>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `caption` | `string` | - | Legenda renderizada abaixo da imagem. |
+| `children` | `ReactNode` | - | O elemento de imagem (ou qualquer visual). |
+
+## Composição
+
+1. **`<ChainOfThought>`** detém o estado de abertura e o espaço externo.
+2. **`<ChainOfThoughtHeader>`** é o handle de alternância no topo.
+3. **`<ChainOfThoughtContent>`** é o corpo expansível que contém os passos.
+4. **`<ChainOfThoughtStep>`** é um bullet com ícone + label + descrição opcional e children para evidência.
+5. **`<ChainOfThoughtSearchResults>` + `<ChainOfThoughtSearchResult>`** agrupam hits relacionados dentro de um passo.
+6. **`<ChainOfThoughtImage>`** embute um screenshot ou gráfico dentro de um passo.
+
+## Variações
+
+### Progresso discreto
+
+Cada passo representa uma ação que o agente executou. O passo "active" se acende na cor foreground enquanto os outros ficam em muted.
+
+```tsx
+<ChainOfThought defaultOpen>
+  <ChainOfThoughtHeader />
+  <ChainOfThoughtContent>
+    <ChainOfThoughtStep
+      status="complete"
+      icon={CheckIcon}
+      label="Inspected files"
+      description="Read 12 TypeScript modules"
+    />
+    <ChainOfThoughtStep
+      status="active"
+      icon={SearchIcon}
+      label="Running tests"
+      description="vitest --run"
+    />
+    <ChainOfThoughtStep status="pending" label="Summarising findings" />
+  </ChainOfThoughtContent>
+</ChainOfThought>
+````
+
+### Passo com hits de busca
+
+Quando um passo representa uma busca, aninhe as citações como chips `SearchResult`.
+
+```tsx
+<ChainOfThoughtStep
+  status="complete"
+  label="Searched the web for 'shadcn registry'"
+>
+  <ChainOfThoughtSearchResults>
+    <ChainOfThoughtSearchResult>ui.shadcn.com</ChainOfThoughtSearchResult>
+    <ChainOfThoughtSearchResult>vercel.com</ChainOfThoughtSearchResult>
+    <ChainOfThoughtSearchResult>github.com</ChainOfThoughtSearchResult>
+  </ChainOfThoughtSearchResults>
+</ChainOfThoughtStep>
+```
+
+### Passo com evidência de imagem
+
+Útil para agentes de visão reportando de volta o que viram.
+
+```tsx
+<ChainOfThoughtStep status="complete" label="Took screenshot">
+  <ChainOfThoughtImage caption="Landing page above the fold">
+    <img src="/screenshots/landing.png" alt="" />
+  </ChainOfThoughtImage>
+</ChainOfThoughtStep>
+```
+
+## Acessibilidade
+
+- **Teclado**: o header é um `CollapsibleTrigger` e alterna com Enter / Space.
+- **ARIA**: o Radix Collapsible conecta `aria-expanded` e `aria-controls` no header e `data-state` no content. Diferenças de status nos passos são transmitidas pela cor do texto mais o formato do ícone, nunca só pela cor.
+- **Leitores de tela**: labels e descrições dos passos ficam em texto puro para serem lidos em ordem; resultados de busca aninhados são anunciados como conteúdo textual, não como chips decorativos.
+- **Movimento reduzido**: animações de abrir / fechar são orientadas por data-state e respeitam `prefers-reduced-motion`.
+
+## Relacionados
+
+- [Reasoning](/components/chatbot/reasoning) - chain-of-thought de forma livre quando você não tem passos discretos
+- [Task](/components/chatbot/task) - lista de tarefas explícita com arquivos / ações aninhados
+- [Plan](/components/chatbot/plan) - plano de execução de nível mais alto com fases
+- [Sources](/components/chatbot/sources) - renderiza as citações referenciadas dentro dos passos

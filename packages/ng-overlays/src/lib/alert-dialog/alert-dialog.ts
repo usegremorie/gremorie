@@ -29,44 +29,44 @@ import {
  * choose**. Use only for moments where doing nothing would be wrong —
  * destructive confirmations, irreversible actions, account deletion.
  *
- * Anatomy: `gn-alert-dialog` (root) → `gn-alert-dialog-trigger` + a
- * `<ng-template brnAlertDialogContent>` wrapping `gn-alert-dialog-content`
- * (carries the `size` variant via `data-size`) → `gn-alert-dialog-header`
- * (+ optional `gn-alert-dialog-media`) / `gn-alert-dialog-footer` /
- * `gn-alert-dialog-title` / `gn-alert-dialog-description` /
- * `gn-alert-dialog-action` / `gn-alert-dialog-cancel`.
+ * Anatomy: `gr-alert-dialog` (root) → `gr-alert-dialog-trigger` + a
+ * `<ng-template brnAlertDialogContent>` wrapping `gr-alert-dialog-content`
+ * (carries the `size` variant via `data-size`) → `gr-alert-dialog-header`
+ * (+ optional `gr-alert-dialog-media`) / `gr-alert-dialog-footer` /
+ * `gr-alert-dialog-title` / `gr-alert-dialog-description` /
+ * `gr-alert-dialog-action` / `gr-alert-dialog-cancel`.
  *
  * Divergence vs. React/Radix: brain renders content from a
  * `<ng-template brnAlertDialogContent>` into a CDK overlay (no Radix portal),
  * so the consumer wraps the panel in that template. `AlertDialogAction` /
  * `AlertDialogCancel` delegate to the `Button` primitive in React; the Angular
  * `Button` (`ai-button`) renders its own inner `<button>` and cannot host the
- * brain `brnDialogClose` directive, so `gn-alert-dialog-action` /
- * `gn-alert-dialog-cancel` are real `<button brnDialogClose>` elements styled
+ * brain `brnDialogClose` directive, so `gr-alert-dialog-action` /
+ * `gr-alert-dialog-cancel` are real `<button brnDialogClose>` elements styled
  * with the shared `buttonVariants(...)` class string — identical visual parity,
  * default variants matched (action: `default`, cancel: `outline`).
  *
  * @example
  * ```html
- * <gn-alert-dialog>
- *   <button gn-alert-dialog-trigger>Delete</button>
+ * <gr-alert-dialog>
+ *   <button gr-alert-dialog-trigger>Delete</button>
  *   <ng-template brnAlertDialogContent>
- *     <gn-alert-dialog-content size="sm">
- *       <gn-alert-dialog-header>
- *         <h2 gn-alert-dialog-title>Are you sure?</h2>
- *         <p gn-alert-dialog-description>This cannot be undone.</p>
- *       </gn-alert-dialog-header>
- *       <gn-alert-dialog-footer>
- *         <button gn-alert-dialog-cancel>Cancel</button>
- *         <button gn-alert-dialog-action variant="destructive">Delete</button>
- *       </gn-alert-dialog-footer>
- *     </gn-alert-dialog-content>
+ *     <gr-alert-dialog-content size="sm">
+ *       <gr-alert-dialog-header>
+ *         <h2 gr-alert-dialog-title>Are you sure?</h2>
+ *         <p gr-alert-dialog-description>This cannot be undone.</p>
+ *       </gr-alert-dialog-header>
+ *       <gr-alert-dialog-footer>
+ *         <button gr-alert-dialog-cancel>Cancel</button>
+ *         <button gr-alert-dialog-action variant="destructive">Delete</button>
+ *       </gr-alert-dialog-footer>
+ *     </gr-alert-dialog-content>
  *   </ng-template>
- * </gn-alert-dialog>
+ * </gr-alert-dialog>
  * ```
  */
 @Component({
-  selector: 'gn-alert-dialog',
+  selector: 'gr-alert-dialog',
   standalone: true,
   hostDirectives: [BrnAlertDialog],
   encapsulation: ViewEncapsulation.None,
@@ -82,7 +82,7 @@ export class AlertDialog {}
  * the ancestor `BrnAlertDialog` via DI.
  */
 @Component({
-  selector: 'gn-alert-dialog-trigger, button[gn-alert-dialog-trigger]',
+  selector: 'gr-alert-dialog-trigger, button[gr-alert-dialog-trigger]',
   standalone: true,
   hostDirectives: [BrnAlertDialogTrigger],
   encapsulation: ViewEncapsulation.None,
@@ -99,7 +99,7 @@ export class AlertDialogTrigger {}
  * group classes, exactly as React.
  */
 @Component({
-  selector: 'gn-alert-dialog-content',
+  selector: 'gr-alert-dialog-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -124,7 +124,7 @@ export class AlertDialogContent {
 
 /** AlertDialogHeader — title/description grid. Mirrors React `AlertDialogHeader`. */
 @Component({
-  selector: 'gn-alert-dialog-header',
+  selector: 'gr-alert-dialog-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -146,7 +146,7 @@ export class AlertDialogHeader {
 
 /** AlertDialogFooter — action row. Mirrors React `AlertDialogFooter`. */
 @Component({
-  selector: 'gn-alert-dialog-footer',
+  selector: 'gr-alert-dialog-footer',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -168,7 +168,7 @@ export class AlertDialogFooter {
 
 /** AlertDialogTitle — accessible heading. Mirrors React `AlertDialogTitle`. */
 @Component({
-  selector: 'gn-alert-dialog-title, [gn-alert-dialog-title]',
+  selector: 'gr-alert-dialog-title, [gr-alert-dialog-title]',
   standalone: true,
   hostDirectives: [BrnAlertDialogTitle],
   encapsulation: ViewEncapsulation.None,
@@ -191,7 +191,7 @@ export class AlertDialogTitle {
 
 /** AlertDialogDescription — supporting copy. Mirrors React `AlertDialogDescription`. */
 @Component({
-  selector: 'gn-alert-dialog-description, [gn-alert-dialog-description]',
+  selector: 'gr-alert-dialog-description, [gr-alert-dialog-description]',
   standalone: true,
   hostDirectives: [BrnAlertDialogDescription],
   encapsulation: ViewEncapsulation.None,
@@ -211,7 +211,7 @@ export class AlertDialogDescription {
 
 /** AlertDialogMedia — icon/illustration slot above the title. Mirrors React `AlertDialogMedia`. */
 @Component({
-  selector: 'gn-alert-dialog-media',
+  selector: 'gr-alert-dialog-media',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -236,7 +236,7 @@ export class AlertDialogMedia {
  * Real `<button brnDialogClose>` styled via `buttonVariants` (default variant).
  */
 @Component({
-  selector: 'gn-alert-dialog-action, button[gn-alert-dialog-action]',
+  selector: 'gr-alert-dialog-action, button[gr-alert-dialog-action]',
   standalone: true,
   hostDirectives: [BrnDialogClose],
   encapsulation: ViewEncapsulation.None,
@@ -268,7 +268,7 @@ export class AlertDialogAction {
  * (default variant: `outline`).
  */
 @Component({
-  selector: 'gn-alert-dialog-cancel, button[gn-alert-dialog-cancel]',
+  selector: 'gr-alert-dialog-cancel, button[gr-alert-dialog-cancel]',
   standalone: true,
   hostDirectives: [BrnDialogClose],
   encapsulation: ViewEncapsulation.None,

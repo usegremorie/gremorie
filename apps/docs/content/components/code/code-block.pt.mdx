@@ -1,0 +1,171 @@
+---
+title: Code Block
+description: Superfície de código com syntax highlighting movida a shiki. Faz lazy-load do highlighting de tokens no mount, distribui temas escuro e claro combinados, e se combina com um botão de cópia ciente de contexto.
+---
+
+import { CodeBlockPreview } from '@/components/preview/ai/code-block';
+import { CodeBlockCopyPreview } from '@/components/preview/ai/code-block-copy';
+
+## Visão geral
+
+`CodeBlock` renderiza código-fonte com highlighting para qualquer uma das linguagens empacotadas do shiki. Ele carrega `codeToHtml` no mount (para que o bundle fique pequeno), produz uma variante clara e uma escura em paralelo, e alterna entre elas via o seletor `dark:` do Tailwind em vez de remontar.
+
+Um pequeno context React expõe a string `code` crua aos descendentes. Isso permite que `CodeBlockCopyButton` (e qualquer child customizado que você colocar no slot de ação posicionado absolutamente) copie o source subjacente sem prop drilling.
+
+Use para artefatos de código em streaming, snippets MDX dentro de saída de ferramenta, diffs gerados por agente e qualquer outro lugar onde você precisa de um bloco inline com highlighting.
+
+## Preview
+
+### Padrão
+
+<ComponentPreview name="ai/code-block">
+  <CodeBlockPreview />
+</ComponentPreview>
+
+### Com botão de cópia
+
+<ComponentPreview name="ai/code-block-copy">
+  <CodeBlockCopyPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+CodeBlock                  Shiki-highlighted code container; exposes the raw code via context
+└── CodeBlockCopyButton    Optional action-slot child; copies the context code to the clipboard
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-code-block ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-code-block ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-code-block ```</Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-code-block ```
+  </Tab>
+</Tabs>
+
+Requer `shiki` e `@gremorie/rx-forms` (para `Button`) como dependências transitivas. Ambos são trazidos automaticamente pelo registry.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { CodeBlock, CodeBlockCopyButton } from "@gremorie/rx-artifacts";
+
+export function Example({ source }) {
+  return (
+    <CodeBlock code={source} language="tsx" showLineNumbers>
+      <CodeBlockCopyButton />
+    </CodeBlock>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component, input } from "@angular/core";
+import { CodeBlock, CodeBlockCopyButton } from "@gremorie/ng-artifacts";
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [CodeBlock, CodeBlockCopyButton],
+template: `     <code-block [code]="source()" language="tsx" [showLineNumbers]="true">
+      <code-block-copy-button />
+    </code-block>
+  `,
+})
+export class ExampleComponent {
+readonly source = input.required<string>();
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<CodeBlock>`
+
+| Prop | Type | Default | Descrição |
+|---|---|---|---|
+| `code` | `string` | - | A string de source para dar highlight. Obrigatório. |
+| `language` | `BundledLanguage` | - | Qualquer linguagem empacotada do shiki (`"tsx"`, `"json"`, `"bash"`, `"python"`, etc.). |
+| `showLineNumbers` | `boolean` | `false` | Quando true, prepende um gutter de número de linha muted via um transformer do shiki. |
+| `children` | `ReactNode` | - | Renderizado em um slot superior direito posicionado absolutamente. Use para o botão de cópia ou ações customizadas. |
+| `className` | `string` | - | Classes extras no `div` raiz. |
+
+Estende todos os `HTMLAttributes<HTMLDivElement>`.
+
+Temas usados internamente:
+- Claro: `github-light-default` (upgrade da auditoria final do Odo. O tema `github-light` simples não passava no AA nos tokens de operador e pontuação.)
+- Escuro: `github-dark-default` para contraste AA simétrico.
+
+### `<CodeBlockCopyButton>`
+
+| Prop | Type | Default | Descrição |
+|---|---|---|---|
+| `onCopy` | `() => void` | - | Dispara após uma escrita bem-sucedida no clipboard. |
+| `onError` | `(error: Error) => void` | - | Dispara quando a Clipboard API está ausente ou é rejeitada. |
+| `timeout` | `number` | `2000` | Por quanto tempo (ms) o botão permanece no estado "copiado" antes de reverter. |
+| `children` | `ReactNode` | ícone copy / check | Sobrescreve o ícone. O botão ainda troca para o ícone check no sucesso, a menos que você o substitua totalmente. |
+
+Puxa a string `code` do `CodeBlockContext`, então deve ser renderizado dentro de um `<CodeBlock>`.
+
+### `highlightCode(code, language, showLineNumbers?)`
+
+Helper assíncrono exposto para fluxos SSR / prerender que querem computar o HTML claro e escuro de antemão. Retorna `Promise<[lightHtml, darkHtml]>`.
+
+## Composição
+
+1. **`<CodeBlock>`** monta um bloco `<pre>` claro e um escuro. O seletor `dark:` do Tailwind alterna a visibilidade, então as trocas de tema são instantâneas (sem re-highlight).
+2. O `CodeBlockContext` fornece `code` aos descendentes.
+3. **Children** (tipicamente `CodeBlockCopyButton`) se posicionam absolutamente no canto superior direito. O slot suporta qualquer node, então você pode colocar múltiplos botões (ex. copiar + abrir no editor) envolvendo-os na sua própria flex row.
+4. **Números de linha** são produzidos pelo `lineNumberTransformer` para que participem da saída HTML do shiki, não como uma coluna separada.
+
+## Variações
+
+### Com números de linha
+
+Útil para snippets longos onde os usuários precisam de um ponto de referência. O gutter é muted para que não compita com as cores dos tokens.
+
+```tsx
+<CodeBlock code={longSnippet} language="tsx" showLineNumbers />
+````
+
+### Cópia mais ação customizada
+
+O slot de ação aceita qualquer node. Componha múltiplos botões aninhando seu próprio container flex.
+
+```tsx
+<CodeBlock code={source} language="tsx">
+  <CodeBlockCopyButton />
+  <Button size="icon" variant="ghost" onClick={openInEditor}>
+    <ExternalLinkIcon />
+  </Button>
+</CodeBlock>
+```
+
+### JSON para saída de ferramenta
+
+Combine com [`Tool`](/components/chatbot/tool). `ToolInput` e `ToolOutput` ambos renderizam através de `CodeBlock`, então as chamadas de ferramenta JSON herdam o mesmo highlighting e tematização.
+
+```tsx
+<CodeBlock code={JSON.stringify(toolResult, null, 2)} language="json" />
+```
+
+## Acessibilidade
+
+- **Teclado**: O botão de cópia é um `Button` real, então participa da ordem normal de Tab e responde a Enter / Space.
+- **Contraste**: Ambos os temas `github-light-default` e `github-dark-default` passam no WCAG AA 4.5:1 em cada token. A auditoria do Odo rejeitou explicitamente o tema mais antigo `github-light` porque os tokens de operador caíam abaixo do limite.
+- **Reduced motion**: Não há animação na superfície em si. O botão de cópia alterna entre dois ícones sem transição.
+- **Leitores de tela**: Quando o botão de cópia é apenas de ícone, forneça um nome acessível através da sua própria composição (ex. envolva em um Tooltip com `aria-label`). Internamente o botão é um `Button` de ícone `ghost`, então as regras padrão de a11y para botões de ícone se aplicam.
+
+## Relacionados
+
+- [Artifact](/components/code/artifact) - o chrome de card que hospeda um `CodeBlock` para artefatos de código gerados
+- [Tool](/components/chatbot/tool) - usa `CodeBlock` internamente para renderizar input e output de ferramenta
+- [Web Preview](/components/code/web-preview) - a superfície de iframe combinada com `CodeBlock` para preview de HTML ao vivo

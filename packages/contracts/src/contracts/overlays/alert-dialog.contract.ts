@@ -90,7 +90,7 @@ export const alertDialog = defineContract({
     rx: 'interaction-overlays-alertdialog--workbench',
     ng: 'interaction-overlays-alertdialog--workbench',
   },
-  tag: { rx: 'AlertDialog', ng: 'gn-alert-dialog' },
+  tag: { rx: 'AlertDialog', ng: 'gr-alert-dialog' },
   example: {
     defaultOpen: false,
     size: 'default',

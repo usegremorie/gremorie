@@ -1,0 +1,93 @@
+---
+title: Layout & stability
+description: Como o KDS pensa sobre estabilidade de layout, Cumulative Layout Shift (CLS), e os padrões que aplicamos para manter as interfaces paradas.
+---
+
+O KDS trata **estabilidade de layout** como uma preocupação fundamental, em pé de igualdade com acessibilidade e contraste de cor. Layouts que se movem involuntariamente depois do primeiro paint causam cliques errados, quebra do fluxo de leitura e dano desproporcional a usuários com deficiências cognitivas ou magnificadores de tela. Eles também derrubam as pontuações de Core Web Vitals e, por extensão, a visibilidade em busca.
+
+Esta página explica o que é layout shift, por que acontece, e os padrões que o KDS usa para preveni-lo em primitives, patterns e os apps que os consomem.
+
+## What is Cumulative Layout Shift
+
+**Cumulative Layout Shift (CLS)** é uma das três Core Web Vitals que o Google usa para avaliar a experiência de página, ao lado de Largest Contentful Paint (LCP) e Interaction to Next Paint (INP). O CLS mede a maior **rajada** de movimento visual involuntário durante a vida de uma página, normalizada pelo tamanho do viewport.
+
+Cada shift contribui com uma pontuação igual a `impact-fraction × distance-fraction`:
+
+- **Impact fraction** — quanto do viewport foi afetado pelo movimento
+- **Distance fraction** — a maior distância que um elemento moveu, dividida pela maior dimensão do viewport
+
+Classificação do Google:
+
+| Score      | Rating            |
+| ---------- | ----------------- |
+| ≤ 0.1      | Good              |
+| 0.1 – 0.25 | Needs improvement |
+| ≥ 0.25     | Poor              |
+
+Um único banner de 100px injetando no topo de um viewport de 1080px de altura já pode consumir ~90% do orçamento "Good". A disciplina não é sobre absorver um shift ruim — é sobre não ter nenhum.
+
+## Why we care
+
+**Para os usuários.** Layout shift causa cliques errados ("fui adicionar ao carrinho, o botão se moveu, deletei minha conta"), quebra o fluxo de leitura quando banners ou embeds injetam na prosa, e é unicamente punitivo para usuários de tecnologia assistiva. Pessoas usando zoom, magnificadores ou leitores de tela dependem de modelos espaciais estáveis — cada shift as força a se reorientar.
+
+**Para o produto.** Web Vitals afetam o ranking de busca do Google desde 2021. Sites com CLS alto veem decaimento mensurável no tráfego orgânico. Testes A/B em e-commerce mostram 10-15% de correlação de conversão com a qualidade do CLS, controlado por outros fatores.
+
+**Para nós, internamente.** Componentes que não reservam seu espaço causam shifts em cascata nos containers que os consomem. Um único primitive descuidado (um `<Avatar>` sem dimensões, uma `<Image>` sem aspect ratio) pode arruinar o CLS de toda página que o usa. Corrigir uma vez no nível do primitive corrige em todo lugar.
+
+## The five dominant causes
+
+1. **Mídia sem dimensões reservadas.** Elementos `<img>` e `<video>` que não declaram `width`/`height` ou não têm um `aspect-ratio` definido em CSS. O browser não consegue reservar espaço até o asset baixar — quando ele chega, o content ao redor se move.
+
+2. **Trocas de fonte (FOIT / FOUT).** Fontes customizadas que carregam de forma assíncrona e substituem o fallback depois do primeiro paint, com métricas diferentes. Mesmo um pequeno delta de line-height cascateia por páginas cheias de texto.
+
+3. **Content injetado tarde.** Ads, cookie banners, embeds de terceiros (Twitter, YouTube), live regions. Eles renderizam depois da hidratação do JavaScript e empurram tudo abaixo deles para baixo.
+
+4. **Animações em propriedades que disparam layout.** Animar `top`, `left`, `width`, `height`, `margin` ou `padding` dispara reflow de layout a cada frame. Elementos visíveis ao redor do animado se movem a cada tick.
+
+5. **Scrollbar aparecendo tarde.** Uma página que cresce além da altura do viewport materializa uma scrollbar vertical de 16px de largura. Sem `scrollbar-gutter: stable`, esses 16px são tomados do layout — cada coluna re-flui horizontalmente no primeiro scroll.
+
+## KDS patterns to prevent shift
+
+### Media primitives reserve space
+
+Todo componente que renderiza content de tamanho variável (`<Avatar>`, `<Image>`, `<Card>` com imagem de capa, charts) declara ou um par explícito de `width`/`height` ou um `aspect-ratio` em CSS. O container de chart (KDS Phase 4) é `aspect-ratio: 16 / 9` por default; `<Avatar>` é quadrado; `<Image>` exige dimensões explícitas e faz lint se faltarem.
+
+### Containers reserve space for dynamic children
+
+Componentes que buscam ou fazem stream de content (skeletons, async loaders, respostas de streaming de AI) declaram um `min-height` que combina com o tamanho de content esperado. Uma `<MessageList>` com 0 mensagens reserva a altura de uma mensagem; um `<Skeleton>` combina com as dimensões do content que ele substitui.
+
+### Animations only on transform and opacity
+
+Componentes e patterns do KDS animam exclusivamente via `transform` e `opacity` — ambos rodam no compositor da GPU e não disparam layout. Menus deslizantes usam `translateX`, transições de fade usam `opacity`, animações de escala usam `scale()`. **Não** anime `width`, `height`, `top` ou `left` em componentes shipados; se você precisa de uma transição de largura, use `transform: scaleX()` a partir de um elemento interno fixo.
+
+### Viewport-anchored layouts use scrollbar-gutter
+
+O setup `--fd-layout-width: 100vw` que fixa a sidebar do site de docs na borda do viewport depende de `scrollbar-gutter: stable` no `<html>`. Sem ele, a scrollbar aparecendo em páginas longas roubaria 16px da coluna da direita, cortando o TOC e movendo o grid inteiro. Qualquer primitive de layout do KDS que consome 100vw deve incluir a mesma regra companheira.
+
+### Fonts loaded with `next/font` (or equivalent)
+
+O KDS recomenda `next/font` para o app consumidor. Ele aplica `font-display`, `size-adjust` e overrides de métrica automaticamente para que a métrica do fallback combine com a fonte customizada, eliminando shift induzido por troca. Tanto `apps/docs` quanto `apps/portfolio` usam Geist Sans / Geist Mono via `next/font/google`.
+
+## Measuring CLS
+
+No dev, observe a faixa **Performance → Web Vitals** no Chrome DevTools — ela destaca cada shift visualmente e aponta para o elemento culpado.
+
+No CI, faça o gate num run do Lighthouse ou num threshold do Vercel Speed Insights. Regressões bloqueiam o merge.
+
+Em produção, use o Vercel Speed Insights para métricas de usuário real, ou conecte a biblioteca [`web-vitals`](https://github.com/GoogleChrome/web-vitals) à sua analytics.
+
+## Anti-patterns
+
+- ❌ `overflow: hidden` no `<body>` para "esconder" a scrollbar — quebra o scroll por teclado e a acessibilidade.
+- ❌ `overflow-y: scroll` no `<html>` — força a scrollbar a sempre renderizar mesmo quando não é necessária; `scrollbar-gutter: stable` é melhor (reserva sem forçar).
+- ❌ Animar larguras ou posições para movimento — use `transform`.
+- ❌ Banners ou notificações anexados ao `<body>` sem espaço reservado.
+- ❌ Imagens sem dimensões, mesmo em MDX — o componente `<Preview>` faz lint para aspect ratios faltantes.
+
+## Further reading
+
+- web.dev — [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls)
+- web.dev — [Optimize CLS](https://web.dev/articles/optimize-cls)
+- MDN — [scrollbar-gutter](https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter)
+- Smashing Magazine — [Setting Height and Width on Images is Important Again](https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/)
+- Vercel — [Speed Insights documentation](https://vercel.com/docs/speed-insights)

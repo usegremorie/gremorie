@@ -55,7 +55,9 @@ describe('Queue', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
 
-    expect(host.querySelector('queue')?.getAttribute('data-slot')).toBe('queue');
+    expect(host.querySelector('queue')?.getAttribute('data-slot')).toBe(
+      'queue',
+    );
     expect(host.querySelector('queue-list ul')).not.toBeNull();
     const content = host.querySelector('[data-slot="queue-item-content"]');
     expect(content?.className).toContain('line-through');
@@ -67,8 +69,8 @@ describe('Queue', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.querySelector('.body')).toBeNull();
-    expect(host.querySelector('queue-section')?.getAttribute('data-state')).toBe(
-      'closed',
-    );
+    expect(
+      host.querySelector('queue-section')?.getAttribute('data-state'),
+    ).toBe('closed');
   });
 });

@@ -7,7 +7,7 @@ import { Textarea } from './textarea';
   standalone: true,
   imports: [Textarea],
   template: `
-    <gn-textarea
+    <gr-textarea
       [placeholder]="placeholder()"
       [value]="value()"
       [disabled]="disabled()"

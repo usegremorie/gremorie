@@ -42,12 +42,12 @@ The assistant is a **block**, not a single-prop primitive: its "API" is the set
 of primitives it composes, each keeping its own documented surface. The block
 itself exposes a thin wrapper:
 
-| Concern        | React (block)                                  | Angular (block)                                  |
-| -------------- | ---------------------------------------------- | ------------------------------------------------ |
-| Submit handler | `PromptInput onSubmit`                          | `(submit)` output / `[onSubmit]`                 |
-| Messages       | composed children (`Message from="…"`)          | content projection / `messages` input            |
-| Reasoning      | `Reasoning isStreaming duration`               | `[isStreaming]` `[duration]` inputs              |
-| Streaming state| `PromptInputSubmit` state (ready/streaming)     | `PromptInputSubmit` state input                  |
+| Concern         | React (block)                               | Angular (block)                       |
+| --------------- | ------------------------------------------- | ------------------------------------- |
+| Submit handler  | `PromptInput onSubmit`                      | `(submit)` output / `[onSubmit]`      |
+| Messages        | composed children (`Message from="…"`)      | content projection / `messages` input |
+| Reasoning       | `Reasoning isStreaming duration`            | `[isStreaming]` `[duration]` inputs   |
+| Streaming state | `PromptInputSubmit` state (ready/streaming) | `PromptInputSubmit` state input       |
 
 The Angular block ships as a standalone, self-contained component
 (`Assistant` / `assistant`) plus a story demonstrating the same canned

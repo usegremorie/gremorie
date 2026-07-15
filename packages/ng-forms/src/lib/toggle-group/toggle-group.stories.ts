@@ -40,16 +40,16 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-toggle-group
+      <gr-toggle-group
         [type]="type"
         [variant]="variant"
         [size]="size"
         [spacing]="spacing"
       >
-        <gn-toggle-group-item value="left" ariaLabel="Align left">L</gn-toggle-group-item>
-        <gn-toggle-group-item value="center" ariaLabel="Align center">C</gn-toggle-group-item>
-        <gn-toggle-group-item value="right" ariaLabel="Align right">R</gn-toggle-group-item>
-      </gn-toggle-group>
+        <gr-toggle-group-item value="left" ariaLabel="Align left">L</gr-toggle-group-item>
+        <gr-toggle-group-item value="center" ariaLabel="Align center">C</gr-toggle-group-item>
+        <gr-toggle-group-item value="right" ariaLabel="Align right">R</gr-toggle-group-item>
+      </gr-toggle-group>
     `,
   }),
 };
@@ -59,11 +59,11 @@ export const Multiple: Story = {
   parameters: { layout: 'padded' },
   render: () => ({
     template: `
-      <gn-toggle-group type="multiple" variant="outline">
-        <gn-toggle-group-item value="bold" ariaLabel="Bold"><span class="font-bold">B</span></gn-toggle-group-item>
-        <gn-toggle-group-item value="italic" ariaLabel="Italic"><span class="italic">I</span></gn-toggle-group-item>
-        <gn-toggle-group-item value="underline" ariaLabel="Underline"><span class="underline">U</span></gn-toggle-group-item>
-      </gn-toggle-group>
+      <gr-toggle-group type="multiple" variant="outline">
+        <gr-toggle-group-item value="bold" ariaLabel="Bold"><span class="font-bold">B</span></gr-toggle-group-item>
+        <gr-toggle-group-item value="italic" ariaLabel="Italic"><span class="italic">I</span></gr-toggle-group-item>
+        <gr-toggle-group-item value="underline" ariaLabel="Underline"><span class="underline">U</span></gr-toggle-group-item>
+      </gr-toggle-group>
     `,
   }),
 };

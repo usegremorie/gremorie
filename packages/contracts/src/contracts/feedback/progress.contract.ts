@@ -59,7 +59,7 @@ export const progress = defineContract({
     rx: 'interaction-feedback-progress--workbench',
     ng: 'interaction-feedback-progress--workbench',
   },
-  tag: { rx: 'Progress', ng: 'gn-progress' },
+  tag: { rx: 'Progress', ng: 'gr-progress' },
   example: { value: 60, max: 100 },
   figma: { nodeId: null },
 });

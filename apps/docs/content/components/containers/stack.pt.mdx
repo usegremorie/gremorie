@@ -1,0 +1,126 @@
+---
+title: Stack
+description: 'Layout flex vertical com tokens consistentes de gap, alinhamento e justificação.'
+---
+
+import { StackPreview } from '@/components/preview/containers/stack';
+import { StackGapsPreview } from '@/components/preview/containers/stack-gaps';
+import { StackCenteredPreview } from '@/components/preview/containers/stack-centered';
+import { StackPinnedFooterPreview } from '@/components/preview/containers/stack-pinned-footer';
+
+## Visão geral
+
+`Stack` é um primitive de layout vertical: um `<div>` pré-configurado como `flex flex-col` com três variants controladas por token - `gap`, `align`, `justify`. Use sempre que você tiver uma lista de itens fluindo de cima para baixo: conteúdo de card, seções de formulário, rows de configurações, menus verticais, páginas de lista, colunas de footer.
+
+Stack existe para **matar strings ad-hoc de `flex flex-col gap-X items-Y`**. Uma vez que gap, alinhamento e justificação pertencem a enums vinculados a design tokens, todo o codebase permanece consistente por meio de reescritas de token em vez de varreduras de regex. Recorra a um `<div>` puro apenas quando nenhum dos três eixos precisar de configuração.
+
+## Preview
+
+<ComponentPreview name="containers/stack">
+  <StackPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Stack   coluna flex; spacing e alinhamento cross-/main-axis controlados inteiramente por props
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-stack ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-stack ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-stack ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-stack ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Stack } from "@gremorie/rx-containers";
+
+export function SettingsRow({ children }) {
+  return (
+    <Stack gap="sm" align="stretch">
+      {children}
+    </Stack>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Stack>`
+
+Renderiza um `<div>` com `flex flex-col` mais as classes de gap, alinhamento e justificação derivadas dos enums de variant.
+
+| Prop        | Type                                                                | Default     | Description                                                                                                                                                                   |
+| ----------- | ------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gap`       | `"none" \| "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"`           | `"md"`      | Spacing vertical entre os filhos. Mapeia para `gap-0`, `gap-1`, `gap-2`, `gap-4`, `gap-6`, `gap-8`, `gap-12` para que os valores combinem com a escala de spacing do projeto. |
+| `align`     | `"start" \| "center" \| "end" \| "stretch" \| "baseline"`           | `"stretch"` | Alinhamento cross-axis, aplicado como `items-*`. A maioria dos contextos de card e formulário quer `stretch`; menus verticais e colunas de modal querem `start`.              |
+| `justify`   | `"start" \| "center" \| "end" \| "between" \| "around" \| "evenly"` | `"start"`   | Alinhamento main-axis, aplicado como `justify-*`. Use `between` quando o último filho deve ancorar no fundo de um Stack com altura limitada.                                  |
+| `className` | `string`                                                            | -           | Classes extras mescladas após as classes de variant. Use para escape hatches de layout (`min-h-0`, `flex-1`, `mx-auto`); evite sobrescrever as próprias classes de variant.   |
+| `ref`       | `Ref<HTMLDivElement>`                                               | -           | Ref encaminhada para o `<div>` subjacente.                                                                                                                                    |
+| `...props`  | `React.ComponentPropsWithoutRef<"div">`                             | -           | Atributos padrão de div.                                                                                                                                                      |
+
+<Callout type="info">
+  **Apenas vertical.** Stack não tem prop `direction`. Para fluxo horizontal,
+  combine-o com um helper de row (ou `flex flex-row gap-*` puro). Para grids de
+  dois eixos, recorra a um primitive `Grid` dedicado.
+</Callout>
+
+## Composição
+
+1. **`<Stack>`** é a coluna. Escolha `gap` para combinar com o ritmo da superfície (cards geralmente querem `md`, listas densas de configurações querem `sm`, menus verticais querem `xs`).
+2. **Os filhos** podem ser qualquer elemento. Stack não os envolve - ele apenas configura o container flex pai.
+3. **Dentro de um Stack**, Stacks aninhados compõem naturalmente: cada um escolhe seu próprio `gap` enquanto herda o alinhamento cross-axis do pai.
+4. **Ancoragem de footer** é o caso de uso canônico de `justify="between"`: header no topo, conteúdo no meio, footer no fundo de um Stack de altura fixa.
+
+## Variações
+
+### Escala de gap
+
+<ComponentPreview name="containers/stack-gaps">
+  <StackGapsPreview />
+</ComponentPreview>
+
+A prop `gap` mapeia para a escala de spacing do projeto. Cards geralmente querem `md`, listas densas de configurações querem `sm`, menus verticais querem `xs`.
+
+### Coluna centralizada
+
+<ComponentPreview name="containers/stack-centered">
+  <StackCenteredPreview />
+</ComponentPreview>
+
+Use `align="center"` para empty states, callouts, e qualquer coluna onde os filhos devem abraçar a linha central.
+
+### Footer ancorado
+
+<ComponentPreview name="containers/stack-pinned-footer">
+  <StackPinnedFooterPreview />
+</ComponentPreview>
+
+Use `justify="between"` mais uma restrição de altura para manter o CTA colado no fundo independentemente do tamanho do corpo.
+
+## Acessibilidade
+
+- **Apenas apresentação**: Stack é um primitive de layout. Ele não adiciona nenhum role ARIA e nenhum comportamento de live-region.
+- **Filhos semânticos**: envolva o conteúdo do Stack no elemento certo para o contexto - `<section>` para um landmark, `<ul>` mais `<li>` para uma lista de verdade, `<nav>` para menus verticais.
+- **Ordem de leitura combina com a ordem no DOM**: Stack é `flex-col`, nunca invertido. A ordem de tabulação e a ordem de leitor de tela seguem a ordem no source.
+- **Nenhum movimento injetado**: sem transitions, sem autofocus, sem comportamento de scroll. Componha com `Skeleton`, `Progress`, ou primitives de movimento onde necessário.
+
+## Relacionados
+
+- [Card](/components/display/card) - o host mais comum para um Stack vertical de conteúdo.
+- [Separator](/components/display/separator) - coloque entre filhos do Stack para divisores explícitos.
+- [ScrollArea](/components/containers/scroll-area) - envolva um Stack quando a coluna ultrapassar seu container.

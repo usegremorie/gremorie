@@ -1,0 +1,80 @@
+---
+title: Button
+description: 'Quando usar um button, hierarquia entre variants, e a regra do label (1-3 palavras, imperativo).'
+related: rx-button, ng-button
+tags: [components, forms, hierarchy, actions]
+---
+
+## TL;DR
+
+Um button executa uma ação. Um link navega. Uma tela carrega no máximo **uma** ação primária; todo o resto é secundário. Labels têm 1-3 palavras, imperativas e contextuais ("Save changes", não "Submit").
+
+## A regra
+
+1. **Ação vs navegação.** Se ativá-lo muda dados, abre um overlay ou executa um processo, é um button. Se leva você para outra URL ou faz scroll até uma seção, é um link. O estilo não determina a semântica: um link pode parecer um button, mas renderize `<a>`.
+2. **Uma primária por superfície.** Cada card, painel, form ou cabeçalho de página tem no máximo um button estilizado como primário (a variant default). Todas as outras ações naquela superfície usam uma variant de menor ênfase: outline, secondary, ghost ou link.
+3. **Destructive é sua própria hierarquia.** Uma ação destrutiva (delete, remove, revoke) usa a variant destructive, nunca a primária. Ela também raramente é primária no fluxo: a ação segura é.
+4. **Label = verbo + objeto.** Imperativo, 1-3 palavras: "Save changes", "Add member", "Discard draft". Evite "OK", "Submit", "Click here".
+5. **Estado disabled precisa de um motivo.** Nunca desabilite um button sem dizer ao usuário por quê. Mostre o requisito faltante perto do button, ou substitua o disabled por um motivo explicado em tooltip.
+
+## Por que
+
+Buttons carregam intenção. Quando toda ação parece igualmente importante, nenhuma é, e o usuário pausa para ler cada label em vez de reconhecer o caminho seguro. A hierarquia visual é como a interface responde "o que eu deveria fazer aqui?" antes de o usuário terminar de ler. A heurística #6 de Nielsen (reconhecimento em vez de memória) e a lei de Fitts juntas defendem um alvo óbvio por decisão: grande, com contraste alto, no caminho que o olho já segue.
+
+A regra do label é uma consequência disso. Um "Submit" genérico força o usuário a lembrar em qual form ele está. "Save changes" ou "Send invitation" carrega esse contexto por ele.
+
+## Como aplicar
+
+### Faça
+
+```tsx
+<div className="flex justify-end gap-2">
+  <Button variant="outline">Cancel</Button>
+  <Button>Save changes</Button>
+</div>
+```
+
+Uma primária ("Save changes") ao lado de uma secundária ("Cancel"). Os labels descrevem o que acontece.
+
+### Não faça
+
+```tsx
+<div className="flex justify-end gap-2">
+  <Button>Cancel</Button>
+  <Button>OK</Button>
+  <Button>Submit</Button>
+</div>
+```
+
+Três primárias competem. Dois labels ("OK", "Submit") não dizem nada ao usuário sobre o resultado.
+
+### Destructive em fluxos de confirmação
+
+```tsx
+<Dialog>
+  <DialogContent>
+    <DialogTitle>Delete project?</DialogTitle>
+    <DialogDescription>This cannot be undone.</DialogDescription>
+    <DialogFooter>
+      <Button variant="outline">Keep project</Button>
+      <Button variant="destructive">Delete project</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+A ação segura fica à esquerda, com baixa ênfase. A ação destrutiva é explícita ("Delete project", não "Yes").
+
+## Contra-casos
+
+- **Toolbars e segmented controls** legitimamente repetem buttons ghost ou outline porque formam um conjunto, não uma hierarquia. Use `ToggleGroup` em vez de uma linha de buttons.
+- **Grids de cards** podem carregar uma ação primária por card quando cada card é uma superfície independente (um produto, um projeto). A regra "uma por superfície" se aplica por card, não por página.
+- **Telas de splash e onboarding** às vezes promovem dois CTAs de peso igual ("Sign up" vs "Log in"). Aceitável quando a escolha é genuinamente binária; combine com textos distintos para que os labels desambiguem.
+- **Buttons só de ícone** em UI densa (linhas de tabela, toolbars) precisam de um tooltip e `aria-label`; o ícone é o label e deve ser inequívoco.
+
+## Fontes
+
+- Nielsen Norman Group: "Primary vs. Secondary Action Buttons" (https://www.nngroup.com/articles/primary-vs-secondary-actions/)
+- Krug, "Don't Make Me Think" (2014): capítulo sobre clicabilidade e hierarquia visual.
+- WCAG 2.1 SC 2.4.4 - Link Purpose (In Context): labels devem comunicar o propósito.
+- WAI-ARIA Authoring Practices: semântica de button vs link.

@@ -14,23 +14,23 @@ import {
  * opt in to the parts you need.
  *
  * The `has-data-[slot=card-action]:grid` host class flips layout to a
- * grid when a `gn-card-action` is present, so the action lands top-right
+ * grid when a `gr-card-action` is present, so the action lands top-right
  * without disturbing the default flex stack.
  *
  * @example
  * ```html
- * <gn-card>
- *   <gn-card-header>
- *     <gn-card-title>Notifications</gn-card-title>
- *     <gn-card-description>You have 3 unread messages.</gn-card-description>
- *   </gn-card-header>
- *   <gn-card-content>...</gn-card-content>
- *   <gn-card-footer>...</gn-card-footer>
- * </gn-card>
+ * <gr-card>
+ *   <gr-card-header>
+ *     <gr-card-title>Notifications</gr-card-title>
+ *     <gr-card-description>You have 3 unread messages.</gr-card-description>
+ *   </gr-card-header>
+ *   <gr-card-content>...</gr-card-content>
+ *   <gr-card-footer>...</gr-card-footer>
+ * </gr-card>
  * ```
  */
 @Component({
-  selector: 'gn-card',
+  selector: 'gr-card',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,10 +47,10 @@ export class Card {}
  * CardHeader — header block of a Card. Mirrors React `CardHeader`.
  *
  * Uses a self-contained grid with auto rows so title and description
- * stack cleanly; reserves a column for `gn-card-action` when present.
+ * stack cleanly; reserves a column for `gr-card-action` when present.
  */
 @Component({
-  selector: 'gn-card-header',
+  selector: 'gr-card-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -67,7 +67,7 @@ export class CardHeader {}
  * CardTitle — title text inside a CardHeader. Mirrors React `CardTitle`.
  */
 @Component({
-  selector: 'gn-card-title',
+  selector: 'gr-card-title',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,7 +84,7 @@ export class CardTitle {}
  * `CardDescription`.
  */
 @Component({
-  selector: 'gn-card-description',
+  selector: 'gr-card-description',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -102,7 +102,7 @@ export class CardDescription {}
  * so the action lands at column 2 row 1.
  */
 @Component({
-  selector: 'gn-card-action',
+  selector: 'gr-card-action',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -118,7 +118,7 @@ export class CardAction {}
  * CardContent — primary body slot. Mirrors React `CardContent`.
  */
 @Component({
-  selector: 'gn-card-content',
+  selector: 'gr-card-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -135,7 +135,7 @@ export class CardContent {}
  * sibling has `.border-t`, pads to keep the visual rhythm.
  */
 @Component({
-  selector: 'gn-card-footer',
+  selector: 'gr-card-footer',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

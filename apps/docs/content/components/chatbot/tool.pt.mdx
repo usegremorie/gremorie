@@ -1,0 +1,241 @@
+---
+title: Tool
+description: Trace de chamada de tool recolhível com badge de status ciente do estado, input JSON e output renderizado. A superfície de transparência para qualquer invocação de tool de IA.
+---
+
+import { ToolRunningPreview } from '@/components/preview/ai/tool-running';
+import { ToolCompletedPreview } from '@/components/preview/ai/tool-completed';
+import { ToolErrorPreview } from '@/components/preview/ai/tool-error';
+import { ToolApprovalPreview } from '@/components/preview/ai/tool-approval';
+
+## Visão geral
+
+`Tool` expõe uma única chamada de tool dentro de um turno do assistant. Ele compõe um `Collapsible` com um header de status, um bloco de parâmetros (JSON formatado via `CodeBlock`) e um bloco de output que auto-detecta se o resultado é um objeto, uma string ou um ReactNode.
+
+Use sempre que o modelo invoca uma função: busca na web, execução de código, I/O de arquivo, tool MCP, ação com aprovação. O ciclo de vida de sete estados (`input-streaming`, `input-available`, `approval-requested`, `approval-responded`, `output-available`, `output-error`, `output-denied`) é codificado como badges de status coloridos para que os usuários possam dizer num relance se a chamada está em execução, aguardando aprovação, teve sucesso ou falhou.
+
+## Preview
+
+### Em execução
+
+<ComponentPreview name="ai/tool-running">
+  <ToolRunningPreview />
+</ComponentPreview>
+
+### Concluído
+
+<ComponentPreview name="ai/tool-completed">
+  <ToolCompletedPreview />
+</ComponentPreview>
+
+### Erro
+
+<ComponentPreview name="ai/tool-error">
+  <ToolErrorPreview />
+</ComponentPreview>
+
+### Aprovação solicitada
+
+<ComponentPreview name="ai/tool-approval">
+  <ToolApprovalPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Tool
+├─ ToolHeader    tipo + badge de status
+└─ ToolContent
+   ├─ ToolInput  os argumentos da chamada
+   └─ ToolOutput o resultado / erro
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-tool ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-tool ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-tool ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-tool ```</Tab>
+</Tabs>
+
+O registry resolve `rx-collapsible`, `rx-badge` e `rx-code-block` como dependências cross-primitive, então você obtém a superfície completa de tool-trace em uma única chamada da CLI.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Tool,
+  ToolHeader,
+  ToolContent,
+  ToolInput,
+  ToolOutput,
+} from "@gremorie/rx-ai";
+
+export function Example({ part }) {
+  return (
+    <Tool defaultOpen>
+      <ToolHeader type={part.type} state={part.state} />
+      <ToolContent>
+        <ToolInput input={part.input} />
+        <ToolOutput output={part.output} errorText={part.errorText} />
+      </ToolContent>
+    </Tool>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```ts
+import { Component, input } from "@angular/core";
+import {
+  Tool,
+  ToolHeader,
+  ToolContent,
+  ToolInput,
+  ToolOutput,
+  ToolState,
+} from "@gremorie/ng-ai";
+
+interface ToolPart {
+type: string;
+state: ToolState;
+input: unknown;
+output: unknown;
+errorText: string | null;
+}
+
+@Component({
+selector: "app-example",
+standalone: true,
+imports: [Tool, ToolHeader, ToolContent, ToolInput, ToolOutput],
+template: `     <tool [open]="true">
+      <tool-header [type]="part().type" [state]="part().state" />
+      <tool-content>
+        <tool-input [input]="part().input" />
+        <tool-output [output]="part().output" [errorText]="part().errorText" />
+      </tool-content>
+    </tool>
+  `,
+})
+export class ExampleComponent {
+readonly part = input.required<ToolPart>();
+}
+
+````
+</Tab>
+</Tabs>
+
+## API
+
+### `<Tool>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `defaultOpen` | `boolean` | `false` | Encaminhado para `Collapsible`. Se o trace começa expandido. |
+| `open` | `boolean` | - | Estado de abertura controlado. |
+| `onOpenChange` | `(open: boolean) => void` | - | Dispara quando o header é alternado. |
+| `className` | `string` | - | Classes extras no `Collapsible` raiz. |
+
+Estende todas as props de `Collapsible` do `@gremorie/rx-display`.
+
+### `<ToolHeader>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `type` | `ToolUIPart["type"]` | - | Tipo completo da tool (por exemplo, `"tool-search"`). O label após `tool-` é renderizado como o título quando `title` é omitido. |
+| `state` | `ToolUIPart["state"]` | - | Um de `input-streaming`, `input-available`, `approval-requested`, `approval-responded`, `output-available`, `output-error`, `output-denied`. Determina o `Badge` de status e seu ícone. |
+| `title` | `string` | derivado de `type` | Override de título opcional. |
+| `className` | `string` | - | Classes extras no `CollapsibleTrigger`. |
+
+O chevron gira 180deg quando `data-state="open"`.
+
+### `<ToolContent>`
+
+Wrapper animado em torno de `CollapsibleContent`. Faz slide-in / fade-out das seções de parâmetros e resultado.
+
+Estende todas as props de `CollapsibleContent`.
+
+### `<ToolInput>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `input` | `ToolUIPart["input"]` | - | O objeto de input da tool. Formatado dentro de um `CodeBlock` com `language="json"`. |
+| `className` | `string` | - | Classes extras no container. |
+
+### `<ToolOutput>`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `output` | `ToolUIPart["output"]` | - | Payload de resultado. Objetos renderizam como JSON, strings renderizam como texto com destaque JSON, ReactNodes renderizam como estão. |
+| `errorText` | `ToolUIPart["errorText"]` | - | String de erro opcional. Quando presente, a superfície muda para um tom destrutivo e a seção é rotulada como "Error". |
+| `className` | `string` | - | Classes extras no container. |
+
+Retorna `null` se tanto `output` quanto `errorText` estão ausentes, então você pode montar `ToolOutput` incondicionalmente durante o streaming.
+
+## Composição
+
+1. **`<Tool>`** é um `Collapsible` com o chrome de borda arredondada. Padroniza o layout para `not-prose` para que sobreviva ao estilo de prose do Fumadocs.
+2. **`<ToolHeader>`** é o trigger. Ele expõe nome da tool + badge de status + chevron em uma única linha.
+3. **`<ToolContent>`** é o painel animado que expande abaixo.
+4. **`<ToolInput>`** renderiza o lado do request. Oculto atrás de um sub-header "Parameters".
+5. **`<ToolOutput>`** renderiza o lado da resposta. Auto-formata com base no tipo e muda para uma superfície destrutiva quando `errorText` está definido.
+
+O corpo de `ToolOutput` recorre a um `CodeBlock`, o que significa que o JSON da chamada de tool herda o mesmo theming shiki do resto dos docs.
+
+## Variações
+
+### Input com streaming
+
+Renderize o trace assim que o modelo começa a emitir tokens de input. O badge permanece em "Pending" até a chamada deixar `input-streaming`.
+
+```tsx
+<Tool defaultOpen>
+  <ToolHeader type="tool-search" state="input-streaming" />
+  <ToolContent>
+    <ToolInput input={partialInput} />
+  </ToolContent>
+</Tool>
+````
+
+### Ação com aprovação
+
+Para tools perigosas (writes de arquivo, deleções, chamadas MCP com efeitos colaterais), exponha o estado de aprovação antes da chamada rodar. Combine com [`Confirmation`](/components/chatbot/confirmation) para a UI de accept / reject de fato.
+
+```tsx
+<Tool defaultOpen>
+  <ToolHeader type="tool-delete-file" state="approval-requested" />
+  <ToolContent>
+    <ToolInput input={{ path: 'src/old-component.tsx' }} />
+  </ToolContent>
+</Tool>
+```
+
+### Trace de erro
+
+Quando a tool lança, passe `errorText`. O painel de output muda para um tom destrutivo e renderiza a mensagem inline.
+
+```tsx
+<Tool defaultOpen>
+  <ToolHeader type="tool-search" state="output-error" />
+  <ToolContent>
+    <ToolInput input={{ query: 'missing-item' }} />
+    <ToolOutput output={undefined} errorText="Registry returned 404." />
+  </ToolContent>
+</Tool>
+```
+
+## Acessibilidade
+
+- **Teclado**: `ToolHeader` é um trigger de `Collapsible`, então Tab foca nele e Space / Enter alterna o trace aberto e fechado.
+- **ARIA**: o trigger herda `aria-expanded` e `aria-controls` de `Collapsible`. O `Badge` de status anuncia o label atual ("Running", "Awaiting Approval", "Completed", etc.) junto com o nome da tool.
+- **Cor não é o único sinal**: Cada status tem tanto um ícone colorido quanto um label de texto. Usuários em displays monocromáticos ou com deficiências de visão de cores ainda obtêm o estado via o texto do badge.
+- **Leitores de tela**: Erros são envolvidos em uma superfície de cor destrutiva E anunciam o título da seção "Error", então a falha não é transmitida apenas pela cor.
+
+## Relacionados
+
+- [Confirmation](/components/chatbot/confirmation) - dialog de aprovação para o estado `approval-requested`
+- [Code Block](/components/code/code-block) - a superfície subjacente para renderização de input e output
+- [Task](/components/chatbot/task) - bloco de task / subtask de nível mais alto quando uma chamada de tool é parte de um plano mais longo

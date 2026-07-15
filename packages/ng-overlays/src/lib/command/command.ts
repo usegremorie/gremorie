@@ -41,18 +41,19 @@ import { cn } from '@gremorie/ng-core';
  * There is no dialog primitive in this package's scope, so `CommandDialog`
  * renders the same palette inline as a popover-style panel with an sr-only
  * title/description (like `ModelSelector`). A true modal would compose
- * `gn-dialog` from the dialog family around `<gn-command>`.
+ * `gr-dialog` from the dialog family around `<gr-command>`.
  */
 @Component({
-  selector: 'gn-command',
+  selector: 'gr-command',
   standalone: true,
-  imports: [BrnCommand],
+  // BrnCommand on the HOST via hostDirectives (not an internal `<div brnCommand>`)
+  // so the BrnCommandToken it provides reaches the <ng-content>-projected
+  // children (input/list/group/item/empty). On an internal div the projected
+  // children can't see it → NG0201. Mirrors the spartan reference `hlm-command`.
+  hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div
-    brnCommand
-    class="flex h-full w-full flex-col overflow-hidden"
-  >
+  template: `<div class="flex h-full w-full flex-col overflow-hidden">
     <ng-content />
   </div>`,
   host: {
@@ -75,16 +76,15 @@ export class Command {
  * description. Divergence alias of `Command` for React `CommandDialog` parity.
  */
 @Component({
-  selector: 'gn-command-dialog',
+  selector: 'gr-command-dialog',
   standalone: true,
-  imports: [BrnCommand],
+  hostDirectives: [BrnCommand],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2 class="sr-only">{{ title() }}</h2>
     <p class="sr-only">{{ description() }}</p>
     <div
-      brnCommand
       class="flex h-full w-full flex-col overflow-hidden **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
     >
       <ng-content />
@@ -108,7 +108,7 @@ export class CommandDialog {
 }
 
 @Component({
-  selector: 'gn-command-input',
+  selector: 'gr-command-input',
   standalone: true,
   imports: [BrnCommandInput],
   encapsulation: ViewEncapsulation.None,
@@ -153,7 +153,7 @@ export class CommandInput {
 }
 
 @Component({
-  selector: 'gn-command-list',
+  selector: 'gr-command-list',
   standalone: true,
   imports: [BrnCommandList],
   encapsulation: ViewEncapsulation.None,
@@ -172,12 +172,15 @@ export class CommandList {
 }
 
 @Component({
-  selector: 'gn-command-empty',
+  selector: 'gr-command-empty',
   standalone: true,
   imports: [BrnCommandEmpty],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div brnCommandEmpty class="py-6 text-center text-sm">
+  // brnCommandEmpty is STRUCTURAL (injects TemplateRef, renders only when the
+  // list has no visible items) — must use the `*` prefix, not a plain attribute
+  // on a <div>, which raised NG0201 (No provider for TemplateRef).
+  template: `<div *brnCommandEmpty class="py-6 text-center text-sm">
     <ng-content />
   </div>`,
   host: { 'data-slot': 'command-empty', class: 'block' },
@@ -185,7 +188,7 @@ export class CommandList {
 export class CommandEmpty {}
 
 @Component({
-  selector: 'gn-command-group',
+  selector: 'gr-command-group',
   standalone: true,
   imports: [BrnCommandGroup],
   encapsulation: ViewEncapsulation.None,
@@ -204,7 +207,7 @@ export class CommandGroup {
 }
 
 @Component({
-  selector: 'gn-command-separator',
+  selector: 'gr-command-separator',
   standalone: true,
   imports: [BrnCommandSeparator],
   encapsulation: ViewEncapsulation.None,
@@ -220,7 +223,7 @@ export class CommandSeparator {
 }
 
 @Component({
-  selector: 'gn-command-item',
+  selector: 'gr-command-item',
   standalone: true,
   imports: [BrnCommandItem],
   encapsulation: ViewEncapsulation.None,
@@ -251,7 +254,7 @@ export class CommandItem {
 }
 
 @Component({
-  selector: 'gn-command-shortcut',
+  selector: 'gr-command-shortcut',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

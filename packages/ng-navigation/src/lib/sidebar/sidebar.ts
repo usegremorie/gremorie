@@ -32,7 +32,7 @@ const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 
 /**
  * Holds the collapsible state for a sidebar subtree — the Angular equivalent
- * of React's `SidebarContext`. Provided by `gn-sidebar-provider`; consumed by
+ * of React's `SidebarContext`. Provided by `gr-sidebar-provider`; consumed by
  * `Sidebar`, `SidebarTrigger`, `SidebarRail` and `SidebarMenuButton`.
  *
  * Mirrors the React `useSidebar()` contract: `open`/`state`, `openMobile`,
@@ -104,13 +104,13 @@ export class SidebarService implements OnDestroy {
 /**
  * SidebarProvider — wraps the app shell and owns the collapsible state.
  * Mirrors React `SidebarProvider`. Wrap any subtree using the sidebar in a
- * `gn-sidebar-provider` (including each Storybook story).
+ * `gr-sidebar-provider` (including each Storybook story).
  *
  * `defaultOpen` seeds the uncontrolled state; `open`/`openChange` allow
  * controlled use.
  */
 @Component({
-  selector: 'gn-sidebar-provider',
+  selector: 'gr-sidebar-provider',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -185,7 +185,7 @@ const sidebarMenuButtonVariants = cva(
  * `data-slot` names and classes match the React edition.
  */
 @Component({
-  selector: 'gn-sidebar',
+  selector: 'gr-sidebar',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -305,7 +305,7 @@ export class Sidebar {
  * SidebarTrigger — toggles the sidebar. Mirrors React `SidebarTrigger`.
  */
 @Component({
-  selector: 'gn-sidebar-trigger',
+  selector: 'gr-sidebar-trigger',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -349,7 +349,7 @@ export class SidebarTrigger {
  * React `SidebarRail`.
  */
 @Component({
-  selector: 'gn-sidebar-rail',
+  selector: 'gr-sidebar-rail',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -384,7 +384,7 @@ export class SidebarRail {
  * `SidebarInset`.
  */
 @Component({
-  selector: 'gn-sidebar-inset',
+  selector: 'gr-sidebar-inset',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -403,7 +403,7 @@ export class SidebarInset {}
  * Angular Input package yet.
  */
 @Component({
-  selector: 'gn-sidebar-input, input[gn-sidebar-input]',
+  selector: 'gr-sidebar-input, input[gr-sidebar-input]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -421,7 +421,7 @@ export class SidebarInput {}
  * SidebarHeader — top region of the sidebar. Mirrors React `SidebarHeader`.
  */
 @Component({
-  selector: 'gn-sidebar-header',
+  selector: 'gr-sidebar-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -438,7 +438,7 @@ export class SidebarHeader {}
  * SidebarFooter — bottom region of the sidebar. Mirrors React `SidebarFooter`.
  */
 @Component({
-  selector: 'gn-sidebar-footer',
+  selector: 'gr-sidebar-footer',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -456,7 +456,7 @@ export class SidebarFooter {}
  * `SidebarSeparator`.
  */
 @Component({
-  selector: 'gn-sidebar-separator',
+  selector: 'gr-sidebar-separator',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -475,7 +475,7 @@ export class SidebarSeparator {}
  * `SidebarContent`.
  */
 @Component({
-  selector: 'gn-sidebar-content',
+  selector: 'gr-sidebar-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -494,7 +494,7 @@ export class SidebarContent {}
  * `SidebarGroup`.
  */
 @Component({
-  selector: 'gn-sidebar-group',
+  selector: 'gr-sidebar-group',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -512,7 +512,7 @@ export class SidebarGroup {}
  * `SidebarGroupLabel`.
  */
 @Component({
-  selector: 'gn-sidebar-group-label',
+  selector: 'gr-sidebar-group-label',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -531,7 +531,7 @@ export class SidebarGroupLabel {}
  * `SidebarGroupAction`.
  */
 @Component({
-  selector: 'gn-sidebar-group-action',
+  selector: 'gr-sidebar-group-action',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -550,7 +550,7 @@ export class SidebarGroupAction {}
  * `SidebarGroupContent`.
  */
 @Component({
-  selector: 'gn-sidebar-group-content',
+  selector: 'gr-sidebar-group-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -567,7 +567,7 @@ export class SidebarGroupContent {}
  * SidebarMenu — the list of menu items. Mirrors React `SidebarMenu`.
  */
 @Component({
-  selector: 'gn-sidebar-menu, ul[gn-sidebar-menu]',
+  selector: 'gr-sidebar-menu, ul[gr-sidebar-menu]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -584,7 +584,7 @@ export class SidebarMenu {}
  * SidebarMenuItem — one menu row. Mirrors React `SidebarMenuItem`.
  */
 @Component({
-  selector: 'gn-sidebar-menu-item, li[gn-sidebar-menu-item]',
+  selector: 'gr-sidebar-menu-item, li[gr-sidebar-menu-item]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -601,7 +601,7 @@ export class SidebarMenuItem {}
  * SidebarMenuButton — the clickable menu entry. Mirrors React
  * `SidebarMenuButton`. Supports `isActive`, `variant`, `size` and a `tooltip`.
  *
- * The collapsed-state `tooltip` is the styled `gn-tooltip` compound from
+ * The collapsed-state `tooltip` is the styled `gr-tooltip` compound from
  * `@gremorie/ng-overlays` (side `right`, like the React edition). React keeps
  * the `TooltipContent` mounted and toggles its `hidden` attribute unless the
  * sidebar is collapsed on desktop; here the compound is instantiated under the
@@ -613,7 +613,7 @@ export class SidebarMenuItem {}
  */
 @Component({
   selector:
-    'gn-sidebar-menu-button, a[gn-sidebar-menu-button], button[gn-sidebar-menu-button]',
+    'gr-sidebar-menu-button, a[gr-sidebar-menu-button], button[gr-sidebar-menu-button]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -628,14 +628,14 @@ export class SidebarMenuItem {}
     <ng-template #content><ng-content /></ng-template>
 
     @if (tooltipVisible()) {
-      <gn-tooltip-provider>
-        <gn-tooltip side="right">
-          <gn-tooltip-trigger class="flex w-full min-w-0 items-center gap-2">
+      <gr-tooltip-provider>
+        <gr-tooltip side="right">
+          <gr-tooltip-trigger class="flex w-full min-w-0 items-center gap-2">
             <ng-container [ngTemplateOutlet]="content" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="content" />
     }
@@ -690,7 +690,7 @@ export class SidebarMenuButton {
  * `SidebarMenuAction`.
  */
 @Component({
-  selector: 'gn-sidebar-menu-action, button[gn-sidebar-menu-action]',
+  selector: 'gr-sidebar-menu-action, button[gr-sidebar-menu-action]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -724,7 +724,7 @@ export class SidebarMenuAction {
  * `SidebarMenuBadge`.
  */
 @Component({
-  selector: 'gn-sidebar-menu-badge',
+  selector: 'gr-sidebar-menu-badge',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -744,7 +744,7 @@ export class SidebarMenuBadge {}
  * dependency) using the same pulsing-accent treatment.
  */
 @Component({
-  selector: 'gn-sidebar-menu-skeleton',
+  selector: 'gr-sidebar-menu-skeleton',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -780,7 +780,7 @@ export class SidebarMenuSkeleton {
  * `SidebarMenuSub`.
  */
 @Component({
-  selector: 'gn-sidebar-menu-sub, ul[gn-sidebar-menu-sub]',
+  selector: 'gr-sidebar-menu-sub, ul[gr-sidebar-menu-sub]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -799,7 +799,7 @@ export class SidebarMenuSub {}
  * `SidebarMenuSubItem`.
  */
 @Component({
-  selector: 'gn-sidebar-menu-sub-item, li[gn-sidebar-menu-sub-item]',
+  selector: 'gr-sidebar-menu-sub-item, li[gr-sidebar-menu-sub-item]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -817,7 +817,7 @@ export class SidebarMenuSubItem {}
  * React `SidebarMenuSubButton`.
  */
 @Component({
-  selector: 'gn-sidebar-menu-sub-button, a[gn-sidebar-menu-sub-button]',
+  selector: 'gr-sidebar-menu-sub-button, a[gr-sidebar-menu-sub-button]',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

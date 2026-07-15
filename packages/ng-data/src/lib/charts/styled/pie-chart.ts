@@ -89,9 +89,14 @@ interface LegendItem {
           [style.top.px]="p.center().cy + p.labels()[active()!].y"
         >
           <div class="flex items-center gap-1.5 text-muted-foreground">
-            <span class="size-2 rounded-[2px]" [style.background]="sliceColor(active()!)"></span>
+            <span
+              class="size-2 rounded-[2px]"
+              [style.background]="sliceColor(active()!)"
+            ></span>
             <span>{{ activeName() }}</span>
-            <span class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground">
+            <span
+              class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+            >
               {{ activeValue() }}
             </span>
           </div>
@@ -103,7 +108,10 @@ interface LegendItem {
       >
         @for (item of legend(); track item.name) {
           <li class="flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[2px]" [style.background]="item.color"></span>
+            <span
+              class="size-2.5 rounded-[2px]"
+              [style.background]="item.color"
+            ></span>
             {{ item.name }}
           </li>
         }
@@ -111,7 +119,9 @@ interface LegendItem {
 
       <table class="sr-only">
         <caption>
-          {{ ariaLabel() }}
+          {{
+            ariaLabel()
+          }}
         </caption>
         <thead>
           <tr>
@@ -162,7 +172,10 @@ export class PieChart {
     const i = this.active();
     if (i === null) return '';
     const cfg = this.config()[this.dataKey()];
-    return formatValue(Number(this.data()[i]?.[this.dataKey()] ?? 0), cfg?.format || 'number');
+    return formatValue(
+      Number(this.data()[i]?.[this.dataKey()] ?? 0),
+      cfg?.format || 'number',
+    );
   });
 
   readonly ariaLabel = computed(

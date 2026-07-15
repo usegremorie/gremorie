@@ -24,7 +24,7 @@ export class TaskItem {}
  * TaskItemFile — file chip used inside a TaskItem. Mirrors React
  * `TaskItemFile`.
  *
- * Dogfoods `gn-badge` (variant `secondary`) from `@gremorie/ng-display`.
+ * Dogfoods `gr-badge` (variant `secondary`) from `@gremorie/ng-display`.
  */
 @Component({
   selector: 'task-item-file',
@@ -33,9 +33,9 @@ export class TaskItem {}
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <gn-badge variant="secondary" class="rounded-md font-normal">
+    <gr-badge variant="secondary" class="rounded-md font-normal">
       <ng-content />
-    </gn-badge>
+    </gr-badge>
   `,
   host: {
     class: 'inline-flex',

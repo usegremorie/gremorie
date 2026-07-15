@@ -1,0 +1,112 @@
+---
+title: Dialog, Drawer, Popover, Tooltip
+description: 'Quatro overlays, quatro funções: decisões focadas, fluxos longos, conteúdo contextual, dicas breves. Escolha pela função, não pela estética.'
+related: rx-dialog, rx-sheet, rx-popover, rx-tooltip, rx-hover-card
+tags: [components, overlays, modal, popover, tooltip]
+---
+
+## TL;DR
+
+Overlays diferem por **stakes** e **escopo**. Dialog interrompe para uma decisão. Drawer (sheet) hospeda um fluxo lateral mais longo. Popover revela conteúdo contextual. Tooltip oferece um label ou dica breve. Escolha pela função, nunca por preferência estética.
+
+## A regra
+
+| Component          | Função                                                                        | Modal?           | Focus preso? | Acionado por  |
+| ------------------ | ----------------------------------------------------------------------------- | ---------------- | ------------ | ------------- |
+| **Dialog**         | Decisão focada ou form curto. Bloqueia a UI por baixo.                        | Sim              | Sim          | Click         |
+| **Drawer / Sheet** | Fluxo mais longo, painel de detalhes, form multi-step. Ancorado na lateral.   | Muitas vezes sim | Sim          | Click         |
+| **Popover**        | Conteúdo contextual interativo (date picker, color picker, mini-form).        | Não              | Não          | Click         |
+| **Tooltip**        | Label ou dica breve de identificação, texto puro.                             | Não              | Não          | Hover / focus |
+| **HoverCard**      | Preview rico de uma entidade referenciada (card de usuário, preview de link). | Não              | Não          | Hover / focus |
+
+Passos de decisão:
+
+1. **Isso interrompe a tarefa do usuário?** Sim -> Dialog ou Sheet. Não -> Popover, Tooltip ou HoverCard.
+2. **Quanto conteúdo?** Uma única pergunta ou 1-3 campos -> Dialog. Um form, um painel, um fluxo -> Sheet.
+3. **Acionado por hover ou focus?** Texto breve -> Tooltip. Preview rico -> HoverCard. Nunca coloque controles interativos em nenhum dos dois.
+4. **Click revela UI contextual?** Popover.
+
+## Por que
+
+Cada overlay define expectativas sobre se o usuário precisa responder. Um modal dialog diz ao usuário "decida antes de continuar"; um popover diz "isto é contextual e fácil de dispensar"; um tooltip diz "isto é auxiliar". Misturá-los viola o #4 de Nielsen (consistência) e o #7 (flexibilidade): usuários aprendem a prever o comportamento do overlay e se sentem presos ou interrompidos quando as expectativas quebram.
+
+Tooltips em dispositivos de toque não têm estado de hover, então qualquer coisa acionável dentro deles fica inacessível. Popovers em viewports pequenas muitas vezes precisam virar Sheets para permanecerem usáveis. Dialogs que hospedam um form de 12 campos deveriam ser Sheets para que a página ainda fique parcialmente visível.
+
+## Como aplicar
+
+### Faça: Dialog para uma decisão focada
+
+```tsx
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Invite member</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Invite a member</DialogTitle>
+      <DialogDescription>
+        They will receive an email with a sign-in link.
+      </DialogDescription>
+    </DialogHeader>
+    <form>
+      <Input name="email" placeholder="email@example.com" />
+    </form>
+    <DialogFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button type="submit">Send invitation</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+Decisão única, no máximo dois campos, duas ações. O título declara a função; a descrição dá a consequência.
+
+### Faça: Sheet para fluxos mais longos
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Edit profile</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Profile settings</SheetTitle>
+    </SheetHeader>
+    {/* multi-field form, sections, scrolling */}
+  </SheetContent>
+</Sheet>
+```
+
+Um editor de perfil é longo demais para um dialog. O painel lateral preserva o contexto espacial (o usuário sabe que veio da página de perfil).
+
+### Não faça: um tooltip com conteúdo interativo
+
+```tsx
+<Tooltip>
+  <TooltipTrigger>Edit</TooltipTrigger>
+  <TooltipContent>
+    <button>Confirm</button>
+    <button>Cancel</button>
+  </TooltipContent>
+</Tooltip>
+```
+
+O tooltip desaparece quando o cursor deixa o trigger. Usuários de toque nunca o veem. Use um Popover para conteúdo interativo.
+
+### Não faça: um dialog para navegação
+
+Um dialog não deve conter uma página inteira de configurações ou uma interface multi-abas. Isso é uma rota, não um overlay. Direcione o usuário por rota.
+
+## Contra-casos
+
+- **Dialogs de confirmação sem uma pergunta** (um toast de salvamento que também serve de "Continue / Cancel") deveriam ser substituídos por um padrão de confirmação inline ou um dialog de ação destrutiva com um título claro. Popups modais para confirmações triviais são um anti-pattern (Nielsen #5 - prevenção de erro por design, não por modal extra).
+- **Drawers mobile acionados por padrões de bottom-sheet** muitas vezes são a escolha certa para ações que seriam um Popover no desktop. Escolha pela viewport.
+- **Combobox e select** são parecidos com popover mas são componentes próprios (`Combobox`, `Select`); não construa um popover do zero para isso.
+- **Toast** não está nesta tabela porque não é um overlay; ele não bloqueia, não captura focus, nem espera resposta do usuário. Veja o artigo toast vs modal vs banner.
+
+## Fontes
+
+- Nielsen Norman Group: "Modal & Nonmodal Dialogs: When (& When Not) to Use Them" (https://www.nngroup.com/articles/modal-nonmodal-dialog/)
+- Norman, "The Design of Everyday Things" (2013): sobre affordances e signifiers.
+- WAI-ARIA Authoring Practices: padrões de dialog, tooltip e popover.
+- W3C WAI: requisitos de gerenciamento de focus para modal dialogs.

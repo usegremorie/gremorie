@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-feedback",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Feedback primitives for Angular - Spinner, Alert, Progress, Skeleton. Companion to Spartan-ng (fills the gap for Spinner; wraps Spartan brain Progress idiomatically). Part of Gremorie.",
   "license": "MIT",
   "repository": {
@@ -23,14 +23,12 @@
     "class-variance-authority": "^0.7.1"
   },
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./fesm2022/ng-feedback.mjs"
-    }
-  },
   "homepage": "https://gremorie.com",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/usegremorie/gremorie/issues"
+  },
+  "author": "Gremorie (https://github.com/usegremorie)"
 }

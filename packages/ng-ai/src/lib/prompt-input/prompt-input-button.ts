@@ -43,7 +43,7 @@ const buttonVariants = cva(
  *
  * Mirrors React `PromptInputButton` (rx-ai): a ghost-style action button that
  * projects an icon and, when `tooltip` is set, wraps the button in the styled
- * `gn-tooltip` compound from `@gremorie/ng-overlays` (the same primitive the
+ * `gr-tooltip` compound from `@gremorie/ng-overlays` (the same primitive the
  * React side uses from `@gremorie/rx-overlays`), so the surface matches the
  * styled tooltip (arrowless popover card), not the bare brain overlay. Reserve
  * the tooltip for non-critical hints.
@@ -74,14 +74,14 @@ const buttonVariants = cva(
     </ng-template>
 
     @if (tooltip()) {
-      <gn-tooltip-provider>
-        <gn-tooltip [side]="side()">
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip [side]="side()">
+          <gr-tooltip-trigger>
             <ng-container [ngTemplateOutlet]="btn" />
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>{{ tooltip() }}</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>{{ tooltip() }}</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     } @else {
       <ng-container [ngTemplateOutlet]="btn" />
     }

@@ -11,7 +11,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
  * Alert variants — token-driven (`bg-card`, `text-destructive`).
  *
  * The grid layout reserves a column for an SVG icon sibling — when the
- * first child of `gn-alert` is an SVG, the layout flips to two columns
+ * first child of `gr-alert` is an SVG, the layout flips to two columns
  * (icon + body); otherwise it collapses to a single column.
  */
 export const alertVariants = cva(
@@ -46,20 +46,20 @@ export type AlertVariant = NonNullable<
  *
  * @example
  * ```html
- * <gn-alert>
+ * <gr-alert>
  *   <svg ...><!-- info icon --></svg>
- *   <gn-alert-title>Heads up!</gn-alert-title>
- *   <gn-alert-description>Some helpful context.</gn-alert-description>
- * </gn-alert>
+ *   <gr-alert-title>Heads up!</gr-alert-title>
+ *   <gr-alert-description>Some helpful context.</gr-alert-description>
+ * </gr-alert>
  *
- * <gn-alert variant="destructive">
- *   <gn-alert-title>Error</gn-alert-title>
- *   <gn-alert-description>Something went wrong.</gn-alert-description>
- * </gn-alert>
+ * <gr-alert variant="destructive">
+ *   <gr-alert-title>Error</gr-alert-title>
+ *   <gr-alert-description>Something went wrong.</gr-alert-description>
+ * </gr-alert>
  * ```
  */
 @Component({
-  selector: 'gn-alert',
+  selector: 'gr-alert',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -83,7 +83,7 @@ export class Alert {
  * AlertTitle — headline inside an Alert. Mirrors React `AlertTitle`.
  */
 @Component({
-  selector: 'gn-alert-title',
+  selector: 'gr-alert-title',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -100,7 +100,7 @@ export class AlertTitle {}
  * `AlertDescription`.
  */
 @Component({
-  selector: 'gn-alert-description',
+  selector: 'gr-alert-description',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

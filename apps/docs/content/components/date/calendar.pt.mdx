@@ -1,0 +1,168 @@
+---
+title: Calendar
+description: Grid de seleção de data construído sobre react-day-picker v10 - data única, várias datas ou um intervalo de datas, com tematização orientada por token e chevrons do lucide.
+---
+
+import { CalendarPreview } from '@/components/preview/forms/calendar';
+
+## Visão geral
+
+`Calendar` envolve o `react-day-picker` v10. Três modos via `mode`:
+
+- `single` - uma data
+- `range` - início + fim (intervalo de datas)
+- `multiple` - várias datas independentes
+
+Use `Calendar` standalone em páginas com bastante espaço (agendamento, planners). Para forms compactos, envolva-o em `Popover` - esse padrão composto é o `DatePicker`. Na v10 do react-day-picker as chaves de `classNames` foram migradas para o enum `UI`; nós chamamos `getDefaultClassNames()` e mesclamos nossos tokens semânticos por cima.
+
+## Preview
+
+<ComponentPreview name="forms/calendar">
+  <CalendarPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Calendar   self-contained DayPicker grid (caption + nav, weekday header, day buttons)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-calendar ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-calendar ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-calendar ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-calendar ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Calendar } from "@gremorie/rx-forms";
+
+export function Example() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  return <Calendar mode="single" selected={date} onSelect={setDate} />;
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Calendar>`
+
+Encaminha toda prop para `DayPicker` do `react-day-picker`. As mais relevantes:
+
+| Prop              | Type                                | Default    | Descrição                                                                                                |
+| ----------------- | ----------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------- |
+| `mode`            | `"single" \| "multiple" \| "range"` | `"single"` | Modelo de seleção.                                                                                       |
+| `selected`        | `Date \| Date[] \| DateRange`       | -          | Seleção controlada. O shape depende do `mode`.                                                           |
+| `onSelect`        | depende do `mode`                   | -          | Dispara quando o usuário escolhe uma data.                                                               |
+| `disabled`        | `Matcher \| Matcher[]`              | -          | Desabilita datas específicas (datas passadas, fins de semana, predicados customizados).                  |
+| `showOutsideDays` | `boolean`                           | `true`     | Mostra dias esmaecidos de meses vizinhos.                                                                |
+| `numberOfMonths`  | `number`                            | `1`        | Mostra vários meses lado a lado (útil para seletores de intervalo).                                      |
+| `defaultMonth`    | `Date`                              | mês atual  | Mês inicial exibido quando não controlado.                                                               |
+| `locale`          | `Locale`                            | en-US      | Locale do `date-fns` para labels de mês / dia da semana.                                                 |
+| `autoFocus`       | `boolean`                           | `false`    | Foca a primeira célula selecionada (ou a de hoje) no mount. Usado pelo `DatePicker` dentro de `Popover`. |
+| `className`       | `string`                            | -          | Classes no `<div>` wrapper. Padrão para `p-3`.                                                           |
+| `classNames`      | `Partial<ClassNames>`               | -          | Sobrescreve qualquer classe interna. Mesclado nos defaults do Gremorie via `cn`.                         |
+
+Para a lista completa de props, veja a [documentação do react-day-picker](https://daypicker.dev/api/interfaces/DayPickerProps).
+
+O wrapper do Gremorie customiza:
+
+- `button_previous` / `button_next` - usam `buttonVariants({ variant: "outline" })` para que as setas combinem com o resto do design system
+- `Chevron` - troca os chevrons padrão do react-day-picker pelos `ChevronLeftIcon` / `ChevronRightIcon` do lucide
+- `selected` - usa os tokens semânticos `bg-primary text-primary-foreground`
+- `today` - usa `bg-accent text-accent-foreground`
+- `outside`, `disabled`, `hidden` - todos orientados por token
+
+## Composição
+
+1. **`<Calendar>`** é um widget autocontido. Coloque onde você precisa de um grid de data.
+2. **Para UI compacta**, envolva-o em um `Popover` + `PopoverTrigger` - essa composição é exportada como `DatePicker` no bundle de overlays.
+3. **Para seletores de intervalo**, defina `mode="range"` e `numberOfMonths={2}` para que os usuários vejam o mês de início + fim de uma vez.
+
+## Variações
+
+### Data única
+
+O modo padrão. O estado é `Date | undefined`.
+
+```tsx
+function SingleDate() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  return <Calendar mode="single" selected={date} onSelect={setDate} />;
+}
+```
+
+### Intervalo de datas
+
+O estado é `{ from?: Date; to?: Date }`. Combine com `numberOfMonths={2}` para a UX clássica de calendário lado a lado.
+
+```tsx
+import type { DateRange } from 'react-day-picker';
+
+function DateRangeExample() {
+  const [range, setRange] = React.useState<DateRange | undefined>();
+  return (
+    <Calendar
+      mode="range"
+      selected={range}
+      onSelect={setRange}
+      numberOfMonths={2}
+    />
+  );
+}
+```
+
+### Desabilitar datas passadas
+
+A prop `disabled` aceita um matcher. Use `{ before: today }` para bloquear datas históricas.
+
+```tsx
+<Calendar
+  mode="single"
+  selected={date}
+  onSelect={setDate}
+  disabled={{ before: new Date() }}
+/>
+```
+
+### Várias datas independentes
+
+`mode="multiple"` deixa os usuários selecionarem qualquer número de datas não contíguas. O estado é `Date[]`.
+
+```tsx
+function MultipleDates() {
+  const [dates, setDates] = React.useState<Date[] | undefined>();
+  return <Calendar mode="multiple" selected={dates} onSelect={setDates} />;
+}
+```
+
+## Acessibilidade
+
+- **Semântica de grid**: o react-day-picker renderiza um `role="grid"` com linhas de células. Cada célula é um botão.
+- **Teclado**:
+  - `ArrowLeft` / `ArrowRight` movem um dia por vez.
+  - `ArrowUp` / `ArrowDown` movem uma semana por vez.
+  - `Home` / `End` pulam para o primeiro / último dia da linha.
+  - `PageUp` / `PageDown` movem um mês; `Shift+PageUp` / `Shift+PageDown` movem um ano.
+- **Anúncios de screen reader**: a data em foco anuncia dia da semana, número do dia e mês. Dias desabilitados e de fora são anunciados como tal.
+- **Foco**: quando envolvido em `Popover` (o padrão `DatePicker`), defina `autoFocus` para que a data ativa receba foco ao abrir.
+- **Reduced motion**: o react-day-picker não tem movimento próprio; o calendário respeita as preferências de movimento do usuário automaticamente.
+
+## Relacionados
+
+- [Date Picker](/components/date/date-picker) - a composição canônica Popover + Calendar
+- [Popover](/components/overlays/popover) - o wrapper recomendado para UIs compactas
+- [Form](/components/form) - conecte o Calendar ao react-hook-form

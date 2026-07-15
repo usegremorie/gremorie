@@ -67,7 +67,9 @@ describe('WebPreview', () => {
       'web-preview-body iframe',
     ) as HTMLIFrameElement;
     expect(input.value).toBe('https://example.com');
-    expect(iframe.getAttribute('src')).toBe('https://example.com');
+    // safeHttpUrl normalizes the URL (adds the empty path) before it reaches
+    // the iframe; the address-bar input keeps the raw value.
+    expect(iframe.getAttribute('src')).toBe('https://example.com/');
     expect(iframe.getAttribute('sandbox')).toContain('allow-scripts');
   });
 
@@ -80,13 +82,13 @@ describe('WebPreview', () => {
     expect(button.getAttribute('title')).toBeNull();
   });
 
-  it('shows the STYLED tooltip surface on hover (gn-tooltip, not native title)', async () => {
+  it('shows the STYLED tooltip surface on hover (gr-tooltip, not native title)', async () => {
     const fixture = render();
     await fixture.whenStable();
     const host = fixture.nativeElement as HTMLElement;
 
     // Regression: the tooltip once rendered as a native `title` attribute
-    // instead of the styled gn-tooltip compound.
+    // instead of the styled gr-tooltip compound.
     expect(host.querySelector('[data-slot="tooltip-trigger"]')).not.toBeNull();
 
     // The anchor span carries a real box (inline-flex) so the CDK overlay
@@ -129,5 +131,34 @@ describe('WebPreview', () => {
     toggle.click();
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('No console output');
+  });
+
+  describe('sandboxing and src validation', () => {
+    function iframeFor(url: string): HTMLIFrameElement {
+      const fixture = render();
+      (fixture.componentInstance as Host).url.set(url);
+      fixture.detectChanges();
+      return fixture.nativeElement.querySelector(
+        'web-preview-body iframe',
+      ) as HTMLIFrameElement;
+    }
+
+    it('never grants allow-same-origin alongside allow-scripts', () => {
+      const sandbox = iframeFor('https://example.com').getAttribute('sandbox');
+      expect(sandbox).toContain('allow-scripts');
+      expect(sandbox).not.toContain('allow-same-origin');
+    });
+
+    it.each([
+      ['javascript scheme', 'javascript:alert(1)'],
+      ['data scheme', 'data:text/html,<script>alert(1)</script>'],
+      // A same-origin frame with allow-scripts could otherwise reach `parent`.
+      ['relative path', '/admin'],
+      ['protocol-relative', '//evil.example'],
+    ])('drops the src for a %s', (_label, url) => {
+      const iframe = iframeFor(url);
+      const src = iframe.getAttribute('src');
+      expect(src === null || src === '').toBe(true);
+    });
   });
 });

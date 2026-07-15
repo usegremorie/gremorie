@@ -39,7 +39,7 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-checkbox
+      <gr-checkbox
         ariaLabel="Accept terms"
         [checked]="checked"
         [indeterminate]="indeterminate"
@@ -55,7 +55,7 @@ export const Workbench: Story = {
 export const Checked: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    template: `<gn-checkbox ariaLabel="Checked" [checked]="true" />`,
+    template: `<gr-checkbox ariaLabel="Checked" [checked]="true" />`,
   }),
 };
 
@@ -65,8 +65,8 @@ export const Disabled: Story = {
   render: () => ({
     template: `
       <div class="flex items-center gap-4">
-        <gn-checkbox ariaLabel="Disabled unchecked" [disabled]="true" />
-        <gn-checkbox ariaLabel="Disabled checked" [disabled]="true" [checked]="true" />
+        <gr-checkbox ariaLabel="Disabled unchecked" [disabled]="true" />
+        <gr-checkbox ariaLabel="Disabled checked" [disabled]="true" [checked]="true" />
       </div>
     `,
   }),
@@ -83,13 +83,13 @@ export const States: Story = {
     template: `
       <div class="flex items-center gap-6">
         <label class="flex items-center gap-2 text-sm">
-          <gn-checkbox ariaLabel="Unchecked" /> Unchecked
+          <gr-checkbox ariaLabel="Unchecked" /> Unchecked
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-checkbox ariaLabel="Checked" [checked]="true" /> Checked
+          <gr-checkbox ariaLabel="Checked" [checked]="true" /> Checked
         </label>
         <label class="flex items-center gap-2 text-sm">
-          <gn-checkbox ariaLabel="Indeterminate" [indeterminate]="true" /> Indeterminate
+          <gr-checkbox ariaLabel="Indeterminate" [indeterminate]="true" /> Indeterminate
         </label>
       </div>
     `,

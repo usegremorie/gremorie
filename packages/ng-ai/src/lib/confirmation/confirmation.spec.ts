@@ -55,7 +55,9 @@ describe('Confirmation', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.querySelector('[role="alert"]')).not.toBeNull();
-    expect(host.querySelector('[data-slot="confirmation-actions"] button')).not.toBeNull();
+    expect(
+      host.querySelector('[data-slot="confirmation-actions"] button'),
+    ).not.toBeNull();
     expect(host.querySelector('.ok')).toBeNull();
   });
 

@@ -11,12 +11,12 @@ import {
   standalone: true,
   imports: [ButtonGroup, ButtonGroupText, ButtonGroupSeparator],
   template: `
-    <gn-button-group [orientation]="orientation()">
-      <gn-button-group-text>https://</gn-button-group-text>
+    <gr-button-group [orientation]="orientation()">
+      <gr-button-group-text>https://</gr-button-group-text>
       <button>Go</button>
-      <gn-button-group-separator />
+      <gr-button-group-separator />
       <button>Copy</button>
-    </gn-button-group>
+    </gr-button-group>
   `,
 })
 class Host {

@@ -1,0 +1,252 @@
+---
+title: Navigation Menu
+description: 'Nav primária de site de marketing com painéis ricos. Faça hover ou focus num trigger para abrir content multi-coluna sob a barra.'
+---
+
+import { NavigationMenuPreview } from '@/components/preview/navigation/navigation-menu';
+import { NavigationMenuLinksPreview } from '@/components/preview/navigation/navigation-menu-links';
+import { NavigationMenuMegaPreview } from '@/components/preview/navigation/navigation-menu-mega';
+
+## Visão geral
+
+`NavigationMenu` é o primitivo de navegação primária de site de marketing: uma barra horizontal de triggers, cada um abrindo um painel de content rico sob a barra. Construído sobre o Radix NavigationMenu, ele implementa o padrão do Vercel / Stripe / Tailwind - "Products", "Solutions", "Pricing" com grids multi-coluna de links e blocos de features sob cada trigger.
+
+Use o NavigationMenu quando **o header também funciona como superfície de descoberta** - os painéis mostram categorização e deixam os usuários navegar sem clicar através. Para navegação entre seções interna do app use [Sidebar](/components/navigation/sidebar); para views irmãs dentro de uma página use [Tabs](/components/navigation/tabs); para menus de ação dentro de uma única tela use [DropdownMenu](/components/overlays/dropdown-menu). Evite aninhar overlays interativos (Dialog, Popover) dentro de um painel - o gerenciamento de focus fica frágil rápido.
+
+## Preview
+
+<ComponentPreview name="navigation/navigation-menu">
+  <NavigationMenuPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+NavigationMenu                       the root; auto-mounts a Viewport when viewport is on
+├─ NavigationMenuList                the horizontal list of items
+│  └─ NavigationMenuItem             one slot: trigger + panel, or a plain link
+│     ├─ NavigationMenuTrigger       the label that opens a content panel
+│     ├─ NavigationMenuContent       the dropdown panel (multi-column friendly)
+│     │  └─ NavigationMenuLink       a link, inside a panel or standalone
+│     └─ navigationMenuTriggerStyle  CVA helper to style plain links like triggers
+├─ NavigationMenuIndicator           pointer arrow that tracks the active trigger
+└─ NavigationMenuViewport            shared sliding container (auto-mounted)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-navigation-menu ```</Tab>
+  <Tab value="pnpm">
+    ```bash pnpm dlx gremorie@latest add rx-navigation-menu ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash yarn dlx gremorie@latest add rx-navigation-menu ```
+  </Tab>
+  <Tab value="bun">
+    ```bash bunx --bun gremorie@latest add rx-navigation-menu ```
+  </Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@gremorie/rx-navigation";
+
+export function SiteNav() {
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-2 p-4">
+              <li>
+                <NavigationMenuLink href="/ai">AI primitives</NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="/forms">Forms</NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="/charts">Charts</NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<NavigationMenu>`
+
+Container raiz. Envolve o `NavigationMenu.Root` do Radix.
+
+| Prop                | Type                         | Default        | Description                                                                                                                                                                                        |
+| ------------------- | ---------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `viewport`          | `boolean`                    | `true`         | Quando `true`, monta `<NavigationMenuViewport>` automaticamente para que os painéis compartilhem um único container deslizante. Defina `false` para renderizar cada painel inline sob seu trigger. |
+| `defaultValue`      | `string`                     | -              | Menu inicialmente aberto, não controlado.                                                                                                                                                          |
+| `value`             | `string`                     | -              | Menu aberto controlado.                                                                                                                                                                            |
+| `onValueChange`     | `(value: string) => void`    | -              | Dispara quando o menu aberto muda.                                                                                                                                                                 |
+| `delayDuration`     | `number`                     | `200`          | Delay de abertura por hover em milissegundos.                                                                                                                                                      |
+| `skipDelayDuration` | `number`                     | `300`          | Janela em que passar o hover entre triggers pula o delay.                                                                                                                                          |
+| `dir`               | `"ltr" \| "rtl"`             | `"ltr"`        | Direção de leitura.                                                                                                                                                                                |
+| `orientation`       | `"horizontal" \| "vertical"` | `"horizontal"` | Eixo de layout.                                                                                                                                                                                    |
+
+### `<NavigationMenuList>`
+
+Container para os triggers. Envolve o `NavigationMenu.List` do Radix.
+
+| Prop       | Type                                               | Default | Description           |
+| ---------- | -------------------------------------------------- | ------- | --------------------- |
+| `...props` | `React.ComponentProps<typeof NavigationMenu.List>` | -       | Props padrão de list. |
+
+### `<NavigationMenuItem>`
+
+Um único menu (trigger mais content) dentro da list. Envolve o `NavigationMenu.Item` do Radix.
+
+| Prop    | Type     | Default | Description                                                            |
+| ------- | -------- | ------- | ---------------------------------------------------------------------- |
+| `value` | `string` | -       | Identificador usado pelo `value` / `onValueChange` controlado do Root. |
+
+### `<NavigationMenuTrigger>`
+
+O botão da barra. Envolve o `NavigationMenu.Trigger` do Radix. Acrescenta automaticamente um `ChevronDown` que gira 180 graus quando o menu está aberto.
+
+| Prop       | Type      | Default | Description              |
+| ---------- | --------- | ------- | ------------------------ |
+| `disabled` | `boolean` | `false` | Desabilita este trigger. |
+
+### `<NavigationMenuContent>`
+
+O painel rico revelado abaixo do trigger. Envolve o `NavigationMenu.Content` do Radix. Vem com classes de animação sensíveis a movimento para as quatro direções de enter / exit (`from-start`, `from-end`, `to-start`, `to-end`).
+
+| Prop         | Type      | Default | Description                                 |
+| ------------ | --------- | ------- | ------------------------------------------- |
+| `forceMount` | `boolean` | `false` | Força o painel no DOM mesmo quando inativo. |
+
+### `<NavigationMenuLink>`
+
+Um link dentro do painel de content. Envolve o `NavigationMenu.Link` do Radix.
+
+| Prop       | Type                     | Default | Description                                                                                |
+| ---------- | ------------------------ | ------- | ------------------------------------------------------------------------------------------ |
+| `active`   | `boolean`                | `false` | Marca o link como a localização atual; estiliza via `data-[active=true]`.                  |
+| `onSelect` | `(event: Event) => void` | -       | Dispara quando o link é ativado. Chame `event.preventDefault()` para manter o menu aberto. |
+| `asChild`  | `boolean`                | `false` | Encaminha as props para o único filho (use com o `Link` do framework).                     |
+| `href`     | `string`                 | -       | Alvo da âncora.                                                                            |
+
+### `<NavigationMenuViewport>`
+
+O container deslizante compartilhado que hospeda qualquer painel de content ativo. Montado automaticamente pelo Root quando `viewport={true}`. Renderize manualmente apenas quando você precisar de controle preciso sobre sua posição.
+
+| Prop         | Type      | Default | Description                                                   |
+| ------------ | --------- | ------- | ------------------------------------------------------------- |
+| `forceMount` | `boolean` | `false` | Força o viewport no DOM mesmo quando nenhum menu está aberto. |
+
+### `<NavigationMenuIndicator>`
+
+Seta indicadora opcional que acompanha o trigger ativo. Renderize como irmã da list quando você quiser a pista visual.
+
+| Prop         | Type      | Default | Description                                             |
+| ------------ | --------- | ------- | ------------------------------------------------------- |
+| `forceMount` | `boolean` | `false` | Força o indicador no DOM quando nenhum menu está ativo. |
+
+### `navigationMenuTriggerStyle`
+
+Função `cva` exportada. Use para estilizar links da barra standalone (links sem painel de content) para que combinem com a aparência do trigger.
+
+```tsx
+<NavigationMenuItem>
+  <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
+    Pricing
+  </NavigationMenuLink>
+</NavigationMenuItem>
+```
+
+## Composição
+
+1. **`<NavigationMenu>`** detém o estado de aberto e (com `viewport={true}`) monta o viewport compartilhado.
+2. **`<NavigationMenuList>`** segura os triggers horizontalmente.
+3. **Cada `<NavigationMenuItem>`** envolve um `<NavigationMenuTrigger>` mais um `<NavigationMenuContent>`. Para links de barra standalone (sem painel) envolva um `<NavigationMenuLink>` com `navigationMenuTriggerStyle()`.
+4. **Dentro do content**, use um grid `<ul>` / `<li>` com elementos `<NavigationMenuLink>` - o layout do painel é seu para compor.
+
+Quando `viewport={true}` (default), todos os painéis de content compartilham um único container deslizante que redimensiona entre menus. Quando `viewport={false}`, cada `<NavigationMenuContent>` renderiza inline sob seu próprio trigger - útil quando os painéis vivem dentro de um card com largura fixa.
+
+## Variações
+
+### Links simples
+
+<ComponentPreview name="navigation/navigation-menu-links">
+  <NavigationMenuLinksPreview />
+</ComponentPreview>
+
+Use como uma barra de header quando cada entrada é um link direto e nenhum painel é necessário. Aplique `navigationMenuTriggerStyle()` a cada `<NavigationMenuLink>` para que os links crus combinem com a aparência do trigger.
+
+### Mega menu com grid de content
+
+<ComponentPreview name="navigation/navigation-menu-mega">
+  <NavigationMenuMegaPreview />
+</ComponentPreview>
+
+Use como a superfície de descoberta de um site de marketing. O grid de duas colunas dá conta de landings de categoria com descrições curtas sob cada link.
+
+### Painéis inline (sem viewport)
+
+```tsx
+<NavigationMenu viewport={false}>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid w-[280px] gap-1 p-3">
+          <li>
+            <NavigationMenuLink href="/blog">Blog</NavigationMenuLink>
+          </li>
+          <li>
+            <NavigationMenuLink href="/guides">Guides</NavigationMenuLink>
+          </li>
+          <li>
+            <NavigationMenuLink href="/changelog">Changelog</NavigationMenuLink>
+          </li>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Use quando cada painel tem sua própria largura e deve descer logo abaixo do seu trigger sem o viewport deslizante compartilhado.
+
+## Acessibilidade
+
+- **Padrão WAI-ARIA Menubar**: triggers carregam `aria-expanded` e `aria-controls`; painéis de content carregam `aria-labelledby` apontando para seu trigger.
+- **Teclado**: `Tab` entra na barra; `ArrowLeft` / `ArrowRight` movem entre triggers; `ArrowDown` ou `Enter` abre o painel do trigger ativo; `Escape` fecha o painel aberto e devolve o foco para o trigger; `Tab` de dentro de um painel move para o content do painel e eventualmente para fora do menu.
+- **Gerenciamento de focus**: abrir um painel não rouba o foco do trigger; os usuários decidem quando entrar no painel. Dentro do painel, `Tab` caminha pelos links em ordem do DOM.
+- **Triggers desabilitados**: renderizam com `aria-disabled="true"` e são pulados na navegação por setas.
+- **Link ativo**: passe `active` em `<NavigationMenuLink>` para definir `data-active="true"` para estilização de localização atual.
+
+## Relacionados
+
+- [Sidebar](/components/navigation/sidebar) - navegação entre seções interna do app.
+- [DropdownMenu](/components/overlays/dropdown-menu) - menus de ação de trigger único.
+- [Menubar](/components/navigation/menubar) - padrão File / Edit / View de app desktop.

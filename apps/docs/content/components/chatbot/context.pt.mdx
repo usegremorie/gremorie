@@ -1,0 +1,205 @@
+---
+title: Context
+description: Indicador de uso de tokens - trigger de progresso circular com um hover card detalhando input, output, reasoning, cache e custo total.
+---
+
+import { ContextPreview } from '@/components/preview/ai/context';
+
+## Visão geral
+
+`Context` mostra quanto da janela de contexto do modelo a conversa atual consumiu. O trigger é um medidor circular minúsculo com a porcentagem; ao passar o hover, um card revela as contagens de tokens (input, output, reasoning, cache) e um custo estimado em USD calculado via `tokenlens`.
+
+Use na toolbar do chat ao lado do prompt input para que os usuários possam ritmar conversas mais longas e notar a pressão de contexto antes de bater no limite.
+
+## Preview
+
+<ComponentPreview name="ai/context">
+  <ContextPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Context                      hovercard de uso de tokens (HoverCard)
+├─ ContextTrigger            botão com % + medidor em anel
+└─ ContextContent
+   ├─ ContextContentHeader    % + usado/total + barra de progresso
+   ├─ ContextContentBody
+   │  ├─ ContextInputUsage
+   │  ├─ ContextOutputUsage
+   │  ├─ ContextReasoningUsage
+   │  └─ ContextCacheUsage     (cada um auto-oculto quando zero)
+   └─ ContextContentFooter    custo total
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-context ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-context ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-context ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-context ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Context,
+  ContextTrigger,
+  ContextContent,
+  ContextContentHeader,
+  ContextContentBody,
+  ContextContentFooter,
+  ContextInputUsage,
+  ContextOutputUsage,
+} from "@gremorie/rx-ai";
+
+export function Example({ usage }) {
+  return (
+    <Context
+      usedTokens={usage.totalTokens}
+      maxTokens={200_000}
+      usage={usage}
+      modelId="anthropic/claude-sonnet-4"
+    >
+      <ContextTrigger />
+      <ContextContent>
+        <ContextContentHeader />
+        <ContextContentBody>
+          <ContextInputUsage />
+          <ContextOutputUsage />
+        </ContextContentBody>
+        <ContextContentFooter />
+      </ContextContent>
+    </Context>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente é distribuída a partir do source hoje (veja o workbench para o lado a lado); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Context>`
+
+| Prop         | Type                 | Default | Description                                                                                                  |
+| ------------ | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `usedTokens` | `number`             | -       | Obrigatório. Total de tokens consumidos. Determina a porcentagem e a barra de progresso.                     |
+| `maxTokens`  | `number`             | -       | Obrigatório. Janela de contexto do modelo.                                                                   |
+| `usage`      | `LanguageModelUsage` | -       | Payload de usage opcional do AI SDK (input, output, reasoning, cached). Determina o detalhamento por bucket. |
+| `modelId`    | `string`             | -       | Id de modelo `tokenlens` opcional usado para calcular custos.                                                |
+
+Estende `ComponentProps<typeof HoverCard>`.
+
+### `<ContextTrigger>`
+
+Renderiza um `Button` ghost com a porcentagem + um medidor SVG circular. Children sobrescrevem o conteúdo padrão. Encaminha todas as props de `Button`.
+
+### `<ContextContent>`
+
+Corpo do hover card. Adiciona `min-w-60`, divide os children com hairlines, remove o padding padrão. Encaminha as props de `HoverCardContent`.
+
+### `<ContextContentHeader>` / `<ContextContentBody>` / `<ContextContentFooter>`
+
+Três regiões verticais:
+
+| Region | Conteúdo padrão                                                          |
+| ------ | ------------------------------------------------------------------------ |
+| Header | Porcentagem + tokens compactos `usado / total` + barra `Progress`        |
+| Body   | Container para linhas de usage por bucket                                |
+| Footer | Custo total em USD (via `tokenlens`) sobre uma superfície `bg-secondary` |
+
+Todos aceitam `children` para sobrescrever os padrões.
+
+### Linhas de usage
+
+`<ContextInputUsage>`, `<ContextOutputUsage>`, `<ContextReasoningUsage>`, `<ContextCacheUsage>`
+
+Auto-ocultam quando o bucket de usage correspondente é zero. Renderizam um label + contagem de tokens + custo. Sobrescreva com `children` para layouts customizados.
+
+## Composição
+
+1. **`<Context>`** recebe os dados de usage e os provê via context aos children.
+2. **`<ContextTrigger>`** é a pílula da toolbar (porcentagem + medidor).
+3. **`<ContextContent>`** é o hover card.
+4. Dentro do content, **`<ContextContentHeader>`** mostra o destaque, **`<ContextContentBody>`** lista as linhas por bucket, **`<ContextContentFooter>`** mostra o custo total.
+
+## Variações
+
+### Trigger mínimo + card auto-populado
+
+O "happy path". Os padrões dão tudo: porcentagem, total de tokens, linhas por bucket, custo em USD.
+
+```tsx
+<Context
+  usedTokens={usage.totalTokens}
+  maxTokens={200_000}
+  usage={usage}
+  modelId="anthropic/claude-sonnet-4"
+>
+  <ContextTrigger />
+  <ContextContent>
+    <ContextContentHeader />
+    <ContextContentBody>
+      <ContextInputUsage />
+      <ContextOutputUsage />
+      <ContextReasoningUsage />
+      <ContextCacheUsage />
+    </ContextContentBody>
+    <ContextContentFooter />
+  </ContextContent>
+</Context>
+```
+
+### Label de trigger customizado
+
+Substitua a porcentagem + medidor padrão por um label customizado (por exemplo, contagens de tokens brutas) para power users.
+
+```tsx
+<Context usedTokens={used} maxTokens={max}>
+  <ContextTrigger>
+    <Button variant="ghost">
+      <CircleIcon className="size-4" />
+      {used.toLocaleString()} / {max.toLocaleString()}
+    </Button>
+  </ContextTrigger>
+  <ContextContent>...</ContextContent>
+</Context>
+```
+
+### Free-tier (sem footer de custo)
+
+Remova `modelId` e `ContextContentFooter` para ocultar o preço em modelos free ou self-hosted.
+
+```tsx
+<Context usedTokens={used} maxTokens={max} usage={usage}>
+  <ContextTrigger />
+  <ContextContent>
+    <ContextContentHeader />
+    <ContextContentBody>
+      <ContextInputUsage />
+      <ContextOutputUsage />
+    </ContextContentBody>
+  </ContextContent>
+</Context>
+```
+
+## Acessibilidade
+
+- **Teclado**: o trigger é um `Button` de verdade e o hover card abre no focus além do hover (padrão Radix).
+- **ARIA**: o SVG do medidor circular carrega `role="img"` e `aria-label="Model context usage"`. A porcentagem também é renderizada como texto vivo, então leitores de tela não dependem só do medidor.
+- **Leitores de tela**: cada linha combina um label (`Input`, `Output`, `Reasoning`, `Cache`) com valores de token + custo, então o detalhamento é lido naturalmente.
+- **Gestão de foco**: o hover card usa o focus trapping do Radix; pressionar Esc retorna o foco ao trigger.
+
+## Relacionados
+
+- [PromptInput](/components/chatbot/prompt-input) - a toolbar onde `Context` normalmente fica
+- [ModelSelector](/components/chatbot/model-selector) - combine com `Context` para expor modelo + usage em uma única linha

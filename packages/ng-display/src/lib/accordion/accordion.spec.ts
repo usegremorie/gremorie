@@ -12,16 +12,16 @@ import {
   standalone: true,
   imports: [Accordion, AccordionItem, AccordionTrigger, AccordionContent],
   template: `
-    <gn-accordion type="single" defaultValue="a">
-      <gn-accordion-item value="a">
-        <gn-accordion-trigger>First</gn-accordion-trigger>
-        <gn-accordion-content>First body</gn-accordion-content>
-      </gn-accordion-item>
-      <gn-accordion-item value="b">
-        <gn-accordion-trigger>Second</gn-accordion-trigger>
-        <gn-accordion-content>Second body</gn-accordion-content>
-      </gn-accordion-item>
-    </gn-accordion>
+    <gr-accordion type="single" defaultValue="a">
+      <gr-accordion-item value="a">
+        <gr-accordion-trigger>First</gr-accordion-trigger>
+        <gr-accordion-content>First body</gr-accordion-content>
+      </gr-accordion-item>
+      <gr-accordion-item value="b">
+        <gr-accordion-trigger>Second</gr-accordion-trigger>
+        <gr-accordion-content>Second body</gr-accordion-content>
+      </gr-accordion-item>
+    </gr-accordion>
   `,
 })
 class Host {}

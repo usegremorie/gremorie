@@ -14,7 +14,7 @@ import {
  * Mirrors React `Tooltip`. Behavior delegated to spartan brain `BrnTooltip`
  * (a single directive on the trigger). The compound Provider/Root/Trigger/
  * Content parts are kept for API parity; `TooltipProvider` is a pass-through
- * (brain has no shared delay context — delay lives per `gn-tooltip`).
+ * (brain has no shared delay context — delay lives per `gr-tooltip`).
  */
 const meta: Meta<Tooltip> = {
   title: 'Interaction/Overlays/Tooltip',
@@ -44,14 +44,14 @@ export const Workbench: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <gn-tooltip-provider>
-        <gn-tooltip [side]="side" [delayDuration]="delayDuration">
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip [side]="side" [delayDuration]="delayDuration">
+          <gr-tooltip-trigger>
             <button type="button" class="rounded-md border px-3 py-1.5 text-sm">Hover</button>
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>Add to library</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>Add to library</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     `,
   }),
 };
@@ -60,14 +60,14 @@ export const Workbench: Story = {
 export const Bottom: Story = {
   render: () => ({
     template: `
-      <gn-tooltip-provider>
-        <gn-tooltip side="bottom">
-          <gn-tooltip-trigger>
+      <gr-tooltip-provider>
+        <gr-tooltip side="bottom">
+          <gr-tooltip-trigger>
             <button type="button" class="rounded-md border px-3 py-1.5 text-sm">More info</button>
-          </gn-tooltip-trigger>
-          <gn-tooltip-content>Shown beneath the trigger</gn-tooltip-content>
-        </gn-tooltip>
-      </gn-tooltip-provider>
+          </gr-tooltip-trigger>
+          <gr-tooltip-content>Shown beneath the trigger</gr-tooltip-content>
+        </gr-tooltip>
+      </gr-tooltip-provider>
     `,
   }),
 };

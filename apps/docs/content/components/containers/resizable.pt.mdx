@@ -1,0 +1,209 @@
+---
+title: Resizable
+description: 'Painéis divididos com handles arrastáveis, layouts persistíveis e um grip de single-pointer.'
+---
+
+import { ResizablePreview } from '@/components/preview/containers/resizable';
+import { ResizableTwoPanePreview } from '@/components/preview/containers/resizable-two-pane';
+import { ResizableVerticalPreview } from '@/components/preview/containers/resizable-vertical';
+import { ResizableThreePanePreview } from '@/components/preview/containers/resizable-three-pane';
+
+## Visão geral
+
+`Resizable` entrega três componentes - `ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle` - construídos sobre `react-resizable-panels`. O group é o frame, os panels reivindicam regiões flex dentro dele, os handles são os divisores de arrastar-e-soltar entre dois panels. Passe `withHandle` para expor um grip visível que o usuário pode agarrar.
+
+Recorra ao Resizable em **dev tools e apps pro**: editores de código, clientes de e-mail, gerenciadores de arquivos, dashboards onde o layout é ele próprio um controle de workspace. Superfícies voltadas ao consumidor quase sempre ficam melhores com proporções fixas mais breakpoints responsivos - um handle arrastável é um elemento de alta affordance e alto custo que deve compensar em produtividade.
+
+## Preview
+
+<ComponentPreview name="containers/resizable">
+  <ResizablePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ResizablePanelGroup        o frame; orientation define horizontal vs. vertical
+├─ ResizablePanel          uma região dimensionada por defaultSize / minSize / maxSize (porcentagens)
+└─ ResizableHandle         o divisor de arraste; passe withHandle para um grip visível
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-resizable ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-resizable ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-resizable ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-resizable ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@gremorie/rx-containers";
+
+export function EditorLayout({ sidebar, editor }) {
+  return (
+    <ResizablePanelGroup orientation="horizontal" autoSaveId="editor-layout">
+      <ResizablePanel defaultSize={25} minSize={15}>
+        {sidebar}
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={75}>{editor}</ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é entregue a partir do código-fonte (veja o workbench para o comparativo lado a lado); a entrada de registry vem em seguida.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<ResizablePanelGroup>`
+
+O frame. Define `flex h-full w-full` e vira para um layout de coluna quando `orientation="vertical"`. Envolva dois ou mais panels separados por handles.
+
+| Prop          | Type                            | Default        | Description                                                                                                                                                 |
+| ------------- | ------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `orientation` | `"horizontal" \| "vertical"`    | `"horizontal"` | Eixo ao longo do qual os panels se dispõem. Grupos horizontais precisam de um pai com `width` definida; grupos verticais precisam de uma `height` definida. |
+| `autoSaveId`  | `string`                        | -              | Quando definido, o group persiste seu layout no `localStorage` sob esta chave, para que a escolha de resize do usuário sobreviva a reloads.                 |
+| `id`          | `string`                        | auto           | Id único para o group. Recorre a um id gerado.                                                                                                              |
+| `onLayout`    | `(sizes: number[]) => void`     | -              | Disparado com os tamanhos atuais dos panels (em porcentagem) sempre que o usuário solta um handle. Útil para sincronizar o layout com um servidor.          |
+| `className`   | `string`                        | -              | Mesclado no div subjacente.                                                                                                                                 |
+| `...props`    | `ResizablePrimitive.GroupProps` | -              | Todas as props de Group do `react-resizable-panels` (ex. `disableCursor`, `style`).                                                                         |
+
+### `<ResizablePanel>`
+
+Uma região flex. Pelo menos um panel no group deve declarar `defaultSize`; os outros se auto-distribuem.
+
+| Prop            | Type                            | Default      | Description                                                                                    |
+| --------------- | ------------------------------- | ------------ | ---------------------------------------------------------------------------------------------- |
+| `defaultSize`   | `number`                        | auto         | Tamanho inicial como porcentagem do group (0-100). Deve somar 100 entre todos os panels.       |
+| `minSize`       | `number`                        | `0`          | Limite inferior durante o resize. Útil para manter uma sidebar acima de seu limiar de colapso. |
+| `maxSize`       | `number`                        | `100`        | Limite superior durante o resize.                                                              |
+| `collapsible`   | `boolean`                       | `false`      | Quando `true`, o panel pode cair abaixo de `minSize` para o estado colapsado.                  |
+| `collapsedSize` | `number`                        | `0`          | Tamanho para o qual encaixar quando colapsado.                                                 |
+| `onCollapse`    | `() => void`                    | -            | Dispara quando o panel colapsa.                                                                |
+| `onExpand`      | `() => void`                    | -            | Dispara quando o panel se re-expande.                                                          |
+| `order`         | `number`                        | ordem no DOM | Reordena os panels independentemente da ordem no source, útil para layouts persistidos.        |
+| `id`            | `string`                        | auto         | Id único dentro do group. Obrigatório ao usar `order`.                                         |
+| `...props`      | `ResizablePrimitive.PanelProps` | -            | Todas as props de Panel do `react-resizable-panels`.                                           |
+
+### `<ResizableHandle>`
+
+O divisor entre dois panels. Por padrão, renderiza uma barra fina com os aria attributes certos e estilização de focus; passe `withHandle` para adicionar um grip vertical visível.
+
+| Prop         | Type                                | Default | Description                                                                                                                                                      |
+| ------------ | ----------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `withHandle` | `boolean`                           | `false` | Quando `true`, monta um badge de grip centralizado com um ícone `GripVertical`. O badge rotaciona 90 graus para handles horizontais dentro de um group vertical. |
+| `disabled`   | `boolean`                           | `false` | Desabilita o resize. O divisor permanece visível mas não responde a arraste ou entrada de teclado.                                                               |
+| `className`  | `string`                            | -       | Mesclado no divisor.                                                                                                                                             |
+| `...props`   | `ResizablePrimitive.SeparatorProps` | -       | Todas as props de Separator do `react-resizable-panels`.                                                                                                         |
+
+## Composição
+
+1. **`<ResizablePanelGroup>`** é o frame. Escolha `orientation` primeiro porque ela define o eixo em que os panels e handles se alinham.
+2. **Cada `<ResizablePanel>`** declara seu `defaultSize`, `minSize` / `maxSize` opcionais, e qualquer comportamento de colapso.
+3. **Entre cada par de panels**, coloque um `<ResizableHandle>`. Não há handle implícito - a contagem de handles é sempre panels menos um.
+4. **Persista** o layout definindo `autoSaveId` no group (ou conecte-o manualmente com `onLayout`).
+5. **Aninhe** groups para layouts tipo grid: um group horizontal cujo panel direito é ele próprio um group vertical deixa o usuário redimensionar um editor mais um terminal empilhado embaixo.
+
+Os divisores são separators operáveis por teclado com `aria-orientation` definido automaticamente, então usuários de leitor de tela os descobrem como affordances de resize de imediato.
+
+## Variações
+
+### Editor de dois painéis
+
+<ComponentPreview name="containers/resizable-two-pane">
+  <ResizableTwoPanePreview />
+</ComponentPreview>
+
+```tsx
+<ResizablePanelGroup orientation="horizontal" autoSaveId="files-editor">
+  <ResizablePanel defaultSize={30} minSize={15}>
+    <FileTree />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={70}>
+    <Editor />
+  </ResizablePanel>
+</ResizablePanelGroup>
+```
+
+A forma clássica de IDE. `minSize={15}` impede que a file tree desapareça acidentalmente; `autoSaveId` faz a divisão sobreviver a reloads.
+
+### Divisão vertical com painel inferior
+
+<ComponentPreview name="containers/resizable-vertical">
+  <ResizableVerticalPreview />
+</ComponentPreview>
+
+```tsx
+<ResizablePanelGroup orientation="vertical" className="h-screen">
+  <ResizablePanel defaultSize={70}>
+    <Editor />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={30} minSize={10}>
+    <Terminal />
+  </ResizablePanel>
+</ResizablePanelGroup>
+```
+
+Para terminal-embaixo ou gavetas de log. O handle rotaciona automaticamente porque a orientation do group vira para vertical.
+
+### Três painéis com uma sidebar colapsável
+
+<ComponentPreview name="containers/resizable-three-pane">
+  <ResizableThreePanePreview />
+</ComponentPreview>
+
+```tsx
+<ResizablePanelGroup orientation="horizontal" autoSaveId="three-pane">
+  <ResizablePanel
+    defaultSize={20}
+    minSize={10}
+    collapsible
+    collapsedSize={4}
+    onCollapse={() => setNavCollapsed(true)}
+    onExpand={() => setNavCollapsed(false)}
+  >
+    <Sidebar />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={50}>
+    <List />
+  </ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={30}>
+    <Detail />
+  </ResizablePanel>
+</ResizablePanelGroup>
+```
+
+Layout de cliente de e-mail: sidebar colapsável mais uma lista mais um painel de detalhe. Os dois handles somam três panels.
+
+## Acessibilidade
+
+- **Resize por teclado**: os handles são focáveis com `Tab` e redimensionam com `ArrowLeft` / `ArrowRight` (grupos horizontais) ou `ArrowUp` / `ArrowDown` (grupos verticais). `Home` e `End` saltam para os limites min / max. Fornecido pelo `react-resizable-panels`.
+- **Semântica aria**: os handles renderizam como `role="separator"` com `aria-orientation` combinando com o group, então leitores de tela os anunciam como controles de resize. Passe `aria-label` (ex. `"Resize file tree"`) para um anúncio explícito.
+- **Focus visível**: os handles usam `focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1` para que o focus por teclado seja inconfundível, mesmo quando o divisor em si tem um único pixel de largura.
+- **Tamanho de alvo**: o handle subjacente é aumentado com uma zona `::after` que expande a área de acerto para confortáveis 4 px no eixo de arraste, satisfazendo a WCAG 2.2 SC 2.5.8 uma vez que o grip visível esteja montado.
+- **Alternativa de single-pointer**: WCAG 2.2 SC 2.5.7 - as setas do teclado cumprem isso para usuários de teclado com visão; para colapsar / expandir, exponha buttons explícitos no chrome ao redor em vez de depender do arraste.
+
+## Relacionados
+
+- [ScrollArea](/components/containers/scroll-area) - recorra ao ScrollArea quando o usuário só precisa dar scroll dentro de uma região fixa.
+- [Stack](/components/containers/stack) - layout vertical quando os filhos não precisam ser redimensionáveis pelo usuário.
+- [Sidebar](/components/navigation/sidebar) - sidebar opinada que já cuida da semântica de colapso para app shells.

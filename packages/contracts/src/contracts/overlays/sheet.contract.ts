@@ -45,7 +45,7 @@ export const sheet = defineContract({
       type: "'top' | 'right' | 'bottom' | 'left'",
       default: 'right',
       options: ['top', 'right', 'bottom', 'left'],
-      adapts: { ng: 'side on the root (gn-sheet) AND gn-sheet-content' },
+      adapts: { ng: 'side on the root (gr-sheet) AND gr-sheet-content' },
       desc: 'SheetContent: which viewport edge the panel slides in from.',
     },
     {
@@ -80,7 +80,7 @@ export const sheet = defineContract({
     ],
     rules: [
       'SheetTrigger opens the sheet on click; it closes on overlay click and Escape.',
-      'side picks the edge; in Angular the same side must be passed to both gn-sheet (root) and gn-sheet-content so the brain animation and the panel layout agree.',
+      'side picks the edge; in Angular the same side must be passed to both gr-sheet (root) and gr-sheet-content so the brain animation and the panel layout agree.',
       'Angular renders the panel from a `<ng-template brnSheetContent>` (CDK overlay); SheetPortal/SheetOverlay are not separate Angular parts (the brain owns the backdrop).',
     ],
     example:
@@ -90,7 +90,7 @@ export const sheet = defineContract({
     rx: 'interaction-overlays-sheet--workbench',
     ng: 'interaction-overlays-sheet--workbench',
   },
-  tag: { rx: 'Sheet', ng: 'gn-sheet' },
+  tag: { rx: 'Sheet', ng: 'gr-sheet' },
   example: {
     defaultOpen: false,
     modal: true,

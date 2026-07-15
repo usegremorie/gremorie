@@ -1,0 +1,211 @@
+---
+title: Card
+description: 'Superfície componível para agrupar conteúdo relacionado. Headers, descrições, slots de conteúdo e footers - opte pelas partes que você precisa.'
+---
+
+import { CardPreview } from '@/components/preview/display/card';
+import { CardWithActionPreview } from '@/components/preview/display/card-with-action';
+import { CardWithFooterPreview } from '@/components/preview/display/card-with-footer';
+
+## Visão geral
+
+`Card` é o primitive de display fundamental: uma superfície arredondada com um ritmo estruturado de Header para Content para Footer. Cada sub-componente é um `div` fino estilizado com um atributo `data-slot`, então a API permanece componível em vez de configurativa. Você opta pelas partes que precisa: um card de marketing pode usar apenas `CardHeader` e `CardContent`; um tile de dashboard pode adicionar `CardAction` para um controle no canto superior direito e `CardFooter` para uma legenda de tendência.
+
+Card é intencionalmente apenas superfície. Ele não gerencia foco, hover ou seleção - envolva-o em um `Button` (via `asChild`) ou um `Link` quando o card inteiro deve ser interativo.
+
+## Preview
+
+<ComponentPreview name="display/card">
+  <CardPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Card                       the surface (bg-card, rounded, bordered, vertical flow)
+├─ CardHeader              title/description area; lays out a CardAction to the right when present
+│  ├─ CardTitle            semibold heading line
+│  ├─ CardDescription      muted supporting copy
+│  └─ CardAction           top-right slot (button, menu, switch)
+├─ CardContent             the main body (padded horizontally)
+└─ CardFooter              bottom row (actions, captions, metadata)
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-card ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-card ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-card ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-card ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@gremorie/rx-display";
+import { Button } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <Card className="max-w-sm">
+      <CardHeader>
+        <CardTitle>Welcome to Gremorie</CardTitle>
+        <CardDescription>AI-native design system, registry first.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">
+          Compose primitives directly. Skip the lock-in.
+        </p>
+      </CardContent>
+      <CardFooter>
+        <Button>Get started</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-card
+```
+
+```ts
+import { Component } from '@angular/core';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@gremorie/ng-display';
+import { Button } from '@gremorie/ng-forms';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
+    CardFooter,
+    Button,
+  ],
+  template: `
+    <gr-card class="max-w-sm">
+      <gr-card-header>
+        <gr-card-title>Welcome to Gremorie</gr-card-title>
+        <gr-card-description
+          >AI-native design system, registry first.</gr-card-description
+        >
+      </gr-card-header>
+      <gr-card-content>
+        <p class="text-sm text-muted-foreground">
+          Compose primitives directly. Skip the lock-in.
+        </p>
+      </gr-card-content>
+      <gr-card-footer>
+        <ai-button>Get started</ai-button>
+      </gr-card-footer>
+    </gr-card>
+  `,
+})
+export class ExampleComponent {}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Card>`
+
+A superfície raiz. Renderiza um `div` arredondado com borda, fundo e um ritmo `flex flex-col gap-6`.
+
+| Prop        | Type     | Default | Descrição                                                                                                      |
+| ----------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `className` | `string` | -       | Classes extras mescladas via `cn`. Use para layout (largura, max-width, margin), não para cores de superfície. |
+
+Todas as outras props de `div` são encaminhadas.
+
+### `<CardHeader>`
+
+Container para o título, descrição e ação opcional. Usa um `grid` para que `CardAction` possa ficar no canto superior direito enquanto título e descrição empilham à esquerda.
+
+| Prop        | Type     | Default | Descrição                          |
+| ----------- | -------- | ------- | ---------------------------------- |
+| `className` | `string` | -       | Classes extras mescladas via `cn`. |
+
+### `<CardTitle>`
+
+Heading de seção. Renderiza como um `div` com `leading-none font-semibold`.
+
+### `<CardDescription>`
+
+Copy secundária sob o título. Renderiza como um `div` com `text-muted-foreground text-sm`.
+
+### `<CardAction>`
+
+Slot no canto superior direito dentro de `CardHeader` para um controle (botão de ícone, trigger de menu, badge). Usa posicionamento CSS grid, então a ordem no JSX não importa - `CardHeader` o detecta via `has-data-[slot=card-action]` e troca para um layout de duas colunas.
+
+### `<CardContent>`
+
+Corpo principal. Padding horizontal apenas - o ritmo vertical vem do `gap-6` da raiz.
+
+### `<CardFooter>`
+
+Linha de footer. Padrão para `flex items-center`; adicione `border-t` no `CardFooter` (ou `border-b` no `CardHeader`) e o slot expande seu padding vertical via `[.border-t]:pt-6`.
+
+## Composição
+
+1. **`<Card>`** é a superfície. Sempre o elemento mais externo.
+2. **`<CardHeader>`** contém `CardTitle`, `CardDescription` e opcionalmente `CardAction`.
+3. **`<CardContent>`** é o corpo. Coloque parágrafos, charts, listas, forms.
+4. **`<CardFooter>`** contém ações ou texto de resumo. Opcional.
+
+Use a composição completa em vez de despejar tudo em `CardContent` - os slots nomeados dão aos consumidores downstream hooks claros para sobrescrever ou tematizar.
+
+## Variações
+
+### Card com ação
+
+<ComponentPreview name="display/card-with-action">
+  <CardWithActionPreview />
+</ComponentPreview>
+
+`CardAction` fica no canto superior direito de `CardHeader` via CSS grid - a ordem do JSX não importa. `CardHeader` o detecta através de `has-data-[slot=card-action]` e troca para um layout de duas colunas.
+
+### Card com footer com borda
+
+<ComponentPreview name="display/card-with-footer">
+  <CardWithFooterPreview />
+</ComponentPreview>
+
+O `border-t` no `CardFooter` dispara `[.border-t]:pt-6`, expandindo o padding superior do footer para que o separador leia limpo.
+
+## Acessibilidade
+
+- **Estrutural, não semântico por padrão**: Card renderiza como um `div` simples. Não é anunciado como uma região.
+- **Adicione `role="region"` e `aria-labelledby`** quando o card representa uma seção distinta que deve ser navegável como um landmark (ex. um widget de dashboard). Aponte `aria-labelledby` para o `id` do `CardTitle`.
+- **Torne o card inteiro clicável** envolvendo o título do `CardHeader` em um `<a>` e esticando com `::after`, ou envolvendo o `Card` inteiro em um `Button` via padrões `asChild`. Não adicione `onClick` ao `Card` cru - isso é um div sem suporte a teclado.
+- **A ordem de foco** segue a ordem do DOM; `CardAction` é posicionado via grid, então visualmente fica no canto superior direito mas recebe foco na ordem em que aparece no JSX (depois do título e da descrição, por padrão).
+
+## Relacionados
+
+- [Badge](/components/display/badge) - conteúdo comum para `CardAction`.
+- [Button](/components/buttons/button) - ação típica em `CardFooter`.
+- [Separator](/components/display/separator) - divisores dentro de cards densos.
+- [Table](/components/display/table) - conteúdo de corpo frequente para cards de dados.

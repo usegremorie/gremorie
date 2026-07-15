@@ -1,0 +1,277 @@
+---
+title: Storybook structure
+description: A árvore canônica de sidebar de 8 seções, as 9 categorias de Primitives, o split de AI (Chatbot + Code) e os grupos de Chart Token. A mesma árvore se aplica às edições NG e RX.
+---
+
+Como o Gremorie organiza componentes através de suas duas edições (NG e RX). A
+mesma árvore se aplica em ambas — só a implementação subjacente difere. Isso
+espelha o padrão do Kalvner DS capturado na base de conhecimento do vault e no
+layout do Vercel AI Elements.
+
+## The 8-section tree
+
+Todo Storybook do Gremorie (NG, RX e o site público de docs) dispõe a
+sidebar nesta ordem exata:
+
+```
+Welcome -> Showcase -> Foundations -> Tokens -> Primitives -> Patterns -> Layouts -> Blocks
+```
+
+Cada seção que lista 3+ itens começa com uma página de **Overview** (um GPS
+antes da lista).
+
+```text
+Storybook
+|
++-- Welcome
+|
++-- Showcase                              top-level, single page
+|
++-- Foundations
+|   +-- About
+|   +-- Principles
+|   +-- Architecture
+|   +-- Accessibility
+|   +-- Contributing
+|
++-- Tokens
+|   +-- Overview
+|   +-- Primitive       (Colors, Spacing, Radius, Shadow, Typography, Motion)
+|   +-- Semantic        (UI intents, per theme if multi-theme)
+|   +-- Chart           only when the product has dataviz
+|       +-- Sequential
+|       +-- Categorical
+|       +-- Divergent
+|       +-- Status
+|       +-- Comparison
+|
++-- Primitives                            9 functional categories
+|   +-- Overview
+|   +-- Containers
+|   +-- Typography
+|   +-- Forms
+|   +-- Display
+|   +-- Data
+|   +-- Feedback
+|   +-- Navigation
+|   +-- Overlays
+|   +-- AI              2 sub-categories from Vercel AI Elements
+|       +-- Chatbot     (18 conversational components)
+|       +-- Code        (15 dev-agent / code-tool components)
+|
++-- Patterns                              flat up to ~12, AI grouped at end
++-- Layouts
++-- Blocks
+```
+
+## The 9 Primitives categories
+
+Validadas contra Material UI, Atlassian ADS, Polaris, Mantine, Chakra
+e Radix Primitives. Componentes são organizados por **o que fazem**, não
+por como se parecem.
+
+| Category       | Function                        | Examples                                                                                                  |
+| -------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Containers** | Structure and spacing helpers   | Stack, Flex, Grid, Box, Spacer, ScrollArea, AspectRatio                                                   |
+| **Typography** | Text and textual elements       | Heading, Text, Code (static), KBD, Blockquote, Link, List                                                 |
+| **Forms**      | User input collection           | Button, Input, Select, Checkbox, Radio, Switch, Slider, Textarea, Combobox, DatePicker, FileUpload, Field |
+| **Display**    | Non-textual static presentation | Avatar, Badge, Card, Item, Image, Icon, Separator, Accordion                                              |
+| **Data**       | Structured data visualisation   | Table, Chart, Stat, Sparkline, KPI, Tree, DescriptionList                                                 |
+| **Feedback**   | Temporary states and indicators | Alert, Banner, Progress, Spinner, Skeleton, Toast, Empty                                                  |
+| **Navigation** | Section-to-section navigation   | Tabs, Breadcrumb, Pagination, NavigationMenu, Sidebar, Steps                                              |
+| **Overlays**   | Floating layers                 | Dialog, Sheet, Drawer, AlertDialog, Popover, Tooltip, DropdownMenu, Command                               |
+| **AI**         | AI-native components            | See sub-categories below                                                                                  |
+
+`AI` é uma das nove categorias, não um caso especial. A edição Angular
+abre com a categoria AI (PromptInput, Conversation, Message); categorias mais
+amplas chegam conforme o registry cresce.
+
+## The AI category: Chatbot + Code
+
+Duas sub-categorias que espelham o [Vercel AI Elements](https://elements.ai-sdk.dev/).
+
+### Primitives / AI / Chatbot (18)
+
+Componentes de UI conversacional:
+
+Attachments, ChainOfThought, Checkpoint, Confirmation, Context, Conversation,
+InlineCitation, Message, ModelSelector, Plan, PromptInput, Queue, Reasoning,
+Shimmer, Sources, Suggestion, Task, Tool.
+
+### Primitives / AI / Code (15)
+
+Componentes de dev-agent e code-tool:
+
+Agent, Artifact, CodeBlock (streaming), Commit, EnvironmentVariables,
+FileTree, JsxPreview, PackageInfo, Sandbox, SchemaDisplay, Snippet,
+StackTrace, Terminal, TestResults, WebPreview.
+
+### Why the split
+
+1. **Espelha o AI Elements.** O tracking e as atualizações se alinham com a
+   referência upstream.
+2. **Casos de uso distintos.** Chatbot é UI conversacional; Code é dev tooling.
+   O comportamento de busca difere.
+3. **Superfície de auditoria focada.** 33 componentes flat sob `Primitives/AI/` é
+   denso demais; duas listas são navegáveis.
+4. **Assimetria justificada.** Outras categorias (Forms, Display) não têm um
+   split canônico pré-existente. AI tem, então nós o honramos.
+
+### Disambiguating edge cases
+
+| Component             | Lives in     | Why                                                      |
+| --------------------- | ------------ | -------------------------------------------------------- |
+| Skeleton              | Feedback     | Loading state, pairs with Spinner                        |
+| Toast                 | Feedback     | Primary function is feedback                             |
+| Sidebar               | Navigation   | Navigating container                                     |
+| CodeBlock (static)    | Typography   | No streaming, no tool call                               |
+| CodeBlock (streaming) | AI / Code    | Generated during AI response                             |
+| Snippet (AI Elements) | AI / Code    | Agent-generated, distinct from Typography Code           |
+| Shimmer               | AI / Chatbot | AI-streaming specific, not the generic Feedback Skeleton |
+| Link                  | Typography   | Text that navigates                                      |
+| Banner                | Feedback     | In-flow persistent message                               |
+
+## Tokens: three coexisting types
+
+A camada de Tokens tem três tipos em paralelo, cada um com um propósito distinto.
+
+### Primitive Tokens — `Tokens/Primitive/`
+
+Cores cruas (50-950) e escalas não-cor (Spacing, Radius, Shadow,
+Typography, Motion). Sem semântica de uso — esses são valores crus.
+
+### Semantic Tokens — `Tokens/Semantic/`
+
+Intents de UI: `--primary`, `--foreground`, `--background`, `--accent`. Cada
+semantic token referencia um primitive. Suporta multi-theme (uma seção por
+theme).
+
+### Chart Color Schemes — `Tokens/Chart/`
+
+**Apenas quando o produto tem dataviz** (charts, dashboards, analytics). Paletas
+completas para codificar dados, em 5 grupos canônicos:
+
+| Group           | Data type                               | Foundation                                       |
+| --------------- | --------------------------------------- | ------------------------------------------------ |
+| **Sequential**  | Ordered, low to high                    | ColorBrewer (Cynthia Brewer, Penn State)         |
+| **Categorical** | Nominal, no order                       | ColorBrewer                                      |
+| **Divergent**   | Significant centre point                | ColorBrewer                                      |
+| **Status**      | State / severity                        | AWS Cloudscape, IBM Carbon                       |
+| **Comparison**  | 2 discrete groups plus neutral baseline | Kalvner DS Standard (A/B test, actual vs target) |
+
+Os três primeiros são consenso acadêmico desde os anos 1990 (ColorBrewer). Status
+e Comparison são padrão de DS de produto. **Cyclical** e **Highlight** são
+opcionais; adicione apenas quando houver um caso de uso real.
+
+#### CSS variable naming
+
+| Group                 | Prefix                                                   | Example                                          |
+| --------------------- | -------------------------------------------------------- | ------------------------------------------------ |
+| Sequential default    | `--chart-1..5`                                           | `--chart-1`, ..., `--chart-5`                    |
+| Sequential additional | `--chart-<color>-1..5`                                   | `--chart-green-1`                                |
+| Categorical           | `--chart-cat-1..N`                                       | `--chart-cat-1`                                  |
+| Divergent             | `--chart-div-1..N`                                       | `--chart-div-1` (with centre)                    |
+| Status                | `--chart-status-<intent>`                                | `--chart-status-success`, `--chart-status-error` |
+| Comparison            | `--chart-cmp-a`, `--chart-cmp-b`, `--chart-cmp-baseline` | pair plus neutral baseline                       |
+
+### Why Chart is a peer of Primitive and Semantic
+
+Paletas de chart não são intents de UI — são paletas de codificação. Misturá-las
+com Semantic Colors (primary, foreground) polui ambas. Separar mantém
+a intenção óbvia: estilização de UI olha para `Tokens/Semantic/Colors`, charts
+olham para `Tokens/Chart/`.
+
+## Overview pages — the rule
+
+Toda seção listando **3 ou mais itens** ganha uma página de `Overview`. Dois tipos
+de Overview existem com formas de content diferentes.
+
+### Level Overview
+
+`Primitives/Overview`, `Patterns/Overview`, `Tokens/Chart/Overview`,
+`Primitives/AI/Overview`. Narrativa para a camada:
+
+1. O que esta camada é — definição em uma frase + exemplo
+2. Quando criar / usar — regra de admissão
+3. Como ela se relaciona com as outras camadas — fluxo de dependência
+
+### Category Overview
+
+`Primitives/Forms/Overview`, `Primitives/AI/Chatbot/Overview`,
+`Primitives/AI/Code/Overview`. Patterns práticos e transversais:
+
+1. O que define esta categoria
+2. Patterns compartilhados (props, ARIA, comportamentos)
+3. Lista de componentes com descrições curtas
+4. Quando usar X vs Y dentro da categoria
+5. Anti-patterns específicos do tipo
+
+## Showcase
+
+Uma **única** página que demonstra componentes aplicados em context real. Vive
+no nível de topo ao lado de Welcome. Formas de content possíveis:
+
+- **Vignettes** - múltiplos mini-apps compactos em cards
+- **Dense dashboard** - uma aplicação rica
+- **Combination** — dashboard no topo, vignettes embaixo
+
+O Showcase usa **apenas** componentes documentados e semantic tokens. Com
+suporte multi-theme, o Showcase deve responder ao seletor de theme.
+
+## storySort.order for AI sub-categories
+
+Para preservar Chatbot e depois Code dentro de AI, o `storySort` em `preview.ts`:
+
+```ts
+storySort: {
+  order: [
+    'Welcome',
+    'Showcase',
+    'Foundations',
+    ['About', 'Principles', 'Architecture', 'Accessibility', 'Contributing'],
+    'Tokens',
+    ['Overview', 'Primitive', 'Semantic', 'Chart'],
+    'Primitives',
+    [
+      'Overview',
+      'Containers',
+      'Typography',
+      'Forms',
+      'Display',
+      'Data',
+      'Feedback',
+      'Navigation',
+      'Overlays',
+      'AI',
+      ['Overview', 'Chatbot', 'Code'],
+    ],
+    'Patterns',
+    ['Overview', '*', 'AI'],
+    'Layouts',
+    ['Overview', '*'],
+    'Blocks',
+    ['Overview', '*'],
+  ],
+}
+```
+
+## Counter-cases and limits
+
+- **Storybook de produto, não DS.** Não precisa dessa hierarquia.
+- **DS muito pequeno (menos de 15 primitives).** A categorização é overhead; fique
+  flat, migre quando crescer.
+- **Categoria com menos de 3 componentes.** Sem Overview de categoria.
+- **Blocks ainda não escritos.** Omita a seção até o primeiro block chegar.
+- **Categoria AI vazia.** Não crie um Overview vazio.
+- **AI mas só Chatbot ou só Code.** Use apenas a sub-categoria presente.
+- **Chart Tokens sem dataviz.** Não adicione a camada.
+- **Showcase precisa de curadoria.** Um Showcase desatualizado engana.
+- **Um Overview sem content é pior que nenhum Overview.**
+
+## Sources
+
+- [Vercel AI Elements](https://elements.ai-sdk.dev/) — canonical AI catalogue
+- [ColorBrewer 2.0](https://colorbrewer2.org/) — sequential / diverging / qualitative
+- [AWS Cloudscape Data Vis Colors](https://cloudscape.design/foundation/visual-foundation/data-vis-colors/)
+- [IBM Carbon Data Visualization](https://carbondesignsystem.com/data-visualization/color-palettes/)
+- [Atlassian Design System](https://atlassian.design/), [Material UI](https://mui.com/material-ui/), [Polaris](https://polaris.shopify.com/), [Mantine](https://mantine.dev/)

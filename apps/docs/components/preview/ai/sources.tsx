@@ -18,8 +18,8 @@ export function SourcesPreview() {
         <Source href="#" title="Migration guide">
           Migration guide
         </Source>
-        <Source href="#" title="Phase 5 release notes">
-          Phase 5 release notes
+        <Source href="#" title="v2.0 release notes">
+          v2.0 release notes
         </Source>
       </SourcesContent>
     </Sources>

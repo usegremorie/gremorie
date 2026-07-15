@@ -52,31 +52,31 @@ type Story = StoryObj<Command>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gn-command class="max-w-[450px] rounded-lg border shadow-md">
-        <gn-command-input placeholder="Type a command or search..." />
-        <gn-command-list>
-          <gn-command-empty>No results found.</gn-command-empty>
-          <gn-command-group>
+      <gr-command class="max-w-[450px] rounded-lg border shadow-md">
+        <gr-command-input placeholder="Type a command or search..." />
+        <gr-command-list>
+          <gr-command-empty>No results found.</gr-command-empty>
+          <gr-command-group>
             <div cmdk-group-heading>Suggestions</div>
-            <gn-command-item value="calendar">Calendar</gn-command-item>
-            <gn-command-item value="search-emoji">Search Emoji</gn-command-item>
-            <gn-command-item value="calculator">Calculator</gn-command-item>
-          </gn-command-group>
-          <gn-command-separator />
-          <gn-command-group>
+            <gr-command-item value="calendar">Calendar</gr-command-item>
+            <gr-command-item value="search-emoji">Search Emoji</gr-command-item>
+            <gr-command-item value="calculator">Calculator</gr-command-item>
+          </gr-command-group>
+          <gr-command-separator />
+          <gr-command-group>
             <div cmdk-group-heading>Settings</div>
-            <gn-command-item value="profile">
-              Profile <gn-command-shortcut>⌘P</gn-command-shortcut>
-            </gn-command-item>
-            <gn-command-item value="billing">
-              Billing <gn-command-shortcut>⌘B</gn-command-shortcut>
-            </gn-command-item>
-            <gn-command-item value="settings">
-              Settings <gn-command-shortcut>⌘S</gn-command-shortcut>
-            </gn-command-item>
-          </gn-command-group>
-        </gn-command-list>
-      </gn-command>
+            <gr-command-item value="profile">
+              Profile <gr-command-shortcut>⌘P</gr-command-shortcut>
+            </gr-command-item>
+            <gr-command-item value="billing">
+              Billing <gr-command-shortcut>⌘B</gr-command-shortcut>
+            </gr-command-item>
+            <gr-command-item value="settings">
+              Settings <gr-command-shortcut>⌘S</gr-command-shortcut>
+            </gr-command-item>
+          </gr-command-group>
+        </gr-command-list>
+      </gr-command>
     `,
   }),
 };
@@ -85,17 +85,17 @@ export const Workbench: Story = {
 export const Dialog: Story = {
   render: () => ({
     template: `
-      <gn-command-dialog class="max-w-[450px]">
-        <gn-command-input placeholder="Search..." />
-        <gn-command-list>
-          <gn-command-empty>No results found.</gn-command-empty>
-          <gn-command-group>
+      <gr-command-dialog class="max-w-[450px]">
+        <gr-command-input placeholder="Search..." />
+        <gr-command-list>
+          <gr-command-empty>No results found.</gr-command-empty>
+          <gr-command-group>
             <div cmdk-group-heading>Navigation</div>
-            <gn-command-item value="home">Home</gn-command-item>
-            <gn-command-item value="docs">Documentation</gn-command-item>
-          </gn-command-group>
-        </gn-command-list>
-      </gn-command-dialog>
+            <gr-command-item value="home">Home</gr-command-item>
+            <gr-command-item value="docs">Documentation</gr-command-item>
+          </gr-command-group>
+        </gr-command-list>
+      </gr-command-dialog>
     `,
   }),
 };

@@ -1,0 +1,161 @@
+---
+title: Project setup
+description: 'Config do Tailwind v4, cascade de tema, path aliases, dark mode, e integração por framework.'
+---
+
+Esta página cobre a configuração no nível do projeto: setup do Tailwind v4, onde
+importar o CSS do tema, o cascade de tokens, e path aliases do tsconfig.
+
+## Tailwind v4
+
+O Gremorie mira o Tailwind CSS v4. Tokens são declarados via blocos `@theme`
+no CSS do pacote, então não há `tailwind.config.js`.
+
+Se o seu projeto ainda usa Tailwind v3, faça o upgrade antes de adicionar o Gremorie --
+o v4 é necessário para a sintaxe `@theme` que os itens do registry emitem.
+
+## Import do CSS do tema
+
+Um único import conecta todo primitive token. Solte-o na sua stylesheet
+global, **depois** do import do Tailwind:
+
+<Tabs items={["Angular", "React (Next.js)", "React (Vite)"]}>
+
+```css tab="Angular"
+/* src/styles.css */
+@import 'tailwindcss';
+@import '@gremorie/tokens/theme.css';
+```
+
+```css tab="React (Next.js)"
+/* app/globals.css */
+@import 'tailwindcss';
+@import '@gremorie/rx-core/styles/globals.css';
+```
+
+```css tab="React (Vite)"
+/* src/index.css */
+@import 'tailwindcss';
+@import '@gremorie/rx-core/styles/globals.css';
+```
+
+</Tabs>
+
+O import define os semantic tokens (`--primary`, `--foreground`,
+`--background`, etc.) no `:root` e os sobrescreve sob `.dark`.
+
+## Cascade de tokens
+
+Três camadas, em ordem de prioridade:
+
+| Camada        | Vive em                            | Nomeação                    | Edições                        |
+| ------------- | ---------------------------------- | --------------------------- | ------------------------------ |
+| **Primitive** | blocos `@theme {}`                 | `--color-<palette>-<stop>`  | Quase nunca (segue o Tailwind) |
+| **Semantic**  | seletores `:root` / `[data-theme]` | `--<role>` (sem prefixo)    | Por troca de tema              |
+| **Chart**     | blocos `@theme inline {}`          | `--color-chart-<group>-<n>` | Por contexto de chart-data     |
+
+Componentes só referenciam semantic tokens. Editar um primitive cascateia
+por todo tema que o consome. Veja [Tokens](/tokens) para o catálogo
+completo.
+
+## Path aliases
+
+Configure o seu `tsconfig.json` para que o caminho de saída default da CLI seja
+importável como `@/components/gremorie/...`:
+
+<Tabs items={["Angular", "React (Next.js)", "React (Vite)"]}>
+
+```json tab="Angular"
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+
+```json tab="React (Next.js)"
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
+```
+
+```json tab="React (Vite)"
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+</Tabs>
+
+Para o Vite, você também precisa espelhar o alias no `vite.config.ts`:
+
+```ts
+import path from 'node:path';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+});
+```
+
+## Dark mode
+
+O CSS do tema entrega variantes dark sob o seletor `.dark`. Conecte qualquer
+theme switcher que você quiser; o mais simples é o `next-themes` para Next.js ou um
+toggle manual de classe no `<html>`.
+
+<Callout type="info">
+  Componentes nunca referenciam variantes `light:` ou `dark:` do Tailwind.
+  Trocar o tema ativo é uma troca de classe de uma linha, e todo primitive segue
+  porque eles só referenciam semantic tokens.
+</Callout>
+
+## Caminhos de saída
+
+Cada item do registry declara o seu próprio caminho de destino, e a CLI escreve o
+source ali: `src/components/gremorie/<category>/<name>/` para itens React
+e `src/app/gremorie/<name>/` para itens Angular.
+
+O caminho de saída ainda não é configurável. Se você quer um layout diferente,
+mova os arquivos depois de instalar e atualize os imports -- o source é
+seu, então nada mais referencia esses caminhos.
+
+## Verificação
+
+Rode uma checagem rápida de sanidade depois do setup:
+
+<Steps>
+
+<Step>
+  Adicione um primitive: `npx gremorie@latest add ng-button` (ou `rx-button`).
+</Step>
+
+<Step>
+  Importe-o e renderize `<ng-button>Hello</ng-button>` (ou `
+  <Button>Hello</Button>`).
+</Step>
+
+<Step>
+  O button deve renderizar com a cor primary da marca na variant default. Se
+  parecer sem estilo, o CSS do tema não está sendo carregado -- confira a ordem
+  do import na sua stylesheet global.
+</Step>
+
+</Steps>

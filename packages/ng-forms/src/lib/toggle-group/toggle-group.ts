@@ -43,15 +43,15 @@ import {
  *
  * @example
  * ```html
- * <gn-toggle-group type="single" variant="outline">
- *   <gn-toggle-group-item value="left" ariaLabel="Align left">L</gn-toggle-group-item>
- *   <gn-toggle-group-item value="center" ariaLabel="Align center">C</gn-toggle-group-item>
- *   <gn-toggle-group-item value="right" ariaLabel="Align right">R</gn-toggle-group-item>
- * </gn-toggle-group>
+ * <gr-toggle-group type="single" variant="outline">
+ *   <gr-toggle-group-item value="left" ariaLabel="Align left">L</gr-toggle-group-item>
+ *   <gr-toggle-group-item value="center" ariaLabel="Align center">C</gr-toggle-group-item>
+ *   <gr-toggle-group-item value="right" ariaLabel="Align right">R</gr-toggle-group-item>
+ * </gr-toggle-group>
  * ```
  */
 @Component({
-  selector: 'gn-toggle-group',
+  selector: 'gr-toggle-group',
   standalone: true,
   hostDirectives: [
     {
@@ -103,7 +103,7 @@ export class ToggleGroup {
  * shared `toggleVariants` cva plus the React item class string.
  */
 @Component({
-  selector: 'gn-toggle-group-item',
+  selector: 'gr-toggle-group-item',
   standalone: true,
   imports: [BrnToggleGroupItem],
   encapsulation: ViewEncapsulation.None,

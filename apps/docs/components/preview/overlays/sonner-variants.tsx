@@ -54,14 +54,11 @@ export function SonnerVariantsPreview() {
         <Button
           variant="outline"
           onClick={() =>
-            toast.promise(
-              new Promise((resolve) => setTimeout(resolve, 1500)),
-              {
-                loading: 'Publishing post...',
-                success: 'Post is live',
-                error: 'Publish failed',
-              },
-            )
+            toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+              loading: 'Publishing post...',
+              success: 'Post is live',
+              error: 'Publish failed',
+            })
           }
         >
           Promise

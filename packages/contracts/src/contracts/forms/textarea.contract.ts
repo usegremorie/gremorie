@@ -66,7 +66,7 @@ export const textarea = defineContract({
     rx: 'inputs-text-textarea--workbench',
     ng: 'inputs-text-textarea--workbench',
   },
-  tag: { rx: 'Textarea', ng: 'gn-textarea' },
+  tag: { rx: 'Textarea', ng: 'gr-textarea' },
   example: {
     placeholder: 'Type your message…',
     disabled: false,

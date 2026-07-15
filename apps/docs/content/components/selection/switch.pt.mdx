@@ -1,0 +1,162 @@
+---
+title: Switch
+description: Toggle on/off de efeito imediato construído sobre o Radix Switch, com presets de size `sm` e `default`.
+---
+
+import { SwitchPreview } from '@/components/preview/forms/switch';
+import { SwitchSizesPreview } from '@/components/preview/forms/switch-sizes';
+import { SwitchDisabledPreview } from '@/components/preview/forms/switch-disabled';
+
+## Visão geral
+
+`Switch` é construído sobre `@radix-ui/react-switch`. Use-o quando alternar o controle muda o estado **na hora** - notificações on / off, dark mode, feature flags. Para estado que tem efeito apenas no envio de formulário, use `Checkbox`.
+
+Dois sizes - `sm` (compacto) e `default` - são expostos via a prop `size`. O thumb consome o size via um seletor `group-data-[size]` para que fique proporcional em ambos os presets.
+
+## Preview
+
+<ComponentPreview name="forms/switch">
+  <SwitchPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Switch   pill track with a sliding thumb; toggles state on click
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">```bash npx gremorie@latest add rx-switch ```</Tab>
+  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-switch ```</Tab>
+  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-switch ```</Tab>
+  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-switch ```</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { Label, Switch } from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <div className="flex items-center gap-2">
+      <Switch id="notifications" defaultChecked />
+      <Label htmlFor="notifications">Push notifications</Label>
+    </div>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+<Callout type="info">
+A edição Angular deste componente hoje é distribuída a partir do source (veja o side-by-side no workbench); sua entrada no registry vem a seguir.
+</Callout>
+</Tab>
+</Tabs>
+
+## API
+
+### `<Switch>`
+
+| Prop              | Type                         | Default     | Description                                                             |
+| ----------------- | ---------------------------- | ----------- | ----------------------------------------------------------------------- |
+| `checked`         | `boolean`                    | -           | Estado checked controlado.                                              |
+| `defaultChecked`  | `boolean`                    | -           | Estado inicial não controlado.                                          |
+| `onCheckedChange` | `(checked: boolean) => void` | -           | Dispara quando o usuário alterna o switch.                              |
+| `disabled`        | `boolean`                    | `false`     | Desabilita a interação.                                                 |
+| `required`        | `boolean`                    | `false`     | Obrigatório para envio de formulário.                                   |
+| `name`            | `string`                     | -           | Nome do campo de formulário.                                            |
+| `value`           | `string`                     | `"on"`      | Valor do campo de formulário quando checked.                            |
+| `size`            | `"sm" \| "default"`          | `"default"` | Preset de footprint. `sm` é `h-3.5 w-6`; `default` é `h-[1.15rem] w-8`. |
+
+Encaminha para `SwitchPrimitive.Root`. Renderiza um `SwitchPrimitive.Thumb` interno que translada em `data-state=checked`.
+
+## Composição
+
+1. **Sempre pareie com um `<Label>`** via `htmlFor` correspondendo ao `id` do switch.
+2. **Use um wrapper** com `flex items-center gap-2` (ou `justify-between` para linhas de configuração onde o label fica de um lado e o switch do outro).
+3. **Para valores booleanos vinculados a formulário** que têm efeito no envio, prefira `Checkbox`.
+
+## Variações
+
+### Linha de configuração
+
+O padrão canônico para páginas de configuração - label à esquerda, switch à direita, ambos centrados verticalmente.
+
+```tsx
+<div className="flex items-center justify-between rounded-md border p-4">
+  <div className="grid gap-0.5">
+    <Label htmlFor="dark-mode">Dark mode</Label>
+    <p className="text-sm text-muted-foreground">
+      Use a dark theme across the app.
+    </p>
+  </div>
+  <Switch id="dark-mode" defaultChecked />
+</div>
+```
+
+### Sizes
+
+Dois presets: `sm` para superfícies densas (sidebars, mini-toolbars, células de tabela) e `default` para linhas de configuração padrão.
+
+<ComponentPreview name="forms/switch-sizes">
+  <SwitchSizesPreview />
+</ComponentPreview>
+
+### Disabled
+
+`disabled` bloqueia a interação e cai a opacidade para 50%. O estado checked permanece visível para que os usuários possam saber qual é o valor travado.
+
+<ComponentPreview name="forms/switch-disabled">
+  <SwitchDisabledPreview />
+</ComponentPreview>
+
+### Controlado com update otimista
+
+Para configurações que batem na rede, vire o switch de forma otimista e reverta no erro.
+
+```tsx
+function NotificationToggle() {
+  const [enabled, setEnabled] = React.useState(false);
+
+  async function handleToggle(next: boolean) {
+    setEnabled(next);
+    try {
+      await api.updateNotifications(next);
+    } catch {
+      setEnabled(!next);
+      toast.error('Could not update notifications.');
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <Switch
+        id="email-notifications"
+        checked={enabled}
+        onCheckedChange={handleToggle}
+      />
+      <Label htmlFor="email-notifications">Email notifications</Label>
+    </div>
+  );
+}
+```
+
+## Acessibilidade
+
+- **ARIA**: o Radix renderiza `role="switch"` com `aria-checked` refletindo o estado. Leitores de tela anunciam o controle como "switch" mais o estado atual.
+- **Teclado**: `Space` alterna o switch; `Tab` / `Shift+Tab` movem o foco.
+- **Associação de label**: clicar no `<Label>` alterna o switch via a semântica padrão `htmlFor`.
+- **Disabled**: `disabled` remove o switch da ordem de tab, esmaece a superfície e propaga o fade para o label vinculado via `peer-disabled`.
+- **Distinção do Checkbox**: o Switch é para mudanças de estado imediatas ("agora"); o Checkbox é para estado capturado no envio de formulário ("no envio"). Isso afeta tanto a semântica quanto as expectativas do usuário.
+
+## Relacionados
+
+- [Checkbox](/components/selection/checkbox) - contraparte de envio de formulário
+- [Toggle](/components/buttons/toggle) - botão de pressão (affordance de texto/ícone) para ações com estado
+- [Label](/components/text/label) - o companheiro canônico
+- [Form](/components/form) - conecte o Switch no react-hook-form

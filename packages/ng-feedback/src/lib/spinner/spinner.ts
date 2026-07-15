@@ -31,13 +31,13 @@ const SIZE_CLASSES: Record<SpinnerSize, string> = {
  *
  * @example
  * ```html
- * <gn-spinner />
- * <gn-spinner size="sm" />
- * <gn-spinner size="lg" />
+ * <gr-spinner />
+ * <gr-spinner size="sm" />
+ * <gr-spinner size="lg" />
  * ```
  */
 @Component({
-  selector: 'gn-spinner',
+  selector: 'gr-spinner',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
