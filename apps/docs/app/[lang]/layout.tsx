@@ -49,7 +49,9 @@ export default async function LangLayout({
           search={{
             enabled: true,
             options: {
-              type: 'fetch',
+              // fumadocs ≥16 dropped the `type: 'fetch'` option — fetch-based
+              // search (hitting the `/api/search` route) is the default when an
+              // `api` endpoint is provided.
               api: '/api/search',
             },
           }}
