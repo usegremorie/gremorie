@@ -1,12 +1,17 @@
 import { Project } from 'ts-morph';
 
 /** Prop names declared on a React `*Props` interface. */
-export function extractReactProps(filePath: string, interfaceName: string): string[] {
+export function extractReactProps(
+  filePath: string,
+  interfaceName: string,
+): string[] {
   const project = new Project({ skipAddingFilesFromTsConfig: true });
   const sf = project.addSourceFileAtPath(filePath);
   const iface = sf.getInterface(interfaceName);
   if (!iface) {
-    throw new Error(`React interface ${interfaceName} not found in ${filePath}`);
+    throw new Error(
+      `React interface ${interfaceName} not found in ${filePath}`,
+    );
   }
   return iface.getProperties().map((p) => p.getName());
 }
@@ -18,7 +23,10 @@ const IS_SIGNAL_INPUT = /^input(\.required)?\s*[<(]/;
  * (`x = input(...)` / `input.required(...)`) and decorator inputs (`@Input()`).
  * Outputs (`output(...)`) and plain fields are excluded.
  */
-export function extractAngularInputs(filePath: string, className: string): string[] {
+export function extractAngularInputs(
+  filePath: string,
+  className: string,
+): string[] {
   const project = new Project({ skipAddingFilesFromTsConfig: true });
   const sf = project.addSourceFileAtPath(filePath);
   const cls = sf.getClass(className);

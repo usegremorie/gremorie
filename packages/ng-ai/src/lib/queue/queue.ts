@@ -255,7 +255,13 @@ export class QueueItemAttachment {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<img [src]="src()" alt="" [class]="imgClass()" width="32" height="32" />`,
+  template: `<img
+    [src]="src()"
+    alt=""
+    [class]="imgClass()"
+    width="32"
+    height="32"
+  />`,
   host: { 'data-slot': 'queue-item-image', class: 'contents' },
 })
 export class QueueItemImage {

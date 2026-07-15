@@ -13,7 +13,15 @@ import {
 
 @Component({
   standalone: true,
-  imports: [Plan, PlanHeader, PlanTitle, PlanDescription, PlanAction, PlanContent, PlanTrigger],
+  imports: [
+    Plan,
+    PlanHeader,
+    PlanTitle,
+    PlanDescription,
+    PlanAction,
+    PlanContent,
+    PlanTrigger,
+  ],
   template: `
     <plan [open]="open">
       <plan-header>
@@ -42,9 +50,9 @@ describe('Plan', () => {
     const plan = host.querySelector('plan');
     expect(plan?.getAttribute('data-slot')).toBe('plan');
     expect(plan?.getAttribute('data-state')).toBe('closed');
-    expect(host.querySelector('[data-slot="plan-title"]')?.textContent).toContain(
-      'Refactor auth',
-    );
+    expect(
+      host.querySelector('[data-slot="plan-title"]')?.textContent,
+    ).toContain('Refactor auth');
     // Collapsed: content body should not render.
     expect(host.querySelector('.step')).toBeNull();
   });

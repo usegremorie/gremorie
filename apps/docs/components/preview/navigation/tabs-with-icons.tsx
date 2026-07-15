@@ -37,7 +37,10 @@ export function TabsWithIconsPreview() {
       >
         Plan, invoices, and payment method.
       </TabsContent>
-      <TabsContent value="alerts" className="mt-4 text-sm text-muted-foreground">
+      <TabsContent
+        value="alerts"
+        className="mt-4 text-sm text-muted-foreground"
+      >
         Notification preferences.
       </TabsContent>
     </Tabs>

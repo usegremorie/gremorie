@@ -1,6 +1,11 @@
 'use client';
 
-import { CopyIcon, MoreHorizontalIcon, PencilIcon, Trash2Icon } from 'lucide-react';
+import {
+  CopyIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  Trash2Icon,
+} from 'lucide-react';
 
 import { Button } from '@gremorie/rx-forms';
 import {

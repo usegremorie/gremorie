@@ -49,13 +49,23 @@ interface LegendItem {
         [xKey]="nameKey()"
         class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
       >
-        <svg:g [radialBar]="dataKey()" #r="radialBar" [attr.transform]="r.transform()">
+        <svg:g
+          [radialBar]="dataKey()"
+          #r="radialBar"
+          [attr.transform]="r.transform()"
+        >
           @for (a of r.arcs(); track a.name) {
-            <svg:path [attr.d]="a.track" fill="currentColor" fill-opacity="0.08" />
+            <svg:path
+              [attr.d]="a.track"
+              fill="currentColor"
+              fill-opacity="0.08"
+            />
             <svg:path
               [attr.d]="a.d"
               [attr.fill]="arcColor(a.index)"
-              [attr.fill-opacity]="active() === null || active() === a.index ? 1 : 0.5"
+              [attr.fill-opacity]="
+                active() === null || active() === a.index ? 1 : 0.5
+              "
               class="cursor-pointer"
               (pointerenter)="tooltip() && active.set(a.index)"
               (pointerleave)="active.set(null)"
@@ -71,9 +81,14 @@ interface LegendItem {
           [style.top.px]="r.center().cy"
         >
           <div class="flex items-center gap-1.5 text-muted-foreground">
-            <span class="size-2 rounded-[2px]" [style.background]="arcColor(active()!)"></span>
+            <span
+              class="size-2 rounded-[2px]"
+              [style.background]="arcColor(active()!)"
+            ></span>
             <span>{{ activeName() }}</span>
-            <span class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground">
+            <span
+              class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+            >
               {{ activeValue() }}
             </span>
           </div>
@@ -85,7 +100,10 @@ interface LegendItem {
       >
         @for (item of legend(); track item.name) {
           <li class="flex items-center gap-1.5">
-            <span class="size-2.5 rounded-[2px]" [style.background]="item.color"></span>
+            <span
+              class="size-2.5 rounded-[2px]"
+              [style.background]="item.color"
+            ></span>
             {{ item.name }}
           </li>
         }
@@ -93,7 +111,9 @@ interface LegendItem {
 
       <table class="sr-only">
         <caption>
-          {{ ariaLabel() }}
+          {{
+            ariaLabel()
+          }}
         </caption>
         <thead>
           <tr>
