@@ -63,7 +63,8 @@
         "outputDir": "dist/storybook/ng-ai",
         "configDir": "packages/ng-ai/.storybook",
         "browserTarget": "playground:build-storybook-target",
-        "compodoc": false
+        "compodoc": false,
+        "statsJson": true
       },
       "configurations": {
         "ci": {
