@@ -90,6 +90,8 @@ Trunk-based. `main` is the trunk.
   source. PRs target here; merging deploys production.
 - `feature/*` (and `fix/*`, `chore/*`) - short-lived branches off `main`. Each
   PR gets its own Vercel preview deploy automatically.
+- `develop`, `staging` - long-lived integration branches kept in sync with
+  `main`, used to stage experiments and test new versions before they land.
 
 ## Quickstart (dev)
 
