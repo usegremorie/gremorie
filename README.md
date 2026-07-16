@@ -84,9 +84,14 @@ gremorie/
 
 ## Branches
 
-- `develop` - default branch and production deploy (www.gremorie.com). PRs target here.
-- `main` - protected (auth-gated) preview builds.
-- `staging` - pre-release validation.
+Trunk-based. `main` is the trunk.
+
+- `main` - default branch, production deploy (www.gremorie.com), and release
+  source. PRs target here; merging deploys production.
+- `feature/*` (and `fix/*`, `chore/*`) - short-lived branches off `main`. Each
+  PR gets its own Vercel preview deploy automatically.
+- `develop`, `staging` - long-lived integration branches kept in sync with
+  `main`, used to stage experiments and test new versions before they land.
 
 ## Quickstart (dev)
 
