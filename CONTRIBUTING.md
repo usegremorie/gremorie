@@ -26,14 +26,18 @@ Thanks for the interest. Gremorie is in early bootstrapping, so APIs and structu
 
 ## Branch flow
 
+Trunk-based. `main` is the trunk.
+
 ```
-feature/* → develop  (production)
+feature/* → main  (production)
 ```
 
-- `develop` — default branch and production deploy (www.gremorie.com). PRs
-  target here; merging deploys production.
-- `main` — protected (auth-gated) preview builds.
-- `staging` — pre-release validation.
+- `main` — default branch, production deploy (www.gremorie.com), and release
+  source. PRs target here; merging deploys production.
+- `feature/*` (also `fix/*`, `chore/*`) — short-lived branches off `main`.
+  Every PR gets its own Vercel preview deploy automatically.
+- `develop`, `staging` — long-lived integration branches kept in sync with
+  `main`, used to stage experiments and test new versions before they land.
 
 ## Quality gates (PR cannot merge without)
 
