@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Please do **not** report security vulnerabilities here — see
-        [SECURITY.md](../blob/develop/SECURITY.md) for private disclosure.
+        [SECURITY.md](../blob/main/SECURITY.md) for private disclosure.
   - type: input
     id: package
     attributes:

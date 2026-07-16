@@ -1,12 +1,12 @@
 name: Dependency Review
 
 # Fails a PR that adds a dependency with a known vulnerability or a
-# disallowed license, before it ever reaches the lockfile on develop.
+# disallowed license, before it ever reaches the lockfile on main.
 # Complements Dependabot (which acts after merge) by shifting the check left.
 
 on:
   pull_request:
-    branches: [main, staging, develop]
+    branches: [main]
 
 permissions:
   contents: read
