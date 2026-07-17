@@ -1,0 +1,185 @@
+---
+title: Temas
+description: O contrato para rodar os seis temas do Gremorie junto com claro/escuro — dois eixos independentes, a única configuração do switcher que quebra tudo, e a garantia de cascata por trás disso.
+---
+
+Theming no Gremorie são **dois eixos independentes**, e eles nunca
+compartilham a mesma chave. Acerte a fiação uma vez e todo componente
+se re-tematiza de graça; erre uma configuração do switcher e marca e
+modo brigam pelo mesmo atributo. Esta página é o contrato.
+
+## Os dois eixos
+
+| Eixo      | O que controla                           | Como se define                  | Seletor                      |
+| --------- | ---------------------------------------- | ------------------------------- | ---------------------------- |
+| **Marca** | Qual dos seis temas (Default, Claude, …) | `data-theme` no `<html>`        | `:root[data-theme='claude']` |
+| **Modo**  | Claro ou escuro dentro daquela marca     | a **classe** `dark` no `<html>` | `.dark`                      |
+
+Eles compõem. Qualquer marca renderiza em qualquer modo, então as
+doze combinações são válidas:
+
+```html
+<html data-theme="claude">
+  <!-- Claude, claro -->
+  <html data-theme="claude" class="dark">
+    <!-- Claude, escuro -->
+    <html class="dark">
+      <!-- Default, escuro -->
+      <html>
+        <!-- Default, claro -->
+      </html>
+    </html>
+  </html>
+</html>
+```
+
+Componentes nunca sabem qual está ativo. Eles pedem `bg-primary`; o
+navegador resolve `var(--primary)` no contexto de marca-e-modo que a
+raiz anuncia.
+
+<Callout
+  type="warn"
+  title="Marca é data-theme, modo é classe — nunca o contrário"
+>
+  O único erro que quebra tudo é colocar o **modo** no `data-theme` (ex.:
+  `data-theme="dark"`). Isso colide com o atributo de marca e sobrescreve o tema
+  ativo silenciosamente. Modo é sempre a **classe** `dark`; `data-theme` é
+  reservado para a marca.
+</Callout>
+
+## Ligando isso no seu app
+
+<Tabs items={['Next.js (next-themes)', 'HTML / JS puro', 'Angular']}>
+
+<Tab value="Next.js (next-themes)">
+
+O `next-themes` é o switcher padrão para apps React, e é o que o
+próprio site de docs do Gremorie usa através do Fumadocs. A
+**configuração crítica é `attribute="class"`** — é o padrão, e é a
+que você não pode mudar.
+
+```tsx
+// app/providers.tsx
+'use client';
+import { ThemeProvider } from 'next-themes';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider
+      attribute="class" // ← modo → a classe `dark`. NÃO use attribute="data-theme".
+      defaultTheme="system"
+      enableSystem
+    >
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+O `next-themes` passa a ser dono do eixo **modo** (ele alterna
+`class="dark"`). Controle o eixo **marca** você mesmo, com um atributo
+simples na raiz do documento:
+
+```tsx
+// Em qualquer lugar — um seletor de marca, um layout, um server component:
+document.documentElement.dataset.theme = 'claude'; // ou remova para Default
+```
+
+<Callout type="error" title='Não use attribute="data-theme"'>
+  Configurar o `next-themes` com `attribute="data-theme"` faz ele escrever o
+  modo no `data-theme` — exatamente o atributo que o Gremorie usa para a marca.
+  Os dois se sobrescrevem. Mantenha `attribute="class"` e os dois eixos
+  permanecem independentes.
+</Callout>
+
+</Tab>
+
+<Tab value="HTML / JS puro">
+
+Sem framework, sem biblioteca. Defina os dois eixos direto no
+`<html>`:
+
+```js
+const root = document.documentElement;
+
+// Marca
+root.dataset.theme = 'gemini'; // ou `delete root.dataset.theme` para Default
+
+// Modo
+root.classList.toggle('dark', prefersDark);
+```
+
+É essa a API inteira. Um `<select>` para marca mais um checkbox para
+modo já é um switcher de tema completo.
+
+</Tab>
+
+<Tab value="Angular">
+
+Angular não envia CSS compilado, então você importa o tema de tokens
+e alterna os mesmos dois atributos na raiz do documento:
+
+```ts
+import { DOCUMENT } from '@angular/common';
+import { inject } from '@angular/core';
+
+export class ThemeService {
+  private doc = inject(DOCUMENT);
+
+  setBrand(brand: string | null) {
+    if (brand) this.doc.documentElement.dataset['theme'] = brand;
+    else delete this.doc.documentElement.dataset['theme'];
+  }
+
+  setDark(dark: boolean) {
+    this.doc.documentElement.classList.toggle('dark', dark);
+  }
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Por que é seguro compor (a garantia de cascata)
+
+Os dois eixos nunca colidem porque resolvem em especificidades
+diferentes, e a folha é emitida numa ordem que faz os desempates
+caírem do lado certo. Concretamente, para qualquer token:
+
+| Seletor                           | Especificidade | Ganha de            |
+| --------------------------------- | -------------- | ------------------- |
+| `:root[data-theme='claude'].dark` | (0,3,0)        | tudo abaixo         |
+| `:root[data-theme='claude']`      | (0,2,0)        | `:root` e `.dark`   |
+| `.dark`                           | (0,1,0)        | `:root` (por ordem) |
+| `:root`                           | (0,1,0)        | base                |
+
+`.dark` e `:root` empatam em (0,1,0); dark ganha porque o bloco base
+`.dark` é emitido **depois** do `:root` na folha compilada. O override
+dark de cada marca fica ainda mais alto, então
+`data-theme="claude" class="dark"` cai na paleta clay-no-escuro sem
+ambiguidade. Você não precisa gerenciar nada disso — é uma
+propriedade de como o `@gremorie/tokens` é construído — mas é por isso
+que dá para definir os dois eixos de forma independente e confiar no
+resultado.
+
+## Limitação conhecida: theming é escopado ao documento
+
+O seletor de marca é ancorado na raiz do documento
+(`:root[data-theme]`), então **exatamente uma marca fica ativa por
+página**. Trocar a marca re-tematiza o documento inteiro — que é
+exatamente o que um seletor de marca quer.
+
+O que isso **não** suporta hoje é **duas marcas na tela ao mesmo
+tempo** — ex.: um card Claude ao lado de um card Gemini na mesma
+view. Isso exigiria o tema escopado a um subtree (`[data-theme]` num
+`<div>`, do jeito que o Radix Themes aninha `<Theme>`), o que os
+seletores ancorados na raiz não fazem. Se você precisa de uma
+comparação lado a lado, renderize cada marca em sua própria rota ou em
+seu próprio iframe.
+
+## Veja também
+
+- [Tokens semânticos](/tokens/semantic) — o que os seis temas remapeiam, e a tabela completa de tokens.
+- [Configuração do projeto](/get-started/project-setup) — config do Tailwind v4 e a cascata de tokens.
+- [Para designers](/get-started/for-designers) — mapeando esses temas para os modos de variável do Figma.

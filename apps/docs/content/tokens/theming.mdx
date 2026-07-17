@@ -1,0 +1,182 @@
+---
+title: Theming
+description: The contract for running Gremorie's six themes and light/dark together — two independent axes, the one switcher setting that breaks it, and the cascade guarantee behind it.
+---
+
+Gremorie theming is **two independent axes**, and they never share a
+switch. Get the wiring right once and every component re-skins for
+free; get one switcher setting wrong and brand and mode fight over
+the same attribute. This page is the contract.
+
+## The two axes
+
+| Axis      | What it controls                             | How it is set                    | Selector                     |
+| --------- | -------------------------------------------- | -------------------------------- | ---------------------------- |
+| **Brand** | Which of the six themes (Default, Claude, …) | `data-theme` on `<html>`         | `:root[data-theme='claude']` |
+| **Mode**  | Light or dark within that brand              | the `dark` **class** on `<html>` | `.dark`                      |
+
+They compose. Any brand renders in either mode, so all twelve
+combinations are valid:
+
+```html
+<html data-theme="claude">
+  <!-- Claude, light -->
+  <html data-theme="claude" class="dark">
+    <!-- Claude, dark  -->
+    <html class="dark">
+      <!-- Default, dark -->
+      <html>
+        <!-- Default, light -->
+      </html>
+    </html>
+  </html>
+</html>
+```
+
+Components never know which is active. They ask for `bg-primary`;
+the browser resolves `var(--primary)` in whatever brand-and-mode
+context the root advertises.
+
+<Callout
+  type="warn"
+  title="Brand is data-theme, mode is a class — never the reverse"
+>
+  The one mistake that breaks everything is putting **mode** on `data-theme`
+  (e.g. `data-theme="dark"`). That collides with the brand attribute and
+  silently clobbers the active theme. Mode is always the `dark` **class**;
+  `data-theme` is reserved for brand.
+</Callout>
+
+## Wiring it in your app
+
+<Tabs items={['Next.js (next-themes)', 'Plain HTML / JS', 'Angular']}>
+
+<Tab value="Next.js (next-themes)">
+
+`next-themes` is the standard switcher for React apps, and it is
+what the Gremorie docs site itself uses through Fumadocs. The
+**critical setting is `attribute="class"`** — this is the default,
+and it is the one you must not change.
+
+```tsx
+// app/providers.tsx
+'use client';
+import { ThemeProvider } from 'next-themes';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider
+      attribute="class" // ← mode → the `dark` class. Do NOT use attribute="data-theme".
+      defaultTheme="system"
+      enableSystem
+    >
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+`next-themes` now owns the **mode** axis (it toggles `class="dark"`).
+Drive the **brand** axis yourself with a plain attribute set on the
+document root:
+
+```tsx
+// Anywhere — a brand picker, a layout, a server component:
+document.documentElement.dataset.theme = 'claude'; // or remove it for Default
+```
+
+<Callout type="error" title='Do not set attribute="data-theme"'>
+  Configuring `next-themes` with `attribute="data-theme"` makes it write the
+  mode onto `data-theme` — the exact attribute Gremorie uses for brand. The two
+  overwrite each other. Keep `attribute="class"` and the two axes stay
+  independent.
+</Callout>
+
+</Tab>
+
+<Tab value="Plain HTML / JS">
+
+No framework, no library. Set the two axes directly on `<html>`:
+
+```js
+const root = document.documentElement;
+
+// Brand
+root.dataset.theme = 'gemini'; // or `delete root.dataset.theme` for Default
+
+// Mode
+root.classList.toggle('dark', prefersDark);
+```
+
+That is the whole API. A `<select>` for brand plus a checkbox for
+mode is a complete theme switcher.
+
+</Tab>
+
+<Tab value="Angular">
+
+Angular ships no compiled CSS, so you import the tokens theme and
+toggle the same two attributes on the document root:
+
+```ts
+import { DOCUMENT } from '@angular/common';
+import { inject } from '@angular/core';
+
+export class ThemeService {
+  private doc = inject(DOCUMENT);
+
+  setBrand(brand: string | null) {
+    if (brand) this.doc.documentElement.dataset['theme'] = brand;
+    else delete this.doc.documentElement.dataset['theme'];
+  }
+
+  setDark(dark: boolean) {
+    this.doc.documentElement.classList.toggle('dark', dark);
+  }
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Why it is safe to compose (the cascade guarantee)
+
+The two axes never collide because they resolve at different
+specificities, and the stylesheet is emitted in an order that makes
+the tie-breaks fall the right way. Concretely, for any token:
+
+| Selector                          | Specificity | Wins over           |
+| --------------------------------- | ----------- | ------------------- |
+| `:root[data-theme='claude'].dark` | (0,3,0)     | everything below    |
+| `:root[data-theme='claude']`      | (0,2,0)     | `:root` and `.dark` |
+| `.dark`                           | (0,1,0)     | `:root` (by order)  |
+| `:root`                           | (0,1,0)     | base                |
+
+`.dark` and `:root` tie at (0,1,0); dark wins because the base
+`.dark` block is emitted **after** `:root` in the compiled sheet.
+Each brand's dark override sits higher still, so
+`data-theme="claude" class="dark"` lands on the clay-in-the-dark
+palette with no ambiguity. You do not have to manage any of this —
+it is a property of how `@gremorie/tokens` is built — but it is why
+you can set the two axes independently and trust the result.
+
+## Known limitation: theming is document-scoped
+
+The brand selector is anchored to the document root
+(`:root[data-theme]`), so **exactly one brand is active per page**.
+Switching brand re-themes the entire document — which is exactly
+what a brand picker wants.
+
+What this does **not** support today is **two brands on screen at
+once** — e.g. a Claude card beside a Gemini card in the same view.
+That would need the theme scoped to a subtree (`[data-theme]` on a
+`<div>`, the way Radix Themes nests `<Theme>`), which the current
+root-anchored selectors do not do. If you need a side-by-side brand
+comparison, render each brand on its own route or in its own iframe.
+
+## See also
+
+- [Semantic tokens](/tokens/semantic) — what the six themes remap, and the full token table.
+- [Project setup](/get-started/project-setup) — Tailwind v4 config and the token cascade.
+- [For designers](/get-started/for-designers) — mapping these themes to Figma variable modes.
