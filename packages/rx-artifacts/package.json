@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-artifacts",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Generative-UI artifacts (Artifact, CodeBlock, WebPreview) for the React edition of Gremorie. Optional add-on — not bundled in @gremorie/react.",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-containers",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "React container primitives for Gremorie - AspectRatio, Resizable, ScrollArea, Stack.",
   "license": "MIT",
   "repository": {

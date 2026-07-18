@@ -1,5 +1,7 @@
 # @gremorie/rx-feedback
 
+## 0.6.0
+
 ## 0.5.1
 
 ## 0.4.0

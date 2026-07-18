@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-artifacts",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Artifact surfaces for Angular - chart/code/web previews. Part of Gremorie.",
   "license": "MIT",
   "repository": {

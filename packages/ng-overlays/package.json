@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-overlays",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Overlay primitives for Angular - Dialog, AlertDialog, Sheet, Drawer, Popover, HoverCard, Tooltip, DropdownMenu, ContextMenu, Command and Sonner. Built on Spartan-ng brain. Part of Gremorie.",
   "license": "MIT",
   "repository": {

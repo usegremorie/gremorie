@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/rx-display",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "React display primitives for Gremorie - Accordion, Avatar, Badge, Card, Carousel, Collapsible, Separator, Table.",
   "license": "MIT",
   "repository": {

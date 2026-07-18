@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-navigation",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Navigation primitives for Angular - Breadcrumb, Menubar, NavigationMenu, Pagination, Sidebar and Tabs. Part of Gremorie.",
   "license": "MIT",
   "repository": {

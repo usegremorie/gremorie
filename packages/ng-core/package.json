@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/ng-core",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Gremorie Angular core: shared utilities and the Button primitive. Design tokens live in @gremorie/tokens.",
   "license": "MIT",
   "repository": {

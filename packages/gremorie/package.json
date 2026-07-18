@@ -1,6 +1,6 @@
 {
   "name": "gremorie",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Unscoped convenience wrapper for the Gremorie CLI. `npx gremorie` delegates to @gremorie/cli.",
   "license": "MIT",
   "repository": {
@@ -24,7 +24,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@gremorie/cli": "^0.5.1"
+    "@gremorie/cli": "^0.6.0"
   },
   "engines": {
     "node": ">=20"
