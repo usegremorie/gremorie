@@ -40,6 +40,7 @@ export default [
             'gr-stack',
             'gr-aspect-ratio',
             'gr-resizable',
+            'gr-scroll-area',
           ],
           style: 'kebab-case',
         },

@@ -1,49 +1,48 @@
-import { afterNextRender, Directive, ElementRef, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  ViewEncapsulation,
+} from '@angular/core';
+
+import { cn } from '@gremorie/ng-core';
 
 /**
- * Gremorie NG ScrollArea — a thin design-system styling layer over ngx-scrollbar's
- * `<ng-scrollbar>`. It applies the Gremorie NG scrollbar look (thin, rounded,
- * `--border`-colored thumb) through ngx-scrollbar's own CSS custom properties,
- * so the heavy lifting (cross-browser overlay scrollbar, smooth scrolling) is
- * delegated to ngx-scrollbar while Gremorie NG owns the visual tokens.
+ * ScrollArea — themeable scroll container. Mirrors React `ScrollArea` from
+ * `@gremorie/rx-containers`.
  *
- * Override any token per-instance with a plain `style` binding, e.g.
- * `[style.--scrollbar-thickness]="10"`.
+ * A relative box wrapping a scrollable viewport. The visible bar comes from the
+ * DS scrollbar baseline in `@gremorie/tokens` (thin, `--border` thumb), so this
+ * is a thin structural wrapper — no third-party scrollbar lib. Constrain it with
+ * a fixed height/width via the host `class` so its content can overflow.
  *
  * @example
  * ```html
- * <ng-scrollbar gremorie class="h-72 rounded-md border border-border">
+ * <gr-scroll-area class="h-72 w-56 rounded-md border">
  *   <div class="p-4">…long content…</div>
- * </ng-scrollbar>
+ * </gr-scroll-area>
  * ```
  */
-@Directive({
-  selector: 'ng-scrollbar[gremorie], ng-scrollbar[gremorieScrollbar]',
+@Component({
+  selector: 'gr-scroll-area',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<div
+    data-slot="scroll-area-viewport"
+    class="size-full overflow-auto rounded-[inherit] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+  >
+    <ng-content />
+  </div>`,
   host: {
     'data-slot': 'scroll-area',
-    class: 'block',
-    '[style.--scrollbar-border-radius]': '"100px"',
-    '[style.--scrollbar-offset]': '3',
-    '[style.--scrollbar-thumb-color]': '"var(--border)"',
-    '[style.--scrollbar-thumb-hover-color]': '"var(--border)"',
-    '[style.--scrollbar-thickness]': '7',
+    '[class]': 'hostClass()',
   },
 })
 export class ScrollArea {
-  constructor() {
-    // React parity: the RX edition stamps `data-slot="scroll-area-viewport"`
-    // on the Radix Viewport — the element that directly wraps the scrollable
-    // children inside the root. ngx-scrollbar collapses Radix's root/viewport
-    // pair into the host (the host element itself scrolls) and renders a
-    // single inner `<ng-scroll-content>` wrapper around the projected
-    // children, so that wrapper is the structural equivalent and carries the
-    // slot. Stamped after first render because NgScrollbar creates it in its
-    // own template.
-    const host = inject(ElementRef).nativeElement as HTMLElement;
-    afterNextRender(() => {
-      host
-        .querySelector(':scope > ng-scroll-content')
-        ?.setAttribute('data-slot', 'scroll-area-viewport');
-    });
-  }
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('relative block', this.class()),
+  );
 }
