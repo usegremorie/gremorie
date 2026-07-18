@@ -35,7 +35,7 @@
       "type": "registry:block",
       "framework": "ng",
       "title": "Scroll Area (Angular)",
-      "description": "Thin scroll container (gr-scroll-area) whose visible bar comes from the Gremorie token scrollbar baseline (thin, --border thumb), no third-party scrollbar lib.",
+      "description": "Themeable overlay scroll container (gr-scroll-area) built on ngx-scrollbar, with the Gremorie look - thin, rounded, --border thumb.",
       "categories": [
         "containers",
         "layout"

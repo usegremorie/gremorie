@@ -11,8 +11,9 @@ Full documentation lives at [gremorie.com](https://gremorie.com).
 npm i @gremorie/ng-containers @gremorie/ng-core
 ```
 
-Requires Angular 21 (`@angular/core` ^21.2.0). The ScrollArea is a thin
-structural wrapper - no third-party scrollbar lib.
+Requires Angular 21 (`@angular/core` ^21.2.0). The ScrollArea is an overlay
+scroll container built on `ngx-scrollbar`, themed with Gremorie tokens (thin,
+rounded, `--border` thumb).
 
 ## Styles
 
@@ -51,8 +52,8 @@ export class ExampleComponent {}
 ## Components
 
 - `ScrollArea` (selector: `gr-scroll-area`): a relative box wrapping a
-  scrollable viewport. The visible bar comes from the DS scrollbar baseline in
-  `@gremorie/tokens` (thin, `--border` thumb).
+  scrollable viewport. Renders an overlay scrollbar via `ngx-scrollbar`,
+  themed with Gremorie tokens (thin, rounded, `--border` thumb).
 
 ## License
 

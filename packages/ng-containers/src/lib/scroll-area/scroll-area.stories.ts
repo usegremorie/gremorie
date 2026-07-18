@@ -8,8 +8,8 @@ import { ScrollArea } from './scroll-area';
  * scrollbar styling. Mirrors React `ScrollArea` from `@gremorie/rx-containers`.
  *
  * A relative box wrapping a scrollable viewport (`data-slot="scroll-area-viewport"`).
- * The visible bar comes from the DS scrollbar baseline in `@gremorie/tokens`
- * (thin, `--border`-colored thumb) — no third-party scrollbar lib.
+ * Renders an overlay scrollbar via `ngx-scrollbar`, themed with Gremorie
+ * tokens (thin, rounded, `--border`-colored thumb).
  */
 const meta: Meta<ScrollArea> = {
   title: 'Layout & display/Containers/ScrollArea',
