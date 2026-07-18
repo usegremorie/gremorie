@@ -35,7 +35,7 @@
       "type": "registry:block",
       "framework": "ng",
       "title": "Scroll Area (Angular)",
-      "description": "Themeable overlay scroll container (gr-scroll-area) built on ngx-scrollbar, with the Gremorie look - thin, rounded, --border thumb.",
+      "description": "Themeable overlay scroll container (gr-scroll-area) implemented natively with signals + ResizeObserver, with the Gremorie look - thin, rounded, --border thumb that fades in on hover.",
       "categories": [
         "containers",
         "layout"

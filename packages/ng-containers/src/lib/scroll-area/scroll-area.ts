@@ -4,28 +4,34 @@ import {
   Component,
   computed,
   ElementRef,
-  inject,
   input,
+  OnDestroy,
+  signal,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { NgScrollbarModule } from 'ngx-scrollbar';
 
 import { cn } from '@gremorie/ng-core';
+
+/** Radix's thumb never shrinks below this, so neither does ours. */
+const MIN_THUMB_PX = 20;
 
 /**
  * ScrollArea — themeable overlay scroll container. Mirrors React `ScrollArea`
  * from `@gremorie/rx-containers` (Radix ScrollArea).
  *
- * Renders an overlay scrollbar (the bar floats over the content and does not
- * take layout space, exactly like the React edition) by delegating the heavy
- * lifting — cross-browser overlay scrollbar, smooth scrolling — to
- * `ngx-scrollbar`, the idiomatic Angular equivalent (also what spartan-ng uses).
- * Gremorie owns only the visual tokens (thin, rounded, `--border`-colored thumb)
- * through ngx-scrollbar's own CSS custom properties.
+ * The native bar is hidden and replaced by an overlay thumb that floats over the
+ * content (it takes no layout space) and fades in while the pointer is over the
+ * area — the same behaviour as Radix's default `type="hover"`. The thumb is a
+ * `--border`-colored pill, matching the React edition's `w-2.5` bar.
+ *
+ * Implemented natively (signals + ResizeObserver) rather than via a third-party
+ * scrollbar library: `ngx-scrollbar` has no Angular 21 release and fails to
+ * initialise here (its viewport measurement stays at 0, so no bar ever renders).
  *
  * Constrain it with a fixed height/width via the host `class` so its content can
- * overflow. Anatomy parity with React: host `data-slot="scroll-area"`, and the
- * inner scrollable wrapper carries `data-slot="scroll-area-viewport"`.
+ * overflow. Anatomy parity with React: `scroll-area` host, `scroll-area-viewport`,
+ * `scroll-area-scrollbar`, `scroll-area-thumb`.
  *
  * @example
  * ```html
@@ -37,42 +43,97 @@ import { cn } from '@gremorie/ng-core';
 @Component({
   selector: 'gr-scroll-area',
   standalone: true,
-  imports: [NgScrollbarModule],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-scrollbar
-    class="block h-full w-full rounded-[inherit]"
-    [style.--scrollbar-border-radius]="'100px'"
-    [style.--scrollbar-offset]="3"
-    [style.--scrollbar-thumb-color]="'var(--border)'"
-    [style.--scrollbar-thumb-hover-color]="'var(--border)'"
-    [style.--scrollbar-thickness]="7"
-  >
-    <ng-content />
-  </ng-scrollbar>`,
+  template: `
+    <div
+      #viewport
+      data-slot="scroll-area-viewport"
+      class="size-full overflow-auto rounded-[inherit] outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      (scroll)="onScroll()"
+    >
+      <ng-content />
+    </div>
+    @if (scrollable()) {
+      <div
+        data-slot="scroll-area-scrollbar"
+        class="absolute inset-y-0 right-0 w-2.5 touch-none p-px opacity-0 transition-opacity duration-150 select-none group-hover:opacity-100"
+      >
+        <div
+          data-slot="scroll-area-thumb"
+          class="w-2 rounded-full bg-border"
+          [style.height.px]="thumbHeight()"
+          [style.transform]="'translateY(' + thumbTop() + 'px)'"
+        ></div>
+      </div>
+    }
+  `,
   host: {
     'data-slot': 'scroll-area',
     '[class]': 'hostClass()',
   },
 })
-export class ScrollArea {
+export class ScrollArea implements OnDestroy {
   readonly class = input<string>();
+  // `group` drives the bar's hover fade in pure CSS (group-hover), so the
+  // overlay behaves like Radix's default `type="hover"` without any listener
+  // or change detection in the path.
   protected readonly hostClass = computed(() =>
-    cn('relative block', this.class()),
+    cn('group relative block overflow-hidden', this.class()),
   );
 
+  private readonly viewport =
+    viewChild.required<ElementRef<HTMLElement>>('viewport');
+
+  private readonly scrollTop = signal(0);
+  private readonly viewportH = signal(0);
+  private readonly contentH = signal(0);
+
+  /** Only mount the bar when the content actually overflows (Radix does the same). */
+  protected readonly scrollable = computed(
+    () => this.contentH() > this.viewportH() + 1,
+  );
+
+  protected readonly thumbHeight = computed(() => {
+    const vh = this.viewportH();
+    const ch = this.contentH();
+    if (ch <= vh) return 0;
+    return Math.max(MIN_THUMB_PX, Math.round((vh / ch) * vh));
+  });
+
+  protected readonly thumbTop = computed(() => {
+    const maxScroll = this.contentH() - this.viewportH();
+    if (maxScroll <= 0) return 0;
+    const track = this.viewportH() - this.thumbHeight();
+    return Math.round((this.scrollTop() / maxScroll) * track);
+  });
+
+  private observer?: ResizeObserver;
+
   constructor() {
-    // React parity: the RX edition stamps `data-slot="scroll-area-viewport"` on
-    // the Radix Viewport — the element that directly wraps the scrollable
-    // children. ngx-scrollbar renders a single inner `<ng-scroll-content>`
-    // wrapper around the projected children, so that wrapper is the structural
-    // equivalent and carries the slot. Stamped after first render because
-    // NgScrollbar creates it in its own template.
-    const host = inject(ElementRef).nativeElement as HTMLElement;
     afterNextRender(() => {
-      host
-        .querySelector('ng-scroll-content')
-        ?.setAttribute('data-slot', 'scroll-area-viewport');
+      const el = this.viewport().nativeElement;
+      this.measure();
+      // Re-measure when the viewport resizes or the projected content grows.
+      this.observer = new ResizeObserver(() => this.measure());
+      this.observer.observe(el);
+      const content = el.firstElementChild;
+      if (content) this.observer.observe(content);
     });
+  }
+
+  protected onScroll(): void {
+    this.scrollTop.set(this.viewport().nativeElement.scrollTop);
+  }
+
+  private measure(): void {
+    const el = this.viewport().nativeElement;
+    this.viewportH.set(el.clientHeight);
+    this.contentH.set(el.scrollHeight);
+    this.scrollTop.set(el.scrollTop);
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
   }
 }
