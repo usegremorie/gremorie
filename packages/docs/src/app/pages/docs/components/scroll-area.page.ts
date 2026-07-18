@@ -28,7 +28,7 @@ import { DocsPreview } from '../../../shared/preview.component';
       <docs-page
         eyebrow="Component · Layout"
         title="Scroll Area"
-        lede="Themeable overlay scroll container built on ngx-scrollbar. The bar floats over the content instead of taking layout space, styled with Gremorie tokens (thin, rounded, --border thumb)."
+        lede="Themeable overlay scroll container implemented natively with signals + ResizeObserver. The bar floats over the content instead of taking layout space, fading in on hover, styled with Gremorie tokens (thin, rounded, --border thumb)."
       >
         <docs-section title="Installation" anchor="install">
           <docs-prose>Install the package:</docs-prose>
@@ -64,14 +64,14 @@ import { DocsPreview } from '../../../shared/preview.component';
               <li>
                 <code>ScrollArea</code> is a standalone component with selector
                 <code>gr-scroll-area</code> — it renders its own host element
-                and an inner viewport, built on <code>ngx-scrollbar</code> for
-                the overlay scrollbar behavior.
+                and an inner viewport, and implements the overlay scrollbar
+                natively with signals and a <code>ResizeObserver</code> (no
+                third-party scrollbar library).
               </li>
               <li>
-                Gremorie themes the bar through <code>ngx-scrollbar</code>'s own
-                CSS custom properties (thin, rounded,
-                <code>--border</code>-colored thumb), so it matches the DS
-                without a bespoke scrollbar implementation.
+                The native bar is hidden and a <code>--border</code>-colored
+                pill thumb floats over the content (thin, rounded), fading in on
+                hover to match the DS.
               </li>
               <li>
                 The host gets <code>display: block</code> and

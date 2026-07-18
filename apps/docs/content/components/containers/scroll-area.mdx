@@ -90,7 +90,7 @@ export class ExampleComponent {
 }
 ```
 
-The Angular edition is a standalone `gr-scroll-area` component that renders an overlay scrollbar via [`ngx-scrollbar`](https://www.npmjs.com/package/ngx-scrollbar) - the bar floats over the content and takes no layout space, matching the React edition - themed with the Gremorie tokens (thin, rounded, `--border` thumb).
+The Angular edition is a standalone `gr-scroll-area` component that implements its own overlay scrollbar natively (signals + `ResizeObserver`, with no external dependency) - the native bar is hidden and a `--border`-colored pill thumb floats over the content, taking no layout space and fading in on hover, matching the React edition's default `type="hover"` behaviour.
 
 </Tab>
 </Tabs>

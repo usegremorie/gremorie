@@ -18,5 +18,6 @@ examples:
 # Containers
 
 Container primitives that organise scroll, overflow, and layout. Currently
-ships with ScrollArea (thin scroll container with the Gremorie look, no
-third-party scrollbar lib).
+ships with ScrollArea (thin scroll container with the Gremorie look,
+implemented natively with signals and a ResizeObserver - the overlay thumb
+fades in on hover, with no external scrollbar dependency).
