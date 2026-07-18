@@ -65,8 +65,8 @@ import { DocsPreview } from '../../../shared/preview.component';
                 <code>ScrollArea</code> is a standalone component with selector
                 <code>gr-scroll-area</code> — it renders its own host element
                 and an inner viewport, and implements the overlay scrollbar
-                natively with signals and a <code>ResizeObserver</code> (no
-                third-party scrollbar library).
+                natively with signals and a <code>ResizeObserver</code>, with no
+                external dependency.
               </li>
               <li>
                 The native bar is hidden and a <code>--border</code>-colored
