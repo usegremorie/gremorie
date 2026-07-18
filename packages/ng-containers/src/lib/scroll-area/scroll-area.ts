@@ -56,14 +56,23 @@ const MIN_THUMB_PX = 20;
     </div>
     @if (scrollable()) {
       <div
+        #track
         data-slot="scroll-area-scrollbar"
-        class="absolute inset-y-0 right-0 w-2.5 touch-none p-px opacity-0 transition-opacity duration-150 select-none group-hover:opacity-100"
+        class="absolute inset-y-0 right-0 w-2.5 touch-none p-px transition-opacity duration-150 select-none"
+        [class.opacity-0]="!dragging()"
+        [class.group-hover:opacity-100]="!dragging()"
+        [class.opacity-100]="dragging()"
+        (pointerdown)="onTrackPointerDown($event)"
       >
         <div
           data-slot="scroll-area-thumb"
           class="w-2 rounded-full bg-border"
           [style.height.px]="thumbHeight()"
           [style.transform]="'translateY(' + thumbTop() + 'px)'"
+          (pointerdown)="onThumbPointerDown($event)"
+          (pointermove)="onThumbPointerMove($event)"
+          (pointerup)="onThumbPointerUp($event)"
+          (pointercancel)="onThumbPointerUp($event)"
         ></div>
       </div>
     }
@@ -108,6 +117,11 @@ export class ScrollArea implements OnDestroy {
     return Math.round((this.scrollTop() / maxScroll) * track);
   });
 
+  /** True while the thumb is being dragged; keeps the bar visible past hover. */
+  protected readonly dragging = signal(false);
+  private dragStartY = 0;
+  private dragStartScroll = 0;
+
   private observer?: ResizeObserver;
 
   constructor() {
@@ -124,6 +138,51 @@ export class ScrollArea implements OnDestroy {
 
   protected onScroll(): void {
     this.scrollTop.set(this.viewport().nativeElement.scrollTop);
+  }
+
+  /**
+   * Grab the thumb and scroll by dragging it (Radix does the same). Pointer
+   * capture keeps the drag alive when the cursor leaves the thin bar, which is
+   * the whole point — an 8px target is easy to slip off of.
+   */
+  protected onThumbPointerDown(event: PointerEvent): void {
+    event.preventDefault();
+    // Don't let the track's click-to-jump handler also fire for this press.
+    event.stopPropagation();
+    (event.target as HTMLElement).setPointerCapture(event.pointerId);
+    this.dragging.set(true);
+    this.dragStartY = event.clientY;
+    this.dragStartScroll = this.viewport().nativeElement.scrollTop;
+  }
+
+  protected onThumbPointerMove(event: PointerEvent): void {
+    if (!this.dragging()) return;
+    const travel = this.viewportH() - this.thumbHeight();
+    if (travel <= 0) return;
+    const maxScroll = this.contentH() - this.viewportH();
+    const delta = event.clientY - this.dragStartY;
+    this.viewport().nativeElement.scrollTop =
+      this.dragStartScroll + (delta / travel) * maxScroll;
+  }
+
+  protected onThumbPointerUp(event: PointerEvent): void {
+    this.dragging.set(false);
+    (event.target as HTMLElement).releasePointerCapture?.(event.pointerId);
+  }
+
+  /** Click anywhere on the track to jump the viewport to that position. */
+  protected onTrackPointerDown(event: PointerEvent): void {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const maxScroll = this.contentH() - this.viewportH();
+    if (maxScroll <= 0) return;
+    // Center the thumb on the click, then clamp to the scrollable range.
+    const ratio =
+      (event.clientY - rect.top - this.thumbHeight() / 2) /
+      Math.max(1, rect.height - this.thumbHeight());
+    this.viewport().nativeElement.scrollTop = Math.min(
+      maxScroll,
+      Math.max(0, ratio * maxScroll),
+    );
   }
 
   private measure(): void {
