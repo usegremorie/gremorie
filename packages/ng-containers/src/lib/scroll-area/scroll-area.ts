@@ -56,7 +56,6 @@ const MIN_THUMB_PX = 20;
     </div>
     @if (scrollable()) {
       <div
-        #track
         data-slot="scroll-area-scrollbar"
         class="absolute inset-y-0 right-0 w-2.5 touch-none p-px transition-opacity duration-150 select-none"
         [class.opacity-0]="!dragging()"
