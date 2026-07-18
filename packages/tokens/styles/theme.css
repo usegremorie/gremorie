@@ -611,6 +611,16 @@
   ::file-selector-button {
     border-color: var(--border);
   }
+
+  /* Thin, themed scrollbars across the whole DS. Modern standard
+     (scrollbar-width/color) — inherited by both editions via the shared token
+     entry, so every overflow gets the DS bar with no per-component wiring. The
+     thumb is the --border token, so it re-themes in light/dark automatically. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
   body {
     font-family: var(--font-sans);
     letter-spacing: var(--tracking-normal);
