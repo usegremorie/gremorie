@@ -156,6 +156,7 @@
     "marked-highlight": "^2.2.1",
     "marked-mangle": "^1.1.10",
     "mermaid": "^10.2.4",
+    "ngx-scrollbar": "^19.1.5",
     "postcss": "^8.5.3",
     "prismjs": "^1.29.0",
     "react-day-picker": "^10.0.1",

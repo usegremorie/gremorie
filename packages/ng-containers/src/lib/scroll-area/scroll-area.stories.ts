@@ -29,7 +29,7 @@ export const Workbench: Story = {
   render: () => ({
     props: { tags: TAGS },
     template: `
-      <gr-scroll-area class="h-72 w-56 rounded-md border">
+      <gr-scroll-area class="h-64 w-56 rounded-md border">
         <div class="p-4">
           <h4 class="mb-3 text-sm font-medium">Tags</h4>
           @for (tag of tags; track tag) {
