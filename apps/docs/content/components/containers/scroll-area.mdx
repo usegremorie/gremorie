@@ -69,20 +69,20 @@ npx gremorie@latest add ng-scroll-area
 
 ```ts
 import { Component } from '@angular/core';
-import { ScrollAreaImports } from '@gremorie/ng-containers';
+import { ScrollArea } from '@gremorie/ng-containers';
 
 @Component({
   selector: 'app-example',
   standalone: true,
-  imports: [ScrollAreaImports],
+  imports: [ScrollArea],
   template: `
-    <ng-scrollbar gremorie class="h-72 w-48 rounded-md border">
+    <gr-scroll-area class="h-72 w-48 rounded-md border">
       <div class="p-4">
         @for (tag of tags; track tag) {
           <div class="py-2 text-sm">{{ tag }}</div>
         }
       </div>
-    </ng-scrollbar>
+    </gr-scroll-area>
   `,
 })
 export class ExampleComponent {
@@ -90,7 +90,7 @@ export class ExampleComponent {
 }
 ```
 
-The Angular edition is a `gremorie` styling directive applied to ngx-scrollbar's `<ng-scrollbar>` element; `ScrollAreaImports` bundles both.
+The Angular edition is a standalone `gr-scroll-area` component; the visible bar comes from the DS scrollbar token baseline in `@gremorie/tokens`, so there is no third-party scrollbar library or imports bundle to wire up.
 
 </Tab>
 </Tabs>
