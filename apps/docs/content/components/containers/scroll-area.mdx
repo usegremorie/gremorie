@@ -69,20 +69,20 @@ npx gremorie@latest add ng-scroll-area
 
 ```ts
 import { Component } from '@angular/core';
-import { ScrollAreaImports } from '@gremorie/ng-containers';
+import { ScrollArea } from '@gremorie/ng-containers';
 
 @Component({
   selector: 'app-example',
   standalone: true,
-  imports: [ScrollAreaImports],
+  imports: [ScrollArea],
   template: `
-    <ng-scrollbar gremorie class="h-72 w-48 rounded-md border">
+    <gr-scroll-area class="h-72 w-48 rounded-md border">
       <div class="p-4">
         @for (tag of tags; track tag) {
           <div class="py-2 text-sm">{{ tag }}</div>
         }
       </div>
-    </ng-scrollbar>
+    </gr-scroll-area>
   `,
 })
 export class ExampleComponent {
@@ -90,7 +90,7 @@ export class ExampleComponent {
 }
 ```
 
-The Angular edition is a `gremorie` styling directive applied to ngx-scrollbar's `<ng-scrollbar>` element; `ScrollAreaImports` bundles both.
+The Angular edition is a standalone `gr-scroll-area` component that implements its own overlay scrollbar natively (signals + `ResizeObserver`, with no external dependency) - the native bar is hidden and a `--border`-colored pill thumb floats over the content, taking no layout space and fading in on hover, matching the React edition's default `type="hover"` behaviour.
 
 </Tab>
 </Tabs>

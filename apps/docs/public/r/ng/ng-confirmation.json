@@ -27,7 +27,7 @@
     },
     {
       "path": "src/lib/confirmation/index.ts",
-      "content": "export {\n  Confirmation,\n  ConfirmationTitle,\n  ConfirmationRequest,\n  ConfirmationAccepted,\n  ConfirmationRejected,\n  ConfirmationActions,\n  ConfirmationAction,\n  CONFIRMATION,\n} from './confirmation';\nexport type {\n  ToolUIPartApproval,\n  ConfirmationState,\n} from './confirmation';\n",
+      "content": "export {\n  Confirmation,\n  ConfirmationTitle,\n  ConfirmationRequest,\n  ConfirmationAccepted,\n  ConfirmationRejected,\n  ConfirmationActions,\n  ConfirmationAction,\n  CONFIRMATION,\n} from './confirmation';\nexport type { ToolUIPartApproval, ConfirmationState } from './confirmation';\n",
       "type": "registry:lib",
       "target": "src/app/gremorie/ai/confirmation/index.ts"
     }

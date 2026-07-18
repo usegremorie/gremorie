@@ -4,21 +4,21 @@
   "type": "registry:block",
   "framework": "ng",
   "title": "Scroll Area (Angular)",
-  "description": "Thin design-system styling layer over ngx-scrollbar - overlay scrollbars with Gremorie tokens (thin, rounded, --border-colored thumb).",
+  "description": "Themeable overlay scroll container (gr-scroll-area) implemented natively with signals + ResizeObserver, with the Gremorie look - thin, rounded, --border thumb that fades in on hover.",
   "categories": [
     "containers",
     "layout"
   ],
   "dependencies": [
     "@angular/core",
-    "ngx-scrollbar"
+    "@gremorie/ng-core"
   ],
   "devDependencies": [],
   "registryDependencies": [],
   "files": [
     {
       "path": "src/lib/scroll-area/scroll-area.ts",
-      "content": "import { afterNextRender, Directive, ElementRef, inject } from '@angular/core';\n\n/**\n * Gremorie NG ScrollArea — a thin design-system styling layer over ngx-scrollbar's\n * `<ng-scrollbar>`. It applies the Gremorie NG scrollbar look (thin, rounded,\n * `--border`-colored thumb) through ngx-scrollbar's own CSS custom properties,\n * so the heavy lifting (cross-browser overlay scrollbar, smooth scrolling) is\n * delegated to ngx-scrollbar while Gremorie NG owns the visual tokens.\n *\n * Override any token per-instance with a plain `style` binding, e.g.\n * `[style.--scrollbar-thickness]=\"10\"`.\n *\n * @example\n * ```html\n * <ng-scrollbar gremorie class=\"h-72 rounded-md border border-border\">\n *   <div class=\"p-4\">…long content…</div>\n * </ng-scrollbar>\n * ```\n */\n@Directive({\n  selector: 'ng-scrollbar[gremorie], ng-scrollbar[gremorieScrollbar]',\n  host: {\n    'data-slot': 'scroll-area',\n    class: 'block',\n    '[style.--scrollbar-border-radius]': '\"100px\"',\n    '[style.--scrollbar-offset]': '3',\n    '[style.--scrollbar-thumb-color]': '\"var(--border)\"',\n    '[style.--scrollbar-thumb-hover-color]': '\"var(--border)\"',\n    '[style.--scrollbar-thickness]': '7',\n  },\n})\nexport class ScrollArea {\n  constructor() {\n    // React parity: the RX edition stamps `data-slot=\"scroll-area-viewport\"`\n    // on the Radix Viewport — the element that directly wraps the scrollable\n    // children inside the root. ngx-scrollbar collapses Radix's root/viewport\n    // pair into the host (the host element itself scrolls) and renders a\n    // single inner `<ng-scroll-content>` wrapper around the projected\n    // children, so that wrapper is the structural equivalent and carries the\n    // slot. Stamped after first render because NgScrollbar creates it in its\n    // own template.\n    const host = inject(ElementRef).nativeElement as HTMLElement;\n    afterNextRender(() => {\n      host\n        .querySelector(':scope > ng-scroll-content')\n        ?.setAttribute('data-slot', 'scroll-area-viewport');\n    });\n  }\n}\n",
+      "content": "import {\n  afterNextRender,\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  ElementRef,\n  input,\n  OnDestroy,\n  signal,\n  viewChild,\n  ViewEncapsulation,\n} from '@angular/core';\n\nimport { cn } from '@gremorie/ng-core';\n\n/** Radix's thumb never shrinks below this, so neither does ours. */\nconst MIN_THUMB_PX = 20;\n\n/**\n * ScrollArea — themeable overlay scroll container. Mirrors React `ScrollArea`\n * from `@gremorie/rx-containers` (Radix ScrollArea).\n *\n * The native bar is hidden and replaced by an overlay thumb that floats over the\n * content (it takes no layout space) and fades in while the pointer is over the\n * area — the same behaviour as Radix's default `type=\"hover\"`. The thumb is a\n * `--border`-colored pill, matching the React edition's `w-2.5` bar.\n *\n * Implemented natively (signals + ResizeObserver) rather than via a third-party\n * scrollbar library: `ngx-scrollbar` has no Angular 21 release and fails to\n * initialise here (its viewport measurement stays at 0, so no bar ever renders).\n *\n * Constrain it with a fixed height/width via the host `class` so its content can\n * overflow. Anatomy parity with React: `scroll-area` host, `scroll-area-viewport`,\n * `scroll-area-scrollbar`, `scroll-area-thumb`.\n *\n * @example\n * ```html\n * <gr-scroll-area class=\"h-64 w-56 rounded-md border\">\n *   <div class=\"p-4\">…long content…</div>\n * </gr-scroll-area>\n * ```\n */\n@Component({\n  selector: 'gr-scroll-area',\n  standalone: true,\n  encapsulation: ViewEncapsulation.None,\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `\n    <div\n      #viewport\n      data-slot=\"scroll-area-viewport\"\n      class=\"size-full overflow-auto rounded-[inherit] outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden\"\n      (scroll)=\"onScroll()\"\n    >\n      <ng-content />\n    </div>\n    @if (scrollable()) {\n      <div\n        data-slot=\"scroll-area-scrollbar\"\n        class=\"absolute inset-y-0 right-0 w-2.5 touch-none p-px opacity-0 transition-opacity duration-150 select-none group-hover:opacity-100\"\n      >\n        <div\n          data-slot=\"scroll-area-thumb\"\n          class=\"w-2 rounded-full bg-border\"\n          [style.height.px]=\"thumbHeight()\"\n          [style.transform]=\"'translateY(' + thumbTop() + 'px)'\"\n        ></div>\n      </div>\n    }\n  `,\n  host: {\n    'data-slot': 'scroll-area',\n    '[class]': 'hostClass()',\n  },\n})\nexport class ScrollArea implements OnDestroy {\n  readonly class = input<string>();\n  // `group` drives the bar's hover fade in pure CSS (group-hover), so the\n  // overlay behaves like Radix's default `type=\"hover\"` without any listener\n  // or change detection in the path.\n  protected readonly hostClass = computed(() =>\n    cn('group relative block overflow-hidden', this.class()),\n  );\n\n  private readonly viewport =\n    viewChild.required<ElementRef<HTMLElement>>('viewport');\n\n  private readonly scrollTop = signal(0);\n  private readonly viewportH = signal(0);\n  private readonly contentH = signal(0);\n\n  /** Only mount the bar when the content actually overflows (Radix does the same). */\n  protected readonly scrollable = computed(\n    () => this.contentH() > this.viewportH() + 1,\n  );\n\n  protected readonly thumbHeight = computed(() => {\n    const vh = this.viewportH();\n    const ch = this.contentH();\n    if (ch <= vh) return 0;\n    return Math.max(MIN_THUMB_PX, Math.round((vh / ch) * vh));\n  });\n\n  protected readonly thumbTop = computed(() => {\n    const maxScroll = this.contentH() - this.viewportH();\n    if (maxScroll <= 0) return 0;\n    const track = this.viewportH() - this.thumbHeight();\n    return Math.round((this.scrollTop() / maxScroll) * track);\n  });\n\n  private observer?: ResizeObserver;\n\n  constructor() {\n    afterNextRender(() => {\n      const el = this.viewport().nativeElement;\n      this.measure();\n      // Re-measure when the viewport resizes or the projected content grows.\n      this.observer = new ResizeObserver(() => this.measure());\n      this.observer.observe(el);\n      const content = el.firstElementChild;\n      if (content) this.observer.observe(content);\n    });\n  }\n\n  protected onScroll(): void {\n    this.scrollTop.set(this.viewport().nativeElement.scrollTop);\n  }\n\n  private measure(): void {\n    const el = this.viewport().nativeElement;\n    this.viewportH.set(el.clientHeight);\n    this.contentH.set(el.scrollHeight);\n    this.scrollTop.set(el.scrollTop);\n  }\n\n  ngOnDestroy(): void {\n    this.observer?.disconnect();\n  }\n}\n",
       "type": "registry:component",
       "target": "src/app/gremorie/scroll-area/scroll-area.ts"
     }
@@ -28,17 +28,17 @@
     "whenToUse": "Any scrollable region that should match the Gremorie look and feel - long chat threads, code blocks, virtualised lists.",
     "whenNotToUse": "Document-level scroll (the browser handles that natively). Or short regions where the native scrollbar is fine.",
     "bestPractices": [
-      "Wrap the scrollable content in gremorie-scroll-area and set an explicit height on the host.",
-      "Use ScrollAreaImports instead of importing the directive and ngx-scrollbar module separately."
+      "Wrap the scrollable content in gr-scroll-area and set an explicit height on the host.",
+      "Import ScrollArea from @gremorie/ng-containers and add it to the component imports array."
     ],
     "antipatterns": [
-      "Setting overflow: scroll on the host and nesting gremorie-scroll-area - they fight each other.",
+      "Setting overflow: scroll on the host and nesting gr-scroll-area - they fight each other.",
       "Using the scroll area for the whole app shell - body scroll is usually the right answer."
     ],
     "examples": [
       {
         "title": "Chat thread",
-        "code": "<gremorie-scroll-area class=\"h-96\">\n  <gremorie-message *ngFor=\"let m of messages\" [data]=\"m\"></gremorie-message>\n</gremorie-scroll-area>\n"
+        "code": "<gr-scroll-area class=\"h-96\">\n  <gremorie-message *ngFor=\"let m of messages\" [data]=\"m\"></gremorie-message>\n</gr-scroll-area>\n"
       }
     ]
   }

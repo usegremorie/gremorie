@@ -1,6 +1,6 @@
 # @gremorie/ng-containers
 
-Container primitives for Angular: a styled ScrollArea built on `ngx-scrollbar`.
+Container primitives for Angular: a themeable ScrollArea container.
 Part of Gremorie, an AI native design system.
 
 Full documentation lives at [gremorie.com](https://gremorie.com).
@@ -8,11 +8,13 @@ Full documentation lives at [gremorie.com](https://gremorie.com).
 ## Install
 
 ```bash
-npm i @gremorie/ng-containers @gremorie/ng-core ngx-scrollbar
+npm i @gremorie/ng-containers @gremorie/ng-core
 ```
 
-Requires Angular 21 (`@angular/core` ^21.2.0). The ScrollArea is a thin styling
-layer over `ngx-scrollbar`.
+Requires Angular 21 (`@angular/core` ^21.2.0). The ScrollArea is an overlay
+scroll container implemented natively with signals and a `ResizeObserver`,
+with no external dependency, themed with Gremorie tokens (thin,
+rounded, `--border` thumb that fades in on hover).
 
 ## Styles
 
@@ -26,24 +28,23 @@ import the core theme once in your global `styles.css`:
 
 ## Usage
 
-The ScrollArea is a directive on `ngx-scrollbar`. Use the `ScrollAreaImports`
-bundle, which exposes both `NgScrollbarModule` and the Gremorie styling
-directive in a single import.
+Import `ScrollArea` and use the `<gr-scroll-area>` element directly. Constrain
+it with a fixed height/width via the host `class` so its content can overflow.
 
 ```ts
 import { Component } from '@angular/core';
-import { ScrollAreaImports } from '@gremorie/ng-containers';
+import { ScrollArea } from '@gremorie/ng-containers';
 
 @Component({
   selector: 'app-example',
   standalone: true,
-  imports: [ScrollAreaImports],
+  imports: [ScrollArea],
   template: `
-    <ng-scrollbar gremorie class="h-72 w-64 rounded-md border">
+    <gr-scroll-area class="h-72 w-64 rounded-md border">
       <div class="p-4">
         <!-- long content -->
       </div>
-    </ng-scrollbar>
+    </gr-scroll-area>
   `,
 })
 export class ExampleComponent {}
@@ -51,11 +52,10 @@ export class ExampleComponent {}
 
 ## Components
 
-- `ScrollArea` (selector: `ng-scrollbar[gremorie], ng-scrollbar[gremorieScrollbar]`):
-  the styling directive applied to an `ngx-scrollbar` host.
-- `ScrollAreaImports`: a convenience array bundling `NgScrollbarModule` and the
-  `ScrollArea` directive for use in `imports: [...]`.
-- `NgScrollbar`, `NgScrollbarModule`: re exported from `ngx-scrollbar`.
+- `ScrollArea` (selector: `gr-scroll-area`): a relative box wrapping a
+  scrollable viewport. Renders its own overlay scrollbar natively (signals +
+  `ResizeObserver`), themed with Gremorie tokens (thin, rounded, `--border`
+  thumb that fades in on hover).
 
 ## License
 

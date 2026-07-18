@@ -19,7 +19,6 @@
     "@angular/core": "^21.2.0",
     "@gremorie/ng-core": ">=0.5.1",
     "@spartan-ng/brain": "^0.0.1-alpha.694",
-    "ngx-scrollbar": "^19.0.0",
     "class-variance-authority": "^0.7.1"
   },
   "sideEffects": false,
