@@ -90,7 +90,7 @@ export class ExampleComponent {
 }
 ```
 
-The Angular edition is a standalone `gr-scroll-area` component; the visible bar comes from the DS scrollbar token baseline in `@gremorie/tokens`, so there is no third-party scrollbar library or imports bundle to wire up.
+The Angular edition is a standalone `gr-scroll-area` component that renders an overlay scrollbar via [`ngx-scrollbar`](https://www.npmjs.com/package/ngx-scrollbar) - the bar floats over the content and takes no layout space, matching the React edition - themed with the Gremorie tokens (thin, rounded, `--border` thumb).
 
 </Tab>
 </Tabs>

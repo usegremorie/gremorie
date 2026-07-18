@@ -90,7 +90,7 @@ export class ExampleComponent {
 }
 ```
 
-A edição Angular é um componente standalone `gr-scroll-area`; a barra visível vem do baseline de tokens de scrollbar do DS em `@gremorie/tokens`, então não há biblioteca de terceiros nem bundle de imports para conectar.
+A edição Angular é um componente standalone `gr-scroll-area` que renderiza uma scrollbar overlay via [`ngx-scrollbar`](https://www.npmjs.com/package/ngx-scrollbar) - a barra flutua sobre o conteúdo e não ocupa espaço de layout, igual à edição React - temada com os tokens do Gremorie (fina, arredondada, thumb `--border`).
 
 </Tab>
 </Tabs>

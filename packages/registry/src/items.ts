@@ -65,13 +65,13 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Scroll Area (Angular)',
     description:
-      'Thin scroll container (gr-scroll-area) whose visible bar comes from the Gremorie token scrollbar baseline (thin, --border thumb), no third-party scrollbar lib.',
+      'Themeable overlay scroll container (gr-scroll-area) built on ngx-scrollbar, with the Gremorie look - thin, rounded, --border thumb.',
     categories: ['containers', 'layout'],
     packageRoot: 'packages/ng-containers',
     sourceFiles: ['src/lib/scroll-area/scroll-area.ts'],
     targetPrefix: 'src/app/gremorie/scroll-area',
     srcStrip: 'src/lib/scroll-area/',
-    dependencies: ['@angular/core'],
+    dependencies: ['@angular/core', 'ngx-scrollbar'],
     registryDependencies: [],
   },
 
