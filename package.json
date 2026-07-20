@@ -57,7 +57,7 @@
     "@angular-devkit/core": "~21.2.0",
     "@angular-devkit/schematics": "~21.2.0",
     "@angular/build": "~21.2.0",
-    "@angular/cli": "~21.2.0",
+    "@angular/cli": "~22.0.7",
     "@angular/compiler-cli": "~21.2.0",
     "@angular/language-service": "~21.2.0",
     "@changesets/changelog-github": "^0.7.0",
