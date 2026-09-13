@@ -112,7 +112,7 @@
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",
-    "verdaccio": "^6.3.2",
+    "verdaccio": "^6.10.3",
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^4.1.10"
