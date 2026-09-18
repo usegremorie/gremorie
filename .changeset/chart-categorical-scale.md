@@ -29,6 +29,3 @@ The scale is no longer themeable. Every theme was overriding it into a single
 hue family — three clay steps, five greens — which encodes order rather than
 identity and left two series differing only in lightness. Brand colour stays on
 the chrome.
-
-One known miss, from the primitives rather than the choice of families:
-`amber-500` sits at L 0.772, just past the light band's 0.77.
