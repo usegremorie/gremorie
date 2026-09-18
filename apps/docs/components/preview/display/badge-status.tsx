@@ -1,14 +1,18 @@
 'use client';
 
 import { Badge } from '@gremorie/rx-display';
-import { AlertCircleIcon, CheckIcon } from 'lucide-react';
+import { AlertCircleIcon, AlertTriangleIcon, CheckIcon } from 'lucide-react';
 
 export function BadgeStatusPreview() {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Badge variant="secondary">
+      <Badge variant="success">
         <CheckIcon />
         Active
+      </Badge>
+      <Badge variant="warning">
+        <AlertTriangleIcon />
+        Expiring
       </Badge>
       <Badge variant="destructive">
         <AlertCircleIcon />

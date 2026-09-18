@@ -21,9 +21,17 @@ import { Badge } from './badge';
  *
  * | Prop | Type | Default | Description |
  * | --- | --- | --- | --- |
- * | `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. |
+ * | `variant` | `"default" \| "secondary" \| "destructive" \| "warning" \| "success" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. |
  * | `asChild` | `boolean` | `false` | Merge styles onto the child (e.g. render as `<a>`); enables the `[a&]:` hover affordances. |
  * | `className` | `string` | — | Extra classes merged via `cn`. |
+ *
+ * ## Status variants
+ *
+ * `destructive`, `warning` and `success` are the three status fills — error,
+ * attention and ok. Each bg/foreground pair clears **WCAG AA 4.5:1** in both
+ * light and dark (verified against the `--success` / `--warning` / `--destructive`
+ * tokens). Reach for them to color a state chip (e.g. a budget "Ok / Attention /
+ * Over" indicator) instead of hand-rolling `bg-*` classes.
  *
  * ## Variables (design tokens)
  *
@@ -32,6 +40,8 @@ import { Badge } from './badge';
  * | `--primary` / `--primary-foreground` | `variant="default"` fill |
  * | `--secondary` / `--secondary-foreground` | `variant="secondary"` |
  * | `--destructive` | `variant="destructive"` |
+ * | `--warning` / `--warning-foreground` | `variant="warning"` (amber, attention) |
+ * | `--success` / `--success-foreground` | `variant="success"` (green, ok) |
  * | `--border` / `--foreground` | `variant="outline"` |
  * | `--accent` / `--accent-foreground` | `ghost` / `outline` hover (as link) |
  * | `--ring` | focus ring |
@@ -49,6 +59,8 @@ const meta = {
         'default',
         'secondary',
         'destructive',
+        'warning',
+        'success',
         'outline',
         'ghost',
         'link',
@@ -76,9 +88,33 @@ export const Variants: Story = {
       <Badge variant="default">Default</Badge>
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="success">Success</Badge>
       <Badge variant="outline">Outline</Badge>
       <Badge variant="ghost">Ghost</Badge>
       <Badge variant="link">Link</Badge>
+    </div>
+  ),
+};
+
+/**
+ * The three status fills — `success` (ok), `warning` (attention) and
+ * `destructive` (error). This is the budget-indicator pattern (e.g. a 50/30/20
+ * card): the same three states, colored by variant. Every pair meets WCAG AA
+ * 4.5:1 in light and dark.
+ */
+export const StatusBadges: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge variant="success">
+        <Check />
+        Ok
+      </Badge>
+      <Badge variant="warning">Attention</Badge>
+      <Badge variant="destructive">
+        <X />
+        Over
+      </Badge>
     </div>
   ),
 };

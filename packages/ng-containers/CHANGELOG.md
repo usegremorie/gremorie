@@ -1,5 +1,7 @@
 # @gremorie/ng-containers
 
+## 0.7.0
+
 ## 0.6.0
 
 ### Minor Changes

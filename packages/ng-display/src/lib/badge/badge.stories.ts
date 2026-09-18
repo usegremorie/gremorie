@@ -5,9 +5,11 @@ import { Badge } from './badge';
 /**
  * Badge — compact label for status, counts and tags.
  *
- * 6 variants mirror React `Badge`. Use stories to validate each variant
+ * 8 variants mirror React `Badge`. Use stories to validate each variant
  * renders with the right surface treatment. Compound usage is shown in
  * the Tool / Task / ChainOfThought stories where Badge is dogfooded.
+ * `destructive` / `warning` / `success` are the status fills (error /
+ * attention / ok); each pair clears WCAG AA 4.5:1 in light and dark.
  */
 const meta: Meta<Badge> = {
   title: 'Layout & display/Display/Badge',
@@ -21,6 +23,8 @@ const meta: Meta<Badge> = {
         'default',
         'secondary',
         'destructive',
+        'warning',
+        'success',
         'outline',
         'ghost',
         'link',
@@ -65,6 +69,22 @@ export const Destructive: Story = {
   }),
 };
 
+export const Warning: Story = {
+  args: { variant: 'warning' },
+  render: (args) => ({
+    props: args,
+    template: `<gr-badge [variant]="variant">Warning</gr-badge>`,
+  }),
+};
+
+export const Success: Story = {
+  args: { variant: 'success' },
+  render: (args) => ({
+    props: args,
+    template: `<gr-badge [variant]="variant">Success</gr-badge>`,
+  }),
+};
+
 export const Outline: Story = {
   args: { variant: 'outline' },
   render: (args) => ({
@@ -91,7 +111,7 @@ export const LinkVariant: Story = {
 };
 
 /**
- * Showcase — all 6 variants side-by-side. Use this story to spot regressions
+ * Showcase — all 8 variants side-by-side. Use this story to spot regressions
  * in spacing, border treatment, or hover affordances when the cva spec
  * changes.
  */
@@ -103,9 +123,29 @@ export const AllVariants: Story = {
         <gr-badge variant="default">Default</gr-badge>
         <gr-badge variant="secondary">Secondary</gr-badge>
         <gr-badge variant="destructive">Destructive</gr-badge>
+        <gr-badge variant="warning">Warning</gr-badge>
+        <gr-badge variant="success">Success</gr-badge>
         <gr-badge variant="outline">Outline</gr-badge>
         <gr-badge variant="ghost">Ghost</gr-badge>
         <gr-badge variant="link">Link</gr-badge>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Status fills — success (ok), warning (attention), destructive (error). The
+ * budget-indicator pattern (e.g. a 50/30/20 card). Every pair meets WCAG AA
+ * 4.5:1 in light and dark.
+ */
+export const StatusBadges: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div class="flex flex-wrap items-center gap-2">
+        <gr-badge variant="success">Ok</gr-badge>
+        <gr-badge variant="warning">Attention</gr-badge>
+        <gr-badge variant="destructive">Over</gr-badge>
       </div>
     `,
   }),

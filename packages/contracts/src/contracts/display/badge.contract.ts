@@ -15,17 +15,19 @@ export const badge = defineContract({
   props: [
     {
       name: 'variant',
-      type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'",
+      type: "'default' | 'secondary' | 'destructive' | 'warning' | 'success' | 'outline' | 'ghost' | 'link'",
       default: 'default',
       options: [
         'default',
         'secondary',
         'destructive',
+        'warning',
+        'success',
         'outline',
         'ghost',
         'link',
       ],
-      desc: 'Visual style.',
+      desc: 'Visual style. `destructive` / `warning` / `success` are the status fills (error, attention, ok) — each pair clears WCAG AA 4.5:1 in light and dark.',
     },
     {
       name: 'asChild',
@@ -47,6 +49,7 @@ export const badge = defineContract({
     summary: 'A compact, static label for status, counts and tags.',
     whenToUse: [
       'Annotate status, counts or categories inline (e.g. "Beta", "3 new").',
+      'Signal a state with the status fills: variant="success" (ok), "warning" (attention), "destructive" (error).',
       'Render a link-styled tag with variant="link" or asChild + an anchor.',
     ],
     whenNotToUse: [

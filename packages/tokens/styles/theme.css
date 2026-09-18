@@ -423,8 +423,17 @@
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-gray-50);
 
-  --success: oklch(0.65 0.18 145);
+  /* Status semantics (success/warning). Solid fills sized for SMALL text
+     (badges): every bg/foreground pair clears WCAG AA 4.5:1 in this mode.
+     Bound to Tailwind primitives per the two-tier rule (no raw literals).
+     success = green fill + white text (green must be dark enough for white →
+     green-700); warning = amber fill + near-black text (amber is light in both
+     modes, so the foreground stays dark). */
+  --success: var(--color-green-700);
   --success-foreground: var(--color-gray-50);
+
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-gray-950);
 
   --border: var(--color-gray-200);
   --input: var(--color-gray-200);
@@ -489,8 +498,13 @@
   --destructive: var(--color-red-400);
   --destructive-foreground: var(--color-gray-50);
 
-  --success: oklch(0.7 0.18 145);
+  /* On dark surfaces the fills invert: a lighter green/amber carries near-black
+     text, both clearing WCAG AA 4.5:1 (mirrors --destructive going to red-400). */
+  --success: var(--color-green-400);
   --success-foreground: var(--color-gray-950);
+
+  --warning: var(--color-amber-400);
+  --warning-foreground: var(--color-gray-950);
 
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
@@ -581,6 +595,8 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

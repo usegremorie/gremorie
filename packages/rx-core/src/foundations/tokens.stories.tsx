@@ -289,12 +289,22 @@ const SEMANTIC_CORE: Row[] = [
   {
     token: '--success',
     className: 'bg-success',
-    primitive: 'oklch(0.65 0.18 145)',
+    primitive: '--color-green-700',
   },
   {
     token: '--success-foreground',
     className: 'text-success-foreground',
     primitive: '--color-gray-50',
+  },
+  {
+    token: '--warning',
+    className: 'bg-warning',
+    primitive: '--color-amber-500',
+  },
+  {
+    token: '--warning-foreground',
+    className: 'text-warning-foreground',
+    primitive: '--color-gray-950',
   },
   {
     token: '--border',

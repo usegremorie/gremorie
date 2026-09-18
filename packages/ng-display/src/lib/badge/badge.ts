@@ -8,7 +8,7 @@ import {
 import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
- * Badge variants — 6 variants mirroring React `Badge` from `@gremorie/rx-display`.
+ * Badge variants — 8 variants mirroring React `Badge` from `@gremorie/rx-display`.
  *
  * Token-driven (`bg-primary`, `bg-secondary`, `border-border`) so theme
  * changes propagate automatically. `[a&]:hover:*` selectors apply hover
@@ -25,6 +25,8 @@ export const badgeVariants = cva(
           'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90',
         destructive:
           'bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90',
+        warning: 'bg-warning text-warning-foreground [a&]:hover:bg-warning/90',
+        success: 'bg-success text-success-foreground [a&]:hover:bg-success/90',
         outline:
           'border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
         ghost: '[a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
@@ -56,6 +58,8 @@ export type BadgeVariant = NonNullable<
  * <gr-badge>Default</gr-badge>
  * <gr-badge variant="secondary">Secondary</gr-badge>
  * <gr-badge variant="destructive">Destructive</gr-badge>
+ * <gr-badge variant="warning">Warning</gr-badge>
+ * <gr-badge variant="success">Success</gr-badge>
  * <gr-badge variant="outline">Outline</gr-badge>
  * <gr-badge variant="ghost">Ghost</gr-badge>
  * <gr-badge variant="link">Link</gr-badge>
