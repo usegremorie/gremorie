@@ -72,16 +72,18 @@ export function titleCaseKey(key: string): string {
   return key.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** The cycling categorical palette token for index `i`. */
 /**
- * The categorical slot for series `i`. Five hues, assigned in fixed order and
- * **never cycled**: a sixth series that reused `--chart-1` would paint two
- * different series the same colour, and the reader has no way back from that.
- * Past the fifth, series fall back to a muted neutral — the chart stops
- * claiming they are individually identifiable, which is the honest signal that
- * the data needs folding into an "Other" bucket, small multiples, or a
- * different form.
+ * The categorical slot for series `i`, from the five-slot `--chart-cat-*`
+ * scale.
+ *
+ * Past the fifth the scale repeats — the same thing Notion's categorical
+ * scheme does, and for the same reason: five is where these ramps stop
+ * separating, so a sixth hue would collide with one of the five rather than
+ * add anything. Two series then share a colour, which is a real cost and the
+ * lesser one: a repeat is easier to work around than a collision, and more
+ * honest than a silent neutral. Charts needing more want an "Other" bucket,
+ * small multiples, or a different form.
  */
 export function paletteColor(i: number): string {
-  return i < 5 ? `var(--chart-${i + 1})` : 'var(--muted-foreground)';
+  return `var(--chart-cat-${(i % 5) + 1})`;
 }

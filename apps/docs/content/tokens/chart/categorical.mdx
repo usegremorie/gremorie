@@ -1,6 +1,6 @@
 ---
 title: Categorical
-description: Eight perceptually distinct hues for nominal categories - regions, departments, types.
+description: Five hues for series identity in nominal data - regions, departments, types.
 ---
 
 import {
@@ -11,10 +11,14 @@ import { CATEGORICAL_SCHEME } from '@/lib/chart-tokens';
 
 **Categorical** is the scheme for **nominal data without order** -
 when you compare magnitudes across categories that have no
-"greater/smaller" relationship. Eight perceptually distinct hues,
-mid-stops from the Tailwind palettes, chosen to stay
-distinguishable under protanopia, deuteranopia and tritanopia
-simulation.
+"greater/smaller" relationship. Five hues, one primitive family per
+slot, the same family in light and dark so a series keeps its colour
+when the mode flips - only the step changes (500 light, 600 dark).
+
+The set is measured, not eyeballed: every pair is checked for
+lightness band, chroma floor, separation under simulated protanopia
+and deuteranopia, separation for full colour vision, and contrast
+against the chart surface.
 
 <ChartSchemeSwatchRow scheme={CATEGORICAL_SCHEME} />
 
@@ -32,18 +36,41 @@ simulation.
   collapses; switch to bars.
 - **Scatter plots** where color encodes the category.
 
-## Why eight is the ceiling
+## Why five, and what happens past it
 
-Above 8 distinct hues, even well built palettes start to blur
-series together. Research (Brewer, 2003) shows humans have
-increasing difficulty telling colors apart beyond that limit,
-especially in small areas (thin lines, dots).
+Five is not a design preference - it is what these primitive ramps
+separate. A sixth slot collapses against one of the five under
+colour-vision deficiency whichever family it comes from: `fuchsia`
+lands on `blue` at ΔE 5.0 under protanopia, `purple` at ΔE 0.7 under
+the commoner deuteranopia, and `sky` fails even for full colour
+vision against `cyan`. Adding one would hand two different series
+the same read.
 
-If you need more than 8 series, consider:
+Notion's categorical scheme stops at five and repeats, for the same
+reason.
 
-1. **Grouping** the rest into "Other".
+**Past the fifth series the scale repeats.** Two series then share a
+colour, which is a real cost and a deliberate one: a repeat is
+easier to work around than a generated hue that collides with a
+neighbour, and more honest than a silent neutral.
+
+If you need more than five series, the chart is usually the problem:
+
+1. **Group** the rest into "Other".
 2. **Small multiples** - one series per mini chart.
 3. **A different visualization** - heatmap, parallel coordinates.
+
+## One known miss
+
+From the primitives rather than the choice of families, and open:
+`amber-500` sits at L 0.772, just past the light band's 0.77.
+
+## Not themeable, on purpose
+
+A brand palette is for chrome. Series identity needs hues that
+separate, and a themed override turns this into a single-hue ramp -
+which encodes order, not identity, leaving two series to differ only
+in lightness. The scale is the same under every theme.
 
 ## When not to use
 

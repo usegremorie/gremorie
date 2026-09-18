@@ -3,27 +3,24 @@ import { paletteColor, titleCaseKey } from './types';
 describe('paletteColor', () => {
   it('assigns the five categorical slots in fixed order', () => {
     expect([0, 1, 2, 3, 4].map(paletteColor)).toEqual([
-      'var(--chart-1)',
-      'var(--chart-2)',
-      'var(--chart-3)',
-      'var(--chart-4)',
-      'var(--chart-5)',
+      'var(--chart-cat-1)',
+      'var(--chart-cat-2)',
+      'var(--chart-cat-3)',
+      'var(--chart-cat-4)',
+      'var(--chart-cat-5)',
     ]);
   });
 
-  it('never reuses a hue past the fifth series', () => {
-    // Cycling would hand series 6 the colour of series 1, painting two
-    // different series identically with no way for the reader to tell them
-    // apart. A muted neutral says instead: these are not individually
-    // identifiable — fold them into "Other" or change the form.
-    const overflow = [5, 6, 7, 12].map(paletteColor);
-    expect(overflow).toEqual([
-      'var(--muted-foreground)',
-      'var(--muted-foreground)',
-      'var(--muted-foreground)',
-      'var(--muted-foreground)',
-    ]);
-    expect(overflow).not.toContain('var(--chart-1)');
+  it('repeats the scale past the fifth series', () => {
+    expect(paletteColor(5)).toBe('var(--chart-cat-1)');
+    expect(paletteColor(6)).toBe('var(--chart-cat-2)');
+    expect(paletteColor(12)).toBe('var(--chart-cat-3)');
+  });
+
+  it('never hands out a colour from outside the scale', () => {
+    for (let i = 0; i < 40; i++) {
+      expect(paletteColor(i)).toMatch(/^var\(--chart-cat-[1-5]\)$/);
+    }
   });
 });
 

@@ -34,16 +34,13 @@ export const CATEGORICAL_SCHEME: ChartScheme = {
   id: 'categorical',
   name: 'Categorical',
   description:
-    'Oito hues perceptualmente distintos para dados nominais. Vai até 8 porque é o teto prático de leitura — acima disso, mesmo paletas bem construídas começam a confundir séries.',
+    'Cinco hues para identidade de série em dado nominal. Para em cinco porque é o que as rampas primitivas separam de verdade — um sexto slot colapsaria contra um dos cinco sob daltonismo. Acima de cinco a escala se repete, como faz o esquema categórico do Notion.',
   rows: [
-    { token: '--color-chart-cat-1', primitive: 'blue-600' },
-    { token: '--color-chart-cat-2', primitive: 'orange-500' },
-    { token: '--color-chart-cat-3', primitive: 'emerald-600' },
-    { token: '--color-chart-cat-4', primitive: 'violet-600' },
-    { token: '--color-chart-cat-5', primitive: 'rose-500' },
-    { token: '--color-chart-cat-6', primitive: 'cyan-600' },
-    { token: '--color-chart-cat-7', primitive: 'amber-600' },
-    { token: '--color-chart-cat-8', primitive: 'fuchsia-600' },
+    { token: '--chart-cat-1', primitive: 'blue-500' },
+    { token: '--chart-cat-2', primitive: 'amber-500' },
+    { token: '--chart-cat-3', primitive: 'green-500' },
+    { token: '--chart-cat-4', primitive: 'cyan-500' },
+    { token: '--chart-cat-5', primitive: 'pink-500' },
   ],
 };
 

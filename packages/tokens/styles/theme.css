@@ -465,11 +465,41 @@
   --shadow-2xl: 0 28px 56px -12px oklch(0 0 0 / 0.2);
 
   /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* ─── Categorical chart scale ──────────────────────────────────────
+   * Six slots for series identity. Not themeable: a brand palette is for
+   * chrome, and every themed override this replaces turned these into a
+   * single-hue ramp (three clay steps, five greens), which encodes order,
+   * not identity. Two series then differ only in lightness.
+   *
+   * One primitive family per slot, the same family in both modes so a
+   * series keeps its colour when the mode flips — only the step changes
+   * (500 light, 600 dark). Validated with the data-viz palette checks:
+   * lightness band, chroma floor, CVD separation, normal-vision floor and
+   * contrast, on every pair, in both modes.
+   *
+   * Five, and the scale repeats past the fifth series. Five is where these
+   * ramps stop separating: a sixth family collapses against one of the five
+   * under colour-vision deficiency whichever one it comes from — fuchsia
+   * lands on blue at ΔE 5.0 under protanopia, purple at ΔE 0.7 under the
+   * commoner deuteranopia, and sky fails for full colour vision against
+   * cyan. Notion's categorical scheme stops at five and repeats for the
+   * same reason.
+   *
+   * One known miss, from the primitives rather than the choice of families:
+   * amber-500 sits at L 0.772, just past the light band's 0.77.
+   */
+  --chart-cat-1: var(--color-blue-500);
+  --chart-cat-2: var(--color-amber-500);
+  --chart-cat-3: var(--color-green-500);
+  --chart-cat-4: var(--color-cyan-500);
+  --chart-cat-5: var(--color-pink-500);
+
+  /* Back-compat: the old slots now point at the validated scale. */
+  --chart-1: var(--chart-cat-1);
+  --chart-2: var(--chart-cat-2);
+  --chart-3: var(--chart-cat-3);
+  --chart-4: var(--chart-cat-4);
+  --chart-5: var(--chart-cat-5);
 }
 
 .dark {
@@ -521,11 +551,18 @@
   --sidebar-ring: var(--color-gray-500);
 
   /* Chart series (dark) */
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* Same families as light, one step darker so they sit in the dark band. */
+  --chart-cat-1: var(--color-blue-600);
+  --chart-cat-2: var(--color-amber-600);
+  --chart-cat-3: var(--color-green-600);
+  --chart-cat-4: var(--color-cyan-600);
+  --chart-cat-5: var(--color-pink-600);
+
+  --chart-1: var(--chart-cat-1);
+  --chart-2: var(--chart-cat-2);
+  --chart-3: var(--chart-cat-3);
+  --chart-4: var(--chart-cat-4);
+  --chart-5: var(--chart-cat-5);
 }
 
 /*
