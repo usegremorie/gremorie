@@ -90,7 +90,11 @@
   --color-amber-200: oklch(92.4% 0.12 95.746); /* #fee685 */
   --color-amber-300: oklch(87.9% 0.169 91.605); /* #ffd230 */
   --color-amber-400: oklch(82.8% 0.189 84.429); /* #ffb900 */
-  --color-amber-500: oklch(76.9% 0.188 70.08); /* #fe9a00 */
+  /* 76.9% quantises to L 0.7724 in 8-bit sRGB, just over the 0.77 ceiling the
+     categorical scale has to sit under. 76.6% lands at 0.7682 with margin; the
+     colour shift is one step in the blue channel and --warning keeps 9.14:1
+     against its foreground, against a 4.5 floor. */
+  --color-amber-500: oklch(76.6% 0.188 70.08); /* #fc9900 */
   --color-amber-600: oklch(66.6% 0.179 58.318); /* #e17100 */
   --color-amber-700: oklch(55.5% 0.163 48.998); /* #bb4d00 */
   --color-amber-800: oklch(47.3% 0.137 46.201); /* #973c00 */
@@ -204,6 +208,28 @@
   --color-indigo-800: oklch(39.8% 0.195 277.366); /* #372aac */
   --color-indigo-900: oklch(35.9% 0.144 278.697); /* #312c85 */
   --color-indigo-950: oklch(25.7% 0.09 281.288); /* #1e1a4d */
+
+  /* ─── Brand ────────────────────────────────────────────────────────
+   * The consumer's own colour, shipped ready so nothing has to be built
+   * before a brand can be applied: override these eleven steps and every
+   * token that references them follows.
+   *
+   * The default is indigo's ramp — a conventional brand hue, and far
+   * enough from `--chart-cat-1` that the two do not read as the same blue
+   * before anyone has customised anything. It is a placeholder with a
+   * real value, not a palette in its own right.
+   */
+  --color-brand-50: oklch(96.2% 0.018 272.314); /* #eef2ff */
+  --color-brand-100: oklch(93% 0.034 272.788); /* #e0e7ff */
+  --color-brand-200: oklch(87% 0.065 274.039); /* #c6d2ff */
+  --color-brand-300: oklch(78.5% 0.115 274.713); /* #a3b3ff */
+  --color-brand-400: oklch(67.3% 0.182 276.935); /* #7c86ff */
+  --color-brand-500: oklch(58.5% 0.233 277.117); /* #615fff */
+  --color-brand-600: oklch(51.1% 0.262 276.966); /* #4f39f6 */
+  --color-brand-700: oklch(45.7% 0.24 277.023); /* #432dd7 */
+  --color-brand-800: oklch(39.8% 0.195 277.366); /* #372aac */
+  --color-brand-900: oklch(35.9% 0.144 278.697); /* #312c85 */
+  --color-brand-950: oklch(25.7% 0.09 281.288); /* #1e1a4d */
 
   --color-violet-50: oklch(96.9% 0.016 293.756); /* #f5f3ff */
   --color-violet-100: oklch(94.3% 0.029 294.588); /* #ede9fe */
@@ -465,11 +491,96 @@
   --shadow-2xl: 0 28px 56px -12px oklch(0 0 0 / 0.2);
 
   /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  /* ─── Categorical chart scale ──────────────────────────────────────
+   * Six slots for series identity. Not themeable: a brand palette is for
+   * chrome, and every themed override this replaces turned these into a
+   * single-hue ramp (three clay steps, five greens), which encodes order,
+   * not identity. Two series then differ only in lightness.
+   *
+   * One primitive family per slot, the same family in both modes so a
+   * series keeps its colour when the mode flips — only the step changes
+   * (500 light, 600 dark). Validated with the data-viz palette checks:
+   * lightness band, chroma floor, CVD separation, normal-vision floor and
+   * contrast, on every pair, in both modes.
+   *
+   * Five, and the scale repeats past the fifth series. Five is where these
+   * ramps stop separating: a sixth family collapses against one of the five
+   * under colour-vision deficiency whichever one it comes from — fuchsia
+   * lands on blue at ΔE 5.0 under protanopia, purple at ΔE 0.7 under the
+   * commoner deuteranopia, and sky fails for full colour vision against
+   * cyan. Notion's categorical scheme stops at five and repeats for the
+   * same reason.
+   */
+  --chart-cat-1: var(--color-blue-500);
+  --chart-cat-2: var(--color-amber-500);
+  --chart-cat-3: var(--color-green-500);
+  --chart-cat-4: var(--color-cyan-500);
+  --chart-cat-5: var(--color-pink-500);
+
+  /* ─── Sequential ───────────────────────────────────────────────────
+   * One hue, light to dark, for data with a natural order. Read by
+   * lightness rather than hue, so it survives colour-vision deficiency by
+   * construction. Steps are 200/400/600/800/950 rather than the evenly
+   * numbered ones: 600 to 700 measures ΔL 0.058, under the 0.06 the eye
+   * needs to call two steps apart.
+   */
+  --chart-seq-1: var(--color-blue-200);
+  --chart-seq-2: var(--color-blue-400);
+  --chart-seq-3: var(--color-blue-600);
+  --chart-seq-4: var(--color-blue-800);
+  --chart-seq-5: var(--color-blue-950);
+
+  /* ─── Divergent ────────────────────────────────────────────────────
+   * Two poles around a neutral pivot, for data with a meaningful middle:
+   * zero, a baseline, an average. Blue against red rather than red
+   * against green, which around 8% of men cannot separate.
+   *
+   * The inner stops are 300, not 200: at 200 the three middle values land
+   * within ΔL 0.04 of the pivot, so the pivot reads as a brightness spike
+   * and the weak ends disappear. At 300 the smallest step is ΔL 0.13, and
+   * the poles sit within 0.02 of each other in lightness, so neither side
+   * looks heavier than the other.
+   */
+  --chart-div-1: var(--color-blue-700);
+  --chart-div-2: var(--color-blue-500);
+  --chart-div-3: var(--color-blue-300);
+  --chart-div-4: var(--color-neutral-100);
+  --chart-div-5: var(--color-red-300);
+  --chart-div-6: var(--color-red-500);
+  --chart-div-7: var(--color-red-700);
+
+  /* ─── Status ───────────────────────────────────────────────────────
+   * Discrete state, never series identity: if green means "good" in your
+   * chart, this is the scheme, not Categorical. Success, warning and
+   * error point at the semantic tokens rather than restating them —
+   * "green means ok" cannot be allowed two different answers in one
+   * system. Info and neutral have no semantic counterpart, so they are
+   * defined here.
+   */
+  --chart-status-success: var(--success);
+  --chart-status-warning: var(--warning);
+  --chart-status-error: var(--destructive);
+  --chart-status-info: var(--color-sky-600);
+  --chart-status-neutral: var(--muted-foreground);
+
+  /* ─── Comparison ───────────────────────────────────────────────────
+   * One series in focus, the rest as backdrop — "you versus your peers",
+   * "current versus baseline", an A/B split. The highlight is the brand
+   * colour, so the thing being compared wears the consumer's identity;
+   * the backdrop is neutral, which is what makes the highlight read.
+   */
+  --chart-cmp-highlight: var(--color-brand-600);
+  --chart-cmp-mute-1: var(--color-neutral-700);
+  --chart-cmp-mute-2: var(--color-neutral-500);
+  --chart-cmp-mute-3: var(--color-neutral-400);
+  --chart-cmp-mute-4: var(--color-neutral-300);
+
+  /* Back-compat: the old slots now point at the validated scale. */
+  --chart-1: var(--chart-cat-1);
+  --chart-2: var(--chart-cat-2);
+  --chart-3: var(--chart-cat-3);
+  --chart-4: var(--chart-cat-4);
+  --chart-5: var(--chart-cat-5);
 }
 
 .dark {
@@ -521,11 +632,46 @@
   --sidebar-ring: var(--color-gray-500);
 
   /* Chart series (dark) */
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* Same families as light, one step darker so they sit in the dark band. */
+  --chart-cat-1: var(--color-blue-600);
+  --chart-cat-2: var(--color-amber-600);
+  --chart-cat-3: var(--color-green-600);
+  --chart-cat-4: var(--color-cyan-600);
+  --chart-cat-5: var(--color-pink-600);
+
+  /* Sequential inverts: on a dark surface the scale has to climb towards
+     light, or its top end disappears into the background. */
+  --chart-seq-1: var(--color-blue-900);
+  --chart-seq-2: var(--color-blue-700);
+  --chart-seq-3: var(--color-blue-500);
+  --chart-seq-4: var(--color-blue-300);
+  --chart-seq-5: var(--color-blue-100);
+
+  /* Same poles; the pivot darkens so it still reads as the middle rather
+     than as the brightest thing on the chart. */
+  --chart-div-1: var(--color-blue-300);
+  --chart-div-2: var(--color-blue-500);
+  --chart-div-3: var(--color-blue-700);
+  --chart-div-4: var(--color-neutral-800);
+  --chart-div-5: var(--color-red-700);
+  --chart-div-6: var(--color-red-500);
+  --chart-div-7: var(--color-red-300);
+
+  /* success/warning/error follow the semantic tokens, which already flip. */
+  --chart-status-info: var(--color-sky-500);
+
+  /* The backdrop inverts: a light grey on a dark surface is a highlight. */
+  --chart-cmp-highlight: var(--color-brand-500);
+  --chart-cmp-mute-1: var(--color-neutral-400);
+  --chart-cmp-mute-2: var(--color-neutral-500);
+  --chart-cmp-mute-3: var(--color-neutral-600);
+  --chart-cmp-mute-4: var(--color-neutral-700);
+
+  --chart-1: var(--chart-cat-1);
+  --chart-2: var(--chart-cat-2);
+  --chart-3: var(--chart-cat-3);
+  --chart-4: var(--chart-cat-4);
+  --chart-5: var(--chart-cat-5);
 }
 
 /*

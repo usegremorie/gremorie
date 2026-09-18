@@ -1,6 +1,6 @@
 ---
 title: Categorical
-description: Oito hues perceptualmente distintos para categorias nominais — regiões, departamentos, tipos.
+description: Cinco hues para identidade de série em dado nominal — regiões, departamentos, tipos.
 ---
 
 import {
@@ -11,9 +11,15 @@ import { CATEGORICAL_SCHEME } from '@/lib/chart-tokens';
 
 **Categorical** é o esquema para **dados nominais sem ordem** —
 quando você compara magnitudes entre categorias que não têm
-relação de "maior/menor". Oito hues perceptualmente distintos,
-mid-stops das paletas Tailwind, escolhidos para se diferenciar
-sob simulação de protanopia, deuteranopia e tritanopia.
+relação de "maior/menor". Cinco hues, uma família primitiva por
+slot, a mesma família no claro e no escuro para que uma série
+mantenha sua cor quando o modo troca — só o step muda (500 no
+claro, 600 no escuro).
+
+O conjunto é medido, não julgado no olho: cada par passa por faixa
+de luminosidade, piso de croma, separação sob protanopia e
+deuteranopia simuladas, separação para visão normal, e contraste
+contra a superfície do gráfico.
 
 <ChartSchemeSwatchRow scheme={CATEGORICAL_SCHEME} />
 
@@ -31,18 +37,37 @@ sob simulação de protanopia, deuteranopia e tritanopia.
   desmorona; troque para bar.
 - **Scatter plots** com cor codificando categoria.
 
-## Por que oito é o teto
+## Por que cinco, e o que acontece depois
 
-Acima de 8 hues distintos, mesmo paletas bem construídas começam
-a confundir séries. A pesquisa (Brewer, 2003) mostra que humanos
-têm dificuldade crescente em diferenciar cores além desse limite,
-especialmente em pequenas áreas (linhas finas, pontos).
+Cinco não é preferência de design — é o que estas rampas primitivas
+de fato separam. Um sexto slot colapsa contra um dos cinco sob
+daltonismo, venha de que família vier: `fuchsia` cai sobre `blue` a
+ΔE 5.0 sob protanopia, `purple` a ΔE 0.7 sob a mais comum
+deuteranopia, e `sky` reprova até para visão normal contra `cyan`.
+Incluí-lo daria a duas séries a mesma leitura.
 
-Se você precisa de mais de 8 séries, considere:
+O esquema categórico do Notion para em cinco e repete, pelo mesmo
+motivo.
+
+**A partir da sexta série a escala se repete.** Duas séries passam
+a dividir uma cor, o que é um custo real e deliberado: repetição é
+mais fácil de contornar que um hue gerado que colide com o vizinho,
+e mais honesta que um neutro silencioso.
+
+Se você precisa de mais de cinco séries, o gráfico costuma ser o
+problema:
 
 1. **Agrupar** o resto em "Outros".
 2. **Small multiples** — uma série por mini-gráfico.
 3. **Visualização diferente** — heatmap, parallel coordinates.
+
+## Não é tematizável, de propósito
+
+Paleta de marca serve à chrome. Identidade de série precisa de hues
+que separem, e uma sobrescrita por tema transforma isto numa rampa
+de um hue só — que codifica ordem, não identidade, deixando duas
+séries a diferir apenas em luminosidade. A escala é a mesma em todo
+tema.
 
 ## Quando não usar
 

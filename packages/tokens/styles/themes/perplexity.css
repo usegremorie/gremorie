@@ -15,14 +15,13 @@
   --sidebar-primary-foreground: var(--color-gray-0);
   --sidebar-ring: oklch(0.553 0.086 208.5);
 
-  --chart-1: var(--color-teal-600);
-  --chart-2: var(--color-teal-300);
-  --chart-3: var(--color-cyan-600);
-  --chart-4: var(--color-sky-400);
-  --chart-5: var(--color-emerald-400);
-
   --radius-base: 0.375rem;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* The categorical chart scale (--chart-cat-*) is deliberately not themed.
+     A brand palette is for chrome; series identity needs hues that separate,
+     and this theme's own colours are a single family — as a data scale they
+     would encode order instead of identity. See theme.css. */
 }
 
 :root[data-theme='perplexity'].dark {
@@ -45,9 +44,4 @@
   /* Chart series (dark): lighter steps of the same hues so every series
      clears the 3:1 graphical minimum on the dark background. Without these
      the light-block values win on specificity and leak into dark mode. */
-  --chart-1: var(--color-teal-400);
-  --chart-2: var(--color-teal-200);
-  --chart-3: var(--color-cyan-400);
-  --chart-4: var(--color-sky-400);
-  --chart-5: var(--color-emerald-400);
 }

@@ -20,13 +20,13 @@ export const SEQUENTIAL_SCHEME: ChartScheme = {
   id: 'sequential',
   name: 'Sequential',
   description:
-    'Gradiente de uma única matiz para dados com ordem natural. Cinco stops da paleta blue (200 → 900). Color-blind safe por construção — diferenças são lidas pela claridade, não pela matiz.',
+    'Uma única matiz, claro para escuro, para dado com ordem natural. Lido por luminosidade e não por matiz, então sobrevive ao daltonismo por construção. Os steps são 200/400/600/800/950: de 600 para 700 a diferença mede ΔL 0.058, abaixo do 0.06 que o olho precisa para separar dois passos.',
   rows: [
-    { token: '--color-chart-seq-1', primitive: 'blue-200' },
-    { token: '--color-chart-seq-2', primitive: 'blue-400' },
-    { token: '--color-chart-seq-3', primitive: 'blue-600' },
-    { token: '--color-chart-seq-4', primitive: 'blue-700' },
-    { token: '--color-chart-seq-5', primitive: 'blue-900' },
+    { token: '--chart-seq-1', primitive: 'blue-200' },
+    { token: '--chart-seq-2', primitive: 'blue-400' },
+    { token: '--chart-seq-3', primitive: 'blue-600' },
+    { token: '--chart-seq-4', primitive: 'blue-800' },
+    { token: '--chart-seq-5', primitive: 'blue-950' },
   ],
 };
 
@@ -34,16 +34,13 @@ export const CATEGORICAL_SCHEME: ChartScheme = {
   id: 'categorical',
   name: 'Categorical',
   description:
-    'Oito hues perceptualmente distintos para dados nominais. Vai até 8 porque é o teto prático de leitura — acima disso, mesmo paletas bem construídas começam a confundir séries.',
+    'Cinco hues para identidade de série em dado nominal. Para em cinco porque é o que as rampas primitivas separam de verdade — um sexto slot colapsaria contra um dos cinco sob daltonismo. Acima de cinco a escala se repete, como faz o esquema categórico do Notion.',
   rows: [
-    { token: '--color-chart-cat-1', primitive: 'blue-600' },
-    { token: '--color-chart-cat-2', primitive: 'orange-500' },
-    { token: '--color-chart-cat-3', primitive: 'emerald-600' },
-    { token: '--color-chart-cat-4', primitive: 'violet-600' },
-    { token: '--color-chart-cat-5', primitive: 'rose-500' },
-    { token: '--color-chart-cat-6', primitive: 'cyan-600' },
-    { token: '--color-chart-cat-7', primitive: 'amber-600' },
-    { token: '--color-chart-cat-8', primitive: 'fuchsia-600' },
+    { token: '--chart-cat-1', primitive: 'blue-500' },
+    { token: '--chart-cat-2', primitive: 'amber-500' },
+    { token: '--chart-cat-3', primitive: 'green-500' },
+    { token: '--chart-cat-4', primitive: 'cyan-500' },
+    { token: '--chart-cat-5', primitive: 'pink-500' },
   ],
 };
 
@@ -51,41 +48,41 @@ export const DIVERGENT_SCHEME: ChartScheme = {
   id: 'divergent',
   name: 'Divergent',
   description:
-    'Sete stops bipolares com pivô neutro: cool (blue) → neutral → warm (rose). Para dado contínuo com midpoint significativo (zero, média, baseline). Inspirado no ColorBrewer RdBu — Red-Blue, e não Red-Green, porque Red-Green é inacessível para 8% dos homens com deficiência de visão de cor.',
+    'Sete stops bipolares com pivô neutro, para dado contínuo com um meio que significa algo: zero, média, baseline. Blue contra red, e não red contra green, que cerca de 8% dos homens não separam. Os stops internos são 300 e não 200 — em 200 os três valores centrais ficam a ΔL 0.04 do pivô, e o pivô lê como estouro de brilho em vez de meio.',
   rows: [
     {
-      token: '--color-chart-div-1',
+      token: '--chart-div-1',
       primitive: 'blue-700',
       meaning: 'Polo frio (forte)',
     },
     {
-      token: '--color-chart-div-2',
+      token: '--chart-div-2',
       primitive: 'blue-500',
       meaning: 'Polo frio (médio)',
     },
     {
-      token: '--color-chart-div-3',
-      primitive: 'blue-200',
+      token: '--chart-div-3',
+      primitive: 'blue-300',
       meaning: 'Polo frio (fraco)',
     },
     {
-      token: '--color-chart-div-4',
-      primitive: 'neutral-200',
+      token: '--chart-div-4',
+      primitive: 'neutral-100',
       meaning: 'Pivô neutro',
     },
     {
-      token: '--color-chart-div-5',
-      primitive: 'rose-200',
+      token: '--chart-div-5',
+      primitive: 'red-300',
       meaning: 'Polo quente (fraco)',
     },
     {
-      token: '--color-chart-div-6',
-      primitive: 'rose-500',
+      token: '--chart-div-6',
+      primitive: 'red-500',
       meaning: 'Polo quente (médio)',
     },
     {
-      token: '--color-chart-div-7',
-      primitive: 'rose-700',
+      token: '--chart-div-7',
+      primitive: 'red-700',
       meaning: 'Polo quente (forte)',
     },
   ],
@@ -95,31 +92,31 @@ export const STATUS_SCHEME: ChartScheme = {
   id: 'status',
   name: 'Status',
   description:
-    "Cinco tokens para charts que encodam estado semântico discreto. A regra: se a cor verde no seu chart significa 'bom', você precisa de Status — não de Categorical. Misturar gera leitura ambígua.",
+    "Cinco tokens para estado semântico discreto, nunca identidade de série. A regra: se o verde no seu chart significa 'bom', você precisa de Status e não de Categorical. Success, warning e error apontam para os tokens semânticos em vez de repeti-los — 'verde significa ok' não pode ter duas respostas no mesmo sistema.",
   rows: [
     {
-      token: '--color-chart-status-success',
-      primitive: 'emerald-600',
+      token: '--chart-status-success',
+      primitive: 'var(--success)',
       meaning: 'Sucesso, OK, alvo atingido',
     },
     {
-      token: '--color-chart-status-warning',
-      primitive: 'amber-500',
+      token: '--chart-status-warning',
+      primitive: 'var(--warning)',
       meaning: 'Atenção, próximo do limite',
     },
     {
-      token: '--color-chart-status-error',
-      primitive: 'red-600',
+      token: '--chart-status-error',
+      primitive: 'var(--destructive)',
       meaning: 'Falha, fora do SLA',
     },
     {
-      token: '--color-chart-status-info',
+      token: '--chart-status-info',
       primitive: 'sky-600',
       meaning: 'Informação neutra, em andamento',
     },
     {
-      token: '--color-chart-status-neutral',
-      primitive: 'neutral-500',
+      token: '--chart-status-neutral',
+      primitive: 'var(--muted-foreground)',
       meaning: 'Inativo, sem dado',
     },
   ],
@@ -129,30 +126,30 @@ export const COMPARISON_SCHEME: ChartScheme = {
   id: 'comparison',
   name: 'Comparison',
   description:
-    "Quatro tokens muted + um highlight para o pattern destaque-um-mute-os-outros. É a paleta canônica para 'você vs seus pares', 'metric atual vs baseline', A/B test, e qualquer caso onde a leitura é 'esse aqui versus o resto'.",
+    "Quatro neutros e um destaque, para o padrão destaque-um-apaga-o-resto: 'você vs seus pares', 'atual vs baseline', teste A/B. O destaque é a cor de marca, então o que está sendo comparado veste a identidade do consumidor; o fundo é neutro, e é isso que faz o destaque ler.",
   rows: [
     {
-      token: '--color-chart-cmp-highlight',
-      primitive: 'blue-600',
+      token: '--chart-cmp-highlight',
+      primitive: 'brand-600',
       meaning: 'A série em foco',
     },
     {
-      token: '--color-chart-cmp-mute-1',
+      token: '--chart-cmp-mute-1',
       primitive: 'neutral-700',
       meaning: 'Backdrop principal',
     },
     {
-      token: '--color-chart-cmp-mute-2',
+      token: '--chart-cmp-mute-2',
       primitive: 'neutral-500',
       meaning: 'Backdrop secundário',
     },
     {
-      token: '--color-chart-cmp-mute-3',
+      token: '--chart-cmp-mute-3',
       primitive: 'neutral-400',
       meaning: 'Backdrop terciário',
     },
     {
-      token: '--color-chart-cmp-mute-4',
+      token: '--chart-cmp-mute-4',
       primitive: 'neutral-300',
       meaning: 'Backdrop quaternário',
     },

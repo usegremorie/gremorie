@@ -16,14 +16,14 @@
   --sidebar-ring: oklch(0.63 0.18 260);
 
   /* Blue-to-purple brand ramp: #4285F4 and #9B72CB anchors plus tints. */
-  --chart-1: oklch(0.63 0.18 260);
-  --chart-2: oklch(0.78 0.11 258);
-  --chart-3: oklch(0.629 0.136 304);
-  --chart-4: oklch(0.78 0.09 304);
-  --chart-5: oklch(0.53 0.2 276);
 
   --radius-base: 1rem;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* The categorical chart scale (--chart-cat-*) is deliberately not themed.
+     A brand palette is for chrome; series identity needs hues that separate,
+     and this theme's own colours are a single family — as a data scale they
+     would encode order instead of identity. See theme.css. */
 }
 
 :root[data-theme='gemini'].dark {
@@ -47,9 +47,4 @@
   /* Chart series (dark): lighter blue-to-purple steps so every series clears
      the 3:1 graphical minimum on the dark background. Without these the
      light-block values win on specificity and leak into dark mode. */
-  --chart-1: oklch(0.75 0.11 258);
-  --chart-2: oklch(0.85 0.07 255);
-  --chart-3: oklch(0.72 0.12 304);
-  --chart-4: oklch(0.84 0.06 300);
-  --chart-5: oklch(0.68 0.14 276);
 }

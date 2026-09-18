@@ -15,12 +15,6 @@
   --sidebar-primary-foreground: var(--color-gray-50);
   --sidebar-ring: var(--color-emerald-500);
 
-  --chart-1: var(--color-emerald-500);
-  --chart-2: var(--color-emerald-300);
-  --chart-3: var(--color-teal-600);
-  --chart-4: var(--color-green-400);
-  --chart-5: var(--color-cyan-400);
-
   --radius-base: 0.75rem;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
@@ -29,6 +23,11 @@
   --shadow: 0 1px 2px 0 oklch(0 0 0 / 0.05);
   --shadow-md: 0 2px 4px 0 oklch(0 0 0 / 0.06);
   --shadow-lg: 0 4px 8px 0 oklch(0 0 0 / 0.06);
+
+  /* The categorical chart scale (--chart-cat-*) is deliberately not themed.
+     A brand palette is for chrome; series identity needs hues that separate,
+     and this theme's own colours are a single family — as a data scale they
+     would encode order instead of identity. See theme.css. */
 }
 
 :root[data-theme='chatgpt'].dark {
@@ -51,9 +50,4 @@
   /* Chart series (dark): lighter steps of the same hues so every series
      clears the 3:1 graphical minimum on the dark background. Without these
      the light-block values win on specificity and leak into dark mode. */
-  --chart-1: var(--color-emerald-400);
-  --chart-2: var(--color-emerald-200);
-  --chart-3: var(--color-teal-400);
-  --chart-4: var(--color-green-400);
-  --chart-5: var(--color-cyan-400);
 }
