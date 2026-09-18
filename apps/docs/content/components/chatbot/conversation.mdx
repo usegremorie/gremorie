@@ -79,27 +79,34 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-conversation
+```
+
+<AngularSetup />
+
 ```ts
-import { Component, signal } from "@angular/core";
+import { Component, signal } from '@angular/core';
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
   Message,
   MessageContent,
-} from "@gremorie/ng-ai";
+} from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [
-Conversation,
-ConversationContent,
-ConversationScrollButton,
-Message,
-MessageContent,
-],
-template: `     <conversation class="h-96 w-full">
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    Conversation,
+    ConversationContent,
+    ConversationScrollButton,
+    Message,
+    MessageContent,
+  ],
+  template: `
+    <conversation class="h-96 w-full">
       <conversation-content>
         @for (m of messages(); track m.id) {
           <message [from]="m.role">
@@ -112,10 +119,12 @@ template: `     <conversation class="h-96 w-full">
   `,
 })
 export class ExampleComponent {
-readonly messages = signal<Array<{ id: string; role: "user" | "assistant"; text: string }>>([]);
+  readonly messages = signal<
+    Array<{ id: string; role: 'user' | 'assistant'; text: string }>
+  >([]);
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -127,28 +136,28 @@ Forwards all props of `StickToBottom` from `use-stick-to-bottom`. The sticky beh
 
 ### `<ConversationContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes on the scrolling content. |
+| Prop        | Type     | Default | Description                             |
+| ----------- | -------- | ------- | --------------------------------------- |
+| `className` | `string` | -       | Extra classes on the scrolling content. |
 
 Renders inside `StickToBottom.Content`. Adds a vertical flex stack with `gap-8` and `p-4`.
 
 ### `<ConversationScrollButton>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Extra classes on the button. |
+| Prop        | Type     | Default | Description                  |
+| ----------- | -------- | ------- | ---------------------------- |
+| `className` | `string` | -       | Extra classes on the button. |
 
 Forwards all `Button` props. Only renders when the user has scrolled away from the bottom; clicking it scrolls back smoothly.
 
 ### `<ConversationEmptyState>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `title` | `string` | `"No messages yet"` | Heading rendered when there is no content. |
-| `description` | `string` | `"Start a conversation to see messages here"` | Supporting copy below the title. |
-| `icon` | `ReactNode` | - | Optional icon above the title. |
-| `children` | `ReactNode` | - | When provided, fully replaces the default title / description layout. |
+| Prop          | Type        | Default                                       | Description                                                           |
+| ------------- | ----------- | --------------------------------------------- | --------------------------------------------------------------------- |
+| `title`       | `string`    | `"No messages yet"`                           | Heading rendered when there is no content.                            |
+| `description` | `string`    | `"Start a conversation to see messages here"` | Supporting copy below the title.                                      |
+| `icon`        | `ReactNode` | -                                             | Optional icon above the title.                                        |
+| `children`    | `ReactNode` | -                                             | When provided, fully replaces the default title / description layout. |
 
 ## Composition
 
@@ -176,7 +185,7 @@ The 90% case: feed messages in, let `Conversation` keep the latest one in view.
   </ConversationContent>
   <ConversationScrollButton />
 </Conversation>
-````
+```
 
 ### Empty state before the first message
 

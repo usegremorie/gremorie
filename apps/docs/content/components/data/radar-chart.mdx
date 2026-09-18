@@ -87,32 +87,38 @@ export function PlayerComparison() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-radar-chart
+```
+
+<AngularSetup />
+
 ```ts
 import { Component } from '@angular/core';
 import { RadarChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-player-comparison',
-imports: [RadarChart],
-template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
+  selector: 'app-player-comparison',
+  imports: [RadarChart],
+  template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
 })
 export class PlayerComparisonComponent {
-readonly data: ChartDatum[] = [
-{ skill: 'Speed', a: 90, b: 60 },
-{ skill: 'Power', a: 70, b: 80 },
-{ skill: 'Stamina', a: 85, b: 70 },
-{ skill: 'Agility', a: 75, b: 90 },
-{ skill: 'Skill', a: 95, b: 65 },
-];
+  readonly data: ChartDatum[] = [
+    { skill: 'Speed', a: 90, b: 60 },
+    { skill: 'Power', a: 70, b: 80 },
+    { skill: 'Stamina', a: 85, b: 70 },
+    { skill: 'Agility', a: 75, b: 90 },
+    { skill: 'Skill', a: 95, b: 65 },
+  ];
 
-readonly config: ChartConfig = {
-a: { label: 'Player A', color: 'var(--chart-1)' },
-b: { label: 'Player B', color: 'var(--chart-2)' },
-};
+  readonly config: ChartConfig = {
+    a: { label: 'Player A', color: 'var(--chart-1)' },
+    b: { label: 'Player B', color: 'var(--chart-2)' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -194,7 +200,7 @@ export function Example({ data }: { data: ChartDatum[] }) {
     </ChartContainer>
   );
 }
-````
+```
 
 Drop down to this level for dashed strokes, gradient fills, marker dots at spoke intersections, or a custom legend via `ChartLegend` + `ChartLegendContent`.
 

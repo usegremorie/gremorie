@@ -11,6 +11,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 
 import type { MDXComponents } from 'mdx/types';
 
+import { AngularSetup } from '@/components/angular-setup';
 import { BlockCard } from '@/components/blocks-gallery/block-card';
 import { ComponentPreview } from '@/components/component-preview';
 import { ArtifactPreview } from '@/components/preview/artifacts';
@@ -44,6 +45,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Step,
     Steps,
     TypeTable,
+    AngularSetup,
     ArtifactPreview,
     BlockCard,
     BlockPreview,

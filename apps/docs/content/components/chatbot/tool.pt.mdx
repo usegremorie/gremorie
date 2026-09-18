@@ -88,8 +88,14 @@ export function Example({ part }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-tool
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component, input } from "@angular/core";
+import { Component, input } from '@angular/core';
 import {
   Tool,
   ToolHeader,
@@ -97,21 +103,22 @@ import {
   ToolInput,
   ToolOutput,
   ToolState,
-} from "@gremorie/ng-ai";
+} from '@gremorie/ng-ai';
 
 interface ToolPart {
-type: string;
-state: ToolState;
-input: unknown;
-output: unknown;
-errorText: string | null;
+  type: string;
+  state: ToolState;
+  input: unknown;
+  output: unknown;
+  errorText: string | null;
 }
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Tool, ToolHeader, ToolContent, ToolInput, ToolOutput],
-template: `     <tool [open]="true">
+  selector: 'app-example',
+  standalone: true,
+  imports: [Tool, ToolHeader, ToolContent, ToolInput, ToolOutput],
+  template: `
+    <tool [open]="true">
       <tool-header [type]="part().type" [state]="part().state" />
       <tool-content>
         <tool-input [input]="part().input" />
@@ -121,10 +128,10 @@ template: `     <tool [open]="true">
   `,
 })
 export class ExampleComponent {
-readonly part = input.required<ToolPart>();
+  readonly part = input.required<ToolPart>();
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -132,23 +139,23 @@ readonly part = input.required<ToolPart>();
 
 ### `<Tool>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultOpen` | `boolean` | `false` | Encaminhado para `Collapsible`. Se o trace começa expandido. |
-| `open` | `boolean` | - | Estado de abertura controlado. |
-| `onOpenChange` | `(open: boolean) => void` | - | Dispara quando o header é alternado. |
-| `className` | `string` | - | Classes extras no `Collapsible` raiz. |
+| Prop           | Type                      | Default | Description                                                  |
+| -------------- | ------------------------- | ------- | ------------------------------------------------------------ |
+| `defaultOpen`  | `boolean`                 | `false` | Encaminhado para `Collapsible`. Se o trace começa expandido. |
+| `open`         | `boolean`                 | -       | Estado de abertura controlado.                               |
+| `onOpenChange` | `(open: boolean) => void` | -       | Dispara quando o header é alternado.                         |
+| `className`    | `string`                  | -       | Classes extras no `Collapsible` raiz.                        |
 
 Estende todas as props de `Collapsible` do `@gremorie/rx-display`.
 
 ### `<ToolHeader>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `type` | `ToolUIPart["type"]` | - | Tipo completo da tool (por exemplo, `"tool-search"`). O label após `tool-` é renderizado como o título quando `title` é omitido. |
-| `state` | `ToolUIPart["state"]` | - | Um de `input-streaming`, `input-available`, `approval-requested`, `approval-responded`, `output-available`, `output-error`, `output-denied`. Determina o `Badge` de status e seu ícone. |
-| `title` | `string` | derivado de `type` | Override de título opcional. |
-| `className` | `string` | - | Classes extras no `CollapsibleTrigger`. |
+| Prop        | Type                  | Default            | Description                                                                                                                                                                             |
+| ----------- | --------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`      | `ToolUIPart["type"]`  | -                  | Tipo completo da tool (por exemplo, `"tool-search"`). O label após `tool-` é renderizado como o título quando `title` é omitido.                                                        |
+| `state`     | `ToolUIPart["state"]` | -                  | Um de `input-streaming`, `input-available`, `approval-requested`, `approval-responded`, `output-available`, `output-error`, `output-denied`. Determina o `Badge` de status e seu ícone. |
+| `title`     | `string`              | derivado de `type` | Override de título opcional.                                                                                                                                                            |
+| `className` | `string`              | -                  | Classes extras no `CollapsibleTrigger`.                                                                                                                                                 |
 
 O chevron gira 180deg quando `data-state="open"`.
 
@@ -160,18 +167,18 @@ Estende todas as props de `CollapsibleContent`.
 
 ### `<ToolInput>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `input` | `ToolUIPart["input"]` | - | O objeto de input da tool. Formatado dentro de um `CodeBlock` com `language="json"`. |
-| `className` | `string` | - | Classes extras no container. |
+| Prop        | Type                  | Default | Description                                                                          |
+| ----------- | --------------------- | ------- | ------------------------------------------------------------------------------------ |
+| `input`     | `ToolUIPart["input"]` | -       | O objeto de input da tool. Formatado dentro de um `CodeBlock` com `language="json"`. |
+| `className` | `string`              | -       | Classes extras no container.                                                         |
 
 ### `<ToolOutput>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `output` | `ToolUIPart["output"]` | - | Payload de resultado. Objetos renderizam como JSON, strings renderizam como texto com destaque JSON, ReactNodes renderizam como estão. |
-| `errorText` | `ToolUIPart["errorText"]` | - | String de erro opcional. Quando presente, a superfície muda para um tom destrutivo e a seção é rotulada como "Error". |
-| `className` | `string` | - | Classes extras no container. |
+| Prop        | Type                      | Default | Description                                                                                                                            |
+| ----------- | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `output`    | `ToolUIPart["output"]`    | -       | Payload de resultado. Objetos renderizam como JSON, strings renderizam como texto com destaque JSON, ReactNodes renderizam como estão. |
+| `errorText` | `ToolUIPart["errorText"]` | -       | String de erro opcional. Quando presente, a superfície muda para um tom destrutivo e a seção é rotulada como "Error".                  |
+| `className` | `string`                  | -       | Classes extras no container.                                                                                                           |
 
 Retorna `null` se tanto `output` quanto `errorText` estão ausentes, então você pode montar `ToolOutput` incondicionalmente durante o streaming.
 
@@ -198,7 +205,7 @@ Renderize o trace assim que o modelo começa a emitir tokens de input. O badge p
     <ToolInput input={partialInput} />
   </ToolContent>
 </Tool>
-````
+```
 
 ### Ação com aprovação
 

@@ -88,35 +88,47 @@ export function TopBrowsers() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-radial-chart
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
 import { Component } from '@angular/core';
 import { RadialChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-top-browsers',
-imports: [RadialChart],
-template: `     <radial-chart [data]="data" [config]="config" nameKey="category" dataKey="visitors" />
+  selector: 'app-top-browsers',
+  imports: [RadialChart],
+  template: `
+    <radial-chart
+      [data]="data"
+      [config]="config"
+      nameKey="category"
+      dataKey="visitors"
+    />
   `,
 })
 export class TopBrowsersComponent {
-readonly data: ChartDatum[] = [
-{ category: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
-{ category: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
-{ category: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
-{ category: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
-];
+  readonly data: ChartDatum[] = [
+    { category: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+    { category: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+    { category: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+    { category: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+  ];
 
-readonly config: ChartConfig = {
-visitors: { label: 'Visitors' },
-Chrome: { label: 'Chrome' },
-Safari: { label: 'Safari' },
-Firefox: { label: 'Firefox' },
-Edge: { label: 'Edge' },
-};
+  readonly config: ChartConfig = {
+    visitors: { label: 'Visitors' },
+    Chrome: { label: 'Chrome' },
+    Safari: { label: 'Safari' },
+    Firefox: { label: 'Firefox' },
+    Edge: { label: 'Edge' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -126,38 +138,38 @@ Edge: { label: 'Edge' },
 
 Um gráfico de barras radiais recharts composto dentro do primitive `chart` do shadcn (`ChartContainer`). Uma barra concêntrica por linha; as cores das barras vêm do `fill` de cada linha, e o `config` opcional fornece os labels mostrados no tooltip.
 
-| Prop        | Type                    | Default | Descrição                                                                                                                                                      |
-| ----------- | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Prop        | Type                    | Default | Descrição                                                                                                                                                                        |
+| ----------- | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `data`      | `readonly ChartDatum[]` | -       | Dados tabulares. Uma linha por barra. Cada linha precisa de um campo string em `nameKey`, um campo numérico em `dataKey` e um `fill` para a cor da barra (ex. `var(--chart-1)`). |
-| `nameKey`   | `string`                | -       | Nome do campo de label de categoria. Usado para resolver o label do tooltip.                                                                                             |
-| `dataKey`   | `string`                | -       | Nome do campo de valor numérico. A varredura de cada barra é proporcional a este valor em relação ao máximo entre as linhas.                                            |
-| `config`    | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de categoria (e chave de valor). Alimenta os labels do tooltip.                                                                      |
-| `tooltip`   | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                              |
-| `className` | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                    |
+| `nameKey`   | `string`                | -       | Nome do campo de label de categoria. Usado para resolver o label do tooltip.                                                                                                     |
+| `dataKey`   | `string`                | -       | Nome do campo de valor numérico. A varredura de cada barra é proporcional a este valor em relação ao máximo entre as linhas.                                                     |
+| `config`    | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de categoria (e chave de valor). Alimenta os labels do tooltip.                                                                              |
+| `tooltip`   | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                                             |
+| `className` | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                            |
 
 ### Primitives de chart para composição customizada
 
 Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart do shadcn, todos reexportados de `@gremorie/rx-data`. Isso espelha o bloco radial oficial do shadcn ([ui.shadcn.com/charts/radial](https://ui.shadcn.com/charts/radial)).
 
-| Export                                              | Papel                                                                              |
-| --------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Export                                              | Papel                                                                                         |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `ChartContainer`                                    | Frame responsivo; injeta as CSS vars de cor por chave (`--color-<key>`) a partir do `config`. |
-| `ChartTooltip` / `ChartTooltipContent`              | Hover card e seu conteúdo temático.                                                |
-| `ChartLegend` / `ChartLegendContent`                | Legenda opcional e seu conteúdo temático.                                           |
-| `useChart`                                          | Hook que retorna o `config` ativo a partir do contexto (use dentro de children customizados).     |
-| `RadialBarChart`, `RadialBar`, `PolarGrid`, `Label` | Primitives recharts crus compostos dentro de `ChartContainer`.                         |
+| `ChartTooltip` / `ChartTooltipContent`              | Hover card e seu conteúdo temático.                                                           |
+| `ChartLegend` / `ChartLegendContent`                | Legenda opcional e seu conteúdo temático.                                                     |
+| `useChart`                                          | Hook que retorna o `config` ativo a partir do contexto (use dentro de children customizados). |
+| `RadialBarChart`, `RadialBar`, `PolarGrid`, `Label` | Primitives recharts crus compostos dentro de `ChartContainer`.                                |
 
 ### Types
 
-| Type          | Shape                                                                                                          |
-| ------------- | -------------------------------------------------------------------------------------------------------------- |
+| Type          | Shape                                                                                                                  |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart; o `fill` define a cor por barra. |
-| `ChartConfig` | Mapa de chave → `{ label?, icon?, color? }`; fornece labels de tooltip/legenda (e cores opcionais).                |
+| `ChartConfig` | Mapa de chave → `{ label?, icon?, color? }`; fornece labels de tooltip/legenda (e cores opcionais).                    |
 
 <Callout type="info">
-  As cores das barras vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`),
-  não do `config`. O `config` opcional mapeia cada nome de categoria para um `{label}`
-  e alimenta os labels mostrados no tooltip.
+  As cores das barras vêm do `fill` de cada linha (ex. `fill:
+  "var(--chart-1)"`), não do `config`. O `config` opcional mapeia cada nome de
+  categoria para um `{label}` e alimenta os labels mostrados no tooltip.
 </Callout>
 
 ## Composição
@@ -185,7 +197,7 @@ O chart se auto-dimensiona ao pai através do `ChartContainer` (`ResponsiveConta
   nameKey="category"
   dataKey="visitors"
 />
-````
+```
 
 ```html
 <radial-chart

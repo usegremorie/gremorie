@@ -47,7 +47,20 @@ export function GET() {
   lines.push('   - Angular, complete edition: `npm i @gremorie/angular`');
   lines.push('     ```ts');
   lines.push(
-    '     // In src/styles.css: @import "tailwindcss"; @import "@gremorie/tokens/theme.css";',
+    '     // Angular emits Tailwind utility classes and ships NO compiled CSS,',
+  );
+  lines.push(
+    '     // so the consumer project needs Tailwind v4 + these three lines in',
+  );
+  lines.push('     // src/styles.css:');
+  lines.push("     //   @import 'tailwindcss';");
+  lines.push("     //   @import '@gremorie/tokens/theme.css';");
+  lines.push("     //   @source '../node_modules/@gremorie';");
+  lines.push(
+    '     // The @source line is REQUIRED: Tailwind v4 skips node_modules by',
+  );
+  lines.push(
+    '     // default, so without it every component renders completely unstyled.',
   );
   lines.push('     import { Badge, Carousel } from "@gremorie/angular";');
   lines.push('     ```');

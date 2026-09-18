@@ -70,21 +70,28 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-task
+```
+
+<AngularSetup />
+
 ```ts
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import {
   Task,
   TaskTrigger,
   TaskContent,
   TaskItem,
   TaskItemFile,
-} from "@gremorie/ng-ai";
+} from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile],
-template: `     <task [open]="true">
+  selector: 'app-example',
+  standalone: true,
+  imports: [Task, TaskTrigger, TaskContent, TaskItem, TaskItemFile],
+  template: `
+    <task [open]="true">
       <task-trigger title="Refactor router" />
       <task-content>
         <task-item>
@@ -99,8 +106,8 @@ template: `     <task [open]="true">
   `,
 })
 export class ExampleComponent {}
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -108,20 +115,20 @@ export class ExampleComponent {}
 
 ### `<Task>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultOpen` | `boolean` | `true` | Uncontrolled initial open state. |
-| `open` | `boolean` | - | Controlled open state. |
-| `onOpenChange` | `(open: boolean) => void` | - | Notification when the user toggles. |
+| Prop           | Type                      | Default | Description                         |
+| -------------- | ------------------------- | ------- | ----------------------------------- |
+| `defaultOpen`  | `boolean`                 | `true`  | Uncontrolled initial open state.    |
+| `open`         | `boolean`                 | -       | Controlled open state.              |
+| `onOpenChange` | `(open: boolean) => void` | -       | Notification when the user toggles. |
 
 Extends `ComponentProps<typeof Collapsible>`.
 
 ### `<TaskTrigger>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `title` | `string` | - | Required. Displayed in the default trigger. |
-| `children` | `ReactNode` | - | Optional. Fully replaces the default search icon + title + chevron layout. |
+| Prop       | Type        | Default | Description                                                                |
+| ---------- | ----------- | ------- | -------------------------------------------------------------------------- |
+| `title`    | `string`    | -       | Required. Displayed in the default trigger.                                |
+| `children` | `ReactNode` | -       | Optional. Fully replaces the default search icon + title + chevron layout. |
 
 Extends `ComponentProps<typeof CollapsibleTrigger>`.
 
@@ -165,14 +172,15 @@ Default usage - the agent reports the files it touched.
       Read <TaskItemFile>app/router.tsx</TaskItemFile>
     </TaskItem>
     <TaskItem>
-      Edited <TaskItemFile>app/router.tsx</TaskItemFile> (12 insertions, 4 deletions)
+      Edited <TaskItemFile>app/router.tsx</TaskItemFile> (12 insertions, 4
+      deletions)
     </TaskItem>
     <TaskItem>
       Ran tests in <TaskItemFile>app/router.test.tsx</TaskItemFile>
     </TaskItem>
   </TaskContent>
 </Task>
-````
+```
 
 ### Custom trigger
 
