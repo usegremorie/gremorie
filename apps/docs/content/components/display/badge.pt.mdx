@@ -1,6 +1,6 @@
 ---
 title: Badge
-description: 'Label compacto para status, contagens e tags. Seis variantes, asChild opcional para badges estilo link.'
+description: 'Label compacto para status, contagens e tags. Oito variantes, asChild opcional para badges estilo link.'
 ---
 
 import { BadgePreview } from '@/components/preview/display/badge';
@@ -13,7 +13,7 @@ import { BadgeCountPreview } from '@/components/preview/display/badge-count';
 
 `Badge` é o primitive de label estático: uma pílula pequena e arredondada para status ("Active", "Pending"), contagens ("12", "99+"), tags ("AI", "Beta") ou marcadores de categoria. Ele renderiza como um `<span>` por padrão - ou qualquer elemento via `asChild` - e é intencionalmente não interativo. Para chips selecionáveis, use `ToggleGroup`; para badges clicáveis que linkam para algum lugar, use `asChild` para compor com um `<a>` ou um componente `Link`.
 
-Seis variantes são distribuídas por padrão: `default` (primary preenchido), `secondary`, `destructive`, `outline`, `ghost` e `link`. Os estados de hover só se aplicam quando o Badge é renderizado como âncora (via o padrão de seletor `[a&]:hover:...`), então as variantes estáticas permanecem verdadeiramente estáticas.
+Oito variantes são distribuídas por padrão: `default` (primary preenchido), `secondary`, `destructive`, `warning`, `success`, `outline`, `ghost` e `link`. Os três preenchimentos de status - `destructive` (erro), `warning` (atenção), `success` (ok) - passam no WCAG AA 4.5:1 nos modos claro e escuro. Os estados de hover só se aplicam quando o Badge é renderizado como âncora (via o padrão de seletor `[a&]:hover:...`), então as variantes estáticas permanecem verdadeiramente estáticas.
 
 ## Preview
 
@@ -87,11 +87,11 @@ export class ExampleComponent {}
 
 ### `<Badge>`
 
-| Prop        | Type                                                                          | Default     | Descrição                                                                                                                                                                 |
-| ----------- | ----------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant`   | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Estilo visual. `default` é primary preenchido; `outline` mostra apenas uma borda; `ghost` é invisível até ser renderizado como âncora; `link` estiliza como texto inline. |
-| `asChild`   | `boolean`                                                                     | `false`     | Quando `true`, renderiza o child imediato via `Slot` do Radix e mescla todas as classes nele. Use para envolver um `<a>` ou `Link` de framework.                          |
-| `className` | `string`                                                                      | -           | Classes extras mescladas via `cn`.                                                                                                                                        |
+| Prop        | Type                                                                                                    | Default     | Descrição                                                                                                                                                                                                                                                            |
+| ----------- | ------------------------------------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`   | `"default" \| "secondary" \| "destructive" \| "warning" \| "success" \| "outline" \| "ghost" \| "link"` | `"default"` | Estilo visual. `default` é primary preenchido; `destructive` / `warning` / `success` são os preenchimentos de status (erro, atenção, ok); `outline` mostra apenas uma borda; `ghost` é invisível até ser renderizado como âncora; `link` estiliza como texto inline. |
+| `asChild`   | `boolean`                                                                                               | `false`     | Quando `true`, renderiza o child imediato via `Slot` do Radix e mescla todas as classes nele. Use para envolver um `<a>` ou `Link` de framework.                                                                                                                     |
+| `className` | `string`                                                                                                | -           | Classes extras mescladas via `cn`.                                                                                                                                                                                                                                   |
 
 Todas as outras props de `span` são encaminhadas.
 
@@ -122,7 +122,7 @@ Badge é um componente folha - não tem sub-partes. As duas alavancas de composi
   <BadgeVariantsPreview />
 </ComponentPreview>
 
-Todas as seis variantes lado a lado: `default` (primary preenchido), `secondary`, `destructive`, `outline`, `ghost` e `link`. `ghost` lê como texto simples até ser renderizado como âncora.
+Todas as oito variantes lado a lado: `default` (primary preenchido), `secondary`, `destructive`, `warning`, `success`, `outline`, `ghost` e `link`. `ghost` lê como texto simples até ser renderizado como âncora.
 
 ### Indicador de status
 
@@ -130,7 +130,7 @@ Todas as seis variantes lado a lado: `default` (primary preenchido), `secondary`
   <BadgeStatusPreview />
 </ComponentPreview>
 
-Combine um ícone com texto para que o status leia claramente sem depender apenas da cor. Ícones dentro do Badge se dimensionam automaticamente via `[&>svg]:size-3`.
+Os três preenchimentos de status mapeiam os três desfechos: `success` para ok, `warning` para atenção, `destructive` para erro. Combine cada um com um ícone e texto para que o status leia claramente sem depender apenas da cor. Ícones dentro do Badge se dimensionam automaticamente via `[&>svg]:size-3`.
 
 ### Badge como link (asChild)
 

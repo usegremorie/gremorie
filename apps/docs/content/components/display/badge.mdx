@@ -1,6 +1,6 @@
 ---
 title: Badge
-description: 'Compact label for status, counts, and tags. Six variants, optional asChild for link-style badges.'
+description: 'Compact label for status, counts, and tags. Eight variants, optional asChild for link-style badges.'
 ---
 
 import { BadgePreview } from '@/components/preview/display/badge';
@@ -13,7 +13,7 @@ import { BadgeCountPreview } from '@/components/preview/display/badge-count';
 
 `Badge` is the static label primitive: a small, rounded pill for statuses ("Active", "Pending"), counts ("12", "99+"), tags ("AI", "Beta"), or category markers. It renders as a `<span>` by default - or any element via `asChild` - and is intentionally non-interactive. For selectable chips, reach for `ToggleGroup`; for clickable badges that link somewhere, use `asChild` to compose with an `<a>` or `Link` component.
 
-Six variants ship by default: `default` (filled primary), `secondary`, `destructive`, `outline`, `ghost`, and `link`. Hover states only apply when Badge is rendered as an anchor (via the `[a&]:hover:...` selector pattern), so the static variants stay truly static.
+Eight variants ship by default: `default` (filled primary), `secondary`, `destructive`, `warning`, `success`, `outline`, `ghost`, and `link`. The three status fills - `destructive` (error), `warning` (attention), `success` (ok) - each clear WCAG AA 4.5:1 in light and dark mode. Hover states only apply when Badge is rendered as an anchor (via the `[a&]:hover:...` selector pattern), so the static variants stay truly static.
 
 ## Preview
 
@@ -50,6 +50,8 @@ export function Example() {
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="outline">Outline</Badge>
       <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="success">Success</Badge>
     </div>
   );
 }
@@ -74,6 +76,8 @@ import { Badge } from '@gremorie/ng-display';
       <gr-badge variant="secondary">Secondary</gr-badge>
       <gr-badge variant="outline">Outline</gr-badge>
       <gr-badge variant="destructive">Destructive</gr-badge>
+      <gr-badge variant="warning">Warning</gr-badge>
+      <gr-badge variant="success">Success</gr-badge>
     </div>
   `,
 })
@@ -87,11 +91,11 @@ export class ExampleComponent {}
 
 ### `<Badge>`
 
-| Prop        | Type                                                                          | Default     | Description                                                                                                                                               |
-| ----------- | ----------------------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant`   | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. `default` is filled primary; `outline` shows only a border; `ghost` is invisible until rendered as an anchor; `link` styles as inline text. |
-| `asChild`   | `boolean`                                                                     | `false`     | When `true`, renders the immediate child via Radix `Slot` and merges all classes onto it. Use to wrap an `<a>` or framework `Link`.                       |
-| `className` | `string`                                                                      | -           | Extra classes merged via `cn`.                                                                                                                            |
+| Prop        | Type                                                                                                    | Default     | Description                                                                                                                                                                                                                                  |
+| ----------- | ------------------------------------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`   | `"default" \| "secondary" \| "destructive" \| "warning" \| "success" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style. `default` is filled primary; `destructive` / `warning` / `success` are the status fills (error, attention, ok); `outline` shows only a border; `ghost` is invisible until rendered as an anchor; `link` styles as inline text. |
+| `asChild`   | `boolean`                                                                                               | `false`     | When `true`, renders the immediate child via Radix `Slot` and merges all classes onto it. Use to wrap an `<a>` or framework `Link`.                                                                                                          |
+| `className` | `string`                                                                                                | -           | Extra classes merged via `cn`.                                                                                                                                                                                                               |
 
 All other `span` props are forwarded.
 
@@ -122,7 +126,7 @@ Icons compose naturally: drop an SVG inside Badge and the variant CSS handles si
   <BadgeVariantsPreview />
 </ComponentPreview>
 
-All six variants side by side: `default` (filled primary), `secondary`, `destructive`, `outline`, `ghost`, and `link`. `ghost` reads as plain text until rendered as an anchor.
+All eight variants side by side: `default` (filled primary), `secondary`, `destructive`, `warning`, `success`, `outline`, `ghost`, and `link`. `ghost` reads as plain text until rendered as an anchor.
 
 ### Status indicator
 
@@ -130,7 +134,7 @@ All six variants side by side: `default` (filled primary), `secondary`, `destruc
   <BadgeStatusPreview />
 </ComponentPreview>
 
-Pair an icon with text so the status reads clearly without relying on color alone. Icons inside Badge size automatically via `[&>svg]:size-3`.
+The three status fills map to the three outcomes: `success` for ok, `warning` for attention, `destructive` for error. Pair each one with an icon and text so the status reads clearly without relying on color alone. Icons inside Badge size automatically via `[&>svg]:size-3`.
 
 ### Badge as a link (asChild)
 
@@ -151,6 +155,7 @@ Hover styles activate automatically when Badge renders as an anchor - that is wh
 - **Static by default**: Badge renders a `<span>` and has no role. Screen readers announce its text content as inline text.
 - **Status updates**: when a Badge's content changes dynamically (e.g. a count that updates live), wrap a parent in an `aria-live="polite"` region so assistive tech announces the change.
 - **Color-only meaning is not enough**: use icons or text in addition to the variant color so users who can't perceive color still get the message ("Active" plus a check icon, not just a green pill).
+- **Status fill contrast**: `destructive`, `warning` and `success` are token pairs (`--warning` / `--warning-foreground`) tuned so the text clears WCAG AA 4.5:1 at badge size in both light and dark mode. If you override the fill with a custom class, re-check the contrast yourself.
 - **Interactive badges**: when rendering as an anchor via `asChild`, the anchor's native semantics apply - focus, Enter to activate, screen reader announcement as a link.
 - **`aria-invalid`**: Badge styles `aria-invalid={true}` automatically with destructive border and ring - useful when Badge is part of a form field.
 
