@@ -23,6 +23,66 @@ import {
 } from '../chart/chart-data-table';
 import type { ChartDatum } from '../chart/types';
 
+/**
+ * Roughly how wide a character is at the 10px label size. Measuring text means
+ * rendering it; this is close enough to turn a pixel budget into a character
+ * budget, and matches the Angular edition's constant so both wrap alike.
+ */
+const CHAR_WIDTH = 5.5;
+const LINE_HEIGHT = 11;
+
+/** Break a label on word boundaries — SVG text does not wrap on its own. */
+function wrapLabel(label: string, maxChars: number): string[] {
+  if (maxChars <= 0 || label.length <= maxChars) return [label];
+  const lines: string[] = [];
+  let line = '';
+  for (const word of label.split(/\s+/)) {
+    if (!line) line = word;
+    else if (line.length + 1 + word.length <= maxChars) line += ` ${word}`;
+    else {
+      lines.push(line);
+      line = word;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+type PolarTickProps = {
+  x?: number;
+  y?: number;
+  textAnchor?: 'start' | 'middle' | 'end' | 'inherit';
+  payload?: { value?: string | number };
+};
+
+/**
+ * A PolarAngleAxis tick that wraps. recharts already anchors by side; it just
+ * draws the label as a single run, so an eleven-spoke chart with sentence-long
+ * category names overlaps itself.
+ */
+function wrappedTick(width: number) {
+  const maxChars = Math.floor(width / CHAR_WIDTH);
+  return function WrappedTick({ x, y, textAnchor, payload }: PolarTickProps) {
+    const lines = wrapLabel(String(payload?.value ?? ''), maxChars);
+    const shift = (-(lines.length - 1) * LINE_HEIGHT) / 2;
+    return (
+      <text
+        x={x}
+        y={y}
+        textAnchor={textAnchor}
+        dominantBaseline="middle"
+        className="fill-muted-foreground text-[10px]"
+      >
+        {lines.map((line, i) => (
+          <tspan key={line} x={x} dy={i === 0 ? shift : LINE_HEIGHT}>
+            {line}
+          </tspan>
+        ))}
+      </text>
+    );
+  };
+}
+
 export type RadarFill = 'auto' | 'on' | 'off';
 
 export interface RadarChartProps {
@@ -46,13 +106,19 @@ export interface RadarChartProps {
    */
   dots?: boolean;
   /**
-   * Pins the radial scale, e.g. `[0, 100]`. Omit and it follows the data —
-   * fine for one chart, wrong the moment two are compared, because a top score
-   * of 70 would fill the plot exactly like a top score of 100.
+   * Top of the radial scale. Pinned by default so two charts are read against
+   * one ruler: with a derived scale someone whose best score is 70 fills the
+   * plot exactly like someone who scored 100. Raise it for data that goes past
+   * 100, or the polygons draw outside the outer ring.
    */
-  domain?: [number, number];
+  max?: number;
   /** Number of grid rings, and of ticks on the radius axis. */
   ticks?: number;
+  /**
+   * Wrap spoke labels to this width in pixels. Omit and each label is one run,
+   * which a long one at the side of the circle draws halfway across the plot.
+   */
+  labelWidth?: number;
   /** Label each ring with its value, up the vertical axis. */
   radiusAxis?: boolean;
   /** Hover tooltip. */
@@ -76,8 +142,9 @@ export function RadarChart({
   gridType = 'polygon',
   fill = 'auto',
   dots = false,
-  domain,
+  max = 100,
   ticks = 4,
+  labelWidth,
   radiusAxis = false,
   tooltip = true,
   className,
@@ -117,14 +184,22 @@ export function RadarChart({
           {tooltip ? (
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           ) : null}
-          <PolarAngleAxis dataKey={xKey} />
+          <PolarAngleAxis
+            dataKey={xKey}
+            // recharts types `tick` narrowly; a component is valid at runtime.
+            tick={
+              labelWidth
+                ? (wrappedTick(labelWidth) as unknown as boolean)
+                : undefined
+            }
+          />
           {/* The radius axis drives the grid: recharts derives PolarGrid's
               rings from its ticks, so `ticks` controls both. It is always
               mounted — `tick={false}` keeps the ring count without drawing the
               numbers — otherwise `domain` and `ticks` would silently do
               nothing unless `radiusAxis` were on. */}
           <PolarRadiusAxis
-            domain={domain}
+            domain={[0, max]}
             tickCount={ticks + 1}
             angle={90}
             axisLine={false}

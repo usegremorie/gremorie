@@ -15,6 +15,8 @@ export interface RadarAxis {
   label: string;
   lx: number;
   ly: number;
+  /** SVG text-anchor for the label, by which side of the circle it sits on. */
+  anchor: 'start' | 'middle' | 'end';
 }
 
 /**
@@ -44,6 +46,9 @@ export class Radar implements OnInit, OnDestroy {
   );
 
   readonly center = computed(() => this.layout());
+
+  /** The domain actually in force — pinned or derived. */
+  readonly domain = computed(() => this.ctx.yDomain());
 
   /**
    * This series' vertex per data row, in spoke order. Exposed so the styled
@@ -82,13 +87,23 @@ export class Radar implements OnInit, OnDestroy {
       const angle = (i / n) * 2 * Math.PI;
       const end = polarPoint(cx, cy, radius, angle);
       const label = polarPoint(cx, cy, radius + 14, angle);
+      /*
+       * Anchor by side, not always centre: a centred label on a spoke at the
+       * left or right reaches half its own width back across the plot. Spokes
+       * within a hair of the vertical stay centred, which is where a centred
+       * label is actually right.
+       */
+      const dx = label.x - cx;
+      const anchor =
+        Math.abs(dx) < radius * 0.05 ? 'middle' : dx > 0 ? 'start' : 'end';
       return {
         x2: end.x,
         y2: end.y,
         label: String(row[this.ctx.xKey()]),
         lx: label.x,
         ly: label.y,
-      };
+        anchor,
+      } as RadarAxis;
     });
   });
 

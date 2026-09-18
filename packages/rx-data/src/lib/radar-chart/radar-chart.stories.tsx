@@ -50,6 +50,7 @@ const meta = {
     gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
     fill: { control: 'inline-radio', options: ['auto', 'on', 'off'] },
     dots: { control: 'boolean' },
+    max: { control: { type: 'number', min: 1 } },
     ticks: { control: { type: 'number', min: 1, max: 12 } },
     radiusAxis: { control: 'boolean' },
     tooltip: { control: 'boolean' },
@@ -70,12 +71,12 @@ type Story = StoryObj<typeof meta>;
 // trails on others, so the polygons cross instead of nesting. A radar whose
 // series nest tells you nothing the same numbers in a table would not.
 const METRICS: ChartDatum[] = [
-  { metric: 'Speed', current: 120, target: 110, baseline: 86 },
-  { metric: 'Power', current: 98, target: 130, baseline: 105 },
-  { metric: 'Range', current: 86, target: 100, baseline: 128 },
-  { metric: 'Agility', current: 99, target: 90, baseline: 118 },
-  { metric: 'Armor', current: 85, target: 120, baseline: 95 },
-  { metric: 'Stealth', current: 65, target: 85, baseline: 112 },
+  { metric: 'Speed', current: 82, target: 74, baseline: 58 },
+  { metric: 'Power', current: 66, target: 88, baseline: 71 },
+  { metric: 'Range', current: 58, target: 68, baseline: 87 },
+  { metric: 'Agility', current: 67, target: 61, baseline: 80 },
+  { metric: 'Armor', current: 57, target: 81, baseline: 64 },
+  { metric: 'Stealth', current: 44, target: 57, baseline: 76 },
 ];
 
 const SINGLE: ChartConfig = {
@@ -121,7 +122,7 @@ export const ScoredScale: Story = {
     data: METRICS,
     config: MULTI,
     xKey: 'metric',
-    domain: [0, 100],
+    max: 100,
     ticks: 10,
     radiusAxis: true,
     dots: true,
@@ -136,12 +137,12 @@ export const CircleGrid: Story = {
 // Shared with the Angular `Workbench` story (ng-data) — keep byte-identical so
 // the dual-framework workbench renders the same use case on both sides.
 const WORKBENCH_DATA: ChartDatum[] = [
-  { trait: 'Speed', you: 120, team: 110, fleet: 86 },
-  { trait: 'Reliability', you: 98, team: 130, fleet: 105 },
-  { trait: 'Comfort', you: 86, team: 100, fleet: 128 },
-  { trait: 'Safety', you: 99, team: 90, fleet: 118 },
-  { trait: 'Efficiency', you: 85, team: 120, fleet: 95 },
-  { trait: 'Range', you: 65, team: 85, fleet: 112 },
+  { trait: 'Speed', you: 82, team: 74, fleet: 58 },
+  { trait: 'Reliability', you: 66, team: 88, fleet: 71 },
+  { trait: 'Comfort', you: 58, team: 68, fleet: 87 },
+  { trait: 'Safety', you: 67, team: 61, fleet: 80 },
+  { trait: 'Efficiency', you: 57, team: 81, fleet: 64 },
+  { trait: 'Range', you: 44, team: 57, fleet: 76 },
 ];
 
 const WORKBENCH_CONFIG: ChartConfig = {

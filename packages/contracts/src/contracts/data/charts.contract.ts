@@ -312,7 +312,7 @@ export const radarChart = defineContract({
   anatomy: `
   <radar-chart> (role=img, card)
   ├─ polar grid (gridType: polygon | circle)
-  ├─ angle axis (spokes from xKey)
+  ├─ angle axis (spokes from xKey, wrapped to labelWidth)
   ├─ radius axis ticks (opt: radiusAxis)
   ├─ radar polygon (1 per config key)
   ├─ vertex dots (opt: dots)
@@ -337,16 +337,21 @@ export const radarChart = defineContract({
       desc: 'Draw a dot at every vertex. The hovered spoke always gets a larger dot regardless.',
     },
     {
-      name: 'domain',
-      type: '[number, number]',
-      desc: 'Pins the radial scale, e.g. [0, 100]. Omit and it follows the data, which makes two charts incomparable.',
-      control: false,
+      name: 'max',
+      type: 'number',
+      default: 100,
+      desc: 'Top of the radial scale. Pinned so two charts share one ruler; raise it for data past 100.',
     },
     {
       name: 'ticks',
       type: 'number',
       default: 4,
       desc: 'Grid rings, and ticks on the radius axis.',
+    },
+    {
+      name: 'labelWidth',
+      type: 'number',
+      desc: 'Wrap spoke labels to this width in px. Omit and a long label is drawn as one run, reaching across the plot.',
     },
     {
       name: 'radiusAxis',
@@ -379,8 +384,9 @@ export const radarChart = defineContract({
   example: {
     xKey: 'trait',
     gridType: 'polygon',
-    ticks: 4,
-    radiusAxis: false,
+    max: 100,
+    ticks: 10,
+    radiusAxis: true,
     dots: false,
     fill: 'auto',
     tooltip: true,

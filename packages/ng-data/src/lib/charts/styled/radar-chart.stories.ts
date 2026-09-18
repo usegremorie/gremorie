@@ -6,12 +6,12 @@ import type { ChartConfig, ChartDatum } from '../headless/types';
 // trails on others, so the polygons cross instead of nesting. A radar whose
 // series nest tells you nothing the same numbers in a table would not.
 const DATA: ChartDatum[] = [
-  { metric: 'Speed', sales: 120, profit: 90, forecast: 104 },
-  { metric: 'Quality', sales: 98, profit: 130, forecast: 112 },
-  { metric: 'Comfort', sales: 86, profit: 70, forecast: 118 },
-  { metric: 'Safety', sales: 99, profit: 110, forecast: 78 },
-  { metric: 'Price', sales: 85, profit: 60, forecast: 124 },
-  { metric: 'Design', sales: 65, profit: 125, forecast: 96 },
+  { metric: 'Speed', sales: 82, profit: 61, forecast: 71 },
+  { metric: 'Quality', sales: 66, profit: 88, forecast: 76 },
+  { metric: 'Comfort', sales: 58, profit: 47, forecast: 80 },
+  { metric: 'Safety', sales: 67, profit: 74, forecast: 53 },
+  { metric: 'Price', sales: 57, profit: 41, forecast: 84 },
+  { metric: 'Design', sales: 44, profit: 85, forecast: 65 },
 ];
 
 // Categorical slots in fixed order — chart-1, then 2, then 3. Never cycled and
@@ -38,7 +38,7 @@ const meta: Meta<RadarChart> = {
           [gridType]="gridType"
           [fill]="fill"
           [dots]="dots"
-          [domain]="domain"
+          [max]="max"
           [ticks]="ticks"
           [radiusAxis]="radiusAxis"
           [tooltip]="tooltip"
@@ -53,7 +53,8 @@ const meta: Meta<RadarChart> = {
     gridType: 'polygon',
     fill: 'auto',
     dots: false,
-    ticks: 4,
+    max: 100,
+    ticks: 10,
     radiusAxis: false,
     tooltip: true,
   },
@@ -75,7 +76,7 @@ export const Dots: Story = { args: { dots: true } };
  * top score of 100.
  */
 export const ScoredScale: Story = {
-  args: { domain: [0, 100], ticks: 10, radiusAxis: true, dots: true },
+  args: { max: 100, ticks: 10, radiusAxis: true, dots: true },
 };
 export const SingleSeries: Story = {
   args: { config: { sales: { label: 'Sales', color: 'var(--chart-1)' } } },
@@ -84,12 +85,12 @@ export const SingleSeries: Story = {
 // Shared with the React `Workbench` story (rx-data) — keep byte-identical so the
 // dual-framework workbench renders the same use case on both sides.
 const WORKBENCH_DATA: ChartDatum[] = [
-  { trait: 'Speed', you: 120, team: 110, fleet: 86 },
-  { trait: 'Reliability', you: 98, team: 130, fleet: 105 },
-  { trait: 'Comfort', you: 86, team: 100, fleet: 128 },
-  { trait: 'Safety', you: 99, team: 90, fleet: 118 },
-  { trait: 'Efficiency', you: 85, team: 120, fleet: 95 },
-  { trait: 'Range', you: 65, team: 85, fleet: 112 },
+  { trait: 'Speed', you: 82, team: 74, fleet: 58 },
+  { trait: 'Reliability', you: 66, team: 88, fleet: 71 },
+  { trait: 'Comfort', you: 58, team: 68, fleet: 87 },
+  { trait: 'Safety', you: 67, team: 61, fleet: 80 },
+  { trait: 'Efficiency', you: 57, team: 81, fleet: 64 },
+  { trait: 'Range', you: 44, team: 57, fleet: 76 },
 ];
 
 const WORKBENCH_CONFIG: ChartConfig = {
@@ -116,7 +117,7 @@ export const Workbench: Story = {
           [gridType]="gridType"
           [fill]="fill"
           [dots]="dots"
-          [domain]="domain"
+          [max]="max"
           [ticks]="ticks"
           [radiusAxis]="radiusAxis"
           [tooltip]="tooltip"

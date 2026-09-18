@@ -384,7 +384,7 @@ describe('RadarChart', () => {
       const restore = stubLayout();
       try {
         const f = await render();
-        f.componentRef.setInput('domain', [0, 100]);
+        f.componentRef.setInput('max', 100);
         f.componentRef.setInput('ticks', 10);
         f.componentRef.setInput('radiusAxis', true);
         f.detectChanges();
@@ -403,7 +403,7 @@ describe('RadarChart', () => {
       const restore = stubLayout();
       try {
         const f = await render();
-        f.componentRef.setInput('domain', [0, 100]);
+        f.componentRef.setInput('max', 100);
         f.detectChanges();
         expect(tickLabels(f).length).toBe(0);
       } finally {
@@ -425,7 +425,7 @@ describe('RadarChart', () => {
             sales: { label: 'Sales' },
           } as ChartConfig);
           f.componentRef.setInput('xKey', 'metric');
-          f.componentRef.setInput('domain', [0, 100]);
+          f.componentRef.setInput('max', 100);
           f.detectChanges();
           await f.whenStable();
           f.detectChanges();
@@ -442,6 +442,105 @@ describe('RadarChart', () => {
         expect(rLow / rHigh).toBeCloseTo(0.5, 1);
       } finally {
         restore();
+      }
+    });
+  });
+
+  describe('spoke labels', () => {
+    const LONG_DATA: ChartDatum[] = [
+      { metric: 'Cuidamos das pessoas', v: 80 },
+      { metric: 'Focamos no sucesso do cliente', v: 70 },
+      { metric: 'Organização e priorização de problemas: Designer', v: 60 },
+      { metric: 'Domínio do produto', v: 75 },
+    ];
+
+    async function renderLong(labelWidth?: number) {
+      const restore = stubLayout();
+      const f = TestBed.createComponent(RadarChart);
+      f.componentRef.setInput('data', LONG_DATA);
+      f.componentRef.setInput('config', { v: { label: 'V' } } as ChartConfig);
+      f.componentRef.setInput('xKey', 'metric');
+      if (labelWidth) f.componentRef.setInput('labelWidth', labelWidth);
+      f.detectChanges();
+      await f.whenStable();
+      f.detectChanges();
+      return { f, restore };
+    }
+
+    // Wrapping splits a label across <tspan>s, so textContent picks up the
+    // whitespace between them — normalise before matching.
+    const flat = (el: Element) =>
+      (el.textContent ?? '').replace(/\s+/g, ' ').trim();
+    const labelTexts = (f: { nativeElement: HTMLElement }) =>
+      [...f.nativeElement.querySelectorAll('text')].filter((t) =>
+        LONG_DATA.some((d) => flat(t) === String(d['metric'])),
+      );
+
+    it('anchors a label by the side of the circle it sits on', async () => {
+      const { f, restore } = await renderLong();
+      try {
+        const anchors = labelTexts(f).map((t) => t.getAttribute('text-anchor'));
+        // 4 spokes: top, right, bottom, left -> middle, start, middle, end
+        expect(anchors).toEqual(['middle', 'start', 'middle', 'end']);
+      } finally {
+        restore();
+      }
+    });
+
+    it('keeps a label on one line when no width is given', async () => {
+      const { f, restore } = await renderLong();
+      try {
+        const long = labelTexts(f).find((t) => flat(t).includes('priorização'));
+        expect(long?.querySelectorAll('tspan').length).toBe(1);
+      } finally {
+        restore();
+      }
+    });
+
+    it('wraps to several lines once a width is set', async () => {
+      const { f, restore } = await renderLong(90);
+      try {
+        const long = labelTexts(f).find((t) => flat(t).includes('priorização'));
+        const spans = long?.querySelectorAll('tspan');
+        expect(spans!.length).toBeGreaterThan(1);
+        // nothing lost in the split
+        expect([...spans!].map((sp) => sp.textContent?.trim()).join(' ')).toBe(
+          'Organização e priorização de problemas: Designer',
+        );
+      } finally {
+        restore();
+      }
+    });
+
+    it('lifts a wrapped block so it stays centred on its spoke', async () => {
+      // Unwrapped, every label starts flush with its anchor.
+      const plain = await renderLong();
+      try {
+        for (const t of labelTexts(plain.f)) {
+          expect(Number(t.querySelector('tspan')!.getAttribute('dy'))).toBe(0);
+        }
+      } finally {
+        plain.restore();
+      }
+
+      // Wrapped, the block is lifted by half its extra height, so its middle
+      // still lands on the spoke instead of the block hanging below it.
+      const wrapped = await renderLong(90);
+      try {
+        const LINE_HEIGHT = 11;
+        for (const t of labelTexts(wrapped.f)) {
+          const lines = t.querySelectorAll('tspan').length;
+          const dy = Number(t.querySelector('tspan')!.getAttribute('dy'));
+          expect(dy).toBe((-(lines - 1) * LINE_HEIGHT) / 2);
+        }
+        // and at this width at least one label really did wrap
+        expect(
+          labelTexts(wrapped.f).some(
+            (t) => t.querySelectorAll('tspan').length > 1,
+          ),
+        ).toBe(true);
+      } finally {
+        wrapped.restore();
       }
     });
   });

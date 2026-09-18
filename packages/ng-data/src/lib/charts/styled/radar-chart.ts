@@ -13,7 +13,12 @@ import { ChartLegend, type ChartLegendItem } from './chart-legend';
 import { ChartFrame } from '../headless/chart-frame';
 import { Radar } from '../headless/radar';
 import { formatValue } from '../headless/format';
-import { placeBeside, polarPoint, spokeIndexAt } from '../headless/polar';
+import {
+  placeBeside,
+  polarPoint,
+  spokeIndexAt,
+  wrapLabel,
+} from '../headless/polar';
 import {
   paletteColor,
   titleCaseKey,
@@ -60,7 +65,7 @@ interface SeriesView {
         chartFrame
         [data]="data()"
         [xKey]="xKey()"
-        [domain]="domain()"
+        [domain]="[0, max()]"
         class="mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground"
         (pointermove)="onPointerMove($event)"
         (pointerleave)="clearActive()"
@@ -123,11 +128,24 @@ interface SeriesView {
                 <svg:text
                   [attr.x]="ax.lx"
                   [attr.y]="ax.ly"
-                  text-anchor="middle"
+                  [attr.text-anchor]="ax.anchor"
                   dominant-baseline="middle"
                   class="fill-muted-foreground text-[10px]"
                 >
-                  {{ ax.label }}
+                  @for (
+                    line of labelLines(ax.label);
+                    track $index;
+                    let li = $index
+                  ) {
+                    <svg:tspan
+                      [attr.x]="ax.lx"
+                      [attr.dy]="
+                        li === 0 ? firstLineShift(ax.label) : LINE_HEIGHT
+                      "
+                    >
+                      {{ line }}
+                    </svg:tspan>
+                  }
                 </svg:text>
               }
             }
@@ -237,13 +255,19 @@ export class RadarChart {
   readonly fill = input<RadarFill>('auto');
   readonly dots = input(false);
   /**
-   * Pins the radial scale, e.g. `[0, 100]`. Omit and it follows the data —
-   * fine for one chart, wrong the moment two are compared, because a top score
-   * of 70 would fill the plot exactly like a top score of 100.
+   * Top of the radial scale. Pinned by default so two charts are read against
+   * one ruler: with a derived scale someone whose best score is 70 fills the
+   * plot exactly like someone who scored 100. Raise it for data that goes
+   * past 100, or the polygons draw outside the outer ring.
    */
-  readonly domain = input<[number, number] | undefined>(undefined);
+  readonly max = input(100);
   /** Number of grid rings, and of ticks on the radius axis. */
   readonly ticks = input(4);
+  /**
+   * Wrap spoke labels to this width in pixels. Omit and each label is one run,
+   * which a long one at the side of the circle draws halfway across the plot.
+   */
+  readonly labelWidth = input<number | undefined>(undefined);
   /** Label each ring with its value, up the vertical axis. */
   readonly radiusAxis = input(false);
   readonly tooltip = input(true);
@@ -269,6 +293,25 @@ export class RadarChart {
 
   /** Index of the spoke the pointer is closest to, or null when outside. */
   readonly active = signal<number | null>(null);
+  /** Line box for wrapped labels, in SVG user units at the 10px label size. */
+  protected readonly LINE_HEIGHT = 11;
+  private static readonly CHAR_WIDTH = 5.5;
+
+  protected labelLines(label: string): string[] {
+    const width = this.labelWidth();
+    if (!width) return [label];
+    return wrapLabel(label, Math.floor(width / RadarChart.CHAR_WIDTH));
+  }
+
+  /**
+   * Lift a wrapped label so the block stays centred on the spoke instead of
+   * hanging below it — otherwise a two-line label drifts down by a full line.
+   */
+  protected firstLineShift(label: string): number {
+    const lines = this.labelLines(label).length;
+    return (-(lines - 1) * this.LINE_HEIGHT) / 2;
+  }
+
   /** Ring positions as fractions of the radius, innermost first. */
   protected readonly gridLevels = computed(() => {
     const n = Math.max(1, Math.floor(this.ticks()));
@@ -279,7 +322,9 @@ export class RadarChart {
   protected readonly radiusTicks = computed(() => {
     const radar = this.radars()[0];
     if (!radar) return [];
-    const [min, max] = this.domain() ?? [0, 0];
+    // Read the domain in force, not the input: the labels have to agree with
+    // the geometry, and an unset input would print empty strings.
+    const [min, max] = radar.domain();
     const span = max - min;
     const { cx, cy, radius } = radar.center();
     return this.gridLevels().map((level) => ({

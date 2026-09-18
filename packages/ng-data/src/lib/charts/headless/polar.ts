@@ -63,6 +63,37 @@ export function spokeIndexAt(
 }
 
 /**
+ * Break a label into lines that fit `maxChars`, on word boundaries.
+ *
+ * SVG `<text>` does not wrap, so a long spoke label is drawn as one run and,
+ * centred on a spoke at the side of the circle, reaches halfway across the
+ * plot. Splitting into `<tspan>` rows is the only way out. A word longer than
+ * the limit is left whole rather than cut mid-word — an overflowing line beats
+ * an unreadable one.
+ *
+ * Character count rather than measured width: measuring text means rendering
+ * it, and this runs while computing geometry. At the 10px label size roughly
+ * 5.5px per character holds well enough for the callers to convert.
+ */
+export function wrapLabel(label: string, maxChars: number): string[] {
+  if (maxChars <= 0 || label.length <= maxChars) return [label];
+  const lines: string[] = [];
+  let line = '';
+  for (const word of label.split(/\s+/)) {
+    if (!line) {
+      line = word;
+    } else if (line.length + 1 + word.length <= maxChars) {
+      line += ` ${word}`;
+    } else {
+      lines.push(line);
+      line = word;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+/**
  * Place a floating card beside an anchor without letting it leave a box.
  *
  * This is recharts' `getTooltipTranslateXY` applied per axis, with its default

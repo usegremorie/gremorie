@@ -1,5 +1,6 @@
 import {
   placeBeside,
+  wrapLabel,
   polarLayout,
   polarPoint,
   polygonPath,
@@ -119,5 +120,39 @@ describe('placeBeside', () => {
 
   it('takes a custom offset', () => {
     expect(placeBeside(10, CARD, 0, 100, 0)).toBe(10);
+  });
+});
+
+describe('wrapLabel', () => {
+  const LONG = 'Organização e priorização de problemas: Designer UI/UX - Pleno';
+
+  it('leaves a label that already fits alone', () => {
+    expect(wrapLabel('Speed', 20)).toEqual(['Speed']);
+  });
+
+  it('breaks on word boundaries, never mid-word', () => {
+    const lines = wrapLabel(LONG, 24);
+    expect(lines.length).toBeGreaterThan(1);
+    for (const line of lines) expect(line).not.toMatch(/^\s|\s$/);
+    // nothing was lost or invented
+    expect(lines.join(' ')).toBe(LONG);
+  });
+
+  it('respects the limit except for a word that cannot fit', () => {
+    const lines = wrapLabel(LONG, 24);
+    for (const line of lines) {
+      if (!line.includes(' ')) continue; // a lone oversized word is allowed
+      expect(line.length).toBeLessThanOrEqual(24);
+    }
+  });
+
+  it('keeps an oversized word whole rather than cutting it', () => {
+    expect(wrapLabel('Internationalization', 5)).toEqual([
+      'Internationalization',
+    ]);
+  });
+
+  it('is a no-op when no limit is given', () => {
+    expect(wrapLabel(LONG, 0)).toEqual([LONG]);
   });
 });
