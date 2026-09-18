@@ -287,7 +287,29 @@ export function ChartArtifact({
       case 'scatter':
         return <ScatterChart data={data} config={config} xKey={categoryKey} />;
       case 'radar':
-        return <RadarChart data={data} config={config} xKey={categoryKey} />;
+        /*
+         * The radar pins its scale at 100 by default, which is right for the
+         * scores it is usually reaching for but wrong here: an artifact carries
+         * whatever a model produced, and anything above 100 would draw outside
+         * the outer ring. Keep 100 as a floor so small values still read
+         * against a familiar scale, and grow past it when the data needs it.
+         */
+        return (
+          <RadarChart
+            data={data}
+            config={config}
+            xKey={categoryKey}
+            max={Math.max(
+              100,
+              ...data.flatMap((row) =>
+                Object.entries(row)
+                  .filter(([key]) => key !== categoryKey)
+                  .map(([, value]) => Number(value))
+                  .filter((value) => Number.isFinite(value)),
+              ),
+            )}
+          />
+        );
       case 'pie':
         return (
           <PieChart
