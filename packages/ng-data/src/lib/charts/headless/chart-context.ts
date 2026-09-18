@@ -23,6 +23,13 @@ export class ChartContext {
   /** When true, the Y domain covers per-row stacked sums (bar/area stacking). */
   readonly stacked = signal(false);
 
+  /**
+   * Pins the Y domain instead of deriving it from the data. A comparison chart
+   * needs this: with a derived domain, someone scoring 70 fills the plot the
+   * same way as someone scoring 100, and two reports stop being comparable.
+   */
+  readonly domainOverride = signal<[number, number] | null>(null);
+
   private readonly registry = signal<readonly SeriesReg[]>([]);
 
   register(reg: SeriesReg): void {
@@ -56,6 +63,8 @@ export class ChartContext {
   );
 
   readonly yDomain = computed<[number, number]>(() => {
+    const pinned = this.domainOverride();
+    if (pinned) return pinned;
     const [min, rawMax] = this.stacked()
       ? computeStackedYDomain(this.registry())
       : computeYDomain(this.registry());

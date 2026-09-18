@@ -36,6 +36,8 @@ export class Radar implements OnInit, OnDestroy {
 
   readonly dataKey = input.required<string>({ alias: 'radar' });
   readonly color = input<string>('currentColor');
+  /** Ring positions as fractions of the radius, innermost first. */
+  readonly levels = input<readonly number[]>([0.25, 0.5, 0.75, 1]);
 
   private readonly layout = computed(() =>
     polarLayout(this.ctx.width(), this.ctx.height(), 28),
@@ -96,7 +98,7 @@ export class Radar implements OnInit, OnDestroy {
     const n = data.length;
     if (n === 0) return [];
     const { cx, cy, radius } = this.layout();
-    return [0.25, 0.5, 0.75, 1].map((level) =>
+    return this.levels().map((level) =>
       polygonPath(
         data.map((_, i) =>
           polarPoint(cx, cy, radius * level, (i / n) * 2 * Math.PI),

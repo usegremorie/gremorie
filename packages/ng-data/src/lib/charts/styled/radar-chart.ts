@@ -60,15 +60,21 @@ interface SeriesView {
         chartFrame
         [data]="data()"
         [xKey]="xKey()"
+        [domain]="domain()"
         class="mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground"
         (pointermove)="onPointerMove($event)"
         (pointerleave)="clearActive()"
       >
         @for (s of series(); track s.key; let i = $index) {
-          <svg:g [radar]="s.key" [color]="s.color" #r="radar">
+          <svg:g
+            [radar]="s.key"
+            [color]="s.color"
+            [levels]="gridLevels()"
+            #r="radar"
+          >
             @if (i === 0) {
               @if (gridType() === 'circle') {
-                @for (level of gridLevels; track level) {
+                @for (level of gridLevels(); track level) {
                   <svg:circle
                     [attr.cx]="r.center().cx"
                     [attr.cy]="r.center().cy"
@@ -86,6 +92,23 @@ interface SeriesView {
                     stroke="currentColor"
                     stroke-opacity="0.12"
                   />
+                }
+              }
+              @if (radiusAxis()) {
+                <!-- Tick values up the vertical, the way recharts'
+                     PolarRadiusAxis sits at angle 90. Nudged left of the axis
+                     so they do not sit on the spoke itself. -->
+                @for (t of radiusTicks(); track t.level) {
+                  <svg:text
+                    data-slot="radar-radius-tick"
+                    [attr.x]="t.x - 6"
+                    [attr.y]="t.y"
+                    text-anchor="end"
+                    dominant-baseline="middle"
+                    class="fill-muted-foreground text-[10px]"
+                  >
+                    {{ t.value }}
+                  </svg:text>
                 }
               }
               @for (ax of r.axes(); track ax.label) {
@@ -213,6 +236,16 @@ export class RadarChart {
   readonly gridType = input<GridType>('polygon');
   readonly fill = input<RadarFill>('auto');
   readonly dots = input(false);
+  /**
+   * Pins the radial scale, e.g. `[0, 100]`. Omit and it follows the data —
+   * fine for one chart, wrong the moment two are compared, because a top score
+   * of 70 would fill the plot exactly like a top score of 100.
+   */
+  readonly domain = input<[number, number] | undefined>(undefined);
+  /** Number of grid rings, and of ticks on the radius axis. */
+  readonly ticks = input(4);
+  /** Label each ring with its value, up the vertical axis. */
+  readonly radiusAxis = input(false);
   readonly tooltip = input(true);
 
   /** One series reads as a shape; two or more read as outlines. */
@@ -236,7 +269,26 @@ export class RadarChart {
 
   /** Index of the spoke the pointer is closest to, or null when outside. */
   readonly active = signal<number | null>(null);
-  protected readonly gridLevels = [0.25, 0.5, 0.75, 1] as const;
+  /** Ring positions as fractions of the radius, innermost first. */
+  protected readonly gridLevels = computed(() => {
+    const n = Math.max(1, Math.floor(this.ticks()));
+    return Array.from({ length: n }, (_, i) => (i + 1) / n);
+  });
+
+  /** Ring values for the radius axis, paired with their fraction. */
+  protected readonly radiusTicks = computed(() => {
+    const radar = this.radars()[0];
+    if (!radar) return [];
+    const [min, max] = this.domain() ?? [0, 0];
+    const span = max - min;
+    const { cx, cy, radius } = radar.center();
+    return this.gridLevels().map((level) => ({
+      level,
+      value: span > 0 ? formatValue(min + span * level) : '',
+      x: cx,
+      y: cy - radius * level,
+    }));
+  });
 
   private readonly plot = viewChild.required<ElementRef<SVGSVGElement>>('plot');
   private readonly radars = viewChildren(Radar);

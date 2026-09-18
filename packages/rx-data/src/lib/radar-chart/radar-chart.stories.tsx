@@ -50,6 +50,8 @@ const meta = {
     gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
     fill: { control: 'inline-radio', options: ['auto', 'on', 'off'] },
     dots: { control: 'boolean' },
+    ticks: { control: { type: 'number', min: 1, max: 12 } },
+    radiusAxis: { control: 'boolean' },
     tooltip: { control: 'boolean' },
   },
   decorators: [
@@ -106,6 +108,24 @@ export const Filled: Story = {
 /** A dot on every vertex; the hovered spoke's grows. */
 export const Dots: Story = {
   args: { data: METRICS, config: MULTI, xKey: 'metric', dots: true },
+};
+
+/**
+ * The competency-review shape: a pinned 0-100 scale with a ring every ten, so
+ * two people's charts are read against the same ruler. Without `domain` the
+ * scale follows the data and a top score of 70 fills the plot exactly like a
+ * top score of 100.
+ */
+export const ScoredScale: Story = {
+  args: {
+    data: METRICS,
+    config: MULTI,
+    xKey: 'metric',
+    domain: [0, 100],
+    ticks: 10,
+    radiusAxis: true,
+    dots: true,
+  },
 };
 
 /** Circular grid. */

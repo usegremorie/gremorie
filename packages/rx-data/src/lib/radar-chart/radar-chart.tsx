@@ -3,6 +3,7 @@
 import { cn } from '@gremorie/rx-core';
 import {
   PolarAngleAxis,
+  PolarRadiusAxis,
   PolarGrid,
   Radar,
   RadarChart as RechartsRadarChart,
@@ -44,6 +45,16 @@ export interface RadarChartProps {
    * regardless, so turning this on reads as the dots growing under the pointer.
    */
   dots?: boolean;
+  /**
+   * Pins the radial scale, e.g. `[0, 100]`. Omit and it follows the data —
+   * fine for one chart, wrong the moment two are compared, because a top score
+   * of 70 would fill the plot exactly like a top score of 100.
+   */
+  domain?: [number, number];
+  /** Number of grid rings, and of ticks on the radius axis. */
+  ticks?: number;
+  /** Label each ring with its value, up the vertical axis. */
+  radiusAxis?: boolean;
   /** Hover tooltip. */
   tooltip?: boolean;
   className?: string;
@@ -65,6 +76,9 @@ export function RadarChart({
   gridType = 'polygon',
   fill = 'auto',
   dots = false,
+  domain,
+  ticks = 4,
+  radiusAxis = false,
   tooltip = true,
   className,
 }: RadarChartProps) {
@@ -104,6 +118,19 @@ export function RadarChart({
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           ) : null}
           <PolarAngleAxis dataKey={xKey} />
+          {/* The radius axis drives the grid: recharts derives PolarGrid's
+              rings from its ticks, so `ticks` controls both. It is always
+              mounted — `tick={false}` keeps the ring count without drawing the
+              numbers — otherwise `domain` and `ticks` would silently do
+              nothing unless `radiusAxis` were on. */}
+          <PolarRadiusAxis
+            domain={domain}
+            tickCount={ticks + 1}
+            angle={90}
+            axisLine={false}
+            tick={radiusAxis}
+            tickFormatter={(value: number) => value.toLocaleString()}
+          />
           <PolarGrid gridType={gridType} />
           {keys.map((key) => (
             <Radar

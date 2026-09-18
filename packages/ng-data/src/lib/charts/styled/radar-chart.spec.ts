@@ -346,4 +346,103 @@ describe('RadarChart', () => {
       }
     });
   });
+
+  describe('radius axis', () => {
+    const rings = (f: { nativeElement: HTMLElement }) =>
+      f.nativeElement.querySelectorAll(
+        'g[data-slot="radar"] path[fill="none"]',
+      );
+    const tickLabels = (f: { nativeElement: HTMLElement }) =>
+      [...f.nativeElement.querySelectorAll('[data-slot="radar-radius-tick"]')]
+        .map((t) => t.textContent?.trim())
+        .filter(Boolean);
+
+    it('draws four rings by default', async () => {
+      const restore = stubLayout();
+      try {
+        const f = await render();
+        // rings are shared, rendered once for the first series
+        expect(rings(f).length).toBe(4);
+      } finally {
+        restore();
+      }
+    });
+
+    it('draws as many rings as `ticks` asks for', async () => {
+      const restore = stubLayout();
+      try {
+        const f = await render();
+        f.componentRef.setInput('ticks', 10);
+        f.detectChanges();
+        expect(rings(f).length).toBe(10);
+      } finally {
+        restore();
+      }
+    });
+
+    it('labels 0-100 in tens — the competency-review case', async () => {
+      const restore = stubLayout();
+      try {
+        const f = await render();
+        f.componentRef.setInput('domain', [0, 100]);
+        f.componentRef.setInput('ticks', 10);
+        f.componentRef.setInput('radiusAxis', true);
+        f.detectChanges();
+
+        expect(tickLabels(f)).toEqual(
+          [10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((n) =>
+            n.toLocaleString(),
+          ),
+        );
+      } finally {
+        restore();
+      }
+    });
+
+    it('stays silent unless asked', async () => {
+      const restore = stubLayout();
+      try {
+        const f = await render();
+        f.componentRef.setInput('domain', [0, 100]);
+        f.detectChanges();
+        expect(tickLabels(f).length).toBe(0);
+      } finally {
+        restore();
+      }
+    });
+
+    it('pins the geometry to the domain, so two charts stay comparable', async () => {
+      const restore = stubLayout();
+      try {
+        // Same shape of data, different magnitudes. Pinned to [0, 100] the
+        // smaller one must NOT reach as far as the larger one.
+        const low: ChartDatum[] = DATA.map((r) => ({ ...r, sales: 50 }));
+        const high: ChartDatum[] = DATA.map((r) => ({ ...r, sales: 100 }));
+        const radiusOf = async (data: ChartDatum[]) => {
+          const f = TestBed.createComponent(RadarChart);
+          f.componentRef.setInput('data', data);
+          f.componentRef.setInput('config', {
+            sales: { label: 'Sales' },
+          } as ChartConfig);
+          f.componentRef.setInput('xKey', 'metric');
+          f.componentRef.setInput('domain', [0, 100]);
+          f.detectChanges();
+          await f.whenStable();
+          f.detectChanges();
+          const d = f.nativeElement
+            .querySelector('[data-slot="radar-polygon"]')
+            .getAttribute('d') as string;
+          // distance of the first vertex from the centre
+          const [x, y] = d.slice(1).split('L')[0].split(',').map(Number);
+          return Math.hypot(x - SIZE / 2, y - SIZE / 2);
+        };
+        const rLow = await radiusOf(low);
+        const rHigh = await radiusOf(high);
+        expect(rLow).toBeLessThan(rHigh);
+        expect(rLow / rHigh).toBeCloseTo(0.5, 1);
+      } finally {
+        restore();
+      }
+    });
+  });
 });

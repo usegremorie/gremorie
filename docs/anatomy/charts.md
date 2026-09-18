@@ -27,6 +27,13 @@ Shared rules for all seven:
   translucent fills turn muddy fast. `on` forces a fill and lightens it to 0.2
   past one series; `off` always outlines. Angular tags the shape
   `data-slot="radar-polygon"`; recharts names its own `.recharts-radar-polygon`.
+- **Radar scale**: `domain` pins the radial scale (e.g. `[0, 100]`); omit it and
+  the scale follows the data, which is fine for one chart and wrong the moment
+  two are compared — a top score of 70 would fill the plot exactly like a top
+  score of 100. `ticks` sets the ring count, and `radiusAxis` labels each ring
+  up the vertical. React mounts recharts' `PolarRadiusAxis` unconditionally so
+  `domain` and `ticks` still apply with the labels hidden; Angular derives the
+  same rings from `ticks` and draws its own tick text.
 - **Radar dots**: `dots` is off by default and draws a small dot (r=3) at every
   vertex, matching the line chart's option of the same name. The hovered spoke
   always gets a larger dot (r=4) whether or not `dots` is on, so turning it on
@@ -64,6 +71,7 @@ Shared rules for all seven:
    ├─ svg
    │  ├─ polar grid (`gridType`: polygon | circle)
    │  ├─ angle axis (spokes from `xKey`)
+   │  ├─ radius axis ticks (opt: `radiusAxis`, count from `ticks`)
    │  ├─ radar polygon, one per config key (`fill`: auto | on | off)
    │  ├─ vertex dots, one per row per series (opt: `dots`)
    │  └─ active dot, one per series, on the hovered spoke

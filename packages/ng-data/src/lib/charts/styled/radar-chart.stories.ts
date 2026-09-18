@@ -38,6 +38,9 @@ const meta: Meta<RadarChart> = {
           [gridType]="gridType"
           [fill]="fill"
           [dots]="dots"
+          [domain]="domain"
+          [ticks]="ticks"
+          [radiusAxis]="radiusAxis"
           [tooltip]="tooltip"
         />
       </div>
@@ -50,6 +53,8 @@ const meta: Meta<RadarChart> = {
     gridType: 'polygon',
     fill: 'auto',
     dots: false,
+    ticks: 4,
+    radiusAxis: false,
     tooltip: true,
   },
 };
@@ -63,6 +68,15 @@ export const CircleGrid: Story = { args: { gridType: 'circle' } };
 export const Filled: Story = { args: { fill: 'on' } };
 /** A dot on every vertex; the hovered spoke's grows. */
 export const Dots: Story = { args: { dots: true } };
+/**
+ * The competency-review shape: a pinned 0-100 scale with a ring every ten, so
+ * two people's charts are read against the same ruler. Without `domain` the
+ * scale follows the data and a top score of 70 fills the plot exactly like a
+ * top score of 100.
+ */
+export const ScoredScale: Story = {
+  args: { domain: [0, 100], ticks: 10, radiusAxis: true, dots: true },
+};
 export const SingleSeries: Story = {
   args: { config: { sales: { label: 'Sales', color: 'var(--chart-1)' } } },
 };
@@ -102,6 +116,9 @@ export const Workbench: Story = {
           [gridType]="gridType"
           [fill]="fill"
           [dots]="dots"
+          [domain]="domain"
+          [ticks]="ticks"
+          [radiusAxis]="radiusAxis"
           [tooltip]="tooltip"
         />
       </div>
