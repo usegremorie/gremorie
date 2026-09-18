@@ -4,12 +4,15 @@ description: 'Compare séries entre múltiplos eixos que compartilham um único 
 ---
 
 import { RadarChartPreview } from '@/components/preview/data/radar-chart';
+import { RadarChartScoredPreview } from '@/components/preview/data/radar-chart-scored';
 
 ## Visão geral
 
 `RadarChart` é o wrapper estilizado sobre o `RadarChart` do recharts, composto sobre o primitive `chart` do shadcn (`ChartContainer`). Cada linha de dados (`xKey`) se torna um raio no grid polar; cada entrada em `config` se torna um polígono fechado que compartilha um único máximo radial. Use quando você tem **três a sete dimensões** que devem ser avaliadas juntas - perfis de habilidade, scores de satisfação, análise de gap de capacidade.
 
 Use RadarChart quando nenhuma dimensão única é o destaque e a **forma do polígono** carrega significado por todo o conjunto. Para comparar uma dimensão ordenada, [`LineChart`](/components/data/line-chart) lê mais rápido. Para ranquear categorias em uma única métrica, [`BarChart`](/components/data/bar-chart) é mais legível.
+
+A escala radial é **fixa em 100 por padrão**. Isso é deliberado: comparação é o trabalho usual deste chart, e uma escala derivada do dado faz alguém com nota máxima 70 preencher o gráfico igual a alguém que tirou 100. Passe um número para outro teto, ou `max="auto"` quando a faixa não for conhecida de antemão.
 
 A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
 
@@ -19,9 +22,12 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
 <radar-chart>
 └─ figure (role="img")                  card surface, aspect-square
    ├─ svg
-   │  ├─ polar grid (gridType: polygon | circle)
-   │  ├─ angle axis (spokes from xKey)
-   │  └─ radar polygons, one per config key
+   │  ├─ polar grid (gridType: polygon | circle, ring count from ticks)
+   │  ├─ angle axis (spokes from xKey, wrapped to labelWidth)
+   │  ├─ radius axis ticks (optional via radiusAxis)
+   │  ├─ radar polygons, one per config key (fill: auto | on | off)
+   │  ├─ vertex dots, one per row per series (optional via dots)
+   │  └─ active dot, one per series, on the hovered spoke
    ├─ tooltip overlay (optional via tooltip)
    ├─ legend (when config has >1 series)
    └─ sr-only data table
@@ -34,9 +40,10 @@ RadarChart
 └─ ChartContainer            responsive square frame + injects --color-<key>
    └─ RadarChart (recharts)  polar plot area over the angular axis (xKey)
       ├─ ChartTooltip        hover card (ChartTooltipContent)
-      ├─ PolarAngleAxis      spoke labels (xKey)
+      ├─ PolarAngleAxis      spoke labels (xKey, wrapped to labelWidth)
+      ├─ PolarRadiusAxis     the scale: max, ticks, radiusAxis
       ├─ PolarGrid           polygon or circular grid (gridType)
-      └─ Radar               one polygon per series
+      └─ Radar               one polygon per series, with dot / activeDot
 ```
 
 ## Preview
@@ -210,6 +217,8 @@ Desça a este nível para traços tracejados, preenchimentos de gradiente, dots 
 2. **Escreva o `config`** com no máximo três séries. Os polígonos permanecem legíveis quando traçados; quatro ou mais ficam difíceis de ler.
 3. **Ordene os raios consistentemente** entre gráficos na mesma superfície para que os usuários possam comparar formas por memória muscular.
 4. **Escolha o `gridType`** - `polygon` (padrão) segue a geometria dos raios; `circle` lê como um alvo/dartboard quando o alinhamento exato dos raios importa menos.
+5. **Decida a escala.** Deixe `max` em `100` para porcentagem ou nota; passe um número para um teto conhecido; use `"auto"` quando a faixa vier de algum lugar que você não controla. Um topo fixo não é limite suave - o que passar dele desenha fora do anel externo.
+6. **Dê largura aos rótulos longos.** Acima de quatro ou cinco raios, o `labelWidth` é o que impede uma categoria do tamanho de uma frase de atravessar o gráfico.
 
 O chart se auto-dimensiona ao pai através do frame responsivo do `ChartContainer`, com um aspect quadrado para que os polígonos permaneçam simétricos.
 
@@ -252,6 +261,53 @@ A forma mais comum. Duas séries traçadas deixam o usuário comparar as pegadas
 
 Para perfis de sujeito único - um jogador, um produto, um time. Um único polígono preenchido lê limpo mesmo com cinco ou seis raios.
 
+### Escala com nota
+
+<ComponentPreview name="data/radar-chart-scored">
+  <RadarChartScoredPreview />
+</ComponentPreview>
+
+Tudo o que o chart oferece para uma leitura comparativa, numa superfície só: escala fixa em 0-100 com um anel a cada dez e cada anel rotulado, rótulos de raio quebrados para que nove caibam, e um ponto em cada vértice. É a forma que uma avaliação de competência pede - três fontes avaliando as mesmas dimensões, lidas na mesma régua.
+
+```html
+<radar-chart
+  [data]="data"
+  [config]="config"
+  xKey="skill"
+  [max]="100"
+  [ticks]="10"
+  [radiusAxis]="true"
+  [labelWidth]="90"
+  [dots]="true"
+/>
+```
+
+O `max={100}` é a prop que sustenta o resto. Sem ele a escala segue o dado, e duas avaliações deixam de ser comparáveis: quem tem nota máxima 70 preenche o gráfico igual a quem tirou 100.
+
+### Deixando o dado definir a escala
+
+```tsx
+<RadarChart data={data} config={config} xKey="metric" max="auto" />
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="metric" max="auto" />
+```
+
+Quando a faixa não é conhecida de antemão - saída de modelo, uma API que você não controla, contagens em vez de notas - o `"auto"` mede contra o maior valor presente. O domínio é arredondado para um limite legível, então o polígono mais externo fica logo dentro do anel, não exatamente sobre ele.
+
+### Preenchido ou contornado
+
+```tsx
+<RadarChart data={data} config={config} xKey="skill" fill="on" />
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" fill="on" />
+```
+
+O `fill` é `"auto"` por padrão: uma série sozinha é preenchida, duas ou mais são contornadas, porque preenchimentos translúcidos empilhados embaçam rápido. Force nos dois sentidos com `"on"` ou `"off"` - forçar ligado acima de uma série clareia o preenchimento para a pilha continuar legível.
+
 ### Grid de polígono
 
 O `gridType` padrão. Anéis de polígono de bordas retas seguem os raios, enfatizando a geometria por raio.
@@ -281,7 +337,8 @@ Defina `gridType` como `"circle"` para círculos concêntricos que leem como um 
 - o `accessibilityLayer` do recharts adiciona navegação por teclado e anúncios de screen reader para as séries plotadas.
 - os tokens `--chart-1` até `--chart-5` vêm com contraste WCAG AA contra o fundo do card em ambos os temas claro e escuro.
 - **Labels dos raios**: cada tick do `PolarAngleAxis` é renderizado como `<text>` SVG ao redor do polígono, mantendo o mapeamento cor-para-série legível junto com o tooltip.
-- **Limite as séries**: mantenha a contagem em duas ou três. Quatro ou mais polígonos sobrepostos derrotam o objetivo visual de comparação de forma.
+- **Limite as séries**: mantenha a contagem baixa. Polígonos contornados suportam mais que preenchidos, mas acima de cinco séries a paleta categórica para de atribuir cor distinta - da sexta em diante vem um neutro apagado, em vez de repetir a primeira cor e pintar duas séries iguais.
+- **Hover nunca é obrigatório para ler um valor**: o tooltip lê o raio inteiro de uma vez, o alvo é a cunha toda e não o vértice, e todo valor também está na tabela `sr-only`.
 
 ## Relacionados
 

@@ -4,12 +4,15 @@ description: 'Compare series across multiple axes that share a single radial dom
 ---
 
 import { RadarChartPreview } from '@/components/preview/data/radar-chart';
+import { RadarChartScoredPreview } from '@/components/preview/data/radar-chart-scored';
 
 ## Overview
 
 `RadarChart` is the styled wrapper over recharts' `RadarChart`, composed on the shadcn `chart` primitive (`ChartContainer`). Each data row (`xKey`) becomes a spoke on the polar grid; each entry in `config` becomes a closed polygon that shares one radial maximum. Use it when you have **three to seven dimensions** that should be evaluated together - skill profiles, satisfaction scores, capability gap analysis.
 
 Reach for RadarChart when no single dimension is the headline and the **shape of the polygon** carries meaning across the whole set. For comparing one ordered dimension, [`LineChart`](/components/data/line-chart) reads faster. For ranking categories on a single metric, [`BarChart`](/components/data/bar-chart) is more legible.
+
+The radial scale is **pinned at 100 by default**. That is deliberate: comparison is the chart's usual job, and a scale derived from the data makes someone whose best score is 70 fill the plot exactly like someone who scored 100. Pass a number for a different ceiling, or `max="auto"` when the range is not known ahead of time.
 
 The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
@@ -19,9 +22,12 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
 <radar-chart>
 └─ figure (role="img")                  card surface, aspect-square
    ├─ svg
-   │  ├─ polar grid (gridType: polygon | circle)
-   │  ├─ angle axis (spokes from xKey)
-   │  └─ radar polygons, one per config key
+   │  ├─ polar grid (gridType: polygon | circle, ring count from ticks)
+   │  ├─ angle axis (spokes from xKey, wrapped to labelWidth)
+   │  ├─ radius axis ticks (optional via radiusAxis)
+   │  ├─ radar polygons, one per config key (fill: auto | on | off)
+   │  ├─ vertex dots, one per row per series (optional via dots)
+   │  └─ active dot, one per series, on the hovered spoke
    ├─ tooltip overlay (optional via tooltip)
    ├─ legend (when config has >1 series)
    └─ sr-only data table
@@ -34,9 +40,10 @@ RadarChart
 └─ ChartContainer            responsive square frame + injects --color-<key>
    └─ RadarChart (recharts)  polar plot area over the angular axis (xKey)
       ├─ ChartTooltip        hover card (ChartTooltipContent)
-      ├─ PolarAngleAxis      spoke labels (xKey)
+      ├─ PolarAngleAxis      spoke labels (xKey, wrapped to labelWidth)
+      ├─ PolarRadiusAxis     the scale: max, ticks, radiusAxis
       ├─ PolarGrid           polygon or circular grid (gridType)
-      └─ Radar               one polygon per series
+      └─ Radar               one polygon per series, with dot / activeDot
 ```
 
 ## Preview
@@ -210,6 +217,8 @@ Drop down to this level for dashed strokes, gradient fills, marker dots at spoke
 2. **Author `config`** with at most three series. Polygons stay legible when stroked; four or more become hard to read.
 3. **Order spokes consistently** across charts in the same surface so users can compare shapes by muscle memory.
 4. **Choose `gridType`** - `polygon` (default) follows the spoke geometry; `circle` reads as a target/dartboard when exact spoke alignment matters less.
+5. **Decide the scale.** Leave `max` at `100` for a percentage or a score; set a number for a known ceiling; use `"auto"` when the range comes from somewhere you do not control. A pinned top is not a soft limit - anything above it draws outside the outer ring.
+6. **Give long labels a width.** Past four or five spokes, `labelWidth` is what keeps a sentence-long category from reaching back across the plot.
 
 The chart auto-sizes to its parent through `ChartContainer`'s responsive frame, with a square aspect so the polygons stay symmetric.
 
@@ -252,6 +261,53 @@ The most common shape. Two stroked series let the user compare polygon footprint
 
 For single-subject profiles - one player, one product, one team. A single filled polygon reads cleanly even with five or six spokes.
 
+### Scored scale
+
+<ComponentPreview name="data/radar-chart-scored">
+  <RadarChartScoredPreview />
+</ComponentPreview>
+
+Everything the chart offers for a comparison read, on one surface: a scale pinned to 0-100 with a ring every ten and each ring labelled, spoke labels wrapped so nine of them fit, and a dot on every vertex. This is the shape a competency review wants - three sources rating the same dimensions, read against one ruler.
+
+```html
+<radar-chart
+  [data]="data"
+  [config]="config"
+  xKey="skill"
+  [max]="100"
+  [ticks]="10"
+  [radiusAxis]="true"
+  [labelWidth]="90"
+  [dots]="true"
+/>
+```
+
+`max={100}` is the load-bearing prop. Without it the scale follows the data, and two reviews stop being comparable: a person whose highest score is 70 fills the plot exactly like one who scored 100.
+
+### Letting the data set the scale
+
+```tsx
+<RadarChart data={data} config={config} xKey="metric" max="auto" />
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="metric" max="auto" />
+```
+
+When the range is not known ahead of time - model output, an API you do not control, counts rather than scores - `"auto"` measures against the largest value present. The domain is rounded up to a readable bound, so the outermost polygon sits just inside the ring rather than exactly on it.
+
+### Filled or outlined
+
+```tsx
+<RadarChart data={data} config={config} xKey="skill" fill="on" />
+```
+
+```html
+<radar-chart [data]="data" [config]="config" xKey="skill" fill="on" />
+```
+
+`fill` defaults to `"auto"`: a lone series is filled, two or more are outlined, because stacked translucent fills turn muddy fast. Force it either way with `"on"` or `"off"` - forcing it on past one series lightens the fill so the stack stays readable.
+
 ### Polygon grid
 
 The default `gridType`. Straight-edged polygon rings track the spokes, emphasizing the per-spoke geometry.
@@ -281,7 +337,8 @@ Set `gridType` to `"circle"` for concentric circles that read like a target or d
 - recharts' `accessibilityLayer` adds keyboard navigation and screen-reader announcements for the plotted series.
 - `--chart-1` through `--chart-5` ship with WCAG AA contrast against the card background in both light and dark themes.
 - **Spoke labels**: each `PolarAngleAxis` tick is rendered as SVG `<text>` around the polygon, keeping the color-to-series mapping legible alongside the tooltip.
-- **Limit series**: keep the count at two or three. Four or more overlapping polygons defeat the visual goal of shape comparison.
+- **Limit series**: keep the count low. Outlined polygons take more than filled ones do, but past five series the categorical palette stops assigning a distinct hue - the sixth and beyond fall back to a muted neutral rather than repeating the first colour, which would paint two series identically.
+- **Hovering never gates a value**: the tooltip reads the whole spoke at once, the hit target is the entire wedge rather than the vertex, and every value is also in the `sr-only` table.
 
 ## Related
 
