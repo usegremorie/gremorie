@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ChartContainer, type ChartConfig } from './chart';
+import { paletteColor } from './chart-data-table';
 
 /**
  * `ChartContainer` renders `ChartStyle`, which is not exported. Rendering the
@@ -122,5 +123,27 @@ describe('ChartStyle', () => {
       const html = markup({ desktop: { label: 'Desktop' } });
       expect(html).not.toContain('<style');
     });
+  });
+});
+
+describe('paletteColor', () => {
+  it('assigns the five categorical slots in fixed order', () => {
+    expect([0, 1, 2, 3, 4].map(paletteColor)).toEqual([
+      'var(--chart-1)',
+      'var(--chart-2)',
+      'var(--chart-3)',
+      'var(--chart-4)',
+      'var(--chart-5)',
+    ]);
+  });
+
+  it('never reuses a hue past the fifth series, matching the Angular edition', () => {
+    const overflow = [5, 6, 11].map(paletteColor);
+    expect(overflow).toEqual([
+      'var(--muted-foreground)',
+      'var(--muted-foreground)',
+      'var(--muted-foreground)',
+    ]);
+    expect(overflow).not.toContain('var(--chart-1)');
   });
 });

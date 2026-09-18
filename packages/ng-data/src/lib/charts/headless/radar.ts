@@ -55,7 +55,16 @@ export class Radar implements OnInit, OnDestroy {
     const { cx, cy, radius } = this.layout();
     return data.map((row, i) => {
       const angle = (i / n) * 2 * Math.PI;
-      const r = (Number(row[this.dataKey()]) / max) * radius;
+      /*
+       * A row missing this series' key, or holding something that is not a
+       * number, sits at the centre — recharts' `computeRadarPoints` does the
+       * same (`isNullish(value) ? 0 : ...`) and keeps the vertex, so the
+       * polygon stays closed and dips on that spoke. Skipping the coercion
+       * lets `Number(undefined)` through as NaN, and a single NaN makes the
+       * whole `d` an invalid path that the browser refuses to draw.
+       */
+      const value = Number(row[this.dataKey()]);
+      const r = Number.isFinite(value) ? (value / max) * radius : 0;
       return polarPoint(cx, cy, r, angle);
     });
   });

@@ -197,4 +197,49 @@ describe('RadarChart', () => {
       expect(path.getAttribute('stroke-width')).toBe('2');
     });
   });
+
+  describe('gaps in the data', () => {
+    // recharts' computeRadarPoints maps a nullish value to radius 0 and keeps
+    // the vertex, so the polygon stays closed and dips to the centre on that
+    // spoke. Anything that is not a finite number has to land there too:
+    // `Number(undefined)` is NaN, and a single NaN turns the whole `d` into an
+    // invalid path that the browser refuses to draw.
+    const GAPPY: ChartDatum[] = [
+      { metric: 'a', v: 10 },
+      { metric: 'b' }, // key missing entirely
+      { metric: 'c', v: 30 },
+      { metric: 'd', v: null as unknown as number },
+      { metric: 'e', v: 'not a number' as unknown as number },
+    ];
+
+    async function renderGappy() {
+      const f = TestBed.createComponent(RadarChart);
+      f.componentRef.setInput('data', GAPPY);
+      f.componentRef.setInput('config', { v: { label: 'V' } } as ChartConfig);
+      f.componentRef.setInput('xKey', 'metric');
+      f.detectChanges();
+      await f.whenStable();
+      f.detectChanges();
+      return f;
+    }
+
+    it('never emits NaN into the path', async () => {
+      const f = await renderGappy();
+      const d = f.nativeElement
+        .querySelector('[data-slot="radar-polygon"]')
+        ?.getAttribute('d');
+      expect(d).toBeTruthy();
+      expect(d).not.toContain('NaN');
+    });
+
+    it('keeps one vertex per row so the polygon stays closed', async () => {
+      const f = await renderGappy();
+      const d: string = f.nativeElement
+        .querySelector('[data-slot="radar-polygon"]')
+        .getAttribute('d');
+      // M<p>L<p>L<p>... Z — one point per row
+      expect(d.endsWith('Z')).toBe(true);
+      expect(d.replace(/[MZ]/g, '').split('L').length).toBe(GAPPY.length);
+    });
+  });
 });
