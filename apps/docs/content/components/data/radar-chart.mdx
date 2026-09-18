@@ -128,6 +128,12 @@ The styled wrapper over recharts' `RadarChart`, composed on `ChartContainer`. Re
 | `config`    | `ChartConfig`           | -           | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
 | `xKey`      | `string`                | -           | Name of the spoke (angle) field on each row. Drives the `PolarAngleAxis` labels around the perimeter.                                                                                                             |
 | `gridType`  | `"polygon" \| "circle"` | `"polygon"` | Shape of the `PolarGrid` rings - straight-edged polygon (default) or concentric circles.                                                                                                                          |
+| `max` | `number` | `100` | Top of the radial scale. Pinned so two charts are read against one ruler: with a derived scale a top score of 70 fills the plot exactly like a top score of 100. **Raise it for data above 100**, or the polygons draw outside the outer ring. |
+| `ticks` | `number` | `4` | Number of grid rings, and of ticks on the radius axis. |
+| `radiusAxis` | `boolean` | `false` | Labels each ring with its value, up the vertical axis. |
+| `labelWidth` | `number` | - | Wraps spoke labels to this width in pixels, on word boundaries. Without it a long label at the side of the circle is drawn as one run, reaching halfway across the plot. |
+| `dots` | `boolean` | `false` | Draws a dot at every vertex. The hovered spoke gets a larger dot either way. |
+| `fill` | `"auto" \| "on" \| "off"` | `"auto"` | Polygon fill. `auto` fills a lone series and outlines two or more, so overlapping series stay readable. |
 | `tooltip`   | `boolean`               | `true`      | Toggles the hover tooltip.                                                                                                                                                                                        |
 | `className` | `string`                | -           | Merged onto the `ChartContainer`. The bundled style centers the chart with a square aspect.                                                                                                                       |
 
