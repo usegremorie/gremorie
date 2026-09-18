@@ -43,19 +43,24 @@ export class Radar implements OnInit, OnDestroy {
 
   readonly center = computed(() => this.layout());
 
-  readonly d = computed(() => {
+  /**
+   * This series' vertex per data row, in spoke order. Exposed so the styled
+   * layer can mark the active one without recomputing the geometry.
+   */
+  readonly points = computed<{ x: number; y: number }[]>(() => {
     const data = this.ctx.data();
     const n = data.length;
-    if (n === 0) return '';
+    if (n === 0) return [];
     const [, max] = this.ctx.yDomain();
     const { cx, cy, radius } = this.layout();
-    const points = data.map((row, i) => {
+    return data.map((row, i) => {
       const angle = (i / n) * 2 * Math.PI;
       const r = (Number(row[this.dataKey()]) / max) * radius;
       return polarPoint(cx, cy, r, angle);
     });
-    return polygonPath(points);
   });
+
+  readonly d = computed(() => polygonPath(this.points()));
 
   /** Spoke endpoints + category labels (shared across series). */
   readonly axes = computed<RadarAxis[]>(() => {

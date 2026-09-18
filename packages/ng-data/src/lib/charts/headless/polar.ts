@@ -31,6 +31,37 @@ export function polarPoint(
   };
 }
 
+/**
+ * Inverse of `polarPoint`: which evenly spaced spoke a pointer belongs to.
+ *
+ * Mirrors recharts' axis-mode hit testing (`calculateActiveTickIndex` with
+ * `axisType: 'angleAxis'`), where a tick owns the angular interval bounded by
+ * the midpoints to its neighbours. For evenly spaced spokes that reduces to
+ * rounding the angle to the nearest step, so every pointer inside the circle
+ * resolves to a spoke — the target is the whole wedge, not the vertex.
+ *
+ * Returns `null` outside the outer radius and at the exact centre, matching
+ * recharts' `inRangeOfSector` radius gate (`0 < radius <= outerRadius`), where
+ * no angle can be derived.
+ */
+export function spokeIndexAt(
+  point: { x: number; y: number },
+  layout: PolarLayout,
+  spokes: number,
+): number | null {
+  if (spokes <= 0) return null;
+  const dx = point.x - layout.cx;
+  const dy = point.y - layout.cy;
+  const distance = Math.hypot(dx, dy);
+  if (distance === 0 || distance > layout.radius) return null;
+
+  // `polarPoint` is x = cx + r·sin(a), y = cy - r·cos(a): angle 0 at the top,
+  // growing clockwise. atan2(dx, -dy) inverts exactly that.
+  const turn = 2 * Math.PI;
+  const angle = (Math.atan2(dx, -dy) + turn) % turn;
+  return Math.round(angle / (turn / spokes)) % spokes;
+}
+
 /** Closed SVG polygon `d` through the given points. Empty string if < 2 points. */
 export function polygonPath(
   points: readonly { x: number; y: number }[],

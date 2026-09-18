@@ -1,6 +1,13 @@
 import { format as d3Format } from 'd3-format';
 
-const number = d3Format(',');
+/*
+ * The default preset delegates to `toLocaleString()` — the same call the React
+ * edition makes in `ChartTooltipContent` — so a value reads identically in both
+ * editions. A fixed d3 format would print `3.76` next to React's `3,76` for a
+ * reader in pt-BR. The trade is that output now follows the host locale, so
+ * assert against `toLocaleString()` rather than a literal in tests.
+ */
+const number = (value: number) => value.toLocaleString();
 const compact = d3Format('.3~s');
 const percent = d3Format('.1~%');
 

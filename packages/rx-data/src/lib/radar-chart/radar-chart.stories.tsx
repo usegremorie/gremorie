@@ -48,6 +48,7 @@ const meta = {
   parameters: { layout: 'padded' },
   argTypes: {
     gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
+    fill: { control: 'inline-radio', options: ['auto', 'on', 'off'] },
     tooltip: { control: 'boolean' },
   },
   decorators: [
@@ -62,52 +63,65 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Values are set so no series dominates: each one leads on some spokes and
+// trails on others, so the polygons cross instead of nesting. A radar whose
+// series nest tells you nothing the same numbers in a table would not.
 const METRICS: ChartDatum[] = [
-  { metric: 'Speed', current: 120, target: 110 },
-  { metric: 'Power', current: 98, target: 130 },
-  { metric: 'Range', current: 86, target: 100 },
-  { metric: 'Agility', current: 99, target: 90 },
-  { metric: 'Armor', current: 85, target: 120 },
-  { metric: 'Stealth', current: 65, target: 85 },
+  { metric: 'Speed', current: 120, target: 110, baseline: 86 },
+  { metric: 'Power', current: 98, target: 130, baseline: 105 },
+  { metric: 'Range', current: 86, target: 100, baseline: 128 },
+  { metric: 'Agility', current: 99, target: 90, baseline: 118 },
+  { metric: 'Armor', current: 85, target: 120, baseline: 95 },
+  { metric: 'Stealth', current: 65, target: 85, baseline: 112 },
 ];
 
 const SINGLE: ChartConfig = {
   current: { label: 'Current', color: 'var(--chart-1)' },
 };
+// Categorical slots in fixed order — chart-1, then 2, then 3. Never cycled and
+// never reordered: a series keeps its hue when the set changes, so the reader's
+// colour memory survives a filter.
 const MULTI: ChartConfig = {
   current: { label: 'Current', color: 'var(--chart-1)' },
   target: { label: 'Target', color: 'var(--chart-2)' },
+  baseline: { label: 'Baseline', color: 'var(--chart-3)' },
 };
 
-/** A single filled polygon. */
+/** Three series (outlined), crossing on several spokes. */
 export const Default: Story = {
+  args: { data: METRICS, config: MULTI, xKey: 'metric' },
+};
+
+/** A single filled polygon — the one-series treatment (fill, no stroke). */
+export const SingleSeries: Story = {
   args: { data: METRICS, config: SINGLE, xKey: 'metric' },
 };
 
-/** Two series (outlined). */
-export const Multiple: Story = {
-  args: { data: METRICS, config: MULTI, xKey: 'metric' },
+/** Three series with the fill forced on — lightened to 0.2 so the stack reads. */
+export const Filled: Story = {
+  args: { data: METRICS, config: MULTI, xKey: 'metric', fill: 'on' },
 };
 
 /** Circular grid. */
 export const CircleGrid: Story = {
-  args: { data: METRICS, config: SINGLE, xKey: 'metric', gridType: 'circle' },
+  args: { data: METRICS, config: MULTI, xKey: 'metric', gridType: 'circle' },
 };
 
 // Shared with the Angular `Workbench` story (ng-data) — keep byte-identical so
 // the dual-framework workbench renders the same use case on both sides.
 const WORKBENCH_DATA: ChartDatum[] = [
-  { trait: 'Speed', you: 120, team: 110 },
-  { trait: 'Reliability', you: 98, team: 130 },
-  { trait: 'Comfort', you: 86, team: 100 },
-  { trait: 'Safety', you: 99, team: 90 },
-  { trait: 'Efficiency', you: 85, team: 120 },
-  { trait: 'Range', you: 65, team: 85 },
+  { trait: 'Speed', you: 120, team: 110, fleet: 86 },
+  { trait: 'Reliability', you: 98, team: 130, fleet: 105 },
+  { trait: 'Comfort', you: 86, team: 100, fleet: 128 },
+  { trait: 'Safety', you: 99, team: 90, fleet: 118 },
+  { trait: 'Efficiency', you: 85, team: 120, fleet: 95 },
+  { trait: 'Range', you: 65, team: 85, fleet: 112 },
 ];
 
 const WORKBENCH_CONFIG: ChartConfig = {
   you: { label: 'You', color: 'var(--chart-1)' },
   team: { label: 'Team', color: 'var(--chart-2)' },
+  fleet: { label: 'Fleet', color: 'var(--chart-3)' },
 };
 
 /**

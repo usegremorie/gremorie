@@ -22,6 +22,8 @@ import {
 } from '../chart/chart-data-table';
 import type { ChartDatum } from '../chart/types';
 
+export type RadarFill = 'auto' | 'on' | 'off';
+
 export interface RadarChartProps {
   /** Tabular rows — one spoke per row. */
   data: readonly ChartDatum[];
@@ -31,6 +33,12 @@ export interface RadarChartProps {
   xKey: string;
   /** Grid shape. */
   gridType?: 'polygon' | 'circle';
+  /**
+   * Polygon fill. `auto` fills a lone series and outlines two or more: stacked
+   * translucent fills turn muddy fast, so past one series the outline carries
+   * the shape. `on` / `off` force it either way.
+   */
+  fill?: RadarFill;
   /** Hover tooltip. */
   tooltip?: boolean;
   className?: string;
@@ -50,11 +58,18 @@ export function RadarChart({
   config,
   xKey,
   gridType = 'polygon',
+  fill = 'auto',
   tooltip = true,
   className,
 }: RadarChartProps) {
   const keys = Object.keys(config).filter((k) => k !== xKey);
   const single = keys.length <= 1;
+  const filled = fill === 'on' || (fill === 'auto' && single);
+  // A lone filled polygon can take a heavy 0.6 and carries its own edge, so it
+  // needs no stroke; overlapping fills cannot, so forcing `on` past one series
+  // drops to 0.2 and keeps the 2px outline doing the work.
+  const fillOpacity = filled ? (single ? 0.6 : 0.2) : 0;
+  const strokeWidth = filled && single ? 0 : 2;
   const series = seriesViews(config, keys);
   const ariaLabel = `Radar chart of ${series
     .map((s) => s.labelText)
@@ -89,9 +104,9 @@ export function RadarChart({
               key={key}
               dataKey={key}
               fill={`var(--color-${key})`}
-              fillOpacity={single ? 0.6 : 0}
+              fillOpacity={fillOpacity}
               stroke={`var(--color-${key})`}
-              strokeWidth={single ? 0 : 2}
+              strokeWidth={strokeWidth}
             />
           ))}
         </RechartsRadarChart>

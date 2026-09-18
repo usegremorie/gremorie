@@ -314,6 +314,7 @@ export const radarChart = defineContract({
   ├─ polar grid (gridType: polygon | circle)
   ├─ angle axis (spokes from xKey)
   ├─ radar polygon (1 per config key)
+  ├─ active dot (1 per series, on the hovered spoke)
   ├─ tooltip (opt) · legend
   └─ sr-only data table`,
   props: [
@@ -326,6 +327,13 @@ export const radarChart = defineContract({
       default: 'polygon',
       options: ['polygon', 'circle'],
       desc: 'Polar grid shape.',
+    },
+    {
+      name: 'fill',
+      type: 'RadarFill',
+      default: 'auto',
+      options: ['auto', 'on', 'off'],
+      desc: 'Polygon fill. `auto` fills a lone series and outlines two or more, so overlapping series stay readable; `on` and `off` force it either way.',
     },
     TOOLTIP,
     CN,
@@ -345,6 +353,7 @@ export const radarChart = defineContract({
   example: {
     xKey: 'trait',
     gridType: 'polygon',
+    fill: 'auto',
     tooltip: true,
   },
 });

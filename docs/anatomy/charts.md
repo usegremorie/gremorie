@@ -17,6 +17,16 @@ Shared rules for all seven:
   for categorical single-series charts.
 - **Tooltip**: hover tooltip on by default (`tooltip` input). Angular implements
   it with a pointer-tracking overlay (the React side gets it from recharts).
+  For the polar charts the hit target is the whole wedge, not the vertex: the
+  active spoke is resolved from the pointer's angle, mirroring recharts'
+  axis-mode `calculateActiveTickIndex`. Attaching invisible shapes to each
+  spoke cannot match it — the series polygons paint over them and swallow the
+  events.
+- **Radar fill**: `fill` is `auto` by default — a lone series is filled at 0.6
+  with no stroke, two or more are outlined at 2px with no fill, because stacked
+  translucent fills turn muddy fast. `on` forces a fill and lightens it to 0.2
+  past one series; `off` always outlines. Angular tags the shape
+  `data-slot="radar-polygon"`; recharts names its own `.recharts-radar-polygon`.
 - **Accessibility**: `role="img"` + computed `aria-label`, plus an `sr-only`
   `<table>` mirroring the data. Both editions ship this.
 
@@ -50,7 +60,8 @@ Shared rules for all seven:
    ├─ svg
    │  ├─ polar grid (`gridType`: polygon | circle)
    │  ├─ angle axis (spokes from `xKey`)
-   │  └─ radar polygon, one per config key
+   │  ├─ radar polygon, one per config key (`fill`: auto | on | off)
+   │  └─ active dot, one per series, on the hovered spoke
    ├─ tooltip overlay (optional)
    ├─ legend
    └─ sr-only data table

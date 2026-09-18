@@ -42,6 +42,13 @@ export type CurveType = 'natural' | 'monotone' | 'linear' | 'step';
 /** Polar grid shape for the radar chart. */
 export type GridType = 'polygon' | 'circle';
 
+/**
+ * Radar polygon fill. `auto` fills a lone series and outlines two or more:
+ * stacked translucent fills turn muddy fast, so past one series the outline
+ * carries the shape. `on` / `off` force it either way.
+ */
+export type RadarFill = 'auto' | 'on' | 'off';
+
 export const DEFAULT_MARGIN: Margin = {
   top: 8,
   right: 8,
