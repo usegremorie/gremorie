@@ -1,3 +1,5 @@
+import type { Type } from '@angular/core';
+
 /**
  * One row of chart data: keys are field names, values are numbers or category
  * labels. The optional `fill` sets a per-row color (per-bar / per-slice), used
@@ -26,8 +28,17 @@ export interface ChartSeriesConfig {
   label?: string;
   /** CSS color or token, e.g. `'var(--chart-1)'`. Defaults to the palette. */
   color?: string;
-  /** Angular-only extension: formatter preset, e.g. `'currency:BRL' | 'percent' | 'compact'`. */
+  /**
+   * Formatter preset, e.g. `'currency:BRL' | 'percent' | 'compact'`. A plain
+   * string, never a function, so the config stays JSON-serializable.
+   */
   format?: string;
+  /**
+   * Component drawn in the legend in place of the colour swatch. Mirrors
+   * React's `ChartConfig.icon`. The series colour reaches it through
+   * `currentColor`, so a plain SVG icon needs no extra wiring.
+   */
+  icon?: Type<unknown>;
 }
 
 /** @deprecated Back-compat alias. Prefer {@link ChartSeriesConfig}. */

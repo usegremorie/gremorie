@@ -8,6 +8,7 @@ import {
   viewChild,
   viewChildren,
 } from '@angular/core';
+import { ChartLegend, type ChartLegendItem } from './chart-legend';
 import { ChartFrame } from '../headless/chart-frame';
 import { Radar } from '../headless/radar';
 import { formatValue } from '../headless/format';
@@ -26,6 +27,7 @@ interface SeriesView {
   label: string;
   color: string;
   format?: string;
+  icon?: ChartLegendItem['icon'];
 }
 
 /**
@@ -41,7 +43,7 @@ interface SeriesView {
  */
 @Component({
   selector: 'radar-chart',
-  imports: [ChartFrame, Radar],
+  imports: [ChartFrame, Radar, ChartLegend],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'radar-chart',
@@ -158,19 +160,7 @@ interface SeriesView {
         </div>
       }
 
-      <ul
-        class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"
-      >
-        @for (s of series(); track s.key) {
-          <li class="flex items-center gap-1.5">
-            <span
-              class="size-2.5 rounded-[2px]"
-              [style.background]="s.color"
-            ></span>
-            {{ s.label }}
-          </li>
-        }
-      </ul>
+      <chart-legend [items]="legendItems()" />
 
       <table class="sr-only">
         <caption>
@@ -284,8 +274,18 @@ export class RadarChart {
         label: cfg[key]?.label ?? titleCaseKey(key),
         color: cfg[key]?.color ?? paletteColor(i),
         format: cfg[key]?.format,
+        icon: cfg[key]?.icon,
       }));
   });
+
+  protected readonly legendItems = computed<ChartLegendItem[]>(() =>
+    this.series().map((s) => ({
+      key: s.key,
+      label: s.label,
+      color: s.color,
+      icon: s.icon,
+    })),
+  );
 
   protected tipRows(
     i: number,

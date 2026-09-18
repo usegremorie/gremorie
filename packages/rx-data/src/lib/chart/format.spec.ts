@@ -1,7 +1,10 @@
+import { describe, expect, it } from 'vitest';
+
 import { formatValue } from './format';
 
 /**
- * Kept byte-identical with `packages/rx-data/src/lib/chart/format.spec.ts`.
+ * Kept byte-identical with
+ * `packages/ng-data/src/lib/charts/headless/format.spec.ts`.
  * The two editions duplicate the twenty-line formatter rather than stand up a
  * shared runtime package; this shared suite is what stops them drifting.
  *

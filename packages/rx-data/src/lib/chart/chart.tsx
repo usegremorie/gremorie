@@ -6,6 +6,8 @@ import type { TooltipValueType } from 'recharts';
 
 import { cn } from '@gremorie/rx-core';
 
+import { formatValue } from './format';
+
 /**
  * Chart primitives — ported from shadcn/ui (new-york-v4), the proven recharts
  * wrapper, adapted to Gremorie (`cn` from `@gremorie/rx-core`; design tokens).
@@ -30,6 +32,12 @@ export type ChartConfig = Record<
   {
     label?: React.ReactNode;
     icon?: React.ComponentType;
+    /**
+     * Formatter preset for this series' values, e.g. `'currency:BRL'`,
+     * `'percent'`, `'compact'`. A plain string, never a function, so the
+     * config stays JSON-serializable. Parity with `@gremorie/ng-data`.
+     */
+    format?: string;
   } & (
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
@@ -357,7 +365,7 @@ function ChartTooltipContent({
                       {item.value != null && (
                         <span className="font-mono font-medium text-card-foreground tabular-nums">
                           {typeof item.value === 'number'
-                            ? item.value.toLocaleString()
+                            ? formatValue(item.value, itemConfig?.format)
                             : String(item.value)}
                         </span>
                       )}

@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RadarChart } from './radar-chart';
 import type { ChartConfig, ChartDatum } from '../headless/types';
@@ -240,6 +241,53 @@ describe('RadarChart', () => {
       // M<p>L<p>L<p>... Z — one point per row
       expect(d.endsWith('Z')).toBe(true);
       expect(d.replace(/[MZ]/g, '').split('L').length).toBe(GAPPY.length);
+    });
+  });
+
+  describe('legend icon', () => {
+    it('draws a swatch when the series has no icon', async () => {
+      const f = await render();
+      const host = f.nativeElement as HTMLElement;
+      expect(
+        host.querySelectorAll('[data-slot="chart-legend-swatch"]').length,
+      ).toBe(2);
+      expect(host.querySelector('[data-slot="chart-legend-icon"]')).toBeNull();
+    });
+
+    it('draws the series icon in place of the swatch, tinted with its colour', async () => {
+      @Component({
+        standalone: true,
+        template: '<svg data-testid="mark"></svg>',
+      })
+      class Mark {}
+
+      const f = TestBed.createComponent(RadarChart);
+      f.componentRef.setInput('data', DATA);
+      f.componentRef.setInput('config', {
+        sales: { label: 'Sales', color: 'var(--chart-1)', icon: Mark },
+        profit: { label: 'Profit', color: 'var(--chart-2)' },
+      } as ChartConfig);
+      f.componentRef.setInput('xKey', 'metric');
+      f.detectChanges();
+      await f.whenStable();
+      f.detectChanges();
+
+      const host = f.nativeElement as HTMLElement;
+      const slot = host.querySelector(
+        '[data-slot="chart-legend-icon"]',
+      ) as HTMLElement;
+      expect(slot).toBeTruthy();
+      // rendered INSIDE the colour context, not beside it: ViewContainerRef
+      // inserts a created component as a sibling of its anchor, so the anchor
+      // has to live inside the span.
+      expect(slot.querySelector('[data-testid="mark"]')).toBeTruthy();
+      // The colour itself is not asserted here: jsdom's CSSOM rejects `var(...)`
+      // values outright, so `style.color` reads empty for the icon and for the
+      // pre-existing swatch alike. Testing it would test jsdom.
+      // the series without an icon keeps its swatch
+      expect(
+        host.querySelectorAll('[data-slot="chart-legend-swatch"]').length,
+      ).toBe(1);
     });
   });
 });

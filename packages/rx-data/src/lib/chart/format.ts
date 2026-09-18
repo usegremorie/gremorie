@@ -4,7 +4,7 @@
  * Built entirely on `Intl.NumberFormat`, the platform API, for three reasons:
  * it needs no dependency, it follows the reader's locale (so a Brazilian sees
  * `1.234,5` and an American `1,234.5`), and it exists identically in both
- * editions — `@gremorie/rx-data` ships a byte-identical copy of this file.
+ * editions — `@gremorie/ng-data` ships a byte-identical copy of this file.
  *
  * **On the duplication:** the two editions have no shared runtime package
  * (`@gremorie/tokens` is CSS, `contracts` is private), and standing one up for
