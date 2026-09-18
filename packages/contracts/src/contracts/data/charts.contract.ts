@@ -312,8 +312,11 @@ export const radarChart = defineContract({
   anatomy: `
   <radar-chart> (role=img, card)
   ├─ polar grid (gridType: polygon | circle)
-  ├─ angle axis (spokes from xKey)
+  ├─ angle axis (spokes from xKey, wrapped to labelWidth)
+  ├─ radius axis ticks (opt: radiusAxis)
   ├─ radar polygon (1 per config key)
+  ├─ vertex dots (opt: dots)
+  ├─ active dot (1 per series, on the hovered spoke)
   ├─ tooltip (opt) · legend
   └─ sr-only data table`,
   props: [
@@ -326,6 +329,42 @@ export const radarChart = defineContract({
       default: 'polygon',
       options: ['polygon', 'circle'],
       desc: 'Polar grid shape.',
+    },
+    {
+      name: 'dots',
+      type: 'boolean',
+      default: false,
+      desc: 'Draw a dot at every vertex. The hovered spoke always gets a larger dot regardless.',
+    },
+    {
+      name: 'max',
+      type: 'number',
+      default: 100,
+      desc: 'Top of the radial scale. Pinned so two charts share one ruler; raise it for data past 100.',
+    },
+    {
+      name: 'ticks',
+      type: 'number',
+      default: 4,
+      desc: 'Grid rings, and ticks on the radius axis.',
+    },
+    {
+      name: 'labelWidth',
+      type: 'number',
+      desc: 'Wrap spoke labels to this width in px. Omit and a long label is drawn as one run, reaching across the plot.',
+    },
+    {
+      name: 'radiusAxis',
+      type: 'boolean',
+      default: false,
+      desc: 'Label each ring with its value, up the vertical axis.',
+    },
+    {
+      name: 'fill',
+      type: 'RadarFill',
+      default: 'auto',
+      options: ['auto', 'on', 'off'],
+      desc: 'Polygon fill. `auto` fills a lone series and outlines two or more, so overlapping series stay readable; `on` and `off` force it either way.',
     },
     TOOLTIP,
     CN,
@@ -345,6 +384,11 @@ export const radarChart = defineContract({
   example: {
     xKey: 'trait',
     gridType: 'polygon',
+    max: 100,
+    ticks: 10,
+    radiusAxis: true,
+    dots: false,
+    fill: 'auto',
     tooltip: true,
   },
 });

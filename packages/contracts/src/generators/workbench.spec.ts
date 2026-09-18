@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { toWorkbenchEntry, workbenchManifest } from './workbench';
-import { chartArtifact } from '../index';
+import { chartArtifact, radarChart } from '../index';
 import type { ComponentContract } from '../types';
 
 describe('toWorkbenchEntry', () => {
@@ -199,5 +199,20 @@ describe('toWorkbenchEntry control overrides and demo controls', () => {
       'disabled',
       'label',
     ]);
+  });
+});
+
+describe('radar-chart fill control', () => {
+  const entry = toWorkbenchEntry(radarChart);
+
+  it('reaches the workbench as a three-state select, defaulting to auto', () => {
+    const fill = entry.controls.find((c) => c.name === 'fill');
+    expect(fill?.kind).toBe('select');
+    expect(fill?.options).toEqual(['auto', 'on', 'off']);
+    expect(fill?.default).toBe('auto');
+  });
+
+  it('seeds the live code sample with the same default', () => {
+    expect(entry.example.fill).toBe('auto');
   });
 });

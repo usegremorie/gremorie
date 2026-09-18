@@ -19,9 +19,17 @@ function titleCaseKey(key: string): string {
   return key.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** The cycling categorical palette token for index `i` — same cycle as NG. */
+/**
+ * The categorical slot for series `i`. Five hues, assigned in fixed order and
+ * **never cycled**: a sixth series that reused `--chart-1` would paint two
+ * different series the same colour, and the reader has no way back from that.
+ * Past the fifth, series fall back to a muted neutral — the chart stops
+ * claiming they are individually identifiable, which is the honest signal that
+ * the data needs folding into an "Other" bucket, small multiples, or a
+ * different form.
+ */
 export function paletteColor(i: number): string {
-  return `var(--chart-${(i % 5) + 1})`;
+  return i < 5 ? `var(--chart-${i + 1})` : 'var(--muted-foreground)';
 }
 
 /**

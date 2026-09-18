@@ -40,6 +40,8 @@ export class ChartFrame {
   readonly margin = input<Margin>(DEFAULT_MARGIN);
   /** Stack series within each category (drives the shared Y domain). */
   readonly stacked = input<boolean>(false);
+  /** Pins the Y domain; omit to derive it from the data. */
+  readonly domain = input<[number, number] | undefined>(undefined);
 
   readonly viewBox = computed(
     () => `0 0 ${this.ctx.width()} ${this.ctx.height()}`,
@@ -51,6 +53,7 @@ export class ChartFrame {
       this.ctx.xKey.set(this.xKey());
       this.ctx.margin.set(this.margin());
       this.ctx.stacked.set(this.stacked());
+      this.ctx.domainOverride.set(this.domain() ?? null);
     });
 
     afterNextRender(() => {

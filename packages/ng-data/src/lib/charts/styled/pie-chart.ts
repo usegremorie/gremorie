@@ -5,6 +5,7 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { ChartLegend, type ChartLegendItem } from './chart-legend';
 import { ChartFrame } from '../headless/chart-frame';
 import { Pie } from '../headless/pie';
 import { formatValue } from '../headless/format';
@@ -32,7 +33,7 @@ interface LegendItem {
  */
 @Component({
   selector: 'pie-chart',
-  imports: [ChartFrame, Pie],
+  imports: [ChartFrame, Pie, ChartLegend],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'pie-chart',
@@ -103,19 +104,7 @@ interface LegendItem {
         </div>
       }
 
-      <ul
-        class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"
-      >
-        @for (item of legend(); track item.name) {
-          <li class="flex items-center gap-1.5">
-            <span
-              class="size-2.5 rounded-[2px]"
-              [style.background]="item.color"
-            ></span>
-            {{ item.name }}
-          </li>
-        }
-      </ul>
+      <chart-legend [items]="legendItems()" />
 
       <table class="sr-only">
         <caption>
@@ -181,5 +170,18 @@ export class PieChart {
   readonly ariaLabel = computed(
     () =>
       `${this.donut() ? 'Donut' : 'Pie'} chart of ${this.dataKey()} by ${this.nameKey()}`,
+  );
+
+  /**
+   * Adapts this chart's per-row legend to the shared legend component. These
+   * charts colour by row rather than by series, so there is no per-series
+   * `icon` to forward — the swatch is always the right mark here.
+   */
+  protected readonly legendItems = computed<ChartLegendItem[]>(() =>
+    this.legend().map((item) => ({
+      key: item.name,
+      label: item.name,
+      color: item.color,
+    })),
   );
 }
