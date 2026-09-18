@@ -216,35 +216,35 @@ interface SeriesView {
           }
         </div>
       }
+    </div>
 
-      <chart-legend [items]="legendItems()" />
+    <chart-legend [items]="legendItems()" />
 
-      <table class="sr-only">
-        <caption>
-          {{
-            ariaLabel()
-          }}
-        </caption>
-        <thead>
+    <table class="sr-only">
+      <caption>
+        {{
+          ariaLabel()
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th>{{ xKey() }}</th>
+          @for (s of series(); track s.key) {
+            <th>{{ s.label }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of data(); track $index) {
           <tr>
-            <th>{{ xKey() }}</th>
+            <td>{{ row[xKey()] }}</td>
             @for (s of series(); track s.key) {
-              <th>{{ s.label }}</th>
+              <td>{{ row[s.key] }}</td>
             }
           </tr>
-        </thead>
-        <tbody>
-          @for (row of data(); track $index) {
-            <tr>
-              <td>{{ row[xKey()] }}</td>
-              @for (s of series(); track s.key) {
-                <td>{{ row[s.key] }}</td>
-              }
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+        }
+      </tbody>
+    </table>
   `,
 })
 export class RadarChart {

@@ -83,6 +83,25 @@ function wrappedTick(width: number) {
   };
 }
 
+/**
+ * A PolarRadiusAxis tick nudged off the vertical. Left centred, recharts draws
+ * the outermost value directly under the spoke label above it — `100` lands on
+ * `Speed`. The Angular edition offsets by the same 6px.
+ */
+function RadiusTick({ x, y, payload }: PolarTickProps) {
+  return (
+    <text
+      x={(x ?? 0) - 6}
+      y={y}
+      textAnchor="end"
+      dominantBaseline="middle"
+      className="fill-muted-foreground text-[10px]"
+    >
+      {Number(payload?.value ?? 0).toLocaleString()}
+    </text>
+  );
+}
+
 export type RadarFill = 'auto' | 'on' | 'off';
 
 export interface RadarChartProps {
@@ -186,6 +205,10 @@ export function RadarChart({
           ) : null}
           <PolarAngleAxis
             dataKey={xKey}
+            /* Default 8 leaves the outermost radius tick sitting on the spoke
+               label above it — `100` lands on `Speed`. 18 clears it, and the
+               Angular edition places its labels at the same distance. */
+            tickSize={18}
             // recharts types `tick` narrowly; a component is valid at runtime.
             tick={
               labelWidth
@@ -200,11 +223,20 @@ export function RadarChart({
               nothing unless `radiusAxis` were on. */}
           <PolarRadiusAxis
             domain={[0, max]}
-            tickCount={ticks + 1}
+            /* Explicit ticks rather than a count: `tickCount` includes zero,
+               which puts a `0` on the centre point where there is no ring to
+               label, and the Angular edition — whose rings start at 1/n — has
+               none. Listing them keeps both editions on the same values. */
+            ticks={
+              Array.from(
+                { length: Math.max(1, Math.floor(ticks)) },
+                (_, i) => ((i + 1) * max) / Math.max(1, Math.floor(ticks)),
+              ) as unknown as never
+            }
             angle={90}
             axisLine={false}
-            tick={radiusAxis}
-            tickFormatter={(value: number) => value.toLocaleString()}
+            // recharts types `tick` narrowly; a component is valid at runtime.
+            tick={radiusAxis ? (RadiusTick as unknown as boolean) : false}
           />
           <PolarGrid gridType={gridType} />
           {keys.map((key) => (

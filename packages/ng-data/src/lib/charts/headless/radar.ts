@@ -86,7 +86,9 @@ export class Radar implements OnInit, OnDestroy {
     return data.map((row, i) => {
       const angle = (i / n) * 2 * Math.PI;
       const end = polarPoint(cx, cy, radius, angle);
-      const label = polarPoint(cx, cy, radius + 14, angle);
+      // Matches recharts' PolarAngleAxis tickSize on the React side: enough
+      // clearance that the outermost radius tick does not land on the label.
+      const label = polarPoint(cx, cy, radius + 18, angle);
       /*
        * Anchor by side, not always centre: a centred label on a spoke at the
        * left or right reaches half its own width back across the plot. Spokes
