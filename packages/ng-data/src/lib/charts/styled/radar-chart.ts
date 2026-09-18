@@ -65,7 +65,7 @@ interface SeriesView {
         chartFrame
         [data]="data()"
         [xKey]="xKey()"
-        [domain]="[0, max()]"
+        [domain]="pinnedDomain()"
         class="mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground"
         (pointermove)="onPointerMove($event)"
         (pointerleave)="clearActive()"
@@ -255,12 +255,25 @@ export class RadarChart {
   readonly fill = input<RadarFill>('auto');
   readonly dots = input(false);
   /**
-   * Top of the radial scale. Pinned by default so two charts are read against
-   * one ruler: with a derived scale someone whose best score is 70 fills the
-   * plot exactly like someone who scored 100. Raise it for data that goes
-   * past 100, or the polygons draw outside the outer ring.
+   * Top of the radial scale, or `'auto'` to follow the largest value in the
+   * data.
+   *
+   * Pinned by default because the chart's usual job is comparison: with a
+   * derived scale someone whose best score is 70 fills the plot exactly like
+   * someone who scored 100, and two reports stop being comparable. That is the
+   * right default for a 0-100 percentage or score, and the wrong one for data
+   * that runs past 100 — pass a number for that range, or `'auto'` when the
+   * range is not known ahead of time.
    */
-  readonly max = input(100);
+  readonly max = input<number | 'auto'>(100);
+  /** `null` hands the domain back to the data, as `chartFrame` expects. */
+  protected readonly pinnedDomain = computed<[number, number] | undefined>(
+    () => {
+      const m = this.max();
+      return m === 'auto' ? undefined : [0, m];
+    },
+  );
+
   /** Number of grid rings, and of ticks on the radius axis. */
   readonly ticks = input(4);
   /**

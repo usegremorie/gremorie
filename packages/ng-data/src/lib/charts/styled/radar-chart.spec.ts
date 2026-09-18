@@ -544,4 +544,93 @@ describe('RadarChart', () => {
       }
     });
   });
+
+  describe("max: 'auto'", () => {
+    // Same shape, different magnitudes. Pinned, the smaller one must reach
+    // less far; on 'auto' each fills its own plot, because each is measured
+    // against its own largest value.
+    const radiusOf = async (top: number, max: number | 'auto') => {
+      const restore = stubLayout();
+      try {
+        const f = TestBed.createComponent(RadarChart);
+        f.componentRef.setInput(
+          'data',
+          DATA.map((r) => ({ ...r, sales: top })),
+        );
+        f.componentRef.setInput('config', {
+          sales: { label: 'Sales' },
+        } as ChartConfig);
+        f.componentRef.setInput('xKey', 'metric');
+        f.componentRef.setInput('max', max);
+        f.detectChanges();
+        await f.whenStable();
+        f.detectChanges();
+        const d = f.nativeElement
+          .querySelector('[data-slot="radar-polygon"]')
+          .getAttribute('d') as string;
+        const [x, y] = d.slice(1).split('L')[0].split(',').map(Number);
+        return Math.hypot(x - SIZE / 2, y - SIZE / 2);
+      } finally {
+        restore();
+      }
+    };
+
+    it('pinned, a smaller top score reaches less far', async () => {
+      const low = await radiusOf(50, 100);
+      const high = await radiusOf(100, 100);
+      expect(low / high).toBeCloseTo(0.5, 1);
+    });
+
+    it("on 'auto', a chart is measured against its own data", async () => {
+      // Pinned at 100, a top score of 50 reaches half the radius. On 'auto' it
+      // fills its own plot instead — not exactly to the edge, because a derived
+      // domain is rounded up to a readable bound (50 becomes 60), which a
+      // pinned one deliberately is not.
+      const pinned = await radiusOf(50, 100);
+      const auto = await radiusOf(50, 'auto');
+      const full = await radiusOf(100, 100);
+
+      expect(pinned / full).toBeCloseTo(0.5, 1);
+      expect(auto / full).toBeGreaterThan(0.8);
+    });
+
+    it("on 'auto', data past 100 still fits inside the plot", async () => {
+      const restore = stubLayout();
+      try {
+        const f = TestBed.createComponent(RadarChart);
+        f.componentRef.setInput(
+          'data',
+          DATA.map((r, i) => ({ ...r, sales: 150 + i * 50 })),
+        );
+        f.componentRef.setInput('config', {
+          sales: { label: 'Sales' },
+        } as ChartConfig);
+        f.componentRef.setInput('xKey', 'metric');
+        f.componentRef.setInput('max', 'auto');
+        f.detectChanges();
+        await f.whenStable();
+        f.detectChanges();
+
+        const svg = f.nativeElement.querySelector('svg') as SVGSVGElement;
+        const outer = Number(
+          svg
+            .querySelector('[data-slot="radar-polygon"]')
+            ?.getAttribute('d')
+            ?.match(/-?\d+(\.\d+)?/g)
+            ?.reduce((worst, n, i, all) => {
+              if (i % 2) return worst;
+              const r = Math.hypot(
+                Number(n) - SIZE / 2,
+                Number(all[i + 1]) - SIZE / 2,
+              );
+              return Math.max(worst, r);
+            }, 0) ?? 0,
+        );
+        // the padded plot radius; nothing may sit outside it
+        expect(outer).toBeLessThanOrEqual(SIZE / 2 - 28 + 0.5);
+      } finally {
+        restore();
+      }
+    });
+  });
 });

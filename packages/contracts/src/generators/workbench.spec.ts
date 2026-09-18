@@ -216,3 +216,15 @@ describe('radar-chart fill control', () => {
     expect(entry.example.fill).toBe('auto');
   });
 });
+
+describe('radar-chart max control', () => {
+  const entry = toWorkbenchEntry(radarChart);
+
+  it('is a text field, so `auto` can be typed alongside a number', () => {
+    // Derivation reads `boolean` / `number` / `string`; the real type is
+    // `number | 'auto'`, which would have produced no control at all.
+    const max = entry.controls.find((c) => c.name === 'max');
+    expect(max?.kind).toBe('text');
+    expect(max?.default).toBe(100);
+  });
+});

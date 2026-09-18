@@ -338,9 +338,10 @@ export const radarChart = defineContract({
     },
     {
       name: 'max',
-      type: 'number',
+      type: "number | 'auto'",
       default: 100,
-      desc: 'Top of the radial scale. Pinned so two charts share one ruler; raise it for data past 100.',
+      control: 'text',
+      desc: "Top of the radial scale, or 'auto' to follow the largest value in the data. Pinned at 100 by default so two charts share one ruler — right for a percentage or score, wrong for data past 100.",
     },
     {
       name: 'ticks',

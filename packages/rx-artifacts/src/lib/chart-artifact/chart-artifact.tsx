@@ -288,26 +288,18 @@ export function ChartArtifact({
         return <ScatterChart data={data} config={config} xKey={categoryKey} />;
       case 'radar':
         /*
-         * The radar pins its scale at 100 by default, which is right for the
-         * scores it is usually reaching for but wrong here: an artifact carries
-         * whatever a model produced, and anything above 100 would draw outside
-         * the outer ring. Keep 100 as a floor so small values still read
-         * against a familiar scale, and grow past it when the data needs it.
+         * An artifact carries whatever a model produced, so the range is not
+         * known ahead of time and the radar's pinned default would draw
+         * anything above 100 outside the outer ring. `'auto'` is the honest
+         * answer here — a floor would flatten a series that happens to run
+         * 0-5 against a scale it never reaches.
          */
         return (
           <RadarChart
             data={data}
             config={config}
             xKey={categoryKey}
-            max={Math.max(
-              100,
-              ...data.flatMap((row) =>
-                Object.entries(row)
-                  .filter(([key]) => key !== categoryKey)
-                  .map(([, value]) => Number(value))
-                  .filter((value) => Number.isFinite(value)),
-              ),
-            )}
+            max="auto"
           />
         );
       case 'pie':
