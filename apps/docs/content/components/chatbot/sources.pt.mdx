@@ -57,20 +57,27 @@ export function Example({ sources }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-sources
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component, input } from "@angular/core";
+import { Component, input } from '@angular/core';
 import {
   Sources,
   SourcesTrigger,
   SourcesContent,
   Source,
-} from "@gremorie/ng-ai";
+} from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Sources, SourcesTrigger, SourcesContent, Source],
-template: `     <sources>
+  selector: 'app-example',
+  standalone: true,
+  imports: [Sources, SourcesTrigger, SourcesContent, Source],
+  template: `
+    <sources>
       <sources-trigger [count]="sources().length" />
       <sources-content>
         @for (s of sources(); track s.url) {
@@ -81,10 +88,10 @@ template: `     <sources>
   `,
 })
 export class ExampleComponent {
-readonly sources = input<Array<{ url: string; title: string }>>([]);
+  readonly sources = input<Array<{ url: string; title: string }>>([]);
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -96,10 +103,10 @@ Envolve `Collapsible`. Estende `ComponentProps<"div">`. Aplica `not-prose`, cor 
 
 ### `<SourcesTrigger>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `count` | `number` | - | Obrigatório. Usado no label padrão ("Used N sources"). |
-| `children` | `ReactNode` | - | Opcional. Substitui completamente o label + chevron padrão. |
+| Prop       | Type        | Default | Description                                                 |
+| ---------- | ----------- | ------- | ----------------------------------------------------------- |
+| `count`    | `number`    | -       | Obrigatório. Usado no label padrão ("Used N sources").      |
+| `children` | `ReactNode` | -       | Opcional. Substitui completamente o label + chevron padrão. |
 
 Estende `ComponentProps<typeof CollapsibleTrigger>`.
 
@@ -111,11 +118,11 @@ Estende `ComponentProps<typeof CollapsibleContent>`.
 
 ### `<Source>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `href` | `string` | - | Obrigatório. URL da fonte. Abre em uma nova aba com `rel="noreferrer"`. |
-| `title` | `string` | - | Título da fonte (renderizado ao lado do ícone de livro por padrão). |
-| `children` | `ReactNode` | - | Opcional. Substitui completamente o ícone + título padrão (use para favicons customizados, trechos, etc). |
+| Prop       | Type        | Default | Description                                                                                               |
+| ---------- | ----------- | ------- | --------------------------------------------------------------------------------------------------------- |
+| `href`     | `string`    | -       | Obrigatório. URL da fonte. Abre em uma nova aba com `rel="noreferrer"`.                                   |
+| `title`    | `string`    | -       | Título da fonte (renderizado ao lado do ícone de livro por padrão).                                       |
+| `children` | `ReactNode` | -       | Opcional. Substitui completamente o ícone + título padrão (use para favicons customizados, trechos, etc). |
 
 Renderiza como `<a>`.
 
@@ -141,7 +148,7 @@ O caso de 90%: ícone de livro + título, abre externamente.
     ))}
   </SourcesContent>
 </Sources>
-````
+```
 
 ### Fonte customizada com favicon
 

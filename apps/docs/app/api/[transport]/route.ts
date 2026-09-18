@@ -11,6 +11,7 @@
  *   - get_component(name, framework?)
  *   - get_block(name)
  *   - get_guidelines(topic?)
+ *   - get_setup(framework)
  *
  * The MCP is fine: it only serves what the registry and the UX corpus
  * MDX already contain. No domain logic, no DB.
@@ -25,6 +26,7 @@ import {
   readRegistryIndex,
   readRegistryItem,
 } from '@/lib/mcp/registry';
+import { SETUP, setupAsText, type Edition } from '@/lib/setup';
 
 /*
  * The MCP SDK's `registerTool` has deeply nested generics (dual v3/v4 zod
@@ -43,7 +45,7 @@ type RegisterTool = <I extends Record<string, unknown>>(
     description?: string;
     inputSchema?: Record<string, unknown>;
   },
-  cb: (input: I) => Promise<ToolHandlerResult>,
+  cb: (input: I) => ToolHandlerResult | Promise<ToolHandlerResult>,
 ) => unknown;
 
 const handler = createMcpHandler(
@@ -205,11 +207,84 @@ const handler = createMcpHandler(
             isError: true,
           };
         }
+        /*
+         * The registry item carries source and usage, but not the
+         * project-level styling prerequisite — and for Angular that
+         * prerequisite is the difference between a styled component and a
+         * completely unstyled one (Tailwind v4 skips node_modules without an
+         * @source line). Point at get_setup rather than inlining the whole
+         * block in every payload.
+         */
+        const edition: Edition = item.name?.startsWith('ng-') ? 'ng' : 'rx';
         return {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(item, null, 2),
+              text: JSON.stringify(
+                {
+                  ...item,
+                  setup: {
+                    edition,
+                    required: true,
+                    summary: SETUP[edition].summary,
+                    hint: `Installing the source is only half the job. Call get_setup with framework "${edition}" for the styling setup this component needs in the consumer project.`,
+                  },
+                },
+                null,
+                2,
+              ),
+            },
+          ],
+        };
+      },
+    );
+
+    /*
+     * ─── get_setup ──────────────────────────────────────────────────
+     * The project-level styling prerequisite, per edition. Deliberately a
+     * tool of its own: get-started/* is author-facing and stays out of the
+     * corpus, but an agent installing a component still has to know that the
+     * Angular edition ships no compiled CSS and needs Tailwind v4 plus an
+     * @source line. Reads lib/setup.ts, the same module behind the docs
+     * <AngularSetup /> callout and the llms.txt install section.
+     */
+    registerTool(
+      'get_setup',
+      {
+        title: 'Get setup',
+        description:
+          'Return the project-level styling setup a Gremorie edition requires in the CONSUMER project. React ships a ' +
+          'pre-compiled stylesheet (one import, no Tailwind). Angular emits Tailwind utility classes and ships no compiled ' +
+          'CSS, so it needs Tailwind v4, the tokens theme, and an @source line covering node_modules/@gremorie — without ' +
+          'that line every Angular component renders completely unstyled. Call this after get_component.',
+        inputSchema: {
+          framework: z
+            .enum(['rx', 'ng'])
+            .describe(
+              "Edition: 'rx' for React, 'ng' for Angular. Match the prefix of the registry item you installed.",
+            ),
+        },
+      },
+      ({ framework }: { framework: Edition }) => {
+        const setup = SETUP[framework];
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(
+                {
+                  edition: framework,
+                  label: setup.label,
+                  file: setup.file,
+                  lang: setup.lang,
+                  code: setup.code,
+                  summary: setup.summary,
+                  requirements: setup.requirements,
+                  text: setupAsText(framework),
+                },
+                null,
+                2,
+              ),
             },
           ],
         };

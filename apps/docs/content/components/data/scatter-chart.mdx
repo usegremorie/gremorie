@@ -90,32 +90,38 @@ export function CorrelationChart() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-scatter-chart
+```
+
+<AngularSetup />
+
 ```ts
 import { Component } from '@angular/core';
 import { ScatterChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-correlation-chart',
-imports: [ScatterChart],
-template: `<scatter-chart [data]="data" [config]="config" xKey="x" />`,
+  selector: 'app-correlation-chart',
+  imports: [ScatterChart],
+  template: `<scatter-chart [data]="data" [config]="config" xKey="x" />`,
 })
 export class CorrelationChartComponent {
-readonly data: ChartDatum[] = [
-{ x: 30, y: 100 },
-{ x: 50, y: 200 },
-{ x: 70, y: 150 },
-{ x: 90, y: 250 },
-{ x: 110, y: 175 },
-{ x: 130, y: 300 },
-];
+  readonly data: ChartDatum[] = [
+    { x: 30, y: 100 },
+    { x: 50, y: 200 },
+    { x: 70, y: 150 },
+    { x: 90, y: 250 },
+    { x: 110, y: 175 },
+    { x: 130, y: 300 },
+  ];
 
-readonly config: ChartConfig = {
-y: { label: 'Value', color: 'var(--chart-1)' },
-};
+  readonly config: ChartConfig = {
+    y: { label: 'Value', color: 'var(--chart-1)' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -130,7 +136,7 @@ The styled wrapper over recharts' `ScatterChart`, composed on `ChartContainer`. 
 | `data`      | `ChartDatum[]` | -       | Tabular data. Each row carries the numeric `xKey` value plus one numeric value per `config` key.                                                                                                                    |
 | `config`    | `ChartConfig`  | -       | Maps each Y series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
 | `xKey`      | `string`       | -       | Name of the **numeric** field on each row used as the X axis. Linear, not categorical.                                                                                                                              |
-| `yAxis`     | `boolean`      | `true`  | Render the numeric Y axis. Set to `false` for a minimal, axis-free scatter.                                                                                                                                          |
+| `yAxis`     | `boolean`      | `true`  | Render the numeric Y axis. Set to `false` for a minimal, axis-free scatter.                                                                                                                                         |
 | `tooltip`   | `boolean`      | `true`  | Toggles the hover tooltip.                                                                                                                                                                                          |
 | `className` | `string`       | -       | Merged onto the `ChartContainer`.                                                                                                                                                                                   |
 
@@ -200,7 +206,7 @@ export function Example({ data }: { data: ChartDatum[] }) {
     </ChartContainer>
   );
 }
-````
+```
 
 Drop down to this level for bubble charts (size encoded by a third field), per-point coloring via the row's `fill`, jitter overlays, or a custom legend via `ChartLegend` + `ChartLegendContent`.
 

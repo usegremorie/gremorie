@@ -79,25 +79,32 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-chain-of-thought
+```
+
+<AngularSetup />
+
 ```ts
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import {
   ChainOfThought,
   ChainOfThoughtHeader,
   ChainOfThoughtContent,
   ChainOfThoughtStep,
-} from "@gremorie/ng-ai";
+} from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [
-ChainOfThought,
-ChainOfThoughtHeader,
-ChainOfThoughtContent,
-ChainOfThoughtStep,
-],
-template: `     <chain-of-thought [open]="true">
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    ChainOfThought,
+    ChainOfThoughtHeader,
+    ChainOfThoughtContent,
+    ChainOfThoughtStep,
+  ],
+  template: `
+    <chain-of-thought [open]="true">
       <chain-of-thought-header>Searching the docs</chain-of-thought-header>
       <chain-of-thought-content>
         <chain-of-thought-step status="complete" label="Inspected files" />
@@ -107,8 +114,8 @@ template: `     <chain-of-thought [open]="true">
   `,
 })
 export class ExampleComponent {}
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -116,11 +123,11 @@ export class ExampleComponent {}
 
 ### `<ChainOfThought>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `open` | `boolean` | - | Controlled open state. |
-| `defaultOpen` | `boolean` | `false` | Uncontrolled initial open state. |
-| `onOpenChange` | `(open: boolean) => void` | - | Notification when the user expands or collapses. |
+| Prop           | Type                      | Default | Description                                      |
+| -------------- | ------------------------- | ------- | ------------------------------------------------ |
+| `open`         | `boolean`                 | -       | Controlled open state.                           |
+| `defaultOpen`  | `boolean`                 | `false` | Uncontrolled initial open state.                 |
+| `onOpenChange` | `(open: boolean) => void` | -       | Notification when the user expands or collapses. |
 
 Extends `ComponentProps<"div">`.
 
@@ -134,13 +141,13 @@ The collapsible body. Children render only when expanded (no animation when clos
 
 ### `<ChainOfThoughtStep>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `icon` | `LucideIcon` | `DotIcon` | Leading icon for the step. |
-| `label` | `ReactNode` | - | Required step title. |
-| `description` | `ReactNode` | - | Optional sub-line in muted text. |
-| `status` | `"complete" \| "active" \| "pending"` | `"complete"` | Drives text color (muted, foreground, muted/50). |
-| `children` | `ReactNode` | - | Nested evidence (search results, image, code block). |
+| Prop          | Type                                  | Default      | Description                                          |
+| ------------- | ------------------------------------- | ------------ | ---------------------------------------------------- |
+| `icon`        | `LucideIcon`                          | `DotIcon`    | Leading icon for the step.                           |
+| `label`       | `ReactNode`                           | -            | Required step title.                                 |
+| `description` | `ReactNode`                           | -            | Optional sub-line in muted text.                     |
+| `status`      | `"complete" \| "active" \| "pending"` | `"complete"` | Drives text color (muted, foreground, muted/50).     |
+| `children`    | `ReactNode`                           | -            | Nested evidence (search results, image, code block). |
 
 ### `<ChainOfThoughtSearchResults>` / `<ChainOfThoughtSearchResult>`
 
@@ -148,10 +155,10 @@ Wrap a row of `Badge`-styled hit chips. `ChainOfThoughtSearchResult` extends `Ba
 
 ### `<ChainOfThoughtImage>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `caption` | `string` | - | Caption rendered below the image. |
-| `children` | `ReactNode` | - | The image element (or any visual). |
+| Prop       | Type        | Default | Description                        |
+| ---------- | ----------- | ------- | ---------------------------------- |
+| `caption`  | `string`    | -       | Caption rendered below the image.  |
+| `children` | `ReactNode` | -       | The image element (or any visual). |
 
 ## Composition
 
@@ -187,7 +194,7 @@ Each step represents an action the agent took. The "active" step lights up in fo
     <ChainOfThoughtStep status="pending" label="Summarising findings" />
   </ChainOfThoughtContent>
 </ChainOfThought>
-````
+```
 
 ### Step with search hits
 

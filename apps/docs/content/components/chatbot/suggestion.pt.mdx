@@ -54,30 +54,39 @@ export function Example({ onPick }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-suggestion
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component } from "@angular/core";
-import { Suggestion, Suggestions } from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Suggestion, Suggestions } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Suggestions, Suggestion],
-template: `     <suggestions>
+  selector: 'app-example',
+  standalone: true,
+  imports: [Suggestions, Suggestion],
+  template: `
+    <suggestions>
       @for (s of items; track s) {
-        <suggestion [value]="s" (selected)="onSelect($event)">{{ s }}</suggestion>
+        <suggestion [value]="s" (selected)="onSelect($event)">{{
+          s
+        }}</suggestion>
       }
     </suggestions>
   `,
 })
 export class ExampleComponent {
-readonly items = ["Tell me a joke", "Summarize this", "Translate to French"];
+  readonly items = ['Tell me a joke', 'Summarize this', 'Translate to French'];
 
-onSelect(value: string): void {
-console.log("picked", value);
+  onSelect(value: string): void {
+    console.log('picked', value);
+  }
 }
-}
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -91,13 +100,13 @@ Estende `ComponentProps<typeof ScrollArea>`.
 
 ### `<Suggestion>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `suggestion` | `string` | - | Obrigatório. O prompt pré-escrito enviado para `onClick` quando o pill é tocado. |
-| `onClick` | `(suggestion: string) => void` | - | Handler de clique. Recebe `suggestion` (não o evento React). |
-| `variant` | `ButtonVariant` | `"outline"` | Encaminhado para o `Button` subjacente. |
-| `size` | `ButtonSize` | `"sm"` | Encaminhado para o `Button` subjacente. |
-| `children` | `ReactNode` | - | Opcional. Sobrescreve o label visível (`suggestion` continua sendo o que é enviado no clique). |
+| Prop         | Type                           | Default     | Description                                                                                    |
+| ------------ | ------------------------------ | ----------- | ---------------------------------------------------------------------------------------------- |
+| `suggestion` | `string`                       | -           | Obrigatório. O prompt pré-escrito enviado para `onClick` quando o pill é tocado.               |
+| `onClick`    | `(suggestion: string) => void` | -           | Handler de clique. Recebe `suggestion` (não o evento React).                                   |
+| `variant`    | `ButtonVariant`                | `"outline"` | Encaminhado para o `Button` subjacente.                                                        |
+| `size`       | `ButtonSize`                   | `"sm"`      | Encaminhado para o `Button` subjacente.                                                        |
+| `children`   | `ReactNode`                    | -           | Opcional. Sobrescreve o label visível (`suggestion` continua sendo o que é enviado no clique). |
 
 Estende `ComponentProps<typeof Button>` (menos `onClick`).
 
@@ -118,7 +127,7 @@ O padrão canônico: uma faixa horizontal de prompts acima do prompt input.
     <Suggestion key={s} suggestion={s} onClick={sendPrompt} />
   ))}
 </Suggestions>
-````
+```
 
 ### Hero de estado vazio
 

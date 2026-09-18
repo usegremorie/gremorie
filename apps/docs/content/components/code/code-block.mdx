@@ -65,24 +65,31 @@ export function Example({ source }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-code-block
+```
+
+<AngularSetup />
+
 ```ts
-import { Component, input } from "@angular/core";
-import { CodeBlock, CodeBlockCopyButton } from "@gremorie/ng-artifacts";
+import { Component, input } from '@angular/core';
+import { CodeBlock, CodeBlockCopyButton } from '@gremorie/ng-artifacts';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [CodeBlock, CodeBlockCopyButton],
-template: `     <code-block [code]="source()" language="tsx" [showLineNumbers]="true">
+  selector: 'app-example',
+  standalone: true,
+  imports: [CodeBlock, CodeBlockCopyButton],
+  template: `
+    <code-block [code]="source()" language="tsx" [showLineNumbers]="true">
       <code-block-copy-button />
     </code-block>
   `,
 })
 export class ExampleComponent {
-readonly source = input.required<string>();
+  readonly source = input.required<string>();
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -90,28 +97,29 @@ readonly source = input.required<string>();
 
 ### `<CodeBlock>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `code` | `string` | - | The source string to highlight. Required. |
-| `language` | `BundledLanguage` | - | Any shiki bundled language (`"tsx"`, `"json"`, `"bash"`, `"python"`, etc.). |
-| `showLineNumbers` | `boolean` | `false` | When true, prepends a muted line-number gutter via a shiki transformer. |
-| `children` | `ReactNode` | - | Rendered in an absolutely-positioned top-right slot. Use for the copy button or custom actions. |
-| `className` | `string` | - | Extra classes on the root `div`. |
+| Prop              | Type              | Default | Description                                                                                     |
+| ----------------- | ----------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `code`            | `string`          | -       | The source string to highlight. Required.                                                       |
+| `language`        | `BundledLanguage` | -       | Any shiki bundled language (`"tsx"`, `"json"`, `"bash"`, `"python"`, etc.).                     |
+| `showLineNumbers` | `boolean`         | `false` | When true, prepends a muted line-number gutter via a shiki transformer.                         |
+| `children`        | `ReactNode`       | -       | Rendered in an absolutely-positioned top-right slot. Use for the copy button or custom actions. |
+| `className`       | `string`          | -       | Extra classes on the root `div`.                                                                |
 
 Extends all `HTMLAttributes<HTMLDivElement>`.
 
 Themes used internally:
+
 - Light: `github-light-default` (Odo final audit upgrade. The plain `github-light` theme missed AA on operator and punctuation tokens.)
 - Dark: `github-dark-default` for symmetric AA contrast.
 
 ### `<CodeBlockCopyButton>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `onCopy` | `() => void` | - | Fires after a successful write to the clipboard. |
-| `onError` | `(error: Error) => void` | - | Fires when the Clipboard API is missing or rejected. |
-| `timeout` | `number` | `2000` | How long (ms) the button stays in the "copied" state before reverting. |
-| `children` | `ReactNode` | copy / check icon | Override the icon. The button still swaps to the check icon on success unless you fully replace it. |
+| Prop       | Type                     | Default           | Description                                                                                         |
+| ---------- | ------------------------ | ----------------- | --------------------------------------------------------------------------------------------------- |
+| `onCopy`   | `() => void`             | -                 | Fires after a successful write to the clipboard.                                                    |
+| `onError`  | `(error: Error) => void` | -                 | Fires when the Clipboard API is missing or rejected.                                                |
+| `timeout`  | `number`                 | `2000`            | How long (ms) the button stays in the "copied" state before reverting.                              |
+| `children` | `ReactNode`              | copy / check icon | Override the icon. The button still swaps to the check icon on success unless you fully replace it. |
 
 Pulls the `code` string from `CodeBlockContext`, so it must be rendered inside a `<CodeBlock>`.
 
@@ -134,7 +142,7 @@ Useful for long snippets where users need a reference point. The gutter is muted
 
 ```tsx
 <CodeBlock code={longSnippet} language="tsx" showLineNumbers />
-````
+```
 
 ### Copy plus custom action
 

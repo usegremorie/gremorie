@@ -45,21 +45,27 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-shimmer
+```
+
+<AngularSetup />
+
 ```ts
-import { Component } from "@angular/core";
-import { Shimmer } from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Shimmer } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Shimmer],
-template: `<span ngShimmer>Thinking...</span>`,
+  selector: 'app-example',
+  standalone: true,
+  imports: [Shimmer],
+  template: `<span ngShimmer>Thinking...</span>`,
 })
 export class ExampleComponent {}
-
-````
+```
 
 > The Angular version is a directive (`[ngShimmer]`) rather than a component. Apply it to any element with text content; the spread auto-scales with character count, mirroring the React implementation.
+
 </Tab>
 </Tabs>
 
@@ -67,13 +73,13 @@ export class ExampleComponent {}
 
 ### `<Shimmer>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `string` | - | Required. The text to shimmer. String is required so the spread can scale with character count. |
-| `as` | `ElementType` | `"p"` | Override the rendered element (e.g. `"span"` to inline inside a sentence). |
-| `className` | `string` | - | Extra classes. |
-| `duration` | `number` | `2` | Seconds per cycle. Lower = faster shimmer. |
-| `spread` | `number` | `2` | Multiplier on the gradient spread (per character). Lower = tighter wash. |
+| Prop        | Type          | Default | Description                                                                                     |
+| ----------- | ------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `children`  | `string`      | -       | Required. The text to shimmer. String is required so the spread can scale with character count. |
+| `as`        | `ElementType` | `"p"`   | Override the rendered element (e.g. `"span"` to inline inside a sentence).                      |
+| `className` | `string`      | -       | Extra classes.                                                                                  |
+| `duration`  | `number`      | `2`     | Seconds per cycle. Lower = faster shimmer.                                                      |
+| `spread`    | `number`      | `2`     | Multiplier on the gradient spread (per character). Lower = tighter wash.                        |
 
 Memoized with `React.memo`.
 
@@ -89,7 +95,7 @@ The 90% case: a short status string.
 
 ```tsx
 <Shimmer>Generating response...</Shimmer>
-````
+```
 
 ### Inline inside a sentence
 

@@ -88,37 +88,49 @@ export function BrowserShare() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-pie-chart
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
 import { Component } from '@angular/core';
 import { PieChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-browser-share',
-imports: [PieChart],
-template: `     <pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
+  selector: 'app-browser-share',
+  imports: [PieChart],
+  template: `
+    <pie-chart
+      [data]="data"
+      [config]="config"
+      nameKey="browser"
+      dataKey="visitors"
+    />
   `,
 })
 export class BrowserShareComponent {
-readonly data: ChartDatum[] = [
-{ browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
-{ browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
-{ browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
-{ browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
-{ browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
-];
+  readonly data: ChartDatum[] = [
+    { browser: 'Chrome', visitors: 275, fill: 'var(--chart-1)' },
+    { browser: 'Safari', visitors: 200, fill: 'var(--chart-2)' },
+    { browser: 'Firefox', visitors: 187, fill: 'var(--chart-3)' },
+    { browser: 'Edge', visitors: 173, fill: 'var(--chart-4)' },
+    { browser: 'Other', visitors: 90, fill: 'var(--chart-5)' },
+  ];
 
-readonly config: ChartConfig = {
-visitors: { label: 'Visitors' },
-Chrome: { label: 'Chrome' },
-Safari: { label: 'Safari' },
-Firefox: { label: 'Firefox' },
-Edge: { label: 'Edge' },
-Other: { label: 'Other' },
-};
+  readonly config: ChartConfig = {
+    visitors: { label: 'Visitors' },
+    Chrome: { label: 'Chrome' },
+    Safari: { label: 'Safari' },
+    Firefox: { label: 'Firefox' },
+    Edge: { label: 'Edge' },
+    Other: { label: 'Other' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -128,40 +140,40 @@ Other: { label: 'Other' },
 
 Um pie/donut recharts composto dentro do primitive `chart` do shadcn (`ChartContainer`). As cores das fatias vêm do `fill` de cada linha; o `config` opcional fornece os labels mostrados no tooltip.
 
-| Prop         | Type                    | Default | Descrição                                                                                                                                                          |
-| ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Prop         | Type                    | Default | Descrição                                                                                                                                                                        |
+| ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `data`       | `readonly ChartDatum[]` | -       | Dados tabulares. Uma linha por fatia. Cada linha precisa de um campo string em `nameKey`, um campo numérico em `dataKey` e um `fill` para a cor da fatia (ex. `var(--chart-1)`). |
-| `nameKey`    | `string`                | -       | Nome do campo de label da fatia. Usado para resolver o label do tooltip.                                                                                                    |
-| `dataKey`    | `string`                | -       | Nome do campo de valor numérico. As fatias são dimensionadas proporcionalmente à sua soma.                                                                                         |
-| `config`     | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de fatia (e chave de valor). Alimenta os labels do tooltip.                                                                             |
-| `donut`      | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (`innerRadius` 60) para produzir um gráfico de donut.                                                                                 |
-| `showLabels` | `boolean`               | `false` | Quando `true`, desenha o nome de cada fatia dentro da fatia via `LabelList` do recharts.                                                                                      |
-| `tooltip`    | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                                  |
-| `className`  | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                        |
+| `nameKey`    | `string`                | -       | Nome do campo de label da fatia. Usado para resolver o label do tooltip.                                                                                                         |
+| `dataKey`    | `string`                | -       | Nome do campo de valor numérico. As fatias são dimensionadas proporcionalmente à sua soma.                                                                                       |
+| `config`     | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de fatia (e chave de valor). Alimenta os labels do tooltip.                                                                                  |
+| `donut`      | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (`innerRadius` 60) para produzir um gráfico de donut.                                                                                |
+| `showLabels` | `boolean`               | `false` | Quando `true`, desenha o nome de cada fatia dentro da fatia via `LabelList` do recharts.                                                                                         |
+| `tooltip`    | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                                             |
+| `className`  | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                            |
 
 ### Primitives de chart para composição customizada
 
 Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart do shadcn, todos reexportados de `@gremorie/rx-data`. Isso espelha o bloco de pie oficial do shadcn ([ui.shadcn.com/charts/pie](https://ui.shadcn.com/charts/pie)).
 
-| Export                                 | Papel                                                                              |
-| -------------------------------------- | --------------------------------------------------------------------------------- |
+| Export                                 | Papel                                                                                         |
+| -------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `ChartContainer`                       | Frame responsivo; injeta as CSS vars de cor por chave (`--color-<key>`) a partir do `config`. |
-| `ChartTooltip` / `ChartTooltipContent` | Hover card e seu conteúdo temático.                                                |
-| `ChartLegend` / `ChartLegendContent`   | Legenda opcional e seu conteúdo temático.                                           |
-| `useChart`                             | Hook que retorna o `config` ativo a partir do contexto (use dentro de children customizados).     |
-| `PieChart`, `Pie`, `Cell`, `Label`     | Primitives recharts crus compostos dentro de `ChartContainer`.                         |
+| `ChartTooltip` / `ChartTooltipContent` | Hover card e seu conteúdo temático.                                                           |
+| `ChartLegend` / `ChartLegendContent`   | Legenda opcional e seu conteúdo temático.                                                     |
+| `useChart`                             | Hook que retorna o `config` ativo a partir do contexto (use dentro de children customizados). |
+| `PieChart`, `Pie`, `Cell`, `Label`     | Primitives recharts crus compostos dentro de `ChartContainer`.                                |
 
 ### Types
 
-| Type          | Shape                                                                                                            |
-| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Type          | Shape                                                                                                                  |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart; o `fill` define a cor por fatia. |
-| `ChartConfig` | Mapa de chave → `{ label?, icon?, color? }`; fornece labels de tooltip/legenda (e cores opcionais).                  |
+| `ChartConfig` | Mapa de chave → `{ label?, icon?, color? }`; fornece labels de tooltip/legenda (e cores opcionais).                    |
 
 <Callout type="info">
-  As cores das fatias vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`),
-  não do `config`. O `config` opcional mapeia cada nome de fatia para um `{label}` e
-  alimenta os labels mostrados no tooltip.
+  As cores das fatias vêm do `fill` de cada linha (ex. `fill:
+  "var(--chart-1)"`), não do `config`. O `config` opcional mapeia cada nome de
+  fatia para um `{label}` e alimenta os labels mostrados no tooltip.
 </Callout>
 
 ## Composição
@@ -183,8 +195,13 @@ O chart se auto-dimensiona ao pai através do `ChartContainer` (`ResponsiveConta
 </ComponentPreview>
 
 ```html
-<pie-chart [data]="data" [config]="config" nameKey="browser" dataKey="visitors" />
-````
+<pie-chart
+  [data]="data"
+  [config]="config"
+  nameKey="browser"
+  dataKey="visitors"
+/>
+```
 
 O padrão. Use quando a superfície ao redor é pequena (card, painel lateral) ou quando nenhum label centralizado é necessário.
 
