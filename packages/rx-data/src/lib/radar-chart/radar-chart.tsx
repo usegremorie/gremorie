@@ -125,12 +125,17 @@ export interface RadarChartProps {
    */
   dots?: boolean;
   /**
-   * Top of the radial scale. Pinned by default so two charts are read against
-   * one ruler: with a derived scale someone whose best score is 70 fills the
-   * plot exactly like someone who scored 100. Raise it for data that goes past
-   * 100, or the polygons draw outside the outer ring.
+   * Top of the radial scale, or `'auto'` to follow the largest value in the
+   * data.
+   *
+   * Pinned by default because the chart's usual job is comparison: with a
+   * derived scale someone whose best score is 70 fills the plot exactly like
+   * someone who scored 100, and two reports stop being comparable. That is the
+   * right default for a 0-100 percentage or score, and the wrong one for data
+   * that runs past 100 — pass a number for that range, or `'auto'` when the
+   * range is not known ahead of time.
    */
-  max?: number;
+  max?: number | 'auto';
   /** Number of grid rings, and of ticks on the radius axis. */
   ticks?: number;
   /**
@@ -222,17 +227,25 @@ export function RadarChart({
               numbers — otherwise `domain` and `ticks` would silently do
               nothing unless `radiusAxis` were on. */}
           <PolarRadiusAxis
-            domain={[0, max]}
+            domain={max === 'auto' ? undefined : [0, max]}
             /* Explicit ticks rather than a count: `tickCount` includes zero,
                which puts a `0` on the centre point where there is no ring to
                label, and the Angular edition — whose rings start at 1/n — has
                none. Listing them keeps both editions on the same values. */
+            /* Only list ticks when the top is known. On `'auto'` recharts
+               derives them from the data-driven scale, and a count is all it
+               needs — it puts a `0` at the centre, which is the one value the
+               Angular edition cannot label, so the editions differ there by
+               recharts' own design rather than by drift. */
             ticks={
-              Array.from(
-                { length: Math.max(1, Math.floor(ticks)) },
-                (_, i) => ((i + 1) * max) / Math.max(1, Math.floor(ticks)),
-              ) as unknown as never
+              max === 'auto'
+                ? undefined
+                : (Array.from(
+                    { length: Math.max(1, Math.floor(ticks)) },
+                    (_, i) => ((i + 1) * max) / Math.max(1, Math.floor(ticks)),
+                  ) as unknown as never)
             }
+            tickCount={max === 'auto' ? ticks + 1 : undefined}
             angle={90}
             axisLine={false}
             // recharts types `tick` narrowly; a component is valid at runtime.

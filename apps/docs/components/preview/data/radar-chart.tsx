@@ -21,15 +21,15 @@ const monthlyConfig: ChartConfig = {
 };
 
 export function RadarChartPreview() {
-  // These counts run to 305, well past the 100 the scale is pinned at by
-  // default, so the top of the scale has to be stated or the polygons draw
-  // outside the outer ring.
+  // These counts run to 305, past the 100 the scale is pinned at by default.
+  // `auto` is the right answer for a range like this one, which has no natural
+  // ceiling — a hardcoded top would need revisiting every time the data moves.
   return (
     <RadarChart
       data={monthlyData}
       config={monthlyConfig}
       xKey="month"
-      max={320}
+      max="auto"
     />
   );
 }

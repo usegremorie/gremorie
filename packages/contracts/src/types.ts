@@ -31,8 +31,11 @@ export interface PropSpec {
   /**
    * Explicit override for the workbench control derivation: `true` includes the
    * prop as a control even when `adapts` is present; `false` always excludes it.
+   * A control kind forces that widget — needed when the type is a union the
+   * derivation cannot read, e.g. `number | 'auto'`, which would otherwise get
+   * no control at all.
    */
-  control?: boolean;
+  control?: boolean | 'select' | 'toggle' | 'number' | 'text';
 }
 
 /**

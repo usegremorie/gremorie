@@ -76,7 +76,16 @@ function toControls(contract: ComponentContract): WorkbenchControl[] {
   const controls: WorkbenchControl[] = [];
   for (const p of contract.props) {
     if (p.control === false) continue;
-    if (p.adapts && p.control !== true) continue;
+    if (p.adapts && !p.control) continue;
+    if (typeof p.control === 'string') {
+      controls.push({
+        name: p.name,
+        kind: p.control,
+        options: p.options,
+        default: p.default,
+      });
+      continue;
+    }
     if (p.options) {
       controls.push({
         name: p.name,
