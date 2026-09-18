@@ -329,6 +329,12 @@ export const radarChart = defineContract({
       desc: 'Polar grid shape.',
     },
     {
+      name: 'dots',
+      type: 'boolean',
+      default: false,
+      desc: 'Draw a dot at every vertex. The hovered spoke always gets a larger dot regardless.',
+    },
+    {
       name: 'fill',
       type: 'RadarFill',
       default: 'auto',
@@ -353,6 +359,7 @@ export const radarChart = defineContract({
   example: {
     xKey: 'trait',
     gridType: 'polygon',
+    dots: false,
     fill: 'auto',
     tooltip: true,
   },

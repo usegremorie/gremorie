@@ -27,6 +27,10 @@ Shared rules for all seven:
   translucent fills turn muddy fast. `on` forces a fill and lightens it to 0.2
   past one series; `off` always outlines. Angular tags the shape
   `data-slot="radar-polygon"`; recharts names its own `.recharts-radar-polygon`.
+- **Radar dots**: `dots` is off by default and draws a small dot (r=3) at every
+  vertex, matching the line chart's option of the same name. The hovered spoke
+  always gets a larger dot (r=4) whether or not `dots` is on, so turning it on
+  reads as the dot growing under the pointer rather than appearing from nothing.
 - **Accessibility**: `role="img"` + computed `aria-label`, plus an `sr-only`
   `<table>` mirroring the data. Both editions ship this.
 
@@ -61,6 +65,7 @@ Shared rules for all seven:
    │  ├─ polar grid (`gridType`: polygon | circle)
    │  ├─ angle axis (spokes from `xKey`)
    │  ├─ radar polygon, one per config key (`fill`: auto | on | off)
+   │  ├─ vertex dots, one per row per series (opt: `dots`)
    │  └─ active dot, one per series, on the hovered spoke
    ├─ tooltip overlay (optional)
    ├─ legend

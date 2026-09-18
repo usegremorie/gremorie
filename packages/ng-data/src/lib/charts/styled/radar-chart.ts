@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  afterRenderEffect,
   ElementRef,
   input,
   signal,
@@ -12,7 +13,7 @@ import { ChartLegend, type ChartLegendItem } from './chart-legend';
 import { ChartFrame } from '../headless/chart-frame';
 import { Radar } from '../headless/radar';
 import { formatValue } from '../headless/format';
-import { spokeIndexAt } from '../headless/polar';
+import { placeBeside, polarPoint, spokeIndexAt } from '../headless/polar';
 import {
   paletteColor,
   titleCaseKey,
@@ -61,7 +62,7 @@ interface SeriesView {
         [xKey]="xKey()"
         class="mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground"
         (pointermove)="onPointerMove($event)"
-        (pointerleave)="active.set(null)"
+        (pointerleave)="clearActive()"
       >
         @for (s of series(); track s.key; let i = $index) {
           <svg:g [radar]="s.key" [color]="s.color" #r="radar">
@@ -115,6 +116,19 @@ interface SeriesView {
               [attr.stroke]="s.color"
               [attr.stroke-width]="strokeWidth()"
             />
+            @if (dots()) {
+              @for (p of r.points(); track $index) {
+                <svg:circle
+                  data-slot="radar-dot"
+                  [attr.cx]="p.x"
+                  [attr.cy]="p.y"
+                  r="3"
+                  [attr.fill]="s.color"
+                  stroke="var(--background)"
+                  stroke-width="1.5"
+                />
+              }
+            }
             @if (tooltip() && activePoint(r) !== null) {
               <!-- Active dot, matching recharts' Radar default (r=4,
                    strokeWidth=2, fill = series colour). recharts hardcodes a
@@ -134,11 +148,13 @@ interface SeriesView {
         }
       </svg>
 
-      @if (tooltip() && activeAnchor(); as anchor) {
+      @if (tooltip() && tipPosition(); as pos) {
         <div
-          class="pointer-events-none absolute z-10 min-w-28 -translate-x-1/2 -translate-y-full rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
-          [style.left.px]="anchor.lx"
-          [style.top.px]="anchor.ly"
+          #tip
+          data-slot="radar-tooltip"
+          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
+          [style.left.px]="pos.x"
+          [style.top.px]="pos.y"
         >
           <div class="mb-1 font-medium text-popover-foreground">
             {{ activeLabel() }}
@@ -196,6 +212,7 @@ export class RadarChart {
   readonly xKey = input.required<string>();
   readonly gridType = input<GridType>('polygon');
   readonly fill = input<RadarFill>('auto');
+  readonly dots = input(false);
   readonly tooltip = input(true);
 
   /** One series reads as a shape; two or more read as outlines. */
@@ -229,11 +246,69 @@ export class RadarChart {
     return i === null ? '' : String(this.data()[i]?.[this.xKey()] ?? '');
   });
 
-  /** Tooltip anchor: the active spoke's label position. */
-  protected readonly activeAnchor = computed(() => {
+  /** Pointer position inside the plot, in SVG user units. */
+  private readonly pointer = signal<{ x: number; y: number } | null>(null);
+  private readonly tip = viewChild<ElementRef<HTMLElement>>('tip');
+  private readonly tipSize = signal({ w: 0, h: 0 });
+
+  constructor() {
+    // The flip below needs the tooltip's own box, which only exists once it has
+    // rendered. Measure after each render and feed it back as a signal.
+    afterRenderEffect(() => {
+      const el = this.tip()?.nativeElement;
+      if (!el) return;
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      const prev = this.tipSize();
+      if (prev.w !== w || prev.h !== h) this.tipSize.set({ w, h });
+    });
+  }
+
+  /**
+   * Where the tooltip points: the active spoke's angle, at the pointer's own
+   * distance from the centre. recharts' `getActivePolarCoordinate` does the
+   * same for a centric layout, which is why its tooltip moves as you reach
+   * further out instead of parking on the axis label.
+   */
+  private readonly anchor = computed(() => {
     const i = this.active();
-    const axes = this.radars()[0]?.axes();
-    return i === null ? null : (axes?.[i] ?? null);
+    const p = this.pointer();
+    const radar = this.radars()[0];
+    if (i === null || !p || !radar) return null;
+    const n = this.data().length;
+    if (n === 0) return null;
+    const { cx, cy } = radar.center();
+    const distance = Math.hypot(p.x - cx, p.y - cy);
+    return polarPoint(cx, cy, distance, (i / n) * 2 * Math.PI);
+  });
+
+  /**
+   * Place the tooltip beside the anchor, flipping to the near side when it
+   * would overflow, then clamping to the plot. This is recharts'
+   * `getTooltipTranslateXY` with its default offset of 10, applied per axis:
+   * prefer `coordinate + offset`, fall back to `coordinate - size - offset`
+   * when the far edge would be crossed, and never start before the plot does.
+   *
+   * Anchoring on the axis label instead — which is what this did first — parks
+   * the card over the plot on the lower spokes and covers both the dots and
+   * the label it points at.
+   */
+  protected readonly tipPosition = computed(() => {
+    const a = this.anchor();
+    const radar = this.radars()[0];
+    if (!a || !radar) return null;
+    const { cx, cy, radius } = radar.center();
+    const { w, h } = this.tipSize();
+    // The plot box the card has to stay inside.
+    const box = {
+      x: cx - radius,
+      y: cy - radius,
+      side: radius * 2,
+    };
+    return {
+      x: placeBeside(a.x, w, box.x, box.side),
+      y: placeBeside(a.y, h, box.y, box.side),
+    };
   });
 
   /**
@@ -250,13 +325,18 @@ export class RadarChart {
     // The frame's viewBox is `0 0 width height` taken from this same element's
     // measured box, so user units and CSS pixels are 1:1.
     const rect = this.plot().nativeElement.getBoundingClientRect();
-    this.active.set(
-      spokeIndexAt(
-        { x: event.clientX - rect.left, y: event.clientY - rect.top },
-        radar.center(),
-        this.data().length,
-      ),
-    );
+    const point = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+    const index = spokeIndexAt(point, radar.center(), this.data().length);
+    this.active.set(index);
+    this.pointer.set(index === null ? null : point);
+  }
+
+  protected clearActive(): void {
+    this.active.set(null);
+    this.pointer.set(null);
   }
 
   /** This series' vertex on the active spoke, for the active dot. */

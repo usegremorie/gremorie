@@ -1,4 +1,10 @@
-import { polarLayout, polarPoint, polygonPath, spokeIndexAt } from './polar';
+import {
+  placeBeside,
+  polarLayout,
+  polarPoint,
+  polygonPath,
+  spokeIndexAt,
+} from './polar';
 
 describe('polarLayout', () => {
   it('centers and fits the radius inside the smaller dimension', () => {
@@ -77,5 +83,41 @@ describe('spokeIndexAt', () => {
 
   it('returns null at the exact centre, where there is no angle', () => {
     expect(spokeIndexAt({ x: 0, y: 0 }, centre, 6)).toBeNull();
+  });
+});
+
+describe('placeBeside', () => {
+  // A 100-wide box starting at 0, and a card 40 long. Offset defaults to 10,
+  // the same as recharts' Tooltip.
+  const BOX_START = 0;
+  const BOX_EXTENT = 100;
+  const CARD = 40;
+  const at = (coordinate: number) =>
+    placeBeside(coordinate, CARD, BOX_START, BOX_EXTENT);
+
+  it('sits after the anchor when there is room', () => {
+    expect(at(10)).toBe(20); // 10 + offset
+  });
+
+  it('flips to the near side rather than crossing the far edge', () => {
+    // 60 + 10 + 40 = 110, past the box end of 100 — so flip to 60 - 40 - 10.
+    expect(at(60)).toBe(10);
+  });
+
+  it('never starts before the box does', () => {
+    // Flipping would land at -45, which is outside; clamp to the box start.
+    expect(at(5)).toBe(15); // still room after, so no flip
+    expect(placeBeside(95, 200, 0, 100)).toBe(0);
+  });
+
+  it('respects a box that does not start at the origin', () => {
+    // Anchor at 210 in a box [200, 300): 220 + 40 fits, so no flip.
+    expect(placeBeside(210, CARD, 200, 100)).toBe(220);
+    // Anchor at 270: 280 + 40 = 320 overflows, flip to 270 - 40 - 10.
+    expect(placeBeside(270, CARD, 200, 100)).toBe(220);
+  });
+
+  it('takes a custom offset', () => {
+    expect(placeBeside(10, CARD, 0, 100, 0)).toBe(10);
   });
 });

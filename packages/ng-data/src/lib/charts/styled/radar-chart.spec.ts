@@ -290,4 +290,60 @@ describe('RadarChart', () => {
       ).toBe(1);
     });
   });
+
+  describe('dots', () => {
+    const fixedDots = (f: { nativeElement: HTMLElement }) =>
+      f.nativeElement.querySelectorAll('[data-slot="radar-dot"]');
+    const activeDots = (f: { nativeElement: HTMLElement }) =>
+      f.nativeElement.querySelectorAll('[data-slot="radar-active-dot"]');
+
+    it('draws none by default', async () => {
+      const f = await render();
+      expect(fixedDots(f).length).toBe(0);
+    });
+
+    it('draws one per vertex per series when turned on', async () => {
+      const f = await render();
+      f.componentRef.setInput('dots', true);
+      f.detectChanges();
+      // 2 series x 6 rows
+      expect(fixedDots(f).length).toBe(2 * DATA.length);
+    });
+
+    it('gives the hovered spoke a larger dot, so it reads as growing', async () => {
+      const restore = stubLayout();
+      try {
+        const f = await render();
+        f.componentRef.setInput('dots', true);
+        f.detectChanges();
+
+        const svg = f.nativeElement.querySelector('svg') as SVGSVGElement;
+        svg.dispatchEvent(pointerAt(SIZE / 2, SIZE / 2 - 60));
+        f.detectChanges();
+
+        const fixed = fixedDots(f)[0];
+        const active = activeDots(f)[0];
+        expect(active).toBeTruthy();
+        const fixedR = Number(fixed.getAttribute('r'));
+        const activeR = Number(active.getAttribute('r'));
+        expect(activeR).toBeGreaterThan(fixedR);
+      } finally {
+        restore();
+      }
+    });
+
+    it('still marks the active spoke when fixed dots are off', async () => {
+      const restore = stubLayout();
+      try {
+        const f = await render();
+        const svg = f.nativeElement.querySelector('svg') as SVGSVGElement;
+        svg.dispatchEvent(pointerAt(SIZE / 2, SIZE / 2 - 60));
+        f.detectChanges();
+        expect(fixedDots(f).length).toBe(0);
+        expect(activeDots(f).length).toBe(2);
+      } finally {
+        restore();
+      }
+    });
+  });
 });

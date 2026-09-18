@@ -62,6 +62,30 @@ export function spokeIndexAt(
   return Math.round(angle / (turn / spokes)) % spokes;
 }
 
+/**
+ * Place a floating card beside an anchor without letting it leave a box.
+ *
+ * This is recharts' `getTooltipTranslateXY` applied per axis, with its default
+ * offset of 10: prefer `coordinate + offset`; if that would cross the far edge,
+ * flip to `coordinate - size - offset`; never start before the box does.
+ *
+ * Kept pure and out of the component because the interesting part is the flip,
+ * and a jsdom component test cannot exercise it — there, a rendered card
+ * measures 0x0.
+ */
+export function placeBeside(
+  coordinate: number,
+  size: number,
+  start: number,
+  extent: number,
+  offset = 10,
+): number {
+  const positive = coordinate + offset;
+  const negative = coordinate - size - offset;
+  if (positive + size > start + extent) return Math.max(negative, start);
+  return Math.max(positive, start);
+}
+
 /** Closed SVG polygon `d` through the given points. Empty string if < 2 points. */
 export function polygonPath(
   points: readonly { x: number; y: number }[],

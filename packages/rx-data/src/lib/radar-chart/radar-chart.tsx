@@ -39,6 +39,11 @@ export interface RadarChartProps {
    * the shape. `on` / `off` force it either way.
    */
   fill?: RadarFill;
+  /**
+   * Draw a dot at every vertex. The hovered spoke always gets a larger dot
+   * regardless, so turning this on reads as the dots growing under the pointer.
+   */
+  dots?: boolean;
   /** Hover tooltip. */
   tooltip?: boolean;
   className?: string;
@@ -59,6 +64,7 @@ export function RadarChart({
   xKey,
   gridType = 'polygon',
   fill = 'auto',
+  dots = false,
   tooltip = true,
   className,
 }: RadarChartProps) {
@@ -105,6 +111,7 @@ export function RadarChart({
               dataKey={key}
               fill={`var(--color-${key})`}
               fillOpacity={fillOpacity}
+              dot={dots}
               stroke={`var(--color-${key})`}
               strokeWidth={strokeWidth}
             />

@@ -49,6 +49,7 @@ const meta = {
   argTypes: {
     gridType: { control: 'inline-radio', options: ['polygon', 'circle'] },
     fill: { control: 'inline-radio', options: ['auto', 'on', 'off'] },
+    dots: { control: 'boolean' },
     tooltip: { control: 'boolean' },
   },
   decorators: [
@@ -100,6 +101,11 @@ export const SingleSeries: Story = {
 /** Three series with the fill forced on — lightened to 0.2 so the stack reads. */
 export const Filled: Story = {
   args: { data: METRICS, config: MULTI, xKey: 'metric', fill: 'on' },
+};
+
+/** A dot on every vertex; the hovered spoke's grows. */
+export const Dots: Story = {
+  args: { data: METRICS, config: MULTI, xKey: 'metric', dots: true },
 };
 
 /** Circular grid. */

@@ -37,6 +37,7 @@ const meta: Meta<RadarChart> = {
           [xKey]="xKey"
           [gridType]="gridType"
           [fill]="fill"
+          [dots]="dots"
           [tooltip]="tooltip"
         />
       </div>
@@ -48,6 +49,7 @@ const meta: Meta<RadarChart> = {
     xKey: 'metric',
     gridType: 'polygon',
     fill: 'auto',
+    dots: false,
     tooltip: true,
   },
 };
@@ -59,6 +61,8 @@ export const Default: Story = {};
 export const CircleGrid: Story = { args: { gridType: 'circle' } };
 /** Three series with the fill forced on — lightened to 0.2 so the stack reads. */
 export const Filled: Story = { args: { fill: 'on' } };
+/** A dot on every vertex; the hovered spoke's grows. */
+export const Dots: Story = { args: { dots: true } };
 export const SingleSeries: Story = {
   args: { config: { sales: { label: 'Sales', color: 'var(--chart-1)' } } },
 };
@@ -97,6 +101,7 @@ export const Workbench: Story = {
           [xKey]="xKey"
           [gridType]="gridType"
           [fill]="fill"
+          [dots]="dots"
           [tooltip]="tooltip"
         />
       </div>
