@@ -69,21 +69,28 @@ export function StartNode({ data, ...props }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-toolbar
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component } from "@angular/core";
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarButton,
-} from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Toolbar, ToolbarGroup, ToolbarButton } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Toolbar, ToolbarGroup, ToolbarButton],
-template: `     <toolbar>
+  selector: 'app-example',
+  standalone: true,
+  imports: [Toolbar, ToolbarGroup, ToolbarButton],
+  template: `
+    <toolbar>
       <toolbar-group ariaLabel="Formatting">
-        <toolbar-button [pressed]="bold" ariaLabel="Bold" (clicked)="bold = !bold">
+        <toolbar-button
+          [pressed]="bold"
+          ariaLabel="Bold"
+          (clicked)="bold = !bold"
+        >
           <span class="font-bold">B</span>
         </toolbar-button>
         <toolbar-button ariaLabel="Italic">
@@ -94,12 +101,12 @@ template: `     <toolbar>
   `,
 })
 export class ExampleComponent {
-bold = false;
+  bold = false;
 }
-
-````
+```
 
 > O `<toolbar>` do Angular é o primitivo genérico (uma `<div role="toolbar">`). Combine-o com `@xyflow/angular` no nível da app se você precisar de um toolbar ancorado no canvas.
+
 </Tab>
 </Tabs>
 
@@ -109,14 +116,14 @@ bold = false;
 
 Envolve o `NodeToolbar` de `@xyflow/react`. Todas as props de `NodeToolbar` são encaminhadas.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `position` | `Position` | `Position.Bottom` | Lado de ancoragem. A Gremorie sobrescreve o default do xyflow para bottom. |
-| `isVisible` | `boolean` | controlado pelo xyflow | Força visível independentemente do estado de seleção. |
-| `offset` | `number` | `10` | Distância (px) da borda do nó. |
-| `nodeId` | `string \| string[]` | nó pai | Vincula a um nó específico quando renderizado fora de um. |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alinhamento ao longo da borda escolhida. |
-| `className` | `string` | - | Classes extras na superfície do toolbar. |
+| Prop        | Type                           | Default                | Description                                                                |
+| ----------- | ------------------------------ | ---------------------- | -------------------------------------------------------------------------- |
+| `position`  | `Position`                     | `Position.Bottom`      | Lado de ancoragem. A Gremorie sobrescreve o default do xyflow para bottom. |
+| `isVisible` | `boolean`                      | controlado pelo xyflow | Força visível independentemente do estado de seleção.                      |
+| `offset`    | `number`                       | `10`                   | Distância (px) da borda do nó.                                             |
+| `nodeId`    | `string \| string[]`           | nó pai                 | Vincula a um nó específico quando renderizado fora de um.                  |
+| `align`     | `"start" \| "center" \| "end"` | `"center"`             | Alinhamento ao longo da borda escolhida.                                   |
+| `className` | `string`                       | -                      | Classes extras na superfície do toolbar.                                   |
 
 Chrome padrão: `flex items-center gap-1 rounded-sm border bg-background p-1.5`.
 
@@ -142,7 +149,7 @@ O toolbar mínimo padrão. Visível apenas quando o nó está selecionado.
     <TrashIcon className="size-4" />
   </Button>
 </Toolbar>
-````
+```
 
 ### Sempre visível
 

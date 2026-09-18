@@ -45,21 +45,27 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-shimmer
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component } from "@angular/core";
-import { Shimmer } from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Shimmer } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Shimmer],
-template: `<span ngShimmer>Thinking...</span>`,
+  selector: 'app-example',
+  standalone: true,
+  imports: [Shimmer],
+  template: `<span ngShimmer>Thinking...</span>`,
 })
 export class ExampleComponent {}
-
-````
+```
 
 > A versão Angular é uma diretiva (`[ngShimmer]`) em vez de um componente. Aplique-a a qualquer elemento com conteúdo de texto; o spread auto-escala com a contagem de caracteres, espelhando a implementação React.
+
 </Tab>
 </Tabs>
 
@@ -67,13 +73,13 @@ export class ExampleComponent {}
 
 ### `<Shimmer>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `string` | - | Obrigatório. O texto para fazer shimmer. A string é obrigatória para que o spread possa escalar com a contagem de caracteres. |
-| `as` | `ElementType` | `"p"` | Sobrescreve o elemento renderizado (por exemplo, `"span"` para inline dentro de uma frase). |
-| `className` | `string` | - | Classes extras. |
-| `duration` | `number` | `2` | Segundos por ciclo. Menor = shimmer mais rápido. |
-| `spread` | `number` | `2` | Multiplicador sobre o spread do gradiente (por caractere). Menor = lavagem mais apertada. |
+| Prop        | Type          | Default | Description                                                                                                                   |
+| ----------- | ------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `string`      | -       | Obrigatório. O texto para fazer shimmer. A string é obrigatória para que o spread possa escalar com a contagem de caracteres. |
+| `as`        | `ElementType` | `"p"`   | Sobrescreve o elemento renderizado (por exemplo, `"span"` para inline dentro de uma frase).                                   |
+| `className` | `string`      | -       | Classes extras.                                                                                                               |
+| `duration`  | `number`      | `2`     | Segundos por ciclo. Menor = shimmer mais rápido.                                                                              |
+| `spread`    | `number`      | `2`     | Multiplicador sobre o spread do gradiente (por caractere). Menor = lavagem mais apertada.                                     |
 
 Memoizado com `React.memo`.
 
@@ -89,7 +95,7 @@ O caso de 90%: uma string de status curta.
 
 ```tsx
 <Shimmer>Generating response...</Shimmer>
-````
+```
 
 ### Inline dentro de uma frase
 

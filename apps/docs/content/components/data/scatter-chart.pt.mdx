@@ -90,32 +90,38 @@ export function CorrelationChart() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-scatter-chart
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
 import { Component } from '@angular/core';
 import { ScatterChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-correlation-chart',
-imports: [ScatterChart],
-template: `<scatter-chart [data]="data" [config]="config" xKey="x" />`,
+  selector: 'app-correlation-chart',
+  imports: [ScatterChart],
+  template: `<scatter-chart [data]="data" [config]="config" xKey="x" />`,
 })
 export class CorrelationChartComponent {
-readonly data: ChartDatum[] = [
-{ x: 30, y: 100 },
-{ x: 50, y: 200 },
-{ x: 70, y: 150 },
-{ x: 90, y: 250 },
-{ x: 110, y: 175 },
-{ x: 130, y: 300 },
-];
+  readonly data: ChartDatum[] = [
+    { x: 30, y: 100 },
+    { x: 50, y: 200 },
+    { x: 70, y: 150 },
+    { x: 90, y: 250 },
+    { x: 110, y: 175 },
+    { x: 130, y: 300 },
+  ];
 
-readonly config: ChartConfig = {
-y: { label: 'Value', color: 'var(--chart-1)' },
-};
+  readonly config: ChartConfig = {
+    y: { label: 'Value', color: 'var(--chart-1)' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -125,34 +131,34 @@ y: { label: 'Value', color: 'var(--chart-1)' },
 
 O wrapper estilizado sobre o `ScatterChart` do recharts, composto sobre `ChartContainer`. Renderiza o frame responsivo, um cartesian grid, os eixos X e Y numéricos, um tooltip opcional e um `<Scatter>` por chave de `config` colorido com `var(--color-<key>)`.
 
-| Prop        | Type           | Default | Descrição                                                                                                                                                                                                         |
-| ----------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`      | `ChartDatum[]` | -       | Dados tabulares. Cada linha carrega o valor numérico de `xKey` mais um valor numérico por chave de `config`.                                                                                                    |
+| Prop        | Type           | Default | Descrição                                                                                                                                                                                                                        |
+| ----------- | -------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`      | `ChartDatum[]` | -       | Dados tabulares. Cada linha carrega o valor numérico de `xKey` mais um valor numérico por chave de `config`.                                                                                                                     |
 | `config`    | `ChartConfig`  | -       | Mapeia cada chave de série Y para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`. `ChartContainer` injeta cada uma como uma CSS variable `var(--color-<key>)`. |
-| `xKey`      | `string`       | -       | Nome do campo **numérico** em cada linha usado como eixo X. Linear, não categórico.                                                                                                                              |
-| `yAxis`     | `boolean`      | `true`  | Renderiza o eixo Y numérico. Defina como `false` para um scatter minimalista, sem eixo.                                                                                                                          |
-| `tooltip`   | `boolean`      | `true`  | Alterna o tooltip de hover.                                                                                                                                                                                          |
-| `className` | `string`       | -       | Mesclado no `ChartContainer`.                                                                                                                                                                                   |
+| `xKey`      | `string`       | -       | Nome do campo **numérico** em cada linha usado como eixo X. Linear, não categórico.                                                                                                                                              |
+| `yAxis`     | `boolean`      | `true`  | Renderiza o eixo Y numérico. Defina como `false` para um scatter minimalista, sem eixo.                                                                                                                                          |
+| `tooltip`   | `boolean`      | `true`  | Alterna o tooltip de hover.                                                                                                                                                                                                      |
+| `className` | `string`       | -       | Mesclado no `ChartContainer`.                                                                                                                                                                                                    |
 
 ### Compondo com o primitive chart
 
 Para controle total, componha recharts diretamente dentro de `ChartContainer` usando os primitives exportados. O shadcn não distribui bloco de scatter, mas a composição segue o mesmo padrão dos [outros blocos de chart do shadcn](https://ui.shadcn.com/charts).
 
-| Export                | Papel                                                                     |
-| --------------------- | ------------------------------------------------------------------------ |
+| Export                | Papel                                                                            |
+| --------------------- | -------------------------------------------------------------------------------- |
 | `ChartContainer`      | Frame responsivo; injeta as vars `--color-<key>` por série a partir do `config`. |
-| `ChartTooltip`        | Reexport do `Tooltip` do recharts; combine com `ChartTooltipContent`.           |
+| `ChartTooltip`        | Reexport do `Tooltip` do recharts; combine com `ChartTooltipContent`.            |
 | `ChartTooltipContent` | Corpo de tooltip estilizado.                                                     |
-| `ChartLegend`         | Reexport do `Legend` do recharts; combine com `ChartLegendContent`.             |
-| `ChartLegendContent`  | Corpo de legenda estilizado.                                                      |
-| `useChart`            | Hook para ler o `config` ativo dentro de um child customizado.                  |
+| `ChartLegend`         | Reexport do `Legend` do recharts; combine com `ChartLegendContent`.              |
+| `ChartLegendContent`  | Corpo de legenda estilizado.                                                     |
+| `useChart`            | Hook para ler o `config` ativo dentro de um child customizado.                   |
 
 ### Types
 
-| Type          | Shape                                                                                                                       |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Type          | Shape                                                                                                                             |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart; o `fill` opcional define uma cor por ponto. |
-| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série.                                   |
+| `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série.                                          |
 
 ```tsx
 import {
@@ -200,7 +206,7 @@ export function Example({ data }: { data: ChartDatum[] }) {
     </ChartContainer>
   );
 }
-````
+```
 
 Desça a este nível para bubble charts (tamanho codificado por um terceiro campo), coloração por ponto via o `fill` da linha, overlays de jitter ou uma legenda customizada via `ChartLegend` + `ChartLegendContent`.
 

@@ -79,27 +79,34 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-conversation
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component, signal } from "@angular/core";
+import { Component, signal } from '@angular/core';
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
   Message,
   MessageContent,
-} from "@gremorie/ng-ai";
+} from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [
-Conversation,
-ConversationContent,
-ConversationScrollButton,
-Message,
-MessageContent,
-],
-template: `     <conversation class="h-96 w-full">
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    Conversation,
+    ConversationContent,
+    ConversationScrollButton,
+    Message,
+    MessageContent,
+  ],
+  template: `
+    <conversation class="h-96 w-full">
       <conversation-content>
         @for (m of messages(); track m.id) {
           <message [from]="m.role">
@@ -112,10 +119,12 @@ template: `     <conversation class="h-96 w-full">
   `,
 })
 export class ExampleComponent {
-readonly messages = signal<Array<{ id: string; role: "user" | "assistant"; text: string }>>([]);
+  readonly messages = signal<
+    Array<{ id: string; role: 'user' | 'assistant'; text: string }>
+  >([]);
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -127,28 +136,28 @@ Encaminha todas as props de `StickToBottom` do `use-stick-to-bottom`. O comporta
 
 ### `<ConversationContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Classes extras no conteúdo com scroll. |
+| Prop        | Type     | Default | Description                            |
+| ----------- | -------- | ------- | -------------------------------------- |
+| `className` | `string` | -       | Classes extras no conteúdo com scroll. |
 
 Renderiza dentro de `StickToBottom.Content`. Adiciona uma pilha flex vertical com `gap-8` e `p-4`.
 
 ### `<ConversationScrollButton>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `className` | `string` | - | Classes extras no botão. |
+| Prop        | Type     | Default | Description              |
+| ----------- | -------- | ------- | ------------------------ |
+| `className` | `string` | -       | Classes extras no botão. |
 
 Encaminha todas as props de `Button`. Só renderiza quando o usuário rolou para longe do fim; clicar rola de volta suavemente.
 
 ### `<ConversationEmptyState>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `title` | `string` | `"No messages yet"` | Título renderizado quando não há conteúdo. |
-| `description` | `string` | `"Start a conversation to see messages here"` | Texto de apoio abaixo do título. |
-| `icon` | `ReactNode` | - | Ícone opcional acima do título. |
-| `children` | `ReactNode` | - | Quando fornecido, substitui completamente o layout padrão de título / descrição. |
+| Prop          | Type        | Default                                       | Description                                                                      |
+| ------------- | ----------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| `title`       | `string`    | `"No messages yet"`                           | Título renderizado quando não há conteúdo.                                       |
+| `description` | `string`    | `"Start a conversation to see messages here"` | Texto de apoio abaixo do título.                                                 |
+| `icon`        | `ReactNode` | -                                             | Ícone opcional acima do título.                                                  |
+| `children`    | `ReactNode` | -                                             | Quando fornecido, substitui completamente o layout padrão de título / descrição. |
 
 ## Composição
 
@@ -176,7 +185,7 @@ O caso de 90%: alimente as mensagens e deixe `Conversation` manter a mais recent
   </ConversationContent>
   <ConversationScrollButton />
 </Conversation>
-````
+```
 
 ### Estado vazio antes da primeira mensagem
 

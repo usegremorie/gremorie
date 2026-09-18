@@ -91,19 +91,22 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-message
+```
+
+<AngularSetup />
+
 ```ts
-import { Component } from "@angular/core";
-import {
-  Message,
-  MessageContent,
-  MessageResponse,
-} from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Message, MessageContent, MessageResponse } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Message, MessageContent, MessageResponse],
-template: `     <message from="assistant">
+  selector: 'app-example',
+  standalone: true,
+  imports: [Message, MessageContent, MessageResponse],
+  template: `
+    <message from="assistant">
       <message-content>
         <message-response>{{ markdown }}</message-response>
       </message-content>
@@ -111,10 +114,10 @@ template: `     <message from="assistant">
   `,
 })
 export class ExampleComponent {
-readonly markdown = "Hello! How can I help you today?";
+  readonly markdown = 'Hello! How can I help you today?';
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -122,10 +125,10 @@ readonly markdown = "Hello! How can I help you today?";
 
 ### `<Message>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `from` | `"user" \| "assistant" \| "system"` | - | Role of the turn. Drives alignment and surface treatment via `is-user` / `is-assistant` group classes. |
-| `className` | `string` | - | Extra classes on the root `div`. |
+| Prop        | Type                                | Default | Description                                                                                            |
+| ----------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| `from`      | `"user" \| "assistant" \| "system"` | -       | Role of the turn. Drives alignment and surface treatment via `is-user` / `is-assistant` group classes. |
+| `className` | `string`                            | -       | Extra classes on the root `div`.                                                                       |
 
 Extends all `HTMLAttributes<HTMLDivElement>`.
 
@@ -137,34 +140,34 @@ Extends all `HTMLAttributes<HTMLDivElement>`.
 
 ### `<MessageResponse>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `string` | - | Markdown source. Re-renders are gated by string equality. |
+| Prop       | Type     | Default | Description                                               |
+| ---------- | -------- | ------- | --------------------------------------------------------- |
+| `children` | `string` | -       | Markdown source. Re-renders are gated by string equality. |
 
 Wraps `Streamdown` for incremental token-by-token rendering.
 
 ### `<MessageAttachments>` / `<MessageAttachment>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `FileUIPart` | - | Attachment payload (`filename`, `mediaType`, `url`). |
-| `onRemove` | `() => void` | - | Optional remove handler. Renders an X button on hover. |
+| Prop       | Type         | Default | Description                                            |
+| ---------- | ------------ | ------- | ------------------------------------------------------ |
+| `data`     | `FileUIPart` | -       | Attachment payload (`filename`, `mediaType`, `url`).   |
+| `onRemove` | `() => void` | -       | Optional remove handler. Renders an X button on hover. |
 
 ### `<MessageToolbar>` / `<MessageActions>` / `<MessageAction>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `tooltip` | `string` | - | Tooltip label rendered above the action. Doubles as `sr-only` text. |
-| `label` | `string` | - | Explicit accessible label (overrides tooltip for sr-only text). |
-| `variant` | `ButtonVariant` | `"ghost"` | Forwarded to the underlying `Button`. |
-| `size` | `ButtonSize` | `"icon-sm"` | Forwarded to the underlying `Button`. |
+| Prop      | Type            | Default     | Description                                                         |
+| --------- | --------------- | ----------- | ------------------------------------------------------------------- |
+| `tooltip` | `string`        | -           | Tooltip label rendered above the action. Doubles as `sr-only` text. |
+| `label`   | `string`        | -           | Explicit accessible label (overrides tooltip for sr-only text).     |
+| `variant` | `ButtonVariant` | `"ghost"`   | Forwarded to the underlying `Button`.                               |
+| `size`    | `ButtonSize`    | `"icon-sm"` | Forwarded to the underlying `Button`.                               |
 
 ### `<MessageBranch>` (compound)
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultBranch` | `number` | `0` | Initial branch index. |
-| `onBranchChange` | `(index: number) => void` | - | Fires when the user navigates between branches. |
+| Prop             | Type                      | Default | Description                                     |
+| ---------------- | ------------------------- | ------- | ----------------------------------------------- |
+| `defaultBranch`  | `number`                  | `0`     | Initial branch index.                           |
+| `onBranchChange` | `(index: number) => void` | -       | Fires when the user navigates between branches. |
 
 Provides context for `MessageBranchContent`, `MessageBranchSelector`, `MessageBranchPrevious`, `MessageBranchNext` and `MessageBranchPage`.
 
@@ -186,14 +189,14 @@ Use while tokens are still arriving. Pair with `Reasoning` to expose thinking.
 ```tsx
 <Message from="assistant">
   <MessageContent>
-    <Reasoning isStreaming={status === "streaming"}>
+    <Reasoning isStreaming={status === 'streaming'}>
       <ReasoningTrigger />
       <ReasoningContent>{thinking}</ReasoningContent>
     </Reasoning>
     <MessageResponse>{partialMarkdown}</MessageResponse>
   </MessageContent>
 </Message>
-````
+```
 
 ### User turn with attachments
 

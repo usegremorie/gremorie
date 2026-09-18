@@ -91,19 +91,22 @@ export function Example() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-message
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component } from "@angular/core";
-import {
-  Message,
-  MessageContent,
-  MessageResponse,
-} from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Message, MessageContent, MessageResponse } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Message, MessageContent, MessageResponse],
-template: `     <message from="assistant">
+  selector: 'app-example',
+  standalone: true,
+  imports: [Message, MessageContent, MessageResponse],
+  template: `
+    <message from="assistant">
       <message-content>
         <message-response>{{ markdown }}</message-response>
       </message-content>
@@ -111,10 +114,10 @@ template: `     <message from="assistant">
   `,
 })
 export class ExampleComponent {
-readonly markdown = "Hello! How can I help you today?";
+  readonly markdown = 'Hello! How can I help you today?';
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -122,10 +125,10 @@ readonly markdown = "Hello! How can I help you today?";
 
 ### `<Message>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `from` | `"user" \| "assistant" \| "system"` | - | Papel do turno. Determina o alinhamento e o tratamento de superfície via classes de grupo `is-user` / `is-assistant`. |
-| `className` | `string` | - | Classes extras na `div` raiz. |
+| Prop        | Type                                | Default | Description                                                                                                           |
+| ----------- | ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| `from`      | `"user" \| "assistant" \| "system"` | -       | Papel do turno. Determina o alinhamento e o tratamento de superfície via classes de grupo `is-user` / `is-assistant`. |
+| `className` | `string`                            | -       | Classes extras na `div` raiz.                                                                                         |
 
 Estende todos os `HTMLAttributes<HTMLDivElement>`.
 
@@ -137,34 +140,34 @@ Estende todos os `HTMLAttributes<HTMLDivElement>`.
 
 ### `<MessageResponse>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `string` | - | Source de markdown. Re-renders são limitados por igualdade de string. |
+| Prop       | Type     | Default | Description                                                           |
+| ---------- | -------- | ------- | --------------------------------------------------------------------- |
+| `children` | `string` | -       | Source de markdown. Re-renders são limitados por igualdade de string. |
 
 Envolve `Streamdown` para renderização incremental token por token.
 
 ### `<MessageAttachments>` / `<MessageAttachment>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `data` | `FileUIPart` | - | Payload do attachment (`filename`, `mediaType`, `url`). |
-| `onRemove` | `() => void` | - | Handler de remoção opcional. Renderiza um botão X no hover. |
+| Prop       | Type         | Default | Description                                                 |
+| ---------- | ------------ | ------- | ----------------------------------------------------------- |
+| `data`     | `FileUIPart` | -       | Payload do attachment (`filename`, `mediaType`, `url`).     |
+| `onRemove` | `() => void` | -       | Handler de remoção opcional. Renderiza um botão X no hover. |
 
 ### `<MessageToolbar>` / `<MessageActions>` / `<MessageAction>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `tooltip` | `string` | - | Label do tooltip renderizado acima da ação. Serve também como texto `sr-only`. |
-| `label` | `string` | - | Label acessível explícito (sobrescreve o tooltip para o texto sr-only). |
-| `variant` | `ButtonVariant` | `"ghost"` | Encaminhado para o `Button` subjacente. |
-| `size` | `ButtonSize` | `"icon-sm"` | Encaminhado para o `Button` subjacente. |
+| Prop      | Type            | Default     | Description                                                                    |
+| --------- | --------------- | ----------- | ------------------------------------------------------------------------------ |
+| `tooltip` | `string`        | -           | Label do tooltip renderizado acima da ação. Serve também como texto `sr-only`. |
+| `label`   | `string`        | -           | Label acessível explícito (sobrescreve o tooltip para o texto sr-only).        |
+| `variant` | `ButtonVariant` | `"ghost"`   | Encaminhado para o `Button` subjacente.                                        |
+| `size`    | `ButtonSize`    | `"icon-sm"` | Encaminhado para o `Button` subjacente.                                        |
 
 ### `<MessageBranch>` (composto)
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `defaultBranch` | `number` | `0` | Índice de branch inicial. |
-| `onBranchChange` | `(index: number) => void` | - | Dispara quando o usuário navega entre branches. |
+| Prop             | Type                      | Default | Description                                     |
+| ---------------- | ------------------------- | ------- | ----------------------------------------------- |
+| `defaultBranch`  | `number`                  | `0`     | Índice de branch inicial.                       |
+| `onBranchChange` | `(index: number) => void` | -       | Dispara quando o usuário navega entre branches. |
 
 Provê o context para `MessageBranchContent`, `MessageBranchSelector`, `MessageBranchPrevious`, `MessageBranchNext` e `MessageBranchPage`.
 
@@ -186,14 +189,14 @@ Use enquanto os tokens ainda estão chegando. Combine com `Reasoning` para expor
 ```tsx
 <Message from="assistant">
   <MessageContent>
-    <Reasoning isStreaming={status === "streaming"}>
+    <Reasoning isStreaming={status === 'streaming'}>
       <ReasoningTrigger />
       <ReasoningContent>{thinking}</ReasoningContent>
     </Reasoning>
     <MessageResponse>{partialMarkdown}</MessageResponse>
   </MessageContent>
 </Message>
-````
+```
 
 ### Turno do usuário com attachments
 

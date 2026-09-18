@@ -72,30 +72,33 @@ export function Example({ status, thinking }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-reasoning
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
-import { Component, input } from "@angular/core";
-import {
-  Reasoning,
-  ReasoningTrigger,
-  ReasoningContent,
-} from "@gremorie/ng-ai";
+import { Component, input } from '@angular/core';
+import { Reasoning, ReasoningTrigger, ReasoningContent } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Reasoning, ReasoningTrigger, ReasoningContent],
-template: `     <reasoning [isStreaming]="status() === 'streaming'">
+  selector: 'app-example',
+  standalone: true,
+  imports: [Reasoning, ReasoningTrigger, ReasoningContent],
+  template: `
+    <reasoning [isStreaming]="status() === 'streaming'">
       <reasoning-trigger />
       <reasoning-content [text]="thinking()" />
     </reasoning>
   `,
 })
 export class ExampleComponent {
-readonly status = input<"idle" | "streaming" | "done">("idle");
-readonly thinking = input<string>("");
+  readonly status = input<'idle' | 'streaming' | 'done'>('idle');
+  readonly thinking = input<string>('');
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -103,28 +106,28 @@ readonly thinking = input<string>("");
 
 ### `<Reasoning>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `isStreaming` | `boolean` | `false` | Enquanto true, o bloco abre, o trigger mostra um "Thinking..." com shimmer e o timer de duração corre. |
-| `open` | `boolean` | - | Estado de abertura controlado. |
-| `defaultOpen` | `boolean` | `true` | Estado de abertura inicial não controlado. O auto-fechamento só dispara quando isto é true. |
-| `onOpenChange` | `(open: boolean) => void` | - | Notificação quando o usuário alterna o trigger. |
-| `duration` | `number` | - | Override externo de duração (segundos). Se omitido, `Reasoning` a mede a partir das transições de `isStreaming`. |
+| Prop           | Type                      | Default | Description                                                                                                      |
+| -------------- | ------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| `isStreaming`  | `boolean`                 | `false` | Enquanto true, o bloco abre, o trigger mostra um "Thinking..." com shimmer e o timer de duração corre.           |
+| `open`         | `boolean`                 | -       | Estado de abertura controlado.                                                                                   |
+| `defaultOpen`  | `boolean`                 | `true`  | Estado de abertura inicial não controlado. O auto-fechamento só dispara quando isto é true.                      |
+| `onOpenChange` | `(open: boolean) => void` | -       | Notificação quando o usuário alterna o trigger.                                                                  |
+| `duration`     | `number`                  | -       | Override externo de duração (segundos). Se omitido, `Reasoning` a mede a partir das transições de `isStreaming`. |
 
 Estende `ComponentProps<typeof Collapsible>`.
 
 ### `<ReasoningTrigger>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
+| Prop                 | Type                                                     | Default | Description                                                                                                             |
+| -------------------- | -------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `getThinkingMessage` | `(isStreaming: boolean, duration?: number) => ReactNode` | builtin | Customiza o label do trigger. O padrão renderiza o `Shimmer` durante o streaming e "Thought for N seconds" ao terminar. |
-| `children` | `ReactNode` | - | Substitui completamente o conteúdo do trigger (ícone + label + chevron). |
+| `children`           | `ReactNode`                                              | -       | Substitui completamente o conteúdo do trigger (ícone + label + chevron).                                                |
 
 ### `<ReasoningContent>`
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `string` | - | Markdown renderizado via `Streamdown`. |
+| Prop       | Type     | Default | Description                            |
+| ---------- | -------- | ------- | -------------------------------------- |
+| `children` | `string` | -       | Markdown renderizado via `Streamdown`. |
 
 ### `useReasoning()`
 
@@ -145,14 +148,14 @@ O pareamento típico - reasoning acima da resposta.
 ```tsx
 <Message from="assistant">
   <MessageContent>
-    <Reasoning isStreaming={status === "streaming"}>
+    <Reasoning isStreaming={status === 'streaming'}>
       <ReasoningTrigger />
       <ReasoningContent>{thinking}</ReasoningContent>
     </Reasoning>
     <MessageResponse>{answer}</MessageResponse>
   </MessageContent>
 </Message>
-````
+```
 
 ### Label de trigger customizado
 
