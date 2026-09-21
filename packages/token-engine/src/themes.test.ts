@@ -22,9 +22,17 @@ const BRAND_THEMES = [
 ] as const;
 
 describe('@gremorie/tokens theme.css', () => {
-  it('has no leftover brand tokens', () => {
+  it('has no semantic brand token', () => {
     expect(theme).not.toMatch(/--brand\b/);
-    expect(theme).not.toMatch(/--color-brand-/);
+  });
+
+  it('ships the brand primitive ramp the comparison scheme points at', () => {
+    // The ramp is a primitive, not the brand layer this file guards against:
+    // --chart-cmp-highlight resolves through it, so it has to exist here.
+    for (const step of [50, 500, 600, 950]) {
+      expect(theme).toContain(`--color-brand-${step}:`);
+    }
+    expect(theme).toContain('--chart-cmp-highlight:');
   });
 
   it('defines the typography tokens', () => {

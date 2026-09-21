@@ -4,6 +4,7 @@
   "sourceRoot": "packages/token-engine/src",
   "projectType": "library",
   "tags": ["scope:token-engine", "type:lib"],
+  "implicitDependencies": ["tokens"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
