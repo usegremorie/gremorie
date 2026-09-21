@@ -122,7 +122,10 @@
     "packages/*"
   ],
   "overrides": {
-    "webpack": "5.106.2"
+    "webpack": "5.106.2",
+    "@modelcontextprotocol/sdk": {
+      "@hono/node-server": "^1.19.15"
+    }
   },
   "dependencies": {
     "@angular/cdk": "^21.2.13",
