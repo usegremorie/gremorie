@@ -44,6 +44,11 @@ jobs:
           storybookBuildDir: dist/storybook/rx-ai
           onlyChanged: true # TurboSnap: only snapshot changed stories (saves quota)
           exitZeroOnChanges: true # report visual diffs, don't fail the build
+          # Whatever lands on the trunk IS the reference. Without this, a diff
+          # on a PR never becomes a baseline, so the next PR inherits it and the
+          # backlog compounds - it reached 83 unreviewed changes before anyone
+          # looked. Accepting on main keeps each PR's report to what that PR did.
+          autoAcceptChanges: main
 
   ng-storybook:
     name: Angular Storybook
@@ -64,3 +69,4 @@ jobs:
           storybookBuildDir: dist/storybook/ng-ai
           onlyChanged: true
           exitZeroOnChanges: true
+          autoAcceptChanges: main
