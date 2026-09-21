@@ -69,21 +69,28 @@ export function StartNode({ data, ...props }) {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-toolbar
+```
+
+<AngularSetup />
+
 ```ts
-import { Component } from "@angular/core";
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarButton,
-} from "@gremorie/ng-ai";
+import { Component } from '@angular/core';
+import { Toolbar, ToolbarGroup, ToolbarButton } from '@gremorie/ng-ai';
 
 @Component({
-selector: "app-example",
-standalone: true,
-imports: [Toolbar, ToolbarGroup, ToolbarButton],
-template: `     <toolbar>
+  selector: 'app-example',
+  standalone: true,
+  imports: [Toolbar, ToolbarGroup, ToolbarButton],
+  template: `
+    <toolbar>
       <toolbar-group ariaLabel="Formatting">
-        <toolbar-button [pressed]="bold" ariaLabel="Bold" (clicked)="bold = !bold">
+        <toolbar-button
+          [pressed]="bold"
+          ariaLabel="Bold"
+          (clicked)="bold = !bold"
+        >
           <span class="font-bold">B</span>
         </toolbar-button>
         <toolbar-button ariaLabel="Italic">
@@ -94,12 +101,12 @@ template: `     <toolbar>
   `,
 })
 export class ExampleComponent {
-bold = false;
+  bold = false;
 }
-
-````
+```
 
 > The Angular `<toolbar>` is the generic primitive (a `<div role="toolbar">`). Pair it with `@xyflow/angular` at the app level if you need a canvas-anchored toolbar.
+
 </Tab>
 </Tabs>
 
@@ -109,14 +116,14 @@ bold = false;
 
 Wraps `NodeToolbar` from `@xyflow/react`. All `NodeToolbar` props are forwarded.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `position` | `Position` | `Position.Bottom` | Anchor side. Gremorie overrides the xyflow default to bottom. |
-| `isVisible` | `boolean` | controlled by xyflow | Force visible regardless of selection state. |
-| `offset` | `number` | `10` | Distance (px) from the node edge. |
-| `nodeId` | `string \| string[]` | parent node | Bind to a specific node when rendered outside of one. |
-| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment along the chosen edge. |
-| `className` | `string` | - | Extra classes on the toolbar surface. |
+| Prop        | Type                           | Default              | Description                                                   |
+| ----------- | ------------------------------ | -------------------- | ------------------------------------------------------------- |
+| `position`  | `Position`                     | `Position.Bottom`    | Anchor side. Gremorie overrides the xyflow default to bottom. |
+| `isVisible` | `boolean`                      | controlled by xyflow | Force visible regardless of selection state.                  |
+| `offset`    | `number`                       | `10`                 | Distance (px) from the node edge.                             |
+| `nodeId`    | `string \| string[]`           | parent node          | Bind to a specific node when rendered outside of one.         |
+| `align`     | `"start" \| "center" \| "end"` | `"center"`           | Alignment along the chosen edge.                              |
+| `className` | `string`                       | -                    | Extra classes on the toolbar surface.                         |
 
 Default chrome: `flex items-center gap-1 rounded-sm border bg-background p-1.5`.
 
@@ -142,7 +149,7 @@ The default minimal toolbar. Visible only when the node is selected.
     <TrashIcon className="size-4" />
   </Button>
 </Toolbar>
-````
+```
 
 ### Always visible
 

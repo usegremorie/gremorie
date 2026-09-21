@@ -94,32 +94,38 @@ export function PlayerComparison() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-radar-chart
+```
+
+<AngularSetup locale="pt" />
+
 ```ts
 import { Component } from '@angular/core';
 import { RadarChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-player-comparison',
-imports: [RadarChart],
-template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
+  selector: 'app-player-comparison',
+  imports: [RadarChart],
+  template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
 })
 export class PlayerComparisonComponent {
-readonly data: ChartDatum[] = [
-{ skill: 'Speed', a: 90, b: 60 },
-{ skill: 'Power', a: 70, b: 80 },
-{ skill: 'Stamina', a: 85, b: 70 },
-{ skill: 'Agility', a: 75, b: 90 },
-{ skill: 'Skill', a: 95, b: 65 },
-];
+  readonly data: ChartDatum[] = [
+    { skill: 'Speed', a: 90, b: 60 },
+    { skill: 'Power', a: 70, b: 80 },
+    { skill: 'Stamina', a: 85, b: 70 },
+    { skill: 'Agility', a: 75, b: 90 },
+    { skill: 'Skill', a: 95, b: 65 },
+  ];
 
-readonly config: ChartConfig = {
-a: { label: 'Player A', color: 'var(--chart-1)' },
-b: { label: 'Player B', color: 'var(--chart-2)' },
-};
+  readonly config: ChartConfig = {
+    a: { label: 'Player A', color: 'var(--chart-1)' },
+    b: { label: 'Player B', color: 'var(--chart-2)' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -129,39 +135,39 @@ b: { label: 'Player B', color: 'var(--chart-2)' },
 
 O wrapper estilizado sobre o `RadarChart` do recharts, composto sobre `ChartContainer`. Renderiza o frame responsivo, um `PolarGrid`, o `PolarAngleAxis` (labels dos raios), um tooltip opcional e um `<Radar>` por chave de `config` colorido com `var(--color-<key>)`.
 
-| Prop        | Type                    | Default     | Descrição                                                                                                                                                                                                       |
-| ----------- | ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`      | `ChartDatum[]`          | -           | Dados tabulares. Uma linha por raio. Cada linha carrega o label do raio em `xKey` mais um valor numérico por chave de `config`.                                                                                              |
-| `config`    | `ChartConfig`           | -           | Mapeia cada chave de série para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`. `ChartContainer` injeta cada uma como uma CSS variable `var(--color-<key>)`. |
-| `xKey`      | `string`                | -           | Nome do campo do raio (ângulo) em cada linha. Determina os labels do `PolarAngleAxis` ao redor do perímetro.                                                                                                             |
-| `gridType`  | `"polygon" \| "circle"` | `"polygon"` | Forma dos anéis do `PolarGrid` - polígono de bordas retas (padrão) ou círculos concêntricos.                                                                                                                          |
-| `max` | `number \| "auto"` | `100` | Topo da escala radial, ou `"auto"` para seguir o maior valor do dado. Fixo para que dois gráficos sejam lidos na mesma régua: com escala derivada, uma nota máxima de 70 preenche o gráfico igual a uma de 100. Isso é certo para porcentagem ou nota e errado acima de 100 — passe um número para essa faixa, ou `"auto"` quando a faixa não for conhecida de antemão. |
-| `ticks` | `number` | `4` | Número de anéis da grade, e de marcas no eixo radial. |
-| `radiusAxis` | `boolean` | `false` | Rotula cada anel com seu valor, subindo pela vertical. |
-| `labelWidth` | `number` | - | Quebra os rótulos dos eixos nesta largura em pixels, por palavra. Sem isso, um rótulo longo na lateral do círculo é desenhado em uma linha só, atravessando metade do gráfico. |
-| `dots` | `boolean` | `false` | Desenha um ponto em cada vértice. O raio sob o mouse ganha um ponto maior de qualquer forma. |
-| `fill` | `"auto" \| "on" \| "off"` | `"auto"` | Preenchimento do polígono. `auto` preenche uma série sozinha e apenas contorna duas ou mais, para que séries sobrepostas continuem legíveis. |
-| `tooltip`   | `boolean`               | `true`      | Alterna o tooltip de hover.                                                                                                                                                                                        |
-| `className` | `string`                | -           | Mesclado no `ChartContainer`. O estilo empacotado centraliza o gráfico com um aspect quadrado.                                                                                                                       |
+| Prop         | Type                      | Default     | Descrição                                                                                                                                                                                                                                                                                                                                                               |
+| ------------ | ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`       | `ChartDatum[]`            | -           | Dados tabulares. Uma linha por raio. Cada linha carrega o label do raio em `xKey` mais um valor numérico por chave de `config`.                                                                                                                                                                                                                                         |
+| `config`     | `ChartConfig`             | -           | Mapeia cada chave de série para `{ label, color }`. A `color` é qualquer cor CSS ou token, tipicamente `"var(--chart-1)"` até `"var(--chart-5)"`. `ChartContainer` injeta cada uma como uma CSS variable `var(--color-<key>)`.                                                                                                                                          |
+| `xKey`       | `string`                  | -           | Nome do campo do raio (ângulo) em cada linha. Determina os labels do `PolarAngleAxis` ao redor do perímetro.                                                                                                                                                                                                                                                            |
+| `gridType`   | `"polygon" \| "circle"`   | `"polygon"` | Forma dos anéis do `PolarGrid` - polígono de bordas retas (padrão) ou círculos concêntricos.                                                                                                                                                                                                                                                                            |
+| `max`        | `number \| "auto"`        | `100`       | Topo da escala radial, ou `"auto"` para seguir o maior valor do dado. Fixo para que dois gráficos sejam lidos na mesma régua: com escala derivada, uma nota máxima de 70 preenche o gráfico igual a uma de 100. Isso é certo para porcentagem ou nota e errado acima de 100 — passe um número para essa faixa, ou `"auto"` quando a faixa não for conhecida de antemão. |
+| `ticks`      | `number`                  | `4`         | Número de anéis da grade, e de marcas no eixo radial.                                                                                                                                                                                                                                                                                                                   |
+| `radiusAxis` | `boolean`                 | `false`     | Rotula cada anel com seu valor, subindo pela vertical.                                                                                                                                                                                                                                                                                                                  |
+| `labelWidth` | `number`                  | -           | Quebra os rótulos dos eixos nesta largura em pixels, por palavra. Sem isso, um rótulo longo na lateral do círculo é desenhado em uma linha só, atravessando metade do gráfico.                                                                                                                                                                                          |
+| `dots`       | `boolean`                 | `false`     | Desenha um ponto em cada vértice. O raio sob o mouse ganha um ponto maior de qualquer forma.                                                                                                                                                                                                                                                                            |
+| `fill`       | `"auto" \| "on" \| "off"` | `"auto"`    | Preenchimento do polígono. `auto` preenche uma série sozinha e apenas contorna duas ou mais, para que séries sobrepostas continuem legíveis.                                                                                                                                                                                                                            |
+| `tooltip`    | `boolean`                 | `true`      | Alterna o tooltip de hover.                                                                                                                                                                                                                                                                                                                                             |
+| `className`  | `string`                  | -           | Mesclado no `ChartContainer`. O estilo empacotado centraliza o gráfico com um aspect quadrado.                                                                                                                                                                                                                                                                          |
 
 ### Compondo com o primitive chart
 
 Para controle total, componha recharts diretamente dentro de `ChartContainer` usando os primitives exportados. Isso espelha o [bloco de radar oficial do shadcn](https://ui.shadcn.com/charts/radar).
 
-| Export                | Papel                                                                     |
-| --------------------- | ------------------------------------------------------------------------ |
+| Export                | Papel                                                                            |
+| --------------------- | -------------------------------------------------------------------------------- |
 | `ChartContainer`      | Frame responsivo; injeta as vars `--color-<key>` por série a partir do `config`. |
-| `ChartTooltip`        | Reexport do `Tooltip` do recharts; combine com `ChartTooltipContent`.           |
+| `ChartTooltip`        | Reexport do `Tooltip` do recharts; combine com `ChartTooltipContent`.            |
 | `ChartTooltipContent` | Corpo de tooltip estilizado.                                                     |
-| `ChartLegend`         | Reexport do `Legend` do recharts; combine com `ChartLegendContent`.             |
-| `ChartLegendContent`  | Corpo de legenda estilizado.                                                      |
-| `useChart`            | Hook para ler o `config` ativo dentro de um child customizado.                  |
+| `ChartLegend`         | Reexport do `Legend` do recharts; combine com `ChartLegendContent`.              |
+| `ChartLegendContent`  | Corpo de legenda estilizado.                                                     |
+| `useChart`            | Hook para ler o `config` ativo dentro de um child customizado.                   |
 
 ### Types
 
-| Type          | Shape                                                                                     |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart.           |
+| Type          | Shape                                                                                    |
+| ------------- | ---------------------------------------------------------------------------------------- |
+| `ChartDatum`  | `Record<string, string \| number> & { fill?: string }` - uma linha de dados do chart.    |
 | `ChartConfig` | `Record<string, { label?: ReactNode; color?: string }>` - mapa de label e cor por série. |
 
 ```tsx
@@ -207,7 +213,7 @@ export function Example({ data }: { data: ChartDatum[] }) {
     </ChartContainer>
   );
 }
-````
+```
 
 Desça a este nível para traços tracejados, preenchimentos de gradiente, dots marcadores nas interseções dos raios ou uma legenda customizada via `ChartLegend` + `ChartLegendContent`.
 

@@ -94,32 +94,38 @@ export function PlayerComparison() {
 ```
 </Tab>
 <Tab value="Angular">
+```bash
+npx gremorie@latest add ng-radar-chart
+```
+
+<AngularSetup />
+
 ```ts
 import { Component } from '@angular/core';
 import { RadarChart } from '@gremorie/ng-data';
 import type { ChartConfig, ChartDatum } from '@gremorie/ng-data';
 
 @Component({
-selector: 'app-player-comparison',
-imports: [RadarChart],
-template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
+  selector: 'app-player-comparison',
+  imports: [RadarChart],
+  template: `<radar-chart [data]="data" [config]="config" xKey="skill" />`,
 })
 export class PlayerComparisonComponent {
-readonly data: ChartDatum[] = [
-{ skill: 'Speed', a: 90, b: 60 },
-{ skill: 'Power', a: 70, b: 80 },
-{ skill: 'Stamina', a: 85, b: 70 },
-{ skill: 'Agility', a: 75, b: 90 },
-{ skill: 'Skill', a: 95, b: 65 },
-];
+  readonly data: ChartDatum[] = [
+    { skill: 'Speed', a: 90, b: 60 },
+    { skill: 'Power', a: 70, b: 80 },
+    { skill: 'Stamina', a: 85, b: 70 },
+    { skill: 'Agility', a: 75, b: 90 },
+    { skill: 'Skill', a: 95, b: 65 },
+  ];
 
-readonly config: ChartConfig = {
-a: { label: 'Player A', color: 'var(--chart-1)' },
-b: { label: 'Player B', color: 'var(--chart-2)' },
-};
+  readonly config: ChartConfig = {
+    a: { label: 'Player A', color: 'var(--chart-1)' },
+    b: { label: 'Player B', color: 'var(--chart-2)' },
+  };
 }
+```
 
-````
 </Tab>
 </Tabs>
 
@@ -129,20 +135,20 @@ b: { label: 'Player B', color: 'var(--chart-2)' },
 
 The styled wrapper over recharts' `RadarChart`, composed on `ChartContainer`. Renders the responsive frame, a `PolarGrid`, the `PolarAngleAxis` (spoke labels), an optional tooltip, and one `<Radar>` per `config` key colored `var(--color-<key>)`.
 
-| Prop        | Type                    | Default     | Description                                                                                                                                                                                                       |
-| ----------- | ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`      | `ChartDatum[]`          | -           | Tabular data. One row per spoke. Each row carries the spoke label at `xKey` plus one numeric value per `config` key.                                                                                              |
-| `config`    | `ChartConfig`           | -           | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable. |
-| `xKey`      | `string`                | -           | Name of the spoke (angle) field on each row. Drives the `PolarAngleAxis` labels around the perimeter.                                                                                                             |
-| `gridType`  | `"polygon" \| "circle"` | `"polygon"` | Shape of the `PolarGrid` rings - straight-edged polygon (default) or concentric circles.                                                                                                                          |
-| `max` | `number \| "auto"` | `100` | Top of the radial scale, or `"auto"` to follow the largest value in the data. Pinned so two charts are read against one ruler: with a derived scale a top score of 70 fills the plot exactly like a top score of 100. That is right for a percentage or score and wrong past 100 — pass a number for that range, or `"auto"` when the range is not known ahead of time. |
-| `ticks` | `number` | `4` | Number of grid rings, and of ticks on the radius axis. |
-| `radiusAxis` | `boolean` | `false` | Labels each ring with its value, up the vertical axis. |
-| `labelWidth` | `number` | - | Wraps spoke labels to this width in pixels, on word boundaries. Without it a long label at the side of the circle is drawn as one run, reaching halfway across the plot. |
-| `dots` | `boolean` | `false` | Draws a dot at every vertex. The hovered spoke gets a larger dot either way. |
-| `fill` | `"auto" \| "on" \| "off"` | `"auto"` | Polygon fill. `auto` fills a lone series and outlines two or more, so overlapping series stay readable. |
-| `tooltip`   | `boolean`               | `true`      | Toggles the hover tooltip.                                                                                                                                                                                        |
-| `className` | `string`                | -           | Merged onto the `ChartContainer`. The bundled style centers the chart with a square aspect.                                                                                                                       |
+| Prop         | Type                      | Default     | Description                                                                                                                                                                                                                                                                                                                                                             |
+| ------------ | ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`       | `ChartDatum[]`            | -           | Tabular data. One row per spoke. Each row carries the spoke label at `xKey` plus one numeric value per `config` key.                                                                                                                                                                                                                                                    |
+| `config`     | `ChartConfig`             | -           | Maps each series key to `{ label, color }`. The `color` is any CSS color or token, typically `"var(--chart-1)"` through `"var(--chart-5)"`. `ChartContainer` injects each as a `var(--color-<key>)` CSS variable.                                                                                                                                                       |
+| `xKey`       | `string`                  | -           | Name of the spoke (angle) field on each row. Drives the `PolarAngleAxis` labels around the perimeter.                                                                                                                                                                                                                                                                   |
+| `gridType`   | `"polygon" \| "circle"`   | `"polygon"` | Shape of the `PolarGrid` rings - straight-edged polygon (default) or concentric circles.                                                                                                                                                                                                                                                                                |
+| `max`        | `number \| "auto"`        | `100`       | Top of the radial scale, or `"auto"` to follow the largest value in the data. Pinned so two charts are read against one ruler: with a derived scale a top score of 70 fills the plot exactly like a top score of 100. That is right for a percentage or score and wrong past 100 — pass a number for that range, or `"auto"` when the range is not known ahead of time. |
+| `ticks`      | `number`                  | `4`         | Number of grid rings, and of ticks on the radius axis.                                                                                                                                                                                                                                                                                                                  |
+| `radiusAxis` | `boolean`                 | `false`     | Labels each ring with its value, up the vertical axis.                                                                                                                                                                                                                                                                                                                  |
+| `labelWidth` | `number`                  | -           | Wraps spoke labels to this width in pixels, on word boundaries. Without it a long label at the side of the circle is drawn as one run, reaching halfway across the plot.                                                                                                                                                                                                |
+| `dots`       | `boolean`                 | `false`     | Draws a dot at every vertex. The hovered spoke gets a larger dot either way.                                                                                                                                                                                                                                                                                            |
+| `fill`       | `"auto" \| "on" \| "off"` | `"auto"`    | Polygon fill. `auto` fills a lone series and outlines two or more, so overlapping series stay readable.                                                                                                                                                                                                                                                                 |
+| `tooltip`    | `boolean`                 | `true`      | Toggles the hover tooltip.                                                                                                                                                                                                                                                                                                                                              |
+| `className`  | `string`                  | -           | Merged onto the `ChartContainer`. The bundled style centers the chart with a square aspect.                                                                                                                                                                                                                                                                             |
 
 ### Composing with the chart primitive
 
@@ -207,7 +213,7 @@ export function Example({ data }: { data: ChartDatum[] }) {
     </ChartContainer>
   );
 }
-````
+```
 
 Drop down to this level for dashed strokes, gradient fills, marker dots at spoke intersections, or a custom legend via `ChartLegend` + `ChartLegendContent`.
 
