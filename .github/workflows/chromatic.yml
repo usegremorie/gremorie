@@ -14,6 +14,16 @@ on:
   push:
     branches: [main]
   pull_request:
+  # TurboSnap skips the snapshot entirely when no story file changed, and a
+  # build that snapshots nothing cannot accept anything - it just inherits the
+  # ancestor's pending count. Run this by hand on main to take a full snapshot
+  # and reset the baseline in one go.
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Snapshot every story, ignoring TurboSnap'
+        type: boolean
+        default: true
 
 # Least privilege. This workflow only reads the repo and talks to Chromatic;
 # it never writes back. A compromised step therefore cannot push, comment, or
@@ -42,7 +52,7 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_RX_TOKEN }}
           storybookBuildDir: dist/storybook/rx-ai
-          onlyChanged: true # TurboSnap: only snapshot changed stories (saves quota)
+          onlyChanged: ${{ github.event_name != 'workflow_dispatch' || !inputs.full }} # TurboSnap: only snapshot changed stories (saves quota)
           exitZeroOnChanges: true # report visual diffs, don't fail the build
           # Whatever lands on the trunk IS the reference. Without this, a diff
           # on a PR never becomes a baseline, so the next PR inherits it and the
@@ -67,6 +77,6 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_NG_TOKEN }}
           storybookBuildDir: dist/storybook/ng-ai
-          onlyChanged: true
+          onlyChanged: ${{ github.event_name != 'workflow_dispatch' || !inputs.full }}
           exitZeroOnChanges: true
           autoAcceptChanges: main
