@@ -38,7 +38,7 @@ jobs:
       # Pinned to a commit SHA, not a floating tag: this third-party action
       # receives CHROMATIC_RX_TOKEN, so a hijacked tag would exfiltrate it.
       # Dependabot (github-actions ecosystem) bumps the SHA on new releases.
-      - uses: chromaui/action@14cfaef73576e69f95f47f60058063f46ca38719 # v18.1.0
+      - uses: chromaui/action@bb3b582719a93c1828c5e520e62992b2937d7889 # v18.9.4
         with:
           projectToken: ${{ secrets.CHROMATIC_RX_TOKEN }}
           storybookBuildDir: dist/storybook/rx-ai
@@ -63,7 +63,7 @@ jobs:
           cache: npm
       - run: npm ci --legacy-peer-deps
       - run: npx nx build-storybook ng-ai
-      - uses: chromaui/action@14cfaef73576e69f95f47f60058063f46ca38719 # v18.1.0
+      - uses: chromaui/action@bb3b582719a93c1828c5e520e62992b2937d7889 # v18.9.4
         with:
           projectToken: ${{ secrets.CHROMATIC_NG_TOKEN }}
           storybookBuildDir: dist/storybook/ng-ai
