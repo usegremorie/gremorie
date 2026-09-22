@@ -12,6 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
 } from '@gremorie/rx-forms';
 import {
   Tabs,
@@ -38,8 +39,8 @@ import {
  * `Assistant` (the same one shipped at /blocks/assistant, rendered here, not a
  * Storybook iframe). Three side-by-side panels:
  *
- *   1. Properties - the block's real props: the starting view plus the
- *                   PromptInput composer config (placeholder, mode, model).
+ *   1. Properties - the block's real props: the starting view, the composer
+ *                   placeholder, and a switch per composer part.
  *   2. Code       - React | Angular consumer code, generated live from the
  *                   controls, plus install commands.
  *   3. Preview    - the REAL `<Assistant />` rendered, with a dark/light toggle.
@@ -47,20 +48,26 @@ import {
  * Every control drives the code AND the preview together.
  */
 
-// Composer presets, mirrored from the block (id <-> label) so the selects here
-// and the generated code use the block's own option ids.
-const MODES = [
-  { value: 'ask', label: 'Ask' },
-  { value: 'analyze', label: 'Analyze' },
-  { value: 'research', label: 'Research' },
-  { value: 'plan', label: 'Plan' },
-];
-const MODELS = [
-  { value: 'claude-opus-4-8', label: 'Claude Opus 4.8' },
-  { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6' },
-  { value: 'gpt-5', label: 'GPT-5' },
-  { value: 'gemini-2-5-pro', label: 'Gemini 2.5 Pro' },
-];
+// The four composer parts the block lets you strip, in the order they appear
+// in the composer: header first (mentions, meter), then the footer selects.
+// Labels match the contract prop names so the panel and the snippet agree.
+const COMPOSER_PARTS = [
+  { key: 'mentions', label: 'Mentions (@)' },
+  { key: 'contextMeter', label: 'Context meter' },
+  { key: 'modeSelect', label: 'Mode select' },
+  { key: 'modelSelect', label: 'Model select' },
+] as const;
+
+type PartKey = (typeof COMPOSER_PARTS)[number]['key'];
+type Parts = Record<PartKey, boolean>;
+
+// Every part ships on; the panel strips them.
+const ALL_ON: Parts = {
+  mentions: true,
+  contextMeter: true,
+  modeSelect: true,
+  modelSelect: true,
+};
 
 // Gremorie brand themes (token sets activated via data-theme on the root, from
 // @gremorie/tokens/styles/themes/*). 'default' = the neutral base.
@@ -76,25 +83,16 @@ const THEMES = [
 // Block defaults - a prop is emitted in the snippet only when it differs.
 const DEFAULTS = {
   placeholder: 'Ask anything, or pick a mode...',
-  mode: 'research',
-  model: 'claude-sonnet-4-6',
 };
 
 type ShowcaseProps = {
   view: AssistantView;
   placeholder: string;
-  mode: string;
-  model: string;
+  parts: Parts;
   theme: string;
 };
 
-function reactCode({
-  view,
-  placeholder,
-  mode,
-  model,
-  theme,
-}: ShowcaseProps): string {
+function reactCode({ view, placeholder, parts, theme }: ShowcaseProps): string {
   // The theme is a token set activated on the app root, not a component prop.
   const shell =
     theme !== 'default'
@@ -104,8 +102,10 @@ function reactCode({
   if (view === 'empty') props.push('initialView="empty"');
   if (placeholder !== DEFAULTS.placeholder)
     props.push(`placeholder="${placeholder}"`);
-  if (mode !== DEFAULTS.mode) props.push(`defaultMode="${mode}"`);
-  if (model !== DEFAULTS.model) props.push(`defaultModel="${model}"`);
+  // Booleans default to true, so only the ones switched OFF earn a line.
+  for (const part of COMPOSER_PARTS) {
+    if (!parts[part.key]) props.push(`${part.key}={false}`);
+  }
 
   const tag =
     props.length === 0
@@ -122,13 +122,11 @@ export function Chat() {
 function angularCode({
   view,
   placeholder,
-  mode,
-  model,
+  parts,
   theme,
 }: ShowcaseProps): string {
-  // The Angular edition exposes the same composer config as real inputs on the
-  // <ai-assistant> element (initialView / placeholder / defaultMode / defaultModel),
-  // so the snippet mirrors the React tab one-to-one.
+  // The Angular edition exposes the same props as real inputs on the
+  // <ai-assistant> element, so the snippet mirrors the React tab one-to-one.
   const shell =
     theme !== 'default'
       ? `<!-- Activate the theme on your app root: <html data-theme="${theme}"> -->\n`
@@ -137,8 +135,9 @@ function angularCode({
   if (view === 'empty') attrs.push('initialView="empty"');
   if (placeholder !== DEFAULTS.placeholder)
     attrs.push(`placeholder="${placeholder}"`);
-  if (mode !== DEFAULTS.mode) attrs.push(`defaultMode="${mode}"`);
-  if (model !== DEFAULTS.model) attrs.push(`defaultModel="${model}"`);
+  for (const part of COMPOSER_PARTS) {
+    if (!parts[part.key]) attrs.push(`[${part.key}]="false"`);
+  }
   const tag =
     attrs.length === 0
       ? '<ai-assistant />'
@@ -152,8 +151,7 @@ ${tag}`;
 export function AssistantShowcase() {
   const [view, setView] = useState<AssistantView>('filled');
   const [placeholder, setPlaceholder] = useState(DEFAULTS.placeholder);
-  const [mode, setMode] = useState(DEFAULTS.mode);
-  const [model, setModel] = useState(DEFAULTS.model);
+  const [parts, setParts] = useState<Parts>(ALL_ON);
   const [theme, setTheme] = useState('default');
   const [previewDark, setPreviewDark] = useState(false);
 
@@ -173,7 +171,7 @@ export function AssistantShowcase() {
     };
   }, [theme]);
 
-  const props: ShowcaseProps = { view, placeholder, mode, model, theme };
+  const props: ShowcaseProps = { view, placeholder, parts, theme };
 
   return (
     <TooltipProvider>
@@ -218,36 +216,34 @@ export function AssistantShowcase() {
               />
             </div>
 
-            <div className="space-y-1.5">
-              <Label className="text-xs">Mode</Label>
-              <Select value={mode} onValueChange={setMode}>
-                <SelectTrigger size="sm" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {MODES.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
-                      {m.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label className="text-xs">Model</Label>
-              <Select value={model} onValueChange={setModel}>
-                <SelectTrigger size="sm" className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {MODELS.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
-                      {m.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            {/* Booleans, not value pickers. Choosing "Research" from a list
+                only re-seeds a select the block already owns - the reader
+                learns nothing about the API. Switching a part off changes the
+                composer in front of them AND changes the snippet, which is
+                what a props panel is for. */}
+            <div className="space-y-2.5">
+              <Label className="text-xs">Composer parts</Label>
+              {COMPOSER_PARTS.map((part) => (
+                <div
+                  key={part.key}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <label
+                    htmlFor={`showcase-${part.key}`}
+                    className="text-muted-foreground text-xs"
+                  >
+                    {part.label}
+                  </label>
+                  <Switch
+                    id={`showcase-${part.key}`}
+                    size="sm"
+                    checked={parts[part.key]}
+                    onCheckedChange={(on) =>
+                      setParts((p) => ({ ...p, [part.key]: on }))
+                    }
+                  />
+                </div>
+              ))}
             </div>
 
             <Separator />
@@ -276,24 +272,39 @@ export function AssistantShowcase() {
                   </TabsTrigger>
                 </TabsList>
               </div>
+              {/* Install first, then the code it enables. The commands used to
+                  sit at the foot of the panel, below a snippet that already
+                  said `import { Assistant }` - reading it top to bottom asked
+                  you to import something you had not installed yet. */}
+              <div className="shrink-0 space-y-1 border-b px-4 py-3 font-mono text-[11px] text-muted-foreground">
+                <div>$ npx gremorie add block-assistant</div>
+                <div>$ npm i @gremorie/ng-ai</div>
+              </div>
+              {/* `h-full` on the CodeBlock, not just on the panel: the block is
+                  w-full already but sizes its height to the snippet, so four
+                  short lines left the rest of the column empty and the box read
+                  as a stray card instead of the panel's content. */}
               <TabsContent
                 value="react"
-                className="m-0 min-h-0 flex-1 overflow-auto p-3"
+                className="m-0 flex min-h-0 flex-1 flex-col overflow-auto p-3"
               >
-                <CodeBlock code={reactCode(props)} language="tsx" />
+                <CodeBlock
+                  className="h-full"
+                  code={reactCode(props)}
+                  language="tsx"
+                />
               </TabsContent>
               <TabsContent
                 value="angular"
-                className="m-0 min-h-0 flex-1 overflow-auto p-3"
+                className="m-0 flex min-h-0 flex-1 flex-col overflow-auto p-3"
               >
-                <CodeBlock code={angularCode(props)} language="html" />
+                <CodeBlock
+                  className="h-full"
+                  code={angularCode(props)}
+                  language="html"
+                />
               </TabsContent>
             </Tabs>
-            <Separator />
-            <div className="space-y-1 p-3 font-mono text-[11px] text-muted-foreground">
-              <div>$ npx gremorie add block-assistant</div>
-              <div>$ npm i @gremorie/ng-ai</div>
-            </div>
           </div>
 
           {/* Panel 3 - live Preview + theme bar */}
@@ -357,11 +368,13 @@ export function AssistantShowcase() {
                   (view, mode, model) so the block resets to them; placeholder is
                   a live prop and updates without a remount. */}
               <Assistant
-                key={`${view}-${mode}-${model}-${previewDark ? 'd' : 'l'}`}
+                key={`${view}-${previewDark ? 'd' : 'l'}`}
                 initialView={view}
                 placeholder={placeholder}
-                defaultMode={mode}
-                defaultModel={model}
+                mentions={parts.mentions}
+                contextMeter={parts.contextMeter}
+                modeSelect={parts.modeSelect}
+                modelSelect={parts.modelSelect}
               />
             </div>
           </div>

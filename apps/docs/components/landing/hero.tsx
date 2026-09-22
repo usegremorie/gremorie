@@ -1,9 +1,9 @@
 import { Badge } from '@gremorie/rx-display';
 import { Button } from '@gremorie/rx-forms';
-import { ArrowRight, Github } from 'lucide-react';
 import Link from 'next/link';
 
 import { InstallCommand } from '@/components/landing/install-command';
+import { gremorieVersion } from '@/lib/version';
 
 /**
  * Landing hero - centered composition (shadcnblocks-style): version pill, the
@@ -16,8 +16,17 @@ import { InstallCommand } from '@/components/landing/install-command';
  * proof of code above the fold. The old "edition marks" row is gone - its
  * numbers moved to the proof strip right below.
  *
+ * The pill's version is derived (see `@/lib/version`), never typed: a release
+ * lands and the hero follows it.
+ *
+ * Two CTAs, not three, and neither carries an icon. `Get started` leads
+ * because the install box above has already answered "is this real" - the next
+ * question is how to begin, not what exists. GitHub is not repeated here; it
+ * sits in the navbar on every page, and a third button only flattened the
+ * hierarchy.
+ *
  * Dogfood: pill is rx-display Badge; CTAs are rx-forms Button (asChild wraps
- * Next Link / anchor); the install box composes rx Tabs + Button.
+ * Next Link); the install box composes rx Tabs + Button.
  */
 export function Hero() {
   return (
@@ -29,9 +38,14 @@ export function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(var(--border)_1px,transparent_1px)] opacity-60 [background-size:22px_22px] [mask-image:radial-gradient(ellipse_55%_50%_at_50%_0%,#000_30%,transparent_75%)]"
       />
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-12 text-center lg:pt-28 lg:pb-14">
+      {/* max-w-4xl, not 3xl: at 48rem the headline broke to three lines on
+          every desktop width, and the third line was just ", at parity." 56rem
+          is the smallest cap that holds it to two lines from 1024px up, which
+          is where the 60px size kicks in. Below lg the cap never binds - the
+          viewport is narrower than it - so nothing changes on mobile. */}
+      <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 pt-20 pb-12 text-center lg:pt-28 lg:pb-14">
         <Badge variant="secondary" className="py-1">
-          v0 · Open source · MIT
+          v{gremorieVersion} · Open source · MIT
         </Badge>
 
         <h1 className="text-balance font-bold text-4xl text-foreground tracking-tight sm:text-5xl lg:text-6xl">
@@ -51,23 +65,10 @@ export function Hero() {
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <Link href="/components">
-              Browse components
-              <ArrowRight aria-hidden="true" />
-            </Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
             <Link href="/get-started/installation">Get started</Link>
           </Button>
-          <Button size="lg" variant="ghost" asChild>
-            <a
-              href="https://github.com/usegremorie/gremorie"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <Github aria-hidden="true" />
-              Star on GitHub
-            </a>
+          <Button size="lg" variant="outline" asChild>
+            <Link href="/components">View components</Link>
           </Button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   HostListener,
   inject,
@@ -652,32 +653,38 @@ interface ComposerOption {
         (submitted)="handleSubmit($event)"
         (canceled)="handleCancel()"
       >
-        <prompt-input-header>
-          <prompt-input-mentions [items]="contextItems" />
-          <context
-            class="ml-auto"
-            [maxTokens]="200000"
-            [usedTokens]="62600"
-            modelId="anthropic:claude-3-5-sonnet"
-            [usage]="contextUsage"
-          >
-            <context-trigger class="ml-auto" />
-            <ng-template brnHoverCardContent>
-              <context-content>
-                <context-content-header />
-                <context-content-body>
-                  <div class="space-y-1">
-                    <context-input-usage />
-                    <context-output-usage />
-                    <context-reasoning-usage />
-                    <context-cache-usage />
-                  </div>
-                </context-content-body>
-                <context-content-footer />
-              </context-content>
-            </ng-template>
-          </context>
-        </prompt-input-header>
+        @if (showHeader()) {
+          <prompt-input-header>
+            @if (mentions()) {
+              <prompt-input-mentions [items]="contextItems" />
+            }
+            @if (contextMeter()) {
+              <context
+                class="ml-auto"
+                [maxTokens]="200000"
+                [usedTokens]="62600"
+                modelId="anthropic:claude-3-5-sonnet"
+                [usage]="contextUsage"
+              >
+                <context-trigger class="ml-auto" />
+                <ng-template brnHoverCardContent>
+                  <context-content>
+                    <context-content-header />
+                    <context-content-body>
+                      <div class="space-y-1">
+                        <context-input-usage />
+                        <context-output-usage />
+                        <context-reasoning-usage />
+                        <context-cache-usage />
+                      </div>
+                    </context-content-body>
+                    <context-content-footer />
+                  </context-content>
+                </ng-template>
+              </context>
+            }
+          </prompt-input-header>
+        }
 
         <prompt-input-body>
           <prompt-input-textarea [placeholder]="placeholder()" />
@@ -685,48 +692,52 @@ interface ComposerOption {
 
         <prompt-input-footer>
           <prompt-input-tools class="gap-2">
-            <prompt-input-select [value]="defaultMode()">
-              <prompt-input-select-trigger ariaLabel="Select mode" size="sm">
-                <prompt-input-select-value placeholder="Mode" />
-              </prompt-input-select-trigger>
-              <prompt-input-select-content>
-                @for (mode of modes; track mode.id) {
-                  <prompt-input-select-item
-                    [value]="mode.id"
-                    [label]="mode.label"
-                  >
-                    {{ mode.label }}
-                  </prompt-input-select-item>
-                }
-              </prompt-input-select-content>
-            </prompt-input-select>
+            @if (modeSelect()) {
+              <prompt-input-select [value]="defaultMode()">
+                <prompt-input-select-trigger ariaLabel="Select mode" size="sm">
+                  <prompt-input-select-value placeholder="Mode" />
+                </prompt-input-select-trigger>
+                <prompt-input-select-content>
+                  @for (mode of modes; track mode.id) {
+                    <prompt-input-select-item
+                      [value]="mode.id"
+                      [label]="mode.label"
+                    >
+                      {{ mode.label }}
+                    </prompt-input-select-item>
+                  }
+                </prompt-input-select-content>
+              </prompt-input-select>
+            }
 
-            <prompt-input-select [value]="defaultModel()">
-              <prompt-input-select-trigger ariaLabel="Select model" size="sm">
-                <prompt-input-select-value placeholder="Model" />
-              </prompt-input-select-trigger>
-              <prompt-input-select-content>
-                @for (model of models; track model.id) {
-                  <prompt-input-select-item
-                    [value]="model.id"
-                    [label]="model.label"
-                  >
-                    @switch (model.icon) {
-                      @case ('claude') {
-                        <ai-claude-icon class="size-4" />
+            @if (modelSelect()) {
+              <prompt-input-select [value]="defaultModel()">
+                <prompt-input-select-trigger ariaLabel="Select model" size="sm">
+                  <prompt-input-select-value placeholder="Model" />
+                </prompt-input-select-trigger>
+                <prompt-input-select-content>
+                  @for (model of models; track model.id) {
+                    <prompt-input-select-item
+                      [value]="model.id"
+                      [label]="model.label"
+                    >
+                      @switch (model.icon) {
+                        @case ('claude') {
+                          <ai-claude-icon class="size-4" />
+                        }
+                        @case ('openai') {
+                          <ai-openai-icon class="size-4" />
+                        }
+                        @case ('gemini') {
+                          <ai-gemini-icon class="size-4" />
+                        }
                       }
-                      @case ('openai') {
-                        <ai-openai-icon class="size-4" />
-                      }
-                      @case ('gemini') {
-                        <ai-gemini-icon class="size-4" />
-                      }
-                    }
-                    {{ model.label }}
-                  </prompt-input-select-item>
-                }
-              </prompt-input-select-content>
-            </prompt-input-select>
+                      {{ model.label }}
+                    </prompt-input-select-item>
+                  }
+                </prompt-input-select-content>
+              </prompt-input-select>
+            }
           </prompt-input-tools>
 
           <prompt-input-tools class="gap-2">
@@ -785,6 +796,26 @@ export class Assistant implements OnInit, OnDestroy {
   readonly defaultMode = input<string>('research');
   /** Initially-selected model (one of the MODELS ids). */
   readonly defaultModel = input<string>('claude-sonnet-4-6');
+
+  /**
+   * Composer parts, all on by default: the block ships complete and you strip
+   * what your product does not have, rather than assembling it piece by piece.
+   */
+  /** Show the mode select in the composer footer. */
+  readonly modeSelect = input(true);
+  /** Show the model select in the composer footer. */
+  readonly modelSelect = input(true);
+  /** Show the @-mention trigger in the composer header. */
+  readonly mentions = input(true);
+  /** Show the context-window meter in the composer header. */
+  readonly contextMeter = input(true);
+
+  /**
+   * The header exists only to carry the mentions trigger and the context
+   * meter. With both off it would render as an empty strip above the textarea,
+   * so it is dropped entirely rather than left hollow.
+   */
+  readonly showHeader = computed(() => this.mentions() || this.contextMeter());
 
   /** Emits the composed prompt (value + attachments) when the user submits. */
   readonly submitted = output<PromptInputSubmitEvent>();
