@@ -4,7 +4,7 @@ import { defineContract } from '../../types';
  * Assistant - the flagship composed chat surface. A BLOCK (a composed,
  * copy-paste starting point built FROM the AI primitives), not a primitive, so
  * it lives in the `blocks` category - never folded under `chatbot`. React ships
- * it as the `block-assistant` registry block; Angular as the `<ai-assistant>`
+ * it as the `rx-assistant` registry block; Angular as the `<ai-assistant>`
  * element from `@gremorie/ng-ai`.
  */
 export const assistant = defineContract({
@@ -103,7 +103,7 @@ export const assistant = defineContract({
       { text: 'Just the composer', use: 'prompt-input' },
     ],
     rules: [
-      'It is a block - copy-paste, you own the source (`gremorie add block-assistant`), not a fixed prop API.',
+      'It is a block - copy-paste, you own the source (`gremorie add rx-assistant`), not a fixed prop API.',
       'initialView picks the starting surface; the header chat switcher flips between filled and empty at runtime.',
       'The composer parts are opt-out, not opt-in: modeSelect, modelSelect, mentions and contextMeter all default to true, so the block ships complete and you strip what your product does not have.',
     ],

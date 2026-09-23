@@ -2529,7 +2529,7 @@
       ]
     },
     {
-      "name": "block-sign-in",
+      "name": "rx-sign-in",
       "type": "registry:block",
       "framework": "rx",
       "title": "Sign-in block",
@@ -2548,7 +2548,7 @@
       ]
     },
     {
-      "name": "block-dashboard",
+      "name": "rx-dashboard",
       "type": "registry:block",
       "framework": "rx",
       "title": "Dashboard block",
@@ -2567,7 +2567,7 @@
       ]
     },
     {
-      "name": "block-assistant",
+      "name": "rx-assistant",
       "type": "registry:block",
       "framework": "rx",
       "title": "Assistant block",
@@ -2593,7 +2593,7 @@
       ]
     },
     {
-      "name": "block-settings-form",
+      "name": "rx-settings-form",
       "type": "registry:block",
       "framework": "rx",
       "title": "Settings form block",
@@ -2615,7 +2615,7 @@
       ]
     },
     {
-      "name": "block-empty-state",
+      "name": "rx-empty-state",
       "type": "registry:block",
       "framework": "rx",
       "title": "Empty state block",

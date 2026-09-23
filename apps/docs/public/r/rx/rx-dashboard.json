@@ -1,6 +1,6 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "block-dashboard",
+  "name": "rx-dashboard",
   "type": "registry:block",
   "framework": "rx",
   "title": "Dashboard block",
@@ -35,7 +35,7 @@
   ],
   "cssVars": {},
   "usage": {
-    "whenToUse": "TBD - document when to use block-dashboard.",
+    "whenToUse": "TBD - document when to use rx-dashboard.",
     "whenNotToUse": "TBD - document when to reach for something else.",
     "bestPractices": [],
     "antipatterns": []

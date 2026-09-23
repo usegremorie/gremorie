@@ -1,6 +1,6 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "block-sign-in",
+  "name": "rx-sign-in",
   "type": "registry:block",
   "framework": "rx",
   "title": "Sign-in block",
@@ -34,7 +34,7 @@
   ],
   "cssVars": {},
   "usage": {
-    "whenToUse": "TBD - document when to use block-sign-in.",
+    "whenToUse": "TBD - document when to use rx-sign-in.",
     "whenNotToUse": "TBD - document when to reach for something else.",
     "bestPractices": [],
     "antipatterns": []

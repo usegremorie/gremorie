@@ -14,13 +14,13 @@ version through `registryDependencies`.
 
 ## Blocks vs Components vs Artifacts
 
-|             | Components               | Blocks                       | Artifacts                                     |
-| ----------- | ------------------------ | ---------------------------- | --------------------------------------------- |
-| **Scope**   | One primitive            | N primitives composed        | One primitive that consumes an LLM schema     |
-| **Example** | `Button`                 | `sign-in` card               | `chart` artifact rendering Recharts from JSON |
-| **Wiring**  | None                     | Layout + state + handlers    | Schema parser + streaming renderer            |
-| **Install** | `gremorie add rx-button` | `gremorie add block-sign-in` | `gremorie add rx-chart`                       |
-| **Status**  | Shipping (83 primitives) | Shipping                     | Shipping                                      |
+|             | Components               | Blocks                    | Artifacts                                     |
+| ----------- | ------------------------ | ------------------------- | --------------------------------------------- |
+| **Scope**   | One primitive            | N primitives composed     | One primitive that consumes an LLM schema     |
+| **Example** | `Button`                 | `sign-in` card            | `chart` artifact rendering Recharts from JSON |
+| **Wiring**  | None                     | Layout + state + handlers | Schema parser + streaming renderer            |
+| **Install** | `gremorie add rx-button` | `gremorie add rx-sign-in` | `gremorie add rx-chart`                       |
+| **Status**  | Shipping (83 primitives) | Shipping                  | Shipping                                      |
 
 ## Categories
 

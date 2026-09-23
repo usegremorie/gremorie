@@ -1,10 +1,8 @@
 'use client';
 
 import { CodeBlock } from '@gremorie/rx-artifacts';
-import { cn } from '@gremorie/rx-core';
-import { Card, Separator } from '@gremorie/rx-display';
+import { Card } from '@gremorie/rx-display';
 import {
-  Button,
   Input,
   Label,
   Select,
@@ -20,15 +18,11 @@ import {
   TabsList,
   TabsTrigger,
 } from '@gremorie/rx-navigation';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@gremorie/rx-overlays';
-import { MoonIcon, PaletteIcon, SunIcon } from 'lucide-react';
+import { TooltipProvider } from '@gremorie/rx-overlays';
+import { PaletteIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { CommandLine } from '@/components/landing/command-line';
 import {
   Assistant,
   type AssistantView,
@@ -43,7 +37,7 @@ import {
  *                   placeholder, and a switch per composer part.
  *   2. Code       - React | Angular consumer code, generated live from the
  *                   controls, plus install commands.
- *   3. Preview    - the REAL `<Assistant />` rendered, with a dark/light toggle.
+ *   3. Preview    - the REAL `<Assistant />` rendered, with a theme picker.
  *
  * Every control drives the code AND the preview together.
  */
@@ -153,7 +147,6 @@ export function AssistantShowcase() {
   const [placeholder, setPlaceholder] = useState(DEFAULTS.placeholder);
   const [parts, setParts] = useState<Parts>(ALL_ON);
   const [theme, setTheme] = useState('default');
-  const [previewDark, setPreviewDark] = useState(false);
 
   // Brand themes are token sets scoped to the root element (`:root[data-theme]`),
   // so a selection re-themes the document; cleaned up on unmount/restore.
@@ -245,14 +238,6 @@ export function AssistantShowcase() {
                 </div>
               ))}
             </div>
-
-            <Separator />
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Assistant is a <strong>block</strong> - you own the source.{' '}
-              <code className="text-[10px]">gremorie add block-assistant</code>{' '}
-              copies it in; wire <code className="text-[10px]">onSubmit</code>{' '}
-              to your endpoint to make the mock real.
-            </p>
           </div>
 
           {/* Panel 2 - Code (React | Angular) + install */}
@@ -275,10 +260,18 @@ export function AssistantShowcase() {
               {/* Install first, then the code it enables. The commands used to
                   sit at the foot of the panel, below a snippet that already
                   said `import { Assistant }` - reading it top to bottom asked
-                  you to import something you had not installed yet. */}
-              <div className="shrink-0 space-y-1 border-b px-4 py-3 font-mono text-[11px] text-muted-foreground">
-                <div>$ npx gremorie add block-assistant</div>
-                <div>$ npm i @gremorie/ng-ai</div>
+                  you to import something you had not installed yet. They are
+                  the same CommandLine the hero uses, so a command looks and
+                  copies the same way everywhere on the site. */}
+              <div className="shrink-0 space-y-2 border-b p-3">
+                <CommandLine
+                  command="npx gremorie add rx-assistant"
+                  label="React install command"
+                />
+                <CommandLine
+                  command="npm i @gremorie/ng-ai"
+                  label="Angular install command"
+                />
               </div>
               {/* `h-full` on the CodeBlock, not just on the panel: the block is
                   w-full already but sizes its height to the snippet, so four
@@ -332,43 +325,17 @@ export function AssistantShowcase() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="size-8"
-                      onClick={() => setPreviewDark((d) => !d)}
-                      aria-label={
-                        previewDark
-                          ? 'Switch preview to light'
-                          : 'Switch preview to dark'
-                      }
-                    >
-                      {previewDark ? (
-                        <SunIcon className="size-4" />
-                      ) : (
-                        <MoonIcon className="size-4" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent className="text-xs">
-                    {previewDark ? 'Light' : 'Dark'}
-                  </TooltipContent>
-                </Tooltip>
               </div>
             </div>
-            <div
-              className={cn(
-                'flex flex-1 items-center justify-center bg-background p-4 text-foreground',
-                previewDark && 'dark',
-              )}
-            >
+            {/* No local dark class: the preview follows the page, which the
+                navbar toggle already controls. Two switches for one thing put
+                the card and the site out of step. */}
+            <div className="flex flex-1 items-center justify-center bg-background p-4 text-foreground">
               {/* Remount on the props that seed initial/uncontrolled state
                   (view, mode, model) so the block resets to them; placeholder is
                   a live prop and updates without a remount. */}
               <Assistant
-                key={`${view}-${previewDark ? 'd' : 'l'}`}
+                key={view}
                 initialView={view}
                 placeholder={placeholder}
                 mentions={parts.mentions}

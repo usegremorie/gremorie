@@ -1,6 +1,6 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "block-settings-form",
+  "name": "rx-settings-form",
   "type": "registry:block",
   "framework": "rx",
   "title": "Settings form block",
@@ -36,7 +36,7 @@
   ],
   "cssVars": {},
   "usage": {
-    "whenToUse": "TBD - document when to use block-settings-form.",
+    "whenToUse": "TBD - document when to use rx-settings-form.",
     "whenNotToUse": "TBD - document when to reach for something else.",
     "bestPractices": [],
     "antipatterns": []

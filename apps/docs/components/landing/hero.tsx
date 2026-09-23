@@ -55,10 +55,15 @@ export function Hero() {
           parity.
         </h1>
 
+        {/* No count here: the proof strip right below carries the numbers, and
+            a figure in the subhead ages the moment a component lands. The AI
+            line is not a label but the inventory itself - conversation,
+            artifacts and charts are components in this system, and AI is its
+            largest category (23 of the primitives, ahead of Forms at 17). */}
         <p className="max-w-2xl text-balance text-lg text-muted-foreground leading-relaxed">
-          83 copy-paste primitives, tokens, and production blocks, shipped to
-          both frameworks from one registry. Install with one command, own the
-          source, restyle with your tokens.
+          Everything an AI product needs: conversation, artifacts, charts, plus
+          the primitives, tokens and blocks around them. One command installs
+          it, and you own the source.
         </p>
 
         <InstallCommand />

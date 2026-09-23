@@ -1,6 +1,6 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "block-assistant",
+  "name": "rx-assistant",
   "type": "registry:block",
   "framework": "rx",
   "title": "Assistant block",
@@ -45,7 +45,7 @@
   ],
   "cssVars": {},
   "usage": {
-    "whenToUse": "TBD - document when to use block-assistant.",
+    "whenToUse": "TBD - document when to use rx-assistant.",
     "whenNotToUse": "TBD - document when to reach for something else.",
     "bestPractices": [],
     "antipatterns": []

@@ -36,14 +36,35 @@ function normaliseFramework(fw: string | undefined): RegistryFramework | null {
 }
 
 /**
+ * Names the registry used to ship under. The five blocks carried a `block-`
+ * category prefix that nothing else in the React namespace used, and that the
+ * Angular edition never had - the same block was `block-assistant` here and
+ * `ng-assistant` there. They are `rx-*` now, like every other React item.
+ *
+ * The old names keep working: they went out with 0.7.0, in the docs and in
+ * people's notes, and a rename is not a reason to break an install.
+ */
+const RENAMED: Record<string, string> = {
+  'block-assistant': 'rx-assistant',
+  'block-dashboard': 'rx-dashboard',
+  'block-empty-state': 'rx-empty-state',
+  'block-settings-form': 'rx-settings-form',
+  'block-sign-in': 'rx-sign-in',
+};
+
+/** Map a legacy name onto its current one; anything else passes through. */
+export function canonicalName(name: string): string {
+  return RENAMED[name] ?? name;
+}
+
+/**
  * Infer the framework from the registry item name itself: `rx-*` items are
- * React, `ng-*` items are Angular, and `block-*` items are React registry
- * blocks. This beats any package.json heuristic because the name is explicit.
+ * React and `ng-*` items are Angular. This beats any package.json heuristic
+ * because the name is explicit.
  */
 function inferFromName(name: string): RegistryFramework | null {
   if (name.startsWith('rx-')) return 'rx';
   if (name.startsWith('ng-')) return 'ng';
-  if (name.startsWith('block-')) return 'rx';
   return null;
 }
 
@@ -94,7 +115,13 @@ export async function addCommand(
   // 1. Fetch every item plus all transitive registryDependencies.
   const ordered: RegistryItem[] = [];
   const seen = new Set<string>();
-  for (const name of names) {
+  for (const requestedName of names) {
+    const name = canonicalName(requestedName);
+    if (name !== requestedName) {
+      console.log(
+        kleur.dim(`  ${requestedName} is now ${name} (old name still works)`),
+      );
+    }
     const { framework, source } = resolveFramework(name, requested, detected);
     console.log(kleur.dim(`  ${name}: framework ${framework} (${source})`));
     try {

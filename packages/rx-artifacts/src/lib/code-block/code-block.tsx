@@ -114,14 +114,19 @@ export const CodeBlock = ({
         )}
         {...props}
       >
-        <div className="relative">
+        {/* h-full so an explicit height on the root actually reaches the
+            scroller: without it the wrapper stayed content-height and a tall
+            CodeBlock showed its horizontal scrollbar near the top with dead
+            space beneath. Against an auto-height root, height:100% resolves
+            to auto, so the default sizing is unchanged. */}
+        <div className="relative h-full">
           <div
-            className="overflow-auto dark:hidden [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
+            className="h-full overflow-auto dark:hidden [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
             // biome-ignore lint/security/noDangerouslySetInnerHtml: "this is needed."
             dangerouslySetInnerHTML={{ __html: html }}
           />
           <div
-            className="hidden overflow-auto dark:block [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
+            className="hidden h-full overflow-auto dark:block [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
             // biome-ignore lint/security/noDangerouslySetInnerHtml: "this is needed."
             dangerouslySetInnerHTML={{ __html: darkHtml }}
           />

@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@gremorie/rx-forms';
 import { Tabs, TabsList, TabsTrigger } from '@gremorie/rx-navigation';
-import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
+
+import { CommandLine } from '@/components/landing/command-line';
 
 /**
  * Hero install command - the "prove it is real" box, rendered right below the
@@ -15,17 +15,16 @@ import { useState } from 'react';
  * command under React | Angular tabs. Two different boxes for one thing made
  * the landing look like a different product from the docs it links to.
  *
- * The measurements come from that rendered block, not from taste:
+ * The wrapper and tab row are measured from that rendered block:
  *   wrapper  flex flex-col overflow-hidden rounded-xl border bg-fd-secondary
  *   tab row  flex gap-3.5 px-4, underlined triggers at py-2 text-sm
- *   code     figure bg-fd-card rounded-xl border shadow-sm, pre at 13px
- *   copy     absolute top-3 right-2, backdrop-blur-lg, 24x24 hit area
+ * The command itself is a `CommandLine`, the one definition of a copyable
+ * command on this site - the Assistant showcase stacks two of the same thing.
  *
- * Dogfood survives the alignment: the tabs are still rx-navigation Tabs and
- * the copy button is still an rx-forms Button. Only the surface tokens are
- * Fumadocs' (`fd-secondary`, `fd-card`), which is what makes it read as the
- * same chrome as the docs. The DS ships a `line` TabsList variant whose
- * underline is already the docs' tab treatment - no restyling needed.
+ * Dogfood survives the alignment: the tabs are still rx-navigation Tabs. Only
+ * the surface tokens are Fumadocs' (`fd-secondary`), which is what makes it
+ * read as the same chrome as the docs. The DS ships a `line` TabsList variant
+ * whose underline is already the docs' tab treatment - no restyling needed.
  *
  * Controlled Tabs with no TabsContent: the command line below the header
  * re-renders from state, so the box stays one compact block instead of two
@@ -41,17 +40,6 @@ type Framework = keyof typeof COMMANDS;
 
 export function InstallCommand() {
   const [framework, setFramework] = useState<Framework>('react');
-  const [copied, setCopied] = useState(false);
-
-  async function copyCommand() {
-    try {
-      await navigator.clipboard.writeText(COMMANDS[framework]);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard unavailable (permissions / insecure context): no-op.
-    }
-  }
 
   return (
     <div className="flex w-full max-w-md flex-col overflow-hidden rounded-xl border bg-fd-secondary text-left">
@@ -77,35 +65,7 @@ export function InstallCommand() {
           </TabsTrigger>
         </TabsList>
       </Tabs>
-      <figure className="relative m-0 overflow-hidden rounded-xl border bg-fd-card shadow-sm">
-        <div className="absolute top-3 right-2 z-2 rounded-lg text-fd-muted-foreground backdrop-blur-lg">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={copyCommand}
-            aria-label={
-              copied ? 'Install command copied' : 'Copy install command'
-            }
-          >
-            {copied ? (
-              <Check className="size-4 text-success" aria-hidden="true" />
-            ) : (
-              <Copy className="size-4" aria-hidden="true" />
-            )}
-          </Button>
-        </div>
-        <pre className="overflow-x-auto px-4 py-3 font-mono text-[13px] text-fd-foreground">
-          <code>
-            <span
-              className="select-none text-fd-muted-foreground"
-              aria-hidden="true"
-            >
-              ${' '}
-            </span>
-            {COMMANDS[framework]}
-          </code>
-        </pre>
-      </figure>
+      <CommandLine command={COMMANDS[framework]} label="install command" />
     </div>
   );
 }
