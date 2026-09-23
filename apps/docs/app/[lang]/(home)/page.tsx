@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 
 import { ArtifactsSpotlight } from '@/components/landing/artifacts-spotlight';
 import { AssistantShowcase } from '@/components/landing/assistant-showcase';
-import { BlocksGallery } from '@/components/landing/blocks-gallery';
+// Hidden, not deleted: see the render list below.
+// import { BlocksGallery } from '@/components/landing/blocks-gallery';
 import { ComponentsShowcase } from '@/components/landing/components-showcase';
 import { FeaturesGrid } from '@/components/landing/features-grid';
 import { FinalCta } from '@/components/landing/final-cta';
@@ -10,7 +11,8 @@ import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/landing/hero';
 import { ParityProof } from '@/components/landing/parity-proof';
 import { ProofStrip } from '@/components/landing/proof-strip';
-import { ThemePlayground } from '@/components/landing/theme-playground';
+// Hidden, not deleted: see the render list below.
+// import { ThemePlayground } from '@/components/landing/theme-playground';
 import { i18n } from '@/lib/i18n';
 
 /**
@@ -30,9 +32,9 @@ import { i18n } from '@/lib/i18n';
  *   4. Parity proof (React | Angular tabs over the same Button)
  *   5. Features grid (own the code, parity, tokens, AI-native)
  *   6. Components showcase (8 categories with counts)
- *   7. Blocks gallery (5 production blocks)
+ *   7. Blocks gallery (5 production blocks) - currently hidden
  *   8. Artifacts spotlight (real ChartArtifact + its code)
- *   9. Theme playground (token sliders)
+ *   9. Theme playground (token sliders) - currently hidden
  *  10. Final CTA
  *  11. Footer (3 columns: brand / resources / community + legal)
  */
@@ -58,9 +60,14 @@ export default function LandingPage() {
         <ParityProof />
         <FeaturesGrid />
         <ComponentsShowcase />
-        <BlocksGallery />
+        {/* Blocks gallery: hidden on Kal's call, 2026-09-22. The section and
+            its component are untouched - uncomment this line and the import
+            above to bring it back. */}
+        {/* <BlocksGallery /> */}
         <ArtifactsSpotlight />
-        <ThemePlayground />
+        {/* Theme playground: hidden on Kal's call, 2026-09-22, alongside the
+            blocks gallery. Both come back when we work on them again. */}
+        {/* <ThemePlayground /> */}
         <FinalCta />
       </main>
       <Footer />

@@ -263,7 +263,13 @@ export function AssistantShowcase() {
                   you to import something you had not installed yet. They are
                   the same CommandLine the hero uses, so a command looks and
                   copies the same way everywhere on the site. */}
-              <div className="shrink-0 space-y-2 border-b p-3">
+              {/* flex + gap, not space-y: CommandLine's figure carries `m-0`
+                  to kill the prose margin, and that beat space-y's margin-top,
+                  so the two fields sat at a 0px gap. p-4 matches the header's
+                  px-4 above, so the fields line up with the "Code" label
+                  instead of sitting 4px inside it. 12px between them against
+                  16px to the edges: closer to each other than to the frame. */}
+              <div className="flex shrink-0 flex-col gap-3 border-b p-4">
                 <CommandLine
                   command="npx gremorie add rx-assistant"
                   label="React install command"
