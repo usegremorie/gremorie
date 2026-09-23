@@ -25,6 +25,7 @@
     "@gremorie/rx-navigation": "*",
     "@gremorie/rx-overlays": "*",
     "@modelcontextprotocol/sdk": "^1.26.0",
+    "@vercel/analytics": "^2.0.1",
     "@xyflow/react": "^12.10.2",
     "ai": "^6.0.177",
     "fumadocs-core": "^16.0.0",
