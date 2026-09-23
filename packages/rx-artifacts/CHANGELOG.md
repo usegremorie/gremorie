@@ -1,5 +1,27 @@
 # @gremorie/rx-artifacts
 
+## 0.8.0
+
+### Patch Changes
+
+- b468fef: Chart artifact: keep radar charts inside the plot
+
+  The radar chart now pins its scale at 100 by default, which is right for the
+  scores it is usually reaching for and wrong for an artifact, which carries
+  whatever range a model produced — anything above 100 drew outside the outer
+  ring. The artifact now treats 100 as a floor and grows the scale when the data
+  needs it.
+
+- db8ed7d: Radar chart: `max` accepts `'auto'`
+
+  Pinning the scale is right when the data has a natural ceiling — a percentage,
+  a 0-100 score — and wrong when it does not, where it silently draws anything
+  above the top outside the outer ring. `max="auto"` follows the largest value in
+  the data instead, which is what the chart did before the scale was pinned.
+
+  The chart artifact now uses it, since it renders whatever range a model
+  produced and cannot assume one.
+
 ## 0.7.0
 
 ## 0.6.0
