@@ -28,8 +28,8 @@ it real.
 
 <Callout type="info">
   This is a **block** — a fully-composed starting point you own. `gremorie add
-  block-assistant` copies the source into your app; you then edit it (swap the
-  mock data, wire your endpoint) rather than consuming a fixed prop API.
+  rx-assistant` copies the source into your app; you then edit it (swap the mock
+  data, wire your endpoint) rather than consuming a fixed prop API.
 </Callout>
 
 ## Preview
@@ -95,7 +95,7 @@ Assistant                          data-size'd card; flips between two views
 <Tab value="npm">
 
 ```bash
-npx gremorie@latest add block-assistant
+npx gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -103,7 +103,7 @@ npx gremorie@latest add block-assistant
 <Tab value="pnpm">
 
 ```bash
-pnpm dlx gremorie@latest add block-assistant
+pnpm dlx gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -111,7 +111,7 @@ pnpm dlx gremorie@latest add block-assistant
 <Tab value="yarn">
 
 ```bash
-yarn dlx gremorie@latest add block-assistant
+yarn dlx gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -119,7 +119,7 @@ yarn dlx gremorie@latest add block-assistant
 <Tab value="bun">
 
 ```bash
-bunx --bun gremorie@latest add block-assistant
+bunx --bun gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -159,17 +159,30 @@ const handleSubmit = (message: PromptInputMessage) => {
 ## API
 
 The block is a composed template, so the surface you tweak is mostly its source.
-The one prop it exposes:
+What it exposes as props:
 
 ### `<Assistant>`
 
-| Prop          | Type                  | Default    | Description                                                                  |
-| ------------- | --------------------- | ---------- | ---------------------------------------------------------------------------- |
-| `initialView` | `'filled' \| 'empty'` | `'filled'` | Which surface to render first — the live conversation or the new-chat start. |
+| Prop           | Type                  | Default                           | Description                                                                  |
+| -------------- | --------------------- | --------------------------------- | ---------------------------------------------------------------------------- |
+| `initialView`  | `'filled' \| 'empty'` | `'filled'`                        | Which surface to render first — the live conversation or the new-chat start. |
+| `placeholder`  | `string`              | `'Ask anything, or pick a mode…'` | Composer textarea placeholder.                                               |
+| `defaultMode`  | `string`              | `'research'`                      | Initially-selected composer mode.                                            |
+| `defaultModel` | `string`              | `'claude-sonnet-4-6'`             | Initially-selected model.                                                    |
+| `mentions`     | `boolean`             | `true`                            | Show the @-mention trigger in the composer header.                           |
+| `contextMeter` | `boolean`             | `true`                            | Show the context-window meter in the composer header.                        |
+| `modeSelect`   | `boolean`             | `true`                            | Show the mode select in the composer footer.                                 |
+| `modelSelect`  | `boolean`             | `true`                            | Show the model select in the composer footer.                                |
 
 ```ts
 export type AssistantView = 'filled' | 'empty';
 ```
+
+The four composer parts are **opt-out, not opt-in**: the block ships complete and
+you strip what your product does not have. Turn off `modeSelect` when your
+endpoint has one behaviour, `modelSelect` when the model is not the user's
+choice, `contextMeter` when you do not surface token usage. With both header
+parts off the header is dropped entirely rather than left as an empty strip.
 
 Everything else (header actions, the mock conversation, mode/model presets,
 context items) lives in the installed source and is meant to be edited.

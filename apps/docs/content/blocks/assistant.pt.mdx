@@ -28,9 +28,9 @@ qualquer endpoint de streaming) para torná-lo real.
 
 <Callout type="info">
   Isto é um **block** — um ponto de partida totalmente composto que você é dono.
-  `gremorie add block-assistant` copia o source para a sua app; você então o
-  edita (troca o mock data, faz a fiação do seu endpoint) em vez de consumir uma
-  API de props fixa.
+  `gremorie add rx-assistant` copia o source para a sua app; você então o edita
+  (troca o mock data, faz a fiação do seu endpoint) em vez de consumir uma API
+  de props fixa.
 </Callout>
 
 ## Preview
@@ -96,7 +96,7 @@ Assistant                          data-size'd card; flips between two views
 <Tab value="npm">
 
 ```bash
-npx gremorie@latest add block-assistant
+npx gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -104,7 +104,7 @@ npx gremorie@latest add block-assistant
 <Tab value="pnpm">
 
 ```bash
-pnpm dlx gremorie@latest add block-assistant
+pnpm dlx gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -112,7 +112,7 @@ pnpm dlx gremorie@latest add block-assistant
 <Tab value="yarn">
 
 ```bash
-yarn dlx gremorie@latest add block-assistant
+yarn dlx gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -120,7 +120,7 @@ yarn dlx gremorie@latest add block-assistant
 <Tab value="bun">
 
 ```bash
-bunx --bun gremorie@latest add block-assistant
+bunx --bun gremorie@latest add rx-assistant
 ```
 
 </Tab>
@@ -160,17 +160,30 @@ const handleSubmit = (message: PromptInputMessage) => {
 ## API
 
 O block é um template composto, então a superfície que você ajusta é
-majoritariamente seu source. A única prop que ele expõe:
+majoritariamente seu source. O que ele expõe como props:
 
 ### `<Assistant>`
 
-| Prop          | Type                  | Default    | Description                                                                       |
-| ------------- | --------------------- | ---------- | --------------------------------------------------------------------------------- |
-| `initialView` | `'filled' \| 'empty'` | `'filled'` | Qual superfície renderizar primeiro — a conversa ao vivo ou o início de new-chat. |
+| Prop           | Type                  | Default                           | Description                                                                       |
+| -------------- | --------------------- | --------------------------------- | --------------------------------------------------------------------------------- |
+| `initialView`  | `'filled' \| 'empty'` | `'filled'`                        | Qual superfície renderizar primeiro — a conversa ao vivo ou o início de new-chat. |
+| `placeholder`  | `string`              | `'Ask anything, or pick a mode…'` | Placeholder da textarea do composer.                                              |
+| `defaultMode`  | `string`              | `'research'`                      | Mode selecionado inicialmente.                                                    |
+| `defaultModel` | `string`              | `'claude-sonnet-4-6'`             | Modelo selecionado inicialmente.                                                  |
+| `mentions`     | `boolean`             | `true`                            | Mostra o gatilho de menção (@) no header do composer.                             |
+| `contextMeter` | `boolean`             | `true`                            | Mostra o medidor de janela de contexto no header do composer.                     |
+| `modeSelect`   | `boolean`             | `true`                            | Mostra o select de mode no footer do composer.                                    |
+| `modelSelect`  | `boolean`             | `true`                            | Mostra o select de modelo no footer do composer.                                  |
 
 ```ts
 export type AssistantView = 'filled' | 'empty';
 ```
+
+As quatro partes do composer são **opt-out, não opt-in**: o block chega completo e
+você remove o que o seu produto não tem. Desligue `modeSelect` quando o seu
+endpoint tem um comportamento só, `modelSelect` quando o modelo não é escolha do
+usuário, `contextMeter` quando você não expõe uso de tokens. Com as duas partes do
+header desligadas, o header some inteiro em vez de virar uma faixa vazia.
 
 Todo o resto (ações do header, a conversa mock, presets de mode/model, itens de
 contexto) vive no source instalado e foi feito para ser editado.

@@ -1,6 +1,6 @@
 {
   "$schema": "https://gremorie.com/schema/registry-item.json",
-  "name": "block-empty-state",
+  "name": "rx-empty-state",
   "type": "registry:block",
   "framework": "rx",
   "title": "Empty state block",
@@ -29,7 +29,7 @@
   ],
   "cssVars": {},
   "usage": {
-    "whenToUse": "TBD - document when to use block-empty-state.",
+    "whenToUse": "TBD - document when to use rx-empty-state.",
     "whenNotToUse": "TBD - document when to reach for something else.",
     "bestPractices": [],
     "antipatterns": []

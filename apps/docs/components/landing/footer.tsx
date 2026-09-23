@@ -1,6 +1,7 @@
 import { Separator } from '@gremorie/rx-display';
-import { Github } from 'lucide-react';
 import Link from 'next/link';
+
+import { GithubMark } from '@/components/github-mark';
 
 // Workbench is intentionally absent from Resources: the workbench app has no
 // public deployment URL yet (docs/workbench.md still says "<set by your Vercel
@@ -18,13 +19,13 @@ const communityLinks = [
   {
     label: 'GitHub',
     href: 'https://github.com/usegremorie/gremorie',
-    icon: Github,
+    icon: GithubMark,
     external: true,
   },
   {
     label: 'Issues',
     href: 'https://github.com/usegremorie/gremorie/issues',
-    icon: Github,
+    icon: GithubMark,
     external: true,
   },
 ];
@@ -74,7 +75,7 @@ export function Footer() {
               rel="noreferrer noopener"
               className="mt-5 inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
-              <Github className="size-3.5" aria-hidden="true" />
+              <GithubMark className="size-3.5" />
               <span>Star on GitHub</span>
               <span className="ml-1 inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
                 MIT

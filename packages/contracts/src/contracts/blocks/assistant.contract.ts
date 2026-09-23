@@ -4,7 +4,7 @@ import { defineContract } from '../../types';
  * Assistant - the flagship composed chat surface. A BLOCK (a composed,
  * copy-paste starting point built FROM the AI primitives), not a primitive, so
  * it lives in the `blocks` category - never folded under `chatbot`. React ships
- * it as the `block-assistant` registry block; Angular as the `<ai-assistant>`
+ * it as the `rx-assistant` registry block; Angular as the `<ai-assistant>`
  * element from `@gremorie/ng-ai`.
  */
 export const assistant = defineContract({
@@ -61,6 +61,30 @@ export const assistant = defineContract({
       desc: 'Initially-selected model.',
     },
     {
+      name: 'modeSelect',
+      type: 'boolean',
+      default: true,
+      desc: 'Show the mode select in the composer footer. Turn it off when your endpoint has one behaviour.',
+    },
+    {
+      name: 'modelSelect',
+      type: 'boolean',
+      default: true,
+      desc: 'Show the model select in the composer footer. Turn it off when the model is not the user’s choice.',
+    },
+    {
+      name: 'mentions',
+      type: 'boolean',
+      default: true,
+      desc: 'Show the @-mention trigger in the composer header, for attaching context items.',
+    },
+    {
+      name: 'contextMeter',
+      type: 'boolean',
+      default: true,
+      desc: 'Show the context-window meter in the composer header. Turn it off when you do not surface token usage.',
+    },
+    {
       name: 'onSubmit',
       type: '(message) => void',
       adapts: { ng: 'output: submitted' },
@@ -79,8 +103,9 @@ export const assistant = defineContract({
       { text: 'Just the composer', use: 'prompt-input' },
     ],
     rules: [
-      'It is a block - copy-paste, you own the source (`gremorie add block-assistant`), not a fixed prop API.',
+      'It is a block - copy-paste, you own the source (`gremorie add rx-assistant`), not a fixed prop API.',
       'initialView picks the starting surface; the header chat switcher flips between filled and empty at runtime.',
+      'The composer parts are opt-out, not opt-in: modeSelect, modelSelect, mentions and contextMeter all default to true, so the block ships complete and you strip what your product does not have.',
     ],
     example: '<Assistant initialView="filled" />',
   },
@@ -94,6 +119,10 @@ export const assistant = defineContract({
     placeholder: 'Ask anything, or pick a mode...',
     defaultMode: 'research',
     defaultModel: 'claude-sonnet-4-6',
+    modeSelect: true,
+    modelSelect: true,
+    mentions: true,
+    contextMeter: true,
   },
   figma: { nodeId: null },
 });

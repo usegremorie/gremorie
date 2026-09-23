@@ -78,6 +78,28 @@
     scroll-behavior: smooth;
   }
   :root {
+    /* Wire the fonts this app actually loads into the variables everything
+       reads. This is the Fumadocs pattern: it ships no font of its own
+       ("Fumadocs doesn't come with a default font, and you may choose one
+       from next/font"), so the app picks one and points --font-sans /
+       --font-mono at it.
+
+       Without this, app/[lang]/layout.tsx downloads Geist and Geist Mono on
+       every page and nothing consumes them: @gremorie/tokens sets --font-sans
+       to Inter and --font-mono to JetBrains Mono / Fira Code, none of which
+       are loaded, so the browser fell through to ui-sans-serif and
+       ui-monospace - Segoe UI and Consolas on Windows. That is what made the
+       hero's install command read thin and badly hinted.
+
+       The override lives here, not in @gremorie/tokens: that file is the
+       token every consumer of the design system inherits, and it must not
+       force Gremorie's typeface on their product. The site chooses Geist;
+       a consumer chooses their own. Fumadocs' --default-mono-font-family
+       already resolves through --font-mono, so its Shiki code blocks follow
+       the same switch. */
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+
     --fd-layout-width: 100vw;
     /* WCAG 1.4.3 AA fix: Fumadocs default --color-fd-muted-foreground
        (#737373) on --color-fd-background (#f5f5f5) is 4.34:1 in light

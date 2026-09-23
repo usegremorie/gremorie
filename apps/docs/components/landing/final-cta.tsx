@@ -1,6 +1,8 @@
 import { Button } from '@gremorie/rx-forms';
-import { ArrowRight, Github } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+
+import { GithubMark } from '@/components/github-mark';
 
 /**
  * Final CTA - the closing chord (home redesign, section 11).
@@ -50,7 +52,7 @@ export function FinalCta() {
               target="_blank"
               rel="noreferrer noopener"
             >
-              <Github aria-hidden="true" />
+              <GithubMark className="size-4" />
               Star on GitHub
             </a>
           </Button>

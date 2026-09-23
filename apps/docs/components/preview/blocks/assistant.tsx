@@ -208,6 +208,10 @@ function Composer({
   placeholder = 'Ask anything, or pick a mode...',
   defaultMode = 'research',
   defaultModel = 'claude-sonnet-4-6',
+  modeSelect = true,
+  modelSelect = true,
+  mentions = true,
+  contextMeter = true,
 }: {
   status: ChatStatus;
   onSubmit: (message: PromptInputMessage) => void;
@@ -217,71 +221,91 @@ function Composer({
   defaultMode?: string;
   /** Initially-selected model (one of MODELS' ids). */
   defaultModel?: string;
+  /** Show the mode select in the footer. */
+  modeSelect?: boolean;
+  /** Show the model select in the footer. */
+  modelSelect?: boolean;
+  /** Show the @-mention trigger in the header. */
+  mentions?: boolean;
+  /** Show the context-window meter in the header. */
+  contextMeter?: boolean;
 }) {
+  // The header exists only to carry the mentions trigger and the context
+  // meter. With both off it would render as an empty strip above the
+  // textarea, so it is dropped entirely rather than left hollow.
+  const showHeader = mentions || contextMeter;
   return (
     <PromptInput className="rounded-xl shadow-lg" multiple onSubmit={onSubmit}>
-      <PromptInputHeader>
-        <PromptInputMentions items={CONTEXT_ITEMS} />
-        <Context
-          maxTokens={200_000}
-          modelId="anthropic:claude-3-5-sonnet"
-          usage={CONTEXT_USAGE}
-          usedTokens={62_600}
-        >
-          <ContextTrigger className="ml-auto" />
-          <ContextContent>
-            <ContextContentHeader />
-            <ContextContentBody>
-              <div className="space-y-1">
-                <ContextInputUsage />
-                <ContextOutputUsage />
-                <ContextReasoningUsage />
-                <ContextCacheUsage />
-              </div>
-            </ContextContentBody>
-            <ContextContentFooter />
-          </ContextContent>
-        </Context>
-      </PromptInputHeader>
+      {showHeader && (
+        <PromptInputHeader>
+          {mentions && <PromptInputMentions items={CONTEXT_ITEMS} />}
+          {contextMeter && (
+            <Context
+              maxTokens={200_000}
+              modelId="anthropic:claude-3-5-sonnet"
+              usage={CONTEXT_USAGE}
+              usedTokens={62_600}
+            >
+              <ContextTrigger className="ml-auto" />
+              <ContextContent>
+                <ContextContentHeader />
+                <ContextContentBody>
+                  <div className="space-y-1">
+                    <ContextInputUsage />
+                    <ContextOutputUsage />
+                    <ContextReasoningUsage />
+                    <ContextCacheUsage />
+                  </div>
+                </ContextContentBody>
+                <ContextContentFooter />
+              </ContextContent>
+            </Context>
+          )}
+        </PromptInputHeader>
+      )}
       <PromptInputBody>
         <PromptInputTextarea placeholder={placeholder} />
       </PromptInputBody>
       <PromptInputFooter>
         <PromptInputTools className="gap-2">
-          <PromptInputSelect defaultValue={defaultMode}>
-            <PromptInputSelectTrigger
-              aria-label="Select mode"
-              className={OUTLINE_TRIGGER}
-              size="sm"
-            >
-              <PromptInputSelectValue placeholder="Mode" />
-            </PromptInputSelectTrigger>
-            <PromptInputSelectContent>
-              {MODES.map((mode) => (
-                <PromptInputSelectItem key={mode.id} value={mode.id}>
-                  {mode.icon}
-                  {mode.label}
-                </PromptInputSelectItem>
-              ))}
-            </PromptInputSelectContent>
-          </PromptInputSelect>
-          <PromptInputSelect defaultValue={defaultModel}>
-            <PromptInputSelectTrigger
-              aria-label="Select model"
-              className={OUTLINE_TRIGGER}
-              size="sm"
-            >
-              <PromptInputSelectValue placeholder="Model" />
-            </PromptInputSelectTrigger>
-            <PromptInputSelectContent>
-              {MODELS.map((model) => (
-                <PromptInputSelectItem key={model.id} value={model.id}>
-                  {model.icon}
-                  {model.label}
-                </PromptInputSelectItem>
-              ))}
-            </PromptInputSelectContent>
-          </PromptInputSelect>
+          {modeSelect && (
+            <PromptInputSelect defaultValue={defaultMode}>
+              <PromptInputSelectTrigger
+                aria-label="Select mode"
+                className={OUTLINE_TRIGGER}
+                size="sm"
+              >
+                <PromptInputSelectValue placeholder="Mode" />
+              </PromptInputSelectTrigger>
+              <PromptInputSelectContent>
+                {MODES.map((mode) => (
+                  <PromptInputSelectItem key={mode.id} value={mode.id}>
+                    {mode.icon}
+                    {mode.label}
+                  </PromptInputSelectItem>
+                ))}
+              </PromptInputSelectContent>
+            </PromptInputSelect>
+          )}
+          {modelSelect && (
+            <PromptInputSelect defaultValue={defaultModel}>
+              <PromptInputSelectTrigger
+                aria-label="Select model"
+                className={OUTLINE_TRIGGER}
+                size="sm"
+              >
+                <PromptInputSelectValue placeholder="Model" />
+              </PromptInputSelectTrigger>
+              <PromptInputSelectContent>
+                {MODELS.map((model) => (
+                  <PromptInputSelectItem key={model.id} value={model.id}>
+                    {model.icon}
+                    {model.label}
+                  </PromptInputSelectItem>
+                ))}
+              </PromptInputSelectContent>
+            </PromptInputSelect>
+          )}
         </PromptInputTools>
         <PromptInputTools className="gap-2">
           <PromptInputTools>
@@ -358,6 +382,10 @@ export function Assistant({
   placeholder,
   defaultMode,
   defaultModel,
+  modeSelect = true,
+  modelSelect = true,
+  mentions = true,
+  contextMeter = true,
 }: {
   /** Start in a live conversation (`filled`) or the empty new-chat state. */
   initialView?: AssistantView;
@@ -367,6 +395,18 @@ export function Assistant({
   defaultMode?: string;
   /** Initially-selected model (one of the MODELS ids). */
   defaultModel?: string;
+  /**
+   * Composer parts, all on by default: the block ships complete and you strip
+   * what your product does not have, rather than assembling it piece by piece.
+   */
+  /** Show the mode select in the composer footer. */
+  modeSelect?: boolean;
+  /** Show the model select in the composer footer. */
+  modelSelect?: boolean;
+  /** Show the @-mention trigger in the composer header. */
+  mentions?: boolean;
+  /** Show the context-window meter in the composer header. */
+  contextMeter?: boolean;
 } = {}) {
   const [view, setView] = useState<AssistantView>(initialView);
   const [status, setStatus] = useState<ChatStatus>('ready');
@@ -474,6 +514,10 @@ export function Assistant({
                 placeholder={placeholder}
                 defaultMode={defaultMode}
                 defaultModel={defaultModel}
+                modeSelect={modeSelect}
+                modelSelect={modelSelect}
+                mentions={mentions}
+                contextMeter={contextMeter}
               />
             </div>
           </div>
@@ -583,6 +627,10 @@ export function Assistant({
                   placeholder={placeholder}
                   defaultMode={defaultMode}
                   defaultModel={defaultModel}
+                  modeSelect={modeSelect}
+                  modelSelect={modelSelect}
+                  mentions={mentions}
+                  contextMeter={contextMeter}
                 />
                 <p className="text-center text-xs text-muted-foreground">
                   Gremorie can make mistakes. Check important info.

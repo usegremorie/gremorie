@@ -1,8 +1,8 @@
 import { defineI18nUI } from 'fumadocs-ui/i18n';
-import { Github } from 'lucide-react';
 
 import type { BaseLayoutProps, LinkItemType } from 'fumadocs-ui/layouts/shared';
 
+import { GithubMark } from '@/components/github-mark';
 import { i18n } from '@/lib/i18n';
 
 /**
@@ -55,8 +55,8 @@ export const logo = (
  * `githubUrl`). The Fumadocs `githubUrl` shortcut renders a raw SVG with
  * `role="img"` but no inner `<title>` or `aria-label`, which axe-core
  * flags as `svg-img-alt`. The parent `<a aria-label="GitHub">` plus the
- * `aria-hidden` Lucide icon expose the link as a labeled action with a
- * decorative graphic.
+ * `aria-hidden` mark expose the link as a labeled action with a decorative
+ * graphic - the same result the shortcut gives, without the violation.
  */
 // Primary destinations (home redesign, section 0): Components, Blocks,
 // Tokens, Corpus. Declared with `on: 'nav'` so they render in the top navbar
@@ -75,7 +75,7 @@ export const linkItems: LinkItemType[] = [
     type: 'icon',
     label: 'GitHub',
     text: 'GitHub',
-    icon: <Github aria-hidden="true" />,
+    icon: <GithubMark className="size-full" />,
     url: 'https://github.com/usegremorie/gremorie',
     external: true,
   },

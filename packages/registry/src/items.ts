@@ -3005,7 +3005,7 @@ export const ITEMS: ItemConfig[] = [
   // React (rx-*): featured blocks
   // ---------------------------------------------------------------------------
   {
-    name: 'block-sign-in',
+    name: 'rx-sign-in',
     framework: 'rx',
     title: 'Sign-in block',
     description:
@@ -3026,7 +3026,7 @@ export const ITEMS: ItemConfig[] = [
     ],
   },
   {
-    name: 'block-dashboard',
+    name: 'rx-dashboard',
     framework: 'rx',
     title: 'Dashboard block',
     description:
@@ -3047,7 +3047,7 @@ export const ITEMS: ItemConfig[] = [
     ],
   },
   {
-    name: 'block-assistant',
+    name: 'rx-assistant',
     framework: 'rx',
     title: 'Assistant block',
     description:
@@ -3074,7 +3074,7 @@ export const ITEMS: ItemConfig[] = [
     ],
   },
   {
-    name: 'block-settings-form',
+    name: 'rx-settings-form',
     framework: 'rx',
     title: 'Settings form block',
     description:
@@ -3097,7 +3097,7 @@ export const ITEMS: ItemConfig[] = [
     ],
   },
   {
-    name: 'block-empty-state',
+    name: 'rx-empty-state',
     framework: 'rx',
     title: 'Empty state block',
     description:
