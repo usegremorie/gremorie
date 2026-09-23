@@ -1,4 +1,5 @@
 import '../global.css';
+import { Analytics } from '@vercel/analytics/next';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
@@ -21,6 +22,11 @@ const geistMono = Geist_Mono({
  * The actual root (app/layout.tsx) is a thin passthrough so the [lang] segment
  * can resolve the locale before rendering. The i18n UI provider feeds the
  * translated UI strings + the language switcher.
+ *
+ * Vercel Analytics sits here rather than in the root passthrough because this
+ * is the layout that renders <body> - the script has to land inside the
+ * document. It is cookie-free and collects nothing in development or on
+ * preview; only the production deployment reports.
  */
 export default async function LangLayout({
   params,
@@ -58,6 +64,7 @@ export default async function LangLayout({
         >
           {children}
         </RootProvider>
+        <Analytics />
       </body>
     </html>
   );
