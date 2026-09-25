@@ -69,7 +69,7 @@ const SEATS_TOTAL = 12;
  *   override intentionally wins over `.dark`'s remap so the chosen hue
  *   persists across both modes.
  */
-export function ThemePlayground() {
+export function ThemePlayground({ lang }: { lang: string }) {
   const [hue, setHue] = useState<Hue>(HUE_VIOLET);
   const [radius, setRadius] = useState(DEFAULT_RADIUS);
   const [fontScale, setFontScale] = useState(DEFAULT_FONT_SCALE);
@@ -118,7 +118,7 @@ export function ThemePlayground() {
             </p>
           </div>
           <Button variant="outline" asChild>
-            <Link href="/tokens">
+            <Link href={`/${lang}/tokens`}>
               Customize tokens
               <ArrowRight aria-hidden="true" />
             </Link>
