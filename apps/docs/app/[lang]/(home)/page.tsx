@@ -14,6 +14,7 @@ import { ProofStrip } from '@/components/landing/proof-strip';
 // Hidden, not deleted: see the render list below.
 // import { ThemePlayground } from '@/components/landing/theme-playground';
 import { i18n } from '@/lib/i18n';
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/lib/site';
 
 /**
  * Public landing at `/`. Lives in the `(home)` route group, wrapped by
@@ -39,9 +40,8 @@ import { i18n } from '@/lib/i18n';
  *  11. Footer (3 columns: brand / resources / community + legal)
  */
 export const metadata: Metadata = {
-  title: 'Gremorie - the design system for React and Angular',
-  description:
-    '83 copy-paste primitives, tokens, and production blocks at parity across React and Angular. AI-native: registry + MCP server. Open source, MIT.',
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
 };
 
 export function generateStaticParams() {
