@@ -174,6 +174,7 @@ majoritariamente seu source. O que ele expõe como props:
 | `contextMeter` | `boolean`             | `true`                            | Mostra o medidor de janela de contexto no header do composer.                     |
 | `modeSelect`   | `boolean`             | `true`                            | Mostra o select de mode no footer do composer.                                    |
 | `modelSelect`  | `boolean`             | `true`                            | Mostra o select de modelo no footer do composer.                                  |
+| `onSubmit`     | `(message) => void`   | -                                 | Dispara com o prompt composto no submit. Ligue ao seu AI SDK.                     |
 
 ```ts
 export type AssistantView = 'filled' | 'empty';
@@ -184,6 +185,11 @@ você remove o que o seu produto não tem. Desligue `modeSelect` quando o seu
 endpoint tem um comportamento só, `modelSelect` quando o modelo não é escolha do
 usuário, `contextMeter` quando você não expõe uso de tokens. Com as duas partes do
 header desligadas, o header some inteiro em vez de virar uma faixa vazia.
+
+O `onSubmit` é o ponto de integração: o block te entrega o prompt composto e segue
+rodando a máquina de estados mock por baixo, então a superfície continua animando
+enquanto você constrói o real. A edição Angular emite no mesmo momento como
+`(submitted)`. Troque o mock quando o seu stream passar a controlar o `status`.
 
 Todo o resto (ações do header, a conversa mock, presets de mode/model, itens de
 contexto) vive no source instalado e foi feito para ser editado.

@@ -377,6 +377,37 @@ function AssistantAnswer({ text }: { text: string }) {
 /** Which surface the block shows: a live conversation, or the new-chat start. */
 export type AssistantView = 'filled' | 'empty';
 
+/**
+ * The block's prop surface. Named and exported on purpose: the contract
+ * drift gate introspects this interface by name, so an inline object type
+ * would leave the block outside the gate - which is exactly how `onSubmit`
+ * went missing here while the Angular edition had it.
+ */
+export interface AssistantProps {
+  /** Start in a live conversation (`filled`) or the empty new-chat state. */
+  initialView?: AssistantView;
+  /** Composer textarea placeholder. */
+  placeholder?: string;
+  /** Initially-selected composer mode (Ask / Analyze / Research / Plan id). */
+  defaultMode?: string;
+  /** Initially-selected model (one of the MODELS ids). */
+  defaultModel?: string;
+  /** Show the mode select in the composer footer. */
+  modeSelect?: boolean;
+  /** Show the model select in the composer footer. */
+  modelSelect?: boolean;
+  /** Show the @-mention trigger in the composer header. */
+  mentions?: boolean;
+  /** Show the context-window meter in the composer header. */
+  contextMeter?: boolean;
+  /**
+   * Fires with the composed prompt when the user submits. Wire it to your AI
+   * SDK; the canned state machine keeps running underneath so the surface
+   * still animates while you build the real thing.
+   */
+  onSubmit?: (message: PromptInputMessage) => void;
+}
+
 export function Assistant({
   initialView = 'filled',
   placeholder,
@@ -386,28 +417,8 @@ export function Assistant({
   modelSelect = true,
   mentions = true,
   contextMeter = true,
-}: {
-  /** Start in a live conversation (`filled`) or the empty new-chat state. */
-  initialView?: AssistantView;
-  /** Composer textarea placeholder. */
-  placeholder?: string;
-  /** Initially-selected composer mode (Ask / Analyze / Research / Plan id). */
-  defaultMode?: string;
-  /** Initially-selected model (one of the MODELS ids). */
-  defaultModel?: string;
-  /**
-   * Composer parts, all on by default: the block ships complete and you strip
-   * what your product does not have, rather than assembling it piece by piece.
-   */
-  /** Show the mode select in the composer footer. */
-  modeSelect?: boolean;
-  /** Show the model select in the composer footer. */
-  modelSelect?: boolean;
-  /** Show the @-mention trigger in the composer header. */
-  mentions?: boolean;
-  /** Show the context-window meter in the composer header. */
-  contextMeter?: boolean;
-} = {}) {
+  onSubmit,
+}: AssistantProps = {}) {
   const [view, setView] = useState<AssistantView>(initialView);
   const [status, setStatus] = useState<ChatStatus>('ready');
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -425,6 +436,10 @@ export function Assistant({
 
   const handleSubmit = (message: PromptInputMessage) => {
     if (!message.text.trim() || status !== 'ready') return;
+    // Hand the prompt to the consumer first, then run the canned states. The
+    // Angular edition emits `submitted` at the same point; this is the React
+    // side of that contract.
+    onSubmit?.(message);
     // Sending from the new-chat state drops you into the conversation.
     setView('filled');
     setStatus('submitted');
