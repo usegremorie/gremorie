@@ -48,27 +48,36 @@ export function generateStaticParams() {
   return i18n.languages.map((lang) => ({ lang }));
 }
 
-export default function LandingPage() {
+export default async function LandingPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  // Every locale carries its prefix now (lib/i18n.ts), so the landing's own
+  // links have to be built with it - a bare /components would 307 through the
+  // proxy on every click.
+  const { lang } = await params;
+
   return (
     <>
       <main id="main">
-        <Hero />
+        <Hero lang={lang} />
         {/* The hero's product shot: the live Assistant workbench card sits
             centered right under the hero copy, Linear/Vercel style. */}
         <AssistantShowcase />
         <ProofStrip />
-        <ParityProof />
+        <ParityProof lang={lang} />
         <FeaturesGrid />
-        <ComponentsShowcase />
+        <ComponentsShowcase lang={lang} />
         {/* Blocks gallery: hidden on Kal's call, 2026-09-22. The section and
             its component are untouched - uncomment this line and the import
             above to bring it back. */}
-        {/* <BlocksGallery /> */}
-        <ArtifactsSpotlight />
+        {/* <BlocksGallery lang={lang} /> */}
+        <ArtifactsSpotlight lang={lang} />
         {/* Theme playground: hidden on Kal's call, 2026-09-22, alongside the
             blocks gallery. Both come back when we work on them again. */}
-        {/* <ThemePlayground /> */}
-        <FinalCta />
+        {/* <ThemePlayground lang={lang} /> */}
+        <FinalCta lang={lang} />
       </main>
       <Footer />
     </>

@@ -51,7 +51,7 @@ const ANGULAR_SNIPPET = `<!-- import { Button } from '@gremorie/ng-core' -->
   <ai-button variant="ghost">Learn more</ai-button>
 </div>`;
 
-export function ParityProof() {
+export function ParityProof({ lang }: { lang: string }) {
   return (
     <section className="py-20">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2 lg:gap-16">
@@ -69,7 +69,7 @@ export function ParityProof() {
           </p>
           <div className="mt-6">
             <Button variant="outline" asChild>
-              <Link href="/components">
+              <Link href={`/${lang}/components`}>
                 Browse the components
                 <ArrowRight aria-hidden="true" />
               </Link>

@@ -28,7 +28,7 @@ import { gremorieVersion } from '@/lib/version';
  * Dogfood: pill is rx-display Badge; CTAs are rx-forms Button (asChild wraps
  * Next Link); the install box composes rx Tabs + Button.
  */
-export function Hero() {
+export function Hero({ lang }: { lang: string }) {
   return (
     <section className="relative overflow-hidden">
       {/* Faint dotted grid that fades toward the edges - the technical,
@@ -70,10 +70,10 @@ export function Hero() {
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <Link href="/get-started/installation">Get started</Link>
+            <Link href={`/${lang}/get-started/installation`}>Get started</Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link href="/components">View components</Link>
+            <Link href={`/${lang}/components`}>View components</Link>
           </Button>
         </div>
       </div>

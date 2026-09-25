@@ -66,29 +66,37 @@ export const logo = (
 // Workbench is intentionally absent: the app has no public deployment URL yet
 // (docs/workbench.md still says "<set by your Vercel project>"). Add it here
 // once the workbench ships publicly.
-export const linkItems: LinkItemType[] = [
-  { text: 'Components', url: '/components', on: 'nav' },
-  { text: 'Blocks', url: '/blocks', on: 'nav' },
-  { text: 'Tokens', url: '/tokens', on: 'nav' },
-  { text: 'Corpus', url: '/corpus', on: 'nav' },
-  {
-    type: 'icon',
-    label: 'GitHub',
-    text: 'GitHub',
-    icon: <GithubMark className="size-full" />,
-    url: 'https://github.com/usegremorie/gremorie',
-    external: true,
-  },
-];
+// Every locale carries its prefix in the URL (see lib/i18n.ts), so these are
+// built per request rather than declared once. Fumadocs highlights a nav item
+// by comparing its `url` against `usePathname()`; a bare `/components` would
+// never match `/en/components`, so the navbar would sit permanently inactive.
+export function linkItems(lang: string): LinkItemType[] {
+  const at = (path: string) => `/${lang}${path}`;
+  return [
+    { text: 'Components', url: at('/components'), on: 'nav' },
+    { text: 'Blocks', url: at('/blocks'), on: 'nav' },
+    { text: 'Tokens', url: at('/tokens'), on: 'nav' },
+    { text: 'Corpus', url: at('/corpus'), on: 'nav' },
+    {
+      type: 'icon',
+      label: 'GitHub',
+      text: 'GitHub',
+      icon: <GithubMark className="size-full" />,
+      url: 'https://github.com/usegremorie/gremorie',
+      external: true,
+    },
+  ];
+}
 
-export function baseOptions(lang?: string): BaseLayoutProps {
-  const home = lang && lang !== i18n.defaultLanguage ? `/${lang}` : '/';
+export function baseOptions(
+  lang: string = i18n.defaultLanguage,
+): BaseLayoutProps {
   return {
     nav: {
       title: logo,
-      url: home,
+      url: `/${lang}`,
     },
-    links: linkItems,
+    links: linkItems(lang),
     searchToggle: {
       enabled: true,
     },

@@ -87,7 +87,7 @@ const categories = [
  * the catalog reads like a reference, not a marketing grid. Hover is a quiet
  * border shift.
  */
-export function ComponentsShowcase() {
+export function ComponentsShowcase({ lang }: { lang: string }) {
   return (
     <section className="py-20">
       <div className="mx-auto max-w-7xl px-6">
@@ -102,7 +102,7 @@ export function ComponentsShowcase() {
             </p>
           </div>
           <Button variant="ghost" asChild>
-            <Link href="/components">
+            <Link href={`/${lang}/components`}>
               View all components
               <ArrowRight aria-hidden="true" />
             </Link>
@@ -113,7 +113,7 @@ export function ComponentsShowcase() {
           {categories.map((cat) => (
             <Link
               key={cat.slug}
-              href="/components"
+              href={`/${lang}/components`}
               className="group block focus-visible:outline-none"
             >
               <Card className="h-full gap-3 py-5 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">

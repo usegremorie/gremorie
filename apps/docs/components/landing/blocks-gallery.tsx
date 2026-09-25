@@ -330,7 +330,7 @@ function BlockMockup({ shape }: { shape: BlockShape }) {
  * - Card height bumped to fit mockup + heading + description
  * - Hover intensifies the gradient halo (opacity 60 -> 100)
  */
-export function BlocksGallery() {
+export function BlocksGallery({ lang }: { lang: string }) {
   return (
     <section className="border-t border-border/60 bg-muted/20 py-20">
       <div className="mx-auto max-w-7xl px-6">
@@ -345,7 +345,7 @@ export function BlocksGallery() {
             </p>
           </div>
           <Button variant="ghost" asChild>
-            <Link href="/blocks">
+            <Link href={`/${lang}/blocks`}>
               See all blocks
               <ArrowRight aria-hidden="true" />
             </Link>

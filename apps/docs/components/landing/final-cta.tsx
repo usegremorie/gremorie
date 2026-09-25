@@ -19,7 +19,7 @@ import { GithubMark } from '@/components/github-mark';
  *
  * Dogfood: rx-forms Button for the CTAs.
  */
-export function FinalCta() {
+export function FinalCta({ lang }: { lang: string }) {
   return (
     <section className="relative overflow-hidden py-24">
       {/* Closing halo - centered, brand-tinted. Larger and more diffuse
@@ -41,7 +41,7 @@ export function FinalCta() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <Link href="/get-started/installation">
+            <Link href={`/${lang}/get-started/installation`}>
               Get started
               <ArrowRight aria-hidden="true" />
             </Link>

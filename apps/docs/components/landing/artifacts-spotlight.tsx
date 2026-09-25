@@ -98,7 +98,7 @@ ${REVENUE_ROWS}
   ];
 }`;
 
-export function ArtifactsSpotlight() {
+export function ArtifactsSpotlight({ lang }: { lang: string }) {
   return (
     <section className="relative py-20">
       {/*
@@ -130,7 +130,7 @@ export function ArtifactsSpotlight() {
             </p>
           </div>
           <Button variant="ghost" asChild>
-            <Link href="/artifacts">
+            <Link href={`/${lang}/artifacts`}>
               Learn more about artifacts
               <ArrowRight aria-hidden="true" />
             </Link>
