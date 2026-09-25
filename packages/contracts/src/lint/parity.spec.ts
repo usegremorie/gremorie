@@ -46,6 +46,19 @@ const SOURCE_MAP: Record<
   string,
   { rx: { file: string; sym: string }; ng: { file: string; sym: string } }
 > = {
+  // The React Assistant is a BLOCK: its source of truth is the file the
+  // registry copies out of apps/docs, not a package. Paths resolve from
+  // process.cwd() (packages/contracts), hence the climb out of packages/.
+  assistant: {
+    rx: {
+      file: '../../apps/docs/components/preview/blocks/assistant.tsx',
+      sym: 'AssistantProps',
+    },
+    ng: {
+      file: '../ng-ai/src/lib/assistant/assistant.ts',
+      sym: 'Assistant',
+    },
+  },
   'chart-artifact': {
     rx: {
       file: '../rx-artifacts/src/lib/chart-artifact/chart-artifact.tsx',
