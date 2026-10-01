@@ -7,6 +7,9 @@ import {
 
 import { i18n } from '@/lib/i18n';
 
+/** A path that already names its locale, e.g. /en or /pt/components. */
+const LOCALE_PREFIX = new RegExp(`^/(${i18n.languages.join('|')})(/|$)`);
+
 /**
  * Combined proxy: Fumadocs i18n routing + AI-onboarding telemetry.
  *
@@ -76,6 +79,17 @@ export default function proxy(req: NextRequest, event: NextFetchEvent) {
   }
 
   if (isAgnostic(pathname)) return NextResponse.next();
+
+  // No language negotiation. Fumadocs' middleware would read Accept-Language
+  // and send a browser set to pt-BR straight to /pt; the site answers in
+  // English (see lib/i18n.ts), so anything arriving without a locale prefix
+  // goes to /en regardless of what the browser asks for. Delete this block to
+  // restore negotiation.
+  if (!LOCALE_PREFIX.test(pathname)) {
+    const url = req.nextUrl.clone();
+    url.pathname = `/${i18n.defaultLanguage}${pathname === '/' ? '' : pathname}`;
+    return NextResponse.redirect(url);
+  }
 
   // Localizable pages (docs + landing) → Fumadocs locale routing.
   return i18nMiddleware(req, event);
