@@ -10,7 +10,10 @@
       "outputs": ["{projectRoot}/.next"],
       "dependsOn": [
         "^build",
-        { "projects": ["registry"], "target": "generate" }
+        {
+          "projects": ["registry"],
+          "target": "generate"
+        }
       ],
       "options": {
         "cwd": "apps/docs",
@@ -22,7 +25,10 @@
       "continuous": true,
       "dependsOn": [
         "^build",
-        { "projects": ["registry"], "target": "generate" }
+        {
+          "projects": ["registry"],
+          "target": "generate"
+        }
       ],
       "options": {
         "cwd": "apps/docs",
@@ -51,6 +57,13 @@
       "options": {
         "cwd": "apps/docs",
         "command": "tsc --noEmit"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/docs",
+        "command": "vitest run"
       }
     }
   }
