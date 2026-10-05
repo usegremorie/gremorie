@@ -103,7 +103,7 @@
     "jsonc-eslint-parser": "^3.1.0",
     "lint-staged": "^17.0.7",
     "ng-packagr": "~21.2.0",
-    "nx": "22.7.7",
+    "nx": "23.2.1",
     "prettier": "^3.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
