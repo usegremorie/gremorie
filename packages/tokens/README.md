@@ -63,7 +63,14 @@ Material Color Utilities from a `SchemeContent` seeded with the theme's
 primary, so they are derived from its hue and chroma: among them the M3 `secondary`, the whole
 tertiary family (shadcn `accent` is a hover surface with no M3 peer),
 `onSurfaceVariant` and `outline`. The derived container roles and the derived
-secondary and tertiary accents sit at the Material 3 baseline tones.
+secondary and tertiary accents sit at the Material 3 baseline tones. The
+surface ladder (`surfaceDim`, `surfaceBright` and `surfaceContainerLowest` to
+`surfaceContainerHighest`) is anchored to the theme background instead: a
+neutral palette with the background's hue and chroma, read at the background
+tone plus the Material 3 baseline spacing. In light, `surfaceContainerLowest`
+is lighter than `surface` and the other containers step darker; in dark,
+`surfaceContainerLowest` is darker and the others step lighter. `surface`
+stays equal to `--background`.
 
 ## Editing tokens
 

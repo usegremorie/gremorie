@@ -348,3 +348,68 @@ describe('M3 contrast (each onX reaches AA on X)', () => {
     ).toEqual([]);
   });
 });
+
+describe('the surface ladder (anchored to the theme background)', () => {
+  const tone = (c: DtcgColor) => Hct.fromInt(argbOf(c)).tone;
+  const hueGap = (a: number, b: number) =>
+    Math.abs(((a - b + 540) % 360) - 180);
+  const CONTAINERS = [
+    'surfaceContainerLow',
+    'surfaceContainer',
+    'surfaceContainerHigh',
+    'surfaceContainerHighest',
+  ] as const;
+
+  for (const [key, run] of runs) {
+    const dark = run.mode === 'dark';
+    const background = tokenValue(run, 'background') as DtcgColor;
+
+    it(`${key}: surface and background are the theme background`, () => {
+      const m3 = m3For(run, roles);
+      expect(m3.surface).toEqual(background);
+      expect(m3.background).toEqual(background);
+      expect(m3[dark ? 'surfaceDim' : 'surfaceBright']).toEqual(background);
+    });
+
+    it(`${key}: the containers step away from the surface in order`, () => {
+      const m3 = m3For(run, roles);
+      const surface = tone(m3.surface);
+      const lowest = tone(m3.surfaceContainerLowest);
+      const atLimit = dark ? surface < 0.5 : surface > 99.5;
+      // Lowest sits on the far side of the surface from the other levels.
+      if (!atLimit) {
+        if (dark) expect(lowest, 'lowest').toBeLessThan(surface);
+        else expect(lowest, 'lowest').toBeGreaterThan(surface);
+      }
+      const ladder = [
+        surface,
+        ...CONTAINERS.map((r) => tone(m3[r])),
+        tone(m3[dark ? 'surfaceBright' : 'surfaceDim']),
+      ];
+      for (let i = 1; i < ladder.length; i++) {
+        const [prev = 0, next = 0] = [ladder[i - 1], ladder[i]];
+        if (dark) expect(next, `step ${i}`).toBeGreaterThan(prev);
+        else expect(next, `step ${i}`).toBeLessThan(prev);
+      }
+    });
+
+    it(`${key}: the ladder keeps the hue of the background`, () => {
+      const seed = Hct.fromInt(argbOf(background));
+      if (seed.chroma < 4) return; // a near-gray background has no hue to keep
+      const m3 = m3For(run, roles);
+      for (const role of [
+        'surfaceContainerLowest',
+        ...CONTAINERS,
+        'surfaceDim',
+        'surfaceBright',
+      ] as const) {
+        const hct = Hct.fromInt(argbOf(m3[role]));
+        if (hct.chroma < 3) continue; // too gray after 8-bit rounding
+        expect(
+          hueGap(hct.hue, seed.hue),
+          `${role} hue ${hct.hue} vs background ${seed.hue}`,
+        ).toBeLessThan(10);
+      }
+    });
+  }
+});

@@ -26,6 +26,14 @@ for each role lives in `packages/tokens/tokens/platform/m3/roles.json`.
   `SchemeContent` seeded with the theme's primary, so they are derived from its
   hue and chroma. The container roles and the derived secondary and tertiary
   accents sit at the Material 3 baseline tones.
+- The **surface ladder** (`surfaceDim`, `surfaceBright` and
+  `surfaceContainerLowest` to `surfaceContainerHighest`) is derived from the
+  theme background instead of the primary: a neutral palette with the
+  background's hue and chroma, read at the background tone plus the Material 3
+  baseline spacing. In light, `surfaceContainerLowest` is lighter than
+  `surface` and the other containers step darker; in dark,
+  `surfaceContainerLowest` is darker and the others step lighter. `surface`
+  itself stays equal to `--background`.
 
 A few derived roles have a semantic token with a similar name that does not
 mean the same thing:

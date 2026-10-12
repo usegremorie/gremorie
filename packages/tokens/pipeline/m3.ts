@@ -1,6 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { Hct, SchemeContent } from '@material/material-color-utilities';
+import {
+  Hct,
+  SchemeContent,
+  TonalPalette,
+} from '@material/material-color-utilities';
 import { argbOf, fromArgb } from './color.ts';
 import { aliasPath, isAlias, type DtcgColor } from './model.ts';
 import type { Run } from './run.ts';
@@ -226,6 +230,65 @@ export function deriveScheme(
   return out;
 }
 
+/**
+ * The surface ladder, as tone offsets from the surface (HCT tone, 0 to 100).
+ * They keep the spacing of the Material 3 baseline scheme, whose surface sits
+ * at tone 98 in light (Lowest 100, Low 96, Container 94, High 92, Highest 90,
+ * Dim 87, Bright 98) and at tone 6 in dark (Lowest 4, Low 10, Container 12,
+ * High 17, Highest 22, Bright 24, Dim 6). In light, Lowest is lighter than
+ * the surface and the other containers step darker; in dark, Lowest is darker
+ * and the others step lighter. A tone past 0 or 100 is clamped.
+ */
+export const SURFACE_TONE_OFFSETS = {
+  light: {
+    surfaceContainerLowest: 2,
+    surfaceContainerLow: -2,
+    surfaceContainer: -4,
+    surfaceContainerHigh: -6,
+    surfaceContainerHighest: -8,
+    surfaceDim: -11,
+  },
+  dark: {
+    surfaceContainerLowest: -2,
+    surfaceContainerLow: 4,
+    surfaceContainer: 6,
+    surfaceContainerHigh: 11,
+    surfaceContainerHighest: 16,
+    surfaceBright: 18,
+  },
+} as const satisfies Record<
+  'light' | 'dark',
+  Partial<Record<(typeof SURFACE_LEVELS)[number], number>>
+>;
+
+/**
+ * The surface roles anchored to the theme background. A neutral tonal palette
+ * takes the background's HCT hue and chroma, and each level is read from it
+ * at the background tone plus its offset, so the containers are tints of the
+ * page rather than of the primary. The level at offset 0 (Bright in light,
+ * Dim in dark, as in the baseline scheme) is the background itself.
+ */
+export function deriveSurfaces(
+  background: DtcgColor,
+  dark: boolean,
+): Record<(typeof SURFACE_LEVELS)[number], DtcgColor> {
+  const seed = Hct.fromInt(argbOf(background));
+  const palette = TonalPalette.fromHueAndChroma(seed.hue, seed.chroma);
+  const offsets: Partial<Record<(typeof SURFACE_LEVELS)[number], number>> =
+    SURFACE_TONE_OFFSETS[dark ? 'dark' : 'light'];
+  const out = {} as Record<(typeof SURFACE_LEVELS)[number], DtcgColor>;
+  for (const level of SURFACE_LEVELS) {
+    const offset = offsets[level];
+    out[level] =
+      offset === undefined
+        ? background
+        : fromArgb(
+            palette.tone(Math.min(100, Math.max(0, seed.tone + offset))),
+          );
+  }
+  return out;
+}
+
 /** The 48 roles of a theme and mode: mapped from semantics, else derived. */
 export function m3For(run: Run, roles: RoleMap): Record<M3Role, DtcgColor> {
   const color = (token: string): DtcgColor => {
@@ -235,7 +298,11 @@ export function m3For(run: Run, roles: RoleMap): Record<M3Role, DtcgColor> {
     }
     return t.value as DtcgColor;
   };
-  const derived = deriveScheme(color('primary'), run.mode === 'dark');
+  const dark = run.mode === 'dark';
+  const derived: Record<M3Role, DtcgColor> = {
+    ...deriveScheme(color('primary'), dark),
+    ...deriveSurfaces(color('background'), dark),
+  };
   const out = {} as Record<M3Role, DtcgColor>;
   for (const role of M3_ROLES) {
     const source = roles[role];

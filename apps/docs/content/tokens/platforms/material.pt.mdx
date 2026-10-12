@@ -26,6 +26,14 @@ papel fica em `packages/tokens/tokens/platform/m3/roles.json`.
   `SchemeContent` semeado com o primary do tema, e por isso derivam da matiz e
   do croma dele. Os papéis de container e os acentos secondary e tertiary
   derivados ficam nos tons de referência do Material 3.
+- A **escada de superfícies** (`surfaceDim`, `surfaceBright` e
+  `surfaceContainerLowest` a `surfaceContainerHighest`) deriva do background do
+  tema, não do primary: uma paleta neutra com a matiz e o croma do background,
+  lida no tom do background mais o espaçamento de referência do Material 3. No
+  claro, o `surfaceContainerLowest` é mais claro que o `surface` e os outros
+  containers descem em direção ao escuro; no escuro, o `surfaceContainerLowest`
+  é mais escuro e os outros sobem em direção ao claro. O `surface` continua
+  igual ao `--background`.
 
 Alguns papéis derivados têm um token semântico de nome parecido que não quer
 dizer a mesma coisa:
