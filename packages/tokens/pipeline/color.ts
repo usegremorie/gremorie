@@ -59,7 +59,8 @@ export function luminance(s: Srgb8): number {
 
 /**
  * WCAG 2.x contrast of a foreground on a background. A translucent
- * background is first composited over `page` (the theme's --background).
+ * background is first composited over `page` (the theme's --background),
+ * which must itself be opaque.
  */
 export function contrastRatio(
   foreground: DtcgColor,
@@ -73,7 +74,13 @@ export function contrastRatio(
         'A translucent background needs the page colour under it',
       );
     }
-    bg = over(bg, toSrgb8(page));
+    const under = toSrgb8(page);
+    if (under.a < 255) {
+      throw new Error(
+        'The page colour must be opaque: a translucent page has no single colour to measure against',
+      );
+    }
+    bg = over(bg, under);
   }
   const fg = over(toSrgb8(foreground), bg);
   const [hi, lo] = [luminance(fg), luminance(bg)].sort((x, y) => y - x) as [

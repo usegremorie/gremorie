@@ -50,4 +50,10 @@ describe('contrast (WCAG 2.x)', () => {
       /page/,
     );
   });
+
+  it('refuses a translucent page colour', () => {
+    expect(() =>
+      contrastRatio(oklch(0, 0, 0), oklch(1, 0, 0, 0.1), oklch(0.5, 0, 0, 0.5)),
+    ).toThrow(/page colour must be opaque/);
+  });
 });
