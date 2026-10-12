@@ -1,0 +1,23 @@
+{
+  "spacing": {
+    "$type": "dimension",
+    "$value": {
+      "value": 0.25,
+      "unit": "rem"
+    }
+  },
+  "tracking": {
+    "normal": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.gremorie.css": {
+          "value": "0em"
+        }
+      }
+    }
+  }
+}
