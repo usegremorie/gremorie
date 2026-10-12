@@ -47,6 +47,19 @@ if (!DRY && !ALLOW_DIRTY) {
   }
 }
 
+/** The files the package's main entry ('.' in exports, or main) points to. */
+function entryFiles(pkg) {
+  const files = [];
+  const collect = (value) => {
+    if (typeof value === 'string') files.push(value);
+    else if (value && typeof value === 'object') {
+      Object.values(value).forEach(collect);
+    }
+  };
+  collect(pkg.exports?.['.'] ?? pkg.main);
+  return files;
+}
+
 const targets = [];
 for (const dir of readdirSync(pkgsDir)) {
   const manifest = join(pkgsDir, dir, 'package.json');
@@ -64,7 +77,12 @@ for (const dir of readdirSync(pkgsDir)) {
   const publishDir = isAngular
     ? join('dist', 'packages', dir) // ng-packagr output
     : join('packages', dir); // in-package dist via `files`
-  targets.push({ name: pkg.name, version: pkg.version, dir: publishDir });
+  targets.push({
+    name: pkg.name,
+    version: pkg.version,
+    dir: publishDir,
+    entryFiles: isAngular ? [] : entryFiles(pkg),
+  });
 }
 
 targets.sort((a, b) => a.name.localeCompare(b.name));
@@ -79,6 +97,16 @@ for (const t of targets) {
   if (!existsSync(join(full, 'package.json'))) {
     console.error(
       `  ✗ ${t.name}: build output missing at ${t.dir} — build the libraries first.`,
+    );
+    failed++;
+    continue;
+  }
+  // A package whose entry point was never built would publish without its
+  // code: dist/ is not committed, so a release from a fresh clone needs a build.
+  const missing = t.entryFiles.filter((f) => !existsSync(join(full, f)));
+  if (missing.length > 0) {
+    console.error(
+      `  ✗ ${t.name}: ${missing.join(', ')} missing at ${t.dir}, build the libraries first.`,
     );
     failed++;
     continue;
