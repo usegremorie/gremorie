@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync } from 'node:fs';
+import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -37,15 +37,26 @@ function step(name: string, cmd: string, args: string[]): void {
   }
 }
 
-step('Kotlin', 'kotlinc', [
-  join(root, 'pipeline/verify/stubs/Color.kt'),
-  join(root, 'pipeline/verify/stubs/Material3.kt'),
-  join(root, 'dist/compose/GremorieColorSchemes.kt'),
-  '-d',
-  mkdtempSync(join(tmpdir(), 'gremorie-kotlin-')),
-]);
-step('Swift', 'swiftc', [
-  '-parse',
-  join(root, 'dist/swift/GremorieTokens.swift'),
-]);
+const tempDirs: string[] = [];
+const tempDir = (prefix: string): string => {
+  const dir = mkdtempSync(join(tmpdir(), prefix));
+  tempDirs.push(dir);
+  return dir;
+};
+
+try {
+  step('Kotlin', 'kotlinc', [
+    join(root, 'pipeline/verify/stubs/Color.kt'),
+    join(root, 'pipeline/verify/stubs/Material3.kt'),
+    join(root, 'dist/compose/GremorieColorSchemes.kt'),
+    '-d',
+    tempDir('gremorie-kotlin-'),
+  ]);
+  step('Swift', 'swiftc', [
+    '-parse',
+    join(root, 'dist/swift/GremorieTokens.swift'),
+  ]);
+} finally {
+  for (const dir of tempDirs) rmSync(dir, { recursive: true, force: true });
+}
 if (failed) process.exit(1);
