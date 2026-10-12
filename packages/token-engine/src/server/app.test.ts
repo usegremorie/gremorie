@@ -360,4 +360,19 @@ describe('server app (DTCG source)', () => {
     });
     expect(loopback.status).toBe(200);
   });
+  it('refuses a request whose Host is not this machine', async () => {
+    const { root, app } = setup(async () => undefined);
+    const before = lightJson(root);
+    const rebound = await post(
+      app,
+      { changes: [] },
+      { host: 'evil.example:5024' },
+    );
+    expect(rebound.status).toBe(403);
+    expect(lightJson(root)).toBe(before);
+    for (const host of ['localhost:5024', '127.0.0.1:5024', 'localhost']) {
+      const res = await app.request('/api/health', { headers: { host } });
+      expect(res.status, host).toBe(200);
+    }
+  });
 });

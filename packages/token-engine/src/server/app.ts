@@ -30,9 +30,21 @@ export type AppConfig =
 
 /** The editor runs on this machine; only pages served from it may call us. */
 const LOCAL_ORIGIN = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+/** A Host header naming this machine, on any port. */
+const LOCAL_HOST = /^(localhost|127\.0\.0\.1)(:\d+)?$/;
 
 export function createApp(cfg: AppConfig) {
   const app = new Hono();
+  // A page on another site could rebind its own hostname to 127.0.0.1 and
+  // then pass the origin check: refuse any Host that does not name this
+  // machine, whatever the port.
+  app.use('*', async (c, next) => {
+    const host = c.req.header('host') ?? new URL(c.req.url).host;
+    if (!LOCAL_HOST.test(host)) {
+      return c.json({ error: `Host not allowed: ${host}` }, 403);
+    }
+    await next();
+  });
   // The server writes files and runs a build, so a page from another site
   // must not reach it: refuse foreign origins outright, not only via CORS.
   app.use('*', async (c, next) => {

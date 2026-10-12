@@ -49,9 +49,11 @@ if (dtcg) {
 }
 
 const PORT = 5024;
-serve({ fetch: app.fetch, port: PORT }, (info) => {
+// Loopback only: the API writes files and runs a build, so it must not be
+// reachable from the network.
+serve({ fetch: app.fetch, hostname: '127.0.0.1', port: PORT }, (info) => {
   const url = 'http://localhost:5023/';
-  console.log(`> Engine API: http://localhost:${info.port}`);
+  console.log(`> Engine API: http://127.0.0.1:${info.port}`);
   console.log(
     `> Editor UI: ${url} (run \`nx serve tokens-atlas\` in another terminal)`,
   );
