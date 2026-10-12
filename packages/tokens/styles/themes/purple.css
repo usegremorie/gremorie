@@ -45,8 +45,9 @@
 }
 
 /*
- * Literal colours only: the aliases of the light block (input, ring, sidebar)
- * resolve against these at use time.
+ * No semantic aliases here, only colour values (one is the gray-950 primitive):
+ * the aliases of the light block (input, ring, sidebar) resolve against these
+ * at use time.
  */
 :root[data-theme='purple'].dark {
   --background: oklch(0.1605 0.013 297.13);
