@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import { cors } from 'hono/cors';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -90,7 +90,16 @@ export function createApp(cfg: AppConfig) {
     });
   });
 
-  app.post('/api/apply', async (c) => {
+  // One apply at a time: each reads the files, writes them and rebuilds, so
+  // two at once would lose an edit or run two builds over the same output.
+  let applying: Promise<unknown> = Promise.resolve();
+  app.post('/api/apply', (c) => {
+    const result = applying.then(() => apply(c));
+    applying = result.catch(() => undefined);
+    return result;
+  });
+
+  const apply = async (c: Context) => {
     const body = (await c.req.json()) as { changes?: unknown };
     if (!Array.isArray(body.changes)) {
       return c.json({ error: 'changes must be a list' }, 400);
@@ -158,7 +167,7 @@ export function createApp(cfg: AppConfig) {
       written: cfg.globalsCss,
       changeCount: changes.length,
     });
-  });
+  };
 
   return app;
 }

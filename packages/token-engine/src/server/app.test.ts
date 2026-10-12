@@ -360,6 +360,38 @@ describe('server app (DTCG source)', () => {
     });
     expect(loopback.status).toBe(200);
   });
+  it('serializes concurrent applies so neither edit is lost', async () => {
+    let active = 0;
+    let most = 0;
+    const { root, app } = setup(async () => {
+      active += 1;
+      most = Math.max(most, active);
+      await new Promise((done) => setTimeout(done, 50));
+      active -= 1;
+    });
+    const edit = (tokenName: string, targetName: string) => ({
+      changes: [
+        {
+          kind: 'semantic-value',
+          tokenName,
+          theme: 'default',
+          mode: 'light',
+          newValue: { kind: 'reference', targetName },
+        },
+      ],
+    });
+    const [first, second] = await Promise.all([
+      post(app, edit('--primary', '--color-violet-700')),
+      post(app, edit('--ring', '--color-emerald-900')),
+    ]);
+    expect(first.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(most).toBe(1);
+    const light = lightJson(root);
+    expect(light).toContain('{color.violet.700}');
+    expect(light).toContain('{color.emerald.900}');
+  });
+
   it('refuses a request whose Host is not this machine', async () => {
     const { root, app } = setup(async () => undefined);
     const before = lightJson(root);
