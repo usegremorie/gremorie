@@ -80,6 +80,9 @@ export function themeOut(run: Run, roles: RoleMap): ThemeOut {
   };
 }
 
+/** Theme ids become Kotlin and Swift identifiers, so they must be one. */
+const THEME_ID = /^[a-z][A-Za-z0-9]*$/;
+
 export function buildPlatformModel(
   runs: Map<string, Run>,
   roles: RoleMap,
@@ -93,6 +96,11 @@ export function buildPlatformModel(
   }
   const out: PlatformModel['themes'] = {};
   for (const theme of themes) {
+    if (!THEME_ID.test(theme)) {
+      throw new Error(
+        `Theme id "${theme}" must match ${THEME_ID.source}: the Kotlin and Swift outputs use it as an identifier`,
+      );
+    }
     const byMode = {} as Record<Mode, ThemeOut>;
     for (const mode of MODES) {
       const run = runs.get(`${theme}/${mode}`);

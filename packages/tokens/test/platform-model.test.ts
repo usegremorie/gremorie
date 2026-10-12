@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { toHex } from '../pipeline/color.ts';
 import { buildCss } from '../pipeline/build.ts';
 import { loadRoleMap, M3_ROLES } from '../pipeline/m3.ts';
-import { THEMES } from '../pipeline/model.ts';
+import { THEMES, type ThemeId } from '../pipeline/model.ts';
 import { buildPlatformModel, camel } from '../pipeline/platforms/model.ts';
 import { loadSource } from '../pipeline/source.ts';
 import { PACKAGE_ROOT } from './support/paths.ts';
@@ -59,5 +59,16 @@ describe('platform model', () => {
   it('records where each M3 role comes from', () => {
     expect(model.m3Sources.onPrimary).toBe('--primary-foreground');
     expect(model.m3Sources.surfaceContainer).toBe('derived');
+  });
+
+  it('refuses a theme id that is not a code identifier', () => {
+    expect(() =>
+      buildPlatformModel(
+        runs,
+        loadRoleMap(PACKAGE_ROOT),
+        ['my-brand' as ThemeId],
+        '0.0.0-test',
+      ),
+    ).toThrow(/Theme id "my-brand" must match \^\[a-z\]/);
   });
 });
