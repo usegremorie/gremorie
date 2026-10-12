@@ -6,6 +6,7 @@ export const THEMES = [
   'gemini',
   'perplexity',
   'mistral',
+  'purple',
 ] as const;
 export type ThemeId = (typeof THEMES)[number];
 export type NamedTheme = Exclude<ThemeId, 'default'>;

@@ -11,7 +11,7 @@ const cssFiles = (dir: string) =>
     .sort();
 
 /** Themes created after 0.8.0: nothing to regress, so they may be extra. */
-const NEW_THEMES: string[] = [];
+const NEW_THEMES = ['purple'];
 
 const intentional = JSON.parse(
   read(join(PACKAGE_ROOT, 'reference', 'intentional-changes.json')),

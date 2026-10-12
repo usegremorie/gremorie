@@ -19,6 +19,7 @@ const BRAND_THEMES = [
   'gemini',
   'perplexity',
   'mistral',
+  'purple',
 ] as const;
 
 describe('@gremorie/tokens theme.css', () => {
@@ -48,7 +49,7 @@ describe('@gremorie/tokens theme.css', () => {
 });
 
 describe('@gremorie/tokens brand themes', () => {
-  it('ships exactly the five brand theme files', () => {
+  it('ships exactly the six brand theme files', () => {
     const files = readdirSync(themesDir)
       .filter((f) => f.endsWith('.css'))
       .sort();
@@ -58,6 +59,7 @@ describe('@gremorie/tokens brand themes', () => {
       'gemini.css',
       'mistral.css',
       'perplexity.css',
+      'purple.css',
     ]);
   });
 

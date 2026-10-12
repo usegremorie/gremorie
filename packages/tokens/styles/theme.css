@@ -23,6 +23,7 @@
 @import './themes/gemini.css';
 @import './themes/perplexity.css';
 @import './themes/mistral.css';
+@import './themes/purple.css';
 
 /*
  * Dark mode is CLASS-driven: the dark token values live under `.dark` (below),

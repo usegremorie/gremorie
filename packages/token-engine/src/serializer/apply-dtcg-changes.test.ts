@@ -127,3 +127,83 @@ describe('applyDtcgChanges', () => {
     ).toThrow(DtcgChangeError);
   });
 });
+
+describe('applyDtcgChanges guards', () => {
+  const semantic = (
+    over: Partial<{
+      tokenName: string;
+      theme: string;
+      mode: string;
+      targetName: string;
+    }>,
+  ) =>
+    ({
+      kind: 'semantic-value',
+      tokenName: over.tokenName ?? '--secondary',
+      theme: over.theme ?? 'chatgpt',
+      mode: over.mode ?? 'dark',
+      newValue: {
+        kind: 'reference',
+        targetName: over.targetName ?? '--color-gray-900',
+      },
+    }) as Parameters<typeof applyDtcgChanges>[1][number];
+
+  it.each(['__proto__', 'constructor', 'dim'])(
+    'refuses the mode %s without touching any prototype',
+    (mode) => {
+      expect(() => applyDtcgChanges(files(), [semantic({ mode })])).toThrow(
+        DtcgChangeError,
+      );
+      expect(({} as Record<string, unknown>).secondary).toBeUndefined();
+      expect(
+        (Object.prototype as Record<string, unknown>).secondary,
+      ).toBeUndefined();
+    },
+  );
+
+  it('refuses a reference to a token that does not exist', () => {
+    expect(() =>
+      applyDtcgChanges(files(), [semantic({ targetName: '--color-nope-1' })]),
+    ).toThrow(/Unknown reference target/);
+    expect(() =>
+      applyDtcgChanges(files(), [semantic({ targetName: 'color-gray-50' })]),
+    ).toThrow(DtcgChangeError);
+  });
+
+  it('refuses a theme that has no file', () => {
+    expect(() =>
+      applyDtcgChanges(files(), [semantic({ theme: 'nope' })]),
+    ).toThrow(/Unknown theme nope/);
+  });
+
+  it('refuses a default light semantic edit of a primitive', () => {
+    expect(() =>
+      applyDtcgChanges(files(), [
+        semantic({
+          tokenName: '--color-gray-50',
+          theme: 'default',
+          mode: 'light',
+        }),
+      ]),
+    ).toThrow(/is a primitive/);
+  });
+
+  it('writes a default light edit of a shadow to the shadow file', () => {
+    const withShadow = {
+      ...files(),
+      'primitive/shadow.json': json({
+        'shadow-sm': { $type: 'shadow', $value: '{shadow-xs}' },
+        'shadow-xs': { $type: 'shadow', $value: '{shadow-sm}' },
+      }),
+    };
+    const out = applyDtcgChanges(withShadow, [
+      semantic({
+        tokenName: '--shadow-sm',
+        theme: 'default',
+        mode: 'light',
+        targetName: '--shadow-xs',
+      }),
+    ]);
+    expect(Object.keys(out)).toEqual(['primitive/shadow.json']);
+  });
+});

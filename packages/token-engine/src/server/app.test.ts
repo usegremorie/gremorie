@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect } from 'vitest';
 import { createApp } from './app.js';
 import { dirname, join } from 'node:path';
 import {
@@ -82,11 +82,18 @@ const tokensPkg = join(
 const run = promisify(execFile);
 
 describe('server app (DTCG source)', () => {
-  const setup = () => {
+  const roots: string[] = [];
+  afterEach(() => {
+    for (const root of roots.splice(0)) {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+  const setup = (rebuild?: () => Promise<void>) => {
     const root = join(
       tmpdir(),
       `tokens-dtcg-${process.pid}-${Math.random().toString(36).slice(2)}`,
     );
+    roots.push(root);
     mkdirSync(join(root, 'styles'), { recursive: true });
     cpSync(join(tokensPkg, 'tokens'), join(root, 'tokens'), {
       recursive: true,
@@ -101,19 +108,21 @@ describe('server app (DTCG source)', () => {
       projectRoot: root,
       source: 'dtcg',
       tokensDir: join(root, 'tokens'),
-      rebuild: async () => {
-        await run(process.execPath, [
-          join(tokensPkg, 'pipeline', 'build.ts'),
-          '--root',
-          root,
-        ]);
-      },
+      rebuild:
+        rebuild ??
+        (async () => {
+          await run(process.execPath, [
+            join(tokensPkg, 'pipeline', 'build.ts'),
+            '--root',
+            root,
+          ]);
+        }),
     });
     return { root, app };
   };
 
   it('GET /api/project returns the DTCG graph', async () => {
-    const { root, app } = setup();
+    const { app } = setup();
     const res = await app.request('/api/project');
     expect(res.status).toBe(200);
     const body = (await res.json()) as {
@@ -126,7 +135,6 @@ describe('server app (DTCG source)', () => {
     expect(body.project.source).toBe('dtcg');
     expect(Object.keys(body.graph.primitives).length).toBeGreaterThan(300);
     expect(body.graph.semantics['claude::dark::--primary']).toBeDefined();
-    rmSync(root, { recursive: true, force: true });
   });
 
   it('POST /api/apply changes the JSON and the generated CSS', async () => {
@@ -165,7 +173,6 @@ describe('server app (DTCG source)', () => {
     expect(chatgpt.slice(chatgpt.indexOf('.dark {'))).toContain(
       '--secondary: var(--color-emerald-900);',
     );
-    rmSync(root, { recursive: true, force: true });
   }, 120_000);
 
   it('POST /api/apply answers 400 to an edit DTCG cannot hold', async () => {
@@ -185,6 +192,114 @@ describe('server app (DTCG source)', () => {
     });
     expect(res.status).toBe(400);
     expect(existsSync(join(root, 'styles/theme.css'))).toBe(false);
-    rmSync(root, { recursive: true, force: true });
+  });
+
+  const post = (
+    app: ReturnType<typeof createApp>,
+    body: unknown,
+    headers: Record<string, string> = {},
+  ) =>
+    app.request('/api/apply', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...headers },
+      body: JSON.stringify(body),
+    });
+  const lightJson = (root: string) =>
+    readFileSync(join(root, 'tokens/semantic/light.json'), 'utf8');
+
+  it('POST /api/apply answers 400 to a reference to nothing', async () => {
+    const { root, app } = setup();
+    const before = lightJson(root);
+    const res = await post(app, {
+      changes: [
+        {
+          kind: 'semantic-value',
+          tokenName: '--primary',
+          theme: 'default',
+          mode: 'light',
+          newValue: { kind: 'reference', targetName: '--color-nope-1' },
+        },
+      ],
+    });
+    expect(res.status).toBe(400);
+    expect(((await res.json()) as { error: string }).error).toMatch(
+      /Unknown reference target/,
+    );
+    expect(lightJson(root)).toBe(before);
+  });
+
+  it('POST /api/apply answers 400 when changes is not a list', async () => {
+    const { app } = setup();
+    const res = await post(app, { changes: 'all of them' });
+    expect(res.status).toBe(400);
+  });
+
+  it('POST /api/apply restores every file when the rebuild fails', async () => {
+    const { root, app } = setup(async () => {
+      throw new Error('pipeline exploded');
+    });
+    const before = lightJson(root);
+    const colorBefore = readFileSync(
+      join(root, 'tokens/primitive/color.json'),
+      'utf8',
+    );
+    const res = await post(app, {
+      changes: [
+        {
+          kind: 'primitive-value',
+          tokenName: '--color-gray-50',
+          newValue: 'oklch(0.99 0 0)',
+        },
+        {
+          kind: 'semantic-value',
+          tokenName: '--primary',
+          theme: 'default',
+          mode: 'light',
+          newValue: { kind: 'reference', targetName: '--color-violet-700' },
+        },
+      ],
+    });
+    expect(res.status).toBe(500);
+    expect(((await res.json()) as { error: string }).error).toMatch(
+      /pipeline exploded/,
+    );
+    expect(lightJson(root)).toBe(before);
+    expect(
+      readFileSync(join(root, 'tokens/primitive/color.json'), 'utf8'),
+    ).toBe(colorBefore);
+  });
+
+  it('refuses a request from a foreign origin and allows a local one', async () => {
+    const { root, app } = setup(async () => undefined);
+    const before = lightJson(root);
+    const change = {
+      changes: [
+        {
+          kind: 'semantic-value',
+          tokenName: '--primary',
+          theme: 'default',
+          mode: 'light',
+          newValue: { kind: 'reference', targetName: '--color-violet-700' },
+        },
+      ],
+    };
+    const foreign = await post(app, change, {
+      origin: 'https://evil.example',
+    });
+    expect(foreign.status).toBe(403);
+    expect(foreign.headers.get('access-control-allow-origin')).toBeNull();
+    expect(lightJson(root)).toBe(before);
+
+    const local = await app.request('/api/project', {
+      headers: { origin: 'http://localhost:5023' },
+    });
+    expect(local.status).toBe(200);
+    expect(local.headers.get('access-control-allow-origin')).toBe(
+      'http://localhost:5023',
+    );
+    const loopback = await app.request('/api/health', {
+      headers: { origin: 'http://127.0.0.1:4000' },
+    });
+    expect(loopback.status).toBe(200);
   });
 });

@@ -82,7 +82,17 @@ export const useProject = create<ProjectState & ProjectActions>((set, get) => ({
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ changes }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        // The engine explains a refused or failed edit in { error }.
+        const failure = (await res.json().catch(() => null)) as {
+          error?: unknown;
+        } | null;
+        throw new Error(
+          typeof failure?.error === 'string'
+            ? failure.error
+            : `HTTP ${res.status}`,
+        );
+      }
       const body = await res.json();
       set({ pendingChanges: [] });
       await get().load();

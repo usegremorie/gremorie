@@ -28,9 +28,24 @@ export type AppConfig =
       rebuild: () => Promise<void>;
     };
 
+/** The editor runs on this machine; only pages served from it may call us. */
+const LOCAL_ORIGIN = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
 export function createApp(cfg: AppConfig) {
   const app = new Hono();
-  app.use('*', cors());
+  // The server writes files and runs a build, so a page from another site
+  // must not reach it: refuse foreign origins outright, not only via CORS.
+  app.use('*', async (c, next) => {
+    const origin = c.req.header('origin');
+    if (origin !== undefined && !LOCAL_ORIGIN.test(origin)) {
+      return c.json({ error: `Origin not allowed: ${origin}` }, 403);
+    }
+    await next();
+  });
+  app.use(
+    '*',
+    cors({ origin: (origin) => (LOCAL_ORIGIN.test(origin) ? origin : null) }),
+  );
 
   app.get('/api/health', (c) => c.json({ ok: true }));
 
@@ -64,7 +79,11 @@ export function createApp(cfg: AppConfig) {
   });
 
   app.post('/api/apply', async (c) => {
-    const body = (await c.req.json()) as { changes: Change[] };
+    const body = (await c.req.json()) as { changes?: unknown };
+    if (!Array.isArray(body.changes)) {
+      return c.json({ error: 'changes must be a list' }, 400);
+    }
+    const changes = body.changes as Change[];
     if (cfg.source === 'dtcg') {
       const texts = Object.fromEntries(
         listDtcgFiles(cfg.tokensDir).map((rel) => [
@@ -74,34 +93,48 @@ export function createApp(cfg: AppConfig) {
       );
       let changed: Record<string, string>;
       try {
-        changed = applyDtcgChanges(texts, body.changes);
+        changed = applyDtcgChanges(texts, changes);
       } catch (error) {
         if (error instanceof DtcgChangeError) {
           return c.json({ error: error.message }, 400);
         }
         throw error;
       }
+      // Format everything first, so a Prettier failure writes nothing.
+      const formatted: [string, string][] = [];
       for (const [rel, text] of Object.entries(changed)) {
         const target = join(cfg.tokensDir, rel);
         const config = (await resolveConfig(target)) ?? {};
-        writeFileSync(
+        formatted.push([
           target,
           await format(text, { ...config, parser: 'json' }),
-        );
+        ]);
       }
-      await cfg.rebuild();
+      try {
+        for (const [target, text] of formatted) writeFileSync(target, text);
+        await cfg.rebuild();
+      } catch (error) {
+        // Put the source back as it was: the JSON and the CSS must agree.
+        for (const [rel] of Object.entries(changed)) {
+          const original = texts[rel];
+          if (original !== undefined) {
+            writeFileSync(join(cfg.tokensDir, rel), original);
+          }
+        }
+        return c.json({ error: (error as Error).message }, 500);
+      }
       return c.json({
         written: Object.keys(changed).join(', '),
-        changeCount: body.changes.length,
+        changeCount: changes.length,
       });
     }
     const cssPath = join(cfg.projectRoot, cfg.globalsCss);
     const css = readFileSync(cssPath, 'utf8');
-    const next = applyChanges(css, cfg.globalsCss, body.changes);
+    const next = applyChanges(css, cfg.globalsCss, changes);
     writeFileSync(cssPath, next);
     return c.json({
       written: cfg.globalsCss,
-      changeCount: body.changes.length,
+      changeCount: changes.length,
     });
   });
 
