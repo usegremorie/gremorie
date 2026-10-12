@@ -29,8 +29,10 @@ Switch themes with `data-theme` on the root element and dark mode with the
 ## What is inside
 
 - **One source, many outputs.** The tokens live as W3C DTCG 2025.10 JSON in
-  `tokens/` (primitives, semantics, one file per theme, and a Material 3 role
-  map). Style Dictionary builds everything below from it.
+  [`tokens/`](https://github.com/usegremorie/gremorie/tree/main/packages/tokens/tokens)
+  (primitives, semantics, one file per theme, and a Material 3 role map), kept
+  in the repository rather than in the npm package. Style Dictionary builds
+  everything below from it.
 - **CSS** (`theme.css`, `themes/*.css`): the full Tailwind palette plus a few
   custom families as OKLCH primitives; semantic tokens in the shadcn vocabulary
   (`primary`, `secondary`, `accent`, `muted`, `destructive`, `border`, `ring`,
@@ -53,8 +55,9 @@ cannot carry OKLCH.
 
 ## Material 3 roles
 
-`tokens/platform/m3/roles.json` names, for each `ColorScheme` role, the
-semantic token it takes or `derived`. Twelve roles take a semantic token:
+[`tokens/platform/m3/roles.json`](https://github.com/usegremorie/gremorie/blob/main/packages/tokens/tokens/platform/m3/roles.json)
+names, for each `ColorScheme` role, the semantic token it takes or `derived`.
+Twelve roles take a semantic token:
 `primary`, `onPrimary`, `secondaryContainer` and `onSecondaryContainer` (the
 shadcn `secondary` is a low-emphasis tinted fill, so it maps to the container),
 `background`, `onBackground`, `surface`, `onSurface`, `surfaceVariant`
@@ -74,8 +77,9 @@ stays equal to `--background`.
 
 ## Editing tokens
 
-Edit the JSON in `tokens/`, or use the visual editor (`apps/tokens`), then run
-`nx build tokens`. `styles/` is generated: never edit it by hand. A test keeps
+Edit the JSON in
+[`tokens/`](https://github.com/usegremorie/gremorie/tree/main/packages/tokens/tokens),
+or use the visual editor (`apps/tokens`), then run `nx build tokens`. `styles/` is generated: never edit it by hand. A test keeps
 the generated CSS equal to the 0.8.0 values (`reference/0.8.0/`) unless a change
 is listed, with its reason, in `reference/intentional-changes.json`.
 
