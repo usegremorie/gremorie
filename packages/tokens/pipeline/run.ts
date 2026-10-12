@@ -4,6 +4,7 @@ import type {
   Dictionary,
   TransformedToken,
 } from 'style-dictionary/types';
+import { renderBlock } from './css.ts';
 import { formatValue } from './css-value.ts';
 import {
   aliasPath,
@@ -122,6 +123,13 @@ const TRANSFORMS = {
 const FORMATS: Record<string, (args: FormatArgs) => string> = {
   'gremorie/run': ({ dictionary }) =>
     JSON.stringify(dictionary.allTokens.map(toRunToken)),
+  'gremorie/css-block': ({ dictionary, options }) =>
+    renderBlock(
+      String(options.selector),
+      dictionary.allTokens.map(toRunToken),
+      typeof options.description === 'string' ? options.description : undefined,
+      options.hex === true,
+    ),
 };
 
 /** One Style Dictionary run for a theme and mode. */
@@ -172,7 +180,10 @@ export async function runTheme(
   );
   const out: Record<string, string> = {};
   for (const b of blocks) {
-    out[b.destination] = byDestination.get(b.destination) ?? '';
+    // Style Dictionary may skip a file with no tokens; the block keeps its selector.
+    out[b.destination] =
+      byDestination.get(b.destination) ??
+      renderBlock(b.selector, [], b.description);
   }
   return {
     run: {

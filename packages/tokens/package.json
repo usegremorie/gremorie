@@ -37,6 +37,7 @@
   "author": "Gremorie (https://github.com/usegremorie)",
   "devDependencies": {
     "@types/node": "22.20.1",
+    "colorjs.io": "0.5.2",
     "postcss": "8.5.28",
     "prettier": "3.9.5",
     "style-dictionary": "5.6.1"
