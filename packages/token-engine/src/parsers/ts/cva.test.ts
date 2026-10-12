@@ -15,16 +15,16 @@ describe('extractCvaFromFile', () => {
     const result = extractCvaFromFile(file, 'Button');
 
     expect(result).toBeDefined();
-    expect(result!.baseClasses).toContain('inline-flex');
-    expect(result!.variants.variant).toEqual(['default', 'outline', 'ghost']);
-    expect(result!.variants.size).toEqual(['default', 'sm', 'lg']);
-    expect(result!.defaultVariants).toEqual({
+    expect(result?.baseClasses).toContain('inline-flex');
+    expect(result?.variants.variant).toEqual(['default', 'outline', 'ghost']);
+    expect(result?.variants.size).toEqual(['default', 'sm', 'lg']);
+    expect(result?.defaultVariants).toEqual({
       variant: 'default',
       size: 'default',
     });
-    expect(result!.classesByVariant['variant']!['default']).toContain(
+    expect(result?.classesByVariant['variant']?.['default']).toContain(
       'bg-primary',
     );
-    expect(result!.classesByVariant['size']!['sm']).toContain('h-8');
+    expect(result?.classesByVariant['size']?.['sm']).toContain('h-8');
   });
 });
