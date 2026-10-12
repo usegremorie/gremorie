@@ -1,6 +1,6 @@
 ---
 title: Colors
-description: Mapeamento intenção → valor para os seis temas Gremorie, em light e dark mode.
+description: Mapeamento intenção → valor para os sete temas Gremorie, em light e dark mode.
 ---
 
 import { SemanticThemeTable } from '@/components/semantic-theme-tables';
@@ -8,9 +8,9 @@ import { SemanticThemeTable } from '@/components/semantic-theme-tables';
 Tokens semânticos são **intenções**: `primary`, `foreground`,
 `border`. Cada tema preenche essas intenções com valores
 diferentes, e cada modo (light / dark) traz seu próprio
-mapeamento. Esta página é a **tabela de verdade** para os seis
-temas embarcados: Default, Claude, ChatGPT, Gemini, Perplexity e
-Mistral.
+mapeamento. Esta página é a **tabela de verdade** para os sete
+temas embarcados: Default, Claude, ChatGPT, Gemini, Perplexity,
+Mistral e Purple.
 
 ## Como ler as tabelas
 
@@ -19,11 +19,13 @@ Mistral.
   do tema, então as duas são fiéis independente do modo em que
   você está lendo.
 - As colunas **Valor** mostram o que o tema declara: um nome de
-  primitivo (consumido via `var(--color-<token>)`) ou, onde o tema
+  primitivo (um alias na fonte DTCG, escrito no CSS como
+  `var(--color-<token>)`) ou, onde o tema
   espelha uma superfície de produto sem primitivo equivalente, um
   valor OKLCH literal.
 - O badge `base` indica que o tema **não** sobrescreve aquele
-  token; ele herda o valor da camada base em `theme.css`. Essa
+  token; ele herda o valor da camada base (`semantic/light.json`
+  e `semantic/dark.json`). Essa
   herança é o comportamento que embarca, não uma omissão.
 
 Se você está auditando um componente que parece "errado" em algum
@@ -43,6 +45,8 @@ do componente ou do mapeamento do tema.
 
 <SemanticThemeTable themeId="mistral" locale="pt" />
 
+<SemanticThemeTable themeId="purple" locale="pt" />
+
 ## Sobre os tokens de sidebar
 
 Os `--sidebar-*` são uma **família paralela** que cobre a chrome
@@ -53,46 +57,31 @@ truque de "background com tint" que se quebra ao mudar de tema.
 
 ## Sobre os tokens de chart
 
-`--chart-1` a `--chart-5` são as cores de série categóricas
-consumidas pelos componentes de chart. Todo tema redefine o
-conjunto completo nos **dois** modos: o bloco dark precisa
-re-declarar cada série porque o bloco light do tema vence o
-seletor `.dark` da base em especificidade, então um override dark
-faltante vazaria o valor light para o dark mode.
+`--chart-1` a `--chart-5` são aliases da escala categórica
+(`--chart-cat-1..5`), que não é tematizável: todo tema mostra as
+mesmas cores de série. Veja [Tokens de chart](/tokens/chart).
 
 ## Editando ou adicionando temas
 
-Temas são **camadas de override** sobre a camada semântica base em
-`packages/tokens/styles/theme.css`. A receita curta:
+Temas são **camadas de override** sobre a camada semântica base. A fonte é
+JSON DTCG em `packages/tokens/tokens/themes/<id>.json`; o CSS em
+`packages/tokens/styles/` é gerado a partir dele. A receita curta:
 
-1. **Crie** um novo arquivo em
-   `packages/tokens/styles/themes/<id>.css`.
-2. **Defina** os dois selectors:
-
-   ```css
-   :root[data-theme='<id>'] {
-     /* overrides do light */
-   }
-   :root[data-theme='<id>'].dark {
-     /* overrides do dark */
-   }
-   ```
-
-3. **Sobrescreva apenas o que difere** da base. Um tema de acento
-   como o Mistral toca uma dúzia de tokens; um tema de superfície
-   completa como o Claude remapeia quase tudo. O que o bloco light
-   declarar, o bloco dark precisa re-declarar (veja a nota de
-   chart acima), porque `:root[data-theme]` vence `.dark`.
-4. **Importe** o arquivo no topo de
-   `packages/tokens/styles/theme.css`.
-5. **Audite** rodando o tema no workbench e checando contraste:
-   pares primary/primary-foreground precisam passar WCAG AA para
-   texto (4.5:1) e as séries de chart precisam de 3:1 sobre o
-   background do tema.
+1. **Crie** `packages/tokens/tokens/themes/<id>.json` com os grupos `light` e
+   `dark`, e acrescente `<id>` a `THEMES` em `packages/tokens/pipeline/model.ts`.
+2. **Sobrescreva apenas o que difere** da base, como tokens DTCG: um alias usa o
+   caminho do token (`{color.emerald.700}`); um literal é um objeto de cor OKLCH.
+   O que o grupo light declarar como cor literal, o grupo dark precisa declarar
+   de novo, porque `:root[data-theme]` vence `.dark`.
+3. **Gere** com `nx build tokens`. O tema ganha o arquivo CSS, o `@import` no
+   `theme.css` e as saídas JSON, TypeScript, Kotlin e Swift.
+4. **Audite** com `nx test tokens`: o teste de contraste falha em qualquer par de
+   texto abaixo de 4,5:1 e em qualquer anel de foco abaixo de 3:1, a menos que o
+   par esteja em `contrast-deviations.json` com o motivo.
 
 <Callout type="warn">
-  **Prefira primitivos.** Referencie as rampas via `var(--color-<token>)` para
-  que um ajuste de primitivo cascateie em todos os temas. Os temas embarcados
+  **Prefira primitivos.** Referencie as rampas por alias (`{color.<rampa>.<passo>}`)
+  para que um ajuste de primitivo cascateie em todos os temas. Os temas embarcados
   só hardcodam OKLCH onde espelham uma superfície de produto sem primitivo
   equivalente (e.g. o creme do Claude ou o grafite do Gemini). Se o seu valor
   é reutilizável, adicione-o como primitivo.

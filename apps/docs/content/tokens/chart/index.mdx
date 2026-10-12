@@ -11,8 +11,9 @@ charts (a sequential gradient applied to nominal categories
 suggests an order that is not there).
 
 This is **layer 3 of 3**: chart tokens reference
-[primitives](/tokens/primitive) and vary per theme like
-[semantic](/tokens/semantic) tokens do. The full picture lives in
+[primitives](/tokens/primitive) and change with light and dark
+mode, but, unlike [semantic](/tokens/semantic) tokens, not with the
+theme. The full picture lives in
 the [three-layer model](/tokens).
 
 ## The five schemes
@@ -75,30 +76,29 @@ See the [Chart](/components/data/chart) page in the UI section for each
 type rendered and the inverse matrix (choosing by the reader's
 question).
 
-## Variation per theme
+## Variation per mode, not per theme
 
-Chart tokens **change per theme**, not just the UI semantic
-tokens. Each of the six themes (Default, Claude, ChatGPT, Gemini,
-Perplexity, Mistral) overrides the chart variable values in its
-`[data-theme="<id>"]` selector, in both light and dark mode.
+Chart tokens **change with the mode**, not with the theme. The base
+layer declares every scale twice: in `:root` for light and in
+`.dark` for dark, one step darker (Sequential inverts, so its top
+end climbs towards light). None of the seven themes (Default,
+Claude, ChatGPT, Gemini, Perplexity, Mistral, Purple) overrides
+them: a brand palette is for chrome, and series identity needs hues
+that separate (see [Categorical](/tokens/chart/categorical)).
 
-That means a chart built with `--color-chart-cat-1` **paints
-differently** depending on the theme active at render time,
-without the component knowing. For the designer, the implication
-is:
+That means a chart built with `--color-chart-cat-1` paints the same
+series colours under every theme and switches only between light
+and dark, without the component knowing. For the designer, the
+implication is:
 
 - **Do not pick the chart scheme by chromatic taste**; pick it by
-  the shape of the data. The exact color will vary.
-- **Check accessibility across all 4 themes and 8 modes
-  (light/dark)**, not just the default theme. A scheme with OK
-  contrast in Default can fail in Amber.
-- **The 5 schemes keep the same intent** across themes -
+  the shape of the data.
+- **Check accessibility in both modes and on each theme's
+  surfaces**: the series stay the same, but the background behind
+  the chart changes per theme.
+- **The 5 schemes keep the same intent** in both modes -
   Sequential is still "ordered by lightness", Status is still
   "semantic state", and so on. Only the concrete color changes.
-
-The Gremorie Storybook decorators run every chart in each theme x mode
-combination (8 in total), and Chromatic gates each one visually -
-when a combination becomes inaccessible, the build fails.
 
 ## Accessibility first
 

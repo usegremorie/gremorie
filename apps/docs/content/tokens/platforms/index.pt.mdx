@@ -1,0 +1,93 @@
+---
+title: Plataformas
+description: Os mesmos tokens do Gremorie como JSON resolvido, TypeScript, Kotlin para Jetpack Compose e Swift para SwiftUI.
+---
+
+O CSS que as edições React e Angular importam é uma das saídas do
+`@gremorie/tokens`. Os tokens vivem como **JSON W3C DTCG 2025.10**, e o mesmo
+build os escreve para cada plataforma que não lê CSS.
+
+| Saída      | Import                                             | O que tem                                                                |
+| ---------- | -------------------------------------------------- | ------------------------------------------------------------------------ |
+| CSS        | `@gremorie/tokens/theme.css`                       | Primitivos, semânticos, os sete temas, light e dark                      |
+| JSON       | `@gremorie/tokens/tokens.json`                     | Cada tema e modo, resolvido: cores, papéis do Material 3, radius, fontes |
+| TypeScript | `import { themes } from '@gremorie/tokens'`        | Os mesmos dados, tipados (`ThemeName`, `M3Role`, `ThemeTokens`)          |
+| Kotlin     | `@gremorie/tokens/compose/GremorieColorSchemes.kt` | Um `ColorScheme` completo do Material 3 por tema e modo                  |
+| Swift      | `@gremorie/tokens/swift/GremorieTokens.swift`      | As cores semânticas por tema e modo para SwiftUI                         |
+
+Toda saída cobre os mesmos sete temas: Default, Claude, ChatGPT, Gemini,
+Perplexity, Mistral e Purple, o tema violeta adaptado do preset Purple do
+Fumadocs.
+
+## TypeScript e React Native
+
+```ts
+import { themes } from '@gremorie/tokens';
+
+const { colors, radius } = themes.purple.dark;
+const style = {
+  backgroundColor: colors.background.hex,
+  color: colors.foreground.hex,
+  borderRadius: radius.lg,
+};
+```
+
+Os nomes das cores são os tokens semânticos em camelCase: `--primary-foreground`
+vira `primaryForeground`. Cada cor traz `hex` (sRGB) e `oklch` (o valor da
+fonte). O radius vem em pixels. O `tokens.json` tem os mesmos dados para
+ferramentas que leem JSON, mais o `m3Sources`, a origem de cada papel do
+Material 3.
+
+## Jetpack Compose
+
+Copie `GremorieColorSchemes.kt` (pacote `com.gremorie.tokens`) para o seu
+módulo e passe um esquema ao `MaterialTheme`:
+
+```kotlin
+MaterialTheme(colorScheme = GremorieColorSchemes.of("purple", dark = isSystemInDarkTheme())) {
+    App()
+}
+```
+
+Cada esquema preenche os 48 papéis do `ColorScheme` atual do Compose. Veja em
+[Material 3](/tokens/platforms/material) de onde vem cada papel.
+
+<Callout type="warn">
+  **Exige `androidx.compose.material3:material3` 1.4.0 ou mais novo.** Os
+  esquemas passam os papéis de acento fixos (`primaryFixed`, `onPrimaryFixed` e
+  os demais), que `lightColorScheme` e `darkColorScheme` aceitam a partir da
+  1.4.0 (estável desde 24 de setembro de 2025; saiu primeiro na 1.4.0-alpha15,
+  mudança `Iad0ee`). Com um Material 3 mais antigo o arquivo não compila.
+</Callout>
+
+## SwiftUI
+
+```swift
+let colors = GremorieTheme.purple.colors(dark: colorScheme == .dark)
+Text("Olá").foregroundStyle(colors.foreground).background(colors.background)
+```
+
+## Gamut de cor
+
+Os primitivos são OKLCH, e algumas cores do Tailwind v4 ficam um pouco fora do
+sRGB. Hex, Kotlin e Swift só carregam sRGB, então essas cores são mapeadas para
+dentro do gamut pelo algoritmo do CSS Color 4: o croma cai com luminosidade e
+matiz fixas até a cor caber, e ela continua reconhecível. O CSS mantém o OKLCH
+original, e telas de gamut amplo continuam recebendo a cor inteira.
+
+## Editando tokens
+
+Toda saída é gerada, então nunca edite `styles/` nem `dist/` à mão. Edite o
+JSON DTCG em `packages/tokens/tokens/` (ou use o editor visual em
+`apps/tokens`) e rode `nx build tokens`:
+
+| Arquivo da fonte                   | O que tem                                                   |
+| ---------------------------------- | ----------------------------------------------------------- |
+| `primitive/*.json`                 | Paletas, radius, fontes, sombras, spacing                   |
+| `semantic/light.json`, `dark.json` | A camada semântica base, um arquivo por modo                |
+| `themes/<id>.json`                 | Os overrides de um tema, nos grupos `light` e `dark`        |
+| `platform/m3/roles.json`           | O token semântico de cada papel do Material 3, ou `derived` |
+
+Todas as saídas, CSS incluído, são regeneradas. Um teste mantém o CSS igual aos
+valores do 0.8.0, a menos que a mudança esteja listada, com o motivo, em
+`reference/intentional-changes.json`.

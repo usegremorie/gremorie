@@ -7,8 +7,8 @@
  * sRGB rendering documented inline in the same file (gamut mapped by
  * chroma reduction, CSS Color 4, for the few primitives wider than sRGB).
  *
- * If theme.css gains or changes a ramp, update this file to match.
- * Verify with: grep -c -- '--color-<ramp>-' packages/tokens/styles/theme.css
+ * If theme.css gains or changes a ramp, update this file to match:
+ * `lib/primitive-color-data.spec.ts` fails on any stop that differs.
  */
 
 export interface PrimitiveColorStop {
@@ -304,8 +304,8 @@ export const PRIMITIVE_COLOR_RAMPS: Record<string, PrimitiveColorStop[]> = {
       step: '500',
       token: '--color-amber-500',
       utility: 'bg-amber-500',
-      oklch: 'oklch(76.9% 0.188 70.08)',
-      hex: '#FE9A00',
+      oklch: 'oklch(76.6% 0.188 70.08)',
+      hex: '#FC9900',
     },
     {
       step: '600',

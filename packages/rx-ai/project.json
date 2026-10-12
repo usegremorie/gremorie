@@ -19,6 +19,7 @@
     },
     "storybook": {
       "executor": "nx:run-commands",
+      "dependsOn": [{ "projects": ["tokens"], "target": "build" }],
       "continuous": true,
       "options": {
         "command": "storybook dev -p 4401 --no-open -c packages/rx-ai/.storybook"
@@ -26,6 +27,7 @@
     },
     "build-storybook": {
       "executor": "nx:run-commands",
+      "dependsOn": [{ "projects": ["tokens"], "target": "build" }],
       "outputs": ["{workspaceRoot}/dist/storybook/rx-ai"],
       "options": {
         "command": "storybook build -c packages/rx-ai/.storybook -o dist/storybook/rx-ai --stats-json"

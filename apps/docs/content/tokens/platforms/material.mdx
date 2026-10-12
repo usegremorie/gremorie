@@ -1,0 +1,75 @@
+---
+title: Material 3
+description: How each role of the Compose ColorScheme is filled for every Gremorie theme, mapped from a semantic token or derived from the theme's primary.
+---
+
+import { M3SchemeTable } from '@/components/m3-scheme-table';
+
+Jetpack Compose themes an app through a `ColorScheme` with **48 roles**.
+Gremorie fills all of them for every theme and mode, in two ways. The choice
+for each role lives in `packages/tokens/tokens/platform/m3/roles.json`.
+
+- **Mapped** roles take a semantic token directly, so the brand colours are
+  exact. Twelve roles work this way:
+
+  | Role                                         | Semantic token                              |
+  | -------------------------------------------- | ------------------------------------------- |
+  | `primary`, `onPrimary`                       | `--primary`, `--primary-foreground`         |
+  | `secondaryContainer`, `onSecondaryContainer` | `--secondary`, `--secondary-foreground`     |
+  | `background`, `onBackground`                 | `--background`, `--foreground`              |
+  | `surface`, `onSurface`                       | `--background`, `--foreground`              |
+  | `surfaceVariant`                             | `--muted`                                   |
+  | `surfaceTint`                                | `--primary`                                 |
+  | `error`, `onError`                           | `--destructive`, `--destructive-foreground` |
+
+- **Derived** roles, the other 36, come from Material Color Utilities: a
+  `SchemeContent` seeded with the theme's primary, so they share its hue and
+  chroma. The container roles sit at the Material 3 baseline tones.
+
+A few derived roles have a semantic token with a similar name that does not
+mean the same thing:
+
+- The shadcn `secondary` is a low-emphasis tinted fill, which is what Material 3
+  calls a container. It maps to `secondaryContainer`, and the M3 `secondary`
+  is derived.
+- `accent` is a hover and selection surface with no Material 3 peer, so the
+  whole tertiary family is derived.
+- `outline` is derived because `--border` is decorative and stays under 3:1;
+  `onSurfaceVariant` is derived to match the derived surface containers it
+  sits on.
+
+Every content role is checked at 4.5:1 on the role it sits on (`onPrimary` on
+`primary`, `onSurface` on each surface container, and so on), and `outline` and
+`inversePrimary` at 3:1. The pairs that inherit a known exception from the
+semantic layer are listed in `packages/tokens/contrast-deviations.json`; the
+Purple theme has none.
+
+The tables below are generated from `@gremorie/tokens/tokens.json`.
+
+## Purple
+
+<M3SchemeTable themeId="purple" locale="en" />
+
+## Default
+
+<M3SchemeTable themeId="default" locale="en" />
+
+## Claude
+
+<M3SchemeTable themeId="claude" locale="en" />
+
+## ChatGPT
+
+<M3SchemeTable themeId="chatgpt" locale="en" />
+
+## Gemini
+
+<M3SchemeTable themeId="gemini" locale="en" />
+
+## Perplexity
+
+<M3SchemeTable themeId="perplexity" locale="en" />
+
+## Mistral
+
+<M3SchemeTable themeId="mistral" locale="en" />

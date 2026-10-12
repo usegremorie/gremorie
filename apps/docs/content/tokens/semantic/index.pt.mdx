@@ -34,11 +34,12 @@ qualquer tema precisa preencher.
 | `chart-cat-1` ... `-5`      | Séries categóricas (ver tokens de Chart) |
 | `sidebar-*`                 | Variantes para a chrome de navegação     |
 
-## Seis temas, dois modos
+## Sete temas, dois modos
 
-O Gremorie embarca **seis temas**. O tema Default é a própria
-camada base; os outros cinco espelham a voz visual dos principais
-produtos de AI:
+O Gremorie embarca **sete temas**. O tema Default é a própria
+camada base; cinco espelham a voz visual dos principais produtos de
+AI, e o Purple é um tema violeta para produtos de leitura, adaptado
+do preset Purple do Fumadocs:
 
 <Cards>
   <Card
@@ -65,6 +66,10 @@ produtos de AI:
     title="Mistral"
     description="Laranja flame com primary preto-sobre-laranja, direto da marca."
   />
+  <Card
+    title="Purple"
+    description="Violeta sobre superfícies lavanda, adaptado do preset Purple do Fumadocs, com correções para WCAG AA."
+  />
 </Cards>
 
 Cada tema entrega **light e dark** independentemente. O switch é
@@ -84,11 +89,25 @@ e o navegador resolve o `var(--primary)` no contexto certo.
 
 ## Como os tokens são definidos
 
-A camada semântica base vive em
-`packages/tokens/styles/theme.css` (`:root` para light, `.dark`
-para dark). Cada tema nomeado é um **arquivo de override** em
-`packages/tokens/styles/themes/<id>.css` que remapeia só o que
-difere, referenciando primitivos via `var(--color-<token>)`:
+A fonte é JSON DTCG em `packages/tokens/tokens/`
+(`semantic/light.json`, `semantic/dark.json`, `themes/<id>.json`),
+que gera o `packages/tokens/styles/theme.css` (`:root` para light,
+`.dark` para dark) e o `themes/<id>.css`. Cada tema nomeado é um
+**arquivo de override** que remapeia só o que difere, nomeando
+primitivos pelo caminho do token:
+
+```json
+{
+  "light": {
+    "primary": { "$type": "color", "$value": "{color.orange.600}" },
+    "primary-foreground": { "$type": "color", "$value": "{color.gray.950}" },
+    "accent": { "$type": "color", "$value": "{color.orange.100}" }
+  }
+}
+```
+
+O build escreve cada alias como referência à primitiva, então o
+CSS gerado mantém a cascata:
 
 ```css
 :root[data-theme='mistral'] {
@@ -110,14 +129,14 @@ quase tudo.
 ## Para a tabela completa
 
 A página [Colors](/tokens/semantic/colors) tem o mapeamento
-intenção → valor (light e dark) para os seis temas. Use-a para
+intenção → valor (light e dark) para os sete temas. Use-a para
 entender por que um botão fica clay em um tema e emerald em outro,
 e para auditar se o seu próprio tema customizado está preenchendo
 as intenções com valores consistentes.
 
 <Callout type="info">
-  **A regra de bolso:** referencie primitivos via `var(--color-<token>)`
-  sempre que um servir, para manter a cascata íntegra. Os temas embarcados só
+  **A regra de bolso:** referencie primitivos por alias (`{color.orange.600}`,
+  escrito no CSS como `var(--color-orange-600)`) sempre que um servir, para manter a cascata íntegra. Os temas embarcados só
   hardcodam OKLCH em superfícies espelhadas de produto sem primitivo
   equivalente.
 </Callout>

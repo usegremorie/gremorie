@@ -12,7 +12,8 @@ Gremorie inherits the Tailwind v4 palettes and extends them with
 **five synthesized ramps**: four extra neutrals (`mauve`, `mist`,
 `olive`, `taupe`) and one brand ramp (`clay`, anchored on Claude's
 `#D97757`). Together they form **27 ramps and 298 stops**, every one
-declared in OKLCH in `packages/tokens/styles/theme.css`.
+declared in OKLCH in `packages/tokens/tokens/primitive/color.json`,
+the DTCG source that generates `packages/tokens/styles/theme.css`.
 
 Each stop is intentionally spaced in lightness (perceptually uniform
 in OKLCH space), so `slate-200` and `blue-200` behave the same way
@@ -41,7 +42,7 @@ mode. There is no rigid usage rule, but the patterns are strong:
 | **800, 900, 950** | Headings, dark mode surfaces                   |
 
 These values are **stable**: they only change when the primitive is
-edited in `theme.css`, and when that happens the change cascades to
+edited in `primitive/color.json`, and when that happens the change cascades to
 every theme that references it.
 
 ## How to consume
