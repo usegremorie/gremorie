@@ -1,0 +1,264 @@
+{
+  "background": {
+    "$type": "color",
+    "$value": "{color.gray.50}",
+    "$description": "2. SEMANTICS"
+  },
+  "foreground": {
+    "$type": "color",
+    "$value": "{color.gray.950}"
+  },
+  "card": {
+    "$type": "color",
+    "$value": "{color.gray.0}",
+    "$description": "Elevated surfaces are pure white (gray-0), one step above the off-white page (gray-50), so cards/dialogs/dropdowns read as raised by color, not just shadow. (Dark mode keeps card/popover at gray-900, see .dark.)"
+  },
+  "card-foreground": {
+    "$type": "color",
+    "$value": "{foreground}"
+  },
+  "popover": {
+    "$type": "color",
+    "$value": "{color.gray.0}"
+  },
+  "popover-foreground": {
+    "$type": "color",
+    "$value": "{foreground}"
+  },
+  "primary": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "primary-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "secondary": {
+    "$type": "color",
+    "$value": "{color.gray.100}"
+  },
+  "secondary-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "muted": {
+    "$type": "color",
+    "$value": "{color.gray.100}"
+  },
+  "muted-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.500}"
+  },
+  "accent": {
+    "$type": "color",
+    "$value": "{color.gray.100}"
+  },
+  "accent-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "destructive": {
+    "$type": "color",
+    "$value": "{color.red.600}"
+  },
+  "destructive-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "success": {
+    "$type": "color",
+    "$value": "{color.green.700}",
+    "$description": "Status semantics (success/warning). Solid fills sized for SMALL text (badges): every bg/foreground pair clears WCAG AA 4.5:1 in this mode. Bound to Tailwind primitives per the two-tier rule (no raw literals). success = green fill + white text (green must be dark enough for white → green-700); warning = amber fill + near-black text (amber is light in both modes, so the foreground stays dark)."
+  },
+  "success-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "warning": {
+    "$type": "color",
+    "$value": "{color.amber.500}"
+  },
+  "warning-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.950}"
+  },
+  "border": {
+    "$type": "color",
+    "$value": "{color.gray.200}"
+  },
+  "input": {
+    "$type": "color",
+    "$value": "{color.gray.200}"
+  },
+  "ring": {
+    "$type": "color",
+    "$value": "{color.gray.400}"
+  },
+  "sidebar": {
+    "$type": "color",
+    "$value": "{color.gray.50}",
+    "$description": "Sidebar (shadcn/tweakcn)"
+  },
+  "sidebar-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.950}"
+  },
+  "sidebar-primary": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "sidebar-primary-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "sidebar-accent": {
+    "$type": "color",
+    "$value": "{color.gray.100}"
+  },
+  "sidebar-accent-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "sidebar-border": {
+    "$type": "color",
+    "$value": "{color.gray.200}"
+  },
+  "sidebar-ring": {
+    "$type": "color",
+    "$value": "{color.gray.400}"
+  },
+  "chart-cat-1": {
+    "$type": "color",
+    "$value": "{color.blue.500}",
+    "$description": "Chart series (consumed by @gremorie/ng-charts)\n\nCategorical chart scale\n\nSix slots for series identity. Not themeable: a brand palette is for chrome, and every themed override this replaces turned these into a single-hue ramp (three clay steps, five greens), which encodes order, not identity. Two series then differ only in lightness.\n\nOne primitive family per slot, the same family in both modes so a series keeps its colour when the mode flips, only the step changes (500 light, 600 dark). Validated with the data-viz palette checks: lightness band, chroma floor, CVD separation, normal-vision floor and contrast, on every pair, in both modes.\n\nFive, and the scale repeats past the fifth series. Five is where these ramps stop separating: a sixth family collapses against one of the five under colour-vision deficiency whichever one it comes from, fuchsia lands on blue at ΔE 5.0 under protanopia, purple at ΔE 0.7 under the commoner deuteranopia, and sky fails for full colour vision against cyan. Notion's categorical scheme stops at five and repeats for the same reason."
+  },
+  "chart-cat-2": {
+    "$type": "color",
+    "$value": "{color.amber.500}"
+  },
+  "chart-cat-3": {
+    "$type": "color",
+    "$value": "{color.green.500}"
+  },
+  "chart-cat-4": {
+    "$type": "color",
+    "$value": "{color.cyan.500}"
+  },
+  "chart-cat-5": {
+    "$type": "color",
+    "$value": "{color.pink.500}"
+  },
+  "chart-seq-1": {
+    "$type": "color",
+    "$value": "{color.blue.200}",
+    "$description": "Sequential\n\nOne hue, light to dark, for data with a natural order. Read by lightness rather than hue, so it survives colour-vision deficiency by construction. Steps are 200/400/600/800/950 rather than the evenly numbered ones: 600 to 700 measures ΔL 0.058, under the 0.06 the eye needs to call two steps apart."
+  },
+  "chart-seq-2": {
+    "$type": "color",
+    "$value": "{color.blue.400}"
+  },
+  "chart-seq-3": {
+    "$type": "color",
+    "$value": "{color.blue.600}"
+  },
+  "chart-seq-4": {
+    "$type": "color",
+    "$value": "{color.blue.800}"
+  },
+  "chart-seq-5": {
+    "$type": "color",
+    "$value": "{color.blue.950}"
+  },
+  "chart-div-1": {
+    "$type": "color",
+    "$value": "{color.blue.700}",
+    "$description": "Divergent\n\nTwo poles around a neutral pivot, for data with a meaningful middle: zero, a baseline, an average. Blue against red rather than red against green, which around 8% of men cannot separate.\n\nThe inner stops are 300, not 200: at 200 the three middle values land within ΔL 0.04 of the pivot, so the pivot reads as a brightness spike and the weak ends disappear. At 300 the smallest step is ΔL 0.13, and the poles sit within 0.02 of each other in lightness, so neither side looks heavier than the other."
+  },
+  "chart-div-2": {
+    "$type": "color",
+    "$value": "{color.blue.500}"
+  },
+  "chart-div-3": {
+    "$type": "color",
+    "$value": "{color.blue.300}"
+  },
+  "chart-div-4": {
+    "$type": "color",
+    "$value": "{color.neutral.100}"
+  },
+  "chart-div-5": {
+    "$type": "color",
+    "$value": "{color.red.300}"
+  },
+  "chart-div-6": {
+    "$type": "color",
+    "$value": "{color.red.500}"
+  },
+  "chart-div-7": {
+    "$type": "color",
+    "$value": "{color.red.700}"
+  },
+  "chart-status-success": {
+    "$type": "color",
+    "$value": "{success}",
+    "$description": "Status\n\nDiscrete state, never series identity: if green means \"good\" in your chart, this is the scheme, not Categorical. Success, warning and error point at the semantic tokens rather than restating them, \"green means ok\" cannot be allowed two different answers in one system. Info and neutral have no semantic counterpart, so they are defined here."
+  },
+  "chart-status-warning": {
+    "$type": "color",
+    "$value": "{warning}"
+  },
+  "chart-status-error": {
+    "$type": "color",
+    "$value": "{destructive}"
+  },
+  "chart-status-info": {
+    "$type": "color",
+    "$value": "{color.sky.600}"
+  },
+  "chart-status-neutral": {
+    "$type": "color",
+    "$value": "{muted-foreground}"
+  },
+  "chart-cmp-highlight": {
+    "$type": "color",
+    "$value": "{color.brand.600}",
+    "$description": "Comparison\n\nOne series in focus, the rest as backdrop, \"you versus your peers\", \"current versus baseline\", an A/B split. The highlight is the brand colour, so the thing being compared wears the consumer's identity; the backdrop is neutral, which is what makes the highlight read."
+  },
+  "chart-cmp-mute-1": {
+    "$type": "color",
+    "$value": "{color.neutral.700}"
+  },
+  "chart-cmp-mute-2": {
+    "$type": "color",
+    "$value": "{color.neutral.500}"
+  },
+  "chart-cmp-mute-3": {
+    "$type": "color",
+    "$value": "{color.neutral.400}"
+  },
+  "chart-cmp-mute-4": {
+    "$type": "color",
+    "$value": "{color.neutral.300}"
+  },
+  "chart-1": {
+    "$type": "color",
+    "$value": "{chart-cat-1}",
+    "$description": "Back-compat: the old slots now point at the validated scale."
+  },
+  "chart-2": {
+    "$type": "color",
+    "$value": "{chart-cat-2}"
+  },
+  "chart-3": {
+    "$type": "color",
+    "$value": "{chart-cat-3}"
+  },
+  "chart-4": {
+    "$type": "color",
+    "$value": "{chart-cat-4}"
+  },
+  "chart-5": {
+    "$type": "color",
+    "$value": "{chart-cat-5}"
+  }
+}

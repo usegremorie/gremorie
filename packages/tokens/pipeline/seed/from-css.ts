@@ -217,3 +217,25 @@ export function seedPrimitives(themeCss: string): Record<string, DtcgGroup> {
   }
   return files;
 }
+
+export function seedSemantic(themeCss: string): {
+  light: DtcgGroup;
+  dark: DtcgGroup;
+} {
+  const out = { light: {} as DtcgGroup, dark: {} as DtcgGroup };
+  const noLookup = () => undefined;
+  for (const block of readBlocks(themeCss)) {
+    const target =
+      block.key === ':root'
+        ? out.light
+        : block.key === '.dark'
+          ? out.dark
+          : null;
+    if (!target) continue;
+    for (const decl of block.decls) {
+      if (typeForProp(decl.prop) === 'shadow') continue;
+      setPath(target, cssNameToPath(decl.prop), declToToken(decl, noLookup));
+    }
+  }
+  return out;
+}
