@@ -4,7 +4,8 @@
  * Extracted from `packages/tokens/styles/theme.css` (the @theme
  * primitives block, the single source of truth for the shipped ramps).
  * The OKLCH string is the exact declared value; the HEX is the
- * sRGB-clamped rendering documented inline in the same file.
+ * sRGB rendering documented inline in the same file (gamut mapped by
+ * chroma reduction, CSS Color 4, for the few primitives wider than sRGB).
  *
  * If theme.css gains or changes a ramp, update this file to match.
  * Verify with: grep -c -- '--color-<ramp>-' packages/tokens/styles/theme.css
@@ -297,7 +298,7 @@ export const PRIMITIVE_COLOR_RAMPS: Record<string, PrimitiveColorStop[]> = {
       token: '--color-amber-400',
       utility: 'bg-amber-400',
       oklch: 'oklch(82.8% 0.189 84.429)',
-      hex: '#FFB900',
+      hex: '#FFBA00',
     },
     {
       step: '500',
@@ -376,14 +377,14 @@ export const PRIMITIVE_COLOR_RAMPS: Record<string, PrimitiveColorStop[]> = {
       token: '--color-yellow-400',
       utility: 'bg-yellow-400',
       oklch: 'oklch(85.2% 0.199 91.936)',
-      hex: '#FDC700',
+      hex: '#FCC800',
     },
     {
       step: '500',
       token: '--color-yellow-500',
       utility: 'bg-yellow-500',
       oklch: 'oklch(79.5% 0.184 86.047)',
-      hex: '#F0B100',
+      hex: '#EFB100',
     },
     {
       step: '600',

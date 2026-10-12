@@ -12,7 +12,9 @@
         "{projectRoot}/tokens/**/*",
         "{projectRoot}/pipeline/**/*",
         "{projectRoot}/styles/partials/**/*",
-        "{projectRoot}/package.json"
+        "{projectRoot}/package.json",
+        "{workspaceRoot}/.prettierrc",
+        "{workspaceRoot}/.prettierignore"
       ],
       "outputs": [
         "{projectRoot}/styles/theme.css",
@@ -24,8 +26,27 @@
         "command": "node pipeline/build.ts"
       }
     },
+    "check-generated": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/tokens/**/*",
+        "{projectRoot}/pipeline/**/*",
+        "{projectRoot}/styles/partials/**/*",
+        "{projectRoot}/package.json",
+        "{workspaceRoot}/.prettierrc",
+        "{workspaceRoot}/.prettierignore",
+        "{projectRoot}/styles/theme.css",
+        "{projectRoot}/styles/themes/**/*"
+      ],
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "node pipeline/build.ts --check"
+      }
+    },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["check-generated"]
     },
     "test": {
       "dependsOn": ["typecheck"],

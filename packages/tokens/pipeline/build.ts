@@ -1,8 +1,20 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { wrapComment } from './css.ts';
-import { themeFile, type DtcgGroup, type NamedTheme } from './model.ts';
+import {
+  ROOT_PLACEMENT,
+  themeFile,
+  type DtcgGroup,
+  type NamedTheme,
+} from './model.ts';
 import { formatCss } from './prettier.ts';
 import { blockOf, runTheme, type Run } from './run.ts';
 import { loadSource, validateSource, type TokenSource } from './source.ts';
@@ -39,6 +51,7 @@ export async function buildCss(
       include: (t) =>
         t.layer === 'semantic-light' ||
         (t.layer === 'primitive' && blockOf(t) === ':root'),
+      placeAfter: ROOT_PLACEMENT,
     },
   ]);
   const baseDark = await runTheme(source, 'default', 'dark', [
@@ -124,27 +137,55 @@ function rootFromArgs(args: readonly string[]): string {
   return resolve(dir);
 }
 
+const differs = (root: string, rel: string, content: string) =>
+  !existsSync(join(root, rel)) ||
+  readFileSync(join(root, rel), 'utf8') !== content;
+
+/** Paths under styles/ to write or delete so they match the build. */
+export function findDrift(
+  root: string,
+  outputs: Readonly<Record<string, string>>,
+): string[] {
+  const stale = Object.entries(outputs)
+    .filter(([rel]) => rel.startsWith('styles/'))
+    .filter(([rel, content]) => differs(root, rel, content))
+    .map(([rel]) => rel);
+  const themesDir = join(root, 'styles', 'themes');
+  const orphans = existsSync(themesDir)
+    ? readdirSync(themesDir)
+        .filter((f) => f.endsWith('.css'))
+        .map((f) => `styles/themes/${f}`)
+        .filter((rel) => !(rel in outputs))
+    : [];
+  return [...stale, ...orphans].sort();
+}
+
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const root = rootFromArgs(args);
   const outputs = await buildOutputs(root);
-  const stale = Object.entries(outputs).filter(
-    ([rel, content]) =>
-      !existsSync(join(root, rel)) ||
-      readFileSync(join(root, rel), 'utf8') !== content,
-  );
+  const drift = findDrift(root, outputs);
   if (args.includes('--check')) {
-    const committed = stale.filter(([rel]) => rel.startsWith('styles/'));
-    if (committed.length > 0) {
-      console.error(
-        `Out of date, run nx build tokens:\n${committed.map(([rel]) => rel).join('\n')}`,
-      );
+    if (drift.length > 0) {
+      console.error(`Out of date, run nx build tokens:\n${drift.join('\n')}`);
       process.exit(1);
     }
     return;
   }
-  for (const [rel, content] of stale) {
+  // Outputs outside styles/ are not committed, so --check ignores them, but
+  // the build still writes them.
+  const uncommitted = Object.entries(outputs)
+    .filter(([rel]) => !rel.startsWith('styles/'))
+    .filter(([rel, content]) => differs(root, rel, content))
+    .map(([rel]) => rel);
+  for (const rel of [...drift, ...uncommitted]) {
     const target = join(root, rel);
+    const content = outputs[rel];
+    if (content === undefined) {
+      rmSync(target);
+      console.log(`removed ${rel}`);
+      continue;
+    }
     mkdirSync(dirname(target), { recursive: true });
     writeFileSync(target, content);
     console.log(`wrote ${rel}`);

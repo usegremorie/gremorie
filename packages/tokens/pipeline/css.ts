@@ -39,6 +39,33 @@ export function wrapComment(text: string, indent: string, width = 80): string {
   ].join('\n');
 }
 
+const parentOf = (t: RunToken) => t.path.slice(0, -1).join('.');
+
+/**
+ * Moves the tokens of `file` right after the token named `after`, keeping
+ * their relative order. Blocks without tokens of `file` come back as is.
+ */
+export function placeAfter(
+  tokens: readonly RunToken[],
+  file: string,
+  after: string,
+): readonly RunToken[] {
+  const moving = tokens
+    .filter((t) => t.file === file)
+    .sort((a, b) => a.order - b.order);
+  if (moving.length === 0) return tokens;
+  const anchor = tokens.find((t) => t.name === after);
+  if (!anchor) throw new Error(`placeAfter: ${after} is not in the block`);
+  const step = 1 / (moving.length + 1);
+  const order = new Map(
+    moving.map((t, i) => [t, anchor.order + step * (i + 1)]),
+  );
+  return tokens.map((t) => {
+    const at = order.get(t);
+    return at === undefined ? t : { ...t, order: at };
+  });
+}
+
 export function renderBlock(
   selector: string,
   tokens: readonly RunToken[],
@@ -46,7 +73,14 @@ export function renderBlock(
   hex = false,
 ): string {
   const body: string[] = [];
+  let previous: RunToken | undefined;
   for (const t of [...tokens].sort((a, b) => a.order - b.order)) {
+    // A blank line before each described token and each new group (the
+    // parent path: color.gray, color.red...) keeps the file readable.
+    if (previous && (t.description || parentOf(t) !== parentOf(previous))) {
+      body.push('');
+    }
+    previous = t;
     if (t.description) body.push(wrapComment(t.description, '  '));
     const comment =
       hex && t.type === 'color' && !isAlias(t.original)

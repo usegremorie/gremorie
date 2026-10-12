@@ -22,7 +22,8 @@
     "./themes/*": "./styles/themes/*"
   },
   "files": [
-    "styles",
+    "styles/theme.css",
+    "styles/themes",
     "README.md"
   ],
   "publishConfig": {

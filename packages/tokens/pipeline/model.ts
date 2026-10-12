@@ -30,6 +30,16 @@ export const PRIMITIVE_FILES: Readonly<Record<string, CssBlock>> = {
   'primitive/spacing.json': '@theme',
   'primitive/shadow.json': ':root',
 };
+/** Where a primitive file written to :root sits among the semantics. */
+export interface Placement {
+  file: string;
+  after: string;
+}
+/** In 0.8.0 the shadows follow the sidebar tokens and precede the charts. */
+export const ROOT_PLACEMENT: Placement = {
+  file: 'primitive/shadow.json',
+  after: '--sidebar-ring',
+};
 export const SEMANTIC_FILES = {
   light: 'semantic/light.json',
   dark: 'semantic/dark.json',

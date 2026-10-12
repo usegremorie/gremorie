@@ -4,7 +4,7 @@ import type {
   Dictionary,
   TransformedToken,
 } from 'style-dictionary/types';
-import { renderBlock } from './css.ts';
+import { placeAfter, renderBlock } from './css.ts';
 import { formatValue } from './css-value.ts';
 import {
   aliasPath,
@@ -21,6 +21,7 @@ import {
   type DtcgValue,
   type Layer,
   type Mode,
+  type Placement,
   type ThemeId,
 } from './model.ts';
 import { pathToCssName } from './names.ts';
@@ -55,6 +56,8 @@ export interface BlockSpec {
   description?: string;
   /** Append the sRGB hex of literal colours as a comment (the @theme block). */
   hex?: boolean;
+  /** Write the tokens of one file right after a named token. */
+  placeAfter?: Placement;
 }
 
 /** The CSS block a token is written to in the base layer. */
@@ -111,6 +114,12 @@ export function applyDerive(tokens: RunToken[]): RunToken[] {
 export const resolvedCss = (t: RunToken): string =>
   t.cssValue ?? formatValue(t.type, t.value);
 
+const placed = (tokens: RunToken[], placement: unknown) => {
+  if (placement === undefined) return tokens;
+  const { file, after } = placement as Placement;
+  return placeAfter(tokens, file, after);
+};
+
 type FormatArgs = { dictionary: Dictionary; options: Record<string, unknown> };
 const TRANSFORMS = {
   // Without a name transform every token is named after its last key, and
@@ -126,7 +135,7 @@ const FORMATS: Record<string, (args: FormatArgs) => string> = {
   'gremorie/css-block': ({ dictionary, options }) =>
     renderBlock(
       String(options.selector),
-      dictionary.allTokens.map(toRunToken),
+      placed(dictionary.allTokens.map(toRunToken), options.placeAfter),
       typeof options.description === 'string' ? options.description : undefined,
       options.hex === true,
     ),
@@ -158,6 +167,7 @@ export async function runTheme(
                 selector: b.selector,
                 description: b.description,
                 hex: b.hex,
+                placeAfter: b.placeAfter,
               },
             })),
           ],

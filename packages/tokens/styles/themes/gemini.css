@@ -25,10 +25,12 @@
   --sidebar-primary: oklch(0.55 0.19 258);
   --sidebar-primary-foreground: var(--color-gray-50);
   --sidebar-ring: oklch(0.63 0.18 260);
+
   /*
    * Blue-to-purple brand ramp: #4285F4 and #9B72CB anchors plus tints.
    */
   --radius-base: 1rem;
+
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -45,6 +47,7 @@
   --background: oklch(0.239 0.002 248);
   --card: oklch(0.274 0.002 248);
   --popover: oklch(0.274 0.002 248);
+
   /*
    * The #8AB4F8 dark-scheme Google blue with a near-black foreground.
    */
