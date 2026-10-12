@@ -1,0 +1,216 @@
+{
+  "$description": "ChatGPT theme: emerald accent on a flat, low-shadow surface. Activate with data-theme=\"chatgpt\" on the root element.",
+  "light": {
+    "$description": "The categorical chart scale (--chart-cat-*) is deliberately not themed. A brand palette is for chrome; series identity needs hues that separate, and this theme's own colours are a single family, as a data scale they would encode order instead of identity. See theme.css.",
+    "primary": {
+      "$type": "color",
+      "$value": "{color.emerald.700}",
+      "$description": "emerald-700 keeps the white foreground at 5.1:1 (AA); emerald-600 sat at 3.5:1 and failed the 4.5:1 text minimum."
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.emerald.100}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.emerald.900}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.emerald.500}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.emerald.700}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.emerald.500}"
+    },
+    "radius": {
+      "base": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        }
+      }
+    },
+    "font": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+      }
+    },
+    "shadow-sm": {
+      "$type": "shadow",
+      "$value": {
+        "color": {
+          "colorSpace": "oklch",
+          "components": [0, 0, 0],
+          "alpha": 0.05
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 1,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 2,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      "$description": "Flat: soften the elevation set."
+    },
+    "shadow": {
+      "$type": "shadow",
+      "$value": {
+        "color": {
+          "colorSpace": "oklch",
+          "components": [0, 0, 0],
+          "alpha": 0.05
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 1,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 2,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "shadow-md": {
+      "$type": "shadow",
+      "$value": {
+        "color": {
+          "colorSpace": "oklch",
+          "components": [0, 0, 0],
+          "alpha": 0.06
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 2,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 4,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "shadow-lg": {
+      "$type": "shadow",
+      "$value": {
+        "color": {
+          "colorSpace": "oklch",
+          "components": [0, 0, 0],
+          "alpha": 0.06
+        },
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 4,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 8,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    }
+  },
+  "dark": {
+    "$description": "Chart series (dark): lighter steps of the same hues so every series clears the 3:1 graphical minimum on the dark background. Without these the light-block values win on specificity and leak into dark mode.",
+    "background": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.248, 0, 0]
+      },
+      "$description": "The real product's flat graphite (#212121 family). Popover tracks card, as in claude.css, so menus never render darker than the page."
+    },
+    "card": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.278, 0, 0]
+      }
+    },
+    "popover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.278, 0, 0]
+      }
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "{color.emerald.400}"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.emerald.900}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.emerald.50}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.emerald.400}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.emerald.400}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.emerald.400}"
+    }
+  }
+}

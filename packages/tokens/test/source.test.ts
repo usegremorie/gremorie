@@ -116,7 +116,7 @@ describe('validateSource', () => {
   });
 
   it('accepts the real source', () => {
-    expect(validateSource(loadSource(PACKAGE_ROOT, ['default']))).toEqual([]);
+    expect(validateSource(loadSource(PACKAGE_ROOT))).toEqual([]);
   });
 });
 

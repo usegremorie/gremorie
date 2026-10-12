@@ -14,6 +14,7 @@ import {
   type DtcgGroup,
   type DtcgToken,
   type DtcgType,
+  type NamedTheme,
 } from '../model.ts';
 import { cssNameToPath } from '../names.ts';
 import { getPath, setPath } from '../tree.ts';
@@ -238,4 +239,32 @@ export function seedSemantic(themeCss: string): {
     }
   }
   return out;
+}
+
+export function seedTheme(themeFileCss: string, theme: NamedTheme): DtcgGroup {
+  const out: DtcgGroup = { light: {}, dark: {} };
+  const noLookup = () => undefined;
+  const selector = `:root[data-theme='${theme}']`;
+  for (const block of readBlocks(themeFileCss)) {
+    const mode =
+      block.key === selector
+        ? 'light'
+        : block.key === `${selector}.dark`
+          ? 'dark'
+          : null;
+    if (!mode) continue;
+    const group = out[mode] as DtcgGroup;
+    if (mode === 'light' && block.lead) out.$description = block.lead;
+    const description = [
+      mode === 'dark' ? block.lead : undefined,
+      block.trailing,
+    ]
+      .filter(Boolean)
+      .join('\n\n');
+    if (description) group.$description = description;
+    for (const decl of block.decls) {
+      setPath(group, cssNameToPath(decl.prop), declToToken(decl, noLookup));
+    }
+  }
+  return { $description: out.$description, light: out.light, dark: out.dark };
 }

@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { formatJson } from '../prettier.ts';
-import { seedPrimitives, seedSemantic } from './from-css.ts';
+import { seedPrimitives, seedSemantic, seedTheme } from './from-css.ts';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const reference = (file: string) =>
@@ -25,7 +25,20 @@ if (layer === 'primitive') {
   const { light, dark } = seedSemantic(themeCss);
   await write('semantic/light.json', light);
   await write('semantic/dark.json', dark);
+} else if (layer === 'themes') {
+  for (const theme of [
+    'claude',
+    'chatgpt',
+    'gemini',
+    'perplexity',
+    'mistral',
+  ] as const) {
+    await write(
+      `themes/${theme}.json`,
+      seedTheme(reference(`themes/${theme}.css`), theme),
+    );
+  }
 } else {
-  console.error('usage: node pipeline/seed/run.ts primitive|semantic');
+  console.error('usage: node pipeline/seed/run.ts primitive|semantic|themes');
   process.exit(1);
 }
