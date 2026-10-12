@@ -5,7 +5,7 @@ import type { DtcgGroup } from '../pipeline/model.ts';
 import { seedTheme } from '../pipeline/seed/from-css.ts';
 import { REFERENCE_DIR } from './support/paths.ts';
 
-const seed = (theme: 'claude' | 'chatgpt') =>
+const seed = (theme: 'claude' | 'chatgpt' | 'gemini') =>
   seedTheme(
     readFileSync(join(REFERENCE_DIR, 'themes', `${theme}.css`), 'utf8'),
     theme,
@@ -31,6 +31,17 @@ describe('seedTheme', () => {
       $value: ['Tiempos Headline', 'Georgia', 'Times New Roman', 'serif'],
     });
     expect(light.$description).toMatch(/categorical chart scale/);
+  });
+
+  it('reads a comment set apart by a blank line as a note on the block', () => {
+    const light = seed('gemini').light as DtcgGroup;
+    expect((light.radius as DtcgGroup).base).toEqual({
+      $type: 'dimension',
+      $value: { value: 1, unit: 'rem' },
+    });
+    expect(light.$description).toMatch(
+      /^Blue-to-purple brand ramp: .*\n\nThe categorical chart scale/,
+    );
   });
 
   it('keeps a theme shadow override in the theme file', () => {

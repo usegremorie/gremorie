@@ -126,6 +126,16 @@ describe('validateSource', () => {
     ]);
   });
 
+  it('rejects a semantic token that redeclares a primitive path with another type', () => {
+    const files = base();
+    (files['semantic/light.json'] as DtcgGroup).radius = {
+      base: color(0.5),
+    };
+    expect(validateSource(createSource(files, ['default']))).toEqual([
+      'semantic/light.json: radius.base is color but primitive/radius.json declares it as dimension',
+    ]);
+  });
+
   it('reports a base-layer cycle once across every theme and mode', () => {
     const files = base();
     (files['semantic/light.json'] as DtcgGroup).a = {

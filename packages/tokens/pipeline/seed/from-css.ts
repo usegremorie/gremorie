@@ -30,8 +30,11 @@ export interface CssBlockRead {
   decls: CssDecl[];
   /** Comment right before the block. */
   lead?: string;
-  /** Comments inside the block after its last declaration. */
-  trailing?: string;
+  /**
+   * Comments inside the block that belong to no declaration: those after the
+   * last one, and those set apart from the next one by a blank line.
+   */
+  notes?: string;
 }
 
 /** Comment text as plain prose: no stars, no box rules, no em or en dashes. */
@@ -87,6 +90,7 @@ export function readBlocks(css: string): CssBlockRead[] {
     if (lead) block.lead = lead;
     pendingTop = [];
     let pending: string[] = [];
+    const notes: string[] = [];
     (node as Container).each((child) => {
       if (child.type === 'comment') {
         const prev = child.prev();
@@ -97,6 +101,9 @@ export function readBlocks(css: string): CssBlockRead[] {
         if (sameLine && last) {
           const description = join([last.description, inlineText(child.text)]);
           if (description) last.description = description;
+        } else if (/\n\s*\n/.test(child.next()?.raws.before ?? '')) {
+          notes.push(...pending, child.text);
+          pending = [];
         } else {
           pending.push(child.text);
         }
@@ -110,8 +117,8 @@ export function readBlocks(css: string): CssBlockRead[] {
         block.decls.push(decl);
       }
     });
-    const trailing = join(pending.map(cleanComment));
-    if (trailing) block.trailing = trailing;
+    const text = join([...notes, ...pending].map(cleanComment));
+    if (text) block.notes = text;
     blocks.push(block);
   });
   return blocks;
@@ -255,10 +262,7 @@ export function seedTheme(themeFileCss: string, theme: NamedTheme): DtcgGroup {
     if (!mode) continue;
     const group = out[mode] as DtcgGroup;
     if (mode === 'light' && block.lead) out.$description = block.lead;
-    const description = [
-      mode === 'dark' ? block.lead : undefined,
-      block.trailing,
-    ]
+    const description = [mode === 'dark' ? block.lead : undefined, block.notes]
       .filter(Boolean)
       .join('\n\n');
     if (description) group.$description = description;

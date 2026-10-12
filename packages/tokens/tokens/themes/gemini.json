@@ -1,7 +1,7 @@
 {
   "$description": "Gemini theme: Google blue with a blue-to-purple chart ramp, rounder radius. Activate with data-theme=\"gemini\" on the root element.",
   "light": {
-    "$description": "The categorical chart scale (--chart-cat-*) is deliberately not themed. A brand palette is for chrome; series identity needs hues that separate, and this theme's own colours are a single family, as a data scale they would encode order instead of identity. See theme.css.",
+    "$description": "Blue-to-purple brand ramp: #4285F4 and #9B72CB anchors plus tints.\n\nThe categorical chart scale (--chart-cat-*) is deliberately not themed. A brand palette is for chrome; series identity needs hues that separate, and this theme's own colours are a single family, as a data scale they would encode order instead of identity. See theme.css.",
     "primary": {
       "$type": "color",
       "$value": {
@@ -53,8 +53,7 @@
         "$value": {
           "value": 1,
           "unit": "rem"
-        },
-        "$description": "Blue-to-purple brand ramp: #4285F4 and #9B72CB anchors plus tints."
+        }
       }
     },
     "font": {

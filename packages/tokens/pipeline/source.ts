@@ -143,7 +143,17 @@ export function validateSource(source: TokenSource): string[] {
   const problems: string[] = [];
   const base = new Map<string, FlatToken>();
   for (const { tokens } of layerTokens(source, 'default', 'light')) {
-    for (const t of tokens) base.set(key(t.path), t);
+    for (const t of tokens) {
+      // A semantic token may restate a primitive path, but not change what
+      // kind of value the name holds.
+      const earlier = base.get(key(t.path));
+      if (earlier && earlier.token.$type !== t.token.$type) {
+        problems.push(
+          `${t.file}: ${key(t.path)} is ${t.token.$type} but ${earlier.file} declares it as ${earlier.token.$type}`,
+        );
+      }
+      base.set(key(t.path), t);
+    }
   }
   const overrides: FlatToken[] = [
     ...flatten(fileOf(source, SEMANTIC_FILES.dark), SEMANTIC_FILES.dark),

@@ -88,6 +88,41 @@ describe('runTheme', () => {
     expect(token(run, '--radius-base').layer).toBe('theme-light');
   });
 
+  it('lets the theme light block beat the semantic dark layer in dark mode', async () => {
+    const lit = (l: number) => ({
+      $type: 'color',
+      $value: { colorSpace: 'oklch', components: [l, 0, 0] },
+    });
+    const cascade = files();
+    cascade['semantic/light.json'] = {
+      background: lit(0.98),
+      foreground: lit(0.2),
+      'card-foreground': { $type: 'color', $value: '{foreground}' },
+    };
+    cascade['semantic/dark.json'] = {
+      background: lit(0.1),
+      foreground: lit(0.9),
+    };
+    cascade['themes/claude.json'] = {
+      light: { background: lit(0.95), foreground: lit(0.3) },
+      dark: {},
+    };
+    const { run } = await runTheme(
+      createSource(cascade, ['default', 'claude']),
+      'claude',
+      'dark',
+    );
+    expect(token(run, '--background')).toMatchObject({
+      layer: 'theme-light',
+      value: { colorSpace: 'oklch', components: [0.95, 0, 0] },
+    });
+    expect(token(run, '--card-foreground')).toMatchObject({
+      layer: 'semantic-light',
+      original: '{foreground}',
+      value: { colorSpace: 'oklch', components: [0.3, 0, 0] },
+    });
+  });
+
   it('fails loudly on a broken reference', async () => {
     const broken = files();
     (broken['semantic/light.json'] as DtcgGroup).ring = {
