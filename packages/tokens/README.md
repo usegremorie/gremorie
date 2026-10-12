@@ -44,6 +44,10 @@ Switch themes with `data-theme` on the root element and dark mode with the
 - **Resolved JSON** (`@gremorie/tokens/tokens.json`) and **TypeScript**
   (`import { themes } from '@gremorie/tokens'`): every theme and mode, each
   colour as sRGB hex and OKLCH, plus radius in px and font stacks.
+  In Node ESM, import the JSON with an import attribute:
+  `import tokens from '@gremorie/tokens/tokens.json' with { type: 'json' }`.
+  TypeScript resolves the subpath exports only with `moduleResolution` set to
+  `node16`, `nodenext` or `bundler` (and `resolveJsonModule` for the JSON).
 - **Kotlin** (`@gremorie/tokens/compose/GremorieColorSchemes.kt`): a complete
   Material 3 `ColorScheme` (all 48 roles) per theme and mode for Jetpack
   Compose.

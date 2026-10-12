@@ -39,6 +39,17 @@ fonte). O radius vem em pixels. Além de `themes`, o `index.js` e o
 ordem do Compose), `m3Sources` (a origem de cada papel) e `version`. O
 `tokens.json` tem os mesmos dados para ferramentas que leem JSON.
 
+O Node roda módulos ES e só lê JSON com um atributo de import, então importe o
+`tokens.json` com `with { type: 'json' }` (os bundlers aceitam com ou sem):
+
+```ts
+import tokens from '@gremorie/tokens/tokens.json' with { type: 'json' };
+```
+
+O TypeScript só resolve os subpath exports do pacote (`tokens.json`,
+`compose/*`, `swift/*`) com `moduleResolution` em `node16`, `nodenext` ou
+`bundler`; importar o JSON também pede `resolveJsonModule`.
+
 ## Jetpack Compose
 
 Copie `GremorieColorSchemes.kt` (pacote `com.gremorie.tokens`) para o seu

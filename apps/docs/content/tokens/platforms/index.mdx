@@ -39,6 +39,18 @@ becomes `primaryForeground`. Each color carries `hex` (sRGB) and `oklch`
 Compose order), `m3Sources` (the origin of each role) and `version`.
 `tokens.json` holds the same data for tools that read JSON.
 
+Node runs ES modules and reads JSON only with an import attribute, so import
+`tokens.json` with `with { type: 'json' }` (bundlers accept it with or
+without):
+
+```ts
+import tokens from '@gremorie/tokens/tokens.json' with { type: 'json' };
+```
+
+TypeScript resolves the package's subpath exports (`tokens.json`, `compose/*`,
+`swift/*`) only when `moduleResolution` is `node16`, `nodenext` or `bundler`;
+importing the JSON also needs `resolveJsonModule`.
+
 ## Jetpack Compose
 
 Copy `GremorieColorSchemes.kt` (package `com.gremorie.tokens`) into your module
