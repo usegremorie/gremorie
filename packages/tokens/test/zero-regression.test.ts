@@ -19,7 +19,7 @@ const intentional = JSON.parse(
 const styles = join(PACKAGE_ROOT, 'styles');
 const referenceThemes = cssFiles(join(REFERENCE_DIR, 'themes'));
 
-describe('zero regression against the 0.8.0 CSS (G4)', () => {
+describe('zero regression against the 0.8.0 CSS', () => {
   it('theme.css keeps every selector, token value and non-token rule', () => {
     expect(
       compareCss(

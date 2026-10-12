@@ -29,9 +29,10 @@ export function probeTargets(
 }
 
 /**
- * A browser expression (for javascript_tool) that switches every theme and
- * mode on <html>, resolves each token through a real CSS property and
- * returns, per theme/mode, a count and an FNV-1a hash of `name=value` lines.
+ * A browser expression (paste into the browser devtools console) that
+ * switches every theme and mode on <html>, resolves each token through a
+ * real CSS property and returns, per theme/mode, a count and an FNV-1a hash
+ * of `name=value` lines.
  * With `only` ("claude/dark"), it returns that theme/mode's lines instead.
  */
 export function probeScript(

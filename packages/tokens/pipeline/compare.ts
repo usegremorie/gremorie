@@ -36,18 +36,45 @@ export interface Difference {
   actual?: string;
 }
 
-const number = (raw: string): string =>
-  raw.endsWith('%') ? fmt(Number(raw.slice(0, -1)) / 100) : fmt(Number(raw));
+/**
+ * A plain number, or a percentage scaled to its channel's range. Anything
+ * else (units, keywords like `none`, functions) is kept as written, so two
+ * different raw values can never collapse to the same text.
+ */
+function channel(raw: string, percentOf: number | null): string {
+  const isPercent = raw.endsWith('%');
+  if (isPercent && percentOf === null) return raw;
+  const text = isPercent ? raw.slice(0, -1) : raw;
+  if (!/^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(text)) return raw;
+  const n = Number(text);
+  return fmt(isPercent ? (n * (percentOf ?? 1)) / 100 : n);
+}
 
-function normalizeOklch(inner: string): string {
-  const [channels = '', alphaRaw] = inner.split('/').map((s) => s.trim());
-  const [l = '', c = '', h = ''] = channels.split(' ');
+/** Hue in degrees: a bare number or `deg`; other angle units stay as written. */
+const hue = (raw: string): string =>
+  raw.toLowerCase().endsWith('deg')
+    ? channel(raw.slice(0, -3), null)
+    : channel(raw, null);
+
+/**
+ * Normalizes the inside of `oklch(...)`. Percentages follow CSS Color 4
+ * (L: 100% = 1, C: 100% = 0.4, alpha: 100% = 1). Unexpected shapes (not
+ * exactly three channels, nested functions) are returned unchanged.
+ */
+function normalizeOklch(match: string, inner: string): string {
+  if (inner.includes('(')) return match;
+  const parts = inner.split('/').map((s) => s.trim());
+  if (parts.length > 2) return match;
+  const [channels = '', alphaRaw] = parts;
+  const lch = channels.split(' ').filter((s) => s !== '');
+  if (lch.length !== 3 || alphaRaw === '') return match;
+  const [l = '', c = '', h = ''] = lch;
   let alpha = '';
   if (alphaRaw !== undefined) {
-    const a = number(alphaRaw);
+    const a = channel(alphaRaw, 1);
     if (a !== '1') alpha = ` / ${a}`;
   }
-  return `oklch(${number(l)} ${number(c)} ${number(h)}${alpha})`;
+  return `oklch(${channel(l, 1)} ${channel(c, 0.4)} ${hue(h)}${alpha})`;
 }
 
 /** Value text with formatting, quotes, comments and number notation erased. */
@@ -61,8 +88,8 @@ export function normalizeValue(raw: string): string {
     .replace(/\s+\)/g, ')')
     .replace(/\s*,\s*/g, ', ')
     .replace(/\s*\/\s*/g, ' / ')
-    .replace(/oklch\(([^)]*)\)/gi, (_m, inner: string) =>
-      normalizeOklch(inner),
+    .replace(/oklch\(([^)]*)\)/gi, (match: string, inner: string) =>
+      normalizeOklch(match, inner),
     );
 }
 
@@ -76,6 +103,10 @@ export function selectorKey(node: ChildNode): string | null {
   return null;
 }
 
+/**
+ * Custom properties per token block. A selector that appears more than once
+ * is merged into one block, later declarations winning, as in the cascade.
+ */
 export function collectDeclarations(css: string): DeclMap {
   const map: DeclMap = new Map();
   postcss.parse(css).each((node) => {
@@ -84,7 +115,8 @@ export function collectDeclarations(css: string): DeclMap {
     const decls = map.get(key) ?? new Map<string, string>();
     (node as Container).each((child) => {
       if (child.type === 'decl' && child.prop.startsWith('--')) {
-        decls.set(child.prop, normalizeValue(child.value));
+        const value = normalizeValue(child.value);
+        decls.set(child.prop, child.important ? `${value} !important` : value);
       }
     });
     map.set(key, decls);
@@ -190,7 +222,6 @@ export function compareCss(
       if (expected[i] !== undefined) d.expected = expected[i];
       if (actual[i] !== undefined) d.actual = actual[i];
       diffs.push(d);
-      break;
     }
   }
   return diffs;

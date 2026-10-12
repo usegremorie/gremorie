@@ -39,8 +39,28 @@ describe('normalizeValue', () => {
       '0 1px 3px 0 oklch(0 0 0 / 0.08), 0 1px 2px -1px oklch(0 0 0 / 0.08)',
     ],
     ['0.625rem /* c */', '0.625rem'],
+    ['oklch(0.5 50% 20)', 'oklch(0.5 0.2 20)'],
+    ['oklch(0.5 0.1 20deg)', 'oklch(0.5 0.1 20)'],
+    ['oklch(0.5 0.1 20 / 100%)', 'oklch(0.5 0.1 20)'],
+    ['oklch(0.5 0.1 0.5turn)', 'oklch(0.5 0.1 0.5turn)'],
+    ['oklch(0.5 0.1 none)', 'oklch(0.5 0.1 none)'],
+    ['oklch(0.5 0.1 20 0.3)', 'oklch(0.5 0.1 20 0.3)'],
+    ['oklch(0.5 0.1)', 'oklch(0.5 0.1)'],
   ])('%j → %s', (raw, expected) => {
     expect(normalizeValue(raw)).toBe(expected);
+  });
+
+  it.each([
+    ['lightness', 'oklch(60% 0.1 20)', 'oklch(0.61 0.1 20)'],
+    ['hue units', 'oklch(0.5 0.1 20deg)', 'oklch(0.5 0.1 90deg)'],
+    ['hue in turns', 'oklch(0.5 0.1 0.1turn)', 'oklch(0.5 0.1 0.2turn)'],
+    ['chroma percent', 'oklch(0.5 50% 20)', 'oklch(0.5 0.5 20)'],
+    ['alpha percent', 'oklch(0.5 0.1 20 / 100%)', 'oklch(0.5 0.1 20 / 0.99)'],
+    ['a fourth channel', 'oklch(0.5 0.1 20 0.3)', 'oklch(0.5 0.1 20)'],
+    ['an empty channel list', 'oklch()', 'oklch(0 0 0)'],
+    ['a nested function', 'oklch(calc(0.5) 0.1 20)', 'oklch(calc(0.6) 0.1 20)'],
+  ])('keeps different %s apart', (_label, a, b) => {
+    expect(normalizeValue(a)).not.toBe(normalizeValue(b));
   });
 });
 
@@ -72,6 +92,24 @@ describe('collectDeclarations', () => {
         [':root', new Map([['--x', 'var(--color-a-50)']])],
         [":root[data-theme='t'].dark", new Map([['--x', 'oklch(0.1 0 0)']])],
         ['@theme inline', new Map([['--color-x', 'var(--x)']])],
+      ]),
+    );
+  });
+});
+
+describe('collectDeclarations with !important', () => {
+  it('keeps the !important flag in the value', () => {
+    expect(
+      collectDeclarations(':root { --a: red !important; --b: red; }'),
+    ).toEqual(
+      new Map([
+        [
+          ':root',
+          new Map([
+            ['--a', 'red !important'],
+            ['--b', 'red'],
+          ]),
+        ],
       ]),
     );
   });
@@ -151,6 +189,15 @@ describe('compareCss', () => {
         actual: '@layer base{*{outline-color:var(--x);}}',
       },
     ]);
+  });
+
+  it('reports every skeleton mismatch, not only the first', () => {
+    const generated = reformatted
+      .replace('(&:where(.dark, .dark *))', '(&:where(.night, .night *))')
+      .replace('border-color', 'outline-color');
+    expect(
+      compareCss('f.css', sample, generated).map((d) => d.selector),
+    ).toEqual(['#1', '#6']);
   });
 
   it('accepts an allowed extra import and an allowed extra selector', () => {
