@@ -158,20 +158,22 @@ export function validateSource(source: TokenSource): string[] {
   ];
 
   // Two paths must never collapse to the same CSS custom property.
-  const owners = new Map<string, string>();
+  const owners = new Map<string, FlatToken>();
   for (const t of [...base.values(), ...overrides]) {
     const name = pathToCssName(t.path);
     const owner = owners.get(name);
-    if (owner !== undefined && owner !== key(t.path)) {
-      problems.push(`${name} is declared by both ${owner} and ${key(t.path)}`);
+    if (owner !== undefined && key(owner.path) !== key(t.path)) {
+      problems.push(
+        `${name} is declared by both ${key(owner.path)} (${owner.file}) and ${key(t.path)} (${t.file})`,
+      );
     }
-    owners.set(name, owner ?? key(t.path));
+    if (owner === undefined) owners.set(name, t);
   }
 
   for (const t of [...base.values(), ...overrides]) {
     const where = `${t.file}: ${key(t.path)}`;
-    for (const segment of t.path) {
-      if (!SEGMENT.test(segment)) problems.push(`${where} has an invalid name`);
+    if (t.path.some((segment) => !SEGMENT.test(segment))) {
+      problems.push(`${where} has an invalid name`);
     }
     if (!DTCG_TYPES.includes(t.token.$type)) {
       problems.push(`${where} has unsupported $type ${String(t.token.$type)}`);
@@ -200,22 +202,49 @@ export function validateSource(source: TokenSource): string[] {
       }
     }
   }
-  // An override whose path the base layer lacks is an orphan.
+  // An override whose path the base layer lacks is an orphan, and one that
+  // changes the type of its base token would change what the name means.
   for (const t of overrides) {
-    if (!base.has(key(t.path))) {
+    const target = base.get(key(t.path));
+    if (!target) {
       problems.push(
         `${t.file}: ${key(t.path)} overrides nothing in the base layer`,
+      );
+    } else if (target.token.$type !== t.token.$type) {
+      problems.push(
+        `${t.file}: ${key(t.path)} is ${t.token.$type} but the base token is ${target.token.$type}`,
       );
     }
   }
 
+  // A path cannot be a token in one file and a group in another: composing
+  // them would overwrite one with the other.
+  const tokenAt = new Map<string, FlatToken>();
+  for (const t of [...base.values(), ...overrides]) {
+    if (!tokenAt.has(key(t.path))) tokenAt.set(key(t.path), t);
+  }
+  const nested = new Set<string>();
+  for (const t of [...base.values(), ...overrides]) {
+    for (let i = 1; i < t.path.length; i++) {
+      const owner = tokenAt.get(key(t.path.slice(0, i)));
+      if (!owner) continue;
+      const problem = `${t.file}: ${key(t.path)} is nested under ${key(owner.path)}, a token in ${owner.file}`;
+      if (!nested.has(problem)) {
+        nested.add(problem);
+        problems.push(problem);
+      }
+    }
+  }
+
+  // A cycle shared by several themes and modes (one in the base layer) is
+  // reported once, under the first theme and mode that has it.
+  const reported = new Set<string>();
   for (const theme of source.themes) {
     for (const mode of ['light', 'dark'] as const) {
       const merged = new Map<string, DtcgToken>();
       for (const { tokens } of layerTokens(source, theme, mode)) {
         for (const t of tokens) merged.set(key(t.path), t.token);
       }
-      const reported = new Set<string>();
       for (const start of merged.keys()) {
         const chain = [start];
         let token = merged.get(start);

@@ -87,7 +87,7 @@ describe('validateSource', () => {
       $value: { value: 1, unit: 'rem' },
     };
     expect(validateSource(createSource(files, ['default']))).toEqual([
-      '--radius-base is declared by both radius.base and radius-base',
+      '--radius-base is declared by both radius.base (primitive/radius.json) and radius-base (semantic/light.json)',
       'semantic/dark.json: brand overrides nothing in the base layer',
     ]);
   });
@@ -112,6 +112,56 @@ describe('validateSource', () => {
     files['themes/claude.json'] = { light: { nope: color(0.4) }, dark: {} };
     expect(validateSource(createSource(files, ['default', 'claude']))).toEqual([
       'themes/claude.json: nope overrides nothing in the base layer',
+    ]);
+  });
+
+  it('rejects an override that changes the type of its base token', () => {
+    const files = base();
+    (files['semantic/dark.json'] as DtcgGroup).foreground = {
+      $type: 'dimension',
+      $value: { value: 1, unit: 'rem' },
+    };
+    expect(validateSource(createSource(files, ['default']))).toEqual([
+      'semantic/dark.json: foreground is dimension but the base token is color',
+    ]);
+  });
+
+  it('reports a base-layer cycle once across every theme and mode', () => {
+    const files = base();
+    (files['semantic/light.json'] as DtcgGroup).a = {
+      $type: 'color',
+      $value: '{b}',
+    };
+    (files['semantic/light.json'] as DtcgGroup).b = {
+      $type: 'color',
+      $value: '{a}',
+    };
+    files['themes/claude.json'] = { light: {}, dark: {} };
+    const problems = validateSource(createSource(files, ['default', 'claude']));
+    expect(problems.filter((p) => p.includes('reference cycle'))).toEqual([
+      'default/light: reference cycle a → b → a',
+    ]);
+  });
+
+  it('reports a path with several invalid segments once', () => {
+    const files = base();
+    (files['semantic/light.json'] as DtcgGroup).Bad = {
+      Worse: color(0.5),
+    };
+    expect(validateSource(createSource(files, ['default']))).toEqual([
+      'semantic/light.json: Bad.Worse has an invalid name',
+    ]);
+  });
+
+  it('rejects a token whose path is also a group in another file', () => {
+    const files = base();
+    files['themes/claude.json'] = {
+      light: { foreground: { strong: color(0.1) } },
+      dark: {},
+    };
+    expect(validateSource(createSource(files, ['default', 'claude']))).toEqual([
+      'themes/claude.json: foreground.strong overrides nothing in the base layer',
+      'themes/claude.json: foreground.strong is nested under foreground, a token in semantic/light.json',
     ]);
   });
 
