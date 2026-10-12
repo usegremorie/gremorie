@@ -121,6 +121,16 @@ export function createApp(cfg: AppConfig) {
             writeFileSync(join(cfg.tokensDir, rel), original);
           }
         }
+        // The failed build may have left styles/ half written: build again
+        // from the restored JSON. Best effort, the first error is the answer.
+        try {
+          await cfg.rebuild();
+        } catch (retryError) {
+          console.error(
+            'Rebuild from the restored tokens also failed:',
+            (retryError as Error).message,
+          );
+        }
         return c.json({ error: (error as Error).message }, 500);
       }
       return c.json({

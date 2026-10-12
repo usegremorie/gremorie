@@ -1,4 +1,4 @@
-import { afterEach, describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import { createApp } from './app.js';
 import { dirname, join } from 'node:path';
 import {
@@ -267,6 +267,69 @@ describe('server app (DTCG source)', () => {
     expect(
       readFileSync(join(root, 'tokens/primitive/color.json'), 'utf8'),
     ).toBe(colorBefore);
+  });
+
+  it('rebuilds from the restored JSON after a failed rebuild', async () => {
+    let calls = 0;
+    let seenOnRetry: string | undefined;
+    const { root, app } = setup(async () => {
+      calls += 1;
+      if (calls === 1) throw new Error('pipeline exploded');
+      seenOnRetry = lightJson(root);
+    });
+    const before = lightJson(root);
+    const res = await post(app, {
+      changes: [
+        {
+          kind: 'semantic-value',
+          tokenName: '--primary',
+          theme: 'default',
+          mode: 'light',
+          newValue: { kind: 'reference', targetName: '--color-violet-700' },
+        },
+      ],
+    });
+    expect(res.status).toBe(500);
+    expect(((await res.json()) as { error: string }).error).toMatch(
+      /pipeline exploded/,
+    );
+    expect(calls).toBe(2);
+    expect(seenOnRetry).toBe(before);
+  });
+
+  it('logs and still reports the first error when the retry rebuild fails', async () => {
+    const logged = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+    try {
+      let calls = 0;
+      const { root, app } = setup(async () => {
+        calls += 1;
+        throw new Error(calls === 1 ? 'first failure' : 'retry failure');
+      });
+      const before = lightJson(root);
+      const res = await post(app, {
+        changes: [
+          {
+            kind: 'semantic-value',
+            tokenName: '--primary',
+            theme: 'default',
+            mode: 'light',
+            newValue: { kind: 'reference', targetName: '--color-violet-700' },
+          },
+        ],
+      });
+      expect(res.status).toBe(500);
+      expect(((await res.json()) as { error: string }).error).toMatch(
+        /first failure/,
+      );
+      expect(calls).toBe(2);
+      expect(lightJson(root)).toBe(before);
+      expect(logged).toHaveBeenCalledTimes(1);
+      expect(String(logged.mock.calls[0]?.join(' '))).toMatch(/retry failure/);
+    } finally {
+      logged.mockRestore();
+    }
   });
 
   it('refuses a request from a foreign origin and allows a local one', async () => {
