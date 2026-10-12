@@ -124,6 +124,27 @@ describe('derivation from the theme primary', () => {
     },
   );
 
+  it.each([
+    [false, 40, 100],
+    [true, 80, 20],
+  ] as const)(
+    'takes the derived accents at the M3 baseline tones (dark %s: %i, content %i)',
+    (dark, accent, content) => {
+      const scheme = deriveScheme(purple, dark);
+      const mcu = new SchemeContent(Hct.fromInt(argbOf(purple)), dark, 0);
+      const tone = (palette: TonalPalette, t: number) =>
+        toHex(fromArgb(palette.tone(t)));
+      const families = [
+        ['secondary', 'onSecondary', mcu.secondaryPalette],
+        ['tertiary', 'onTertiary', mcu.tertiaryPalette],
+      ] as const;
+      for (const [family, on, palette] of families) {
+        expect(toHex(scheme[family]), family).toBe(tone(palette, accent));
+        expect(toHex(scheme[on]), on).toBe(tone(palette, content));
+      }
+    },
+  );
+
   it('fills every role from MCU SchemeContent', () => {
     const scheme = deriveScheme(
       { colorSpace: 'oklch', components: [0.5379, 0.2912, 295.26] },
@@ -150,6 +171,18 @@ describe('derivation from the theme primary', () => {
         expect(toHex(m3[`${family}Container`]), family).not.toBe(
           toHex(m3[family]),
         );
+      }
+    });
+
+    it(`${key}: no derived accent repeats its on-container colour`, () => {
+      const m3 = m3For(run, roles);
+      const accents = [
+        ['secondary', 'onSecondaryContainer'],
+        ['tertiary', 'onTertiaryContainer'],
+      ] as const;
+      for (const [accent, onContainer] of accents) {
+        if (roles[accent].kind !== 'derived') continue;
+        expect(toHex(m3[accent]), accent).not.toBe(toHex(m3[onContainer]));
       }
     });
 

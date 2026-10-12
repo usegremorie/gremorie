@@ -172,11 +172,25 @@ const CONTAINER_TONE = { light: 90, dark: 30 } as const;
 const ON_CONTAINER_TONE = { light: 10, dark: 90 } as const;
 
 /**
+ * The accent families whose accent roles are derived (the theme maps primary
+ * and error to its own tokens). SchemeContent can place these accents next to
+ * the container content tone: purple dark tertiary came out as its own
+ * onTertiaryContainer.
+ */
+const DERIVED_ACCENT_FAMILIES = ['secondary', 'tertiary'] as const;
+/** Accent fill and content tones, light then dark (M3 baseline scheme). */
+const ACCENT_TONE = { light: 40, dark: 80 } as const;
+const ON_ACCENT_TONE = { light: 100, dark: 20 } as const;
+
+/**
  * Every M3 role from an MCU SchemeContent seeded with `seed` (colour spec
  * 2021, contrast 0). The palettes keep the seed's hue and chroma; the
  * container roles are then read from those palettes at the baseline tones
  * (tone 90 with content at 10 in light, 30 with content at 90 in dark), so a
- * container is always a tint of its accent, never the accent itself.
+ * container is always a tint of its accent, never the accent itself. The
+ * secondary and tertiary accents are read the same way (tone 40 with content
+ * at 100 in light, 80 with content at 20 in dark), so an accent never repeats
+ * its container content.
  */
 export function deriveScheme(
   seed: DtcgColor,
@@ -202,6 +216,12 @@ export function deriveScheme(
     const on = `on${family.charAt(0).toUpperCase()}${family.slice(1)}Container`;
     out[`${family}Container`] = fromArgb(palette.tone(CONTAINER_TONE[mode]));
     out[on as M3Role] = fromArgb(palette.tone(ON_CONTAINER_TONE[mode]));
+  }
+  for (const family of DERIVED_ACCENT_FAMILIES) {
+    const palette = palettes[family];
+    const on = `on${family.charAt(0).toUpperCase()}${family.slice(1)}`;
+    out[family] = fromArgb(palette.tone(ACCENT_TONE[mode]));
+    out[on as M3Role] = fromArgb(palette.tone(ON_ACCENT_TONE[mode]));
   }
   return out;
 }
