@@ -111,7 +111,7 @@ describe('round trip over every literal value of the 0.8.0 CSS', () => {
     for (const [selector, decls] of collectDeclarations(css)) {
       if (selector === '@theme inline') continue;
       for (const [prop, value] of decls) {
-        if (/var\(|em$/.test(value)) continue;
+        if (value.includes('var(') || value.endsWith('em')) continue;
         literals.push([prop, value]);
       }
     }

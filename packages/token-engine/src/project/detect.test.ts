@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { join } from 'node:path';
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { detectDtcgProject, detectRegistryProject } from './detect.js';
 
 describe('detectRegistryProject', () => {
-  const dir = join(tmpdir(), 'tokens-detect-' + Date.now());
+  const dir = mkdtempSync(join(tmpdir(), 'tokens-detect-'));
 
   it('returns null when not a registry-compatible project', () => {
     mkdirSync(dir, { recursive: true });
@@ -33,7 +33,7 @@ describe('detectRegistryProject', () => {
 
 describe('detectDtcgProject', () => {
   it('finds the Gremorie monorepo by its token source and pipeline', () => {
-    const dir = join(tmpdir(), 'tokens-detect-dtcg-' + Date.now());
+    const dir = mkdtempSync(join(tmpdir(), 'tokens-detect-dtcg-'));
     mkdirSync(join(dir, 'packages/tokens/tokens/primitive'), {
       recursive: true,
     });

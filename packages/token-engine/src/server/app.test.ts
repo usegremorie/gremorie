@@ -5,6 +5,7 @@ import {
   cpSync,
   existsSync,
   mkdirSync,
+  mkdtempSync,
   writeFileSync,
   rmSync,
   readFileSync,
@@ -16,8 +17,7 @@ import { fileURLToPath } from 'node:url';
 
 describe('server app', () => {
   it('GET /api/health returns ok', async () => {
-    const dir = join(tmpdir(), 'tokens-srv-' + Date.now());
-    mkdirSync(dir, { recursive: true });
+    const dir = mkdtempSync(join(tmpdir(), 'tokens-srv-'));
     const app = createApp({ projectRoot: dir, globalsCss: 'globals.css' });
     const res = await app.request('/api/health');
     expect(res.status).toBe(200);
@@ -26,8 +26,7 @@ describe('server app', () => {
   });
 
   it('GET /api/project returns parsed graph', async () => {
-    const dir = join(tmpdir(), 'tokens-srv-' + Date.now());
-    mkdirSync(dir, { recursive: true });
+    const dir = mkdtempSync(join(tmpdir(), 'tokens-srv-'));
     writeFileSync(
       join(dir, 'globals.css'),
       `@theme { --color-gray-50: oklch(0.98 0 0); }
@@ -46,8 +45,7 @@ describe('server app', () => {
   });
 
   it('POST /api/apply updates globals.css', async () => {
-    const dir = join(tmpdir(), 'tokens-srv-' + Date.now());
-    mkdirSync(dir, { recursive: true });
+    const dir = mkdtempSync(join(tmpdir(), 'tokens-srv-'));
     const cssPath = join(dir, 'globals.css');
     writeFileSync(cssPath, `@theme { --color-gray-50: oklch(0.98 0 0); }`);
 
@@ -89,10 +87,7 @@ describe('server app (DTCG source)', () => {
     }
   });
   const setup = (rebuild?: () => Promise<void>) => {
-    const root = join(
-      tmpdir(),
-      `tokens-dtcg-${process.pid}-${Math.random().toString(36).slice(2)}`,
-    );
+    const root = mkdtempSync(join(tmpdir(), 'tokens-dtcg-'));
     roots.push(root);
     mkdirSync(join(root, 'styles'), { recursive: true });
     cpSync(join(tokensPkg, 'tokens'), join(root, 'tokens'), {
