@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { PRIMITIVE_FILES, type DtcgGroup } from '../pipeline/model.ts';
 import {
   cleanComment,
+  declToToken,
   readBlocks,
   seedPrimitives,
 } from '../pipeline/seed/from-css.ts';
@@ -23,6 +24,12 @@ describe('cleanComment', () => {
         '*\n   * The default is indigo \u2014 a hue.\n   *\n   * Second.',
       ),
     ).toBe('The default is indigo, a hue.\n\nSecond.');
+  });
+
+  it('breaks a ruled heading that runs into prose into its own paragraph', () => {
+    expect(
+      cleanComment('─── Brand ────\n   * The consumer.\n   *\n   * Second.'),
+    ).toBe('Brand\n\nThe consumer.\n\nSecond.');
   });
 });
 
@@ -110,7 +117,29 @@ describe('seedPrimitives', () => {
     expect(Array.isArray(sm.$value) && sm.$value.length).toBe(2);
   });
 
+  it('carries no box-drawing rule into any description', () => {
+    expect(JSON.stringify(seeded)).not.toMatch(/─/);
+  });
+
   it('carries no em dash or en dash into any description', () => {
     expect(JSON.stringify(seeded)).not.toMatch(/[\u2013\u2014]/);
+  });
+});
+
+describe('declToToken', () => {
+  const none = () => undefined;
+  it('maps only a zero em length to the CSS extension', () => {
+    expect(
+      declToToken({ prop: '--tracking-normal', value: '0em' }, none),
+    ).toEqual({
+      $type: 'dimension',
+      $value: { value: 0, unit: 'rem' },
+      $extensions: { 'com.gremorie.css': { value: '0em' } },
+    });
+  });
+  it('refuses a non-zero em length, which has no DTCG equivalent', () => {
+    expect(() =>
+      declToToken({ prop: '--tracking-wide', value: '0.025em' }, none),
+    ).toThrow(/em/);
   });
 });

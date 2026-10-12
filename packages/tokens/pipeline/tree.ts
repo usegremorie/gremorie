@@ -5,13 +5,15 @@ export function setPath(
   path: readonly string[],
   value: unknown,
 ): void {
+  const last = path[path.length - 1];
+  if (last === undefined) throw new Error('setPath needs a non-empty path');
   let node = group;
   for (const key of path.slice(0, -1)) {
     const next = node[key];
     if (typeof next !== 'object' || next === null) node[key] = {};
     node = node[key] as DtcgGroup;
   }
-  node[path[path.length - 1]!] = value;
+  node[last] = value;
 }
 
 export function getPath(group: DtcgGroup, path: readonly string[]): unknown {

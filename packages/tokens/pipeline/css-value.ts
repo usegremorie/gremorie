@@ -38,7 +38,8 @@ function plainNumber(raw: string, what: string): number {
 export function parseColor(raw: string): DtcgColor {
   const m = /^oklch\(([^)]*)\)$/i.exec(raw.replace(/\s+/g, ' ').trim());
   if (!m) throw new Error(`Only oklch() colours are supported: ${raw}`);
-  const [channels = '', alphaRaw] = m[1]!.split('/').map((s) => s.trim());
+  const [, inner = ''] = m;
+  const [channels = '', alphaRaw] = inner.split('/').map((s) => s.trim());
   const parts = channels.split(' ');
   if (parts.length !== 3) {
     throw new Error(`oklch() needs three channels: ${raw}`);
@@ -116,10 +117,10 @@ function parseShadowLayer(text: string): DtcgShadowLayer {
   if (colorAt === -1) {
     throw new Error(`Shadow without an oklch() colour: ${text}`);
   }
-  const [colorText] = parts.splice(colorAt, 1);
+  const [colorText = ''] = parts.splice(colorAt, 1);
   const [x = '0', y = '0', blur = '0', spread = '0'] = parts;
   const layer: DtcgShadowLayer = {
-    color: parseColor(colorText!),
+    color: parseColor(colorText),
     offsetX: parseDimension(x),
     offsetY: parseDimension(y),
     blur: parseDimension(blur),
@@ -131,7 +132,8 @@ function parseShadowLayer(text: string): DtcgShadowLayer {
 
 export function parseShadow(raw: string): DtcgShadow {
   const layers = splitTopLevel(raw, ',').map(parseShadowLayer);
-  return layers.length === 1 ? layers[0]! : layers;
+  const [only] = layers;
+  return layers.length === 1 && only ? only : layers;
 }
 
 export function formatShadow(shadow: DtcgShadow): string {

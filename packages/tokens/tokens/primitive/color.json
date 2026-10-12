@@ -174,7 +174,7 @@
           "colorSpace": "oklch",
           "components": [0.98, 0.016, 73.684]
         },
-        "$description": "Tailwind v4 default palettes (full primitive set) ───── Imported verbatim from tailwindcss/theme.css so the project OWNS the raw palette instead of leaning on Tailwind defaults. gray (neutralized) and red (custom) above are the project's intentional overrides and are NOT duplicated here. Consume via semantics/chart tokens - components never read primitives directly."
+        "$description": "Tailwind v4 default palettes (full primitive set)\n\nImported verbatim from tailwindcss/theme.css so the project OWNS the raw palette instead of leaning on Tailwind defaults. gray (neutralized) and red (custom) above are the project's intentional overrides and are NOT duplicated here. Consume via semantics/chart tokens - components never read primitives directly."
       },
       "100": {
         "$type": "color",
@@ -1045,7 +1045,7 @@
           "colorSpace": "oklch",
           "components": [0.962, 0.018, 272.314]
         },
-        "$description": "Brand ──────────────────────────────────────────────────────── The consumer's own colour, shipped ready so nothing has to be built before a brand can be applied: override these eleven steps and every token that references them follows.\n\nThe default is indigo's ramp, a conventional brand hue, and far enough from `--chart-cat-1` that the two do not read as the same blue before anyone has customised anything. It is a placeholder with a real value, not a palette in its own right."
+        "$description": "Brand\n\nThe consumer's own colour, shipped ready so nothing has to be built before a brand can be applied: override these eleven steps and every token that references them follows.\n\nThe default is indigo's ramp, a conventional brand hue, and far enough from `--chart-cat-1` that the two do not read as the same blue before anyone has customised anything. It is a placeholder with a real value, not a palette in its own right."
       },
       "100": {
         "$type": "color",

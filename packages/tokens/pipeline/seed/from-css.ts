@@ -35,22 +35,26 @@ export interface CssBlockRead {
 
 /** Comment text as plain prose: no stars, no box rules, no em or en dashes. */
 export function cleanComment(text: string): string {
-  return text
-    .split('\n')
-    .map((line) => line.replace(/^\s*\*+ ?/, '').trim())
-    .join('\n')
-    .split(/\n\s*\n/)
-    .map((para) =>
-      para
-        .replace(/\s+/g, ' ')
-        .replace(/^[─\s]+|[─\s]+$/g, '')
-        .replaceAll(' \u2014 ', ', ')
-        .replaceAll('\u2014', ', ')
-        .replaceAll('\u2013', '-')
-        .trim(),
-    )
-    .filter((para) => para !== '')
-    .join('\n\n');
+  return (
+    text
+      .split('\n')
+      .map((line) => line.replace(/^\s*\*+ ?/, '').trim())
+      .join('\n')
+      // A box rule ends a heading: whatever follows it is a new paragraph.
+      .replace(/[ \t]*─{2,}[ \t]*/g, '\n\n')
+      .split(/\n\s*\n/)
+      .map((para) =>
+        para
+          .replace(/\s+/g, ' ')
+          .replace(/^[─\s]+|[─\s]+$/g, '')
+          .replaceAll(' \u2014 ', ', ')
+          .replaceAll('\u2014', ', ')
+          .replaceAll('\u2013', '-')
+          .trim(),
+      )
+      .filter((para) => para !== '')
+      .join('\n\n')
+  );
 }
 
 const join = (parts: (string | undefined)[]) => {
@@ -135,24 +139,33 @@ export function declToToken(
   const $type = typeForProp(decl.prop);
   const value = decl.value.replace(/\s+/g, ' ').trim();
   const token: DtcgToken = { $type, $value: '' };
-  const varRef = /^var\((--[\w-]+)\)$/.exec(value);
+  const varRef = /^var\((--[\w-]+)\)$/.exec(value)?.[1];
   const scaled = /^calc\(var\((--[\w-]+)\) \* (\d*\.?\d+)\)$/.exec(value);
-  if (varRef) {
-    token.$value = alias(varRef[1]!);
+  if (varRef !== undefined) {
+    token.$value = alias(varRef);
   } else if (scaled) {
-    const from = alias(scaled[1]!);
-    const base = lookup(cssNameToPath(scaled[1]!));
+    const [, baseName = '', factor = ''] = scaled;
+    const from = alias(baseName);
+    const base = lookup(cssNameToPath(baseName));
     if (!base || typeof base.$value === 'string') {
-      throw new Error(`${decl.prop}: ${scaled[1]} must be a literal dimension`);
+      throw new Error(`${decl.prop}: ${baseName} must be a literal dimension`);
     }
     const d = base.$value as DtcgDimension;
-    const multiply = Number(scaled[2]);
+    const multiply = round6(Number(factor));
     token.$value = { value: round6(d.value * multiply), unit: d.unit };
     token.$extensions = { [DERIVE_EXTENSION]: { from, multiply } };
   } else if ($type === 'color') {
     token.$value = parseColor(value);
-  } else if ($type === 'dimension' && /^-?[\d.]+em$/.test(value)) {
-    token.$value = { value: Number(value.slice(0, -2)), unit: 'rem' };
+  } else if ($type === 'dimension' && /[\d.]em$/.test(value)) {
+    // DTCG has no em unit. Only a zero length has an exact rem twin, so the
+    // CSS keeps the em text and any other em length is refused.
+    const em = /^(-?(?:\d+\.?\d*|\.\d+))em$/.exec(value)?.[1];
+    if (em === undefined || round6(Number(em)) !== 0) {
+      throw new Error(
+        `${decl.prop}: only a zero em length is supported: ${value}`,
+      );
+    }
+    token.$value = { value: 0, unit: 'rem' };
     token.$extensions = { [CSS_EXTENSION]: { value } };
   } else if ($type === 'dimension') {
     token.$value = parseDimension(value);
@@ -166,7 +179,7 @@ export function declToToken(
 }
 
 const primitiveFileOf = (path: string[]): string => {
-  const head = path[0]!;
+  const [head = ''] = path;
   if (head === 'color') return 'primitive/color.json';
   if (head === 'radius') return 'primitive/radius.json';
   if (head === 'font') return 'primitive/font.json';
@@ -182,8 +195,14 @@ const primitiveFileOf = (path: string[]): string => {
 export function seedPrimitives(themeCss: string): Record<string, DtcgGroup> {
   const files: Record<string, DtcgGroup> = {};
   for (const file of Object.keys(PRIMITIVE_FILES)) files[file] = {};
+  const groupFor = (path: string[]): DtcgGroup => {
+    const file = primitiveFileOf(path);
+    const group = files[file];
+    if (!group) throw new Error(`${file} is not a primitive file`);
+    return group;
+  };
   const lookup = (path: string[]) =>
-    getPath(files[primitiveFileOf(path)]!, path) as DtcgToken | undefined;
+    getPath(groupFor(path), path) as DtcgToken | undefined;
   for (const block of readBlocks(themeCss)) {
     const decls =
       block.key === '@theme'
@@ -193,7 +212,7 @@ export function seedPrimitives(themeCss: string): Record<string, DtcgGroup> {
           : [];
     for (const decl of decls) {
       const path = cssNameToPath(decl.prop);
-      setPath(files[primitiveFileOf(path)]!, path, declToToken(decl, lookup));
+      setPath(groupFor(path), path, declToToken(decl, lookup));
     }
   }
   return files;
