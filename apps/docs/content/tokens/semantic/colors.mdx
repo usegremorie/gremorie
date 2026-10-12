@@ -57,7 +57,7 @@ background" trick that breaks when the theme changes.
 
 `--chart-1` through `--chart-5` alias the categorical scale
 (`--chart-cat-1..5`), which is not themeable: every theme shows the
-same series colours. See [Chart tokens](/tokens/chart).
+same series colors. See [Chart tokens](/tokens/chart).
 
 ## Editing or adding themes
 
@@ -68,8 +68,8 @@ is DTCG JSON in `packages/tokens/tokens/themes/<id>.json`; the CSS in
 1. **Create** `packages/tokens/tokens/themes/<id>.json` with a `light` and a
    `dark` group, and add `<id>` to `THEMES` in `packages/tokens/pipeline/model.ts`.
 2. **Override only what differs** from the base, as DTCG tokens: an alias names
-   the token path (`{color.emerald.700}`); a literal is an OKLCH colour object.
-   Whatever the light group declares as a literal colour, the dark group must
+   the token path (`{color.emerald.700}`); a literal is an OKLCH color object.
+   Whatever the light group declares as a literal color, the dark group must
    declare again, because `:root[data-theme]` outranks `.dark`.
 3. **Build** with `nx build tokens`. The theme gets its CSS file, its `@import`
    in `theme.css`, and its JSON, TypeScript, Kotlin and Swift outputs.

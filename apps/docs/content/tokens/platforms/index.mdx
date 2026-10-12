@@ -7,13 +7,13 @@ The CSS that the React and Angular editions import is one output of
 `@gremorie/tokens`. The tokens themselves live as **W3C DTCG 2025.10 JSON**,
 and the same build writes them for every platform that cannot read CSS.
 
-| Output     | Import                                             | What it holds                                                            |
-| ---------- | -------------------------------------------------- | ------------------------------------------------------------------------ |
-| CSS        | `@gremorie/tokens/theme.css`                       | Primitives, semantics, the seven themes, light and dark                  |
-| JSON       | `@gremorie/tokens/tokens.json`                     | Every theme and mode, resolved: colours, Material 3 roles, radius, fonts |
-| TypeScript | `import { themes } from '@gremorie/tokens'`        | The same data, typed (`ThemeName`, `M3Role`, `ThemeTokens`)              |
-| Kotlin     | `@gremorie/tokens/compose/GremorieColorSchemes.kt` | A complete Material 3 `ColorScheme` per theme and mode                   |
-| Swift      | `@gremorie/tokens/swift/GremorieTokens.swift`      | The semantic colours per theme and mode for SwiftUI                      |
+| Output     | Import                                             | What it holds                                                           |
+| ---------- | -------------------------------------------------- | ----------------------------------------------------------------------- |
+| CSS        | `@gremorie/tokens/theme.css`                       | Primitives, semantics, the seven themes, light and dark                 |
+| JSON       | `@gremorie/tokens/tokens.json`                     | Every theme and mode, resolved: colors, Material 3 roles, radius, fonts |
+| TypeScript | `import { themes } from '@gremorie/tokens'`        | The same data, typed (`ThemeName`, `M3Role`, `ThemeTokens`)             |
+| Kotlin     | `@gremorie/tokens/compose/GremorieColorSchemes.kt` | A complete Material 3 `ColorScheme` per theme and mode                  |
+| Swift      | `@gremorie/tokens/swift/GremorieTokens.swift`      | The semantic colors per theme and mode for SwiftUI                      |
 
 Every output covers the same seven themes: Default, Claude, ChatGPT, Gemini,
 Perplexity, Mistral and Purple, the violet theme adapted from the Fumadocs
@@ -32,10 +32,12 @@ const style = {
 };
 ```
 
-Colour names are the semantic tokens in camelCase: `--primary-foreground`
-becomes `primaryForeground`. Each colour carries `hex` (sRGB) and `oklch`
-(the source value). Radius is in pixels. `tokens.json` holds the same data for
-tools that read JSON, plus `m3Sources`, the origin of each Material 3 role.
+Color names are the semantic tokens in camelCase: `--primary-foreground`
+becomes `primaryForeground`. Each color carries `hex` (sRGB) and `oklch`
+(the source value). Radius is in pixels. Besides `themes`, `index.js` and
+`index.d.ts` export `themeNames`, `m3Roles` (the 48 Material 3 roles in
+Compose order), `m3Sources` (the origin of each role) and `version`.
+`tokens.json` holds the same data for tools that read JSON.
 
 ## Jetpack Compose
 
@@ -66,12 +68,12 @@ let colors = GremorieTheme.purple.colors(dark: colorScheme == .dark)
 Text("Hello").foregroundStyle(colors.foreground).background(colors.background)
 ```
 
-## Colour gamut
+## Color gamut
 
-The primitives are OKLCH, and some Tailwind v4 colours sit slightly outside
-sRGB. Hex, Kotlin and Swift carry sRGB only, so those colours are mapped into
+The primitives are OKLCH, and some Tailwind v4 colors sit slightly outside
+sRGB. Hex, Kotlin and Swift carry sRGB only, so those colors are mapped into
 the gamut with the CSS Color 4 algorithm: chroma drops at constant lightness
-and hue until the colour fits, which keeps it recognisably the same colour.
+and hue until the color fits, which keeps it recognizably the same color.
 The CSS keeps the original OKLCH, so wide-gamut screens still get it.
 
 ## Editing tokens

@@ -60,10 +60,10 @@ shadcn `secondary` is a low-emphasis tinted fill, so it maps to the container),
 `background`, `onBackground`, `surface`, `onSurface`, `surfaceVariant`
 (`muted`), `surfaceTint`, `error` and `onError`. The other 36 are derived with
 Material Color Utilities from a `SchemeContent` seeded with the theme's
-primary, so they share its hue: among them the M3 `secondary`, the whole
+primary, so they are derived from its hue and chroma: among them the M3 `secondary`, the whole
 tertiary family (shadcn `accent` is a hover surface with no M3 peer),
-`onSurfaceVariant` and `outline`. The derived container roles sit at the
-Material 3 baseline tones.
+`onSurfaceVariant` and `outline`. The derived container roles and the derived
+secondary and tertiary accents sit at the Material 3 baseline tones.
 
 ## Editing tokens
 

@@ -26,6 +26,13 @@ const THEME_CSS = join(
   'theme.css',
 );
 
+/**
+ * Ramps the palette page leaves out on purpose. `brand` is a slot that a
+ * consumer overrides; by default it repeats the indigo ramp, which the page
+ * already lists.
+ */
+const UNDOCUMENTED_RAMPS = ['brand'];
+
 interface CssPrimitive {
   oklch: string;
   hex: string | undefined;
@@ -62,6 +69,16 @@ describe('primitive colour data mirrors theme.css', () => {
   it('finds the primitives in theme.css', () => {
     expect(css.size).toBeGreaterThan(0);
     expect(ramps.length).toBeGreaterThan(0);
+  });
+
+  it('documents every ramp theme.css declares', () => {
+    const declared = new Set(
+      [...css.keys()].map((t) => t.replace(/^--color-|-\d+$/g, '')),
+    );
+    for (const ramp of UNDOCUMENTED_RAMPS) declared.delete(ramp);
+    expect(Object.keys(PRIMITIVE_COLOR_RAMPS).sort()).toEqual(
+      [...declared].sort(),
+    );
   });
 
   for (const [ramp, stops] of ramps) {

@@ -34,9 +34,10 @@ const style = {
 
 Os nomes das cores são os tokens semânticos em camelCase: `--primary-foreground`
 vira `primaryForeground`. Cada cor traz `hex` (sRGB) e `oklch` (o valor da
-fonte). O radius vem em pixels. O `tokens.json` tem os mesmos dados para
-ferramentas que leem JSON, mais o `m3Sources`, a origem de cada papel do
-Material 3.
+fonte). O radius vem em pixels. Além de `themes`, o `index.js` e o
+`index.d.ts` exportam `themeNames`, `m3Roles` (os 48 papéis do Material 3 na
+ordem do Compose), `m3Sources` (a origem de cada papel) e `version`. O
+`tokens.json` tem os mesmos dados para ferramentas que leem JSON.
 
 ## Jetpack Compose
 

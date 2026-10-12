@@ -13,7 +13,8 @@ onde não há).
 Esta é a **camada 3 de 3**: tokens de chart referenciam
 [primitivos](/tokens/primitive) e mudam com o modo light e dark,
 mas, ao contrário dos tokens [semânticos](/tokens/semantic), não
-com o tema. O desenho completo está no
+com o tema (a Status é a única exceção, veja abaixo). O desenho
+completo está no
 [modelo de três camadas](/tokens).
 
 ## Os cinco esquemas
@@ -78,12 +79,15 @@ do leitor).
 
 Os tokens chart **mudam com o modo**, não com o tema. A camada base
 declara cada escala duas vezes: no `:root` para light e no `.dark`
-para dark, um passo mais escura (a Sequential inverte, para o topo
-da escala subir em direção ao claro). Nenhum dos sete temas
-(Default, Claude, ChatGPT, Gemini, Perplexity, Mistral, Purple) as
-sobrescreve: uma paleta de marca é para a chrome, e a identidade de
-série precisa de matizes que se separem (veja
-[Categorical](/tokens/chart/categorical)).
+para dark. A Categorical desce um passo, mais escura, no modo dark;
+a Sequential, a Divergent e os mutes da Comparison invertem, para a
+ponta forte subir em direção ao claro. Nenhum tema declara um token
+de chart, então as escalas são as mesmas em qualquer tema, exceto a
+Status, que aponta para `--success`, `--warning`, `--destructive` e
+`--muted-foreground` e acompanha o tema que os sobrescreve (hoje a
+série neutra no Claude e no Purple). Uma paleta de marca é para a
+chrome, e a identidade de série precisa de matizes que se separem
+(veja [Categorical](/tokens/chart/categorical)).
 
 Isso significa que um gráfico construído com `--color-chart-cat-1`
 pinta as mesmas cores de série em qualquer tema e só troca entre

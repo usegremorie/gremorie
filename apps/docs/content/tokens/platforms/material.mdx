@@ -9,7 +9,7 @@ Jetpack Compose themes an app through a `ColorScheme` with **48 roles**.
 Gremorie fills all of them for every theme and mode, in two ways. The choice
 for each role lives in `packages/tokens/tokens/platform/m3/roles.json`.
 
-- **Mapped** roles take a semantic token directly, so the brand colours are
+- **Mapped** roles take a semantic token directly, so the brand colors are
   exact. Twelve roles work this way:
 
   | Role                                         | Semantic token                              |
@@ -23,8 +23,9 @@ for each role lives in `packages/tokens/tokens/platform/m3/roles.json`.
   | `error`, `onError`                           | `--destructive`, `--destructive-foreground` |
 
 - **Derived** roles, the other 36, come from Material Color Utilities: a
-  `SchemeContent` seeded with the theme's primary, so they share its hue and
-  chroma. The container roles sit at the Material 3 baseline tones.
+  `SchemeContent` seeded with the theme's primary, so they are derived from its
+  hue and chroma. The container roles and the derived secondary and tertiary
+  accents sit at the Material 3 baseline tones.
 
 A few derived roles have a semantic token with a similar name that does not
 mean the same thing:

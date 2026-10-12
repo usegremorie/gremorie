@@ -13,7 +13,8 @@ suggests an order that is not there).
 This is **layer 3 of 3**: chart tokens reference
 [primitives](/tokens/primitive) and change with light and dark
 mode, but, unlike [semantic](/tokens/semantic) tokens, not with the
-theme. The full picture lives in
+theme (Status is the one exception, see below). The full picture
+lives in
 the [three-layer model](/tokens).
 
 ## The five schemes
@@ -80,14 +81,18 @@ question).
 
 Chart tokens **change with the mode**, not with the theme. The base
 layer declares every scale twice: in `:root` for light and in
-`.dark` for dark, one step darker (Sequential inverts, so its top
-end climbs towards light). None of the seven themes (Default,
-Claude, ChatGPT, Gemini, Perplexity, Mistral, Purple) overrides
-them: a brand palette is for chrome, and series identity needs hues
-that separate (see [Categorical](/tokens/chart/categorical)).
+`.dark` for dark. Categorical moves one step darker in dark mode;
+Sequential, Divergent and the Comparison mutes invert, so their
+strong end climbs towards light. No theme declares a chart token,
+so the scales are the same under every theme, except Status, which
+aliases `--success`, `--warning`, `--destructive` and
+`--muted-foreground` and follows a theme that overrides them (today
+the neutral series in Claude and Purple). A brand palette is for
+chrome, and series identity needs hues that separate (see
+[Categorical](/tokens/chart/categorical)).
 
 That means a chart built with `--color-chart-cat-1` paints the same
-series colours under every theme and switches only between light
+series colors under every theme and switches only between light
 and dark, without the component knowing. For the designer, the
 implication is:
 

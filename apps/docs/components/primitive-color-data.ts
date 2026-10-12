@@ -8,7 +8,8 @@
  * chroma reduction, CSS Color 4, for the few primitives wider than sRGB).
  *
  * If theme.css gains or changes a ramp, update this file to match:
- * `lib/primitive-color-data.spec.ts` fails on any stop that differs.
+ * `lib/primitive-color-data.spec.ts` fails on any stop that differs and on
+ * any ramp of theme.css missing here (except `brand`, a slot, see the spec).
  */
 
 export interface PrimitiveColorStop {
