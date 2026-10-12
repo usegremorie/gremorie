@@ -95,6 +95,9 @@ Trunk-based. `main` is the trunk.
 
 ## Quickstart (dev)
 
+Requires Node 22.18 or later (the token pipeline runs its TypeScript directly,
+through Node's type stripping) and npm 10 or later.
+
 ```bash
 npm install
 
