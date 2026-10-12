@@ -1,4 +1,5 @@
 import Color from 'colorjs.io';
+import { round6 } from './format-number.ts';
 import type { DtcgColor } from './model.ts';
 
 export interface Srgb8 {
@@ -85,3 +86,22 @@ export function contrastRatio(
 /** Perceptual distance in OKLab between a token colour and a reference. */
 export const deltaEOK = (a: DtcgColor, b: Color): number =>
   toColorJs(a).deltaE(b, 'OK');
+
+/** Opaque ARGB (0xFFRRGGBB) of the gamut-mapped colour; alpha is dropped. */
+export function argbOf(c: DtcgColor): number {
+  const s = toSrgb8(c);
+  return ((0xff << 24) | (s.r << 16) | (s.g << 8) | s.b) >>> 0;
+}
+
+/** An ARGB integer back to an OKLCH token colour, at 6 decimals. */
+export function fromArgb(argb: number): DtcgColor {
+  const channel = (shift: number) => ((argb >>> shift) & 0xff) / 255;
+  const okl = new Color('srgb', [channel(16), channel(8), channel(0)]).to(
+    'oklch',
+  );
+  const [l = 0, c = 0, h = 0] = okl.coords;
+  return {
+    colorSpace: 'oklch',
+    components: [round6(l), round6(c), round6(Number.isNaN(h) ? 0 : h)],
+  };
+}

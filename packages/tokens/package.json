@@ -37,6 +37,7 @@
   },
   "author": "Gremorie (https://github.com/usegremorie)",
   "devDependencies": {
+    "@material/material-color-utilities": "0.3.0",
     "@types/node": "22.20.1",
     "colorjs.io": "0.5.2",
     "postcss": "8.5.28",
