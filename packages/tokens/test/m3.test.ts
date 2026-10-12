@@ -5,7 +5,11 @@ import {
 } from '@material/material-color-utilities';
 import { describe, expect, it } from 'vitest';
 import { argbOf, contrastRatio, fromArgb, toHex } from '../pipeline/color.ts';
-import { loadDeviations, matches } from '../pipeline/contrast.ts';
+import {
+  loadDeviations,
+  matches,
+  type Deviation,
+} from '../pipeline/contrast.ts';
 import {
   deriveScheme,
   loadRoleMap,
@@ -17,7 +21,7 @@ import {
   PRIMARY_FAMILY,
   type M3Role,
 } from '../pipeline/m3.ts';
-import type { DtcgColor } from '../pipeline/model.ts';
+import type { DtcgColor, Mode } from '../pipeline/model.ts';
 import { runAll, type Run } from '../pipeline/run.ts';
 import { loadSource } from '../pipeline/source.ts';
 import { PACKAGE_ROOT } from './support/paths.ts';
@@ -208,15 +212,35 @@ describe('M3 contrast (each onX reaches AA on X)', () => {
     const s = roles[role];
     return s.kind === 'semantic' ? s.token : null;
   };
+  /**
+   * A Material pair is excused only by an entry for that pair: one marked
+   * `scheme: 'm3'` that names the two roles, or a semantic entry that names
+   * the two semantic tokens both roles are mapped to.
+   */
+  const listsM3Pair = (
+    list: readonly Deviation[],
+    where: { theme: string; mode: Mode },
+    container: M3Role,
+    content: M3Role,
+  ) =>
+    list.some((d) => {
+      if (d.scheme === 'm3') {
+        return matches(d, {
+          ...where,
+          background: container,
+          foreground: content,
+        });
+      }
+      const background = toSemantic(container);
+      const foreground = toSemantic(content);
+      return (
+        background !== null &&
+        foreground !== null &&
+        matches(d, { ...where, background, foreground })
+      );
+    });
   const listed = (run: Run, container: M3Role, content: M3Role) =>
-    deviations.some((d) =>
-      matches(d, {
-        theme: run.theme,
-        mode: run.mode,
-        background: toSemantic(container) ?? container,
-        foreground: toSemantic(content) ?? content,
-      }),
-    );
+    listsM3Pair(deviations, run, container, content);
   const groups = [
     ['text', M3_ON_PAIRS, 4.5],
     ['graphic', M3_GRAPHIC_PAIRS, 3],
@@ -268,6 +292,55 @@ describe('M3 contrast (each onX reaches AA on X)', () => {
       }
     });
   }
+
+  it('excuses a Material pair only with an m3 entry or its semantic peers', () => {
+    const where = { theme: 'default', mode: 'light' } as const;
+    const entry = (
+      background: string,
+      foreground: string,
+      scheme?: 'm3',
+    ): Deviation => ({
+      ...where,
+      background,
+      foreground,
+      ratio: 1,
+      reason: 'test',
+      ...(scheme ? { scheme } : {}),
+    });
+    // A derived pair: only an m3 entry naming the roles excuses it.
+    expect(
+      listsM3Pair(
+        [entry('surface', 'outline', 'm3')],
+        where,
+        'surface',
+        'outline',
+      ),
+    ).toBe(true);
+    expect(
+      listsM3Pair([entry('surface', 'outline')], where, 'surface', 'outline'),
+    ).toBe(false);
+    // A mapped pair: the semantic entry for its peers excuses it.
+    expect(
+      listsM3Pair(
+        [entry('destructive', 'destructive-foreground')],
+        where,
+        'error',
+        'onError',
+      ),
+    ).toBe(true);
+    // An m3 entry must name roles, not the semantic tokens.
+    expect(
+      listsM3Pair(
+        [entry('destructive', 'destructive-foreground', 'm3')],
+        where,
+        'error',
+        'onError',
+      ),
+    ).toBe(false);
+    expect(
+      listsM3Pair([entry('error', 'onError', 'm3')], where, 'error', 'onError'),
+    ).toBe(true);
+  });
 
   it('purple has no Material-only deviation', () => {
     expect(
