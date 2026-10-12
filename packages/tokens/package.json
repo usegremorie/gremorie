@@ -34,8 +34,14 @@
     "styles/theme.css",
     "styles/themes",
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "NOTICE.md"
   ],
+  "scripts": {
+    "prepack": "node -e \"for (const f of ['LICENSE', 'NOTICE.md']) require('node:fs').copyFileSync('../../' + f, f)\"",
+    "postpack": "node -e \"for (const f of ['LICENSE', 'NOTICE.md']) require('node:fs').rmSync(f, { force: true })\""
+  },
   "publishConfig": {
     "access": "public"
   },
