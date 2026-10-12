@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/tokens",
   "version": "0.8.0",
-  "description": "Framework-free design tokens for Gremorie: primitives, semantics, and themes as plain CSS. Consumed by the React and Angular editions.",
+  "description": "Framework-free design tokens for Gremorie, from one DTCG source: CSS for the React and Angular editions, plus resolved JSON, TypeScript, Kotlin (Material 3 ColorScheme) and Swift.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,13 +17,23 @@
     "gremorie"
   ],
   "type": "module",
+  "types": "./dist/index.d.ts",
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./theme.css": "./styles/theme.css",
-    "./themes/*": "./styles/themes/*"
+    "./themes/*": "./styles/themes/*",
+    "./tokens.json": "./dist/tokens.json",
+    "./compose/*": "./dist/compose/*",
+    "./swift/*": "./dist/swift/*",
+    "./package.json": "./package.json"
   },
   "files": [
     "styles/theme.css",
     "styles/themes",
+    "dist",
     "README.md"
   ],
   "publishConfig": {

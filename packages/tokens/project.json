@@ -44,6 +44,14 @@
         "command": "node pipeline/build.ts --check"
       }
     },
+    "verify-platforms": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "node pipeline/verify-platforms.ts"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "dependsOn": ["check-generated"]

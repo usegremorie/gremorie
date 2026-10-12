@@ -9,6 +9,12 @@ import {
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { wrapComment } from './css.ts';
+import { loadRoleMap } from './m3.ts';
+import { renderTokensJson } from './platforms/json.ts';
+import { renderKotlin } from './platforms/kotlin.ts';
+import { buildPlatformModel } from './platforms/model.ts';
+import { renderSwift } from './platforms/swift.ts';
+import { renderIndexDts, renderIndexJs } from './platforms/ts.ts';
 import {
   ROOT_PLACEMENT,
   themeFile,
@@ -125,7 +131,21 @@ export async function buildOutputs(
   if (problems.length > 0) {
     throw new Error(`Invalid token source:\n${problems.join('\n')}`);
   }
-  const { files } = await buildCss(source);
+  const { files, runs } = await buildCss(source);
+  const { version } = JSON.parse(
+    readFileSync(join(root, 'package.json'), 'utf8'),
+  ) as { version: string };
+  const model = buildPlatformModel(
+    runs,
+    loadRoleMap(root),
+    source.themes,
+    version,
+  );
+  files['dist/tokens.json'] = renderTokensJson(model);
+  files['dist/index.js'] = renderIndexJs(model);
+  files['dist/index.d.ts'] = renderIndexDts(model);
+  files['dist/compose/GremorieColorSchemes.kt'] = renderKotlin(model);
+  files['dist/swift/GremorieTokens.swift'] = renderSwift(model);
   return files;
 }
 

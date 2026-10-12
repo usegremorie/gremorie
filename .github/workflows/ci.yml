@@ -65,3 +65,11 @@ jobs:
         env:
           NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
         run: npx nx affected -t test --parallel=3
+
+      - name: Verify platform outputs affected (Kotlin compile, Swift parse)
+        # ubuntu-latest ships kotlinc and swiftc; the target builds the tokens
+        # first and fails here, unlike locally, when a compiler is missing.
+        env:
+          NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
+          REQUIRE_PLATFORM_COMPILERS: '1'
+        run: npx nx affected -t verify-platforms --parallel=1
