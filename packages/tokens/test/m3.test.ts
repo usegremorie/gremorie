@@ -1,10 +1,15 @@
-import { Hct } from '@material/material-color-utilities';
+import {
+  Hct,
+  SchemeContent,
+  type TonalPalette,
+} from '@material/material-color-utilities';
 import { describe, expect, it } from 'vitest';
 import { argbOf, contrastRatio, fromArgb, toHex } from '../pipeline/color.ts';
 import { loadDeviations, matches } from '../pipeline/contrast.ts';
 import {
   deriveScheme,
   loadRoleMap,
+  M3_GRAPHIC_PAIRS,
   M3_ON_PAIRS,
   M3_ROLES,
   m3For,
@@ -36,21 +41,18 @@ describe('the role list', () => {
     expect([...M3_ROLES]).toEqual(COMPOSE_ROLES);
   });
 
-  it('maps exactly 15 roles to semantics and derives the other 33', () => {
+  it('maps exactly 12 roles to semantics and derives the other 36', () => {
     const mapped = M3_ROLES.filter((r) => roles[r].kind === 'semantic');
     expect(mapped).toEqual([
       'primary',
       'onPrimary',
-      'secondary',
-      'onSecondary',
-      'tertiary',
-      'onTertiary',
+      'secondaryContainer',
+      'onSecondaryContainer',
       'background',
       'onBackground',
       'surface',
       'onSurface',
       'surfaceVariant',
-      'onSurfaceVariant',
       'surfaceTint',
       'error',
       'onError',
@@ -58,6 +60,8 @@ describe('the role list', () => {
   });
 
   it('refuses a map that misses a role or names an unknown one', () => {
+    expect(() => parseRoleMap(null)).toThrow(/^roles\.json: /);
+    expect(() => parseRoleMap([])).toThrow(/^roles\.json: /);
     expect(() => parseRoleMap({ roles: { primary: '{primary}' } })).toThrow(
       /missing/,
     );
@@ -89,6 +93,37 @@ describe('ARGB round trip', () => {
 });
 
 describe('derivation from the theme primary', () => {
+  const purple: DtcgColor = {
+    colorSpace: 'oklch',
+    components: [0.5379, 0.2912, 295.26],
+  };
+
+  it.each([
+    [false, 90, 10],
+    [true, 30, 90],
+  ] as const)(
+    'takes containers at the M3 baseline tones (dark %s: %i, content %i)',
+    (dark, container, content) => {
+      const scheme = deriveScheme(purple, dark);
+      const mcu = new SchemeContent(Hct.fromInt(argbOf(purple)), dark, 0);
+      const tone = (palette: TonalPalette, t: number) =>
+        toHex(fromArgb(palette.tone(t)));
+      const families = [
+        ['primary', mcu.primaryPalette],
+        ['secondary', mcu.secondaryPalette],
+        ['tertiary', mcu.tertiaryPalette],
+        ['error', mcu.errorPalette],
+      ] as const;
+      for (const [family, palette] of families) {
+        const on = `on${family[0]?.toUpperCase()}${family.slice(1)}Container`;
+        expect(toHex(scheme[`${family}Container`]), family).toBe(
+          tone(palette, container),
+        );
+        expect(toHex(scheme[on as M3Role]), on).toBe(tone(palette, content));
+      }
+    },
+  );
+
   it('fills every role from MCU SchemeContent', () => {
     const scheme = deriveScheme(
       { colorSpace: 'oklch', components: [0.5379, 0.2912, 295.26] },
@@ -106,6 +141,15 @@ describe('derivation from the theme primary', () => {
         if (source.kind === 'semantic') {
           expect(m3[role], role).toEqual(tokenValue(run, source.token));
         }
+      }
+    });
+
+    it(`${key}: no container repeats its accent colour`, () => {
+      const m3 = m3For(run, roles);
+      for (const family of ['primary', 'tertiary', 'error'] as const) {
+        expect(toHex(m3[`${family}Container`]), family).not.toBe(
+          toHex(m3[family]),
+        );
       }
     });
 
@@ -131,33 +175,70 @@ describe('M3 contrast (each onX reaches AA on X)', () => {
     const s = roles[role];
     return s.kind === 'semantic' ? s.token : null;
   };
+  const listed = (run: Run, container: M3Role, content: M3Role) =>
+    deviations.some((d) =>
+      matches(d, {
+        theme: run.theme,
+        mode: run.mode,
+        background: toSemantic(container) ?? container,
+        foreground: toSemantic(content) ?? content,
+      }),
+    );
+  const groups = [
+    ['text', M3_ON_PAIRS, 4.5],
+    ['graphic', M3_GRAPHIC_PAIRS, 3],
+  ] as const;
+
+  it('guards the surfaces, the fixed roles and the inverse roles', () => {
+    const has = (pairs: typeof M3_ON_PAIRS, a: M3Role, b: M3Role) =>
+      pairs.some(([x, y]) => x === a && y === b);
+    for (const level of [
+      'surfaceContainerLowest',
+      'surfaceContainerLow',
+      'surfaceContainer',
+      'surfaceContainerHigh',
+      'surfaceContainerHighest',
+    ] as const) {
+      expect(has(M3_ON_PAIRS, level, 'onSurface'), level).toBe(true);
+      expect(has(M3_ON_PAIRS, level, 'onSurfaceVariant'), level).toBe(true);
+    }
+    for (const family of ['primary', 'secondary', 'tertiary'] as const) {
+      const f = `${family.charAt(0).toUpperCase()}${family.slice(1)}`;
+      for (const fill of [`${family}Fixed`, `${family}FixedDim`]) {
+        for (const on of [`on${f}Fixed`, `on${f}FixedVariant`]) {
+          expect(has(M3_ON_PAIRS, fill as M3Role, on as M3Role), on).toBe(true);
+        }
+      }
+    }
+    expect(has(M3_ON_PAIRS, 'inverseSurface', 'inverseOnSurface')).toBe(true);
+    expect(has(M3_ON_PAIRS, 'surfaceBright', 'onSurface')).toBe(true);
+    expect(has(M3_ON_PAIRS, 'surfaceDim', 'onSurface')).toBe(true);
+    expect(has(M3_GRAPHIC_PAIRS, 'inverseSurface', 'inversePrimary')).toBe(
+      true,
+    );
+    expect(has(M3_GRAPHIC_PAIRS, 'surface', 'outline')).toBe(true);
+  });
+
   for (const [key, run] of runs) {
-    it(`${key}: every on-pair reaches 4.5:1 or is a listed deviation`, () => {
+    it(`${key}: every pair reaches its minimum or is a listed deviation`, () => {
       const m3 = m3For(run, roles);
       const page = m3.background;
-      for (const [container, content] of M3_ON_PAIRS) {
-        const ratio = Number(
-          contrastRatio(m3[content], m3[container], page).toFixed(2),
-        );
-        if (ratio >= 4.5) continue;
-        const background = toSemantic(container) ?? container;
-        const foreground = toSemantic(content) ?? content;
-        const listed = deviations.some((d) =>
-          matches(d, {
-            theme: run.theme,
-            mode: run.mode,
-            background,
-            foreground,
-          }),
-        );
-        expect(listed, `${key} ${content} on ${container} is ${ratio}:1`).toBe(
-          true,
-        );
+      for (const [kind, pairs, min] of groups) {
+        for (const [container, content] of pairs) {
+          const ratio = contrastRatio(m3[content], m3[container], page);
+          if (ratio >= min) continue;
+          expect(
+            listed(run, container, content),
+            `${key} ${kind} ${content} on ${container} is ${ratio.toFixed(3)}:1`,
+          ).toBe(true);
+        }
       }
     });
   }
 
-  it('purple has no M3 deviation', () => {
-    expect(deviations.filter((d) => d.theme === 'purple')).toEqual([]);
+  it('purple has no Material-only deviation', () => {
+    expect(
+      deviations.filter((d) => d.theme === 'purple' && d.scheme === 'm3'),
+    ).toEqual([]);
   });
 });

@@ -61,7 +61,28 @@ export type RoleSource =
   { kind: 'semantic'; token: string } | { kind: 'derived' };
 export type RoleMap = Record<M3Role, RoleSource>;
 
-/** Content on its container: each must reach 4.5:1. */
+const SURFACE_LEVELS = [
+  'surfaceContainerLowest',
+  'surfaceContainerLow',
+  'surfaceContainer',
+  'surfaceContainerHigh',
+  'surfaceContainerHighest',
+  'surfaceBright',
+  'surfaceDim',
+] as const;
+
+const FIXED_PAIRS = (['primary', 'secondary', 'tertiary'] as const).flatMap(
+  (family) => {
+    const f = `${family.charAt(0).toUpperCase()}${family.slice(1)}`;
+    return [`${family}Fixed`, `${family}FixedDim`].flatMap((fill) =>
+      [`on${f}Fixed`, `on${f}FixedVariant`].map(
+        (on) => [fill as M3Role, on as M3Role] as const,
+      ),
+    );
+  },
+);
+
+/** Content on its container: each must reach 4.5:1 (WCAG 2.2 1.4.3). */
 export const M3_ON_PAIRS: readonly (readonly [M3Role, M3Role])[] = [
   ['primary', 'onPrimary'],
   ['primaryContainer', 'onPrimaryContainer'],
@@ -75,17 +96,17 @@ export const M3_ON_PAIRS: readonly (readonly [M3Role, M3Role])[] = [
   ['surface', 'onSurface'],
   ['surfaceVariant', 'onSurfaceVariant'],
   ['inverseSurface', 'inverseOnSurface'],
-  ['surfaceContainerLowest', 'onSurface'],
-  ['surfaceContainerLow', 'onSurface'],
-  ['surfaceContainer', 'onSurface'],
-  ['surfaceContainerHigh', 'onSurface'],
-  ['surfaceContainerHighest', 'onSurface'],
-  ['primaryFixed', 'onPrimaryFixed'],
-  ['primaryFixedDim', 'onPrimaryFixed'],
-  ['secondaryFixed', 'onSecondaryFixed'],
-  ['secondaryFixedDim', 'onSecondaryFixed'],
-  ['tertiaryFixed', 'onTertiaryFixed'],
-  ['tertiaryFixedDim', 'onTertiaryFixed'],
+  ...SURFACE_LEVELS.map((level) => [level, 'onSurface'] as const),
+  ...SURFACE_LEVELS.slice(0, 5).map(
+    (level) => [level, 'onSurfaceVariant'] as const,
+  ),
+  ...FIXED_PAIRS,
+];
+
+/** A boundary or accent on its surface: each must reach 3:1 (1.4.11). */
+export const M3_GRAPHIC_PAIRS: readonly (readonly [M3Role, M3Role])[] = [
+  ['surface', 'outline'],
+  ['inverseSurface', 'inversePrimary'],
 ];
 
 /** Derived roles that come from the primary palette, so share its hue. */
@@ -100,6 +121,9 @@ export const PRIMARY_FAMILY: readonly M3Role[] = [
 ];
 
 export function parseRoleMap(json: unknown): RoleMap {
+  if (typeof json !== 'object' || json === null || Array.isArray(json)) {
+    throw new Error('roles.json: expected an object with a "roles" map');
+  }
   const roles = (json as { roles?: Record<string, unknown> }).roles ?? {};
   for (const name of Object.keys(roles)) {
     if (!(M3_ROLES as readonly string[]).includes(name)) {
@@ -132,7 +156,28 @@ export const loadRoleMap = (root: string): RoleMap =>
     ),
   );
 
-/** Every M3 role from an MCU SchemeContent seeded with `seed`. */
+/**
+ * The accent families whose container roles sit at the Material 3 baseline
+ * tones. SchemeContent places primaryContainer at the seed's own tone, so a
+ * saturated mid-tone primary (purple's #850aff) came out as its own container.
+ */
+const CONTAINER_FAMILIES = [
+  'primary',
+  'secondary',
+  'tertiary',
+  'error',
+] as const;
+/** Container fill and content tones, light then dark (M3 baseline scheme). */
+const CONTAINER_TONE = { light: 90, dark: 30 } as const;
+const ON_CONTAINER_TONE = { light: 10, dark: 90 } as const;
+
+/**
+ * Every M3 role from an MCU SchemeContent seeded with `seed` (colour spec
+ * 2021, contrast 0). The palettes keep the seed's hue and chroma; the
+ * container roles are then read from those palettes at the baseline tones
+ * (tone 90 with content at 10 in light, 30 with content at 90 in dark), so a
+ * container is always a tint of its accent, never the accent itself.
+ */
 export function deriveScheme(
   seed: DtcgColor,
   dark: boolean,
@@ -144,6 +189,19 @@ export function deriveScheme(
     const value = argb[role];
     if (typeof value !== 'number') throw new Error(`MCU has no role ${role}`);
     out[role] = fromArgb(value);
+  }
+  const mode = dark ? 'dark' : 'light';
+  const palettes = {
+    primary: scheme.primaryPalette,
+    secondary: scheme.secondaryPalette,
+    tertiary: scheme.tertiaryPalette,
+    error: scheme.errorPalette,
+  };
+  for (const family of CONTAINER_FAMILIES) {
+    const palette = palettes[family];
+    const on = `on${family.charAt(0).toUpperCase()}${family.slice(1)}Container`;
+    out[`${family}Container`] = fromArgb(palette.tone(CONTAINER_TONE[mode]));
+    out[on as M3Role] = fromArgb(palette.tone(ON_CONTAINER_TONE[mode]));
   }
   return out;
 }
