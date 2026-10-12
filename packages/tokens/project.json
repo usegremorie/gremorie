@@ -12,6 +12,22 @@
         "command": "node -e \"const fs=require('fs');fs.cpSync('packages/tokens/styles','dist/packages/tokens/styles',{recursive:true});fs.copyFileSync('packages/tokens/package.json','dist/packages/tokens/package.json');fs.copyFileSync('packages/tokens/README.md','dist/packages/tokens/README.md')\""
       }
     },
-    "lint": { "executor": "@nx/eslint:lint" }
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "vitest run"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "tsc --noEmit"
+      }
+    }
   }
 }
