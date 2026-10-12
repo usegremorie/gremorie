@@ -5,6 +5,7 @@
 @import '../../../packages/tokens/styles/themes/gemini.css';
 @import '../../../packages/tokens/styles/themes/mistral.css';
 @import '../../../packages/tokens/styles/themes/perplexity.css';
+@import '../../../packages/tokens/styles/themes/purple.css';
 
 /* The token system ships dark mode as a `.dark` class that remaps CSS vars, but
    no `@custom-variant`, so Tailwind's `dark:` utilities (e.g. the CodeBlock

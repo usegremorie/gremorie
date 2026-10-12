@@ -17,6 +17,7 @@ const THEMES = [
   'gemini',
   'perplexity',
   'mistral',
+  'purple',
 ] as const;
 
 const preview: Preview = {

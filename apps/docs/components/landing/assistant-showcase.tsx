@@ -72,6 +72,7 @@ const THEMES = [
   { value: 'gemini', label: 'Gemini' },
   { value: 'perplexity', label: 'Perplexity' },
   { value: 'mistral', label: 'Mistral' },
+  { value: 'purple', label: 'Purple' },
 ];
 
 // Block defaults - a prop is emitted in the snippet only when it differs.
