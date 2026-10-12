@@ -36,6 +36,8 @@ export interface Difference {
   actual?: string;
 }
 
+const PLAIN_NUMBER = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i;
+
 /**
  * A plain number, or a percentage scaled to its channel's range. Anything
  * else (units, keywords like `none`, functions) is kept as written, so two
@@ -45,16 +47,21 @@ function channel(raw: string, percentOf: number | null): string {
   const isPercent = raw.endsWith('%');
   if (isPercent && percentOf === null) return raw;
   const text = isPercent ? raw.slice(0, -1) : raw;
-  if (!/^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(text)) return raw;
+  if (!PLAIN_NUMBER.test(text)) return raw;
   const n = Number(text);
   return fmt(isPercent ? (n * (percentOf ?? 1)) / 100 : n);
 }
 
-/** Hue in degrees: a bare number or `deg`; other angle units stay as written. */
-const hue = (raw: string): string =>
-  raw.toLowerCase().endsWith('deg')
-    ? channel(raw.slice(0, -3), null)
-    : channel(raw, null);
+/**
+ * Hue in degrees: a bare number or a number followed by `deg`. Other angle
+ * units, and a `deg` suffix on something that is not a number, stay exactly
+ * as written.
+ */
+function hue(raw: string): string {
+  if (!raw.toLowerCase().endsWith('deg')) return channel(raw, null);
+  const degrees = raw.slice(0, -3);
+  return PLAIN_NUMBER.test(degrees) ? channel(degrees, null) : raw;
+}
 
 /**
  * Normalizes the inside of `oklch(...)`. Percentages follow CSS Color 4

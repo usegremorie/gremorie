@@ -46,6 +46,9 @@ describe('normalizeValue', () => {
     ['oklch(0.5 0.1 none)', 'oklch(0.5 0.1 none)'],
     ['oklch(0.5 0.1 20 0.3)', 'oklch(0.5 0.1 20 0.3)'],
     ['oklch(0.5 0.1)', 'oklch(0.5 0.1)'],
+    ['oklch(0.5 0.1 xdeg)', 'oklch(0.5 0.1 xdeg)'],
+    ['oklch(0.5 0.1 nonedeg)', 'oklch(0.5 0.1 nonedeg)'],
+    ['oklch(0.5 0.1 deg)', 'oklch(0.5 0.1 deg)'],
   ])('%j → %s', (raw, expected) => {
     expect(normalizeValue(raw)).toBe(expected);
   });
@@ -54,6 +57,7 @@ describe('normalizeValue', () => {
     ['lightness', 'oklch(60% 0.1 20)', 'oklch(0.61 0.1 20)'],
     ['hue units', 'oklch(0.5 0.1 20deg)', 'oklch(0.5 0.1 90deg)'],
     ['hue in turns', 'oklch(0.5 0.1 0.1turn)', 'oklch(0.5 0.1 0.2turn)'],
+    ['a non-numeric deg hue', 'oklch(0.5 0.1 nonedeg)', 'oklch(0.5 0.1 none)'],
     ['chroma percent', 'oklch(0.5 50% 20)', 'oklch(0.5 0.5 20)'],
     ['alpha percent', 'oklch(0.5 0.1 20 / 100%)', 'oklch(0.5 0.1 20 / 0.99)'],
     ['a fourth channel', 'oklch(0.5 0.1 20 0.3)', 'oklch(0.5 0.1 20)'],
