@@ -1,6 +1,6 @@
 {
   "name": "@gremorie/tokens",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Framework-free design tokens for Gremorie, from one DTCG source: CSS for the React and Angular editions, plus resolved JSON, TypeScript, Kotlin (Material 3 ColorScheme) and Swift.",
   "license": "MIT",
   "repository": {
