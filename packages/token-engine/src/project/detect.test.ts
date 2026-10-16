@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { join } from 'node:path';
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { detectRegistryProject } from './detect.js';
+import { detectDtcgProject, detectRegistryProject } from './detect.js';
 
 describe('detectRegistryProject', () => {
-  const dir = join(tmpdir(), 'tokens-detect-' + Date.now());
+  const dir = mkdtempSync(join(tmpdir(), 'tokens-detect-'));
 
   it('returns null when not a registry-compatible project', () => {
     mkdirSync(dir, { recursive: true });
@@ -26,7 +26,29 @@ describe('detectRegistryProject', () => {
 
     const result = detectRegistryProject(dir);
     expect(result).not.toBeNull();
-    expect(result!.globalsCss).toBe('src/styles/globals.css');
+    expect(result?.globalsCss).toBe('src/styles/globals.css');
+    rmSync(dir, { recursive: true, force: true });
+  });
+});
+
+describe('detectDtcgProject', () => {
+  it('finds the Gremorie monorepo by its token source and pipeline', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'tokens-detect-dtcg-'));
+    mkdirSync(join(dir, 'packages/tokens/tokens/primitive'), {
+      recursive: true,
+    });
+    mkdirSync(join(dir, 'packages/tokens/pipeline'), { recursive: true });
+    expect(detectDtcgProject(dir)).toBeNull();
+    writeFileSync(
+      join(dir, 'packages/tokens/tokens/primitive/color.json'),
+      '{}',
+    );
+    writeFileSync(join(dir, 'packages/tokens/pipeline/build.ts'), '');
+    expect(detectDtcgProject(dir)).toEqual({
+      root: dir,
+      packageDir: join(dir, 'packages/tokens'),
+      tokensDir: join(dir, 'packages/tokens/tokens'),
+    });
     rmSync(dir, { recursive: true, force: true });
   });
 });

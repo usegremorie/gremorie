@@ -12,12 +12,12 @@ import { CATEGORICAL_SCHEME } from '@/lib/chart-tokens';
 **Categorical** is the scheme for **nominal data without order** -
 when you compare magnitudes across categories that have no
 "greater/smaller" relationship. Five hues, one primitive family per
-slot, the same family in light and dark so a series keeps its colour
+slot, the same family in light and dark so a series keeps its color
 when the mode flips - only the step changes (500 light, 600 dark).
 
 The set is measured, not eyeballed: every pair is checked for
 lightness band, chroma floor, separation under simulated protanopia
-and deuteranopia, separation for full colour vision, and contrast
+and deuteranopia, separation for full color vision, and contrast
 against the chart surface.
 
 <ChartSchemeSwatchRow scheme={CATEGORICAL_SCHEME} />
@@ -40,9 +40,9 @@ against the chart surface.
 
 Five is not a design preference - it is what these primitive ramps
 separate. A sixth slot collapses against one of the five under
-colour-vision deficiency whichever family it comes from: `fuchsia`
+color-vision deficiency whichever family it comes from: `fuchsia`
 lands on `blue` at ΔE 5.0 under protanopia, `purple` at ΔE 0.7 under
-the commoner deuteranopia, and `sky` fails even for full colour
+the commoner deuteranopia, and `sky` fails even for full color
 vision against `cyan`. Adding one would hand two different series
 the same read.
 
@@ -50,7 +50,7 @@ Notion's categorical scheme stops at five and repeats, for the same
 reason.
 
 **Past the fifth series the scale repeats.** Two series then share a
-colour, which is a real cost and a deliberate one: a repeat is
+color, which is a real cost and a deliberate one: a repeat is
 easier to work around than a generated hue that collides with a
 neighbour, and more honest than a silent neutral.
 

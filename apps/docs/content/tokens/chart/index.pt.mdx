@@ -11,8 +11,10 @@ gradiente sequential aplicado a categorias nominais sugere ordem
 onde não há).
 
 Esta é a **camada 3 de 3**: tokens de chart referenciam
-[primitivos](/tokens/primitive) e variam por tema como os tokens
-[semânticos](/tokens/semantic). O desenho completo está no
+[primitivos](/tokens/primitive) e mudam com o modo light e dark,
+mas, ao contrário dos tokens [semânticos](/tokens/semantic), não
+com o tema (a Status é a única exceção, veja abaixo). O desenho
+completo está no
 [modelo de três camadas](/tokens).
 
 ## Os cinco esquemas
@@ -73,29 +75,33 @@ Veja a página [Chart](/components/data/chart) na seção de UI para ver
 cada tipo renderizado e a matriz inversa (escolha pela pergunta
 do leitor).
 
-## Variação por tema
+## Variação por modo, não por tema
 
-Os tokens chart **mudam por tema**, não só os tokens semânticos da
-UI. Cada um dos seis temas (Default, Claude, ChatGPT, Gemini,
-Perplexity, Mistral) sobrescreve os valores das variáveis chart no
-seletor `[data-theme="<id>"]` correspondente, no light e no dark.
+Os tokens chart **mudam com o modo**, não com o tema. A camada base
+declara cada escala duas vezes: no `:root` para light e no `.dark`
+para dark. A Categorical desce um passo, mais escura, no modo dark;
+a Sequential, a Divergent e os mutes da Comparison invertem, para a
+ponta forte subir em direção ao claro. Nenhum tema declara um token
+de chart, então as escalas são as mesmas em qualquer tema, exceto a
+Status, que aponta para `--success`, `--warning`, `--destructive` e
+`--muted-foreground` e acompanha o tema que os sobrescreve (hoje a
+série neutra no Claude e no Purple). Uma paleta de marca é para a
+chrome, e a identidade de série precisa de matizes que se separem
+(veja [Categorical](/tokens/chart/categorical)).
 
 Isso significa que um gráfico construído com `--color-chart-cat-1`
-**pinta diferente** dependendo do tema ativo no momento do render —
-sem o componente saber. Para o designer, a implicação é:
+pinta as mesmas cores de série em qualquer tema e só troca entre
+light e dark, sem o componente saber. Para o designer, a implicação
+é:
 
 - **Não escolha o esquema chart pelo gosto cromático**, escolha pela
-  forma do dado. A cor exata vai variar.
-- **Verifique acessibilidade em todos os 4 temas + 8 modos
-  (light/dark)**, não só no tema padrão. Um esquema que tem
-  contraste OK no Default pode falhar no Amber.
-- **Os 5 esquemas mantêm a mesma intenção** entre temas — Sequential
-  continua sendo "ordenado por claridade", Status continua sendo
-  "estado semântico", etc. Só a cor concreta muda.
-
-Os Storybook decorators do Gremorie rodam todos os charts em cada tema ×
-modo (8 combinações), e o Chromatic gata visualmente em cada uma —
-quando uma combinação ficar inacessível, o build falha.
+  forma do dado.
+- **Verifique acessibilidade nos dois modos e sobre as superfícies
+  de cada tema**: as séries são as mesmas, mas o fundo atrás do
+  gráfico muda por tema.
+- **Os 5 esquemas mantêm a mesma intenção** nos dois modos:
+  Sequential continua sendo "ordenado por claridade", Status
+  continua sendo "estado semântico", etc. Só a cor concreta muda.
 
 ## Acessibilidade primeiro
 

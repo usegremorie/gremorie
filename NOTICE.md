@@ -34,6 +34,25 @@ The Gremorie adaptations (file structure, registry items, MCP server,
 documentation, Angular ports, and AI-specific primitives) are licensed under
 the MIT License found in `LICENSE`.
 
+### Fumadocs Purple preset (MIT License)
+
+The `purple` theme in `@gremorie/tokens` (`packages/tokens/tokens/themes/purple.json`)
+adapts the colour values of the Purple preset of Fumadocs
+(https://github.com/fuma-nama/fumadocs, `packages/radix-ui/css/purple.css`),
+converted from HSL to OKLCH, with two foregrounds changed for WCAG AA contrast.
+Used under the MIT License, whose permission notice is reproduced above.
+
+Copyright (c) 2023 Fuma
+
+### Build-time tools for `@gremorie/tokens`
+
+- Style Dictionary (Apache-2.0) builds every token output.
+- Material Color Utilities (Apache-2.0) derives the Material 3 roles that the
+  role map marks as derived.
+- Color.js (MIT) converts colours and maps them into the sRGB gamut.
+
+None of them ships inside the published package.
+
 ### Other third-party software
 
 - Radix UI primitives (MIT) - used in many rx-\* packages

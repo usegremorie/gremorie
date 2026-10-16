@@ -21,7 +21,7 @@ describe('parseSemantics', () => {
         t.name === '--background',
     );
     expect(bg).toBeDefined();
-    expect(bg!.value).toEqual({
+    expect(bg?.value).toEqual({
       kind: 'reference',
       targetName: '--color-gray-50',
     });
@@ -32,7 +32,7 @@ describe('parseSemantics', () => {
       (t) =>
         t.theme === 'default' && t.mode === 'light' && t.name === '--primary',
     );
-    expect(primary!.value).toEqual({
+    expect(primary?.value).toEqual({
       kind: 'literal',
       raw: 'oklch(0.5 0.2 30)',
     });
@@ -74,7 +74,7 @@ describe('parseSemantics', () => {
         t.theme === 'default' && t.mode === 'light' && t.name === '--radius',
     );
     expect(radius).toBeDefined();
-    expect(radius!.value).toEqual({ kind: 'literal', raw: '0.625rem' });
+    expect(radius?.value).toEqual({ kind: 'literal', raw: '0.625rem' });
   });
 
   it('handles multi-selector dark variant (`:root.dark, [data-theme="default"].dark`)', () => {

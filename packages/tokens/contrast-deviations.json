@@ -1,0 +1,133 @@
+{
+  "$description": "Pairs under WCAG 2.2 AA that 0.8.0 already shipped. Each one stays until a release changes the value on purpose; test/contrast.test.ts fails on any pair missing here and on any entry that passes again.",
+  "deviations": [
+    {
+      "theme": "default",
+      "mode": "light",
+      "background": "muted",
+      "foreground": "muted-foreground",
+      "ratio": 4.35,
+      "reason": "Base layer since 0.8.0: gray-500 on gray-100. The shadcn default; passes on background and card."
+    },
+    {
+      "theme": "default",
+      "mode": "light",
+      "background": "background",
+      "foreground": "ring",
+      "ratio": 2.48,
+      "reason": "Base layer since 0.8.0: the focus ring is gray-400, the shadcn default, under the 3:1 graphical minimum."
+    },
+    {
+      "theme": "default",
+      "mode": "dark",
+      "background": "destructive",
+      "foreground": "destructive-foreground",
+      "ratio": 2.77,
+      "reason": "Base layer since 0.8.0: gray-50 text on the red-400 fill. The purple theme fixes it with gray-950."
+    },
+    {
+      "theme": "claude",
+      "mode": "light",
+      "background": "primary",
+      "foreground": "primary-foreground",
+      "ratio": 2.99,
+      "reason": "Documented in claude.json: clay-500 under gray-50 mirrors claude.ai's own primary button, for graphical and large-text use."
+    },
+    {
+      "theme": "claude",
+      "mode": "light",
+      "background": "background",
+      "foreground": "ring",
+      "ratio": 2.82,
+      "reason": "The ring is the brand clay-500, as on claude.ai; the brand colour wins over the 3:1 graphical minimum."
+    },
+    {
+      "theme": "claude",
+      "mode": "dark",
+      "background": "destructive",
+      "foreground": "destructive-foreground",
+      "ratio": 2.77,
+      "reason": "Inherited from the base layer since 0.8.0: gray-50 text on the red-400 fill."
+    },
+    {
+      "theme": "chatgpt",
+      "mode": "light",
+      "background": "muted",
+      "foreground": "muted-foreground",
+      "ratio": 4.35,
+      "reason": "Inherited from the base layer since 0.8.0: gray-500 on gray-100."
+    },
+    {
+      "theme": "chatgpt",
+      "mode": "light",
+      "background": "background",
+      "foreground": "ring",
+      "ratio": 2.37,
+      "reason": "Since 0.8.0 the ring is emerald-500 on the gray-50 page, under the 3:1 graphical minimum."
+    },
+    {
+      "theme": "chatgpt",
+      "mode": "dark",
+      "background": "destructive",
+      "foreground": "destructive-foreground",
+      "ratio": 2.77,
+      "reason": "Inherited from the base layer since 0.8.0: gray-50 text on the red-400 fill."
+    },
+    {
+      "theme": "gemini",
+      "mode": "light",
+      "background": "muted",
+      "foreground": "muted-foreground",
+      "ratio": 4.35,
+      "reason": "Inherited from the base layer since 0.8.0: gray-500 on gray-100."
+    },
+    {
+      "theme": "gemini",
+      "mode": "dark",
+      "background": "destructive",
+      "foreground": "destructive-foreground",
+      "ratio": 2.77,
+      "reason": "Inherited from the base layer since 0.8.0: gray-50 text on the red-400 fill."
+    },
+    {
+      "theme": "perplexity",
+      "mode": "light",
+      "background": "muted",
+      "foreground": "muted-foreground",
+      "ratio": 4.35,
+      "reason": "Inherited from the base layer since 0.8.0: gray-500 on gray-100."
+    },
+    {
+      "theme": "perplexity",
+      "mode": "dark",
+      "background": "destructive",
+      "foreground": "destructive-foreground",
+      "ratio": 2.77,
+      "reason": "Inherited from the base layer since 0.8.0: gray-50 text on the red-400 fill."
+    },
+    {
+      "theme": "mistral",
+      "mode": "light",
+      "background": "muted",
+      "foreground": "muted-foreground",
+      "ratio": 4.35,
+      "reason": "Inherited from the base layer since 0.8.0: gray-500 on gray-100."
+    },
+    {
+      "theme": "mistral",
+      "mode": "light",
+      "background": "background",
+      "foreground": "ring",
+      "ratio": 2.77,
+      "reason": "Since 0.8.0 the ring is orange-500 on the gray-50 page, under the 3:1 graphical minimum."
+    },
+    {
+      "theme": "mistral",
+      "mode": "dark",
+      "background": "destructive",
+      "foreground": "destructive-foreground",
+      "ratio": 2.77,
+      "reason": "Inherited from the base layer since 0.8.0: gray-50 text on the red-400 fill."
+    }
+  ]
+}

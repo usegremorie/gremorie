@@ -1,17 +1,75 @@
 {
   "name": "tokens",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/tokens/styles",
+  "sourceRoot": "packages/tokens",
   "projectType": "library",
   "tags": ["scope:lib", "type:tokens"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/dist/packages/tokens"],
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/tokens/**/*",
+        "{projectRoot}/pipeline/**/*",
+        "{projectRoot}/styles/partials/**/*",
+        "{projectRoot}/package.json",
+        "{workspaceRoot}/.prettierrc",
+        "{workspaceRoot}/.prettierignore"
+      ],
+      "outputs": [
+        "{projectRoot}/styles/theme.css",
+        "{projectRoot}/styles/themes",
+        "{projectRoot}/dist"
+      ],
       "options": {
-        "command": "node -e \"const fs=require('fs');fs.cpSync('packages/tokens/styles','dist/packages/tokens/styles',{recursive:true});fs.copyFileSync('packages/tokens/package.json','dist/packages/tokens/package.json');fs.copyFileSync('packages/tokens/README.md','dist/packages/tokens/README.md')\""
+        "cwd": "packages/tokens",
+        "command": "node pipeline/build.ts"
       }
     },
-    "lint": { "executor": "@nx/eslint:lint" }
+    "check-generated": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/tokens/**/*",
+        "{projectRoot}/pipeline/**/*",
+        "{projectRoot}/styles/partials/**/*",
+        "{projectRoot}/package.json",
+        "{workspaceRoot}/.prettierrc",
+        "{workspaceRoot}/.prettierignore",
+        "{projectRoot}/styles/theme.css",
+        "{projectRoot}/styles/themes/**/*"
+      ],
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "node pipeline/build.ts --check"
+      }
+    },
+    "verify-platforms": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "node pipeline/verify-platforms.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["check-generated"]
+    },
+    "test": {
+      "dependsOn": ["typecheck"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "vitest run"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/tokens",
+        "command": "tsc --noEmit"
+      }
+    }
   }
 }

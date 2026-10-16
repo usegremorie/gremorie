@@ -1,12 +1,15 @@
 /**
- * Semantic token data for the six shipped themes.
+ * Semantic token data for the seven shipped themes.
  *
- * Hand-verified extraction from the CURRENT token sources:
+ * A hand-kept copy of the semantic blocks of the generated CSS:
  * - `packages/tokens/styles/theme.css` (base semantic layer: `:root` light
  *   plus `.dark`, consumed as-is by the Default theme)
- * - `packages/tokens/styles/themes/{claude,chatgpt,gemini,perplexity,mistral}.css`
+ * - `packages/tokens/styles/themes/{claude,chatgpt,gemini,perplexity,mistral,purple}.css`
  *   (per-theme override layers: `:root[data-theme='<id>']` and
  *   `:root[data-theme='<id>'].dark`)
+ *
+ * These files are generated from packages/tokens/tokens (DTCG); compare
+ * against them, or against dist/tokens.json.
  *
  * The file mirrors the CSS structure on purpose: a BASE map plus per-theme
  * OVERRIDE maps, so a diff against the css files stays trivial. Tokens a
@@ -18,8 +21,13 @@
  * `:root[data-theme=...]` outranks the bare `.dark` selector. The resolver
  * below reproduces that order.
  *
- * Regenerate by hand whenever theme.css or any themes/*.css changes.
- * Quick check: `git diff packages/tokens/styles/` against this file.
+ * Aliases are recorded resolved: card-foreground and popover-foreground to
+ * the foreground primitive, chart-1..5 (declared as var(--chart-cat-N)) to
+ * the categorical primitives. No theme overrides a chart token.
+ *
+ * Update it by hand whenever theme.css or any themes/*.css changes:
+ * `lib/semantic-color-data.spec.ts` fails on any theme, mode and token whose
+ * value differs from the CSS cascade.
  */
 import { PRIMITIVE_COLOR_RAMPS } from './primitive-color-data';
 
@@ -97,11 +105,11 @@ const BASE_LIGHT: TokenMap = {
   border: 'gray-200',
   input: 'gray-200',
   ring: 'gray-400',
-  'chart-1': 'oklch(0.646 0.222 41.116)',
-  'chart-2': 'oklch(0.6 0.118 184.704)',
-  'chart-3': 'oklch(0.398 0.07 227.392)',
-  'chart-4': 'oklch(0.828 0.189 84.429)',
-  'chart-5': 'oklch(0.769 0.188 70.08)',
+  'chart-1': 'blue-500',
+  'chart-2': 'amber-500',
+  'chart-3': 'green-500',
+  'chart-4': 'cyan-500',
+  'chart-5': 'pink-500',
   sidebar: 'gray-50',
   'sidebar-foreground': 'gray-950',
   'sidebar-primary': 'gray-900',
@@ -137,11 +145,11 @@ const BASE_DARK: TokenMap = {
   border: 'oklch(1 0 0 / 10%)',
   input: 'oklch(1 0 0 / 15%)',
   ring: 'gray-500',
-  'chart-1': 'oklch(0.488 0.243 264.376)',
-  'chart-2': 'oklch(0.696 0.17 162.48)',
-  'chart-3': 'oklch(0.769 0.188 70.08)',
-  'chart-4': 'oklch(0.627 0.265 303.9)',
-  'chart-5': 'oklch(0.645 0.246 16.439)',
+  'chart-1': 'blue-600',
+  'chart-2': 'amber-600',
+  'chart-3': 'green-600',
+  'chart-4': 'cyan-600',
+  'chart-5': 'pink-600',
   sidebar: 'gray-900',
   'sidebar-foreground': 'gray-50',
   'sidebar-primary': 'gray-100',
@@ -214,11 +222,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-accent-foreground': 'clay-900',
       'sidebar-border': 'oklch(0.9 0.014 78)',
       'sidebar-ring': 'clay-500',
-      'chart-1': 'clay-500',
-      'chart-2': 'clay-300',
-      'chart-3': 'clay-700',
-      'chart-4': 'taupe-400',
-      'chart-5': 'amber-400',
     },
     dark: {
       background: 'oklch(0.235 0.006 100)',
@@ -246,11 +249,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-accent-foreground': 'gray-50',
       'sidebar-border': 'oklch(1 0 0 / 10%)',
       'sidebar-ring': 'clay-400',
-      'chart-1': 'clay-400',
-      'chart-2': 'clay-200',
-      'chart-3': 'clay-600',
-      'chart-4': 'taupe-400',
-      'chart-5': 'amber-400',
     },
   },
   {
@@ -271,11 +269,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'emerald-700',
       'sidebar-primary-foreground': 'gray-50',
       'sidebar-ring': 'emerald-500',
-      'chart-1': 'emerald-500',
-      'chart-2': 'emerald-300',
-      'chart-3': 'teal-600',
-      'chart-4': 'green-400',
-      'chart-5': 'cyan-400',
     },
     dark: {
       background: 'oklch(0.248 0 0)',
@@ -289,11 +282,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'emerald-400',
       'sidebar-primary-foreground': 'gray-950',
       'sidebar-ring': 'emerald-400',
-      'chart-1': 'emerald-400',
-      'chart-2': 'emerald-200',
-      'chart-3': 'teal-400',
-      'chart-4': 'green-400',
-      'chart-5': 'cyan-400',
     },
   },
   {
@@ -302,8 +290,8 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
     selector: "[data-theme='gemini']",
     radius: '1rem',
     description: {
-      en: 'Google blue with a blue-to-purple chart ramp and the roundest radius of the set. Dark mode sits on the cool graphite of the real product.',
-      pt: 'Azul Google com rampa de chart azul-para-roxo e o radius mais arredondado do conjunto. O dark mode usa o grafite frio do produto real.',
+      en: 'Google blue with a blue-to-purple brand ramp and the roundest radius of the set. Dark mode sits on the cool graphite of the real product.',
+      pt: 'Azul Google com rampa de marca azul-para-roxo e o radius mais arredondado do conjunto. O dark mode usa o grafite frio do produto real.',
     },
     light: {
       primary: 'oklch(0.55 0.19 258)',
@@ -314,11 +302,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'oklch(0.55 0.19 258)',
       'sidebar-primary-foreground': 'gray-50',
       'sidebar-ring': 'oklch(0.63 0.18 260)',
-      'chart-1': 'oklch(0.63 0.18 260)',
-      'chart-2': 'oklch(0.78 0.11 258)',
-      'chart-3': 'oklch(0.629 0.136 304)',
-      'chart-4': 'oklch(0.78 0.09 304)',
-      'chart-5': 'oklch(0.53 0.2 276)',
     },
     dark: {
       background: 'oklch(0.239 0.002 248)',
@@ -332,11 +315,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'oklch(0.75 0.11 258)',
       'sidebar-primary-foreground': 'gray-950',
       'sidebar-ring': 'oklch(0.75 0.11 258)',
-      'chart-1': 'oklch(0.75 0.11 258)',
-      'chart-2': 'oklch(0.85 0.07 255)',
-      'chart-3': 'oklch(0.72 0.12 304)',
-      'chart-4': 'oklch(0.84 0.06 300)',
-      'chart-5': 'oklch(0.68 0.14 276)',
     },
   },
   {
@@ -357,11 +335,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'oklch(0.553 0.086 208.5)',
       'sidebar-primary-foreground': 'gray-0',
       'sidebar-ring': 'oklch(0.553 0.086 208.5)',
-      'chart-1': 'teal-600',
-      'chart-2': 'teal-300',
-      'chart-3': 'cyan-600',
-      'chart-4': 'sky-400',
-      'chart-5': 'emerald-400',
     },
     dark: {
       background: 'oklch(0.192 0.02 195.6)',
@@ -375,11 +348,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'oklch(0.72 0.11 205)',
       'sidebar-primary-foreground': 'gray-950',
       'sidebar-ring': 'oklch(0.72 0.11 205)',
-      'chart-1': 'teal-400',
-      'chart-2': 'teal-200',
-      'chart-3': 'cyan-400',
-      'chart-4': 'sky-400',
-      'chart-5': 'emerald-400',
     },
   },
   {
@@ -400,11 +368,6 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'orange-600',
       'sidebar-primary-foreground': 'gray-950',
       'sidebar-ring': 'orange-500',
-      'chart-1': 'orange-500',
-      'chart-2': 'orange-300',
-      'chart-3': 'orange-700',
-      'chart-4': 'amber-400',
-      'chart-5': 'red-400',
     },
     dark: {
       primary: 'orange-400',
@@ -415,11 +378,71 @@ export const SEMANTIC_THEMES: SemanticThemeSource[] = [
       'sidebar-primary': 'orange-400',
       'sidebar-primary-foreground': 'gray-950',
       'sidebar-ring': 'orange-400',
-      'chart-1': 'orange-400',
-      'chart-2': 'orange-200',
-      'chart-3': 'orange-600',
-      'chart-4': 'amber-400',
-      'chart-5': 'red-400',
+    },
+  },
+  {
+    id: 'purple',
+    name: 'Purple',
+    selector: "[data-theme='purple']",
+    radius: '0.625rem',
+    description: {
+      en: 'Violet on lavender surfaces, adapted from the Fumadocs Purple preset (MIT). Two pairs are corrected for WCAG AA: a near-white primary foreground in light mode and a near-black destructive foreground in dark mode.',
+      pt: 'Violeta sobre superfícies lavanda, adaptado do preset Purple do Fumadocs (MIT). Dois pares foram corrigidos para WCAG AA: primary-foreground quase branco no light e destructive-foreground quase preto no dark.',
+    },
+    light: {
+      background: 'oklch(0.9491 0.0278 298.05)',
+      foreground: 'oklch(0.3035 0.1296 288.37)',
+      card: 'oklch(0.9142 0.0337 297.92)',
+      'card-foreground': 'oklch(0.2481 0.1513 278.88)',
+      popover: 'oklch(0.9572 0.0166 298.26)',
+      'popover-foreground': 'oklch(0.2481 0.1513 278.88)',
+      primary: 'oklch(0.5379 0.2912 295.26)',
+      'primary-foreground': 'oklch(0.9764 0.0145 308.3)',
+      secondary: 'oklch(0.8983 0.0444 307.91)',
+      'secondary-foreground': 'oklch(0.1783 0.0597 291.44)',
+      muted: 'oklch(0.9357 0.0251 298.1)',
+      'muted-foreground': 'oklch(0.4838 0.1888 289.71)',
+      accent: 'oklch(0.8876 0.0356 308.02)',
+      'accent-foreground': 'oklch(0.2757 0.1499 296.78)',
+      border: 'oklch(0.8116 0.0606 307.63 / 0.5)',
+      input: 'oklch(0.8116 0.0606 307.63 / 0.5)',
+      ring: 'oklch(0.5379 0.2912 295.26)',
+      sidebar: 'oklch(0.9491 0.0278 298.05)',
+      'sidebar-foreground': 'oklch(0.3035 0.1296 288.37)',
+      'sidebar-primary': 'oklch(0.5379 0.2912 295.26)',
+      'sidebar-primary-foreground': 'oklch(0.9764 0.0145 308.3)',
+      'sidebar-accent': 'oklch(0.8876 0.0356 308.02)',
+      'sidebar-accent-foreground': 'oklch(0.2757 0.1499 296.78)',
+      'sidebar-border': 'oklch(0.8116 0.0606 307.63 / 0.5)',
+      'sidebar-ring': 'oklch(0.5379 0.2912 295.26)',
+    },
+    dark: {
+      background: 'oklch(0.1605 0.013 297.13)',
+      foreground: 'oklch(0.8926 0.0424 297.73)',
+      card: 'oklch(0.1992 0.0236 296.44)',
+      'card-foreground': 'oklch(0.8926 0.0424 297.73)',
+      popover: 'oklch(0.1592 0.015 296.89)',
+      'popover-foreground': 'oklch(0.8926 0.0424 297.73)',
+      primary: 'oklch(0.8366 0.1046 307.06)',
+      'primary-foreground': 'oklch(0.1434 0.0399 294.09)',
+      secondary: 'oklch(0.2979 0.0443 306.78)',
+      'secondary-foreground': 'oklch(0.8926 0.0424 297.73)',
+      muted: 'oklch(0.1992 0.0236 296.44)',
+      'muted-foreground': 'oklch(0.7413 0.0922 296.32)',
+      accent: 'oklch(0.3093 0.0463 295.83)',
+      'accent-foreground': 'oklch(0.8687 0.0418 307.93)',
+      'destructive-foreground': 'gray-950',
+      border: 'oklch(0.4403 0.1603 303.37 / 0.3)',
+      input: 'oklch(0.4403 0.1603 303.37 / 0.3)',
+      ring: 'oklch(0.8366 0.1046 307.06)',
+      sidebar: 'oklch(0.1605 0.013 297.13)',
+      'sidebar-foreground': 'oklch(0.8926 0.0424 297.73)',
+      'sidebar-primary': 'oklch(0.8366 0.1046 307.06)',
+      'sidebar-primary-foreground': 'oklch(0.1434 0.0399 294.09)',
+      'sidebar-accent': 'oklch(0.3093 0.0463 295.83)',
+      'sidebar-accent-foreground': 'oklch(0.8687 0.0418 307.93)',
+      'sidebar-border': 'oklch(0.4403 0.1603 303.37 / 0.3)',
+      'sidebar-ring': 'oklch(0.8366 0.1046 307.06)',
     },
   },
 ];

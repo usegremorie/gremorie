@@ -6,13 +6,18 @@ export default [
   ...nx.configs['flat/base'],
   ...baseConfig,
   {
-    // CSS-only package: nothing for ESLint to lint except the manifests.
+    // Build-time code (pipeline, tests) is not part of the published surface.
     files: ['**/*.json'],
     rules: {
       '@nx/dependency-checks': [
         'error',
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
+          ignoredFiles: [
+            '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/pipeline/**',
+            '{projectRoot}/test/**',
+            '{projectRoot}/vitest.config.ts',
+          ],
         },
       ],
     },

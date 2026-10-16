@@ -1,0 +1,106 @@
+---
+title: Platforms
+description: The same Gremorie tokens as resolved JSON, TypeScript, Kotlin for Jetpack Compose and Swift for SwiftUI.
+---
+
+The CSS that the React and Angular editions import is one output of
+`@gremorie/tokens`. The tokens themselves live as **W3C DTCG 2025.10 JSON**,
+and the same build writes them for every platform that cannot read CSS.
+
+| Output     | Import                                             | What it holds                                                           |
+| ---------- | -------------------------------------------------- | ----------------------------------------------------------------------- |
+| CSS        | `@gremorie/tokens/theme.css`                       | Primitives, semantics, the seven themes, light and dark                 |
+| JSON       | `@gremorie/tokens/tokens.json`                     | Every theme and mode, resolved: colors, Material 3 roles, radius, fonts |
+| TypeScript | `import { themes } from '@gremorie/tokens'`        | The same data, typed (`ThemeName`, `M3Role`, `ThemeTokens`)             |
+| Kotlin     | `@gremorie/tokens/compose/GremorieColorSchemes.kt` | A complete Material 3 `ColorScheme` per theme and mode                  |
+| Swift      | `@gremorie/tokens/swift/GremorieTokens.swift`      | The semantic colors per theme and mode for SwiftUI                      |
+
+Every output covers the same seven themes: Default, Claude, ChatGPT, Gemini,
+Perplexity, Mistral and Purple, the violet theme adapted from the Fumadocs
+Purple preset.
+
+## TypeScript and React Native
+
+```ts
+import { themes } from '@gremorie/tokens';
+
+const { colors, radius } = themes.purple.dark;
+const style = {
+  backgroundColor: colors.background.hex,
+  color: colors.foreground.hex,
+  borderRadius: radius.lg,
+};
+```
+
+Color names are the semantic tokens in camelCase: `--primary-foreground`
+becomes `primaryForeground`. Each color carries `hex` (sRGB) and `oklch`
+(the source value). Radius is in pixels. Besides `themes`, `index.js` and
+`index.d.ts` export `themeNames`, `m3Roles` (the 48 Material 3 roles in
+Compose order), `m3Sources` (the origin of each role) and `version`.
+`tokens.json` holds the same data for tools that read JSON.
+
+Node runs ES modules and reads JSON only with an import attribute, so import
+`tokens.json` with `with { type: 'json' }` (bundlers accept it with or
+without):
+
+```ts
+import tokens from '@gremorie/tokens/tokens.json' with { type: 'json' };
+```
+
+TypeScript resolves the package's subpath exports (`tokens.json`, `compose/*`,
+`swift/*`) only when `moduleResolution` is `node16`, `nodenext` or `bundler`;
+importing the JSON also needs `resolveJsonModule`.
+
+## Jetpack Compose
+
+Copy `GremorieColorSchemes.kt` (package `com.gremorie.tokens`) into your module
+and pass a scheme to `MaterialTheme`:
+
+```kotlin
+MaterialTheme(colorScheme = GremorieColorSchemes.of("purple", dark = isSystemInDarkTheme())) {
+    App()
+}
+```
+
+Every scheme sets all 48 roles of the current Compose `ColorScheme`. See
+[Material 3](/tokens/platforms/material) for where each role comes from.
+
+<Callout type="warn">
+  **Requires `androidx.compose.material3:material3` 1.4.0 or later.** The
+  schemes pass the fixed accent roles (`primaryFixed`, `onPrimaryFixed` and the
+  rest), which `lightColorScheme` and `darkColorScheme` accept from 1.4.0
+  (stable since September 24, 2025; first shipped in 1.4.0-alpha15, change
+  `Iad0ee`). With an older Material 3 the file does not compile.
+</Callout>
+
+## SwiftUI
+
+```swift
+let colors = GremorieTheme.purple.colors(dark: colorScheme == .dark)
+Text("Hello").foregroundStyle(colors.foreground).background(colors.background)
+```
+
+## Color gamut
+
+The primitives are OKLCH, and some Tailwind v4 colors sit slightly outside
+sRGB. Hex, Kotlin and Swift carry sRGB only, so those colors are mapped into
+the gamut with the CSS Color 4 algorithm: chroma drops at constant lightness
+and hue until the color fits, which keeps it recognizably the same color.
+The CSS keeps the original OKLCH, so wide-gamut screens still get it.
+
+## Editing tokens
+
+Every output is generated, so never edit `styles/` or `dist/` by hand. Edit
+the DTCG JSON in `packages/tokens/tokens/` (or use the visual editor in
+`apps/tokens`) and run `nx build tokens`:
+
+| Source file                        | What it holds                                               |
+| ---------------------------------- | ----------------------------------------------------------- |
+| `primitive/*.json`                 | Palettes, radius, fonts, shadows, spacing                   |
+| `semantic/light.json`, `dark.json` | The base semantic layer, one file per mode                  |
+| `themes/<id>.json`                 | One theme's overrides, in a `light` and a `dark` group      |
+| `platform/m3/roles.json`           | The semantic token each Material 3 role takes, or `derived` |
+
+Every output, CSS included, is regenerated. A test keeps the CSS equal to the
+0.8.0 values unless a change is listed, with its reason, in
+`reference/intentional-changes.json`.

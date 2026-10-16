@@ -1,0 +1,73 @@
+/*
+ * Purple theme: the Purple preset of Fumadocs (MIT, see NOTICE.md), converted
+ * from HSL to OKLCH. Activate with data-theme="purple" on the root element. Two
+ * pairs differ from the preset on purpose: light primary-foreground is hsl(270
+ * 100% 98%) instead of hsl(270 100% 20%), which sat at 2.6:1 on the primary and
+ * failed the 4.5:1 text minimum; dark destructive-foreground is gray-950,
+ * because the base pair (red-400 under gray-50) sits at 2.77:1. The preset has
+ * no sidebar or input colours, so those follow its own surfaces.
+ *
+ * GENERATED FILE from tokens/themes/purple.json by nx build tokens. Edit the
+ * JSON, never this file.
+ */
+
+:root[data-theme='purple'] {
+  --background: oklch(0.9491 0.0278 298.05);
+  --foreground: oklch(0.3035 0.1296 288.37);
+  --card: oklch(0.9142 0.0337 297.92);
+  --card-foreground: oklch(0.2481 0.1513 278.88);
+  --popover: oklch(0.9572 0.0166 298.26);
+  --popover-foreground: oklch(0.2481 0.1513 278.88);
+  --primary: oklch(0.5379 0.2912 295.26);
+
+  /*
+   * hsl(270 100% 98%), not the preset's hsl(270 100% 20%): 5.6:1 on the primary
+   * instead of 2.6:1.
+   */
+  --primary-foreground: oklch(0.9764 0.0145 308.3);
+  --secondary: oklch(0.8983 0.0444 307.91);
+  --secondary-foreground: oklch(0.1783 0.0597 291.44);
+  --muted: oklch(0.9357 0.0251 298.1);
+  --muted-foreground: oklch(0.4838 0.1888 289.71);
+  --accent: oklch(0.8876 0.0356 308.02);
+  --accent-foreground: oklch(0.2757 0.1499 296.78);
+  --border: oklch(0.8116 0.0606 307.63 / 0.5);
+  --input: var(--border);
+  --ring: var(--primary);
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+/*
+ * No semantic aliases here, only colour values (one is the gray-950 primitive):
+ * the aliases of the light block (input, ring, sidebar) resolve against these
+ * at use time.
+ */
+:root[data-theme='purple'].dark {
+  --background: oklch(0.1605 0.013 297.13);
+  --foreground: oklch(0.8926 0.0424 297.73);
+  --card: oklch(0.1992 0.0236 296.44);
+  --card-foreground: oklch(0.8926 0.0424 297.73);
+  --popover: oklch(0.1592 0.015 296.89);
+  --popover-foreground: oklch(0.8926 0.0424 297.73);
+  --primary: oklch(0.8366 0.1046 307.06);
+  --primary-foreground: oklch(0.1434 0.0399 294.09);
+  --secondary: oklch(0.2979 0.0443 306.78);
+  --secondary-foreground: oklch(0.8926 0.0424 297.73);
+  --muted: oklch(0.1992 0.0236 296.44);
+  --muted-foreground: oklch(0.7413 0.0922 296.32);
+  --accent: oklch(0.3093 0.0463 295.83);
+  --accent-foreground: oklch(0.8687 0.0418 307.93);
+  --border: oklch(0.4403 0.1603 303.37 / 0.3);
+
+  /*
+   * gray-950, not the base gray-50: 6.9:1 on red-400 instead of 2.77:1.
+   */
+  --destructive-foreground: var(--color-gray-950);
+}

@@ -2,7 +2,7 @@
   "name": "@gremorie/token-engine",
   "version": "0.0.0",
   "private": true,
-  "description": "Framework-agnostic core for the Tokens visual editor — CSS parsing, cva extraction, token graph, comment-preserving serializer, and Hono CLI runner.",
+  "description": "Framework-agnostic core for the Tokens visual editor: CSS parsing, cva extraction, token graph, comment-preserving serializer, and Hono CLI runner.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -37,9 +37,10 @@
   "dependencies": {
     "@hono/node-server": "^2.0.10",
     "hono": "^4.13.7",
+    "open": "^10.1.0",
     "postcss": "^8.5.26",
-    "ts-morph": "^25.0.0",
-    "open": "^10.1.0"
+    "prettier": "3.9.5",
+    "ts-morph": "^25.0.0"
   },
   "devDependencies": {
     "@gremorie/eslint-config": "*",

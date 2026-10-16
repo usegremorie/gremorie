@@ -1,32 +1,62 @@
 #!/usr/bin/env node
-import { resolve } from 'node:path';
+import { execFile } from 'node:child_process';
+import { join, resolve } from 'node:path';
+import { promisify } from 'node:util';
 import { serve } from '@hono/node-server';
 import open from 'open';
 import { createApp } from '../dist/server/app.js';
-import { detectRegistryProject } from '../dist/project/detect.js';
+import {
+  detectDtcgProject,
+  detectRegistryProject,
+} from '../dist/project/detect.js';
 
-const target = process.argv[2] ?? process.cwd();
+const args = process.argv.slice(2);
+const noOpen = args.includes('--no-open');
+const target = args.find((a) => !a.startsWith('--')) ?? process.cwd();
 const projectRoot = resolve(target);
-const project = detectRegistryProject(projectRoot);
+const run = promisify(execFile);
 
-if (!project) {
-  console.error(`x Not a registry-compatible project: ${projectRoot}`);
-  console.error('  Looking for components.json with tailwind.css path.');
-  process.exit(1);
+let app;
+const dtcg = detectDtcgProject(projectRoot);
+if (dtcg) {
+  app = createApp({
+    projectRoot: dtcg.root,
+    source: 'dtcg',
+    tokensDir: dtcg.tokensDir,
+    rebuild: async () => {
+      await run(
+        process.execPath,
+        [join(dtcg.packageDir, 'pipeline', 'build.ts')],
+        { cwd: dtcg.packageDir },
+      );
+    },
+  });
+  console.log(`> Tokens - DTCG source: ${dtcg.tokensDir}`);
+} else {
+  const project = detectRegistryProject(projectRoot);
+  if (!project) {
+    console.error(
+      `x Not a Gremorie or registry-compatible project: ${projectRoot}`,
+    );
+    console.error('  Looking for packages/tokens/tokens or components.json.');
+    process.exit(1);
+  }
+  app = createApp({
+    projectRoot: project.root,
+    globalsCss: project.globalsCss,
+  });
+  console.log(`> Tokens - serving project: ${project.root}`);
 }
 
-const app = createApp({
-  projectRoot: project.root,
-  globalsCss: project.globalsCss,
-});
-
 const PORT = 5024;
-serve({ fetch: app.fetch, port: PORT }, (info) => {
-  const url = `http://localhost:5023/`;
-  console.log(`> Tokens - serving project: ${project.root}`);
-  console.log(`> Engine API: http://localhost:${info.port}`);
+// Loopback only: the API writes files and runs a build, so it must not be
+// reachable from the network.
+serve({ fetch: app.fetch, hostname: '127.0.0.1', port: PORT }, (info) => {
+  const url = 'http://localhost:5023/';
+  console.log(`> Engine API: http://127.0.0.1:${info.port}`);
   console.log(
-    `> Editor UI: ${url} (run \`pnpm dev:tokens\` in another terminal)`,
+    `> Editor UI: ${url} (run \`nx serve tokens-atlas\` in another terminal)`,
   );
-  open(url).catch(() => {});
+  // Opening a browser is a convenience; the server runs either way.
+  if (!noOpen) open(url).catch(() => undefined);
 });

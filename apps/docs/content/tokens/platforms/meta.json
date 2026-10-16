@@ -1,0 +1,6 @@
+{
+  "title": "Platforms",
+  "icon": "Smartphone",
+  "description": "The same tokens as JSON, TypeScript, Kotlin and Swift.",
+  "pages": ["index", "material"]
+}

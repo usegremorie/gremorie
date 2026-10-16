@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/tokens",
   "version": "0.8.0",
-  "description": "Framework-free design tokens for Gremorie: primitives, semantics, and themes as plain CSS. Consumed by the React and Angular editions.",
+  "description": "Framework-free design tokens for Gremorie, from one DTCG source: CSS for the React and Angular editions, plus resolved JSON, TypeScript, Kotlin (Material 3 ColorScheme) and Swift.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,14 +17,31 @@
     "gremorie"
   ],
   "type": "module",
+  "types": "./dist/index.d.ts",
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./theme.css": "./styles/theme.css",
-    "./themes/*": "./styles/themes/*"
+    "./themes/*": "./styles/themes/*",
+    "./tokens.json": "./dist/tokens.json",
+    "./compose/*": "./dist/compose/*",
+    "./swift/*": "./dist/swift/*",
+    "./package.json": "./package.json"
   },
   "files": [
-    "styles",
-    "README.md"
+    "styles/theme.css",
+    "styles/themes",
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE.md"
   ],
+  "scripts": {
+    "prepack": "node -e \"for (const f of ['LICENSE', 'NOTICE.md']) require('node:fs').copyFileSync('../../' + f, f)\"",
+    "postpack": "node -e \"for (const f of ['LICENSE', 'NOTICE.md']) require('node:fs').rmSync(f, { force: true })\""
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -34,5 +51,13 @@
   "bugs": {
     "url": "https://github.com/usegremorie/gremorie/issues"
   },
-  "author": "Gremorie (https://github.com/usegremorie)"
+  "author": "Gremorie (https://github.com/usegremorie)",
+  "devDependencies": {
+    "@material/material-color-utilities": "0.3.0",
+    "@types/node": "22.20.1",
+    "colorjs.io": "0.5.2",
+    "postcss": "8.5.28",
+    "prettier": "3.9.5",
+    "style-dictionary": "5.6.1"
+  }
 }

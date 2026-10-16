@@ -4,8 +4,6 @@ import type {
   PrimitiveToken,
   SemanticToken,
   TokenReference,
-  ThemeId,
-  ColorMode,
 } from './types.js';
 
 describe('token graph types', () => {
