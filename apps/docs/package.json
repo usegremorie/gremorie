@@ -25,7 +25,7 @@
     "@gremorie/rx-navigation": "*",
     "@gremorie/rx-overlays": "*",
     "@gremorie/tokens": "*",
-    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@modelcontextprotocol/sdk": "^1.31.0",
     "@vercel/analytics": "^2.0.1",
     "@xyflow/react": "^12.10.2",
     "ai": "^6.0.177",
