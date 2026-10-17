@@ -9,6 +9,7 @@ import { item } from './item.contract';
 import { mediaRangePlayer } from './media-range-player.contract';
 import { separator } from './separator.contract';
 import { table } from './table.contract';
+import { wordTimeline } from './word-timeline.contract';
 
 /** All `display` category contracts. */
 export const DISPLAY_CONTRACTS = [
@@ -23,4 +24,5 @@ export const DISPLAY_CONTRACTS = [
   mediaRangePlayer,
   separator,
   table,
+  wordTimeline,
 ];

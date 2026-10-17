@@ -9,3 +9,4 @@ export * from './lib/item';
 export * from './lib/media-range-player';
 export * from './lib/separator';
 export * from './lib/table';
+export * from './lib/word-timeline';
