@@ -6,6 +6,7 @@ import { carousel } from './carousel.contract';
 import { collapsible } from './collapsible.contract';
 import { featuredIcon } from './featured-icon.contract';
 import { item } from './item.contract';
+import { mediaRangePlayer } from './media-range-player.contract';
 import { separator } from './separator.contract';
 import { table } from './table.contract';
 
@@ -19,6 +20,7 @@ export const DISPLAY_CONTRACTS = [
   collapsible,
   featuredIcon,
   item,
+  mediaRangePlayer,
   separator,
   table,
 ];

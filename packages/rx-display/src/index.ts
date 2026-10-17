@@ -6,5 +6,6 @@ export * from './lib/carousel';
 export * from './lib/collapsible';
 export * from './lib/featured-icon';
 export * from './lib/item';
+export * from './lib/media-range-player';
 export * from './lib/separator';
 export * from './lib/table';
