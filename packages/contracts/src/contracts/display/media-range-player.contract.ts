@@ -36,9 +36,15 @@ export const mediaRangePlayer = defineContract({
       desc: 'What to fetch before the first play or seek (none for lists).',
     },
     {
+      name: 'controls',
+      type: 'boolean',
+      default: false,
+      desc: 'Also show the native video controls (keyboard seeking, volume, fullscreen).',
+    },
+    {
       name: 'labels',
       type: 'Partial<MediaRangePlayerLabels>',
-      desc: 'Button and label text (defaults in English).',
+      desc: 'Button, time label and video aria-label text (defaults in English).',
     },
     {
       name: 'onTimeUpdate',
@@ -70,6 +76,6 @@ export const mediaRangePlayer = defineContract({
   preview: { rx: 'layout-display-display-mediarangeplayer--workbench' },
   tag: { rx: 'MediaRangePlayer', ng: 'gr-media-range-player' },
   // `range` is a tuple, not a scalar control value, so it stays in the story args.
-  example: { src: '', context: 1 },
+  example: { src: '', context: 1, controls: false },
   figma: { nodeId: null },
 });

@@ -29,8 +29,24 @@ import { MediaRangePlayer } from './media-range-player';
  * | `range` | `[number, number]` | required | Clip in/out in seconds. |
  * | `context` | `number` | `30` | Seconds around the clip. |
  * | `preload` | `'none' \| 'metadata'` | `'metadata'` | What to fetch before the first play or seek. |
- * | `labels` | `Partial<MediaRangePlayerLabels>` | English | Button and label text. |
+ * | `controls` | `boolean` | `false` | Also show the native video controls (keyboard seeking, volume, fullscreen). |
+ * | `labels` | `Partial<MediaRangePlayerLabels>` | English | Button, time label and video `aria-label` text. |
  * | `onTimeUpdate` | `(t: number) => void` | - | Current time while playing. |
+ *
+ * ## Ref handle
+ *
+ * | Method | Description |
+ * | --- | --- |
+ * | `seek(t)` | Move to `t` seconds; cancels a pending stop point. Works before the metadata loads. |
+ * | `playRange(from, to)` | Play from `from` and pause exactly at `to`. |
+ * | `pause()` | Pause; cancels a pending stop point. |
+ *
+ * ## Accessibility
+ *
+ * The clip controls are real buttons (`type="button"`) reachable with Tab. The
+ * track is decorative (`aria-hidden`); the time label carries the same
+ * information as text. Pass `controls` when users need keyboard seeking,
+ * volume or fullscreen on the video itself.
  *
  * ## Variables (design tokens)
  *
@@ -49,6 +65,7 @@ const meta = {
   argTypes: {
     context: { control: { type: 'number', min: 0, max: 60, step: 1 } },
     preload: { control: 'inline-radio', options: ['metadata', 'none'] },
+    controls: { control: 'boolean' },
   },
 } satisfies Meta<typeof MediaRangePlayer>;
 

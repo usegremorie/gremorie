@@ -15,8 +15,11 @@ import {
 } from './media-range-player.logic';
 
 export interface MediaRangePlayerHandle {
+  /** Move the playhead to `t` (seconds) and cancel any pending stop point. */
   seek(t: number): void;
+  /** Play from `from` and pause exactly at `to` (seconds). */
   playRange(from: number, to: number): void;
+  /** Pause and cancel any pending stop point. */
   pause(): void;
 }
 
@@ -25,6 +28,8 @@ export interface MediaRangePlayerLabels {
   playContext: string;
   pause: string;
   clip: string;
+  /** Accessible name of the video element. */
+  video: string;
 }
 
 const DEFAULT_LABELS: MediaRangePlayerLabels = {
@@ -32,6 +37,7 @@ const DEFAULT_LABELS: MediaRangePlayerLabels = {
   playContext: 'Play with context',
   pause: 'Pause',
   clip: 'clip',
+  video: 'Clip preview',
 };
 
 export interface MediaRangePlayerProps extends Omit<
@@ -46,6 +52,11 @@ export interface MediaRangePlayerProps extends Omit<
   context?: number;
   /** What to fetch before the first play or seek. Use 'none' when a page shows many players. */
   preload?: 'none' | 'metadata';
+  /**
+   * Show the browser's native video controls (keyboard seeking, volume,
+   * fullscreen) in addition to the clip controls.
+   */
+  controls?: boolean;
   labels?: Partial<MediaRangePlayerLabels>;
   onTimeUpdate?: (t: number) => void;
 }
@@ -66,6 +77,7 @@ export const MediaRangePlayer = React.forwardRef<
     range,
     context = 30,
     preload = 'metadata',
+    controls = false,
     labels,
     onTimeUpdate,
     className,
@@ -74,33 +86,102 @@ export const MediaRangePlayer = React.forwardRef<
   ref,
 ) {
   const video = React.useRef<HTMLVideoElement>(null);
+  /** Where playback must stop, or null for free play. */
   const stopAt = React.useRef<number | null>(null);
+  /** A position requested before the metadata arrived; applied on loadedmetadata. */
+  const pendingSeek = React.useRef<number | null>(null);
+  /** Active requestAnimationFrame id of the stop watcher. */
+  const frame = React.useRef<number | null>(null);
   const [time, setTime] = React.useState(range[0]);
   const [duration, setDuration] = React.useState<number | undefined>(undefined);
   const [playing, setPlaying] = React.useState(false);
+  /** Latest onTimeUpdate, so the stop watcher reports without re-subscribing. */
+  const onTime = React.useRef(onTimeUpdate);
+  React.useEffect(() => {
+    onTime.current = onTimeUpdate;
+  });
   const l = { ...DEFAULT_LABELS, ...labels };
   const win = contextWindow(range, context, duration);
   const left = toPercent(range[0], win);
-  const width = toPercent(range[1], win) - left;
+  const width = Math.max(0, toPercent(range[1], win) - left);
 
-  const playRange = React.useCallback((from: number, to: number) => {
+  const stopWatch = React.useCallback(() => {
+    if (frame.current !== null) {
+      cancelAnimationFrame(frame.current);
+      frame.current = null;
+    }
+  }, []);
+
+  /** Pause at the stop point itself, not at the first event after it. */
+  const checkStop = React.useCallback(
+    (v: HTMLVideoElement): boolean => {
+      const to = stopAt.current;
+      if (to === null || !shouldStop(v.currentTime, to)) return false;
+      stopAt.current = null;
+      stopWatch();
+      v.pause();
+      v.currentTime = to;
+      setTime(to);
+      onTime.current?.(to);
+      return true;
+    },
+    [stopWatch],
+  );
+
+  const startWatch = React.useCallback(() => {
+    stopWatch();
+    if (typeof requestAnimationFrame !== 'function') return;
+    const tick = () => {
+      frame.current = null;
+      const v = video.current;
+      if (!v || v.paused || stopAt.current === null) return;
+      if (!checkStop(v)) frame.current = requestAnimationFrame(tick);
+    };
+    frame.current = requestAnimationFrame(tick);
+  }, [checkStop, stopWatch]);
+
+  const position = React.useCallback((t: number) => {
     const v = video.current;
     if (!v) return;
-    v.currentTime = from;
-    stopAt.current = to;
-    void v.play();
+    if (v.readyState >= 1) {
+      pendingSeek.current = null;
+      v.currentTime = t;
+    } else {
+      pendingSeek.current = t;
+    }
+    setTime(t);
   }, []);
+
+  const playRange = React.useCallback(
+    (from: number, to: number) => {
+      const v = video.current;
+      if (!v) return;
+      stopAt.current = to;
+      position(from);
+      const p = v.play();
+      if (p) p.catch(() => undefined);
+    },
+    [position],
+  );
+
+  const pause = React.useCallback(() => {
+    stopAt.current = null;
+    stopWatch();
+    video.current?.pause();
+  }, [stopWatch]);
 
   React.useImperativeHandle(
     ref,
     () => ({
       seek: (t: number) => {
-        if (video.current) video.current.currentTime = t;
+        stopAt.current = null;
+        stopWatch();
+        position(t);
       },
       playRange,
-      pause: () => video.current?.pause(),
+      pause,
     }),
-    [playRange],
+    [pause, playRange, position, stopWatch],
   );
 
   const start = range[0];
@@ -108,6 +189,8 @@ export const MediaRangePlayer = React.forwardRef<
     const v = video.current;
     if (v && v.readyState >= 1) v.currentTime = start;
   }, [start]);
+
+  React.useEffect(() => stopWatch, [stopWatch]);
 
   return (
     <div
@@ -119,26 +202,37 @@ export const MediaRangePlayer = React.forwardRef<
         ref={video}
         src={src}
         preload={preload}
+        controls={controls}
+        aria-label={l.video}
         playsInline
         className="aspect-video w-full rounded-md bg-muted"
         onLoadedMetadata={(e) => {
-          setDuration(e.currentTarget.duration);
-          e.currentTarget.currentTime = start;
+          const v = e.currentTarget;
+          setDuration(v.duration);
+          // Honour a seek or playRange issued before the metadata arrived
+          // (e.g. with preload="none"); otherwise park at the clip start.
+          const t = pendingSeek.current ?? start;
+          pendingSeek.current = null;
+          v.currentTime = t;
         }}
         onTimeUpdate={(e) => {
-          const t = e.currentTarget.currentTime;
-          setTime(t);
-          onTimeUpdate?.(t);
-          if (shouldStop(t, stopAt.current)) {
-            e.currentTarget.pause();
-            stopAt.current = null;
-          }
+          const v = e.currentTarget;
+          if (checkStop(v)) return;
+          setTime(v.currentTime);
+          onTime.current?.(v.currentTime);
         }}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
+        onPlay={() => {
+          setPlaying(true);
+          if (stopAt.current !== null) startWatch();
+        }}
+        onPause={() => {
+          setPlaying(false);
+          stopWatch();
+        }}
       />
       <div
         data-slot="media-range-player-track"
+        aria-hidden="true"
         className="relative h-2 rounded-full bg-muted"
       >
         <div
@@ -154,21 +248,22 @@ export const MediaRangePlayer = React.forwardRef<
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {playing ? (
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => video.current?.pause()}
-          >
+          <Button type="button" size="sm" variant="secondary" onClick={pause}>
             <Pause />
             {l.pause}
           </Button>
         ) : (
-          <Button size="sm" onClick={() => playRange(range[0], range[1])}>
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => playRange(range[0], range[1])}
+          >
             <Play />
             {l.playClip}
           </Button>
         )}
         <Button
+          type="button"
           size="sm"
           variant="outline"
           onClick={() => playRange(win[0], win[1])}
