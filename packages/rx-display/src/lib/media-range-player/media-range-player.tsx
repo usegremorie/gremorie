@@ -160,8 +160,11 @@ export const MediaRangePlayer = React.forwardRef<
       position(from);
       const p = v.play();
       if (p) p.catch(() => undefined);
+      // onPlay does not fire when the video is already playing, so arm the
+      // frame watcher here too (startWatch restarts it, never doubles it).
+      startWatch();
     },
-    [position],
+    [position, startWatch],
   );
 
   const pause = React.useCallback(() => {
@@ -189,6 +192,11 @@ export const MediaRangePlayer = React.forwardRef<
     const v = video.current;
     if (v && v.readyState >= 1) v.currentTime = start;
   }, [start]);
+
+  // A position queued for the previous source must not leak into the new one.
+  React.useEffect(() => {
+    pendingSeek.current = null;
+  }, [src]);
 
   React.useEffect(() => stopWatch, [stopWatch]);
 

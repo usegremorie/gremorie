@@ -72,6 +72,8 @@ beforeEach(() => {
   Object.defineProperty(proto, 'play', {
     configurable: true,
     value: vi.fn(function (this: HTMLMediaElement) {
+      // Like a real element: no 'play' event when it is already playing.
+      if (!media(this).paused) return Promise.resolve();
       media(this).paused = false;
       this.dispatchEvent(new Event('play'));
       return Promise.resolve();
@@ -211,6 +213,42 @@ describe('MediaRangePlayer behaviour (DOM)', () => {
     expect(onTimeUpdate).toHaveBeenLastCalledWith(70);
     expect(frames.length).toBe(0);
     expect(el().textContent).toContain('1:10 ·');
+  });
+
+  it('re-arms the frame loop when playRange runs while already playing', () => {
+    const { ref, video, m } = mount();
+    loadMetadata(video);
+    // Free play (no stop point), then a seek cancels any loop.
+    act(() => {
+      void video.play();
+    });
+    act(() => api(ref).seek(30));
+    expect(m.paused).toBe(false);
+    expect(frames.length).toBe(0);
+    act(() => api(ref).playRange(40, 70));
+    expect(frames.length).toBe(1);
+    m.currentTime = 70.01;
+    act(flushFrame);
+    expect(m.paused).toBe(true);
+    expect(m.currentTime).toBe(70);
+  });
+
+  it('drops a pending seek when the source changes', () => {
+    const { ref, video, m } = mount({ preload: 'none' });
+    act(() => api(ref).seek(55));
+    act(() => {
+      rootOf().render(
+        <MediaRangePlayer
+          ref={ref}
+          src="/other.mp4"
+          range={[40, 70]}
+          context={30}
+          preload="none"
+        />,
+      );
+    });
+    loadMetadata(video);
+    expect(m.currentTime).toBe(40);
   });
 
   it('keeps the context start when play comes before metadata (I1)', () => {
