@@ -18,7 +18,7 @@ import type { TimelineWord } from './word-timeline.logic';
  * ├─ mode                 ToggleGroup: seek | set in | set out
  * └─ words (role=group)
  *    ├─ speaker label     at each speaker turn
- *    └─ word button       data-in-range, data-current
+ *    └─ word button       data-in-range, data-edge, data-current
  * ```
  *
  * ## Props
@@ -31,20 +31,28 @@ import type { TimelineWord } from './word-timeline.logic';
  * | `currentTime` | `number` | - | Highlights the spoken word. |
  * | `onSeek` | `(t) => void` | - | Word start, in seek mode. |
  * | `speakerNames` | `Record<string, string>` | - | Display names per speaker id. |
- * | `labels` | `Partial<WordTimelineLabels>` | English | Mode and group labels. |
+ * | `labels` | `Partial<WordTimelineLabels>` | English | Mode, group and screen-reader clip-state labels. |
+ * | `followPlayhead` | `boolean` | `true` | Scroll the strip to keep the spoken word visible (skipped while focus is in the strip). |
  *
  * ## Accessibility
  *
- * Every word is a real button (`type="button"`, safe inside forms) reachable
- * with Tab in reading order; Enter or Space activates it. The mode is a
- * single-select toggle group (arrow keys move between modes). The words sit
- * in a `role="group"` labelled by `labels.group`.
+ * Every word is a real button (`type="button"`, safe inside forms). The strip
+ * is one tab stop (roving tabindex): Tab enters on the last focused word, else
+ * the word at the playhead; Arrow keys move word by word, Home and End jump to
+ * the ends; Enter or Space activates. The mode is a single-select toggle group
+ * (arrow keys move between modes). The words sit in a `role="group"` labelled
+ * by `labels.group`.
+ *
+ * The clip never relies on color alone: the first and last words carry a
+ * `--primary` border on the outer side, and each in-clip word has hidden text
+ * (`clip start`, `in clip`, `clip end`, overridable in `labels`). The spoken
+ * word is underlined and has `aria-current="true"`.
  *
  * ## Variables (design tokens)
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--primary` | in-range word background (15%) |
+ * | `--primary` | in-range word background (15%, 25% on hover), clip edge borders |
  * | `--accent` | hover |
  * | `--ring` | focus ring |
  * | `--foreground` / `--border` | word text and strip border |
@@ -106,6 +114,9 @@ export const Localized: Story = {
       seek: 'Ir',
       setIn: 'Marcar início',
       setOut: 'Marcar fim',
+      clipStart: 'início do trecho',
+      clipEnd: 'fim do trecho',
+      inClip: 'no trecho',
     },
   },
   render: (args) => <Controlled {...args} />,

@@ -14,7 +14,7 @@ export const wordTimeline = defineContract({
     ├─ mode (toggle group: seek | set in | set out)
     └─ words (role=group)
        ├─ speaker label (at each turn)
-       └─ word button (data-in-range, data-current)`,
+       └─ word button (data-in-range, data-edge, data-current; roving tabindex)`,
   props: [
     {
       name: 'words',
@@ -51,7 +51,13 @@ export const wordTimeline = defineContract({
     {
       name: 'labels',
       type: 'Partial<WordTimelineLabels>',
-      desc: 'Mode and group labels (defaults in English).',
+      desc: 'Mode, group and screen-reader clip-state labels (defaults in English).',
+    },
+    {
+      name: 'followPlayhead',
+      type: 'boolean',
+      default: true,
+      desc: 'Scroll the strip to keep the spoken word visible, except while focus is inside it.',
     },
     {
       name: 'className',
@@ -67,6 +73,8 @@ export const wordTimeline = defineContract({
     rules: [
       'The range never inverts: setting out before in moves in to that word.',
       'Pair with MediaRangePlayer: pass its time as currentTime and seek from onSeek.',
+      'The strip is one tab stop; arrows, Home and End move between words.',
+      'Clip state is also in text and borders, never only in color.',
     ],
     example:
       '<WordTimeline words={words} value={[12.3, 58.1]} onValueChange={setValue} />',

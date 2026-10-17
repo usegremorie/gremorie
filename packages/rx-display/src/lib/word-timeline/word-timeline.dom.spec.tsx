@@ -54,6 +54,8 @@ function Harness({
 }
 
 const render = (el: React.ReactElement) => act(() => root.render(el));
+/** Visible word text (the button also holds screen-reader-only clip state). */
+const wordText = (b: Element) => b.firstChild?.textContent ?? null;
 const words = () =>
   Array.from(
     host.querySelectorAll<HTMLButtonElement>(
@@ -61,7 +63,7 @@ const words = () =>
     ),
   );
 const word = (text: string) => {
-  const found = words().find((b) => b.textContent === text);
+  const found = words().find((b) => wordText(b) === text);
   if (!found) throw new Error(`word ${text} not rendered`);
   return found;
 };
@@ -79,7 +81,7 @@ const click = (el: HTMLElement) =>
 const inRangeWords = () =>
   words()
     .filter((b) => b.dataset['inRange'] === 'true')
-    .map((b) => b.textContent);
+    .map(wordText);
 const lastValue = (fn: ReturnType<typeof vi.fn>) =>
   fn.mock.lastCall?.[0] as [number, number];
 
@@ -188,7 +190,7 @@ describe('WordTimeline (DOM)', () => {
     const current = () =>
       words()
         .filter((b) => b.dataset['current'] === 'true')
-        .map((b) => b.textContent);
+        .map(wordText);
     render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={0.2} />);
     expect(current()).toEqual(['Good']);
     render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={2.6} />);
@@ -222,16 +224,154 @@ describe('WordTimeline (DOM)', () => {
     expect(modeButton('Ir')).toBeTruthy();
   });
 
-  it('words are focusable buttons in reading order', () => {
+  it('words are buttons in reading order; activating one seeks', () => {
     const onSeek = vi.fn();
     render(<WordTimeline words={WORDS} value={[0, 2.9]} onSeek={onSeek} />);
     const list = words();
-    expect(list.map((b) => b.textContent)).toEqual(WORDS.map((w) => w.w));
-    for (const b of list) expect(b.tabIndex).toBe(0);
+    expect(list.map(wordText)).toEqual(WORDS.map((w) => w.w));
     act(() => list[3].focus());
     expect(document.activeElement).toBe(list[3]);
     // Native buttons turn Enter/Space into click; jsdom does not, so click.
     click(list[3]);
     expect(onSeek).toHaveBeenCalledWith(1.7);
+  });
+});
+
+describe('WordTimeline roving tab stop', () => {
+  const tabStops = () =>
+    words()
+      .filter((b) => b.tabIndex === 0)
+      .map(wordText);
+  const key = (k: string) =>
+    act(() => {
+      document.activeElement?.dispatchEvent(
+        new KeyboardEvent('keydown', { key: k, bubbles: true }),
+      );
+    });
+
+  it('exactly one word is a tab stop: the spoken word, else the first', () => {
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} />);
+    expect(tabStops()).toEqual(['Good']);
+    for (const b of words().slice(1)) expect(b.tabIndex).toBe(-1);
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={1.8} />);
+    expect(tabStops()).toEqual(['for']);
+  });
+
+  it('arrows, Home and End move focus and the tab stop follows', () => {
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} />);
+    act(() => word('Good').focus());
+    key('ArrowRight');
+    expect(document.activeElement).toBe(word('morning.'));
+    expect(tabStops()).toEqual(['morning.']);
+    key('ArrowRight');
+    key('ArrowLeft');
+    expect(document.activeElement).toBe(word('morning.'));
+    key('End');
+    expect(document.activeElement).toBe(word('me.'));
+    key('ArrowRight');
+    expect(document.activeElement).toBe(word('me.'));
+    key('Home');
+    expect(document.activeElement).toBe(word('Good'));
+    key('ArrowLeft');
+    expect(document.activeElement).toBe(word('Good'));
+    expect(tabStops()).toEqual(['Good']);
+  });
+
+  it('the last focused word stays the tab stop as the playhead moves', () => {
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={0.2} />);
+    act(() => word('having').focus());
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={2.6} />);
+    expect(tabStops()).toEqual(['having']);
+  });
+});
+
+describe('WordTimeline clip state without color', () => {
+  const sr = (text: string) =>
+    word(text).querySelector('.sr-only')?.textContent ?? '';
+
+  it('marks start and end edges, in-clip words and the spoken word', () => {
+    render(<WordTimeline words={WORDS} value={[1.2, 2.4]} currentTime={1.8} />);
+    expect(word('Thanks').dataset['edge']).toBe('start');
+    expect(word('having').dataset['edge']).toBe('end');
+    expect(word('for').dataset['edge']).toBe('none');
+    expect(word('Good').dataset['edge']).toBe('none');
+    expect(sr('Thanks')).toBe(', clip start');
+    expect(sr('for')).toBe(', in clip');
+    expect(sr('having')).toBe(', clip end');
+    expect(sr('Good')).toBe('');
+    expect(sr('me.')).toBe('');
+    expect(word('for').getAttribute('aria-current')).toBe('true');
+    expect(
+      words()
+        .filter((b) => b.hasAttribute('aria-current'))
+        .map(wordText),
+    ).toEqual(['for']);
+  });
+
+  it('a one-word clip is both start and end; labels are overridable', () => {
+    render(
+      <WordTimeline
+        words={WORDS}
+        value={[1.7, 1.9]}
+        labels={{ clipStart: 'início', clipEnd: 'fim', inClip: 'no trecho' }}
+      />,
+    );
+    expect(word('for').dataset['edge']).toBe('both');
+    expect(sr('for')).toBe(', início, fim');
+  });
+});
+
+describe('WordTimeline follows the playhead', () => {
+  const rect = (top: number, bottom: number) =>
+    ({
+      top,
+      bottom,
+      left: 0,
+      right: 0,
+      width: 0,
+      height: bottom - top,
+    }) as DOMRect;
+
+  it('scrolls only the strip to the spoken word, unless focus is inside', () => {
+    const tops: Record<string, number> = { 'me.': 300 };
+    const spy = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.getAttribute('role') === 'group') return rect(0, 100);
+        const t = tops[wordText(this) ?? ''] ?? 10;
+        return rect(t, t + 20);
+      });
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={0.2} />);
+    const strip = host.querySelector<HTMLElement>('[role="group"]');
+    if (!strip) throw new Error('strip not rendered');
+    expect(strip.scrollTop).toBe(0);
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={2.6} />);
+    expect(strip.scrollTop).toBe(220);
+
+    strip.scrollTop = 0;
+    act(() => word('Good').focus());
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={0.2} />);
+    render(<WordTimeline words={WORDS} value={[0, 2.9]} currentTime={2.6} />);
+    expect(strip.scrollTop).toBe(0);
+
+    act(() => (document.activeElement as HTMLElement).blur());
+    render(
+      <WordTimeline
+        words={WORDS}
+        value={[0, 2.9]}
+        currentTime={0.2}
+        followPlayhead={false}
+      />,
+    );
+    render(
+      <WordTimeline
+        words={WORDS}
+        value={[0, 2.9]}
+        currentTime={2.6}
+        followPlayhead={false}
+      />,
+    );
+    expect(strip.scrollTop).toBe(0);
+    spy.mockRestore();
   });
 });

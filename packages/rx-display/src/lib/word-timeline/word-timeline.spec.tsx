@@ -100,6 +100,22 @@ describe('WordTimeline markup', () => {
     expect(html).toContain('>Guest<');
   });
 
+  it('has exactly one word in the tab order (the spoken one)', () => {
+    const stops = [
+      ...html.matchAll(/data-slot="word-timeline-word"[^>]*tabindex="(-?\d)"/g),
+    ].map((m) => m[1]);
+    expect(stops).toEqual(['-1', '-1', '-1', '0', '-1', '-1']);
+    expect(html).toMatch(/aria-current="true"[^>]*tabindex="0"[^>]*>for</);
+  });
+
+  it('states the clip edges in text, not only in color', () => {
+    expect(html).toContain('data-edge="start"');
+    expect(html).toContain('data-edge="end"');
+    expect(html).toContain('<span class="sr-only">, clip start</span>');
+    expect(html).toContain('<span class="sr-only">, in clip</span>');
+    expect(html).toContain('<span class="sr-only">, clip end</span>');
+  });
+
   it('renders words as buttons for keyboard use', () => {
     expect(
       html.match(/<button type="button" data-slot="word-timeline-word"/g),
