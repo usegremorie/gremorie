@@ -35,11 +35,11 @@
     "clean": "rm -rf dist node_modules/.cache .turbo"
   },
   "dependencies": {
-    "@hono/node-server": "^2.0.10",
-    "hono": "^4.13.7",
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.13",
     "open": "^10.1.0",
-    "postcss": "^8.5.26",
-    "prettier": "3.9.5",
+    "postcss": "^8.5.30",
+    "prettier": "3.9.10",
     "ts-morph": "^25.0.0"
   },
   "devDependencies": {
