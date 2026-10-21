@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.0.10",
-    "hono": "^4.13.7",
+    "hono": "^4.13.13",
     "open": "^10.1.0",
     "postcss": "^8.5.26",
     "prettier": "3.9.5",
