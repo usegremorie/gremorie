@@ -18,7 +18,7 @@ export default defineConfig({
     setupFiles: ['src/test-setup.ts'],
     include: ['src/**/*.spec.ts'],
     // These specs predate this test target and fail on real bugs, tracked in
-    // ClickUp wdp7exb80j's sibling task: slider's thumb aria-label is
+    // ClickUp wdp7exb82a: slider's thumb aria-label is
     // overwritten by the brain directive's host binding, and input-otp slots
     // miss the BrnInputOtp provider. Remove each line once it is fixed.
     exclude: [
