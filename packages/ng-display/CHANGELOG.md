@@ -1,5 +1,25 @@
 # @gremorie/ng-display
 
+## 0.10.0
+
+### Minor Changes
+
+- MediaRangePlayer and WordTimeline, the Angular editions of the React components
+  in `@gremorie/rx-display` 0.10.0 (`gr-media-range-player`, `gr-word-timeline`).
+
+  `gr-media-range-player` plays one clip of a longer source inside a context
+  window, stops exactly at the out point, and exposes `seek`, `playRange` and
+  `pause` as public methods (the React ref handle), so a sibling can drive it
+  through a template reference. React `onTimeUpdate` is the `timeUpdate` output.
+
+  `gr-word-timeline` picks clip in/out by clicking transcript words. The range
+  never inverts, the strip is one tab stop with arrow-key navigation, and the
+  clip state is carried in text and borders, not color alone. `value` pairs with
+  the `valueChange` output, so `[(value)]` works; React `onSeek` is the `seek`
+  output. Now depends on `@gremorie/ng-forms` (ToggleGroup) as a peer.
+
+  Both are Storybook-only for now: no docs page or registry entry yet.
+
 ## 0.9.0
 
 ## 0.8.0

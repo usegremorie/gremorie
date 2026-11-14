@@ -93,3 +93,9 @@ export {
   TableHeader,
   TableRow,
 } from './lib/table';
+
+// MediaRangePlayer
+export * from './lib/media-range-player';
+
+// WordTimeline
+export * from './lib/word-timeline';
