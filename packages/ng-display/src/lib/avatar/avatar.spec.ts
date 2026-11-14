@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 
@@ -7,15 +7,17 @@ import { Avatar, AvatarFallback, AvatarImage } from './avatar';
   standalone: true,
   imports: [Avatar, AvatarImage, AvatarFallback],
   template: `
-    <gr-avatar [size]="size">
-      <gr-avatar-image [src]="src" alt="me" />
+    <gr-avatar [size]="size()">
+      <gr-avatar-image [src]="src()" alt="me" />
       <gr-avatar-fallback>CN</gr-avatar-fallback>
     </gr-avatar>
   `,
 })
 class Host {
-  size: 'sm' | 'default' | 'lg' = 'lg';
-  src: string | undefined = undefined;
+  // Signals, not plain fields: the suite runs zoneless, where mutating a plain
+  // field after the first render marks nothing dirty and the view never updates.
+  readonly size = signal<'sm' | 'default' | 'lg'>('lg');
+  readonly src = signal<string | undefined>(undefined);
 }
 
 describe('Avatar', () => {
@@ -47,7 +49,7 @@ describe('Avatar', () => {
 
   it('renders an <img> once a source is provided', () => {
     const fixture = render();
-    fixture.componentInstance.src = 'https://example.com/a.png';
+    fixture.componentInstance.src.set('https://example.com/a.png');
     fixture.detectChanges();
     const img = fixture.nativeElement.querySelector(
       '[data-slot="avatar-image"]',

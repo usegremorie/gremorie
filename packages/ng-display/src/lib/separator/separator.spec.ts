@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { Separator } from './separator';
 
@@ -7,13 +7,15 @@ import { Separator } from './separator';
   standalone: true,
   imports: [Separator],
   template: `<gr-separator
-    [orientation]="orientation"
-    [decorative]="decorative"
+    [orientation]="orientation()"
+    [decorative]="decorative()"
   />`,
 })
 class Host {
-  orientation: 'horizontal' | 'vertical' = 'horizontal';
-  decorative = true;
+  // Signals, not plain fields: the suite runs zoneless, where mutating a plain
+  // field after the first render marks nothing dirty and the view never updates.
+  readonly orientation = signal<'horizontal' | 'vertical'>('horizontal');
+  readonly decorative = signal(true);
 }
 
 describe('Separator', () => {
@@ -44,8 +46,8 @@ describe('Separator', () => {
 
   it('exposes role="separator" with aria-orientation when not decorative and vertical', () => {
     const fixture = render();
-    fixture.componentInstance.decorative = false;
-    fixture.componentInstance.orientation = 'vertical';
+    fixture.componentInstance.decorative.set(false);
+    fixture.componentInstance.orientation.set('vertical');
     fixture.detectChanges();
     const el = fixture.nativeElement.querySelector(
       '[data-slot="separator"]',
