@@ -1,6 +1,6 @@
 ---
 title: Theming
-description: The contract for running Gremorie's six themes and light/dark together — two independent axes, the one switcher setting that breaks it, and the cascade guarantee behind it.
+description: The contract for running Gremorie's seven themes and light/dark together. Two independent axes, the one switcher setting that breaks it, and the cascade guarantee behind it.
 ---
 
 Gremorie theming is **two independent axes**, and they never share a
@@ -10,12 +10,12 @@ the same attribute. This page is the contract.
 
 ## The two axes
 
-| Axis      | What it controls                             | How it is set                    | Selector                     |
-| --------- | -------------------------------------------- | -------------------------------- | ---------------------------- |
-| **Brand** | Which of the six themes (Default, Claude, …) | `data-theme` on `<html>`         | `:root[data-theme='claude']` |
-| **Mode**  | Light or dark within that brand              | the `dark` **class** on `<html>` | `.dark`                      |
+| Axis      | What it controls                               | How it is set                    | Selector                     |
+| --------- | ---------------------------------------------- | -------------------------------- | ---------------------------- |
+| **Brand** | Which of the seven themes (Default, Claude, …) | `data-theme` on `<html>`         | `:root[data-theme='claude']` |
+| **Mode**  | Light or dark within that brand                | the `dark` **class** on `<html>` | `.dark`                      |
 
-They compose. Any brand renders in either mode, so all twelve
+They compose. Any brand renders in either mode, so all fourteen
 combinations are valid:
 
 ```html
@@ -177,6 +177,6 @@ comparison, render each brand on its own route or in its own iframe.
 
 ## See also
 
-- [Semantic tokens](/tokens/semantic) — what the six themes remap, and the full token table.
+- [Semantic tokens](/tokens/semantic): what the seven themes remap, and the full token table.
 - [Project setup](/get-started/project-setup) — Tailwind v4 config and the token cascade.
 - [For designers](/get-started/for-designers) — mapping these themes to Figma variable modes.

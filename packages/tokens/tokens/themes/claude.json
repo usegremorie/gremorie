@@ -1,0 +1,291 @@
+{
+  "$description": "Claude theme: warm clay (coral terracotta) on cream surfaces, serif display. Activate with data-theme=\"claude\" on the root element.",
+  "light": {
+    "$description": "The categorical chart scale (--chart-cat-*) is deliberately not themed. A brand palette is for chrome; series identity needs hues that separate, and this theme's own colours are a single family, as a data scale they would encode order instead of identity. See theme.css.",
+    "background": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.965, 0.011, 92]
+      },
+      "$description": "Warm oat surfaces, anchored on Anthropic's own light canvas."
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "card": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.008, 92]
+      }
+    },
+    "card-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "popover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.008, 92]
+      }
+    },
+    "popover-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "{color.clay.500}",
+      "$description": "Intentional 3.0:1 pair (clay-500 on gray-50), mirroring claude.ai's own primary button; fine for graphical/large-text use. Text-heavy contexts should use clay-600 instead, as --sidebar-primary already does."
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.95, 0.012, 80]
+      }
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": "{color.clay.900}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.95, 0.012, 80]
+      }
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "{color.taupe.600}"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.clay.100}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.clay.900}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.clay.500}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.9, 0.014, 78]
+      }
+    },
+    "input": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.9, 0.014, 78]
+      }
+    },
+    "sidebar": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.97, 0.01, 84]
+      }
+    },
+    "sidebar-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.clay.600}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "sidebar-accent": {
+      "$type": "color",
+      "$value": "{color.clay.100}"
+    },
+    "sidebar-accent-foreground": {
+      "$type": "color",
+      "$value": "{color.clay.900}"
+    },
+    "sidebar-border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.9, 0.014, 78]
+      }
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.clay.500}"
+    },
+    "radius": {
+      "base": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.5,
+          "unit": "rem"
+        }
+      }
+    },
+    "font": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+      },
+      "serif": {
+        "$type": "fontFamily",
+        "$value": ["Tiempos Headline", "Georgia", "Times New Roman", "serif"]
+      }
+    }
+  },
+  "dark": {
+    "$description": "Chart series (dark): lighter clay steps so every series clears the 3:1 graphical minimum on the dark background. Without these the light-block values win on specificity and leak into dark mode.",
+    "background": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.235, 0.006, 100]
+      },
+      "$description": "The real product's warm charcoal (#262624 family), less red than hue 60."
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "card": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.268, 0.005, 100]
+      }
+    },
+    "card-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "popover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.268, 0.005, 100]
+      }
+    },
+    "popover-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "{color.clay.400}"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.28, 0.012, 58]
+      }
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.28, 0.012, 58]
+      }
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "{color.taupe.300}"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.clay.900}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.clay.50}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.clay.400}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "alpha": 0.1
+      }
+    },
+    "input": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "alpha": 0.15
+      }
+    },
+    "sidebar": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.24, 0.012, 60]
+      }
+    },
+    "sidebar-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.clay.400}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "sidebar-accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.28, 0.012, 58]
+      }
+    },
+    "sidebar-accent-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.50}"
+    },
+    "sidebar-border": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0],
+        "alpha": 0.1
+      }
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.clay.400}"
+    }
+  }
+}

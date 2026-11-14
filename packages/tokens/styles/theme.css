@@ -12,12 +12,18 @@
  * They are imported here at the top because CSS requires @import before other
  * rules; custom properties resolve at use time, so referencing primitives
  * defined further down is fine. Dark mode keeps the existing `.dark` class.
+ *
+ * GENERATED FILE. The source is the DTCG JSON in packages/tokens/tokens/,
+ * built by `nx build tokens` (packages/tokens/pipeline/build.ts). Edit the
+ * JSON, or the partials in styles/partials/, never this file.
  */
+
 @import './themes/claude.css';
 @import './themes/chatgpt.css';
 @import './themes/gemini.css';
 @import './themes/perplexity.css';
 @import './themes/mistral.css';
+@import './themes/purple.css';
 
 /*
  * Dark mode is CLASS-driven: the dark token values live under `.dark` (below),
@@ -35,10 +41,12 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* ─── 1. PRIMITIVES ───────────────────────────────── */
-  --color-gray-0: oklch(
-    1 0 0
-  ); /* pure white — elevated surfaces (card/popover) on light */
+  /*
+   * 1. PRIMITIVES
+   *
+   * pure white, elevated surfaces (card/popover) on light
+   */
+  --color-gray-0: oklch(1 0 0); /* #ffffff */
   --color-gray-50: oklch(0.985 0 0); /* #fafafa */
   --color-gray-100: oklch(0.97 0 0); /* #f5f5f5 */
   --color-gray-200: oklch(0.922 0 0); /* #e5e5e5 */
@@ -51,421 +59,442 @@
   --color-gray-900: oklch(0.205 0 0); /* #171717 */
   --color-gray-950: oklch(0.145 0 0); /* #0a0a0a */
 
-  /* Full canonical red scale (Tailwind v4). NOTE: --destructive binds to
-     red-600 (light) / red-400 (dark) - red-600 here equals the project's
-     previous custom red-500, so the destructive surface is unchanged. */
-  --color-red-50: oklch(97.1% 0.013 17.38); /* #fef2f2 */
-  --color-red-100: oklch(93.6% 0.032 17.717); /* #ffe2e2 */
-  --color-red-200: oklch(88.5% 0.062 18.334); /* #ffc9c9 */
-  --color-red-300: oklch(80.8% 0.114 19.571); /* #ffa2a2 */
-  --color-red-400: oklch(70.4% 0.191 22.216); /* #ff6467 */
-  --color-red-500: oklch(63.7% 0.237 25.331); /* #fb2c36 */
-  --color-red-600: oklch(57.7% 0.245 27.325); /* #e7000b */
-  --color-red-700: oklch(50.5% 0.213 27.518); /* #c10007 */
-  --color-red-800: oklch(44.4% 0.177 26.899); /* #9f0712 */
-  --color-red-900: oklch(39.6% 0.141 25.723); /* #82181a */
-  --color-red-950: oklch(25.8% 0.092 26.042); /* #460809 */
-
-  /* ─── Tailwind v4 default palettes (full primitive set) ─────
-   * Imported verbatim from tailwindcss/theme.css so the project
-   * OWNS the raw palette instead of leaning on Tailwind defaults.
-   * gray (neutralized) and red (custom) above are the project's
-   * intentional overrides and are NOT duplicated here.
-   * Consume via semantics/chart tokens - components never read
-   * primitives directly. */
-  --color-orange-50: oklch(98% 0.016 73.684); /* #fff7ed */
-  --color-orange-100: oklch(95.4% 0.038 75.164); /* #ffedd4 */
-  --color-orange-200: oklch(90.1% 0.076 70.697); /* #ffd6a7 */
-  --color-orange-300: oklch(83.7% 0.128 66.29); /* #ffb86a */
-  --color-orange-400: oklch(75% 0.183 55.934); /* #ff8904 */
-  --color-orange-500: oklch(70.5% 0.213 47.604); /* #ff6900 */
-  --color-orange-600: oklch(64.6% 0.222 41.116); /* #f54900 */
-  --color-orange-700: oklch(55.3% 0.195 38.402); /* #ca3500 */
-  --color-orange-800: oklch(47% 0.157 37.304); /* #9f2d00 */
-  --color-orange-900: oklch(40.8% 0.123 38.172); /* #7e2a0c */
-  --color-orange-950: oklch(26.6% 0.079 36.259); /* #441306 */
-
-  --color-amber-50: oklch(98.7% 0.022 95.277); /* #fffbeb */
-  --color-amber-100: oklch(96.2% 0.059 95.617); /* #fef3c6 */
-  --color-amber-200: oklch(92.4% 0.12 95.746); /* #fee685 */
-  --color-amber-300: oklch(87.9% 0.169 91.605); /* #ffd230 */
-  --color-amber-400: oklch(82.8% 0.189 84.429); /* #ffb900 */
-  /* 76.9% quantises to L 0.7724 in 8-bit sRGB, just over the 0.77 ceiling the
-     categorical scale has to sit under. 76.6% lands at 0.7682 with margin; the
-     colour shift is one step in the blue channel and --warning keeps 9.14:1
-     against its foreground, against a 4.5 floor. */
-  --color-amber-500: oklch(76.6% 0.188 70.08); /* #fc9900 */
-  --color-amber-600: oklch(66.6% 0.179 58.318); /* #e17100 */
-  --color-amber-700: oklch(55.5% 0.163 48.998); /* #bb4d00 */
-  --color-amber-800: oklch(47.3% 0.137 46.201); /* #973c00 */
-  --color-amber-900: oklch(41.4% 0.112 45.904); /* #7b3306 */
-  --color-amber-950: oklch(27.9% 0.077 45.635); /* #461901 */
-
-  --color-yellow-50: oklch(98.7% 0.026 102.212); /* #fefce8 */
-  --color-yellow-100: oklch(97.3% 0.071 103.193); /* #fef9c2 */
-  --color-yellow-200: oklch(94.5% 0.129 101.54); /* #fff085 */
-  --color-yellow-300: oklch(90.5% 0.182 98.111); /* #ffdf20 */
-  --color-yellow-400: oklch(85.2% 0.199 91.936); /* #fdc700 */
-  --color-yellow-500: oklch(79.5% 0.184 86.047); /* #f0b100 */
-  --color-yellow-600: oklch(68.1% 0.162 75.834); /* #d08700 */
-  --color-yellow-700: oklch(55.4% 0.135 66.442); /* #a65f00 */
-  --color-yellow-800: oklch(47.6% 0.114 61.907); /* #894b00 */
-  --color-yellow-900: oklch(42.1% 0.095 57.708); /* #733e0a */
-  --color-yellow-950: oklch(28.6% 0.066 53.813); /* #432004 */
-
-  --color-lime-50: oklch(98.6% 0.031 120.757); /* #f7fee7 */
-  --color-lime-100: oklch(96.7% 0.067 122.328); /* #ecfcca */
-  --color-lime-200: oklch(93.8% 0.127 124.321); /* #d8f999 */
-  --color-lime-300: oklch(89.7% 0.196 126.665); /* #bbf451 */
-  --color-lime-400: oklch(84.1% 0.238 128.85); /* #9ae600 */
-  --color-lime-500: oklch(76.8% 0.233 130.85); /* #7ccf00 */
-  --color-lime-600: oklch(64.8% 0.2 131.684); /* #5ea500 */
-  --color-lime-700: oklch(53.2% 0.157 131.589); /* #497d00 */
-  --color-lime-800: oklch(45.3% 0.124 130.933); /* #3c6300 */
-  --color-lime-900: oklch(40.5% 0.101 131.063); /* #35530e */
-  --color-lime-950: oklch(27.4% 0.072 132.109); /* #192e03 */
-
-  --color-green-50: oklch(98.2% 0.018 155.826); /* #f0fdf4 */
-  --color-green-100: oklch(96.2% 0.044 156.743); /* #dcfce7 */
-  --color-green-200: oklch(92.5% 0.084 155.995); /* #b9f8cf */
-  --color-green-300: oklch(87.1% 0.15 154.449); /* #7bf1a8 */
-  --color-green-400: oklch(79.2% 0.209 151.711); /* #05df72 */
-  --color-green-500: oklch(72.3% 0.219 149.579); /* #00c950 */
-  --color-green-600: oklch(62.7% 0.194 149.214); /* #00a63e */
-  --color-green-700: oklch(52.7% 0.154 150.069); /* #008236 */
-  --color-green-800: oklch(44.8% 0.119 151.328); /* #016630 */
-  --color-green-900: oklch(39.3% 0.095 152.535); /* #0d542b */
-  --color-green-950: oklch(26.6% 0.065 152.934); /* #032e15 */
-
-  --color-emerald-50: oklch(97.9% 0.021 166.113); /* #ecfdf5 */
-  --color-emerald-100: oklch(95% 0.052 163.051); /* #d0fae5 */
-  --color-emerald-200: oklch(90.5% 0.093 164.15); /* #a4f4cf */
-  --color-emerald-300: oklch(84.5% 0.143 164.978); /* #5ee9b5 */
-  --color-emerald-400: oklch(76.5% 0.177 163.223); /* #00d492 */
-  --color-emerald-500: oklch(69.6% 0.17 162.48); /* #00bc7d */
-  --color-emerald-600: oklch(59.6% 0.145 163.225); /* #009966 */
-  --color-emerald-700: oklch(50.8% 0.118 165.612); /* #007a55 */
-  --color-emerald-800: oklch(43.2% 0.095 166.913); /* #006045 */
-  --color-emerald-900: oklch(37.8% 0.077 168.94); /* #004f3b */
-  --color-emerald-950: oklch(26.2% 0.051 172.552); /* #002c22 */
-
-  --color-teal-50: oklch(98.4% 0.014 180.72); /* #f0fdfa */
-  --color-teal-100: oklch(95.3% 0.051 180.801); /* #cbfbf1 */
-  --color-teal-200: oklch(91% 0.096 180.426); /* #96f7e4 */
-  --color-teal-300: oklch(85.5% 0.138 181.071); /* #46ecd5 */
-  --color-teal-400: oklch(77.7% 0.152 181.912); /* #00d5be */
-  --color-teal-500: oklch(70.4% 0.14 182.503); /* #00bba7 */
-  --color-teal-600: oklch(60% 0.118 184.704); /* #009689 */
-  --color-teal-700: oklch(51.1% 0.096 186.391); /* #00786f */
-  --color-teal-800: oklch(43.7% 0.078 188.216); /* #005f5a */
-  --color-teal-900: oklch(38.6% 0.063 188.416); /* #0b4f4a */
-  --color-teal-950: oklch(27.7% 0.046 192.524); /* #022f2e */
-
-  --color-cyan-50: oklch(98.4% 0.019 200.873); /* #ecfeff */
-  --color-cyan-100: oklch(95.6% 0.045 203.388); /* #cefafe */
-  --color-cyan-200: oklch(91.7% 0.08 205.041); /* #a2f4fd */
-  --color-cyan-300: oklch(86.5% 0.127 207.078); /* #53eafd */
-  --color-cyan-400: oklch(78.9% 0.154 211.53); /* #00d3f2 */
-  --color-cyan-500: oklch(71.5% 0.143 215.221); /* #00b8db */
-  --color-cyan-600: oklch(60.9% 0.126 221.723); /* #0092b8 */
-  --color-cyan-700: oklch(52% 0.105 223.128); /* #007595 */
-  --color-cyan-800: oklch(45% 0.085 224.283); /* #005f78 */
-  --color-cyan-900: oklch(39.8% 0.07 227.392); /* #104e64 */
-  --color-cyan-950: oklch(30.2% 0.056 229.695); /* #053345 */
-
-  --color-sky-50: oklch(97.7% 0.013 236.62); /* #f0f9ff */
-  --color-sky-100: oklch(95.1% 0.026 236.824); /* #dff2fe */
-  --color-sky-200: oklch(90.1% 0.058 230.902); /* #b8e6fe */
-  --color-sky-300: oklch(82.8% 0.111 230.318); /* #74d4ff */
-  --color-sky-400: oklch(74.6% 0.16 232.661); /* #00bcff */
-  --color-sky-500: oklch(68.5% 0.169 237.323); /* #00a6f4 */
-  --color-sky-600: oklch(58.8% 0.158 241.966); /* #0084d1 */
-  --color-sky-700: oklch(50% 0.134 242.749); /* #0069a8 */
-  --color-sky-800: oklch(44.3% 0.11 240.79); /* #00598a */
-  --color-sky-900: oklch(39.1% 0.09 240.876); /* #024a70 */
-  --color-sky-950: oklch(29.3% 0.066 243.157); /* #052f4a */
-
-  --color-blue-50: oklch(97% 0.014 254.604); /* #eff6ff */
-  --color-blue-100: oklch(93.2% 0.032 255.585); /* #dbeafe */
-  --color-blue-200: oklch(88.2% 0.059 254.128); /* #bedbff */
-  --color-blue-300: oklch(80.9% 0.105 251.813); /* #8ec5ff */
-  --color-blue-400: oklch(70.7% 0.165 254.624); /* #51a2ff */
-  --color-blue-500: oklch(62.3% 0.214 259.815); /* #2b7fff */
-  --color-blue-600: oklch(54.6% 0.245 262.881); /* #155dfc */
-  --color-blue-700: oklch(48.8% 0.243 264.376); /* #1447e6 */
-  --color-blue-800: oklch(42.4% 0.199 265.638); /* #193cb8 */
-  --color-blue-900: oklch(37.9% 0.146 265.522); /* #1c398e */
-  --color-blue-950: oklch(28.2% 0.091 267.935); /* #162456 */
-
-  --color-indigo-50: oklch(96.2% 0.018 272.314); /* #eef2ff */
-  --color-indigo-100: oklch(93% 0.034 272.788); /* #e0e7ff */
-  --color-indigo-200: oklch(87% 0.065 274.039); /* #c6d2ff */
-  --color-indigo-300: oklch(78.5% 0.115 274.713); /* #a3b3ff */
-  --color-indigo-400: oklch(67.3% 0.182 276.935); /* #7c86ff */
-  --color-indigo-500: oklch(58.5% 0.233 277.117); /* #615fff */
-  --color-indigo-600: oklch(51.1% 0.262 276.966); /* #4f39f6 */
-  --color-indigo-700: oklch(45.7% 0.24 277.023); /* #432dd7 */
-  --color-indigo-800: oklch(39.8% 0.195 277.366); /* #372aac */
-  --color-indigo-900: oklch(35.9% 0.144 278.697); /* #312c85 */
-  --color-indigo-950: oklch(25.7% 0.09 281.288); /* #1e1a4d */
-
-  /* ─── Brand ────────────────────────────────────────────────────────
-   * The consumer's own colour, shipped ready so nothing has to be built
-   * before a brand can be applied: override these eleven steps and every
-   * token that references them follows.
-   *
-   * The default is indigo's ramp — a conventional brand hue, and far
-   * enough from `--chart-cat-1` that the two do not read as the same blue
-   * before anyone has customised anything. It is a placeholder with a
-   * real value, not a palette in its own right.
+  /*
+   * Full canonical red scale (Tailwind v4). NOTE: --destructive binds to
+   * red-600 (light) / red-400 (dark) - red-600 here equals the project's
+   * previous custom red-500, so the destructive surface is unchanged.
    */
-  --color-brand-50: oklch(96.2% 0.018 272.314); /* #eef2ff */
-  --color-brand-100: oklch(93% 0.034 272.788); /* #e0e7ff */
-  --color-brand-200: oklch(87% 0.065 274.039); /* #c6d2ff */
-  --color-brand-300: oklch(78.5% 0.115 274.713); /* #a3b3ff */
-  --color-brand-400: oklch(67.3% 0.182 276.935); /* #7c86ff */
-  --color-brand-500: oklch(58.5% 0.233 277.117); /* #615fff */
-  --color-brand-600: oklch(51.1% 0.262 276.966); /* #4f39f6 */
-  --color-brand-700: oklch(45.7% 0.24 277.023); /* #432dd7 */
-  --color-brand-800: oklch(39.8% 0.195 277.366); /* #372aac */
-  --color-brand-900: oklch(35.9% 0.144 278.697); /* #312c85 */
-  --color-brand-950: oklch(25.7% 0.09 281.288); /* #1e1a4d */
+  --color-red-50: oklch(0.971 0.013 17.38); /* #fef2f2 */
+  --color-red-100: oklch(0.936 0.032 17.717); /* #ffe2e2 */
+  --color-red-200: oklch(0.885 0.062 18.334); /* #ffc9c9 */
+  --color-red-300: oklch(0.808 0.114 19.571); /* #ffa2a2 */
+  --color-red-400: oklch(0.704 0.191 22.216); /* #ff6467 */
+  --color-red-500: oklch(0.637 0.237 25.331); /* #fb2c36 */
+  --color-red-600: oklch(0.577 0.245 27.325); /* #e7000b */
+  --color-red-700: oklch(0.505 0.213 27.518); /* #c10007 */
+  --color-red-800: oklch(0.444 0.177 26.899); /* #9f0712 */
+  --color-red-900: oklch(0.396 0.141 25.723); /* #82181a */
+  --color-red-950: oklch(0.258 0.092 26.042); /* #460809 */
 
-  --color-violet-50: oklch(96.9% 0.016 293.756); /* #f5f3ff */
-  --color-violet-100: oklch(94.3% 0.029 294.588); /* #ede9fe */
-  --color-violet-200: oklch(89.4% 0.057 293.283); /* #ddd6ff */
-  --color-violet-300: oklch(81.1% 0.111 293.571); /* #c4b4ff */
-  --color-violet-400: oklch(70.2% 0.183 293.541); /* #a684ff */
-  --color-violet-500: oklch(60.6% 0.25 292.717); /* #8e51ff */
-  --color-violet-600: oklch(54.1% 0.281 293.009); /* #7f22fe */
-  --color-violet-700: oklch(49.1% 0.27 292.581); /* #7008e7 */
-  --color-violet-800: oklch(43.2% 0.232 292.759); /* #5d0ec0 */
-  --color-violet-900: oklch(38% 0.189 293.745); /* #4d179a */
-  --color-violet-950: oklch(28.3% 0.141 291.089); /* #2f0d68 */
+  /*
+   * Tailwind v4 default palettes (full primitive set)
+   *
+   * Imported verbatim from tailwindcss/theme.css so the project OWNS the raw
+   * palette instead of leaning on Tailwind defaults. gray (neutralized) and red
+   * (custom) above are the project's intentional overrides and are NOT
+   * duplicated here. Consume via semantics/chart tokens - components never read
+   * primitives directly.
+   */
+  --color-orange-50: oklch(0.98 0.016 73.684); /* #fff7ed */
+  --color-orange-100: oklch(0.954 0.038 75.164); /* #ffedd4 */
+  --color-orange-200: oklch(0.901 0.076 70.697); /* #ffd6a7 */
+  --color-orange-300: oklch(0.837 0.128 66.29); /* #ffb86a */
+  --color-orange-400: oklch(0.75 0.183 55.934); /* #ff8904 */
+  --color-orange-500: oklch(0.705 0.213 47.604); /* #ff6900 */
+  --color-orange-600: oklch(0.646 0.222 41.116); /* #f54900 */
+  --color-orange-700: oklch(0.553 0.195 38.402); /* #ca3500 */
+  --color-orange-800: oklch(0.47 0.157 37.304); /* #9f2d00 */
+  --color-orange-900: oklch(0.408 0.123 38.172); /* #7e2a0c */
+  --color-orange-950: oklch(0.266 0.079 36.259); /* #441306 */
 
-  --color-purple-50: oklch(97.7% 0.014 308.299); /* #faf5ff */
-  --color-purple-100: oklch(94.6% 0.033 307.174); /* #f3e8ff */
-  --color-purple-200: oklch(90.2% 0.063 306.703); /* #e9d4ff */
-  --color-purple-300: oklch(82.7% 0.119 306.383); /* #dab2ff */
-  --color-purple-400: oklch(71.4% 0.203 305.504); /* #c27aff */
-  --color-purple-500: oklch(62.7% 0.265 303.9); /* #ad46ff */
-  --color-purple-600: oklch(55.8% 0.288 302.321); /* #9810fa */
-  --color-purple-700: oklch(49.6% 0.265 301.924); /* #8200db */
-  --color-purple-800: oklch(43.8% 0.218 303.724); /* #6e11b0 */
-  --color-purple-900: oklch(38.1% 0.176 304.987); /* #59168b */
-  --color-purple-950: oklch(29.1% 0.149 302.717); /* #3c0366 */
+  --color-amber-50: oklch(0.987 0.022 95.277); /* #fffbeb */
+  --color-amber-100: oklch(0.962 0.059 95.617); /* #fef3c6 */
+  --color-amber-200: oklch(0.924 0.12 95.746); /* #fee685 */
+  --color-amber-300: oklch(0.879 0.169 91.605); /* #ffd230 */
+  --color-amber-400: oklch(0.828 0.189 84.429); /* #ffba00 */
 
-  --color-fuchsia-50: oklch(97.7% 0.017 320.058); /* #fdf4ff */
-  --color-fuchsia-100: oklch(95.2% 0.037 318.852); /* #fae8ff */
-  --color-fuchsia-200: oklch(90.3% 0.076 319.62); /* #f6cfff */
-  --color-fuchsia-300: oklch(83.3% 0.145 321.434); /* #f4a8ff */
-  --color-fuchsia-400: oklch(74% 0.238 322.16); /* #ed6aff */
-  --color-fuchsia-500: oklch(66.7% 0.295 322.15); /* #e12afb */
-  --color-fuchsia-600: oklch(59.1% 0.293 322.896); /* #c800de */
-  --color-fuchsia-700: oklch(51.8% 0.253 323.949); /* #a800b7 */
-  --color-fuchsia-800: oklch(45.2% 0.211 324.591); /* #8a0194 */
-  --color-fuchsia-900: oklch(40.1% 0.17 325.612); /* #721378 */
-  --color-fuchsia-950: oklch(29.3% 0.136 325.661); /* #4b004f */
+  /*
+   * 76.9% quantises to L 0.7724 in 8-bit sRGB, just over the 0.77 ceiling the
+   * categorical scale has to sit under. 76.6% lands at 0.7682 with margin; the
+   * colour shift is one step in the blue channel and --warning keeps 9.14:1
+   * against its foreground, against a 4.5 floor.
+   */
+  --color-amber-500: oklch(0.766 0.188 70.08); /* #fc9900 */
+  --color-amber-600: oklch(0.666 0.179 58.318); /* #e17100 */
+  --color-amber-700: oklch(0.555 0.163 48.998); /* #bb4d00 */
+  --color-amber-800: oklch(0.473 0.137 46.201); /* #973c00 */
+  --color-amber-900: oklch(0.414 0.112 45.904); /* #7b3306 */
+  --color-amber-950: oklch(0.279 0.077 45.635); /* #461901 */
 
-  --color-pink-50: oklch(97.1% 0.014 343.198); /* #fdf2f8 */
-  --color-pink-100: oklch(94.8% 0.028 342.258); /* #fce7f3 */
-  --color-pink-200: oklch(89.9% 0.061 343.231); /* #fccee8 */
-  --color-pink-300: oklch(82.3% 0.12 346.018); /* #fda5d5 */
-  --color-pink-400: oklch(71.8% 0.202 349.761); /* #fb64b6 */
-  --color-pink-500: oklch(65.6% 0.241 354.308); /* #f6339a */
-  --color-pink-600: oklch(59.2% 0.249 0.584); /* #e60076 */
-  --color-pink-700: oklch(52.5% 0.223 3.958); /* #c6005c */
-  --color-pink-800: oklch(45.9% 0.187 3.815); /* #a3004c */
-  --color-pink-900: oklch(40.8% 0.153 2.432); /* #861043 */
-  --color-pink-950: oklch(28.4% 0.109 3.907); /* #510424 */
+  --color-yellow-50: oklch(0.987 0.026 102.212); /* #fefce8 */
+  --color-yellow-100: oklch(0.973 0.071 103.193); /* #fef9c2 */
+  --color-yellow-200: oklch(0.945 0.129 101.54); /* #fff085 */
+  --color-yellow-300: oklch(0.905 0.182 98.111); /* #ffdf20 */
+  --color-yellow-400: oklch(0.852 0.199 91.936); /* #fcc800 */
+  --color-yellow-500: oklch(0.795 0.184 86.047); /* #efb100 */
+  --color-yellow-600: oklch(0.681 0.162 75.834); /* #d08700 */
+  --color-yellow-700: oklch(0.554 0.135 66.442); /* #a65f00 */
+  --color-yellow-800: oklch(0.476 0.114 61.907); /* #894b00 */
+  --color-yellow-900: oklch(0.421 0.095 57.708); /* #733e0a */
+  --color-yellow-950: oklch(0.286 0.066 53.813); /* #432004 */
 
-  --color-rose-50: oklch(96.9% 0.015 12.422); /* #fff1f2 */
-  --color-rose-100: oklch(94.1% 0.03 12.58); /* #ffe4e6 */
-  --color-rose-200: oklch(89.2% 0.058 10.001); /* #ffccd3 */
-  --color-rose-300: oklch(81% 0.117 11.638); /* #ffa1ad */
-  --color-rose-400: oklch(71.2% 0.194 13.428); /* #ff637e */
-  --color-rose-500: oklch(64.5% 0.246 16.439); /* #ff2056 */
-  --color-rose-600: oklch(58.6% 0.253 17.585); /* #ec003f */
-  --color-rose-700: oklch(51.4% 0.222 16.935); /* #c70036 */
-  --color-rose-800: oklch(45.5% 0.188 13.697); /* #a50036 */
-  --color-rose-900: oklch(41% 0.159 10.272); /* #8b0836 */
-  --color-rose-950: oklch(27.1% 0.105 12.094); /* #4d0218 */
+  --color-lime-50: oklch(0.986 0.031 120.757); /* #f7fee7 */
+  --color-lime-100: oklch(0.967 0.067 122.328); /* #ecfcca */
+  --color-lime-200: oklch(0.938 0.127 124.321); /* #d8f999 */
+  --color-lime-300: oklch(0.897 0.196 126.665); /* #bbf451 */
+  --color-lime-400: oklch(0.841 0.238 128.85); /* #9ae600 */
+  --color-lime-500: oklch(0.768 0.233 130.85); /* #7ccf00 */
+  --color-lime-600: oklch(0.648 0.2 131.684); /* #5ea500 */
+  --color-lime-700: oklch(0.532 0.157 131.589); /* #497d00 */
+  --color-lime-800: oklch(0.453 0.124 130.933); /* #3c6300 */
+  --color-lime-900: oklch(0.405 0.101 131.063); /* #35530e */
+  --color-lime-950: oklch(0.274 0.072 132.109); /* #192e03 */
 
-  --color-slate-50: oklch(98.4% 0.003 247.858); /* #f8fafc */
-  --color-slate-100: oklch(96.8% 0.007 247.896); /* #f1f5f9 */
-  --color-slate-200: oklch(92.9% 0.013 255.508); /* #e2e8f0 */
-  --color-slate-300: oklch(86.9% 0.022 252.894); /* #cad5e2 */
-  --color-slate-400: oklch(70.4% 0.04 256.788); /* #90a1b9 */
-  --color-slate-500: oklch(55.4% 0.046 257.417); /* #62748e */
-  --color-slate-600: oklch(44.6% 0.043 257.281); /* #45556c */
-  --color-slate-700: oklch(37.2% 0.044 257.287); /* #314158 */
-  --color-slate-800: oklch(27.9% 0.041 260.031); /* #1d293d */
-  --color-slate-900: oklch(20.8% 0.042 265.755); /* #0f172b */
-  --color-slate-950: oklch(12.9% 0.042 264.695); /* #020618 */
+  --color-green-50: oklch(0.982 0.018 155.826); /* #f0fdf4 */
+  --color-green-100: oklch(0.962 0.044 156.743); /* #dcfce7 */
+  --color-green-200: oklch(0.925 0.084 155.995); /* #b9f8cf */
+  --color-green-300: oklch(0.871 0.15 154.449); /* #7bf1a8 */
+  --color-green-400: oklch(0.792 0.209 151.711); /* #05df72 */
+  --color-green-500: oklch(0.723 0.219 149.579); /* #00c950 */
+  --color-green-600: oklch(0.627 0.194 149.214); /* #00a63e */
+  --color-green-700: oklch(0.527 0.154 150.069); /* #008236 */
+  --color-green-800: oklch(0.448 0.119 151.328); /* #016630 */
+  --color-green-900: oklch(0.393 0.095 152.535); /* #0d542b */
+  --color-green-950: oklch(0.266 0.065 152.934); /* #032e15 */
 
-  --color-zinc-50: oklch(98.5% 0 0); /* #fafafa */
-  --color-zinc-100: oklch(96.7% 0.001 286.375); /* #f4f4f5 */
-  --color-zinc-200: oklch(92% 0.004 286.32); /* #e4e4e7 */
-  --color-zinc-300: oklch(87.1% 0.006 286.286); /* #d4d4d8 */
-  --color-zinc-400: oklch(70.5% 0.015 286.067); /* #9f9fa9 */
-  --color-zinc-500: oklch(55.2% 0.016 285.938); /* #71717b */
-  --color-zinc-600: oklch(44.2% 0.017 285.786); /* #52525c */
-  --color-zinc-700: oklch(37% 0.013 285.805); /* #3f3f46 */
-  --color-zinc-800: oklch(27.4% 0.006 286.033); /* #27272a */
-  --color-zinc-900: oklch(21% 0.006 285.885); /* #18181b */
-  --color-zinc-950: oklch(14.1% 0.005 285.823); /* #09090b */
+  --color-emerald-50: oklch(0.979 0.021 166.113); /* #ecfdf5 */
+  --color-emerald-100: oklch(0.95 0.052 163.051); /* #d0fae5 */
+  --color-emerald-200: oklch(0.905 0.093 164.15); /* #a4f4cf */
+  --color-emerald-300: oklch(0.845 0.143 164.978); /* #5ee9b5 */
+  --color-emerald-400: oklch(0.765 0.177 163.223); /* #00d492 */
+  --color-emerald-500: oklch(0.696 0.17 162.48); /* #00bc7d */
+  --color-emerald-600: oklch(0.596 0.145 163.225); /* #009966 */
+  --color-emerald-700: oklch(0.508 0.118 165.612); /* #007a55 */
+  --color-emerald-800: oklch(0.432 0.095 166.913); /* #006045 */
+  --color-emerald-900: oklch(0.378 0.077 168.94); /* #004f3b */
+  --color-emerald-950: oklch(0.262 0.051 172.552); /* #002c22 */
 
-  --color-neutral-50: oklch(98.5% 0 0); /* #fafafa */
-  --color-neutral-100: oklch(97% 0 0); /* #f5f5f5 */
-  --color-neutral-200: oklch(92.2% 0 0); /* #e5e5e5 */
-  --color-neutral-300: oklch(87% 0 0); /* #d4d4d4 */
-  --color-neutral-400: oklch(70.8% 0 0); /* #a1a1a1 */
-  --color-neutral-500: oklch(55.6% 0 0); /* #737373 */
-  --color-neutral-600: oklch(43.9% 0 0); /* #525252 */
-  --color-neutral-700: oklch(37.1% 0 0); /* #404040 */
-  --color-neutral-800: oklch(26.9% 0 0); /* #262626 */
-  --color-neutral-900: oklch(20.5% 0 0); /* #171717 */
-  --color-neutral-950: oklch(14.5% 0 0); /* #0a0a0a */
+  --color-teal-50: oklch(0.984 0.014 180.72); /* #f0fdfa */
+  --color-teal-100: oklch(0.953 0.051 180.801); /* #cbfbf1 */
+  --color-teal-200: oklch(0.91 0.096 180.426); /* #96f7e4 */
+  --color-teal-300: oklch(0.855 0.138 181.071); /* #46ecd5 */
+  --color-teal-400: oklch(0.777 0.152 181.912); /* #00d5be */
+  --color-teal-500: oklch(0.704 0.14 182.503); /* #00bba7 */
+  --color-teal-600: oklch(0.6 0.118 184.704); /* #009689 */
+  --color-teal-700: oklch(0.511 0.096 186.391); /* #00786f */
+  --color-teal-800: oklch(0.437 0.078 188.216); /* #005f5a */
+  --color-teal-900: oklch(0.386 0.063 188.416); /* #0b4f4a */
+  --color-teal-950: oklch(0.277 0.046 192.524); /* #022f2e */
 
-  --color-stone-50: oklch(98.5% 0.001 106.423); /* #fafaf9 */
-  --color-stone-100: oklch(97% 0.001 106.424); /* #f5f5f4 */
-  --color-stone-200: oklch(92.3% 0.003 48.717); /* #e7e5e4 */
-  --color-stone-300: oklch(86.9% 0.005 56.366); /* #d6d3d1 */
-  --color-stone-400: oklch(70.9% 0.01 56.259); /* #a6a09b */
-  --color-stone-500: oklch(55.3% 0.013 58.071); /* #79716b */
-  --color-stone-600: oklch(44.4% 0.011 73.639); /* #57534d */
-  --color-stone-700: oklch(37.4% 0.01 67.558); /* #44403b */
-  --color-stone-800: oklch(26.8% 0.007 34.298); /* #292524 */
-  --color-stone-900: oklch(21.6% 0.006 56.043); /* #1c1917 */
-  --color-stone-950: oklch(14.7% 0.004 49.25); /* #0c0a09 */
+  --color-cyan-50: oklch(0.984 0.019 200.873); /* #ecfeff */
+  --color-cyan-100: oklch(0.956 0.045 203.388); /* #cefafe */
+  --color-cyan-200: oklch(0.917 0.08 205.041); /* #a2f4fd */
+  --color-cyan-300: oklch(0.865 0.127 207.078); /* #53eafd */
+  --color-cyan-400: oklch(0.789 0.154 211.53); /* #00d3f2 */
+  --color-cyan-500: oklch(0.715 0.143 215.221); /* #00b8db */
+  --color-cyan-600: oklch(0.609 0.126 221.723); /* #0092b8 */
+  --color-cyan-700: oklch(0.52 0.105 223.128); /* #007595 */
+  --color-cyan-800: oklch(0.45 0.085 224.283); /* #005f78 */
+  --color-cyan-900: oklch(0.398 0.07 227.392); /* #104e64 */
+  --color-cyan-950: oklch(0.302 0.056 229.695); /* #053345 */
 
-  --color-mauve-50: oklch(98.5% 0 0); /* #fafafa */
-  --color-mauve-100: oklch(96% 0.003 325.6); /* #f3f1f3 */
-  --color-mauve-200: oklch(92.2% 0.005 325.62); /* #e7e4e7 */
-  --color-mauve-300: oklch(86.5% 0.012 325.68); /* #d7d0d7 */
-  --color-mauve-400: oklch(71.1% 0.019 323.02); /* #a89ea9 */
-  --color-mauve-500: oklch(54.2% 0.034 322.5); /* #79697b */
-  --color-mauve-600: oklch(43.5% 0.029 321.78); /* #594c5b */
-  --color-mauve-700: oklch(36.4% 0.029 323.89); /* #463947 */
-  --color-mauve-800: oklch(26.3% 0.024 320.12); /* #2a212c */
-  --color-mauve-900: oklch(21.2% 0.019 322.12); /* #1d161e */
-  --color-mauve-950: oklch(14.5% 0.008 326); /* #0c090c */
+  --color-sky-50: oklch(0.977 0.013 236.62); /* #f0f9ff */
+  --color-sky-100: oklch(0.951 0.026 236.824); /* #dff2fe */
+  --color-sky-200: oklch(0.901 0.058 230.902); /* #b8e6fe */
+  --color-sky-300: oklch(0.828 0.111 230.318); /* #74d4ff */
+  --color-sky-400: oklch(0.746 0.16 232.661); /* #00bcff */
+  --color-sky-500: oklch(0.685 0.169 237.323); /* #00a6f4 */
+  --color-sky-600: oklch(0.588 0.158 241.966); /* #0084d1 */
+  --color-sky-700: oklch(0.5 0.134 242.749); /* #0069a8 */
+  --color-sky-800: oklch(0.443 0.11 240.79); /* #00598a */
+  --color-sky-900: oklch(0.391 0.09 240.876); /* #024a70 */
+  --color-sky-950: oklch(0.293 0.066 243.157); /* #052f4a */
 
-  --color-olive-50: oklch(98.8% 0.003 106.5); /* #fbfbf9 */
-  --color-olive-100: oklch(96.6% 0.005 106.5); /* #f4f4f0 */
-  --color-olive-200: oklch(93% 0.007 106.5); /* #e8e8e3 */
-  --color-olive-300: oklch(88% 0.011 106.6); /* #d8d8d0 */
-  --color-olive-400: oklch(73.7% 0.021 106.9); /* #abab9c */
-  --color-olive-500: oklch(58% 0.031 107.3); /* #7c7c67 */
-  --color-olive-600: oklch(46.6% 0.025 107.3); /* #5b5b4b */
-  --color-olive-700: oklch(39.4% 0.023 107.4); /* #474739 */
-  --color-olive-800: oklch(28.6% 0.016 107.4); /* #2b2b22 */
-  --color-olive-900: oklch(22.8% 0.013 107.4); /* #1d1d16 */
-  --color-olive-950: oklch(15.3% 0.006 107.1); /* #0c0c09 */
+  --color-blue-50: oklch(0.97 0.014 254.604); /* #eff6ff */
+  --color-blue-100: oklch(0.932 0.032 255.585); /* #dbeafe */
+  --color-blue-200: oklch(0.882 0.059 254.128); /* #bedbff */
+  --color-blue-300: oklch(0.809 0.105 251.813); /* #8ec5ff */
+  --color-blue-400: oklch(0.707 0.165 254.624); /* #51a2ff */
+  --color-blue-500: oklch(0.623 0.214 259.815); /* #2b7fff */
+  --color-blue-600: oklch(0.546 0.245 262.881); /* #155dfc */
+  --color-blue-700: oklch(0.488 0.243 264.376); /* #1447e6 */
+  --color-blue-800: oklch(0.424 0.199 265.638); /* #193cb8 */
+  --color-blue-900: oklch(0.379 0.146 265.522); /* #1c398e */
+  --color-blue-950: oklch(0.282 0.091 267.935); /* #162456 */
 
-  --color-mist-50: oklch(98.7% 0.002 197.1); /* #f9fbfb */
-  --color-mist-100: oklch(96.3% 0.002 197.1); /* #f1f3f3 */
-  --color-mist-200: oklch(92.5% 0.005 214.3); /* #e3e7e8 */
-  --color-mist-300: oklch(87.2% 0.007 219.6); /* #d0d6d8 */
-  --color-mist-400: oklch(72.3% 0.014 214.4); /* #9ca8ab */
-  --color-mist-500: oklch(56% 0.021 213.5); /* #67787c */
-  --color-mist-600: oklch(45% 0.017 213.2); /* #4b585b */
-  --color-mist-700: oklch(37.8% 0.015 216); /* #394447 */
-  --color-mist-800: oklch(27.5% 0.011 216.9); /* #22292b */
-  --color-mist-900: oklch(21.8% 0.008 223.9); /* #161b1d */
-  --color-mist-950: oklch(14.8% 0.004 228.8); /* #090b0c */
+  --color-indigo-50: oklch(0.962 0.018 272.314); /* #eef2ff */
+  --color-indigo-100: oklch(0.93 0.034 272.788); /* #e0e7ff */
+  --color-indigo-200: oklch(0.87 0.065 274.039); /* #c6d2ff */
+  --color-indigo-300: oklch(0.785 0.115 274.713); /* #a3b3ff */
+  --color-indigo-400: oklch(0.673 0.182 276.935); /* #7c86ff */
+  --color-indigo-500: oklch(0.585 0.233 277.117); /* #615fff */
+  --color-indigo-600: oklch(0.511 0.262 276.966); /* #4f39f6 */
+  --color-indigo-700: oklch(0.457 0.24 277.023); /* #432dd7 */
+  --color-indigo-800: oklch(0.398 0.195 277.366); /* #372aac */
+  --color-indigo-900: oklch(0.359 0.144 278.697); /* #312c85 */
+  --color-indigo-950: oklch(0.257 0.09 281.288); /* #1e1a4d */
 
-  --color-taupe-50: oklch(98.6% 0.002 67.8); /* #fbfaf9 */
-  --color-taupe-100: oklch(96% 0.002 17.2); /* #f3f1f1 */
-  --color-taupe-200: oklch(92.2% 0.005 34.3); /* #e8e4e3 */
-  --color-taupe-300: oklch(86.8% 0.007 39.5); /* #d8d2d0 */
-  --color-taupe-400: oklch(71.4% 0.014 41.2); /* #aba09c */
-  --color-taupe-500: oklch(54.7% 0.021 43.1); /* #7c6d67 */
-  --color-taupe-600: oklch(43.8% 0.017 39.3); /* #5b4f4b */
-  --color-taupe-700: oklch(36.7% 0.016 35.7); /* #473c39 */
-  --color-taupe-800: oklch(26.8% 0.011 36.5); /* #2b2422 */
-  --color-taupe-900: oklch(21.4% 0.009 43.1); /* #1d1816 */
-  --color-taupe-950: oklch(14.7% 0.004 49.3); /* #0c0a09 */
+  /*
+   * Brand
+   *
+   * The consumer's own colour, shipped ready so nothing has to be built before
+   * a brand can be applied: override these eleven steps and every token that
+   * references them follows.
+   *
+   * The default is indigo's ramp, a conventional brand hue, and far enough from
+   * `--chart-cat-1` that the two do not read as the same blue before anyone has
+   * customised anything. It is a placeholder with a real value, not a palette
+   * in its own right.
+   */
+  --color-brand-50: oklch(0.962 0.018 272.314); /* #eef2ff */
+  --color-brand-100: oklch(0.93 0.034 272.788); /* #e0e7ff */
+  --color-brand-200: oklch(0.87 0.065 274.039); /* #c6d2ff */
+  --color-brand-300: oklch(0.785 0.115 274.713); /* #a3b3ff */
+  --color-brand-400: oklch(0.673 0.182 276.935); /* #7c86ff */
+  --color-brand-500: oklch(0.585 0.233 277.117); /* #615fff */
+  --color-brand-600: oklch(0.511 0.262 276.966); /* #4f39f6 */
+  --color-brand-700: oklch(0.457 0.24 277.023); /* #432dd7 */
+  --color-brand-800: oklch(0.398 0.195 277.366); /* #372aac */
+  --color-brand-900: oklch(0.359 0.144 278.697); /* #312c85 */
+  --color-brand-950: oklch(0.257 0.09 281.288); /* #1e1a4d */
 
-  /* Clay: warm coral/terracotta, anchored on Claude's brand color #D97757.
-     The brand color IS clay-500 exactly; the rest of the ramp is derived from
-     it (smooth lightness, chroma peaking mid and tapering at the ends, gamut
-     mapped to sRGB). clay-500 (the brand) is the light-mode --primary, with a
-     white icon on the submit button (graphical 3:1); clay-400 is the dark-mode
-     --primary. Used only by the Claude theme. */
+  --color-violet-50: oklch(0.969 0.016 293.756); /* #f5f3ff */
+  --color-violet-100: oklch(0.943 0.029 294.588); /* #ede9fe */
+  --color-violet-200: oklch(0.894 0.057 293.283); /* #ddd6ff */
+  --color-violet-300: oklch(0.811 0.111 293.571); /* #c4b4ff */
+  --color-violet-400: oklch(0.702 0.183 293.541); /* #a684ff */
+  --color-violet-500: oklch(0.606 0.25 292.717); /* #8e51ff */
+  --color-violet-600: oklch(0.541 0.281 293.009); /* #7f22fe */
+  --color-violet-700: oklch(0.491 0.27 292.581); /* #7008e7 */
+  --color-violet-800: oklch(0.432 0.232 292.759); /* #5d0ec0 */
+  --color-violet-900: oklch(0.38 0.189 293.745); /* #4d179a */
+  --color-violet-950: oklch(0.283 0.141 291.089); /* #2f0d68 */
+
+  --color-purple-50: oklch(0.977 0.014 308.299); /* #faf5ff */
+  --color-purple-100: oklch(0.946 0.033 307.174); /* #f3e8ff */
+  --color-purple-200: oklch(0.902 0.063 306.703); /* #e9d4ff */
+  --color-purple-300: oklch(0.827 0.119 306.383); /* #dab2ff */
+  --color-purple-400: oklch(0.714 0.203 305.504); /* #c27aff */
+  --color-purple-500: oklch(0.627 0.265 303.9); /* #ad46ff */
+  --color-purple-600: oklch(0.558 0.288 302.321); /* #9810fa */
+  --color-purple-700: oklch(0.496 0.265 301.924); /* #8200db */
+  --color-purple-800: oklch(0.438 0.218 303.724); /* #6e11b0 */
+  --color-purple-900: oklch(0.381 0.176 304.987); /* #59168b */
+  --color-purple-950: oklch(0.291 0.149 302.717); /* #3c0366 */
+
+  --color-fuchsia-50: oklch(0.977 0.017 320.058); /* #fdf4ff */
+  --color-fuchsia-100: oklch(0.952 0.037 318.852); /* #fae8ff */
+  --color-fuchsia-200: oklch(0.903 0.076 319.62); /* #f6cfff */
+  --color-fuchsia-300: oklch(0.833 0.145 321.434); /* #f4a8ff */
+  --color-fuchsia-400: oklch(0.74 0.238 322.16); /* #ed6aff */
+  --color-fuchsia-500: oklch(0.667 0.295 322.15); /* #e12afb */
+  --color-fuchsia-600: oklch(0.591 0.293 322.896); /* #c800de */
+  --color-fuchsia-700: oklch(0.518 0.253 323.949); /* #a800b7 */
+  --color-fuchsia-800: oklch(0.452 0.211 324.591); /* #8a0194 */
+  --color-fuchsia-900: oklch(0.401 0.17 325.612); /* #721378 */
+  --color-fuchsia-950: oklch(0.293 0.136 325.661); /* #4b004f */
+
+  --color-pink-50: oklch(0.971 0.014 343.198); /* #fdf2f8 */
+  --color-pink-100: oklch(0.948 0.028 342.258); /* #fce7f3 */
+  --color-pink-200: oklch(0.899 0.061 343.231); /* #fccee8 */
+  --color-pink-300: oklch(0.823 0.12 346.018); /* #fda5d5 */
+  --color-pink-400: oklch(0.718 0.202 349.761); /* #fb64b6 */
+  --color-pink-500: oklch(0.656 0.241 354.308); /* #f6339a */
+  --color-pink-600: oklch(0.592 0.249 0.584); /* #e60076 */
+  --color-pink-700: oklch(0.525 0.223 3.958); /* #c6005c */
+  --color-pink-800: oklch(0.459 0.187 3.815); /* #a3004c */
+  --color-pink-900: oklch(0.408 0.153 2.432); /* #861043 */
+  --color-pink-950: oklch(0.284 0.109 3.907); /* #510424 */
+
+  --color-rose-50: oklch(0.969 0.015 12.422); /* #fff1f2 */
+  --color-rose-100: oklch(0.941 0.03 12.58); /* #ffe4e6 */
+  --color-rose-200: oklch(0.892 0.058 10.001); /* #ffccd3 */
+  --color-rose-300: oklch(0.81 0.117 11.638); /* #ffa1ad */
+  --color-rose-400: oklch(0.712 0.194 13.428); /* #ff637e */
+  --color-rose-500: oklch(0.645 0.246 16.439); /* #ff2056 */
+  --color-rose-600: oklch(0.586 0.253 17.585); /* #ec003f */
+  --color-rose-700: oklch(0.514 0.222 16.935); /* #c70036 */
+  --color-rose-800: oklch(0.455 0.188 13.697); /* #a50036 */
+  --color-rose-900: oklch(0.41 0.159 10.272); /* #8b0836 */
+  --color-rose-950: oklch(0.271 0.105 12.094); /* #4d0218 */
+
+  --color-slate-50: oklch(0.984 0.003 247.858); /* #f8fafc */
+  --color-slate-100: oklch(0.968 0.007 247.896); /* #f1f5f9 */
+  --color-slate-200: oklch(0.929 0.013 255.508); /* #e2e8f0 */
+  --color-slate-300: oklch(0.869 0.022 252.894); /* #cad5e2 */
+  --color-slate-400: oklch(0.704 0.04 256.788); /* #90a1b9 */
+  --color-slate-500: oklch(0.554 0.046 257.417); /* #62748e */
+  --color-slate-600: oklch(0.446 0.043 257.281); /* #45556c */
+  --color-slate-700: oklch(0.372 0.044 257.287); /* #314158 */
+  --color-slate-800: oklch(0.279 0.041 260.031); /* #1d293d */
+  --color-slate-900: oklch(0.208 0.042 265.755); /* #0f172b */
+  --color-slate-950: oklch(0.129 0.042 264.695); /* #020618 */
+
+  --color-zinc-50: oklch(0.985 0 0); /* #fafafa */
+  --color-zinc-100: oklch(0.967 0.001 286.375); /* #f4f4f5 */
+  --color-zinc-200: oklch(0.92 0.004 286.32); /* #e4e4e7 */
+  --color-zinc-300: oklch(0.871 0.006 286.286); /* #d4d4d8 */
+  --color-zinc-400: oklch(0.705 0.015 286.067); /* #9f9fa9 */
+  --color-zinc-500: oklch(0.552 0.016 285.938); /* #71717b */
+  --color-zinc-600: oklch(0.442 0.017 285.786); /* #52525c */
+  --color-zinc-700: oklch(0.37 0.013 285.805); /* #3f3f46 */
+  --color-zinc-800: oklch(0.274 0.006 286.033); /* #27272a */
+  --color-zinc-900: oklch(0.21 0.006 285.885); /* #18181b */
+  --color-zinc-950: oklch(0.141 0.005 285.823); /* #09090b */
+
+  --color-neutral-50: oklch(0.985 0 0); /* #fafafa */
+  --color-neutral-100: oklch(0.97 0 0); /* #f5f5f5 */
+  --color-neutral-200: oklch(0.922 0 0); /* #e5e5e5 */
+  --color-neutral-300: oklch(0.87 0 0); /* #d4d4d4 */
+  --color-neutral-400: oklch(0.708 0 0); /* #a1a1a1 */
+  --color-neutral-500: oklch(0.556 0 0); /* #737373 */
+  --color-neutral-600: oklch(0.439 0 0); /* #525252 */
+  --color-neutral-700: oklch(0.371 0 0); /* #404040 */
+  --color-neutral-800: oklch(0.269 0 0); /* #262626 */
+  --color-neutral-900: oklch(0.205 0 0); /* #171717 */
+  --color-neutral-950: oklch(0.145 0 0); /* #0a0a0a */
+
+  --color-stone-50: oklch(0.985 0.001 106.423); /* #fafaf9 */
+  --color-stone-100: oklch(0.97 0.001 106.424); /* #f5f5f4 */
+  --color-stone-200: oklch(0.923 0.003 48.717); /* #e7e5e4 */
+  --color-stone-300: oklch(0.869 0.005 56.366); /* #d6d3d1 */
+  --color-stone-400: oklch(0.709 0.01 56.259); /* #a6a09b */
+  --color-stone-500: oklch(0.553 0.013 58.071); /* #79716b */
+  --color-stone-600: oklch(0.444 0.011 73.639); /* #57534d */
+  --color-stone-700: oklch(0.374 0.01 67.558); /* #44403b */
+  --color-stone-800: oklch(0.268 0.007 34.298); /* #292524 */
+  --color-stone-900: oklch(0.216 0.006 56.043); /* #1c1917 */
+  --color-stone-950: oklch(0.147 0.004 49.25); /* #0c0a09 */
+
+  --color-mauve-50: oklch(0.985 0 0); /* #fafafa */
+  --color-mauve-100: oklch(0.96 0.003 325.6); /* #f3f1f3 */
+  --color-mauve-200: oklch(0.922 0.005 325.62); /* #e7e4e7 */
+  --color-mauve-300: oklch(0.865 0.012 325.68); /* #d7d0d7 */
+  --color-mauve-400: oklch(0.711 0.019 323.02); /* #a89ea9 */
+  --color-mauve-500: oklch(0.542 0.034 322.5); /* #79697b */
+  --color-mauve-600: oklch(0.435 0.029 321.78); /* #594c5b */
+  --color-mauve-700: oklch(0.364 0.029 323.89); /* #463947 */
+  --color-mauve-800: oklch(0.263 0.024 320.12); /* #2a212c */
+  --color-mauve-900: oklch(0.212 0.019 322.12); /* #1d161e */
+  --color-mauve-950: oklch(0.145 0.008 326); /* #0c090c */
+
+  --color-olive-50: oklch(0.988 0.003 106.5); /* #fbfbf9 */
+  --color-olive-100: oklch(0.966 0.005 106.5); /* #f4f4f0 */
+  --color-olive-200: oklch(0.93 0.007 106.5); /* #e8e8e3 */
+  --color-olive-300: oklch(0.88 0.011 106.6); /* #d8d8d0 */
+  --color-olive-400: oklch(0.737 0.021 106.9); /* #abab9c */
+  --color-olive-500: oklch(0.58 0.031 107.3); /* #7c7c67 */
+  --color-olive-600: oklch(0.466 0.025 107.3); /* #5b5b4b */
+  --color-olive-700: oklch(0.394 0.023 107.4); /* #474739 */
+  --color-olive-800: oklch(0.286 0.016 107.4); /* #2b2b22 */
+  --color-olive-900: oklch(0.228 0.013 107.4); /* #1d1d16 */
+  --color-olive-950: oklch(0.153 0.006 107.1); /* #0c0c09 */
+
+  --color-mist-50: oklch(0.987 0.002 197.1); /* #f9fbfb */
+  --color-mist-100: oklch(0.963 0.002 197.1); /* #f1f3f3 */
+  --color-mist-200: oklch(0.925 0.005 214.3); /* #e3e7e8 */
+  --color-mist-300: oklch(0.872 0.007 219.6); /* #d0d6d8 */
+  --color-mist-400: oklch(0.723 0.014 214.4); /* #9ca8ab */
+  --color-mist-500: oklch(0.56 0.021 213.5); /* #67787c */
+  --color-mist-600: oklch(0.45 0.017 213.2); /* #4b585b */
+  --color-mist-700: oklch(0.378 0.015 216); /* #394447 */
+  --color-mist-800: oklch(0.275 0.011 216.9); /* #22292b */
+  --color-mist-900: oklch(0.218 0.008 223.9); /* #161b1d */
+  --color-mist-950: oklch(0.148 0.004 228.8); /* #090b0c */
+
+  --color-taupe-50: oklch(0.986 0.002 67.8); /* #fbfaf9 */
+  --color-taupe-100: oklch(0.96 0.002 17.2); /* #f3f1f1 */
+  --color-taupe-200: oklch(0.922 0.005 34.3); /* #e8e4e3 */
+  --color-taupe-300: oklch(0.868 0.007 39.5); /* #d8d2d0 */
+  --color-taupe-400: oklch(0.714 0.014 41.2); /* #aba09c */
+  --color-taupe-500: oklch(0.547 0.021 43.1); /* #7c6d67 */
+  --color-taupe-600: oklch(0.438 0.017 39.3); /* #5b4f4b */
+  --color-taupe-700: oklch(0.367 0.016 35.7); /* #473c39 */
+  --color-taupe-800: oklch(0.268 0.011 36.5); /* #2b2422 */
+  --color-taupe-900: oklch(0.214 0.009 43.1); /* #1d1816 */
+  --color-taupe-950: oklch(0.147 0.004 49.3); /* #0c0a09 */
+
+  /*
+   * Clay: warm coral/terracotta, anchored on Claude's brand color #D97757. The
+   * brand color IS clay-500 exactly; the rest of the ramp is derived from it
+   * (smooth lightness, chroma peaking mid and tapering at the ends, gamut
+   * mapped to sRGB). clay-500 (the brand) is the light-mode --primary, with a
+   * white icon on the submit button (graphical 3:1); clay-400 is the dark-mode
+   * --primary. Used only by the Claude theme.
+   */
   --color-clay-50: oklch(0.971 0.013 44); /* #fef3ee */
   --color-clay-100: oklch(0.936 0.03 43); /* #fce4da */
   --color-clay-200: oklch(0.882 0.058 42); /* #fbccbb */
   --color-clay-300: oklch(0.815 0.09 41); /* #f5af96 */
   --color-clay-400: oklch(0.745 0.118 40); /* #ec9272 */
-  --color-clay-500: oklch(0.672 0.131 38.76); /* #d97757 brand */
+
+  /*
+   * brand
+   */
+  --color-clay-500: oklch(0.672 0.131 38.76); /* #d97757 */
   --color-clay-600: oklch(0.57 0.135 38); /* #b85637 */
   --color-clay-700: oklch(0.5 0.118 36); /* #9a4730 */
   --color-clay-800: oklch(0.43 0.093 35); /* #7a3b2b */
   --color-clay-900: oklch(0.365 0.067 34); /* #5d3026 */
   --color-clay-950: oklch(0.268 0.042 33); /* #381e18 */
 
-  /* Radii base */
+  /*
+   * Radii base
+   */
   --radius-base: 0.625rem;
   --radius-sm: calc(var(--radius-base) * 0.6);
   --radius-md: calc(var(--radius-base) * 0.8);
   --radius-lg: var(--radius-base);
   --radius-xl: calc(var(--radius-base) * 1.2);
 
-  /* Typography, spacing, tracking (tweakcn contract). Themes may override. */
+  /*
+   * Typography, spacing, tracking (tweakcn contract). Themes may override.
+   */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-serif: ui-serif, 'Georgia', 'Times New Roman', serif;
   --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', monospace;
+
   --spacing: 0.25rem;
+
   --tracking-normal: 0em;
 }
 
 :root {
-  /* ─── 2. SEMANTICS ─────────────── */
+  /*
+   * 2. SEMANTICS
+   */
   --background: var(--color-gray-50);
   --foreground: var(--color-gray-950);
 
-  /* Elevated surfaces are pure white (gray-0), one step above the off-white
-     page (gray-50), so cards/dialogs/dropdowns read as raised by color, not
-     just shadow. (Dark mode keeps card/popover at gray-900 — see .dark.) */
+  /*
+   * Elevated surfaces are pure white (gray-0), one step above the off-white
+   * page (gray-50), so cards/dialogs/dropdowns read as raised by color, not
+   * just shadow. (Dark mode keeps card/popover at gray-900, see .dark.)
+   */
   --card: var(--color-gray-0);
   --card-foreground: var(--foreground);
-
   --popover: var(--color-gray-0);
   --popover-foreground: var(--foreground);
-
   --primary: var(--color-gray-900);
   --primary-foreground: var(--color-gray-50);
-
   --secondary: var(--color-gray-100);
   --secondary-foreground: var(--color-gray-900);
-
   --muted: var(--color-gray-100);
   --muted-foreground: var(--color-gray-500);
-
   --accent: var(--color-gray-100);
   --accent-foreground: var(--color-gray-900);
-
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-gray-50);
 
-  /* Status semantics (success/warning). Solid fills sized for SMALL text
-     (badges): every bg/foreground pair clears WCAG AA 4.5:1 in this mode.
-     Bound to Tailwind primitives per the two-tier rule (no raw literals).
-     success = green fill + white text (green must be dark enough for white →
-     green-700); warning = amber fill + near-black text (amber is light in both
-     modes, so the foreground stays dark). */
+  /*
+   * Status semantics (success/warning). Solid fills sized for SMALL text
+   * (badges): every bg/foreground pair clears WCAG AA 4.5:1 in this mode. Bound
+   * to Tailwind primitives per the two-tier rule (no raw literals). success =
+   * green fill + white text (green must be dark enough for white → green-700);
+   * warning = amber fill + near-black text (amber is light in both modes, so
+   * the foreground stays dark).
+   */
   --success: var(--color-green-700);
   --success-foreground: var(--color-gray-50);
-
   --warning: var(--color-amber-500);
   --warning-foreground: var(--color-gray-950);
-
   --border: var(--color-gray-200);
   --input: var(--color-gray-200);
   --ring: var(--color-gray-400);
 
-  /* ─── Sidebar (shadcn/tweakcn) ───── */
+  /*
+   * Sidebar (shadcn/tweakcn)
+   */
   --sidebar: var(--color-gray-50);
   --sidebar-foreground: var(--color-gray-950);
   --sidebar-primary: var(--color-gray-900);
@@ -475,7 +504,9 @@
   --sidebar-border: var(--color-gray-200);
   --sidebar-ring: var(--color-gray-400);
 
-  /* ─── Shadows (tweakcn contract; themes may override) ───── */
+  /*
+   * Shadows (tweakcn contract; themes may override)
+   */
   --shadow-2xs: 0 1px 2px 0 oklch(0 0 0 / 0.04);
   --shadow-xs: 0 1px 3px 0 oklch(0 0 0 / 0.06);
   --shadow-sm:
@@ -490,26 +521,28 @@
     0 20px 28px -6px oklch(0 0 0 / 0.12), 0 8px 12px -6px oklch(0 0 0 / 0.1);
   --shadow-2xl: 0 28px 56px -12px oklch(0 0 0 / 0.2);
 
-  /* ─── Chart series (consumed by @gremorie/ng-charts) ───── */
-  /* ─── Categorical chart scale ──────────────────────────────────────
+  /*
+   * Chart series (consumed by @gremorie/ng-charts)
+   *
+   * Categorical chart scale
+   *
    * Six slots for series identity. Not themeable: a brand palette is for
    * chrome, and every themed override this replaces turned these into a
-   * single-hue ramp (three clay steps, five greens), which encodes order,
-   * not identity. Two series then differ only in lightness.
+   * single-hue ramp (three clay steps, five greens), which encodes order, not
+   * identity. Two series then differ only in lightness.
    *
-   * One primitive family per slot, the same family in both modes so a
-   * series keeps its colour when the mode flips — only the step changes
-   * (500 light, 600 dark). Validated with the data-viz palette checks:
-   * lightness band, chroma floor, CVD separation, normal-vision floor and
-   * contrast, on every pair, in both modes.
+   * One primitive family per slot, the same family in both modes so a series
+   * keeps its colour when the mode flips, only the step changes (500 light, 600
+   * dark). Validated with the data-viz palette checks: lightness band, chroma
+   * floor, CVD separation, normal-vision floor and contrast, on every pair, in
+   * both modes.
    *
    * Five, and the scale repeats past the fifth series. Five is where these
    * ramps stop separating: a sixth family collapses against one of the five
-   * under colour-vision deficiency whichever one it comes from — fuchsia
-   * lands on blue at ΔE 5.0 under protanopia, purple at ΔE 0.7 under the
-   * commoner deuteranopia, and sky fails for full colour vision against
-   * cyan. Notion's categorical scheme stops at five and repeats for the
-   * same reason.
+   * under colour-vision deficiency whichever one it comes from, fuchsia lands
+   * on blue at ΔE 5.0 under protanopia, purple at ΔE 0.7 under the commoner
+   * deuteranopia, and sky fails for full colour vision against cyan. Notion's
+   * categorical scheme stops at five and repeats for the same reason.
    */
   --chart-cat-1: var(--color-blue-500);
   --chart-cat-2: var(--color-amber-500);
@@ -517,12 +550,14 @@
   --chart-cat-4: var(--color-cyan-500);
   --chart-cat-5: var(--color-pink-500);
 
-  /* ─── Sequential ───────────────────────────────────────────────────
-   * One hue, light to dark, for data with a natural order. Read by
-   * lightness rather than hue, so it survives colour-vision deficiency by
-   * construction. Steps are 200/400/600/800/950 rather than the evenly
-   * numbered ones: 600 to 700 measures ΔL 0.058, under the 0.06 the eye
-   * needs to call two steps apart.
+  /*
+   * Sequential
+   *
+   * One hue, light to dark, for data with a natural order. Read by lightness
+   * rather than hue, so it survives colour-vision deficiency by construction.
+   * Steps are 200/400/600/800/950 rather than the evenly numbered ones: 600 to
+   * 700 measures ΔL 0.058, under the 0.06 the eye needs to call two steps
+   * apart.
    */
   --chart-seq-1: var(--color-blue-200);
   --chart-seq-2: var(--color-blue-400);
@@ -530,16 +565,18 @@
   --chart-seq-4: var(--color-blue-800);
   --chart-seq-5: var(--color-blue-950);
 
-  /* ─── Divergent ────────────────────────────────────────────────────
-   * Two poles around a neutral pivot, for data with a meaningful middle:
-   * zero, a baseline, an average. Blue against red rather than red
-   * against green, which around 8% of men cannot separate.
+  /*
+   * Divergent
+   *
+   * Two poles around a neutral pivot, for data with a meaningful middle: zero,
+   * a baseline, an average. Blue against red rather than red against green,
+   * which around 8% of men cannot separate.
    *
    * The inner stops are 300, not 200: at 200 the three middle values land
-   * within ΔL 0.04 of the pivot, so the pivot reads as a brightness spike
-   * and the weak ends disappear. At 300 the smallest step is ΔL 0.13, and
-   * the poles sit within 0.02 of each other in lightness, so neither side
-   * looks heavier than the other.
+   * within ΔL 0.04 of the pivot, so the pivot reads as a brightness spike and
+   * the weak ends disappear. At 300 the smallest step is ΔL 0.13, and the poles
+   * sit within 0.02 of each other in lightness, so neither side looks heavier
+   * than the other.
    */
   --chart-div-1: var(--color-blue-700);
   --chart-div-2: var(--color-blue-500);
@@ -549,13 +586,14 @@
   --chart-div-6: var(--color-red-500);
   --chart-div-7: var(--color-red-700);
 
-  /* ─── Status ───────────────────────────────────────────────────────
-   * Discrete state, never series identity: if green means "good" in your
-   * chart, this is the scheme, not Categorical. Success, warning and
-   * error point at the semantic tokens rather than restating them —
-   * "green means ok" cannot be allowed two different answers in one
-   * system. Info and neutral have no semantic counterpart, so they are
-   * defined here.
+  /*
+   * Status
+   *
+   * Discrete state, never series identity: if green means "good" in your chart,
+   * this is the scheme, not Categorical. Success, warning and error point at
+   * the semantic tokens rather than restating them, "green means ok" cannot be
+   * allowed two different answers in one system. Info and neutral have no
+   * semantic counterpart, so they are defined here.
    */
   --chart-status-success: var(--success);
   --chart-status-warning: var(--warning);
@@ -563,11 +601,13 @@
   --chart-status-info: var(--color-sky-600);
   --chart-status-neutral: var(--muted-foreground);
 
-  /* ─── Comparison ───────────────────────────────────────────────────
-   * One series in focus, the rest as backdrop — "you versus your peers",
-   * "current versus baseline", an A/B split. The highlight is the brand
-   * colour, so the thing being compared wears the consumer's identity;
-   * the backdrop is neutral, which is what makes the highlight read.
+  /*
+   * Comparison
+   *
+   * One series in focus, the rest as backdrop, "you versus your peers",
+   * "current versus baseline", an A/B split. The highlight is the brand colour,
+   * so the thing being compared wears the consumer's identity; the backdrop is
+   * neutral, which is what makes the highlight read.
    */
   --chart-cmp-highlight: var(--color-brand-600);
   --chart-cmp-mute-1: var(--color-neutral-700);
@@ -575,7 +615,9 @@
   --chart-cmp-mute-3: var(--color-neutral-400);
   --chart-cmp-mute-4: var(--color-neutral-300);
 
-  /* Back-compat: the old slots now point at the validated scale. */
+  /*
+   * Back-compat: the old slots now point at the validated scale.
+   */
   --chart-1: var(--chart-cat-1);
   --chart-2: var(--chart-cat-2);
   --chart-3: var(--chart-cat-3);
@@ -584,71 +626,75 @@
 }
 
 .dark {
-  /* Only remap semantics. Primitives stay intact. */
+  /*
+   * Only remap semantics. Primitives stay intact.
+   */
   --background: var(--color-gray-950);
   --foreground: var(--color-gray-50);
-
   --card: var(--color-gray-900);
   --card-foreground: var(--color-gray-50);
-
   --popover: var(--color-gray-900);
   --popover-foreground: var(--color-gray-50);
-
   --primary: var(--color-gray-100);
   --primary-foreground: var(--color-gray-900);
-
   --secondary: var(--color-gray-800);
   --secondary-foreground: var(--color-gray-50);
-
   --muted: var(--color-gray-800);
   --muted-foreground: var(--color-gray-400);
-
   --accent: var(--color-gray-800);
   --accent-foreground: var(--color-gray-50);
-
   --destructive: var(--color-red-400);
   --destructive-foreground: var(--color-gray-50);
 
-  /* On dark surfaces the fills invert: a lighter green/amber carries near-black
-     text, both clearing WCAG AA 4.5:1 (mirrors --destructive going to red-400). */
+  /*
+   * On dark surfaces the fills invert: a lighter green/amber carries near-black
+   * text, both clearing WCAG AA 4.5:1 (mirrors --destructive going to red-400).
+   */
   --success: var(--color-green-400);
   --success-foreground: var(--color-gray-950);
-
   --warning: var(--color-amber-400);
   --warning-foreground: var(--color-gray-950);
-
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(1 0 0 / 0.1);
+  --input: oklch(1 0 0 / 0.15);
   --ring: var(--color-gray-500);
 
-  /* Sidebar (dark) */
+  /*
+   * Sidebar (dark)
+   */
   --sidebar: var(--color-gray-900);
   --sidebar-foreground: var(--color-gray-50);
   --sidebar-primary: var(--color-gray-100);
   --sidebar-primary-foreground: var(--color-gray-900);
   --sidebar-accent: var(--color-gray-800);
   --sidebar-accent-foreground: var(--color-gray-50);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-border: oklch(1 0 0 / 0.1);
   --sidebar-ring: var(--color-gray-500);
 
-  /* Chart series (dark) */
-  /* Same families as light, one step darker so they sit in the dark band. */
+  /*
+   * Chart series (dark)
+   *
+   * Same families as light, one step darker so they sit in the dark band.
+   */
   --chart-cat-1: var(--color-blue-600);
   --chart-cat-2: var(--color-amber-600);
   --chart-cat-3: var(--color-green-600);
   --chart-cat-4: var(--color-cyan-600);
   --chart-cat-5: var(--color-pink-600);
 
-  /* Sequential inverts: on a dark surface the scale has to climb towards
-     light, or its top end disappears into the background. */
+  /*
+   * Sequential inverts: on a dark surface the scale has to climb towards light,
+   * or its top end disappears into the background.
+   */
   --chart-seq-1: var(--color-blue-900);
   --chart-seq-2: var(--color-blue-700);
   --chart-seq-3: var(--color-blue-500);
   --chart-seq-4: var(--color-blue-300);
   --chart-seq-5: var(--color-blue-100);
 
-  /* Same poles; the pivot darkens so it still reads as the middle rather
-     than as the brightest thing on the chart. */
+  /*
+   * Same poles; the pivot darkens so it still reads as the middle rather than
+   * as the brightest thing on the chart.
+   */
   --chart-div-1: var(--color-blue-300);
   --chart-div-2: var(--color-blue-500);
   --chart-div-3: var(--color-blue-700);
@@ -657,16 +703,19 @@
   --chart-div-6: var(--color-red-500);
   --chart-div-7: var(--color-red-300);
 
-  /* success/warning/error follow the semantic tokens, which already flip. */
+  /*
+   * success/warning/error follow the semantic tokens, which already flip.
+   */
   --chart-status-info: var(--color-sky-500);
 
-  /* The backdrop inverts: a light grey on a dark surface is a highlight. */
+  /*
+   * The backdrop inverts: a light grey on a dark surface is a highlight.
+   */
   --chart-cmp-highlight: var(--color-brand-500);
   --chart-cmp-mute-1: var(--color-neutral-400);
   --chart-cmp-mute-2: var(--color-neutral-500);
   --chart-cmp-mute-3: var(--color-neutral-600);
   --chart-cmp-mute-4: var(--color-neutral-700);
-
   --chart-1: var(--chart-cat-1);
   --chart-2: var(--chart-cat-2);
   --chart-3: var(--chart-cat-3);
@@ -677,7 +726,7 @@
 /*
  * ─── Animations ───────────────────────────────────────
  * Used by dropdowns (action-menu, model-select) and attachments.
- * All applied via motion-safe: utilities — disabled under
+ * All applied via motion-safe: utilities, disabled under
  * prefers-reduced-motion (see block below).
  */
 @keyframes gremorie-pop-in {
@@ -701,7 +750,7 @@
 }
 
 /*
- * Reduced motion — global override.
+ * Reduced motion, global override.
  * Users who set prefers-reduced-motion get drastically shortened durations
  * for animations, transitions, and scroll. Essential indicators (aria-busy,
  * spinners) still update visually but without the spin animation cost.
@@ -760,7 +809,7 @@
  * Default border + outline color.
  * Tailwind v4's Preflight leaves bare `border` / `outline` at `currentColor`,
  * which renders DS borders as the (near-black) foreground instead of the
- * subtle `--border` token. This is the canonical shadcn base layer — without
+ * subtle `--border` token. This is the canonical shadcn base layer, without
  * it, every `border` utility falls back to currentColor (e.g. black card
  * borders in Storybook). Explicit utilities like `border-input` still win
  * (utilities layer > base).
@@ -775,7 +824,7 @@
   }
 
   /* Thin, themed scrollbars across the whole DS. Modern standard
-     (scrollbar-width/color) — inherited by both editions via the shared token
+     (scrollbar-width/color), inherited by both editions via the shared token
      entry, so every overflow gets the DS bar with no per-component wiring. The
      thumb is the --border token, so it re-themes in light/dark automatically. */
   * {

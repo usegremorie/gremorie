@@ -20,6 +20,6 @@ describe('scanProjectComponents', () => {
     rmSync(dir, { recursive: true, force: true });
 
     expect(results).toHaveLength(1);
-    expect(results[0]!.name).toBe('Button');
+    expect(results[0]?.name).toBe('Button');
   });
 });

@@ -1,5 +1,6 @@
 import {
   SourceFile,
+  type Node,
   SyntaxKind,
   type CallExpression,
   type ObjectLiteralExpression,
@@ -11,7 +12,7 @@ function unquote(s: string): string {
   return s.replace(/^["'`](.*)["'`]$/s, '$1');
 }
 
-function getStringLiteral(node: any): string | null {
+function getStringLiteral(node: Node | undefined): string | null {
   if (!node) return null;
   const kind = node.getKind();
   if (

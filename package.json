@@ -8,7 +8,7 @@
     "url": "https://github.com/usegremorie/gremorie.git"
   },
   "engines": {
-    "node": ">=22",
+    "node": ">=22.18",
     "npm": ">=10"
   },
   "packageManager": "npm@11.6.2",

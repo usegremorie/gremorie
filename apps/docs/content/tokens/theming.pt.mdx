@@ -1,6 +1,6 @@
 ---
 title: Temas
-description: O contrato para rodar os seis temas do Gremorie junto com claro/escuro — dois eixos independentes, a única configuração do switcher que quebra tudo, e a garantia de cascata por trás disso.
+description: O contrato para rodar os sete temas do Gremorie junto com claro/escuro. Dois eixos independentes, a única configuração do switcher que quebra tudo, e a garantia de cascata por trás disso.
 ---
 
 Theming no Gremorie são **dois eixos independentes**, e eles nunca
@@ -12,11 +12,11 @@ modo brigam pelo mesmo atributo. Esta página é o contrato.
 
 | Eixo      | O que controla                           | Como se define                  | Seletor                      |
 | --------- | ---------------------------------------- | ------------------------------- | ---------------------------- |
-| **Marca** | Qual dos seis temas (Default, Claude, …) | `data-theme` no `<html>`        | `:root[data-theme='claude']` |
+| **Marca** | Qual dos sete temas (Default, Claude, …) | `data-theme` no `<html>`        | `:root[data-theme='claude']` |
 | **Modo**  | Claro ou escuro dentro daquela marca     | a **classe** `dark` no `<html>` | `.dark`                      |
 
 Eles compõem. Qualquer marca renderiza em qualquer modo, então as
-doze combinações são válidas:
+catorze combinações são válidas:
 
 ```html
 <html data-theme="claude">
@@ -180,6 +180,6 @@ seu próprio iframe.
 
 ## Veja também
 
-- [Tokens semânticos](/tokens/semantic) — o que os seis temas remapeiam, e a tabela completa de tokens.
+- [Tokens semânticos](/tokens/semantic): o que os sete temas remapeiam, e a tabela completa de tokens.
 - [Configuração do projeto](/get-started/project-setup) — config do Tailwind v4 e a cascata de tokens.
 - [Para designers](/get-started/for-designers) — mapeando esses temas para os modos de variável do Figma.

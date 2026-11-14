@@ -1,5 +1,11 @@
 # gremorie
 
+## 0.9.0
+
+### Patch Changes
+
+- @gremorie/cli@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes

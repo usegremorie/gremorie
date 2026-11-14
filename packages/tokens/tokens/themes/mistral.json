@@ -1,0 +1,89 @@
+{
+  "$description": "Mistral theme: flame orange, slightly tighter radius. Activate with data-theme=\"mistral\" on the root element.",
+  "light": {
+    "$description": "The categorical chart scale (--chart-cat-*) is deliberately not themed. A brand palette is for chrome; series identity needs hues that separate, and this theme's own colours are a single family, as a data scale they would encode order instead of identity. See theme.css.",
+    "primary": {
+      "$type": "color",
+      "$value": "{color.orange.600}"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}",
+      "$description": "Black on flame orange (5.5:1), matching Mistral's own brand usage; the previous near-white foreground sat at 3.4:1 and failed AA."
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.orange.100}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.orange.900}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.orange.500}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.orange.600}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.orange.500}"
+    },
+    "radius": {
+      "base": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.5,
+          "unit": "rem"
+        }
+      }
+    },
+    "font": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+      }
+    }
+  },
+  "dark": {
+    "$description": "Chart series (dark): lighter orange steps so every series clears the 3:1 graphical minimum on the dark background. Without these the light-block values win on specificity and leak into dark mode.",
+    "primary": {
+      "$type": "color",
+      "$value": "{color.orange.400}"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.orange.900}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.orange.50}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.orange.400}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.orange.400}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.gray.950}"
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.orange.400}"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+---
+title: Material 3
+description: Como cada papel do ColorScheme do Compose é preenchido em cada tema do Gremorie, mapeado de um token semântico ou derivado do primary do tema.
+---
+
+import { M3SchemeTable } from '@/components/m3-scheme-table';
+
+O Jetpack Compose aplica o tema por um `ColorScheme` com **48 papéis**. O
+Gremorie preenche todos, em cada tema e modo, de dois jeitos. A escolha de cada
+papel fica em `packages/tokens/tokens/platform/m3/roles.json`.
+
+- Papéis **mapeados** usam um token semântico direto, então as cores da marca
+  saem exatas. São doze:
+
+  | Papel                                        | Token semântico                             |
+  | -------------------------------------------- | ------------------------------------------- |
+  | `primary`, `onPrimary`                       | `--primary`, `--primary-foreground`         |
+  | `secondaryContainer`, `onSecondaryContainer` | `--secondary`, `--secondary-foreground`     |
+  | `background`, `onBackground`                 | `--background`, `--foreground`              |
+  | `surface`, `onSurface`                       | `--background`, `--foreground`              |
+  | `surfaceVariant`                             | `--muted`                                   |
+  | `surfaceTint`                                | `--primary`                                 |
+  | `error`, `onError`                           | `--destructive`, `--destructive-foreground` |
+
+- Papéis **derivados**, os outros 36, saem do Material Color Utilities: um
+  `SchemeContent` semeado com o primary do tema, e por isso derivam da matiz e
+  do croma dele. Os papéis de container e os acentos secondary e tertiary
+  derivados ficam nos tons de referência do Material 3.
+- A **escada de superfícies** (`surfaceDim`, `surfaceBright` e
+  `surfaceContainerLowest` a `surfaceContainerHighest`) deriva do background do
+  tema, não do primary: uma paleta neutra com a matiz e o croma do background,
+  lida no tom do background mais o espaçamento de referência do Material 3. No
+  claro, o `surfaceContainerLowest` é mais claro que o `surface` e os outros
+  containers descem em direção ao escuro; no escuro, o `surfaceContainerLowest`
+  é mais escuro e os outros sobem em direção ao claro. O `surface` continua
+  igual ao `--background`.
+
+Alguns papéis derivados têm um token semântico de nome parecido que não quer
+dizer a mesma coisa:
+
+- O `secondary` do shadcn é um preenchimento tingido de baixa ênfase, o que o
+  Material 3 chama de container. Ele vai para `secondaryContainer`, e o
+  `secondary` do M3 é derivado.
+- O `accent` é uma superfície de hover e seleção sem par no Material 3, então
+  a família tertiary inteira é derivada.
+- O `outline` é derivado porque o `--border` é decorativo e fica abaixo de
+  3:1; o `onSurfaceVariant` é derivado para combinar com os surface containers
+  derivados sobre os quais ele fica.
+
+Cada papel de conteúdo é conferido em 4,5:1 sobre o papel em que fica
+(`onPrimary` sobre `primary`, `onSurface` sobre cada surface container, e assim
+por diante), e `outline` e `inversePrimary` em 3:1. Os pares que herdam uma
+exceção conhecida da camada semântica estão listados em
+`packages/tokens/contrast-deviations.json`; o tema Purple não tem nenhum.
+
+As tabelas abaixo são geradas a partir do `@gremorie/tokens/tokens.json`.
+
+## Purple
+
+<M3SchemeTable themeId="purple" locale="pt" />
+
+## Default
+
+<M3SchemeTable themeId="default" locale="pt" />
+
+## Claude
+
+<M3SchemeTable themeId="claude" locale="pt" />
+
+## ChatGPT
+
+<M3SchemeTable themeId="chatgpt" locale="pt" />
+
+## Gemini
+
+<M3SchemeTable themeId="gemini" locale="pt" />
+
+## Perplexity
+
+<M3SchemeTable themeId="perplexity" locale="pt" />
+
+## Mistral
+
+<M3SchemeTable themeId="mistral" locale="pt" />

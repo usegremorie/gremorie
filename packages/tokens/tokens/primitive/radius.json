@@ -1,0 +1,55 @@
+{
+  "radius": {
+    "base": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.625,
+        "unit": "rem"
+      },
+      "$description": "Radii base"
+    },
+    "sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.375,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.gremorie.derive": {
+          "from": "{radius.base}",
+          "multiply": 0.6
+        }
+      }
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.5,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.gremorie.derive": {
+          "from": "{radius.base}",
+          "multiply": 0.8
+        }
+      }
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "{radius.base}"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.75,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.gremorie.derive": {
+          "from": "{radius.base}",
+          "multiply": 1.2
+        }
+      }
+    }
+  }
+}

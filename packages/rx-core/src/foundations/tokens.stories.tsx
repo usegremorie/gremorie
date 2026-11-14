@@ -8,6 +8,22 @@ import { type ReactNode, useEffect, useMemo, useState } from 'react';
 // Reading the source keeps it accurate with zero drift.
 // @ts-expect-error - Vite `?raw` import, typed by the bundler not tsc.
 import themeCssRaw from '@gremorie/tokens/theme.css?raw';
+// The resolved build output: the Material 3 roles exist only there, since CSS
+// has no ColorScheme.
+import tokensJson from '@gremorie/tokens/tokens.json';
+
+type M3Model = {
+  m3Roles: string[];
+  m3Sources: Record<string, string>;
+  themes: Record<
+    string,
+    Record<
+      'light' | 'dark',
+      { m3: Record<string, { hex: string; oklch: string }> }
+    >
+  >;
+};
+const M3_MODEL = tokensJson as unknown as M3Model;
 
 /**
  * Tokens - a LIVE reference for the Gremorie two-tier color system.
@@ -603,4 +619,79 @@ export const Primitive: Story = {
       ))}
     </Page>
   ),
+};
+
+/**
+ * Material 3 - the Compose ColorScheme of the theme picked in the toolbar,
+ * from @gremorie/tokens/tokens.json. Mapped roles name their semantic token;
+ * derived roles come from Material Color Utilities, seeded with the primary.
+ */
+export const Material3: Story = {
+  name: 'Material 3',
+  render: (_args, { globals }) => {
+    const theme = typeof globals.theme === 'string' ? globals.theme : 'default';
+    const mode = globals.dark ? 'dark' : 'light';
+    const scheme = M3_MODEL.themes[theme]?.[mode]?.m3;
+    const cell = {
+      padding: '8px 12px',
+      borderBottom: '1px solid var(--border)',
+    };
+    const code = { fontFamily: 'var(--font-mono)', fontSize: 12 };
+    return (
+      <Page>
+        <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 4px' }}>
+          Material 3 colour scheme
+        </h2>
+        <p style={{ margin: '0 0 20px', color: 'var(--muted-foreground)' }}>
+          {theme} / {mode}: the 48 roles Jetpack Compose receives from
+          GremorieColorSchemes.kt. Mapped roles name the semantic token they
+          take; derived roles come from Material Color Utilities, seeded with
+          the theme primary.
+        </p>
+        {scheme ? (
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                {['Sample', 'Role', 'Source', 'OKLCH', 'Hex'].map((h) => (
+                  <th key={h} style={{ ...cell, textAlign: 'left' }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {M3_MODEL.m3Roles.map((role) => {
+                const value = scheme[role];
+                if (!value) return null;
+                return (
+                  <tr key={role} data-role={role}>
+                    <td style={cell}>
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          width: 28,
+                          height: 28,
+                          borderRadius: 6,
+                          border: '1px solid var(--border)',
+                          background: value.hex,
+                        }}
+                      />
+                    </td>
+                    <td style={{ ...cell, ...code }}>{role}</td>
+                    <td style={{ ...cell, ...code }}>
+                      {M3_MODEL.m3Sources[role]}
+                    </td>
+                    <td style={{ ...cell, ...code }}>{value.oklch}</td>
+                    <td style={{ ...cell, ...code }}>{value.hex}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <p>Unknown theme: {theme}</p>
+        )}
+      </Page>
+    );
+  },
 };

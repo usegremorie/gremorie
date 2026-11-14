@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { TokenGraph } from './types.js';
 import { tokenKey } from './types.js';
-import { resolveValue, resolveToColor } from './resolve.js';
+import { resolveToColor } from './resolve.js';
 
 const graph: TokenGraph = {
   primitives: {

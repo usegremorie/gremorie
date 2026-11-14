@@ -5,7 +5,7 @@ import type { Preview } from '@storybook/angular';
  * and the live theme/dark toolbars, mirroring the rx-* Storybook
  * (`packages/rx-ai/.storybook/preview.ts`).
  *
- * Theme tokens (base + `.dark` + the five `data-theme` brand themes) are loaded
+ * Theme tokens (base + `.dark` + the six `data-theme` brand themes) are loaded
  * globally through `packages/playground/src/styles.css`, which imports
  * `@gremorie/tokens/theme.css` (that file in turn `@import`s every brand theme).
  * The Theme and Dark toolbars set `data-theme` and toggle the `.dark` class on
@@ -18,6 +18,7 @@ const THEMES = [
   'gemini',
   'perplexity',
   'mistral',
+  'purple',
 ] as const;
 
 const preview: Preview = {

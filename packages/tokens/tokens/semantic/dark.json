@@ -1,0 +1,258 @@
+{
+  "background": {
+    "$type": "color",
+    "$value": "{color.gray.950}",
+    "$description": "Only remap semantics. Primitives stay intact."
+  },
+  "foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "card": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "card-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "popover": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "popover-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "primary": {
+    "$type": "color",
+    "$value": "{color.gray.100}"
+  },
+  "primary-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "secondary": {
+    "$type": "color",
+    "$value": "{color.gray.800}"
+  },
+  "secondary-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "muted": {
+    "$type": "color",
+    "$value": "{color.gray.800}"
+  },
+  "muted-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.400}"
+  },
+  "accent": {
+    "$type": "color",
+    "$value": "{color.gray.800}"
+  },
+  "accent-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "destructive": {
+    "$type": "color",
+    "$value": "{color.red.400}"
+  },
+  "destructive-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "success": {
+    "$type": "color",
+    "$value": "{color.green.400}",
+    "$description": "On dark surfaces the fills invert: a lighter green/amber carries near-black text, both clearing WCAG AA 4.5:1 (mirrors --destructive going to red-400)."
+  },
+  "success-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.950}"
+  },
+  "warning": {
+    "$type": "color",
+    "$value": "{color.amber.400}"
+  },
+  "warning-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.950}"
+  },
+  "border": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "oklch",
+      "components": [1, 0, 0],
+      "alpha": 0.1
+    }
+  },
+  "input": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "oklch",
+      "components": [1, 0, 0],
+      "alpha": 0.15
+    }
+  },
+  "ring": {
+    "$type": "color",
+    "$value": "{color.gray.500}"
+  },
+  "sidebar": {
+    "$type": "color",
+    "$value": "{color.gray.900}",
+    "$description": "Sidebar (dark)"
+  },
+  "sidebar-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "sidebar-primary": {
+    "$type": "color",
+    "$value": "{color.gray.100}"
+  },
+  "sidebar-primary-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.900}"
+  },
+  "sidebar-accent": {
+    "$type": "color",
+    "$value": "{color.gray.800}"
+  },
+  "sidebar-accent-foreground": {
+    "$type": "color",
+    "$value": "{color.gray.50}"
+  },
+  "sidebar-border": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "oklch",
+      "components": [1, 0, 0],
+      "alpha": 0.1
+    }
+  },
+  "sidebar-ring": {
+    "$type": "color",
+    "$value": "{color.gray.500}"
+  },
+  "chart-cat-1": {
+    "$type": "color",
+    "$value": "{color.blue.600}",
+    "$description": "Chart series (dark)\n\nSame families as light, one step darker so they sit in the dark band."
+  },
+  "chart-cat-2": {
+    "$type": "color",
+    "$value": "{color.amber.600}"
+  },
+  "chart-cat-3": {
+    "$type": "color",
+    "$value": "{color.green.600}"
+  },
+  "chart-cat-4": {
+    "$type": "color",
+    "$value": "{color.cyan.600}"
+  },
+  "chart-cat-5": {
+    "$type": "color",
+    "$value": "{color.pink.600}"
+  },
+  "chart-seq-1": {
+    "$type": "color",
+    "$value": "{color.blue.900}",
+    "$description": "Sequential inverts: on a dark surface the scale has to climb towards light, or its top end disappears into the background."
+  },
+  "chart-seq-2": {
+    "$type": "color",
+    "$value": "{color.blue.700}"
+  },
+  "chart-seq-3": {
+    "$type": "color",
+    "$value": "{color.blue.500}"
+  },
+  "chart-seq-4": {
+    "$type": "color",
+    "$value": "{color.blue.300}"
+  },
+  "chart-seq-5": {
+    "$type": "color",
+    "$value": "{color.blue.100}"
+  },
+  "chart-div-1": {
+    "$type": "color",
+    "$value": "{color.blue.300}",
+    "$description": "Same poles; the pivot darkens so it still reads as the middle rather than as the brightest thing on the chart."
+  },
+  "chart-div-2": {
+    "$type": "color",
+    "$value": "{color.blue.500}"
+  },
+  "chart-div-3": {
+    "$type": "color",
+    "$value": "{color.blue.700}"
+  },
+  "chart-div-4": {
+    "$type": "color",
+    "$value": "{color.neutral.800}"
+  },
+  "chart-div-5": {
+    "$type": "color",
+    "$value": "{color.red.700}"
+  },
+  "chart-div-6": {
+    "$type": "color",
+    "$value": "{color.red.500}"
+  },
+  "chart-div-7": {
+    "$type": "color",
+    "$value": "{color.red.300}"
+  },
+  "chart-status-info": {
+    "$type": "color",
+    "$value": "{color.sky.500}",
+    "$description": "success/warning/error follow the semantic tokens, which already flip."
+  },
+  "chart-cmp-highlight": {
+    "$type": "color",
+    "$value": "{color.brand.500}",
+    "$description": "The backdrop inverts: a light grey on a dark surface is a highlight."
+  },
+  "chart-cmp-mute-1": {
+    "$type": "color",
+    "$value": "{color.neutral.400}"
+  },
+  "chart-cmp-mute-2": {
+    "$type": "color",
+    "$value": "{color.neutral.500}"
+  },
+  "chart-cmp-mute-3": {
+    "$type": "color",
+    "$value": "{color.neutral.600}"
+  },
+  "chart-cmp-mute-4": {
+    "$type": "color",
+    "$value": "{color.neutral.700}"
+  },
+  "chart-1": {
+    "$type": "color",
+    "$value": "{chart-cat-1}"
+  },
+  "chart-2": {
+    "$type": "color",
+    "$value": "{chart-cat-2}"
+  },
+  "chart-3": {
+    "$type": "color",
+    "$value": "{chart-cat-3}"
+  },
+  "chart-4": {
+    "$type": "color",
+    "$value": "{chart-cat-4}"
+  },
+  "chart-5": {
+    "$type": "color",
+    "$value": "{chart-cat-5}"
+  }
+}

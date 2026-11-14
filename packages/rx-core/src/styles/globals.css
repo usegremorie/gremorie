@@ -6,7 +6,8 @@
  * (see project.json `build`). Consumers import the compiled output via the
  * package export; this raw `@theme` source no longer ships and is kept only
  * for git history. Edit the token source of truth in `@gremorie/tokens`
- * (`packages/tokens/styles/theme.css`), and the @source list in
+ * (the DTCG JSON in `packages/tokens/tokens/`, which generates
+ * `packages/tokens/styles/theme.css`), and the @source list in
  * `packages/rx-core/styles/globals.src.css`.
  */
 @import '@gremorie/tokens/theme.css';

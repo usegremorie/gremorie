@@ -55,7 +55,9 @@ feature/* → main  (production)
 
 Two-tier, class-based.
 
-- **Source of truth**: `@gremorie/tokens` (`packages/tokens/styles/theme.css`).
+- **Source of truth**: `@gremorie/tokens`, whose DTCG JSON in
+  `packages/tokens/tokens/` generates `packages/tokens/styles/theme.css` and
+  `themes/*.css` (`nx build tokens`); edit the JSON, never the CSS.
   Layer 1 primitives (`--color-*` scales) feed Layer 2 semantics
   (`--background`, `--card`, `--primary`, `--input`, `--border`, `--ring`,
   `--muted`, `--accent`, `--destructive`, `--sidebar-*`, `--chart-*`, …). Named
@@ -70,7 +72,7 @@ Two-tier, class-based.
 - **Any new Tailwind entry** (anything with `@import "tailwindcss"`) must import
   `@gremorie/tokens/theme.css` so it inherits the class-based `dark:` variant.
   Omitting it lets the OS dark preference fire `dark:*` utilities while the token
-  theme stays light — a white surface with dark controls. That exact mismatch
+  theme stays light: a white surface with dark controls. That exact mismatch
   shipped as a real bug; treat a new Tailwind entry without the tokens import as
   broken.
 - **Validate** themes and dark mode via the Storybook Theme/Dark toolbar, not a

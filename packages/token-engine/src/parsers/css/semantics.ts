@@ -10,7 +10,7 @@ const VAR_PATTERN = /^\s*var\((--[a-z0-9-]+)\)\s*$/i;
 
 function parseValue(raw: string): TokenValue {
   const match = VAR_PATTERN.exec(raw);
-  if (match) return { kind: 'reference', targetName: match[1]! };
+  if (match) return { kind: 'reference', targetName: match[1] ?? '' };
   return { kind: 'literal', raw: raw.trim() };
 }
 
@@ -25,11 +25,11 @@ function classifySelector(selector: string): SelectorTheme | null {
   if (trimmed === '.dark' || trimmed === ':root.dark')
     return { theme: 'default', mode: 'dark' };
 
-  // Accept both quote styles — CSS authors (and formatters like Prettier)
+  // Accept both quote styles: CSS authors (and formatters like Prettier)
   // may emit either `[data-theme="x"]` or `[data-theme='x']`.
   const dataMatch = /\[data-theme=["']([^"']+)["']\](\.dark)?/.exec(trimmed);
   if (dataMatch) {
-    return { theme: dataMatch[1]!, mode: dataMatch[2] ? 'dark' : 'light' };
+    return { theme: dataMatch[1] ?? '', mode: dataMatch[2] ? 'dark' : 'light' };
   }
   return null;
 }

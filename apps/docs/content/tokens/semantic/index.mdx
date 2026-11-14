@@ -34,11 +34,12 @@ theme must fill.
 | `chart-cat-1` ... `-5`      | Categorical series (see Chart tokens)    |
 | `sidebar-*`                 | Variants for the navigation chrome       |
 
-## Six themes, two modes
+## Seven themes, two modes
 
-Gremorie ships **six themes**. The Default theme is the base layer
-itself; the other five match the visual voice of the leading AI
-products:
+Gremorie ships **seven themes**. The Default theme is the base layer
+itself; five match the visual voice of the leading AI products, and
+Purple is a violet theme for reading products, adapted from the
+Fumadocs Purple preset:
 
 <Cards>
   <Card
@@ -65,6 +66,10 @@ products:
     title="Mistral"
     description="Flame orange with a black-on-orange primary, straight from the brand."
   />
+  <Card
+    title="Purple"
+    description="Violet on lavender surfaces, adapted from the Fumadocs Purple preset, with WCAG AA corrections."
+  />
 </Cards>
 
 Each theme ships **light and dark** independently. Switching is a
@@ -85,11 +90,25 @@ right context.
 
 ## How the tokens are defined
 
-The base semantic layer lives in
-`packages/tokens/styles/theme.css` (`:root` for light, `.dark` for
-dark). Each named theme is an **override file** at
-`packages/tokens/styles/themes/<id>.css` that remaps only what
-differs, referencing primitives via `var(--color-<token>)`:
+The source is DTCG JSON in `packages/tokens/tokens/`
+(`semantic/light.json`, `semantic/dark.json`, `themes/<id>.json`),
+which generates `packages/tokens/styles/theme.css` (`:root` for
+light, `.dark` for dark) and `themes/<id>.css`. Each named theme is
+an **override file** that remaps only what differs, naming
+primitives by their token path:
+
+```json
+{
+  "light": {
+    "primary": { "$type": "color", "$value": "{color.orange.600}" },
+    "primary-foreground": { "$type": "color", "$value": "{color.gray.950}" },
+    "accent": { "$type": "color", "$value": "{color.orange.100}" }
+  }
+}
+```
+
+The build writes each alias as a reference to the primitive, so
+the generated CSS keeps the cascade:
 
 ```css
 :root[data-theme='mistral'] {
@@ -110,13 +129,13 @@ full-surface theme like Claude remaps almost everything.
 ## For the full table
 
 The [Colors](/tokens/semantic/colors) page has the intent-to-value
-mapping (light and dark) for the six themes. Use it to understand
+mapping (light and dark) for the seven themes. Use it to understand
 why a button turns clay in one theme and emerald in another, and
 to audit whether your own custom theme is filling the intents with
 consistent values.
 
 <Callout type="info">
-  **The rule of thumb:** reference primitives via `var(--color-<token>)`
-  whenever one fits, so the cascade stays intact. The shipped themes hardcode
+  **The rule of thumb:** reference primitives by alias (`{color.orange.600}`,
+  written to CSS as `var(--color-orange-600)`) whenever one fits, so the cascade stays intact. The shipped themes hardcode
   OKLCH only for product-matched surfaces that have no primitive equivalent.
 </Callout>

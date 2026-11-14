@@ -1,0 +1,19 @@
+/*
+ * Gremorie two-tier token system.
+ *
+ * Layer 1 (Primitives): raw palette, base radii
+ * Layer 2 (Semantics):  what components consume
+ *
+ * Components NEVER consume primitives directly.
+ * Editing primitives = rebrand global.
+ * Editing semantics inside .dark = remap dark mode.
+ *
+ * Named themes (opt-in via data-theme on the root element) live in themes/.
+ * They are imported here at the top because CSS requires @import before other
+ * rules; custom properties resolve at use time, so referencing primitives
+ * defined further down is fine. Dark mode keeps the existing `.dark` class.
+ *
+ * GENERATED FILE. The source is the DTCG JSON in packages/tokens/tokens/,
+ * built by `nx build tokens` (packages/tokens/pipeline/build.ts). Edit the
+ * JSON, or the partials in styles/partials/, never this file.
+ */

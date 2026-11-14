@@ -19,6 +19,7 @@ const BRAND_THEMES = [
   'gemini',
   'perplexity',
   'mistral',
+  'purple',
 ] as const;
 
 describe('@gremorie/tokens theme.css', () => {
@@ -48,7 +49,7 @@ describe('@gremorie/tokens theme.css', () => {
 });
 
 describe('@gremorie/tokens brand themes', () => {
-  it('ships exactly the five brand theme files', () => {
+  it('ships exactly the six brand theme files', () => {
     const files = readdirSync(themesDir)
       .filter((f) => f.endsWith('.css'))
       .sort();
@@ -58,6 +59,7 @@ describe('@gremorie/tokens brand themes', () => {
       'gemini.css',
       'mistral.css',
       'perplexity.css',
+      'purple.css',
     ]);
   });
 
@@ -70,4 +72,23 @@ describe('@gremorie/tokens brand themes', () => {
       expect(css).toMatch(/--primary:/);
     },
   );
+});
+
+describe('every theme switcher offers every theme', () => {
+  const root = join(here, '../../..');
+  it.each([
+    'packages/rx-ai/.storybook/preview.ts',
+    'packages/ng-ai/.storybook/preview.ts',
+    'apps/workbench/src/app.tsx',
+    'apps/docs/components/landing/assistant-showcase.tsx',
+    'apps/docs/components/semantic-color-data.ts',
+  ])('%s lists the purple theme', (file) => {
+    expect(readFileSync(join(root, file), 'utf8')).toMatch(/['"]purple['"]/);
+  });
+
+  it('the workbench stylesheet imports the purple theme', () => {
+    expect(
+      readFileSync(join(root, 'apps/workbench/src/styles.css'), 'utf8'),
+    ).toContain("themes/purple.css'");
+  });
 });

@@ -76,6 +76,7 @@ const THEMES = [
   { value: 'gemini', label: 'Gemini' },
   { value: 'mistral', label: 'Mistral' },
   { value: 'perplexity', label: 'Perplexity' },
+  { value: 'purple', label: 'Purple' },
 ] as const;
 
 type Values = Record<string, string | number | boolean>;

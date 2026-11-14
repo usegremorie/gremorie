@@ -71,9 +71,9 @@ Semantics translate primitives into **intent**. Instead of asking for
 changes, the foreground swaps primitives on its own and the component never
 finds out.
 
-This is where Gremorie supports its **bundled brand themes**, six in total
-(Default, Claude, ChatGPT, Gemini, Mistral, Perplexity), each with light and
-dark modes. All component chrome talks to this layer.
+This is where Gremorie supports its **bundled brand themes**, seven in total
+(Default, Claude, ChatGPT, Gemini, Mistral, Perplexity, Purple), each with
+light and dark modes. All component chrome talks to this layer.
 
 ### 3. Chart, or why dataviz is different
 
@@ -99,6 +99,9 @@ shape of data.
   scheme depends on the shape of the data, not on taste.
 - Need an **exact value** (a marketing color outside the system, a specific
   spacing)? Use [Primitive](/tokens/primitive).
+- Building for **Android, iOS or React Native**? Go to
+  [Platforms](/tokens/platforms): the same tokens as JSON, TypeScript, Kotlin
+  and Swift, all built from one DTCG source.
 
 <Callout type="info">
   **Naming convention.** Primitives use the native Tailwind prefix

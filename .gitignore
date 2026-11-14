@@ -81,3 +81,7 @@ docs/superpowers/
 packages/*/src/**/*.js
 packages/*/src/**/*.js.map
 packages/*/src/**/*.d.ts.map
+
+# Copied from the repository root while @gremorie/tokens is packed
+packages/tokens/LICENSE
+packages/tokens/NOTICE.md
