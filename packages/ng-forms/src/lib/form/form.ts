@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   Directive,
+  forwardRef,
   inject,
   InjectionToken,
   input,
@@ -96,7 +97,11 @@ let formItemId = 0;
   providers: [
     {
       provide: FORM_FIELD_CONTEXT,
-      useExisting: FormItem,
+      // forwardRef: this decorator runs before the class binding exists. A
+      // bare `FormItem` here throws "used before its declaration" in builds
+      // that downlevel decorators (the docs-ng SSR bundle did, once ng-display
+      // started importing ng-forms).
+      useExisting: forwardRef(() => FormItem),
     },
   ],
 })
