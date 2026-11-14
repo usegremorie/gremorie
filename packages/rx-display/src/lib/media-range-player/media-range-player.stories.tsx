@@ -76,7 +76,7 @@ type Story = StoryObj<typeof meta>;
 const SAMPLE =
   'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
 
-/** Workbench preset (React only for now; the Angular twin is not built yet). */
+/** Workbench preset; the Angular edition has the same story and args. */
 export const Workbench: Story = {
   args: { src: SAMPLE, range: [1.5, 3.5], context: 1 },
   render: (args) => (

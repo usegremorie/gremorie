@@ -92,7 +92,7 @@ function Controlled(props: React.ComponentProps<typeof WordTimeline>) {
   );
 }
 
-/** Workbench preset (React only for now; the Angular twin is not built yet). */
+/** Workbench preset; the Angular edition has the same story and args. */
 export const Workbench: Story = {
   args: {
     words: WORDS,

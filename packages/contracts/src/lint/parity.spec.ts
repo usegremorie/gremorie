@@ -129,6 +129,26 @@ const SOURCE_MAP: Record<
       sym: 'RadarChart',
     },
   },
+  'media-range-player': {
+    rx: {
+      file: '../rx-display/src/lib/media-range-player/media-range-player.tsx',
+      sym: 'MediaRangePlayerProps',
+    },
+    ng: {
+      file: '../ng-display/src/lib/media-range-player/media-range-player.ts',
+      sym: 'MediaRangePlayer',
+    },
+  },
+  'word-timeline': {
+    rx: {
+      file: '../rx-display/src/lib/word-timeline/word-timeline.tsx',
+      sym: 'WordTimelineProps',
+    },
+    ng: {
+      file: '../ng-display/src/lib/word-timeline/word-timeline.ts',
+      sym: 'WordTimeline',
+    },
+  },
   'radial-chart': {
     rx: {
       file: '../rx-data/src/lib/radial-chart/radial-chart.tsx',

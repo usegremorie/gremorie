@@ -59,6 +59,11 @@ export interface MediaRangePlayerProps extends Omit<
   controls?: boolean;
   labels?: Partial<MediaRangePlayerLabels>;
   onTimeUpdate?: (t: number) => void;
+  /**
+   * Merged onto the root. Inherited from the div props too; declared here so
+   * the contract drift gate (which reads declared members) sees it.
+   */
+  className?: string;
 }
 
 /**

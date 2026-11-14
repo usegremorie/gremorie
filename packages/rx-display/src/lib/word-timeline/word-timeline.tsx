@@ -57,6 +57,11 @@ export interface WordTimelineProps extends Omit<
    * while focus is inside the strip. Default `true`.
    */
   followPlayhead?: boolean;
+  /**
+   * Merged onto the root. Inherited from the div props too; declared here so
+   * the contract drift gate (which reads declared members) sees it.
+   */
+  className?: string;
 }
 
 /** Last word whose start is at or before `t` (0 before the first word). */

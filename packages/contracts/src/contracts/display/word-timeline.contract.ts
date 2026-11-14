@@ -2,8 +2,12 @@ import { defineContract } from '../../types';
 
 /**
  * WordTimeline - transcript words as a clickable strip to pick clip in/out at
- * word boundaries. React: `@gremorie/rx-display`. Angular: not built yet
- * (status preview).
+ * word boundaries. React: `@gremorie/rx-display` (`WordTimeline`). Angular:
+ * `@gremorie/ng-display` (`gr-word-timeline`), with `[(value)]` two-way binding.
+ *
+ * Storybook only, on purpose: no page on the docs site, no registry entry, no
+ * workbench nav (Kal, 2026-11-13). Both editions live in their Storybooks.
+ * Ask before adding docs for it.
  */
 export const wordTimeline = defineContract({
   name: 'word-timeline',
@@ -31,6 +35,7 @@ export const wordTimeline = defineContract({
     {
       name: 'onValueChange',
       type: '(value: [number, number]) => void',
+      adapts: { ng: 'output: valueChange' },
       desc: 'New in/out after a boundary click.',
     },
     {
@@ -41,6 +46,7 @@ export const wordTimeline = defineContract({
     {
       name: 'onSeek',
       type: '(t: number) => void',
+      adapts: { ng: 'output: seek' },
       desc: 'Word start, when clicked in seek mode.',
     },
     {
@@ -79,7 +85,10 @@ export const wordTimeline = defineContract({
     example:
       '<WordTimeline words={words} value={[12.3, 58.1]} onValueChange={setValue} />',
   },
-  preview: { rx: 'layout-display-display-wordtimeline--workbench' },
+  preview: {
+    rx: 'layout-display-display-wordtimeline--workbench',
+    ng: 'layout-display-display-wordtimeline--workbench',
+  },
   tag: { rx: 'WordTimeline', ng: 'gr-word-timeline' },
   // `value` is a tuple and `words` an array, not scalar control values, so
   // they stay in the story args.
