@@ -90,7 +90,10 @@ export default function proxy(req: NextRequest, event: NextFetchEvent) {
   if (!LOCALE_PREFIX.test(pathname)) {
     const url = req.nextUrl.clone();
     url.pathname = `/${i18n.defaultLanguage}${pathname === '/' ? '' : pathname}`;
-    return NextResponse.redirect(url);
+    // 308, not the default 307: the prefixed URL is where the page lives for
+    // good. A temporary redirect told Google that `/` was the real home and
+    // `/en` its duplicate ("Duplicate without user-selected canonical").
+    return NextResponse.redirect(url, 308);
   }
 
   // Localizable pages (docs + landing) → Fumadocs locale routing.
