@@ -3,6 +3,7 @@ import { defineI18nUI } from 'fumadocs-ui/i18n';
 import type { BaseLayoutProps, LinkItemType } from 'fumadocs-ui/layouts/shared';
 
 import { GithubMark } from '@/components/github-mark';
+import { GremorieSymbol } from '@/components/gremorie-symbol';
 import { i18n } from '@/lib/i18n';
 
 /**
@@ -41,11 +42,14 @@ export const { provider } = defineI18nUI(i18n, {
  * filters to icon-only entries; HomeLayout uses the full list.
  */
 
-// Plain text wordmark. The provisional icon mark was removed on purpose:
-// Kal is designing the real Gremorie logo, and until it lands the brand is
-// the wordmark alone (no placeholder glyph).
+// The brand in the navbar is the symbol alone (no wordmark), decided
+// 2026-11-14. The glyph is decorative, so the visually hidden name is what
+// gives the home link its accessible name ("Gremorie").
 export const logo = (
-  <span className="inline-flex items-center gap-2 font-semibold">Gremorie</span>
+  <span className="inline-flex items-center">
+    <GremorieSymbol className="size-6" />
+    <span className="sr-only">Gremorie</span>
+  </span>
 );
 
 /**
