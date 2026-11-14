@@ -21,6 +21,26 @@ const workspaceRoot = path.join(
  * so they apply both via Vercel's edge layer and Next's middleware,
  * which keeps local `next start` parity with production.
  */
+/**
+ * Portuguese is written but not served (see lib/i18n.ts). Anything already
+ * pointing at `/pt` lands on the English page instead of a 404.
+ *
+ * Temporary on purpose: a 308 would be cached by browsers and would outlive
+ * the decision. When `'pt'` goes back into `i18n.languages`, delete this.
+ */
+const localeRedirects = [
+  {
+    source: '/pt',
+    destination: '/en',
+    permanent: false,
+  },
+  {
+    source: '/pt/:path*',
+    destination: '/en/:path*',
+    permanent: false,
+  },
+];
+
 const foundationsRedirects = [
   {
     source: '/foundations/about',
@@ -149,7 +169,7 @@ const config = {
     '@gremorie/rx-overlays',
   ],
   async redirects() {
-    return [...foundationsRedirects, ...aiRedirects];
+    return [...foundationsRedirects, ...aiRedirects, ...localeRedirects];
   },
 };
 

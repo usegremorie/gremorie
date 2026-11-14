@@ -9,9 +9,11 @@ import { source } from '@/lib/source';
  * Derives the page list from the same Fumadocs source loader the app renders
  * with (lib/source.ts), so every docs page - /components/*, /blocks/*,
  * /tokens/*, /corpus/*, /get-started/*, /artifacts/*, /platform/* - is listed
- * without a hand-maintained URL list. The landing page is added per locale
- * ('/' for English, '/pt' for Portuguese; hideLocale keeps the default
- * language at the root).
+ * without a hand-maintained URL list. The landing page is added per locale.
+ *
+ * Every URL carries its locale prefix, because `hideLocale` is `'never'`
+ * (lib/i18n.ts). This used to emit `/` for English, which now only redirects
+ * to `/en` - a sitemap should list the destination, not the hop.
  *
  * Referenced by app/robots.ts (sitemap: https://www.gremorie.com/sitemap.xml).
  */
@@ -21,13 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   const urls = new Set<string>();
 
-  for (const lang of i18n.languages) {
+  // Default language only. Portuguese is written but not served (lib/i18n.ts),
+  // and /pt redirects to /en - a sitemap lists destinations, not redirects.
+  for (const lang of [i18n.defaultLanguage]) {
     // Landing page per locale.
-    urls.add(lang === i18n.defaultLanguage ? '/' : `/${lang}`);
+    urls.add(`/${lang}`);
 
     // Every docs page known to the source loader, per locale. The loader
-    // already applies hideLocale, so English URLs come back unprefixed and
-    // Portuguese URLs come back under /pt.
+    // returns URLs already prefixed with the locale.
     for (const page of source.getPages(lang)) {
       urls.add(page.url);
     }
