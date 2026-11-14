@@ -19,7 +19,8 @@ const LOCALE_PREFIX = new RegExp(`^/(${i18n.languages.join('|')})(/|$)`);
  * - i18n: every doc/home request is routed through Fumadocs' locale middleware
  *   (default English stays at `/`, Portuguese under `/pt`, missing translations
  *   fall back to English). Language-agnostic routes (/api, /r, /llms.txt,
- *   /robots.txt) skip i18n and pass straight through.
+ *   /robots.txt, /sitemap.xml, /manifest.webmanifest) skip i18n and pass
+ *   straight through.
  * - Telemetry: one structured JSON log line per high-signal request (the
  *   machine-readable index, registry fetches, MCP/search, onboarding docs),
  *   tagged with whether the caller looks like an AI agent. Read in Vercel
@@ -40,7 +41,8 @@ function isAgnostic(pathname: string): boolean {
     pathname === '/llms.txt' ||
     pathname === '/llms-full.txt' ||
     pathname === '/robots.txt' ||
-    pathname === '/sitemap.xml'
+    pathname === '/sitemap.xml' ||
+    pathname === '/manifest.webmanifest'
   );
 }
 

@@ -1,0 +1,1 @@
+Gremorie, one design system for React and Angular at parity: the Gremorie symbol beside real dashboard, sign-in and settings blocks.
