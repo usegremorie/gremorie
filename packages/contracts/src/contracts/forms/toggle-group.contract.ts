@@ -11,8 +11,8 @@ export const toggleGroup = defineContract({
   status: 'stable',
   anatomy: `
     <toggle-group>
-    └─ toggle-group (root)
-       └─ toggle-group-item (one per option, button + aria-pressed)`,
+    └─ toggle-group (root, radiogroup when single, toolbar when multiple)
+       └─ toggle-group-item (one per option, button: radio + aria-checked when single, aria-pressed when multiple; one tab stop, arrows move focus)`,
   props: [
     {
       name: 'type',
