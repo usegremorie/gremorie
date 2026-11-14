@@ -49,12 +49,12 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
-    "input-otp": "^1.4.2",
+    "input-otp": "^1.5.0",
     "lucide-react": "^0.547.0",
-    "radix-ui": "^1.4.3",
-    "react-day-picker": "^10.0.0",
-    "react-hook-form": "^7.76.0",
-    "tslib": "^2.3.0"
+    "radix-ui": "^1.8.1",
+    "react-day-picker": "^10.0.2",
+    "react-hook-form": "^7.91.0",
+    "tslib": "^2.9.1"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",
