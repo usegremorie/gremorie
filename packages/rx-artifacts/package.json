@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "lucide-react": "^0.547.0",
-    "shiki": "^4.1.0",
-    "tslib": "^2.3.0"
+    "shiki": "^4.6.0",
+    "tslib": "^2.9.1"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",

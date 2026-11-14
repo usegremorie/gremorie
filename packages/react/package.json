@@ -44,7 +44,7 @@
     "@gremorie/rx-containers": ">=0.10.0",
     "@gremorie/rx-data": ">=0.10.0",
     "@gremorie/rx-ai": ">=0.10.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.9.1"
   },
   "sideEffects": [
     "**/*.css"

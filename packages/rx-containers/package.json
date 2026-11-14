@@ -39,9 +39,9 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.547.0",
-    "radix-ui": "^1.4.3",
-    "react-resizable-panels": "^4.0.0",
-    "tslib": "^2.3.0"
+    "radix-ui": "^1.8.1",
+    "react-resizable-panels": "^4.21.0",
+    "tslib": "^2.9.1"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",

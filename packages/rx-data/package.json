@@ -36,8 +36,8 @@
     "react": "^18 || ^19"
   },
   "dependencies": {
-    "recharts": "^3.8.0",
-    "tslib": "^2.3.0"
+    "recharts": "^3.10.1",
+    "tslib": "^2.9.1"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",
