@@ -28,6 +28,13 @@ const isProduction = process.env.VERCEL_ENV === 'production';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Every page declares itself as canonical on the production host. A URL
+  // instance (not a string) makes Next resolve it with the current page's
+  // pathname, so this one entry yields https://www.gremorie.com/en/components
+  // on /en/components, without query strings, instead of one shared URL.
+  alternates: {
+    canonical: new URL(SITE_URL),
+  },
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
