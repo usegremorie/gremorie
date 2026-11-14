@@ -49,8 +49,16 @@ export const WordButton = React.memo(function WordButton({
       tabIndex={focused ? 0 : -1}
       onClick={() => onPick(index)}
       onFocus={() => onFocusIndex(index)}
+      // Focus ring: the design-system geometry (3px at 50% of --ring), the
+      // same one Button and ToggleGroupItem render, so keyboard focus does not
+      // change shape when it moves from the mode toggle into the strip.
+      // The DS pairs that ring with `focus-visible:border-ring`; this button
+      // deliberately does not. Here the border is not decoration - it marks the
+      // clip edges in --primary, which is the cue that keeps the clip readable
+      // without color alone. Repainting it on focus would hide the edge exactly
+      // while the user is on it.
       className={cn(
-        'rounded border-primary px-0.5 outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded border-primary px-0.5 outline-none hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50',
         'data-[in-range=true]:bg-primary/15 data-[in-range=true]:hover:bg-primary/25',
         'data-[edge=start]:rounded-l-none data-[edge=start]:border-l-2',
         'data-[edge=end]:rounded-r-none data-[edge=end]:border-r-2',
