@@ -61,6 +61,20 @@ jobs:
           NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
         run: npx nx affected -t build --parallel=3
 
+      - name: Registry matches its sources
+        # apps/docs/public/r is generated from the packages (registry:generate)
+        # and committed. Deploys regenerate it, so a stale copy never ships,
+        # but the repo copy drifted once (#176 changed ng-forms without the
+        # regenerated JSON). Regenerate unconditionally and fail on any diff,
+        # including new files the generator would add.
+        run: |
+          npx nx run registry:generate --skip-nx-cache
+          if [ -n "$(git status --porcelain -- apps/docs/public/r)" ]; then
+            git status --short -- apps/docs/public/r
+            echo "::error::apps/docs/public/r is out of date. Run 'npx nx run registry:generate' and commit the result."
+            exit 1
+          fi
+
       - name: Test affected
         env:
           NX_IGNORE_UNSUPPORTED_TS_SETUP: 'true'
