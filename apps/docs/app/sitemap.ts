@@ -20,26 +20,34 @@ import { source } from '@/lib/source';
 const baseUrl = 'https://www.gremorie.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-  const urls = new Set<string>();
+  const entries = new Map<string, Date | undefined>();
 
   // Default language only. Portuguese is written but not served (lib/i18n.ts),
   // and /pt redirects to /en - a sitemap lists destinations, not redirects.
   for (const lang of [i18n.defaultLanguage]) {
-    // Landing page per locale.
-    urls.add(`/${lang}`);
+    // Landing page per locale. It is built from code, not an MDX file, so it
+    // has no single source date and carries no <lastmod>.
+    entries.set(`/${lang}`, undefined);
 
     // Every docs page known to the source loader, per locale. The loader
-    // returns URLs already prefixed with the locale.
+    // returns URLs already prefixed with the locale. `lastModified` is the
+    // last git commit of the page's MDX file (fumadocs-mdx last-modified
+    // plugin, see source.config.ts).
     for (const page of source.getPages(lang)) {
-      urls.add(page.url);
+      entries.set(page.url, page.data.lastModified);
     }
   }
 
-  return [...urls].map((url): MetadataRoute.Sitemap[number] => ({
-    url: `${baseUrl}${url === '/' ? '' : url}`,
-    lastModified,
-    changeFrequency: 'weekly',
-    priority: url === '/' ? 1 : 0.7,
-  }));
+  const home = `/${i18n.defaultLanguage}`;
+
+  // A page with no known date omits <lastmod> rather than claiming "now":
+  // Google stops trusting lastmod on a site where it always moves.
+  return [...entries].map(
+    ([url, lastModified]): MetadataRoute.Sitemap[number] => ({
+      url: `${baseUrl}${url}`,
+      ...(lastModified ? { lastModified } : {}),
+      changeFrequency: 'weekly',
+      priority: url === home ? 1 : 0.7,
+    }),
+  );
 }
