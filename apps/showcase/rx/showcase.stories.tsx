@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { ContributionHistory } from './cards/contribution-history';
+import { PayoutThreshold } from './cards/payout-threshold';
 import { Masonry } from './masonry';
 
 /**
@@ -15,5 +17,12 @@ const meta = {
 export default meta;
 
 export const All: StoryObj = {
-  render: () => <Masonry columns={[[], []]} />,
+  render: () => (
+    <Masonry
+      columns={[
+        [<ContributionHistory key="contribution-history" />],
+        [<PayoutThreshold key="payout-threshold" />],
+      ]}
+    />
+  ),
 };
