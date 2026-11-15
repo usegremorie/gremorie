@@ -266,7 +266,7 @@ interface ComposerOption {
           </svg>
           Sources
         </ai-button>
-        <ai-button variant="ghost" size="icon" ariaLabel="Share" class="size-9">
+        <ai-button variant="ghost" size="icon" ariaLabel="Share">
           <svg
             viewBox="0 0 24 24"
             fill="none"

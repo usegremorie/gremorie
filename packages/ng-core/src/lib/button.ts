@@ -33,8 +33,8 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-8 px-3',
-        sm: 'h-7 rounded-sm px-2.5 text-xs',
-        lg: 'h-9 rounded-sm px-4',
+        sm: 'h-8 rounded-sm px-3 text-xs',
+        lg: 'h-10 rounded-sm px-6',
         icon: 'size-8',
       },
     },
@@ -55,10 +55,14 @@ export type ButtonSize = NonNullable<
 @Component({
   selector: 'ai-button',
   standalone: true,
+  // The host stays out of layout (like React, where Button IS the <button>),
+  // so a caller's w-full / flex sizing applies against the parent.
+  host: { class: 'contents' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
+      data-slot="button"
       [attr.type]="type()"
       [class]="buttonClass()"
       [attr.aria-label]="ariaLabel() || null"
@@ -79,6 +83,8 @@ export class Button {
   readonly pressed = input<boolean | null>(null);
   readonly ariaLabel = input<string>('');
   readonly title = input<string>('');
+  /** Extra classes merged onto the native button. Mirrors React `className`. */
+  readonly class = input<string>('');
 
   readonly pressedChange = output<MouseEvent>();
 
@@ -91,7 +97,10 @@ export class Button {
   // React edition's cn() does (e.g. the destructive focus-visible ring
   // overriding the base ring-ring), keeping the winning classes identical.
   protected readonly buttonClass = computed(() =>
-    cn(buttonVariants({ variant: this.variant(), size: this.size() })),
+    cn(
+      buttonVariants({ variant: this.variant(), size: this.size() }),
+      this.class(),
+    ),
   );
 
   handleClick(event: MouseEvent): void {
