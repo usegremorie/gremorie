@@ -38,7 +38,7 @@ import {
   host: {
     'data-slot': 'card',
     class:
-      'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm has-data-[slot=card-action]:grid',
+      'bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-md ring-1 ring-foreground/10 has-data-[slot=card-action]:grid',
   },
 })
 export class Card {}
@@ -58,7 +58,7 @@ export class Card {}
   host: {
     'data-slot': 'card-header',
     class:
-      '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
+      '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
   },
 })
 export class CardHeader {}
@@ -74,7 +74,7 @@ export class CardHeader {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-title',
-    class: 'leading-none font-semibold',
+    class: 'text-base leading-6 font-medium',
   },
 })
 export class CardTitle {}
