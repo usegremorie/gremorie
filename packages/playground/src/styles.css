@@ -16,6 +16,7 @@
 @source '../../ng-forms/src/**/*.{ts,html}';
 @source '../../ng-overlays/src/**/*.{ts,html}';
 @source '../../ng-navigation/src/**/*.{ts,html}';
+@source '../../../apps/showcase/ng/**/*.{ts,html}';
 
 html,
 body {
@@ -23,12 +24,7 @@ body {
   margin: 0;
   background-color: var(--background);
   color: var(--foreground);
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  /* The Gremorie typeface comes from the tokens (Inter), like the React side;
+     a hardcoded system stack here kept every Angular preview off Inter. */
+  font-family: var(--font-sans);
 }
