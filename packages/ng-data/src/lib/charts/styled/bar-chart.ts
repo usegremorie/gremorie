@@ -14,6 +14,8 @@ import {
   titleCaseKey,
   type ChartConfig,
   type ChartDatum,
+  DEFAULT_MARGIN,
+  type Margin,
 } from '../headless/types';
 
 interface SeriesView {
@@ -61,15 +63,16 @@ interface TooltipRow {
     '[class]': 'hostClass()',
   },
   template: `
-    <div class="relative w-full">
+    <div class="relative min-h-0 w-full flex-1">
       <svg
         chartFrame
+        [margin]="margin()"
         chartTooltip
         #tip="chartTooltip"
         [data]="data()"
         [xKey]="xKey()"
         [stacked]="stacked()"
-        class="aspect-video w-full overflow-visible text-muted-foreground"
+        class="size-full overflow-visible text-muted-foreground"
       >
         @for (s of series(); track s.key; let i = $index) {
           <svg:g
@@ -102,7 +105,7 @@ interface TooltipRow {
                   [attr.y]="labelY(r)"
                   [attr.text-anchor]="horizontal() ? 'start' : 'middle'"
                   dominant-baseline="middle"
-                  class="fill-foreground text-[10px]"
+                  class="fill-foreground text-xs"
                 >
                   {{ fmt(r.value, s.format) }}
                 </svg:text>
@@ -116,7 +119,7 @@ interface TooltipRow {
                   [attr.y]="t.y"
                   [attr.text-anchor]="horizontal() ? 'end' : 'middle'"
                   [attr.dominant-baseline]="horizontal() ? 'middle' : 'auto'"
-                  class="fill-muted-foreground text-[10px]"
+                  class="fill-muted-foreground text-xs"
                 >
                   {{ t.label }}
                 </svg:text>
@@ -128,7 +131,7 @@ interface TooltipRow {
                     [attr.y]="t.y"
                     [attr.text-anchor]="horizontal() ? 'middle' : 'end'"
                     dominant-baseline="middle"
-                    class="fill-muted-foreground text-[10px]"
+                    class="fill-muted-foreground text-xs"
                   >
                     {{ t.label }}
                   </svg:text>
@@ -191,10 +194,19 @@ export class BarChart {
   /** Draw the value grid lines. */
   readonly grid = input(true);
 
+  /** Plot margins, matching the React edition's recharts margins and its
+   * 30px category axis, so both editions draw the same plot area. */
+  protected readonly margin = computed<Margin>(() => ({
+    top: this.showLabels() && !this.horizontal() ? 20 : 8,
+    right: 12,
+    bottom: 30,
+    left: this.yAxis() && !this.horizontal() ? DEFAULT_MARGIN.left : 12,
+  }));
+
   protected readonly hostClass = computed(() =>
     this.framed()
-      ? 'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground'
-      : 'flex flex-col gap-2',
+      ? 'flex aspect-video flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground'
+      : 'flex aspect-video flex-col gap-2',
   );
 
   readonly series = computed<SeriesView[]>(() => {

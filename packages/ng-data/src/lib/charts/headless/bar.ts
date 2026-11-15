@@ -12,6 +12,14 @@ import { formatValue } from './format';
 import { bandScale, linearScale } from './scales';
 import { roundedRectPath, type CornerRadii } from './shape';
 
+/** Gap between the bars of one category, as recharts' default `barGap`. */
+const BAR_GAP = 4;
+
+/** Width of one bar in a group of `count`, truncated like recharts. */
+function barSize(bandwidth: number, count: number): number {
+  return Math.max(0, Math.floor((bandwidth - BAR_GAP * (count - 1)) / count));
+}
+
 /** A category tick: label plus its anchor pixel position. */
 export interface BarCategoryTick {
   label: string;
@@ -100,7 +108,7 @@ export class Bar implements OnInit, OnDestroy {
         [this.ctx.plotLeft(), this.ctx.plotRight()],
       );
       const zero = vScale(0);
-      const subH = band.bandwidth / count;
+      const subH = barSize(band.bandwidth, count);
       return data.map((d, i) => {
         const value = Number(d[key] ?? 0);
         let x: number, y: number, width: number, height: number;
@@ -111,8 +119,8 @@ export class Bar implements OnInit, OnDestroy {
           x = vScale(lo);
           width = Math.max(0, vScale(lo + value) - x);
         } else {
-          y = band(categories[i]) + subH * index;
-          height = Math.max(0, subH - 1);
+          y = band(categories[i]) + (subH + BAR_GAP) * index;
+          height = subH;
           x = zero;
           width = Math.max(0, vScale(value) - zero);
         }
@@ -137,7 +145,9 @@ export class Bar implements OnInit, OnDestroy {
     );
     const yScale = this.ctx.yScale();
     const baseline = yScale(0);
-    const subW = band.bandwidth / count;
+    // recharts' grouping: bars of one category sit BAR_GAP apart and each is
+    // truncated to whole pixels (a single 40.4px slot draws a 40px bar).
+    const subW = barSize(band.bandwidth, count);
     return data.map((d, i) => {
       const value = Number(d[key] ?? 0);
       let x: number, y: number, width: number, height: number;
@@ -148,8 +158,8 @@ export class Bar implements OnInit, OnDestroy {
         y = yScale(lo + value);
         height = Math.max(0, yScale(lo) - y);
       } else {
-        x = band(categories[i]) + subW * index;
-        width = Math.max(0, subW - 1);
+        x = band(categories[i]) + (subW + BAR_GAP) * index;
+        width = subW;
         y = yScale(value);
         height = Math.max(0, baseline - y);
       }

@@ -40,7 +40,11 @@ export function bandScale(
   const scale = scaleBand<string>()
     .domain([...categories])
     .range([...range])
-    .padding(padding);
+    // recharts' barCategoryGap (10% of the slot on each side of the bars)
+    // is paddingInner = padding, paddingOuter = padding / 2: the React and
+    // Angular bar charts then give a bar the same width at the same size.
+    .paddingInner(padding)
+    .paddingOuter(padding / 2);
   const fn = ((value: string) => scale(value) ?? 0) as BandScale;
   fn.bandwidth = scale.bandwidth();
   fn.step = scale.step();
