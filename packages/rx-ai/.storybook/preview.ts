@@ -1,5 +1,10 @@
 import type { Preview } from '@storybook/react';
 
+// Inter is the Gremorie typeface (--font-sans); load it, never rely on the OS.
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
 import './preview.css';
 
 /**

@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 @import '@gremorie/tokens/theme.css';
+/* Inter is the Gremorie typeface (--font-sans); load it, never rely on the OS. */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
 
 @source '../../ng-core/src/**/*.{ts,html}';
 @source '../../ng-ai/src/**/*.{ts,html}';
