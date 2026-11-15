@@ -31,7 +31,7 @@ export const itemVariants = cva(
       },
       size: {
         lg: 'gap-3 p-4',
-        md: 'gap-2.5 px-4 py-3',
+        md: 'gap-2.5 p-4',
         sm: 'gap-2 px-3 py-2',
         // No padding/gap so a host-styled row controls layout; the media/text
         // still resolve to `md` because data-size falls back to `md` below.

@@ -117,7 +117,7 @@ export class Slider {
 
   protected readonly trackClass = computed(() =>
     cn(
-      'relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5',
+      'relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-2 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2',
     ),
   );
 
@@ -129,7 +129,7 @@ export class Slider {
 
   protected readonly thumbClass = computed(() =>
     cn(
-      'block size-4 shrink-0 rounded-full border border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
+      'block h-4 w-6 shrink-0 rounded-full bg-white shadow-md ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
     ),
   );
 }
