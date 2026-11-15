@@ -43,6 +43,8 @@ import { useEffect, useMemo, useState } from 'react';
 // generator (node:fs/node:path), which cannot enter a browser bundle.
 import { ITEMS } from '@gremorie/registry/dist/items.js';
 
+import { cn } from '@gremorie/rx-core';
+import { type ShowcaseView } from './nav';
 import { Sidebar } from './sidebar';
 
 /**
@@ -56,6 +58,12 @@ import { Sidebar } from './sidebar';
 // permalinks) via build-time env vars. Same iframe contract either way.
 const RX_BASE = import.meta.env.VITE_RX_BASE ?? 'http://localhost:4401';
 const NG_BASE = import.meta.env.VITE_NG_BASE ?? 'http://localhost:4400';
+
+/** The shadcn showcase the Gremorie showcase is rebuilt from (Luma style). */
+const REFERENCE_URL =
+  'https://ui.shadcn.com/preview/base/preview-02?preset=b1VnZgxu&style=luma&theme=fuchsia&menuColor=default-translucent&radius=small';
+/** Story id of the showcase screen in both Storybooks. */
+const SHOWCASE_STORY = 'showcase--all';
 
 /**
  * Angular items that actually exist in the published registry index
@@ -414,6 +422,7 @@ export function App() {
   const [values, setValues] = useState<Values>(() => defaults(entry));
   const [dark, setDark] = useState(true);
   const [theme, setTheme] = useState<string>('default');
+  const [showcase, setShowcase] = useState<ShowcaseView | null>(null);
 
   // Drive both the CSS-var tokens (`.dark`) and the brand palette (`data-theme`)
   // from the root element, so the whole shell - every rx-* component and the
@@ -440,6 +449,7 @@ export function App() {
     if (!next) return;
     setName(n);
     setValues(defaults(next));
+    setShowcase(null);
   };
   const set = (k: string, v: string | number | boolean) =>
     setValues((prev) => ({ ...prev, [k]: v }));
@@ -514,12 +524,35 @@ export function App() {
             active={name}
             contracted={contracted}
             onSelect={selectByName}
+            showcase={showcase}
+            onShowcase={setShowcase}
           />
+
+          {showcase && (
+            <main data-showcase={showcase} className="min-h-0 min-w-0 flex-1">
+              <iframe
+                key={showcase}
+                title={`Showcase: ${showcase === 'ref' ? 'shadcn reference' : showcase === 'rx' ? 'React' : 'Angular'}`}
+                className="size-full border-0"
+                src={
+                  showcase === 'ref'
+                    ? REFERENCE_URL
+                    : (storyUrl(
+                        showcase === 'rx' ? RX_BASE : NG_BASE,
+                        SHOWCASE_STORY,
+                        {},
+                        theme,
+                        dark,
+                      ) ?? undefined)
+                }
+              />
+            </main>
+          )}
 
           {/* Content: anatomy/guidance · props · React · Angular */}
           <ResizablePanelGroup
             direction="horizontal"
-            className="min-h-0 flex-1"
+            className={cn('min-h-0 flex-1', showcase && 'hidden')}
           >
             <ResizablePanel defaultSize={20} minSize={13}>
               <div className="flex h-full min-h-0 flex-col">
