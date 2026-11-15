@@ -55,14 +55,14 @@
         "$type": "color",
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.45, 0, 0]
+          "components": [0.439, 0, 0]
         }
       },
       "700": {
         "$type": "color",
         "$value": {
           "colorSpace": "oklch",
-          "components": [0.35, 0, 0]
+          "components": [0.371, 0, 0]
         }
       },
       "800": {

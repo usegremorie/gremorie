@@ -1,7 +1,8 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { compareCss, type IntentionalChange } from '../pipeline/compare.ts';
+import { compareCss } from '../pipeline/compare.ts';
+import { INTENTIONAL } from './support/intentional.ts';
 import { PACKAGE_ROOT, REFERENCE_DIR } from './support/paths.ts';
 
 const read = (p: string) => readFileSync(p, 'utf8');
@@ -13,9 +14,7 @@ const cssFiles = (dir: string) =>
 /** Themes created after 0.8.0: nothing to regress, so they may be extra. */
 const NEW_THEMES = ['purple'];
 
-const intentional = JSON.parse(
-  read(join(PACKAGE_ROOT, 'reference', 'intentional-changes.json')),
-) as IntentionalChange[];
+const intentional = INTENTIONAL;
 const styles = join(PACKAGE_ROOT, 'styles');
 const referenceThemes = cssFiles(join(REFERENCE_DIR, 'themes'));
 

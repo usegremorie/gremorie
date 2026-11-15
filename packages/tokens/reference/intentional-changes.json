@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-gray-600",
+    "to": "oklch(0.439 0 0)",
+    "reason": "Align the gray scale with the shadcn/Tailwind Neutral ramp (--color-neutral-600)."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-gray-700",
+    "to": "oklch(0.371 0 0)",
+    "reason": "Align the gray scale with the shadcn/Tailwind Neutral ramp (--color-neutral-700)."
+  }
+]

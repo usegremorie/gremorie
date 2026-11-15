@@ -2,6 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import postcss from 'postcss';
 import { describe, expect, it } from 'vitest';
+import { INTENTIONAL } from './support/intentional.ts';
 import { cleanComment } from '../pipeline/seed/from-css.ts';
 import { PACKAGE_ROOT, REFERENCE_DIR } from './support/paths.ts';
 
@@ -55,6 +56,8 @@ describe('the hex comments of the primitives match 0.8.0', () => {
     expect(reference.size).toBeGreaterThan(300);
     for (const [name, hex] of reference) {
       if (GAMUT_MAPPED.includes(name)) continue;
+      // A primitive changed on purpose carries its new colour's hex.
+      if (INTENTIONAL.some((c) => c.prop === name)) continue;
       expect(generated.get(name), name).toBe(hex);
     }
   });
