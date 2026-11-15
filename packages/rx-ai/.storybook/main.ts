@@ -42,6 +42,8 @@ const config: StorybookConfig = {
     '../../rx-data/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     // Blocks: app-level compositions (registry templates) showcased here too.
     '../../../apps/docs/components/preview/blocks/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    // Showcase: the shadcn reference cards rebuilt, embedded by the workbench.
+    '../../../apps/showcase/rx/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: ['@storybook/addon-docs'],
   framework: { name: '@storybook/react-vite', options: {} },
