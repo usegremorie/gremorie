@@ -39,6 +39,10 @@ export interface BarChartProps {
   tooltip?: boolean;
   /** Corner radius of the bars. */
   radius?: number;
+  /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
+  framed?: boolean;
+  /** Draw the value grid lines. */
+  grid?: boolean;
   className?: string;
 }
 
@@ -67,6 +71,8 @@ export function BarChart({
   showLabels = false,
   tooltip = true,
   radius = 8,
+  framed = true,
+  grid = true,
   className,
 }: BarChartProps) {
   const keys = Object.keys(config).filter((k) => k !== xKey);
@@ -101,7 +107,8 @@ export function BarChart({
         aria-label={ariaLabel}
         config={config}
         className={cn(
-          'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
+          framed &&
+            'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
           className,
         )}
       >
@@ -116,7 +123,9 @@ export function BarChart({
             bottom: 0,
           }}
         >
-          <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
+          {grid && (
+            <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
+          )}
           {horizontal ? (
             <>
               <YAxis

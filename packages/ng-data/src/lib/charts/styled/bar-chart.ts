@@ -58,8 +58,7 @@ interface TooltipRow {
     'data-slot': 'bar-chart',
     role: 'img',
     '[attr.aria-label]': 'ariaLabel()',
-    class:
-      'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
+    '[class]': 'hostClass()',
   },
   template: `
     <div class="relative w-full">
@@ -79,7 +78,7 @@ interface TooltipRow {
             [horizontal]="horizontal()"
             #b="bar"
           >
-            @if (i === 0) {
+            @if (i === 0 && grid()) {
               @for (g of b.gridLines(); track $index) {
                 <svg:line
                   [attr.x1]="g.x1"
@@ -187,6 +186,16 @@ export class BarChart {
   readonly showLabels = input(false);
   readonly tooltip = input(true);
   readonly radius = input(8);
+  /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
+  readonly framed = input(true);
+  /** Draw the value grid lines. */
+  readonly grid = input(true);
+
+  protected readonly hostClass = computed(() =>
+    this.framed()
+      ? 'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground'
+      : 'flex flex-col gap-2',
+  );
 
   readonly series = computed<SeriesView[]>(() => {
     const cfg = this.config();

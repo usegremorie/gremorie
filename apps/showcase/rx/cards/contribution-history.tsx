@@ -45,6 +45,8 @@ export function ContributionHistory() {
           xKey="month"
           yAxis={false}
           radius={6}
+          framed={false}
+          grid={false}
           className="h-[200px] w-full"
         />
       </CardContent>
