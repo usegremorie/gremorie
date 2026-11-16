@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+// The React Assistant is a docs block, not a package (the Angular one ships
+// in ng-ai); this dev-only showcase reaches into the docs app for it.
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { Assistant } from '../../docs/components/preview/blocks/assistant';
 import { ContributionHistory } from './cards/contribution-history';
 import { PayoutThreshold } from './cards/payout-threshold';
 import { NewChat } from './cards/new-chat';
@@ -25,6 +29,7 @@ export const All: StoryObj = {
         [<ContributionHistory key="contribution-history" />],
         [<PayoutThreshold key="payout-threshold" />],
         [<NewChat key="new-chat" />, <PromptSelects key="prompt-selects" />],
+        [<Assistant key="assistant" />],
       ]}
     />
   ),

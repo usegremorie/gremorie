@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
+import { Assistant } from '@gremorie/ng-ai';
 
 import { ContributionHistory } from './cards/contribution-history';
 import { NewChat } from './cards/new-chat';
@@ -16,7 +17,13 @@ const meta: Meta = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     moduleMetadata({
-      imports: [ContributionHistory, PayoutThreshold, NewChat, PromptSelects],
+      imports: [
+        ContributionHistory,
+        PayoutThreshold,
+        NewChat,
+        PromptSelects,
+        Assistant,
+      ],
     }),
   ],
 };
@@ -36,6 +43,9 @@ export const All: StoryObj = {
         <div class="flex w-[375px] shrink-0 flex-col gap-10">
           <showcase-new-chat />
           <showcase-prompt-selects />
+        </div>
+        <div class="flex w-[375px] shrink-0 flex-col gap-10">
+          <ai-assistant />
         </div>
       </div>
     `,
