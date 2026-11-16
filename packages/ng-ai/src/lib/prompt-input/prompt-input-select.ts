@@ -227,7 +227,7 @@ export class PromptInputSelectTrigger {
     @if (icon(); as tpl) {
       <ng-container [ngTemplateOutlet]="tpl" />
     }
-    {{ display() }}
+    <span data-slot="select-value-label">{{ display() }}</span>
   `,
   host: { 'data-slot': 'select-value', class: 'pointer-events-none' },
 })

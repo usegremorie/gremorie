@@ -198,6 +198,18 @@ const REVENUE_BY_REGION = [
   { region: 'LATAM', revenue: 260_000 },
 ];
 
+// ── Compact mode ──────────────────────────────────────────────────────────
+// The Assistant is a size container (@container/assistant). Below 36rem of
+// its OWN width (a card, a sidebar, a phone) it switches to compact: actions
+// with a label become 32px icon buttons (the label stays for screen readers),
+// select triggers show only their icon, and the new-chat composer docks to
+// the bottom. Same classes in the Angular edition.
+const COMPACT_ICON_BUTTON =
+  '@max-xl/assistant:size-8 @max-xl/assistant:gap-0 @max-xl/assistant:p-0';
+const COMPACT_LABEL = '@max-xl/assistant:sr-only';
+const COMPACT_SELECT_TRIGGER =
+  '@max-xl/assistant:size-8 @max-xl/assistant:justify-center @max-xl/assistant:px-0 @max-xl/assistant:[&_[data-slot=select-value-label]]:sr-only @max-xl/assistant:[&>svg:last-child]:hidden';
+
 // ── Composer (the floating B2B PromptInput) ─────────────────────────────────
 function Composer({
   status,
@@ -269,7 +281,10 @@ function Composer({
             <PromptInputSelect defaultValue={defaultMode}>
               <PromptInputSelectTrigger
                 aria-label="Select mode"
-                className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
+                className={cn(
+                  'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+                  COMPACT_SELECT_TRIGGER,
+                )}
                 variant="outline"
                 size="sm"
               >
@@ -279,7 +294,7 @@ function Composer({
                 {MODES.map((mode) => (
                   <PromptInputSelectItem key={mode.id} value={mode.id}>
                     {mode.icon}
-                    {mode.label}
+                    <span data-slot="select-value-label">{mode.label}</span>
                   </PromptInputSelectItem>
                 ))}
               </PromptInputSelectContent>
@@ -289,7 +304,10 @@ function Composer({
             <PromptInputSelect defaultValue={defaultModel}>
               <PromptInputSelectTrigger
                 aria-label="Select model"
-                className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
+                className={cn(
+                  'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+                  COMPACT_SELECT_TRIGGER,
+                )}
                 variant="outline"
                 size="sm"
               >
@@ -299,7 +317,7 @@ function Composer({
                 {MODELS.map((model) => (
                   <PromptInputSelectItem key={model.id} value={model.id}>
                     {model.icon}
-                    {model.label}
+                    <span data-slot="select-value-label">{model.label}</span>
                   </PromptInputSelectItem>
                 ))}
               </PromptInputSelectContent>
@@ -451,7 +469,7 @@ export function Assistant({
 
   return (
     <TooltipProvider>
-      <div className="relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10">
+      <div className="@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10">
         {/* AssistantHeader */}
         <header className="flex items-center justify-between gap-2 px-3 py-2">
           <DropdownMenu>
@@ -482,8 +500,13 @@ export function Assistant({
           </DropdownMenu>
 
           <div className="flex items-center gap-2">
-            <Button className="gap-2" size="sm" variant="outline">
-              <LibraryIcon className="size-4" /> Sources
+            <Button
+              className={cn('gap-2', COMPACT_ICON_BUTTON)}
+              size="sm"
+              variant="outline"
+            >
+              <LibraryIcon className="size-4" />
+              <span className={COMPACT_LABEL}>Sources</span>
             </Button>
             <Button aria-label="Share" size="icon-sm" variant="outline">
               <Share2Icon className="size-4" />
@@ -517,8 +540,8 @@ export function Assistant({
         {view === 'empty' ? (
           // AssistantStart - the new-chat state: a centered welcome, the
           // composer, and quick-start chips (the Claude home pattern).
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-            <h2 className="text-center font-semibold text-2xl">
+          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4 @max-xl/assistant:justify-end @max-xl/assistant:px-3 @max-xl/assistant:pb-3">
+            <h2 className="text-center font-semibold text-2xl @max-xl/assistant:flex @max-xl/assistant:flex-1 @max-xl/assistant:items-center">
               How can I help you today?
             </h2>
             <div className="w-full max-w-2xl">
@@ -608,11 +631,15 @@ export function Assistant({
                         intentionally inert. */}
                         <div className="flex items-center gap-1">
                           <Button
-                            className="gap-1.5 text-muted-foreground"
+                            className={cn(
+                              'gap-1.5 text-muted-foreground',
+                              COMPACT_ICON_BUTTON,
+                            )}
                             size="sm"
                             variant="ghost"
                           >
-                            <LibraryIcon className="size-4" /> Sources
+                            <LibraryIcon className="size-4" />
+                            <span className={COMPACT_LABEL}>Sources</span>
                           </Button>
                           <MessageBranchSelector from="assistant">
                             <MessageBranchPrevious />

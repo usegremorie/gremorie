@@ -14,6 +14,13 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Button } from '@gremorie/ng-core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  lucideChartColumnBig,
+  lucideListChecks,
+  lucideMessageCircleQuestion,
+  lucideTelescope,
+} from '@ng-icons/lucide';
 import { ChartArtifact } from '@gremorie/ng-artifacts';
 import { BrnHoverCardContent } from '@spartan-ng/brain/hover-card';
 
@@ -110,13 +117,33 @@ interface ComposerOption {
  * streaming -> ready) as the React block, so the two read identically. Wire
  * `(submitted)` to your AI SDK to make it real.
  */
+// The Assistant is a size container (@container/assistant). Below 36rem of
+// its OWN width (a card, a sidebar, a phone) it switches to compact: actions
+// with a label become 32px icon buttons (the label stays for screen readers),
+// select triggers show only their icon, and the new-chat composer docks to
+// the bottom. Same classes as the React edition.
+const COMPACT_ICON_BUTTON =
+  '@max-xl/assistant:size-8 @max-xl/assistant:gap-0 @max-xl/assistant:p-0';
+const COMPACT_LABEL = '@max-xl/assistant:sr-only';
+const COMPACT_SELECT_TRIGGER =
+  '@max-xl/assistant:size-8 @max-xl/assistant:justify-center @max-xl/assistant:px-0 @max-xl/assistant:[&_[data-slot=select-value-label]]:sr-only @max-xl/assistant:[&>svg:last-child]:hidden';
+
 @Component({
   selector: 'ai-assistant',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    provideIcons({
+      lucideChartColumnBig,
+      lucideListChecks,
+      lucideMessageCircleQuestion,
+      lucideTelescope,
+    }),
+  ],
   imports: [
     NgTemplateOutlet,
+    NgIcon,
     BrnHoverCardContent,
     Button,
     ChartArtifact,
@@ -173,7 +200,7 @@ interface ComposerOption {
   host: {
     'data-slot': 'assistant',
     class:
-      'relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10',
+      '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10',
   },
   template: `
     <!-- AssistantHeader -->
@@ -248,7 +275,11 @@ interface ComposerOption {
       </div>
 
       <div class="flex items-center gap-2">
-        <ai-button variant="outline" size="sm" class="gap-2">
+        <ai-button
+          variant="outline"
+          size="sm"
+          [class]="'gap-2 ' + compactIconButton"
+        >
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -264,7 +295,7 @@ interface ComposerOption {
             <path d="M8 8v12" />
             <path d="M4 4v16" />
           </svg>
-          Sources
+          <span [class]="compactLabel">Sources</span>
         </ai-button>
         <ai-button variant="outline" size="icon" ariaLabel="Share">
           <svg
@@ -389,8 +420,12 @@ interface ComposerOption {
 
     @if (view() === 'empty') {
       <!-- AssistantStart - the new-chat state -->
-      <div class="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-        <h2 class="text-center text-2xl font-semibold">
+      <div
+        class="flex flex-1 flex-col items-center justify-center gap-6 px-4 @max-xl/assistant:justify-end @max-xl/assistant:px-3 @max-xl/assistant:pb-3"
+      >
+        <h2
+          class="text-center text-2xl font-semibold @max-xl/assistant:flex @max-xl/assistant:flex-1 @max-xl/assistant:items-center"
+        >
           How can I help you today?
         </h2>
         <div class="w-full max-w-2xl">
@@ -569,7 +604,9 @@ interface ComposerOption {
                     <ai-button
                       variant="ghost"
                       size="sm"
-                      class="gap-1.5 text-muted-foreground"
+                      [class]="
+                        'gap-1.5 text-muted-foreground ' + compactIconButton
+                      "
                     >
                       <svg
                         viewBox="0 0 24 24"
@@ -586,7 +623,7 @@ interface ComposerOption {
                         <path d="M8 8v12" />
                         <path d="M4 4v16" />
                       </svg>
-                      Sources
+                      <span [class]="compactLabel">Sources</span>
                     </ai-button>
                     <message-branch-selector from="assistant">
                       <message-branch-previous />
@@ -696,6 +733,7 @@ interface ComposerOption {
                   ariaLabel="Select mode"
                   size="sm"
                   variant="outline"
+                  [class]="compactSelectTrigger"
                 >
                   <prompt-input-select-value placeholder="Mode" />
                 </prompt-input-select-trigger>
@@ -705,6 +743,13 @@ interface ComposerOption {
                       [value]="mode.id"
                       [label]="mode.label"
                     >
+                      <ng-template>
+                        <ng-icon
+                          [name]="mode.icon"
+                          class="size-4"
+                          aria-hidden="true"
+                        />
+                      </ng-template>
                       {{ mode.label }}
                     </prompt-input-select-item>
                   }
@@ -718,6 +763,7 @@ interface ComposerOption {
                   ariaLabel="Select model"
                   size="sm"
                   variant="outline"
+                  [class]="compactSelectTrigger"
                 >
                   <prompt-input-select-value placeholder="Model" />
                 </prompt-input-select-trigger>
@@ -792,6 +838,10 @@ interface ComposerOption {
   `,
 })
 export class Assistant implements OnInit, OnDestroy {
+  protected readonly compactIconButton = COMPACT_ICON_BUTTON;
+  protected readonly compactLabel = COMPACT_LABEL;
+  protected readonly compactSelectTrigger = COMPACT_SELECT_TRIGGER;
+
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 
   /** Start in a live conversation (`filled`) or the empty new-chat state. */
@@ -844,11 +894,13 @@ export class Assistant implements OnInit, OnDestroy {
     this.view() === 'empty' ? 'New chat' : 'Q3 board review';
 
   // ── B2B composer presets (the Gremorie standard) ──────────────────────────
-  protected readonly modes: ComposerOption[] = [
-    { id: 'ask', label: 'Ask' },
-    { id: 'analyze', label: 'Analyze' },
-    { id: 'research', label: 'Research' },
-    { id: 'plan', label: 'Plan' },
+  // Same icons as the React edition's MODES: in compact mode the trigger
+  // shows only the icon, so a mode without one would render an empty button.
+  protected readonly modes: Array<ComposerOption & { icon: string }> = [
+    { id: 'ask', label: 'Ask', icon: 'lucideMessageCircleQuestion' },
+    { id: 'analyze', label: 'Analyze', icon: 'lucideChartColumnBig' },
+    { id: 'research', label: 'Research', icon: 'lucideTelescope' },
+    { id: 'plan', label: 'Plan', icon: 'lucideListChecks' },
   ];
 
   protected readonly models: Array<ComposerOption & { icon: string }> = [

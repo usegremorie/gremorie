@@ -104,7 +104,7 @@ export class MessageBranchNext {
   template: `<span>{{ label() }}</span>`,
   host: {
     class:
-      'inline-flex items-center px-2 text-muted-foreground text-xs font-medium',
+      'inline-flex items-center whitespace-nowrap px-2 text-muted-foreground text-xs font-medium',
   },
 })
 export class MessageBranchPage {

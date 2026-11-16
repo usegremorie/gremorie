@@ -291,7 +291,7 @@ export const MessageBranchPage = ({
   return (
     <ButtonGroupText
       className={cn(
-        'border-none bg-transparent text-muted-foreground shadow-none',
+        'whitespace-nowrap border-none bg-transparent text-muted-foreground shadow-none',
         className,
       )}
       {...props}
