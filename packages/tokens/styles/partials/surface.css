@@ -1,0 +1,30 @@
+/*
+ * ─── Floating surfaces ────────────────────────────────
+ * Menus, selects, popovers and hover cards paint a translucent
+ * popover with a soft backdrop blur by default. Use them through
+ * the `bg-popover-surface` utility, never `bg-popover/NN`.
+ *
+ * Opt out (opaque, no blur): <html data-menu="solid">.
+ * Users who ask the OS to reduce transparency get the opaque
+ * surface automatically.
+ */
+:root[data-menu='solid'] {
+  --popover-surface: var(--popover);
+  --popover-backdrop: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --popover-surface: var(--popover);
+    --popover-backdrop: none;
+  }
+}
+
+@utility bg-popover-surface {
+  background-color: var(
+    --popover-surface,
+    color-mix(in oklab, var(--popover) 70%, transparent)
+  );
+  -webkit-backdrop-filter: var(--popover-backdrop, blur(40px) saturate(1.5));
+  backdrop-filter: var(--popover-backdrop, blur(40px) saturate(1.5));
+}

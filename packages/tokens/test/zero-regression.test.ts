@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { compareCss } from '../pipeline/compare.ts';
-import { INTENTIONAL } from './support/intentional.ts';
+import { INTENTIONAL, extraRulesFor } from './support/intentional.ts';
 import { PACKAGE_ROOT, REFERENCE_DIR } from './support/paths.ts';
 
 const read = (p: string) => readFileSync(p, 'utf8');
@@ -27,6 +27,7 @@ describe('zero regression against the 0.8.0 CSS', () => {
         read(join(styles, 'theme.css')),
         {
           allowExtraImports: NEW_THEMES.map((t) => `./themes/${t}.css`),
+          ...extraRulesFor('theme.css'),
           intentional,
         },
       ),

@@ -29,3 +29,22 @@ export function applyIntentional(
   }
   return decls;
 }
+
+/** Non-token rules added on purpose since 0.8.0 (reference/intentional-rules.json). */
+export const INTENTIONAL_RULES = JSON.parse(
+  readFileSync(
+    join(PACKAGE_ROOT, 'reference', 'intentional-rules.json'),
+    'utf8',
+  ),
+) as { file: string; rule: string; reason: string }[];
+
+/** compareCss options that accept the intentional new rules of one file. */
+export function extraRulesFor(file: string) {
+  const rules = INTENTIONAL_RULES.filter((r) => r.file === file).map(
+    (r) => r.rule,
+  );
+  return {
+    allowExtraRules: rules,
+    allowExtraSelectors: rules.filter((r) => !r.startsWith('@')),
+  };
+}

@@ -98,4 +98,11 @@ describe('parseSemantics', () => {
     const colorish = tokens.find((t) => t.name.startsWith('--color-'));
     expect(colorish).toBeUndefined();
   });
+  it('ignores conditional overrides inside at-rules (e.g. @media)', () => {
+    const tokens = parseSemantics(
+      ':root { --popover: white; }\n@media (prefers-reduced-transparency: reduce) { :root { --popover-surface: var(--popover); } }',
+      'x.css',
+    );
+    expect(tokens.map((t) => t.name)).toEqual(['--popover']);
+  });
 });

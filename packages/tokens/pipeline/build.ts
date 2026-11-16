@@ -30,6 +30,7 @@ export const PARTIALS = [
   'variants',
   'motion',
   'wiring',
+  'surface',
   'base',
 ] as const;
 
@@ -81,6 +82,7 @@ export async function buildCss(
       baseDark.blocks['.dark'],
       partial('motion'),
       partial('wiring'),
+      partial('surface'),
       partial('base'),
     ].join('\n\n') + '\n',
   );
