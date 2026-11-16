@@ -58,7 +58,7 @@ export function ParityProof({ lang }: { lang: string }) {
         {/* Copy column */}
         <div className="max-w-xl">
           <p className="font-medium text-primary text-sm">React ⇄ Angular</p>
-          <h2 className="mt-2 font-bold text-3xl text-foreground tracking-tight sm:text-4xl">
+          <h2 className="mt-2 font-bold text-3xl text-foreground sm:text-4xl">
             Same component. Both frameworks. No drift.
           </h2>
           <p className="mt-4 text-base text-muted-foreground leading-relaxed">

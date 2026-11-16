@@ -120,7 +120,7 @@ export function ArtifactsSpotlight({ lang }: { lang: string }) {
             description on the left, one ghost-button link on the right. */}
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
               Artifacts that render real output
             </h2>
             <p className="mt-3 text-base text-muted-foreground">

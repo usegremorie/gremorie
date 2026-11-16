@@ -67,7 +67,7 @@ export function ColorPaletteTable({
   const headers = COLOR_TABLE_HEADERS[locale];
   return (
     <section className="my-8" id={`palette-${palette.id}`}>
-      <h3 className="text-xl font-semibold tracking-tight">{palette.name}</h3>
+      <h3 className="text-xl font-semibold">{palette.name}</h3>
       {palette.description ? (
         <p className="mt-1 text-sm text-fd-muted-foreground">
           {palette.description}

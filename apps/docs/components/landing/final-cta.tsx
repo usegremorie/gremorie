@@ -30,7 +30,7 @@ export function FinalCta({ lang }: { lang: string }) {
         className="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[680px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]"
       />
       <div className="mx-auto max-w-3xl px-6 text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+        <h2 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
           Ship your own design system,
           <br />
           <span className="text-primary">not a dependency.</span>

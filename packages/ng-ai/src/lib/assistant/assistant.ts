@@ -390,7 +390,7 @@ interface ComposerOption {
     @if (view() === 'empty') {
       <!-- AssistantStart - the new-chat state -->
       <div class="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-        <h2 class="text-center text-2xl font-semibold tracking-tight">
+        <h2 class="text-center text-2xl font-semibold">
           How can I help you today?
         </h2>
         <div class="w-full max-w-2xl">

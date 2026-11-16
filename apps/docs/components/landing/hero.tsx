@@ -48,7 +48,7 @@ export function Hero({ lang }: { lang: string }) {
           v{gremorieVersion} · Open source · MIT
         </Badge>
 
-        <h1 className="text-balance font-bold text-4xl text-foreground tracking-tight sm:text-5xl lg:text-6xl">
+        <h1 className="text-balance font-bold text-4xl text-foreground sm:text-5xl lg:text-6xl">
           One design system.{' '}
           <span className="text-cyan-600 dark:text-cyan-500">React</span> and{' '}
           <span className="text-rose-500 dark:text-rose-400">Angular</span>, at

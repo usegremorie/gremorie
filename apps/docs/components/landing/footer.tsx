@@ -62,9 +62,7 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
           {/* Brand column */}
           <div className="lg:col-span-5">
-            <p className="text-base font-semibold tracking-tight text-foreground">
-              Gremorie
-            </p>
+            <p className="text-base font-semibold text-foreground">Gremorie</p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Copy-paste primitives, tokens, and blocks for React and Angular.
               Open source under MIT, made to be read by humans and machines.

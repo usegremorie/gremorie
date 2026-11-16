@@ -336,7 +336,7 @@ export function BlocksGallery({ lang }: { lang: string }) {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
               Blocks, not just primitives
             </h2>
             <p className="mt-3 text-base text-muted-foreground">

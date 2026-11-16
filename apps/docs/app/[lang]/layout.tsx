@@ -1,15 +1,17 @@
 import '../global.css';
 import { Analytics } from '@vercel/analytics/next';
 import { RootProvider } from 'fumadocs-ui/provider/next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist_Mono, Inter } from 'next/font/google';
 
 import type { ReactNode } from 'react';
 
 import { provider } from '@/lib/layout.shared';
 
-const geistSans = Geist({
+// Inter is the Gremorie typeface; Geist Mono stays for code (Inter has no
+// monospace cut).
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-geist-sans',
+  variable: '--font-inter',
 });
 
 const geistMono = Geist_Mono({
@@ -41,7 +43,7 @@ export default async function LangLayout({
     <html
       lang={lang}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${inter.variable} ${geistMono.variable}`}
     >
       <body className="flex flex-col min-h-screen font-sans">
         <a

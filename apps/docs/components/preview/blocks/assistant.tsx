@@ -519,7 +519,7 @@ export function Assistant({
           // AssistantStart - the new-chat state: a centered welcome, the
           // composer, and quick-start chips (the Claude home pattern).
           <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-            <h2 className="text-center font-semibold text-2xl tracking-tight">
+            <h2 className="text-center font-semibold text-2xl">
               How can I help you today?
             </h2>
             <div className="w-full max-w-2xl">

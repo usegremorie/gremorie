@@ -50,7 +50,7 @@ export function FeaturesGrid() {
     <section className="relative border-t border-border/60 bg-muted/20 py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
             A design system you own, end to end
           </h2>
           <p className="mt-3 text-base text-muted-foreground">

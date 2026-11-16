@@ -110,7 +110,7 @@ export function SemanticThemeTable({
   const darkBg = rows.find((r) => r.token === '--background')?.dark.css;
   return (
     <section className="my-8" id={`theme-${theme.id}`}>
-      <h3 className="text-xl font-semibold tracking-tight">{theme.name}</h3>
+      <h3 className="text-xl font-semibold">{theme.name}</h3>
       <p className="mt-1 text-sm text-fd-muted-foreground">
         {theme.description[locale]}
       </p>
