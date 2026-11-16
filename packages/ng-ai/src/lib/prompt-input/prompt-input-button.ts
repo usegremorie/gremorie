@@ -18,14 +18,14 @@ import {
 } from '@gremorie/ng-overlays';
 
 const buttonVariants = cva(
-  'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-sm text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         ghost:
           'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
         outline:
-          'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
+          'border border-foreground/10 border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
       },
       size: {

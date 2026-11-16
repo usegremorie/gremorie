@@ -399,8 +399,6 @@ const B2B_ATTACHMENTS = [
 // stays transparent so the control sits flush on the card surface (--card,
 // white) instead of showing --background (#fafafa), which reads as a faint grey
 // pill on the white card.
-const OUTLINE_TRIGGER =
-  'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
 
 const B2BPromptInput = ({
   withAttachments,
@@ -474,7 +472,8 @@ const B2BPromptInput = ({
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select mode"
-                  className={OUTLINE_TRIGGER}
+                  className="aria-expanded:bg-accent"
+                  variant="outline"
                   size="sm"
                 >
                   <PromptInputSelectValue placeholder="Mode" />
@@ -498,7 +497,8 @@ const B2BPromptInput = ({
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select model"
-                  className={OUTLINE_TRIGGER}
+                  className="aria-expanded:bg-accent"
+                  variant="outline"
                   size="sm"
                 >
                   <PromptInputSelectValue placeholder="Model" />

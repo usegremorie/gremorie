@@ -159,9 +159,6 @@ const THREADS = [
   'Churn analysis — enterprise',
 ];
 
-const OUTLINE_TRIGGER =
-  'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
-
 // Per-category token usage powering the Context hovercard breakdown + cost.
 const CONTEXT_USAGE: LanguageModelUsage = {
   inputTokens: 52_600,
@@ -235,7 +232,7 @@ function Composer({
   // textarea, so it is dropped entirely rather than left hollow.
   const showHeader = mentions || contextMeter;
   return (
-    <PromptInput className="rounded-xl shadow-lg" multiple onSubmit={onSubmit}>
+    <PromptInput multiple onSubmit={onSubmit}>
       {showHeader && (
         <PromptInputHeader>
           {mentions && <PromptInputMentions items={CONTEXT_ITEMS} />}
@@ -272,7 +269,8 @@ function Composer({
             <PromptInputSelect defaultValue={defaultMode}>
               <PromptInputSelectTrigger
                 aria-label="Select mode"
-                className={OUTLINE_TRIGGER}
+                className="aria-expanded:bg-accent"
+                variant="outline"
                 size="sm"
               >
                 <PromptInputSelectValue placeholder="Mode" />
@@ -291,7 +289,8 @@ function Composer({
             <PromptInputSelect defaultValue={defaultModel}>
               <PromptInputSelectTrigger
                 aria-label="Select model"
-                className={OUTLINE_TRIGGER}
+                className="aria-expanded:bg-accent"
+                variant="outline"
                 size="sm"
               >
                 <PromptInputSelectValue placeholder="Model" />

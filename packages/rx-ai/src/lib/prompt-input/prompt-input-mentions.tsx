@@ -134,7 +134,7 @@ export const PromptInputMentions = ({
     <InputGroupButton
       aria-expanded={open}
       aria-label="Add context"
-      className="border border-input border-solid bg-transparent text-foreground shadow-none transition-colors hover:bg-accent hover:text-foreground aria-expanded:bg-accent"
+      className="aria-expanded:bg-accent"
       size={hasSelection ? 'icon-sm' : 'sm'}
       type="button"
       variant="outline"

@@ -192,7 +192,7 @@ export class PromptInputMentions {
 
   protected readonly triggerClass = computed(() =>
     cn(
-      'inline-flex h-8 items-center gap-1.5 rounded-md border border-input border-solid bg-transparent px-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-expanded:bg-accent',
+      'inline-flex h-8 items-center gap-1.5 rounded-sm border border-foreground/10 border-solid bg-transparent px-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-expanded:bg-accent',
       this.hasSelection() && 'size-8 justify-center px-0',
     ),
   );

@@ -179,13 +179,6 @@ export default meta;
 
 type Story = StoryObj<PromptInput>;
 
-// Outlined trigger to match the Button "outline" variant — byte-identical to
-// the React story's OUTLINE_TRIGGER. The fill stays transparent so the control
-// sits flush on the card surface (--card, white) instead of showing
-// --background (#fafafa), which reads as a faint grey pill on the white card.
-const OUTLINE_TRIGGER =
-  'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
-
 /**
  * Args-driven demo controls for the Workbench story. `state` drives the real
  * composer state; the booleans are composition toggles (story-level, NOT
@@ -278,7 +271,6 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
       contextItems: B2B_CONTEXT,
       contextUsage: B2B_USAGE,
       attachmentItems: B2B_ATTACHMENTS,
-      outlineTrigger: OUTLINE_TRIGGER,
     },
     template: `
         <prompt-input [state]="state">
@@ -340,7 +332,7 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
                       <prompt-input-select-trigger
                         ariaLabel="Select mode"
                         size="sm"
-                        [class]="outlineTrigger"
+                        variant="outline"
                       >
                         <prompt-input-select-value placeholder="Mode" />
                       </prompt-input-select-trigger>
@@ -449,7 +441,7 @@ export const Workbench: StoryObj<WorkbenchArgs> = {
                       <prompt-input-select-trigger
                         ariaLabel="Select model"
                         size="sm"
-                        [class]="outlineTrigger"
+                        variant="outline"
                       >
                         <prompt-input-select-value placeholder="Model" />
                       </prompt-input-select-trigger>

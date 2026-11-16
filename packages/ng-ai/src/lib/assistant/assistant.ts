@@ -647,7 +647,6 @@ interface ComposerOption {
     <!-- The floating B2B composer (PromptInput). -->
     <ng-template #composer>
       <prompt-input
-        class="rounded-xl shadow-lg"
         [state]="status()"
         (submitted)="handleSubmit($event)"
         (canceled)="handleCancel()"
@@ -693,7 +692,11 @@ interface ComposerOption {
           <prompt-input-tools class="gap-2">
             @if (modeSelect()) {
               <prompt-input-select [value]="defaultMode()">
-                <prompt-input-select-trigger ariaLabel="Select mode" size="sm">
+                <prompt-input-select-trigger
+                  ariaLabel="Select mode"
+                  size="sm"
+                  variant="outline"
+                >
                   <prompt-input-select-value placeholder="Mode" />
                 </prompt-input-select-trigger>
                 <prompt-input-select-content>
@@ -711,7 +714,11 @@ interface ComposerOption {
 
             @if (modelSelect()) {
               <prompt-input-select [value]="defaultModel()">
-                <prompt-input-select-trigger ariaLabel="Select model" size="sm">
+                <prompt-input-select-trigger
+                  ariaLabel="Select model"
+                  size="sm"
+                  variant="outline"
+                >
                   <prompt-input-select-value placeholder="Model" />
                 </prompt-input-select-trigger>
                 <prompt-input-select-content>

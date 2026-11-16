@@ -777,7 +777,9 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        <InputGroup className="overflow-hidden rounded-xl bg-card dark:bg-card">
+        {/* A filled field like every other Gremorie input: no border, no
+            shadow. Controls inside use outline or secondary, never a fill. */}
+        <InputGroup className="overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50">
           {children}
         </InputGroup>
       </form>
@@ -1294,19 +1296,34 @@ export type PromptInputSelectTriggerProps = ComponentProps<
   typeof SelectTrigger
 >;
 
+/**
+ * `ghost` (default) is the AI Elements look: no surface until hover. On a
+ * filled prompt, `outline` or `secondary` draw the trigger like the other
+ * controls, through the Select's own variants.
+ */
 export const PromptInputSelectTrigger = ({
   className,
+  variant = 'ghost',
   ...props
-}: PromptInputSelectTriggerProps) => (
-  <SelectTrigger
-    className={cn(
-      'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors',
-      'hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground',
-      className,
-    )}
-    {...props}
-  />
-);
+}: Omit<PromptInputSelectTriggerProps, 'variant'> & {
+  variant?: 'ghost' | 'outline' | 'secondary';
+}) =>
+  variant === 'ghost' ? (
+    <SelectTrigger
+      className={cn(
+        'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors',
+        'hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground',
+        className,
+      )}
+      {...props}
+    />
+  ) : (
+    <SelectTrigger
+      variant={variant}
+      className={cn('font-medium aria-expanded:bg-accent', className)}
+      {...props}
+    />
+  );
 
 export type PromptInputSelectContentProps = ComponentProps<
   typeof SelectContent
