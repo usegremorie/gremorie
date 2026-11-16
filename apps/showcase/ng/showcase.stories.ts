@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 
 import { ContributionHistory } from './cards/contribution-history';
+import { NewChat } from './cards/new-chat';
 import { PayoutThreshold } from './cards/payout-threshold';
+import { PromptSelects } from './cards/prompt-selects';
 
 /**
  * The Angular showcase: the shadcn reference cards rebuilt with Gremorie
@@ -13,7 +15,9 @@ const meta: Meta = {
   title: 'Showcase',
   parameters: { layout: 'fullscreen' },
   decorators: [
-    moduleMetadata({ imports: [ContributionHistory, PayoutThreshold] }),
+    moduleMetadata({
+      imports: [ContributionHistory, PayoutThreshold, NewChat, PromptSelects],
+    }),
   ],
 };
 
@@ -28,6 +32,10 @@ export const All: StoryObj = {
         </div>
         <div class="flex w-[375px] shrink-0 flex-col gap-10">
           <showcase-payout-threshold />
+        </div>
+        <div class="flex w-[375px] shrink-0 flex-col gap-10">
+          <showcase-new-chat />
+          <showcase-prompt-selects />
         </div>
       </div>
     `,

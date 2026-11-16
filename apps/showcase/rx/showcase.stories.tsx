@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ContributionHistory } from './cards/contribution-history';
 import { PayoutThreshold } from './cards/payout-threshold';
+import { NewChat } from './cards/new-chat';
+import { PromptSelects } from './cards/prompt-selects';
 import { Masonry } from './masonry';
 
 /**
@@ -22,6 +24,7 @@ export const All: StoryObj = {
       columns={[
         [<ContributionHistory key="contribution-history" />],
         [<PayoutThreshold key="payout-threshold" />],
+        [<NewChat key="new-chat" />, <PromptSelects key="prompt-selects" />],
       ]}
     />
   ),
