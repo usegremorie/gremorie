@@ -4,6 +4,10 @@
  * popover with a soft backdrop blur by default. Use them through
  * the `bg-popover-surface` utility, never `bg-popover/NN`.
  *
+ * Inside the surface, accent (item hover/highlight) and muted (tracks,
+ * subtle fills) become translucent foreground, as in Luma: an opaque fill
+ * close to the popover color would vanish over whatever sits behind.
+ *
  * Opt out (opaque, no blur): <html data-menu="solid">.
  * Users who ask the OS to reduce transparency get the opaque
  * surface automatically.
@@ -27,4 +31,6 @@
   );
   -webkit-backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
   backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
+  --accent: color-mix(in oklab, var(--foreground) 10%, transparent);
+  --muted: color-mix(in oklab, var(--foreground) 10%, transparent);
 }
