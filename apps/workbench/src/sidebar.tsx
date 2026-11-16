@@ -25,6 +25,7 @@ export function Sidebar({
   showcase: ShowcaseView | null;
   onShowcase: (view: ShowcaseView) => void;
 }) {
+  const [showcaseOpen, setShowcaseOpen] = useState(true);
   const [open, setOpen] = useState<Set<string>>(
     () => new Set([categoryOf(active)].filter(Boolean) as string[]),
   );
@@ -62,26 +63,44 @@ export function Sidebar({
     <aside className="flex w-64 shrink-0 flex-col border-r">
       <ScrollArea className="min-h-0 flex-1">
         <nav className="space-y-5 p-3">
-          <div className="space-y-1">
-            <p className="px-3 font-semibold text-[11px] text-muted-foreground">
-              Showcase
-            </p>
-            {SHOWCASE.map(({ view, label }) => (
-              <button
-                type="button"
-                key={view}
-                onClick={() => onShowcase(view)}
+          {/* Showcase: a collapsible category like the component ones,
+              pinned first, its views as sub-items. */}
+          <div>
+            <button
+              type="button"
+              aria-expanded={showcaseOpen}
+              onClick={() => setShowcaseOpen((v) => !v)}
+              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent/50"
+            >
+              <LayoutDashboard className="size-4 shrink-0 text-muted-foreground" />
+              <span>Showcase</span>
+              <ChevronRight
                 className={cn(
-                  'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
-                  showcase === view
-                    ? 'bg-accent font-medium text-accent-foreground'
-                    : 'hover:bg-accent/50',
+                  'ml-auto size-4 shrink-0 text-muted-foreground transition-transform',
+                  showcaseOpen && 'rotate-90',
                 )}
-              >
-                <LayoutDashboard className="size-4 shrink-0" />
-                <span>{label}</span>
-              </button>
-            ))}
+              />
+            </button>
+            {showcaseOpen && (
+              <div className="mt-0.5 space-y-0.5">
+                {SHOWCASE.map(({ view, label }) => (
+                  <button
+                    type="button"
+                    key={view}
+                    aria-current={showcase === view ? 'page' : undefined}
+                    onClick={() => onShowcase(view)}
+                    className={cn(
+                      'block w-full rounded-md py-1.5 pr-2 pl-9 text-left text-sm transition-colors',
+                      showcase === view
+                        ? 'bg-accent font-medium text-accent-foreground'
+                        : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           {NAV.map((section) => (
             <div key={section.title} className="space-y-1">
