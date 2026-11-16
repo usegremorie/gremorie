@@ -3,9 +3,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { Assistant } from '@gremorie/ng-ai';
 
 import { ContributionHistory } from './cards/contribution-history';
-import { NewChat } from './cards/new-chat';
 import { PayoutThreshold } from './cards/payout-threshold';
-import { PromptSelects } from './cards/prompt-selects';
 
 /**
  * The Angular showcase: the shadcn reference cards rebuilt with Gremorie
@@ -17,13 +15,7 @@ const meta: Meta = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     moduleMetadata({
-      imports: [
-        ContributionHistory,
-        PayoutThreshold,
-        NewChat,
-        PromptSelects,
-        Assistant,
-      ],
+      imports: [ContributionHistory, PayoutThreshold, Assistant],
     }),
   ],
 };
@@ -41,11 +33,7 @@ export const All: StoryObj = {
           <showcase-payout-threshold />
         </div>
         <div class="flex w-[375px] shrink-0 flex-col gap-10">
-          <showcase-new-chat />
-          <showcase-prompt-selects />
-        </div>
-        <div class="flex w-[375px] shrink-0 flex-col gap-10">
-          <ai-assistant />
+          <ai-assistant initialView="empty" />
         </div>
       </div>
     `,
