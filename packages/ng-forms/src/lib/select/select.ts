@@ -213,9 +213,11 @@ const VIEWPORT_MARGIN = 8;
 /**
  * Item-aligned positioning, the Radix `position="item-aligned"` that React
  * `SelectContent` uses by default: on open, the listbox shifts so the selected
- * item's text lands exactly on the trigger's text, and it is at least as wide
- * as the trigger. The brain only places the listbox below the trigger, so this
- * runs after each render of the content. Without a selection it stays below.
+ * item's text lands exactly on the trigger's text and, since the item's padding
+ * matches the trigger's, its box lands on the trigger's box; the panel
+ * overhangs the trigger by its own padding and reaches the trigger's right
+ * edge. The brain only places the listbox below the trigger, so this runs
+ * after each render of the content. Without a selection it stays below.
  *
  * The open zoom animation scales the panel, which would skew the measurement,
  * so it is suspended while measuring and restarts afterwards. The shift uses
@@ -241,11 +243,17 @@ export class SelectItemAligned {
     if (!trigger || !value || !item) return;
 
     const panel = this.panel;
-    panel.style.minWidth = `${trigger.getBoundingClientRect().width}px`;
     panel.style.animationName = 'none';
-    const from = firstTextRect(item);
     const to = firstTextRect(value);
-    if (from && to) {
+    const before = firstTextRect(item);
+    if (to && before) {
+      // Radix: the panel starts where the item text meets the value text, so
+      // it overhangs the trigger by its own padding, and it is wide enough to
+      // reach the trigger's right edge.
+      const left = panel.getBoundingClientRect().left + (to.left - before.left);
+      panel.style.minWidth = `${trigger.getBoundingClientRect().right - left}px`;
+      // The overlay may re-anchor a wider panel, so measure again.
+      const from = firstTextRect(item) ?? before;
       const box = panel.getBoundingClientRect();
       const clamp = (shift: number, start: number, end: number, max: number) =>
         Math.min(
@@ -396,7 +404,7 @@ export class SelectItem {
 
   protected readonly computedClass = computed(() =>
     cn(
-      "group relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+      "group relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-3 text-sm outline-hidden select-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
       this.class(),
     ),
   );
@@ -437,7 +445,7 @@ export class SelectLabel {
   readonly class = input<string>('');
 
   protected readonly computedClass = computed(() =>
-    cn('px-2 py-1.5 text-xs text-muted-foreground', this.class()),
+    cn('px-3 py-1.5 text-xs text-muted-foreground', this.class()),
   );
 }
 
