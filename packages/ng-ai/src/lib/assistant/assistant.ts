@@ -248,7 +248,7 @@ const COMPACT_SELECT_TRIGGER =
           <div
             role="menu"
             #threadPanel
-            class="w-64 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+            class="w-64 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
           >
             <p class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
               Recent chats
@@ -370,7 +370,7 @@ const COMPACT_SELECT_TRIGGER =
             <div
               role="menu"
               #overflowPanel
-              class="w-44 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+              class="w-44 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
             >
               <button
                 type="button"
@@ -805,17 +805,19 @@ const COMPACT_SELECT_TRIGGER =
                       [value]="model.id"
                       [label]="model.label"
                     >
-                      @switch (model.icon) {
-                        @case ('claude') {
-                          <ai-claude-icon class="size-4" />
+                      <ng-template>
+                        @switch (model.icon) {
+                          @case ('claude') {
+                            <ai-claude-icon class="size-4" />
+                          }
+                          @case ('openai') {
+                            <ai-openai-icon class="size-4" />
+                          }
+                          @case ('gemini') {
+                            <ai-gemini-icon class="size-4" />
+                          }
                         }
-                        @case ('openai') {
-                          <ai-openai-icon class="size-4" />
-                        }
-                        @case ('gemini') {
-                          <ai-gemini-icon class="size-4" />
-                        }
-                      }
+                      </ng-template>
                       {{ model.label }}
                     </prompt-input-select-item>
                   }
