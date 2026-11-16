@@ -979,6 +979,10 @@ export const PromptInputButton = ({
       aria-pressed={active}
       data-state={active === undefined ? undefined : active ? 'on' : 'off'}
       className={cn(
+        // Rest in the secondary text, like the secondary chips beside it; hover
+        // changes only the background. Only the active (pressed) state moves to
+        // the full foreground.
+        'text-secondary-foreground',
         active &&
           'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
         className,
@@ -1324,8 +1328,8 @@ export const PromptInputSelectTrigger = ({
   variant === 'ghost' ? (
     <SelectTrigger
       className={cn(
-        'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors',
-        'hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted aria-expanded:text-foreground dark:aria-expanded:bg-input/30',
+        'border-none bg-transparent font-medium text-secondary-foreground shadow-none transition-colors',
+        'hover:bg-muted dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
         className,
       )}
       {...props}
