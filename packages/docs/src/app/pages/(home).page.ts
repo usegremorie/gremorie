@@ -17,9 +17,7 @@ import { DocsLayout } from '../shared/doc-layout.component';
           >
             v0.1.0 · pre-release
           </span>
-          <h1
-            class="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
-          >
+          <h1 class="text-4xl font-semibold text-foreground sm:text-5xl">
             AI-native components<br />for Angular.
           </h1>
           <p class="max-w-prose text-base text-muted-foreground sm:text-lg">
@@ -120,9 +118,7 @@ import { DocsLayout } from '../shared/doc-layout.component';
         </section>
 
         <section class="flex flex-col gap-3">
-          <h2 class="text-xl font-semibold tracking-tight text-foreground">
-            Install
-          </h2>
+          <h2 class="text-xl font-semibold text-foreground">Install</h2>
           <docs-code-block lang="bash" code="npm install @gremorie/ng-ai" />
           <p class="text-sm text-muted-foreground">
             Then import the components you need:

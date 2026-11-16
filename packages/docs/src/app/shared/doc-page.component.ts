@@ -20,7 +20,7 @@ import {
             {{ eyebrow() }}
           </span>
         }
-        <h1 class="text-3xl font-semibold tracking-tight text-foreground">
+        <h1 class="text-3xl font-semibold text-foreground">
           {{ title() }}
         </h1>
         @if (lede()) {
@@ -48,7 +48,7 @@ export class DocsPage {
   template: `
     <section class="flex flex-col gap-3">
       <h2
-        class="scroll-mt-20 text-xl font-semibold tracking-tight text-foreground"
+        class="scroll-mt-20 text-xl font-semibold text-foreground"
         [id]="anchor()"
       >
         {{ title() }}

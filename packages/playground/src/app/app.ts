@@ -10,7 +10,7 @@ import { ChartsDemo } from './charts-demo';
   template: `
     <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
       <header class="flex flex-col gap-2">
-        <h1 class="text-3xl font-semibold tracking-tight text-foreground">
+        <h1 class="text-3xl font-semibold text-foreground">
           {{ title }}
         </h1>
         <p class="text-muted-foreground">
