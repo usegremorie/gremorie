@@ -950,6 +950,11 @@ export const PromptInputTextarea = ({
 
 export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
   /**
+   * Makes the button a toggle (e.g. web search): sets `aria-pressed` and,
+   * when on, the translucent active fill that reads on the filled prompt.
+   */
+  active?: boolean;
+  /**
    * Optional hover/focus tooltip. When set, the button is wrapped in a
    * `Tooltip` (the `PromptInput` root already provides a `TooltipProvider`,
    * so this works out of the box). Reserve it for non-critical hints such as
@@ -960,6 +965,7 @@ export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
 
 export const PromptInputButton = ({
   variant = 'ghost',
+  active,
   className,
   size,
   tooltip,
@@ -970,7 +976,13 @@ export const PromptInputButton = ({
 
   const button = (
     <InputGroupButton
-      className={cn(className)}
+      aria-pressed={active}
+      data-state={active === undefined ? undefined : active ? 'on' : 'off'}
+      className={cn(
+        active &&
+          'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
+        className,
+      )}
       size={newSize}
       type="button"
       variant={variant}

@@ -67,6 +67,8 @@ const buttonVariants = cva(
         [class]="buttonClass()"
         [disabled]="disabled()"
         [attr.aria-label]="ariaLabel() || null"
+        [attr.aria-pressed]="active() ?? null"
+        [attr.data-state]="active() === null ? null : active() ? 'on' : 'off'"
         (click)="pressed.emit($event)"
       >
         <ng-content />
@@ -93,6 +95,11 @@ export class PromptInputButton {
   readonly type = input<'button' | 'submit'>('button');
   readonly disabled = input<boolean>(false);
   readonly ariaLabel = input<string>('');
+  /**
+   * Makes the button a toggle (e.g. web search): sets `aria-pressed` and,
+   * when on, the translucent active fill. Mirrors React `active`.
+   */
+  readonly active = input<boolean | null>(null);
 
   /** Optional hover/focus tooltip text. */
   readonly tooltip = input<string | null | undefined>(null);
@@ -108,6 +115,8 @@ export class PromptInputButton {
   protected readonly buttonClass = computed(() =>
     cn(
       buttonVariants({ variant: this.variant(), size: this.size() }),
+      this.active() &&
+        'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
       this.class(),
     ),
   );

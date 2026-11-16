@@ -239,6 +239,7 @@ function Composer({
   /** Show the context-window meter in the header. */
   contextMeter?: boolean;
 }) {
+  const [webSearch, setWebSearch] = useState(false);
   // The header exists only to carry the mentions trigger and the context
   // meter. With both off it would render as an empty strip above the
   // textarea, so it is dropped entirely rather than left hollow.
@@ -323,7 +324,9 @@ function Composer({
         <PromptInputTools className="gap-2">
           <PromptInputTools>
             <PromptInputButton
+              active={webSearch}
               aria-label="Search the web"
+              onClick={() => setWebSearch((on) => !on)}
               tooltip="Search the web"
             >
               <GlobeIcon className="size-4" />

@@ -1,3 +1,4 @@
+import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -14,9 +15,12 @@ import {
   model,
   signal,
   TemplateRef,
+  viewChild,
   ViewEncapsulation,
+  effect,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
+import { MENU_BELOW_START } from '../overlay-positions';
 
 /**
  * Shared state contract for the PromptInputSelect family, distributed via DI so
@@ -32,6 +36,11 @@ export interface PromptInputSelectState {
   labelFor: (value: string | null) => string | null;
   registerItemIcon: (value: string, icon: TemplateRef<void> | null) => void;
   iconFor: (value: string | null) => TemplateRef<void> | null;
+  /** The trigger button the listbox is positioned against. */
+  readonly origin: () => HTMLElement | null;
+  setOrigin: (el: HTMLElement | null) => void;
+  /** The listbox panel (rendered in the CDK overlay, outside this element). */
+  setPanel: (el: HTMLElement | null) => void;
 }
 
 export const PROMPT_INPUT_SELECT = new InjectionToken<PromptInputSelectState>(
@@ -75,8 +84,20 @@ export class PromptInputSelect implements PromptInputSelectState {
   private readonly icons = new Map<string, TemplateRef<void> | null>();
   private readonly labelVersion = signal(0);
 
+  private readonly _origin = signal<HTMLElement | null>(null);
+  private panel: HTMLElement | null = null;
+
   readonly value = () => this.selected();
   readonly open = () => this._open();
+  readonly origin = () => this._origin();
+
+  setOrigin(el: HTMLElement | null): void {
+    this._origin.set(el);
+  }
+
+  setPanel(el: HTMLElement | null): void {
+    this.panel = el;
+  }
 
   setValue(value: string): void {
     this.selected.set(value);
@@ -117,7 +138,11 @@ export class PromptInputSelect implements PromptInputSelectState {
       return;
     }
     const target = event.target as Node | null;
-    if (target && !this.elementRef.nativeElement.contains(target)) {
+    if (
+      target &&
+      !this.elementRef.nativeElement.contains(target) &&
+      !this.panel?.contains(target)
+    ) {
       this.close();
     }
   }
@@ -157,6 +182,7 @@ const TRIGGER_PROMPT_OVERRIDES =
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
+      #button
       type="button"
       data-slot="select-trigger"
       [attr.data-size]="dataSize()"
@@ -186,6 +212,11 @@ const TRIGGER_PROMPT_OVERRIDES =
 })
 export class PromptInputSelectTrigger {
   protected readonly ctx = inject(PROMPT_INPUT_SELECT);
+  private readonly button = viewChild<ElementRef<HTMLElement>>('button');
+
+  constructor() {
+    effect(() => this.ctx.setOrigin(this.button()?.nativeElement ?? null));
+  }
   readonly ariaLabel = input<string>('');
   readonly size = input<'sm' | 'md'>('sm');
   /**
@@ -248,20 +279,36 @@ export class PromptInputSelectValue {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CdkConnectedOverlay],
   template: `
-    @if (ctx.open()) {
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="ctx.origin()!"
+      [cdkConnectedOverlayOpen]="ctx.open() && !!ctx.origin()"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayViewportMargin]="8"
+      [cdkConnectedOverlayMinWidth]="ctx.origin()?.offsetWidth ?? 0"
+      (detach)="ctx.close()"
+    >
       <div
+        #panel
         role="listbox"
-        class="absolute left-0 top-full z-50 mt-1 w-max min-w-full origin-top-left overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="w-max origin-top-left overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         <ng-content />
       </div>
-    }
+    </ng-template>
   `,
   host: { class: 'contents' },
 })
 export class PromptInputSelectContent {
   protected readonly ctx = inject(PROMPT_INPUT_SELECT);
+  protected readonly positions = MENU_BELOW_START;
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
+
+  constructor() {
+    effect(() => this.ctx.setPanel(this.panel()?.nativeElement ?? null));
+  }
 }
 
 /**

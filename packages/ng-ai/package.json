@@ -17,6 +17,7 @@
     "attachments"
   ],
   "peerDependencies": {
+    "@angular/cdk": "^21.2.0",
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0",
     "@gremorie/ng-artifacts": ">=0.5.1",

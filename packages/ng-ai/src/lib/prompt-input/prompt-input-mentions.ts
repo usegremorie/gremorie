@@ -8,9 +8,12 @@ import {
   input,
   model,
   signal,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { cn } from '@gremorie/ng-core';
+import { MENU_BELOW_START } from '../overlay-positions';
 
 /** One selectable context item in the mentions palette. */
 export interface PromptInputMentionsItem {
@@ -50,9 +53,12 @@ interface MentionGroup {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CdkConnectedOverlay, CdkOverlayOrigin],
   template: `
     <button
       type="button"
+      cdkOverlayOrigin
+      #origin="cdkOverlayOrigin"
       [class]="triggerClass()"
       [attr.aria-expanded]="open()"
       aria-haspopup="listbox"
@@ -77,12 +83,19 @@ interface MentionGroup {
       }
     </button>
 
-    @if (open()) {
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="origin"
+      [cdkConnectedOverlayOpen]="open()"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayViewportMargin]="8"
+      (detach)="open.set(false)"
+    >
       <div
         role="listbox"
         aria-label="Add context"
-        class="absolute z-50 mt-2 w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
-        [style.top.px]="menuTopOffset"
+        #panel
+        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         <div class="border-b p-2">
           <input
@@ -133,7 +146,7 @@ interface MentionGroup {
           }
         </div>
       </div>
-    }
+    </ng-template>
 
     @for (item of selectedItems(); track item.id) {
       <span
@@ -182,7 +195,8 @@ export class PromptInputMentions {
 
   protected readonly open = signal(false);
   protected readonly query = signal('');
-  protected readonly menuTopOffset = 36;
+  protected readonly positions = MENU_BELOW_START;
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
 
   protected readonly hasSelection = computed(() => this.value().length > 0);
 
@@ -252,7 +266,11 @@ export class PromptInputMentions {
       return;
     }
     const target = event.target as Node | null;
-    if (target && !this.elementRef.nativeElement.contains(target)) {
+    if (
+      target &&
+      !this.elementRef.nativeElement.contains(target) &&
+      !this.panel()?.nativeElement.contains(target)
+    ) {
       this.open.set(false);
     }
   }

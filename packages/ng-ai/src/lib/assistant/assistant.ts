@@ -1,3 +1,4 @@
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -12,9 +13,11 @@ import {
   output,
   signal,
   ViewEncapsulation,
+  viewChild,
 } from '@angular/core';
 import { Button } from '@gremorie/ng-core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { MENU_BELOW_END, MENU_BELOW_START } from '../overlay-positions';
 import {
   lucideChartColumnBig,
   lucideListChecks,
@@ -144,6 +147,8 @@ const COMPACT_SELECT_TRIGGER =
   imports: [
     NgTemplateOutlet,
     NgIcon,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin,
     BrnHoverCardContent,
     Button,
     ChartArtifact,
@@ -205,7 +210,11 @@ const COMPACT_SELECT_TRIGGER =
   template: `
     <!-- AssistantHeader -->
     <header class="flex items-center justify-between gap-2 px-3 py-2">
-      <div class="relative inline-flex">
+      <div
+        class="relative inline-flex"
+        cdkOverlayOrigin
+        #threadOrigin="cdkOverlayOrigin"
+      >
         <ai-button
           variant="ghost"
           size="sm"
@@ -228,10 +237,18 @@ const COMPACT_SELECT_TRIGGER =
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </ai-button>
-        @if (threadMenuOpen()) {
+        <ng-template
+          cdkConnectedOverlay
+          [cdkConnectedOverlayOrigin]="threadOrigin"
+          [cdkConnectedOverlayOpen]="threadMenuOpen()"
+          [cdkConnectedOverlayPositions]="menuBelowStart"
+          [cdkConnectedOverlayViewportMargin]="8"
+          (detach)="threadMenuOpen.set(false)"
+        >
           <div
             role="menu"
-            class="absolute left-0 top-10 z-50 w-64 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+            #threadPanel
+            class="w-64 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
           >
             <p class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
               Recent chats
@@ -271,7 +288,7 @@ const COMPACT_SELECT_TRIGGER =
               New chat
             </button>
           </div>
-        }
+        </ng-template>
       </div>
 
       <div class="flex items-center gap-2">
@@ -315,7 +332,11 @@ const COMPACT_SELECT_TRIGGER =
             <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
           </svg>
         </ai-button>
-        <div class="relative inline-flex">
+        <div
+          class="relative inline-flex"
+          cdkOverlayOrigin
+          #overflowOrigin="cdkOverlayOrigin"
+        >
           <ai-button
             variant="outline"
             size="icon"
@@ -338,10 +359,18 @@ const COMPACT_SELECT_TRIGGER =
               <circle cx="5" cy="12" r="1" />
             </svg>
           </ai-button>
-          @if (overflowMenuOpen()) {
+          <ng-template
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="overflowOrigin"
+            [cdkConnectedOverlayOpen]="overflowMenuOpen()"
+            [cdkConnectedOverlayPositions]="menuBelowEnd"
+            [cdkConnectedOverlayViewportMargin]="8"
+            (detach)="overflowMenuOpen.set(false)"
+          >
             <div
               role="menu"
-              class="absolute right-0 top-10 z-50 w-44 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+              #overflowPanel
+              class="w-44 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
             >
               <button
                 type="button"
@@ -413,7 +442,7 @@ const COMPACT_SELECT_TRIGGER =
                 Delete
               </button>
             </div>
-          }
+          </ng-template>
         </div>
       </div>
     </header>
@@ -800,6 +829,8 @@ const COMPACT_SELECT_TRIGGER =
               <prompt-input-button
                 ariaLabel="Search the web"
                 tooltip="Search the web"
+                [active]="webSearch()"
+                (pressed)="webSearch.set(!webSearch())"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -884,6 +915,14 @@ export class Assistant implements OnInit, OnDestroy {
   protected readonly view = signal<AssistantView>('filled');
   protected readonly status = signal<PromptInputState>('ready');
   protected readonly threadMenuOpen = signal(false);
+  /** The composer's web-search toggle. */
+  protected readonly webSearch = signal(false);
+  protected readonly menuBelowStart = MENU_BELOW_START;
+  protected readonly menuBelowEnd = MENU_BELOW_END;
+  private readonly threadPanel =
+    viewChild<ElementRef<HTMLElement>>('threadPanel');
+  private readonly overflowPanel =
+    viewChild<ElementRef<HTMLElement>>('overflowPanel');
   protected readonly overflowMenuOpen = signal(false);
 
   private timer: ReturnType<typeof setTimeout> | null = null;
@@ -995,7 +1034,12 @@ The regional breakdown is charted below. Toggle to the table view for the exact 
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     const target = event.target as Node | null;
-    if (target && !this.elementRef.nativeElement.contains(target)) {
+    if (
+      target &&
+      !this.elementRef.nativeElement.contains(target) &&
+      !this.threadPanel()?.nativeElement.contains(target) &&
+      !this.overflowPanel()?.nativeElement.contains(target)
+    ) {
       this.threadMenuOpen.set(false);
       this.overflowMenuOpen.set(false);
     }
