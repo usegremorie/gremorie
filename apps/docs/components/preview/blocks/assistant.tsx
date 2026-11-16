@@ -247,7 +247,9 @@ function Composer({
     <PromptInput multiple onSubmit={onSubmit}>
       {showHeader && (
         <PromptInputHeader>
-          {mentions && <PromptInputMentions items={CONTEXT_ITEMS} />}
+          {mentions && (
+            <PromptInputMentions items={CONTEXT_ITEMS} variant="secondary" />
+          )}
           {contextMeter && (
             <Context
               maxTokens={200_000}
@@ -281,11 +283,8 @@ function Composer({
             <PromptInputSelect defaultValue={defaultMode}>
               <PromptInputSelectTrigger
                 aria-label="Select mode"
-                className={cn(
-                  'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
-                  COMPACT_SELECT_TRIGGER,
-                )}
-                variant="outline"
+                className={COMPACT_SELECT_TRIGGER}
+                variant="secondary"
                 size="sm"
               >
                 <PromptInputSelectValue placeholder="Mode" />
@@ -304,11 +303,8 @@ function Composer({
             <PromptInputSelect defaultValue={defaultModel}>
               <PromptInputSelectTrigger
                 aria-label="Select model"
-                className={cn(
-                  'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
-                  COMPACT_SELECT_TRIGGER,
-                )}
-                variant="outline"
+                className={COMPACT_SELECT_TRIGGER}
+                variant="secondary"
                 size="sm"
               >
                 <PromptInputSelectValue placeholder="Model" />

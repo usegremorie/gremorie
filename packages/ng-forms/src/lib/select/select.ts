@@ -31,7 +31,8 @@ const SELECT_TRIGGER_VARIANTS = {
   default: '',
   outline:
     'border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  secondary:
+    'bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15',
 } as const;
 
 /**

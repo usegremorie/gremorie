@@ -26,7 +26,9 @@ const buttonVariants = cva(
         outline:
           'border border-foreground/10 bg-transparent hover:bg-muted hover:text-foreground dark:hover:bg-input/30',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          // Translucent, so it reads on any surface (a card or a filled field)
+          // and its hover always shows.
+          'bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15',
         ghost:
           'bg-transparent text-foreground hover:bg-muted hover:text-foreground dark:hover:bg-input/30',
         link: 'text-primary underline-offset-4 hover:underline bg-transparent',

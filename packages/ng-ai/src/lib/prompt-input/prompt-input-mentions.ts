@@ -175,6 +175,8 @@ export class PromptInputMentions {
   /** Two-way bindable selected ids. */
   readonly value = model<string[]>([]);
   readonly label = input<string>('Add context');
+  /** Trigger surface on the prompt: `outline` (default) or `secondary`. Mirrors React `variant`. */
+  readonly variant = input<'outline' | 'secondary'>('outline');
   readonly placeholder = input<string>('Search context...');
   readonly emptyText = input<string>('No context found.');
 
@@ -192,7 +194,10 @@ export class PromptInputMentions {
 
   protected readonly triggerClass = computed(() =>
     cn(
-      'inline-flex h-8 items-center gap-1.5 rounded-sm border border-foreground/10 border-solid bg-transparent px-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted hover:text-foreground dark:hover:bg-input/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+      'inline-flex h-8 items-center gap-1.5 rounded-sm border border-solid px-2.5 text-sm font-medium text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      this.variant() === 'secondary'
+        ? 'border-transparent bg-foreground/5 hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15'
+        : 'border-foreground/10 bg-transparent hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
       this.hasSelection() && 'size-8 justify-center px-0',
     ),
   );

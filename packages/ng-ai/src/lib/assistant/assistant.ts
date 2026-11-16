@@ -691,7 +691,10 @@ const COMPACT_SELECT_TRIGGER =
         @if (showHeader()) {
           <prompt-input-header>
             @if (mentions()) {
-              <prompt-input-mentions [items]="contextItems" />
+              <prompt-input-mentions
+                [items]="contextItems"
+                variant="secondary"
+              />
             }
             @if (contextMeter()) {
               <context
@@ -732,7 +735,7 @@ const COMPACT_SELECT_TRIGGER =
                 <prompt-input-select-trigger
                   ariaLabel="Select mode"
                   size="sm"
-                  variant="outline"
+                  variant="secondary"
                   [class]="compactSelectTrigger"
                 >
                   <prompt-input-select-value placeholder="Mode" />
@@ -762,7 +765,7 @@ const COMPACT_SELECT_TRIGGER =
                 <prompt-input-select-trigger
                   ariaLabel="Select model"
                   size="sm"
-                  variant="outline"
+                  variant="secondary"
                   [class]="compactSelectTrigger"
                 >
                   <prompt-input-select-value placeholder="Model" />
