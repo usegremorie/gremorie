@@ -229,7 +229,13 @@ export class SelectItemAligned {
   private readonly host: HTMLElement = inject(SelectContent).host;
 
   constructor() {
-    afterNextRender(() => this.align());
+    // Hidden until placed: the first paint would otherwise show the panel
+    // where the overlay put it, before the shift.
+    this.panel.style.visibility = 'hidden';
+    afterNextRender(() => {
+      this.align();
+      this.panel.style.visibility = '';
+    });
   }
 
   private align(): void {
