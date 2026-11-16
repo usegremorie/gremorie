@@ -193,7 +193,7 @@ export class ContextContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'block min-w-60 divide-y overflow-hidden rounded-md border bg-popover p-0 text-popover-foreground shadow-md',
+      'block min-w-60 divide-y overflow-hidden rounded-md border bg-popover-surface p-0 text-popover-foreground shadow-md',
       this.class(),
     ),
   );

@@ -80,7 +80,7 @@ const optionVariants = cva(
       <div
         role="listbox"
         [attr.aria-label]="ariaLabel()"
-        class="absolute z-50 mt-2 min-w-full origin-top-left rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="absolute z-50 mt-2 min-w-full origin-top-left rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
         [style.top.px]="menuTopOffset"
       >
         @for (option of options(); track option.id) {

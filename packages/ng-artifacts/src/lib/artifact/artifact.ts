@@ -369,7 +369,7 @@ export type ArtifactMenuEntry = ArtifactMenuItem | 'separator';
         role="menu"
         tabindex="-1"
         (keydown.escape)="close()"
-        class="absolute top-full z-50 mt-1 w-44 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
+        class="absolute top-full z-50 mt-1 w-44 overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md"
         [class.right-0]="align() === 'end'"
         [class.left-0]="align() === 'start'"
       >

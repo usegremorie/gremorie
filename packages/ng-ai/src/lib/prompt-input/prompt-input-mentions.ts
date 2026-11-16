@@ -95,7 +95,7 @@ interface MentionGroup {
         role="listbox"
         aria-label="Add context"
         #panel
-        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         <div class="border-b p-2">
           <input

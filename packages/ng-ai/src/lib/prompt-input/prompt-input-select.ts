@@ -293,7 +293,7 @@ export class PromptInputSelectValue {
       <div
         #panel
         role="listbox"
-        class="w-max origin-top-left overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="w-max origin-top-left overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         <ng-content />
       </div>

@@ -80,7 +80,7 @@ import { Calendar } from '../calendar/calendar';
       </button>
       <ng-template brnPopoverContent>
         <div
-          class="w-auto rounded-md border bg-popover p-0 text-popover-foreground shadow-md"
+          class="w-auto rounded-md border bg-popover-surface p-0 text-popover-foreground shadow-md"
         >
           <gr-calendar [(date)]="date" />
         </div>
