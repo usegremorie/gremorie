@@ -76,16 +76,72 @@ function SelectTrigger({
   );
 }
 
+/** Box of the first non-empty text node under `root` (null when none). */
+function firstTextRect(root: Element): DOMRect | null {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!node.textContent?.trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return range.getBoundingClientRect();
+  }
+  return null;
+}
+
+/**
+ * Settles item-aligned placement on measured boxes. Radix places the listbox
+ * with integer math (`parseInt` of paddings and borders, `offsetTop`), which
+ * drifts by a fraction of a pixel wherever layout is fractional (display
+ * scaling, browser zoom), leaving the selected item slightly below the
+ * trigger. Once Radix has placed it, the listbox is shifted by whatever still
+ * separates the selected item's text from the trigger's value text, the same
+ * measurement the Angular edition positions with.
+ */
+function settleItemAligned(content: HTMLDivElement): () => void {
+  const frame = requestAnimationFrame(() => {
+    const trigger = content.id
+      ? document.querySelector(`[aria-controls="${CSS.escape(content.id)}"]`)
+      : null;
+    const value = trigger?.querySelector('[data-slot=select-value]');
+    const item = content.querySelector('[role=option][data-state=checked]');
+    if (!value || !item) return;
+    // The open zoom scales the panel; measure without it.
+    content.style.animationName = 'none';
+    const to = firstTextRect(value);
+    const from = firstTextRect(item);
+    if (to && from) {
+      const dx = to.left - from.left;
+      const dy = to.top - from.top;
+      if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
+        content.style.translate = `${dx}px ${dy}px`;
+      }
+    }
+    content.style.animationName = '';
+  });
+  return () => cancelAnimationFrame(frame);
+}
+
 function SelectContent({
   className,
   children,
   position = 'item-aligned',
   align = 'center',
+  ref,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  const contentRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+      if (!node || position !== 'item-aligned') return undefined;
+      return settleItemAligned(node);
+    },
+    [ref, position],
+  );
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        ref={contentRef}
         data-slot="select-content"
         className={cn(
           'relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
