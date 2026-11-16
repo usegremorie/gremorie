@@ -73,6 +73,7 @@ import {
   ChartColumnBigIcon,
   ChevronDownIcon,
   CopyIcon,
+  CornerDownLeftIcon,
   EllipsisIcon,
   FileSpreadsheetIcon,
   FileTextIcon,
@@ -221,6 +222,7 @@ function Composer({
   modelSelect = true,
   mentions = true,
   contextMeter = true,
+  newChat = false,
 }: {
   status: ChatStatus;
   onSubmit: (message: PromptInputMessage) => void;
@@ -238,6 +240,11 @@ function Composer({
   mentions?: boolean;
   /** Show the context-window meter in the header. */
   contextMeter?: boolean;
+  /**
+   * New-chat composer: the send button reads "Chat" with the enter icon
+   * (compact keeps the icon-only arrow). The conversation keeps the arrow.
+   */
+  newChat?: boolean;
 }) {
   const [webSearch, setWebSearch] = useState(false);
   // The header exists only to carry the mentions trigger and the context
@@ -334,9 +341,25 @@ function Composer({
             <PromptInputAttachButton tooltip="Attach files" />
             <PromptInputSpeechButton tooltip="Voice input" />
           </PromptInputTools>
-          <PromptInputSubmit status={status} tooltip="Send">
-            <ArrowUpIcon className="size-4" />
-          </PromptInputSubmit>
+          {newChat ? (
+            <PromptInputSubmit
+              aria-label="Chat"
+              className={cn(
+                'gap-2 pr-2.5 pl-3 @max-xl/assistant:px-0!',
+                COMPACT_ICON_BUTTON,
+              )}
+              size="sm"
+              status={status}
+            >
+              <span className="@max-xl/assistant:hidden">Chat</span>
+              <CornerDownLeftIcon className="size-4 @max-xl/assistant:hidden" />
+              <ArrowUpIcon className="hidden size-4 @max-xl/assistant:block" />
+            </PromptInputSubmit>
+          ) : (
+            <PromptInputSubmit status={status} tooltip="Send">
+              <ArrowUpIcon className="size-4" />
+            </PromptInputSubmit>
+          )}
         </PromptInputTools>
       </PromptInputFooter>
     </PromptInput>
@@ -482,7 +505,9 @@ export function Assistant({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64">
-              <DropdownMenuLabel>Recent chats</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs text-muted-foreground">
+                Recent chats
+              </DropdownMenuLabel>
               {THREADS.map((thread) => (
                 <DropdownMenuItem
                   key={thread}
@@ -493,21 +518,17 @@ export function Assistant({
               ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => setView('empty')}>
-                <PenSquareIcon className="mr-2 size-4" /> New chat
+                <PenSquareIcon className="size-4" /> New chat
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="flex items-center gap-2">
-            <Button
-              className={cn('gap-2', COMPACT_ICON_BUTTON)}
-              size="sm"
-              variant="outline"
-            >
+          {/* Header actions: ghost icon buttons, no gap between them. */}
+          <div className="flex items-center">
+            <Button aria-label="Sources" size="icon-sm" variant="ghost">
               <LibraryIcon className="size-4" />
-              <span className={COMPACT_LABEL}>Sources</span>
             </Button>
-            <Button aria-label="Share" size="icon-sm" variant="outline">
+            <Button aria-label="Share" size="icon-sm" variant="ghost">
               <Share2Icon className="size-4" />
             </Button>
             <DropdownMenu>
@@ -515,21 +536,21 @@ export function Assistant({
                 <Button
                   aria-label="More actions"
                   size="icon-sm"
-                  variant="outline"
+                  variant="ghost"
                 >
                   <EllipsisIcon className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>
-                  <ArchiveIcon className="mr-2 size-4" /> Archive
+                  <ArchiveIcon className="size-4" /> Archive
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <CopyIcon className="mr-2 size-4" /> Duplicate
+                  <CopyIcon className="size-4" /> Duplicate
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive">
-                  <Trash2Icon className="mr-2 size-4" /> Delete
+                  <Trash2Icon className="size-4" /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -545,6 +566,7 @@ export function Assistant({
             </h2>
             <div className="w-full max-w-2xl">
               <Composer
+                newChat
                 onSubmit={handleSubmit}
                 status={status}
                 placeholder={placeholder}

@@ -7,6 +7,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { cva } from 'class-variance-authority';
 import {
   Tooltip,
@@ -33,10 +34,10 @@ const LABEL_MAP: Record<PromptInputState, string> = {
   error: 'Retry',
 };
 
-// size-8 mirrors the React PromptInputSubmit default (InputGroupButton
-// `icon-sm`), keeping both composers' send buttons the same footprint.
+// Sizes mirror the React PromptInputSubmit `size` (InputGroupButton): `icon-sm`
+// (default, 32px square) and `sm` (32px tall, for a labelled button).
 const submitVariants = cva(
-  'inline-flex size-8 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'inline-flex shrink-0 items-center justify-center rounded-sm text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       state: {
@@ -46,9 +47,14 @@ const submitVariants = cva(
         error:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       },
+      size: {
+        'icon-sm': 'size-8',
+        sm: 'h-8 gap-1.5 px-2.5',
+      },
     },
     defaultVariants: {
       state: 'ready',
+      size: 'icon-sm',
     },
   },
 );
@@ -139,6 +145,19 @@ export class PromptInputSubmit {
    */
   readonly tooltip = input<string | null | undefined>(null);
 
+  /** Button size. Mirrors React PromptInputSubmit `size`. */
+  readonly size = input<'icon-sm' | 'sm'>('icon-sm');
+
+  /**
+   * Accessible name. Defaults to the state label ("Send message"…); set it when
+   * the button shows visible text, so the name contains that text. Mirrors
+   * React `aria-label`.
+   */
+  readonly label = input<string | null>(null);
+
+  /** Extra classes merged via `cn`. Mirrors React `className`. */
+  readonly class = input<string>('');
+
   protected readonly state = computed<PromptInputState>(() =>
     this.parent.state(),
   );
@@ -155,11 +174,16 @@ export class PromptInputSubmit {
     () => this.disabled() || this.parent.disabled(),
   );
 
-  protected readonly ariaLabel = computed(() => LABEL_MAP[this.state()]);
+  protected readonly ariaLabel = computed(
+    () => this.label() ?? LABEL_MAP[this.state()],
+  );
   protected readonly iconPath = computed(() => ICON_MAP[this.state()]);
 
   protected readonly buttonClass = computed(() =>
-    submitVariants({ state: this.state() }),
+    cn(
+      submitVariants({ state: this.state(), size: this.size() }),
+      this.class(),
+    ),
   );
 
   handleClick(): void {

@@ -20,6 +20,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { MENU_BELOW_END, MENU_BELOW_START } from '../overlay-positions';
 import {
   lucideChartColumnBig,
+  lucideCornerDownLeft,
   lucideListChecks,
   lucideMessageCircleQuestion,
   lucideTelescope,
@@ -139,6 +140,7 @@ const COMPACT_SELECT_TRIGGER =
   providers: [
     provideIcons({
       lucideChartColumnBig,
+      lucideCornerDownLeft,
       lucideListChecks,
       lucideMessageCircleQuestion,
       lucideTelescope,
@@ -291,12 +293,9 @@ const COMPACT_SELECT_TRIGGER =
         </ng-template>
       </div>
 
-      <div class="flex items-center gap-2">
-        <ai-button
-          variant="outline"
-          size="sm"
-          [class]="'gap-2 ' + compactIconButton"
-        >
+      <!-- Header actions: ghost icon buttons, no gap between them. -->
+      <div class="flex items-center">
+        <ai-button variant="ghost" size="icon" ariaLabel="Sources">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -312,9 +311,8 @@ const COMPACT_SELECT_TRIGGER =
             <path d="M8 8v12" />
             <path d="M4 4v16" />
           </svg>
-          <span [class]="compactLabel">Sources</span>
         </ai-button>
-        <ai-button variant="outline" size="icon" ariaLabel="Share">
+        <ai-button variant="ghost" size="icon" ariaLabel="Share">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -338,7 +336,7 @@ const COMPACT_SELECT_TRIGGER =
           #overflowOrigin="cdkOverlayOrigin"
         >
           <ai-button
-            variant="outline"
+            variant="ghost"
             size="icon"
             ariaLabel="More actions"
             [attr.aria-expanded]="overflowMenuOpen()"
@@ -458,7 +456,10 @@ const COMPACT_SELECT_TRIGGER =
           How can I help you today?
         </h2>
         <div class="w-full max-w-2xl">
-          <ng-container [ngTemplateOutlet]="composer" />
+          <ng-container
+            [ngTemplateOutlet]="composer"
+            [ngTemplateOutletContext]="{ newChat: true }"
+          />
         </div>
       </div>
     } @else {
@@ -711,7 +712,7 @@ const COMPACT_SELECT_TRIGGER =
     </ng-template>
 
     <!-- The floating B2B composer (PromptInput). -->
-    <ng-template #composer>
+    <ng-template #composer let-newChat="newChat">
       <prompt-input
         [state]="status()"
         (submitted)="handleSubmit($event)"
@@ -852,21 +853,55 @@ const COMPACT_SELECT_TRIGGER =
               <prompt-input-attach-button tooltip="Attach files" />
               <prompt-input-speech-button tooltip="Voice input" />
             </prompt-input-tools>
-            <prompt-input-submit>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                class="size-4"
+            @if (newChat) {
+              <!-- New chat: "Chat" + the enter icon; compact keeps the arrow. -->
+              <prompt-input-submit
+                size="sm"
+                label="Chat"
+                [class]="
+                  'gap-2 pr-2.5 pl-3 @max-xl/assistant:px-0! ' +
+                  compactIconButton
+                "
               >
-                <path d="m5 12 7-7 7 7" />
-                <path d="M12 19V5" />
-              </svg>
-            </prompt-input-submit>
+                <span class="@max-xl/assistant:hidden">Chat</span>
+                <span class="flex @max-xl/assistant:hidden">
+                  <ng-icon
+                    name="lucideCornerDownLeft"
+                    class="size-4"
+                    aria-hidden="true"
+                  />
+                </span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="hidden size-4 @max-xl/assistant:block"
+                >
+                  <path d="m5 12 7-7 7 7" />
+                  <path d="M12 19V5" />
+                </svg>
+              </prompt-input-submit>
+            } @else {
+              <prompt-input-submit>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="size-4"
+                >
+                  <path d="m5 12 7-7 7 7" />
+                  <path d="M12 19V5" />
+                </svg>
+              </prompt-input-submit>
+            }
           </prompt-input-tools>
         </prompt-input-footer>
       </prompt-input>
