@@ -1270,7 +1270,8 @@ export const PromptInputSpeechButton = ({
       aria-label="Toggle voice input"
       className={cn(
         'relative transition-all duration-200',
-        isListening && 'animate-pulse bg-accent text-accent-foreground',
+        isListening &&
+          'animate-pulse bg-muted text-foreground dark:bg-input/30',
         className,
       )}
       disabled={!recognition}
@@ -1312,7 +1313,7 @@ export const PromptInputSelectTrigger = ({
     <SelectTrigger
       className={cn(
         'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors',
-        'hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground',
+        'hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted aria-expanded:text-foreground dark:aria-expanded:bg-input/30',
         className,
       )}
       {...props}

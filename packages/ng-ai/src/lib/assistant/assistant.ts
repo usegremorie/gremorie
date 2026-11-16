@@ -173,7 +173,7 @@ interface ComposerOption {
   host: {
     'data-slot': 'assistant',
     class:
-      'relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-[16px] border bg-card text-card-foreground shadow-sm',
+      'relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10',
   },
   template: `
     <!-- AssistantHeader -->
@@ -247,8 +247,8 @@ interface ComposerOption {
         }
       </div>
 
-      <div class="flex items-center gap-1">
-        <ai-button variant="ghost" size="sm" class="gap-2">
+      <div class="flex items-center gap-2">
+        <ai-button variant="outline" size="sm" class="gap-2">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -266,7 +266,7 @@ interface ComposerOption {
           </svg>
           Sources
         </ai-button>
-        <ai-button variant="ghost" size="icon" ariaLabel="Share">
+        <ai-button variant="outline" size="icon" ariaLabel="Share">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -286,7 +286,7 @@ interface ComposerOption {
         </ai-button>
         <div class="relative inline-flex">
           <ai-button
-            variant="ghost"
+            variant="outline"
             size="icon"
             ariaLabel="More actions"
             [attr.aria-expanded]="overflowMenuOpen()"

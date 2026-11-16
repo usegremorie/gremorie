@@ -147,7 +147,7 @@ const TRIGGER_VARIANTS = {
 } as const;
 
 const TRIGGER_PROMPT_OVERRIDES =
-  'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground';
+  'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors hover:bg-muted hover:text-foreground dark:hover:bg-input/30 aria-expanded:bg-muted aria-expanded:text-foreground dark:aria-expanded:bg-input/30';
 
 @Component({
   selector: 'prompt-input-select-trigger',

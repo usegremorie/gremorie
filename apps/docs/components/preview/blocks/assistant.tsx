@@ -451,7 +451,7 @@ export function Assistant({
 
   return (
     <TooltipProvider>
-      <div className="relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-[16px] border bg-card text-card-foreground shadow-sm">
+      <div className="relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10">
         {/* AssistantHeader */}
         <header className="flex items-center justify-between gap-2 px-3 py-2">
           <DropdownMenu>
@@ -481,11 +481,11 @@ export function Assistant({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="flex items-center gap-1">
-            <Button className="gap-2" size="sm" variant="ghost">
+          <div className="flex items-center gap-2">
+            <Button className="gap-2" size="sm" variant="outline">
               <LibraryIcon className="size-4" /> Sources
             </Button>
-            <Button aria-label="Share" size="icon-sm" variant="ghost">
+            <Button aria-label="Share" size="icon-sm" variant="outline">
               <Share2Icon className="size-4" />
             </Button>
             <DropdownMenu>
@@ -493,7 +493,7 @@ export function Assistant({
                 <Button
                   aria-label="More actions"
                   size="icon-sm"
-                  variant="ghost"
+                  variant="outline"
                 >
                   <EllipsisIcon className="size-4" />
                 </Button>
