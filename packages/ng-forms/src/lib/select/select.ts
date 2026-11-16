@@ -27,6 +27,19 @@ import { cn } from '@gremorie/ng-core';
 /** Trigger height. Mirrors React `SelectTrigger` `size`. */
 export type SelectSize = 'sm' | 'default';
 
+const SELECT_TRIGGER_VARIANTS = {
+  default: '',
+  outline: 'border-foreground/10 bg-transparent hover:bg-accent',
+  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+} as const;
+
+/**
+ * Trigger surface. `default` is the filled field; `outline` and `secondary`
+ * are for a trigger that sits on a filled surface (e.g. inside a prompt
+ * input), where a second fill would vanish.
+ */
+export type SelectTriggerVariant = keyof typeof SELECT_TRIGGER_VARIANTS;
+
 /**
  * Select — dropdown chooser for short, fixed lists. Mirrors React `Select`
  * from `@gremorie/rx-forms`, which wraps `@radix-ui/react-select`.
@@ -121,6 +134,7 @@ export class Select {
       type="button"
       data-slot="select-trigger"
       [attr.data-size]="size()"
+      [attr.data-variant]="variant()"
       [class]="computedClass()"
     >
       <ng-content />
@@ -143,12 +157,15 @@ export class Select {
 export class SelectTrigger {
   /** Trigger height. Mirrors React `SelectTrigger` `size` (default 'default'). */
   readonly size = input<SelectSize>('default');
+  /** Trigger surface. Mirrors React `SelectTrigger` `variant`. */
+  readonly variant = input<SelectTriggerVariant>('default');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
   protected readonly computedClass = computed(() =>
     cn(
       "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
+      SELECT_TRIGGER_VARIANTS[this.variant()],
       this.class(),
     ),
   );
