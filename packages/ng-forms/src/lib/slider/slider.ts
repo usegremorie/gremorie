@@ -129,7 +129,7 @@ export class Slider {
 
   protected readonly thumbClass = computed(() =>
     cn(
-      'absolute block h-4 w-6 shrink-0 data-[orientation=horizontal]:top-1/2 data-[orientation=horizontal]:-mt-2 data-[orientation=vertical]:left-1/2 data-[orientation=vertical]:-ml-3 rounded-full bg-white shadow-md ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
+      'absolute block h-4 w-6 shrink-0 border border-foreground/15 dark:border-0 data-[orientation=horizontal]:top-1/2 data-[orientation=horizontal]:-mt-2 data-[orientation=vertical]:left-1/2 data-[orientation=vertical]:-ml-3 rounded-full bg-white shadow-md ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
     ),
   );
 }

@@ -15,9 +15,23 @@ import { roundedRectPath, type CornerRadii } from './shape';
 /** Gap between the bars of one category, as recharts' default `barGap`. */
 const BAR_GAP = 4;
 
-/** Width of one bar in a group of `count`, truncated like recharts. */
-function barSize(bandwidth: number, count: number): number {
-  return Math.max(0, Math.floor((bandwidth - BAR_GAP * (count - 1)) / count));
+/**
+ * Size of one bar in a group of `count` and the gap between them, as
+ * recharts lays them out: the gap is dropped when it does not fit, and the
+ * size is truncated to whole pixels only when it is wider than 1px.
+ */
+export function barLayout(
+  bandwidth: number,
+  count: number,
+): { size: number; gap: number } {
+  const gap = bandwidth - BAR_GAP * (count - 1) <= 0 ? 0 : BAR_GAP;
+  const raw = Math.max(0, (bandwidth - gap * (count - 1)) / count);
+  return { size: raw > 1 ? Math.floor(raw) : raw, gap };
+}
+
+/** Width of one bar in a group of `count` (see `barLayout`). */
+export function barSize(bandwidth: number, count: number): number {
+  return barLayout(bandwidth, count).size;
 }
 
 /** A category tick: label plus its anchor pixel position. */
@@ -108,7 +122,7 @@ export class Bar implements OnInit, OnDestroy {
         [this.ctx.plotLeft(), this.ctx.plotRight()],
       );
       const zero = vScale(0);
-      const subH = barSize(band.bandwidth, count);
+      const { size: subH, gap } = barLayout(band.bandwidth, count);
       return data.map((d, i) => {
         const value = Number(d[key] ?? 0);
         let x: number, y: number, width: number, height: number;
@@ -119,7 +133,7 @@ export class Bar implements OnInit, OnDestroy {
           x = vScale(lo);
           width = Math.max(0, vScale(lo + value) - x);
         } else {
-          y = band(categories[i]) + (subH + BAR_GAP) * index;
+          y = band(categories[i]) + (subH + gap) * index;
           height = subH;
           x = zero;
           width = Math.max(0, vScale(value) - zero);
@@ -147,7 +161,7 @@ export class Bar implements OnInit, OnDestroy {
     const baseline = yScale(0);
     // recharts' grouping: bars of one category sit BAR_GAP apart and each is
     // truncated to whole pixels (a single 40.4px slot draws a 40px bar).
-    const subW = barSize(band.bandwidth, count);
+    const { size: subW, gap } = barLayout(band.bandwidth, count);
     return data.map((d, i) => {
       const value = Number(d[key] ?? 0);
       let x: number, y: number, width: number, height: number;
@@ -158,7 +172,7 @@ export class Bar implements OnInit, OnDestroy {
         y = yScale(lo + value);
         height = Math.max(0, yScale(lo) - y);
       } else {
-        x = band(categories[i]) + (subW + BAR_GAP) * index;
+        x = band(categories[i]) + (subW + gap) * index;
         width = subW;
         y = yScale(value);
         height = Math.max(0, baseline - y);

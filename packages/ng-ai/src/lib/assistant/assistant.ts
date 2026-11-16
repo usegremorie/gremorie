@@ -289,7 +289,6 @@ interface ComposerOption {
             variant="ghost"
             size="icon"
             ariaLabel="More actions"
-            class="size-9"
             [attr.aria-expanded]="overflowMenuOpen()"
             (pressedChange)="toggleOverflowMenu()"
           >

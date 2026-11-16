@@ -116,7 +116,7 @@ export function ComponentsShowcase({ lang }: { lang: string }) {
               href={`/${lang}/components`}
               className="group block focus-visible:outline-none"
             >
-              <Card className="h-full gap-3 py-5 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
+              <Card className="h-full gap-3 py-5 transition-[color,box-shadow] duration-200 group-hover:ring-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
                 <CardHeader className="gap-3">
                   <div className="flex items-center justify-between">
                     <div className="flex size-9 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground">

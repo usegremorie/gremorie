@@ -359,7 +359,7 @@ export function BlocksGallery({ lang }: { lang: string }) {
               href={block.href}
               className="group block focus-visible:outline-none"
             >
-              <Card className="h-64 justify-between gap-0 overflow-hidden py-0 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
+              <Card className="h-64 justify-between gap-0 overflow-hidden py-0 transition-[color,box-shadow] duration-200 group-hover:ring-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
                 {/* Schematic preview - monochrome (muted-foreground via
                     currentColor) on a subtle muted frame. */}
                 <div className="flex h-28 items-center justify-center border-b bg-muted/30 px-6 text-muted-foreground">

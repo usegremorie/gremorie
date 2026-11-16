@@ -196,12 +196,18 @@ export class BarChart {
 
   /** Plot margins, matching the React edition's recharts margins and its
    * 30px category axis, so both editions draw the same plot area. */
-  protected readonly margin = computed<Margin>(() => ({
-    top: this.showLabels() && !this.horizontal() ? 20 : 8,
-    right: 12,
-    bottom: 30,
-    left: this.yAxis() && !this.horizontal() ? DEFAULT_MARGIN.left : 12,
-  }));
+  protected readonly margin = computed<Margin>(() => {
+    const horizontal = this.horizontal();
+    return {
+      top: this.showLabels() && !horizontal ? 20 : 8,
+      right: 12,
+      // Vertical: the category axis is always at the bottom (recharts XAxis,
+      // 30px). Horizontal: the bottom axis is the value axis, shown with yAxis.
+      bottom: !horizontal || this.yAxis() ? 30 : 0,
+      // Horizontal: the category axis sits on the left (recharts YAxis, 60px).
+      left: horizontal ? 12 + 60 : this.yAxis() ? DEFAULT_MARGIN.left : 12,
+    };
+  });
 
   protected readonly hostClass = computed(() =>
     this.framed()

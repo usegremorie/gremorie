@@ -63,7 +63,7 @@ export function FeaturesGrid() {
           {features.map((feature) => (
             <Card
               key={feature.title}
-              className="transition-colors duration-200 hover:border-foreground/20"
+              className="transition-[color,box-shadow] duration-200 hover:ring-foreground/20"
             >
               <CardHeader className="gap-3">
                 <div className="flex size-9 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground">
