@@ -19,5 +19,19 @@
     "prop": "--popover",
     "to": "var(--color-gray-800)",
     "reason": "Lift dark floating surfaces one step above the card so the translucent surface reads on top of it."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--secondary-foreground",
+    "to": "var(--color-gray-300)",
+    "reason": "Softer text on secondary controls and labels (references: segmented tabs and form labels, measured rgb 205-210)."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--secondary-foreground",
+    "to": "var(--color-gray-700)",
+    "reason": "Light counterpart of the softer secondary text."
   }
 ]

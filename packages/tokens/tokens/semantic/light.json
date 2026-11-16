@@ -39,7 +39,7 @@
   },
   "secondary-foreground": {
     "$type": "color",
-    "$value": "{color.gray.900}"
+    "$value": "{color.gray.700}"
   },
   "muted": {
     "$type": "color",

@@ -468,7 +468,7 @@
   --primary: var(--color-gray-900);
   --primary-foreground: var(--color-gray-50);
   --secondary: var(--color-gray-100);
-  --secondary-foreground: var(--color-gray-900);
+  --secondary-foreground: var(--color-gray-700);
   --muted: var(--color-gray-100);
   --muted-foreground: var(--color-gray-500);
   --accent: var(--color-gray-100);
@@ -638,7 +638,7 @@
   --primary: var(--color-gray-100);
   --primary-foreground: var(--color-gray-900);
   --secondary: var(--color-gray-800);
-  --secondary-foreground: var(--color-gray-50);
+  --secondary-foreground: var(--color-gray-300);
   --muted: var(--color-gray-800);
   --muted-foreground: var(--color-gray-400);
   --accent: var(--color-gray-800);
