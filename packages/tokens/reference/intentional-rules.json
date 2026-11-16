@@ -12,6 +12,6 @@
   {
     "file": "theme.css",
     "rule": "@utility bg-popover-surface",
-    "reason": "Translucent floating surface (popover 70% + backdrop blur), the default for menus, selects, popovers and hover cards."
+    "reason": "Translucent floating surface (popover 60% + backdrop blur), the default for menus, selects, popovers and hover cards."
   }
 ]

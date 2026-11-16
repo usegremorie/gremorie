@@ -12,5 +12,12 @@
     "prop": "--color-gray-700",
     "to": "oklch(0.371 0 0)",
     "reason": "Align the gray scale with the shadcn/Tailwind Neutral ramp (--color-neutral-700)."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--popover",
+    "to": "var(--color-gray-800)",
+    "reason": "Lift dark floating surfaces one step above the card so the translucent surface reads on top of it."
   }
 ]
