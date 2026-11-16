@@ -472,7 +472,7 @@ const B2BPromptInput = ({
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select mode"
-                  className="aria-expanded:bg-accent"
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
                   variant="outline"
                   size="sm"
                 >
@@ -497,7 +497,7 @@ const B2BPromptInput = ({
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select model"
-                  className="aria-expanded:bg-accent"
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
                   variant="outline"
                   size="sm"
                 >

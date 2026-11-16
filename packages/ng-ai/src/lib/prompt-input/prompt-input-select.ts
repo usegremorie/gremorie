@@ -141,7 +141,8 @@ const TRIGGER_BASE =
   "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground";
 /** The Select trigger variants (ng-forms), for a trigger on a filled prompt. */
 const TRIGGER_VARIANTS = {
-  outline: 'border-foreground/10 bg-transparent hover:bg-accent',
+  outline:
+    'border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
   secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
 } as const;
 
@@ -204,7 +205,7 @@ export class PromptInputSelectTrigger {
       : cn(
           TRIGGER_BASE,
           TRIGGER_VARIANTS[variant],
-          'font-medium aria-expanded:bg-accent',
+          'font-medium aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
           this.class(),
         );
   });

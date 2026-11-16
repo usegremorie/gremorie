@@ -191,7 +191,7 @@ export function PromptInputB2BPreview() {
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select mode"
-                  className="aria-expanded:bg-accent"
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
                   variant="outline"
                   size="sm"
                 >
@@ -214,7 +214,7 @@ export function PromptInputB2BPreview() {
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select model"
-                  className="aria-expanded:bg-accent"
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
                   variant="outline"
                   size="sm"
                 >

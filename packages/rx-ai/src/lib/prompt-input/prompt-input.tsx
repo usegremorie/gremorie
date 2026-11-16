@@ -1320,7 +1320,10 @@ export const PromptInputSelectTrigger = ({
   ) : (
     <SelectTrigger
       variant={variant}
-      className={cn('font-medium aria-expanded:bg-accent', className)}
+      className={cn(
+        'font-medium aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        className,
+      )}
       {...props}
     />
   );

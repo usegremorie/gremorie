@@ -33,7 +33,8 @@ function SelectValue({
 
 const SELECT_TRIGGER_VARIANTS = {
   default: '',
-  outline: 'border-foreground/10 bg-transparent hover:bg-accent',
+  outline:
+    'border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
   secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
 } as const;
 

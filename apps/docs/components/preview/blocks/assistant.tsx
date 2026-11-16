@@ -269,7 +269,7 @@ function Composer({
             <PromptInputSelect defaultValue={defaultMode}>
               <PromptInputSelectTrigger
                 aria-label="Select mode"
-                className="aria-expanded:bg-accent"
+                className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
                 variant="outline"
                 size="sm"
               >
@@ -289,7 +289,7 @@ function Composer({
             <PromptInputSelect defaultValue={defaultModel}>
               <PromptInputSelectTrigger
                 aria-label="Select model"
-                className="aria-expanded:bg-accent"
+                className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
                 variant="outline"
                 size="sm"
               >
