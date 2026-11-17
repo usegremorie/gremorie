@@ -682,7 +682,7 @@ export function Assistant({
     <TooltipProvider>
       <div
         className={cn(
-          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10',
+          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/5 dark:ring-foreground/10',
           className,
         )}
       >
