@@ -95,7 +95,19 @@ import {
 import { PromptInputSpeechButton } from '../prompt-input/prompt-input-speech-button';
 import { PromptInputSubmit } from '../prompt-input/prompt-input-submit';
 import { PromptInputTextarea } from '../prompt-input/prompt-input-textarea';
-import { PromptInputTools } from '../prompt-input/prompt-input-tools';
+import {
+  PromptInputTools,
+  PromptInputToolsCollapsed,
+  PromptInputToolsExpanded,
+  type PromptInputToolsCollapse,
+} from '../prompt-input/prompt-input-tools';
+import {
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuSwitchItem,
+  PromptInputActionMenuTrigger,
+} from '../prompt-input/prompt-input-action-menu';
 import type {
   PromptInputState,
   PromptInputSubmitEvent,
@@ -205,6 +217,13 @@ const COMPACT_SELECT_TRIGGER =
     PromptInputFooter,
     PromptInputTextarea,
     PromptInputTools,
+    PromptInputToolsExpanded,
+    PromptInputToolsCollapsed,
+    PromptInputActionMenu,
+    PromptInputActionMenuTrigger,
+    PromptInputActionMenuContent,
+    PromptInputActionMenuSwitchItem,
+    PromptInputActionAddAttachments,
     PromptInputSubmit,
     PromptInputButton,
     PromptInputAttachButton,
@@ -871,29 +890,81 @@ const COMPACT_SELECT_TRIGGER =
           <prompt-input-tools class="gap-2">
             <!-- Ghost icon group: no gap between the icons; the outer gap-2
                  separates the group from the send button. -->
-            <prompt-input-tools class="gap-0">
-              <prompt-input-button
-                ariaLabel="Search the web"
-                tooltip="Search the web"
-                [active]="webSearch()"
-                (pressed)="webSearch.set(!webSearch())"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                  class="size-4"
+            <prompt-input-tools class="gap-0" [collapse]="toolsCollapse()">
+              <prompt-input-tools-expanded>
+                <prompt-input-button
+                  ariaLabel="Search the web"
+                  tooltip="Search the web"
+                  [active]="webSearch()"
+                  (pressed)="webSearch.set(!webSearch())"
                 >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                  <path d="M2 12h20" />
-                </svg>
-              </prompt-input-button>
-              <prompt-input-attach-button tooltip="Attach files" />
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    class="size-4"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                    <path d="M2 12h20" />
+                  </svg>
+                </prompt-input-button>
+                <prompt-input-attach-button tooltip="Attach files" />
+              </prompt-input-tools-expanded>
+              <!-- Collapsed: web search and attachments move to the overflow
+                   menu; the mic, an input mode, stays at hand. -->
+              <prompt-input-tools-collapsed>
+                <prompt-input-action-menu>
+                  <prompt-input-action-menu-trigger
+                    ariaLabel="More tools"
+                    tooltip="More tools"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      class="size-4"
+                    >
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="19" cy="12" r="1" />
+                      <circle cx="5" cy="12" r="1" />
+                    </svg>
+                  </prompt-input-action-menu-trigger>
+                  <prompt-input-action-menu-content>
+                    <prompt-input-action-menu-switch-item
+                      [checked]="webSearch()"
+                      (checkedChange)="webSearch.set($event)"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        class="size-4"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <path
+                          d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+                        />
+                        <path d="M2 12h20" />
+                      </svg>
+                      Search the web
+                    </prompt-input-action-menu-switch-item>
+                    <prompt-input-action-add-attachments label="Attach files" />
+                  </prompt-input-action-menu-content>
+                </prompt-input-action-menu>
+              </prompt-input-tools-collapsed>
               <prompt-input-speech-button tooltip="Voice input" />
             </prompt-input-tools>
             @if (newChat) {
@@ -980,6 +1051,12 @@ export class Assistant implements OnInit, OnDestroy {
   readonly mentions = input(true);
   /** Show the context-window meter in the composer header. */
   readonly contextMeter = input(true);
+  /**
+   * Composer tools: `auto` (default) shows them inline and moves web search
+   * and attachments to an overflow menu when the composer is narrow;
+   * `never` keeps them inline; `always` keeps the menu. Mirrors React.
+   */
+  readonly toolsCollapse = input<PromptInputToolsCollapse>('auto');
 
   /**
    * The header exists only to carry the mentions trigger and the context

@@ -85,6 +85,14 @@ export const assistant = defineContract({
       desc: 'Show the context-window meter in the composer header. Turn it off when you do not surface token usage.',
     },
     {
+      name: 'toolsCollapse',
+      type: "'auto' | 'always' | 'never'",
+      default: 'auto',
+      options: ['auto', 'always', 'never'],
+      control: true,
+      desc: 'Composer tools: inline, in an overflow menu, or switching by the composer width (auto, under 28rem).',
+    },
+    {
       name: 'onSubmit',
       type: '(message) => void',
       adapts: { ng: 'output: submitted' },

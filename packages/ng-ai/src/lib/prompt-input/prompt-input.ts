@@ -35,7 +35,7 @@ import {
  * `packages/rx-ai/src/lib/prompt-input/prompt-input.tsx`.
  */
 const INPUT_GROUP_CARD =
-  'group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50';
+  '@container/prompt-input group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50';
 
 const containerVariants = cva(INPUT_GROUP_CARD, {
   variants: {

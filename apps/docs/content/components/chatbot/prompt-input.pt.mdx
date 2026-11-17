@@ -380,6 +380,14 @@ Passe `label` (por exemplo `label="Chat"`) para um botão de enviar com texto: q
 
 `PromptInputActionAddAttachments` é um `DropdownMenuItem` pré-conectado que chama `attachments.openFileDialog()` ao selecionar. Label padrão: `"Add photos or files"`. Aceita uma prop `label` para sobrescrever.
 
+`PromptInputActionMenuSwitchItem` é uma linha que liga e desliga uma ferramenta (por exemplo Search the web), com um switch à direita. A linha é o controle (`role="menuitemcheckbox"`, `aria-checked`), então o switch é só desenho, não interativo, e alternar mantém o menu aberto. Ligue `checked` / `onCheckedChange` ao mesmo estado do toggle inline.
+
+### Recolhendo as ferramentas
+
+`PromptInputTools` recebe `collapse`: `"auto"` (padrão) mostra as ferramentas inline e troca para um menu de overflow quando o composer fica com menos de 28rem; `"never"` mantém inline; `"always"` mantém o menu. Escreva as duas formas dentro dele: `PromptInputToolsExpanded` com os botões inline, `PromptInputToolsCollapsed` com o menu, e o CSS mostra uma delas. Um controle fora das duas (o mic, por exemplo) aparece nas duas formas.
+
+A edição Angular tem as mesmas partes em kebab-case (`prompt-input-tools [collapse]`, `prompt-input-tools-expanded`, `prompt-input-tools-collapsed`, `prompt-input-action-menu-switch-item [(checked)]`).
+
 ### `<PromptInputSpeechButton>`
 
 Toggle da Web Speech API.

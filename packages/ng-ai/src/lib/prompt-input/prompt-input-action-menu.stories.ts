@@ -1,28 +1,49 @@
 import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
 
-import { PromptInputActionMenu } from './prompt-input-action-menu';
+import { PromptInput } from './prompt-input';
+import {
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuItem,
+  PromptInputActionMenuSwitchItem,
+  PromptInputActionMenuTrigger,
+} from './prompt-input-action-menu';
 
 const meta: Meta<PromptInputActionMenu> = {
   title: 'AI/Chatbot/PromptInput/ActionMenu',
   component: PromptInputActionMenu,
   tags: ['autodocs'],
-  argTypes: {
-    disabled: { control: 'boolean' },
-    ariaLabel: { control: 'text' },
-  },
-  args: {
-    disabled: false,
-    ariaLabel: 'More actions',
-  },
-  render: (args) => ({
-    props: args,
+  decorators: [
+    moduleMetadata({
+      imports: [
+        PromptInput,
+        PromptInputActionMenu,
+        PromptInputActionMenuTrigger,
+        PromptInputActionMenuContent,
+        PromptInputActionMenuItem,
+        PromptInputActionMenuSwitchItem,
+        PromptInputActionAddAttachments,
+      ],
+    }),
+  ],
+  render: () => ({
+    props: { web: true },
     template: `
-      <div style="padding: 4rem 1rem;">
-        <prompt-input-action-menu [disabled]="disabled" [ariaLabel]="ariaLabel">
-          <button type="button" style="display:flex; width:100%; padding:.375rem .5rem; font-size:.875rem; text-align:left; border-radius:.125rem;">Take a photo</button>
-          <button type="button" style="display:flex; width:100%; padding:.375rem .5rem; font-size:.875rem; text-align:left; border-radius:.125rem;">Record voice</button>
-          <button type="button" style="display:flex; width:100%; padding:.375rem .5rem; font-size:.875rem; text-align:left; border-radius:.125rem;">Connect tool…</button>
-        </prompt-input-action-menu>
+      <div style="padding: 1rem 1rem 14rem; max-width: 32rem;">
+        <prompt-input>
+          <prompt-input-action-menu>
+            <prompt-input-action-menu-trigger ariaLabel="More tools" tooltip="More tools" />
+            <prompt-input-action-menu-content>
+              <prompt-input-action-menu-switch-item [(checked)]="web">
+                Search the web
+              </prompt-input-action-menu-switch-item>
+              <prompt-input-action-add-attachments />
+              <prompt-input-action-menu-item>Record voice</prompt-input-action-menu-item>
+            </prompt-input-action-menu-content>
+          </prompt-input-action-menu>
+        </prompt-input>
       </div>
     `,
   }),
@@ -30,5 +51,4 @@ const meta: Meta<PromptInputActionMenu> = {
 
 export default meta;
 type Story = StoryObj<PromptInputActionMenu>;
-export const Default: Story = { name: 'Trigger + 3 items' };
-export const Disabled: Story = { args: { disabled: true } };
+export const Default: Story = { name: 'Trigger + items' };

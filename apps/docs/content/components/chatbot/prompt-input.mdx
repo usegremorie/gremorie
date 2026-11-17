@@ -380,6 +380,48 @@ Pass `label` (e.g. `label="Chat"`) for a labelled send button: when ready it rea
 
 `PromptInputActionAddAttachments` is a pre-wired `DropdownMenuItem` that calls `attachments.openFileDialog()` on select. Default label: `"Add photos or files"`. Accepts a `label` prop to override.
 
+`PromptInputActionMenuSwitchItem` is a row that toggles a tool (for example Search the web) with a switch on the right. The row is the control (`role="menuitemcheckbox"`, `aria-checked`), so the switch is drawn, not interactive, and toggling keeps the menu open. Bind `checked` / `onCheckedChange` to the same state as the inline toggle.
+
+### Collapsing the tools
+
+`PromptInputTools` takes `collapse`: `"auto"` (default) shows the tools inline and swaps to an overflow menu when the composer is narrower than 28rem; `"never"` keeps them inline; `"always"` keeps the menu. Write both forms inside it: `PromptInputToolsExpanded` holds the inline buttons, `PromptInputToolsCollapsed` holds the menu, and CSS shows one of them. A control placed outside both (the mic, say) shows in either form.
+
+```tsx
+<PromptInputTools className="gap-0" collapse="auto">
+  <PromptInputToolsExpanded>
+    <PromptInputButton
+      active={web}
+      aria-label="Search the web"
+      onClick={toggleWeb}
+      tooltip="Search the web"
+    >
+      <GlobeIcon className="size-4" />
+    </PromptInputButton>
+    <PromptInputAttachButton tooltip="Attach files" />
+  </PromptInputToolsExpanded>
+  <PromptInputToolsCollapsed>
+    <PromptInputActionMenu>
+      <PromptInputActionMenuTrigger
+        aria-label="More tools"
+        tooltip="More tools"
+      >
+        <EllipsisIcon className="size-4" />
+      </PromptInputActionMenuTrigger>
+      <PromptInputActionMenuContent>
+        <PromptInputActionMenuSwitchItem checked={web} onCheckedChange={setWeb}>
+          <GlobeIcon className="size-4" />
+          Search the web
+        </PromptInputActionMenuSwitchItem>
+        <PromptInputActionAddAttachments label="Attach files" />
+      </PromptInputActionMenuContent>
+    </PromptInputActionMenu>
+  </PromptInputToolsCollapsed>
+  <PromptInputSpeechButton tooltip="Voice input" />
+</PromptInputTools>
+```
+
+The Angular edition has the same parts in kebab-case (`prompt-input-tools [collapse]`, `prompt-input-tools-expanded`, `prompt-input-tools-collapsed`, `prompt-input-action-menu-switch-item [(checked)]`).
+
 ### `<PromptInputSpeechButton>`
 
 Web Speech API toggle.

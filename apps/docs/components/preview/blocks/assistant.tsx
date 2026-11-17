@@ -40,6 +40,13 @@ import {
   PromptInputSelectValue,
   PromptInputSpeechButton,
   PromptInputSubmit,
+  PromptInputToolsExpanded,
+  PromptInputToolsCollapsed,
+  PromptInputActionMenuTrigger,
+  PromptInputActionMenuSwitchItem,
+  PromptInputActionMenuContent,
+  PromptInputActionMenu,
+  PromptInputActionAddAttachments,
   PromptInputTextarea,
   PromptInputTools,
   Reasoning,
@@ -48,6 +55,7 @@ import {
   type ChatStatus,
   type PromptInputMentionsItem,
   type PromptInputMessage,
+  type PromptInputToolsCollapse,
 } from '@gremorie/rx-ai';
 import { ChartArtifact } from '@gremorie/rx-artifacts';
 import { cn } from '@gremorie/rx-core';
@@ -227,6 +235,7 @@ function Composer({
   mentions = true,
   contextMeter = true,
   newChat = false,
+  toolsCollapse = 'auto',
 }: {
   status: ChatStatus;
   onSubmit: (message: PromptInputMessage) => void;
@@ -249,6 +258,8 @@ function Composer({
    * (compact keeps the icon-only arrow). The conversation keeps the arrow.
    */
   newChat?: boolean;
+  /** Tools inline, in the overflow menu, or switching by width (`auto`). */
+  toolsCollapse?: PromptInputToolsCollapse;
 }) {
   const [webSearch, setWebSearch] = useState(false);
   // The header exists only to carry the mentions trigger and the context
@@ -347,16 +358,40 @@ function Composer({
         <PromptInputTools className="gap-2">
           {/* Ghost icon group: no gap between the icons; the outer gap-2
               separates the group from the send button. */}
-          <PromptInputTools className="gap-0">
-            <PromptInputButton
-              active={webSearch}
-              aria-label="Search the web"
-              onClick={() => setWebSearch((on) => !on)}
-              tooltip="Search the web"
-            >
-              <GlobeIcon className="size-4" />
-            </PromptInputButton>
-            <PromptInputAttachButton tooltip="Attach files" />
+          <PromptInputTools className="gap-0" collapse={toolsCollapse}>
+            <PromptInputToolsExpanded>
+              <PromptInputButton
+                active={webSearch}
+                aria-label="Search the web"
+                onClick={() => setWebSearch((on) => !on)}
+                tooltip="Search the web"
+              >
+                <GlobeIcon className="size-4" />
+              </PromptInputButton>
+              <PromptInputAttachButton tooltip="Attach files" />
+            </PromptInputToolsExpanded>
+            {/* Collapsed: web search and attachments move to the overflow
+                menu; the mic, an input mode, stays at hand. */}
+            <PromptInputToolsCollapsed>
+              <PromptInputActionMenu>
+                <PromptInputActionMenuTrigger
+                  aria-label="More tools"
+                  tooltip="More tools"
+                >
+                  <EllipsisIcon className="size-4" />
+                </PromptInputActionMenuTrigger>
+                <PromptInputActionMenuContent>
+                  <PromptInputActionMenuSwitchItem
+                    checked={webSearch}
+                    onCheckedChange={setWebSearch}
+                  >
+                    <GlobeIcon className="size-4" />
+                    Search the web
+                  </PromptInputActionMenuSwitchItem>
+                  <PromptInputActionAddAttachments label="Attach files" />
+                </PromptInputActionMenuContent>
+              </PromptInputActionMenu>
+            </PromptInputToolsCollapsed>
             <PromptInputSpeechButton tooltip="Voice input" />
           </PromptInputTools>
           {newChat ? (
@@ -459,6 +494,12 @@ export interface AssistantProps {
   /** Show the context-window meter in the composer header. */
   contextMeter?: boolean;
   /**
+   * Composer tools: `auto` (default) shows them inline and moves web search
+   * and attachments to an overflow menu when the composer is narrow;
+   * `never` keeps them inline; `always` keeps the menu.
+   */
+  toolsCollapse?: PromptInputToolsCollapse;
+  /**
    * Fires with the composed prompt when the user submits. Wire it to your AI
    * SDK; the canned state machine keeps running underneath so the surface
    * still animates while you build the real thing.
@@ -475,6 +516,7 @@ export function Assistant({
   modelSelect = true,
   mentions = true,
   contextMeter = true,
+  toolsCollapse = 'auto',
   onSubmit,
 }: AssistantProps = {}) {
   const [view, setView] = useState<AssistantView>(initialView);
@@ -610,6 +652,7 @@ export function Assistant({
                 modelSelect={modelSelect}
                 mentions={mentions}
                 contextMeter={contextMeter}
+                toolsCollapse={toolsCollapse}
               />
             </div>
           </div>
@@ -727,6 +770,7 @@ export function Assistant({
                   modelSelect={modelSelect}
                   mentions={mentions}
                   contextMeter={contextMeter}
+                  toolsCollapse={toolsCollapse}
                 />
                 <p className="text-center text-xs text-muted-foreground">
                   Gremorie can make mistakes. Check important info.

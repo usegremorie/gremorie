@@ -57,7 +57,6 @@ import {
 } from '@gremorie/rx-overlays';
 import {
   CornerDownLeftIcon,
-  ImageIcon,
   Loader2Icon,
   MicIcon,
   PaperclipIcon,
@@ -431,7 +430,8 @@ export const PromptInputActionAddAttachments = ({
         attachments.openFileDialog();
       }}
     >
-      <ImageIcon className="size-4" /> {label}
+      {/* Paperclip, as the inline attach button: one action, one icon. */}
+      <PaperclipIcon className="size-4" /> {label}
     </DropdownMenuItem>
   );
 };
@@ -779,7 +779,7 @@ export const PromptInput = ({
       >
         {/* A filled field like every other Gremorie input: no border, no
             shadow. Controls inside use outline or secondary, never a fill. */}
-        <InputGroup className="overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50">
+        <InputGroup className="@container/prompt-input overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50">
           {children}
         </InputGroup>
       </form>
@@ -842,11 +842,56 @@ export const PromptInputFooter = ({
 
 export type PromptInputToolsProps = HTMLAttributes<HTMLDivElement>;
 
+/**
+ * How the tools fit the composer. `auto` (default) shows them inline and
+ * swaps to the overflow menu when the composer is narrower than 28rem;
+ * `never` always shows them inline; `always` always uses the menu.
+ */
+export type PromptInputToolsCollapse = 'auto' | 'always' | 'never';
+
 export const PromptInputTools = ({
   className,
+  collapse = 'auto',
   ...props
-}: PromptInputToolsProps) => (
-  <div className={cn('flex items-center gap-1', className)} {...props} />
+}: PromptInputToolsProps & { collapse?: PromptInputToolsCollapse }) => (
+  <div
+    className={cn(
+      'group/prompt-input-tools flex items-center gap-1',
+      className,
+    )}
+    data-collapse={collapse}
+    {...props}
+  />
+);
+
+/** The tools shown inline. Hidden while `PromptInputTools` is collapsed. */
+export const PromptInputToolsExpanded = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'contents group-data-[collapse=always]/prompt-input-tools:hidden group-data-[collapse=auto]/prompt-input-tools:@max-md/prompt-input:hidden',
+      className,
+    )}
+    data-slot="prompt-input-tools-expanded"
+    {...props}
+  />
+);
+
+/** The overflow menu that replaces the inline tools while collapsed. */
+export const PromptInputToolsCollapsed = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'hidden group-data-[collapse=always]/prompt-input-tools:contents group-data-[collapse=auto]/prompt-input-tools:@max-md/prompt-input:contents',
+      className,
+    )}
+    data-slot="prompt-input-tools-collapsed"
+    {...props}
+  />
 );
 
 // ============================================================================
@@ -1122,7 +1167,14 @@ export const PromptInputActionMenuTrigger = ({
   ...props
 }: PromptInputActionMenuTriggerProps) => (
   <DropdownMenuTrigger asChild>
-    <PromptInputButton className={className} {...props}>
+    <PromptInputButton
+      className={cn(
+        // Open state shows, as the prompt selects do.
+        'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        className,
+      )}
+      {...props}
+    >
       {children ?? <PlusIcon className="size-4" />}
     </PromptInputButton>
   </DropdownMenuTrigger>
@@ -1146,6 +1198,53 @@ export const PromptInputActionMenuItem = ({
   ...props
 }: PromptInputActionMenuItemProps) => (
   <DropdownMenuItem className={cn(className)} {...props} />
+);
+
+export type PromptInputActionMenuSwitchItemProps = Omit<
+  ComponentProps<typeof DropdownMenuItem>,
+  'onSelect'
+> & {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+};
+
+/**
+ * A menu row that toggles a tool on and off (e.g. Search the web), with a
+ * switch on the right. The row itself is the control (`menuitemcheckbox`), so
+ * the switch is drawn, not interactive; toggling keeps the menu open. Share
+ * `checked` with the inline toggle so both stay in step.
+ */
+export const PromptInputActionMenuSwitchItem = ({
+  className,
+  children,
+  checked = false,
+  onCheckedChange,
+  ...props
+}: PromptInputActionMenuSwitchItemProps) => (
+  <DropdownMenuItem
+    aria-checked={checked}
+    className={cn('justify-between gap-4', className)}
+    onSelect={(event) => {
+      event.preventDefault();
+      onCheckedChange?.(!checked);
+    }}
+    role="menuitemcheckbox"
+    {...props}
+  >
+    <span className="flex items-center gap-2">{children}</span>
+    {/* Same look as Switch (size sm); keep in lock-step with rx-forms. */}
+    <span
+      aria-hidden="true"
+      className="inline-flex h-3.5 w-6 shrink-0 items-center rounded-full border border-transparent transition-all data-[state=checked]:bg-primary data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+      data-slot="switch"
+      data-state={checked ? 'checked' : 'unchecked'}
+    >
+      <span
+        className="pointer-events-none block size-3 rounded-full bg-background transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
+        data-state={checked ? 'checked' : 'unchecked'}
+      />
+    </span>
+  </DropdownMenuItem>
 );
 
 // ============================================================================
