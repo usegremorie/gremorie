@@ -33,5 +33,96 @@
     "prop": "--secondary-foreground",
     "to": "var(--color-gray-700)",
     "reason": "Light counterpart of the softer secondary text."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "New switch-checked token (switch track when on): primary by default, foreground 60% in the neutral dark so the white thumb reads, a colour theme's own primary."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--switch-checked",
+    "to": "oklch(0.985 0 0 / 0.6)",
+    "reason": "New switch-checked token (switch track when on): primary by default, foreground 60% in the neutral dark so the white thumb reads, a colour theme's own primary."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-switch-checked",
+    "to": "var(--switch-checked)",
+    "reason": "Tailwind wiring for the switch-checked token (bg-switch-checked)."
+  },
+  {
+    "file": "themes/chatgpt.css",
+    "selector": ":root[data-theme='chatgpt']",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/chatgpt.css",
+    "selector": ":root[data-theme='chatgpt'].dark",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/claude.css",
+    "selector": ":root[data-theme='claude']",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/claude.css",
+    "selector": ":root[data-theme='claude'].dark",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/gemini.css",
+    "selector": ":root[data-theme='gemini']",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/gemini.css",
+    "selector": ":root[data-theme='gemini'].dark",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/mistral.css",
+    "selector": ":root[data-theme='mistral']",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/mistral.css",
+    "selector": ":root[data-theme='mistral'].dark",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/perplexity.css",
+    "selector": ":root[data-theme='perplexity']",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "themes/perplexity.css",
+    "selector": ":root[data-theme='perplexity'].dark",
+    "prop": "--switch-checked",
+    "to": "var(--primary)",
+    "reason": "The theme's switch takes its own accent (primary)."
   }
 ]

@@ -19,6 +19,7 @@
    */
   --primary: var(--color-emerald-700);
   --primary-foreground: var(--color-gray-50);
+  --switch-checked: var(--primary);
   --accent: var(--color-emerald-100);
   --accent-foreground: var(--color-emerald-900);
   --ring: var(--color-emerald-500);
@@ -54,6 +55,7 @@
   --popover: oklch(0.278 0 0);
   --primary: var(--color-emerald-400);
   --primary-foreground: var(--color-gray-950);
+  --switch-checked: var(--primary);
   --accent: var(--color-emerald-900);
   --accent-foreground: var(--color-emerald-50);
   --ring: var(--color-emerald-400);

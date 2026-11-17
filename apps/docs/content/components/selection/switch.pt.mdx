@@ -13,6 +13,8 @@ import { SwitchDisabledPreview } from '@/components/preview/forms/switch-disable
 
 Dois sizes - `sm` (compacto) e `default` - são expostos via a prop `size`. O thumb consome o size via um seletor `group-data-[size]` para que fique proporcional em ambos os presets.
 
+Ligado, o trilho usa o token `switch-checked`: o primary por padrão, o foreground a 60% no dark (para a bolinha se destacar) e o primary do tema de cor, então o switch acompanha a cor de destaque do tema. A bolinha é sempre branca, com 2px de folga em volta.
+
 ## Preview
 
 <ComponentPreview name="forms/switch">
@@ -68,16 +70,16 @@ A edição Angular deste componente hoje é distribuída a partir do source (vej
 
 ### `<Switch>`
 
-| Prop              | Type                         | Default     | Description                                                             |
-| ----------------- | ---------------------------- | ----------- | ----------------------------------------------------------------------- |
-| `checked`         | `boolean`                    | -           | Estado checked controlado.                                              |
-| `defaultChecked`  | `boolean`                    | -           | Estado inicial não controlado.                                          |
-| `onCheckedChange` | `(checked: boolean) => void` | -           | Dispara quando o usuário alterna o switch.                              |
-| `disabled`        | `boolean`                    | `false`     | Desabilita a interação.                                                 |
-| `required`        | `boolean`                    | `false`     | Obrigatório para envio de formulário.                                   |
-| `name`            | `string`                     | -           | Nome do campo de formulário.                                            |
-| `value`           | `string`                     | `"on"`      | Valor do campo de formulário quando checked.                            |
-| `size`            | `"sm" \| "default"`          | `"default"` | Preset de footprint. `sm` é `h-3.5 w-6`; `default` é `h-[1.15rem] w-8`. |
+| Prop              | Type                         | Default     | Description                                                                                                              |
+| ----------------- | ---------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `checked`         | `boolean`                    | -           | Estado checked controlado.                                                                                               |
+| `defaultChecked`  | `boolean`                    | -           | Estado inicial não controlado.                                                                                           |
+| `onCheckedChange` | `(checked: boolean) => void` | -           | Dispara quando o usuário alterna o switch.                                                                               |
+| `disabled`        | `boolean`                    | `false`     | Desabilita a interação.                                                                                                  |
+| `required`        | `boolean`                    | `false`     | Obrigatório para envio de formulário.                                                                                    |
+| `name`            | `string`                     | -           | Nome do campo de formulário.                                                                                             |
+| `value`           | `string`                     | `"on"`      | Valor do campo de formulário quando checked.                                                                             |
+| `size`            | `"sm" \| "default"`          | `"default"` | Preset de footprint. `sm` é 16 × 28 (`h-4 w-7`); `default` é 20 × 44 (`h-5 w-11`), com 2px de folga em volta da bolinha. |
 
 Encaminha para `SwitchPrimitive.Root`. Renderiza um `SwitchPrimitive.Thumb` interno que translada em `data-state=checked`.
 

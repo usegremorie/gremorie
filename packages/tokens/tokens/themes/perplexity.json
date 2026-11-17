@@ -14,6 +14,10 @@
       "$type": "color",
       "$value": "{color.gray.0}"
     },
+    "switch-checked": {
+      "$type": "color",
+      "$value": "{primary}"
+    },
     "accent": {
       "$type": "color",
       "$value": "{color.teal.100}"
@@ -97,6 +101,10 @@
     "primary-foreground": {
       "$type": "color",
       "$value": "{color.gray.950}"
+    },
+    "switch-checked": {
+      "$type": "color",
+      "$value": "{primary}"
     },
     "accent": {
       "$type": "color",

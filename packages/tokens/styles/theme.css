@@ -467,6 +467,12 @@
   --popover-foreground: var(--foreground);
   --primary: var(--color-gray-900);
   --primary-foreground: var(--color-gray-50);
+
+  /*
+   * Switch track when on. Defaults to the primary; a colour theme points it at
+   * its own primary, so switches take the theme's accent.
+   */
+  --switch-checked: var(--primary);
   --secondary: var(--color-gray-100);
   --secondary-foreground: var(--color-gray-700);
   --muted: var(--color-gray-100);
@@ -637,6 +643,13 @@
   --popover-foreground: var(--color-gray-50);
   --primary: var(--color-gray-100);
   --primary-foreground: var(--color-gray-900);
+
+  /*
+   * Switch track when on: foreground at 60% in the neutral theme, so the white
+   * thumb reads on it (the near-white primary would hide it). Colour themes
+   * point it at their primary.
+   */
+  --switch-checked: oklch(0.985 0 0 / 0.6);
   --secondary: var(--color-gray-800);
   --secondary-foreground: var(--color-gray-300);
   --muted: var(--color-gray-800);
@@ -780,6 +793,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-switch-checked: var(--switch-checked);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);

@@ -13,6 +13,8 @@ import { SwitchDisabledPreview } from '@/components/preview/forms/switch-disable
 
 Two sizes - `sm` (compact) and `default` - are exposed via the `size` prop. The thumb consumes the size via a `group-data-[size]` selector so it stays proportional in both presets.
 
+When on, the track uses the `switch-checked` token: the primary by default, foreground at 60% in dark mode (so the thumb reads against it), and a colour theme's own primary, so switches follow the theme's accent. The thumb is always white, with 2px around it.
+
 ## Preview
 
 <ComponentPreview name="forms/switch">
@@ -68,16 +70,16 @@ The Angular edition of this component ships from source today (see the workbench
 
 ### `<Switch>`
 
-| Prop              | Type                         | Default     | Description                                                            |
-| ----------------- | ---------------------------- | ----------- | ---------------------------------------------------------------------- |
-| `checked`         | `boolean`                    | -           | Controlled checked state.                                              |
-| `defaultChecked`  | `boolean`                    | -           | Uncontrolled initial state.                                            |
-| `onCheckedChange` | `(checked: boolean) => void` | -           | Fires when the user toggles the switch.                                |
-| `disabled`        | `boolean`                    | `false`     | Disables interaction.                                                  |
-| `required`        | `boolean`                    | `false`     | Required for form submission.                                          |
-| `name`            | `string`                     | -           | Form field name.                                                       |
-| `value`           | `string`                     | `"on"`      | Form field value when checked.                                         |
-| `size`            | `"sm" \| "default"`          | `"default"` | Footprint preset. `sm` is `h-3.5 w-6`; `default` is `h-[1.15rem] w-8`. |
+| Prop              | Type                         | Default     | Description                                                                                                  |
+| ----------------- | ---------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `checked`         | `boolean`                    | -           | Controlled checked state.                                                                                    |
+| `defaultChecked`  | `boolean`                    | -           | Uncontrolled initial state.                                                                                  |
+| `onCheckedChange` | `(checked: boolean) => void` | -           | Fires when the user toggles the switch.                                                                      |
+| `disabled`        | `boolean`                    | `false`     | Disables interaction.                                                                                        |
+| `required`        | `boolean`                    | `false`     | Required for form submission.                                                                                |
+| `name`            | `string`                     | -           | Form field name.                                                                                             |
+| `value`           | `string`                     | `"on"`      | Form field value when checked.                                                                               |
+| `size`            | `"sm" \| "default"`          | `"default"` | Footprint preset. `sm` is 16 × 28 (`h-4 w-7`); `default` is 20 × 44 (`h-5 w-11`), with 2px around the thumb. |
 
 Forwards to `SwitchPrimitive.Root`. Renders an internal `SwitchPrimitive.Thumb` that translates on `data-state=checked`.
 

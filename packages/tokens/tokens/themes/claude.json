@@ -45,6 +45,10 @@
       "$type": "color",
       "$value": "{color.gray.50}"
     },
+    "switch-checked": {
+      "$type": "color",
+      "$value": "{primary}"
+    },
     "secondary": {
       "$type": "color",
       "$value": {
@@ -194,6 +198,10 @@
     "primary-foreground": {
       "$type": "color",
       "$value": "{color.gray.950}"
+    },
+    "switch-checked": {
+      "$type": "color",
+      "$value": "{primary}"
     },
     "secondary": {
       "$type": "color",
