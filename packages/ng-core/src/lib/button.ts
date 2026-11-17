@@ -34,9 +34,11 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline bg-transparent',
       },
       size: {
-        default: 'h-8 px-3',
-        sm: 'h-8 rounded-sm px-3 text-xs',
-        lg: 'h-10 rounded-sm px-6',
+        // Same scale as React Button: text-sm everywhere, tighter padding when
+        // an icon sits beside the label.
+        default: 'h-8 px-3 has-[>svg]:px-2.5',
+        sm: 'h-8 gap-1.5 rounded-sm px-3 has-[>svg]:px-2.5',
+        lg: 'h-10 rounded-sm px-6 has-[>svg]:px-4',
         icon: 'size-8',
       },
     },

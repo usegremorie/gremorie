@@ -81,6 +81,7 @@ import {
   LibraryIcon,
   ListChecksIcon,
   MessageCircleQuestionIcon,
+  MessageCirclePlusIcon,
   PenSquareIcon,
   RefreshCwIcon,
   Share2Icon,
@@ -250,7 +251,33 @@ function Composer({
   // The header exists only to carry the mentions trigger and the context
   // meter. With both off it would render as an empty strip above the
   // textarea, so it is dropped entirely rather than left hollow.
-  const showHeader = mentions || contextMeter;
+  // The context meter sits in the header beside the mentions trigger; with
+  // mentions off it moves beside the textarea, so no row holds it alone.
+  const showHeader = mentions;
+  const meterInHeader = mentions && contextMeter;
+  const meterInBody = !mentions && contextMeter;
+  const contextMeterEl = (
+    <Context
+      maxTokens={200_000}
+      modelId="anthropic:claude-3-5-sonnet"
+      usage={CONTEXT_USAGE}
+      usedTokens={62_600}
+    >
+      <ContextTrigger className={meterInHeader ? 'ml-auto' : undefined} />
+      <ContextContent>
+        <ContextContentHeader />
+        <ContextContentBody>
+          <div className="space-y-1">
+            <ContextInputUsage />
+            <ContextOutputUsage />
+            <ContextReasoningUsage />
+            <ContextCacheUsage />
+          </div>
+        </ContextContentBody>
+        <ContextContentFooter />
+      </ContextContent>
+    </Context>
+  );
   return (
     <PromptInput multiple onSubmit={onSubmit}>
       {showHeader && (
@@ -258,32 +285,18 @@ function Composer({
           {mentions && (
             <PromptInputMentions items={CONTEXT_ITEMS} variant="secondary" />
           )}
-          {contextMeter && (
-            <Context
-              maxTokens={200_000}
-              modelId="anthropic:claude-3-5-sonnet"
-              usage={CONTEXT_USAGE}
-              usedTokens={62_600}
-            >
-              <ContextTrigger className="ml-auto" />
-              <ContextContent>
-                <ContextContentHeader />
-                <ContextContentBody>
-                  <div className="space-y-1">
-                    <ContextInputUsage />
-                    <ContextOutputUsage />
-                    <ContextReasoningUsage />
-                    <ContextCacheUsage />
-                  </div>
-                </ContextContentBody>
-                <ContextContentFooter />
-              </ContextContent>
-            </Context>
-          )}
+          {meterInHeader && contextMeterEl}
         </PromptInputHeader>
       )}
       <PromptInputBody>
-        <PromptInputTextarea placeholder={placeholder} />
+        {meterInBody ? (
+          <div className="flex w-full items-start">
+            <PromptInputTextarea className="flex-1" placeholder={placeholder} />
+            <div className="shrink-0 pt-1 pr-3">{contextMeterEl}</div>
+          </div>
+        ) : (
+          <PromptInputTextarea placeholder={placeholder} />
+        )}
       </PromptInputBody>
       <PromptInputFooter>
         <PromptInputTools className="gap-2">
@@ -518,7 +531,7 @@ export function Assistant({
               ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => setView('empty')}>
-                <PenSquareIcon className="size-4" /> New chat
+                <MessageCirclePlusIcon className="size-4" /> New chat
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

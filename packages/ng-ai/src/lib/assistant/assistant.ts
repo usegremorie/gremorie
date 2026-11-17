@@ -22,6 +22,7 @@ import {
   lucideChartColumnBig,
   lucideCornerDownLeft,
   lucideListChecks,
+  lucideMessageCirclePlus,
   lucideMessageCircleQuestion,
   lucideTelescope,
 } from '@ng-icons/lucide';
@@ -142,6 +143,7 @@ const COMPACT_SELECT_TRIGGER =
       lucideChartColumnBig,
       lucideCornerDownLeft,
       lucideListChecks,
+      lucideMessageCirclePlus,
       lucideMessageCircleQuestion,
       lucideTelescope,
     }),
@@ -265,28 +267,18 @@ const COMPACT_SELECT_TRIGGER =
                 {{ thread }}
               </button>
             }
-            <div class="my-1 h-px bg-border"></div>
+            <div class="-mx-1 my-1 h-px bg-border"></div>
             <button
               type="button"
               role="menuitem"
               class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
               (click)="newChat()"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+              <ng-icon
+                name="lucideMessageCirclePlus"
                 class="size-4"
-              >
-                <path d="M12 20h9" />
-                <path
-                  d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
-                />
-              </svg>
+                aria-hidden="true"
+              />
               New chat
             </button>
           </div>
@@ -415,7 +407,7 @@ const COMPACT_SELECT_TRIGGER =
                 </svg>
                 Duplicate
               </button>
-              <div class="my-1 h-px bg-border"></div>
+              <div class="-mx-1 my-1 h-px bg-border"></div>
               <button
                 type="button"
                 role="menuitem"
@@ -712,6 +704,33 @@ const COMPACT_SELECT_TRIGGER =
     </ng-template>
 
     <!-- The floating B2B composer (PromptInput). -->
+    <!-- Context meter: in the header with mentions, beside the text without. -->
+    <ng-template #contextMeterTpl>
+      <context
+        [class]="meterInBody() ? '' : 'ml-auto'"
+        [maxTokens]="200000"
+        [usedTokens]="62600"
+        modelId="anthropic:claude-3-5-sonnet"
+        [usage]="contextUsage"
+      >
+        <context-trigger [class]="meterInBody() ? '' : 'ml-auto'" />
+        <ng-template brnHoverCardContent>
+          <context-content>
+            <context-content-header />
+            <context-content-body>
+              <div class="space-y-1">
+                <context-input-usage />
+                <context-output-usage />
+                <context-reasoning-usage />
+                <context-cache-usage />
+              </div>
+            </context-content-body>
+            <context-content-footer />
+          </context-content>
+        </ng-template>
+      </context>
+    </ng-template>
+
     <ng-template #composer let-newChat="newChat">
       <prompt-input
         [state]="status()"
@@ -727,35 +746,26 @@ const COMPACT_SELECT_TRIGGER =
               />
             }
             @if (contextMeter()) {
-              <context
-                class="ml-auto"
-                [maxTokens]="200000"
-                [usedTokens]="62600"
-                modelId="anthropic:claude-3-5-sonnet"
-                [usage]="contextUsage"
-              >
-                <context-trigger class="ml-auto" />
-                <ng-template brnHoverCardContent>
-                  <context-content>
-                    <context-content-header />
-                    <context-content-body>
-                      <div class="space-y-1">
-                        <context-input-usage />
-                        <context-output-usage />
-                        <context-reasoning-usage />
-                        <context-cache-usage />
-                      </div>
-                    </context-content-body>
-                    <context-content-footer />
-                  </context-content>
-                </ng-template>
-              </context>
+              <ng-container [ngTemplateOutlet]="contextMeterTpl" />
             }
           </prompt-input-header>
         }
 
         <prompt-input-body>
-          <prompt-input-textarea [placeholder]="placeholder()" />
+          @if (meterInBody()) {
+            <!-- Mentions off: the meter sits beside the text, not alone above it. -->
+            <div class="flex w-full items-start">
+              <prompt-input-textarea
+                class="flex-1"
+                [placeholder]="placeholder()"
+              />
+              <div class="shrink-0 pt-1 pr-3">
+                <ng-container [ngTemplateOutlet]="contextMeterTpl" />
+              </div>
+            </div>
+          } @else {
+            <prompt-input-textarea [placeholder]="placeholder()" />
+          }
         </prompt-input-body>
 
         <prompt-input-footer>
@@ -942,7 +952,12 @@ export class Assistant implements OnInit, OnDestroy {
    * meter. With both off it would render as an empty strip above the textarea,
    * so it is dropped entirely rather than left hollow.
    */
-  readonly showHeader = computed(() => this.mentions() || this.contextMeter());
+  // The context meter sits in the header beside the mentions trigger; with
+  // mentions off it moves beside the textarea, so no row holds it alone.
+  readonly showHeader = computed(() => this.mentions());
+  readonly meterInBody = computed(
+    () => !this.mentions() && this.contextMeter(),
+  );
 
   /** Emits the composed prompt (value + attachments) when the user submits. */
   readonly submitted = output<PromptInputSubmitEvent>();
