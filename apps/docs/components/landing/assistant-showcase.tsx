@@ -208,7 +208,7 @@ export function AssistantShowcase() {
           aria-hidden="true"
           className="-z-10 pointer-events-none absolute inset-x-0 top-0 mx-auto size-[520px] rounded-full bg-primary/10 blur-[120px]"
         />
-        <Card className="grid gap-0 overflow-hidden p-0 shadow-lg lg:grid-cols-[minmax(0,19rem)_minmax(0,22rem)_minmax(0,1fr)]">
+        <Card className="grid gap-0 overflow-hidden p-0 shadow-lg lg:grid-cols-[minmax(0,20rem)_minmax(0,22rem)_minmax(0,1fr)]">
           {/* Panel 1 - Properties: a settings list (Item rows), one control
               per row: switch, compact select, or a value edited in a popover. */}
           <div className="flex flex-col gap-5 border-b p-4 lg:border-r lg:border-b-0">

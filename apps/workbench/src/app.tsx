@@ -555,7 +555,7 @@ export function App() {
               direction="horizontal"
               className="min-h-0 flex-1"
             >
-              <ResizablePanel defaultSize={20} minSize={13}>
+              <ResizablePanel defaultSize={17} minSize={13}>
                 <div className="flex h-full min-h-0 flex-col">
                   <div className="flex h-12 shrink-0 items-center border-b px-4">
                     <h2 className="font-semibold text-sm">
@@ -589,7 +589,7 @@ export function App() {
               </ResizablePanel>
               <ResizableHandle withHandle />
 
-              <ResizablePanel defaultSize={18} minSize={13}>
+              <ResizablePanel defaultSize={23} minSize={16}>
                 <div className="flex h-full min-h-0 flex-col">
                   <div className="flex h-12 shrink-0 items-center justify-between border-b px-4">
                     <h2 className="font-semibold text-sm">Properties</h2>
@@ -628,7 +628,7 @@ export function App() {
               </ResizablePanel>
               <ResizableHandle withHandle />
 
-              <ResizablePanel defaultSize={31} minSize={20}>
+              <ResizablePanel defaultSize={30} minSize={20}>
                 <FrameworkColumn
                   title="React"
                   edition="rx-*"
@@ -640,7 +640,7 @@ export function App() {
               </ResizablePanel>
               <ResizableHandle withHandle />
 
-              <ResizablePanel defaultSize={31} minSize={20}>
+              <ResizablePanel defaultSize={30} minSize={20}>
                 <FrameworkColumn
                   title="Angular"
                   edition="ng-*"
