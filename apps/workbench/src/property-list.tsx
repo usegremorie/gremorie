@@ -139,10 +139,10 @@ export function PropertyText({
 }) {
   return (
     <Item className={ROW} size="sm">
-      <ItemContent className="min-w-0 flex-1">
+      <ItemContent className="min-w-0 max-w-[60%] shrink-0">
         <ItemTitle>{label}</ItemTitle>
       </ItemContent>
-      <ItemActions className="ml-auto min-w-0 max-w-[55%]">
+      <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
         <Popover>
           <PopoverTrigger asChild>
             <button
