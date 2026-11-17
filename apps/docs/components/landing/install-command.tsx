@@ -69,29 +69,49 @@ export function InstallCommand({
         className,
       )}
     >
-      <Tabs
+      <FrameworkTabs
+        className="px-4"
+        onValueChange={setFramework}
         value={framework}
-        onValueChange={(v) => setFramework(v as Framework)}
-      >
-        <TabsList
-          variant="line"
-          className="h-auto w-full justify-start gap-3.5 p-0 px-4"
-        >
-          <TabsTrigger
-            value="react"
-            className="flex-none px-0 py-2 text-sm font-medium"
-          >
-            React
-          </TabsTrigger>
-          <TabsTrigger
-            value="angular"
-            className="flex-none px-0 py-2 text-sm font-medium"
-          >
-            Angular
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      />
       <CommandLine command={commands[framework]} label="install command" />
     </div>
+  );
+}
+
+// The underline sits on the trigger's bottom edge. The `line` variant draws it
+// 5px below the trigger, outside a list with no padding, where whatever comes
+// next (the command box) painted over it.
+const TRIGGER =
+  'flex-none px-0 py-2 text-sm font-medium group-data-[orientation=horizontal]/tabs:after:bottom-0';
+
+/**
+ * React | Angular switch: the DS `line` Tabs, text plus an underline on the
+ * active edition. Controlled, with no TabsContent: the caller renders what the
+ * edition changes (a command, a code sample).
+ */
+export function FrameworkTabs({
+  value,
+  onValueChange,
+  className,
+}: {
+  value: Framework;
+  onValueChange: (framework: Framework) => void;
+  className?: string;
+}) {
+  return (
+    <Tabs value={value} onValueChange={(v) => onValueChange(v as Framework)}>
+      <TabsList
+        variant="line"
+        className={cn('h-auto w-full justify-start gap-3.5 p-0', className)}
+      >
+        <TabsTrigger value="react" className={TRIGGER}>
+          React
+        </TabsTrigger>
+        <TabsTrigger value="angular" className={TRIGGER}>
+          Angular
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
-import { Card } from '@gremorie/rx-display';
+import { Card, CardHeader } from '@gremorie/rx-display';
 import { TooltipProvider } from '@gremorie/rx-overlays';
 import {
   AtSignIcon,
@@ -16,8 +16,9 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+import { CommandLine } from '@/components/landing/command-line';
 import {
-  InstallCommand,
+  FrameworkTabs,
   type Framework,
 } from '@/components/landing/install-command';
 import {
@@ -82,6 +83,11 @@ const LAYOUT_OPTIONS: { value: ComposerLayout; label: string }[] = [
   { value: 'stacked', label: 'Default' },
   { value: 'inline', label: 'Compact' },
 ];
+
+// The code box: fixed 320px, scrollbars hidden until the pointer is over it
+// (the DS bar, --border thumb, otherwise).
+const CODE_SCROLL =
+  '[&_.overflow-auto]:h-80 [&_.overflow-auto]:[scrollbar-color:transparent_transparent] [&_.overflow-auto:hover]:[scrollbar-color:var(--border)_transparent]';
 
 const INSTALL: Record<Framework, string> = {
   react: 'npx gremorie add rx-assistant',
@@ -219,23 +225,30 @@ export function AssistantShowcase() {
               </PropertyGroup>
             </Card>
 
-            {/* Install, then the code it enables, for the edition in the tab. */}
-            <Card className="min-h-0 flex-1 gap-3 p-4">
-              <InstallCommand
-                className="max-w-none"
-                commands={INSTALL}
-                framework={edition}
-                onFrameworkChange={setEdition}
-              />
-              <CodeBlock
-                className="min-h-0 flex-1"
-                code={
-                  edition === 'react' ? reactCode(props) : angularCode(props)
-                }
-                language={edition === 'react' ? 'tsx' : 'html'}
-              >
-                <CodeBlockCopyButton />
-              </CodeBlock>
+            {/* Code: the edition tabs head the card; the body holds the
+                install command and the consumer code for that edition. The
+                code box has a fixed height, so the section keeps its size
+                whatever the props produce; it scrolls both ways, with the
+                bars showing on hover. */}
+            <Card className="gap-0 overflow-hidden py-0">
+              <CardHeader className="border-b px-4 [.border-b]:pb-0">
+                <FrameworkTabs onValueChange={setEdition} value={edition} />
+              </CardHeader>
+              <div className="flex flex-col gap-3 p-4">
+                <CommandLine
+                  command={INSTALL[edition]}
+                  label="install command"
+                />
+                <CodeBlock
+                  className={CODE_SCROLL}
+                  code={
+                    edition === 'react' ? reactCode(props) : angularCode(props)
+                  }
+                  language={edition === 'react' ? 'tsx' : 'html'}
+                >
+                  <CodeBlockCopyButton />
+                </CodeBlock>
+              </div>
             </Card>
           </div>
 
