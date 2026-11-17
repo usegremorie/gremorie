@@ -71,10 +71,10 @@ export function PropertySwitch({
   return (
     <Item asChild className={cn(ROW, 'cursor-pointer')} size="sm">
       <label htmlFor={id}>
-        <ItemContent className="min-w-0 max-w-[60%] flex-none">
+        <ItemContent className="min-w-0 flex-1">
           <ItemTitle>{label}</ItemTitle>
         </ItemContent>
-        <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
+        <ItemActions className="ml-auto shrink-0">
           <Switch
             checked={checked}
             id={id}
@@ -100,10 +100,10 @@ export function PropertySelect({
 }) {
   return (
     <Item className={ROW} size="sm">
-      <ItemContent className="min-w-0 max-w-[60%] flex-none">
+      <ItemContent className="min-w-0 flex-1">
         <ItemTitle>{label}</ItemTitle>
       </ItemContent>
-      <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
+      <ItemActions className="ml-auto shrink-0">
         <Select onValueChange={onValueChange} value={value}>
           <SelectTrigger
             aria-label={ariaLabel}
@@ -139,10 +139,10 @@ export function PropertyText({
 }) {
   return (
     <Item className={ROW} size="sm">
-      <ItemContent className="min-w-0 max-w-[60%] flex-none">
+      <ItemContent className="min-w-0 flex-1">
         <ItemTitle>{label}</ItemTitle>
       </ItemContent>
-      <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
+      <ItemActions className="ml-auto min-w-0 max-w-[55%]">
         <Popover>
           <PopoverTrigger asChild>
             <button
