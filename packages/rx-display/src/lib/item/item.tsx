@@ -17,7 +17,7 @@ import { Separator } from '../separator';
  * - with a description:    lg 40px · md 36px · sm 32px
  * - without a description: lg/md 20px · sm 16px
  *
- * The `icon` media variant is the only fixed size (24px) and ignores the
+ * The `icon` media variant is the only fixed size (16px) and ignores the
  * cascade; `featured` / `avatar` / `image` follow it.
  */
 const itemVariants = cva(
@@ -87,8 +87,9 @@ const itemMediaVariants = cva(
   {
     variants: {
       variant: {
-        // The only fixed size: a bare 24px glyph, no container, no cascade.
-        icon: "bg-transparent [&_svg:not([class*='size-'])]:size-6",
+        // The only fixed size: a bare 16px glyph (as in menus and 32px
+        // controls), no container, no cascade.
+        icon: "bg-transparent [&_svg:not([class*='size-'])]:size-4",
         featured: `${mediaSizeCascade} rounded-sm border bg-muted [&_svg:not([class*='size-'])]:size-[60%]`,
         avatar: `${mediaSizeCascade} overflow-hidden rounded-full [&_img]:size-full [&_img]:object-cover`,
         image: `${mediaSizeCascade} overflow-hidden rounded-sm [&_img]:size-full [&_img]:object-cover`,

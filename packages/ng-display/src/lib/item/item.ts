@@ -61,7 +61,7 @@ export type ItemSize = NonNullable<VariantProps<typeof itemVariants>['size']>;
  *
  * The `size` set on the root cascades to the media size and the
  * title/description typography via `data-size` + `group-data` selectors.
- * The `icon` media variant is the only fixed size (24px); `featured` /
+ * The `icon` media variant is the only fixed size (16px); `featured` /
  * `avatar` / `image` follow the cascade.
  *
  * @example
@@ -125,8 +125,9 @@ export const itemMediaVariants = cva(
   {
     variants: {
       variant: {
-        // The only fixed size: a bare 24px glyph, no container, no cascade.
-        icon: "bg-transparent [&_svg:not([class*='size-'])]:size-6",
+        // The only fixed size: a bare 16px glyph (as in menus and 32px
+        // controls), no container, no cascade.
+        icon: "bg-transparent [&_svg:not([class*='size-'])]:size-4",
         featured: `${mediaSizeCascade} rounded-sm border bg-muted [&_svg:not([class*='size-'])]:size-[60%]`,
         avatar: `${mediaSizeCascade} overflow-hidden rounded-full [&_img]:size-full [&_img]:object-cover`,
         image: `${mediaSizeCascade} overflow-hidden rounded-sm [&_img]:size-full [&_img]:object-cover`,
