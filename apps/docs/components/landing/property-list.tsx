@@ -40,7 +40,7 @@ import { Children, Fragment, type ReactNode } from 'react';
 // Row: 40px tall, 12px sides, 12px between icon and label. Hover changes only
 // the background. Title at 14px (Item `sm` would set 12px).
 const ROW =
-  'min-h-10 flex-nowrap gap-3 rounded-none px-3 py-1 hover:bg-foreground/5 [&_[data-slot=item-title]]:block [&_[data-slot=item-title]]:w-full [&_[data-slot=item-title]]:truncate [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
+  'min-h-10 flex-nowrap gap-3 rounded-none border-0 px-3 py-1 hover:bg-foreground/5 [&_[data-slot=item-title]]:block [&_[data-slot=item-title]]:w-full [&_[data-slot=item-title]]:truncate [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
 
 function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
   return (
