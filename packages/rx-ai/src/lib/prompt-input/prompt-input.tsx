@@ -46,6 +46,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuSub,
   DropdownMenuTrigger,
   HoverCard,
   HoverCardContent,
@@ -463,6 +469,12 @@ export type PromptInputProps = Omit<
     message: PromptInputMessage,
     event: FormEvent<HTMLFormElement>,
   ) => void | Promise<void>;
+  /**
+   * `stacked` (default): header, text and footer in rows. `inline`: one row,
+   * e.g. a "+" menu, the text, then mic and send; the buttons stay at the
+   * bottom as the text grows.
+   */
+  layout?: 'stacked' | 'inline';
 };
 
 export const PromptInput = ({
@@ -476,6 +488,7 @@ export const PromptInput = ({
   onError,
   onSubmit,
   children,
+  layout = 'stacked',
   ...props
 }: PromptInputProps) => {
   const controller = useOptionalPromptInputController();
@@ -779,7 +792,14 @@ export const PromptInput = ({
       >
         {/* A filled field like every other Gremorie input: no border, no
             shadow. Controls inside use outline or secondary, never a fill. */}
-        <InputGroup className="@container/prompt-input overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50">
+        <InputGroup
+          className={cn(
+            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50',
+            layout === 'inline' &&
+              'h-auto flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
+          )}
+          data-layout={layout}
+        >
           {children}
         </InputGroup>
       </form>
@@ -1245,6 +1265,51 @@ export const PromptInputActionMenuSwitchItem = ({
       />
     </span>
   </DropdownMenuItem>
+);
+
+// Submenus (e.g. Mode ›, Model ›) and choice rows, for a menu that gathers the
+// composer's controls (the one-row composer's "+").
+export const PromptInputActionMenuSub = DropdownMenuSub;
+
+export type PromptInputActionMenuSubTriggerProps = ComponentProps<
+  typeof DropdownMenuSubTrigger
+> & {
+  /** Current value, shown muted on the right (e.g. "Research"). */
+  value?: ReactNode;
+};
+export const PromptInputActionMenuSubTrigger = ({
+  className,
+  children,
+  value,
+  ...props
+}: PromptInputActionMenuSubTriggerProps) => (
+  <DropdownMenuSubTrigger className={cn('gap-2', className)} {...props}>
+    {children}
+    {value != null && (
+      <span className="ml-auto pl-4 text-muted-foreground">{value}</span>
+    )}
+  </DropdownMenuSubTrigger>
+);
+
+export const PromptInputActionMenuSubContent = DropdownMenuSubContent;
+export const PromptInputActionMenuRadioGroup = DropdownMenuRadioGroup;
+export const PromptInputActionMenuRadioItem = DropdownMenuRadioItem;
+
+export type PromptInputActionMenuCheckboxItemProps = ComponentProps<
+  typeof DropdownMenuCheckboxItem
+>;
+/** A checkable row; toggling keeps the menu open. */
+export const PromptInputActionMenuCheckboxItem = ({
+  onSelect,
+  ...props
+}: PromptInputActionMenuCheckboxItemProps) => (
+  <DropdownMenuCheckboxItem
+    onSelect={(event) => {
+      event.preventDefault();
+      onSelect?.(event);
+    }}
+    {...props}
+  />
 );
 
 // ============================================================================

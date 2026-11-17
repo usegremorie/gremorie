@@ -312,10 +312,11 @@ const rowClassBase = 'flex items-center justify-between text-xs';
   template: `
     @if (tokens()) {
       <span class="text-muted-foreground">Input</span>
-      <span>
-        {{ tokensText() }}
+      <span class="inline-flex items-center gap-1.5">
+        <span>{{ tokensText() }}</span>
         @if (costText()) {
-          <span class="ml-2 text-muted-foreground">• {{ costText() }}</span>
+          <span aria-hidden="true" class="text-muted-foreground">•</span>
+          <span class="text-muted-foreground">{{ costText() }}</span>
         }
       </span>
     }
@@ -352,10 +353,11 @@ export class ContextInputUsage {
   template: `
     @if (tokens()) {
       <span class="text-muted-foreground">Output</span>
-      <span>
-        {{ tokensText() }}
+      <span class="inline-flex items-center gap-1.5">
+        <span>{{ tokensText() }}</span>
         @if (costText()) {
-          <span class="ml-2 text-muted-foreground">• {{ costText() }}</span>
+          <span aria-hidden="true" class="text-muted-foreground">•</span>
+          <span class="text-muted-foreground">{{ costText() }}</span>
         }
       </span>
     }
@@ -392,10 +394,11 @@ export class ContextOutputUsage {
   template: `
     @if (tokens()) {
       <span class="text-muted-foreground">Reasoning</span>
-      <span>
-        {{ tokensText() }}
+      <span class="inline-flex items-center gap-1.5">
+        <span>{{ tokensText() }}</span>
         @if (costText()) {
-          <span class="ml-2 text-muted-foreground">• {{ costText() }}</span>
+          <span aria-hidden="true" class="text-muted-foreground">•</span>
+          <span class="text-muted-foreground">{{ costText() }}</span>
         }
       </span>
     }
@@ -432,10 +435,11 @@ export class ContextReasoningUsage {
   template: `
     @if (tokens()) {
       <span class="text-muted-foreground">Cache</span>
-      <span>
-        {{ tokensText() }}
+      <span class="inline-flex items-center gap-1.5">
+        <span>{{ tokensText() }}</span>
         @if (costText()) {
-          <span class="ml-2 text-muted-foreground">• {{ costText() }}</span>
+          <span aria-hidden="true" class="text-muted-foreground">•</span>
+          <span class="text-muted-foreground">{{ costText() }}</span>
         }
       </span>
     }

@@ -81,6 +81,7 @@ const containerVariants = cva(INPUT_GROUP_CARD, {
     // The composer card, as React's InputGroup (data-slot="input-group").
     'data-slot': 'input-group',
     '[class]': 'hostClass()',
+    '[attr.data-layout]': 'layout()',
     '[attr.aria-label]': 'ariaLabel()',
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
     '[attr.data-state]': 'state()',
@@ -102,6 +103,12 @@ export class PromptInput {
   readonly state = input<PromptInputState>('ready');
   readonly size = input<PromptInputSize>('md');
   readonly variant = input<PromptInputVariant>('default');
+  /**
+   * `stacked` (default): header, text and footer in rows. `inline`: one row,
+   * e.g. a "+" menu, the text, then mic and send; the buttons stay at the
+   * bottom as the text grows. Mirrors React `layout`.
+   */
+  readonly layout = input<'stacked' | 'inline'>('stacked');
   readonly disabled = input<boolean>(false);
   readonly submitOnEnter = input<boolean>(true);
   readonly ariaLabel = input<string>('AI prompt input');
@@ -149,6 +156,8 @@ export class PromptInput {
         variant: this.variant(),
         state: this.state(),
       }),
+      this.layout() === 'inline' &&
+        'flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
       this.disabled() && 'pointer-events-none opacity-50',
       this.isDragging() && 'ring-2 ring-ring ring-offset-2',
     ),

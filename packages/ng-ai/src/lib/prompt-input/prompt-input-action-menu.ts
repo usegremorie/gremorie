@@ -1,4 +1,7 @@
-import { CdkConnectedOverlay } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  type ConnectedPosition,
+} from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +14,8 @@ import {
   output,
   signal,
   ViewChild,
+  WritableSignal,
+  computed,
   ViewEncapsulation,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
@@ -39,6 +44,10 @@ import { PromptInput } from './prompt-input';
  * portal, so an overflow-hidden ancestor (a card) never clips it.
  */
 export interface PromptInputActionMenuContext {
+  /** Marks every panel of this menu (root and submenus) for outside clicks. */
+  readonly menuId: string;
+  /** The open submenu, if any (one at a time). */
+  readonly activeSub: WritableSignal<object | null>;
   readonly open: () => boolean;
   readonly origin: () => HTMLElement | null;
   setOrigin(el: HTMLElement | null): void;
@@ -53,6 +62,8 @@ export const PROMPT_INPUT_ACTION_MENU =
 const ITEM_CLASS =
   "relative flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-hidden select-none transition-colors hover:bg-accent focus-visible:bg-accent disabled:pointer-events-none disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
 
+let nextMenuId = 0;
+
 @Component({
   selector: 'prompt-input-action-menu',
   standalone: true,
@@ -66,6 +77,8 @@ const ITEM_CLASS =
 })
 export class PromptInputActionMenu implements PromptInputActionMenuContext {
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
+  readonly menuId = `prompt-input-action-menu-${nextMenuId++}`;
+  readonly activeSub = signal<object | null>(null);
   private readonly _open = signal(false);
   private readonly _origin = signal<HTMLElement | null>(null);
   private panel: HTMLElement | null = null;
@@ -87,16 +100,18 @@ export class PromptInputActionMenu implements PromptInputActionMenuContext {
 
   close(): void {
     this._open.set(false);
+    this.activeSub.set(null);
   }
 
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     if (!this._open()) return;
-    const target = event.target as Node | null;
+    const target = event.target as Element | null;
     if (
       target &&
       !this.elementRef.nativeElement.contains(target) &&
-      !this.panel?.contains(target)
+      !this.panel?.contains(target) &&
+      !target.closest?.(`[data-menu-id="${this.menuId}"]`)
     ) {
       this.close();
     }
@@ -209,6 +224,7 @@ export class PromptInputActionMenuTrigger {
         role="menu"
         tabindex="-1"
         data-slot="prompt-input-action-menu-content"
+        [attr.data-menu-id]="ctx.menuId"
         [class]="panelClass()"
         (keydown)="onKeydown($event)"
       >
@@ -421,3 +437,325 @@ export class PromptInputActionAddAttachments {
     this.ctx.close();
   }
 }
+
+// ---------------------------------------------------------------------------
+// Submenus (e.g. Mode ›, Model ›) and choice rows, for a menu that gathers the
+// composer's controls (the one-row composer's "+"). Mirrors the React parts
+// built on Radix DropdownMenuSub / RadioGroup / RadioItem / CheckboxItem.
+// ---------------------------------------------------------------------------
+
+export interface PromptInputActionMenuSubContext {
+  readonly open: () => boolean;
+  readonly origin: () => HTMLElement | null;
+  setOrigin(el: HTMLElement | null): void;
+  show(): void;
+  hide(): void;
+}
+
+export const PROMPT_INPUT_ACTION_MENU_SUB =
+  new InjectionToken<PromptInputActionMenuSubContext>(
+    'PromptInputActionMenuSub',
+  );
+
+/** A submenu: holds a sub trigger and its content. One open at a time. */
+@Component({
+  selector: 'prompt-input-action-menu-sub',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: PROMPT_INPUT_ACTION_MENU_SUB,
+      useExisting: PromptInputActionMenuSub,
+    },
+  ],
+  template: `<ng-content />`,
+  host: { class: 'block' },
+})
+export class PromptInputActionMenuSub implements PromptInputActionMenuSubContext {
+  private readonly menu = inject(PROMPT_INPUT_ACTION_MENU);
+  private readonly _origin = signal<HTMLElement | null>(null);
+  readonly open = computed(
+    () => this.menu.open() && this.menu.activeSub() === this,
+  );
+  readonly origin = () => this._origin();
+
+  setOrigin(el: HTMLElement | null): void {
+    this._origin.set(el);
+  }
+
+  show(): void {
+    this.menu.activeSub.set(this);
+  }
+
+  hide(): void {
+    if (this.menu.activeSub() === this) this.menu.activeSub.set(null);
+  }
+}
+
+/** The row that opens a submenu: label, current value (muted), chevron. */
+@Component({
+  selector: 'prompt-input-action-menu-sub-trigger',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <button
+      #btn
+      type="button"
+      role="menuitem"
+      tabindex="-1"
+      aria-haspopup="menu"
+      [attr.aria-expanded]="sub.open()"
+      [class]="itemClass"
+      (click)="sub.show()"
+      (mouseenter)="sub.show()"
+      (keydown.arrowright)="openWithKeyboard($event)"
+      (keydown.enter)="openWithKeyboard($event)"
+    >
+      <ng-content />
+      @if (value()) {
+        <span class="ml-auto pl-4 text-muted-foreground">{{ value() }}</span>
+      }
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        [class]="value() ? 'size-4' : 'ml-auto size-4'"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </button>
+  `,
+  host: { class: 'block' },
+})
+export class PromptInputActionMenuSubTrigger {
+  protected readonly sub = inject(PROMPT_INPUT_ACTION_MENU_SUB);
+  private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
+  /** Current value, shown muted on the right (e.g. "Research"). Mirrors React `value`. */
+  readonly value = input<string | number | null | undefined>(null);
+  protected readonly itemClass = ITEM_CLASS + ' aria-expanded:bg-accent';
+
+  constructor() {
+    queueMicrotask(() => this.sub.setOrigin(this.elementRef.nativeElement));
+  }
+
+  protected openWithKeyboard(event: Event): void {
+    event.preventDefault();
+    this.sub.show();
+    queueMicrotask(() =>
+      document
+        .querySelector<HTMLElement>(
+          '[data-slot=prompt-input-action-menu-sub-content] [role^=menuitem]',
+        )
+        ?.focus(),
+    );
+  }
+}
+
+/** The submenu panel: CDK overlay to the right of its trigger (left if no room). */
+@Component({
+  selector: 'prompt-input-action-menu-sub-content',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CdkConnectedOverlay],
+  template: `
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="sub.origin()!"
+      [cdkConnectedOverlayOpen]="sub.open() && !!sub.origin()"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayViewportMargin]="8"
+    >
+      <div
+        role="menu"
+        tabindex="-1"
+        data-slot="prompt-input-action-menu-sub-content"
+        [attr.data-menu-id]="menu.menuId"
+        class="min-w-[10rem] origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        (keydown)="onKeydown($event)"
+      >
+        <ng-content />
+      </div>
+    </ng-template>
+  `,
+  host: { class: 'contents' },
+})
+export class PromptInputActionMenuSubContent {
+  protected readonly sub = inject(PROMPT_INPUT_ACTION_MENU_SUB);
+  protected readonly menu = inject(PROMPT_INPUT_ACTION_MENU);
+  protected readonly positions: ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'top',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetX: 4,
+      offsetY: -5,
+    },
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: -4,
+      offsetY: -5,
+    },
+  ];
+
+  /** Up/Down move, Left goes back to the parent row. */
+  protected onKeydown(event: KeyboardEvent): void {
+    const panel = event.currentTarget as HTMLElement;
+    const items = Array.from(
+      panel.querySelectorAll<HTMLElement>('[role^=menuitem]:not([disabled])'),
+    );
+    const i = items.indexOf(document.activeElement as HTMLElement);
+    const go = (n: number) => {
+      event.preventDefault();
+      items[(n + items.length) % items.length]?.focus();
+    };
+    if (event.key === 'ArrowDown') go(i + 1);
+    else if (event.key === 'ArrowUp') go(i - 1);
+    else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.sub.hide();
+      this.sub.origin()?.querySelector('button')?.focus();
+    }
+  }
+}
+
+export interface PromptInputActionMenuRadioGroupContext {
+  readonly value: () => string | null;
+  select(value: string): void;
+}
+
+export const PROMPT_INPUT_ACTION_MENU_RADIO_GROUP =
+  new InjectionToken<PromptInputActionMenuRadioGroupContext>(
+    'PromptInputActionMenuRadioGroup',
+  );
+
+/** One-of-many choice inside a (sub)menu. Two-way `[(value)]`. Mirrors React `RadioGroup`. */
+@Component({
+  selector: 'prompt-input-action-menu-radio-group',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: PROMPT_INPUT_ACTION_MENU_RADIO_GROUP,
+      useExisting: PromptInputActionMenuRadioGroup,
+    },
+  ],
+  template: `<ng-content />`,
+  host: { role: 'group', class: 'block' },
+})
+export class PromptInputActionMenuRadioGroup implements PromptInputActionMenuRadioGroupContext {
+  readonly selected = model<string | null>(null, { alias: 'value' });
+  readonly value = () => this.selected();
+
+  select(value: string): void {
+    this.selected.set(value);
+  }
+}
+
+const CHOICE_CLASS = ITEM_CLASS + ' pl-8';
+const INDICATOR =
+  'pointer-events-none absolute left-2 flex size-3.5 items-center justify-center';
+
+/** A choice in a radio group; choosing it closes the menu. Mirrors React `RadioItem`. */
+@Component({
+  selector: 'prompt-input-action-menu-radio-item',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <button
+      type="button"
+      role="menuitemradio"
+      tabindex="-1"
+      [attr.aria-checked]="checked()"
+      [class]="itemClass"
+      (click)="choose()"
+    >
+      <span [class]="indicator">
+        @if (checked()) {
+          <span class="size-2 rounded-full bg-current"></span>
+        }
+      </span>
+      <ng-content />
+    </button>
+  `,
+  host: { class: 'block' },
+})
+export class PromptInputActionMenuRadioItem {
+  private readonly group = inject(PROMPT_INPUT_ACTION_MENU_RADIO_GROUP);
+  private readonly menu = inject(PROMPT_INPUT_ACTION_MENU);
+  readonly value = input.required<string>();
+  protected readonly checked = computed(
+    () => this.group.value() === this.value(),
+  );
+  protected readonly itemClass = CHOICE_CLASS;
+  protected readonly indicator = INDICATOR;
+
+  protected choose(): void {
+    this.group.select(this.value());
+    this.menu.close();
+  }
+}
+
+/** A checkable row; toggling keeps the menu open. Mirrors React `CheckboxItem`. */
+@Component({
+  selector: 'prompt-input-action-menu-checkbox-item',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <button
+      type="button"
+      role="menuitemcheckbox"
+      tabindex="-1"
+      [attr.aria-checked]="checked()"
+      [class]="itemClass"
+      (click)="checked.set(!checked())"
+    >
+      <span [class]="indicator">
+        @if (checked()) {
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="size-4"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        }
+      </span>
+      <ng-content />
+    </button>
+  `,
+  host: { class: 'block' },
+})
+export class PromptInputActionMenuCheckboxItem {
+  readonly checked = model<boolean>(false);
+  protected readonly itemClass = CHOICE_CLASS;
+  protected readonly indicator = INDICATOR;
+}
+
+/** A divider between groups of rows. Mirrors React `DropdownMenuSeparator`. */
+@Component({
+  selector: 'prompt-input-action-menu-separator',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '',
+  host: { role: 'separator', class: '-mx-1 my-1 block h-px bg-border' },
+})
+export class PromptInputActionMenuSeparator {}

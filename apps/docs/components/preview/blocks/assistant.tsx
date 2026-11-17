@@ -40,6 +40,12 @@ import {
   PromptInputSelectValue,
   PromptInputSpeechButton,
   PromptInputSubmit,
+  PromptInputActionMenuCheckboxItem,
+  PromptInputActionMenuRadioItem,
+  PromptInputActionMenuRadioGroup,
+  PromptInputActionMenuSubContent,
+  PromptInputActionMenuSubTrigger,
+  PromptInputActionMenuSub,
   PromptInputToolsExpanded,
   PromptInputToolsCollapsed,
   PromptInputActionMenuTrigger,
@@ -80,6 +86,8 @@ import {
 } from '@gremorie/rx-overlays';
 import {
   ArchiveIcon,
+  SparklesIcon,
+  AtSignIcon,
   ArrowUpIcon,
   ChartColumnBigIcon,
   ChevronDownIcon,
@@ -236,6 +244,7 @@ function Composer({
   contextMeter = true,
   newChat = false,
   toolsCollapse = 'auto',
+  layout = 'stacked',
 }: {
   status: ChatStatus;
   onSubmit: (message: PromptInputMessage) => void;
@@ -260,8 +269,13 @@ function Composer({
   newChat?: boolean;
   /** Tools inline, in the overflow menu, or switching by width (`auto`). */
   toolsCollapse?: PromptInputToolsCollapse;
+  /** `stacked` (default) or `inline`: one row, + menu · text · mic · send. */
+  layout?: 'stacked' | 'inline';
 }) {
   const [webSearch, setWebSearch] = useState(false);
+  const [mode, setMode] = useState(defaultMode);
+  const [model, setModel] = useState(defaultModel);
+  const [context, setContext] = useState<string[]>([]);
   // The header exists only to carry the mentions trigger and the context
   // meter. With both off it would render as an empty strip above the
   // textarea, so it is dropped entirely rather than left hollow.
@@ -292,6 +306,130 @@ function Composer({
       </ContextContent>
     </Context>
   );
+  const submitEl = newChat ? (
+    <PromptInputSubmit
+      aria-label="Chat"
+      tooltip="Chat"
+      // The label goes when the composer itself is narrow (< 28rem,
+      // as the tools collapse), not when the whole card is.
+      className="gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
+      size="sm"
+      status={status}
+    >
+      <span className="@max-md/prompt-input:hidden">Chat</span>
+      <CornerDownLeftIcon className="size-4 @max-md/prompt-input:hidden" />
+      <ArrowUpIcon className="hidden size-4 @max-md/prompt-input:block" />
+    </PromptInputSubmit>
+  ) : (
+    <PromptInputSubmit status={status} tooltip="Send">
+      <ArrowUpIcon className="size-4" />
+    </PromptInputSubmit>
+  );
+
+  if (layout === 'inline') {
+    // One row: every composer control lives in the "+" menu (context, mode
+    // and model as submenus, web search as a switch, attachments); the text
+    // takes the middle; dictation and send stay at hand on the right.
+    return (
+      <PromptInput layout="inline" multiple onSubmit={onSubmit}>
+        <PromptInputActionMenu>
+          <PromptInputActionMenuTrigger aria-label="Add" tooltip="Add" />
+          <PromptInputActionMenuContent className="w-64">
+            {mentions && (
+              <PromptInputActionMenuSub>
+                <PromptInputActionMenuSubTrigger
+                  value={context.length > 0 ? context.length : undefined}
+                >
+                  <AtSignIcon className="size-4" />
+                  Add context
+                </PromptInputActionMenuSubTrigger>
+                <PromptInputActionMenuSubContent>
+                  {CONTEXT_ITEMS.map((item) => (
+                    <PromptInputActionMenuCheckboxItem
+                      checked={context.includes(item.id)}
+                      key={item.id}
+                      onCheckedChange={(on) =>
+                        setContext((c) =>
+                          on
+                            ? [...c, item.id]
+                            : c.filter((id) => id !== item.id),
+                        )
+                      }
+                    >
+                      {item.label}
+                    </PromptInputActionMenuCheckboxItem>
+                  ))}
+                </PromptInputActionMenuSubContent>
+              </PromptInputActionMenuSub>
+            )}
+            {modeSelect && (
+              <PromptInputActionMenuSub>
+                <PromptInputActionMenuSubTrigger
+                  value={MODES.find((m) => m.id === mode)?.label}
+                >
+                  <TelescopeIcon className="size-4" />
+                  Mode
+                </PromptInputActionMenuSubTrigger>
+                <PromptInputActionMenuSubContent>
+                  <PromptInputActionMenuRadioGroup
+                    onValueChange={setMode}
+                    value={mode}
+                  >
+                    {MODES.map((m) => (
+                      <PromptInputActionMenuRadioItem key={m.id} value={m.id}>
+                        {m.icon}
+                        {m.label}
+                      </PromptInputActionMenuRadioItem>
+                    ))}
+                  </PromptInputActionMenuRadioGroup>
+                </PromptInputActionMenuSubContent>
+              </PromptInputActionMenuSub>
+            )}
+            {modelSelect && (
+              <PromptInputActionMenuSub>
+                <PromptInputActionMenuSubTrigger
+                  value={MODELS.find((m) => m.id === model)?.label}
+                >
+                  <SparklesIcon className="size-4" />
+                  Model
+                </PromptInputActionMenuSubTrigger>
+                <PromptInputActionMenuSubContent>
+                  <PromptInputActionMenuRadioGroup
+                    onValueChange={setModel}
+                    value={model}
+                  >
+                    {MODELS.map((m) => (
+                      <PromptInputActionMenuRadioItem key={m.id} value={m.id}>
+                        {m.icon}
+                        {m.label}
+                      </PromptInputActionMenuRadioItem>
+                    ))}
+                  </PromptInputActionMenuRadioGroup>
+                </PromptInputActionMenuSubContent>
+              </PromptInputActionMenuSub>
+            )}
+            {(mentions || modeSelect || modelSelect) && (
+              <DropdownMenuSeparator />
+            )}
+            <PromptInputActionMenuSwitchItem
+              checked={webSearch}
+              onCheckedChange={setWebSearch}
+            >
+              <GlobeIcon className="size-4" />
+              Search the web
+            </PromptInputActionMenuSwitchItem>
+            <PromptInputActionAddAttachments label="Attach files" />
+          </PromptInputActionMenuContent>
+        </PromptInputActionMenu>
+        <PromptInputBody>
+          <PromptInputTextarea placeholder={placeholder} rows={1} />
+        </PromptInputBody>
+        <PromptInputSpeechButton tooltip="Voice input" />
+        {submitEl}
+      </PromptInput>
+    );
+  }
+
   return (
     <PromptInput multiple onSubmit={onSubmit}>
       {showHeader && (
@@ -394,25 +532,7 @@ function Composer({
             </PromptInputToolsCollapsed>
             <PromptInputSpeechButton tooltip="Voice input" />
           </PromptInputTools>
-          {newChat ? (
-            <PromptInputSubmit
-              aria-label="Chat"
-              tooltip="Chat"
-              // The label goes when the composer itself is narrow (< 28rem,
-              // as the tools collapse), not when the whole card is.
-              className="gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
-              size="sm"
-              status={status}
-            >
-              <span className="@max-md/prompt-input:hidden">Chat</span>
-              <CornerDownLeftIcon className="size-4 @max-md/prompt-input:hidden" />
-              <ArrowUpIcon className="hidden size-4 @max-md/prompt-input:block" />
-            </PromptInputSubmit>
-          ) : (
-            <PromptInputSubmit status={status} tooltip="Send">
-              <ArrowUpIcon className="size-4" />
-            </PromptInputSubmit>
-          )}
+          {submitEl}
         </PromptInputTools>
       </PromptInputFooter>
     </PromptInput>
@@ -476,6 +596,8 @@ export type AssistantView = 'filled' | 'empty';
  * went missing here while the Angular edition had it.
  */
 export interface AssistantProps {
+  /** Extra classes on the card (e.g. a host sizing it to its column). */
+  className?: string;
   /** Start in a live conversation (`filled`) or the empty new-chat state. */
   initialView?: AssistantView;
   /** Composer textarea placeholder. */
@@ -499,6 +621,11 @@ export interface AssistantProps {
    */
   toolsCollapse?: PromptInputToolsCollapse;
   /**
+   * Composer layout: `stacked` (default, rows) or `inline` (one row: a "+"
+   * menu with every composer control, the text, mic and send).
+   */
+  composerLayout?: 'stacked' | 'inline';
+  /**
    * Fires with the composed prompt when the user submits. Wire it to your AI
    * SDK; the canned state machine keeps running underneath so the surface
    * still animates while you build the real thing.
@@ -516,6 +643,8 @@ export function Assistant({
   mentions = true,
   contextMeter = true,
   toolsCollapse = 'auto',
+  composerLayout = 'stacked',
+  className,
   onSubmit,
 }: AssistantProps = {}) {
   const [view, setView] = useState<AssistantView>(initialView);
@@ -551,7 +680,12 @@ export function Assistant({
 
   return (
     <TooltipProvider>
-      <div className="@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10">
+      <div
+        className={cn(
+          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-md ring-1 ring-foreground/10',
+          className,
+        )}
+      >
         {/* AssistantHeader */}
         <header className="flex items-center justify-between gap-2 px-3 py-2">
           <DropdownMenu>
@@ -652,6 +786,7 @@ export function Assistant({
                 mentions={mentions}
                 contextMeter={contextMeter}
                 toolsCollapse={toolsCollapse}
+                layout={composerLayout}
               />
             </div>
           </div>
@@ -770,6 +905,7 @@ export function Assistant({
                   mentions={mentions}
                   contextMeter={contextMeter}
                   toolsCollapse={toolsCollapse}
+                  layout={composerLayout}
                 />
                 <p className="text-center text-xs text-muted-foreground">
                   Gremorie can make mistakes. Check important info.

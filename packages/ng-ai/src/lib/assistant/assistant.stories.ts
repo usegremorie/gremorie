@@ -101,3 +101,18 @@ export const NewChatWithoutMentions: Story = {
     `,
   }),
 };
+
+/**
+ * Compact composer: one row. The "+" menu holds every composer control
+ * (Add context, Mode and Model as submenus, web search, attachments); mic and
+ * send stay at the end.
+ */
+export const CompactComposer: Story = {
+  render: () => ({
+    template: `
+      <div class="mx-auto max-w-3xl p-6">
+        <ai-assistant [initialView]="'filled'" composerLayout="inline" />
+      </div>
+    `,
+  }),
+};

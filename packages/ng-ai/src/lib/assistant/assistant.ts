@@ -8,6 +8,7 @@ import {
   HostListener,
   inject,
   input,
+  linkedSignal,
   OnDestroy,
   OnInit,
   output,
@@ -19,11 +20,13 @@ import { Button } from '@gremorie/ng-core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { MENU_BELOW_END, MENU_BELOW_START } from '../overlay-positions';
 import {
+  lucideAtSign,
   lucideChartColumnBig,
   lucideCornerDownLeft,
   lucideListChecks,
   lucideMessageCirclePlus,
   lucideMessageCircleQuestion,
+  lucideSparkles,
   lucideTelescope,
 } from '@ng-icons/lucide';
 import { ChartArtifact } from '@gremorie/ng-artifacts';
@@ -104,7 +107,14 @@ import {
 import {
   PromptInputActionAddAttachments,
   PromptInputActionMenu,
+  PromptInputActionMenuCheckboxItem,
   PromptInputActionMenuContent,
+  PromptInputActionMenuRadioGroup,
+  PromptInputActionMenuRadioItem,
+  PromptInputActionMenuSeparator,
+  PromptInputActionMenuSub,
+  PromptInputActionMenuSubContent,
+  PromptInputActionMenuSubTrigger,
   PromptInputActionMenuSwitchItem,
   PromptInputActionMenuTrigger,
 } from '../prompt-input/prompt-input-action-menu';
@@ -158,11 +168,13 @@ const COMPACT_SELECT_TRIGGER =
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     provideIcons({
+      lucideAtSign,
       lucideChartColumnBig,
       lucideCornerDownLeft,
       lucideListChecks,
       lucideMessageCirclePlus,
       lucideMessageCircleQuestion,
+      lucideSparkles,
       lucideTelescope,
     }),
   ],
@@ -224,6 +236,13 @@ const COMPACT_SELECT_TRIGGER =
     PromptInputActionMenuContent,
     PromptInputActionMenuSwitchItem,
     PromptInputActionAddAttachments,
+    PromptInputActionMenuSub,
+    PromptInputActionMenuSubTrigger,
+    PromptInputActionMenuSubContent,
+    PromptInputActionMenuRadioGroup,
+    PromptInputActionMenuRadioItem,
+    PromptInputActionMenuCheckboxItem,
+    PromptInputActionMenuSeparator,
     PromptInputSubmit,
     PromptInputButton,
     PromptInputAttachButton,
@@ -783,145 +802,308 @@ const COMPACT_SELECT_TRIGGER =
 
     <ng-template #composer let-newChat="newChat">
       <prompt-input
+        [layout]="composerLayout()"
         [state]="status()"
         (submitted)="handleSubmit($event)"
         (canceled)="handleCancel()"
       >
-        @if (showHeader()) {
-          <prompt-input-header>
-            @if (mentions()) {
-              <prompt-input-mentions
-                [items]="contextItems"
-                variant="secondary"
-              />
-            }
-            @if (contextMeter()) {
-              <ng-container [ngTemplateOutlet]="contextMeterTpl" />
-            }
-          </prompt-input-header>
-        }
-
-        <prompt-input-body>
-          @if (meterInBody()) {
-            <!-- Mentions off: the meter sits beside the text, not alone above it. -->
-            <div class="flex w-full items-start">
-              <prompt-input-textarea
-                class="flex-1"
-                [placeholder]="placeholder()"
-              />
-              <div class="shrink-0 pt-1 pr-3">
-                <ng-container [ngTemplateOutlet]="contextMeterTpl" />
-              </div>
-            </div>
+        <!-- The send button, shared by both layouts. Declared inside
+             <prompt-input> so it injects the composer it submits. -->
+        <ng-template #submitTpl let-newChat="newChat">
+          @if (newChat) {
+            <!-- New chat: "Chat" + the enter icon; compact keeps the arrow. -->
+            <prompt-input-submit
+              size="sm"
+              label="Chat"
+              tooltip="Chat"
+              class="gap-2 pr-2.5 pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
+            >
+              <span class="@max-md/prompt-input:hidden">Chat</span>
+              <span class="flex @max-md/prompt-input:hidden">
+                <ng-icon
+                  name="lucideCornerDownLeft"
+                  class="size-4"
+                  aria-hidden="true"
+                />
+              </span>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="hidden size-4 @max-md/prompt-input:block"
+              >
+                <path d="m5 12 7-7 7 7" />
+                <path d="M12 19V5" />
+              </svg>
+            </prompt-input-submit>
           } @else {
-            <prompt-input-textarea [placeholder]="placeholder()" />
+            <prompt-input-submit tooltip="Send">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="size-4"
+              >
+                <path d="m5 12 7-7 7 7" />
+                <path d="M12 19V5" />
+              </svg>
+            </prompt-input-submit>
           }
-        </prompt-input-body>
+        </ng-template>
 
-        <prompt-input-footer>
-          <prompt-input-tools class="gap-2">
-            @if (modeSelect()) {
-              <prompt-input-select [value]="defaultMode()">
-                <prompt-input-select-trigger
-                  ariaLabel="Select mode"
-                  size="sm"
-                  variant="secondary"
-                  [class]="compactSelectTrigger"
-                >
-                  <prompt-input-select-value placeholder="Mode" />
-                </prompt-input-select-trigger>
-                <prompt-input-select-content>
-                  @for (mode of modes; track mode.id) {
-                    <prompt-input-select-item
-                      [value]="mode.id"
-                      [label]="mode.label"
-                    >
-                      <ng-template>
-                        <ng-icon
-                          [name]="mode.icon"
-                          class="size-4"
-                          aria-hidden="true"
-                        />
-                      </ng-template>
-                      {{ mode.label }}
-                    </prompt-input-select-item>
-                  }
-                </prompt-input-select-content>
-              </prompt-input-select>
-            }
-
-            @if (modelSelect()) {
-              <prompt-input-select [value]="defaultModel()">
-                <prompt-input-select-trigger
-                  ariaLabel="Select model"
-                  size="sm"
-                  variant="secondary"
-                  [class]="compactSelectTrigger"
-                >
-                  <prompt-input-select-value placeholder="Model" />
-                </prompt-input-select-trigger>
-                <prompt-input-select-content>
-                  @for (model of models; track model.id) {
-                    <prompt-input-select-item
-                      [value]="model.id"
-                      [label]="model.label"
-                    >
-                      <ng-template>
-                        @switch (model.icon) {
-                          @case ('claude') {
-                            <ai-claude-icon class="size-4" />
-                          }
-                          @case ('openai') {
-                            <ai-openai-icon class="size-4" />
-                          }
-                          @case ('gemini') {
-                            <ai-gemini-icon class="size-4" />
-                          }
-                        }
-                      </ng-template>
-                      {{ model.label }}
-                    </prompt-input-select-item>
-                  }
-                </prompt-input-select-content>
-              </prompt-input-select>
-            }
-          </prompt-input-tools>
-
-          <prompt-input-tools class="gap-2">
-            <!-- Ghost icon group: no gap between the icons; the outer gap-2
-                 separates the group from the send button. -->
-            <prompt-input-tools class="gap-0" [collapse]="toolsCollapse()">
-              <prompt-input-tools-expanded>
-                <prompt-input-button
-                  ariaLabel="Search the web"
-                  tooltip="Search the web"
-                  [active]="webSearch()"
-                  (pressed)="webSearch.set(!webSearch())"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    class="size-4"
+        @if (composerLayout() === 'inline') {
+          <!-- One row: every composer control lives in the "+" menu (context,
+               mode and model as submenus, web search as a switch, attachments);
+               the text takes the middle; dictation and send stay at hand. -->
+          <prompt-input-action-menu>
+            <prompt-input-action-menu-trigger ariaLabel="Add" tooltip="Add" />
+            <prompt-input-action-menu-content class="w-64">
+              @if (mentions()) {
+                <prompt-input-action-menu-sub>
+                  <prompt-input-action-menu-sub-trigger
+                    [value]="inlineContext().length || null"
                   >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                    <path d="M2 12h20" />
-                  </svg>
-                </prompt-input-button>
-                <prompt-input-attach-button tooltip="Attach files" />
-              </prompt-input-tools-expanded>
-              <!-- Collapsed: web search and attachments move to the overflow
-                   menu; the mic, an input mode, stays at hand. -->
-              <prompt-input-tools-collapsed>
-                <prompt-input-action-menu>
-                  <prompt-input-action-menu-trigger
-                    ariaLabel="More tools"
-                    tooltip="More tools"
+                    <ng-icon
+                      name="lucideAtSign"
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                    Add context
+                  </prompt-input-action-menu-sub-trigger>
+                  <prompt-input-action-menu-sub-content>
+                    @for (item of contextItems; track item.id) {
+                      <prompt-input-action-menu-checkbox-item
+                        [checked]="inlineContext().includes(item.id)"
+                        (checkedChange)="toggleInlineContext(item.id, $event)"
+                      >
+                        {{ item.label }}
+                      </prompt-input-action-menu-checkbox-item>
+                    }
+                  </prompt-input-action-menu-sub-content>
+                </prompt-input-action-menu-sub>
+              }
+              @if (modeSelect()) {
+                <prompt-input-action-menu-sub>
+                  <prompt-input-action-menu-sub-trigger
+                    [value]="inlineModeLabel()"
+                  >
+                    <ng-icon
+                      name="lucideTelescope"
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                    Mode
+                  </prompt-input-action-menu-sub-trigger>
+                  <prompt-input-action-menu-sub-content>
+                    <prompt-input-action-menu-radio-group
+                      [(value)]="inlineMode"
+                    >
+                      @for (mode of modes; track mode.id) {
+                        <prompt-input-action-menu-radio-item [value]="mode.id">
+                          <ng-icon
+                            [name]="mode.icon"
+                            class="size-4"
+                            aria-hidden="true"
+                          />
+                          {{ mode.label }}
+                        </prompt-input-action-menu-radio-item>
+                      }
+                    </prompt-input-action-menu-radio-group>
+                  </prompt-input-action-menu-sub-content>
+                </prompt-input-action-menu-sub>
+              }
+              @if (modelSelect()) {
+                <prompt-input-action-menu-sub>
+                  <prompt-input-action-menu-sub-trigger
+                    [value]="inlineModelLabel()"
+                  >
+                    <ng-icon
+                      name="lucideSparkles"
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                    Model
+                  </prompt-input-action-menu-sub-trigger>
+                  <prompt-input-action-menu-sub-content>
+                    <prompt-input-action-menu-radio-group
+                      [(value)]="inlineModel"
+                    >
+                      @for (model of models; track model.id) {
+                        <prompt-input-action-menu-radio-item [value]="model.id">
+                          @switch (model.icon) {
+                            @case ('claude') {
+                              <ai-claude-icon class="size-4" />
+                            }
+                            @case ('openai') {
+                              <ai-openai-icon class="size-4" />
+                            }
+                            @case ('gemini') {
+                              <ai-gemini-icon class="size-4" />
+                            }
+                          }
+                          {{ model.label }}
+                        </prompt-input-action-menu-radio-item>
+                      }
+                    </prompt-input-action-menu-radio-group>
+                  </prompt-input-action-menu-sub-content>
+                </prompt-input-action-menu-sub>
+              }
+              @if (mentions() || modeSelect() || modelSelect()) {
+                <prompt-input-action-menu-separator />
+              }
+              <prompt-input-action-menu-switch-item
+                [checked]="webSearch()"
+                (checkedChange)="webSearch.set($event)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="size-4"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                  <path d="M2 12h20" />
+                </svg>
+                Search the web
+              </prompt-input-action-menu-switch-item>
+              <prompt-input-action-add-attachments label="Attach files" />
+            </prompt-input-action-menu-content>
+          </prompt-input-action-menu>
+          <prompt-input-body>
+            <prompt-input-textarea
+              class="flex-1"
+              [placeholder]="placeholder()"
+            />
+          </prompt-input-body>
+          <prompt-input-speech-button tooltip="Voice input" />
+          <ng-container
+            [ngTemplateOutlet]="submitTpl"
+            [ngTemplateOutletContext]="{ newChat: newChat }"
+          />
+        } @else {
+          @if (showHeader()) {
+            <prompt-input-header>
+              @if (mentions()) {
+                <prompt-input-mentions
+                  [items]="contextItems"
+                  variant="secondary"
+                />
+              }
+              @if (contextMeter()) {
+                <ng-container [ngTemplateOutlet]="contextMeterTpl" />
+              }
+            </prompt-input-header>
+          }
+
+          <prompt-input-body>
+            @if (meterInBody()) {
+              <!-- Mentions off: the meter sits beside the text, not alone above it. -->
+              <div class="flex w-full items-start">
+                <prompt-input-textarea
+                  class="flex-1"
+                  [placeholder]="placeholder()"
+                />
+                <div class="shrink-0 pt-1 pr-3">
+                  <ng-container [ngTemplateOutlet]="contextMeterTpl" />
+                </div>
+              </div>
+            } @else {
+              <prompt-input-textarea [placeholder]="placeholder()" />
+            }
+          </prompt-input-body>
+
+          <prompt-input-footer>
+            <prompt-input-tools class="gap-2">
+              @if (modeSelect()) {
+                <prompt-input-select [value]="defaultMode()">
+                  <prompt-input-select-trigger
+                    ariaLabel="Select mode"
+                    size="sm"
+                    variant="secondary"
+                    [class]="compactSelectTrigger"
+                  >
+                    <prompt-input-select-value placeholder="Mode" />
+                  </prompt-input-select-trigger>
+                  <prompt-input-select-content>
+                    @for (mode of modes; track mode.id) {
+                      <prompt-input-select-item
+                        [value]="mode.id"
+                        [label]="mode.label"
+                      >
+                        <ng-template>
+                          <ng-icon
+                            [name]="mode.icon"
+                            class="size-4"
+                            aria-hidden="true"
+                          />
+                        </ng-template>
+                        {{ mode.label }}
+                      </prompt-input-select-item>
+                    }
+                  </prompt-input-select-content>
+                </prompt-input-select>
+              }
+
+              @if (modelSelect()) {
+                <prompt-input-select [value]="defaultModel()">
+                  <prompt-input-select-trigger
+                    ariaLabel="Select model"
+                    size="sm"
+                    variant="secondary"
+                    [class]="compactSelectTrigger"
+                  >
+                    <prompt-input-select-value placeholder="Model" />
+                  </prompt-input-select-trigger>
+                  <prompt-input-select-content>
+                    @for (model of models; track model.id) {
+                      <prompt-input-select-item
+                        [value]="model.id"
+                        [label]="model.label"
+                      >
+                        <ng-template>
+                          @switch (model.icon) {
+                            @case ('claude') {
+                              <ai-claude-icon class="size-4" />
+                            }
+                            @case ('openai') {
+                              <ai-openai-icon class="size-4" />
+                            }
+                            @case ('gemini') {
+                              <ai-gemini-icon class="size-4" />
+                            }
+                          }
+                        </ng-template>
+                        {{ model.label }}
+                      </prompt-input-select-item>
+                    }
+                  </prompt-input-select-content>
+                </prompt-input-select>
+              }
+            </prompt-input-tools>
+
+            <prompt-input-tools class="gap-2">
+              <!-- Ghost icon group: no gap between the icons; the outer gap-2
+                   separates the group from the send button. -->
+              <prompt-input-tools class="gap-0" [collapse]="toolsCollapse()">
+                <prompt-input-tools-expanded>
+                  <prompt-input-button
+                    ariaLabel="Search the web"
+                    tooltip="Search the web"
+                    [active]="webSearch()"
+                    (pressed)="webSearch.set(!webSearch())"
                   >
                     <svg
                       viewBox="0 0 24 24"
@@ -933,15 +1115,22 @@ const COMPACT_SELECT_TRIGGER =
                       aria-hidden="true"
                       class="size-4"
                     >
-                      <circle cx="12" cy="12" r="1" />
-                      <circle cx="19" cy="12" r="1" />
-                      <circle cx="5" cy="12" r="1" />
+                      <circle cx="12" cy="12" r="10" />
+                      <path
+                        d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+                      />
+                      <path d="M2 12h20" />
                     </svg>
-                  </prompt-input-action-menu-trigger>
-                  <prompt-input-action-menu-content>
-                    <prompt-input-action-menu-switch-item
-                      [checked]="webSearch()"
-                      (checkedChange)="webSearch.set($event)"
+                  </prompt-input-button>
+                  <prompt-input-attach-button tooltip="Attach files" />
+                </prompt-input-tools-expanded>
+                <!-- Collapsed: web search and attachments move to the overflow
+                     menu; the mic, an input mode, stays at hand. -->
+                <prompt-input-tools-collapsed>
+                  <prompt-input-action-menu>
+                    <prompt-input-action-menu-trigger
+                      ariaLabel="More tools"
+                      tooltip="More tools"
                     >
                       <svg
                         viewBox="0 0 24 24"
@@ -953,69 +1142,49 @@ const COMPACT_SELECT_TRIGGER =
                         aria-hidden="true"
                         class="size-4"
                       >
-                        <circle cx="12" cy="12" r="10" />
-                        <path
-                          d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
-                        />
-                        <path d="M2 12h20" />
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="19" cy="12" r="1" />
+                        <circle cx="5" cy="12" r="1" />
                       </svg>
-                      Search the web
-                    </prompt-input-action-menu-switch-item>
-                    <prompt-input-action-add-attachments label="Attach files" />
-                  </prompt-input-action-menu-content>
-                </prompt-input-action-menu>
-              </prompt-input-tools-collapsed>
-              <prompt-input-speech-button tooltip="Voice input" />
+                    </prompt-input-action-menu-trigger>
+                    <prompt-input-action-menu-content>
+                      <prompt-input-action-menu-switch-item
+                        [checked]="webSearch()"
+                        (checkedChange)="webSearch.set($event)"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <path
+                            d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+                          />
+                          <path d="M2 12h20" />
+                        </svg>
+                        Search the web
+                      </prompt-input-action-menu-switch-item>
+                      <prompt-input-action-add-attachments
+                        label="Attach files"
+                      />
+                    </prompt-input-action-menu-content>
+                  </prompt-input-action-menu>
+                </prompt-input-tools-collapsed>
+                <prompt-input-speech-button tooltip="Voice input" />
+              </prompt-input-tools>
+              <ng-container
+                [ngTemplateOutlet]="submitTpl"
+                [ngTemplateOutletContext]="{ newChat: newChat }"
+              />
             </prompt-input-tools>
-            @if (newChat) {
-              <!-- New chat: "Chat" + the enter icon; compact keeps the arrow. -->
-              <prompt-input-submit
-                size="sm"
-                label="Chat"
-                tooltip="Chat"
-                class="gap-2 pr-2.5 pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
-              >
-                <span class="@max-md/prompt-input:hidden">Chat</span>
-                <span class="flex @max-md/prompt-input:hidden">
-                  <ng-icon
-                    name="lucideCornerDownLeft"
-                    class="size-4"
-                    aria-hidden="true"
-                  />
-                </span>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                  class="hidden size-4 @max-md/prompt-input:block"
-                >
-                  <path d="m5 12 7-7 7 7" />
-                  <path d="M12 19V5" />
-                </svg>
-              </prompt-input-submit>
-            } @else {
-              <prompt-input-submit tooltip="Send">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                  class="size-4"
-                >
-                  <path d="m5 12 7-7 7 7" />
-                  <path d="M12 19V5" />
-                </svg>
-              </prompt-input-submit>
-            }
-          </prompt-input-tools>
-        </prompt-input-footer>
+          </prompt-input-footer>
+        }
       </prompt-input>
     </ng-template>
   `,
@@ -1054,6 +1223,11 @@ export class Assistant implements OnInit, OnDestroy {
    * `never` keeps them inline; `always` keeps the menu. Mirrors React.
    */
   readonly toolsCollapse = input<PromptInputToolsCollapse>('auto');
+  /**
+   * Composer layout: `stacked` (default, rows) or `inline` (one row: a "+"
+   * menu with every composer control, the text, mic and send). Mirrors React.
+   */
+  readonly composerLayout = input<'stacked' | 'inline'>('stacked');
 
   /**
    * The header exists only to carry the mentions trigger and the context
@@ -1077,6 +1251,23 @@ export class Assistant implements OnInit, OnDestroy {
   protected readonly threadMenuOpen = signal(false);
   /** The composer's web-search toggle. */
   protected readonly webSearch = signal(false);
+  // One-row composer state: mode/model start from the defaults; context is
+  // the set of items checked in the "Add context" submenu.
+  protected readonly inlineMode = linkedSignal(() => this.defaultMode());
+  protected readonly inlineModel = linkedSignal(() => this.defaultModel());
+  protected readonly inlineContext = signal<string[]>([]);
+  protected readonly inlineModeLabel = computed(
+    () => this.modes.find((m) => m.id === this.inlineMode())?.label ?? null,
+  );
+  protected readonly inlineModelLabel = computed(
+    () => this.models.find((m) => m.id === this.inlineModel())?.label ?? null,
+  );
+
+  protected toggleInlineContext(id: string, on: boolean): void {
+    this.inlineContext.update((c) =>
+      on ? [...c, id] : c.filter((x) => x !== id),
+    );
+  }
   protected readonly menuBelowStart = MENU_BELOW_START;
   protected readonly menuBelowEnd = MENU_BELOW_END;
   private readonly threadPanel =

@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@gremorie/rx-core';
 import { Tabs, TabsList, TabsTrigger } from '@gremorie/rx-navigation';
 import { useState } from 'react';
 
@@ -36,13 +37,38 @@ const COMMANDS = {
   angular: 'npx gremorie add ng-button',
 } as const;
 
-type Framework = keyof typeof COMMANDS;
+export type Framework = 'react' | 'angular';
 
-export function InstallCommand() {
-  const [framework, setFramework] = useState<Framework>('react');
+/**
+ * `commands` sets the command per edition (defaults to the button). Pass
+ * `framework` + `onFrameworkChange` to drive it from outside, e.g. so the same
+ * tab also switches a code sample below it.
+ */
+export function InstallCommand({
+  commands = COMMANDS,
+  framework: controlled,
+  onFrameworkChange,
+  className,
+}: {
+  commands?: Record<Framework, string>;
+  framework?: Framework;
+  onFrameworkChange?: (framework: Framework) => void;
+  className?: string;
+} = {}) {
+  const [own, setOwn] = useState<Framework>('react');
+  const framework = controlled ?? own;
+  const setFramework = (f: Framework) => {
+    setOwn(f);
+    onFrameworkChange?.(f);
+  };
 
   return (
-    <div className="flex w-full max-w-md flex-col overflow-hidden rounded-xl border bg-fd-secondary text-left">
+    <div
+      className={cn(
+        'flex w-full max-w-md flex-col overflow-hidden rounded-xl border bg-fd-secondary text-left',
+        className,
+      )}
+    >
       <Tabs
         value={framework}
         onValueChange={(v) => setFramework(v as Framework)}
@@ -65,7 +91,7 @@ export function InstallCommand() {
           </TabsTrigger>
         </TabsList>
       </Tabs>
-      <CommandLine command={COMMANDS[framework]} label="install command" />
+      <CommandLine command={commands[framework]} label="install command" />
     </div>
   );
 }
