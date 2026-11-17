@@ -40,7 +40,7 @@ import { Children, Fragment, type ReactNode } from 'react';
 // Row: 40px tall, 12px sides, 12px between icon and label. Hover changes only
 // the background. Title at 14px (Item `sm` would set 12px).
 const ROW =
-  'min-h-10 gap-3 rounded-none px-3 py-2 hover:bg-foreground/5 [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
+  'min-h-10 flex-nowrap gap-3 rounded-none px-3 py-1 hover:bg-foreground/5 [&_[data-slot=item-title]]:block [&_[data-slot=item-title]]:w-full [&_[data-slot=item-title]]:truncate [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
 
 function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
   return (
@@ -63,7 +63,7 @@ export function PropertyGroup({
       <h4 className="px-1 font-medium text-muted-foreground text-xs">
         {title}
       </h4>
-      <ItemGroup className="overflow-hidden rounded-lg bg-foreground/5">
+      <ItemGroup className="overflow-hidden rounded-lg bg-foreground/5 dark:bg-foreground/[0.07]">
         {rows.map((row, i) => (
           <Fragment key={i}>
             {i > 0 && (
@@ -95,10 +95,10 @@ export function PropertySwitch({
     <Item asChild className={cn(ROW, 'cursor-pointer')} size="sm">
       <label htmlFor={id}>
         <RowIcon icon={icon} />
-        <ItemContent>
+        <ItemContent className="min-w-0 max-w-[60%] flex-none">
           <ItemTitle>{label}</ItemTitle>
         </ItemContent>
-        <ItemActions>
+        <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
           <Switch
             checked={checked}
             id={id}
@@ -127,14 +127,14 @@ export function PropertySelect({
   return (
     <Item className={ROW} size="sm">
       <RowIcon icon={icon} />
-      <ItemContent>
+      <ItemContent className="min-w-0 max-w-[60%] flex-none">
         <ItemTitle>{label}</ItemTitle>
       </ItemContent>
-      <ItemActions>
+      <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
         <Select onValueChange={onValueChange} value={value}>
           <SelectTrigger
             aria-label={label}
-            className="-mr-2 h-7 gap-1 border-none bg-transparent px-2 text-muted-foreground shadow-none hover:bg-foreground/5 dark:bg-transparent"
+            className="-mr-2 h-7 min-w-0 gap-1 border-none bg-transparent px-2 text-muted-foreground shadow-none hover:bg-foreground/5 dark:bg-transparent"
             size="sm"
           >
             <SelectValue />
@@ -168,15 +168,15 @@ export function PropertyText({
   return (
     <Item className={ROW} size="sm">
       <RowIcon icon={icon} />
-      <ItemContent className="min-w-0">
+      <ItemContent className="min-w-0 max-w-[60%] flex-none">
         <ItemTitle>{label}</ItemTitle>
       </ItemContent>
-      <ItemActions className="min-w-0">
+      <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
         <Popover>
           <PopoverTrigger asChild>
             <button
               aria-label={`Edit ${label.toLowerCase()}`}
-              className="-mr-2 flex h-7 min-w-0 max-w-40 items-center gap-1.5 rounded-sm px-2 text-muted-foreground text-sm hover:bg-foreground/5"
+              className="-mr-2 flex h-7 min-w-0 items-center gap-1.5 rounded-sm px-2 text-muted-foreground text-sm hover:bg-foreground/5"
               type="button"
             >
               <span className="truncate">{value}</span>
