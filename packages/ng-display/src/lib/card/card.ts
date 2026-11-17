@@ -38,7 +38,7 @@ import {
   host: {
     'data-slot': 'card',
     class:
-      'bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-md ring-1 ring-foreground/5 dark:ring-foreground/10 has-data-[slot=card-action]:grid',
+      'bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10 has-data-[slot=card-action]:grid',
   },
 })
 export class Card {}

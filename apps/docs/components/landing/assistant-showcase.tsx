@@ -92,10 +92,9 @@ const LAYOUT_OPTIONS: { value: ComposerLayout; label: string }[] = [
   { value: 'inline', label: 'Compact' },
 ];
 
-// The code box: fixed 320px, scrollbars hidden until the pointer is over it
-// (the DS bar, --border thumb, otherwise).
-const CODE_SCROLL =
-  '[&_.overflow-auto]:h-80 [&_.overflow-auto]:[scrollbar-color:transparent_transparent] [&_.overflow-auto:hover]:[scrollbar-color:var(--border)_transparent]';
+// The code box: fixed 320px, so the section keeps its size; it scrolls both
+// ways, and the DS CodeBlock shows its bars on hover.
+const CODE_SCROLL = '[&_.overflow-auto]:h-80';
 
 const INSTALL: Record<Framework, string> = {
   react: 'npx gremorie add rx-assistant',
