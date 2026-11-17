@@ -1286,7 +1286,9 @@ export const PromptInputActionMenuSubTrigger = ({
   <DropdownMenuSubTrigger className={cn('gap-2', className)} {...props}>
     {children}
     {value != null && (
-      <span className="ml-auto pl-4 text-muted-foreground">{value}</span>
+      <span className="ml-auto min-w-0 truncate whitespace-nowrap pl-4 text-muted-foreground">
+        {value}
+      </span>
     )}
   </DropdownMenuSubTrigger>
 );

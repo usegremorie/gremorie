@@ -865,7 +865,7 @@ const COMPACT_SELECT_TRIGGER =
                the text takes the middle; dictation and send stay at hand. -->
           <prompt-input-action-menu>
             <prompt-input-action-menu-trigger ariaLabel="Add" tooltip="Add" />
-            <prompt-input-action-menu-content class="w-64">
+            <prompt-input-action-menu-content class="w-72">
               @if (mentions()) {
                 <prompt-input-action-menu-sub>
                   <prompt-input-action-menu-sub-trigger

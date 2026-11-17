@@ -515,7 +515,10 @@ export class PromptInputActionMenuSub implements PromptInputActionMenuSubContext
     >
       <ng-content />
       @if (value()) {
-        <span class="ml-auto pl-4 text-muted-foreground">{{ value() }}</span>
+        <span
+          class="ml-auto min-w-0 truncate whitespace-nowrap pl-4 text-muted-foreground"
+          >{{ value() }}</span
+        >
       }
       <svg
         viewBox="0 0 24 24"

@@ -334,7 +334,7 @@ function Composer({
       <PromptInput layout="inline" multiple onSubmit={onSubmit}>
         <PromptInputActionMenu>
           <PromptInputActionMenuTrigger aria-label="Add" tooltip="Add" />
-          <PromptInputActionMenuContent className="w-64">
+          <PromptInputActionMenuContent className="w-72">
             {mentions && (
               <PromptInputActionMenuSub>
                 <PromptInputActionMenuSubTrigger
