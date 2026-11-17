@@ -279,13 +279,22 @@ export function AssistantShowcase() {
               fills it, scrolling its thread inside, instead of a long
               conversation stretching the whole section. Remount on the props
               that seed initial state (view) so it resets to them. */}
-          <div className="relative min-h-[680px]">
+          <div
+            className={cn(
+              'relative min-h-[680px]',
+              // Mobile: the column stays full width and turns into a stage
+              // (the props panel's surface, card radius); only the block
+              // narrows, with 24px of stage above and below.
+              viewport === 'mobile' &&
+                'rounded-xl bg-foreground/5 py-6 lg:py-0 dark:bg-foreground/[0.07]',
+            )}
+          >
             <Assistant
               className={cn(
                 'h-[680px] max-w-none lg:absolute lg:inset-0 lg:h-auto',
                 // Mobile: a phone-wide column, centered in the preview area.
                 viewport === 'mobile' &&
-                  'w-[390px] lg:right-auto lg:left-[calc(50%-195px)]',
+                  'w-[390px] lg:inset-y-6 lg:right-auto lg:left-[calc(50%-195px)]',
               )}
               composerLayout={layout}
               contextMeter={parts.contextMeter}
