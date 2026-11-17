@@ -241,18 +241,26 @@ export const MessageBranchPrevious = ({
 }: MessageBranchPreviousProps) => {
   const { goToPrevious, totalBranches } = useMessageBranch();
 
+  // Icon-only: the tooltip names the action on hover and focus.
   return (
-    <Button
-      aria-label="Previous branch"
-      disabled={totalBranches <= 1}
-      onClick={goToPrevious}
-      size="icon-sm"
-      type="button"
-      variant="ghost"
-      {...props}
-    >
-      {children ?? <ChevronLeftIcon size={14} />}
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-label="Previous branch"
+            disabled={totalBranches <= 1}
+            onClick={goToPrevious}
+            size="icon-sm"
+            type="button"
+            variant="ghost"
+            {...props}
+          >
+            {children ?? <ChevronLeftIcon size={14} />}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Previous branch</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
@@ -265,18 +273,27 @@ export const MessageBranchNext = ({
 }: MessageBranchNextProps) => {
   const { goToNext, totalBranches } = useMessageBranch();
 
+  // Icon-only: the tooltip names the action on hover and focus.
   return (
-    <Button
-      aria-label="Next branch"
-      disabled={totalBranches <= 1}
-      onClick={goToNext}
-      size="icon-sm"
-      type="button"
-      variant="ghost"
-      {...props}
-    >
-      {children ?? <ChevronRightIcon size={14} />}
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-label="Next branch"
+            className={className}
+            disabled={totalBranches <= 1}
+            onClick={goToNext}
+            size="icon-sm"
+            type="button"
+            variant="ghost"
+            {...props}
+          >
+            {children ?? <ChevronRightIcon size={14} />}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Next branch</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

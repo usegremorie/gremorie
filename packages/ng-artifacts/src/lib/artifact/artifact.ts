@@ -261,11 +261,12 @@ export class ArtifactAction {
       // rx-forms buttonVariants base (verbatim)
       "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       // variant: ghost (verbatim)
-      'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+      'hover:bg-accent dark:hover:bg-accent/50',
       // size: icon-sm (verbatim)
       'size-8',
-      // ArtifactAction overlay (verbatim)
-      'text-muted-foreground hover:text-foreground',
+      // ArtifactAction overlay: secondary text at rest; hover changes only the
+      // background (React ArtifactAction, verbatim)
+      'text-secondary-foreground',
       this.class(),
     ),
   );
@@ -286,7 +287,7 @@ export interface ArtifactViewOption {
  */
 @Component({
   selector: 'artifact-view-toggle',
-  imports: [NgIcon],
+  imports: [NgIcon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger],
   providers: [provideIcons(ARTIFACT_ICONS)],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'data-slot': 'artifact-view-toggle' },
@@ -295,19 +296,26 @@ export interface ArtifactViewOption {
       class="mr-1 inline-flex items-center rounded-md border border-input bg-background p-0.5"
       role="group"
     >
-      @for (o of options(); track o.value) {
-        <button
-          type="button"
-          [attr.aria-label]="o.label"
-          [attr.aria-pressed]="o.value === value()"
-          (click)="select(o.value)"
-          class="inline-flex size-7 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground"
-          [class.bg-accent]="o.value === value()"
-          [class.text-accent-foreground]="o.value === value()"
-        >
-          <ng-icon [name]="o.icon" class="text-base" aria-hidden="true" />
-        </button>
-      }
+      <gr-tooltip-provider>
+        @for (o of options(); track o.value) {
+          <gr-tooltip>
+            <gr-tooltip-trigger>
+              <button
+                type="button"
+                [attr.aria-label]="o.label"
+                [attr.aria-pressed]="o.value === value()"
+                (click)="select(o.value)"
+                class="inline-flex size-7 items-center justify-center rounded-sm text-secondary-foreground transition-colors hover:bg-muted"
+                [class.bg-accent]="o.value === value()"
+                [class.text-accent-foreground]="o.value === value()"
+              >
+                <ng-icon [name]="o.icon" class="text-base" aria-hidden="true" />
+              </button>
+            </gr-tooltip-trigger>
+            <gr-tooltip-content>{{ o.label }}</gr-tooltip-content>
+          </gr-tooltip>
+        }
+      </gr-tooltip-provider>
     </div>
   `,
 })
@@ -340,21 +348,28 @@ export type ArtifactMenuEntry = ArtifactMenuItem | 'separator';
  */
 @Component({
   selector: 'artifact-menu',
-  imports: [NgIcon],
+  imports: [NgIcon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger],
   providers: [provideIcons(ARTIFACT_ICONS)],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'data-slot': 'artifact-menu', class: 'relative inline-flex' },
   template: `
-    <button
-      type="button"
-      [attr.aria-label]="label()"
-      [attr.aria-expanded]="open()"
-      aria-haspopup="menu"
-      (click)="toggle()"
-      class="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-    >
-      <ng-icon [name]="icon()" class="text-base" aria-hidden="true" />
-    </button>
+    <gr-tooltip-provider>
+      <gr-tooltip>
+        <gr-tooltip-trigger>
+          <button
+            type="button"
+            [attr.aria-label]="label()"
+            [attr.aria-expanded]="open()"
+            aria-haspopup="menu"
+            (click)="toggle()"
+            class="inline-flex size-8 items-center justify-center rounded-md text-secondary-foreground transition-colors hover:bg-accent"
+          >
+            <ng-icon [name]="icon()" class="text-base" aria-hidden="true" />
+          </button>
+        </gr-tooltip-trigger>
+        <gr-tooltip-content>{{ label() }}</gr-tooltip-content>
+      </gr-tooltip>
+    </gr-tooltip-provider>
 
     @if (open()) {
       <!-- backdrop closes on outside click; a button so it is keyboard-reachable -->
