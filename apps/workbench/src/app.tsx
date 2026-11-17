@@ -563,23 +563,25 @@ export function App() {
                     </h2>
                   </div>
                   <ScrollArea className="min-h-0 flex-1">
-                    <div className="p-4">
-                      {entry.controls.length === 0 ? (
-                        <p className="text-muted-foreground text-xs">
-                          No interactive props for this component.
-                        </p>
-                      ) : (
-                        <PropertyGroup>
-                          {entry.controls.map((c) => (
-                            <PropField
-                              key={c.name}
-                              control={c}
-                              meta={metaByName.get(c.name)}
-                              value={values[c.name]}
-                              onChange={(v) => set(c.name, v)}
-                            />
-                          ))}
-                        </PropertyGroup>
+                    <div className="space-y-4 p-4">
+                      <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 font-mono text-[11px] text-foreground leading-relaxed">
+                        {entry.anatomy.trim()}
+                      </pre>
+                      <Separator />
+                      <p className="text-muted-foreground text-xs leading-relaxed">
+                        {entry.guidance.summary}
+                      </p>
+                      <GuidanceList
+                        title="Use when"
+                        items={entry.guidance.whenToUse}
+                        tone="do"
+                      />
+                      {whenNot && whenNot.length > 0 && (
+                        <GuidanceList
+                          title="Avoid when"
+                          items={whenNot}
+                          tone="dont"
+                        />
                       )}
                     </div>
                   </ScrollArea>
@@ -600,21 +602,24 @@ export function App() {
                     </Button>
                   </div>
                   <ScrollArea className="min-h-0 flex-1">
-                    <div className="space-y-4 p-4">
-                      {entry.controls.length === 0 && (
+                    <div className="p-4">
+                      {entry.controls.length === 0 ? (
                         <p className="text-muted-foreground text-xs">
                           No interactive props for this component.
                         </p>
+                      ) : (
+                        <PropertyGroup>
+                          {entry.controls.map((c) => (
+                            <PropField
+                              key={c.name}
+                              control={c}
+                              meta={metaByName.get(c.name)}
+                              value={values[c.name]}
+                              onChange={(v) => set(c.name, v)}
+                            />
+                          ))}
+                        </PropertyGroup>
                       )}
-                      {entry.controls.map((c) => (
-                        <PropField
-                          key={c.name}
-                          control={c}
-                          meta={metaByName.get(c.name)}
-                          value={values[c.name]}
-                          onChange={(v) => set(c.name, v)}
-                        />
-                      ))}
                     </div>
                   </ScrollArea>
                 </div>
