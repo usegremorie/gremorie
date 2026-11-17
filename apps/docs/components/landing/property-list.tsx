@@ -43,9 +43,11 @@ const ROW =
   'min-h-10 flex-nowrap gap-3 rounded-none border-0 px-3 py-1 hover:bg-foreground/5 [&_[data-slot=item-title]]:block [&_[data-slot=item-title]]:w-full [&_[data-slot=item-title]]:truncate [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
 
 function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
+  // 16px, as menu icons and the 32px controls. The size goes on the svg:
+  // ItemMedia "icon" sizes any svg without a size-* class to 24px.
   return (
-    <ItemMedia className="text-muted-foreground [&_svg]:size-4">
-      <Icon />
+    <ItemMedia className="text-muted-foreground">
+      <Icon className="size-4" />
     </ItemMedia>
   );
 }
@@ -67,9 +69,8 @@ export function PropertyGroup({
         {rows.map((row, i) => (
           <Fragment key={i}>
             {i > 0 && (
-              // Starts where the text starts: 12px side + 24px icon box
-              // (ItemMedia icon) + 12px gap.
-              <ItemSeparator className="my-0 ml-12 w-auto bg-foreground/8" />
+              // Starts where the text starts: 12px side + 16px icon + 12px gap.
+              <ItemSeparator className="my-0 ml-10 w-auto bg-foreground/8" />
             )}
             {row}
           </Fragment>
