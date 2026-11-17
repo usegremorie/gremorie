@@ -973,13 +973,10 @@ const COMPACT_SELECT_TRIGGER =
                 size="sm"
                 label="Chat"
                 tooltip="Chat"
-                [class]="
-                  'gap-2 pr-2.5 pl-3 @max-xl/assistant:px-0! ' +
-                  compactIconButton
-                "
+                class="gap-2 pr-2.5 pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
               >
-                <span class="@max-xl/assistant:hidden">Chat</span>
-                <span class="flex @max-xl/assistant:hidden">
+                <span class="@max-md/prompt-input:hidden">Chat</span>
+                <span class="flex @max-md/prompt-input:hidden">
                   <ng-icon
                     name="lucideCornerDownLeft"
                     class="size-4"
@@ -994,7 +991,7 @@ const COMPACT_SELECT_TRIGGER =
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   aria-hidden="true"
-                  class="hidden size-4 @max-xl/assistant:block"
+                  class="hidden size-4 @max-md/prompt-input:block"
                 >
                   <path d="m5 12 7-7 7 7" />
                   <path d="M12 19V5" />

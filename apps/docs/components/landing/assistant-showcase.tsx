@@ -3,26 +3,35 @@
 import { CodeBlock } from '@gremorie/rx-artifacts';
 import { Card } from '@gremorie/rx-display';
 import {
-  Input,
-  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Switch,
+  ToggleGroup,
+  ToggleGroupItem,
 } from '@gremorie/rx-forms';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@gremorie/rx-navigation';
 import { TooltipProvider } from '@gremorie/rx-overlays';
-import { PaletteIcon } from 'lucide-react';
+import {
+  AtSignIcon,
+  EllipsisIcon,
+  GaugeIcon,
+  MessageSquareIcon,
+  PaletteIcon,
+  SparklesIcon,
+  TelescopeIcon,
+  TextCursorInputIcon,
+  type LucideIcon,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { CommandLine } from '@/components/landing/command-line';
+import {
+  PropertyGroup,
+  PropertySelect,
+  PropertySwitch,
+  PropertyText,
+} from '@/components/landing/property-list';
 import {
   Assistant,
   type AssistantView,
@@ -45,12 +54,23 @@ import {
 // The four composer parts the block lets you strip, in the order they appear
 // in the composer: header first (mentions, meter), then the footer selects.
 // Labels match the contract prop names so the panel and the snippet agree.
-const COMPOSER_PARTS = [
-  { key: 'mentions', label: 'Mentions (@)' },
-  { key: 'contextMeter', label: 'Context meter' },
-  { key: 'modeSelect', label: 'Mode select' },
-  { key: 'modelSelect', label: 'Model select' },
-] as const;
+const COMPOSER_PARTS: readonly {
+  key: 'mentions' | 'contextMeter' | 'modeSelect' | 'modelSelect';
+  label: string;
+  icon: LucideIcon;
+}[] = [
+  { key: 'mentions', label: 'Mentions (@)', icon: AtSignIcon },
+  { key: 'contextMeter', label: 'Context meter', icon: GaugeIcon },
+  { key: 'modeSelect', label: 'Mode select', icon: TelescopeIcon },
+  { key: 'modelSelect', label: 'Model select', icon: SparklesIcon },
+];
+
+type ToolsCollapse = 'auto' | 'always' | 'never';
+const TOOLS_OPTIONS: { value: ToolsCollapse; label: string }[] = [
+  { value: 'auto', label: 'Auto' },
+  { value: 'never', label: 'Inline' },
+  { value: 'always', label: 'Menu' },
+];
 
 type PartKey = (typeof COMPOSER_PARTS)[number]['key'];
 type Parts = Record<PartKey, boolean>;
@@ -84,10 +104,17 @@ type ShowcaseProps = {
   view: AssistantView;
   placeholder: string;
   parts: Parts;
+  tools: ToolsCollapse;
   theme: string;
 };
 
-function reactCode({ view, placeholder, parts, theme }: ShowcaseProps): string {
+function reactCode({
+  view,
+  placeholder,
+  parts,
+  tools,
+  theme,
+}: ShowcaseProps): string {
   // The theme is a token set activated on the app root, not a component prop.
   const shell =
     theme !== 'default'
@@ -101,6 +128,7 @@ function reactCode({ view, placeholder, parts, theme }: ShowcaseProps): string {
   for (const part of COMPOSER_PARTS) {
     if (!parts[part.key]) props.push(`${part.key}={false}`);
   }
+  if (tools !== 'auto') props.push(`toolsCollapse="${tools}"`);
 
   const tag =
     props.length === 0
@@ -118,6 +146,7 @@ function angularCode({
   view,
   placeholder,
   parts,
+  tools,
   theme,
 }: ShowcaseProps): string {
   // The Angular edition exposes the same props as real inputs on the
@@ -133,6 +162,7 @@ function angularCode({
   for (const part of COMPOSER_PARTS) {
     if (!parts[part.key]) attrs.push(`[${part.key}]="false"`);
   }
+  if (tools !== 'auto') attrs.push(`toolsCollapse="${tools}"`);
   const tag =
     attrs.length === 0
       ? '<ai-assistant />'
@@ -148,6 +178,8 @@ export function AssistantShowcase() {
   const [placeholder, setPlaceholder] = useState(DEFAULTS.placeholder);
   const [parts, setParts] = useState<Parts>(ALL_ON);
   const [theme, setTheme] = useState('default');
+  const [tools, setTools] = useState<ToolsCollapse>('auto');
+  const [edition, setEdition] = useState<'react' | 'angular'>('react');
 
   // Brand themes are token sets scoped to the root element (`:root[data-theme]`),
   // so a selection re-themes the document; cleaned up on unmount/restore.
@@ -165,7 +197,7 @@ export function AssistantShowcase() {
     };
   }, [theme]);
 
-  const props: ShowcaseProps = { view, placeholder, parts, theme };
+  const props: ShowcaseProps = { view, placeholder, parts, tools, theme };
 
   return (
     <TooltipProvider>
@@ -176,87 +208,75 @@ export function AssistantShowcase() {
           aria-hidden="true"
           className="-z-10 pointer-events-none absolute inset-x-0 top-0 mx-auto size-[520px] rounded-full bg-primary/10 blur-[120px]"
         />
-        <Card className="grid gap-0 overflow-hidden p-0 shadow-lg lg:grid-cols-[minmax(0,15rem)_minmax(0,22rem)_minmax(0,1fr)]">
-          {/* Panel 1 - Properties */}
-          <div className="flex flex-col gap-4 border-b p-5 lg:border-r lg:border-b-0">
-            <h3 className="font-semibold text-sm">Properties</h3>
-
-            <div className="space-y-1.5">
-              <Label className="text-xs">Starting view</Label>
-              <Tabs
-                value={view}
+        <Card className="grid gap-0 overflow-hidden p-0 shadow-lg lg:grid-cols-[minmax(0,17rem)_minmax(0,22rem)_minmax(0,1fr)]">
+          {/* Panel 1 - Properties: a settings list (Item rows), one control
+              per row: switch, compact select, or a value edited in a popover. */}
+          <div className="flex flex-col gap-5 border-b p-4 lg:border-r lg:border-b-0">
+            <PropertyGroup title="Assistant">
+              <PropertySelect
+                icon={MessageSquareIcon}
+                label="Starting view"
                 onValueChange={(v) => setView(v as AssistantView)}
-              >
-                <TabsList className="grid h-8 w-full grid-cols-2">
-                  <TabsTrigger value="filled" className="text-xs">
-                    Conversation
-                  </TabsTrigger>
-                  <TabsTrigger value="empty" className="text-xs">
-                    New chat
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label htmlFor="showcase-placeholder" className="text-xs">
-                Composer placeholder
-              </Label>
-              <Input
-                id="showcase-placeholder"
-                className="h-8"
-                value={placeholder}
-                onChange={(e) => setPlaceholder(e.target.value)}
+                options={[
+                  { value: 'filled', label: 'Conversation' },
+                  { value: 'empty', label: 'New chat' },
+                ]}
+                value={view}
               />
-            </div>
+              <PropertyText
+                icon={TextCursorInputIcon}
+                id="showcase-placeholder"
+                label="Placeholder"
+                onValueChange={setPlaceholder}
+                value={placeholder}
+              />
+            </PropertyGroup>
 
-            {/* Booleans, not value pickers. Choosing "Research" from a list
-                only re-seeds a select the block already owns - the reader
-                learns nothing about the API. Switching a part off changes the
-                composer in front of them AND changes the snippet, which is
-                what a props panel is for. */}
-            <div className="space-y-2.5">
-              <Label className="text-xs">Composer parts</Label>
+            {/* Booleans, not value pickers: switching a part off changes the
+                composer in front of the reader AND the snippet, which is what
+                a props panel is for. */}
+            <PropertyGroup title="Composer">
               {COMPOSER_PARTS.map((part) => (
-                <div
+                <PropertySwitch
+                  checked={parts[part.key]}
+                  icon={part.icon}
+                  id={`showcase-${part.key}`}
                   key={part.key}
-                  className="flex items-center justify-between gap-3"
-                >
-                  <label
-                    htmlFor={`showcase-${part.key}`}
-                    className="text-muted-foreground text-xs"
-                  >
-                    {part.label}
-                  </label>
-                  <Switch
-                    id={`showcase-${part.key}`}
-                    size="sm"
-                    checked={parts[part.key]}
-                    onCheckedChange={(on) =>
-                      setParts((p) => ({ ...p, [part.key]: on }))
-                    }
-                  />
-                </div>
+                  label={part.label}
+                  onCheckedChange={(on) =>
+                    setParts((p) => ({ ...p, [part.key]: on }))
+                  }
+                />
               ))}
-            </div>
+              <PropertySelect
+                icon={EllipsisIcon}
+                label="Tools"
+                onValueChange={(v) => setTools(v as ToolsCollapse)}
+                options={TOOLS_OPTIONS}
+                value={tools}
+              />
+            </PropertyGroup>
           </div>
 
           {/* Panel 2 - Code (React | Angular) + install */}
           <div className="flex min-w-0 flex-col border-b lg:border-r lg:border-b-0">
-            <Tabs
-              defaultValue="react"
-              className="flex min-h-0 flex-1 flex-col gap-0"
-            >
+            <div className="flex min-h-0 flex-1 flex-col">
               <div className="flex h-12 shrink-0 items-center justify-between border-b px-4">
                 <span className="font-semibold text-sm">Code</span>
-                <TabsList className="h-8">
-                  <TabsTrigger value="react" className="text-xs">
-                    React
-                  </TabsTrigger>
-                  <TabsTrigger value="angular" className="text-xs">
-                    Angular
-                  </TabsTrigger>
-                </TabsList>
+                {/* One edition at a time: a toggle group, not tabs. */}
+                <ToggleGroup
+                  aria-label="Edition"
+                  onValueChange={(v) =>
+                    v && setEdition(v as 'react' | 'angular')
+                  }
+                  size="sm"
+                  type="single"
+                  value={edition}
+                  variant="outline"
+                >
+                  <ToggleGroupItem value="react">React</ToggleGroupItem>
+                  <ToggleGroupItem value="angular">Angular</ToggleGroupItem>
+                </ToggleGroup>
               </div>
               {/* Install first, then the code it enables. The commands used to
                   sit at the foot of the panel, below a snippet that already
@@ -284,27 +304,16 @@ export function AssistantShowcase() {
                   w-full already but sizes its height to the snippet, so four
                   short lines left the rest of the column empty and the box read
                   as a stray card instead of the panel's content. */}
-              <TabsContent
-                value="react"
-                className="m-0 flex min-h-0 flex-1 flex-col overflow-auto p-3"
-              >
+              <div className="m-0 flex min-h-0 flex-1 flex-col overflow-auto p-3">
                 <CodeBlock
                   className="h-full"
-                  code={reactCode(props)}
-                  language="tsx"
+                  code={
+                    edition === 'react' ? reactCode(props) : angularCode(props)
+                  }
+                  language={edition === 'react' ? 'tsx' : 'html'}
                 />
-              </TabsContent>
-              <TabsContent
-                value="angular"
-                className="m-0 flex min-h-0 flex-1 flex-col overflow-auto p-3"
-              >
-                <CodeBlock
-                  className="h-full"
-                  code={angularCode(props)}
-                  language="html"
-                />
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
           </div>
 
           {/* Panel 3 - live Preview + theme bar */}
@@ -349,6 +358,7 @@ export function AssistantShowcase() {
                 contextMeter={parts.contextMeter}
                 modeSelect={parts.modeSelect}
                 modelSelect={parts.modelSelect}
+                toolsCollapse={tools}
               />
             </div>
           </div>

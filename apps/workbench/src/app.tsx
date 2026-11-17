@@ -45,6 +45,12 @@ import { ITEMS } from '@gremorie/registry/dist/items.js';
 
 import { cn } from '@gremorie/rx-core';
 import { type ShowcaseView } from './nav';
+import {
+  PropertyGroup,
+  PropertySelect,
+  PropertySwitch,
+  PropertyText,
+} from './property-list';
 import { Sidebar } from './sidebar';
 
 /**
@@ -200,9 +206,9 @@ function PropInfo({ text }: { text: string }) {
   );
 }
 
-/** One playground row: just the name + control. Type is implied by the control
- *  (a text box is a string, a dropdown shows its options on open); the optional
- *  description lives behind an info icon. Required props get a subtle marker. */
+/** One playground row, Luma-style: the name on the left (required marker and
+ *  info tip beside it) and the control on the right. Type is implied by the
+ *  control: a switch, a compact select, or a value edited in a popover. */
 function PropField({
   control,
   meta,
@@ -214,61 +220,51 @@ function PropField({
   value: string | number | boolean | undefined;
   onChange: (v: string | number | boolean) => void;
 }) {
-  const labelRow = (
-    <div className="flex items-center gap-1">
-      <Label className="font-medium text-foreground text-xs">
-        {control.name}
-      </Label>
+  const id = `prop-${control.name}`;
+  const label = (
+    <span className="flex min-w-0 items-center gap-1">
+      <span className="truncate">{control.name}</span>
       {meta?.required && (
         <span className="text-[10px] text-rose-500 leading-none">*</span>
       )}
       {(meta?.description ?? control.desc) && (
         <PropInfo text={meta?.description ?? control.desc ?? ''} />
       )}
-    </div>
+    </span>
   );
 
   if (control.kind === 'toggle') {
     return (
-      <div className="flex items-center justify-between gap-2">
-        {labelRow}
-        <Switch checked={Boolean(value)} onCheckedChange={onChange} />
-      </div>
+      <PropertySwitch
+        ariaLabel={control.name}
+        checked={Boolean(value)}
+        id={id}
+        label={label}
+        onCheckedChange={onChange}
+      />
     );
   }
   if (control.kind === 'select') {
     return (
-      <div className="space-y-1.5">
-        {labelRow}
-        <Select value={String(value ?? '')} onValueChange={onChange}>
-          <SelectTrigger className="h-8 w-full" size="sm">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {control.options?.map((o) => (
-              <SelectItem key={o} value={o}>
-                {o}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <PropertySelect
+        ariaLabel={control.name}
+        id={id}
+        label={label}
+        onValueChange={onChange}
+        options={control.options ?? []}
+        value={String(value ?? '')}
+      />
     );
   }
   return (
-    <div className="space-y-1.5">
-      {labelRow}
-      <Input
-        type={control.kind === 'number' ? 'number' : 'text'}
-        className="h-8"
-        value={String(value ?? '')}
-        onChange={(e) =>
-          onChange(
-            control.kind === 'number' ? Number(e.target.value) : e.target.value,
-          )
-        }
-      />
-    </div>
+    <PropertyText
+      ariaLabel={control.name}
+      id={id}
+      label={label}
+      onValueChange={(v) => onChange(control.kind === 'number' ? Number(v) : v)}
+      type={control.kind === 'number' ? 'number' : 'text'}
+      value={String(value ?? '')}
+    />
   );
 }
 
@@ -567,25 +563,23 @@ export function App() {
                     </h2>
                   </div>
                   <ScrollArea className="min-h-0 flex-1">
-                    <div className="space-y-4 p-4">
-                      <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 font-mono text-[11px] text-foreground leading-relaxed">
-                        {entry.anatomy.trim()}
-                      </pre>
-                      <Separator />
-                      <p className="text-muted-foreground text-xs leading-relaxed">
-                        {entry.guidance.summary}
-                      </p>
-                      <GuidanceList
-                        title="Use when"
-                        items={entry.guidance.whenToUse}
-                        tone="do"
-                      />
-                      {whenNot && whenNot.length > 0 && (
-                        <GuidanceList
-                          title="Avoid when"
-                          items={whenNot}
-                          tone="dont"
-                        />
+                    <div className="p-4">
+                      {entry.controls.length === 0 ? (
+                        <p className="text-muted-foreground text-xs">
+                          No interactive props for this component.
+                        </p>
+                      ) : (
+                        <PropertyGroup>
+                          {entry.controls.map((c) => (
+                            <PropField
+                              key={c.name}
+                              control={c}
+                              meta={metaByName.get(c.name)}
+                              value={values[c.name]}
+                              onChange={(v) => set(c.name, v)}
+                            />
+                          ))}
+                        </PropertyGroup>
                       )}
                     </div>
                   </ScrollArea>

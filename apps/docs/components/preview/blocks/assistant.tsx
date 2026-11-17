@@ -398,16 +398,15 @@ function Composer({
             <PromptInputSubmit
               aria-label="Chat"
               tooltip="Chat"
-              className={cn(
-                'gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3 @max-xl/assistant:px-0!',
-                COMPACT_ICON_BUTTON,
-              )}
+              // The label goes when the composer itself is narrow (< 28rem,
+              // as the tools collapse), not when the whole card is.
+              className="gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
               size="sm"
               status={status}
             >
-              <span className="@max-xl/assistant:hidden">Chat</span>
-              <CornerDownLeftIcon className="size-4 @max-xl/assistant:hidden" />
-              <ArrowUpIcon className="hidden size-4 @max-xl/assistant:block" />
+              <span className="@max-md/prompt-input:hidden">Chat</span>
+              <CornerDownLeftIcon className="size-4 @max-md/prompt-input:hidden" />
+              <ArrowUpIcon className="hidden size-4 @max-md/prompt-input:block" />
             </PromptInputSubmit>
           ) : (
             <PromptInputSubmit status={status} tooltip="Send">
