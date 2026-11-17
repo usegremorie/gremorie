@@ -134,7 +134,7 @@ export function PropertySelect({
         <Select onValueChange={onValueChange} value={value}>
           <SelectTrigger
             aria-label={label}
-            className="-mr-2 h-7 min-w-0 gap-1 border-none bg-transparent px-2 text-muted-foreground shadow-none hover:bg-foreground/5 dark:bg-transparent"
+            className="-mr-2 h-7 min-w-0 gap-1 border-none data-[size=sm]:h-7 bg-transparent px-2 text-muted-foreground shadow-none hover:bg-foreground/5 dark:bg-transparent"
             size="sm"
           >
             <SelectValue />
