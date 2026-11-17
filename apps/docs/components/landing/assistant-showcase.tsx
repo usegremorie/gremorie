@@ -1,6 +1,7 @@
 'use client';
 
 import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
+import { cn } from '@gremorie/rx-core';
 import { Card, CardHeader } from '@gremorie/rx-display';
 import { TooltipProvider } from '@gremorie/rx-overlays';
 import {
@@ -8,6 +9,7 @@ import {
   EllipsisIcon,
   GaugeIcon,
   MessageSquareIcon,
+  MonitorSmartphoneIcon,
   PanelBottomIcon,
   SparklesIcon,
   TelescopeIcon,
@@ -76,6 +78,12 @@ const TOOLS_OPTIONS: { value: ToolsCollapse; label: string }[] = [
   { value: 'auto', label: 'Auto' },
   { value: 'never', label: 'Inline' },
   { value: 'always', label: 'Menu' },
+];
+
+type Viewport = 'desktop' | 'mobile';
+const VIEWPORT_OPTIONS: { value: Viewport; label: string }[] = [
+  { value: 'desktop', label: 'Desktop' },
+  { value: 'mobile', label: 'Mobile' },
 ];
 
 type ComposerLayout = 'stacked' | 'inline';
@@ -159,6 +167,8 @@ export function AssistantShowcase() {
   const [tools, setTools] = useState<ToolsCollapse>('auto');
   const [layout, setLayout] = useState<ComposerLayout>('stacked');
   const [edition, setEdition] = useState<Framework>('react');
+  // Preview only (not a prop, never in the snippet): the block's width.
+  const [viewport, setViewport] = useState<Viewport>('desktop');
 
   const props: ShowcaseProps = { view, placeholder, parts, tools, layout };
 
@@ -174,6 +184,16 @@ export function AssistantShowcase() {
           <div className="flex min-w-0 flex-col gap-6">
             <Card className="gap-5 p-4">
               <PropertyGroup title="Assistant">
+                {/* Preview width, not a prop: Mobile renders the block at a
+                    phone's 390px, where its own container queries switch it
+                    to compact. Not emitted in the code. */}
+                <PropertySelect
+                  icon={MonitorSmartphoneIcon}
+                  label="Viewport"
+                  onValueChange={(v) => setViewport(v as Viewport)}
+                  options={VIEWPORT_OPTIONS}
+                  value={viewport}
+                />
                 <PropertySelect
                   icon={MessageSquareIcon}
                   label="Starting view"
@@ -261,7 +281,12 @@ export function AssistantShowcase() {
               that seed initial state (view) so it resets to them. */}
           <div className="relative min-h-[680px]">
             <Assistant
-              className="h-[680px] max-w-none lg:absolute lg:inset-0 lg:h-auto"
+              className={cn(
+                'h-[680px] max-w-none lg:absolute lg:inset-0 lg:h-auto',
+                // Mobile: a phone-wide column, centered in the preview area.
+                viewport === 'mobile' &&
+                  'w-[390px] lg:right-auto lg:left-[calc(50%-195px)]',
+              )}
               composerLayout={layout}
               contextMeter={parts.contextMeter}
               initialView={view}
