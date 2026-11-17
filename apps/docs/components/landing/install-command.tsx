@@ -81,11 +81,11 @@ export function InstallCommand({
 
 // The underline sits ON the divider below the tabs (the card header's
 // border-b, or the command box's top border), as Fumadocs and Radix Themes
-// draw it: full-height trigger, line moved 1px down over the border and
-// painted above the next block. The `line` variant's default (5px below a
-// padded list) left it floating, or under the command box.
+// draw it. ::after is placed from the trigger's padding box, and the trigger
+// has a 1px (transparent) border, so -2px puts the 2px line exactly over the
+// trigger's border plus the 1px divider. Painted above the next block.
 const TRIGGER =
-  'h-full flex-none px-0 py-2 text-sm font-medium after:z-10 group-data-[orientation=horizontal]/tabs:after:bottom-[-1px]';
+  'h-full flex-none px-0 py-2 text-sm font-medium after:z-10 group-data-[orientation=horizontal]/tabs:after:bottom-[-2px]';
 
 /**
  * React | Angular switch: the DS `line` Tabs, text plus an underline on the
