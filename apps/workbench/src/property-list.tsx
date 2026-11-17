@@ -139,7 +139,7 @@ export function PropertyText({
 }) {
   return (
     <Item className={ROW} size="sm">
-      <ItemContent className="min-w-0 max-w-[60%] shrink-0">
+      <ItemContent className="min-w-0 max-w-[60%] flex-none">
         <ItemTitle>{label}</ItemTitle>
       </ItemContent>
       <ItemActions className="ml-auto min-w-0 flex-1 justify-end">
