@@ -231,7 +231,7 @@ export function AssistantShowcase() {
                 whatever the props produce; it scrolls both ways, with the
                 bars showing on hover. */}
             <Card className="gap-0 overflow-hidden py-0">
-              <CardHeader className="border-b px-4 [.border-b]:pb-0">
+              <CardHeader className="block border-b px-4 [.border-b]:pb-0">
                 <FrameworkTabs onValueChange={setEdition} value={edition} />
               </CardHeader>
               <div className="flex flex-col gap-3 p-4">
