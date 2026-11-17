@@ -601,7 +601,9 @@ export function App() {
                       Reset
                     </Button>
                   </div>
-                  <ScrollArea className="min-h-0 flex-1">
+                  {/* Radix renders the viewport content as display:table, which grows to
+                      the content's width; block keeps the rows inside the panel. */}
+                  <ScrollArea className="min-h-0 flex-1 [&_[data-slot=scroll-area-viewport]>div]:!block">
                     <div className="p-4">
                       {entry.controls.length === 0 ? (
                         <p className="text-muted-foreground text-xs">
