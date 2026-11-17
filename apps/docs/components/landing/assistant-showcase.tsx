@@ -237,20 +237,25 @@ export function AssistantShowcase() {
             </Card>
           </div>
 
-          {/* Right column: the block itself, filling the column. Remount on
-              the props that seed initial state (view) so it resets to them. */}
-          <Assistant
-            className="h-full min-h-[680px] max-w-none"
-            composerLayout={layout}
-            contextMeter={parts.contextMeter}
-            initialView={view}
-            key={view}
-            mentions={parts.mentions}
-            modelSelect={parts.modelSelect}
-            modeSelect={parts.modeSelect}
-            placeholder={placeholder}
-            toolsCollapse={tools}
-          />
+          {/* Right column: the block itself. On large screens the left
+              column sets the row height (680px at least) and the Assistant
+              fills it, scrolling its thread inside, instead of a long
+              conversation stretching the whole section. Remount on the props
+              that seed initial state (view) so it resets to them. */}
+          <div className="relative min-h-[680px]">
+            <Assistant
+              className="h-[680px] max-w-none lg:absolute lg:inset-0 lg:h-auto"
+              composerLayout={layout}
+              contextMeter={parts.contextMeter}
+              initialView={view}
+              key={view}
+              mentions={parts.mentions}
+              modelSelect={parts.modelSelect}
+              modeSelect={parts.modeSelect}
+              placeholder={placeholder}
+              toolsCollapse={tools}
+            />
+          </div>
         </div>
       </section>
     </TooltipProvider>
