@@ -67,8 +67,9 @@ export function PropertyGroup({
         {rows.map((row, i) => (
           <Fragment key={i}>
             {i > 0 && (
-              // Inset to the label: 12px side + 16px icon + 12px gap.
-              <ItemSeparator className="my-0 ml-10 w-auto bg-foreground/8" />
+              // Starts where the text starts: 12px side + 24px icon box
+              // (ItemMedia icon) + 12px gap.
+              <ItemSeparator className="my-0 ml-12 w-auto bg-foreground/8" />
             )}
             {row}
           </Fragment>
