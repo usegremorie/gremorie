@@ -372,6 +372,8 @@ Contrato de teclado embutido:
 
 Carrega `aria-label="Submit"`.
 
+Passe `label` (por exemplo `label="Chat"`) para um botão de enviar com texto: quando pronto, ele mostra o label com o ícone de enter, em `size="sm"`, e o label vira o seu nome acessível; enviando, em streaming ou com erro, volta ao botão só de ícone de status. `PromptInputButton`s só de ícone recebem `tooltip`, assim como o submit; o grupo de ferramentas fica sem gap (`<PromptInputTools className="gap-0">`) dentro da linha `gap-2` do footer, para o grupo ficar separado do botão de enviar.
+
 ### Família action menu
 
 `PromptInputActionMenu`, `PromptInputActionMenuTrigger`, `PromptInputActionMenuContent` e `PromptInputActionMenuItem` são wrappers finos em torno de `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent` e `DropdownMenuItem`. O trigger tem como padrão um `PromptInputButton` com um `PlusIcon`.

@@ -372,6 +372,8 @@ Built-in keyboard contract:
 
 Carries `aria-label="Submit"`.
 
+Pass `label` (e.g. `label="Chat"`) for a labelled send button: when ready it reads the label with the enter icon, at `size="sm"`, and the label becomes its accessible name; while submitting, streaming or on error it falls back to the icon-only status button. Icon-only `PromptInputButton`s take `tooltip`, and so does the submit; the tool group sits with no gap (`<PromptInputTools className="gap-0">`) inside the footer's `gap-2` row, so the group stays apart from the send button.
+
 ### Action menu family
 
 `PromptInputActionMenu`, `PromptInputActionMenuTrigger`, `PromptInputActionMenuContent` and `PromptInputActionMenuItem` are thin wrappers around `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent` and `DropdownMenuItem`. The trigger defaults to a `PromptInputButton` with a `PlusIcon`.

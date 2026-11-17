@@ -431,7 +431,7 @@ export const PromptInputActionAddAttachments = ({
         attachments.openFileDialog();
       }}
     >
-      <ImageIcon className="mr-2 size-4" /> {label}
+      <ImageIcon className="size-4" /> {label}
     </DropdownMenuItem>
   );
 };
@@ -1014,17 +1014,25 @@ export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
   status?: ChatStatus;
   /** Optional hover/focus tooltip, wrapped via the root `TooltipProvider`. */
   tooltip?: ReactNode;
+  /**
+   * Visible label (e.g. "Chat"). When ready, the button reads the label with
+   * the enter icon and the label is its accessible name; while submitting,
+   * streaming or on error it falls back to the icon-only status button.
+   */
+  label?: string;
 };
 
 export const PromptInputSubmit = ({
   className,
   variant = 'default',
-  size = 'icon-sm',
+  size,
   status,
   children,
   tooltip,
+  label,
   ...props
 }: PromptInputSubmitProps) => {
+  const labelled = Boolean(label) && (!status || status === 'ready');
   let Icon: ReactNode = <CornerDownLeftIcon className="size-4" />;
 
   if (status === 'submitted') {
@@ -1037,14 +1045,25 @@ export const PromptInputSubmit = ({
 
   const button = (
     <InputGroupButton
-      aria-label="Submit"
-      className={cn(className)}
-      size={size}
+      aria-label={labelled ? label : 'Submit'}
+      className={cn(
+        labelled && 'gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3',
+        className,
+      )}
+      size={size ?? (labelled ? 'sm' : 'icon-sm')}
       type="submit"
       variant={variant}
       {...props}
     >
-      {children ?? Icon}
+      {children ??
+        (labelled ? (
+          <>
+            <span>{label}</span>
+            <CornerDownLeftIcon className="size-4" />
+          </>
+        ) : (
+          Icon
+        ))}
     </InputGroupButton>
   );
 

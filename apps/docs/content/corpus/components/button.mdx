@@ -16,6 +16,7 @@ A button performs an action. A link navigates. One screen carries at most **one*
 3. **Destructive is its own hierarchy.** A destructive action (delete, remove, revoke) uses the destructive variant, never the primary. It is also rarely primary in flow: the safe action is.
 4. **Label = verb + object.** Imperative, 1-3 words: "Save changes", "Add member", "Discard draft". Avoid "OK", "Submit", "Click here".
 5. **Disabled state needs a reason.** Never disable a button without telling the user why. Show the missing requirement near the button, or replace disabled with a tooltip-explained reason.
+6. **Icon-only buttons are named twice.** An `aria-label` for assistive tech and a `Tooltip` with the same text for sighted users, composed on the screen. Ghost icon buttons that form one group sit with no gap between them; the group keeps `gap-2` from the next control.
 
 ## Why
 

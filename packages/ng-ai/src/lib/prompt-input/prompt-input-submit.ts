@@ -20,11 +20,12 @@ import { PromptInput } from './prompt-input';
 import { PromptInputState } from './prompt-input.types';
 
 const ICON_MAP: Record<PromptInputState, string> = {
-  ready: 'M5 12h14M13 5l7 7-7 7',
+  // lucide corner-down-left (enter), as React
+  ready: 'M9 10 4 15l5 5M20 4v7a4 4 0 0 1-4 4H4',
   submitted: '', // spinner — rendered via SVG below
   streaming: 'M6 6h12v12H6z',
-  error:
-    'M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z',
+  // lucide x, as React
+  error: 'M18 6 6 18M6 6l12 12',
 };
 
 const LABEL_MAP: Record<PromptInputState, string> = {
@@ -115,6 +116,9 @@ const submitVariants = cva(
               ></circle>
             </svg>
           } @else {
+            @if (labelled()) {
+              <span>{{ label() }}</span>
+            }
             <svg
               class="size-4"
               xmlns="http://www.w3.org/2000/svg"
@@ -149,11 +153,16 @@ export class PromptInputSubmit {
   readonly size = input<'icon-sm' | 'sm'>('icon-sm');
 
   /**
-   * Accessible name. Defaults to the state label ("Send message"…); set it when
-   * the button shows visible text, so the name contains that text. Mirrors
-   * React `aria-label`.
+   * Visible label (e.g. "Chat"). When ready, the button reads the label with
+   * the enter icon and the label is its accessible name; while submitting,
+   * streaming or on error it falls back to the icon-only status button.
+   * Mirrors React `label`.
    */
   readonly label = input<string | null>(null);
+
+  protected readonly labelled = computed(
+    () => !!this.label() && this.state() === 'ready',
+  );
 
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
@@ -174,14 +183,19 @@ export class PromptInputSubmit {
     () => this.disabled() || this.parent.disabled(),
   );
 
-  protected readonly ariaLabel = computed(
-    () => this.label() ?? LABEL_MAP[this.state()],
+  protected readonly ariaLabel = computed(() =>
+    this.labelled() ? (this.label() as string) : LABEL_MAP[this.state()],
   );
   protected readonly iconPath = computed(() => ICON_MAP[this.state()]);
 
   protected readonly buttonClass = computed(() =>
     cn(
-      submitVariants({ state: this.state(), size: this.size() }),
+      submitVariants({
+        state: this.state(),
+        // A labelled button grows to `sm` unless a size was set explicitly.
+        size: this.labelled() && this.size() === 'icon-sm' ? 'sm' : this.size(),
+      }),
+      this.labelled() && 'gap-2 pr-2.5 pl-3',
       this.class(),
     ),
   );

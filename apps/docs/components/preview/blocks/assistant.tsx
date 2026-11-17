@@ -65,7 +65,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
   TooltipProvider,
+  TooltipTrigger,
 } from '@gremorie/rx-overlays';
 import {
   ArchiveIcon,
@@ -342,7 +345,9 @@ function Composer({
           )}
         </PromptInputTools>
         <PromptInputTools className="gap-2">
-          <PromptInputTools>
+          {/* Ghost icon group: no gap between the icons; the outer gap-2
+              separates the group from the send button. */}
+          <PromptInputTools className="gap-0">
             <PromptInputButton
               active={webSearch}
               aria-label="Search the web"
@@ -357,8 +362,9 @@ function Composer({
           {newChat ? (
             <PromptInputSubmit
               aria-label="Chat"
+              tooltip="Chat"
               className={cn(
-                'gap-2 pr-2.5 pl-3 @max-xl/assistant:px-0!',
+                'gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3 @max-xl/assistant:px-0!',
                 COMPACT_ICON_BUTTON,
               )}
               size="sm"
@@ -538,22 +544,37 @@ export function Assistant({
 
           {/* Header actions: ghost icon buttons, no gap between them. */}
           <div className="flex items-center">
-            <Button aria-label="Sources" size="icon-sm" variant="ghost">
-              <LibraryIcon className="size-4" />
-            </Button>
-            <Button aria-label="Share" size="icon-sm" variant="ghost">
-              <Share2Icon className="size-4" />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  aria-label="More actions"
-                  size="icon-sm"
-                  variant="ghost"
-                >
-                  <EllipsisIcon className="size-4" />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button aria-label="Sources" size="icon-sm" variant="ghost">
+                  <LibraryIcon className="size-4" />
                 </Button>
-              </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent>Sources</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button aria-label="Share" size="icon-sm" variant="ghost">
+                  <Share2Icon className="size-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Share</TooltipContent>
+            </Tooltip>
+            <DropdownMenu>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      aria-label="More actions"
+                      size="icon-sm"
+                      variant="ghost"
+                    >
+                      <EllipsisIcon className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                </TooltipTrigger>
+                <TooltipContent>More actions</TooltipContent>
+              </Tooltip>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>
                   <ArchiveIcon className="size-4" /> Archive

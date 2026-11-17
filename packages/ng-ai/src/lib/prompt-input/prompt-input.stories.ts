@@ -168,7 +168,7 @@ const meta: Meta<PromptInput> = {
         <prompt-input-textarea placeholder="Ask anything…"></prompt-input-textarea>
         <prompt-input-toolbar>
           <prompt-input-tools></prompt-input-tools>
-          <prompt-input-submit></prompt-input-submit>
+          <prompt-input-submit label="Chat"></prompt-input-submit>
         </prompt-input-toolbar>
       </prompt-input>
     `,

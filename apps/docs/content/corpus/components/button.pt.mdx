@@ -16,6 +16,7 @@ Um button executa uma ação. Um link navega. Uma tela carrega no máximo **uma*
 3. **Destructive é sua própria hierarquia.** Uma ação destrutiva (delete, remove, revoke) usa a variant destructive, nunca a primária. Ela também raramente é primária no fluxo: a ação segura é.
 4. **Label = verbo + objeto.** Imperativo, 1-3 palavras: "Save changes", "Add member", "Discard draft". Evite "OK", "Submit", "Click here".
 5. **Estado disabled precisa de um motivo.** Nunca desabilite um button sem dizer ao usuário por quê. Mostre o requisito faltante perto do button, ou substitua o disabled por um motivo explicado em tooltip.
+6. **Button só de ícone tem nome duas vezes.** Um `aria-label` para tecnologia assistiva e um `Tooltip` com o mesmo texto para quem enxerga, montados na tela. Icon buttons ghost que formam um grupo ficam sem gap entre si; o grupo mantém `gap-2` em relação ao controle seguinte.
 
 ## Por que
 

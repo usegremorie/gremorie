@@ -96,11 +96,14 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
     <PromptInputFooter>
       <PromptInputTools>
         <PromptInputActionMenu>
-          <PromptInputActionMenuTrigger aria-label="More actions" />
+          <PromptInputActionMenuTrigger
+            aria-label="More actions"
+            tooltip="More actions"
+          />
           <PromptInputActionMenuContent>
             <PromptInputActionAddAttachments />
             <PromptInputActionMenuItem>
-              <MicIcon className="mr-2 size-4" /> Record voice
+              <MicIcon className="size-4" /> Record voice
             </PromptInputActionMenuItem>
           </PromptInputActionMenuContent>
         </PromptInputActionMenu>
@@ -125,7 +128,7 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
           </PromptInputSelectContent>
         </PromptInputSelect>
       </PromptInputTools>
-      <PromptInputSubmit status={status} />
+      <PromptInputSubmit label="Chat" status={status} />
     </PromptInputFooter>
   </PromptInput>
 );

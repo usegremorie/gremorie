@@ -27,6 +27,12 @@ import {
   lucideTelescope,
 } from '@ng-icons/lucide';
 import { ChartArtifact } from '@gremorie/ng-artifacts';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 import { BrnHoverCardContent } from '@spartan-ng/brain/hover-card';
 
 import {
@@ -151,6 +157,10 @@ const COMPACT_SELECT_TRIGGER =
   imports: [
     NgTemplateOutlet,
     NgIcon,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     BrnHoverCardContent,
@@ -287,68 +297,89 @@ const COMPACT_SELECT_TRIGGER =
 
       <!-- Header actions: ghost icon buttons, no gap between them. -->
       <div class="flex items-center">
-        <ai-button variant="ghost" size="icon" ariaLabel="Sources">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            class="size-4"
-          >
-            <path d="m16 6 4 14" />
-            <path d="M12 6v14" />
-            <path d="M8 8v12" />
-            <path d="M4 4v16" />
-          </svg>
-        </ai-button>
-        <ai-button variant="ghost" size="icon" ariaLabel="Share">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            class="size-4"
-          >
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
-            <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
-          </svg>
-        </ai-button>
+        <gr-tooltip-provider>
+          <gr-tooltip>
+            <gr-tooltip-trigger>
+              <ai-button variant="ghost" size="icon" ariaLabel="Sources">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="size-4"
+                >
+                  <path d="m16 6 4 14" />
+                  <path d="M12 6v14" />
+                  <path d="M8 8v12" />
+                  <path d="M4 4v16" />
+                </svg>
+              </ai-button>
+            </gr-tooltip-trigger>
+            <gr-tooltip-content>Sources</gr-tooltip-content>
+          </gr-tooltip>
+        </gr-tooltip-provider>
+        <gr-tooltip-provider>
+          <gr-tooltip>
+            <gr-tooltip-trigger>
+              <ai-button variant="ghost" size="icon" ariaLabel="Share">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="size-4"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+                  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+                </svg>
+              </ai-button>
+            </gr-tooltip-trigger>
+            <gr-tooltip-content>Share</gr-tooltip-content>
+          </gr-tooltip>
+        </gr-tooltip-provider>
         <div
           class="relative inline-flex"
           cdkOverlayOrigin
           #overflowOrigin="cdkOverlayOrigin"
         >
-          <ai-button
-            variant="ghost"
-            size="icon"
-            ariaLabel="More actions"
-            [attr.aria-expanded]="overflowMenuOpen()"
-            (pressedChange)="toggleOverflowMenu()"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              class="size-4"
-            >
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="19" cy="12" r="1" />
-              <circle cx="5" cy="12" r="1" />
-            </svg>
-          </ai-button>
+          <gr-tooltip-provider>
+            <gr-tooltip>
+              <gr-tooltip-trigger>
+                <ai-button
+                  variant="ghost"
+                  size="icon"
+                  ariaLabel="More actions"
+                  [attr.aria-expanded]="overflowMenuOpen()"
+                  (pressedChange)="toggleOverflowMenu()"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    class="size-4"
+                  >
+                    <circle cx="12" cy="12" r="1" />
+                    <circle cx="19" cy="12" r="1" />
+                    <circle cx="5" cy="12" r="1" />
+                  </svg>
+                </ai-button>
+              </gr-tooltip-trigger>
+              <gr-tooltip-content>More actions</gr-tooltip-content>
+            </gr-tooltip>
+          </gr-tooltip-provider>
           <ng-template
             cdkConnectedOverlay
             [cdkConnectedOverlayOrigin]="overflowOrigin"
@@ -838,7 +869,9 @@ const COMPACT_SELECT_TRIGGER =
           </prompt-input-tools>
 
           <prompt-input-tools class="gap-2">
-            <prompt-input-tools>
+            <!-- Ghost icon group: no gap between the icons; the outer gap-2
+                 separates the group from the send button. -->
+            <prompt-input-tools class="gap-0">
               <prompt-input-button
                 ariaLabel="Search the web"
                 tooltip="Search the web"
@@ -868,6 +901,7 @@ const COMPACT_SELECT_TRIGGER =
               <prompt-input-submit
                 size="sm"
                 label="Chat"
+                tooltip="Chat"
                 [class]="
                   'gap-2 pr-2.5 pl-3 @max-xl/assistant:px-0! ' +
                   compactIconButton
@@ -896,7 +930,7 @@ const COMPACT_SELECT_TRIGGER =
                 </svg>
               </prompt-input-submit>
             } @else {
-              <prompt-input-submit>
+              <prompt-input-submit tooltip="Send">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
