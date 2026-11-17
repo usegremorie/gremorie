@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
   output,
@@ -8,6 +9,12 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 
 import { CODE_BLOCK } from './code-block';
 
@@ -23,60 +30,77 @@ import { CODE_BLOCK } from './code-block';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [Tooltip, TooltipContent, TooltipProvider, TooltipTrigger],
+  // Icon-only, so it always carries a tooltip naming the action (as
+  // ArtifactAction does); the name follows the copied state.
   template: `
-    <button
-      type="button"
-      data-slot="button"
-      [class]="buttonClass"
-      (click)="copy()"
-      aria-label="Copy code"
-    >
-      <ng-content>
-        @if (isCopied()) {
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
+    <gr-tooltip-provider>
+      <gr-tooltip>
+        <gr-tooltip-trigger>
+          <button
+            type="button"
+            data-slot="button"
+            [class]="buttonClass"
+            (click)="copy()"
+            [attr.aria-label]="name()"
           >
-            <path d="M20 6 9 17l-5-5" />
-          </svg>
-        } @else {
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-          </svg>
-        }
-      </ng-content>
-    </button>
+            <ng-content>
+              @if (isCopied()) {
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              } @else {
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                  <path
+                    d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                  />
+                </svg>
+              }
+            </ng-content>
+          </button>
+        </gr-tooltip-trigger>
+        <gr-tooltip-content>{{ name() }}</gr-tooltip-content>
+      </gr-tooltip>
+    </gr-tooltip-provider>
   `,
 })
 export class CodeBlockCopyButton {
   readonly timeout = input<number>(2000);
+  /** Tooltip naming the action; reads "Copied" while the copied state lasts. */
+  readonly tooltip = input<string>('Copy code');
 
   readonly copied = output<void>();
   readonly errored = output<Error>();
 
   private readonly host = inject(CODE_BLOCK);
   protected readonly isCopied = signal(false);
+  protected readonly name = computed(() =>
+    this.isCopied() ? 'Copied' : this.tooltip(),
+  );
 
   protected readonly buttonClass = cn(
-    'shrink-0 inline-flex size-7 items-center justify-center rounded-md text-foreground/70 hover:bg-accent hover:text-accent-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+    'shrink-0 inline-flex size-8 items-center justify-center rounded-md text-foreground/70 hover:bg-accent hover:text-accent-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
   );
 
   protected async copy(): Promise<void> {

@@ -1,6 +1,6 @@
 'use client';
 
-import { CodeBlock } from '@gremorie/rx-artifacts';
+import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
 import { Card } from '@gremorie/rx-display';
 import { TooltipProvider } from '@gremorie/rx-overlays';
 import {
@@ -233,7 +233,9 @@ export function AssistantShowcase() {
                   edition === 'react' ? reactCode(props) : angularCode(props)
                 }
                 language={edition === 'react' ? 'tsx' : 'html'}
-              />
+              >
+                <CodeBlockCopyButton />
+              </CodeBlock>
             </Card>
           </div>
 

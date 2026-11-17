@@ -58,8 +58,13 @@ export const codeBlock = defineContract({
       name: 'timeout',
       type: 'number',
       default: 2000,
-      adapts: { ng: 'n/a (copy button uses a fixed reset delay)' },
       desc: 'CodeBlockCopyButton: ms before the copied state resets.',
+    },
+    {
+      name: 'tooltip',
+      type: 'string',
+      default: 'Copy code',
+      desc: 'CodeBlockCopyButton: tooltip and accessible name; reads "Copied" while the copied state lasts.',
     },
   ],
   guidance: {

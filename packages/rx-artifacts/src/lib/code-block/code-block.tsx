@@ -2,11 +2,18 @@
 
 import { Button } from '@gremorie/rx-forms';
 import { cn } from '@gremorie/rx-core';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/rx-overlays';
 import { CheckIcon, CopyIcon } from 'lucide-react';
 import {
   type ComponentProps,
   createContext,
   type HTMLAttributes,
+  type MouseEvent,
   useContext,
   useEffect,
   useRef,
@@ -145,12 +152,15 @@ export type CodeBlockCopyButtonProps = ComponentProps<typeof Button> & {
   onCopy?: () => void;
   onError?: (error: Error) => void;
   timeout?: number;
+  /** Tooltip naming the action; reads "Copied" while the copied state lasts. */
+  tooltip?: string;
 };
 
 export const CodeBlockCopyButton = ({
   onCopy,
   onError,
   timeout = 2000,
+  tooltip = 'Copy code',
   children,
   className,
   ...props
@@ -158,7 +168,10 @@ export const CodeBlockCopyButton = ({
   const [isCopied, setIsCopied] = useState(false);
   const { code } = useContext(CodeBlockContext);
 
-  const copyToClipboard = async () => {
+  const copyToClipboard = async (event?: MouseEvent<HTMLButtonElement>) => {
+    // Keep the tooltip open so it can say "Copied" (Radix closes it on a
+    // click unless the event is marked handled).
+    event?.preventDefault();
     if (typeof window === 'undefined' || !navigator?.clipboard?.writeText) {
       onError?.(new Error('Clipboard API not available'));
       return;
@@ -176,16 +189,38 @@ export const CodeBlockCopyButton = ({
 
   const Icon = isCopied ? CheckIcon : CopyIcon;
 
+  // Icon-only, so it always carries a tooltip naming the action (as
+  // ArtifactAction does); the name follows the copied state.
+  const name = isCopied ? 'Copied' : tooltip;
+  const buttonRef = useRef<HTMLButtonElement>(null);
   return (
-    <Button
-      aria-label="Copy code"
-      className={cn('shrink-0', className)}
-      onClick={copyToClipboard}
-      size="icon"
-      variant="ghost"
-      {...props}
-    >
-      {children ?? <Icon size={14} />}
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-label={name}
+            ref={buttonRef}
+            className={cn('shrink-0', className)}
+            onClick={copyToClipboard}
+            onPointerDown={(e) => e.preventDefault()}
+            size="icon"
+            variant="ghost"
+            {...props}
+          >
+            {children ?? <Icon size={14} />}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent
+          // A press on the button itself is not "outside": stay open so the
+          // tooltip can say "Copied".
+          onPointerDownOutside={(e) => {
+            if (buttonRef.current?.contains(e.target as Node))
+              e.preventDefault();
+          }}
+        >
+          {name}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
