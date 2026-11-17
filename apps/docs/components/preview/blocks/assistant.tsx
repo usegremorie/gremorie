@@ -292,7 +292,7 @@ function Composer({
         {meterInBody ? (
           <div className="flex w-full items-start">
             <PromptInputTextarea className="flex-1" placeholder={placeholder} />
-            <div className="shrink-0 pt-1 pr-3">{contextMeterEl}</div>
+            <div className="shrink-0 pt-1.5 pr-3">{contextMeterEl}</div>
           </div>
         ) : (
           <PromptInputTextarea placeholder={placeholder} />
