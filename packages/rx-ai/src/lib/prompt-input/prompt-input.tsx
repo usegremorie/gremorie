@@ -1255,12 +1255,12 @@ export const PromptInputActionMenuSwitchItem = ({
     {/* Same look as Switch (size sm); keep in lock-step with rx-forms. */}
     <span
       aria-hidden="true"
-      className="inline-flex h-3.5 w-6 shrink-0 items-center rounded-full border border-transparent transition-all data-[state=checked]:bg-primary data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+      className="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
       data-slot="switch"
       data-state={checked ? 'checked' : 'unchecked'}
     >
       <span
-        className="pointer-events-none block size-3 rounded-full bg-background transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
+        className="pointer-events-none block size-3 rounded-full bg-white shadow-sm transition-transform data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0"
         data-state={checked ? 'checked' : 'unchecked'}
       />
     </span>
