@@ -2,6 +2,7 @@ import { HomeLayout } from 'fumadocs-ui/layouts/home';
 
 import type { ReactNode } from 'react';
 
+import { SiteHeader } from '@/components/site-header';
 import { baseOptions } from '@/lib/layout.shared';
 
 /**
@@ -26,8 +27,16 @@ export default async function Layout({
   children: ReactNode;
 }) {
   const { lang } = await params;
+  const base = baseOptions(lang);
+  // The top bar is our own (Luma layout: logo left, icon nav centred,
+  // actions right; border and translucent surface only once scrolled). It
+  // keeps the 56px of Fumadocs' header, so nothing else shifts.
   return (
-    <HomeLayout i18n={false} {...baseOptions(lang)}>
+    <HomeLayout
+      i18n={false}
+      {...base}
+      nav={{ ...base.nav, component: <SiteHeader lang={lang} /> }}
+    >
       {children}
     </HomeLayout>
   );
