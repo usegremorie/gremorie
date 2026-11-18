@@ -835,7 +835,9 @@ export function Assistant({
                       </MessageToolbar>
                     </Message>
 
-                    <Message from="assistant">
+                    {/* The answer spans the reading column, edge to edge with
+                        the composer (as Claude). */}
+                    <Message className="max-w-full" from="assistant">
                       <MessageBranch defaultBranch={0}>
                         <MessageBranchContent>
                           {[

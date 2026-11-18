@@ -585,7 +585,9 @@ const COMPACT_SELECT_TRIGGER =
                 </message-toolbar>
               </message>
 
-              <message from="assistant">
+              <!-- The answer spans the reading column, edge to edge with the
+                   composer (as Claude). -->
+              <message class="max-w-full" from="assistant">
                 <message-branch [defaultBranch]="0">
                   <message-branch-content>
                     <ng-template messageBranchItem>
