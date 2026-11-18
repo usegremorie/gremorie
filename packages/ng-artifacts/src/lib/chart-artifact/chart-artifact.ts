@@ -249,10 +249,11 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string): void {
       <artifact-content>
         <!-- The chart is 16:9 of the card's width up to 288px tall (a height
              from the container width; aspect-ratio plus max-height would also
-             cap the width). Mirrors React. -->
+             cap the width). The artifact is the frame: the chart's own card
+             frame is dropped here. Mirrors React. -->
         <div
           #contentRef
-          class="@container [&>*]:aspect-auto [&>*]:h-[min(18rem,56.25cqw)]"
+          class="@container [&>*]:aspect-auto [&>*]:h-[min(18rem,56.25cqw)] [&>*]:rounded-none [&>*]:border-0 [&>*]:bg-transparent [&>*]:p-0 [&>*]:shadow-none"
         >
           @if (view() === 'chart') {
             @switch (type()) {

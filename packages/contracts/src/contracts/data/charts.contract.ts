@@ -142,7 +142,7 @@ export const barChart = defineContract({
     {
       name: 'maxBarSize',
       type: 'number',
-      default: 32,
+      default: 48,
       desc: 'Widest a bar may draw (px); a capped bar is centred in its slot, as recharts maxBarSize.',
     },
     {

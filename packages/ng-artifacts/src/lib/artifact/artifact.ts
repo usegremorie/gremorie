@@ -38,7 +38,7 @@ import { ARTIFACT_ICONS } from './icons';
   host: {
     'data-slot': 'artifact',
     class:
-      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
+      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-foreground/5 text-card-foreground shadow-sm dark:bg-foreground/[0.07]',
   },
   template: `<ng-content />`,
 })

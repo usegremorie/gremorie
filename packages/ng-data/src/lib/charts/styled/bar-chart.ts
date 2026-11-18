@@ -191,7 +191,7 @@ export class BarChart {
   readonly tooltip = input(true);
   readonly radius = input(8);
   /** Widest a bar may draw (px); a capped bar is centred in its slot. */
-  readonly maxBarSize = input(32);
+  readonly maxBarSize = input(48);
   /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
   readonly framed = input(true);
   /** Draw the value grid lines. */

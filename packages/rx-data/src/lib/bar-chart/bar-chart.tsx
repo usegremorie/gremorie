@@ -73,7 +73,7 @@ export function BarChart({
   showLabels = false,
   tooltip = true,
   radius = 8,
-  maxBarSize = 32,
+  maxBarSize = 48,
   framed = true,
   grid = true,
   className,

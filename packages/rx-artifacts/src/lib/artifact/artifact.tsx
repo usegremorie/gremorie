@@ -37,7 +37,7 @@ export const Artifact = ({ className, ...props }: ArtifactProps) => (
       // (not the viewport), so actions collapse/expand based on how much room
       // the card actually has. `min-w-[280px]` keeps icon + truncated title +
       // a menu button always legible.
-      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
+      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-foreground/5 text-card-foreground shadow-sm dark:bg-foreground/[0.07]',
       className,
     )}
     {...props}
