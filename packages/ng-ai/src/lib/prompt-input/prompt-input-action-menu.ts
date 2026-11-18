@@ -6,6 +6,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  forwardRef,
   HostListener,
   inject,
   InjectionToken,
@@ -70,7 +71,10 @@ let nextMenuId = 0;
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    { provide: PROMPT_INPUT_ACTION_MENU, useExisting: PromptInputActionMenu },
+    {
+      provide: PROMPT_INPUT_ACTION_MENU,
+      useExisting: forwardRef(() => PromptInputActionMenu),
+    },
   ],
   template: `<ng-content />`,
   host: { class: 'inline-flex', 'data-slot': 'prompt-input-action-menu' },
@@ -466,7 +470,7 @@ export const PROMPT_INPUT_ACTION_MENU_SUB =
   providers: [
     {
       provide: PROMPT_INPUT_ACTION_MENU_SUB,
-      useExisting: PromptInputActionMenuSub,
+      useExisting: forwardRef(() => PromptInputActionMenuSub),
     },
   ],
   template: `<ng-content />`,
@@ -651,7 +655,7 @@ export const PROMPT_INPUT_ACTION_MENU_RADIO_GROUP =
   providers: [
     {
       provide: PROMPT_INPUT_ACTION_MENU_RADIO_GROUP,
-      useExisting: PromptInputActionMenuRadioGroup,
+      useExisting: forwardRef(() => PromptInputActionMenuRadioGroup),
     },
   ],
   template: `<ng-content />`,
