@@ -48,7 +48,7 @@ const features = [
 /** Dogfood: each pillar is an rx-display Card. Hover is a quiet border shift. */
 export function FeaturesGrid() {
   return (
-    <section className="relative border-t border-border/60 bg-muted/20 py-20">
+    <section className="relative border-t border-border/60 py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
           <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
