@@ -464,9 +464,14 @@ export function ChartArtifact({
       </ArtifactHeader>
 
       <ArtifactContent>
-        {/* The chart keeps 16:9 up to 288px tall, so a wide card (a chat
-            column, a dashboard cell) does not turn into a tall poster. */}
-        <div className="[&_[data-slot=chart]]:max-h-72" ref={contentRef}>
+        {/* The chart is 16:9 of the card's width up to 288px tall, so a wide
+            card (a chat column, a dashboard cell) does not turn into a tall
+            poster. A height from the container width, not aspect-ratio plus
+            max-height: that pair also caps the width and shrinks the chart. */}
+        <div
+          className="@container [&_[data-slot=chart]]:aspect-auto [&_[data-slot=chart]]:h-[min(18rem,56.25cqw)]"
+          ref={contentRef}
+        >
           {view === 'chart' ? (
             renderChart()
           ) : (
