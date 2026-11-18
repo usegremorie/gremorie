@@ -18,7 +18,7 @@ import { BarChart } from './bar-chart';
  * BarChart                       recharts bar chart wired to the chart primitive
  * ├─ ChartContainer              responsive frame + injects --color-<key> from config
  * │  └─ RechartsBarChart         the recharts <BarChart> (accessibilityLayer)
- * │     ├─ CartesianGrid         horizontal rules (vertical when horizontal)
+ * │     ├─ CartesianGrid         horizontal rules (vertical when horizontal); grid
  * │     ├─ XAxis / YAxis         category + value axes (axes swap when horizontal)
  * │     ├─ ChartTooltip          hover card
  * │     │  └─ ChartTooltipContent  token-styled tooltip body
@@ -39,6 +39,9 @@ import { BarChart } from './bar-chart';
  * | `showLabels` | `boolean` | `false` | Draw the value on each bar. |
  * | `tooltip` | `boolean` | `true` | Hover tooltip. |
  * | `radius` | `number` | `8` | Bar corner radius. |
+ * | `maxBarSize` | `number` | `48` | Widest bar (px); a capped bar is centred in its slot. |
+ * | `framed` | `boolean` | `true` | Own card frame; turn off inside a Card. |
+ * | `grid` | `boolean` | `true` | Value grid lines. |
  *
  * ## Variables (design tokens)
  *

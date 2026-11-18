@@ -12,12 +12,25 @@ export const promptInput = defineContract({
   status: 'stable',
   anatomy: `
     <prompt-input>
-    └─ prompt-input (form root + state)
+    └─ prompt-input (form root + state; layout stacked | inline)
        ├─ prompt-input-attachments → prompt-input-attachment   (RX; chips above the field)
        ├─ prompt-input-textarea (auto-growing composer)
        └─ prompt-input-toolbar
-          ├─ prompt-input-tools
-          │  ├─ prompt-input-action-menu (+ trigger / content / item)
+          ├─ prompt-input-tools (collapse auto | always | never)
+          │  ├─ prompt-input-tools-expanded (inline tools; hidden while collapsed)
+          │  ├─ prompt-input-tools-collapsed (overflow menu; shown while collapsed)
+          │  ├─ prompt-input-action-menu
+          │  │  ├─ prompt-input-action-menu-trigger (ariaLabel, tooltip)
+          │  │  └─ prompt-input-action-menu-content
+          │  │     ├─ prompt-input-action-menu-item
+          │  │     ├─ prompt-input-action-add-attachments
+          │  │     ├─ prompt-input-action-menu-switch-item (keeps the menu open)
+          │  │     ├─ prompt-input-action-menu-checkbox-item (keeps the menu open)
+          │  │     ├─ prompt-input-action-menu-separator (RX: DropdownMenuSeparator)
+          │  │     └─ prompt-input-action-menu-sub
+          │  │        ├─ prompt-input-action-menu-sub-trigger (value)
+          │  │        └─ prompt-input-action-menu-sub-content
+          │  │           └─ prompt-input-action-menu-radio-group → prompt-input-action-menu-radio-item
           │  └─ prompt-input-model-select (RX: prompt-input-select*)
           └─ prompt-input-submit (status-driven button)`,
   props: [
@@ -66,6 +79,13 @@ export const promptInput = defineContract({
       options: ['default', 'ghost', 'bordered'],
       adapts: { rx: 'styling only' },
       desc: 'Surface style (Angular container input).',
+    },
+    {
+      name: 'layout',
+      type: "'stacked' | 'inline'",
+      default: 'stacked',
+      options: ['stacked', 'inline'],
+      desc: 'stacked: header, text and footer in rows. inline: one row (a "+" menu, the text, then mic and send), buttons kept at the bottom as the text grows.',
     },
     {
       name: 'disabled',

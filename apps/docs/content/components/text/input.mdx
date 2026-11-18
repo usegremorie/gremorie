@@ -13,7 +13,7 @@ import { InputDisabledPreview } from '@/components/preview/forms/input-disabled'
 
 `Input` is a thin styled wrapper around the native `<input>` element. Pass any HTML `type` (`text`, `email`, `password`, `number`, `search`, `tel`, `url`, `file`, `date`...) and the browser semantics, validation, and virtual keyboard all come along for free.
 
-All visual states are token-driven: `border-input` for default, `focus-visible:ring-ring/50` for keyboard focus, and `aria-invalid:border-destructive` for error. There are no variants - inputs should look the same everywhere so users can predict their behavior.
+All visual states are token-driven: a filled field (`bg-input/50`, a transparent border, no shadow) at `h-8` (32px) for default, `focus-visible:ring-ring/50` for keyboard focus, and `aria-invalid:border-destructive` for error. There are no variants - inputs should look the same everywhere so users can predict their behavior.
 
 ## Preview
 
@@ -24,7 +24,7 @@ All visual states are token-driven: `border-input` for default, `focus-visible:r
 ## Anatomy
 
 ```text
-Input   single styled native <input> element (leaf primitive)
+Input   single styled native <input> element (leaf primitive), filled, h-8
 ```
 
 ## Installation

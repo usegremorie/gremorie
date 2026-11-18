@@ -47,7 +47,7 @@ const SETTINGS = `
  * Mirrors React `Item`. One `size` on `gr-item` cascades to the media size
  * AND the title/description typography via `data-size` + `group-data`, so a
  * single input scales the whole row. The `icon` media variant is the only
- * fixed size (24px).
+ * fixed size (16px).
  */
 const meta: Meta<Item> = {
   title: 'Layout & display/Display/Item',
@@ -138,7 +138,7 @@ export const Sizes: Story = {
 
 /**
  * Variants — the four media kinds at the default size. `icon` is the bare
- * 24px glyph; the rest are sized containers from the cascade.
+ * 16px glyph; the rest are sized containers from the cascade.
  */
 export const Variants: Story = {
   parameters: { controls: { disable: true } },
@@ -151,7 +151,7 @@ export const Variants: Story = {
           </gr-item-media>
           <gr-item-content>
             <gr-item-title>icon</gr-item-title>
-            <gr-item-description>Bare 24px glyph, no container.</gr-item-description>
+            <gr-item-description>Bare 16px glyph, no container.</gr-item-description>
           </gr-item-content>
         </gr-item>
         <gr-item variant="outline">

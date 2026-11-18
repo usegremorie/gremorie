@@ -25,13 +25,13 @@ const IMG =
  *
  * Height rule (media tracks the text block, centered):
  * with description → lg 40 / md 36 / sm 32px; without → lg-md 20 / sm 16px.
- * The `icon` media variant is the only fixed size (24px).
+ * The `icon` media variant is the only fixed size (16px).
  *
  * ## Anatomy
  *
  * ```text
  * Item                         row container — `size` cascades to media + text
- * ├─ ItemMedia                 icon (fixed 24px) · featured · avatar · image
+ * ├─ ItemMedia                 icon (fixed 16px) · featured · avatar · image
  * ├─ ItemContent
  * │  ├─ ItemTitle
  * │  └─ ItemDescription        optional — its presence drives the taller media
@@ -189,7 +189,7 @@ export const Sizes: Story = {
 };
 
 /**
- * Variants - the four media kinds at the default size. `icon` is the bare 24px
+ * Variants - the four media kinds at the default size. `icon` is the bare 16px
  * glyph; the rest are sized containers from the cascade.
  */
 export const Variants: Story = {
@@ -202,7 +202,7 @@ export const Variants: Story = {
         </ItemMedia>
         <ItemContent>
           <ItemTitle>icon</ItemTitle>
-          <ItemDescription>Bare 24px glyph, no container.</ItemDescription>
+          <ItemDescription>Bare 16px glyph, no container.</ItemDescription>
         </ItemContent>
       </Item>
       <Item variant="outline">

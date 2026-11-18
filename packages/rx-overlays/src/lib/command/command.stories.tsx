@@ -65,7 +65,7 @@ import {
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--popover` / `--popover-foreground` | Palette surface |
+ * | `--popover` / `--popover-foreground` | Palette surface: opaque `bg-popover`; transparent inside a Popover, whose `bg-popover-surface` shows through |
  * | `--accent` / `--accent-foreground` | Selected item |
  * | `--border` | Input + separator |
  * | `--muted-foreground` | Group headings + shortcuts |

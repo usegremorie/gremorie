@@ -28,9 +28,9 @@ Artifact                       rounded, bordered card root
 │  │  └─ ArtifactDescription   single-line supporting text (truncates)
 │  └─ ArtifactActions          right-aligned action cluster
 │     ├─ ArtifactAction        ghost icon button (optional tooltip)
-│     ├─ ArtifactViewToggle    segmented view switch (chart ⇄ table, …)
-│     ├─ ArtifactMenu          icon-triggered dropdown of items
-│     └─ ArtifactClose         X button
+│     ├─ ArtifactViewToggle    segmented view switch (chart ⇄ table, …); selected view filled, tooltip per option
+│     ├─ ArtifactMenu          icon-triggered dropdown of items; trigger tooltip = label
+│     └─ ArtifactClose         X button; tooltip "Close"
 └─ ArtifactContent             scrollable body slot
 ```
 
@@ -132,7 +132,9 @@ Quando `tooltip` é definido, a ação se envolve em um `TooltipProvider` + `Too
 
 ### `<ArtifactClose>`
 
-`ArtifactAction` especializado com um `XIcon` embutido. Carrega `aria-label="Close"` via span `sr-only`.
+`ArtifactAction` especializado com um `XIcon` embutido. Carrega `aria-label="Close"` via span `sr-only` e sempre mostra um tooltip "Close" em hover e foco.
+
+`ArtifactViewToggle` e `ArtifactMenu` seguem a mesma regra: todo controle só de ícone carrega um tooltip. Cada opção do view toggle mostra o seu `label` como tooltip, e a view selecionada mantém um estado preenchido (`bg-accent`) para a view atual se ler de relance; o trigger do menu mostra o seu `label` como tooltip.
 
 | Prop       | Type            | Default     | Descrição                                                            |
 | ---------- | --------------- | ----------- | -------------------------------------------------------------------- |
@@ -224,8 +226,8 @@ Use `WebPreview` dentro para um artefato executável. O header explica o que o u
 ## Acessibilidade
 
 - **Teclado**: Todas as ações são `Button`s reais, então a ordem de Tab é natural e Enter / Space as ativam.
-- **ARIA**: `ArtifactClose` distribui um label `sr-only` "Close" para que o X apenas de ícone seja anunciado. `ArtifactAction` usa `tooltip` / `label` para definir o nome acessível em botões apenas de ícone.
-- **Tooltip**: Quando `tooltip` é fornecido, o botão é envolvido em um `Tooltip` + `TooltipProvider`. Se você tem um `TooltipProvider` global mais acima na árvore, o provider aninhado é um no-op.
+- **ARIA**: `ArtifactClose` distribui um label `sr-only` "Close" para que o X apenas de ícone seja anunciado. `ArtifactAction` usa `tooltip` / `label` para definir o nome acessível em botões apenas de ícone. As opções do `ArtifactViewToggle` e o trigger do `ArtifactMenu` usam o seu `label` como `aria-label`.
+- **Tooltip**: `ArtifactClose`, `ArtifactViewToggle` e `ArtifactMenu` sempre carregam um tooltip. No `ArtifactAction`, quando `tooltip` é fornecido, o botão é envolvido em um `Tooltip` + `TooltipProvider`. Se você tem um `TooltipProvider` global mais acima na árvore, o provider aninhado é um no-op.
 - **Ordem de foco**: As ações do header permanecem na ordem do documento para que leitores de tela anunciem título -> descrição -> ações, correspondendo à ordem visual.
 
 ## Relacionados

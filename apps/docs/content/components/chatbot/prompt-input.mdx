@@ -29,22 +29,43 @@ The component also carries an enforced keyboard contract: Enter submits, Shift+E
 ## Anatomy
 
 ```text
-PromptInput
+PromptInput                            layout · stacked (default) or inline
 ├─ PromptInputHeader
-│  ├─ PromptInputMentions          @ add-context picker
-│  └─ Context                      token-usage meter
+│  ├─ PromptInputMentions              @ add-context picker
+│  └─ Context                          token-usage meter
 ├─ PromptInputBody
-│  ├─ PromptInputAttachments       optional
+│  ├─ PromptInputAttachments           optional
 │  └─ PromptInputTextarea
 └─ PromptInputFooter
-   ├─ PromptInputTools             left · mode + model
-   │  ├─ PromptInputSelect         mode
-   │  └─ PromptInputSelect         model
-   └─ PromptInputTools             right
-      ├─ PromptInputButton         web search
-      ├─ PromptInputAttachButton   attach
-      ├─ PromptInputSpeechButton   voice
-      └─ PromptInputSubmit         send
+   ├─ PromptInputTools                 left · mode + model
+   │  ├─ PromptInputSelect             mode
+   │  └─ PromptInputSelect             model
+   └─ PromptInputTools                 right · collapse
+      ├─ PromptInputToolsExpanded      inline tools, wide composer
+      │  ├─ PromptInputButton          web search
+      │  └─ PromptInputAttachButton    attach
+      ├─ PromptInputToolsCollapsed     overflow menu, narrow composer
+      │  └─ PromptInputActionMenu      the action menu below
+      ├─ PromptInputSpeechButton       voice
+      └─ PromptInputSubmit             send
+```
+
+The action menu, with every part it accepts:
+
+```text
+PromptInputActionMenu
+├─ PromptInputActionMenuTrigger              "+" by default
+└─ PromptInputActionMenuContent
+   ├─ PromptInputActionMenuItem              one action
+   ├─ PromptInputActionAddAttachments        opens the file picker
+   ├─ PromptInputActionMenuSwitchItem        a tool on or off, keeps the menu open
+   ├─ PromptInputActionMenuCheckboxItem      checkable row, keeps the menu open
+   ├─ PromptInputActionMenuSeparator         divider
+   └─ PromptInputActionMenuSub
+      ├─ PromptInputActionMenuSubTrigger     label + current value
+      └─ PromptInputActionMenuSubContent
+         └─ PromptInputActionMenuRadioGroup
+            └─ PromptInputActionMenuRadioItem
 ```
 
 ## Installation
@@ -283,18 +304,19 @@ action carries a tooltip.
 
 The root form. Manages attachments, file drag-drop and submit lifecycle. Use a `PromptInputProvider` parent to lift state outside.
 
-| Prop              | Type                                                                                   | Default | Description                                                                                               |
-| ----------------- | -------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------- |
-| `onSubmit`        | `(message: PromptInputMessage, event: FormEvent) => void \| Promise<void>`             | -       | **Required.** Fires on form submit (Enter key, Submit click, or `requestSubmit`).                         |
-| `accept`          | `string`                                                                               | -       | Comma-separated MIME pattern (`"image/*,application/pdf"`). Validates pasted and dropped files.           |
-| `multiple`        | `boolean`                                                                              | -       | Allow more than one file per pick.                                                                        |
-| `globalDrop`      | `boolean`                                                                              | `false` | When true, accepts drops anywhere on the document. Default scope is the form element.                     |
-| `syncHiddenInput` | `boolean`                                                                              | `false` | Clear the hidden file input when the attachments list goes to 0. Useful for re-picking the same filename. |
-| `maxFiles`        | `number`                                                                               | -       | Cap on total attachments. Extra files trigger `onError({ code: "max_files" })`.                           |
-| `maxFileSize`     | `number`                                                                               | -       | Per-file byte cap. Files over the limit trigger `onError({ code: "max_file_size" })`.                     |
-| `onError`         | `(err: { code: "max_files" \| "max_file_size" \| "accept"; message: string }) => void` | -       | Fires when validation rejects files.                                                                      |
-| `className`       | `string`                                                                               | -       | Extra classes on the underlying `InputGroup`.                                                             |
-| `children`        | `ReactNode`                                                                            | -       | Typically `PromptInputBody` and its descendants.                                                          |
+| Prop              | Type                                                                                   | Default     | Description                                                                                                                                                     |
+| ----------------- | -------------------------------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onSubmit`        | `(message: PromptInputMessage, event: FormEvent) => void \| Promise<void>`             | -           | **Required.** Fires on form submit (Enter key, Submit click, or `requestSubmit`).                                                                               |
+| `accept`          | `string`                                                                               | -           | Comma-separated MIME pattern (`"image/*,application/pdf"`). Validates pasted and dropped files.                                                                 |
+| `multiple`        | `boolean`                                                                              | -           | Allow more than one file per pick.                                                                                                                              |
+| `globalDrop`      | `boolean`                                                                              | `false`     | When true, accepts drops anywhere on the document. Default scope is the form element.                                                                           |
+| `syncHiddenInput` | `boolean`                                                                              | `false`     | Clear the hidden file input when the attachments list goes to 0. Useful for re-picking the same filename.                                                       |
+| `maxFiles`        | `number`                                                                               | -           | Cap on total attachments. Extra files trigger `onError({ code: "max_files" })`.                                                                                 |
+| `maxFileSize`     | `number`                                                                               | -           | Per-file byte cap. Files over the limit trigger `onError({ code: "max_file_size" })`.                                                                           |
+| `onError`         | `(err: { code: "max_files" \| "max_file_size" \| "accept"; message: string }) => void` | -           | Fires when validation rejects files.                                                                                                                            |
+| `layout`          | `"stacked" \| "inline"`                                                                | `"stacked"` | `stacked`: header, text and footer in rows. `inline`: one row (a "+" menu, the text, then mic and send), with the buttons kept at the bottom as the text grows. |
+| `className`       | `string`                                                                               | -           | Extra classes on the underlying `InputGroup`.                                                                                                                   |
+| `children`        | `ReactNode`                                                                            | -           | Typically `PromptInputBody` and its descendants.                                                                                                                |
 
 ### `<PromptInputProvider>`
 
@@ -360,6 +382,11 @@ Built-in keyboard contract:
 
 `PromptInputButton` wraps `InputGroupButton`. Picks `size="icon-sm"` for single-child icons and `size="sm"` for icon+label, unless you set `size` explicitly. Default `variant="ghost"`.
 
+| Prop      | Type        | Default | Description                                                                                                                                                                      |
+| --------- | ----------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `active`  | `boolean`   | -       | Makes the button a toggle (e.g. web search): sets `aria-pressed` and `data-state="on"` / `"off"`, and when on, a translucent foreground fill. Leave it unset for a plain button. |
+| `tooltip` | `ReactNode` | -       | Hover and focus tooltip, through the root's `TooltipProvider`.                                                                                                                   |
+
 `PromptInputSubmit` is a status-driven `InputGroupButton` whose icon depends on `status`:
 
 | `status`      | Icon                     | Behavior                                                  |
@@ -381,6 +408,50 @@ Pass `label` (e.g. `label="Chat"`) for a labelled send button: when ready it rea
 `PromptInputActionAddAttachments` is a pre-wired `DropdownMenuItem` that calls `attachments.openFileDialog()` on select. Default label: `"Add photos or files"`. Accepts a `label` prop to override.
 
 `PromptInputActionMenuSwitchItem` is a row that toggles a tool (for example Search the web) with a switch on the right. The row is the control (`role="menuitemcheckbox"`, `aria-checked`), so the switch is drawn, not interactive, and toggling keeps the menu open. Bind `checked` / `onCheckedChange` to the same state as the inline toggle.
+
+For a menu that gathers the composer's controls (the one-row composer's "+"), the family also has submenus and choice rows:
+
+| Part                                | Wraps                            | Notes                                                                                                               |
+| ----------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `PromptInputActionMenuSub`          | `DropdownMenuSub`                | A submenu: holds a sub trigger and its content.                                                                     |
+| `PromptInputActionMenuSubTrigger`   | `DropdownMenuSubTrigger`         | The row that opens the submenu. `value` (`ReactNode`) shows the current choice muted on the right, e.g. "Research". |
+| `PromptInputActionMenuSubContent`   | `DropdownMenuSubContent`         | The submenu panel.                                                                                                  |
+| `PromptInputActionMenuRadioGroup`   | `DropdownMenuRadioGroup`         | One-of-many choice (`value` / `onValueChange`).                                                                     |
+| `PromptInputActionMenuRadioItem`    | `DropdownMenuRadioItem`          | A choice in the group. Choosing it closes the menu.                                                                 |
+| `PromptInputActionMenuCheckboxItem` | `DropdownMenuCheckboxItem`       | A checkable row. Toggling keeps the menu open.                                                                      |
+| `PromptInputActionMenuSwitchItem`   | `DropdownMenuItem`               | A tool on or off, with a drawn switch. Toggling keeps the menu open.                                                |
+| Separator                           | `PromptInputActionMenuSeparator` | Divider between groups. Angular: `prompt-input-action-menu-separator`.                                              |
+
+```tsx
+<PromptInputActionMenu>
+  <PromptInputActionMenuTrigger aria-label="More" tooltip="More" />
+  <PromptInputActionMenuContent>
+    <PromptInputActionMenuSub>
+      <PromptInputActionMenuSubTrigger value={modeLabel}>
+        Mode
+      </PromptInputActionMenuSubTrigger>
+      <PromptInputActionMenuSubContent>
+        <PromptInputActionMenuRadioGroup value={mode} onValueChange={setMode}>
+          <PromptInputActionMenuRadioItem value="chat">
+            Chat
+          </PromptInputActionMenuRadioItem>
+          <PromptInputActionMenuRadioItem value="research">
+            Research
+          </PromptInputActionMenuRadioItem>
+        </PromptInputActionMenuRadioGroup>
+      </PromptInputActionMenuSubContent>
+    </PromptInputActionMenuSub>
+    <PromptInputActionMenuSeparator />
+    <PromptInputActionMenuSwitchItem checked={web} onCheckedChange={setWeb}>
+      <GlobeIcon className="size-4" />
+      Search the web
+    </PromptInputActionMenuSwitchItem>
+    <PromptInputActionAddAttachments label="Attach files" />
+  </PromptInputActionMenuContent>
+</PromptInputActionMenu>
+```
+
+The Angular action menu is compound too, with the same parts in kebab-case: `prompt-input-action-menu`, `prompt-input-action-menu-trigger`, `prompt-input-action-menu-content`, `prompt-input-action-menu-item`, `prompt-input-action-menu-switch-item [(checked)]`, `prompt-input-action-menu-sub`, `prompt-input-action-menu-sub-trigger [value]`, `prompt-input-action-menu-sub-content`, `prompt-input-action-menu-radio-group [(value)]`, `prompt-input-action-menu-radio-item [value]`, `prompt-input-action-menu-checkbox-item [(checked)]`, `prompt-input-action-menu-separator` and `prompt-input-action-add-attachments`. The trigger's `ariaLabel` (default `"More actions"`) and `tooltip` are inputs of `prompt-input-action-menu-trigger`, not of the root.
 
 ### Collapsing the tools
 
@@ -432,11 +503,21 @@ Web Speech API toggle.
 | `onTranscriptionChange` | `(text: string) => void`                 | -         | Fires whenever a final transcript is appended.                     |
 | `lang`                  | `string`                                 | `"en-US"` | BCP-47 language tag passed to `SpeechRecognition`.                 |
 
-Carries `aria-label="Toggle voice input"`. Disabled when neither `SpeechRecognition` nor `webkitSpeechRecognition` is available. Animates a pulsing accent surface while listening.
+Carries `aria-label="Toggle voice input"`. Disabled when neither `SpeechRecognition` nor `webkitSpeechRecognition` is available. Animates a pulsing `bg-muted` surface while listening (`dark:bg-input/30`).
 
 ### `<PromptInputSelect>` family
 
-Wrappers around `Select` from `@gremorie/rx-forms` (`PromptInputSelect`, `PromptInputSelectTrigger`, `PromptInputSelectContent`, `PromptInputSelectItem`, `PromptInputSelectValue`). The trigger is restyled to look inline inside the input row (borderless, transparent background, muted foreground).
+Wrappers around `Select` from `@gremorie/rx-forms` (`PromptInputSelect`, `PromptInputSelectTrigger`, `PromptInputSelectContent`, `PromptInputSelectItem`, `PromptInputSelectValue`).
+
+`PromptInputSelectTrigger` takes `variant`:
+
+| Prop      | Type                                  | Default   | Description                                                                                                                                                                                                                                                                 |
+| --------- | ------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant` | `"ghost" \| "outline" \| "secondary"` | `"ghost"` | `ghost` is the AI Elements look: borderless, transparent, `text-secondary-foreground`, with a `bg-muted` surface on hover and while open. `outline` and `secondary` use the Select's own trigger variants, so the trigger reads like the other controls on a filled prompt. |
+
+### `<PromptInputMentions>`
+
+The `@` add-context picker. Its trigger takes `variant`: `"outline"` (default) or `"secondary"`, the same surfaces as the other controls on the prompt.
 
 ### `<PromptInputHoverCard>` family
 
@@ -619,7 +700,7 @@ async function send(message: PromptInputMessage) {
 - **Keyboard contract** (documented above and enforced in code): Enter submits, Shift+Enter inserts a newline, Backspace on empty textarea removes the latest attachment. The IME composition flag (`onCompositionStart` / `onCompositionEnd`) suppresses Enter while composing CJK input.
 - **Speech button degradation**: When the Web Speech API is missing, `PromptInputSpeechButton` is disabled rather than hidden. `aria-label="Toggle voice input"` stays on the disabled button so screen readers can describe what is unavailable.
 - **Attachment remove**: Each chip's remove button carries `aria-label="Remove attachment"` plus an `sr-only` "Remove" span.
-- **Tools needing tooltips**: Icon-only `PromptInputButton`s require an `aria-label`. There is no built-in tooltip, so wrap each in `Tooltip` from `@gremorie/rx-overlays` when you want a hover hint.
+- **Tools needing tooltips**: Icon-only `PromptInputButton`s require an `aria-label`. Pass `tooltip` for a hover and focus hint; the root already provides the `TooltipProvider`.
 - **Status announcement**: When `status` changes, consider announcing the new state via a separate `aria-live` region in the host app - Submit's icon swap alone is silent for screen readers.
 - **Focus visible**: The `InputGroup` surface drives the focus ring. Do not strip outlines.
 - **Reduced motion**: The speech button's pulse animation and the submit spinner respect `prefers-reduced-motion` via Tailwind's default `motion-reduce:` variants (apply manually to custom additions).

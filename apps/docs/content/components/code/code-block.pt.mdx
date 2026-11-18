@@ -114,12 +114,13 @@ Temas usados internamente:
 
 ### `<CodeBlockCopyButton>`
 
-| Prop       | Type                     | Default            | Descrição                                                                                                        |
-| ---------- | ------------------------ | ------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| `onCopy`   | `() => void`             | -                  | Dispara após uma escrita bem-sucedida no clipboard.                                                              |
-| `onError`  | `(error: Error) => void` | -                  | Dispara quando a Clipboard API está ausente ou é rejeitada.                                                      |
-| `timeout`  | `number`                 | `2000`             | Por quanto tempo (ms) o botão permanece no estado "copiado" antes de reverter.                                   |
-| `children` | `ReactNode`              | ícone copy / check | Sobrescreve o ícone. O botão ainda troca para o ícone check no sucesso, a menos que você o substitua totalmente. |
+| Prop       | Type                     | Default            | Descrição                                                                                                                                               |
+| ---------- | ------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onCopy`   | `() => void`             | -                  | Dispara após uma escrita bem-sucedida no clipboard.                                                                                                     |
+| `onError`  | `(error: Error) => void` | -                  | Dispara quando a Clipboard API está ausente ou é rejeitada.                                                                                             |
+| `timeout`  | `number`                 | `2000`             | Por quanto tempo (ms) o botão permanece no estado "copiado" antes de reverter.                                                                          |
+| `tooltip`  | `string`                 | `"Copy code"`      | Tooltip que nomeia a ação, em hover e foco. Mostra "Copied" enquanto dura o estado copiado, e o mesmo texto é o nome acessível do botão (`aria-label`). |
+| `children` | `ReactNode`              | ícone copy / check | Sobrescreve o ícone. O botão ainda troca para o ícone check no sucesso, a menos que você o substitua totalmente.                                        |
 
 Puxa a string `code` do `CodeBlockContext`, então deve ser renderizado dentro de um `<CodeBlock>`.
 
@@ -170,7 +171,7 @@ Combine com [`Tool`](/components/chatbot/tool). `ToolInput` e `ToolOutput` ambos
 - **Teclado**: O botão de cópia é um `Button` real, então participa da ordem normal de Tab e responde a Enter / Space.
 - **Contraste**: Ambos os temas `github-light-default` e `github-dark-default` passam no WCAG AA 4.5:1 em cada token. A auditoria do Odo rejeitou explicitamente o tema mais antigo `github-light` porque os tokens de operador caíam abaixo do limite.
 - **Reduced motion**: Não há animação na superfície em si. O botão de cópia alterna entre dois ícones sem transição.
-- **Leitores de tela**: Quando o botão de cópia é apenas de ícone, forneça um nome acessível através da sua própria composição (ex. envolva em um Tooltip com `aria-label`). Internamente o botão é um `Button` de ícone `ghost`, então as regras padrão de a11y para botões de ícone se aplicam.
+- **Leitores de tela**: O botão de cópia, só de ícone, já se nomeia: o `aria-label` segue o `tooltip` (`"Copy code"` por padrão) e troca para "Copied" depois de copiar, então você não precisa adicionar um nome. Internamente o botão é um `Button` de ícone `ghost`, então as regras padrão de a11y para botões de ícone se aplicam.
 
 ## Relacionados
 

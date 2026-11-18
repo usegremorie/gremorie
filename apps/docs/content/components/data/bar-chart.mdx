@@ -18,9 +18,9 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
 
 ```
 <bar-chart>
-└─ figure (role="img")                  card surface, aspect-video
+└─ figure (role="img")                  card surface when framed, aspect-video
    ├─ svg (chart frame)
-   │  ├─ cartesian grid
+   │  ├─ cartesian grid (optional via grid)
    │  ├─ x axis (category from xKey)
    │  ├─ y axis (numeric, optional via yAxis)
    │  ├─ bars, one group per config key   (stacked or grouped)
@@ -140,7 +140,10 @@ The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<BarChar
 | `showLabels` | `boolean`               | `false` | Draw the value as a label on top of (or beside) each bar.                                                                                                                                                                                                                         |
 | `tooltip`    | `boolean`               | `true`  | Show the hover tooltip.                                                                                                                                                                                                                                                           |
 | `radius`     | `number`                | `8`     | Corner radius of the bars.                                                                                                                                                                                                                                                        |
-| `className`  | `string`                | -       | Merged onto the `ChartContainer`. The bundled style supplies a rounded card surface plus aspect ratio.                                                                                                                                                                            |
+| `maxBarSize` | `number`                | `48`    | Widest a bar may draw, in px. A capped bar is centred in its slot.                                                                                                                                                                                                                |
+| `framed`     | `boolean`               | `true`  | Draw the chart's own card frame (rounded border, `bg-card`, padding). Turn it off when the chart sits inside a `Card`.                                                                                                                                                            |
+| `grid`       | `boolean`               | `true`  | Draw the value grid lines.                                                                                                                                                                                                                                                        |
+| `className`  | `string`                | -       | Merged onto the `ChartContainer`. With `framed` (the default) the bundled style supplies a rounded card surface; without it, no surface. The `ChartContainer` keeps its aspect ratio either way.                                                                                  |
 
 ### Chart primitive exports
 

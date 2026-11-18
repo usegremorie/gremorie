@@ -144,9 +144,8 @@ const USAGE: LanguageModelUsage = {
   },
 };
 
-// Outlined trigger to match the Button "outline" variant. The default
-// PromptInputSelectTrigger is borderless/ghost, so re-add the border and keep
-// the fill transparent so the control sits flush on the card surface.
+// Mode and Model use PromptInputSelectTrigger variant="outline" (the default is
+// the borderless ghost), with the open state shown as on the other controls.
 
 export function PromptInputB2BPreview() {
   return (

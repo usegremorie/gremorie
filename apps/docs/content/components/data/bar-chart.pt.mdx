@@ -18,9 +18,9 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
 
 ```
 <bar-chart>
-└─ figure (role="img")                  card surface, aspect-video
+└─ figure (role="img")                  superfície de card com framed, aspect-video
    ├─ svg (chart frame)
-   │  ├─ cartesian grid
+   │  ├─ cartesian grid (opcional via grid)
    │  ├─ x axis (category from xKey)
    │  ├─ y axis (numeric, optional via yAxis)
    │  ├─ bars, one group per config key   (stacked or grouped)
@@ -140,7 +140,10 @@ O wrapper estilizado. Renderiza um div `ChartContainer` envolvendo um `<BarChart
 | `showLabels` | `boolean`               | `false` | Desenha o valor como um label em cima de (ou ao lado de) cada barra.                                                                                                                                                                                                                                 |
 | `tooltip`    | `boolean`               | `true`  | Mostra o tooltip de hover.                                                                                                                                                                                                                                                                           |
 | `radius`     | `number`                | `8`     | Raio do canto das barras.                                                                                                                                                                                                                                                                            |
-| `className`  | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece uma superfície de card arredondada mais aspect ratio.                                                                                                                                                                                      |
+| `maxBarSize` | `number`                | `48`    | Largura máxima de uma barra, em px. Uma barra limitada fica centralizada no seu slot.                                                                                                                                                                                                                |
+| `framed`     | `boolean`               | `true`  | Desenha o frame de card do próprio gráfico (borda arredondada, `bg-card`, padding). Desligue quando o gráfico fica dentro de um `Card`.                                                                                                                                                              |
+| `grid`       | `boolean`               | `true`  | Desenha as linhas de grade dos valores.                                                                                                                                                                                                                                                              |
+| `className`  | `string`                | -       | Mesclado no `ChartContainer`. Com `framed` (o padrão) o estilo empacotado fornece uma superfície de card arredondada; sem ele, nenhuma superfície. O `ChartContainer` mantém o aspect ratio nos dois casos.                                                                                          |
 
 ### Exports do primitive chart
 

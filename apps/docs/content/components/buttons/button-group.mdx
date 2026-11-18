@@ -125,26 +125,25 @@ An action row is any horizontal cluster of controls: a toolbar, a card header wi
 
 Adjacent controls in a row must share the same height step. Pick the step, then use the matching **size variant** on every control:
 
-| Height        | Button      | Icon Button      | Select      | Input                              |
-| ------------- | ----------- | ---------------- | ----------- | ---------------------------------- |
-| 24px (`h-6`)  | `size="xs"` | `size="icon-xs"` | -           | -                                  |
-| 32px (`h-8`)  | `size="sm"` | `size="icon-sm"` | `size="sm"` | `className="h-8"` (no variant yet) |
-| 36px (`h-9`)  | default     | `size="icon"`    | default     | default                            |
-| 40px (`h-10`) | `size="lg"` | `size="icon-lg"` | -           | -                                  |
+| Height        | Button                 | Icon Button                                  | Select                 | Input   |
+| ------------- | ---------------------- | -------------------------------------------- | ---------------------- | ------- |
+| 24px (`h-6`)  | `size="xs"`            | `size="icon-xs"`                             | -                      | -       |
+| 32px (`h-8`)  | default or `size="sm"` | `size="icon"` or `size="icon-sm"` (`size-8`) | default or `size="sm"` | default |
+| 40px (`h-10`) | `size="lg"`            | `size="icon-lg"`                             | -                      | -       |
 
-**Never override a control's height with a `className` when a size variant exists.** The variant owns the height (Select applies it via `data-[size=...]` selectors), so a manual `h-8` on a default-size trigger loses to the variant's `h-9` and the row misaligns by 4px.
+**Never override a control's height with a `className` when a size variant exists.** The variant owns the height (Select applies it via `data-[size=...]` selectors), so a manual `h-10` on a trigger loses to the variant's `h-8` and the row misaligns by 8px. The default step is 32px: a default `Button`, an `icon` or `icon-sm` button, any `SelectTrigger` and an `Input` all line up with no size prop.
 
 ```tsx
 // Wrong: manual height fights the size variant and loses
 <div className="flex items-center gap-2">
-  <SelectTrigger className="h-8 w-36">...</SelectTrigger>  {/* renders 36px */}
-  <Button variant="outline" size="icon-sm">...</Button>     {/* renders 32px */}
+  <SelectTrigger className="h-10 w-36">...</SelectTrigger>  {/* still renders 32px */}
+  <Button variant="outline" size="icon-lg">...</Button>      {/* renders 40px */}
 </div>
 
 // Right: same step, matching variants
 <div className="flex items-center gap-2">
-  <SelectTrigger size="sm" className="w-36">...</SelectTrigger>  {/* 32px */}
-  <Button variant="outline" size="icon-sm">...</Button>          {/* 32px */}
+  <SelectTrigger className="w-36">...</SelectTrigger>  {/* 32px */}
+  <Button variant="outline" size="icon">...</Button>   {/* 32px */}
 </div>
 ```
 

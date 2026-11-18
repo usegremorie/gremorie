@@ -23,7 +23,7 @@ import {
  *
  * ```text
  * Select                       root, owns the value (value / onValueChange)
- * ├─ SelectTrigger             the visible button (size = sm | default)
+ * ├─ SelectTrigger             the visible button (size, variant)
  * │  └─ SelectValue            renders the selected value / placeholder
  * └─ SelectContent             the portalled, scrollable listbox
  *    ├─ SelectScrollUpButton   scroll-up affordance (auto-included)
@@ -45,13 +45,14 @@ import {
  *
  * | Prop (SelectTrigger) | Type | Default | Description |
  * | --- | --- | --- | --- |
- * | `size` | `"sm" \| "default"` | `"default"` | Trigger height. |
+ * | `size` | `"sm" \| "default"` | `"default"` | Both are `h-8` (32px). |
+ * | `variant` | `"default" \| "outline" \| "secondary"` | `"default"` | `default` is the filled field; `outline` / `secondary` sit on a filled surface. |
  *
  * ## Subcomponents
  *
  * | Component | Description |
  * | --- | --- |
- * | `SelectTrigger` | The clickable trigger (`size`). |
+ * | `SelectTrigger` | The clickable trigger (`size`, `variant`). |
  * | `SelectValue` | Selected value / placeholder display. |
  * | `SelectContent` | Portalled listbox. |
  * | `SelectGroup` / `SelectLabel` | Grouped options with a heading. |
@@ -63,8 +64,8 @@ import {
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | trigger border |
- * | `--popover` / `--popover-foreground` | content surface |
+ * | `--input` | filled trigger (`bg-input/50`, transparent border) |
+ * | `--popover` / `--popover-foreground` | content surface (`bg-popover-surface`) |
  * | `--accent` / `--accent-foreground` | item hover/focus |
  * | `--ring` | focus ring |
  * | `--muted-foreground` | placeholder + group label |

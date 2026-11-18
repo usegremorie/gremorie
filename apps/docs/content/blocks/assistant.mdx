@@ -70,7 +70,7 @@ Assistant                          data-size'd card; flips between two views
 ├─ header                          thread switcher + actions (DropdownMenu · Button)
 │                                  New chat → empty · recent chat → filled
 ├─ Conversation (filled)           auto-scroll log; scrollbar reveals only while scrolling
-│  └─ ConversationContent
+│  └─ ConversationContent           holds a centred reading column, 768px at most
 │     ├─ Message (user)
 │     │  ├─ MessageContent
 │     │  └─ MessageToolbar          hover actions: MessageActions (Copy · Edit)
@@ -82,11 +82,19 @@ Assistant                          data-size'd card; flips between two views
 │           │  └─ ChartArtifact     inline chart with chart/table toggle + downloads
 │           └─ MessageToolbar        MessageActions (left) · Sources + MessageBranchSelector (right)
 ├─ start (empty)                    centered welcome heading over the composer
-└─ PromptInput                      floating B2B composer (see Prompt Input)
+└─ PromptInput                      floating B2B composer (see Prompt Input), same column
    ├─ PromptInputHeader            PromptInputMentions + Context usage meter
    ├─ PromptInputBody → PromptInputTextarea
-   └─ PromptInputFooter            mode/model selects · web · attach · voice · submit
+   └─ PromptInputFooter            mode/model selects · tools · submit
+      └─ PromptInputTools          collapse = toolsCollapse
+         ├─ PromptInputToolsExpanded   web search · attach, inline
+         ├─ PromptInputToolsCollapsed  the same two in a "…" menu
+         └─ PromptInputSpeechButton    voice, in both forms
 ```
+
+With `composerLayout="inline"` the composer is one row instead: a "+"
+`PromptInputActionMenu` (Add context, Mode and Model submenus, Search the web,
+Attach files), the textarea, then the mic and send.
 
 ## Installation
 
@@ -163,17 +171,20 @@ What it exposes as props:
 
 ### `<Assistant>`
 
-| Prop           | Type                  | Default                           | Description                                                                   |
-| -------------- | --------------------- | --------------------------------- | ----------------------------------------------------------------------------- |
-| `initialView`  | `'filled' \| 'empty'` | `'filled'`                        | Which surface to render first — the live conversation or the new-chat start.  |
-| `placeholder`  | `string`              | `'Ask anything, or pick a mode…'` | Composer textarea placeholder.                                                |
-| `defaultMode`  | `string`              | `'research'`                      | Initially-selected composer mode.                                             |
-| `defaultModel` | `string`              | `'claude-sonnet-4-6'`             | Initially-selected model.                                                     |
-| `mentions`     | `boolean`             | `true`                            | Show the @-mention trigger in the composer header.                            |
-| `contextMeter` | `boolean`             | `true`                            | Show the context-window meter in the composer header.                         |
-| `modeSelect`   | `boolean`             | `true`                            | Show the mode select in the composer footer.                                  |
-| `modelSelect`  | `boolean`             | `true`                            | Show the model select in the composer footer.                                 |
-| `onSubmit`     | `(message) => void`   | -                                 | Fires with the composed prompt when the user submits. Wire it to your AI SDK. |
+| Prop             | Type                            | Default                           | Description                                                                                                                                                                                                                                                                          |
+| ---------------- | ------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `initialView`    | `'filled' \| 'empty'`           | `'filled'`                        | Which surface to render first: the live conversation or the new-chat start.                                                                                                                                                                                                          |
+| `placeholder`    | `string`                        | `'Ask anything, or pick a mode…'` | Composer textarea placeholder.                                                                                                                                                                                                                                                       |
+| `defaultMode`    | `string`                        | `'research'`                      | Initially-selected composer mode.                                                                                                                                                                                                                                                    |
+| `defaultModel`   | `string`                        | `'claude-sonnet-4-6'`             | Initially-selected model.                                                                                                                                                                                                                                                            |
+| `mentions`       | `boolean`                       | `true`                            | Show the @-mention trigger in the composer header.                                                                                                                                                                                                                                   |
+| `contextMeter`   | `boolean`                       | `true`                            | Show the context-window meter in the composer header.                                                                                                                                                                                                                                |
+| `modeSelect`     | `boolean`                       | `true`                            | Show the mode select in the composer footer.                                                                                                                                                                                                                                         |
+| `modelSelect`    | `boolean`                       | `true`                            | Show the model select in the composer footer.                                                                                                                                                                                                                                        |
+| `toolsCollapse`  | `'auto' \| 'always' \| 'never'` | `'auto'`                          | Composer tools. `auto` shows web search and attach inline and moves them to an overflow menu when the composer is narrower than 28rem; `never` keeps them inline; `always` keeps the menu.                                                                                           |
+| `composerLayout` | `'stacked' \| 'inline'`         | `'stacked'`                       | `stacked`: header, text and footer in rows. `inline`: one row, with a "+" menu holding Add context, the Mode and Model submenus, Search the web and Attach files, then the text, the mic and send. Parts turned off by `mentions`, `modeSelect` or `modelSelect` leave the menu too. |
+| `className`      | `string`                        | -                                 | Extra classes merged onto the block root, e.g. to size it to its container. Angular has no input: put the class on the `<ai-assistant>` host.                                                                                                                                        |
+| `onSubmit`       | `(message) => void`             | -                                 | Fires with the composed prompt when the user submits. Wire it to your AI SDK.                                                                                                                                                                                                        |
 
 ```ts
 export type AssistantView = 'filled' | 'empty';
@@ -184,6 +195,10 @@ you strip what your product does not have. Turn off `modeSelect` when your
 endpoint has one behaviour, `modelSelect` when the model is not the user's
 choice, `contextMeter` when you do not surface token usage. With both header
 parts off the header is dropped entirely rather than left as an empty strip.
+
+The conversation reads in a centred column of at most 768px (`max-w-3xl`),
+as Claude and ChatGPT do; the scroll area stays card-wide so its bar sits at the
+edge, and the composer shares the column.
 
 `onSubmit` is the integration point: the block hands you the composed prompt and
 keeps running its canned state machine underneath, so the surface still animates

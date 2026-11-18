@@ -42,6 +42,7 @@ import {
   PromptInputSubmit,
   PromptInputActionMenuCheckboxItem,
   PromptInputActionMenuRadioItem,
+  PromptInputActionMenuSeparator,
   PromptInputActionMenuRadioGroup,
   PromptInputActionMenuSubContent,
   PromptInputActionMenuSubTrigger,
@@ -409,7 +410,7 @@ function Composer({
               </PromptInputActionMenuSub>
             )}
             {(mentions || modeSelect || modelSelect) && (
-              <DropdownMenuSeparator />
+              <PromptInputActionMenuSeparator />
             )}
             <PromptInputActionMenuSwitchItem
               checked={webSearch}

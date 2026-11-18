@@ -42,7 +42,7 @@ import { Button } from '@gremorie/rx-forms';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--popover` / `--popover-foreground` | Card surface |
+ * | `--popover` / `--popover-foreground` | Card surface, via `bg-popover-surface` (translucent 60% + blur; opaque with `data-menu="solid"`) |
  * | `--border` | Card border |
  * | `--muted-foreground` | Secondary text |
  */

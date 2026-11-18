@@ -51,6 +51,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuTrigger,
   HoverCard,
@@ -1270,6 +1271,9 @@ export const PromptInputActionMenuSwitchItem = ({
 // Submenus (e.g. Mode ›, Model ›) and choice rows, for a menu that gathers the
 // composer's controls (the one-row composer's "+").
 export const PromptInputActionMenuSub = DropdownMenuSub;
+
+/** Divider between groups of the action menu. Mirrors Angular `prompt-input-action-menu-separator`. */
+export const PromptInputActionMenuSeparator = DropdownMenuSeparator;
 
 export type PromptInputActionMenuSubTriggerProps = ComponentProps<
   typeof DropdownMenuSubTrigger
