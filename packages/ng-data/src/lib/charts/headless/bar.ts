@@ -29,6 +29,18 @@ export function barLayout(
   return { size: raw > 1 ? Math.floor(raw) : raw, gap };
 }
 
+/**
+ * recharts' `maxBarSize`: a bar takes min(slot, max) and is centred in its own
+ * slot, so a capped group keeps its spacing. Without a cap, the slot is the bar.
+ */
+export function fitBar(
+  slot: number,
+  max?: number,
+): { size: number; offset: number } {
+  if (max === undefined || slot <= max) return { size: slot, offset: 0 };
+  return { size: max, offset: (slot - max) / 2 };
+}
+
 /** Width of one bar in a group of `count` (see `barLayout`). */
 export function barSize(bandwidth: number, count: number): number {
   return barLayout(bandwidth, count).size;
@@ -97,6 +109,8 @@ export class Bar implements OnInit, OnDestroy {
   readonly radius = input<number>(0);
   /** Render horizontal bars (categories on Y, values on X). */
   readonly horizontal = input<boolean>(false);
+  /** Widest a bar may draw (px), as recharts' `maxBarSize`; unset = no cap. */
+  readonly maxBarSize = input<number | undefined>(undefined);
 
   readonly bars = computed<BarRect[]>(() => {
     const data = this.ctx.data();
@@ -110,6 +124,7 @@ export class Bar implements OnInit, OnDestroy {
     const r = this.radius();
     const base = stacked ? this.ctx.stackBaseFor(key) : undefined;
     const [, max] = this.ctx.yDomain();
+    const cap = this.maxBarSize();
 
     if (this.horizontal()) {
       const band = bandScale(
@@ -128,13 +143,15 @@ export class Bar implements OnInit, OnDestroy {
         let x: number, y: number, width: number, height: number;
         if (stacked) {
           const lo = base?.[i] ?? 0;
-          y = band(categories[i]);
-          height = band.bandwidth;
+          const fit = fitBar(band.bandwidth, cap);
+          y = band(categories[i]) + fit.offset;
+          height = fit.size;
           x = vScale(lo);
           width = Math.max(0, vScale(lo + value) - x);
         } else {
-          y = band(categories[i]) + (subH + gap) * index;
-          height = subH;
+          const fit = fitBar(subH, cap);
+          y = band(categories[i]) + (subH + gap) * index + fit.offset;
+          height = fit.size;
           x = zero;
           width = Math.max(0, vScale(value) - zero);
         }
@@ -167,13 +184,15 @@ export class Bar implements OnInit, OnDestroy {
       let x: number, y: number, width: number, height: number;
       if (stacked) {
         const lo = base?.[i] ?? 0;
-        x = band(categories[i]);
-        width = band.bandwidth;
+        const fit = fitBar(band.bandwidth, cap);
+        x = band(categories[i]) + fit.offset;
+        width = fit.size;
         y = yScale(lo + value);
         height = Math.max(0, yScale(lo) - y);
       } else {
-        x = band(categories[i]) + (subW + gap) * index;
-        width = subW;
+        const fit = fitBar(subW, cap);
+        x = band(categories[i]) + (subW + gap) * index + fit.offset;
+        width = fit.size;
         y = yScale(value);
         height = Math.max(0, baseline - y);
       }

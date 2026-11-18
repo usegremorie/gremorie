@@ -527,106 +527,19 @@ const COMPACT_SELECT_TRIGGER =
       <!-- AssistantContent - the conversation -->
       <div class="relative flex-1 overflow-hidden">
         <conversation class="h-full">
-          <conversation-content class="gap-6 px-4 pt-6 pb-80">
-            <message from="user">
-              <message-content>{{ userQuestion }}</message-content>
-              <message-toolbar
-                class="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
-              >
-                <message-actions class="ml-auto">
-                  <message-action tooltip="Copy" label="Copy">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                      class="size-4"
-                    >
-                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                      <path
-                        d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-                      />
-                    </svg>
-                  </message-action>
-                  <message-action tooltip="Edit" label="Edit">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                      class="size-4"
-                    >
-                      <path d="M12 20h9" />
-                      <path
-                        d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
-                      />
-                    </svg>
-                  </message-action>
-                </message-actions>
-              </message-toolbar>
-            </message>
-
-            <message from="assistant">
-              <message-branch [defaultBranch]="0">
-                <message-branch-content>
-                  <ng-template messageBranchItem>
-                    <ng-container
-                      [ngTemplateOutlet]="answer"
-                      [ngTemplateOutletContext]="{ $implicit: answerFull }"
-                    />
-                  </ng-template>
-                  <ng-template messageBranchItem>
-                    <ng-container
-                      [ngTemplateOutlet]="answer"
-                      [ngTemplateOutletContext]="{ $implicit: answerConcise }"
-                    />
-                  </ng-template>
-                </message-branch-content>
-                <message-toolbar>
-                  <message-actions>
-                    <message-action
-                      tooltip="Good response"
-                      label="Good response"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <path d="M7 10v12" />
-                        <path
-                          d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
-                        />
-                      </svg>
-                    </message-action>
-                    <message-action tooltip="Bad response" label="Bad response">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <path d="M17 14V2" />
-                        <path
-                          d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"
-                        />
-                      </svg>
-                    </message-action>
+          <conversation-content class="px-4 pt-6 pb-80">
+            <!-- The reading column: 768px at most, centred (as Claude and
+                 ChatGPT); the scroll area stays card-wide. Mirrors React. -->
+            <div
+              class="mx-auto flex w-full max-w-3xl flex-col gap-6"
+              data-slot="assistant-column"
+            >
+              <message from="user">
+                <message-content>{{ userQuestion }}</message-content>
+                <message-toolbar
+                  class="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
+                >
+                  <message-actions class="ml-auto">
                     <message-action tooltip="Copy" label="Copy">
                       <svg
                         viewBox="0 0 24 24"
@@ -651,7 +564,7 @@ const COMPACT_SELECT_TRIGGER =
                         />
                       </svg>
                     </message-action>
-                    <message-action tooltip="Regenerate" label="Regenerate">
+                    <message-action tooltip="Edit" label="Edit">
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -662,69 +575,173 @@ const COMPACT_SELECT_TRIGGER =
                         aria-hidden="true"
                         class="size-4"
                       >
+                        <path d="M12 20h9" />
                         <path
-                          d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                          d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
                         />
-                        <path d="M21 3v5h-5" />
-                        <path
-                          d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
-                        />
-                        <path d="M8 16H3v5" />
-                      </svg>
-                    </message-action>
-                    <message-action tooltip="Share" label="Share">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <circle cx="18" cy="5" r="3" />
-                        <circle cx="6" cy="12" r="3" />
-                        <circle cx="18" cy="19" r="3" />
-                        <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
-                        <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
                       </svg>
                     </message-action>
                   </message-actions>
-                  <div class="flex items-center gap-1">
-                    <ai-button
-                      variant="ghost"
-                      size="sm"
-                      [class]="
-                        'gap-1.5 text-muted-foreground ' + compactIconButton
-                      "
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <path d="m16 6 4 14" />
-                        <path d="M12 6v14" />
-                        <path d="M8 8v12" />
-                        <path d="M4 4v16" />
-                      </svg>
-                      <span [class]="compactLabel">Sources</span>
-                    </ai-button>
-                    <message-branch-selector from="assistant">
-                      <message-branch-previous />
-                      <message-branch-page />
-                      <message-branch-next />
-                    </message-branch-selector>
-                  </div>
                 </message-toolbar>
-              </message-branch>
-            </message>
+              </message>
+
+              <message from="assistant">
+                <message-branch [defaultBranch]="0">
+                  <message-branch-content>
+                    <ng-template messageBranchItem>
+                      <ng-container
+                        [ngTemplateOutlet]="answer"
+                        [ngTemplateOutletContext]="{ $implicit: answerFull }"
+                      />
+                    </ng-template>
+                    <ng-template messageBranchItem>
+                      <ng-container
+                        [ngTemplateOutlet]="answer"
+                        [ngTemplateOutletContext]="{ $implicit: answerConcise }"
+                      />
+                    </ng-template>
+                  </message-branch-content>
+                  <message-toolbar>
+                    <message-actions>
+                      <message-action
+                        tooltip="Good response"
+                        label="Good response"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path d="M7 10v12" />
+                          <path
+                            d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+                          />
+                        </svg>
+                      </message-action>
+                      <message-action
+                        tooltip="Bad response"
+                        label="Bad response"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path d="M17 14V2" />
+                          <path
+                            d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"
+                          />
+                        </svg>
+                      </message-action>
+                      <message-action tooltip="Copy" label="Copy">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <rect
+                            width="14"
+                            height="14"
+                            x="8"
+                            y="8"
+                            rx="2"
+                            ry="2"
+                          />
+                          <path
+                            d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                          />
+                        </svg>
+                      </message-action>
+                      <message-action tooltip="Regenerate" label="Regenerate">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path
+                            d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                          />
+                          <path d="M21 3v5h-5" />
+                          <path
+                            d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                          />
+                          <path d="M8 16H3v5" />
+                        </svg>
+                      </message-action>
+                      <message-action tooltip="Share" label="Share">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <circle cx="18" cy="5" r="3" />
+                          <circle cx="6" cy="12" r="3" />
+                          <circle cx="18" cy="19" r="3" />
+                          <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+                          <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+                        </svg>
+                      </message-action>
+                    </message-actions>
+                    <div class="flex items-center gap-1">
+                      <ai-button
+                        variant="ghost"
+                        size="sm"
+                        [class]="
+                          'gap-1.5 text-muted-foreground ' + compactIconButton
+                        "
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path d="m16 6 4 14" />
+                          <path d="M12 6v14" />
+                          <path d="M8 8v12" />
+                          <path d="M4 4v16" />
+                        </svg>
+                        <span [class]="compactLabel">Sources</span>
+                      </ai-button>
+                      <message-branch-selector from="assistant">
+                        <message-branch-previous />
+                        <message-branch-page />
+                        <message-branch-next />
+                      </message-branch-selector>
+                    </div>
+                  </message-toolbar>
+                </message-branch>
+              </message>
+            </div>
           </conversation-content>
           <conversation-scroll-button />
         </conversation>
@@ -737,13 +754,14 @@ const COMPACT_SELECT_TRIGGER =
       <!-- AssistantComposer - floats over the conversation -->
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10">
         <div class="h-8 bg-gradient-to-t from-card to-transparent"></div>
-        <div
-          class="pointer-events-auto space-y-2 bg-card/80 px-3 pb-3 backdrop-blur-sm"
-        >
-          <ng-container [ngTemplateOutlet]="composer" />
-          <p class="text-center text-xs text-muted-foreground">
-            Gremorie can make mistakes. Check important info.
-          </p>
+        <div class="pointer-events-auto bg-card/80 px-3 pb-3 backdrop-blur-sm">
+          <!-- The composer shares the reading column. -->
+          <div class="mx-auto w-full max-w-3xl space-y-2">
+            <ng-container [ngTemplateOutlet]="composer" />
+            <p class="text-center text-xs text-muted-foreground">
+              Gremorie can make mistakes. Check important info.
+            </p>
+          </div>
         </div>
       </div>
     }

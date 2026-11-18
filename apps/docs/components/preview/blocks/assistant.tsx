@@ -802,7 +802,7 @@ export function Assistant({
                 {/* ScrollArea-style auto-hide: the thumb is transparent at rest and
                 only paints while the user is actively scrolling (state below). */}
                 <ConversationContent
-                  className="gap-6 px-4 pt-6 pb-80"
+                  className="px-4 pt-6 pb-80"
                   scrollClassName={cn(
                     '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:transition-colors [&::-webkit-scrollbar-track]:bg-transparent',
                     scrolling
@@ -810,78 +810,86 @@ export function Assistant({
                       : '[&::-webkit-scrollbar-thumb]:bg-transparent',
                   )}
                 >
-                  <Message from="user">
-                    <MessageContent>
-                      How did Q3 revenue break down by region? Give me a chart
-                      plus the underlying table I can drop straight into the
-                      board deck.
-                    </MessageContent>
-                    <MessageToolbar className="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
-                      <MessageActions className="ml-auto">
-                        <MessageAction tooltip="Copy">
-                          <CopyIcon className="size-4" />
-                        </MessageAction>
-                        <MessageAction tooltip="Edit">
-                          <PenSquareIcon className="size-4" />
-                        </MessageAction>
-                      </MessageActions>
-                    </MessageToolbar>
-                  </Message>
-
-                  <Message from="assistant">
-                    <MessageBranch defaultBranch={0}>
-                      <MessageBranchContent>
-                        {[
-                          <AssistantAnswer key="full" text={ANSWER_FULL} />,
-                          <AssistantAnswer
-                            key="concise"
-                            text={ANSWER_CONCISE}
-                          />,
-                        ]}
-                      </MessageBranchContent>
-                      <MessageToolbar>
-                        {/* Left: feedback, then copy / regenerate / share. */}
-                        <MessageActions>
-                          <MessageAction tooltip="Good response">
-                            <ThumbsUpIcon className="size-4" />
-                          </MessageAction>
-                          <MessageAction tooltip="Bad response">
-                            <ThumbsDownIcon className="size-4" />
-                          </MessageAction>
+                  {/* The reading column: 768px at most, centred, as Claude
+                      and ChatGPT; the scroll area stays card-wide so its bar
+                      sits at the edge. The composer below shares the column. */}
+                  <div
+                    className="mx-auto flex w-full max-w-3xl flex-col gap-6"
+                    data-slot="assistant-column"
+                  >
+                    <Message from="user">
+                      <MessageContent>
+                        How did Q3 revenue break down by region? Give me a chart
+                        plus the underlying table I can drop straight into the
+                        board deck.
+                      </MessageContent>
+                      <MessageToolbar className="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
+                        <MessageActions className="ml-auto">
                           <MessageAction tooltip="Copy">
                             <CopyIcon className="size-4" />
                           </MessageAction>
-                          <MessageAction tooltip="Regenerate">
-                            <RefreshCwIcon className="size-4" />
-                          </MessageAction>
-                          <MessageAction tooltip="Share">
-                            <Share2Icon className="size-4" />
+                          <MessageAction tooltip="Edit">
+                            <PenSquareIcon className="size-4" />
                           </MessageAction>
                         </MessageActions>
-                        {/* Right: Sources sits just before the branch nav. The list
-                        opens in a modal in the host app, so the demo trigger is
-                        intentionally inert. */}
-                        <div className="flex items-center gap-1">
-                          <Button
-                            className={cn(
-                              'gap-1.5 text-muted-foreground',
-                              COMPACT_ICON_BUTTON,
-                            )}
-                            size="sm"
-                            variant="ghost"
-                          >
-                            <LibraryIcon className="size-4" />
-                            <span className={COMPACT_LABEL}>Sources</span>
-                          </Button>
-                          <MessageBranchSelector from="assistant">
-                            <MessageBranchPrevious />
-                            <MessageBranchPage />
-                            <MessageBranchNext />
-                          </MessageBranchSelector>
-                        </div>
                       </MessageToolbar>
-                    </MessageBranch>
-                  </Message>
+                    </Message>
+
+                    <Message from="assistant">
+                      <MessageBranch defaultBranch={0}>
+                        <MessageBranchContent>
+                          {[
+                            <AssistantAnswer key="full" text={ANSWER_FULL} />,
+                            <AssistantAnswer
+                              key="concise"
+                              text={ANSWER_CONCISE}
+                            />,
+                          ]}
+                        </MessageBranchContent>
+                        <MessageToolbar>
+                          {/* Left: feedback, then copy / regenerate / share. */}
+                          <MessageActions>
+                            <MessageAction tooltip="Good response">
+                              <ThumbsUpIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Bad response">
+                              <ThumbsDownIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Copy">
+                              <CopyIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Regenerate">
+                              <RefreshCwIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Share">
+                              <Share2Icon className="size-4" />
+                            </MessageAction>
+                          </MessageActions>
+                          {/* Right: Sources sits just before the branch nav. The list
+                          opens in a modal in the host app, so the demo trigger is
+                          intentionally inert. */}
+                          <div className="flex items-center gap-1">
+                            <Button
+                              className={cn(
+                                'gap-1.5 text-muted-foreground',
+                                COMPACT_ICON_BUTTON,
+                              )}
+                              size="sm"
+                              variant="ghost"
+                            >
+                              <LibraryIcon className="size-4" />
+                              <span className={COMPACT_LABEL}>Sources</span>
+                            </Button>
+                            <MessageBranchSelector from="assistant">
+                              <MessageBranchPrevious />
+                              <MessageBranchPage />
+                              <MessageBranchNext />
+                            </MessageBranchSelector>
+                          </div>
+                        </MessageToolbar>
+                      </MessageBranch>
+                    </Message>
+                  </div>
                 </ConversationContent>
                 <ConversationScrollButton />
               </Conversation>
@@ -893,23 +901,25 @@ export function Assistant({
                 scrolls behind it, fading out through the gradient. */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
               <div className="h-8 bg-gradient-to-t from-card to-transparent" />
-              <div className="pointer-events-auto space-y-2 bg-card/80 px-3 pb-3 backdrop-blur-sm">
-                <Composer
-                  onSubmit={handleSubmit}
-                  status={status}
-                  placeholder={placeholder}
-                  defaultMode={defaultMode}
-                  defaultModel={defaultModel}
-                  modeSelect={modeSelect}
-                  modelSelect={modelSelect}
-                  mentions={mentions}
-                  contextMeter={contextMeter}
-                  toolsCollapse={toolsCollapse}
-                  layout={composerLayout}
-                />
-                <p className="text-center text-xs text-muted-foreground">
-                  Gremorie can make mistakes. Check important info.
-                </p>
+              <div className="pointer-events-auto bg-card/80 px-3 pb-3 backdrop-blur-sm">
+                <div className="mx-auto w-full max-w-3xl space-y-2">
+                  <Composer
+                    onSubmit={handleSubmit}
+                    status={status}
+                    placeholder={placeholder}
+                    defaultMode={defaultMode}
+                    defaultModel={defaultModel}
+                    modeSelect={modeSelect}
+                    modelSelect={modelSelect}
+                    mentions={mentions}
+                    contextMeter={contextMeter}
+                    toolsCollapse={toolsCollapse}
+                    layout={composerLayout}
+                  />
+                  <p className="text-center text-xs text-muted-foreground">
+                    Gremorie can make mistakes. Check important info.
+                  </p>
+                </div>
               </div>
             </div>
           </>

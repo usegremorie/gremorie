@@ -247,7 +247,9 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string): void {
       </artifact-header>
 
       <artifact-content>
-        <div #contentRef>
+        <!-- The chart keeps 16:9 up to 288px tall, so a wide card does not
+             turn into a tall poster. Mirrors React. -->
+        <div #contentRef class="[&>*]:max-h-72">
           @if (view() === 'chart') {
             @switch (type()) {
               @case ('area') {

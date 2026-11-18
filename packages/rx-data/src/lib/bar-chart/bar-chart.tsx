@@ -39,6 +39,8 @@ export interface BarChartProps {
   tooltip?: boolean;
   /** Corner radius of the bars. */
   radius?: number;
+  /** Widest a bar may draw (px); a capped bar is centred in its slot. */
+  maxBarSize?: number;
   /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
   framed?: boolean;
   /** Draw the value grid lines. */
@@ -71,6 +73,7 @@ export function BarChart({
   showLabels = false,
   tooltip = true,
   radius = 8,
+  maxBarSize = 32,
   framed = true,
   grid = true,
   className,
@@ -170,6 +173,7 @@ export function BarChart({
               key={key}
               dataKey={key}
               fill={`var(--color-${key})`}
+              maxBarSize={maxBarSize}
               radius={segRadius(i)}
               stackId={stacked ? 'a' : undefined}
             >

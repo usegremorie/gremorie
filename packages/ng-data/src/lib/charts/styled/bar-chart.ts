@@ -78,6 +78,7 @@ interface TooltipRow {
           <svg:g
             [bar]="s.key"
             [radius]="radius()"
+            [maxBarSize]="maxBarSize()"
             [horizontal]="horizontal()"
             #b="bar"
           >
@@ -189,6 +190,8 @@ export class BarChart {
   readonly showLabels = input(false);
   readonly tooltip = input(true);
   readonly radius = input(8);
+  /** Widest a bar may draw (px); a capped bar is centred in its slot. */
+  readonly maxBarSize = input(32);
   /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
   readonly framed = input(true);
   /** Draw the value grid lines. */

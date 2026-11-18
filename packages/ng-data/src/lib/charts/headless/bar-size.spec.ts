@@ -1,4 +1,4 @@
-import { barSize } from './bar';
+import { barSize, fitBar } from './bar';
 
 // recharts' grouped-bar sizing (combineAllBarPositions): BAR_GAP between the
 // bars of one category, dropped when it does not fit, and whole pixels only
@@ -18,5 +18,21 @@ describe('barSize', () => {
 
   it('keeps a sub-pixel bar instead of truncating it to 0', () => {
     expect(barSize(2, 3)).toBeCloseTo(2 / 3);
+  });
+});
+
+// recharts' maxBarSize (getBarPositions): the bar takes min(slot, max) and is
+// centred in its own slot, so a capped group keeps its spacing.
+describe('fitBar', () => {
+  it('leaves a bar narrower than the cap untouched', () => {
+    expect(fitBar(20, 32)).toEqual({ size: 20, offset: 0 });
+  });
+
+  it('caps a wide bar and centres it in its slot', () => {
+    expect(fitBar(100, 32)).toEqual({ size: 32, offset: 34 });
+  });
+
+  it('does nothing without a cap', () => {
+    expect(fitBar(100)).toEqual({ size: 100, offset: 0 });
   });
 });
