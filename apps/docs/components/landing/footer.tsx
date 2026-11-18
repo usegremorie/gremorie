@@ -1,7 +1,9 @@
-import { Separator } from '@gremorie/rx-display';
+import { Badge, Separator } from '@gremorie/rx-display';
+import { Button } from '@gremorie/rx-forms';
 import Link from 'next/link';
 
 import { GithubMark } from '@/components/github-mark';
+import { GremorieSymbol } from '@/components/gremorie-symbol';
 
 // Workbench is intentionally absent from Resources: the workbench app has no
 // public deployment URL yet (docs/workbench.md still says "<set by your Vercel
@@ -62,23 +64,27 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
           {/* Brand column */}
           <div className="lg:col-span-5">
-            <p className="text-base font-semibold text-foreground">Gremorie</p>
+            {/* The brand is the symbol, as in the navbar (symbol alone, no
+                wordmark); the visually hidden name is the accessible one. */}
+            <p className="text-foreground" data-slot="footer-logo">
+              <GremorieSymbol className="size-8" />
+              <span className="sr-only">Gremorie</span>
+            </p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Copy-paste primitives, tokens, and blocks for React and Angular.
               Open source under MIT, made to be read by humans and machines.
             </p>
-            <a
-              href="https://github.com/usegremorie/gremorie"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="mt-5 inline-flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              <GithubMark className="size-3.5" />
-              <span>Star on GitHub</span>
-              <span className="ml-1 inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
-                MIT
-              </span>
-            </a>
+            <Button asChild className="mt-5" variant="secondary">
+              <a
+                href="https://github.com/usegremorie/gremorie"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                <GithubMark className="size-4" />
+                Star on GitHub
+                <Badge variant="outline">MIT</Badge>
+              </a>
+            </Button>
           </div>
 
           {/* Resources column */}
@@ -164,7 +170,6 @@ export function Footer() {
         {/* Bottom bar - copyright + MIT */}
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 Kalvner. Open source under MIT.</p>
-          <p>Made with care in Brazil.</p>
         </div>
       </div>
     </footer>

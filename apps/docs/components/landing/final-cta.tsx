@@ -40,13 +40,13 @@ export function FinalCta({ lang }: { lang: string }) {
           other: in React, in Angular, and in front of your AI tools.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button size="lg" asChild>
+          <Button asChild>
             <Link href={`/${lang}/get-started/installation`}>
               Get started
               <ArrowRight aria-hidden="true" />
             </Link>
           </Button>
-          <Button size="lg" variant="outline" asChild>
+          <Button variant="secondary" asChild>
             <a
               href="https://github.com/usegremorie/gremorie"
               target="_blank"

@@ -3,13 +3,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  FeaturedIcon,
 } from '@gremorie/rx-display';
 import { Brain, Copy, GitBranch, Sparkles } from 'lucide-react';
 
 /**
  * Four pillars, presented the way a serious component library presents them
- * (shadcn / Radix / Fumadocs): neutral cards, a single monochrome icon in a
- * muted tile, and typography + spacing carrying the hierarchy. No per-card
+ * (shadcn / Radix / Fumadocs): neutral cards, a single monochrome DS
+ * FeaturedIcon, and typography + spacing carrying the hierarchy. No per-card
  * accent colors - restraint reads as professional; the rainbow of tinted tiles
  * read as generic.
  *
@@ -61,18 +62,20 @@ export function FeaturesGrid() {
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => (
-            <Card
-              key={feature.title}
-              className="transition-[color,box-shadow] duration-200 hover:ring-foreground/20"
-            >
-              <CardHeader className="gap-3">
-                <div className="flex size-9 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground">
-                  <feature.icon className="size-5" aria-hidden="true" />
-                </div>
-                <CardTitle className="text-base">{feature.title}</CardTitle>
-                <CardDescription className="leading-relaxed">
-                  {feature.description}
-                </CardDescription>
+            // DS card pattern: featured icon (48 = title 24 + 4 + description
+            // 20), then the header as the Card ships it. Not clickable, so no
+            // hover state.
+            <Card key={feature.title}>
+              <CardHeader>
+                <FeaturedIcon
+                  className="mb-5"
+                  color="gray"
+                  icon={feature.icon}
+                  size="lg"
+                  theme="light"
+                />
+                <CardTitle>{feature.title}</CardTitle>
+                <CardDescription>{feature.description}</CardDescription>
               </CardHeader>
             </Card>
           ))}

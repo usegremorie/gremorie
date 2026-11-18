@@ -9,7 +9,6 @@ import { FeaturesGrid } from '@/components/landing/features-grid';
 import { FinalCta } from '@/components/landing/final-cta';
 import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/landing/hero';
-import { ParityProof } from '@/components/landing/parity-proof';
 import { ProofStrip } from '@/components/landing/proof-strip';
 // Hidden, not deleted: see the render list below.
 // import { ThemePlayground } from '@/components/landing/theme-playground';
@@ -66,7 +65,6 @@ export default async function LandingPage({
             centered right under the hero copy, Linear/Vercel style. */}
         <AssistantShowcase />
         <ProofStrip />
-        <ParityProof lang={lang} />
         <FeaturesGrid />
         <ComponentsShowcase lang={lang} />
         {/* Blocks gallery: hidden on Kal's call, 2026-09-22. The section and

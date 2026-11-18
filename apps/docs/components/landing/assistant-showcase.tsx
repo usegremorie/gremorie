@@ -1,8 +1,7 @@
 'use client';
 
-import { CodeBlock, CodeBlockCopyButton } from '@gremorie/rx-artifacts';
 import { cn } from '@gremorie/rx-core';
-import { Card, CardHeader } from '@gremorie/rx-display';
+import { Card } from '@gremorie/rx-display';
 import { TooltipProvider } from '@gremorie/rx-overlays';
 import {
   AtSignIcon,
@@ -18,11 +17,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-import { CommandLine } from '@/components/landing/command-line';
-import {
-  FrameworkTabs,
-  type Framework,
-} from '@/components/landing/install-command';
+import { CodeCard } from '@/components/landing/code-card';
+import { type Framework } from '@/components/landing/framework-tabs';
 import {
   PropertyGroup,
   PropertySelect,
@@ -245,32 +241,19 @@ export function AssistantShowcase() {
             </Card>
 
             {/* Code: the edition tabs head the card; the body holds the
-                install command and the consumer code for that edition. The
-                code box has a fixed height, so the section keeps its size
-                whatever the props produce; it scrolls both ways, with the
-                bars showing on hover. */}
-            <Card className="gap-0 overflow-hidden py-0">
-              <CardHeader className="block border-b px-4 [.border-b]:pb-0">
-                <FrameworkTabs onValueChange={setEdition} value={edition} />
-              </CardHeader>
-              <div className="flex flex-col gap-3 p-4">
-                <CommandLine
-                  command={INSTALL[edition]}
-                  label="install command"
-                />
-                <CodeBlock
-                  className={CODE_SCROLL}
-                  code={
-                    edition === 'react' ? reactCode(props) : angularCode(props)
-                  }
-                  language={edition === 'react' ? 'tsx' : 'html'}
-                >
-                  {/* Backdrop like the install command's copy: code scrolling
-                      under the button stays out of the icon's way. */}
-                  <CodeBlockCopyButton className="bg-background/80 backdrop-blur-lg" />
-                </CodeBlock>
-              </div>
-            </Card>
+                install command and the consumer code. The code box has a
+                fixed height, so the section keeps its size whatever the props
+                produce. */}
+            <CodeCard
+              code={{
+                react: { code: reactCode(props), language: 'tsx' },
+                angular: { code: angularCode(props), language: 'html' },
+              }}
+              codeClassName={CODE_SCROLL}
+              command={INSTALL}
+              edition={edition}
+              onEditionChange={setEdition}
+            />
           </div>
 
           {/* Right column: the block itself. On large screens the left

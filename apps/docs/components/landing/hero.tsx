@@ -2,7 +2,6 @@ import { Badge } from '@gremorie/rx-display';
 import { Button } from '@gremorie/rx-forms';
 import Link from 'next/link';
 
-import { InstallCommand } from '@/components/landing/install-command';
 import { gremorieVersion } from '@/lib/version';
 
 /**
@@ -26,7 +25,7 @@ import { gremorieVersion } from '@/lib/version';
  * hierarchy.
  *
  * Dogfood: pill is rx-display Badge; CTAs are rx-forms Button (asChild wraps
- * Next Link); the install box composes rx Tabs + Button.
+ * Next Link); the second CTA is the secondary variant.
  */
 export function Hero({ lang }: { lang: string }) {
   return (
@@ -66,13 +65,11 @@ export function Hero({ lang }: { lang: string }) {
           it, and you own the source.
         </p>
 
-        <InstallCommand />
-
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button size="lg" asChild>
+          <Button asChild>
             <Link href={`/${lang}/get-started/installation`}>Get started</Link>
           </Button>
-          <Button size="lg" variant="outline" asChild>
+          <Button variant="secondary" asChild>
             <Link href={`/${lang}/components`}>View components</Link>
           </Button>
         </div>

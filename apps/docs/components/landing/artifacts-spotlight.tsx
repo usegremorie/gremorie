@@ -2,10 +2,12 @@
 
 import { ChartArtifact } from '@gremorie/rx-artifacts';
 import { Button } from '@gremorie/rx-forms';
-import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ArrowRight, TrendingUpIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
+
+import { CodeCard } from '@/components/landing/code-card';
+import { type Framework } from '@/components/landing/framework-tabs';
 
 /**
  * Spotlights the REAL `ChartArtifact` from @gremorie/rx-artifacts - the same
@@ -99,6 +101,7 @@ ${REVENUE_ROWS}
 }`;
 
 export function ArtifactsSpotlight({ lang }: { lang: string }) {
+  const [edition, setEdition] = useState<Framework>('react');
   return (
     <section className="relative py-20">
       {/*
@@ -117,7 +120,7 @@ export function ArtifactsSpotlight({ lang }: { lang: string }) {
       />
       <div className="mx-auto max-w-7xl px-6">
         {/* Header CTA placement mirrors components-showcase: heading +
-            description on the left, one ghost-button link on the right. */}
+            description on the left, one secondary-button link on the right. */}
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
@@ -129,7 +132,7 @@ export function ArtifactsSpotlight({ lang }: { lang: string }) {
               actions, paired with the exact code that renders it.
             </p>
           </div>
-          <Button variant="ghost" asChild>
+          <Button variant="secondary" asChild>
             <Link href={`/${lang}/artifacts`}>
               Learn more about artifacts
               <ArrowRight aria-hidden="true" />
@@ -156,20 +159,28 @@ export function ArtifactsSpotlight({ lang }: { lang: string }) {
             className="h-full"
           />
 
-          {/* The code behind the artifact, on the SAME surface the docs use:
-              Fumadocs Tabs + DynamicCodeBlock (shiki, copy button), with one
-              faithful snippet per framework edition. */}
-          <Tabs className="my-0 min-w-0" items={['React', 'Angular']}>
-            <Tab className="my-0 [&_figure]:my-0" value="React">
-              <DynamicCodeBlock code={REACT_ARTIFACT_CODE} lang="tsx" />
-            </Tab>
-            <Tab className="my-0 [&_figure]:my-0" value="Angular">
-              <DynamicCodeBlock
-                code={ANGULAR_ARTIFACT_CODE}
-                lang="angular-ts"
-              />
-            </Tab>
-          </Tabs>
+          {/* The code behind the artifact, in the same code card as the
+              Assistant showcase: edition tabs in the header, the DS CodeBlock
+              (copy, scrollbars on hover) filling the card beside the artifact.
+              One faithful snippet per framework edition. */}
+          {/* On large screens the artifact sets the row height and the code
+              card fills it (scrolling inside), so a long snippet never
+              stretches the artifact. */}
+          <div className="relative min-h-80">
+            <CodeCard
+              className="h-full lg:absolute lg:inset-0"
+              code={{
+                react: { code: REACT_ARTIFACT_CODE, language: 'tsx' },
+                angular: {
+                  code: ANGULAR_ARTIFACT_CODE,
+                  language: 'angular-ts',
+                },
+              }}
+              codeClassName="min-h-0 flex-1"
+              edition={edition}
+              onEditionChange={setEdition}
+            />
+          </div>
         </div>
       </div>
     </section>
