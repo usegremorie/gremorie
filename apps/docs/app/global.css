@@ -70,6 +70,14 @@
 }
 
 @layer base {
+  /* The home is the DS showcase and sits on the DS background (see
+     app/[lang]/(home)/page.tsx). Its top bar is transparent at the top and
+     the scrollbar gutter shows the body, so the body takes the same colour
+     there; docs pages keep Fumadocs' fd-background. Keyed on the home-only
+     site header. */
+  body:has([data-slot='site-header']) {
+    background-color: var(--background);
+  }
   html {
     scrollbar-gutter: stable;
     /* Smooth scroll for in-page anchor links on the landing.
