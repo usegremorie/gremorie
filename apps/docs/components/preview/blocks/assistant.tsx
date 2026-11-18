@@ -682,7 +682,7 @@ export function Assistant({
     <TooltipProvider>
       <div
         className={cn(
-          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
+          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
           className,
         )}
       >
@@ -896,14 +896,14 @@ export function Assistant({
                 <ConversationScrollButton />
               </Conversation>
               {/* Top fade: content dissolves into the header as it scrolls up. */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-card to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-background to-transparent" />
             </div>
 
             {/* AssistantComposer - floats over the conversation; the response
                 scrolls behind it, fading out through the gradient. */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
-              <div className="h-8 bg-gradient-to-t from-card to-transparent" />
-              <div className="pointer-events-auto bg-card/80 px-3 pb-3 backdrop-blur-sm">
+              <div className="h-8 bg-gradient-to-t from-background to-transparent" />
+              <div className="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm">
                 <div className="mx-auto w-full max-w-3xl space-y-2">
                   <Composer
                     onSubmit={handleSubmit}

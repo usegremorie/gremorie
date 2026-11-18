@@ -257,7 +257,7 @@ const COMPACT_SELECT_TRIGGER =
   host: {
     'data-slot': 'assistant',
     class:
-      '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-card text-card-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
+      '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
   },
   template: `
     <!-- AssistantHeader -->
@@ -749,14 +749,16 @@ const COMPACT_SELECT_TRIGGER =
         </conversation>
         <!-- Top fade: content dissolves into the header as it scrolls up. -->
         <div
-          class="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-card to-transparent"
+          class="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-background to-transparent"
         ></div>
       </div>
 
       <!-- AssistantComposer - floats over the conversation -->
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10">
-        <div class="h-8 bg-gradient-to-t from-card to-transparent"></div>
-        <div class="pointer-events-auto bg-card/80 px-3 pb-3 backdrop-blur-sm">
+        <div class="h-8 bg-gradient-to-t from-background to-transparent"></div>
+        <div
+          class="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm"
+        >
           <!-- The composer shares the reading column. -->
           <div class="mx-auto w-full max-w-3xl space-y-2">
             <ng-container [ngTemplateOutlet]="composer" />
