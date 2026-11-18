@@ -38,7 +38,7 @@ import { ARTIFACT_ICONS } from './icons';
   host: {
     'data-slot': 'artifact',
     class:
-      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-foreground/5 text-card-foreground shadow-sm dark:bg-foreground/[0.07]',
+      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-foreground/5 text-card-foreground shadow-sm dark:bg-foreground/[0.07] [--accent:color-mix(in_oklab,var(--foreground)_10%,transparent)] [--muted:color-mix(in_oklab,var(--foreground)_10%,transparent)]',
   },
   template: `<ng-content />`,
 })
@@ -292,8 +292,11 @@ export interface ArtifactViewOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'data-slot': 'artifact-view-toggle' },
   template: `
+    <!-- No fill of its own (React's outline ToggleGroup has none): an
+         opaque background here dimmed the selected item on the artifact's
+         translucent surface. -->
     <div
-      class="mr-1 inline-flex items-center rounded-md border border-input bg-background p-0.5"
+      class="mr-1 inline-flex items-center rounded-md border border-input p-0.5"
       role="group"
     >
       <gr-tooltip-provider>

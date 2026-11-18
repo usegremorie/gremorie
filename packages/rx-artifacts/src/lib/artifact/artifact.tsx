@@ -33,11 +33,15 @@ export type ArtifactProps = HTMLAttributes<HTMLDivElement>;
 export const Artifact = ({ className, ...props }: ArtifactProps) => (
   <div
     className={cn(
+      // Surface: the inner card fill (foreground 5%, 7% dark), so the artifact
+      // reads inside a card; on that translucent fill, accent and muted
+      // (selected and hover states) become foreground 10%, as on the floating
+      // surfaces, or they would match the fill and vanish.
       // `@container/artifact` lets the header adapt to the CARD's own width
       // (not the viewport), so actions collapse/expand based on how much room
       // the card actually has. `min-w-[280px]` keeps icon + truncated title +
       // a menu button always legible.
-      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-foreground/5 text-card-foreground shadow-sm dark:bg-foreground/[0.07]',
+      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-foreground/5 text-card-foreground shadow-sm dark:bg-foreground/[0.07] [--accent:color-mix(in_oklab,var(--foreground)_10%,transparent)] [--muted:color-mix(in_oklab,var(--foreground)_10%,transparent)]',
       className,
     )}
     {...props}
