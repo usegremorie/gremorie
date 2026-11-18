@@ -4,8 +4,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 // in ng-ai); this dev-only showcase reaches into the docs app for it.
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { Assistant } from '../../docs/components/preview/blocks/assistant';
+import { AccountAccess } from './cards/account-access';
 import { ContributionHistory } from './cards/contribution-history';
 import { PayoutThreshold } from './cards/payout-threshold';
+import { ReceivingMethod } from './cards/receiving-method';
 import { Masonry } from './masonry';
 
 /**
@@ -27,6 +29,8 @@ export const All: StoryObj = {
         [<ContributionHistory key="contribution-history" />],
         [<PayoutThreshold key="payout-threshold" />],
         [<Assistant key="assistant" initialView="empty" />],
+        [<AccountAccess key="account-access" />],
+        [<ReceivingMethod key="receiving-method" />],
       ]}
     />
   ),

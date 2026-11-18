@@ -36,4 +36,23 @@ describe('Label', () => {
     const el = host.querySelector('label') as HTMLLabelElement;
     expect(el.textContent?.trim()).toBe('Email');
   });
+
+  it('draws a passed class once, not on both the host and the inner label', () => {
+    @Component({
+      standalone: true,
+      imports: [Label],
+      template: `<gr-label for="x" class="rounded-lg border p-4">X</gr-label>`,
+    })
+    class Boxed {}
+    TestBed.configureTestingModule({ imports: [Boxed] });
+    const fixture = TestBed.createComponent(Boxed);
+    fixture.detectChanges();
+    const host = fixture.nativeElement.querySelector('gr-label') as HTMLElement;
+    const inner = host.querySelector('label') as HTMLLabelElement;
+    // The native label draws the box (so all of it is clickable); the host
+    // keeps the static class but, being display: contents, draws nothing.
+    expect(inner.classList.contains('border')).toBe(true);
+    expect(host.style.display).toBe('contents');
+    expect(inner.getAttribute('for')).toBe('x');
+  });
 });
