@@ -152,7 +152,7 @@ export function SiteHeader({ lang }: { lang: string }) {
                 </a>
               </Button>
             </IconAction>
-            <ThemeSwitch className="ml-2 max-md:hidden" />
+            <ThemeSwitch className="ml-2" />
             <DropdownMenu>
               <IconAction label="Menu">
                 <DropdownMenuTrigger asChild>
