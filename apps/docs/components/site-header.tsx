@@ -12,21 +12,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@gremorie/rx-overlays';
-import { useSearchContext } from 'fumadocs-ui/contexts/search';
+import {
+  FullSearchTrigger,
+  SearchTrigger,
+} from 'fumadocs-ui/layouts/shared/slots/search-trigger';
+import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import {
   BlocksIcon,
   ComponentIcon,
   LibraryIcon,
   MenuIcon,
-  MoonIcon,
   PaletteIcon,
-  SearchIcon,
-  SunIcon,
   type LucideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTheme } from 'next-themes';
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { GithubMark } from '@/components/github-mark';
@@ -38,9 +38,10 @@ import { GremorieSymbol } from '@/components/gremorie-symbol';
  *   header (sticky, 56px)
  *   ├─ logo                     left: the symbol, home link
  *   ├─ nav                      centre: icon + label, 14px / 500 in every state
- *   └─ actions                  right: search, GitHub, theme (ghost icon
- *                               buttons, gap 0, each with a tooltip);
- *                               below md the nav moves into a menu here
+ *   └─ actions                  right: Fumadocs' search field and theme
+ *                               switch (as on the docs pages), GitHub as a
+ *                               DS ghost icon button; below md the search is
+ *                               an icon and the nav moves into a menu here
  *
  * At the top of the page the bar has no surface and no border. Once the page
  * scrolls it gets the bottom border and the DS translucent treatment (60% of
@@ -72,8 +73,6 @@ function IconAction({
 
 export function SiteHeader({ lang }: { lang: string }) {
   const pathname = usePathname();
-  const { setOpenSearch } = useSearchContext();
-  const { resolvedTheme, setTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -133,16 +132,14 @@ export function SiteHeader({ lang }: { lang: string }) {
             className="ml-auto flex items-center"
             data-slot="site-header-actions"
           >
-            <IconAction label="Search">
-              <Button
-                aria-label="Search"
-                onClick={() => setOpenSearch(true)}
-                size="icon-sm"
-                variant="ghost"
-              >
-                <SearchIcon />
-              </Button>
-            </IconAction>
+            {/* Search and theme are Fumadocs' own controls, the same as on
+                the docs pages: the search field (with its shortcut) from md
+                up, the icon trigger below it. */}
+            <FullSearchTrigger
+              className="mr-2 w-56 rounded-full ps-2.5 max-md:hidden"
+              hideIfDisabled
+            />
+            <SearchTrigger className="p-2 md:hidden" hideIfDisabled />
             <IconAction label="GitHub">
               <Button asChild size="icon-sm" variant="ghost">
                 <a
@@ -155,21 +152,7 @@ export function SiteHeader({ lang }: { lang: string }) {
                 </a>
               </Button>
             </IconAction>
-            <IconAction label="Toggle theme">
-              <Button
-                aria-label="Toggle theme"
-                onClick={() =>
-                  setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-                }
-                size="icon-sm"
-                variant="ghost"
-              >
-                {/* Both glyphs render; CSS shows the right one, so server
-                    and client markup match before the theme is known. */}
-                <SunIcon className="dark:hidden" />
-                <MoonIcon className="hidden dark:block" />
-              </Button>
-            </IconAction>
+            <ThemeSwitch className="ml-2 max-md:hidden" />
             <DropdownMenu>
               <IconAction label="Menu">
                 <DropdownMenuTrigger asChild>
