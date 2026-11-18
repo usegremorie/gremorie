@@ -85,6 +85,12 @@ export class Textarea implements ControlValueAccessor {
   readonly name = input<string>('');
   /** Visible row count. Mirrors React `rows` (optional; defaults to none). */
   readonly rows = input<number | null>(null);
+  /**
+   * Show the browser's resize handle (vertical only). Off by default: the
+   * field grows with its content up to max-h-64, then scrolls. Mirrors React
+   * `resizable`.
+   */
+  readonly resizable = input<boolean>(false);
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
@@ -102,7 +108,8 @@ export class Textarea implements ControlValueAccessor {
 
   protected readonly textareaClass = computed(() =>
     cn(
-      'flex field-sizing-content min-h-16 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:ring-destructive/40',
+      'flex field-sizing-content min-h-16 max-h-64 w-full rounded-sm border border-transparent bg-input/50 px-3 py-2 text-base transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:ring-destructive/40',
+      this.resizable() ? 'resize-y' : 'resize-none',
       this.class(),
     ),
   );

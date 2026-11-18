@@ -1,3 +1,4 @@
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -7,14 +8,34 @@ import {
   HostListener,
   inject,
   input,
+  linkedSignal,
   OnDestroy,
   OnInit,
   output,
   signal,
   ViewEncapsulation,
+  viewChild,
 } from '@angular/core';
 import { Button } from '@gremorie/ng-core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { MENU_BELOW_END, MENU_BELOW_START } from '../overlay-positions';
+import {
+  lucideAtSign,
+  lucideChartColumnBig,
+  lucideCornerDownLeft,
+  lucideListChecks,
+  lucideMessageCirclePlus,
+  lucideMessageCircleQuestion,
+  lucideSparkles,
+  lucideTelescope,
+} from '@ng-icons/lucide';
 import { ChartArtifact } from '@gremorie/ng-artifacts';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
 import { BrnHoverCardContent } from '@spartan-ng/brain/hover-card';
 
 import {
@@ -77,7 +98,26 @@ import {
 import { PromptInputSpeechButton } from '../prompt-input/prompt-input-speech-button';
 import { PromptInputSubmit } from '../prompt-input/prompt-input-submit';
 import { PromptInputTextarea } from '../prompt-input/prompt-input-textarea';
-import { PromptInputTools } from '../prompt-input/prompt-input-tools';
+import {
+  PromptInputTools,
+  PromptInputToolsCollapsed,
+  PromptInputToolsExpanded,
+  type PromptInputToolsCollapse,
+} from '../prompt-input/prompt-input-tools';
+import {
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuCheckboxItem,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuRadioGroup,
+  PromptInputActionMenuRadioItem,
+  PromptInputActionMenuSeparator,
+  PromptInputActionMenuSub,
+  PromptInputActionMenuSubContent,
+  PromptInputActionMenuSubTrigger,
+  PromptInputActionMenuSwitchItem,
+  PromptInputActionMenuTrigger,
+} from '../prompt-input/prompt-input-action-menu';
 import type {
   PromptInputState,
   PromptInputSubmitEvent,
@@ -110,13 +150,43 @@ interface ComposerOption {
  * streaming -> ready) as the React block, so the two read identically. Wire
  * `(submitted)` to your AI SDK to make it real.
  */
+// The Assistant is a size container (@container/assistant). Below 36rem of
+// its OWN width (a card, a sidebar, a phone) it switches to compact: actions
+// with a label become 32px icon buttons (the label stays for screen readers),
+// select triggers show only their icon, and the new-chat composer docks to
+// the bottom. Same classes as the React edition.
+const COMPACT_ICON_BUTTON =
+  '@max-xl/assistant:size-8 @max-xl/assistant:gap-0 @max-xl/assistant:p-0';
+const COMPACT_LABEL = '@max-xl/assistant:sr-only';
+const COMPACT_SELECT_TRIGGER =
+  '@max-xl/assistant:size-8 @max-xl/assistant:justify-center @max-xl/assistant:px-0 @max-xl/assistant:[&_[data-slot=select-value-label]]:sr-only @max-xl/assistant:[&>svg:last-child]:hidden';
+
 @Component({
   selector: 'ai-assistant',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    provideIcons({
+      lucideAtSign,
+      lucideChartColumnBig,
+      lucideCornerDownLeft,
+      lucideListChecks,
+      lucideMessageCirclePlus,
+      lucideMessageCircleQuestion,
+      lucideSparkles,
+      lucideTelescope,
+    }),
+  ],
   imports: [
     NgTemplateOutlet,
+    NgIcon,
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin,
     BrnHoverCardContent,
     Button,
     ChartArtifact,
@@ -159,6 +229,20 @@ interface ComposerOption {
     PromptInputFooter,
     PromptInputTextarea,
     PromptInputTools,
+    PromptInputToolsExpanded,
+    PromptInputToolsCollapsed,
+    PromptInputActionMenu,
+    PromptInputActionMenuTrigger,
+    PromptInputActionMenuContent,
+    PromptInputActionMenuSwitchItem,
+    PromptInputActionAddAttachments,
+    PromptInputActionMenuSub,
+    PromptInputActionMenuSubTrigger,
+    PromptInputActionMenuSubContent,
+    PromptInputActionMenuRadioGroup,
+    PromptInputActionMenuRadioItem,
+    PromptInputActionMenuCheckboxItem,
+    PromptInputActionMenuSeparator,
     PromptInputSubmit,
     PromptInputButton,
     PromptInputAttachButton,
@@ -173,12 +257,16 @@ interface ComposerOption {
   host: {
     'data-slot': 'assistant',
     class:
-      'relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-[16px] border bg-card text-card-foreground shadow-sm',
+      '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
   },
   template: `
     <!-- AssistantHeader -->
     <header class="flex items-center justify-between gap-2 px-3 py-2">
-      <div class="relative inline-flex">
+      <div
+        class="relative inline-flex"
+        cdkOverlayOrigin
+        #threadOrigin="cdkOverlayOrigin"
+      >
         <ai-button
           variant="ghost"
           size="sm"
@@ -201,10 +289,18 @@ interface ComposerOption {
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </ai-button>
-        @if (threadMenuOpen()) {
+        <ng-template
+          cdkConnectedOverlay
+          [cdkConnectedOverlayOrigin]="threadOrigin"
+          [cdkConnectedOverlayOpen]="threadMenuOpen()"
+          [cdkConnectedOverlayPositions]="menuBelowStart"
+          [cdkConnectedOverlayViewportMargin]="8"
+          (detach)="threadMenuOpen.set(false)"
+        >
           <div
             role="menu"
-            class="absolute left-0 top-10 z-50 w-64 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+            #threadPanel
+            class="w-64 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
           >
             <p class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
               Recent chats
@@ -219,99 +315,121 @@ interface ComposerOption {
                 {{ thread }}
               </button>
             }
-            <div class="my-1 h-px bg-border"></div>
+            <div class="-mx-1 my-1 h-px bg-border"></div>
             <button
               type="button"
               role="menuitem"
               class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
               (click)="newChat()"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+              <ng-icon
+                name="lucideMessageCirclePlus"
                 class="size-4"
-              >
-                <path d="M12 20h9" />
-                <path
-                  d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
-                />
-              </svg>
+                aria-hidden="true"
+              />
               New chat
             </button>
           </div>
-        }
+        </ng-template>
       </div>
 
-      <div class="flex items-center gap-1">
-        <ai-button variant="ghost" size="sm" class="gap-2">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            class="size-4"
+      <!-- Header actions: ghost icon buttons, no gap between them. -->
+      <div class="flex items-center">
+        <gr-tooltip-provider>
+          <gr-tooltip>
+            <gr-tooltip-trigger>
+              <ai-button variant="ghost" size="icon" ariaLabel="Sources">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="size-4"
+                >
+                  <path d="m16 6 4 14" />
+                  <path d="M12 6v14" />
+                  <path d="M8 8v12" />
+                  <path d="M4 4v16" />
+                </svg>
+              </ai-button>
+            </gr-tooltip-trigger>
+            <gr-tooltip-content>Sources</gr-tooltip-content>
+          </gr-tooltip>
+        </gr-tooltip-provider>
+        <gr-tooltip-provider>
+          <gr-tooltip>
+            <gr-tooltip-trigger>
+              <ai-button variant="ghost" size="icon" ariaLabel="Share">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="size-4"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+                  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+                </svg>
+              </ai-button>
+            </gr-tooltip-trigger>
+            <gr-tooltip-content>Share</gr-tooltip-content>
+          </gr-tooltip>
+        </gr-tooltip-provider>
+        <div
+          class="relative inline-flex"
+          cdkOverlayOrigin
+          #overflowOrigin="cdkOverlayOrigin"
+        >
+          <gr-tooltip-provider>
+            <gr-tooltip>
+              <gr-tooltip-trigger>
+                <ai-button
+                  variant="ghost"
+                  size="icon"
+                  ariaLabel="More actions"
+                  [attr.aria-expanded]="overflowMenuOpen()"
+                  (pressedChange)="toggleOverflowMenu()"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    class="size-4"
+                  >
+                    <circle cx="12" cy="12" r="1" />
+                    <circle cx="19" cy="12" r="1" />
+                    <circle cx="5" cy="12" r="1" />
+                  </svg>
+                </ai-button>
+              </gr-tooltip-trigger>
+              <gr-tooltip-content>More actions</gr-tooltip-content>
+            </gr-tooltip>
+          </gr-tooltip-provider>
+          <ng-template
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="overflowOrigin"
+            [cdkConnectedOverlayOpen]="overflowMenuOpen()"
+            [cdkConnectedOverlayPositions]="menuBelowEnd"
+            [cdkConnectedOverlayViewportMargin]="8"
+            (detach)="overflowMenuOpen.set(false)"
           >
-            <path d="m16 6 4 14" />
-            <path d="M12 6v14" />
-            <path d="M8 8v12" />
-            <path d="M4 4v16" />
-          </svg>
-          Sources
-        </ai-button>
-        <ai-button variant="ghost" size="icon" ariaLabel="Share" class="size-9">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            class="size-4"
-          >
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
-            <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
-          </svg>
-        </ai-button>
-        <div class="relative inline-flex">
-          <ai-button
-            variant="ghost"
-            size="icon"
-            ariaLabel="More actions"
-            class="size-9"
-            [attr.aria-expanded]="overflowMenuOpen()"
-            (pressedChange)="toggleOverflowMenu()"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              class="size-4"
-            >
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="19" cy="12" r="1" />
-              <circle cx="5" cy="12" r="1" />
-            </svg>
-          </ai-button>
-          @if (overflowMenuOpen()) {
             <div
               role="menu"
-              class="absolute right-0 top-10 z-50 w-44 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+              #overflowPanel
+              class="w-44 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
             >
               <button
                 type="button"
@@ -358,7 +476,7 @@ interface ComposerOption {
                 </svg>
                 Duplicate
               </button>
-              <div class="my-1 h-px bg-border"></div>
+              <div class="-mx-1 my-1 h-px bg-border"></div>
               <button
                 type="button"
                 role="menuitem"
@@ -383,125 +501,45 @@ interface ComposerOption {
                 Delete
               </button>
             </div>
-          }
+          </ng-template>
         </div>
       </div>
     </header>
 
     @if (view() === 'empty') {
       <!-- AssistantStart - the new-chat state -->
-      <div class="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-        <h2 class="text-center text-2xl font-semibold tracking-tight">
+      <div
+        class="flex flex-1 flex-col items-center justify-center gap-6 px-4 @max-xl/assistant:justify-end @max-xl/assistant:px-3 @max-xl/assistant:pb-3"
+      >
+        <h2
+          class="text-center text-2xl font-semibold @max-xl/assistant:flex @max-xl/assistant:flex-1 @max-xl/assistant:items-center"
+        >
           How can I help you today?
         </h2>
         <div class="w-full max-w-2xl">
-          <ng-container [ngTemplateOutlet]="composer" />
+          <ng-container
+            [ngTemplateOutlet]="composer"
+            [ngTemplateOutletContext]="{ newChat: true }"
+          />
         </div>
       </div>
     } @else {
       <!-- AssistantContent - the conversation -->
       <div class="relative flex-1 overflow-hidden">
         <conversation class="h-full">
-          <conversation-content class="gap-6 px-4 pt-6 pb-80">
-            <message from="user">
-              <message-content>{{ userQuestion }}</message-content>
-              <message-toolbar
-                class="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
-              >
-                <message-actions class="ml-auto">
-                  <message-action tooltip="Copy" label="Copy">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                      class="size-4"
-                    >
-                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                      <path
-                        d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-                      />
-                    </svg>
-                  </message-action>
-                  <message-action tooltip="Edit" label="Edit">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                      class="size-4"
-                    >
-                      <path d="M12 20h9" />
-                      <path
-                        d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
-                      />
-                    </svg>
-                  </message-action>
-                </message-actions>
-              </message-toolbar>
-            </message>
-
-            <message from="assistant">
-              <message-branch [defaultBranch]="0">
-                <message-branch-content>
-                  <ng-template messageBranchItem>
-                    <ng-container
-                      [ngTemplateOutlet]="answer"
-                      [ngTemplateOutletContext]="{ $implicit: answerFull }"
-                    />
-                  </ng-template>
-                  <ng-template messageBranchItem>
-                    <ng-container
-                      [ngTemplateOutlet]="answer"
-                      [ngTemplateOutletContext]="{ $implicit: answerConcise }"
-                    />
-                  </ng-template>
-                </message-branch-content>
-                <message-toolbar>
-                  <message-actions>
-                    <message-action
-                      tooltip="Good response"
-                      label="Good response"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <path d="M7 10v12" />
-                        <path
-                          d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
-                        />
-                      </svg>
-                    </message-action>
-                    <message-action tooltip="Bad response" label="Bad response">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <path d="M17 14V2" />
-                        <path
-                          d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"
-                        />
-                      </svg>
-                    </message-action>
+          <conversation-content class="px-4 pt-6 pb-80">
+            <!-- The reading column: 768px at most, centred (as Claude and
+                 ChatGPT); the scroll area stays card-wide. Mirrors React. -->
+            <div
+              class="mx-auto flex w-full max-w-3xl flex-col gap-6"
+              data-slot="assistant-column"
+            >
+              <message from="user">
+                <message-content>{{ userQuestion }}</message-content>
+                <message-toolbar
+                  class="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
+                >
+                  <message-actions class="ml-auto">
                     <message-action tooltip="Copy" label="Copy">
                       <svg
                         viewBox="0 0 24 24"
@@ -526,7 +564,7 @@ interface ComposerOption {
                         />
                       </svg>
                     </message-action>
-                    <message-action tooltip="Regenerate" label="Regenerate">
+                    <message-action tooltip="Edit" label="Edit">
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -537,86 +575,197 @@ interface ComposerOption {
                         aria-hidden="true"
                         class="size-4"
                       >
+                        <path d="M12 20h9" />
                         <path
-                          d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                          d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
                         />
-                        <path d="M21 3v5h-5" />
-                        <path
-                          d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
-                        />
-                        <path d="M8 16H3v5" />
-                      </svg>
-                    </message-action>
-                    <message-action tooltip="Share" label="Share">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <circle cx="18" cy="5" r="3" />
-                        <circle cx="6" cy="12" r="3" />
-                        <circle cx="18" cy="19" r="3" />
-                        <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
-                        <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
                       </svg>
                     </message-action>
                   </message-actions>
-                  <div class="flex items-center gap-1">
-                    <ai-button
-                      variant="ghost"
-                      size="sm"
-                      class="gap-1.5 text-muted-foreground"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        class="size-4"
-                      >
-                        <path d="m16 6 4 14" />
-                        <path d="M12 6v14" />
-                        <path d="M8 8v12" />
-                        <path d="M4 4v16" />
-                      </svg>
-                      Sources
-                    </ai-button>
-                    <message-branch-selector from="assistant">
-                      <message-branch-previous />
-                      <message-branch-page />
-                      <message-branch-next />
-                    </message-branch-selector>
-                  </div>
                 </message-toolbar>
-              </message-branch>
-            </message>
+              </message>
+
+              <!-- The answer spans the reading column, edge to edge with the
+                   composer (as Claude). -->
+              <message class="max-w-full" from="assistant">
+                <message-branch [defaultBranch]="0">
+                  <message-branch-content>
+                    <ng-template messageBranchItem>
+                      <ng-container
+                        [ngTemplateOutlet]="answer"
+                        [ngTemplateOutletContext]="{ $implicit: answerFull }"
+                      />
+                    </ng-template>
+                    <ng-template messageBranchItem>
+                      <ng-container
+                        [ngTemplateOutlet]="answer"
+                        [ngTemplateOutletContext]="{ $implicit: answerConcise }"
+                      />
+                    </ng-template>
+                  </message-branch-content>
+                  <message-toolbar>
+                    <message-actions>
+                      <message-action
+                        tooltip="Good response"
+                        label="Good response"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path d="M7 10v12" />
+                          <path
+                            d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+                          />
+                        </svg>
+                      </message-action>
+                      <message-action
+                        tooltip="Bad response"
+                        label="Bad response"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path d="M17 14V2" />
+                          <path
+                            d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"
+                          />
+                        </svg>
+                      </message-action>
+                      <message-action tooltip="Copy" label="Copy">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <rect
+                            width="14"
+                            height="14"
+                            x="8"
+                            y="8"
+                            rx="2"
+                            ry="2"
+                          />
+                          <path
+                            d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                          />
+                        </svg>
+                      </message-action>
+                      <message-action tooltip="Regenerate" label="Regenerate">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path
+                            d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                          />
+                          <path d="M21 3v5h-5" />
+                          <path
+                            d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                          />
+                          <path d="M8 16H3v5" />
+                        </svg>
+                      </message-action>
+                      <message-action tooltip="Share" label="Share">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <circle cx="18" cy="5" r="3" />
+                          <circle cx="6" cy="12" r="3" />
+                          <circle cx="18" cy="19" r="3" />
+                          <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+                          <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+                        </svg>
+                      </message-action>
+                    </message-actions>
+                    <div class="flex items-center gap-1">
+                      <ai-button
+                        variant="ghost"
+                        size="sm"
+                        [class]="
+                          'gap-1.5 text-muted-foreground ' + compactIconButton
+                        "
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <path d="m16 6 4 14" />
+                          <path d="M12 6v14" />
+                          <path d="M8 8v12" />
+                          <path d="M4 4v16" />
+                        </svg>
+                        <span [class]="compactLabel">Sources</span>
+                      </ai-button>
+                      <message-branch-selector from="assistant">
+                        <message-branch-previous />
+                        <message-branch-page />
+                        <message-branch-next />
+                      </message-branch-selector>
+                    </div>
+                  </message-toolbar>
+                </message-branch>
+              </message>
+            </div>
           </conversation-content>
           <conversation-scroll-button />
         </conversation>
         <!-- Top fade: content dissolves into the header as it scrolls up. -->
         <div
-          class="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-card to-transparent"
+          class="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-background to-transparent"
         ></div>
       </div>
 
       <!-- AssistantComposer - floats over the conversation -->
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10">
-        <div class="h-8 bg-gradient-to-t from-card to-transparent"></div>
+        <div class="h-8 bg-gradient-to-t from-background to-transparent"></div>
         <div
-          class="pointer-events-auto space-y-2 bg-card/80 px-3 pb-3 backdrop-blur-sm"
+          class="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm"
         >
-          <ng-container [ngTemplateOutlet]="composer" />
-          <p class="text-center text-xs text-muted-foreground">
-            Gremorie can make mistakes. Check important info.
-          </p>
+          <!-- The composer shares the reading column. -->
+          <div class="mx-auto w-full max-w-3xl space-y-2">
+            <ng-container [ngTemplateOutlet]="composer" />
+            <p class="text-center text-xs text-muted-foreground">
+              Gremorie can make mistakes. Check important info.
+            </p>
+          </div>
         </div>
       </div>
     }
@@ -646,105 +795,195 @@ interface ComposerOption {
     </ng-template>
 
     <!-- The floating B2B composer (PromptInput). -->
-    <ng-template #composer>
+    <!-- Context meter: in the header with mentions, beside the text without. -->
+    <ng-template #contextMeterTpl>
+      <context
+        [class]="meterInBody() ? '' : 'ml-auto'"
+        [maxTokens]="200000"
+        [usedTokens]="62600"
+        modelId="anthropic:claude-3-5-sonnet"
+        [usage]="contextUsage"
+      >
+        <context-trigger [class]="meterInBody() ? '' : 'ml-auto'" />
+        <ng-template brnHoverCardContent>
+          <context-content>
+            <context-content-header />
+            <context-content-body>
+              <div class="space-y-1">
+                <context-input-usage />
+                <context-output-usage />
+                <context-reasoning-usage />
+                <context-cache-usage />
+              </div>
+            </context-content-body>
+            <context-content-footer />
+          </context-content>
+        </ng-template>
+      </context>
+    </ng-template>
+
+    <ng-template #composer let-newChat="newChat">
       <prompt-input
-        class="rounded-xl shadow-lg"
+        [layout]="composerLayout()"
         [state]="status()"
         (submitted)="handleSubmit($event)"
         (canceled)="handleCancel()"
       >
-        @if (showHeader()) {
-          <prompt-input-header>
-            @if (mentions()) {
-              <prompt-input-mentions [items]="contextItems" />
-            }
-            @if (contextMeter()) {
-              <context
-                class="ml-auto"
-                [maxTokens]="200000"
-                [usedTokens]="62600"
-                modelId="anthropic:claude-3-5-sonnet"
-                [usage]="contextUsage"
+        <!-- The send button, shared by both layouts. Declared inside
+             <prompt-input> so it injects the composer it submits. -->
+        <ng-template #submitTpl let-newChat="newChat">
+          @if (newChat) {
+            <!-- New chat: "Chat" + the enter icon; compact keeps the arrow. -->
+            <prompt-input-submit
+              size="sm"
+              label="Chat"
+              tooltip="Chat"
+              class="gap-2 pr-2.5 pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
+            >
+              <span class="@max-md/prompt-input:hidden">Chat</span>
+              <span class="flex @max-md/prompt-input:hidden">
+                <ng-icon
+                  name="lucideCornerDownLeft"
+                  class="size-4"
+                  aria-hidden="true"
+                />
+              </span>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="hidden size-4 @max-md/prompt-input:block"
               >
-                <context-trigger class="ml-auto" />
-                <ng-template brnHoverCardContent>
-                  <context-content>
-                    <context-content-header />
-                    <context-content-body>
-                      <div class="space-y-1">
-                        <context-input-usage />
-                        <context-output-usage />
-                        <context-reasoning-usage />
-                        <context-cache-usage />
-                      </div>
-                    </context-content-body>
-                    <context-content-footer />
-                  </context-content>
-                </ng-template>
-              </context>
-            }
-          </prompt-input-header>
-        }
+                <path d="m5 12 7-7 7 7" />
+                <path d="M12 19V5" />
+              </svg>
+            </prompt-input-submit>
+          } @else {
+            <prompt-input-submit tooltip="Send">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="size-4"
+              >
+                <path d="m5 12 7-7 7 7" />
+                <path d="M12 19V5" />
+              </svg>
+            </prompt-input-submit>
+          }
+        </ng-template>
 
-        <prompt-input-body>
-          <prompt-input-textarea [placeholder]="placeholder()" />
-        </prompt-input-body>
-
-        <prompt-input-footer>
-          <prompt-input-tools class="gap-2">
-            @if (modeSelect()) {
-              <prompt-input-select [value]="defaultMode()">
-                <prompt-input-select-trigger ariaLabel="Select mode" size="sm">
-                  <prompt-input-select-value placeholder="Mode" />
-                </prompt-input-select-trigger>
-                <prompt-input-select-content>
-                  @for (mode of modes; track mode.id) {
-                    <prompt-input-select-item
-                      [value]="mode.id"
-                      [label]="mode.label"
+        @if (composerLayout() === 'inline') {
+          <!-- One row: every composer control lives in the "+" menu (context,
+               mode and model as submenus, web search as a switch, attachments);
+               the text takes the middle; dictation and send stay at hand. -->
+          <prompt-input-action-menu>
+            <prompt-input-action-menu-trigger ariaLabel="Add" tooltip="Add" />
+            <prompt-input-action-menu-content class="w-72">
+              @if (mentions()) {
+                <prompt-input-action-menu-sub>
+                  <prompt-input-action-menu-sub-trigger
+                    [value]="inlineContext().length || null"
+                  >
+                    <ng-icon
+                      name="lucideAtSign"
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                    Add context
+                  </prompt-input-action-menu-sub-trigger>
+                  <prompt-input-action-menu-sub-content>
+                    @for (item of contextItems; track item.id) {
+                      <prompt-input-action-menu-checkbox-item
+                        [checked]="inlineContext().includes(item.id)"
+                        (checkedChange)="toggleInlineContext(item.id, $event)"
+                      >
+                        {{ item.label }}
+                      </prompt-input-action-menu-checkbox-item>
+                    }
+                  </prompt-input-action-menu-sub-content>
+                </prompt-input-action-menu-sub>
+              }
+              @if (modeSelect()) {
+                <prompt-input-action-menu-sub>
+                  <prompt-input-action-menu-sub-trigger
+                    [value]="inlineModeLabel()"
+                  >
+                    <ng-icon
+                      name="lucideTelescope"
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                    Mode
+                  </prompt-input-action-menu-sub-trigger>
+                  <prompt-input-action-menu-sub-content>
+                    <prompt-input-action-menu-radio-group
+                      [(value)]="inlineMode"
                     >
-                      {{ mode.label }}
-                    </prompt-input-select-item>
-                  }
-                </prompt-input-select-content>
-              </prompt-input-select>
-            }
-
-            @if (modelSelect()) {
-              <prompt-input-select [value]="defaultModel()">
-                <prompt-input-select-trigger ariaLabel="Select model" size="sm">
-                  <prompt-input-select-value placeholder="Model" />
-                </prompt-input-select-trigger>
-                <prompt-input-select-content>
-                  @for (model of models; track model.id) {
-                    <prompt-input-select-item
-                      [value]="model.id"
-                      [label]="model.label"
-                    >
-                      @switch (model.icon) {
-                        @case ('claude') {
-                          <ai-claude-icon class="size-4" />
-                        }
-                        @case ('openai') {
-                          <ai-openai-icon class="size-4" />
-                        }
-                        @case ('gemini') {
-                          <ai-gemini-icon class="size-4" />
-                        }
+                      @for (mode of modes; track mode.id) {
+                        <prompt-input-action-menu-radio-item [value]="mode.id">
+                          <ng-icon
+                            [name]="mode.icon"
+                            class="size-4"
+                            aria-hidden="true"
+                          />
+                          {{ mode.label }}
+                        </prompt-input-action-menu-radio-item>
                       }
-                      {{ model.label }}
-                    </prompt-input-select-item>
-                  }
-                </prompt-input-select-content>
-              </prompt-input-select>
-            }
-          </prompt-input-tools>
-
-          <prompt-input-tools class="gap-2">
-            <prompt-input-tools>
-              <prompt-input-button
-                ariaLabel="Search the web"
-                tooltip="Search the web"
+                    </prompt-input-action-menu-radio-group>
+                  </prompt-input-action-menu-sub-content>
+                </prompt-input-action-menu-sub>
+              }
+              @if (modelSelect()) {
+                <prompt-input-action-menu-sub>
+                  <prompt-input-action-menu-sub-trigger
+                    [value]="inlineModelLabel()"
+                  >
+                    <ng-icon
+                      name="lucideSparkles"
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                    Model
+                  </prompt-input-action-menu-sub-trigger>
+                  <prompt-input-action-menu-sub-content>
+                    <prompt-input-action-menu-radio-group
+                      [(value)]="inlineModel"
+                    >
+                      @for (model of models; track model.id) {
+                        <prompt-input-action-menu-radio-item [value]="model.id">
+                          @switch (model.icon) {
+                            @case ('claude') {
+                              <ai-claude-icon class="size-4" />
+                            }
+                            @case ('openai') {
+                              <ai-openai-icon class="size-4" />
+                            }
+                            @case ('gemini') {
+                              <ai-gemini-icon class="size-4" />
+                            }
+                          }
+                          {{ model.label }}
+                        </prompt-input-action-menu-radio-item>
+                      }
+                    </prompt-input-action-menu-radio-group>
+                  </prompt-input-action-menu-sub-content>
+                </prompt-input-action-menu-sub>
+              }
+              @if (mentions() || modeSelect() || modelSelect()) {
+                <prompt-input-action-menu-separator />
+              }
+              <prompt-input-action-menu-switch-item
+                [checked]="webSearch()"
+                (checkedChange)="webSearch.set($event)"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -760,32 +999,223 @@ interface ComposerOption {
                   <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                   <path d="M2 12h20" />
                 </svg>
-              </prompt-input-button>
-              <prompt-input-attach-button tooltip="Attach files" />
-              <prompt-input-speech-button tooltip="Voice input" />
+                Search the web
+              </prompt-input-action-menu-switch-item>
+              <prompt-input-action-add-attachments label="Attach files" />
+            </prompt-input-action-menu-content>
+          </prompt-input-action-menu>
+          <prompt-input-body>
+            <prompt-input-textarea
+              class="flex-1"
+              [placeholder]="placeholder()"
+            />
+          </prompt-input-body>
+          <prompt-input-speech-button tooltip="Voice input" />
+          <ng-container
+            [ngTemplateOutlet]="submitTpl"
+            [ngTemplateOutletContext]="{ newChat: newChat }"
+          />
+        } @else {
+          @if (showHeader()) {
+            <prompt-input-header>
+              @if (mentions()) {
+                <prompt-input-mentions
+                  [items]="contextItems"
+                  variant="secondary"
+                />
+              }
+              @if (contextMeter()) {
+                <ng-container [ngTemplateOutlet]="contextMeterTpl" />
+              }
+            </prompt-input-header>
+          }
+
+          <prompt-input-body>
+            @if (meterInBody()) {
+              <!-- Mentions off: the meter sits beside the text, not alone above it. -->
+              <div class="flex w-full items-start">
+                <prompt-input-textarea
+                  class="flex-1"
+                  [placeholder]="placeholder()"
+                />
+                <div class="shrink-0 pt-1 pr-3">
+                  <ng-container [ngTemplateOutlet]="contextMeterTpl" />
+                </div>
+              </div>
+            } @else {
+              <prompt-input-textarea [placeholder]="placeholder()" />
+            }
+          </prompt-input-body>
+
+          <prompt-input-footer>
+            <prompt-input-tools class="gap-2">
+              @if (modeSelect()) {
+                <prompt-input-select [value]="defaultMode()">
+                  <prompt-input-select-trigger
+                    ariaLabel="Select mode"
+                    size="sm"
+                    variant="secondary"
+                    [class]="compactSelectTrigger"
+                  >
+                    <prompt-input-select-value placeholder="Mode" />
+                  </prompt-input-select-trigger>
+                  <prompt-input-select-content>
+                    @for (mode of modes; track mode.id) {
+                      <prompt-input-select-item
+                        [value]="mode.id"
+                        [label]="mode.label"
+                      >
+                        <ng-template>
+                          <ng-icon
+                            [name]="mode.icon"
+                            class="size-4"
+                            aria-hidden="true"
+                          />
+                        </ng-template>
+                        {{ mode.label }}
+                      </prompt-input-select-item>
+                    }
+                  </prompt-input-select-content>
+                </prompt-input-select>
+              }
+
+              @if (modelSelect()) {
+                <prompt-input-select [value]="defaultModel()">
+                  <prompt-input-select-trigger
+                    ariaLabel="Select model"
+                    size="sm"
+                    variant="secondary"
+                    [class]="compactSelectTrigger"
+                  >
+                    <prompt-input-select-value placeholder="Model" />
+                  </prompt-input-select-trigger>
+                  <prompt-input-select-content>
+                    @for (model of models; track model.id) {
+                      <prompt-input-select-item
+                        [value]="model.id"
+                        [label]="model.label"
+                      >
+                        <ng-template>
+                          @switch (model.icon) {
+                            @case ('claude') {
+                              <ai-claude-icon class="size-4" />
+                            }
+                            @case ('openai') {
+                              <ai-openai-icon class="size-4" />
+                            }
+                            @case ('gemini') {
+                              <ai-gemini-icon class="size-4" />
+                            }
+                          }
+                        </ng-template>
+                        {{ model.label }}
+                      </prompt-input-select-item>
+                    }
+                  </prompt-input-select-content>
+                </prompt-input-select>
+              }
             </prompt-input-tools>
-            <prompt-input-submit>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                class="size-4"
-              >
-                <path d="m5 12 7-7 7 7" />
-                <path d="M12 19V5" />
-              </svg>
-            </prompt-input-submit>
-          </prompt-input-tools>
-        </prompt-input-footer>
+
+            <prompt-input-tools class="gap-2">
+              <!-- Ghost icon group: no gap between the icons; the outer gap-2
+                   separates the group from the send button. -->
+              <prompt-input-tools class="gap-0" [collapse]="toolsCollapse()">
+                <prompt-input-tools-expanded>
+                  <prompt-input-button
+                    ariaLabel="Search the web"
+                    tooltip="Search the web"
+                    [active]="webSearch()"
+                    (pressed)="webSearch.set(!webSearch())"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      class="size-4"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path
+                        d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+                      />
+                      <path d="M2 12h20" />
+                    </svg>
+                  </prompt-input-button>
+                  <prompt-input-attach-button tooltip="Attach files" />
+                </prompt-input-tools-expanded>
+                <!-- Collapsed: web search and attachments move to the overflow
+                     menu; the mic, an input mode, stays at hand. -->
+                <prompt-input-tools-collapsed>
+                  <prompt-input-action-menu>
+                    <prompt-input-action-menu-trigger
+                      ariaLabel="More tools"
+                      tooltip="More tools"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        class="size-4"
+                      >
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="19" cy="12" r="1" />
+                        <circle cx="5" cy="12" r="1" />
+                      </svg>
+                    </prompt-input-action-menu-trigger>
+                    <prompt-input-action-menu-content>
+                      <prompt-input-action-menu-switch-item
+                        [checked]="webSearch()"
+                        (checkedChange)="webSearch.set($event)"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class="size-4"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <path
+                            d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+                          />
+                          <path d="M2 12h20" />
+                        </svg>
+                        Search the web
+                      </prompt-input-action-menu-switch-item>
+                      <prompt-input-action-add-attachments
+                        label="Attach files"
+                      />
+                    </prompt-input-action-menu-content>
+                  </prompt-input-action-menu>
+                </prompt-input-tools-collapsed>
+                <prompt-input-speech-button tooltip="Voice input" />
+              </prompt-input-tools>
+              <ng-container
+                [ngTemplateOutlet]="submitTpl"
+                [ngTemplateOutletContext]="{ newChat: newChat }"
+              />
+            </prompt-input-tools>
+          </prompt-input-footer>
+        }
       </prompt-input>
     </ng-template>
   `,
 })
 export class Assistant implements OnInit, OnDestroy {
+  protected readonly compactIconButton = COMPACT_ICON_BUTTON;
+  protected readonly compactLabel = COMPACT_LABEL;
+  protected readonly compactSelectTrigger = COMPACT_SELECT_TRIGGER;
+
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 
   /** Start in a live conversation (`filled`) or the empty new-chat state. */
@@ -809,13 +1239,29 @@ export class Assistant implements OnInit, OnDestroy {
   readonly mentions = input(true);
   /** Show the context-window meter in the composer header. */
   readonly contextMeter = input(true);
+  /**
+   * Composer tools: `auto` (default) shows them inline and moves web search
+   * and attachments to an overflow menu when the composer is narrow;
+   * `never` keeps them inline; `always` keeps the menu. Mirrors React.
+   */
+  readonly toolsCollapse = input<PromptInputToolsCollapse>('auto');
+  /**
+   * Composer layout: `stacked` (default, rows) or `inline` (one row: a "+"
+   * menu with every composer control, the text, mic and send). Mirrors React.
+   */
+  readonly composerLayout = input<'stacked' | 'inline'>('stacked');
 
   /**
    * The header exists only to carry the mentions trigger and the context
    * meter. With both off it would render as an empty strip above the textarea,
    * so it is dropped entirely rather than left hollow.
    */
-  readonly showHeader = computed(() => this.mentions() || this.contextMeter());
+  // The context meter sits in the header beside the mentions trigger; with
+  // mentions off it moves beside the textarea, so no row holds it alone.
+  readonly showHeader = computed(() => this.mentions());
+  readonly meterInBody = computed(
+    () => !this.mentions() && this.contextMeter(),
+  );
 
   /** Emits the composed prompt (value + attachments) when the user submits. */
   readonly submitted = output<PromptInputSubmitEvent>();
@@ -825,6 +1271,31 @@ export class Assistant implements OnInit, OnDestroy {
   protected readonly view = signal<AssistantView>('filled');
   protected readonly status = signal<PromptInputState>('ready');
   protected readonly threadMenuOpen = signal(false);
+  /** The composer's web-search toggle. */
+  protected readonly webSearch = signal(false);
+  // One-row composer state: mode/model start from the defaults; context is
+  // the set of items checked in the "Add context" submenu.
+  protected readonly inlineMode = linkedSignal(() => this.defaultMode());
+  protected readonly inlineModel = linkedSignal(() => this.defaultModel());
+  protected readonly inlineContext = signal<string[]>([]);
+  protected readonly inlineModeLabel = computed(
+    () => this.modes.find((m) => m.id === this.inlineMode())?.label ?? null,
+  );
+  protected readonly inlineModelLabel = computed(
+    () => this.models.find((m) => m.id === this.inlineModel())?.label ?? null,
+  );
+
+  protected toggleInlineContext(id: string, on: boolean): void {
+    this.inlineContext.update((c) =>
+      on ? [...c, id] : c.filter((x) => x !== id),
+    );
+  }
+  protected readonly menuBelowStart = MENU_BELOW_START;
+  protected readonly menuBelowEnd = MENU_BELOW_END;
+  private readonly threadPanel =
+    viewChild<ElementRef<HTMLElement>>('threadPanel');
+  private readonly overflowPanel =
+    viewChild<ElementRef<HTMLElement>>('overflowPanel');
   protected readonly overflowMenuOpen = signal(false);
 
   private timer: ReturnType<typeof setTimeout> | null = null;
@@ -838,11 +1309,13 @@ export class Assistant implements OnInit, OnDestroy {
     this.view() === 'empty' ? 'New chat' : 'Q3 board review';
 
   // ── B2B composer presets (the Gremorie standard) ──────────────────────────
-  protected readonly modes: ComposerOption[] = [
-    { id: 'ask', label: 'Ask' },
-    { id: 'analyze', label: 'Analyze' },
-    { id: 'research', label: 'Research' },
-    { id: 'plan', label: 'Plan' },
+  // Same icons as the React edition's MODES: in compact mode the trigger
+  // shows only the icon, so a mode without one would render an empty button.
+  protected readonly modes: Array<ComposerOption & { icon: string }> = [
+    { id: 'ask', label: 'Ask', icon: 'lucideMessageCircleQuestion' },
+    { id: 'analyze', label: 'Analyze', icon: 'lucideChartColumnBig' },
+    { id: 'research', label: 'Research', icon: 'lucideTelescope' },
+    { id: 'plan', label: 'Plan', icon: 'lucideListChecks' },
   ];
 
   protected readonly models: Array<ComposerOption & { icon: string }> = [
@@ -934,7 +1407,12 @@ The regional breakdown is charted below. Toggle to the table view for the exact 
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     const target = event.target as Node | null;
-    if (target && !this.elementRef.nativeElement.contains(target)) {
+    if (
+      target &&
+      !this.elementRef.nativeElement.contains(target) &&
+      !this.threadPanel()?.nativeElement.contains(target) &&
+      !this.overflowPanel()?.nativeElement.contains(target)
+    ) {
       this.threadMenuOpen.set(false);
       this.overflowMenuOpen.set(false);
     }

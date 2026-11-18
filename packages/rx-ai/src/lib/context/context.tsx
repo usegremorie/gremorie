@@ -413,10 +413,16 @@ const TokensWithCost = ({
   tokens?: number;
   costText?: string;
 }) => (
-  <span>
-    {tokens === undefined ? '—' : formatCompact(tokens)}
+  // Tokens, dot, cost: one gap on both sides of the dot.
+  <span className="inline-flex items-center gap-1.5">
+    <span>{tokens === undefined ? '—' : formatCompact(tokens)}</span>
     {costText ? (
-      <span className="ml-2 text-muted-foreground">• {costText}</span>
+      <>
+        <span aria-hidden="true" className="text-muted-foreground">
+          •
+        </span>
+        <span className="text-muted-foreground">{costText}</span>
+      </>
     ) : null}
   </span>
 );

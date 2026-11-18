@@ -7,6 +7,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { cva } from 'class-variance-authority';
 import {
   Tooltip,
@@ -19,11 +20,12 @@ import { PromptInput } from './prompt-input';
 import { PromptInputState } from './prompt-input.types';
 
 const ICON_MAP: Record<PromptInputState, string> = {
-  ready: 'M5 12h14M13 5l7 7-7 7',
+  // lucide corner-down-left (enter), as React
+  ready: 'M9 10 4 15l5 5M20 4v7a4 4 0 0 1-4 4H4',
   submitted: '', // spinner — rendered via SVG below
   streaming: 'M6 6h12v12H6z',
-  error:
-    'M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z',
+  // lucide x, as React
+  error: 'M18 6 6 18M6 6l12 12',
 };
 
 const LABEL_MAP: Record<PromptInputState, string> = {
@@ -33,10 +35,10 @@ const LABEL_MAP: Record<PromptInputState, string> = {
   error: 'Retry',
 };
 
-// size-8 mirrors the React PromptInputSubmit default (InputGroupButton
-// `icon-sm`), keeping both composers' send buttons the same footprint.
+// Sizes mirror the React PromptInputSubmit `size` (InputGroupButton): `icon-sm`
+// (default, 32px square) and `sm` (32px tall, for a labelled button).
 const submitVariants = cva(
-  'inline-flex size-8 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'inline-flex shrink-0 items-center justify-center rounded-sm text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       state: {
@@ -46,9 +48,14 @@ const submitVariants = cva(
         error:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       },
+      size: {
+        'icon-sm': 'size-8',
+        sm: 'h-8 gap-1.5 px-2.5',
+      },
     },
     defaultVariants: {
       state: 'ready',
+      size: 'icon-sm',
     },
   },
 );
@@ -109,6 +116,9 @@ const submitVariants = cva(
               ></circle>
             </svg>
           } @else {
+            @if (labelled()) {
+              <span>{{ label() }}</span>
+            }
             <svg
               class="size-4"
               xmlns="http://www.w3.org/2000/svg"
@@ -139,6 +149,24 @@ export class PromptInputSubmit {
    */
   readonly tooltip = input<string | null | undefined>(null);
 
+  /** Button size. Mirrors React PromptInputSubmit `size`. */
+  readonly size = input<'icon-sm' | 'sm'>('icon-sm');
+
+  /**
+   * Visible label (e.g. "Chat"). When ready, the button reads the label with
+   * the enter icon and the label is its accessible name; while submitting,
+   * streaming or on error it falls back to the icon-only status button.
+   * Mirrors React `label`.
+   */
+  readonly label = input<string | null>(null);
+
+  protected readonly labelled = computed(
+    () => !!this.label() && this.state() === 'ready',
+  );
+
+  /** Extra classes merged via `cn`. Mirrors React `className`. */
+  readonly class = input<string>('');
+
   protected readonly state = computed<PromptInputState>(() =>
     this.parent.state(),
   );
@@ -155,11 +183,21 @@ export class PromptInputSubmit {
     () => this.disabled() || this.parent.disabled(),
   );
 
-  protected readonly ariaLabel = computed(() => LABEL_MAP[this.state()]);
+  protected readonly ariaLabel = computed(() =>
+    this.labelled() ? (this.label() as string) : LABEL_MAP[this.state()],
+  );
   protected readonly iconPath = computed(() => ICON_MAP[this.state()]);
 
   protected readonly buttonClass = computed(() =>
-    submitVariants({ state: this.state() }),
+    cn(
+      submitVariants({
+        state: this.state(),
+        // A labelled button grows to `sm` unless a size was set explicitly.
+        size: this.labelled() && this.size() === 'icon-sm' ? 'sm' : this.size(),
+      }),
+      this.labelled() && 'gap-2 pr-2.5 pl-3',
+      this.class(),
+    ),
   );
 
   handleClick(): void {

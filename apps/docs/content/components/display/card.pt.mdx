@@ -22,9 +22,9 @@ Card é intencionalmente apenas superfície. Ele não gerencia foco, hover ou se
 ## Anatomia
 
 ```text
-Card                       the surface (bg-card, rounded, bordered, vertical flow)
-├─ CardHeader              title/description area; lays out a CardAction to the right when present
-│  ├─ CardTitle            semibold heading line
+Card                       the surface (bg-card, rounded, 1px ring + shadow, no border, vertical flow)
+├─ CardHeader              title/description area (gap-1); lays out a CardAction to the right when present
+│  ├─ CardTitle            medium heading line (text-base leading-6)
 │  ├─ CardDescription      muted supporting copy
 │  └─ CardAction           top-right slot (button, menu, switch)
 ├─ CardContent             the main body (padded horizontally)
@@ -135,7 +135,7 @@ export class ExampleComponent {}
 
 ### `<Card>`
 
-A superfície raiz. Renderiza um `div` arredondado com borda, fundo e um ritmo `flex flex-col gap-6`.
+A superfície raiz. Renderiza um `div` arredondado com fundo, sem borda mas com um ring de 1px (`ring-1 ring-foreground/5`, `/10` no dark) sobre `shadow-sm` (`shadow-md` no dark), e um ritmo `flex flex-col gap-6`.
 
 | Prop        | Type     | Default | Descrição                                                                                                      |
 | ----------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------- |
@@ -145,7 +145,7 @@ Todas as outras props de `div` são encaminhadas.
 
 ### `<CardHeader>`
 
-Container para o título, descrição e ação opcional. Usa um `grid` para que `CardAction` possa ficar no canto superior direito enquanto título e descrição empilham à esquerda.
+Container para o título, descrição e ação opcional, com `gap-1` entre eles. Usa um `grid` para que `CardAction` possa ficar no canto superior direito enquanto título e descrição empilham à esquerda.
 
 | Prop        | Type     | Default | Descrição                          |
 | ----------- | -------- | ------- | ---------------------------------- |
@@ -153,7 +153,7 @@ Container para o título, descrição e ação opcional. Usa um `grid` para que 
 
 ### `<CardTitle>`
 
-Heading de seção. Renderiza como um `div` com `leading-none font-semibold`.
+Heading de seção. Renderiza como um `div` com `text-base leading-6 font-medium`.
 
 ### `<CardDescription>`
 

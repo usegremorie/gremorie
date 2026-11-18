@@ -132,7 +132,7 @@ export class InlineCitationCardTrigger {
   host: {
     'data-slot': 'inline-citation-card-body',
     class:
-      'relative block w-80 overflow-hidden rounded-md border bg-popover p-0 text-popover-foreground shadow-md',
+      'relative block w-80 overflow-hidden rounded-md border bg-popover-surface p-0 text-popover-foreground shadow-md',
   },
 })
 export class InlineCitationCardBody {}

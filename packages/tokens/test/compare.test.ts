@@ -235,4 +235,15 @@ describe('compareCss', () => {
       }),
     ).toEqual([]);
   });
+  it('accepts only the extra rules it was told about', () => {
+    const generated =
+      reformatted +
+      '\n@utility bg-x { color: red; }\n@utility bg-y { color: blue; }\n';
+    const diffs = compareCss('f.css', sample, generated, {
+      allowExtraRules: ['@utility bg-x'],
+    });
+    expect(diffs).toHaveLength(1);
+    expect(diffs[0]).toMatchObject({ kind: 'skeleton' });
+    expect(diffs[0]?.actual).toContain('bg-y');
+  });
 });

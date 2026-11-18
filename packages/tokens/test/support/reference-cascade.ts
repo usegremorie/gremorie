@@ -2,6 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { collectDeclarations, normalizeValue } from '../../pipeline/compare.ts';
 import { fmt } from '../../pipeline/format-number.ts';
+import { applyIntentional } from './intentional.ts';
 import { REFERENCE_DIR } from './paths.ts';
 
 const blocks = new Map<string, Map<string, string>>();
@@ -12,7 +13,7 @@ for (const file of [
   for (const [selector, decls] of collectDeclarations(
     readFileSync(join(REFERENCE_DIR, file), 'utf8'),
   )) {
-    blocks.set(selector, decls);
+    blocks.set(selector, applyIntentional(file, selector, decls));
   }
 }
 

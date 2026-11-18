@@ -33,13 +33,18 @@
     "$type": "color",
     "$value": "{color.gray.50}"
   },
+  "switch-checked": {
+    "$type": "color",
+    "$value": "{primary}",
+    "$description": "Switch track when on. Defaults to the primary; a colour theme points it at its own primary, so switches take the theme's accent."
+  },
   "secondary": {
     "$type": "color",
     "$value": "{color.gray.100}"
   },
   "secondary-foreground": {
     "$type": "color",
-    "$value": "{color.gray.900}"
+    "$value": "{color.gray.700}"
   },
   "muted": {
     "$type": "color",

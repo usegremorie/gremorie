@@ -11,7 +11,13 @@ export default [
       '@nx/dependency-checks': [
         'error',
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
+          // Build/test scaffolding is excluded from the published dependency
+          // contract (same as ng-display, ng-navigation and ng-ai).
+          ignoredFiles: [
+            '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/vite.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/src/test-setup.ts',
+          ],
         },
       ],
     },

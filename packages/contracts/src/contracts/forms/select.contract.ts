@@ -61,6 +61,14 @@ export const select = defineContract({
       desc: 'Trigger height (on the trigger sub-component).',
     },
     {
+      name: 'variant',
+      type: 'SelectTriggerVariant',
+      default: 'default',
+      options: ['default', 'outline', 'secondary'],
+      adapts: { rx: 'on <SelectTrigger>', ng: 'on <gr-select-trigger>' },
+      desc: 'Trigger surface: filled (default), or outline / secondary on a filled surface.',
+    },
+    {
       name: 'className',
       type: 'string',
       adapts: { ng: 'input: class (per sub-component)' },

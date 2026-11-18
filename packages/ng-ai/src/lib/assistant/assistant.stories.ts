@@ -90,3 +90,29 @@ export const NewChat: Story = {
     `,
   }),
 };
+
+/** Mentions off: the context meter moves beside the text instead of sitting alone above it. */
+export const NewChatWithoutMentions: Story = {
+  render: () => ({
+    template: `
+      <div class="mx-auto max-w-3xl p-6">
+        <ai-assistant [initialView]="'empty'" [mentions]="false" />
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Compact composer: one row. The "+" menu holds every composer control
+ * (Add context, Mode and Model as submenus, web search, attachments); mic and
+ * send stay at the end.
+ */
+export const CompactComposer: Story = {
+  render: () => ({
+    template: `
+      <div class="mx-auto max-w-3xl p-6">
+        <ai-assistant [initialView]="'filled'" composerLayout="inline" />
+      </div>
+    `,
+  }),
+};

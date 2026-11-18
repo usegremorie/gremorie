@@ -19,6 +19,7 @@
    */
   --primary: oklch(0.553 0.086 208.5);
   --primary-foreground: var(--color-gray-0);
+  --switch-checked: var(--primary);
   --accent: var(--color-teal-100);
   --accent-foreground: var(--color-teal-900);
   --ring: oklch(0.553 0.086 208.5);
@@ -46,6 +47,7 @@
   --popover: oklch(0.225 0.018 196);
   --primary: oklch(0.72 0.11 205);
   --primary-foreground: var(--color-gray-950);
+  --switch-checked: var(--primary);
   --accent: var(--color-teal-900);
   --accent-foreground: var(--color-teal-50);
   --ring: oklch(0.72 0.11 205);

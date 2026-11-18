@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 @import '@gremorie/tokens/theme.css';
+/* Inter is the Gremorie typeface (--font-sans); load it, never rely on the OS. */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
 
 @source '../../ng-core/src/**/*.{ts,html}';
 @source '../../ng-ai/src/**/*.{ts,html}';
@@ -11,6 +16,7 @@
 @source '../../ng-forms/src/**/*.{ts,html}';
 @source '../../ng-overlays/src/**/*.{ts,html}';
 @source '../../ng-navigation/src/**/*.{ts,html}';
+@source '../../../apps/showcase/ng/**/*.{ts,html}';
 
 html,
 body {
@@ -18,12 +24,7 @@ body {
   margin: 0;
   background-color: var(--background);
   color: var(--foreground);
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  /* The Gremorie typeface comes from the tokens (Inter), like the React side;
+     a hardcoded system stack here kept every Angular preview off Inter. */
+  font-family: var(--font-sans);
 }

@@ -22,7 +22,7 @@ import { Button } from './button';
  * | Prop | Type | Default | Description |
  * | --- | --- | --- | --- |
  * | `variant` | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"default"` | Visual style. |
- * | `size` | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Height / padding preset. |
+ * | `size` | `"default" \| "xs" \| "sm" \| "lg" \| "icon" \| "icon-xs" \| "icon-sm" \| "icon-lg"` | `"default"` | Height / padding preset (`default`, `sm`, `icon`, `icon-sm` are 32px). |
  * | `asChild` | `boolean` | `false` | Render the single child instead of a `<button>` (Radix Slot). |
  * | `disabled` | `boolean` | `false` | Native disabled state (pointer-events off + 50% opacity). |
  * | ...`button` | `React.ComponentProps<"button">` | — | All native button props. |
@@ -33,10 +33,10 @@ import { Button } from './button';
  * | --- | --- |
  * | `--primary` / `--primary-foreground` | `variant="default"` fill |
  * | `--destructive` | `variant="destructive"` fill |
- * | `--secondary` / `--secondary-foreground` | `variant="secondary"` fill |
- * | `--accent` / `--accent-foreground` | `ghost` / `outline` hover |
+ * | `--foreground` / `--secondary-foreground` | `variant="secondary"`: translucent `bg-foreground/5` (`/8` dark), hover `/10` (`/15` dark) |
+ * | `--muted` / `--input` | `ghost` / `outline` hover (`bg-muted`, `dark:bg-input/30`) |
+ * | `--foreground` | `outline` hairline (`border-foreground/10`, transparent fill) |
  * | `--ring` | focus ring |
- * | `--background` / `--input` | `outline` surface |
  */
 const meta = {
   title: 'Inputs/Buttons/Button',

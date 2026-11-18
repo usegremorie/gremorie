@@ -26,7 +26,7 @@ import {
 
 /**
  * The React composer card is `InputGroup` (rx-forms) + the rx-ai overrides
- * `overflow-hidden rounded-xl bg-card dark:bg-card`. The class string below is
+ * `overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50`. The class string below is
  * the same InputGroup base, with the layout that React derives from
  * `has-[>[data-align=block-*]]` selectors resolved statically (`h-auto
  * flex-col items-stretch`) because the Angular column always hosts block
@@ -35,7 +35,7 @@ import {
  * `packages/rx-ai/src/lib/prompt-input/prompt-input.tsx`.
  */
 const INPUT_GROUP_CARD =
-  'group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 overflow-hidden rounded-xl bg-card dark:bg-card';
+  '@container/prompt-input group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50';
 
 const containerVariants = cva(INPUT_GROUP_CARD, {
   variants: {
@@ -78,7 +78,10 @@ const containerVariants = cva(INPUT_GROUP_CARD, {
   `,
   host: {
     role: 'form',
+    // The composer card, as React's InputGroup (data-slot="input-group").
+    'data-slot': 'input-group',
     '[class]': 'hostClass()',
+    '[attr.data-layout]': 'layout()',
     '[attr.aria-label]': 'ariaLabel()',
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
     '[attr.data-state]': 'state()',
@@ -100,6 +103,12 @@ export class PromptInput {
   readonly state = input<PromptInputState>('ready');
   readonly size = input<PromptInputSize>('md');
   readonly variant = input<PromptInputVariant>('default');
+  /**
+   * `stacked` (default): header, text and footer in rows. `inline`: one row,
+   * e.g. a "+" menu, the text, then mic and send; the buttons stay at the
+   * bottom as the text grows. Mirrors React `layout`.
+   */
+  readonly layout = input<'stacked' | 'inline'>('stacked');
   readonly disabled = input<boolean>(false);
   readonly submitOnEnter = input<boolean>(true);
   readonly ariaLabel = input<string>('AI prompt input');
@@ -147,6 +156,8 @@ export class PromptInput {
         variant: this.variant(),
         state: this.state(),
       }),
+      this.layout() === 'inline' &&
+        'flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
       this.disabled() && 'pointer-events-none opacity-50',
       this.isDragging() && 'ring-2 ring-ring ring-offset-2',
     ),

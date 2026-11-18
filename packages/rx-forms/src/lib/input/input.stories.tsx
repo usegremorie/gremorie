@@ -8,13 +8,14 @@ import { Input } from './input';
  *
  * Single-line text field — a faithful shadcn port. Renders a styled native
  * `<input>` that adopts every HTML `type` (text, email, password, number,
- * search, tel, url, file…). Visual states are token-driven: `border-input` by
- * default, `ring-ring/50` on focus, `border-destructive` on `aria-invalid`.
+ * search, tel, url, file…). Visual states are token-driven: a filled field
+ * (`bg-input/50`, transparent border, no shadow, `h-8`) by default,
+ * `ring-ring/50` on focus, `border-destructive` on `aria-invalid`.
  *
  * ## Anatomy
  *
  * ```text
- * Input   single styled native <input> element (leaf primitive)
+ * Input   single styled native <input> element (leaf primitive), filled, h-8
  * ```
  *
  * ## Props
@@ -31,7 +32,7 @@ import { Input } from './input';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | default border |
+ * | `--input` | filled field (`bg-input/50`) |
  * | `--ring` | focus ring |
  * | `--destructive` | `aria-invalid` border/ring |
  * | `--muted-foreground` | placeholder |

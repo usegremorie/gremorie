@@ -96,11 +96,14 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
     <PromptInputFooter>
       <PromptInputTools>
         <PromptInputActionMenu>
-          <PromptInputActionMenuTrigger aria-label="More actions" />
+          <PromptInputActionMenuTrigger
+            aria-label="More actions"
+            tooltip="More actions"
+          />
           <PromptInputActionMenuContent>
             <PromptInputActionAddAttachments />
             <PromptInputActionMenuItem>
-              <MicIcon className="mr-2 size-4" /> Record voice
+              <MicIcon className="size-4" /> Record voice
             </PromptInputActionMenuItem>
           </PromptInputActionMenuContent>
         </PromptInputActionMenu>
@@ -125,7 +128,7 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
           </PromptInputSelectContent>
         </PromptInputSelect>
       </PromptInputTools>
-      <PromptInputSubmit status={status} />
+      <PromptInputSubmit label="Chat" status={status} />
     </PromptInputFooter>
   </PromptInput>
 );
@@ -145,7 +148,7 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
  * ## Anatomy
  *
  * ```text
- * PromptInput
+ * PromptInput                        layout · stacked (default) or inline
  * ├─ PromptInputHeader
  * │  ├─ PromptInputMentions          @ add-context picker (palette + chips)
  * │  └─ Context                      token-usage meter (trigger + hovercard)
@@ -156,11 +159,27 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
  *    ├─ PromptInputTools             left · mode + model
  *    │  ├─ PromptInputSelect         mode
  *    │  └─ PromptInputSelect         model
- *    └─ PromptInputTools             right · icon group + submit
- *       ├─ PromptInputButton         web search
- *       ├─ PromptInputAttachButton   attach (paperclip)
+ *    └─ PromptInputTools             right · collapse auto | always | never
+ *       ├─ PromptInputToolsExpanded  inline tools, wide composer
+ *       │  ├─ PromptInputButton      web search (active = toggle)
+ *       │  └─ PromptInputAttachButton attach (paperclip)
+ *       ├─ PromptInputToolsCollapsed overflow menu, narrow composer
+ *       │  └─ PromptInputActionMenu  the action menu below
  *       ├─ PromptInputSpeechButton   voice
  *       └─ PromptInputSubmit         status-aware send
+ *
+ * PromptInputActionMenu
+ * ├─ PromptInputActionMenuTrigger          "+" by default
+ * └─ PromptInputActionMenuContent
+ *    ├─ PromptInputActionMenuItem          one action
+ *    ├─ PromptInputActionAddAttachments    opens the file picker
+ *    ├─ PromptInputActionMenuSwitchItem    a tool on or off, keeps the menu open
+ *    ├─ PromptInputActionMenuCheckboxItem  checkable row, keeps the menu open
+ *    ├─ DropdownMenuSeparator              divider (from rx-overlays)
+ *    └─ PromptInputActionMenuSub
+ *       ├─ PromptInputActionMenuSubTrigger label + current value
+ *       └─ PromptInputActionMenuSubContent
+ *          └─ PromptInputActionMenuRadioGroup → PromptInputActionMenuRadioItem
  * ```
  */
 const meta = {
@@ -394,13 +413,8 @@ const B2B_ATTACHMENTS = [
   },
 ] as const;
 
-// Outlined trigger to match the Button "outline" variant - the default
-// PromptInputSelectTrigger is borderless/ghost, so re-add the border. The fill
-// stays transparent so the control sits flush on the card surface (--card,
-// white) instead of showing --background (#fafafa), which reads as a faint grey
-// pill on the white card.
-const OUTLINE_TRIGGER =
-  'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
+// Mode and Model use PromptInputSelectTrigger variant="outline" (the default is
+// the borderless ghost), with the open state shown as on the other controls.
 
 const B2BPromptInput = ({
   withAttachments,
@@ -474,7 +488,8 @@ const B2BPromptInput = ({
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select mode"
-                  className={OUTLINE_TRIGGER}
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
+                  variant="outline"
                   size="sm"
                 >
                   <PromptInputSelectValue placeholder="Mode" />
@@ -498,7 +513,8 @@ const B2BPromptInput = ({
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select model"
-                  className={OUTLINE_TRIGGER}
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
+                  variant="outline"
                   size="sm"
                 >
                   <PromptInputSelectValue placeholder="Model" />

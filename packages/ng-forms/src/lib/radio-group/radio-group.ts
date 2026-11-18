@@ -81,6 +81,8 @@ export class RadioGroup {}
   imports: [BrnRadio],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // The host wraps the 16px control: it must not shrink in a flex row.
+  host: { class: 'inline-flex shrink-0' },
   template: `
     <brn-radio
       data-slot="radio-group-item"
@@ -128,11 +130,13 @@ export class RadioGroupItem {
    * The React `RadioGroupItem` class string, verbatim, applied to the brain
    * `brn-radio` host and merged with any consumer `class`. The leading `group`
    * (set statically on the element) cooperates with this string so the
-   * indicator can key off `.brn-radio-checked`.
+   * indicator can key off `.brn-radio-checked`. `inline-flex` because
+   * `brn-radio` is a custom element (display: inline by default), where
+   * size-4 is ignored; React's item is a <button> (inline-block).
    */
   protected readonly computedClass = computed(() =>
     cn(
-      'group aspect-square size-4 shrink-0 rounded-full border border-input text-primary shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40',
+      'group inline-flex aspect-square size-4 shrink-0 items-center justify-center rounded-full border border-input text-primary shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40',
       this.class(),
     ),
   );

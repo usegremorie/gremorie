@@ -40,6 +40,20 @@ import {
   PromptInputSelectValue,
   PromptInputSpeechButton,
   PromptInputSubmit,
+  PromptInputActionMenuCheckboxItem,
+  PromptInputActionMenuRadioItem,
+  PromptInputActionMenuSeparator,
+  PromptInputActionMenuRadioGroup,
+  PromptInputActionMenuSubContent,
+  PromptInputActionMenuSubTrigger,
+  PromptInputActionMenuSub,
+  PromptInputToolsExpanded,
+  PromptInputToolsCollapsed,
+  PromptInputActionMenuTrigger,
+  PromptInputActionMenuSwitchItem,
+  PromptInputActionMenuContent,
+  PromptInputActionMenu,
+  PromptInputActionAddAttachments,
   PromptInputTextarea,
   PromptInputTools,
   Reasoning,
@@ -48,6 +62,7 @@ import {
   type ChatStatus,
   type PromptInputMentionsItem,
   type PromptInputMessage,
+  type PromptInputToolsCollapse,
 } from '@gremorie/rx-ai';
 import { ChartArtifact } from '@gremorie/rx-artifacts';
 import { cn } from '@gremorie/rx-core';
@@ -65,14 +80,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
   TooltipProvider,
+  TooltipTrigger,
 } from '@gremorie/rx-overlays';
 import {
   ArchiveIcon,
+  SparklesIcon,
+  AtSignIcon,
   ArrowUpIcon,
   ChartColumnBigIcon,
   ChevronDownIcon,
   CopyIcon,
+  CornerDownLeftIcon,
   EllipsisIcon,
   FileSpreadsheetIcon,
   FileTextIcon,
@@ -80,6 +101,7 @@ import {
   LibraryIcon,
   ListChecksIcon,
   MessageCircleQuestionIcon,
+  MessageCirclePlusIcon,
   PenSquareIcon,
   RefreshCwIcon,
   Share2Icon,
@@ -159,9 +181,6 @@ const THREADS = [
   'Churn analysis — enterprise',
 ];
 
-const OUTLINE_TRIGGER =
-  'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
-
 // Per-category token usage powering the Context hovercard breakdown + cost.
 const CONTEXT_USAGE: LanguageModelUsage = {
   inputTokens: 52_600,
@@ -201,6 +220,18 @@ const REVENUE_BY_REGION = [
   { region: 'LATAM', revenue: 260_000 },
 ];
 
+// ── Compact mode ──────────────────────────────────────────────────────────
+// The Assistant is a size container (@container/assistant). Below 36rem of
+// its OWN width (a card, a sidebar, a phone) it switches to compact: actions
+// with a label become 32px icon buttons (the label stays for screen readers),
+// select triggers show only their icon, and the new-chat composer docks to
+// the bottom. Same classes in the Angular edition.
+const COMPACT_ICON_BUTTON =
+  '@max-xl/assistant:size-8 @max-xl/assistant:gap-0 @max-xl/assistant:p-0';
+const COMPACT_LABEL = '@max-xl/assistant:sr-only';
+const COMPACT_SELECT_TRIGGER =
+  '@max-xl/assistant:size-8 @max-xl/assistant:justify-center @max-xl/assistant:px-0 @max-xl/assistant:[&_[data-slot=select-value-label]]:sr-only @max-xl/assistant:[&>svg:last-child]:hidden';
+
 // ── Composer (the floating B2B PromptInput) ─────────────────────────────────
 function Composer({
   status,
@@ -212,6 +243,9 @@ function Composer({
   modelSelect = true,
   mentions = true,
   contextMeter = true,
+  newChat = false,
+  toolsCollapse = 'auto',
+  layout = 'stacked',
 }: {
   status: ChatStatus;
   onSubmit: (message: PromptInputMessage) => void;
@@ -229,42 +263,193 @@ function Composer({
   mentions?: boolean;
   /** Show the context-window meter in the header. */
   contextMeter?: boolean;
+  /**
+   * New-chat composer: the send button reads "Chat" with the enter icon
+   * (compact keeps the icon-only arrow). The conversation keeps the arrow.
+   */
+  newChat?: boolean;
+  /** Tools inline, in the overflow menu, or switching by width (`auto`). */
+  toolsCollapse?: PromptInputToolsCollapse;
+  /** `stacked` (default) or `inline`: one row, + menu · text · mic · send. */
+  layout?: 'stacked' | 'inline';
 }) {
+  const [webSearch, setWebSearch] = useState(false);
+  const [mode, setMode] = useState(defaultMode);
+  const [model, setModel] = useState(defaultModel);
+  const [context, setContext] = useState<string[]>([]);
   // The header exists only to carry the mentions trigger and the context
   // meter. With both off it would render as an empty strip above the
   // textarea, so it is dropped entirely rather than left hollow.
-  const showHeader = mentions || contextMeter;
+  // The context meter sits in the header beside the mentions trigger; with
+  // mentions off it moves beside the textarea, so no row holds it alone.
+  const showHeader = mentions;
+  const meterInHeader = mentions && contextMeter;
+  const meterInBody = !mentions && contextMeter;
+  const contextMeterEl = (
+    <Context
+      maxTokens={200_000}
+      modelId="anthropic:claude-3-5-sonnet"
+      usage={CONTEXT_USAGE}
+      usedTokens={62_600}
+    >
+      <ContextTrigger className={meterInHeader ? 'ml-auto' : undefined} />
+      <ContextContent>
+        <ContextContentHeader />
+        <ContextContentBody>
+          <div className="space-y-1">
+            <ContextInputUsage />
+            <ContextOutputUsage />
+            <ContextReasoningUsage />
+            <ContextCacheUsage />
+          </div>
+        </ContextContentBody>
+        <ContextContentFooter />
+      </ContextContent>
+    </Context>
+  );
+  const submitEl = newChat ? (
+    <PromptInputSubmit
+      aria-label="Chat"
+      tooltip="Chat"
+      // The label goes when the composer itself is narrow (< 28rem,
+      // as the tools collapse), not when the whole card is.
+      className="gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3 @max-md/prompt-input:size-8 @max-md/prompt-input:gap-0 @max-md/prompt-input:px-0!"
+      size="sm"
+      status={status}
+    >
+      <span className="@max-md/prompt-input:hidden">Chat</span>
+      <CornerDownLeftIcon className="size-4 @max-md/prompt-input:hidden" />
+      <ArrowUpIcon className="hidden size-4 @max-md/prompt-input:block" />
+    </PromptInputSubmit>
+  ) : (
+    <PromptInputSubmit status={status} tooltip="Send">
+      <ArrowUpIcon className="size-4" />
+    </PromptInputSubmit>
+  );
+
+  if (layout === 'inline') {
+    // One row: every composer control lives in the "+" menu (context, mode
+    // and model as submenus, web search as a switch, attachments); the text
+    // takes the middle; dictation and send stay at hand on the right.
+    return (
+      <PromptInput layout="inline" multiple onSubmit={onSubmit}>
+        <PromptInputActionMenu>
+          <PromptInputActionMenuTrigger aria-label="Add" tooltip="Add" />
+          <PromptInputActionMenuContent className="w-72">
+            {mentions && (
+              <PromptInputActionMenuSub>
+                <PromptInputActionMenuSubTrigger
+                  value={context.length > 0 ? context.length : undefined}
+                >
+                  <AtSignIcon className="size-4" />
+                  Add context
+                </PromptInputActionMenuSubTrigger>
+                <PromptInputActionMenuSubContent>
+                  {CONTEXT_ITEMS.map((item) => (
+                    <PromptInputActionMenuCheckboxItem
+                      checked={context.includes(item.id)}
+                      key={item.id}
+                      onCheckedChange={(on) =>
+                        setContext((c) =>
+                          on
+                            ? [...c, item.id]
+                            : c.filter((id) => id !== item.id),
+                        )
+                      }
+                    >
+                      {item.label}
+                    </PromptInputActionMenuCheckboxItem>
+                  ))}
+                </PromptInputActionMenuSubContent>
+              </PromptInputActionMenuSub>
+            )}
+            {modeSelect && (
+              <PromptInputActionMenuSub>
+                <PromptInputActionMenuSubTrigger
+                  value={MODES.find((m) => m.id === mode)?.label}
+                >
+                  <TelescopeIcon className="size-4" />
+                  Mode
+                </PromptInputActionMenuSubTrigger>
+                <PromptInputActionMenuSubContent>
+                  <PromptInputActionMenuRadioGroup
+                    onValueChange={setMode}
+                    value={mode}
+                  >
+                    {MODES.map((m) => (
+                      <PromptInputActionMenuRadioItem key={m.id} value={m.id}>
+                        {m.icon}
+                        {m.label}
+                      </PromptInputActionMenuRadioItem>
+                    ))}
+                  </PromptInputActionMenuRadioGroup>
+                </PromptInputActionMenuSubContent>
+              </PromptInputActionMenuSub>
+            )}
+            {modelSelect && (
+              <PromptInputActionMenuSub>
+                <PromptInputActionMenuSubTrigger
+                  value={MODELS.find((m) => m.id === model)?.label}
+                >
+                  <SparklesIcon className="size-4" />
+                  Model
+                </PromptInputActionMenuSubTrigger>
+                <PromptInputActionMenuSubContent>
+                  <PromptInputActionMenuRadioGroup
+                    onValueChange={setModel}
+                    value={model}
+                  >
+                    {MODELS.map((m) => (
+                      <PromptInputActionMenuRadioItem key={m.id} value={m.id}>
+                        {m.icon}
+                        {m.label}
+                      </PromptInputActionMenuRadioItem>
+                    ))}
+                  </PromptInputActionMenuRadioGroup>
+                </PromptInputActionMenuSubContent>
+              </PromptInputActionMenuSub>
+            )}
+            {(mentions || modeSelect || modelSelect) && (
+              <PromptInputActionMenuSeparator />
+            )}
+            <PromptInputActionMenuSwitchItem
+              checked={webSearch}
+              onCheckedChange={setWebSearch}
+            >
+              <GlobeIcon className="size-4" />
+              Search the web
+            </PromptInputActionMenuSwitchItem>
+            <PromptInputActionAddAttachments label="Attach files" />
+          </PromptInputActionMenuContent>
+        </PromptInputActionMenu>
+        <PromptInputBody>
+          <PromptInputTextarea placeholder={placeholder} rows={1} />
+        </PromptInputBody>
+        <PromptInputSpeechButton tooltip="Voice input" />
+        {submitEl}
+      </PromptInput>
+    );
+  }
+
   return (
-    <PromptInput className="rounded-xl shadow-lg" multiple onSubmit={onSubmit}>
+    <PromptInput multiple onSubmit={onSubmit}>
       {showHeader && (
         <PromptInputHeader>
-          {mentions && <PromptInputMentions items={CONTEXT_ITEMS} />}
-          {contextMeter && (
-            <Context
-              maxTokens={200_000}
-              modelId="anthropic:claude-3-5-sonnet"
-              usage={CONTEXT_USAGE}
-              usedTokens={62_600}
-            >
-              <ContextTrigger className="ml-auto" />
-              <ContextContent>
-                <ContextContentHeader />
-                <ContextContentBody>
-                  <div className="space-y-1">
-                    <ContextInputUsage />
-                    <ContextOutputUsage />
-                    <ContextReasoningUsage />
-                    <ContextCacheUsage />
-                  </div>
-                </ContextContentBody>
-                <ContextContentFooter />
-              </ContextContent>
-            </Context>
+          {mentions && (
+            <PromptInputMentions items={CONTEXT_ITEMS} variant="secondary" />
           )}
+          {meterInHeader && contextMeterEl}
         </PromptInputHeader>
       )}
       <PromptInputBody>
-        <PromptInputTextarea placeholder={placeholder} />
+        {meterInBody ? (
+          <div className="flex w-full items-start">
+            <PromptInputTextarea className="flex-1" placeholder={placeholder} />
+            <div className="shrink-0 pt-1.5 pr-3">{contextMeterEl}</div>
+          </div>
+        ) : (
+          <PromptInputTextarea placeholder={placeholder} />
+        )}
       </PromptInputBody>
       <PromptInputFooter>
         <PromptInputTools className="gap-2">
@@ -272,7 +457,8 @@ function Composer({
             <PromptInputSelect defaultValue={defaultMode}>
               <PromptInputSelectTrigger
                 aria-label="Select mode"
-                className={OUTLINE_TRIGGER}
+                className={COMPACT_SELECT_TRIGGER}
+                variant="secondary"
                 size="sm"
               >
                 <PromptInputSelectValue placeholder="Mode" />
@@ -281,7 +467,7 @@ function Composer({
                 {MODES.map((mode) => (
                   <PromptInputSelectItem key={mode.id} value={mode.id}>
                     {mode.icon}
-                    {mode.label}
+                    <span data-slot="select-value-label">{mode.label}</span>
                   </PromptInputSelectItem>
                 ))}
               </PromptInputSelectContent>
@@ -291,7 +477,8 @@ function Composer({
             <PromptInputSelect defaultValue={defaultModel}>
               <PromptInputSelectTrigger
                 aria-label="Select model"
-                className={OUTLINE_TRIGGER}
+                className={COMPACT_SELECT_TRIGGER}
+                variant="secondary"
                 size="sm"
               >
                 <PromptInputSelectValue placeholder="Model" />
@@ -300,7 +487,7 @@ function Composer({
                 {MODELS.map((model) => (
                   <PromptInputSelectItem key={model.id} value={model.id}>
                     {model.icon}
-                    {model.label}
+                    <span data-slot="select-value-label">{model.label}</span>
                   </PromptInputSelectItem>
                 ))}
               </PromptInputSelectContent>
@@ -308,19 +495,45 @@ function Composer({
           )}
         </PromptInputTools>
         <PromptInputTools className="gap-2">
-          <PromptInputTools>
-            <PromptInputButton
-              aria-label="Search the web"
-              tooltip="Search the web"
-            >
-              <GlobeIcon className="size-4" />
-            </PromptInputButton>
-            <PromptInputAttachButton tooltip="Attach files" />
+          {/* Ghost icon group: no gap between the icons; the outer gap-2
+              separates the group from the send button. */}
+          <PromptInputTools className="gap-0" collapse={toolsCollapse}>
+            <PromptInputToolsExpanded>
+              <PromptInputButton
+                active={webSearch}
+                aria-label="Search the web"
+                onClick={() => setWebSearch((on) => !on)}
+                tooltip="Search the web"
+              >
+                <GlobeIcon className="size-4" />
+              </PromptInputButton>
+              <PromptInputAttachButton tooltip="Attach files" />
+            </PromptInputToolsExpanded>
+            {/* Collapsed: web search and attachments move to the overflow
+                menu; the mic, an input mode, stays at hand. */}
+            <PromptInputToolsCollapsed>
+              <PromptInputActionMenu>
+                <PromptInputActionMenuTrigger
+                  aria-label="More tools"
+                  tooltip="More tools"
+                >
+                  <EllipsisIcon className="size-4" />
+                </PromptInputActionMenuTrigger>
+                <PromptInputActionMenuContent>
+                  <PromptInputActionMenuSwitchItem
+                    checked={webSearch}
+                    onCheckedChange={setWebSearch}
+                  >
+                    <GlobeIcon className="size-4" />
+                    Search the web
+                  </PromptInputActionMenuSwitchItem>
+                  <PromptInputActionAddAttachments label="Attach files" />
+                </PromptInputActionMenuContent>
+              </PromptInputActionMenu>
+            </PromptInputToolsCollapsed>
             <PromptInputSpeechButton tooltip="Voice input" />
           </PromptInputTools>
-          <PromptInputSubmit status={status} tooltip="Send">
-            <ArrowUpIcon className="size-4" />
-          </PromptInputSubmit>
+          {submitEl}
         </PromptInputTools>
       </PromptInputFooter>
     </PromptInput>
@@ -384,6 +597,8 @@ export type AssistantView = 'filled' | 'empty';
  * went missing here while the Angular edition had it.
  */
 export interface AssistantProps {
+  /** Extra classes on the card (e.g. a host sizing it to its column). */
+  className?: string;
   /** Start in a live conversation (`filled`) or the empty new-chat state. */
   initialView?: AssistantView;
   /** Composer textarea placeholder. */
@@ -401,6 +616,17 @@ export interface AssistantProps {
   /** Show the context-window meter in the composer header. */
   contextMeter?: boolean;
   /**
+   * Composer tools: `auto` (default) shows them inline and moves web search
+   * and attachments to an overflow menu when the composer is narrow;
+   * `never` keeps them inline; `always` keeps the menu.
+   */
+  toolsCollapse?: PromptInputToolsCollapse;
+  /**
+   * Composer layout: `stacked` (default, rows) or `inline` (one row: a "+"
+   * menu with every composer control, the text, mic and send).
+   */
+  composerLayout?: 'stacked' | 'inline';
+  /**
    * Fires with the composed prompt when the user submits. Wire it to your AI
    * SDK; the canned state machine keeps running underneath so the surface
    * still animates while you build the real thing.
@@ -417,6 +643,9 @@ export function Assistant({
   modelSelect = true,
   mentions = true,
   contextMeter = true,
+  toolsCollapse = 'auto',
+  composerLayout = 'stacked',
+  className,
   onSubmit,
 }: AssistantProps = {}) {
   const [view, setView] = useState<AssistantView>(initialView);
@@ -452,7 +681,12 @@ export function Assistant({
 
   return (
     <TooltipProvider>
-      <div className="relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-[16px] border bg-card text-card-foreground shadow-sm">
+      <div
+        className={cn(
+          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
+          className,
+        )}
+      >
         {/* AssistantHeader */}
         <header className="flex items-center justify-between gap-2 px-3 py-2">
           <DropdownMenu>
@@ -466,7 +700,9 @@ export function Assistant({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64">
-              <DropdownMenuLabel>Recent chats</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs text-muted-foreground">
+                Recent chats
+              </DropdownMenuLabel>
               {THREADS.map((thread) => (
                 <DropdownMenuItem
                   key={thread}
@@ -477,38 +713,54 @@ export function Assistant({
               ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => setView('empty')}>
-                <PenSquareIcon className="mr-2 size-4" /> New chat
+                <MessageCirclePlusIcon className="size-4" /> New chat
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="flex items-center gap-1">
-            <Button className="gap-2" size="sm" variant="ghost">
-              <LibraryIcon className="size-4" /> Sources
-            </Button>
-            <Button aria-label="Share" size="icon-sm" variant="ghost">
-              <Share2Icon className="size-4" />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  aria-label="More actions"
-                  size="icon-sm"
-                  variant="ghost"
-                >
-                  <EllipsisIcon className="size-4" />
+          {/* Header actions: ghost icon buttons, no gap between them. */}
+          <div className="flex items-center">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button aria-label="Sources" size="icon-sm" variant="ghost">
+                  <LibraryIcon className="size-4" />
                 </Button>
-              </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent>Sources</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button aria-label="Share" size="icon-sm" variant="ghost">
+                  <Share2Icon className="size-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Share</TooltipContent>
+            </Tooltip>
+            <DropdownMenu>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      aria-label="More actions"
+                      size="icon-sm"
+                      variant="ghost"
+                    >
+                      <EllipsisIcon className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                </TooltipTrigger>
+                <TooltipContent>More actions</TooltipContent>
+              </Tooltip>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>
-                  <ArchiveIcon className="mr-2 size-4" /> Archive
+                  <ArchiveIcon className="size-4" /> Archive
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <CopyIcon className="mr-2 size-4" /> Duplicate
+                  <CopyIcon className="size-4" /> Duplicate
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive">
-                  <Trash2Icon className="mr-2 size-4" /> Delete
+                  <Trash2Icon className="size-4" /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -518,12 +770,13 @@ export function Assistant({
         {view === 'empty' ? (
           // AssistantStart - the new-chat state: a centered welcome, the
           // composer, and quick-start chips (the Claude home pattern).
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4">
-            <h2 className="text-center font-semibold text-2xl tracking-tight">
+          <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4 @max-xl/assistant:justify-end @max-xl/assistant:px-3 @max-xl/assistant:pb-3">
+            <h2 className="text-center font-semibold text-2xl @max-xl/assistant:flex @max-xl/assistant:flex-1 @max-xl/assistant:items-center">
               How can I help you today?
             </h2>
             <div className="w-full max-w-2xl">
               <Composer
+                newChat
                 onSubmit={handleSubmit}
                 status={status}
                 placeholder={placeholder}
@@ -533,6 +786,8 @@ export function Assistant({
                 modelSelect={modelSelect}
                 mentions={mentions}
                 contextMeter={contextMeter}
+                toolsCollapse={toolsCollapse}
+                layout={composerLayout}
               />
             </div>
           </div>
@@ -548,7 +803,7 @@ export function Assistant({
                 {/* ScrollArea-style auto-hide: the thumb is transparent at rest and
                 only paints while the user is actively scrolling (state below). */}
                 <ConversationContent
-                  className="gap-6 px-4 pt-6 pb-80"
+                  className="px-4 pt-6 pb-80"
                   scrollClassName={cn(
                     '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:transition-colors [&::-webkit-scrollbar-track]:bg-transparent',
                     scrolling
@@ -556,100 +811,118 @@ export function Assistant({
                       : '[&::-webkit-scrollbar-thumb]:bg-transparent',
                   )}
                 >
-                  <Message from="user">
-                    <MessageContent>
-                      How did Q3 revenue break down by region? Give me a chart
-                      plus the underlying table I can drop straight into the
-                      board deck.
-                    </MessageContent>
-                    <MessageToolbar className="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
-                      <MessageActions className="ml-auto">
-                        <MessageAction tooltip="Copy">
-                          <CopyIcon className="size-4" />
-                        </MessageAction>
-                        <MessageAction tooltip="Edit">
-                          <PenSquareIcon className="size-4" />
-                        </MessageAction>
-                      </MessageActions>
-                    </MessageToolbar>
-                  </Message>
-
-                  <Message from="assistant">
-                    <MessageBranch defaultBranch={0}>
-                      <MessageBranchContent>
-                        {[
-                          <AssistantAnswer key="full" text={ANSWER_FULL} />,
-                          <AssistantAnswer
-                            key="concise"
-                            text={ANSWER_CONCISE}
-                          />,
-                        ]}
-                      </MessageBranchContent>
-                      <MessageToolbar>
-                        {/* Left: feedback, then copy / regenerate / share. */}
-                        <MessageActions>
-                          <MessageAction tooltip="Good response">
-                            <ThumbsUpIcon className="size-4" />
-                          </MessageAction>
-                          <MessageAction tooltip="Bad response">
-                            <ThumbsDownIcon className="size-4" />
-                          </MessageAction>
+                  {/* The reading column: 768px at most, centred, as Claude
+                      and ChatGPT; the scroll area stays card-wide so its bar
+                      sits at the edge. The composer below shares the column. */}
+                  <div
+                    className="mx-auto flex w-full max-w-3xl flex-col gap-6"
+                    data-slot="assistant-column"
+                  >
+                    <Message from="user">
+                      <MessageContent>
+                        How did Q3 revenue break down by region? Give me a chart
+                        plus the underlying table I can drop straight into the
+                        board deck.
+                      </MessageContent>
+                      <MessageToolbar className="mt-1 justify-end opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
+                        <MessageActions className="ml-auto">
                           <MessageAction tooltip="Copy">
                             <CopyIcon className="size-4" />
                           </MessageAction>
-                          <MessageAction tooltip="Regenerate">
-                            <RefreshCwIcon className="size-4" />
-                          </MessageAction>
-                          <MessageAction tooltip="Share">
-                            <Share2Icon className="size-4" />
+                          <MessageAction tooltip="Edit">
+                            <PenSquareIcon className="size-4" />
                           </MessageAction>
                         </MessageActions>
-                        {/* Right: Sources sits just before the branch nav. The list
-                        opens in a modal in the host app, so the demo trigger is
-                        intentionally inert. */}
-                        <div className="flex items-center gap-1">
-                          <Button
-                            className="gap-1.5 text-muted-foreground"
-                            size="sm"
-                            variant="ghost"
-                          >
-                            <LibraryIcon className="size-4" /> Sources
-                          </Button>
-                          <MessageBranchSelector from="assistant">
-                            <MessageBranchPrevious />
-                            <MessageBranchPage />
-                            <MessageBranchNext />
-                          </MessageBranchSelector>
-                        </div>
                       </MessageToolbar>
-                    </MessageBranch>
-                  </Message>
+                    </Message>
+
+                    {/* The answer spans the reading column, edge to edge with
+                        the composer (as Claude). */}
+                    <Message className="max-w-full" from="assistant">
+                      <MessageBranch defaultBranch={0}>
+                        <MessageBranchContent>
+                          {[
+                            <AssistantAnswer key="full" text={ANSWER_FULL} />,
+                            <AssistantAnswer
+                              key="concise"
+                              text={ANSWER_CONCISE}
+                            />,
+                          ]}
+                        </MessageBranchContent>
+                        <MessageToolbar>
+                          {/* Left: feedback, then copy / regenerate / share. */}
+                          <MessageActions>
+                            <MessageAction tooltip="Good response">
+                              <ThumbsUpIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Bad response">
+                              <ThumbsDownIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Copy">
+                              <CopyIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Regenerate">
+                              <RefreshCwIcon className="size-4" />
+                            </MessageAction>
+                            <MessageAction tooltip="Share">
+                              <Share2Icon className="size-4" />
+                            </MessageAction>
+                          </MessageActions>
+                          {/* Right: Sources sits just before the branch nav. The list
+                          opens in a modal in the host app, so the demo trigger is
+                          intentionally inert. */}
+                          <div className="flex items-center gap-1">
+                            <Button
+                              className={cn(
+                                'gap-1.5 text-muted-foreground',
+                                COMPACT_ICON_BUTTON,
+                              )}
+                              size="sm"
+                              variant="ghost"
+                            >
+                              <LibraryIcon className="size-4" />
+                              <span className={COMPACT_LABEL}>Sources</span>
+                            </Button>
+                            <MessageBranchSelector from="assistant">
+                              <MessageBranchPrevious />
+                              <MessageBranchPage />
+                              <MessageBranchNext />
+                            </MessageBranchSelector>
+                          </div>
+                        </MessageToolbar>
+                      </MessageBranch>
+                    </Message>
+                  </div>
                 </ConversationContent>
                 <ConversationScrollButton />
               </Conversation>
               {/* Top fade: content dissolves into the header as it scrolls up. */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-card to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-gradient-to-b from-background to-transparent" />
             </div>
 
             {/* AssistantComposer - floats over the conversation; the response
                 scrolls behind it, fading out through the gradient. */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
-              <div className="h-8 bg-gradient-to-t from-card to-transparent" />
-              <div className="pointer-events-auto space-y-2 bg-card/80 px-3 pb-3 backdrop-blur-sm">
-                <Composer
-                  onSubmit={handleSubmit}
-                  status={status}
-                  placeholder={placeholder}
-                  defaultMode={defaultMode}
-                  defaultModel={defaultModel}
-                  modeSelect={modeSelect}
-                  modelSelect={modelSelect}
-                  mentions={mentions}
-                  contextMeter={contextMeter}
-                />
-                <p className="text-center text-xs text-muted-foreground">
-                  Gremorie can make mistakes. Check important info.
-                </p>
+              <div className="h-8 bg-gradient-to-t from-background to-transparent" />
+              <div className="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm">
+                <div className="mx-auto w-full max-w-3xl space-y-2">
+                  <Composer
+                    onSubmit={handleSubmit}
+                    status={status}
+                    placeholder={placeholder}
+                    defaultMode={defaultMode}
+                    defaultModel={defaultModel}
+                    modeSelect={modeSelect}
+                    modelSelect={modelSelect}
+                    mentions={mentions}
+                    contextMeter={contextMeter}
+                    toolsCollapse={toolsCollapse}
+                    layout={composerLayout}
+                  />
+                  <p className="text-center text-xs text-muted-foreground">
+                    Gremorie can make mistakes. Check important info.
+                  </p>
+                </div>
               </div>
             </div>
           </>

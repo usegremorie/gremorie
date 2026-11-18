@@ -49,11 +49,14 @@ export function PromptInputPreview() {
       <PromptInputFooter>
         <PromptInputTools>
           <PromptInputActionMenu>
-            <PromptInputActionMenuTrigger aria-label="More actions" />
+            <PromptInputActionMenuTrigger
+              aria-label="More actions"
+              tooltip="More actions"
+            />
             <PromptInputActionMenuContent>
               <PromptInputActionAddAttachments />
               <PromptInputActionMenuItem>
-                <MicIcon className="mr-2 size-4" /> Record voice
+                <MicIcon className="size-4" /> Record voice
               </PromptInputActionMenuItem>
             </PromptInputActionMenuContent>
           </PromptInputActionMenu>
@@ -78,7 +81,7 @@ export function PromptInputPreview() {
             </PromptInputSelectContent>
           </PromptInputSelect>
         </PromptInputTools>
-        <PromptInputSubmit status="ready" />
+        <PromptInputSubmit label="Chat" status="ready" />
       </PromptInputFooter>
     </PromptInput>
   );

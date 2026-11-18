@@ -58,6 +58,7 @@
       },
       "$description": "hsl(270 100% 98%), not the preset's hsl(270 100% 20%): 5.6:1 on the primary instead of 2.6:1."
     },
+    "switch-checked": { "$type": "color", "$value": "{primary}" },
     "secondary": {
       "$type": "color",
       "$value": {
@@ -174,6 +175,7 @@
         "components": [0.1434, 0.0399, 294.09]
       }
     },
+    "switch-checked": { "$type": "color", "$value": "{primary}" },
     "secondary": {
       "$type": "color",
       "$value": {

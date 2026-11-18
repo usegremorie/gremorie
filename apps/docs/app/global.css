@@ -93,11 +93,12 @@
 
        The override lives here, not in @gremorie/tokens: that file is the
        token every consumer of the design system inherits, and it must not
-       force Gremorie's typeface on their product. The site chooses Geist;
-       a consumer chooses their own. Fumadocs' --default-mono-font-family
+       force Gremorie's typeface on their product. The site chooses its own;
+       a consumer chooses their own. The site uses Inter, the Gremorie typeface,
+       with Geist Mono for code. Fumadocs' --default-mono-font-family
        already resolves through --font-mono, so its Shiki code blocks follow
        the same switch. */
-    --font-sans: var(--font-geist-sans);
+    --font-sans: var(--font-inter);
     --font-mono: var(--font-geist-mono);
 
     --fd-layout-width: 100vw;
@@ -136,4 +137,14 @@
     var(--color-fd-background),
     var(--color-fd-foreground) 3%
   );
+}
+
+/* The home is the DS showcase and sits on the DS background (see
+   app/[lang]/(home)/page.tsx). Its top bar is transparent at the top and the
+   scrollbar gutter shows the body, so the body takes the same colour there;
+   docs pages keep Fumadocs' fd-background. Keyed on the home-only site
+   header. Unlayered on purpose: the body's colour comes from a utility class
+   that a @layer base rule cannot override. */
+body:has([data-slot='site-header']) {
+  background-color: var(--background);
 }

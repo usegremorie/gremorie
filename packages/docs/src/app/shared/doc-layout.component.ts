@@ -81,10 +81,7 @@ const NAV: NavSection[] = [
         <div
           class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4"
         >
-          <a
-            [routerLink]="['/']"
-            class="flex items-center gap-2 font-semibold tracking-tight"
-          >
+          <a [routerLink]="['/']" class="flex items-center gap-2 font-semibold">
             <span
               class="rounded bg-foreground px-1.5 py-0.5 text-xs font-bold text-background"
               >SHAD</span

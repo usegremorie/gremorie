@@ -62,3 +62,12 @@ export const Default: Story = {};
 export const NewChat: Story = {
   args: { initialView: 'empty' },
 };
+
+/**
+ * Compact composer: one row. The "+" menu holds every composer control
+ * (Add context, Mode and Model as submenus, web search, attachments); mic and
+ * send stay at the end.
+ */
+export const CompactComposer: Story = {
+  args: { composerLayout: 'inline' },
+};

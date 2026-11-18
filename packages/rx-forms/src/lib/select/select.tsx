@@ -31,30 +31,94 @@ function SelectValue({
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
+const SELECT_TRIGGER_VARIANTS = {
+  default: '',
+  outline:
+    'border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
+  secondary:
+    'bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15',
+} as const;
+
+/**
+ * Trigger surface. `default` is the filled field; `outline` and `secondary`
+ * are for a trigger that sits on a filled surface (e.g. inside a prompt
+ * input), where a second fill would vanish.
+ */
+export type SelectTriggerVariant = keyof typeof SELECT_TRIGGER_VARIANTS;
+
 function SelectTrigger({
   className,
   size = 'default',
+  variant = 'default',
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: 'sm' | 'default';
+  variant?: SelectTriggerVariant;
 }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
+      data-variant={variant}
       className={cn(
-        "flex w-fit items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
+        "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        SELECT_TRIGGER_VARIANTS[variant],
         className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <ChevronDownIcon className="size-4 text-muted-foreground opacity-50" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
+}
+
+/** Box of the first non-empty text node under `root` (null when none). */
+function firstTextRect(root: Element): DOMRect | null {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!node.textContent?.trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return range.getBoundingClientRect();
+  }
+  return null;
+}
+
+/**
+ * Settles item-aligned placement on measured boxes. Radix places the listbox
+ * with integer math (`parseInt` of paddings and borders, `offsetTop`), which
+ * drifts by a fraction of a pixel wherever layout is fractional (display
+ * scaling, browser zoom), leaving the selected item slightly below the
+ * trigger. Once Radix has placed it, the listbox is shifted by whatever still
+ * separates the selected item's text from the trigger's value text, the same
+ * measurement the Angular edition positions with.
+ */
+function settleItemAligned(content: HTMLDivElement): () => void {
+  const frame = requestAnimationFrame(() => {
+    const trigger = content.id
+      ? document.querySelector(`[aria-controls="${CSS.escape(content.id)}"]`)
+      : null;
+    const value = trigger?.querySelector('[data-slot=select-value]');
+    const item = content.querySelector('[role=option][data-state=checked]');
+    if (!value || !item) return;
+    // The open zoom scales the panel; measure without it.
+    content.style.animationName = 'none';
+    const to = firstTextRect(value);
+    const from = firstTextRect(item);
+    if (to && from) {
+      const dx = to.left - from.left;
+      const dy = to.top - from.top;
+      if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
+        content.style.translate = `${dx}px ${dy}px`;
+      }
+    }
+    content.style.animationName = '';
+  });
+  return () => cancelAnimationFrame(frame);
 }
 
 function SelectContent({
@@ -62,14 +126,25 @@ function SelectContent({
   children,
   position = 'item-aligned',
   align = 'center',
+  ref,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  const contentRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+      if (!node || position !== 'item-aligned') return undefined;
+      return settleItemAligned(node);
+    },
+    [ref, position],
+  );
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        ref={contentRef}
         data-slot="select-content"
         className={cn(
-          'relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+          'relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
           className,
@@ -101,7 +176,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
-      className={cn('px-2 py-1.5 text-xs text-muted-foreground', className)}
+      className={cn('px-3 py-1.5 text-xs text-muted-foreground', className)}
       {...props}
     />
   );
@@ -116,7 +191,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-3 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}

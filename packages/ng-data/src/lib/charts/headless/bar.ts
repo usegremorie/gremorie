@@ -12,6 +12,40 @@ import { formatValue } from './format';
 import { bandScale, linearScale } from './scales';
 import { roundedRectPath, type CornerRadii } from './shape';
 
+/** Gap between the bars of one category, as recharts' default `barGap`. */
+const BAR_GAP = 4;
+
+/**
+ * Size of one bar in a group of `count` and the gap between them, as
+ * recharts lays them out: the gap is dropped when it does not fit, and the
+ * size is truncated to whole pixels only when it is wider than 1px.
+ */
+export function barLayout(
+  bandwidth: number,
+  count: number,
+): { size: number; gap: number } {
+  const gap = bandwidth - BAR_GAP * (count - 1) <= 0 ? 0 : BAR_GAP;
+  const raw = Math.max(0, (bandwidth - gap * (count - 1)) / count);
+  return { size: raw > 1 ? Math.floor(raw) : raw, gap };
+}
+
+/**
+ * recharts' `maxBarSize`: a bar takes min(slot, max) and is centred in its own
+ * slot, so a capped group keeps its spacing. Without a cap, the slot is the bar.
+ */
+export function fitBar(
+  slot: number,
+  max?: number,
+): { size: number; offset: number } {
+  if (max === undefined || slot <= max) return { size: slot, offset: 0 };
+  return { size: max, offset: (slot - max) / 2 };
+}
+
+/** Width of one bar in a group of `count` (see `barLayout`). */
+export function barSize(bandwidth: number, count: number): number {
+  return barLayout(bandwidth, count).size;
+}
+
 /** A category tick: label plus its anchor pixel position. */
 export interface BarCategoryTick {
   label: string;
@@ -75,6 +109,8 @@ export class Bar implements OnInit, OnDestroy {
   readonly radius = input<number>(0);
   /** Render horizontal bars (categories on Y, values on X). */
   readonly horizontal = input<boolean>(false);
+  /** Widest a bar may draw (px), as recharts' `maxBarSize`; unset = no cap. */
+  readonly maxBarSize = input<number | undefined>(undefined);
 
   readonly bars = computed<BarRect[]>(() => {
     const data = this.ctx.data();
@@ -88,6 +124,7 @@ export class Bar implements OnInit, OnDestroy {
     const r = this.radius();
     const base = stacked ? this.ctx.stackBaseFor(key) : undefined;
     const [, max] = this.ctx.yDomain();
+    const cap = this.maxBarSize();
 
     if (this.horizontal()) {
       const band = bandScale(
@@ -100,19 +137,21 @@ export class Bar implements OnInit, OnDestroy {
         [this.ctx.plotLeft(), this.ctx.plotRight()],
       );
       const zero = vScale(0);
-      const subH = band.bandwidth / count;
+      const { size: subH, gap } = barLayout(band.bandwidth, count);
       return data.map((d, i) => {
         const value = Number(d[key] ?? 0);
         let x: number, y: number, width: number, height: number;
         if (stacked) {
           const lo = base?.[i] ?? 0;
-          y = band(categories[i]);
-          height = band.bandwidth;
+          const fit = fitBar(band.bandwidth, cap);
+          y = band(categories[i]) + fit.offset;
+          height = fit.size;
           x = vScale(lo);
           width = Math.max(0, vScale(lo + value) - x);
         } else {
-          y = band(categories[i]) + subH * index;
-          height = Math.max(0, subH - 1);
+          const fit = fitBar(subH, cap);
+          y = band(categories[i]) + (subH + gap) * index + fit.offset;
+          height = fit.size;
           x = zero;
           width = Math.max(0, vScale(value) - zero);
         }
@@ -137,19 +176,23 @@ export class Bar implements OnInit, OnDestroy {
     );
     const yScale = this.ctx.yScale();
     const baseline = yScale(0);
-    const subW = band.bandwidth / count;
+    // recharts' grouping: bars of one category sit BAR_GAP apart and each is
+    // truncated to whole pixels (a single 40.4px slot draws a 40px bar).
+    const { size: subW, gap } = barLayout(band.bandwidth, count);
     return data.map((d, i) => {
       const value = Number(d[key] ?? 0);
       let x: number, y: number, width: number, height: number;
       if (stacked) {
         const lo = base?.[i] ?? 0;
-        x = band(categories[i]);
-        width = band.bandwidth;
+        const fit = fitBar(band.bandwidth, cap);
+        x = band(categories[i]) + fit.offset;
+        width = fit.size;
         y = yScale(lo + value);
         height = Math.max(0, yScale(lo) - y);
       } else {
-        x = band(categories[i]) + subW * index;
-        width = Math.max(0, subW - 1);
+        const fit = fitBar(subW, cap);
+        x = band(categories[i]) + (subW + gap) * index + fit.offset;
+        width = fit.size;
         y = yScale(value);
         height = Math.max(0, baseline - y);
       }

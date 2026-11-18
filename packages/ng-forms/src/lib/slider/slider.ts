@@ -111,13 +111,13 @@ export class Slider {
 
   protected readonly rootClass = computed(() =>
     cn(
-      'relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
+      'relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=horizontal]:h-2 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
     ),
   );
 
   protected readonly trackClass = computed(() =>
     cn(
-      'relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5',
+      'relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-2 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2',
     ),
   );
 
@@ -129,7 +129,7 @@ export class Slider {
 
   protected readonly thumbClass = computed(() =>
     cn(
-      'block size-4 shrink-0 rounded-full border border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
+      'absolute block size-4 shrink-0 border border-foreground/15 dark:border-0 data-[orientation=horizontal]:top-1/2 data-[orientation=horizontal]:-mt-2 data-[orientation=vertical]:left-1/2 data-[orientation=vertical]:-ml-2 rounded-full bg-white shadow-md ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
     ),
   );
 }

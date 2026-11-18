@@ -16,3 +16,4 @@
 @source "../../rx-data/src/**/*.{ts,tsx}";
 @source "../../rx-core/src/**/*.{ts,tsx}";
 @source "../../../apps/docs/components/preview/blocks/**/*.{ts,tsx}";
+@source "../../../apps/showcase/rx/**/*.{ts,tsx}";

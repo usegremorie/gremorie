@@ -4,6 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  FeaturedIcon,
 } from '@gremorie/rx-display';
 import { Button } from '@gremorie/rx-forms';
 import {
@@ -93,7 +94,7 @@ export function ComponentsShowcase({ lang }: { lang: string }) {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
               83 primitives across 8 categories
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
@@ -101,7 +102,7 @@ export function ComponentsShowcase({ lang }: { lang: string }) {
               from the registry, own the source, customize with your tokens.
             </p>
           </div>
-          <Button variant="ghost" asChild>
+          <Button variant="secondary" asChild>
             <Link href={`/${lang}/components`}>
               View all components
               <ArrowRight aria-hidden="true" />
@@ -116,18 +117,22 @@ export function ComponentsShowcase({ lang }: { lang: string }) {
               href={`/${lang}/components`}
               className="group block focus-visible:outline-none"
             >
-              <Card className="h-full gap-3 py-5 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
-                <CardHeader className="gap-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex size-9 items-center justify-center rounded-md border bg-muted/50 text-muted-foreground">
-                      <cat.icon className="size-5" aria-hidden="true" />
-                    </div>
+              {/* DS card pattern (as the features grid): featured icon and the
+                  count, then the header as the Card ships it. Clickable, so
+                  the ring answers hover and focus. */}
+              <Card className="h-full transition-[color,box-shadow] duration-200 group-hover:ring-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
+                <CardHeader>
+                  <div className="mb-5 flex items-start justify-between">
+                    <FeaturedIcon
+                      color="gray"
+                      icon={cat.icon}
+                      size="lg"
+                      theme="light"
+                    />
                     <Badge variant="secondary">{cat.count}</Badge>
                   </div>
-                  <CardTitle className="text-base">{cat.name}</CardTitle>
-                  <CardDescription className="text-xs leading-relaxed">
-                    {cat.description}
-                  </CardDescription>
+                  <CardTitle>{cat.name}</CardTitle>
+                  <CardDescription>{cat.description}</CardDescription>
                 </CardHeader>
               </Card>
             </Link>

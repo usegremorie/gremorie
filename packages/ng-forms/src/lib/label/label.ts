@@ -36,6 +36,12 @@ import { cn } from '@gremorie/ng-core';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Angular keeps a parent's static `class` on the host as well as feeding
+  // the `class` input, so a passed box (border, padding) drew twice: on the
+  // host and on the inner <label>. The host is display: contents (inline, so
+  // it beats any class), which draws nothing; the native label keeps the look
+  // and the whole box stays clickable.
+  host: { style: 'display: contents' },
   template: `
     <label data-slot="label" [class]="labelClass()" [attr.for]="for() || null">
       <ng-content />
@@ -50,7 +56,7 @@ export class Label {
 
   protected readonly labelClass = computed(() =>
     cn(
-      'flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+      'flex items-center gap-2 text-sm leading-none font-medium text-secondary-foreground select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
       this.class(),
     ),
   );

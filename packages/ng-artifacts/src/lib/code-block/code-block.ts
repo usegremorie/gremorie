@@ -81,11 +81,11 @@ export const CODE_BLOCK = new InjectionToken<CodeBlockState>('CodeBlockState');
   template: `
     <div class="relative h-full">
       <div
-        class="h-full overflow-auto dark:hidden [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
+        class="h-full overflow-auto [scrollbar-color:transparent_transparent] hover:[scrollbar-color:var(--border)_transparent] dark:hidden [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
         [innerHTML]="lightHtml()"
       ></div>
       <div
-        class="hidden h-full overflow-auto dark:block [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
+        class="hidden h-full overflow-auto [scrollbar-color:transparent_transparent] hover:[scrollbar-color:var(--border)_transparent] dark:block [&>pre]:m-0 [&>pre]:bg-background! [&>pre]:p-4 [&>pre]:text-foreground! [&>pre]:text-sm [&_code]:font-mono [&_code]:text-sm"
         [innerHTML]="darkHtml()"
       ></div>
       <div class="absolute top-2 right-2 flex items-center gap-2">

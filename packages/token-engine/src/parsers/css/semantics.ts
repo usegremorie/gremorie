@@ -42,6 +42,9 @@ export function parseSemantics(
   const tokens: SemanticToken[] = [];
 
   root.walkRules((rule: Rule) => {
+    // A rule inside an at-rule (@media, @supports) is a conditional override
+    // of a token, not its definition.
+    if (rule.parent?.type === 'atrule') return;
     let classified: SelectorTheme | null = null;
     for (const sel of rule.selectors) {
       classified = classifySelector(sel);

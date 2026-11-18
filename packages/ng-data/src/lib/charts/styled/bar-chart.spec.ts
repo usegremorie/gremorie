@@ -53,4 +53,41 @@ describe('BarChart', () => {
     const groups = fixture.nativeElement.querySelectorAll('g[data-slot="bar"]');
     expect(groups.length).toBe(2);
   });
+
+  describe('plot margins match the React edition', () => {
+    const margin = (f: { componentInstance: unknown }) =>
+      (
+        f.componentInstance as { margin: () => Record<string, number> }
+      ).margin();
+
+    it('reserves the category axis on the left when horizontal', async () => {
+      const fixture = await render();
+      fixture.componentRef.setInput('horizontal', true);
+      fixture.componentRef.setInput('yAxis', false);
+      fixture.detectChanges();
+      expect(margin(fixture).left).toBe(72);
+      expect(margin(fixture).bottom).toBe(0);
+    });
+
+    it('keeps the 30px category axis at the bottom when vertical', async () => {
+      const fixture = await render();
+      fixture.componentRef.setInput('yAxis', false);
+      fixture.detectChanges();
+      expect(margin(fixture)).toMatchObject({
+        left: 12,
+        right: 12,
+        bottom: 30,
+      });
+    });
+  });
+
+  it('drops its own card frame when framed is false', async () => {
+    const fixture = await render();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.className).toContain('border');
+    fixture.componentRef.setInput('framed', false);
+    fixture.detectChanges();
+    expect(host.className).not.toContain('border');
+    expect(host.className).not.toContain('bg-card');
+  });
 });

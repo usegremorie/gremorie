@@ -8,9 +8,12 @@ import {
   input,
   model,
   signal,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { cn } from '@gremorie/ng-core';
+import { MENU_BELOW_START } from '../overlay-positions';
 
 /** One selectable context item in the mentions palette. */
 export interface PromptInputMentionsItem {
@@ -50,9 +53,12 @@ interface MentionGroup {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CdkConnectedOverlay, CdkOverlayOrigin],
   template: `
     <button
       type="button"
+      cdkOverlayOrigin
+      #origin="cdkOverlayOrigin"
       [class]="triggerClass()"
       [attr.aria-expanded]="open()"
       aria-haspopup="listbox"
@@ -77,12 +83,19 @@ interface MentionGroup {
       }
     </button>
 
-    @if (open()) {
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="origin"
+      [cdkConnectedOverlayOpen]="open()"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayViewportMargin]="8"
+      (detach)="open.set(false)"
+    >
       <div
         role="listbox"
         aria-label="Add context"
-        class="absolute z-50 mt-2 w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
-        [style.top.px]="menuTopOffset"
+        #panel
+        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         <div class="border-b p-2">
           <input
@@ -133,7 +146,7 @@ interface MentionGroup {
           }
         </div>
       </div>
-    }
+    </ng-template>
 
     @for (item of selectedItems(); track item.id) {
       <span
@@ -175,12 +188,15 @@ export class PromptInputMentions {
   /** Two-way bindable selected ids. */
   readonly value = model<string[]>([]);
   readonly label = input<string>('Add context');
+  /** Trigger surface on the prompt: `outline` (default) or `secondary`. Mirrors React `variant`. */
+  readonly variant = input<'outline' | 'secondary'>('outline');
   readonly placeholder = input<string>('Search context...');
   readonly emptyText = input<string>('No context found.');
 
   protected readonly open = signal(false);
   protected readonly query = signal('');
-  protected readonly menuTopOffset = 36;
+  protected readonly positions = MENU_BELOW_START;
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
 
   protected readonly hasSelection = computed(() => this.value().length > 0);
 
@@ -192,7 +208,10 @@ export class PromptInputMentions {
 
   protected readonly triggerClass = computed(() =>
     cn(
-      'inline-flex h-8 items-center gap-1.5 rounded-md border border-input border-solid bg-transparent px-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-expanded:bg-accent',
+      'inline-flex h-8 items-center gap-1.5 rounded-sm border border-solid px-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+      this.variant() === 'secondary'
+        ? 'border-transparent bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15'
+        : 'border-foreground/10 bg-transparent text-foreground hover:bg-muted dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
       this.hasSelection() && 'size-8 justify-center px-0',
     ),
   );
@@ -247,7 +266,11 @@ export class PromptInputMentions {
       return;
     }
     const target = event.target as Node | null;
-    if (target && !this.elementRef.nativeElement.contains(target)) {
+    if (
+      target &&
+      !this.elementRef.nativeElement.contains(target) &&
+      !this.panel()?.nativeElement.contains(target)
+    ) {
       this.open.set(false);
     }
   }

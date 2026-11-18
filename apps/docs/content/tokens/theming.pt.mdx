@@ -178,6 +178,27 @@ seletores ancorados na raiz não fazem. Se você precisa de uma
 comparação lado a lado, renderize cada marca em sua própria rota ou em
 seu próprio iframe.
 
+## Superfícies flutuantes
+
+Menus, selects, popovers, hover cards e os painéis de menubar e navigation menu pintam o painel com a
+utility `bg-popover-surface`, nunca `bg-popover/NN`. É um popover translúcido:
+`--popover` a 60% sobre um blur de fundo de 16px (`blur(16px) saturate(1.5)`).
+
+Dentro da superfície, `--accent` (hover e destaque de item) e `--muted`
+(trilhos, preenchimentos sutis) viram foreground a 10%. Um preenchimento opaco
+próximo da cor do popover sumiria sobre o que estiver atrás do painel.
+
+| Situação                                      | Superfície                                   |
+| --------------------------------------------- | -------------------------------------------- |
+| Padrão                                        | `--popover` a 60% + blur de 16px             |
+| `<html data-menu="solid">`                    | `--popover` opaco, sem blur (o opt-out)      |
+| O sistema pede `prefers-reduced-transparency` | `--popover` opaco, sem blur, automaticamente |
+
+```html
+<!-- Menus e popovers opacos no app inteiro -->
+<html data-menu="solid"></html>
+```
+
 ## Veja também
 
 - [Tokens semânticos](/tokens/semantic): o que os sete temas remapeiam, e a tabela completa de tokens.

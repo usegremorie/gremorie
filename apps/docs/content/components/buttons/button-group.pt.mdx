@@ -125,26 +125,25 @@ Uma action row é qualquer cluster horizontal de controles: uma toolbar, o heade
 
 Controles adjacentes em uma row precisam compartilhar o mesmo passo de altura. Escolha o passo e então use a **size variant** correspondente em cada controle:
 
-| Height        | Button      | Icon Button      | Select      | Input                                 |
-| ------------- | ----------- | ---------------- | ----------- | ------------------------------------- |
-| 24px (`h-6`)  | `size="xs"` | `size="icon-xs"` | -           | -                                     |
-| 32px (`h-8`)  | `size="sm"` | `size="icon-sm"` | `size="sm"` | `className="h-8"` (ainda sem variant) |
-| 36px (`h-9`)  | default     | `size="icon"`    | default     | default                               |
-| 40px (`h-10`) | `size="lg"` | `size="icon-lg"` | -           | -                                     |
+| Height        | Button                 | Icon Button                                  | Select                 | Input   |
+| ------------- | ---------------------- | -------------------------------------------- | ---------------------- | ------- |
+| 24px (`h-6`)  | `size="xs"`            | `size="icon-xs"`                             | -                      | -       |
+| 32px (`h-8`)  | default ou `size="sm"` | `size="icon"` ou `size="icon-sm"` (`size-8`) | default ou `size="sm"` | default |
+| 40px (`h-10`) | `size="lg"`            | `size="icon-lg"`                             | -                      | -       |
 
-**Nunca sobrescreva a altura de um controle com uma `className` quando existe uma size variant.** A variant é dona da altura (o Select a aplica via seletores `data-[size=...]`), então um `h-8` manual em um trigger de tamanho default perde para o `h-9` da variant e a row desalinha em 4px.
+**Nunca sobrescreva a altura de um controle com uma `className` quando existe uma size variant.** A variant é dona da altura (o Select a aplica via seletores `data-[size=...]`), então um `h-10` manual em um trigger perde para o `h-8` da variant e a row desalinha em 8px. O passo padrão é 32px: um `Button` default, um botão `icon` ou `icon-sm`, qualquer `SelectTrigger` e um `Input` se alinham sem prop de size.
 
 ```tsx
 // Wrong: manual height fights the size variant and loses
 <div className="flex items-center gap-2">
-  <SelectTrigger className="h-8 w-36">...</SelectTrigger>  {/* renders 36px */}
-  <Button variant="outline" size="icon-sm">...</Button>     {/* renders 32px */}
+  <SelectTrigger className="h-10 w-36">...</SelectTrigger>  {/* still renders 32px */}
+  <Button variant="outline" size="icon-lg">...</Button>      {/* renders 40px */}
 </div>
 
 // Right: same step, matching variants
 <div className="flex items-center gap-2">
-  <SelectTrigger size="sm" className="w-36">...</SelectTrigger>  {/* 32px */}
-  <Button variant="outline" size="icon-sm">...</Button>          {/* 32px */}
+  <SelectTrigger className="w-36">...</SelectTrigger>  {/* 32px */}
+  <Button variant="outline" size="icon">...</Button>   {/* 32px */}
 </div>
 ```
 

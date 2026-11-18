@@ -18,14 +18,14 @@ import {
 } from '@gremorie/ng-overlays';
 
 const buttonVariants = cva(
-  'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex shrink-0 items-center justify-center gap-1.5 rounded-sm text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         ghost:
-          'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
+          'bg-transparent text-secondary-foreground hover:bg-muted dark:hover:bg-input/30',
         outline:
-          'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
+          'border border-foreground/10 border-solid bg-transparent text-secondary-foreground hover:bg-muted dark:hover:bg-input/30',
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
       },
       size: {
@@ -67,6 +67,8 @@ const buttonVariants = cva(
         [class]="buttonClass()"
         [disabled]="disabled()"
         [attr.aria-label]="ariaLabel() || null"
+        [attr.aria-pressed]="active() ?? null"
+        [attr.data-state]="active() === null ? null : active() ? 'on' : 'off'"
         (click)="pressed.emit($event)"
       >
         <ng-content />
@@ -93,6 +95,11 @@ export class PromptInputButton {
   readonly type = input<'button' | 'submit'>('button');
   readonly disabled = input<boolean>(false);
   readonly ariaLabel = input<string>('');
+  /**
+   * Makes the button a toggle (e.g. web search): sets `aria-pressed` and,
+   * when on, the translucent active fill. Mirrors React `active`.
+   */
+  readonly active = input<boolean | null>(null);
 
   /** Optional hover/focus tooltip text. */
   readonly tooltip = input<string | null | undefined>(null);
@@ -108,6 +115,8 @@ export class PromptInputButton {
   protected readonly buttonClass = computed(() =>
     cn(
       buttonVariants({ variant: this.variant(), size: this.size() }),
+      this.active() &&
+        'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
       this.class(),
     ),
   );

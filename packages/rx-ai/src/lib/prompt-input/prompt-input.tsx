@@ -46,6 +46,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
   DropdownMenuTrigger,
   HoverCard,
   HoverCardContent,
@@ -57,7 +64,6 @@ import {
 } from '@gremorie/rx-overlays';
 import {
   CornerDownLeftIcon,
-  ImageIcon,
   Loader2Icon,
   MicIcon,
   PaperclipIcon,
@@ -431,7 +437,8 @@ export const PromptInputActionAddAttachments = ({
         attachments.openFileDialog();
       }}
     >
-      <ImageIcon className="mr-2 size-4" /> {label}
+      {/* Paperclip, as the inline attach button: one action, one icon. */}
+      <PaperclipIcon className="size-4" /> {label}
     </DropdownMenuItem>
   );
 };
@@ -463,6 +470,12 @@ export type PromptInputProps = Omit<
     message: PromptInputMessage,
     event: FormEvent<HTMLFormElement>,
   ) => void | Promise<void>;
+  /**
+   * `stacked` (default): header, text and footer in rows. `inline`: one row,
+   * e.g. a "+" menu, the text, then mic and send; the buttons stay at the
+   * bottom as the text grows.
+   */
+  layout?: 'stacked' | 'inline';
 };
 
 export const PromptInput = ({
@@ -476,6 +489,7 @@ export const PromptInput = ({
   onError,
   onSubmit,
   children,
+  layout = 'stacked',
   ...props
 }: PromptInputProps) => {
   const controller = useOptionalPromptInputController();
@@ -777,7 +791,16 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        <InputGroup className="overflow-hidden rounded-xl bg-card dark:bg-card">
+        {/* A filled field like every other Gremorie input: no border, no
+            shadow. Controls inside use outline or secondary, never a fill. */}
+        <InputGroup
+          className={cn(
+            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50',
+            layout === 'inline' &&
+              'h-auto flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
+          )}
+          data-layout={layout}
+        >
           {children}
         </InputGroup>
       </form>
@@ -840,11 +863,56 @@ export const PromptInputFooter = ({
 
 export type PromptInputToolsProps = HTMLAttributes<HTMLDivElement>;
 
+/**
+ * How the tools fit the composer. `auto` (default) shows them inline and
+ * swaps to the overflow menu when the composer is narrower than 28rem;
+ * `never` always shows them inline; `always` always uses the menu.
+ */
+export type PromptInputToolsCollapse = 'auto' | 'always' | 'never';
+
 export const PromptInputTools = ({
   className,
+  collapse = 'auto',
   ...props
-}: PromptInputToolsProps) => (
-  <div className={cn('flex items-center gap-1', className)} {...props} />
+}: PromptInputToolsProps & { collapse?: PromptInputToolsCollapse }) => (
+  <div
+    className={cn(
+      'group/prompt-input-tools flex items-center gap-1',
+      className,
+    )}
+    data-collapse={collapse}
+    {...props}
+  />
+);
+
+/** The tools shown inline. Hidden while `PromptInputTools` is collapsed. */
+export const PromptInputToolsExpanded = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'contents group-data-[collapse=always]/prompt-input-tools:hidden group-data-[collapse=auto]/prompt-input-tools:@max-md/prompt-input:hidden',
+      className,
+    )}
+    data-slot="prompt-input-tools-expanded"
+    {...props}
+  />
+);
+
+/** The overflow menu that replaces the inline tools while collapsed. */
+export const PromptInputToolsCollapsed = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'hidden group-data-[collapse=always]/prompt-input-tools:contents group-data-[collapse=auto]/prompt-input-tools:@max-md/prompt-input:contents',
+      className,
+    )}
+    data-slot="prompt-input-tools-collapsed"
+    {...props}
+  />
 );
 
 // ============================================================================
@@ -948,6 +1016,11 @@ export const PromptInputTextarea = ({
 
 export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
   /**
+   * Makes the button a toggle (e.g. web search): sets `aria-pressed` and,
+   * when on, the translucent active fill that reads on the filled prompt.
+   */
+  active?: boolean;
+  /**
    * Optional hover/focus tooltip. When set, the button is wrapped in a
    * `Tooltip` (the `PromptInput` root already provides a `TooltipProvider`,
    * so this works out of the box). Reserve it for non-critical hints such as
@@ -958,6 +1031,7 @@ export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
 
 export const PromptInputButton = ({
   variant = 'ghost',
+  active,
   className,
   size,
   tooltip,
@@ -968,7 +1042,17 @@ export const PromptInputButton = ({
 
   const button = (
     <InputGroupButton
-      className={cn(className)}
+      aria-pressed={active}
+      data-state={active === undefined ? undefined : active ? 'on' : 'off'}
+      className={cn(
+        // Rest in the secondary text, like the secondary chips beside it; hover
+        // changes only the background. Only the active (pressed) state moves to
+        // the full foreground.
+        'text-secondary-foreground',
+        active &&
+          'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
+        className,
+      )}
       size={newSize}
       type="button"
       variant={variant}
@@ -996,17 +1080,25 @@ export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
   status?: ChatStatus;
   /** Optional hover/focus tooltip, wrapped via the root `TooltipProvider`. */
   tooltip?: ReactNode;
+  /**
+   * Visible label (e.g. "Chat"). When ready, the button reads the label with
+   * the enter icon and the label is its accessible name; while submitting,
+   * streaming or on error it falls back to the icon-only status button.
+   */
+  label?: string;
 };
 
 export const PromptInputSubmit = ({
   className,
   variant = 'default',
-  size = 'icon-sm',
+  size,
   status,
   children,
   tooltip,
+  label,
   ...props
 }: PromptInputSubmitProps) => {
+  const labelled = Boolean(label) && (!status || status === 'ready');
   let Icon: ReactNode = <CornerDownLeftIcon className="size-4" />;
 
   if (status === 'submitted') {
@@ -1019,14 +1111,25 @@ export const PromptInputSubmit = ({
 
   const button = (
     <InputGroupButton
-      aria-label="Submit"
-      className={cn(className)}
-      size={size}
+      aria-label={labelled ? label : 'Submit'}
+      className={cn(
+        labelled && 'gap-2 pr-2.5 pl-3 has-[>svg]:pr-2.5 has-[>svg]:pl-3',
+        className,
+      )}
+      size={size ?? (labelled ? 'sm' : 'icon-sm')}
       type="submit"
       variant={variant}
       {...props}
     >
-      {children ?? Icon}
+      {children ??
+        (labelled ? (
+          <>
+            <span>{label}</span>
+            <CornerDownLeftIcon className="size-4" />
+          </>
+        ) : (
+          Icon
+        ))}
     </InputGroupButton>
   );
 
@@ -1085,7 +1188,14 @@ export const PromptInputActionMenuTrigger = ({
   ...props
 }: PromptInputActionMenuTriggerProps) => (
   <DropdownMenuTrigger asChild>
-    <PromptInputButton className={className} {...props}>
+    <PromptInputButton
+      className={cn(
+        // Open state shows, as the prompt selects do.
+        'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        className,
+      )}
+      {...props}
+    >
       {children ?? <PlusIcon className="size-4" />}
     </PromptInputButton>
   </DropdownMenuTrigger>
@@ -1109,6 +1219,103 @@ export const PromptInputActionMenuItem = ({
   ...props
 }: PromptInputActionMenuItemProps) => (
   <DropdownMenuItem className={cn(className)} {...props} />
+);
+
+export type PromptInputActionMenuSwitchItemProps = Omit<
+  ComponentProps<typeof DropdownMenuItem>,
+  'onSelect'
+> & {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+};
+
+/**
+ * A menu row that toggles a tool on and off (e.g. Search the web), with a
+ * switch on the right. The row itself is the control (`menuitemcheckbox`), so
+ * the switch is drawn, not interactive; toggling keeps the menu open. Share
+ * `checked` with the inline toggle so both stay in step.
+ */
+export const PromptInputActionMenuSwitchItem = ({
+  className,
+  children,
+  checked = false,
+  onCheckedChange,
+  ...props
+}: PromptInputActionMenuSwitchItemProps) => (
+  <DropdownMenuItem
+    aria-checked={checked}
+    className={cn('justify-between gap-4', className)}
+    onSelect={(event) => {
+      event.preventDefault();
+      onCheckedChange?.(!checked);
+    }}
+    role="menuitemcheckbox"
+    {...props}
+  >
+    <span className="flex items-center gap-2">{children}</span>
+    {/* Same look as Switch (size sm); keep in lock-step with rx-forms. */}
+    <span
+      aria-hidden="true"
+      className="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+      data-slot="switch"
+      data-state={checked ? 'checked' : 'unchecked'}
+    >
+      <span
+        className="pointer-events-none block size-3 rounded-full bg-white shadow-sm transition-transform data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0"
+        data-state={checked ? 'checked' : 'unchecked'}
+      />
+    </span>
+  </DropdownMenuItem>
+);
+
+// Submenus (e.g. Mode ›, Model ›) and choice rows, for a menu that gathers the
+// composer's controls (the one-row composer's "+").
+export const PromptInputActionMenuSub = DropdownMenuSub;
+
+/** Divider between groups of the action menu. Mirrors Angular `prompt-input-action-menu-separator`. */
+export const PromptInputActionMenuSeparator = DropdownMenuSeparator;
+
+export type PromptInputActionMenuSubTriggerProps = ComponentProps<
+  typeof DropdownMenuSubTrigger
+> & {
+  /** Current value, shown muted on the right (e.g. "Research"). */
+  value?: ReactNode;
+};
+export const PromptInputActionMenuSubTrigger = ({
+  className,
+  children,
+  value,
+  ...props
+}: PromptInputActionMenuSubTriggerProps) => (
+  <DropdownMenuSubTrigger className={cn('gap-2', className)} {...props}>
+    {children}
+    {value != null && (
+      <span className="ml-auto min-w-0 truncate whitespace-nowrap pl-4 text-muted-foreground">
+        {value}
+      </span>
+    )}
+  </DropdownMenuSubTrigger>
+);
+
+export const PromptInputActionMenuSubContent = DropdownMenuSubContent;
+export const PromptInputActionMenuRadioGroup = DropdownMenuRadioGroup;
+export const PromptInputActionMenuRadioItem = DropdownMenuRadioItem;
+
+export type PromptInputActionMenuCheckboxItemProps = ComponentProps<
+  typeof DropdownMenuCheckboxItem
+>;
+/** A checkable row; toggling keeps the menu open. */
+export const PromptInputActionMenuCheckboxItem = ({
+  onSelect,
+  ...props
+}: PromptInputActionMenuCheckboxItemProps) => (
+  <DropdownMenuCheckboxItem
+    onSelect={(event) => {
+      event.preventDefault();
+      onSelect?.(event);
+    }}
+    {...props}
+  />
 );
 
 // ============================================================================
@@ -1268,7 +1475,8 @@ export const PromptInputSpeechButton = ({
       aria-label="Toggle voice input"
       className={cn(
         'relative transition-all duration-200',
-        isListening && 'animate-pulse bg-accent text-accent-foreground',
+        isListening &&
+          'animate-pulse bg-muted text-foreground dark:bg-input/30',
         className,
       )}
       disabled={!recognition}
@@ -1294,19 +1502,39 @@ export type PromptInputSelectTriggerProps = ComponentProps<
   typeof SelectTrigger
 >;
 
+/**
+ * `ghost` (default) is the AI Elements look: no surface until hover. On a
+ * filled prompt, `outline` or `secondary` draw the trigger like the other
+ * controls, through the Select's own variants.
+ */
 export const PromptInputSelectTrigger = ({
   className,
+  variant = 'ghost',
   ...props
-}: PromptInputSelectTriggerProps) => (
-  <SelectTrigger
-    className={cn(
-      'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors',
-      'hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground',
-      className,
-    )}
-    {...props}
-  />
-);
+}: Omit<PromptInputSelectTriggerProps, 'variant'> & {
+  variant?: 'ghost' | 'outline' | 'secondary';
+}) =>
+  variant === 'ghost' ? (
+    <SelectTrigger
+      className={cn(
+        'border-none bg-transparent font-medium text-secondary-foreground shadow-none transition-colors',
+        'hover:bg-muted dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        className,
+      )}
+      {...props}
+    />
+  ) : (
+    <SelectTrigger
+      variant={variant}
+      className={cn(
+        'font-medium',
+        variant === 'outline' &&
+          'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        className,
+      )}
+      {...props}
+    />
+  );
 
 export type PromptInputSelectContentProps = ComponentProps<
   typeof SelectContent

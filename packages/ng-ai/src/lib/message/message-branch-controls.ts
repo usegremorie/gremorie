@@ -6,6 +6,13 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@gremorie/ng-overlays';
+
 import { MESSAGE_BRANCH } from './message-branch';
 
 /**
@@ -14,31 +21,39 @@ import { MESSAGE_BRANCH } from './message-branch';
  */
 @Component({
   selector: 'message-branch-previous',
+  imports: [Tooltip, TooltipContent, TooltipProvider, TooltipTrigger],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button
-      type="button"
-      class="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
-      aria-label="Previous branch"
-      [disabled]="disabled()"
-      (click)="prev()"
-    >
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="m15 18-6-6 6-6" />
-      </svg>
-    </button>
+    <gr-tooltip-provider>
+      <gr-tooltip>
+        <gr-tooltip-trigger>
+          <button
+            type="button"
+            class="inline-flex size-8 items-center justify-center rounded-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-input/30"
+            aria-label="Previous branch"
+            [disabled]="disabled()"
+            (click)="prev()"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+        </gr-tooltip-trigger>
+        <gr-tooltip-content>Previous branch</gr-tooltip-content>
+      </gr-tooltip>
+    </gr-tooltip-provider>
   `,
 })
 export class MessageBranchPrevious {
@@ -56,31 +71,39 @@ export class MessageBranchPrevious {
  */
 @Component({
   selector: 'message-branch-next',
+  imports: [Tooltip, TooltipContent, TooltipProvider, TooltipTrigger],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button
-      type="button"
-      class="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
-      aria-label="Next branch"
-      [disabled]="disabled()"
-      (click)="next()"
-    >
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="m9 18 6-6-6-6" />
-      </svg>
-    </button>
+    <gr-tooltip-provider>
+      <gr-tooltip>
+        <gr-tooltip-trigger>
+          <button
+            type="button"
+            class="inline-flex size-8 items-center justify-center rounded-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-input/30"
+            aria-label="Next branch"
+            [disabled]="disabled()"
+            (click)="next()"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </gr-tooltip-trigger>
+        <gr-tooltip-content>Next branch</gr-tooltip-content>
+      </gr-tooltip>
+    </gr-tooltip-provider>
   `,
 })
 export class MessageBranchNext {
@@ -104,7 +127,7 @@ export class MessageBranchNext {
   template: `<span>{{ label() }}</span>`,
   host: {
     class:
-      'inline-flex items-center px-2 text-muted-foreground text-xs font-medium',
+      'inline-flex items-center whitespace-nowrap px-2 text-muted-foreground text-xs font-medium',
   },
 })
 export class MessageBranchPage {

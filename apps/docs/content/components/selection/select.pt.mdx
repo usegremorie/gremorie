@@ -108,13 +108,14 @@ Encaminha para `SelectPrimitive.Root`.
 
 O botão visível que os usuários clicam para abrir a listbox.
 
-| Prop   | Type                | Default     | Description                      |
-| ------ | ------------------- | ----------- | -------------------------------- |
-| `size` | `"sm" \| "default"` | `"default"` | `sm` é `h-8`; `default` é `h-9`. |
+| Prop      | Type                                    | Default     | Description                                                                                                                                                                                                                                                                                    |
+| --------- | --------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `size`    | `"sm" \| "default"`                     | `"default"` | Os dois sizes são `h-8` (32px).                                                                                                                                                                                                                                                                |
+| `variant` | `"default" \| "outline" \| "secondary"` | `"default"` | `default` é o campo preenchido (`bg-input/50`, borda transparente). `outline` (um fio `border-foreground/10`, transparente) e `secondary` (um `bg-foreground/5` translúcido) são para um trigger sobre uma superfície preenchida, como um prompt input, onde um segundo preenchimento sumiria. |
 
 Renderiza a superfície do trigger e um `ChevronDownIcon` ao final.
 
-A variant de size é dona da altura do trigger via seletores `data-[size=...]`, então nunca force uma altura com `className` - um `h-8` manual num trigger de size default perde para o `h-9` da variant. Ao lado de um `Button` de ícone, pareie `size="sm"` com `size="icon-sm"` (ambos 32px) ou os defaults com `size="icon"` (ambos 36px). Veja [Action rows e size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
+A variant de size é dona da altura do trigger via seletores `data-[size=...]`, então nunca force uma altura com `className`. Todo size tem 32px, igual ao `Button` default e aos seus tamanhos `icon` e `icon-sm` (`size-8`), então o trigger se alinha com eles sem ajuste. Veja [Action rows e size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
 
 ### `<SelectValue>`
 

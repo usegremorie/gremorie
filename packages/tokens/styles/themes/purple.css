@@ -25,6 +25,7 @@
    * instead of 2.6:1.
    */
   --primary-foreground: oklch(0.9764 0.0145 308.3);
+  --switch-checked: var(--primary);
   --secondary: oklch(0.8983 0.0444 307.91);
   --secondary-foreground: oklch(0.1783 0.0597 291.44);
   --muted: oklch(0.9357 0.0251 298.1);
@@ -58,6 +59,7 @@
   --popover-foreground: oklch(0.8926 0.0424 297.73);
   --primary: oklch(0.8366 0.1046 307.06);
   --primary-foreground: oklch(0.1434 0.0399 294.09);
+  --switch-checked: var(--primary);
   --secondary: oklch(0.2979 0.0443 306.78);
   --secondary-foreground: oklch(0.8926 0.0424 297.73);
   --muted: oklch(0.1992 0.0236 296.44);

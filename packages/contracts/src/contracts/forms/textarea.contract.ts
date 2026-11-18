@@ -29,6 +29,12 @@ export const textarea = defineContract({
       desc: 'Visible row count (escape hatch over auto-sizing).',
     },
     {
+      name: 'resizable',
+      type: 'boolean',
+      default: false,
+      desc: 'Show the vertical resize handle. Off: the field grows with its content up to 16rem.',
+    },
+    {
       name: 'aria-invalid',
       type: 'boolean',
       adapts: { ng: 'input: ariaInvalid' },

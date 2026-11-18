@@ -108,13 +108,14 @@ Forwards to `SelectPrimitive.Root`.
 
 The visible button users click to open the listbox.
 
-| Prop   | Type                | Default     | Description                        |
-| ------ | ------------------- | ----------- | ---------------------------------- |
-| `size` | `"sm" \| "default"` | `"default"` | `sm` is `h-8`; `default` is `h-9`. |
+| Prop      | Type                                    | Default     | Description                                                                                                                                                                                                                                                                      |
+| --------- | --------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `size`    | `"sm" \| "default"`                     | `"default"` | Both sizes are `h-8` (32px).                                                                                                                                                                                                                                                     |
+| `variant` | `"default" \| "outline" \| "secondary"` | `"default"` | `default` is the filled field (`bg-input/50`, transparent border). `outline` (a `border-foreground/10` hairline, transparent) and `secondary` (a translucent `bg-foreground/5`) are for a trigger on a filled surface, such as a prompt input, where a second fill would vanish. |
 
 Renders the trigger surface and a trailing `ChevronDownIcon`.
 
-The size variant owns the trigger height via `data-[size=...]` selectors, so never force a height with `className` - a manual `h-8` on a default-size trigger loses to the variant's `h-9`. Next to an icon `Button`, pair `size="sm"` with `size="icon-sm"` (both 32px) or the defaults with `size="icon"` (both 36px). See [Action rows and size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
+The size variant owns the trigger height via `data-[size=...]` selectors, so never force a height with `className`. Every size is 32px, the same as the default `Button` and its `icon` and `icon-sm` sizes (`size-8`), so a trigger lines up with them as is. See [Action rows and size pairing](/components/buttons/button-group#action-rows-and-size-pairing).
 
 ### `<SelectValue>`
 

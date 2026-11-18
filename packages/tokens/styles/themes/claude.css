@@ -30,6 +30,7 @@
    */
   --primary: var(--color-clay-500);
   --primary-foreground: var(--color-gray-50);
+  --switch-checked: var(--primary);
   --secondary: oklch(0.95 0.012 80);
   --secondary-foreground: var(--color-clay-900);
   --muted: oklch(0.95 0.012 80);
@@ -71,6 +72,7 @@
   --popover-foreground: var(--color-gray-50);
   --primary: var(--color-clay-400);
   --primary-foreground: var(--color-gray-950);
+  --switch-checked: var(--primary);
   --secondary: oklch(0.28 0.012 58);
   --secondary-foreground: var(--color-gray-50);
   --muted: oklch(0.28 0.012 58);

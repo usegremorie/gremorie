@@ -85,6 +85,28 @@ export const assistant = defineContract({
       desc: 'Show the context-window meter in the composer header. Turn it off when you do not surface token usage.',
     },
     {
+      name: 'toolsCollapse',
+      type: "'auto' | 'always' | 'never'",
+      default: 'auto',
+      options: ['auto', 'always', 'never'],
+      control: true,
+      desc: 'Composer tools: inline, in an overflow menu, or switching by the composer width (auto, under 28rem).',
+    },
+    {
+      name: 'composerLayout',
+      type: "'stacked' | 'inline'",
+      default: 'stacked',
+      options: ['stacked', 'inline'],
+      control: true,
+      desc: 'Composer layout: stacked rows (default) or one row, with every composer control in the "+" menu and mic and send at the end.',
+    },
+    {
+      name: 'className',
+      type: 'string',
+      adapts: { ng: 'host class' },
+      desc: 'Merged onto the block root (size it to its container).',
+    },
+    {
       name: 'onSubmit',
       type: '(message) => void',
       adapts: { ng: 'output: submitted' },

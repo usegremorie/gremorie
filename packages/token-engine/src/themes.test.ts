@@ -80,7 +80,6 @@ describe('every theme switcher offers every theme', () => {
     'packages/rx-ai/.storybook/preview.ts',
     'packages/ng-ai/.storybook/preview.ts',
     'apps/workbench/src/app.tsx',
-    'apps/docs/components/landing/assistant-showcase.tsx',
     'apps/docs/components/semantic-color-data.ts',
   ])('%s lists the purple theme', (file) => {
     expect(readFileSync(join(root, file), 'utf8')).toMatch(/['"]purple['"]/);

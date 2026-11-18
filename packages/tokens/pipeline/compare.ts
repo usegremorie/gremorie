@@ -16,6 +16,12 @@ export interface CompareOptions {
   allowExtraSelectors?: string[];
   /** Paths, without quotes, e.g. './themes/purple.css'. */
   allowExtraImports?: string[];
+  /**
+   * Non-token rules added on purpose after the reference: skeleton entries
+   * that start with one of these prefixes (e.g. '@utility bg-popover-surface')
+   * are not a regression.
+   */
+  allowExtraRules?: string[];
   intentional?: IntentionalChange[];
 }
 
@@ -219,9 +225,12 @@ export function compareCss(
     (options.allowExtraImports ?? []).map((p) => `@import '${p}'`),
   );
   const expected = skeleton(reference);
+  const allowedRules = options.allowExtraRules ?? [];
   const actual = skeleton(generated).filter(
     (n) =>
-      !allowedImports.has(n) && !allowedSelectors.has(n.split('{')[0] ?? ''),
+      !allowedImports.has(n) &&
+      !allowedSelectors.has(n.split('{')[0] ?? '') &&
+      !allowedRules.some((r) => n.startsWith(r)),
   );
   for (let i = 0; i < Math.max(expected.length, actual.length); i++) {
     if (expected[i] !== actual[i]) {

@@ -139,6 +139,24 @@ export const barChart = defineContract({
     },
     TOOLTIP,
     { name: 'radius', type: 'number', default: 8, desc: 'Bar corner radius.' },
+    {
+      name: 'maxBarSize',
+      type: 'number',
+      default: 48,
+      desc: 'Widest a bar may draw (px); a capped bar is centred in its slot, as recharts maxBarSize.',
+    },
+    {
+      name: 'framed',
+      type: 'boolean',
+      default: true,
+      desc: "Draw the chart's own card frame. Turn off inside a Card.",
+    },
+    {
+      name: 'grid',
+      type: 'boolean',
+      default: true,
+      desc: 'Draw the value grid lines.',
+    },
     CN,
   ],
   guidance: {

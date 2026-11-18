@@ -12,7 +12,7 @@ import { TextareaDisabledPreview } from '@/components/preview/forms/textarea-dis
 
 `Textarea` is a thin styled wrapper around the native `<textarea>`. It uses `field-sizing: content` so the field grows automatically as the user types - no `rows` juggling, no JS height measurement, no resize handle dancing.
 
-Visual states match `Input` exactly: `border-input` for default, `focus-visible:ring-ring/50` for focus, `aria-invalid:border-destructive` for error. The minimum height is `min-h-16` so empty textareas always look like multi-line surfaces.
+Visual states match `Input` exactly: a filled field (`bg-input/50`, a transparent border, no shadow) by default, `focus-visible:ring-ring/50` for focus, `aria-invalid:border-destructive` for error. The minimum height is `min-h-16` so empty textareas always look like multi-line surfaces; the field grows up to `max-h-64` (16rem), then scrolls. The resize handle is off unless you pass `resizable`.
 
 ## Preview
 
@@ -23,7 +23,7 @@ Visual states match `Input` exactly: `border-input` for default, `focus-visible:
 ## Anatomy
 
 ```text
-Textarea   single styled <textarea>, min-h-16, auto-growing via field-sizing: content
+Textarea   single styled <textarea>, filled (bg-input/50), min-h-16 to max-h-64, auto-growing via field-sizing: content
 ```
 
 ## Installation
@@ -69,11 +69,12 @@ The Angular edition of this component ships from source today (see the workbench
 
 ### `<Textarea>`
 
-| Prop           | Type      | Default | Description                                                                                                                  |
-| -------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `rows`         | `number`  | -       | Hint for initial visible rows. Less critical here since `field-sizing: content` overrides static sizing once the user types. |
-| `disabled`     | `boolean` | `false` | Disables interaction. Applies `cursor-not-allowed` and `opacity-50`.                                                         |
-| `aria-invalid` | `boolean` | -       | When `true`, switches border and focus ring to the destructive token.                                                        |
+| Prop           | Type      | Default | Description                                                                                                                                                     |
+| -------------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rows`         | `number`  | -       | Hint for initial visible rows. Less critical here since `field-sizing: content` overrides static sizing once the user types.                                    |
+| `disabled`     | `boolean` | `false` | Disables interaction. Applies `cursor-not-allowed` and `opacity-50`.                                                                                            |
+| `resizable`    | `boolean` | `false` | Shows the browser's resize handle, vertical only (`resize-y`). Off by default (`resize-none`): the field grows with its content up to `max-h-64`, then scrolls. |
+| `aria-invalid` | `boolean` | -       | When `true`, switches border and focus ring to the destructive token.                                                                                           |
 
 Extends all `React.ComponentProps<"textarea">`. Renders with `data-slot="textarea"`.
 

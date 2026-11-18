@@ -7,6 +7,7 @@ import { ButtonPreview } from '@/components/preview/forms/button';
 import { ButtonSizesPreview } from '@/components/preview/forms/button-sizes';
 import { ButtonIconPreview } from '@/components/preview/forms/button-icon';
 import { ButtonIconOnlyPreview } from '@/components/preview/forms/button-icon-only';
+import { ButtonIconGroupPreview } from '@/components/preview/forms/button-icon-group';
 import { ButtonDisabledPreview } from '@/components/preview/forms/button-disabled';
 
 ## Visão geral
@@ -143,12 +144,23 @@ Coloque um ícone como filho. O CSS o auto-dimensiona e aperta o padding horizon
 
 ### Button icon-only
 
-Use `size="icon"` (ou `icon-xs`, `icon-sm`, `icon-lg`) para buttons quadrados. Sempre combine com um `aria-label` para que leitores de tela anunciem a ação.
+Use `size="icon"` (ou `icon-xs`, `icon-sm`, `icon-lg`) para buttons quadrados. Um button só de ícone sempre leva duas coisas:
+
+- **`aria-label`**: o nome que leitores de tela anunciam.
+- **Um `Tooltip`** com o mesmo texto: o nome que quem enxerga vê no hover e no foco por teclado. Monte na tela (`Tooltip` › `TooltipTrigger asChild` › `Button`); o `Button` em si não traz tooltip. Os blocos compostos (PromptInput, Assistant, ações de Message, Artifact) já vêm com tooltip nos seus icon buttons.
 
 Quando um icon button fica ao lado de outro controle, iguale os passos de altura pelas size variants (`icon-sm` com um select ou button `size="sm"`, `icon` com os defaults) em vez de forçar alturas com classes. Veja [Action rows e pareamento de tamanho](/components/buttons/button-group#action-rows-and-size-pairing).
 
 <ComponentPreview name="forms/button-icon-only">
   <ButtonIconOnlyPreview />
+</ComponentPreview>
+
+### Grupo de icon buttons
+
+Icon buttons ghost que pertencem ao mesmo grupo (as ferramentas de um composer, as ações de formatação de uma toolbar) ficam **sem gap** entre si: o fundo de hover de cada um já marca a sua área. Envolva o grupo num container próprio e separe-o do controle seguinte com `gap-2`. Cada button do grupo continua com o seu tooltip.
+
+<ComponentPreview name="forms/button-icon-group">
+  <ButtonIconGroupPreview />
 </ComponentPreview>
 
 ### Disabled
@@ -177,7 +189,7 @@ import Link from 'next/link';
 - **Focus**: ring de 3px controlado por `focus-visible:ring-ring/50`, então aparece apenas para navegação por teclado, nunca no clique.
 - **Disabled**: `disabled` remove o elemento da ordem de tabulação, reduz a opacidade para 50% e aplica `pointer-events-none` para que o button também não possa ser ativado pelo mouse.
 - **Invalid**: `aria-invalid="true"` troca o focus ring para o token destructive.
-- **Icon-only**: sempre forneça `aria-label`. Sem ele, leitores de tela anunciam o button sem nome.
+- **Icon-only**: sempre forneça `aria-label` e um `Tooltip` com o mesmo texto. Sem o label, leitores de tela anunciam o button sem nome; sem o tooltip, quem enxerga precisa adivinhar o ícone.
 
 ## Relacionados
 

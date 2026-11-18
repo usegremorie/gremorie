@@ -53,8 +53,8 @@
   --color-gray-300: oklch(0.87 0 0); /* #d4d4d4 */
   --color-gray-400: oklch(0.708 0 0); /* #a1a1a1 */
   --color-gray-500: oklch(0.556 0 0); /* #737373 */
-  --color-gray-600: oklch(0.45 0 0); /* #555555 */
-  --color-gray-700: oklch(0.35 0 0); /* #3a3a3a */
+  --color-gray-600: oklch(0.439 0 0); /* #525252 */
+  --color-gray-700: oklch(0.371 0 0); /* #404040 */
   --color-gray-800: oklch(0.269 0 0); /* #262626 */
   --color-gray-900: oklch(0.205 0 0); /* #171717 */
   --color-gray-950: oklch(0.145 0 0); /* #0a0a0a */
@@ -467,8 +467,14 @@
   --popover-foreground: var(--foreground);
   --primary: var(--color-gray-900);
   --primary-foreground: var(--color-gray-50);
+
+  /*
+   * Switch track when on. Defaults to the primary; a colour theme points it at
+   * its own primary, so switches take the theme's accent.
+   */
+  --switch-checked: var(--primary);
   --secondary: var(--color-gray-100);
-  --secondary-foreground: var(--color-gray-900);
+  --secondary-foreground: var(--color-gray-700);
   --muted: var(--color-gray-100);
   --muted-foreground: var(--color-gray-500);
   --accent: var(--color-gray-100);
@@ -633,12 +639,19 @@
   --foreground: var(--color-gray-50);
   --card: var(--color-gray-900);
   --card-foreground: var(--color-gray-50);
-  --popover: var(--color-gray-900);
+  --popover: var(--color-gray-800);
   --popover-foreground: var(--color-gray-50);
   --primary: var(--color-gray-100);
   --primary-foreground: var(--color-gray-900);
+
+  /*
+   * Switch track when on: foreground at 60% in the neutral theme, so the white
+   * thumb reads on it (the near-white primary would hide it). Colour themes
+   * point it at their primary.
+   */
+  --switch-checked: oklch(0.985 0 0 / 0.6);
   --secondary: var(--color-gray-800);
-  --secondary-foreground: var(--color-gray-50);
+  --secondary-foreground: var(--color-gray-300);
   --muted: var(--color-gray-800);
   --muted-foreground: var(--color-gray-400);
   --accent: var(--color-gray-800);
@@ -780,6 +793,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-switch-checked: var(--switch-checked);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -803,6 +817,43 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+ * ─── Floating surfaces ────────────────────────────────
+ * Menus, selects, popovers and hover cards paint a translucent
+ * popover with a soft backdrop blur by default. Use them through
+ * the `bg-popover-surface` utility, never `bg-popover/NN`.
+ *
+ * Inside the surface, accent (item hover/highlight) and muted (tracks,
+ * subtle fills) become translucent foreground, as in Luma: an opaque fill
+ * close to the popover color would vanish over whatever sits behind.
+ *
+ * Opt out (opaque, no blur): <html data-menu="solid">.
+ * Users who ask the OS to reduce transparency get the opaque
+ * surface automatically.
+ */
+:root[data-menu='solid'] {
+  --popover-surface: var(--popover);
+  --popover-backdrop: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --popover-surface: var(--popover);
+    --popover-backdrop: none;
+  }
+}
+
+@utility bg-popover-surface {
+  background-color: var(
+    --popover-surface,
+    color-mix(in oklab, var(--popover) 60%, transparent)
+  );
+  -webkit-backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
+  backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
+  --accent: color-mix(in oklab, var(--foreground) 10%, transparent);
+  --muted: color-mix(in oklab, var(--foreground) 10%, transparent);
 }
 
 /*

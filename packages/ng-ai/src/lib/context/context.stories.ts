@@ -13,7 +13,17 @@ import {
   ContextOutputUsage,
   ContextReasoningUsage,
   ContextTrigger,
+  type ContextCostResolver,
 } from './context';
+
+// Demo pricing (USD per million tokens) so the rows show their cost, as in
+// React. Real apps pass their own resolver.
+const demoCost: ContextCostResolver = (_model, u) =>
+  ((u.inputTokens ?? 0) * 3 +
+    (u.outputTokens ?? 0) * 15 +
+    (u.reasoningTokens ?? 0) * 15 +
+    (u.cachedInputTokens ?? 0) * 0.3) /
+  1_000_000;
 
 /**
  * Context — a token-usage meter that hovers into a usage/cost breakdown.
@@ -89,9 +99,9 @@ export const Workbench: Story = {
  */
 export const NearLimit: Story = {
   render: () => ({
-    props: { usage },
+    props: { usage, demoCost },
     template: `
-      <context [usedTokens]="184000" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet">
+      <context [usedTokens]="184000" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet" [costResolver]="demoCost">
         <context-trigger />
         <ng-template brnHoverCardContent>
           <context-content>

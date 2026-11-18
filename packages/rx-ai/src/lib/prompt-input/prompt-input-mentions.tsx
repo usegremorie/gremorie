@@ -55,6 +55,8 @@ export type PromptInputMentionsProps = Omit<
 > & {
   /** Available context items, rendered grouped in declaration order. */
   items: PromptInputMentionsItem[];
+  /** Trigger surface on the prompt: `outline` (default) or `secondary`. */
+  variant?: 'outline' | 'secondary';
   /** Controlled selected ids. */
   value?: string[];
   /** Uncontrolled initial selected ids. */
@@ -83,6 +85,7 @@ export const PromptInputMentions = ({
   emptyText = 'No context found.',
   tooltip = 'Add context',
   align = 'start',
+  variant = 'outline',
   className,
   ...props
 }: PromptInputMentionsProps) => {
@@ -134,10 +137,14 @@ export const PromptInputMentions = ({
     <InputGroupButton
       aria-expanded={open}
       aria-label="Add context"
-      className="border border-input border-solid bg-transparent text-foreground shadow-none transition-colors hover:bg-accent hover:text-foreground aria-expanded:bg-accent"
+      className={
+        variant === 'outline'
+          ? 'aria-expanded:bg-muted dark:aria-expanded:bg-input/30'
+          : undefined
+      }
       size={hasSelection ? 'icon-sm' : 'sm'}
       type="button"
-      variant="outline"
+      variant={variant}
     >
       <AtSignIcon className="size-4" />
       {hasSelection ? null : <span>{label}</span>}

@@ -14,7 +14,7 @@ import { Textarea } from './textarea';
  * ## Anatomy
  *
  * ```text
- * Textarea   single styled <textarea>, min-h-16, auto-growing via field-sizing: content
+ * Textarea   single styled <textarea>, filled (bg-input/50), min-h-16 to max-h-64, auto-growing via field-sizing: content
  * ```
  *
  * ## Props
@@ -23,6 +23,7 @@ import { Textarea } from './textarea';
  * | --- | --- | --- | --- |
  * | `placeholder` | `string` | — | Placeholder text. |
  * | `disabled` | `boolean` | `false` | Disable interaction. |
+ * | `resizable` | `boolean` | `false` | Vertical resize handle; off by default (grows to max-h-64, then scrolls). |
  * | `aria-invalid` | `boolean` | — | Switches to destructive error styling. |
  * | ...`textarea` | `React.ComponentProps<"textarea">` | — | All native textarea props. |
  *
@@ -30,7 +31,7 @@ import { Textarea } from './textarea';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | default border |
+ * | `--input` | filled field (`bg-input/50`, transparent border) |
  * | `--ring` | focus ring |
  * | `--destructive` | `aria-invalid` border/ring |
  * | `--muted-foreground` | placeholder |

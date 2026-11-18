@@ -11,6 +11,10 @@
       "$value": "{color.gray.950}",
       "$description": "Black on flame orange (5.5:1), matching Mistral's own brand usage; the previous near-white foreground sat at 3.4:1 and failed AA."
     },
+    "switch-checked": {
+      "$type": "color",
+      "$value": "{primary}"
+    },
     "accent": {
       "$type": "color",
       "$value": "{color.orange.100}"
@@ -60,6 +64,10 @@
     "primary-foreground": {
       "$type": "color",
       "$value": "{color.gray.950}"
+    },
+    "switch-checked": {
+      "$type": "color",
+      "$value": "{primary}"
     },
     "accent": {
       "$type": "color",

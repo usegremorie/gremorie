@@ -39,6 +39,12 @@ export interface BarChartProps {
   tooltip?: boolean;
   /** Corner radius of the bars. */
   radius?: number;
+  /** Widest a bar may draw (px); a capped bar is centred in its slot. */
+  maxBarSize?: number;
+  /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
+  framed?: boolean;
+  /** Draw the value grid lines. */
+  grid?: boolean;
   className?: string;
 }
 
@@ -67,6 +73,9 @@ export function BarChart({
   showLabels = false,
   tooltip = true,
   radius = 8,
+  maxBarSize = 48,
+  framed = true,
+  grid = true,
   className,
 }: BarChartProps) {
   const keys = Object.keys(config).filter((k) => k !== xKey);
@@ -101,7 +110,8 @@ export function BarChart({
         aria-label={ariaLabel}
         config={config}
         className={cn(
-          'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
+          framed &&
+            'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
           className,
         )}
       >
@@ -116,7 +126,9 @@ export function BarChart({
             bottom: 0,
           }}
         >
-          <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
+          {grid && (
+            <CartesianGrid vertical={horizontal} horizontal={!horizontal} />
+          )}
           {horizontal ? (
             <>
               <YAxis
@@ -161,6 +173,7 @@ export function BarChart({
               key={key}
               dataKey={key}
               fill={`var(--color-${key})`}
+              maxBarSize={maxBarSize}
               radius={segRadius(i)}
               stackId={stacked ? 'a' : undefined}
             >

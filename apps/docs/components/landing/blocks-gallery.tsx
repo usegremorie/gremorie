@@ -336,7 +336,7 @@ export function BlocksGallery({ lang }: { lang: string }) {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
               Blocks, not just primitives
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
@@ -359,7 +359,7 @@ export function BlocksGallery({ lang }: { lang: string }) {
               href={block.href}
               className="group block focus-visible:outline-none"
             >
-              <Card className="h-64 justify-between gap-0 overflow-hidden py-0 transition-colors duration-200 group-hover:border-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
+              <Card className="h-64 justify-between gap-0 overflow-hidden py-0 transition-[color,box-shadow] duration-200 group-hover:ring-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
                 {/* Schematic preview - monochrome (muted-foreground via
                     currentColor) on a subtle muted frame. */}
                 <div className="flex h-28 items-center justify-center border-b bg-muted/30 px-6 text-muted-foreground">

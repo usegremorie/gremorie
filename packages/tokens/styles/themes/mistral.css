@@ -20,6 +20,7 @@
    * previous near-white foreground sat at 3.4:1 and failed AA.
    */
   --primary-foreground: var(--color-gray-950);
+  --switch-checked: var(--primary);
   --accent: var(--color-orange-100);
   --accent-foreground: var(--color-orange-900);
   --ring: var(--color-orange-500);
@@ -40,6 +41,7 @@
 :root[data-theme='mistral'].dark {
   --primary: var(--color-orange-400);
   --primary-foreground: var(--color-gray-950);
+  --switch-checked: var(--primary);
   --accent: var(--color-orange-900);
   --accent-foreground: var(--color-orange-50);
   --ring: var(--color-orange-400);

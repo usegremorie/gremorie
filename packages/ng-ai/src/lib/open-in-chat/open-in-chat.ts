@@ -156,7 +156,7 @@ export class OpenInContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'block w-[240px] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md',
+      'block w-[240px] overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md',
       this.class(),
     ),
   );

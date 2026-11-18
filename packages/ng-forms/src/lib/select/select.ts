@@ -1,7 +1,11 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
+  Directive,
+  ElementRef,
+  inject,
   input,
   ViewEncapsulation,
 } from '@angular/core';
@@ -17,15 +21,26 @@ import {
   BrnSelectTrigger,
   BrnSelectValue,
 } from '@spartan-ng/brain/select';
-import {
-  BrnPopover,
-  BrnPopoverContent,
-  BrnPopoverTrigger,
-} from '@spartan-ng/brain/popover';
+import { BrnPopover, BrnPopoverContent } from '@spartan-ng/brain/popover';
 import { cn } from '@gremorie/ng-core';
 
 /** Trigger height. Mirrors React `SelectTrigger` `size`. */
 export type SelectSize = 'sm' | 'default';
+
+const SELECT_TRIGGER_VARIANTS = {
+  default: '',
+  outline:
+    'border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
+  secondary:
+    'bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15',
+} as const;
+
+/**
+ * Trigger surface. `default` is the filled field; `outline` and `secondary`
+ * are for a trigger that sits on a filled surface (e.g. inside a prompt
+ * input), where a second fill would vanish.
+ */
+export type SelectTriggerVariant = keyof typeof SELECT_TRIGGER_VARIANTS;
 
 /**
  * Select — dropdown chooser for short, fixed lists. Mirrors React `Select`
@@ -45,8 +60,10 @@ export type SelectSize = 'sm' | 'default';
  * - React `Select` (`Root`) = `gr-select`, which hosts the `BrnPopover` element
  *   and applies `brnSelect` to it via host directives so the value lives on the
  *   root and the popover owns open/close. `data-slot="select"` on the host.
- * - React `SelectTrigger` = `gr-select-trigger` — a `<button>` carrying both
- *   `brnSelectTrigger` and `brnPopoverTrigger`, with the verbatim React trigger
+ * - React `SelectTrigger` = `gr-select-trigger` — a `<button>` carrying
+ *   `brnSelectTrigger` only (it toggles the select AND sets the overlay origin;
+ *   adding `brnPopoverTrigger` too toggles twice per click and the select never
+ *   opens), with the verbatim React trigger
  *   class string and `data-size`. The trailing chevron (lucide `chevron-down`,
  *   hand-inlined) is rendered after the projected value.
  * - React `SelectValue` = `gr-select-value` — `brnSelectValue` renders the
@@ -78,7 +95,10 @@ export type SelectSize = 'sm' | 'default';
     BrnPopover,
     {
       directive: BrnSelect,
-      inputs: ['value', 'disabled'],
+      // itemToString: the content is lazy (rendered on open), so a closed
+      // select only knows its value. React's SelectValue shows the item's
+      // text; pass itemToString to show the same label before first open.
+      inputs: ['value', 'disabled', 'itemToString'],
       outputs: ['valueChange'],
     },
   ],
@@ -96,7 +116,7 @@ export class Select {
   // lives on `gr-select-value` (the brain `BrnSelectValue` `placeholder`
   // input), matching React's `SelectValue placeholder`. The `BrnPopover` host
   // directive supplies the ancestor popover that `BrnSelect`, the trigger
-  // (`brnPopoverTrigger`) and the content (`brnPopoverContent`) resolve — it
+  // (`brnSelectTrigger`) and the content (`brnPopoverContent`) resolve — it
   // owns the portalled, positioned overlay. `Select` adds no extra inputs; the
   // wrapper exists to apply both brain directives + the slot.
 }
@@ -108,22 +128,22 @@ export class Select {
 @Component({
   selector: 'gr-select-trigger',
   standalone: true,
-  imports: [BrnSelectTrigger, BrnPopoverTrigger],
+  imports: [BrnSelectTrigger],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
       brnSelectTrigger
-      brnPopoverTrigger
       type="button"
       data-slot="select-trigger"
       [attr.data-size]="size()"
+      [attr.data-variant]="variant()"
       [class]="computedClass()"
     >
       <ng-content />
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="size-4 opacity-50"
+        class="size-4 text-muted-foreground opacity-50"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -140,12 +160,15 @@ export class Select {
 export class SelectTrigger {
   /** Trigger height. Mirrors React `SelectTrigger` `size` (default 'default'). */
   readonly size = input<SelectSize>('default');
+  /** Trigger surface. Mirrors React `SelectTrigger` `variant`. */
+  readonly variant = input<SelectTriggerVariant>('default');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
   protected readonly computedClass = computed(() =>
     cn(
-      "flex w-fit items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
+      "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      SELECT_TRIGGER_VARIANTS[this.variant()],
       this.class(),
     ),
   );
@@ -172,6 +195,85 @@ export class SelectValue {
   readonly placeholder = input<string>('');
 }
 
+/** Box of the first non-empty text node under `root` (null when none). */
+function firstTextRect(root: Element): DOMRect | null {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!node.textContent?.trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return range.getBoundingClientRect();
+  }
+  return null;
+}
+
+/** Keep this far from the viewport edges when shifting the listbox. */
+const VIEWPORT_MARGIN = 8;
+
+/**
+ * Item-aligned positioning, the Radix `position="item-aligned"` that React
+ * `SelectContent` uses by default: on open, the listbox shifts so the selected
+ * item's text lands exactly on the trigger's text and, since the item's padding
+ * matches the trigger's, its box lands on the trigger's box; the panel
+ * overhangs the trigger by its own padding and reaches the trigger's right
+ * edge. The brain only places the listbox below the trigger, so this runs
+ * after each render of the content. Without a selection it stays below.
+ *
+ * The open zoom animation scales the panel, which would skew the measurement,
+ * so it is suspended while measuring and restarts afterwards. The shift uses
+ * the `translate` property, which composes with the animation's `transform`.
+ */
+@Directive({ selector: '[grSelectItemAligned]', standalone: true })
+export class SelectItemAligned {
+  private readonly panel: HTMLElement = inject(ElementRef).nativeElement;
+  private readonly host: HTMLElement = inject(SelectContent).host;
+
+  constructor() {
+    // Hidden until placed: the first paint would otherwise show the panel
+    // where the overlay put it, before the shift.
+    this.panel.style.visibility = 'hidden';
+    afterNextRender(() => {
+      this.align();
+      this.panel.style.visibility = '';
+    });
+  }
+
+  private align(): void {
+    const trigger = this.host
+      .closest('[data-slot=select]')
+      ?.querySelector<HTMLElement>('[data-slot=select-trigger]');
+    const value = trigger?.querySelector('[data-slot=select-value]');
+    const item = this.panel.querySelector(
+      '[data-slot=select-item][aria-selected=true]',
+    );
+    if (!trigger || !value || !item) return;
+
+    const panel = this.panel;
+    panel.style.animationName = 'none';
+    const to = firstTextRect(value);
+    const before = firstTextRect(item);
+    if (to && before) {
+      // Radix: the panel starts where the item text meets the value text, so
+      // it overhangs the trigger by its own padding, and it is wide enough to
+      // reach the trigger's right edge.
+      const left = panel.getBoundingClientRect().left + (to.left - before.left);
+      panel.style.minWidth = `${trigger.getBoundingClientRect().right - left}px`;
+      // The overlay may re-anchor a wider panel, so measure again.
+      const from = firstTextRect(item) ?? before;
+      const box = panel.getBoundingClientRect();
+      const clamp = (shift: number, start: number, end: number, max: number) =>
+        Math.min(
+          Math.max(shift, VIEWPORT_MARGIN - start),
+          max - VIEWPORT_MARGIN - end,
+        );
+      const dx = clamp(to.left - from.left, box.left, box.right, innerWidth);
+      const dy = clamp(to.top - from.top, box.top, box.bottom, innerHeight);
+      panel.style.translate = `${dx}px ${dy}px`;
+    }
+    panel.style.animationName = '';
+  }
+}
+
 /**
  * SelectContent — the portalled, scrollable listbox. Mirrors React
  * `SelectContent`.
@@ -184,6 +286,7 @@ export class SelectValue {
     BrnSelectContent,
     BrnSelectScrollUp,
     BrnSelectScrollDown,
+    SelectItemAligned,
   ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -191,12 +294,13 @@ export class SelectValue {
     <ng-template brnPopoverContent>
       <div
         brnSelectContent
+        grSelectItemAligned
         data-slot="select-content"
         [class]="computedClass()"
       >
         <button
           brnSelectScrollUp
-          class="flex cursor-default items-center justify-center py-1"
+          class="flex cursor-default items-center justify-center py-1 data-[hidden]:hidden"
           aria-hidden="true"
         >
           <svg
@@ -217,7 +321,7 @@ export class SelectValue {
         </div>
         <button
           brnSelectScrollDown
-          class="flex cursor-default items-center justify-center py-1"
+          class="flex cursor-default items-center justify-center py-1 data-[hidden]:hidden"
           aria-hidden="true"
         >
           <svg
@@ -238,12 +342,14 @@ export class SelectValue {
   `,
 })
 export class SelectContent {
+  /** Host element; the item-aligned positioning finds the trigger from it. */
+  readonly host: HTMLElement = inject(ElementRef).nativeElement;
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
   protected readonly computedClass = computed(() =>
     cn(
-      'relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+      'relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
       this.class(),
     ),
   );
@@ -254,8 +360,8 @@ export class SelectContent {
  * indicator (lucide `check`, hand-inlined) sits in an absolute right slot.
  *
  * React's Radix `ItemIndicator` only mounts when the item is selected. The
- * brain `brnSelectItem` sets `[attr.aria-selected]="active()"` on its host
- * button, so to stay faithful the indicator is gated purely off that attribute
+ * brain `BrnSelectItem` sets `[attr.aria-selected]="active()"` on this host
+ * element, so to stay faithful the indicator is gated purely off that attribute
  * via the `group-aria-selected:flex hidden` arbitrary variant — visible only
  * when the brain reports the item selected. No manual `selected` input is
  * needed; selection stays the single source of truth in the brain.
@@ -263,51 +369,48 @@ export class SelectContent {
 @Component({
   selector: 'gr-select-item',
   standalone: true,
-  imports: [BrnSelectItem],
+  hostDirectives: [{ directive: BrnSelectItem, inputs: ['value', 'disabled'] }],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button
-      brnSelectItem
-      type="button"
-      data-slot="select-item"
-      [value]="value()"
-      [disabled]="disabled()"
-      [class]="computedClass()"
+    <span
+      data-slot="select-item-indicator"
+      class="absolute right-2 hidden size-3.5 items-center justify-center group-aria-selected:flex"
     >
-      <span
-        data-slot="select-item-indicator"
-        class="absolute right-2 hidden size-3.5 items-center justify-center group-aria-selected:flex"
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="size-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="size-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M20 6 9 17l-5-5" />
-        </svg>
-      </span>
-      <ng-content />
-    </button>
+        <path d="M20 6 9 17l-5-5" />
+      </svg>
+    </span>
+    <span data-slot="select-item-text"><ng-content /></span>
   `,
+  host: {
+    'data-slot': 'select-item',
+    '[class]': 'computedClass()',
+  },
 })
 export class SelectItem {
-  /** The value this option represents. Mirrors React `value`. */
-  readonly value = input.required<string>();
-  /** Disable just this option. Mirrors React `disabled`. */
-  readonly disabled = input<boolean>(false);
+  // `value` (required) and `disabled` are the brain `BrnSelectItem` inputs,
+  // exposed on this element by the host directive. The brain must sit on the
+  // `gr-select-item` element itself: `BrnSelect` collects its items with a
+  // content query, which cannot see a directive inside this template — the
+  // items would never register, leaving no highlight, keyboard navigation or
+  // type-ahead.
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
   protected readonly computedClass = computed(() =>
     cn(
-      "group relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+      "group relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-3 text-sm outline-hidden select-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
       this.class(),
     ),
   );
@@ -348,7 +451,7 @@ export class SelectLabel {
   readonly class = input<string>('');
 
   protected readonly computedClass = computed(() =>
-    cn('px-2 py-1.5 text-xs text-muted-foreground', this.class()),
+    cn('px-3 py-1.5 text-xs text-muted-foreground', this.class()),
   );
 }
 

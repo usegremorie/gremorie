@@ -144,11 +144,8 @@ const USAGE: LanguageModelUsage = {
   },
 };
 
-// Outlined trigger to match the Button "outline" variant. The default
-// PromptInputSelectTrigger is borderless/ghost, so re-add the border and keep
-// the fill transparent so the control sits flush on the card surface.
-const OUTLINE_TRIGGER =
-  'border border-input border-solid bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent';
+// Mode and Model use PromptInputSelectTrigger variant="outline" (the default is
+// the borderless ghost), with the open state shown as on the other controls.
 
 export function PromptInputB2BPreview() {
   return (
@@ -193,7 +190,8 @@ export function PromptInputB2BPreview() {
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select mode"
-                  className={OUTLINE_TRIGGER}
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
+                  variant="outline"
                   size="sm"
                 >
                   <PromptInputSelectValue placeholder="Mode" />
@@ -215,7 +213,8 @@ export function PromptInputB2BPreview() {
               <TooltipTrigger asChild>
                 <PromptInputSelectTrigger
                   aria-label="Select model"
-                  className={OUTLINE_TRIGGER}
+                  className="aria-expanded:bg-muted dark:aria-expanded:bg-input/30"
+                  variant="outline"
                   size="sm"
                 >
                   <PromptInputSelectValue placeholder="Model" />

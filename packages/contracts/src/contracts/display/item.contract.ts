@@ -12,7 +12,7 @@ export const item = defineContract({
   status: 'stable',
   anatomy: `
     <item>                   (row container; size cascades to media + text)
-    ├─ item-media            (icon (fixed 24px) · featured · avatar · image)
+    ├─ item-media            (icon (fixed 16px) · featured · avatar · image)
     ├─ item-content
     │  ├─ item-title
     │  └─ item-description   (optional; its presence drives the taller media)
@@ -70,7 +70,7 @@ export const item = defineContract({
     rules: [
       'Set size once on the root - media size and typography follow via the data-size cascade; never size the parts individually.',
       'item-description presence switches the media cascade to the taller two-line height.',
-      'The icon media variant is the only fixed size (24px); featured / avatar / image follow the cascade.',
+      'The icon media variant is the only fixed size (16px); featured / avatar / image follow the cascade.',
       'Set interactive only when the row is actually clickable.',
     ],
     example:

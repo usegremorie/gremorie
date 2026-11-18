@@ -32,9 +32,9 @@ import { Switch } from './switch';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--primary` | checked track fill |
+ * | `--switch-checked` | checked track fill (`bg-switch-checked`) |
  * | `--input` | unchecked track fill |
- * | `--background` | thumb fill |
+ * | (none) | thumb fill: always white (`bg-white shadow-sm`) |
  * | `--ring` | focus ring |
  */
 const meta = {

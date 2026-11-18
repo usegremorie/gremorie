@@ -1,0 +1,17 @@
+[
+  {
+    "file": "theme.css",
+    "rule": ":root[data-menu='solid']",
+    "reason": "Opt-out for translucent floating surfaces (opaque popover, no blur)."
+  },
+  {
+    "file": "theme.css",
+    "rule": "@media (prefers-reduced-transparency:reduce)",
+    "reason": "Translucent floating surfaces turn opaque when the OS asks to reduce transparency."
+  },
+  {
+    "file": "theme.css",
+    "rule": "@utility bg-popover-surface",
+    "reason": "Translucent floating surface (popover 60% + backdrop blur), the default for menus, selects, popovers and hover cards."
+  }
+]

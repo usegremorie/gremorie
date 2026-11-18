@@ -1,3 +1,4 @@
+import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -14,9 +15,12 @@ import {
   model,
   signal,
   TemplateRef,
+  viewChild,
   ViewEncapsulation,
+  effect,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
+import { MENU_BELOW_START } from '../overlay-positions';
 
 /**
  * Shared state contract for the PromptInputSelect family, distributed via DI so
@@ -32,6 +36,11 @@ export interface PromptInputSelectState {
   labelFor: (value: string | null) => string | null;
   registerItemIcon: (value: string, icon: TemplateRef<void> | null) => void;
   iconFor: (value: string | null) => TemplateRef<void> | null;
+  /** The trigger button the listbox is positioned against. */
+  readonly origin: () => HTMLElement | null;
+  setOrigin: (el: HTMLElement | null) => void;
+  /** The listbox panel (rendered in the CDK overlay, outside this element). */
+  setPanel: (el: HTMLElement | null) => void;
 }
 
 export const PROMPT_INPUT_SELECT = new InjectionToken<PromptInputSelectState>(
@@ -75,8 +84,20 @@ export class PromptInputSelect implements PromptInputSelectState {
   private readonly icons = new Map<string, TemplateRef<void> | null>();
   private readonly labelVersion = signal(0);
 
+  private readonly _origin = signal<HTMLElement | null>(null);
+  private panel: HTMLElement | null = null;
+
   readonly value = () => this.selected();
   readonly open = () => this._open();
+  readonly origin = () => this._origin();
+
+  setOrigin(el: HTMLElement | null): void {
+    this._origin.set(el);
+  }
+
+  setPanel(el: HTMLElement | null): void {
+    this.panel = el;
+  }
 
   setValue(value: string): void {
     this.selected.set(value);
@@ -117,7 +138,11 @@ export class PromptInputSelect implements PromptInputSelectState {
       return;
     }
     const target = event.target as Node | null;
-    if (target && !this.elementRef.nativeElement.contains(target)) {
+    if (
+      target &&
+      !this.elementRef.nativeElement.contains(target) &&
+      !this.panel?.contains(target)
+    ) {
       this.close();
     }
   }
@@ -138,9 +163,17 @@ export class PromptInputSelect implements PromptInputSelectState {
  * `packages/rx-ai/src/lib/prompt-input/prompt-input.tsx`.
  */
 const TRIGGER_BASE =
-  "flex w-fit items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground";
+  "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4";
+/** The Select trigger variants (ng-forms), for a trigger on a filled prompt. */
+const TRIGGER_VARIANTS = {
+  outline:
+    'border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
+  secondary:
+    'bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15',
+} as const;
+
 const TRIGGER_PROMPT_OVERRIDES =
-  'border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground';
+  'border-none bg-transparent font-medium text-secondary-foreground shadow-none transition-colors hover:bg-muted dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30';
 
 @Component({
   selector: 'prompt-input-select-trigger',
@@ -149,6 +182,7 @@ const TRIGGER_PROMPT_OVERRIDES =
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
+      #button
       type="button"
       data-slot="select-trigger"
       [attr.data-size]="dataSize()"
@@ -168,7 +202,7 @@ const TRIGGER_PROMPT_OVERRIDES =
         stroke-linecap="round"
         stroke-linejoin="round"
         aria-hidden="true"
-        class="size-4 opacity-50"
+        class="size-4 text-muted-foreground opacity-50"
       >
         <path d="m6 9 6 6 6-6" />
       </svg>
@@ -178,17 +212,37 @@ const TRIGGER_PROMPT_OVERRIDES =
 })
 export class PromptInputSelectTrigger {
   protected readonly ctx = inject(PROMPT_INPUT_SELECT);
+  private readonly button = viewChild<ElementRef<HTMLElement>>('button');
+
+  constructor() {
+    effect(() => this.ctx.setOrigin(this.button()?.nativeElement ?? null));
+  }
   readonly ariaLabel = input<string>('');
   readonly size = input<'sm' | 'md'>('sm');
+  /**
+   * `ghost` (default) is the AI Elements look; `outline` / `secondary` draw
+   * the trigger like the Select variants. Mirrors React `variant`.
+   */
+  readonly variant = input<'ghost' | 'outline' | 'secondary'>('ghost');
   readonly class = input<string>('');
 
   protected readonly dataSize = computed(() =>
     this.size() === 'sm' ? 'sm' : 'default',
   );
 
-  protected readonly triggerClass = computed(() =>
-    cn(TRIGGER_BASE, TRIGGER_PROMPT_OVERRIDES, this.class()),
-  );
+  protected readonly triggerClass = computed(() => {
+    const variant = this.variant();
+    return variant === 'ghost'
+      ? cn(TRIGGER_BASE, TRIGGER_PROMPT_OVERRIDES, this.class())
+      : cn(
+          TRIGGER_BASE,
+          TRIGGER_VARIANTS[variant],
+          'font-medium',
+          variant === 'outline' &&
+            'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+          this.class(),
+        );
+  });
 }
 
 /**
@@ -207,7 +261,7 @@ export class PromptInputSelectTrigger {
     @if (icon(); as tpl) {
       <ng-container [ngTemplateOutlet]="tpl" />
     }
-    {{ display() }}
+    <span data-slot="select-value-label">{{ display() }}</span>
   `,
   host: { 'data-slot': 'select-value', class: 'pointer-events-none' },
 })
@@ -225,20 +279,36 @@ export class PromptInputSelectValue {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CdkConnectedOverlay],
   template: `
-    @if (ctx.open()) {
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="ctx.origin()!"
+      [cdkConnectedOverlayOpen]="ctx.open() && !!ctx.origin()"
+      [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayViewportMargin]="8"
+      [cdkConnectedOverlayMinWidth]="ctx.origin()?.offsetWidth ?? 0"
+      (detach)="ctx.close()"
+    >
       <div
+        #panel
         role="listbox"
-        class="absolute left-0 top-full z-50 mt-1 w-max min-w-full origin-top-left overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="w-max origin-top-left overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
       >
         <ng-content />
       </div>
-    }
+    </ng-template>
   `,
   host: { class: 'contents' },
 })
 export class PromptInputSelectContent {
   protected readonly ctx = inject(PROMPT_INPUT_SELECT);
+  protected readonly positions = MENU_BELOW_START;
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
+
+  constructor() {
+    effect(() => this.ctx.setPanel(this.panel()?.nativeElement ?? null));
+  }
 }
 
 /**

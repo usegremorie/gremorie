@@ -43,6 +43,14 @@ import { useEffect, useMemo, useState } from 'react';
 // generator (node:fs/node:path), which cannot enter a browser bundle.
 import { ITEMS } from '@gremorie/registry/dist/items.js';
 
+import { cn } from '@gremorie/rx-core';
+import { type ShowcaseView } from './nav';
+import {
+  PropertyGroup,
+  PropertySelect,
+  PropertySwitch,
+  PropertyText,
+} from './property-list';
 import { Sidebar } from './sidebar';
 
 /**
@@ -56,6 +64,12 @@ import { Sidebar } from './sidebar';
 // permalinks) via build-time env vars. Same iframe contract either way.
 const RX_BASE = import.meta.env.VITE_RX_BASE ?? 'http://localhost:4401';
 const NG_BASE = import.meta.env.VITE_NG_BASE ?? 'http://localhost:4400';
+
+/** The shadcn showcase the Gremorie showcase is rebuilt from (Luma style). */
+const REFERENCE_URL =
+  'https://ui.shadcn.com/preview/base/preview-02?preset=b1VnZgxu&style=luma&theme=fuchsia&menuColor=default-translucent&radius=small';
+/** Story id of the showcase screen in both Storybooks. */
+const SHOWCASE_STORY = 'showcase--all';
 
 /**
  * Angular items that actually exist in the published registry index
@@ -192,9 +206,9 @@ function PropInfo({ text }: { text: string }) {
   );
 }
 
-/** One playground row: just the name + control. Type is implied by the control
- *  (a text box is a string, a dropdown shows its options on open); the optional
- *  description lives behind an info icon. Required props get a subtle marker. */
+/** One playground row, Luma-style: the name on the left (required marker and
+ *  info tip beside it) and the control on the right. Type is implied by the
+ *  control: a switch, a compact select, or a value edited in a popover. */
 function PropField({
   control,
   meta,
@@ -206,61 +220,51 @@ function PropField({
   value: string | number | boolean | undefined;
   onChange: (v: string | number | boolean) => void;
 }) {
-  const labelRow = (
-    <div className="flex items-center gap-1">
-      <Label className="font-medium text-foreground text-xs">
-        {control.name}
-      </Label>
+  const id = `prop-${control.name}`;
+  const label = (
+    <span className="flex min-w-0 items-center gap-1">
+      <span className="truncate">{control.name}</span>
       {meta?.required && (
         <span className="text-[10px] text-rose-500 leading-none">*</span>
       )}
       {(meta?.description ?? control.desc) && (
         <PropInfo text={meta?.description ?? control.desc ?? ''} />
       )}
-    </div>
+    </span>
   );
 
   if (control.kind === 'toggle') {
     return (
-      <div className="flex items-center justify-between gap-2">
-        {labelRow}
-        <Switch checked={Boolean(value)} onCheckedChange={onChange} />
-      </div>
+      <PropertySwitch
+        ariaLabel={control.name}
+        checked={Boolean(value)}
+        id={id}
+        label={label}
+        onCheckedChange={onChange}
+      />
     );
   }
   if (control.kind === 'select') {
     return (
-      <div className="space-y-1.5">
-        {labelRow}
-        <Select value={String(value ?? '')} onValueChange={onChange}>
-          <SelectTrigger className="h-8 w-full" size="sm">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {control.options?.map((o) => (
-              <SelectItem key={o} value={o}>
-                {o}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <PropertySelect
+        ariaLabel={control.name}
+        id={id}
+        label={label}
+        onValueChange={onChange}
+        options={control.options ?? []}
+        value={String(value ?? '')}
+      />
     );
   }
   return (
-    <div className="space-y-1.5">
-      {labelRow}
-      <Input
-        type={control.kind === 'number' ? 'number' : 'text'}
-        className="h-8"
-        value={String(value ?? '')}
-        onChange={(e) =>
-          onChange(
-            control.kind === 'number' ? Number(e.target.value) : e.target.value,
-          )
-        }
-      />
-    </div>
+    <PropertyText
+      ariaLabel={control.name}
+      id={id}
+      label={label}
+      onValueChange={(v) => onChange(control.kind === 'number' ? Number(v) : v)}
+      type={control.kind === 'number' ? 'number' : 'text'}
+      value={String(value ?? '')}
+    />
   );
 }
 
@@ -414,6 +418,7 @@ export function App() {
   const [values, setValues] = useState<Values>(() => defaults(entry));
   const [dark, setDark] = useState(true);
   const [theme, setTheme] = useState<string>('default');
+  const [showcase, setShowcase] = useState<ShowcaseView | null>(null);
 
   // Drive both the CSS-var tokens (`.dark`) and the brand palette (`data-theme`)
   // from the root element, so the whole shell - every rx-* component and the
@@ -440,6 +445,7 @@ export function App() {
     if (!next) return;
     setName(n);
     setValues(defaults(next));
+    setShowcase(null);
   };
   const set = (k: string, v: string | number | boolean) =>
     setValues((prev) => ({ ...prev, [k]: v }));
@@ -514,102 +520,138 @@ export function App() {
             active={name}
             contracted={contracted}
             onSelect={selectByName}
+            showcase={showcase}
+            onShowcase={setShowcase}
           />
 
+          {showcase && (
+            <main data-showcase={showcase} className="min-h-0 min-w-0 flex-1">
+              <iframe
+                key={showcase}
+                title={`Showcase: ${showcase === 'ref' ? 'shadcn reference' : showcase === 'rx' ? 'React' : 'Angular'}`}
+                className="size-full border-0"
+                src={
+                  showcase === 'ref'
+                    ? REFERENCE_URL
+                    : (storyUrl(
+                        showcase === 'rx' ? RX_BASE : NG_BASE,
+                        SHOWCASE_STORY,
+                        {},
+                        theme,
+                        dark,
+                      ) ?? undefined)
+                }
+              />
+            </main>
+          )}
+
           {/* Content: anatomy/guidance · props · React · Angular */}
-          <ResizablePanelGroup
-            direction="horizontal"
-            className="min-h-0 flex-1"
+          {/* A wrapper, not a class on the group: react-resizable-panels sets
+              display:flex inline, which would override "hidden". */}
+          <div
+            className={cn('flex min-h-0 min-w-0 flex-1', showcase && 'hidden')}
           >
-            <ResizablePanel defaultSize={20} minSize={13}>
-              <div className="flex h-full min-h-0 flex-col">
-                <div className="flex h-12 shrink-0 items-center border-b px-4">
-                  <h2 className="font-semibold text-sm">Anatomy & guidance</h2>
-                </div>
-                <ScrollArea className="min-h-0 flex-1">
-                  <div className="space-y-4 p-4">
-                    <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 font-mono text-[11px] text-foreground leading-relaxed">
-                      {entry.anatomy.trim()}
-                    </pre>
-                    <Separator />
-                    <p className="text-muted-foreground text-xs leading-relaxed">
-                      {entry.guidance.summary}
-                    </p>
-                    <GuidanceList
-                      title="Use when"
-                      items={entry.guidance.whenToUse}
-                      tone="do"
-                    />
-                    {whenNot && whenNot.length > 0 && (
-                      <GuidanceList
-                        title="Avoid when"
-                        items={whenNot}
-                        tone="dont"
-                      />
-                    )}
+            <ResizablePanelGroup
+              direction="horizontal"
+              className="min-h-0 flex-1"
+            >
+              <ResizablePanel defaultSize={17} minSize={13}>
+                <div className="flex h-full min-h-0 flex-col">
+                  <div className="flex h-12 shrink-0 items-center border-b px-4">
+                    <h2 className="font-semibold text-sm">
+                      Anatomy & guidance
+                    </h2>
                   </div>
-                </ScrollArea>
-              </div>
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-
-            <ResizablePanel defaultSize={18} minSize={13}>
-              <div className="flex h-full min-h-0 flex-col">
-                <div className="flex h-12 shrink-0 items-center justify-between border-b px-4">
-                  <h2 className="font-semibold text-sm">Properties</h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setValues(defaults(entry))}
-                  >
-                    Reset
-                  </Button>
-                </div>
-                <ScrollArea className="min-h-0 flex-1">
-                  <div className="space-y-4 p-4">
-                    {entry.controls.length === 0 && (
-                      <p className="text-muted-foreground text-xs">
-                        No interactive props for this component.
+                  <ScrollArea className="min-h-0 flex-1">
+                    <div className="space-y-4 p-4">
+                      <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 font-mono text-[11px] text-foreground leading-relaxed">
+                        {entry.anatomy.trim()}
+                      </pre>
+                      <Separator />
+                      <p className="text-muted-foreground text-xs leading-relaxed">
+                        {entry.guidance.summary}
                       </p>
-                    )}
-                    {entry.controls.map((c) => (
-                      <PropField
-                        key={c.name}
-                        control={c}
-                        meta={metaByName.get(c.name)}
-                        value={values[c.name]}
-                        onChange={(v) => set(c.name, v)}
+                      <GuidanceList
+                        title="Use when"
+                        items={entry.guidance.whenToUse}
+                        tone="do"
                       />
-                    ))}
+                      {whenNot && whenNot.length > 0 && (
+                        <GuidanceList
+                          title="Avoid when"
+                          items={whenNot}
+                          tone="dont"
+                        />
+                      )}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+
+              <ResizablePanel defaultSize={23} minSize={16}>
+                <div className="flex h-full min-h-0 flex-col">
+                  <div className="flex h-12 shrink-0 items-center justify-between border-b px-4">
+                    <h2 className="font-semibold text-sm">Properties</h2>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setValues(defaults(entry))}
+                    >
+                      Reset
+                    </Button>
                   </div>
-                </ScrollArea>
-              </div>
-            </ResizablePanel>
-            <ResizableHandle withHandle />
+                  {/* Radix renders the viewport content as display:table, which grows to
+                      the content's width; block keeps the rows inside the panel. */}
+                  <ScrollArea className="min-h-0 flex-1 [&_[data-slot=scroll-area-viewport]>div]:!block">
+                    <div className="p-4">
+                      {entry.controls.length === 0 ? (
+                        <p className="text-muted-foreground text-xs">
+                          No interactive props for this component.
+                        </p>
+                      ) : (
+                        <PropertyGroup>
+                          {entry.controls.map((c) => (
+                            <PropField
+                              key={c.name}
+                              control={c}
+                              meta={metaByName.get(c.name)}
+                              value={values[c.name]}
+                              onChange={(v) => set(c.name, v)}
+                            />
+                          ))}
+                        </PropertyGroup>
+                      )}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
 
-            <ResizablePanel defaultSize={31} minSize={20}>
-              <FrameworkColumn
-                title="React"
-                edition="rx-*"
-                url={storyUrl(RX_BASE, entry.preview.rx, values, theme, dark)}
-                code={usageCode(entry, values, 'rx')}
-                language="tsx"
-                commands={entry.commands.rx}
-              />
-            </ResizablePanel>
-            <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30} minSize={20}>
+                <FrameworkColumn
+                  title="React"
+                  edition="rx-*"
+                  url={storyUrl(RX_BASE, entry.preview.rx, values, theme, dark)}
+                  code={usageCode(entry, values, 'rx')}
+                  language="tsx"
+                  commands={entry.commands.rx}
+                />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
 
-            <ResizablePanel defaultSize={31} minSize={20}>
-              <FrameworkColumn
-                title="Angular"
-                edition="ng-*"
-                url={storyUrl(NG_BASE, entry.preview.ng, values, theme, dark)}
-                code={usageCode(entry, values, 'ng')}
-                language="typescript"
-                commands={entry.commands.ng}
-              />
-            </ResizablePanel>
-          </ResizablePanelGroup>
+              <ResizablePanel defaultSize={30} minSize={20}>
+                <FrameworkColumn
+                  title="Angular"
+                  edition="ng-*"
+                  url={storyUrl(NG_BASE, entry.preview.ng, values, theme, dark)}
+                  code={usageCode(entry, values, 'ng')}
+                  language="typescript"
+                  commands={entry.commands.ng}
+                />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </div>
         </div>
       </div>
     </TooltipProvider>

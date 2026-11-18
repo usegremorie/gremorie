@@ -10,9 +10,9 @@ export const card = defineContract({
   category: 'display',
   status: 'stable',
   anatomy: `
-    <card> (rounded, bordered surface; vertical flow)
-    ├─ card-header (title/description grid; reserves a slot for action)
-    │  ├─ card-title (semibold heading line)
+    <card> (rounded surface: 1px ring-foreground/5 (/10 dark) + shadow-sm (shadow-md dark), no border; vertical flow)
+    ├─ card-header (title/description grid, gap-1; reserves a slot for action)
+    │  ├─ card-title (text-base leading-6 font-medium heading line)
     │  ├─ card-description (muted supporting copy)
     │  └─ card-action (top-right slot: button / menu / switch)
     ├─ card-content (main body, padded horizontally)
@@ -27,7 +27,7 @@ export const card = defineContract({
   ],
   guidance: {
     summary:
-      'A rounded, bordered surface that groups related content with a Header / Content / Footer rhythm.',
+      'A rounded, ringed surface that groups related content with a Header / Content / Footer rhythm.',
     whenToUse: [
       'Dashboard tiles, KPI surfaces, marketing feature cards.',
       'Wrap a chart: header for title + description, content for the chart, footer for a caption.',

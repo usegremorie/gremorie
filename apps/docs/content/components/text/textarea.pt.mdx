@@ -12,7 +12,7 @@ import { TextareaDisabledPreview } from '@/components/preview/forms/textarea-dis
 
 `Textarea` é um wrapper estilizado fino ao redor do `<textarea>` nativo. Ele usa `field-sizing: content` para que o campo cresça automaticamente conforme o usuário digita - sem malabarismo de `rows`, sem medição de altura via JS, sem dança de resize handle.
 
-Os estados visuais combinam exatamente com o `Input`: `border-input` para o padrão, `focus-visible:ring-ring/50` para focus, `aria-invalid:border-destructive` para erro. A altura mínima é `min-h-16` para que textareas vazias sempre pareçam superfícies multi-linha.
+Os estados visuais combinam exatamente com o `Input`: um campo preenchido (`bg-input/50`, borda transparente, sem sombra) no padrão, `focus-visible:ring-ring/50` para focus, `aria-invalid:border-destructive` para erro. A altura mínima é `min-h-16` para que textareas vazias sempre pareçam superfícies multi-linha; o campo cresce até `max-h-64` (16rem) e depois rola. O resize handle fica desligado a menos que você passe `resizable`.
 
 ## Preview
 
@@ -23,7 +23,7 @@ Os estados visuais combinam exatamente com o `Input`: `border-input` para o padr
 ## Anatomia
 
 ```text
-Textarea   único <textarea> estilizado, min-h-16, crescendo automaticamente via field-sizing: content
+Textarea   único <textarea> estilizado, preenchido (bg-input/50), de min-h-16 a max-h-64, crescendo automaticamente via field-sizing: content
 ```
 
 ## Instalação
@@ -69,11 +69,12 @@ A edição Angular deste componente hoje é entregue a partir do código-fonte (
 
 ### `<Textarea>`
 
-| Prop           | Type      | Default | Description                                                                                                                                            |
-| -------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `rows`         | `number`  | -       | Dica para as rows visíveis iniciais. Menos crítica aqui já que `field-sizing: content` sobrescreve o dimensionamento estático quando o usuário digita. |
-| `disabled`     | `boolean` | `false` | Desabilita a interação. Aplica `cursor-not-allowed` e `opacity-50`.                                                                                    |
-| `aria-invalid` | `boolean` | -       | Quando `true`, troca a borda e o focus ring para o token destructive.                                                                                  |
+| Prop           | Type      | Default | Description                                                                                                                                                    |
+| -------------- | --------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rows`         | `number`  | -       | Dica para as rows visíveis iniciais. Menos crítica aqui já que `field-sizing: content` sobrescreve o dimensionamento estático quando o usuário digita.         |
+| `disabled`     | `boolean` | `false` | Desabilita a interação. Aplica `cursor-not-allowed` e `opacity-50`.                                                                                            |
+| `resizable`    | `boolean` | `false` | Mostra o resize handle do browser, só vertical (`resize-y`). Desligado por padrão (`resize-none`): o campo cresce com o conteúdo até `max-h-64` e depois rola. |
+| `aria-invalid` | `boolean` | -       | Quando `true`, troca a borda e o focus ring para o token destructive.                                                                                          |
 
 Estende todos os `React.ComponentProps<"textarea">`. Renderiza com `data-slot="textarea"`.
 

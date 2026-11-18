@@ -53,7 +53,7 @@ export const button = defineContract({
     {
       name: 'className',
       type: 'string',
-      adapts: { ng: 'host class' },
+      adapts: { ng: 'input: class (merged onto the native button)' },
       desc: 'Extra classes merged onto the button.',
     },
   ],

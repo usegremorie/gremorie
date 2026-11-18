@@ -65,7 +65,7 @@ export class Command {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
+      'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground in-data-[slot=popover-content]:bg-transparent',
       this.class(),
     ),
   );

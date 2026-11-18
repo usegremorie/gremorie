@@ -1,5 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  computed,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -20,7 +21,17 @@ import {
 import { PromptInput } from './prompt-input';
 
 const buttonClass = cva(
-  'inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-transparent text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-muted dark:hover:bg-input/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        ghost: '',
+        outline:
+          'border border-foreground/10 hover:bg-muted dark:hover:bg-input/30',
+      },
+    },
+    defaultVariants: { variant: 'ghost' },
+  },
 );
 
 /**
@@ -51,7 +62,7 @@ const buttonClass = cva(
     <ng-template #btn>
       <button
         type="button"
-        [class]="buttonClass"
+        [class]="buttonClass()"
         aria-label="Attach files"
         (click)="open()"
       >
@@ -104,10 +115,14 @@ export class PromptInputAttachButton {
   private readonly fileInput!: ElementRef<HTMLInputElement>;
 
   readonly tooltip = input<string | null | undefined>(null);
+  /** `ghost` (default) or `outline`. Mirrors React `variant`. */
+  readonly variant = input<'ghost' | 'outline'>('ghost');
   readonly side = input<BrnTooltipPosition>('top');
   readonly multiple = input<boolean>(true);
 
-  protected readonly buttonClass = buttonClass();
+  protected readonly buttonClass = computed(() =>
+    buttonClass({ variant: this.variant() }),
+  );
 
   protected readonly accept = () => {
     const accept = this.parent?.acceptAttachments();

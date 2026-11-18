@@ -13,7 +13,7 @@ import { InputDisabledPreview } from '@/components/preview/forms/input-disabled'
 
 `Input` é um wrapper estilizado fino ao redor do elemento `<input>` nativo. Passe qualquer `type` do HTML (`text`, `email`, `password`, `number`, `search`, `tel`, `url`, `file`, `date`...) e a semântica do browser, a validação e o teclado virtual vêm todos de graça.
 
-Todos os estados visuais são controlados por token: `border-input` para o padrão, `focus-visible:ring-ring/50` para focus de teclado, e `aria-invalid:border-destructive` para erro. Não há variants - inputs devem parecer iguais em todo lugar para que os usuários possam prever seu comportamento.
+Todos os estados visuais são controlados por token: um campo preenchido (`bg-input/50`, borda transparente, sem sombra) em `h-8` (32px) para o padrão, `focus-visible:ring-ring/50` para focus de teclado, e `aria-invalid:border-destructive` para erro. Não há variants - inputs devem parecer iguais em todo lugar para que os usuários possam prever seu comportamento.
 
 ## Preview
 
@@ -24,7 +24,7 @@ Todos os estados visuais são controlados por token: `border-input` para o padr�
 ## Anatomia
 
 ```text
-Input   único elemento <input> nativo estilizado (primitive folha)
+Input   único elemento <input> nativo estilizado (primitive folha), preenchido, h-8
 ```
 
 ## Instalação

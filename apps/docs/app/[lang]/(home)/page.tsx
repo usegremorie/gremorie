@@ -9,7 +9,6 @@ import { FeaturesGrid } from '@/components/landing/features-grid';
 import { FinalCta } from '@/components/landing/final-cta';
 import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/landing/hero';
-import { ParityProof } from '@/components/landing/parity-proof';
 import { ProofStrip } from '@/components/landing/proof-strip';
 // Hidden, not deleted: see the render list below.
 // import { ThemePlayground } from '@/components/landing/theme-playground';
@@ -60,13 +59,16 @@ export default async function LandingPage({
 
   return (
     <>
-      <main id="main">
+      {/* The home is the design system's showcase, so it sits on the DS
+          background (--background), as the workbench does; the docs pages
+          keep Fumadocs' surface. On fd-background (#121212 in dark) a DS
+          card (gray-900) all but vanished, leaving only its ring. */}
+      <main className="bg-background" id="main">
         <Hero lang={lang} />
         {/* The hero's product shot: the live Assistant workbench card sits
             centered right under the hero copy, Linear/Vercel style. */}
         <AssistantShowcase />
         <ProofStrip />
-        <ParityProof lang={lang} />
         <FeaturesGrid />
         <ComponentsShowcase lang={lang} />
         {/* Blocks gallery: hidden on Kal's call, 2026-09-22. The section and

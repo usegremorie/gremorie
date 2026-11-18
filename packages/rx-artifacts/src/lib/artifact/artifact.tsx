@@ -33,6 +33,8 @@ export type ArtifactProps = HTMLAttributes<HTMLDivElement>;
 export const Artifact = ({ className, ...props }: ArtifactProps) => (
   <div
     className={cn(
+      // Surface: a card (white in light, gray-900 in dark). In a chat it sits
+      // on the conversation's --background, as cards sit on the page.
       // `@container/artifact` lets the header adapt to the CARD's own width
       // (not the viewport), so actions collapse/expand based on how much room
       // the card actually has. `min-w-[280px]` keeps icon + truncated title +
@@ -175,6 +177,19 @@ export type ArtifactActionProps = ComponentProps<typeof Button> & {
   icon?: LucideIcon;
 };
 
+/**
+ * Icon-only controls always carry a tooltip naming the action (hover and
+ * keyboard focus), on top of the accessible name.
+ */
+const withTooltip = (label: ReactNode, trigger: ReactNode) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
+
 export const ArtifactAction = ({
   tooltip,
   label,
@@ -187,7 +202,7 @@ export const ArtifactAction = ({
 }: ArtifactActionProps) => {
   const button = (
     <Button
-      className={cn('text-muted-foreground hover:text-foreground', className)}
+      className={cn('text-secondary-foreground', className)}
       size={size}
       type="button"
       variant={variant}
@@ -222,18 +237,20 @@ export const ArtifactClose = ({
   size = 'icon-sm',
   variant = 'ghost',
   ...props
-}: ArtifactCloseProps) => (
-  <Button
-    className={cn('text-muted-foreground hover:text-foreground', className)}
-    size={size}
-    type="button"
-    variant={variant}
-    {...props}
-  >
-    {children ?? <XIcon className="size-4" />}
-    <span className="sr-only">Close</span>
-  </Button>
-);
+}: ArtifactCloseProps) =>
+  withTooltip(
+    'Close',
+    <Button
+      className={cn('text-secondary-foreground', className)}
+      size={size}
+      type="button"
+      variant={variant}
+      {...props}
+    >
+      {children ?? <XIcon className="size-4" />}
+      <span className="sr-only">Close</span>
+    </Button>,
+  );
 
 /** One option in an `ArtifactViewToggle`. */
 export interface ArtifactViewOption {
@@ -259,20 +276,27 @@ export const ArtifactViewToggle = ({
   options,
   className,
 }: ArtifactViewToggleProps) => (
-  <ToggleGroup
-    type="single"
-    value={value}
-    onValueChange={(v) => v && onValueChange(v)}
-    variant="outline"
-    size="sm"
-    className={cn('mr-1', className)}
-  >
-    {options.map((o) => (
-      <ToggleGroupItem key={o.value} value={o.value} aria-label={o.label}>
-        <o.icon className="size-4" />
-      </ToggleGroupItem>
-    ))}
-  </ToggleGroup>
+  <TooltipProvider>
+    <ToggleGroup
+      type="single"
+      value={value}
+      onValueChange={(v) => v && onValueChange(v)}
+      variant="outline"
+      size="sm"
+      className={cn('mr-1', className)}
+    >
+      {options.map((o) => (
+        <Tooltip key={o.value}>
+          <TooltipTrigger asChild>
+            <ToggleGroupItem value={o.value} aria-label={o.label}>
+              <o.icon className="size-4" />
+            </ToggleGroupItem>
+          </TooltipTrigger>
+          <TooltipContent>{o.label}</TooltipContent>
+        </Tooltip>
+      ))}
+    </ToggleGroup>
+  </TooltipProvider>
 );
 
 /** One row in an `ArtifactMenu` (or the literal `"separator"`). */
@@ -302,17 +326,20 @@ export const ArtifactMenu = ({
   className,
 }: ArtifactMenuProps) => (
   <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon-sm"
-        className={cn('text-muted-foreground hover:text-foreground', className)}
-        aria-label={label}
-      >
-        <Icon className="size-4" />
-      </Button>
-    </DropdownMenuTrigger>
+    {withTooltip(
+      label,
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          className={cn('text-secondary-foreground', className)}
+          aria-label={label}
+        >
+          <Icon className="size-4" />
+        </Button>
+      </DropdownMenuTrigger>,
+    )}
     <DropdownMenuContent align={align} className="w-44">
       {items.map((it, i) =>
         it === 'separator' ? (
