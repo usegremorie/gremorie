@@ -73,11 +73,11 @@ export function ReceivingMethod() {
               {METHODS.map((m) => (
                 <FieldLabel htmlFor={`method-${m.value}`} key={m.value}>
                   <Field orientation="horizontal">
+                    <RadioGroupItem id={`method-${m.value}`} value={m.value} />
                     <FieldContent>
                       <FieldTitle>{m.title}</FieldTitle>
                       <FieldDescription>{m.description}</FieldDescription>
                     </FieldContent>
-                    <RadioGroupItem id={`method-${m.value}`} value={m.value} />
                   </Field>
                 </FieldLabel>
               ))}

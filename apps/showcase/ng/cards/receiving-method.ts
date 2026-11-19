@@ -89,16 +89,16 @@ import {
               @for (m of methods; track m.value) {
                 <gr-field-label [for]="'method-' + m.value">
                   <gr-field orientation="horizontal">
+                    <gr-radio-group-item
+                      [id]="'method-' + m.value"
+                      [value]="m.value"
+                    />
                     <gr-field-content>
                       <gr-field-title>{{ m.title }}</gr-field-title>
                       <gr-field-description>{{
                         m.description
                       }}</gr-field-description>
                     </gr-field-content>
-                    <gr-radio-group-item
-                      [id]="'method-' + m.value"
-                      [value]="m.value"
-                    />
                   </gr-field>
                 </gr-field-label>
               }
