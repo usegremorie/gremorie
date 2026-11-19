@@ -248,13 +248,13 @@ Wrap a `Field` in a `FieldLabel` and put a `RadioGroupItem` inside it: the whole
 </RadioGroup>
 ```
 
-The selected card takes the `--primary` border and the `--accent` fill, both semantic tokens, so every theme and both modes keep their own selected look, with no literal opacity. In the neutral theme the fill is the quiet `--accent` gray and the border the strong `--primary`; a colour theme tints the card with its own accent.
+The card follows shadcn's Luma style: the border stays the same, and selection and hover lift the fill. Keyboard focus draws the ring around the card. All of it comes from semantic tokens, with no literal opacity, so each theme and both modes keep their own look.
 
-| Token       | Used for                      |
-| ----------- | ----------------------------- |
-| `--primary` | border of the selected card   |
-| `--accent`  | fill of the selected card     |
-| `--border`  | border of the unselected card |
+| Token      | Used for                                  |
+| ---------- | ----------------------------------------- |
+| `--border` | border of every card, selected or not     |
+| `--accent` | fill of the selected and the hovered card |
+| `--ring`   | border and ring when the radio has focus  |
 
 ### Choice card with a checkbox
 
@@ -302,7 +302,7 @@ Mark an invalid field with `data-invalid="true"` on the `Field` and `aria-invali
 - **Grouping**: React renders a native `<fieldset>` with a `<legend>`. Angular renders `role="group"` and points `aria-labelledby` at the `FieldLegend`. Each `Field` is a `role="group"` too.
 - **Errors**: `FieldError` is `role="alert"`, so a message that appears is announced. Pair it with `aria-invalid` on the control.
 - **Choice cards**: the radio or checkbox inside stays the focusable, keyboard-operable control; the card only enlarges its click area. Radio groups keep their roving tabindex and arrow keys.
-- **Contrast**: the selected card is `--primary` on `--accent`, and `FieldDescription` is `--muted-foreground`, the same pairs the rest of the system already uses.
+- **Contrast**: the selected card's text is `--foreground` on `--accent`, and `FieldDescription` is `--muted-foreground`, the same pairs the rest of the system already uses.
 
 ## Related
 

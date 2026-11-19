@@ -248,13 +248,13 @@ Envolva um `Field` em um `FieldLabel` e ponha um `RadioGroupItem` dentro: o card
 </RadioGroup>
 ```
 
-O card selecionado recebe a borda `--primary` e o preenchimento `--accent`, ambos tokens semânticos, então cada tema e os dois modos mantêm o seu próprio visual de selecionado, sem opacidade literal. No tema neutro o preenchimento é o cinza discreto de `--accent` e a borda o `--primary` forte; um tema colorido tinge o card com o seu próprio accent.
+O card segue o estilo Luma do shadcn: a borda não muda, e a seleção e o hover clareiam o preenchimento. O foco pelo teclado desenha o anel em volta do card. Tudo vem de tokens semânticos, sem opacidade literal, então cada tema e os dois modos mantêm o seu próprio visual.
 
-| Token       | Usado em                          |
-| ----------- | --------------------------------- |
-| `--primary` | borda do card selecionado         |
-| `--accent`  | preenchimento do card selecionado |
-| `--border`  | borda do card não selecionado     |
+| Token      | Usado em                                     |
+| ---------- | -------------------------------------------- |
+| `--border` | borda de todos os cards, selecionados ou não |
+| `--accent` | preenchimento do card selecionado e no hover |
+| `--ring`   | borda e anel quando o radio está em foco     |
 
 ### Card de escolha com checkbox
 
@@ -302,7 +302,7 @@ Marque um campo inválido com `data-invalid="true"` no `Field` e `aria-invalid` 
 - **Agrupamento**: o React renderiza um `<fieldset>` nativo com um `<legend>`. O Angular renderiza `role="group"` e aponta `aria-labelledby` para o `FieldLegend`. Cada `Field` também é um `role="group"`.
 - **Erros**: `FieldError` é `role="alert"`, então uma mensagem que aparece é anunciada. Combine com `aria-invalid` no controle.
 - **Cards de escolha**: o radio ou checkbox de dentro continua sendo o controle focável e operável por teclado; o card só amplia a área de clique. Grupos de radio mantêm o roving tabindex e as setas.
-- **Contraste**: o card selecionado é `--primary` sobre `--accent`, e `FieldDescription` é `--muted-foreground`, os mesmos pares que o resto do sistema já usa.
+- **Contraste**: o texto do card selecionado é `--foreground` sobre `--accent`, e `FieldDescription` é `--muted-foreground`, os mesmos pares que o resto do sistema já usa.
 
 ## Relacionados
 
