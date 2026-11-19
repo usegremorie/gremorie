@@ -472,7 +472,9 @@ export function App() {
     const was = readUrlState();
     const screen = (c: string | null, v: ShowcaseView | null) =>
       v ? `showcase:${v}` : `component:${c}`;
+    // The first write only normalizes the URL the page was opened with.
     const pushed =
+      window.location.search !== '' &&
       screen(was.component, was.showcase) !== screen(name, showcase);
     window.history[pushed ? 'pushState' : 'replaceState'](null, '', next);
   }, [name, showcase, dark, theme]);
