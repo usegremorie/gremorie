@@ -841,7 +841,7 @@
  */
 html {
   --surface-opacity: 70%;
-  --surface-backdrop: blur(16px) saturate(1.5);
+  --surface-backdrop: blur(20px) saturate(1.5);
 }
 
 :root[data-menu='solid'] {
