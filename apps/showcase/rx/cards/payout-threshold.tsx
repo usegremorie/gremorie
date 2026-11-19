@@ -9,7 +9,9 @@ import {
 } from '@gremorie/rx-display';
 import {
   Button,
-  Label,
+  Field,
+  FieldGroup,
+  FieldLabel,
   Select,
   SelectContent,
   SelectItem,
@@ -46,9 +48,11 @@ export function PayoutThreshold() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="preferred-currency">Preferred Currency</Label>
+        <FieldGroup className="gap-6">
+          <Field>
+            <FieldLabel htmlFor="preferred-currency">
+              Preferred Currency
+            </FieldLabel>
             <Select defaultValue="usd">
               <SelectTrigger id="preferred-currency" className="w-full">
                 <SelectValue />
@@ -59,10 +63,12 @@ export function PayoutThreshold() {
                 <SelectItem value="gbp">GBP — British Pound</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-          <div className="flex flex-col gap-3">
+          </Field>
+          <Field>
             <div className="flex items-baseline justify-between">
-              <Label htmlFor="min-payout">Minimum Payout Amount</Label>
+              <FieldLabel htmlFor="min-payout">
+                Minimum Payout Amount
+              </FieldLabel>
               <span className="font-semibold text-2xl tabular-nums">
                 ${amount[0].toFixed(2)}
               </span>
@@ -80,16 +86,16 @@ export function PayoutThreshold() {
               <span>$50 (MIN)</span>
               <span>$10,000 (MAX)</span>
             </div>
-          </div>
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="payout-notes">Notes</Label>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="payout-notes">Notes</FieldLabel>
             <Textarea
               id="payout-notes"
               placeholder="Add any notes for this payout configuration..."
               className="min-h-[100px]"
             />
-          </div>
-        </div>
+          </Field>
+        </FieldGroup>
       </CardContent>
       <CardFooter>
         <Button className="w-full">Save Threshold</Button>
