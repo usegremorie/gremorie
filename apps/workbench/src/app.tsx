@@ -349,7 +349,10 @@ function FrameworkColumn({
           className="m-0 min-h-0 flex-1 overflow-hidden"
         >
           {url ? (
+            // A new iframe per URL: changing src on the same element adds a
+            // browser history entry, which would hijack the back button.
             <iframe
+              key={url}
               title={`${title} preview`}
               src={url}
               className="h-full w-full border-0 bg-background"
