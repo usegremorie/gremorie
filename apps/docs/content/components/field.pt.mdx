@@ -17,7 +17,7 @@ import { FieldErrorPreview } from '@/components/preview/forms/field-error';
 
 Use `Field` para o layout de qualquer formulário. Quando o estado do formulário vive no react-hook-form e você quer `id`, `aria-describedby` e `aria-invalid` ligados a partir dele, use o [Form](/components/form); os dois se combinam. Para uma legenda solta, o `Label` basta.
 
-É um port da família `Field` do shadcn/ui, nas duas edições: as mesmas dez partes, as mesmas props, os mesmos nomes de `data-slot`.
+Vem nas duas edições com as mesmas dez partes, as mesmas props, os mesmos nomes de `data-slot`.
 
 ## Preview
 
@@ -174,7 +174,7 @@ Um controle com seu label, texto e erro. Renderiza uma `div` com `role="group"` 
 | ------------- | -------------------------------------------- | ------------ | --------------------------------------------------------------------------------------- |
 | `orientation` | `"vertical" \| "horizontal" \| "responsive"` | `"vertical"` | Layout das partes. `responsive` é vertical até o `FieldGroup` ter largura `md` (28rem). |
 
-O estado vive em atributos, como no shadcn: `data-invalid="true"` deixa o texto destrutivo (ponha `aria-invalid` no controle também), e `data-disabled="true"` esmaece o label e o texto (ponha `disabled` no controle também).
+O estado vive em atributos: `data-invalid="true"` deixa o texto destrutivo (ponha `aria-invalid` no controle também), e `data-disabled="true"` esmaece o label e o texto (ponha `disabled` no controle também).
 
 ### `<FieldLabel>` / `<gr-field-label>`
 
@@ -248,7 +248,7 @@ Envolva um `Field` em um `FieldLabel` e ponha um `RadioGroupItem` dentro: o card
 </RadioGroup>
 ```
 
-O card segue o estilo Luma do shadcn: a borda não muda, e a seleção e o hover clareiam o preenchimento. O foco pelo teclado desenha o anel em volta do card. Tudo vem de tokens semânticos, sem opacidade literal, então cada tema e os dois modos mantêm o seu próprio visual.
+A borda do card de escolha não muda: a seleção e o hover clareiam o preenchimento. O foco pelo teclado desenha o anel em volta do card. Tudo vem de tokens semânticos, sem opacidade literal, então cada tema e os dois modos mantêm o seu próprio visual.
 
 | Token      | Usado em                                     |
 | ---------- | -------------------------------------------- |

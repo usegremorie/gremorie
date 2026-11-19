@@ -65,7 +65,7 @@ import { Sidebar } from './sidebar';
 const RX_BASE = import.meta.env.VITE_RX_BASE ?? 'http://localhost:4401';
 const NG_BASE = import.meta.env.VITE_NG_BASE ?? 'http://localhost:4400';
 
-/** The shadcn showcase the Gremorie showcase is rebuilt from (Luma style). */
+/** The reference showcase the Gremorie showcase is compared against. */
 const REFERENCE_URL =
   'https://ui.shadcn.com/preview/base/preview-02?preset=b1VnZgxu&style=luma&theme=fuchsia&menuColor=default-translucent&radius=small';
 /** Story id of the showcase screen in both Storybooks. */
@@ -206,7 +206,7 @@ function PropInfo({ text }: { text: string }) {
   );
 }
 
-/** One playground row, Luma-style: the name on the left (required marker and
+/** One playground row: the name on the left (required marker and
  *  info tip beside it) and the control on the right. Type is implied by the
  *  control: a switch, a compact select, or a value edited in a popover. */
 function PropField({

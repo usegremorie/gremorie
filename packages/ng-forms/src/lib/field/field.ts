@@ -319,7 +319,7 @@ export class FieldLabel {
       LABEL_CLASS,
       'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50',
       'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4',
-      // Choice card, as shadcn's Luma style: the border never changes; selection
+      // Choice card: the border never changes; selection
       // and hover lift the fill (--accent), and keyboard focus draws the ring.
       'has-data-[state=checked]:bg-accent has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-accent',
       'has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-[3px] has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50',

@@ -33,7 +33,7 @@ import { GithubMark } from '@/components/github-mark';
 import { GremorieSymbol } from '@/components/gremorie-symbol';
 
 /**
- * Site top bar, in the Luma app's layout:
+ * Site top bar:
  *
  *   header (sticky, 56px)
  *   ├─ logo                     left: the symbol, home link

@@ -17,7 +17,7 @@ import { FieldErrorPreview } from '@/components/preview/forms/field-error';
 
 Reach for `Field` for the layout of any form. When the form state lives in react-hook-form and you want `id`, `aria-describedby` and `aria-invalid` wired from it, use [Form](/components/form); the two compose. For a bare caption, `Label` is enough.
 
-It is a port of the shadcn/ui `Field` family, in both editions: the same ten parts, the same props, the same `data-slot` names.
+It ships in both editions with the same ten parts, the same props, the same `data-slot` names.
 
 ## Preview
 
@@ -174,7 +174,7 @@ One control with its label, text and error. Renders a `div` with `role="group"` 
 | ------------- | -------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------ |
 | `orientation` | `"vertical" \| "horizontal" \| "responsive"` | `"vertical"` | Layout of the parts. `responsive` is vertical until its `FieldGroup` is `md` (28rem) wide. |
 
-State lives in attributes, as in shadcn: `data-invalid="true"` turns the text destructive (put `aria-invalid` on the control too), and `data-disabled="true"` dims the label and the text (put `disabled` on the control too).
+State lives in attributes: `data-invalid="true"` turns the text destructive (put `aria-invalid` on the control too), and `data-disabled="true"` dims the label and the text (put `disabled` on the control too).
 
 ### `<FieldLabel>` / `<gr-field-label>`
 
@@ -248,7 +248,7 @@ Wrap a `Field` in a `FieldLabel` and put a `RadioGroupItem` inside it: the whole
 </RadioGroup>
 ```
 
-The card follows shadcn's Luma style: the border stays the same, and selection and hover lift the fill. Keyboard focus draws the ring around the card. All of it comes from semantic tokens, with no literal opacity, so each theme and both modes keep their own look.
+The border of a choice card stays the same: selection and hover lift the fill. Keyboard focus draws the ring around the card. All of it comes from semantic tokens, with no literal opacity, so each theme and both modes keep their own look.
 
 | Token      | Used for                                  |
 | ---------- | ----------------------------------------- |

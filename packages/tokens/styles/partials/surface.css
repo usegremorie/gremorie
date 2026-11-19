@@ -15,7 +15,7 @@
  * reduce transparency get the solid surface automatically.
  *
  * Inside a popover surface, accent (item hover/highlight) and muted (tracks,
- * subtle fills) become translucent foreground, as in Luma: an opaque fill
+ * subtle fills) become translucent foreground: an opaque fill
  * close to the popover color would vanish over whatever sits behind.
  */
 html {
