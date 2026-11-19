@@ -27,7 +27,7 @@
 @utility bg-popover-surface {
   background-color: var(
     --popover-surface,
-    color-mix(in oklab, var(--popover) 60%, transparent)
+    color-mix(in oklab, var(--popover) 70%, transparent)
   );
   -webkit-backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
   backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));

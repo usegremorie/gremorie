@@ -179,7 +179,7 @@ comparison, render each brand on its own route or in its own iframe.
 
 Menus, selects, popovers, hover cards and menubar or navigation-menu panels paint their panel
 with the `bg-popover-surface` utility, never `bg-popover/NN`. It is a
-translucent popover: `--popover` at 60% over a 16px backdrop blur
+translucent popover: `--popover` at 70% over a 16px backdrop blur
 (`blur(16px) saturate(1.5)`).
 
 Inside the surface, `--accent` (item hover and highlight) and `--muted`
@@ -188,7 +188,7 @@ popover colour would vanish over whatever sits behind the panel.
 
 | Situation                                  | Surface                                    |
 | ------------------------------------------ | ------------------------------------------ |
-| Default                                    | `--popover` at 60% + 16px blur             |
+| Default                                    | `--popover` at 70% + 16px blur             |
 | `<html data-menu="solid">`                 | Opaque `--popover`, no blur (the opt-out)  |
 | OS asks for `prefers-reduced-transparency` | Opaque `--popover`, no blur, automatically |
 

@@ -69,7 +69,7 @@ import {
  * | Token | Used for |
  * | --- | --- |
  * | `--background` / `--border` | Bar surface + border |
- * | `--popover` / `--popover-foreground` | Dropdown panels, via `bg-popover-surface` (translucent 60% + blur; opaque with `data-menu="solid"`) |
+ * | `--popover` / `--popover-foreground` | Dropdown panels, via `bg-popover-surface` (translucent 70% + blur; opaque with `data-menu="solid"`) |
  * | `--accent` / `--accent-foreground` | Focused item highlight |
  * | `--destructive` | `variant="destructive"` items |
  * | `--muted-foreground` | Shortcut hints + item icons |

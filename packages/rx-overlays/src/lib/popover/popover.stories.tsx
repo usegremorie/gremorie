@@ -57,7 +57,7 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--popover` / `--popover-foreground` | Surface, via `bg-popover-surface` (translucent 60% + blur; opaque with `data-menu="solid"`) |
+ * | `--popover` / `--popover-foreground` | Surface, via `bg-popover-surface` (translucent 70% + blur; opaque with `data-menu="solid"`) |
  * | `--border` | Border |
  * | `--muted-foreground` | Description text |
  */
