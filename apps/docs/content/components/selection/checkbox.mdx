@@ -7,6 +7,7 @@ import { CheckboxPreview } from '@/components/preview/forms/checkbox';
 import { CheckboxStatesPreview } from '@/components/preview/forms/checkbox-states';
 import { CheckboxWithLabelPreview } from '@/components/preview/forms/checkbox-with-label';
 import { CheckboxDisabledPreview } from '@/components/preview/forms/checkbox-disabled';
+import { FieldChoiceCardCheckboxPreview } from '@/components/preview/forms/field-choice-card-checkbox';
 
 ## Overview
 
@@ -92,11 +93,31 @@ Forwards all props to `CheckboxPrimitive.Root` and renders a `CheckboxPrimitive.
 
 ### With label and description
 
-The canonical form pattern: checkbox, label, and an optional helper line. Clicking the label toggles the control.
+The canonical form pattern: checkbox, label, and an optional helper line, laid out with [`Field`](/components/field). Clicking the label toggles the control.
 
 <ComponentPreview name="forms/checkbox-with-label">
   <CheckboxWithLabelPreview />
 </ComponentPreview>
+
+### Choice card
+
+Wrap a `Field` in a `FieldLabel` and the whole card becomes the click target of its checkbox; any number of cards can be selected. A selected card takes the `--primary` border and the `--accent` fill.
+
+<ComponentPreview name="forms/field-choice-card-checkbox">
+  <FieldChoiceCardCheckboxPreview />
+</ComponentPreview>
+
+```tsx
+<FieldLabel htmlFor="push">
+  <Field orientation="horizontal">
+    <Checkbox id="push" />
+    <FieldContent>
+      <FieldTitle>Push</FieldTitle>
+      <FieldDescription>Instant alerts on your phone.</FieldDescription>
+    </FieldContent>
+  </Field>
+</FieldLabel>
+```
 
 ### States
 
@@ -150,5 +171,6 @@ function SelectAll({ items, selected, onChange }) {
 
 - [Switch](/components/selection/switch) - immediate-effect toggle (vs form-submission selection)
 - [Radio Group](/components/selection/radio-group) - single-select cousin
+- [Field](/components/field) - labels, descriptions, errors and choice cards around a checkbox
 - [Label](/components/text/label) - the canonical companion
 - [Form](/components/form) - wire Checkbox into react-hook-form

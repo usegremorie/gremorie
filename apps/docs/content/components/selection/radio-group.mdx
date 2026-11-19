@@ -6,6 +6,7 @@ description: Single-select group of mutually exclusive options built on Radix Ra
 import { RadioGroupPreview } from '@/components/preview/forms/radio-group';
 import { RadioGroupWithDescriptionPreview } from '@/components/preview/forms/radio-group-with-description';
 import { RadioGroupDisabledPreview } from '@/components/preview/forms/radio-group-disabled';
+import { FieldChoiceCardPreview } from '@/components/preview/forms/field-choice-card';
 
 ## Overview
 
@@ -156,11 +157,33 @@ When options are short and the surrounding context is wide enough, switch to hor
 
 ### With descriptions
 
-Add a hint paragraph after each label when the choice has consequences worth explaining. Align the item to the top of the row with `mt-0.5`.
+Add a hint after each label when the choice has consequences worth explaining. `Field` with `orientation="horizontal"` and a `FieldContent` lays it out and aligns the item to the first line of text.
 
 <ComponentPreview name="forms/radio-group-with-description">
   <RadioGroupWithDescriptionPreview />
 </ComponentPreview>
+
+### Choice card
+
+Wrap each option in a [`Field`](/components/field) inside a `FieldLabel` and the whole card becomes the click target of its radio. The selected card takes the `--primary` border and the `--accent` fill.
+
+<ComponentPreview name="forms/field-choice-card">
+  <FieldChoiceCardPreview />
+</ComponentPreview>
+
+```tsx
+<RadioGroup defaultValue="kubernetes">
+  <FieldLabel htmlFor="kubernetes">
+    <Field orientation="horizontal">
+      <FieldContent>
+        <FieldTitle>Kubernetes</FieldTitle>
+        <FieldDescription>Run GPU workloads on a K8s cluster.</FieldDescription>
+      </FieldContent>
+      <RadioGroupItem value="kubernetes" id="kubernetes" />
+    </Field>
+  </FieldLabel>
+</RadioGroup>
+```
 
 ### Disabled option
 
@@ -187,5 +210,6 @@ Disable a single `RadioGroupItem` to lock out an unavailable choice while keepin
 - [Checkbox](/components/selection/checkbox) - multi-select sibling
 - [Select](/components/selection/select) - dropdown alternative for longer lists
 - [Toggle Group](/components/buttons/toggle-group) - icon-led single-select for compact toolbars
+- [Field](/components/field) - labels, descriptions, errors and choice cards around a radio
 - [Label](/components/text/label) - the canonical companion
 - [Form](/components/form) - wire RadioGroup into react-hook-form

@@ -93,18 +93,18 @@ Encaminha para `SwitchPrimitive.Root`. Renderiza um `SwitchPrimitive.Thumb` inte
 
 ### Linha de configuração
 
-O padrão canônico para páginas de configuração - label à esquerda, switch à direita, ambos centrados verticalmente.
+O padrão canônico para páginas de configuração - label à esquerda, switch à direita, ambos centrados verticalmente. É um card de escolha do [`Field`](/components/field): a linha inteira alterna o switch, e fica em destaque enquanto ele está ligado.
 
 ```tsx
-<div className="flex items-center justify-between rounded-md border p-4">
-  <div className="grid gap-0.5">
-    <Label htmlFor="dark-mode">Dark mode</Label>
-    <p className="text-sm text-muted-foreground">
-      Use a dark theme across the app.
-    </p>
-  </div>
-  <Switch id="dark-mode" defaultChecked />
-</div>
+<FieldLabel htmlFor="dark-mode">
+  <Field orientation="horizontal">
+    <FieldContent>
+      <FieldTitle>Dark mode</FieldTitle>
+      <FieldDescription>Use a dark theme across the app.</FieldDescription>
+    </FieldContent>
+    <Switch id="dark-mode" defaultChecked />
+  </Field>
+</FieldLabel>
 ```
 
 ### Sizes
@@ -166,5 +166,6 @@ function NotificationToggle() {
 
 - [Checkbox](/components/selection/checkbox) - contraparte de envio de formulário
 - [Toggle](/components/buttons/toggle) - botão de pressão (affordance de texto/ícone) para ações com estado
+- [Field](/components/field) - labels, descrições e cards de escolha em volta de um switch
 - [Label](/components/text/label) - o companheiro canônico
 - [Form](/components/form) - conecte o Switch no react-hook-form
