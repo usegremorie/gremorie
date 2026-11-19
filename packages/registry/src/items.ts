@@ -817,6 +817,21 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['ng-utils'],
   },
   {
+    name: 'ng-field',
+    framework: 'ng',
+    title: 'Field (Angular)',
+    description:
+      'Form-layout family for the Angular edition - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox). Mirrors React Field from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/field/field.ts', 'src/lib/field/index.ts'],
+    targetPrefix: 'src/app/gremorie/field',
+    srcStrip: 'src/lib/field/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    // field.ts imports the label base class from `../label/label`.
+    registryDependencies: ['ng-utils', 'ng-label'],
+  },
+  {
     name: 'ng-label',
     framework: 'ng',
     title: 'Label (Angular)',
@@ -1617,6 +1632,21 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/input/',
     dependencies: [],
     registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-field',
+    framework: 'rx',
+    title: 'Field (React)',
+    description:
+      'Form-layout family - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox).',
+    categories: ['forms'],
+    packageRoot: 'packages/rx-forms',
+    sourceFiles: ['src/lib/field/field.tsx'],
+    targetPrefix: 'src/components/gremorie/forms/field',
+    srcStrip: 'src/lib/field/',
+    dependencies: ['class-variance-authority'],
+    // field.tsx imports `../label/label`.
+    registryDependencies: ['rx-utils', 'rx-label'],
   },
   {
     name: 'rx-label',

@@ -72,6 +72,22 @@ export {
 export { Calendar } from './lib/calendar';
 // DatePicker
 export { DatePicker } from './lib/date-picker';
+// Field
+export {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldTitle,
+  type FieldErrorItem,
+  type FieldLegendVariant,
+  type FieldOrientation,
+} from './lib/field';
 // Form
 export {
   FormItem,

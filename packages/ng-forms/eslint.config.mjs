@@ -50,6 +50,7 @@ export default [
             'gr-button-group',
             'gr-calendar',
             'gr-date-picker',
+            'gr-field',
             'gr-form-item',
             'gr-form-label',
             'gr-form-description',

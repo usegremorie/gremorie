@@ -24,6 +24,7 @@
     "form",
     "input-otp",
     "radio-group",
+    "field",
     "slider",
     "switch",
     "toggle",

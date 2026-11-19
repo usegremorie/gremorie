@@ -593,6 +593,20 @@
       ]
     },
     {
+      "name": "ng-field",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Field (Angular)",
+      "description": "Form-layout family for the Angular edition - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox). Mirrors React Field from @gremorie/rx-forms.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-label"
+      ]
+    },
+    {
       "name": "ng-label",
       "type": "registry:block",
       "framework": "ng",
@@ -1238,6 +1252,20 @@
       ],
       "registryDependencies": [
         "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-field",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Field (React)",
+      "description": "Form-layout family - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox).",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-label"
       ]
     },
     {

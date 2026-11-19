@@ -8,6 +8,13 @@ import {
 import { cn } from '@gremorie/ng-core';
 
 /**
+ * The base class string of the label, shared with `FieldLabel` so both stay
+ * byte-identical to React `Label`. Internal: not re-exported from the package.
+ */
+export const LABEL_CLASS =
+  'flex items-center gap-2 text-sm leading-none font-medium text-secondary-foreground select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50';
+
+/**
  * Label — accessible label primitive. Mirrors React `Label` from
  * `@gremorie/rx-forms`.
  *
@@ -54,10 +61,5 @@ export class Label {
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
-  protected readonly labelClass = computed(() =>
-    cn(
-      'flex items-center gap-2 text-sm leading-none font-medium text-secondary-foreground select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
-      this.class(),
-    ),
-  );
+  protected readonly labelClass = computed(() => cn(LABEL_CLASS, this.class()));
 }
