@@ -55,6 +55,10 @@ export type CheckedState = boolean | 'indeterminate';
 @Component({
   selector: 'gr-checkbox',
   standalone: true,
+  // `id` is an input AND a static attribute: Angular would also leave it on this
+  // host, a second element with the same id. A label's `for` would then find the
+  // host (not labelable) before the real control. The control keeps the id.
+  host: { '[attr.id]': 'null' },
   imports: [BrnCheckbox],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

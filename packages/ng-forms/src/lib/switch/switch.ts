@@ -68,6 +68,8 @@ export type SwitchSize = 'sm' | 'default';
     </brn-switch>
   `,
   host: {
+    // The control keeps the `id` (see Input: a host copy would shadow it).
+    '[attr.id]': 'null',
     '[attr.data-size]': 'size()',
     class: 'group/switch contents',
   },

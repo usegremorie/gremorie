@@ -5,7 +5,11 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnRadio, BrnRadioGroup } from '@spartan-ng/brain/radio-group';
+import {
+  BrnRadio,
+  BrnRadioGroup,
+  injectBrnRadioGroup,
+} from '@spartan-ng/brain/radio-group';
 import { cn } from '@gremorie/ng-core';
 
 /**
@@ -81,14 +85,16 @@ export class RadioGroup {}
   imports: [BrnRadio],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // The host wraps the 16px control: it must not shrink in a flex row.
-  host: { class: 'inline-flex shrink-0' },
+  // The host wraps the 16px control: it must not shrink in a flex row. The
+  // control keeps the `id` (see Input: a host copy would shadow it for labels).
+  host: { class: 'inline-flex shrink-0', '[attr.id]': 'null' },
   template: `
     <brn-radio
       data-slot="radio-group-item"
       [class]="computedClass()"
       [value]="value()"
       [disabled]="disabled()"
+      [attr.data-state]="state()"
       [id]="id() || undefined"
       [aria-label]="ariaLabel() || undefined"
     >
@@ -125,6 +131,17 @@ export class RadioGroupItem {
   readonly ariaLabel = input<string>('');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
+
+  private readonly group = injectBrnRadioGroup();
+
+  /**
+   * `checked` or `unchecked`, as Radix puts it in `data-state`. It lets one
+   * selector (`has-data-[state=checked]`, used by `FieldLabel` for the selected
+   * choice card) serve both editions.
+   */
+  protected readonly state = computed(() =>
+    this.group.value() === this.value() ? 'checked' : 'unchecked',
+  );
 
   /**
    * The React `RadioGroupItem` class string, verbatim, applied to the brain

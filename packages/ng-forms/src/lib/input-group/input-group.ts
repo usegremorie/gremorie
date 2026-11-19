@@ -247,6 +247,8 @@ export class InputGroupText {
 @Component({
   selector: 'gr-input-group-input',
   standalone: true,
+  // The control keeps the `id` (see Input: a host copy would shadow it for labels).
+  host: { '[attr.id]': 'null' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -301,6 +303,8 @@ export class InputGroupInput {
 @Component({
   selector: 'gr-input-group-textarea',
   standalone: true,
+  // The control keeps the `id` (see Input: a host copy would shadow it for labels).
+  host: { '[attr.id]': 'null' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
