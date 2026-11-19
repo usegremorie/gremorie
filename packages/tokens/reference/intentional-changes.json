@@ -124,5 +124,75 @@
     "prop": "--switch-checked",
     "to": "var(--primary)",
     "reason": "The theme's switch takes its own accent (primary)."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--foreground",
+    "to": "var(--color-gray-900)",
+    "reason": "Softer text for long reading (references: Vercel Geist #171717/#ededed, Radix gray12 #202020/#eeeeee)."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--accent-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--sidebar-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--sidebar-accent-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--foreground",
+    "to": "var(--color-gray-200)",
+    "reason": "Softer text for long reading (references: Vercel Geist #171717/#ededed, Radix gray12 #202020/#eeeeee)."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--card-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--popover-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--accent-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--sidebar-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--sidebar-accent-foreground",
+    "to": "var(--foreground)",
+    "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
   }
 ]

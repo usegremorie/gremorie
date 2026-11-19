@@ -6,7 +6,7 @@
   },
   "foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{color.gray.200}"
   },
   "card": {
     "$type": "color",
@@ -14,7 +14,7 @@
   },
   "card-foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{foreground}"
   },
   "popover": {
     "$type": "color",
@@ -22,7 +22,7 @@
   },
   "popover-foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{foreground}"
   },
   "primary": {
     "$type": "color",
@@ -63,7 +63,7 @@
   },
   "accent-foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{foreground}"
   },
   "destructive": {
     "$type": "color",
@@ -117,7 +117,7 @@
   },
   "sidebar-foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{foreground}"
   },
   "sidebar-primary": {
     "$type": "color",
@@ -133,7 +133,7 @@
   },
   "sidebar-accent-foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{foreground}"
   },
   "sidebar-border": {
     "$type": "color",

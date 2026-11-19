@@ -6,7 +6,7 @@
   },
   "foreground": {
     "$type": "color",
-    "$value": "{color.gray.950}"
+    "$value": "{color.gray.900}"
   },
   "card": {
     "$type": "color",
@@ -60,7 +60,7 @@
   },
   "accent-foreground": {
     "$type": "color",
-    "$value": "{color.gray.900}"
+    "$value": "{foreground}"
   },
   "destructive": {
     "$type": "color",
@@ -106,7 +106,7 @@
   },
   "sidebar-foreground": {
     "$type": "color",
-    "$value": "{color.gray.950}"
+    "$value": "{foreground}"
   },
   "sidebar-primary": {
     "$type": "color",
@@ -122,7 +122,7 @@
   },
   "sidebar-accent-foreground": {
     "$type": "color",
-    "$value": "{color.gray.900}"
+    "$value": "{foreground}"
   },
   "sidebar-border": {
     "$type": "color",

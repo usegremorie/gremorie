@@ -454,7 +454,7 @@
    * 2. SEMANTICS
    */
   --background: var(--color-gray-50);
-  --foreground: var(--color-gray-950);
+  --foreground: var(--color-gray-900);
 
   /*
    * Elevated surfaces are pure white (gray-0), one step above the off-white
@@ -478,7 +478,7 @@
   --muted: var(--color-gray-100);
   --muted-foreground: var(--color-gray-500);
   --accent: var(--color-gray-100);
-  --accent-foreground: var(--color-gray-900);
+  --accent-foreground: var(--foreground);
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-gray-50);
 
@@ -502,11 +502,11 @@
    * Sidebar (shadcn/tweakcn)
    */
   --sidebar: var(--color-gray-50);
-  --sidebar-foreground: var(--color-gray-950);
+  --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--color-gray-900);
   --sidebar-primary-foreground: var(--color-gray-50);
   --sidebar-accent: var(--color-gray-100);
-  --sidebar-accent-foreground: var(--color-gray-900);
+  --sidebar-accent-foreground: var(--foreground);
   --sidebar-border: var(--color-gray-200);
   --sidebar-ring: var(--color-gray-400);
 
@@ -636,11 +636,11 @@
    * Only remap semantics. Primitives stay intact.
    */
   --background: var(--color-gray-950);
-  --foreground: var(--color-gray-50);
+  --foreground: var(--color-gray-200);
   --card: var(--color-gray-900);
-  --card-foreground: var(--color-gray-50);
+  --card-foreground: var(--foreground);
   --popover: var(--color-gray-800);
-  --popover-foreground: var(--color-gray-50);
+  --popover-foreground: var(--foreground);
   --primary: var(--color-gray-100);
   --primary-foreground: var(--color-gray-900);
 
@@ -655,7 +655,7 @@
   --muted: var(--color-gray-800);
   --muted-foreground: var(--color-gray-400);
   --accent: var(--color-gray-800);
-  --accent-foreground: var(--color-gray-50);
+  --accent-foreground: var(--foreground);
   --destructive: var(--color-red-400);
   --destructive-foreground: var(--color-gray-50);
 
@@ -675,11 +675,11 @@
    * Sidebar (dark)
    */
   --sidebar: var(--color-gray-900);
-  --sidebar-foreground: var(--color-gray-50);
+  --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--color-gray-100);
   --sidebar-primary-foreground: var(--color-gray-900);
   --sidebar-accent: var(--color-gray-800);
-  --sidebar-accent-foreground: var(--color-gray-50);
+  --sidebar-accent-foreground: var(--foreground);
   --sidebar-border: oklch(1 0 0 / 0.1);
   --sidebar-ring: var(--color-gray-500);
 
