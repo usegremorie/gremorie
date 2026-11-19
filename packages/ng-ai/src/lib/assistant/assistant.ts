@@ -757,7 +757,7 @@ const COMPACT_SELECT_TRIGGER =
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10">
         <div class="h-8 bg-gradient-to-t from-background to-transparent"></div>
         <div
-          class="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm"
+          class="pointer-events-auto bg-background/70 px-3 pb-3 backdrop-blur-sm"
         >
           <!-- The composer shares the reading column. -->
           <div class="mx-auto w-full max-w-3xl space-y-2">
