@@ -188,7 +188,7 @@ Two tokens drive every floating surface:
 | Token                | Default                    | What it controls                                    |
 | -------------------- | -------------------------- | --------------------------------------------------- |
 | `--surface-opacity`  | `70%`                      | How much of the fill is paint (100% is solid)       |
-| `--surface-backdrop` | `blur(16px) saturate(1.5)` | The filter behind the surface (`none` turns it off) |
+| `--surface-backdrop` | `blur(24px) saturate(1.5)` | The filter behind the surface (`none` turns it off) |
 
 Inside a popover surface, `--accent` (item hover and highlight) and `--muted`
 (tracks, subtle fills) become foreground at 10%. An opaque fill close to the
@@ -196,7 +196,7 @@ popover colour would vanish over whatever sits behind the panel.
 
 | Situation                                  | Surface                            |
 | ------------------------------------------ | ---------------------------------- |
-| Default                                    | 70% fill + 16px blur               |
+| Default                                    | 70% fill + 24px blur               |
 | `<html data-menu="solid">`                 | Solid fill, no blur (the opt-out)  |
 | OS asks for `prefers-reduced-transparency` | Solid fill, no blur, automatically |
 

@@ -191,7 +191,7 @@ Dois tokens controlam todas as superfícies flutuantes:
 | Token                | Padrão                     | O que controla                                |
 | -------------------- | -------------------------- | --------------------------------------------- |
 | `--surface-opacity`  | `70%`                      | Quanto do fundo é tinta (100% é sólido)       |
-| `--surface-backdrop` | `blur(16px) saturate(1.5)` | O filtro atrás da superfície (`none` desliga) |
+| `--surface-backdrop` | `blur(24px) saturate(1.5)` | O filtro atrás da superfície (`none` desliga) |
 
 Dentro de uma superfície de popover, `--accent` (hover e destaque de item) e
 `--muted` (trilhos, preenchimentos sutis) viram foreground a 10%. Um
@@ -200,7 +200,7 @@ do painel.
 
 | Situação                                      | Superfície                              |
 | --------------------------------------------- | --------------------------------------- |
-| Padrão                                        | Fundo a 70% + blur de 16px              |
+| Padrão                                        | Fundo a 70% + blur de 24px              |
 | `<html data-menu="solid">`                    | Fundo sólido, sem blur (o opt-out)      |
 | O sistema pede `prefers-reduced-transparency` | Fundo sólido, sem blur, automaticamente |
 

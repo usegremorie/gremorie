@@ -193,7 +193,7 @@ interface SeriesView {
         <div
           #tip
           data-slot="radar-tooltip"
-          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
+          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
           [style.left.px]="pos.x"
           [style.top.px]="pos.y"
         >
