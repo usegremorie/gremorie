@@ -94,8 +94,7 @@ export function SiteHeader({ lang }: { lang: string }) {
       <header
         className={cn(
           'sticky top-0 z-40 h-14 border-b border-transparent transition-[background-color,border-color] duration-200',
-          scrolled &&
-            'border-border bg-background/70 backdrop-blur-[16px] backdrop-saturate-150 [[data-menu=solid]_&]:bg-background [[data-menu=solid]_&]:backdrop-blur-none [@media(prefers-reduced-transparency:reduce)]:bg-background [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none',
+          scrolled && 'border-border bg-background-surface',
         )}
         data-scrolled={scrolled || undefined}
         data-slot="site-header"

@@ -37,7 +37,7 @@ import { DatePicker } from './date-picker';
  * | Token | Used for |
  * | --- | --- |
  * | `--muted-foreground` | Placeholder text |
- * | `--popover` | Calendar surface: the Popover's `bg-popover-surface` (translucent 70% + blur; opaque with `data-menu="solid"`) |
+ * | `--popover` | Calendar surface: the Popover's `bg-popover-surface` (translucent per `--surface-opacity` and `--surface-backdrop`; solid with `data-menu="solid"`) |
  * | `--border` | Trigger + popover border |
  */
 const meta = {

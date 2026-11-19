@@ -56,7 +56,7 @@ import {
  * | Token | Used for |
  * | --- | --- |
  * | `--background` | Trigger surface |
- * | `--popover` / `--popover-foreground` | Panel surface, via `bg-popover-surface` (translucent 70% + blur; opaque with `data-menu="solid"`) |
+ * | `--popover` / `--popover-foreground` | Panel surface, via `bg-popover-surface` (translucent per `--surface-opacity` and `--surface-backdrop`; solid with `data-menu="solid"`) |
  * | `--accent` / `--accent-foreground` | Hover / open state |
  * | `--muted-foreground` | Panel link descriptions + icons |
  * | `--ring` | Keyboard focus ring |
