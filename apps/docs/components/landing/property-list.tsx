@@ -118,15 +118,17 @@ export function PropertySelect({
   value,
   options,
   onValueChange,
+  className,
 }: {
   icon: LucideIcon;
   label: string;
   value: string;
   options: { value: string; label: string }[];
   onValueChange: (value: string) => void;
+  className?: string;
 }) {
   return (
-    <Item className={ROW} size="sm">
+    <Item className={cn(ROW, className)} size="sm">
       <RowIcon icon={icon} />
       <ItemContent className="min-w-0 flex-1">
         <ItemTitle>{label}</ItemTitle>

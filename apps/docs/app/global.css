@@ -148,3 +148,11 @@
 body:has([data-slot='site-header']) {
   background-color: var(--background);
 }
+
+/* Phones: nothing may push the page sideways. The known overflows are fixed
+   at the source; this keeps an off-canvas drawer or a stray decoration from
+   making the whole page pannable. `clip` (not `hidden`) keeps sticky working. */
+html,
+body {
+  overflow-x: clip;
+}

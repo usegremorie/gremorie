@@ -90,7 +90,7 @@ const LAYOUT_OPTIONS: { value: ComposerLayout; label: string }[] = [
 
 // The code box: fixed 320px, so the section keeps its size; it scrolls both
 // ways, and the DS CodeBlock shows its bars on hover.
-const CODE_SCROLL = '[&_.overflow-auto]:h-80';
+const CODE_SCROLL = '[&_.overflow-auto]:max-h-80 lg:[&_.overflow-auto]:h-80';
 
 const INSTALL: Record<Framework, string> = {
   react: 'npx gremorie add rx-assistant',
@@ -172,7 +172,7 @@ export function AssistantShowcase() {
       <section className="relative mx-auto max-w-[88rem] px-6 pb-20">
         <div
           aria-hidden="true"
-          className="-z-10 pointer-events-none absolute inset-x-0 top-0 mx-auto size-[520px] rounded-full bg-primary/10 blur-[120px]"
+          className="-z-10 pointer-events-none absolute inset-x-0 top-0 mx-auto size-[520px] max-w-full rounded-full bg-primary/10 blur-[120px]"
         />
         <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
           {/* Left column: the controls, then the code they produce. */}
@@ -183,6 +183,7 @@ export function AssistantShowcase() {
                     phone's 390px, where its own container queries switch it
                     to compact. Not emitted in the code. */}
                 <PropertySelect
+                  className="hidden lg:flex"
                   icon={MonitorSmartphoneIcon}
                   label="Viewport"
                   onValueChange={(v) => setViewport(v as Viewport)}
