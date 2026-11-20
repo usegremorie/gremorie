@@ -17,6 +17,7 @@ export function TabBarIosPreview() {
   return (
     <PhoneFrame>
       <TabBar
+        aria-label="Example"
         className="absolute"
         onValueChange={setTab}
         value={tab}
