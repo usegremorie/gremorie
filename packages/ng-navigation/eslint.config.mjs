@@ -44,6 +44,7 @@ export default [
           prefix: [
             'gr-breadcrumb',
             'gr-pagination',
+            'gr-tab-bar',
             'gr-tabs',
             'gr-navigation-menu',
             'gr-menubar',

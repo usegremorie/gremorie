@@ -1,7 +1,7 @@
 {
   "name": "@gremorie/rx-navigation",
   "version": "0.11.0",
-  "description": "React navigation primitives for Gremorie - Breadcrumb, Menubar, NavigationMenu, Pagination, Sidebar, Tabs.",
+  "description": "React navigation primitives for Gremorie - Breadcrumb, Menubar, NavigationMenu, Pagination, Sidebar, Tab Bar, Tabs.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
     "navigation-menu",
     "pagination",
     "sidebar",
+    "tab-bar",
     "tabs"
   ],
   "type": "module",

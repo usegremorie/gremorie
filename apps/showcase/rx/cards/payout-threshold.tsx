@@ -70,7 +70,7 @@ export function PayoutThreshold() {
                 Minimum Payout Amount
               </FieldLabel>
               <span className="font-semibold text-2xl tabular-nums">
-                ${amount[0].toFixed(2)}
+                ${(amount[0] ?? MIN).toFixed(2)}
               </span>
             </div>
             <Slider

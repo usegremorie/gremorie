@@ -8,6 +8,7 @@
 
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
 @source "../../../packages/rx-*/src/**/*.{ts,tsx}";
+@source "../../showcase/rx/**/*.{ts,tsx}";
 
 /* ---------------------------------------------------------------- *\
  * Customizations (intentionally minimal).

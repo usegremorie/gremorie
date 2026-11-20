@@ -20,6 +20,7 @@ import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import {
   BlocksIcon,
   ComponentIcon,
+  LayoutDashboardIcon,
   LibraryIcon,
   MenuIcon,
   PaletteIcon,
@@ -54,6 +55,7 @@ const NAV: { text: string; path: string; icon: LucideIcon }[] = [
   { text: 'Blocks', path: '/blocks', icon: BlocksIcon },
   { text: 'Tokens', path: '/tokens', icon: PaletteIcon },
   { text: 'Corpus', path: '/corpus', icon: LibraryIcon },
+  { text: 'Showcase', path: '/showcase', icon: LayoutDashboardIcon },
 ];
 
 function IconAction({

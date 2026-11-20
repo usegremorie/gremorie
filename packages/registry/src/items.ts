@@ -1212,6 +1212,20 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['ng-utils', 'ng-tooltip'],
   },
   {
+    name: 'ng-tab-bar',
+    framework: 'ng',
+    title: 'Tab Bar (Angular)',
+    description:
+      'Bottom tab bar for phone screens - TabBar, TabBarItem (gr-tab-bar, gr-tab-bar-item, a[gr-tab-bar-item]). Three looks on one API: material, ios and floating. Badges, hide on scroll, safe-area aware. Mirrors React TabBar from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: ['src/lib/tab-bar/tab-bar.ts', 'src/lib/tab-bar/index.ts'],
+    targetPrefix: 'src/app/gremorie/tab-bar',
+    srcStrip: 'src/lib/tab-bar/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    registryDependencies: ['ng-utils', 'ng-tooltip'],
+  },
+  {
     name: 'ng-tabs',
     framework: 'ng',
     title: 'Tabs (Angular)',
@@ -2222,6 +2236,20 @@ export const ITEMS: ItemConfig[] = [
       'rx-sheet',
       'rx-tooltip',
     ],
+  },
+  {
+    name: 'rx-tab-bar',
+    framework: 'rx',
+    title: 'Tab Bar (React)',
+    description:
+      'Bottom tab bar for phone screens - TabBar, TabBarItem. Three looks on one API: material (full-width bar with a pill indicator), ios (floating translucent capsule) and floating (compact icon-only pill). Badges, hide on scroll, safe-area aware, asChild for router links.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/tab-bar/tab-bar.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/tab-bar',
+    srcStrip: 'src/lib/tab-bar/',
+    dependencies: ['radix-ui', 'class-variance-authority'],
+    registryDependencies: ['rx-utils', 'rx-tooltip'],
   },
   {
     name: 'rx-tabs',

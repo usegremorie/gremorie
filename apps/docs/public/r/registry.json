@@ -921,6 +921,20 @@
       ]
     },
     {
+      "name": "ng-tab-bar",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Tab Bar (Angular)",
+      "description": "Bottom tab bar for phone screens - TabBar, TabBarItem (gr-tab-bar, gr-tab-bar-item, a[gr-tab-bar-item]). Three looks on one API: material, ios and floating. Badges, hide on scroll, safe-area aware. Mirrors React TabBar from @gremorie/rx-navigation.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-tooltip"
+      ]
+    },
+    {
       "name": "ng-tabs",
       "type": "registry:block",
       "framework": "ng",
@@ -1790,6 +1804,20 @@
         "rx-separator",
         "rx-skeleton",
         "rx-sheet",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-tab-bar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tab Bar (React)",
+      "description": "Bottom tab bar for phone screens - TabBar, TabBarItem. Three looks on one API: material (full-width bar with a pill indicator), ios (floating translucent capsule) and floating (compact icon-only pill). Badges, hide on scroll, safe-area aware, asChild for router links.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
         "rx-tooltip"
       ]
     },

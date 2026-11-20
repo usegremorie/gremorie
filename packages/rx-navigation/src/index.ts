@@ -3,4 +3,5 @@ export * from './lib/menubar';
 export * from './lib/navigation-menu';
 export * from './lib/pagination';
 export * from './lib/sidebar';
+export * from './lib/tab-bar';
 export * from './lib/tabs';

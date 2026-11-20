@@ -1,0 +1,192 @@
+---
+title: Tab Bar
+description: 'The top-level destinations of a phone app, docked to the bottom of the screen. Three looks on one API: material, ios and floating.'
+---
+
+import { TabBarMaterialPreview } from '@/components/preview/mobile/tab-bar-material';
+import { TabBarIosPreview } from '@/components/preview/mobile/tab-bar-ios';
+import { TabBarFloatingPreview } from '@/components/preview/mobile/tab-bar-floating';
+
+## Overview
+
+`TabBar` keeps three to five top-level destinations one tap away at the bottom of a phone screen. One API, three looks:
+
+| Variant    | Look                                                                                   |
+| ---------- | -------------------------------------------------------------------------------------- |
+| `material` | Full-width bar. The active icon sits on a pill indicator, the label below              |
+| `ios`      | Floating translucent capsule above the content, icon over label                        |
+| `floating` | Compact floating pill with icons only. Labels become the accessible name and a tooltip |
+
+The floating looks paint with the [floating-surface tokens](/tokens/theming), so a solid theme gets a solid bar. On this site, the navigation on phones is a `floating` TabBar.
+
+Reach for TabBar for **destinations**. For panels inside one page use [Tabs](/components/navigation/tabs); for desktop app navigation use [Sidebar](/components/navigation/sidebar).
+
+## Preview
+
+<ComponentPreview name="mobile/tab-bar-material">
+  <TabBarMaterialPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+TabBar                nav, fixed to the bottom, safe-area aware
+└─ TabBarItem         one destination: icon, label, optional badge
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-tab-bar
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-tab-bar
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-tab-bar
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-tab-bar
+```
+
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+
+```tsx
+import { TabBar, TabBarItem } from '@gremorie/rx-navigation';
+import { HouseIcon, SearchIcon, UserIcon } from 'lucide-react';
+import Link from 'next/link';
+
+export function AppTabBar({ current }: { current: string }) {
+  return (
+    <TabBar variant="floating" value={current} hideOnScroll>
+      <TabBarItem value="home" label="Home" icon={HouseIcon} asChild>
+        <Link href="/" />
+      </TabBarItem>
+      <TabBarItem value="search" label="Search" icon={SearchIcon} asChild>
+        <Link href="/search" />
+      </TabBarItem>
+      <TabBarItem value="profile" label="Profile" icon={UserIcon} badge asChild>
+        <Link href="/profile" />
+      </TabBarItem>
+    </TabBar>
+  );
+}
+```
+
+</Tab>
+<Tab value="Angular">
+
+```html
+<gr-tab-bar variant="floating" [(value)]="current" hideOnScroll>
+  <a gr-tab-bar-item value="home" label="Home" routerLink="/">
+    <svg><!-- house icon --></svg>
+  </a>
+  <a gr-tab-bar-item value="search" label="Search" routerLink="/search">
+    <svg><!-- search icon --></svg>
+  </a>
+</gr-tab-bar>
+```
+
+```bash
+npx gremorie@latest add ng-tab-bar
+```
+
+<AngularSetup />
+
+The icon is projected content (an inline `<svg>` or your icon component). On a link or button, use the attribute form `a[gr-tab-bar-item]` so the host is the single focusable element; `[(value)]` binds the active item two-way.
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<TabBar>`
+
+| Prop            | Type                                | Default      | Description                                                            |
+| --------------- | ----------------------------------- | ------------ | ---------------------------------------------------------------------- |
+| `variant`       | `"material" \| "ios" \| "floating"` | `"material"` | The look.                                                              |
+| `labels`        | `"always" \| "active" \| "never"`   | `"always"`   | When item labels show. `floating` always hides them visually.          |
+| `value`         | `string`                            | -            | Controlled active item.                                                |
+| `defaultValue`  | `string`                            | -            | Initially active item (uncontrolled).                                  |
+| `onValueChange` | `(value: string) => void`           | -            | Fires with the item's value when an item is chosen.                    |
+| `hideOnScroll`  | `boolean`                           | `false`      | Slides the bar away while the page scrolls down, back on scrolling up. |
+| `aria-label`    | `string`                            | `"Main"`     | Name of the navigation landmark.                                       |
+
+### `<TabBarItem>`
+
+| Prop      | Type                | Default | Description                                                             |
+| --------- | ------------------- | ------- | ----------------------------------------------------------------------- |
+| `value`   | `string`            | -       | Required. The bar is active on the item whose value matches.            |
+| `label`   | `string`            | -       | Required. Visible text, and the accessible name when labels are hidden. |
+| `icon`    | `ElementType`       | -       | Required. Icon component, e.g. a lucide icon.                           |
+| `badge`   | `number \| boolean` | -       | A count (capped at 99+), or `true` for a dot.                           |
+| `active`  | `boolean`           | -       | Forces the active state, e.g. from the router's current path.           |
+| `asChild` | `boolean`           | `false` | Renders the child element (a router link) instead of a button.          |
+
+## Variations
+
+### Material
+
+<ComponentPreview name="mobile/tab-bar-material">
+  <TabBarMaterialPreview />
+</ComponentPreview>
+
+A full-width bar for apps whose content runs edge to edge. Labels show by default; `labels="active"` keeps only the active one.
+
+### iOS
+
+<ComponentPreview name="mobile/tab-bar-ios">
+  <TabBarIosPreview />
+</ComponentPreview>
+
+A translucent capsule that floats above the content, so the page shows through the bar as it scrolls.
+
+### Floating
+
+<ComponentPreview name="mobile/tab-bar-floating">
+  <TabBarFloatingPreview />
+</ComponentPreview>
+
+The most compact look: a pill of icons. Use it when the icons are unambiguous; each item still has its label as the accessible name and a tooltip.
+
+## Placement
+
+- The bar is `fixed` to the viewport and pads itself with `env(safe-area-inset-bottom)`, so it clears the phone's home indicator. Add `viewport-fit=cover` to the viewport meta for the inset to apply.
+- Leave room under the content: about `6rem` of bottom padding on the page.
+- To show the bar inside a frame (a preview, a mock-up), give the frame `position: relative` and pass `className="absolute"`.
+- Show it on phones only (for example `className="md:hidden"`) and move the same destinations to a top bar or sidebar on wider screens.
+
+## Accessibility
+
+- The root is a `<nav>` landmark (`aria-label`, default `"Main"`), not a `tablist`: items are destinations, not panels.
+- The active item carries `aria-current="page"`.
+- When labels are hidden, each item gets its label as `aria-label` (with the count for a numeric badge) and a tooltip on hover or focus.
+- Items are regular buttons or links, so `Tab` moves between them and `Enter` activates.
+- `hideOnScroll` respects `prefers-reduced-motion`: the bar still hides, without the slide.
+
+## Related
+
+- [Tabs](/components/navigation/tabs) - panels inside one page.
+- [Sidebar](/components/navigation/sidebar) - app navigation on wider screens.
+- [Drawer](/components/overlays/drawer) - more destinations than a bar can hold.

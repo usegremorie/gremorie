@@ -5,6 +5,7 @@ import { Geist_Mono, Inter } from 'next/font/google';
 
 import type { ReactNode } from 'react';
 
+import { SiteTabBar } from '@/components/site-tab-bar';
 import { provider } from '@/lib/layout.shared';
 
 // Inter is the Gremorie typeface; Geist Mono stays for code (Inter has no
@@ -45,7 +46,7 @@ export default async function LangLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${geistMono.variable}`}
     >
-      <body className="flex flex-col min-h-screen font-sans">
+      <body className="flex flex-col min-h-screen font-sans max-md:pb-24">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-md focus:outline-2 focus:outline-ring"
@@ -65,6 +66,7 @@ export default async function LangLayout({
           }}
         >
           {children}
+          <SiteTabBar lang={lang} />
         </RootProvider>
         <Analytics />
       </body>

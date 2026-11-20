@@ -91,3 +91,12 @@ export {
   TabsContent,
   tabsListVariants,
 } from './lib/tabs';
+
+// TabBar
+export {
+  TabBar,
+  TabBarItem,
+  tabBarVariants,
+  type TabBarLabels,
+  type TabBarVariant,
+} from './lib/tab-bar';
