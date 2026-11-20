@@ -30,8 +30,8 @@ const METHODS = [
 ];
 
 /**
- * shadcn reference card (column 5): where payouts go. The eyebrow sits above
- * the title, as in the reference; saving waits for an account number.
+ * Showcase card (column 5): where payouts go. The eyebrow sits above
+ * the title; saving waits for an account number.
  */
 export function ReceivingMethod() {
   const [method, setMethod] = useState('bank');

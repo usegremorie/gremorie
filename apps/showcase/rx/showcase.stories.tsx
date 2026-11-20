@@ -11,9 +11,9 @@ import { ReceivingMethod } from './cards/receiving-method';
 import { Masonry } from './masonry';
 
 /**
- * The React showcase: the shadcn reference cards rebuilt with Gremorie
- * components, in the reference's column order. The workbench embeds this
- * story (id `showcase--all`) next to the Angular one and the reference.
+ * The React showcase: a set of product cards built with Gremorie
+ * components, in a fixed column order. The workbench embeds this
+ * story (id `showcase--all`) next to the Angular one.
  */
 const meta = {
   title: 'Showcase',

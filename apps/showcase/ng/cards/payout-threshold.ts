@@ -24,7 +24,7 @@ import {
   Textarea,
 } from '@gremorie/ng-forms';
 
-/** shadcn reference card 2 (column 2): minimum payout settings. */
+/** Showcase card 2 (column 2): minimum payout settings. */
 @Component({
   selector: 'showcase-payout-threshold',
   standalone: true,

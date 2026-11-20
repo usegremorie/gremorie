@@ -8,8 +8,8 @@ import { PayoutThreshold } from './cards/payout-threshold';
 import { ReceivingMethod } from './cards/receiving-method';
 
 /**
- * The Angular showcase: the shadcn reference cards rebuilt with Gremorie
- * components, in the reference's column order, mirroring the React showcase
+ * The Angular showcase: a set of product cards built with Gremorie
+ * components, in a fixed column order, mirroring the React showcase
  * (same id, `showcase--all`). Fixed 375px columns, 40px apart.
  */
 const meta: Meta = {

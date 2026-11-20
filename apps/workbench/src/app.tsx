@@ -606,7 +606,7 @@ export function App() {
             <main data-showcase={showcase} className="min-h-0 min-w-0 flex-1">
               <iframe
                 key={showcase}
-                title={`Showcase: ${showcase === 'ref' ? 'shadcn reference' : showcase === 'rx' ? 'React' : 'Angular'}`}
+                title={`Showcase: ${showcase === 'ref' ? 'Reference' : showcase === 'rx' ? 'React' : 'Angular'}`}
                 className="size-full border-0"
                 src={
                   showcase === 'ref'

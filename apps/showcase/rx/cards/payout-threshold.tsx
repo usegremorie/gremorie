@@ -26,7 +26,7 @@ import { useState } from 'react';
 const MIN = 50;
 const MAX = 10000;
 
-/** shadcn reference card 2 (column 2): minimum payout settings. */
+/** Showcase card 2 (column 2): minimum payout settings. */
 export function PayoutThreshold() {
   const [amount, setAmount] = useState([2500]);
   return (

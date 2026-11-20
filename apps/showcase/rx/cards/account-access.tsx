@@ -21,7 +21,7 @@ import {
 } from '@gremorie/rx-forms';
 import { ArrowRightIcon, CircleAlertIcon, LockKeyholeIcon } from 'lucide-react';
 
-/** shadcn reference card (column 4): credentials and the danger zone. */
+/** Showcase card (column 4): credentials and the danger zone. */
 export function AccountAccess() {
   return (
     <Card>

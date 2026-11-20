@@ -22,7 +22,7 @@ import {
 } from '@gremorie/ng-display';
 import { Field, FieldGroup, FieldLabel, Input } from '@gremorie/ng-forms';
 
-/** shadcn reference card (column 4): credentials and the danger zone. */
+/** Showcase card (column 4): credentials and the danger zone. */
 @Component({
   selector: 'showcase-account-access',
   standalone: true,
