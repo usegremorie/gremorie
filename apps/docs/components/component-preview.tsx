@@ -6,8 +6,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { type ReactNode } from 'react';
 
 /**
- * Tabbed Preview / Code surface for component docs, matching the AI Elements
- * and shadcn/ui reference pattern.
+ * Tabbed Preview / Code surface for component docs.
  *
  * `name` is the path of the example under `components/preview` (without the
  * extension), e.g. `ai/prompt-input`. The Code tab shows the REAL source of

@@ -8,13 +8,13 @@ import { RadarChartScoredPreview } from '@/components/preview/data/radar-chart-s
 
 ## Visão geral
 
-`RadarChart` é o wrapper estilizado sobre o `RadarChart` do recharts, composto sobre o primitive `chart` do shadcn (`ChartContainer`). Cada linha de dados (`xKey`) se torna um raio no grid polar; cada entrada em `config` se torna um polígono fechado que compartilha um único máximo radial. Use quando você tem **três a sete dimensões** que devem ser avaliadas juntas - perfis de habilidade, scores de satisfação, análise de gap de capacidade.
+`RadarChart` é o wrapper estilizado sobre o `RadarChart` do recharts, composto sobre o primitive `chart` (`ChartContainer`). Cada linha de dados (`xKey`) se torna um raio no grid polar; cada entrada em `config` se torna um polígono fechado que compartilha um único máximo radial. Use quando você tem **três a sete dimensões** que devem ser avaliadas juntas - perfis de habilidade, scores de satisfação, análise de gap de capacidade.
 
 Use RadarChart quando nenhuma dimensão única é o destaque e a **forma do polígono** carrega significado por todo o conjunto. Para comparar uma dimensão ordenada, [`LineChart`](/components/data/line-chart) lê mais rápido. Para ranquear categorias em uma única métrica, [`BarChart`](/components/data/bar-chart) é mais legível.
 
 A escala radial é **fixa em 100 por padrão**. Isso é deliberado: comparação é o trabalho usual deste chart, e uma escala derivada do dado faz alguém com nota máxima 70 preencher o gráfico igual a alguém que tirou 100. Passe um número para outro teto, ou `max="auto"` quando a faixa não for conhecida de antemão.
 
-A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart`; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
 
 ## Anatomia
 
@@ -33,7 +33,7 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
    └─ sr-only data table
 ```
 
-A edição React compõe esta superfície através do primitive `chart` do shadcn:
+A edição React compõe esta superfície através do primitive `chart`:
 
 ```text
 RadarChart
@@ -152,7 +152,7 @@ O wrapper estilizado sobre o `RadarChart` do recharts, composto sobre `ChartCont
 
 ### Compondo com o primitive chart
 
-Para controle total, componha recharts diretamente dentro de `ChartContainer` usando os primitives exportados. Isso espelha o [bloco de radar oficial do shadcn](https://ui.shadcn.com/charts/radar).
+Para controle total, componha recharts diretamente dentro de `ChartContainer` usando os primitives exportados.
 
 | Export                | Papel                                                                            |
 | --------------------- | -------------------------------------------------------------------------------- |

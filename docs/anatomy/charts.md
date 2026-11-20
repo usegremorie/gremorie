@@ -2,7 +2,7 @@
 
 Seven chart primitives. React (`@gremorie/rx-data`) is the reference; Angular
 (`@gremorie/ng-data`) must match input-for-input. React renders with recharts
-inside the shadcn `chart` primitive; Angular renders headless d3 geometry inside
+inside the `chart` primitive; Angular renders headless d3 geometry inside
 a styled SVG. **The rendering engine differs; the public surface does not.**
 
 Shared rules for all seven:

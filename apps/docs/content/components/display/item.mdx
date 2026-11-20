@@ -7,7 +7,7 @@ import { ItemPreview } from '@/components/preview/display/item';
 
 ## Overview
 
-`Item` is the compound list-row primitive: a media slot, a title/description block, and a trailing actions slot, laid out on one line. Adapted from shadcn/ui into a **single-`size` cascade** — the `size` you set on `Item` (`lg`, `md`, `sm`, or `none`) drives the media size _and_ the title/description typography at once through `data-size` + `group-data` selectors, so no sub-part repeats measurements.
+`Item` is the compound list-row primitive: a media slot, a title/description block, and a trailing actions slot, laid out on one line. It is built around a **single-`size` cascade** — the `size` you set on `Item` (`lg`, `md`, `sm`, or `none`) drives the media size _and_ the title/description typography at once through `data-size` + `group-data` selectors, so no sub-part repeats measurements.
 
 The media height tracks the text block: with a description it is taller (lg 40 · md 36 · sm 32px), without one it matches the title (lg/md 20 · sm 16px). The `icon` media variant is the only fixed size — a bare 16px glyph, as in menus; `featured`, `avatar`, and `image` follow the cascade. Use `variant` (`default`, `outline`, `muted`) for the surface, `interactive` for hover affordance, and `asChild` to render the row as a link or button.
 

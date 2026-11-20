@@ -7,7 +7,7 @@ import { ChartPreview } from '@/components/preview/data/chart';
 
 ## Visão geral
 
-`Chart` é o primitive de fundação sobre o qual todo gráfico `rx-*` é composto. Portado do wrapper recharts consagrado do shadcn/ui e adaptado aos tokens do Gremorie, ele fornece as peças em que você envolve recharts cru: `ChartContainer` (frame responsivo + CSS vars de cor por série), `ChartTooltip` / `ChartTooltipContent` (o hover card) e `ChartLegend` / `ChartLegendContent` (a legenda). O hook `useChart` retorna o `ChartConfig` ativo a partir do contexto.
+`Chart` é o primitive de fundação sobre o qual todo gráfico `rx-*` é composto. Um wrapper recharts guiado pelos tokens do Gremorie, ele fornece as peças em que você envolve recharts cru: `ChartContainer` (frame responsivo + CSS vars de cor por série), `ChartTooltip` / `ChartTooltipContent` (o hover card) e `ChartLegend` / `ChartLegendContent` (a legenda). O hook `useChart` retorna o `ChartConfig` ativo a partir do contexto.
 
 Normalmente você recorre a um gráfico pronto — [`BarChart`](/components/data/bar-chart), [`LineChart`](/components/data/line-chart), [`AreaChart`](/components/data/area-chart) e o resto são wrappers finos sobre este primitive. Desça direto para `Chart` quando precisar de controle total: linhas de referência extras, uma legenda customizada, séries mistas ou um tipo de recharts que os wrappers não cobrem. `ChartContainer` continua injetando suas cores de token como `var(--color-<key>)` e estiliza o tooltip, então você só escreve os recharts que realmente precisa.
 

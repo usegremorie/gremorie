@@ -67,27 +67,27 @@ The Angular edition of this component ships from source today (see the workbench
 
 ### `<Slider>`
 
-| Prop             | Type                         | Default        | Description                                                                                                                                                                                                                      |
-| ---------------- | ---------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`          | `number[]`                   | -              | Controlled value(s). One number for single thumb; two for range.                                                                                                                                                                 |
-| `defaultValue`   | `number[]`                   | `[min, max]`   | Uncontrolled initial value(s).                                                                                                                                                                                                   |
-| `onValueChange`  | `(value: number[]) => void`  | -              | Fires on every drag step.                                                                                                                                                                                                        |
-| `onValueCommit`  | `(value: number[]) => void`  | -              | Fires when the user releases the thumb (useful for network commits).                                                                                                                                                             |
-| `min`            | `number`                     | `0`            | Minimum value.                                                                                                                                                                                                                   |
-| `max`            | `number`                     | `100`          | Maximum value.                                                                                                                                                                                                                   |
-| `step`           | `number`                     | `1`            | Increment between allowed values.                                                                                                                                                                                                |
-| `orientation`    | `"horizontal" \| "vertical"` | `"horizontal"` | Vertical sliders default to `min-h-44` so they have something to drag along.                                                                                                                                                     |
-| `disabled`       | `boolean`                    | `false`        | Disables interaction.                                                                                                                                                                                                            |
-| `name`           | `string`                     | -              | Form field name.                                                                                                                                                                                                                 |
-| `thumbAriaLabel` | `string \| string[]`         | -              | **Gremorie extension** (not in shadcn default). Accessible name for each thumb. Pass an array for range sliders, e.g. `["Minimum price", "Maximum price"]`. Required for WCAG 4.1.2 when the slider lacks an adjacent `<Label>`. |
-| `aria-label`     | `string`                     | -              | Falls back to this for thumb labels when `thumbAriaLabel` is not set.                                                                                                                                                            |
+| Prop             | Type                         | Default        | Description                                                                                                                                                                                              |
+| ---------------- | ---------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`          | `number[]`                   | -              | Controlled value(s). One number for single thumb; two for range.                                                                                                                                         |
+| `defaultValue`   | `number[]`                   | `[min, max]`   | Uncontrolled initial value(s).                                                                                                                                                                           |
+| `onValueChange`  | `(value: number[]) => void`  | -              | Fires on every drag step.                                                                                                                                                                                |
+| `onValueCommit`  | `(value: number[]) => void`  | -              | Fires when the user releases the thumb (useful for network commits).                                                                                                                                     |
+| `min`            | `number`                     | `0`            | Minimum value.                                                                                                                                                                                           |
+| `max`            | `number`                     | `100`          | Maximum value.                                                                                                                                                                                           |
+| `step`           | `number`                     | `1`            | Increment between allowed values.                                                                                                                                                                        |
+| `orientation`    | `"horizontal" \| "vertical"` | `"horizontal"` | Vertical sliders default to `min-h-44` so they have something to drag along.                                                                                                                             |
+| `disabled`       | `boolean`                    | `false`        | Disables interaction.                                                                                                                                                                                    |
+| `name`           | `string`                     | -              | Form field name.                                                                                                                                                                                         |
+| `thumbAriaLabel` | `string \| string[]`         | -              | **Gremorie extension**. Accessible name for each thumb. Pass an array for range sliders, e.g. `["Minimum price", "Maximum price"]`. Required for WCAG 4.1.2 when the slider lacks an adjacent `<Label>`. |
+| `aria-label`     | `string`                     | -              | Falls back to this for thumb labels when `thumbAriaLabel` is not set.                                                                                                                                    |
 
 Forwards to `SliderPrimitive.Root`. Renders `SliderPrimitive.Track`, `SliderPrimitive.Range`, and one `SliderPrimitive.Thumb` per value.
 
 <Callout type="info">
-  **`thumbAriaLabel` is a Gremorie addition** to the standard shadcn Slider.
-  Without it, range sliders announce two unnamed thumbs and fail WCAG 4.1.2
-  (Name, Role, Value). Always set it for range / multi-thumb sliders.
+  **`thumbAriaLabel` is a Gremorie addition** to the Slider. Without it, range
+  sliders announce two unnamed thumbs and fail WCAG 4.1.2 (Name, Role, Value).
+  Always set it for range / multi-thumb sliders.
 </Callout>
 
 ## Composition

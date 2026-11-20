@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { gremorieVersion } from '@/lib/version';
 
 /**
- * Landing hero - centered composition (shadcnblocks-style): version pill, the
+ * Landing hero - centered composition: version pill, the
  * parity headline, a one-paragraph subtitle, the install command box, and the
  * CTA hierarchy, all centered in a single column. The live chat surface lives
  * below the hero as the Assistant showcase.
@@ -31,7 +31,7 @@ export function Hero({ lang }: { lang: string }) {
   return (
     <section className="relative overflow-hidden">
       {/* Faint dotted grid that fades toward the edges - the technical,
-          docs-grade backdrop (Fumadocs / shadcn) in place of a colored glow.
+          docs-grade backdrop in place of a colored glow.
           Dots use the border token; the radial mask keeps it a whisper. */}
       <div
         aria-hidden="true"

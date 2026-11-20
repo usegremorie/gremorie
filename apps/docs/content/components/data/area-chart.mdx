@@ -8,11 +8,11 @@ import { AreaChartSinglePreview } from '@/components/preview/data/area-chart-sin
 
 ## Overview
 
-`AreaChart` is a recharts chart wired to Gremorie's design tokens through the shadcn `chart` primitive (`ChartContainer`) for **filled-area over an ordered category**. Pass tabular `data`, a serializable `config` that maps each value field to a `label` plus a `color`, and the `xKey` that names the category field. `ChartContainer` injects each series color as `var(--color-<key>)`, and recharts renders the cartesian grid, axis ticks, and per-series filled paths. Pass `stacked` to layer the series or `type` to choose the interpolation curve.
+`AreaChart` is a recharts chart wired to Gremorie's design tokens through the `chart` primitive (`ChartContainer`) for **filled-area over an ordered category**. Pass tabular `data`, a serializable `config` that maps each value field to a `label` plus a `color`, and the `xKey` that names the category field. `ChartContainer` injects each series color as `var(--color-<key>)`, and recharts renders the cartesian grid, axis ticks, and per-series filled paths. Pass `stacked` to layer the series or `type` to choose the interpolation curve.
 
 Reach for AreaChart when the **magnitude** of a series matters as much as its trend - traffic by month, revenue by week, error count by day. For pure shape comparison without magnitude emphasis, prefer [`LineChart`](/components/data/line-chart); for discrete category-vs-category comparisons, prefer [`BarChart`](/components/data/bar-chart).
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -29,7 +29,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
 ChartContainer                  responsive frame + injects --color-<key> from config
@@ -142,7 +142,7 @@ The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<AreaCha
 
 ### Chart primitive exports
 
-`@gremorie/rx-data` re-exports the shadcn `chart` primitive so you can compose custom charts. Wrap raw recharts (`Area`, `Bar`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
+`@gremorie/rx-data` re-exports the `chart` primitive so you can compose custom charts. Wrap raw recharts (`Area`, `Bar`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
 
 | Export                                 | Role                                                                                                  |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |

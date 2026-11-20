@@ -8,13 +8,13 @@ import { RadarChartScoredPreview } from '@/components/preview/data/radar-chart-s
 
 ## Overview
 
-`RadarChart` is the styled wrapper over recharts' `RadarChart`, composed on the shadcn `chart` primitive (`ChartContainer`). Each data row (`xKey`) becomes a spoke on the polar grid; each entry in `config` becomes a closed polygon that shares one radial maximum. Use it when you have **three to seven dimensions** that should be evaluated together - skill profiles, satisfaction scores, capability gap analysis.
+`RadarChart` is the styled wrapper over recharts' `RadarChart`, composed on the `chart` primitive (`ChartContainer`). Each data row (`xKey`) becomes a spoke on the polar grid; each entry in `config` becomes a closed polygon that shares one radial maximum. Use it when you have **three to seven dimensions** that should be evaluated together - skill profiles, satisfaction scores, capability gap analysis.
 
 Reach for RadarChart when no single dimension is the headline and the **shape of the polygon** carries meaning across the whole set. For comparing one ordered dimension, [`LineChart`](/components/data/line-chart) reads faster. For ranking categories on a single metric, [`BarChart`](/components/data/bar-chart) is more legible.
 
 The radial scale is **pinned at 100 by default**. That is deliberate: comparison is the chart's usual job, and a scale derived from the data makes someone whose best score is 70 fill the plot exactly like someone who scored 100. Pass a number for a different ceiling, or `max="auto"` when the range is not known ahead of time.
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -33,7 +33,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
 RadarChart
@@ -152,7 +152,7 @@ The styled wrapper over recharts' `RadarChart`, composed on `ChartContainer`. Re
 
 ### Composing with the chart primitive
 
-For full control, compose recharts directly inside `ChartContainer` using the exported primitives. This mirrors the [official shadcn radar block](https://ui.shadcn.com/charts/radar).
+For full control, compose recharts directly inside `ChartContainer` using the exported primitives.
 
 | Export                | Role                                                                     |
 | --------------------- | ------------------------------------------------------------------------ |

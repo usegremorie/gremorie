@@ -248,8 +248,7 @@ export function ChatBox() {
 ## Receitas
 
 `PromptInput` é customizado por composição, não por configuração. Não existe
-uma prop `showAttachments` ou `showVoice`, por design (o mesmo contrato do Vercel
-AI Elements): cada parte é um componente que você inclui na árvore ou deixa de fora.
+uma prop `showAttachments` ou `showVoice`, por design: cada parte é um componente que você inclui na árvore ou deixa de fora.
 Para remover a seção de context, o botão de voz ou o fluxo de attachments, você
 deleta a parte do seu código em vez de alternar uma flag. As receitas abaixo
 são pontos de partida completos e copiáveis, ordenados do menor composer possível
@@ -511,9 +510,9 @@ Wrappers em torno de `Select` do `@gremorie/rx-forms` (`PromptInputSelect`, `Pro
 
 `PromptInputSelectTrigger` recebe `variant`:
 
-| Prop      | Type                                  | Default   | Description                                                                                                                                                                                                                                                                                      |
-| --------- | ------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `variant` | `"ghost" \| "outline" \| "secondary"` | `"ghost"` | `ghost` é o visual do AI Elements: sem borda, transparente, `text-secondary-foreground`, com uma superfície `bg-muted` em hover e enquanto aberto. `outline` e `secondary` usam as variantes do trigger do próprio Select, para o trigger se ler como os outros controles num prompt preenchido. |
+| Prop      | Type                                  | Default   | Description                                                                                                                                                                                                                                                                                |
+| --------- | ------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `variant` | `"ghost" \| "outline" \| "secondary"` | `"ghost"` | `ghost` é o visual discreto: sem borda, transparente, `text-secondary-foreground`, com uma superfície `bg-muted` em hover e enquanto aberto. `outline` e `secondary` usam as variantes do trigger do próprio Select, para o trigger se ler como os outros controles num prompt preenchido. |
 
 ### `<PromptInputMentions>`
 

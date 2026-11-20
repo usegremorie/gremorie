@@ -8,11 +8,11 @@ import { LineChartSinglePreview } from '@/components/preview/data/line-chart-sin
 
 ## Visão geral
 
-`LineChart` é um gráfico recharts conectado aos design tokens do Gremorie através do primitive `chart` do shadcn (`ChartContainer`) para **linhas de tendência sobre uma categoria ordenada**. Passe `data` tabular, um `config` serializável que mapeia cada campo de valor para um `label` mais uma `color`, e o `xKey` que nomeia o campo de categoria. `ChartContainer` injeta a cor de cada série como `var(--color-<key>)`, e o recharts renderiza o cartesian grid, os ticks dos eixos e os paths traçados por série. Passe `type` para escolher a curva de interpolação ou `dots` para marcar cada ponto.
+`LineChart` é um gráfico recharts conectado aos design tokens do Gremorie através do primitive `chart` (`ChartContainer`) para **linhas de tendência sobre uma categoria ordenada**. Passe `data` tabular, um `config` serializável que mapeia cada campo de valor para um `label` mais uma `color`, e o `xKey` que nomeia o campo de categoria. `ChartContainer` injeta a cor de cada série como `var(--color-<key>)`, e o recharts renderiza o cartesian grid, os ticks dos eixos e os paths traçados por série. Passe `type` para escolher a curva de interpolação ou `dots` para marcar cada ponto.
 
 Use LineChart quando **forma e direção** são o destaque - conversão mês a mês, usuários ativos semanais, deploys por dia. Use [`AreaChart`](/components/data/area-chart) quando a magnitude preenchida é a história; use [`BarChart`](/components/data/bar-chart) para comparações discretas de categoria; use [`ScatterChart`](/components/data/scatter-chart) quando o eixo X é ele mesmo numérico e contínuo.
 
-A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart`; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
 
 ## Anatomia
 
@@ -30,7 +30,7 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
    └─ sr-only data table
 ```
 
-A edição React compõe esta superfície através do primitive `chart` do shadcn:
+A edição React compõe esta superfície através do primitive `chart`:
 
 ```text
 LineChart                       styled wrapper; one Line per config entry
@@ -143,7 +143,7 @@ O wrapper estilizado. Renderiza um div `ChartContainer` envolvendo um `<LineChar
 
 ### Exports do primitive chart
 
-`@gremorie/rx-data` reexporta o primitive `chart` do shadcn para que você possa compor gráficos customizados. Envolva recharts cru (`Line`, `Area`, `Bar`, `CartesianGrid`, `XAxis`, `YAxis`) dentro de `ChartContainer`:
+`@gremorie/rx-data` reexporta o primitive `chart` para que você possa compor gráficos customizados. Envolva recharts cru (`Line`, `Area`, `Bar`, `CartesianGrid`, `XAxis`, `YAxis`) dentro de `ChartContainer`:
 
 | Export                                 | Papel                                                                                                      |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------- |

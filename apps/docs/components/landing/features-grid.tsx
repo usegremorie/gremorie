@@ -8,8 +8,8 @@ import {
 import { Brain, Copy, GitBranch, Sparkles } from 'lucide-react';
 
 /**
- * Four pillars, presented the way a serious component library presents them
- * (shadcn / Radix / Fumadocs): neutral cards, a single monochrome DS
+ * Four pillars, presented the way a serious component library presents them:
+ * neutral cards, a single monochrome DS
  * FeaturedIcon, and typography + spacing carrying the hierarchy. No per-card
  * accent colors - restraint reads as professional; the rainbow of tinted tiles
  * read as generic.

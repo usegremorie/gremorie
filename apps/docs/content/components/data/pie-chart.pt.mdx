@@ -9,11 +9,11 @@ import { PieChartLabelsPreview } from '@/components/preview/data/pie-chart-label
 
 ## Visão geral
 
-`PieChart` é um gráfico recharts construído sobre o primitive `chart` do shadcn (`ChartContainer`) para **partes de um todo**. Passe `data` tabular, o `nameKey` (o campo de label da fatia) e o `dataKey` (o campo de valor numérico). As cores das fatias vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`), e um `config` opcional fornece os labels mostrados no tooltip. Passe `donut` para uma variante de donut com furo centralizado.
+`PieChart` é um gráfico recharts construído sobre o primitive `chart` (`ChartContainer`) para **partes de um todo**. Passe `data` tabular, o `nameKey` (o campo de label da fatia) e o `dataKey` (o campo de valor numérico). As cores das fatias vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`), e um `config` opcional fornece os labels mostrados no tooltip. Passe `donut` para uma variante de donut com furo centralizado.
 
 Use PieChart quando **proporções importam** e você tem **duas a seis categorias** que somam um total significativo - share de tráfego por browser, receita por tier, alocações por time. Para sete ou mais categorias, um [`BarChart`](/components/data/bar-chart) lê mais rápido; para proporções em série temporal, um [`AreaChart`](/components/data/area-chart) empilhado carrega mais informação.
 
-A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart`; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
 
 ## Anatomia
 
@@ -29,10 +29,10 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
    └─ sr-only data table
 ```
 
-A edição React compõe esta superfície através do primitive `chart` do shadcn:
+A edição React compõe esta superfície através do primitive `chart`:
 
 ```text
-PieChart                          recharts pie / donut on the shadcn chart primitive
+PieChart                          recharts pie / donut on the chart primitive
 └─ ChartContainer                 responsive square frame + tooltip label config
    └─ RechartsPieChart            recharts pie surface
       ├─ ChartTooltip             hover card
@@ -138,7 +138,7 @@ export class BrowserShareComponent {
 
 ### `<PieChart>`
 
-Um pie/donut recharts composto dentro do primitive `chart` do shadcn (`ChartContainer`). As cores das fatias vêm do `fill` de cada linha; o `config` opcional fornece os labels mostrados no tooltip.
+Um pie/donut recharts composto dentro do primitive `chart` (`ChartContainer`). As cores das fatias vêm do `fill` de cada linha; o `config` opcional fornece os labels mostrados no tooltip.
 
 | Prop         | Type                    | Default | Descrição                                                                                                                                                                        |
 | ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,7 +153,7 @@ Um pie/donut recharts composto dentro do primitive `chart` do shadcn (`ChartCont
 
 ### Primitives de chart para composição customizada
 
-Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart do shadcn, todos reexportados de `@gremorie/rx-data`. Isso espelha o bloco de pie oficial do shadcn ([ui.shadcn.com/charts/pie](https://ui.shadcn.com/charts/pie)).
+Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart, todos reexportados de `@gremorie/rx-data`.
 
 | Export                                 | Papel                                                                                         |
 | -------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -255,7 +255,7 @@ Use labels quando a superfície é grande o suficiente para acomodá-los e você
 
 ### Composição customizada
 
-Quando você precisa de cores por fatia explícitas, preenchimentos de gradiente, um label central ou uma legenda customizada, componha recharts cru dentro de `ChartContainer`. Isso espelha o bloco de pie oficial do shadcn.
+Quando você precisa de cores por fatia explícitas, preenchimentos de gradiente, um label central ou uma legenda customizada, componha recharts cru dentro de `ChartContainer`.
 
 ```tsx
 import {

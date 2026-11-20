@@ -9,11 +9,11 @@ import { PieChartLabelsPreview } from '@/components/preview/data/pie-chart-label
 
 ## Overview
 
-`PieChart` is a recharts chart built on the shadcn `chart` primitive (`ChartContainer`) for **parts of a whole**. Pass tabular `data`, the `nameKey` (the slice label field), and the `dataKey` (the numeric value field). Slice colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip. Pass `donut` for a donut variant with a centered hole.
+`PieChart` is a recharts chart built on the `chart` primitive (`ChartContainer`) for **parts of a whole**. Pass tabular `data`, the `nameKey` (the slice label field), and the `dataKey` (the numeric value field). Slice colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip. Pass `donut` for a donut variant with a centered hole.
 
 Reach for PieChart when **proportions matter** and you have **two to six categories** that sum to a meaningful total - traffic share by browser, revenue by tier, allocations by team. For seven or more categories, a [`BarChart`](/components/data/bar-chart) reads faster; for time-series proportions, a stacked [`AreaChart`](/components/data/area-chart) carries more information.
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -29,10 +29,10 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
-PieChart                          recharts pie / donut on the shadcn chart primitive
+PieChart                          recharts pie / donut on the chart primitive
 └─ ChartContainer                 responsive square frame + tooltip label config
    └─ RechartsPieChart            recharts pie surface
       ├─ ChartTooltip             hover card
@@ -138,7 +138,7 @@ export class BrowserShareComponent {
 
 ### `<PieChart>`
 
-A recharts pie/donut composed inside the shadcn `chart` primitive (`ChartContainer`). Slice colors come from each row's `fill`; the optional `config` provides the labels shown in the tooltip.
+A recharts pie/donut composed inside the `chart` primitive (`ChartContainer`). Slice colors come from each row's `fill`; the optional `config` provides the labels shown in the tooltip.
 
 | Prop         | Type                    | Default | Description                                                                                                                                                          |
 | ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,7 +153,7 @@ A recharts pie/donut composed inside the shadcn `chart` primitive (`ChartContain
 
 ### Chart primitives for custom composition
 
-For full control, compose raw recharts inside `ChartContainer` using the shadcn chart primitives, all re-exported from `@gremorie/rx-data`. This mirrors the official shadcn pie block ([ui.shadcn.com/charts/pie](https://ui.shadcn.com/charts/pie)).
+For full control, compose raw recharts inside `ChartContainer` using the chart primitives, all re-exported from `@gremorie/rx-data`.
 
 | Export                                 | Role                                                                              |
 | -------------------------------------- | --------------------------------------------------------------------------------- |
@@ -255,7 +255,7 @@ Reach for labels when the surface is large enough to hold them and you want the 
 
 ### Custom composition
 
-When you need explicit per-slice colors, gradient fills, a center label, or a custom legend, compose raw recharts inside `ChartContainer`. This mirrors the official shadcn pie block.
+When you need explicit per-slice colors, gradient fills, a center label, or a custom legend, compose raw recharts inside `ChartContainer`.
 
 ```tsx
 import {

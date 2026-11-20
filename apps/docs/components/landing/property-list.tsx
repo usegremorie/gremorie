@@ -11,7 +11,7 @@
  *   └─ PropertyText          value + pencil; edits in a popover
  *
  * Built on Item (ItemGroup / Item / ItemMedia / ItemContent / ItemActions /
- * ItemSeparator), the shadcn way to lay out settings rows.
+ * ItemSeparator), the Gremorie way to lay out settings rows.
  */
 
 import { cn } from '@gremorie/rx-core';

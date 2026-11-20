@@ -4,9 +4,7 @@ description: A árvore canônica de sidebar de 8 seções, as 9 categorias de Pr
 ---
 
 Como o Gremorie organiza componentes através de suas duas edições (NG e RX). A
-mesma árvore se aplica em ambas — só a implementação subjacente difere. Isso
-espelha o padrão do Kalvner DS capturado na base de conhecimento do vault e no
-layout do Vercel AI Elements.
+mesma árvore se aplica em ambas — só a implementação subjacente difere.
 
 ## The 8-section tree
 
@@ -55,7 +53,7 @@ Storybook
 |   +-- Feedback
 |   +-- Navigation
 |   +-- Overlays
-|   +-- AI              2 sub-categories from Vercel AI Elements
+|   +-- AI              2 sub-categories
 |       +-- Chatbot     (18 conversational components)
 |       +-- Code        (15 dev-agent / code-tool components)
 |
@@ -88,7 +86,7 @@ amplas chegam conforme o registry cresce.
 
 ## The AI category: Chatbot + Code
 
-Duas sub-categorias que espelham o [Vercel AI Elements](https://elements.ai-sdk.dev/).
+Duas sub-categorias: UI conversacional e dev tooling.
 
 ### Primitives / AI / Chatbot (18)
 
@@ -108,13 +106,11 @@ StackTrace, Terminal, TestResults, WebPreview.
 
 ### Why the split
 
-1. **Espelha o AI Elements.** O tracking e as atualizações se alinham com a
-   referência upstream.
-2. **Casos de uso distintos.** Chatbot é UI conversacional; Code é dev tooling.
+1. **Casos de uso distintos.** Chatbot é UI conversacional; Code é dev tooling.
    O comportamento de busca difere.
-3. **Superfície de auditoria focada.** 33 componentes flat sob `Primitives/AI/` é
+2. **Superfície de auditoria focada.** 33 componentes flat sob `Primitives/AI/` é
    denso demais; duas listas são navegáveis.
-4. **Assimetria justificada.** Outras categorias (Forms, Display) não têm um
+3. **Assimetria justificada.** Outras categorias (Forms, Display) não têm um
    split canônico pré-existente. AI tem, então nós o honramos.
 
 ### Disambiguating edge cases
@@ -126,7 +122,7 @@ StackTrace, Terminal, TestResults, WebPreview.
 | Sidebar               | Navigation   | Navigating container                                     |
 | CodeBlock (static)    | Typography   | No streaming, no tool call                               |
 | CodeBlock (streaming) | AI / Code    | Generated during AI response                             |
-| Snippet (AI Elements) | AI / Code    | Agent-generated, distinct from Typography Code           |
+| Snippet (AI)          | AI / Code    | Agent-generated, distinct from Typography Code           |
 | Shimmer               | AI / Chatbot | AI-streaming specific, not the generic Feedback Skeleton |
 | Link                  | Typography   | Text that navigates                                      |
 | Banner                | Feedback     | In-flow persistent message                               |
@@ -270,7 +266,6 @@ storySort: {
 
 ## Sources
 
-- [Vercel AI Elements](https://elements.ai-sdk.dev/) — canonical AI catalogue
 - [ColorBrewer 2.0](https://colorbrewer2.org/) — sequential / diverging / qualitative
 - [AWS Cloudscape Data Vis Colors](https://cloudscape.design/foundation/visual-foundation/data-vis-colors/)
 - [IBM Carbon Data Visualization](https://carbondesignsystem.com/data-visualization/color-palettes/)

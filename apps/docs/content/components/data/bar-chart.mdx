@@ -8,11 +8,11 @@ import { BarChartSinglePreview } from '@/components/preview/data/bar-chart-singl
 
 ## Overview
 
-`BarChart` is a recharts chart wired to Gremorie's design tokens through the shadcn `chart` primitive (`ChartContainer`) for **categorical comparison**. Pass tabular `data`, a serializable `config` mapping each value field to a `label` plus a `color`, and the `xKey` for the category field. `ChartContainer` injects each series color as `var(--color-<key>)`, and recharts renders the cartesian grid, axis ticks, and one set of grouped rectangles per series. Pass `stacked`, `horizontal`, or `showLabels` to switch layouts.
+`BarChart` is a recharts chart wired to Gremorie's design tokens through the `chart` primitive (`ChartContainer`) for **categorical comparison**. Pass tabular `data`, a serializable `config` mapping each value field to a `label` plus a `color`, and the `xKey` for the category field. `ChartContainer` injects each series color as `var(--color-<key>)`, and recharts renders the cartesian grid, axis ticks, and one set of grouped rectangles per series. Pass `stacked`, `horizontal`, or `showLabels` to switch layouts.
 
 Reach for BarChart when **discrete buckets** matter - revenue by product, errors by service, users by region. For ordered-domain trends prefer [`LineChart`](/components/data/line-chart) or [`AreaChart`](/components/data/area-chart); for two numeric axes prefer [`ScatterChart`](/components/data/scatter-chart).
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -30,7 +30,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
 BarChart                       recharts bar chart wired to the chart primitive
@@ -147,7 +147,7 @@ The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<BarChar
 
 ### Chart primitive exports
 
-`@gremorie/rx-data` re-exports the shadcn `chart` primitive so you can compose custom charts. Wrap raw recharts (`Bar`, `Area`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
+`@gremorie/rx-data` re-exports the `chart` primitive so you can compose custom charts. Wrap raw recharts (`Bar`, `Area`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
 
 | Export                                 | Role                                                                                                  |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |

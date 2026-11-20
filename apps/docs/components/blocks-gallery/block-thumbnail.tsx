@@ -16,7 +16,7 @@ function ThumbnailSkeleton() {
  * every block (the Assistant alone composes most of rx-ai) into the
  * page. `scale` is tuned per block so its natural layout width fits
  * the card: the inner frame renders at `100% / scale` of the card and
- * is scaled back down, the shadcn /blocks approach.
+ * is scaled back down.
  */
 const BLOCKS = {
   'sign-in': {
