@@ -111,7 +111,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Carousel (Angular)',
     description:
-      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).',
+      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display.',
     categories: ['display'],
     packageRoot: 'packages/ng-display',
     sourceFiles: ['src/lib/carousel/carousel.ts', 'src/lib/carousel/index.ts'],
@@ -2894,7 +2894,7 @@ export const ITEMS: ItemConfig[] = [
   },
 
   // ============================================================
-  // React data viz - recharts + the shadcn `chart` primitive (1 base + 7 charts).
+  // React data viz - recharts + the `chart` primitive (1 base + 7 charts).
   // A shared `rx-chart` base carries the chart primitive (ChartContainer /
   // ChartTooltip / ChartTooltipContent / ChartLegend) wired to the design
   // tokens; each styled chart composes it with recharts. (Replaces the former

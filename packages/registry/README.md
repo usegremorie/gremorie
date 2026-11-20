@@ -21,8 +21,8 @@ nx run registry:generate   # produce apps/docs/public/r/**/*.json
 
 ## Output shape
 
-Each item follows the Gremorie `registry-item` schema (compatible with the
-shadcn registry-item shape, see `NOTICE.md`), extended with a `usage` block
+Each item follows the Gremorie `registry-item` schema (the common
+registry-item shape, see `NOTICE.md`), extended with a `usage` block
 carrying design knowledge (when to use, anti-patterns, API, examples). The
 CLI consumes the bare `files[]`; the MCP server consumes everything, especially
 the `usage` block.
