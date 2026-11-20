@@ -99,7 +99,7 @@ const PRODUCTS: FeatureLink[] = [
     icon: LayersIcon,
   },
   {
-    title: 'AI Elements',
+    title: 'AI components',
     href: '#',
     description: 'Generative-UI primitives for LLM-driven surfaces.',
     icon: SparklesIcon,

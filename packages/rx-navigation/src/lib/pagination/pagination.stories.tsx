@@ -16,8 +16,7 @@ import {
  * Bookmarkable page-by-page navigation. Plain semantic markup — a `<nav>`
  * wrapping a list of `<a>` links styled as buttons (via `buttonVariants`). Use
  * this (vs infinite scroll / load-more) when URLs need to be shareable, stable
- * order matters, and users need to return to a specific position. Faithful
- * shadcn/ui port.
+ * order matters, and users need to return to a specific position.
  *
  * The disabled state on `Previous` / `Next` is consumer-driven — apply
  * `aria-disabled` and a passive class; the primitive does not auto-detect

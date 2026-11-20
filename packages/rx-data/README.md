@@ -1,6 +1,6 @@
 # @gremorie/rx-data
 
-React data visualization primitives for Gremorie, an AI native design system. Tokenized charts (area, line, bar, scatter, pie, radar, radial) built on the shadcn chart primitive.
+React data visualization primitives for Gremorie, an AI native design system. Tokenized charts (area, line, bar, scatter, pie, radar, radial) built on the chart primitive.
 
 Full documentation lives at [gremorie.com](https://gremorie.com).
 
@@ -48,7 +48,7 @@ export function Example() {
 
 ## Components
 
-- `ChartContainer` and tooltip primitives (the shadcn chart foundation)
+- `ChartContainer` and tooltip primitives (the chart foundation)
 - `AreaChart`
 - `LineChart`
 - `BarChart`

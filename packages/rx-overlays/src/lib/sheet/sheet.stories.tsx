@@ -15,7 +15,7 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
 /**
  * # Sheet
  *
- * A side-anchored panel for longer flows — a faithful shadcn port over Radix
+ * A side-anchored panel for longer flows — built on Radix
  * Dialog with a directional slide animation. Use it for filters, settings panels
  * and multi-section edit forms: content too rich for a `Popover` but not
  * deserving the full focus of a `Dialog`. `right` is the default; `left` suits

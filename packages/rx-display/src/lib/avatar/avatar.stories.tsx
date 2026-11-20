@@ -78,7 +78,7 @@ export const Workbench: Story = {
   args: { size: 'default' },
   render: (args) => (
     <Avatar {...args}>
-      <AvatarImage src={SRC} alt="@shadcn" />
+      <AvatarImage src={SRC} alt="User avatar" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   ),
@@ -88,7 +88,7 @@ export const Workbench: Story = {
 export const Default: Story = {
   render: (args) => (
     <Avatar {...args}>
-      <AvatarImage src={SRC} alt="@shadcn" />
+      <AvatarImage src={SRC} alt="User avatar" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   ),
@@ -109,7 +109,7 @@ export const Sizes: Story = {
     <div className="flex items-end gap-4">
       {(['sm', 'default', 'lg'] as const).map((size) => (
         <Avatar key={size} size={size}>
-          <AvatarImage src={SRC} alt="@shadcn" />
+          <AvatarImage src={SRC} alt="User avatar" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       ))}
@@ -121,7 +121,7 @@ export const Sizes: Story = {
 export const WithBadge: Story = {
   render: () => (
     <Avatar size="lg">
-      <AvatarImage src={SRC} alt="@shadcn" />
+      <AvatarImage src={SRC} alt="User avatar" />
       <AvatarFallback>CN</AvatarFallback>
       <AvatarBadge className="bg-success">
         <Check />

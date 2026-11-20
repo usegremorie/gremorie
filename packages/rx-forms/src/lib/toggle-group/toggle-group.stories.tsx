@@ -13,7 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from './toggle-group';
 /**
  * # ToggleGroup
  *
- * Coordinated set of Toggles, a faithful shadcn/Radix port. Use `type="single"`
+ * Coordinated set of Toggles, built on Radix. Use `type="single"`
  * for radio-like behavior (one pressed at a time) or `type="multiple"` for
  * checkbox-like (any number pressed). `variant`, `size` and `spacing` propagate
  * from the Root to children via context. Use it for formatting/state

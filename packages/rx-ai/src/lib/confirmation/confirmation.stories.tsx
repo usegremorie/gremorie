@@ -13,7 +13,7 @@ import {
 /**
  * # Confirmation
  *
- * A faithful port of the Vercel AI Elements **Confirmation** — a human-in-the-
+ * The **Confirmation** — a human-in-the-
  * loop approval card for tool calls that need consent before running (e.g. a
  * destructive action). It is driven by the AI SDK `state` plus an `approval`
  * object and conditionally renders the requested / accepted / rejected slots.

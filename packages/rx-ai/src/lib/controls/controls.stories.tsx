@@ -11,7 +11,7 @@ import { Controls } from './controls';
 /**
  * # Controls
  *
- * A faithful port of the Vercel AI Elements **Controls** — a restyled wrapper
+ * The **Controls** — a restyled wrapper
  * around React Flow's `Controls` (zoom in / out, fit-view, interactivity lock).
  * It applies the design system card surface, rounded buttons and a subtle
  * hover state so the control cluster matches the rest of the canvas chrome.

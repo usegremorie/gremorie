@@ -6,7 +6,7 @@ import { Button } from './button';
 /**
  * # Button
  *
- * Primary click target. A faithful shadcn port wired to a single
+ * Primary click target, wired to a single
  * class-variance-authority factory exposing six visual variants and eight size
  * presets (including icon-only sizes), plus an `asChild` escape hatch via Radix
  * Slot for rendering as a link or any other element.

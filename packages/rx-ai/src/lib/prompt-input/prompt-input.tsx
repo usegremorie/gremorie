@@ -1503,7 +1503,7 @@ export type PromptInputSelectTriggerProps = ComponentProps<
 >;
 
 /**
- * `ghost` (default) is the AI Elements look: no surface until hover. On a
+ * `ghost` (default) is the quiet look: no surface until hover. On a
  * filled prompt, `outline` or `secondary` draw the trigger like the other
  * controls, through the Select's own variants.
  */

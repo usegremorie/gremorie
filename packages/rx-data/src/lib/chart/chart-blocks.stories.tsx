@@ -42,20 +42,19 @@ import {
 } from './chart';
 
 /**
- * # Chart blocks (shadcn reference)
+ * # Chart blocks
  *
- * The **official shadcn/ui chart blocks**, copied verbatim and adapted only at
- * the import line — `Card` from `@gremorie/rx-display`, the chart primitive from
- * `@gremorie/rx-data`, and the chart parts straight from `recharts`. They are
- * the reference compositions (matching ui.shadcn.com/charts) so you can validate
- * the primitive renders pixel-for-pixel like upstream.
+ * Complete chart compositions built from the primitives: `Card` from
+ * `@gremorie/rx-display`, the chart primitive from `@gremorie/rx-data`, and the
+ * chart parts straight from `recharts`. Use them to validate that the
+ * primitive renders every chart type correctly.
  *
  * These are **examples**, not package API. For data-driven usage import the thin
  * wrappers (`BarChart`, `AreaChart`, …) — which are these same compositions,
  * parameterized by `data`/`config`.
  */
 const meta = {
-  title: 'Layout & display/Data/Blocks (shadcn)',
+  title: 'Layout & display/Data/Blocks',
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (

@@ -23,7 +23,7 @@ import {
  * Hierarchical trail of links showing where the current page sits in the site
  * structure. Plain semantic markup — a `<nav>` wrapping an `<ol>` of `<li>`
  * items, kept dependency-free for SSR and accessibility. Use only on deep
- * hierarchies (≥3 levels). This is a faithful shadcn/ui port.
+ * hierarchies (≥3 levels).
  *
  * ## Anatomy
  *

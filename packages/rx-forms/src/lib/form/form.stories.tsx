@@ -17,7 +17,7 @@ import {
 /**
  * # Form
  *
- * A faithful shadcn `react-hook-form` wrapper: a set of field-aware primitives
+ * A `react-hook-form` wrapper: a set of field-aware primitives
  * that wire ARIA relationships (`htmlFor`, `aria-describedby`, `aria-invalid`)
  * automatically. `Form` is just `FormProvider`; the real work happens in
  * `FormField` (a typed `Controller`) and the `FormItem` context.

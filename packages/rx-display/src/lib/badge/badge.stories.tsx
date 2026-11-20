@@ -7,8 +7,8 @@ import { Badge } from './badge';
  * # Badge
  *
  * A compact label for status, counts and tags. Renders a `<span>` (or any
- * element via `asChild`) styled by `class-variance-authority`. A faithful
- * shadcn port — KDS treats Badge as a *static* label primitive; interactive
+ * element via `asChild`) styled by `class-variance-authority`. Gremorie
+ * treats Badge as a *static* label primitive; interactive
  * selection-style chips belong to `ToggleGroup`.
  *
  * ## Anatomy

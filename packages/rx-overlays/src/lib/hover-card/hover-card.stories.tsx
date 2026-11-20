@@ -7,7 +7,7 @@ import { Button } from '@gremorie/rx-forms';
 /**
  * # HoverCard
  *
- * A non-interactive preview pane shown on hover — a faithful shadcn port over
+ * A non-interactive preview pane shown on hover — built on
  * Radix HoverCard. Use it to *preview* content the user can fully open with a
  * click (profile cards on `@mentions`, link previews, image teasers). Never put
  * critical info or controls inside it — those belong in a `Popover`.

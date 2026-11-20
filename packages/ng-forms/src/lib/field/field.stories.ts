@@ -22,7 +22,7 @@ import {
 
 /**
  * Field - the form-layout family. Angular parity port of React `Field` from
- * `@gremorie/rx-forms` (a port of shadcn/ui `Field`): a label, a control,
+ * `@gremorie/rx-forms`: a label, a control,
  * helper text and an error composed into one accessible unit, grouped into
  * sets, plus the **choice card** (a whole `gr-field` inside a
  * `gr-field-label`).

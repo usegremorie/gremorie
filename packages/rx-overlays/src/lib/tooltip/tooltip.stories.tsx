@@ -12,7 +12,7 @@ import { Button } from '@gremorie/rx-forms';
 /**
  * # Tooltip
  *
- * Short, non-essential context shown on hover/focus — a faithful shadcn port over
+ * Short, non-essential context shown on hover/focus — built on
  * Radix Tooltip. Reserve it for supporting hints (keyboard shortcuts, icon
  * labels). Touch users may never trigger it and keyboard users only see it on
  * focus, so critical info must stay visible in the layout. Wrap the app (or each

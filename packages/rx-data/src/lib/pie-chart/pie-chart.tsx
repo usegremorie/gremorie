@@ -35,7 +35,7 @@ export interface PieChartProps {
 }
 
 /**
- * Pie / donut chart — recharts + the shadcn `chart` primitives. Slice colors
+ * Pie / donut chart — recharts + the `chart` primitives. Slice colors
  * come from each row's `fill`. Pass `donut` for a donut.
  *
  * @example

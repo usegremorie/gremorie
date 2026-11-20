@@ -22,7 +22,7 @@ import {
 /**
  * # Field
  *
- * The form-layout family, a faithful port of shadcn/ui `Field`: a label, a
+ * The form-layout family: a label, a
  * control, helper text and an error composed into one accessible unit, grouped
  * into sets, plus the **choice card** (a whole `Field` inside a `FieldLabel`).
  *
@@ -53,7 +53,7 @@ import {
  * | `errors` (FieldError) | `Array<{ message?: string }>` | — | Messages; children win over `errors`. |
  * | ...`div` | `React.ComponentProps<"div">` | — | Native props on every part. |
  *
- * State lives in attributes, as in shadcn: `data-invalid="true"` on `Field`
+ * State lives in attributes: `data-invalid="true"` on `Field`
  * (and `aria-invalid` on the control), `data-disabled="true"` on `Field` (and
  * `disabled` on the control).
  *

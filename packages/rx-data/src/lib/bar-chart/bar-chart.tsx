@@ -49,7 +49,7 @@ export interface BarChartProps {
 }
 
 /**
- * Bar chart — recharts + the shadcn `chart` primitives. Renders one `<Bar>` per
+ * Bar chart — recharts + the `chart` primitives. Renders one `<Bar>` per
  * `config` entry (colored `var(--color-<key>)`); for a single categorical
  * series give each row its own `fill` and the bars take those colors.
  *

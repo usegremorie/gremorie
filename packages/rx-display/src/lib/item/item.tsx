@@ -7,8 +7,8 @@ import { cn } from '@gremorie/rx-core';
 import { Separator } from '../separator';
 
 /**
- * Item - flexible list-row primitive (compound). Adapted from shadcn/ui's Item
- * into a single-`size` cascade: the `size` set on `Item` drives media size AND
+ * Item - flexible list-row primitive (compound), built around a
+ * single-`size` cascade: the `size` set on `Item` drives media size AND
  * title/description typography at once via `data-size` + `group-data` selectors,
  * so no wrapper has to repeat measurements.
  *

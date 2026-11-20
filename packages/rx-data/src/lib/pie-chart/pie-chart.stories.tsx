@@ -8,13 +8,13 @@ import { PieChart } from './pie-chart';
  * # PieChart
  *
  * A recharts pie / donut chart wired to Gremorie's design tokens through the
- * shadcn `chart` primitive (`ChartContainer`). Slice colors come from each row's
+ * `chart` primitive (`ChartContainer`). Slice colors come from each row's
  * `fill`; `config` supplies the labels shown in the tooltip.
  *
  * ## Anatomy
  *
  * ```text
- * PieChart                          recharts pie / donut on the shadcn chart primitive
+ * PieChart                          recharts pie / donut on the chart primitive
  * └─ ChartContainer                 responsive square frame + tooltip label config
  *    └─ RechartsPieChart            recharts pie surface
  *       ├─ ChartTooltip             hover card

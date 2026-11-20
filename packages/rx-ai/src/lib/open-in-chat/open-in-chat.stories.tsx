@@ -17,7 +17,7 @@ import {
 /**
  * # OpenIn
  *
- * A faithful port of the Vercel AI Elements **OpenIn** primitive — a dropdown
+ * The **OpenIn** primitive — a dropdown
  * that deep-links the current `query` into an external AI chat / builder
  * (ChatGPT, Claude, T3 Chat, Scira, v0, Cursor). Each provider item builds a
  * pre-filled URL from the shared `query` and opens it in a new tab.

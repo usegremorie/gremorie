@@ -11,7 +11,7 @@ import {
 
 /**
  * Carousel — Embla-backed slide region (Angular edition). Mirrors React
- * `Carousel` from `@gremorie/rx-display` (shadcn pattern). Five parts:
+ * `Carousel` from `@gremorie/rx-display`. Five parts:
  * root + content + item + previous + next.
  */
 const meta: Meta<Carousel> = {

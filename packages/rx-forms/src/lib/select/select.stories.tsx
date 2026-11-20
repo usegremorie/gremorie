@@ -15,7 +15,7 @@ import {
 /**
  * # Select
  *
- * Dropdown chooser for short, fixed lists — a faithful shadcn/Radix port. A
+ * Dropdown chooser for short, fixed lists — built on Radix. A
  * compound primitive: the trigger and value live in page flow while the listbox
  * is portalled and animated by Radix.
  *

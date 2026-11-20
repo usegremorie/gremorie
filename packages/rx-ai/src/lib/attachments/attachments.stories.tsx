@@ -20,7 +20,7 @@ import {
  * # Attachments
  *
  * A flexible, composable surface for displaying files, images, video, audio and
- * source documents — a faithful port of the Vercel AI Elements **Attachments**.
+ * source documents: the **Attachments** family.
  * It is **standalone** (no PromptInput context required), so the same component
  * renders attachments in a composer *and* on a sent message.
  *

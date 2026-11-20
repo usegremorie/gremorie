@@ -37,7 +37,7 @@ export interface AreaChartProps {
 }
 
 /**
- * Area chart — recharts + the shadcn `chart` primitives. One `<Area>` per
+ * Area chart — recharts + the `chart` primitives. One `<Area>` per
  * `config` entry, filled with `var(--color-<key>)`.
  *
  * @example

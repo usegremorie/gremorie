@@ -9,8 +9,9 @@ import { cn } from '@gremorie/rx-core';
 import { formatValue } from './format';
 
 /**
- * Chart primitives — ported from shadcn/ui (new-york-v4), the proven recharts
- * wrapper, adapted to Gremorie (`cn` from `@gremorie/rx-core`; design tokens).
+ * Chart primitives: the recharts wrapper every Gremorie chart composes on
+ * (`cn` from `@gremorie/rx-core`; design tokens). Third-party licenses: see
+ * NOTICE.md.
  *
  * This is the foundation every React (`rx-*`) chart composes on: `ChartContainer`
  * provides the responsive frame + per-series CSS color vars (`--color-<key>`),

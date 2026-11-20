@@ -220,7 +220,7 @@ export class PromptInputSelectTrigger {
   readonly ariaLabel = input<string>('');
   readonly size = input<'sm' | 'md'>('sm');
   /**
-   * `ghost` (default) is the AI Elements look; `outline` / `secondary` draw
+   * `ghost` (default) is the quiet look; `outline` / `secondary` draw
    * the trigger like the Select variants. Mirrors React `variant`.
    */
   readonly variant = input<'ghost' | 'outline' | 'secondary'>('ghost');

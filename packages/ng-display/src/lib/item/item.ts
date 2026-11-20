@@ -57,7 +57,7 @@ export type ItemSize = NonNullable<VariantProps<typeof itemVariants>['size']>;
 
 /**
  * Item — flexible list-row primitive (compound). Mirrors React `Item` from
- * `@gremorie/rx-display` (adapted from shadcn/ui's Item).
+ * `@gremorie/rx-display`.
  *
  * The `size` set on the root cascades to the media size and the
  * title/description typography via `data-size` + `group-data` selectors.

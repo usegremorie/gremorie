@@ -18,7 +18,7 @@ import { Button } from '@gremorie/rx-forms';
 /**
  * # AlertDialog
  *
- * A modal, blocking confirmation dialog — a faithful shadcn port over Radix
+ * A modal, blocking confirmation dialog — built on Radix
  * AlertDialog. Unlike `Dialog`, it does not close on overlay click or escape by
  * default and forces the user to choose. Reserve it for destructive or
  * irreversible actions (delete, discard, account removal).

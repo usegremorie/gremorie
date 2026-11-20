@@ -22,7 +22,7 @@ import { LABEL_CLASS } from '../label/label';
 
 /**
  * Field - the form-layout family. Angular parity port of the React `Field`
- * family from `@gremorie/rx-forms` (a port of shadcn/ui `Field`): it composes a
+ * family from `@gremorie/rx-forms`: it composes a
  * label, a control, helper text and a validation message into one accessible
  * unit, and groups units into sets.
  *

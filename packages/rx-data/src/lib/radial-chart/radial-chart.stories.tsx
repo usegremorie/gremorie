@@ -8,7 +8,7 @@ import { RadialChart } from './radial-chart';
  * # RadialChart
  *
  * A recharts radial bar chart wired to Gremorie's design tokens through the
- * shadcn `chart` primitive (`ChartContainer`). One concentric bar per row; bar
+ * `chart` primitive (`ChartContainer`). One concentric bar per row; bar
  * colors come from each row's `fill`.
  *
  * ## Anatomy

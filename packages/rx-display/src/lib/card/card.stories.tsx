@@ -18,7 +18,7 @@ import {
  * A surface primitive for grouping related content: a rounded surface with a
  * 1px ring and a soft shadow (no border), with a structured
  * `Header → Content → Footer` rhythm. The API is composable, not
- * configurative: opt in to only the parts you need. A faithful shadcn port.
+ * configurative: opt in to only the parts you need.
  *
  * ## Anatomy
  *

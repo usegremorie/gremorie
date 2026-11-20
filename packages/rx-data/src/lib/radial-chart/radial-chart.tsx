@@ -35,7 +35,7 @@ export interface RadialChartProps {
 }
 
 /**
- * Radial bar chart — recharts + the shadcn `chart` primitives. One concentric
+ * Radial bar chart — recharts + the `chart` primitives. One concentric
  * bar per row; colors come from each row's `fill`.
  *
  * @example

@@ -24,8 +24,7 @@ import { cn } from '@gremorie/ng-core';
 
 /**
  * Carousel — horizontally (or vertically) scrollable slide region. Mirrors
- * React `Carousel` from `@gremorie/rx-display`, which follows the shadcn/ui
- * pattern built on Embla. Five parts:
+ * React `Carousel` from `@gremorie/rx-display`, both built on Embla. Five parts:
  * `gr-carousel` (root), `gr-carousel-content`, `gr-carousel-item`,
  * `gr-carousel-previous`, `gr-carousel-next`.
  *

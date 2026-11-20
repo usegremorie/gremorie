@@ -103,7 +103,7 @@ export const ManySources: Story = {
         <sources-content>
           <source href="https://example.com/1" title="React docs · forwardRef" />
           <source href="https://example.com/2" title="Radix Primitives · Slot" />
-          <source href="https://example.com/3" title="shadcn registry overview" />
+          <source href="https://example.com/3" title="Component registry overview" />
           <source href="https://example.com/4" title="Angular signals" />
           <source href="https://example.com/5" title="AI SDK · UIMessage" />
           <source href="https://example.com/6" title="Spartan-ng · Brain" />

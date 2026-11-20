@@ -16,7 +16,7 @@ import { suggestion } from './suggestion.contract';
 import { task } from './task.contract';
 import { tool } from './tool.contract';
 
-/** All `chatbot` (AI Elements) category contracts. */
+/** All `chatbot` (AI) category contracts. */
 export const CHATBOT_CONTRACTS = [
   chainOfThought,
   checkpoint,

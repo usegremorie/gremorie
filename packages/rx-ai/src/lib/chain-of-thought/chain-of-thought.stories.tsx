@@ -127,7 +127,7 @@ export const WithSearchResults: Story = {
               React docs · forwardRef
             </ChainOfThoughtSearchResult>
             <ChainOfThoughtSearchResult>
-              shadcn · slot pattern
+              Gremorie docs · slot pattern
             </ChainOfThoughtSearchResult>
           </ChainOfThoughtSearchResults>
         </ChainOfThoughtStep>

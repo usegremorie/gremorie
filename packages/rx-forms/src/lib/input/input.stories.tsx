@@ -6,7 +6,7 @@ import { Input } from './input';
 /**
  * # Input
  *
- * Single-line text field — a faithful shadcn port. Renders a styled native
+ * Single-line text field. Renders a styled native
  * `<input>` that adopts every HTML `type` (text, email, password, number,
  * search, tel, url, file…). Visual states are token-driven: a filled field
  * (`bg-input/50`, transparent border, no shadow, `h-8`) by default,

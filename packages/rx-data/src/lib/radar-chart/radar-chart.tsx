@@ -151,7 +151,7 @@ export interface RadarChartProps {
 }
 
 /**
- * Radar chart — recharts + the shadcn `chart` primitives. One `<Radar>` per
+ * Radar chart — recharts + the `chart` primitives. One `<Radar>` per
  * `config` entry over a shared angular axis (`xKey`).
  *
  * @example

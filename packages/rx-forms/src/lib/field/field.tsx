@@ -10,7 +10,7 @@ import { Label } from '../label/label';
 /**
  * Field - the form-layout family: it composes a label, a control, helper text
  * and a validation message into one accessible unit, and groups units into
- * sets. A faithful port of the shadcn/ui `Field` family.
+ * sets.
  *
  * Parts: `Field`, `FieldLabel`, `FieldTitle`, `FieldDescription`,
  * `FieldError`, `FieldContent`, `FieldGroup`, `FieldSet`, `FieldLegend`,

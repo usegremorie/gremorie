@@ -43,8 +43,8 @@ export default [
         'error',
         {
           type: 'element',
-          // One namespaced prefix per AI Elements family (mirrors the Vercel AI
-          // Elements component names — intentional, not the workspace `gn-` prefix).
+          // One namespaced prefix per AI component family (matches the component
+          // names, intentional, not the workspace `gn-` prefix).
           prefix: [
             'ai',
             'attachment',

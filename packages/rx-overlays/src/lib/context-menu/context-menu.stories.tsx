@@ -20,7 +20,7 @@ import {
 /**
  * # ContextMenu
  *
- * A right-click activated secondary action menu — a faithful shadcn port over
+ * A right-click activated secondary action menu — built on
  * Radix ContextMenu. Treat it as a power-user accelerator: every action here
  * must also be reachable through a visible button, dropdown or shortcut. Shares
  * its full shape with `DropdownMenu` (items, groups, checkbox/radio, submenus).

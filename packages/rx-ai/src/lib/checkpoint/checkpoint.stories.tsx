@@ -7,7 +7,7 @@ import { Checkpoint, CheckpointIcon, CheckpointTrigger } from './checkpoint';
 /**
  * # Checkpoint
  *
- * A faithful port of the Vercel AI Elements **Checkpoint** — a timeline marker
+ * The **Checkpoint** — a timeline marker
  * shown in a conversation to let the user rewind/branch from a saved point. It
  * renders an icon, a trigger button and a trailing separator that fills the
  * remaining row width.

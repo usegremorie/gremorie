@@ -288,10 +288,10 @@ const PREVIEW_ITEMS: AttachmentData[] = [
           <docs-prose>
             <ul class="ml-5 list-disc space-y-1">
               <li>
-                <strong>Hover cards deferred to v0.2.</strong> AI Elements ships
-                an AttachmentHoverCard for showing a larger preview on hover in
-                inline variant. Gremorie NG will adopt it once the popover
-                primitive lands (target: v0.2 alongside Conversation).
+                <strong>Hover cards deferred to v0.2.</strong> The React edition
+                ships an AttachmentHoverCard for showing a larger preview on
+                hover in inline variant. Gremorie NG will adopt it once the
+                popover primitive lands (target: v0.2 alongside Conversation).
               </li>
               <li>
                 <strong>id generation.</strong>

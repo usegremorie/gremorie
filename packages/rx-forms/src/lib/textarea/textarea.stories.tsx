@@ -6,7 +6,7 @@ import { Textarea } from './textarea';
 /**
  * # Textarea
  *
- * Multi-line text field — a faithful shadcn port. Uses CSS
+ * Multi-line text field. Uses CSS
  * `field-sizing: content` so it grows automatically as the user types, with no
  * manual `rows` or JS measurement in modern browsers. Pair with labels and
  * validation messages.

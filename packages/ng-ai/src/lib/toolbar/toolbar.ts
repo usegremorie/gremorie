@@ -9,8 +9,8 @@ import {
  * contexts.
  *
  * Anatomy diff vs rx-ai: the React `Toolbar` wraps `@xyflow/react`
- * `NodeToolbar` and is tied to the workflow-canvas world. AI Elements (the
- * upstream blueprint) actually uses a generic `<div role="toolbar">` outside
+ * `NodeToolbar` and is tied to the workflow-canvas world. The generic
+ * pattern uses a generic `<div role="toolbar">` outside
  * the canvas, so this Angular port is the generic primitive — three
  * components (Toolbar / ToolbarGroup / ToolbarButton) that compose without
  * @xyflow/angular. Workflow-canvas users compose `<toolbar>` inside an

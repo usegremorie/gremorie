@@ -11,7 +11,7 @@ import { Connection } from './connection';
 /**
  * # Connection
  *
- * A faithful port of the Vercel AI Elements **Connection** line — the bezier
+ * The **Connection** line — the bezier
  * curve React Flow draws while the user is dragging a new edge between two
  * handles. It renders a ring-colored animated path ending in a small white
  * dot at the cursor.

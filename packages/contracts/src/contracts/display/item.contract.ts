@@ -1,8 +1,7 @@
 import { defineContract } from '../../types';
 
 /**
- * Item - flexible list-row primitive (compound), adapted from shadcn/ui's
- * Item. React: `@gremorie/rx-display`. Angular: `@gremorie/ng-display`.
+ * Item - flexible list-row primitive (compound). React: `@gremorie/rx-display`. Angular: `@gremorie/ng-display`.
  * One `size` on the root cascades to the media size AND the
  * title/description typography via `data-size` + `group-data` selectors.
  */
