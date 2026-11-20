@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 /**
  * Integration guard over the published token source in @gremorie/tokens. Keeps
- * the brand layer from creeping back and the tweakcn contract complete.
+ * the brand layer from creeping back and the theme contract complete.
  */
 const here = dirname(fileURLToPath(import.meta.url));
 const tokensDir = join(here, '../../tokens/styles');

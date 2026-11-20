@@ -34,7 +34,7 @@ Switch themes with `data-theme` on the root element and dark mode with the
   in the repository rather than in the npm package. Style Dictionary builds
   everything below from it.
 - **CSS** (`theme.css`, `themes/*.css`): the full Tailwind palette plus a few
-  custom families as OKLCH primitives; semantic tokens in the shadcn vocabulary
+  custom families as OKLCH primitives; semantic tokens in a familiar vocabulary
   (`primary`, `secondary`, `accent`, `muted`, `destructive`, `border`, `ring`,
   `card`, `popover`, the `sidebar-*` family and the chart schemes); theme
   controls (`--radius-base`, `--font-sans/serif/mono`, the `--shadow-*` set,
@@ -63,12 +63,12 @@ cannot carry OKLCH.
 names, for each `ColorScheme` role, the semantic token it takes or `derived`.
 Twelve roles take a semantic token:
 `primary`, `onPrimary`, `secondaryContainer` and `onSecondaryContainer` (the
-shadcn `secondary` is a low-emphasis tinted fill, so it maps to the container),
+Gremorie `secondary` is a low-emphasis tinted fill, so it maps to the container),
 `background`, `onBackground`, `surface`, `onSurface`, `surfaceVariant`
 (`muted`), `surfaceTint`, `error` and `onError`. The other 36 are derived with
 Material Color Utilities from a `SchemeContent` seeded with the theme's
 primary, so they are derived from its hue and chroma: among them the M3 `secondary`, the whole
-tertiary family (shadcn `accent` is a hover surface with no M3 peer),
+tertiary family (Gremorie `accent` is a hover surface with no M3 peer),
 `onSurfaceVariant` and `outline`. The derived container roles and the derived
 secondary and tertiary accents sit at the Material 3 baseline tones. The
 surface ladder (`surfaceDim`, `surfaceBright` and `surfaceContainerLowest` to

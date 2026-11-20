@@ -3,7 +3,7 @@
     "sans": {
       "$type": "fontFamily",
       "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-      "$description": "Typography, spacing, tracking (tweakcn contract). Themes may override."
+      "$description": "Typography, spacing, tracking (theme contract). Themes may override."
     },
     "serif": {
       "$type": "fontFamily",

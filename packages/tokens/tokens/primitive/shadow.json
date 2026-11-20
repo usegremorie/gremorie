@@ -24,7 +24,7 @@
         "unit": "px"
       }
     },
-    "$description": "Shadows (tweakcn contract; themes may override)"
+    "$description": "Shadows (theme contract; themes may override)"
   },
   "shadow-xs": {
     "$type": "shadow",
