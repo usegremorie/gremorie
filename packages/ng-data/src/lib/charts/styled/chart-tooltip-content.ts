@@ -49,7 +49,7 @@ export interface ChartTooltipRow {
           @switch (indicator()) {
             @case ('line') {
               <span
-                class="h-3 w-1 shrink-0 rounded-[2px]"
+                class="h-3 w-1 shrink-0 rounded-xs"
                 [style.background]="row.color"
               ></span>
             }
@@ -61,7 +61,7 @@ export interface ChartTooltipRow {
             }
             @default {
               <span
-                class="size-2 shrink-0 rounded-[2px]"
+                class="size-2 shrink-0 rounded-xs"
                 [style.background]="row.color"
               ></span>
             }

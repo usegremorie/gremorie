@@ -58,7 +58,7 @@ export const WordButton = React.memo(function WordButton({
       // without color alone. Repainting it on focus would hide the edge exactly
       // while the user is on it.
       className={cn(
-        'rounded border-primary px-0.5 outline-none hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        'rounded border-primary px-0.5 outline-none hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50',
         'data-[in-range=true]:bg-primary/15 data-[in-range=true]:hover:bg-primary/25',
         'data-[edge=start]:rounded-l-none data-[edge=start]:border-l-2',
         'data-[edge=end]:rounded-r-none data-[edge=end]:border-r-2',

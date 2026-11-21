@@ -46,6 +46,26 @@ export const inputGroup = defineContract({
       adapts: { rx: 'on <InputGroupButton>', ng: 'on <gr-input-group-button>' },
       desc: 'Button size preset (on input-group-button).',
     },
+    {
+      name: 'onChange',
+      type: '(e) => void',
+      adapts: {
+        rx: 'on <InputGroupInput>',
+        ng: 'output: valueChange on <gr-input-group-input>',
+      },
+      desc: 'Fires on input (on input-group-input); Angular emits the string value.',
+      control: false,
+    },
+    {
+      name: 'inputMode',
+      type: 'string',
+      adapts: {
+        rx: 'on <InputGroupInput>',
+        ng: 'input: inputmode on <gr-input-group-input>',
+      },
+      desc: 'Virtual keyboard hint (on input-group-input).',
+      control: false,
+    },
   ],
   guidance: {
     summary:

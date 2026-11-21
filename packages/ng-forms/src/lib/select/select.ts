@@ -128,6 +128,9 @@ export class Select {
 @Component({
   selector: 'gr-select-trigger',
   standalone: true,
+  // `id` is an input AND a static attribute: keep it off the host so a label's
+  // `for` reaches the button (same as gr-input / gr-checkbox).
+  host: { '[attr.id]': 'null' },
   imports: [BrnSelectTrigger],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -136,6 +139,7 @@ export class Select {
       brnSelectTrigger
       type="button"
       data-slot="select-trigger"
+      [id]="resolvedId()"
       [attr.data-size]="size()"
       [attr.data-variant]="variant()"
       [class]="computedClass()"
@@ -158,6 +162,11 @@ export class Select {
   `,
 })
 export class SelectTrigger {
+  private static nextId = 0;
+  private readonly fallbackId = `gr-select-trigger-${SelectTrigger.nextId++}`;
+
+  /** Element id on the trigger button, for `<label for>`. Mirrors React `id`. */
+  readonly id = input<string>('');
   /** Trigger height. Mirrors React `SelectTrigger` `size` (default 'default'). */
   readonly size = input<SelectSize>('default');
   /** Trigger surface. Mirrors React `SelectTrigger` `variant`. */
@@ -165,9 +174,11 @@ export class SelectTrigger {
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
+  protected readonly resolvedId = computed(() => this.id() || this.fallbackId);
+
   protected readonly computedClass = computed(() =>
     cn(
-      "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "flex w-fit items-center justify-between gap-2 rounded-sm border border-transparent bg-input/50 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 hover:bg-input/70 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       SELECT_TRIGGER_VARIANTS[this.variant()],
       this.class(),
     ),
@@ -349,7 +360,7 @@ export class SelectContent {
 
   protected readonly computedClass = computed(() =>
     cn(
-      'relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+      'relative z-50 max-h-(--radix-select-content-available-height) min-w-32 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
       this.class(),
     ),
   );

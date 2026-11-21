@@ -77,6 +77,16 @@ export const dropdownMenu = defineContract({
       desc: 'DropdownMenuCheckboxItem: controlled checked state.',
     },
     {
+      name: 'aria-label',
+      type: 'string',
+      adapts: {
+        rx: 'on <DropdownMenuTrigger>',
+        ng: 'input: ariaLabel on <gr-dropdown-menu-trigger>',
+      },
+      desc: 'DropdownMenuTrigger: accessible name for an icon-only trigger.',
+      control: false,
+    },
+    {
       name: 'className',
       type: 'string',
       adapts: { ng: 'class input' },
@@ -101,7 +111,7 @@ export const dropdownMenu = defineContract({
     rules: [
       'DropdownMenuTrigger opens the menu on click; items close it on select (checkbox/radio items can keep it open).',
       'Use inset on plain Items/Labels to align them with rows that have a leading checkbox or radio indicator.',
-      'Angular has no spartan dropdown-menu primitive, so it is composed on BrnPopover: the trigger is a button with `[brnPopoverTriggerFor]` pointing at a `<ng-template brnPopoverContent>`, and nested submenus are styled placeholders (the brain popover has no real submenu behavior).',
+      'Angular has no spartan dropdown-menu primitive, so it is composed on BrnPopover: the trigger opens the root popover, which renders the sibling `<ng-template brnPopoverContent>` (no template ref to wire), and nested submenus are styled placeholders (the brain popover has no real submenu behavior).',
     ],
     example:
       '<DropdownMenu><DropdownMenuTrigger>Open</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>Edit</DropdownMenuItem><DropdownMenuItem variant="destructive">Delete</DropdownMenuItem></DropdownMenuContent></DropdownMenu>',

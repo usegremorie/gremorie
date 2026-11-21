@@ -30,7 +30,7 @@ import { ARTIFACT_ICONS } from './icons';
  *
  * `@container/artifact` lets the header adapt to the CARD's own width (not the
  * viewport), so actions collapse/expand based on how much room the card actually
- * has. `min-w-[280px]` keeps icon + truncated title + a menu button legible.
+ * has. `min-w-70` keeps icon + truncated title + a menu button legible.
  */
 @Component({
   selector: 'artifact',
@@ -38,7 +38,7 @@ import { ARTIFACT_ICONS } from './icons';
   host: {
     'data-slot': 'artifact',
     class:
-      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
+      '@container/artifact flex min-w-70 flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
   },
   template: `<ng-content />`,
 })
@@ -259,7 +259,7 @@ export class ArtifactAction {
   protected readonly buttonClass = computed(() =>
     cn(
       // rx-forms buttonVariants base (verbatim)
-      "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       // variant: ghost (verbatim)
       'hover:bg-accent dark:hover:bg-accent/50',
       // size: icon-sm (verbatim)

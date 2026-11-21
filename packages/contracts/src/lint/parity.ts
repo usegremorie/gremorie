@@ -30,6 +30,8 @@ export function checkParity(
   }
 
   const known = new Set(contract.props.map((p) => p.name));
+  // React `className` is the Angular `class` input: same prop, framework name.
+  if (known.has('className')) known.add('class');
   const notInContract = [...new Set([...impl.rx, ...impl.ng])].filter(
     (n) => !known.has(n),
   );

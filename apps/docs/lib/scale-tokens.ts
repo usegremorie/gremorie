@@ -192,22 +192,22 @@ export const RADIUS_TOKENS: RadiusRow[] = [
   {
     token: '--radius-sm',
     utility: 'rounded-sm',
-    rem: '0.25rem',
-    px: '4px',
+    rem: '0.375rem',
+    px: '6px',
     useCase: 'Inputs em tema austero, separadores',
   },
   {
     token: '--radius-md',
     utility: 'rounded-md',
-    rem: '0.375rem',
-    px: '6px',
+    rem: '0.5rem',
+    px: '8px',
     useCase: 'Default de inputs e botões pequenos',
   },
   {
     token: '--radius-lg',
     utility: 'rounded-lg',
-    rem: '0.5rem',
-    px: '8px',
+    rem: '0.625rem',
+    px: '10px',
     useCase: 'Cards, modais, painéis',
   },
   {
@@ -354,6 +354,18 @@ export const DURATION_TOKENS: DurationRow[] = [
 ];
 
 export const ANIMATIONS = [
+  {
+    token: '--animate-pop-in',
+    utility: 'animate-pop-in',
+    value: 'gremorie-pop-in 120ms ease-out',
+    useCase: 'Entrada de menus e dropdowns (escala 0.96 e fade)',
+  },
+  {
+    token: '--animate-fade-in',
+    utility: 'animate-fade-in',
+    value: 'gremorie-fade-in 120ms ease-out',
+    useCase: 'Entrada de anexos e conteúdo que surge no lugar',
+  },
   {
     token: '--animate-spin',
     utility: 'animate-spin',

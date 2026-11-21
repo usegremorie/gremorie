@@ -7,6 +7,7 @@ import {
   InputGroupButton,
   InputGroupInput,
   InputGroupText,
+  InputGroupTextarea,
 } from './input-group';
 
 @Component({
@@ -66,4 +67,95 @@ describe('InputGroup', () => {
       render().querySelector('[data-slot="input-group-button"]'),
     ).not.toBeNull();
   });
+
+  it('pulls an addon holding gr-input-group-button toward the edge (has-[>button] parity)', () => {
+    const addons = render().querySelectorAll('[data-slot="input-group-addon"]');
+    const end = Array.from(addons).find(
+      (a) => a.getAttribute('data-align') === 'inline-end',
+    );
+    expect(end?.className).toContain('has-[>gr-input-group-button]:-mr-1.5');
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [InputGroup, InputGroupAddon, InputGroupInput],
+  template: `
+    <gr-input-group>
+      <gr-input-group-addon>$</gr-input-group-addon>
+      <gr-input-group-input
+        inputmode="decimal"
+        [value]="value"
+        (valueChange)="changes.push($event)"
+      />
+    </gr-input-group>
+  `,
+})
+class ValueHost {
+  value = '12';
+  changes: string[] = [];
+}
+
+describe('InputGroupInput parity', () => {
+  function render() {
+    TestBed.configureTestingModule({ imports: [ValueHost] });
+    const fixture = TestBed.createComponent(ValueHost);
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('keeps its host out of layout so the input stretches like React (flex-1)', () => {
+    const host = render().nativeElement as HTMLElement;
+    expect(host.querySelector('gr-input-group-input')?.classList).toContain(
+      'contents',
+    );
+    const input = host.querySelector('input')!;
+    expect(input.className).toContain('flex-1');
+  });
+
+  it('lets the group reach the input through the host ([&>input] parity)', () => {
+    const host = render().nativeElement as HTMLElement;
+    const group = host.querySelector('[data-slot="input-group"]')!;
+    expect(group.className).toContain(
+      'has-[>[data-align=inline-start]]:[&>gr-input-group-input>input]:pl-2',
+    );
+  });
+
+  it('emits valueChange with the typed string and seeds from value', () => {
+    const fixture = render();
+    const input = (fixture.nativeElement as HTMLElement).querySelector(
+      'input',
+    )!;
+    expect(input.value).toBe('12');
+    input.value = '123';
+    input.dispatchEvent(new Event('input'));
+    expect(fixture.componentInstance.changes).toEqual(['123']);
+  });
+
+  it('forwards inputmode to the native input', () => {
+    const host = render().nativeElement as HTMLElement;
+    expect(host.querySelector('input')?.getAttribute('inputmode')).toBe(
+      'decimal',
+    );
+  });
+
+  it('lets a textarea group grow (has-[>textarea] parity through the host)', () => {
+    TestBed.configureTestingModule({ imports: [TextareaHost] });
+    const fixture = TestBed.createComponent(TextareaHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('gr-input-group-textarea')?.classList).toContain(
+      'contents',
+    );
+    expect(
+      host.querySelector('[data-slot="input-group"]')?.className,
+    ).toContain('has-[>gr-input-group-textarea]:h-auto');
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [InputGroup, InputGroupTextarea],
+  template: `<gr-input-group><gr-input-group-textarea /></gr-input-group>`,
+})
+class TextareaHost {}

@@ -59,4 +59,36 @@ describe('Checkbox', () => {
       host.querySelector('[data-slot="checkbox-indicator"]'),
     ).not.toBeNull();
   });
+
+  it('draws a dash (not a check) when indeterminate', () => {
+    TestBed.configureTestingModule({ imports: [Host] });
+    const fixture = TestBed.createComponent(Host);
+    fixture.componentInstance.checked.set('indeterminate');
+    fixture.detectChanges();
+    const indicator = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-slot="checkbox-indicator"]',
+    );
+    const paths = Array.from(indicator?.querySelectorAll('path') ?? []).map(
+      (p) => p.getAttribute('d'),
+    );
+    expect(paths).toEqual(['M5 12h14']);
+  });
+
+  it('draws the check when checked', () => {
+    const fixture = render();
+    fixture.componentInstance.checked.set(true);
+    fixture.detectChanges();
+    const indicator = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-slot="checkbox-indicator"]',
+    );
+    const paths = Array.from(indicator?.querySelectorAll('path') ?? []).map(
+      (p) => p.getAttribute('d'),
+    );
+    expect(paths).toEqual(['M20 6 9 17l-5-5']);
+  });
+
+  it('keeps the host out of layout so the row is as tall as the box', () => {
+    const host = render().nativeElement as HTMLElement;
+    expect(host.querySelector('gr-checkbox')?.classList).toContain('contents');
+  });
 });

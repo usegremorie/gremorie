@@ -65,10 +65,16 @@ export type ButtonGroupOrientation = NonNullable<
     role: 'group',
     'data-slot': 'button-group',
     '[attr.data-orientation]': 'orientation()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class ButtonGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Layout axis. Mirrors React `orientation` (default 'horizontal'). */
   readonly orientation = input<ButtonGroupOrientation>('horizontal');
 
@@ -89,11 +95,19 @@ export class ButtonGroup {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: {
-    class:
-      "bg-muted shadow-xs flex items-center gap-2 rounded-md border px-4 text-sm font-medium [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
+    '[class]': 'hostClass()',
   },
 })
-export class ButtonGroupText {}
+export class ButtonGroupText {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      "bg-muted shadow-xs flex items-center gap-2 rounded-md border px-4 text-sm font-medium [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
+      this.class(),
+    ),
+  );
+}
 
 /**
  * ButtonGroupSeparator — a thin divider between segments of a ButtonGroup.
@@ -115,10 +129,16 @@ export class ButtonGroupText {}
     'aria-hidden': 'true',
     'data-slot': 'button-group-separator',
     '[attr.data-orientation]': 'orientation()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class ButtonGroupSeparator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Divider axis. Mirrors React `orientation` (default 'vertical'). */
   readonly orientation = input<'horizontal' | 'vertical'>('vertical');
 

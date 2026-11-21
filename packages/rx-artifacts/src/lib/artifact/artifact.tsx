@@ -37,9 +37,9 @@ export const Artifact = ({ className, ...props }: ArtifactProps) => (
       // on the conversation's --background, as cards sit on the page.
       // `@container/artifact` lets the header adapt to the CARD's own width
       // (not the viewport), so actions collapse/expand based on how much room
-      // the card actually has. `min-w-[280px]` keeps icon + truncated title +
+      // the card actually has. `min-w-70` keeps icon + truncated title +
       // a menu button always legible.
-      '@container/artifact flex min-w-[280px] flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
+      '@container/artifact flex min-w-70 flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm',
       className,
     )}
     {...props}

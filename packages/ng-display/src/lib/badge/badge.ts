@@ -5,6 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
@@ -16,7 +17,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
  * default static surface non-interactive.
  */
 export const badgeVariants = cva(
-  'inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3',
+  'inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3',
   {
     variants: {
       variant: {
@@ -74,10 +75,16 @@ export type BadgeVariant = NonNullable<
   host: {
     'data-slot': 'badge',
     '[attr.data-variant]': 'variant()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Badge {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly variant = input<BadgeVariant>('default');
 
   protected readonly computedClass = computed(() =>

@@ -5,6 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
@@ -68,10 +69,16 @@ export type AlertVariant = NonNullable<
     'data-slot': 'alert',
     role: 'alert',
     '[attr.data-variant]': 'variant()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Alert {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly variant = input<AlertVariant>('default');
 
   protected readonly computedClass = computed(() =>
@@ -90,10 +97,16 @@ export class Alert {
   template: `<ng-content />`,
   host: {
     'data-slot': 'alert-title',
-    class: 'col-start-2 line-clamp-1 min-h-4 font-medium',
+    '[class]': 'hostClass()',
   },
 })
-export class AlertTitle {}
+export class AlertTitle {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('col-start-2 line-clamp-1 min-h-4 font-medium', this.class()),
+  );
+}
 
 /**
  * AlertDescription — secondary body inside an Alert. Mirrors React
@@ -107,8 +120,16 @@ export class AlertTitle {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'alert-description',
-    class:
-      'col-start-2 grid justify-items-start gap-1 text-sm text-muted-foreground [&_p]:leading-relaxed',
+    '[class]': 'hostClass()',
   },
 })
-export class AlertDescription {}
+export class AlertDescription {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'col-start-2 grid justify-items-start gap-1 text-sm text-muted-foreground [&_p]:leading-relaxed',
+      this.class(),
+    ),
+  );
+}

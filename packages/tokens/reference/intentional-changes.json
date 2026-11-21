@@ -194,5 +194,33 @@
     "prop": "--sidebar-accent-foreground",
     "to": "var(--foreground)",
     "reason": "Text on surfaces follows --foreground instead of repeating its primitive, so the text colour changes in one place."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--radius-xs",
+    "to": "calc(var(--radius-base) * 0.2)",
+    "reason": "New radius step below sm (2px at the default base) so components stop hard-coding rounded-[2px]/[4px]."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--text-2xs",
+    "to": "0.625rem",
+    "reason": "New type step below text-xs (10px) replacing hand-written text-[10px] in charts, tab bar and badges; size only, line-height from context."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--animate-pop-in",
+    "to": "gremorie-pop-in 120ms ease-out",
+    "reason": "Animation token for the existing gremorie-pop-in keyframes, replacing animate-[gremorie-pop-in_120ms_ease-out]."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--animate-fade-in",
+    "to": "gremorie-fade-in 120ms ease-out",
+    "reason": "Animation token for the existing gremorie-fade-in keyframes, replacing animate-[gremorie-fade-in_120ms_ease-out]."
   }
 ]

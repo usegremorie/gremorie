@@ -48,7 +48,7 @@ interface LegendItem {
           chartFrame
           [data]="data()"
           [xKey]="nameKey()"
-          class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
+          class="mx-auto aspect-square max-h-65 w-full overflow-visible text-muted-foreground"
         >
           <svg:g
             [pie]="dataKey()"
@@ -74,7 +74,7 @@ interface LegendItem {
                   [attr.y]="l.y"
                   text-anchor="middle"
                   dominant-baseline="middle"
-                  class="pointer-events-none fill-background text-[10px] font-medium"
+                  class="pointer-events-none fill-background text-2xs font-medium"
                 >
                   {{ l.name }}
                 </svg:text>
@@ -109,7 +109,7 @@ interface LegendItem {
           >
             <div class="flex items-center gap-1.5 text-muted-foreground">
               <span
-                class="size-2 rounded-[2px]"
+                class="size-2 rounded-xs"
                 [style.background]="sliceColor(active()!)"
               ></span>
               <span>{{ activeName() }}</span>

@@ -50,4 +50,27 @@ describe('ToggleGroup', () => {
       expect(item.getAttribute('data-size')).toBe('sm');
     });
   });
+
+  it('merges a consumer class onto the item button (cn wins) and keeps the host out of layout', () => {
+    TestBed.configureTestingModule({ imports: [ClassHost] });
+    const fixture = TestBed.createComponent(ClassHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const item = host.querySelector('gr-toggle-group-item')!;
+    expect(item.classList).toContain('contents');
+    const button = item.querySelector('button')!;
+    expect(button.className).toContain('px-1');
+    expect(button.className).not.toContain('px-3');
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [ToggleGroup, ToggleGroupItem],
+  template: `
+    <gr-toggle-group type="single">
+      <gr-toggle-group-item value="a" class="px-1">A</gr-toggle-group-item>
+    </gr-toggle-group>
+  `,
+})
+class ClassHost {}

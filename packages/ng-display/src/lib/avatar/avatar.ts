@@ -58,10 +58,16 @@ export class AvatarService {
   host: {
     'data-slot': 'avatar',
     '[attr.data-size]': 'size()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Avatar {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Avatar size. Mirrors React `size`. */
   readonly size = input<AvatarSize>('default');
 
@@ -161,10 +167,16 @@ export class AvatarFallback {
   template: `<ng-content />`,
   host: {
     'data-slot': 'avatar-badge',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class AvatarBadge {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       'absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground ring-2 ring-background select-none',
@@ -187,10 +199,16 @@ export class AvatarBadge {
   template: `<ng-content />`,
   host: {
     'data-slot': 'avatar-group',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class AvatarGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       'group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background',
@@ -209,10 +227,16 @@ export class AvatarGroup {
   template: `<ng-content />`,
   host: {
     'data-slot': 'avatar-group-count',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class AvatarGroupCount {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       'relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3',

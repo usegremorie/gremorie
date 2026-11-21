@@ -60,7 +60,7 @@ function Calendar({
         weekdays: cn(defaults.weekdays, 'flex'),
         weekday: cn(
           defaults.weekday,
-          'w-8 text-[0.8rem] font-normal text-muted-foreground',
+          'w-8 text-xs font-normal text-muted-foreground',
         ),
         week: cn(defaults.week, 'mt-2 flex w-full'),
         day: cn(

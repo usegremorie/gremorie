@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 
 /**
  * Breadcrumb — hierarchical trail. Mirrors React `Breadcrumb` from
@@ -61,11 +64,19 @@ export class Breadcrumb {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'breadcrumb-list',
-    class:
-      'text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5',
+    '[class]': 'hostClass()',
   },
 })
-export class BreadcrumbList {}
+export class BreadcrumbList {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * BreadcrumbItem — one segment wrapper. Mirrors React `BreadcrumbItem`.
@@ -78,10 +89,16 @@ export class BreadcrumbList {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'breadcrumb-item',
-    class: 'inline-flex items-center gap-1.5',
+    '[class]': 'hostClass()',
   },
 })
-export class BreadcrumbItem {}
+export class BreadcrumbItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('inline-flex items-center gap-1.5', this.class()),
+  );
+}
 
 /**
  * BreadcrumbLink — a navigable ancestor segment. Mirrors React
@@ -97,10 +114,16 @@ export class BreadcrumbItem {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'breadcrumb-link',
-    class: 'hover:text-foreground transition-colors',
+    '[class]': 'hostClass()',
   },
 })
-export class BreadcrumbLink {}
+export class BreadcrumbLink {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('hover:text-foreground transition-colors', this.class()),
+  );
+}
 
 /**
  * BreadcrumbPage — the current (non-link) page. Mirrors React
@@ -118,10 +141,16 @@ export class BreadcrumbLink {}
     role: 'link',
     'aria-disabled': 'true',
     'aria-current': 'page',
-    class: 'text-foreground font-normal',
+    '[class]': 'hostClass()',
   },
 })
-export class BreadcrumbPage {}
+export class BreadcrumbPage {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('text-foreground font-normal', this.class()),
+  );
+}
 
 /**
  * BreadcrumbSeparator — visual divider between segments. Mirrors React
@@ -152,10 +181,16 @@ export class BreadcrumbPage {}
     'data-slot': 'breadcrumb-separator',
     role: 'presentation',
     'aria-hidden': 'true',
-    class: '[&>svg]:size-3.5',
+    '[class]': 'hostClass()',
   },
 })
-export class BreadcrumbSeparator {}
+export class BreadcrumbSeparator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('[&>svg]:size-3.5', this.class()),
+  );
+}
 
 /**
  * BreadcrumbEllipsis — collapsed-middle indicator. Mirrors React
@@ -188,7 +223,13 @@ export class BreadcrumbSeparator {}
     'data-slot': 'breadcrumb-ellipsis',
     role: 'presentation',
     'aria-hidden': 'true',
-    class: 'flex size-9 items-center justify-center',
+    '[class]': 'hostClass()',
   },
 })
-export class BreadcrumbEllipsis {}
+export class BreadcrumbEllipsis {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex size-9 items-center justify-center', this.class()),
+  );
+}

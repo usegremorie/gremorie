@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 
 /**
  * Skeleton — placeholder block for loading states. Mirrors React
@@ -33,7 +36,13 @@ import {
   template: ``,
   host: {
     'data-slot': 'skeleton',
-    class: 'block animate-pulse rounded-md bg-accent',
+    '[class]': 'hostClass()',
   },
 })
-export class Skeleton {}
+export class Skeleton {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('block animate-pulse rounded-md bg-accent', this.class()),
+  );
+}

@@ -86,7 +86,7 @@ export function PieChart({
       <div className="relative">
         <ChartContainer
           config={config}
-          className="mx-auto aspect-square max-h-[260px] w-full"
+          className="mx-auto aspect-square max-h-65 w-full"
         >
           <RechartsPieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
             {tooltip ? (

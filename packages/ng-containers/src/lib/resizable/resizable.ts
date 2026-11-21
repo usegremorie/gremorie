@@ -1,9 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import {
   BrnResizableGroup,
   BrnResizableHandle,
@@ -56,11 +59,19 @@ import {
   host: {
     // brain already sets data-slot="resizable-panel-group" + the
     // data-panel-group-direction attr the aria selectors below key off.
-    class:
-      'flex h-full w-full aria-[orientation=vertical]:flex-col data-[panel-group-direction=vertical]:flex-col',
+    '[class]': 'hostClass()',
   },
 })
-export class ResizablePanelGroup {}
+export class ResizablePanelGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'flex h-full w-full aria-[orientation=vertical]:flex-col data-[panel-group-direction=vertical]:flex-col',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * ResizablePanel — a resizable region. Mirrors React `ResizablePanel`.
@@ -133,11 +144,19 @@ export class ResizablePanel {}
     // brain sets data-slot="resizable-handle"? (it sets role=separator +
     // aria-orientation); add the slot for parity with the React data-slot.
     'data-slot': 'resizable-handle',
-    class:
-      'relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-1 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2 [&[aria-orientation=horizontal]>div]:rotate-90',
+    '[class]': 'hostClass()',
   },
 })
 export class ResizableHandle {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-1 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2 [&[aria-orientation=horizontal]>div]:rotate-90',
+      this.class(),
+    ),
+  );
+
   /** The host BrnResizableHandle — read back `withHandle` to render the grip. */
   protected readonly handle = inject(BrnResizableHandle, { self: true });
 }

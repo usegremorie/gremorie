@@ -130,7 +130,7 @@ interface TooltipRow {
               [attr.x]="t.x"
               [attr.y]="x.labelY()"
               text-anchor="middle"
-              class="fill-muted-foreground text-[10px]"
+              class="fill-muted-foreground text-2xs"
             >
               {{ t.label }}
             </svg:text>
@@ -145,7 +145,7 @@ interface TooltipRow {
                 [attr.y]="t.y"
                 text-anchor="end"
                 dominant-baseline="middle"
-                class="fill-muted-foreground text-[10px]"
+                class="fill-muted-foreground text-2xs"
               >
                 {{ t.label }}
               </svg:text>

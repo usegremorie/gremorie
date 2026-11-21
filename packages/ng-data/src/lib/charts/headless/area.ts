@@ -7,7 +7,7 @@ import {
   type OnInit,
 } from '@angular/core';
 import { ChartContext } from './chart-context';
-import { areaBandPath, areaPath, type XYPoint } from './shape';
+import { areaBandPath, areaPath, linePath, type XYPoint } from './shape';
 import type { CurveType, Datum } from './types';
 
 /** Pure: project data through the scales into an area `d` string. */
@@ -105,6 +105,13 @@ export class Area implements OnInit, OnDestroy {
       y: yScale((base[i] ?? 0) + Number(d[key] ?? 0)),
     }));
   });
+
+  /**
+   * Open path along the top edge only (cumulative when stacked). Stroke this
+   * instead of the closed area so no outline runs down the sides and along the
+   * baseline, matching the recharts Area stroke.
+   */
+  readonly topLine = computed(() => linePath(this.points(), this.curve()));
 
   ngOnInit(): void {
     const key = this.dataKey();
