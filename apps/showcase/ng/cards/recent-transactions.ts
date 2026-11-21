@@ -8,7 +8,15 @@ import {
   lucideTv,
   lucideWallet,
 } from '@ng-icons/lucide';
-import { Button } from '@gremorie/ng-core';
+import { BrnPopoverContent } from '@spartan-ng/brain/popover';
+import { Button, buttonVariants } from '@gremorie/ng-core';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@gremorie/ng-overlays';
 import {
   Card,
   CardAction,
@@ -83,6 +91,7 @@ const usd = new Intl.NumberFormat('en-US', {
   selector: 'showcase-recent-transactions',
   standalone: true,
   imports: [
+    BrnPopoverContent,
     Button,
     Card,
     CardAction,
@@ -90,6 +99,11 @@ const usd = new Intl.NumberFormat('en-US', {
     CardDescription,
     CardHeader,
     CardTitle,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
     Item,
     ItemActions,
     ItemContent,
@@ -145,13 +159,35 @@ const usd = new Intl.NumberFormat('en-US', {
                 >{{ t.amount }}</span
               >
               <gr-item-actions>
-                <!-- gr-dropdown-menu throws on render in this build
-                     (brain popover stateComputed), so the row keeps the
-                     trigger and waits for the menu fix. -->
-                <ai-button variant="ghost" size="icon">
-                  <ng-icon name="lucideEllipsis" size="16" aria-hidden="true" />
-                  <span class="sr-only">Actions for {{ t.merchant }}</span>
-                </ai-button>
+                <gr-dropdown-menu>
+                  <gr-dropdown-menu-trigger
+                    [ariaLabel]="'Actions for ' + t.merchant"
+                    [class]="iconButton"
+                  >
+                    <ng-icon
+                      name="lucideEllipsis"
+                      size="16"
+                      aria-hidden="true"
+                    />
+                  </gr-dropdown-menu-trigger>
+                  <ng-template brnPopoverContent>
+                    <gr-dropdown-menu-content class="w-44">
+                      <gr-dropdown-menu-item
+                        >View details</gr-dropdown-menu-item
+                      >
+                      <gr-dropdown-menu-item
+                        >Change category</gr-dropdown-menu-item
+                      >
+                      <gr-dropdown-menu-item
+                        >Split transaction</gr-dropdown-menu-item
+                      >
+                      <gr-dropdown-menu-separator />
+                      <gr-dropdown-menu-item variant="destructive">
+                        Report a problem
+                      </gr-dropdown-menu-item>
+                    </gr-dropdown-menu-content>
+                  </ng-template>
+                </gr-dropdown-menu>
               </gr-item-actions>
             </gr-item>
           }
@@ -161,6 +197,11 @@ const usd = new Intl.NumberFormat('en-US', {
   `,
 })
 export class RecentTransactions {
+  // The React card renders a ghost icon Button as the trigger; same classes.
+  protected readonly iconButton = buttonVariants({
+    variant: 'ghost',
+    size: 'icon',
+  });
   protected readonly transactions = TRANSACTIONS.map((t) => ({
     ...t,
     credit: t.amount > 0,
