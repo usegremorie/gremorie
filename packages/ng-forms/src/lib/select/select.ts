@@ -128,6 +128,9 @@ export class Select {
 @Component({
   selector: 'gr-select-trigger',
   standalone: true,
+  // `id` is an input AND a static attribute: keep it off the host so a label's
+  // `for` reaches the button (same as gr-input / gr-checkbox).
+  host: { '[attr.id]': 'null' },
   imports: [BrnSelectTrigger],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -136,6 +139,7 @@ export class Select {
       brnSelectTrigger
       type="button"
       data-slot="select-trigger"
+      [id]="resolvedId()"
       [attr.data-size]="size()"
       [attr.data-variant]="variant()"
       [class]="computedClass()"
@@ -158,12 +162,19 @@ export class Select {
   `,
 })
 export class SelectTrigger {
+  private static nextId = 0;
+  private readonly fallbackId = `gr-select-trigger-${SelectTrigger.nextId++}`;
+
+  /** Element id on the trigger button, for `<label for>`. Mirrors React `id`. */
+  readonly id = input<string>('');
   /** Trigger height. Mirrors React `SelectTrigger` `size` (default 'default'). */
   readonly size = input<SelectSize>('default');
   /** Trigger surface. Mirrors React `SelectTrigger` `variant`. */
   readonly variant = input<SelectTriggerVariant>('default');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
+
+  protected readonly resolvedId = computed(() => this.id() || this.fallbackId);
 
   protected readonly computedClass = computed(() =>
     cn(

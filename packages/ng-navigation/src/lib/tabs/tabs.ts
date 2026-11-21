@@ -61,10 +61,16 @@ import { cn } from '@gremorie/ng-core';
   host: {
     'data-slot': 'tabs',
     '[attr.data-orientation]': 'orientation()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Tabs {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   private readonly brnTabs = inject(BrnTabs, { self: true });
 
   /** Tab layout direction. Mirrors React `orientation`. */
@@ -122,10 +128,16 @@ const tabsListVariants = cva(
   host: {
     'data-slot': 'tabs-list',
     '[attr.data-variant]': 'variant()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TabsList {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Pill (`default`) vs minimal `line` indicator. Mirrors React `variant`. */
   readonly variant =
     input<NonNullable<VariantProps<typeof tabsListVariants>['variant']>>(

@@ -20,7 +20,9 @@ const meta: Meta<RadioGroup> = {
 };
 
 export default meta;
-type Story = StoryObj<RadioGroup>;
+// `value` / `disabled` are BrnRadioGroup host-directive inputs, not class
+// members, so the story args type names them explicitly.
+type Story = StoryObj<RadioGroup & { value: string; disabled: boolean }>;
 
 /** Interactive workbench — pick a default value, toggle disabled. */
 export const Workbench: Story = {

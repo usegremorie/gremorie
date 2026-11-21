@@ -71,17 +71,38 @@ export class DropdownMenuPortal {}
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button type="button" [brnPopoverTriggerFor]="content()" [class]="class()">
+    <button
+      type="button"
+      brnPopoverTrigger
+      [brnPopoverTriggerFor]="overlay()"
+      [class]="class()"
+      [attr.aria-label]="ariaLabel() || null"
+    >
       <ng-content />
     </button>
   `,
-  host: { 'data-slot': 'dropdown-menu-trigger', class: 'inline-flex' },
+  // The host stays out of layout: React's trigger IS the button, so a caller's
+  // `class` must style only the inner button, never a wrapper too.
+  host: { 'data-slot': 'dropdown-menu-trigger', class: 'contents' },
 })
 export class DropdownMenuTrigger {
-  /** Template ref of the `<ng-template brnPopoverContent>` to open. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly content = input.required<any>();
+  /**
+   * Optional. The trigger opens the `BrnPopover` of the enclosing
+   * `gr-dropdown-menu`, which picks up the sibling
+   * `<ng-template brnPopoverContent>` on its own. Kept for compatibility: a
+   * template ref here is ignored; a `BrnPopover` instance targets that popover.
+   */
+  readonly content = input<unknown>();
   readonly class = input<string>();
+  /** Accessible name for icon-only triggers (forwarded to the button). */
+  readonly ariaLabel = input<string>();
+  // Brain's trigger calls `stateComputed()` on whatever `brnPopoverTriggerFor`
+  // holds, so only a real popover may reach it; otherwise the trigger falls
+  // back to the popover injected from the enclosing root.
+  protected readonly overlay = computed(() => {
+    const content = this.content();
+    return content instanceof BrnPopover ? content : undefined;
+  });
 }
 
 @Component({

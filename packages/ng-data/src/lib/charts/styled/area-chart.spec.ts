@@ -40,4 +40,25 @@ describe('AreaChart', () => {
     const rows = host.querySelectorAll('table tbody tr');
     expect(rows.length).toBe(DATA.length);
   });
+
+  it('puts aspect-video on the padded frame (host), not the inner svg', async () => {
+    const fixture = await render();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.classList).toContain('aspect-video');
+    expect(host.querySelector('svg')?.classList).not.toContain('aspect-video');
+  });
+
+  it('strokes only the top edge: the filled area has no stroke, an open line does', async () => {
+    const fixture = await render();
+    const host = fixture.nativeElement as HTMLElement;
+    const areas = host.querySelectorAll('path[data-slot="area"]');
+    areas.forEach((a) => expect(a.getAttribute('stroke')).toBeNull());
+    const lines = host.querySelectorAll('path[data-slot="area-line"]');
+    expect(lines.length).toBe(2);
+    lines.forEach((l) => {
+      expect(l.getAttribute('fill')).toBe('none');
+      expect(l.getAttribute('stroke')).not.toBeNull();
+      expect(l.getAttribute('d') ?? '').not.toMatch(/Z/i);
+    });
+  });
 });

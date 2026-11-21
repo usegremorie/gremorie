@@ -49,10 +49,16 @@ export type { SeparatorOrientation };
   host: {
     'data-slot': 'separator',
     '[attr.data-orientation]': 'orientation()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Separator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly orientation = input<SeparatorOrientation>('horizontal');
   readonly decorative = input<boolean>(true);
 

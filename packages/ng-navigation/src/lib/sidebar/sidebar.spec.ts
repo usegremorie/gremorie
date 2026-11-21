@@ -157,4 +157,48 @@ describe('Sidebar', () => {
     ).not.toBeNull();
     expect(host.querySelector('[data-slot="tooltip-trigger"]')).toBeNull();
   });
+
+  it('lets a consumer class override SidebarGroup / MenuButton defaults (cn merge)', () => {
+    TestBed.configureTestingModule({ imports: [ClassHost] });
+    const fixture = TestBed.createComponent(ClassHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const group = host.querySelector('[data-slot="sidebar-group"]')!;
+    expect(group.className).toContain('p-0');
+    expect(group.className).not.toMatch(/(^| )p-2( |$)/);
+    const button = host.querySelector(
+      '[data-sidebar="menu-button"], [data-slot="sidebar-menu-button"]',
+    )!;
+    expect(button.className).toContain('h-10');
+    expect(button.className).not.toMatch(/(^| )h-8( |$)/);
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [
+    SidebarProvider,
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarMenu,
+    SidebarMenuItem,
+    SidebarMenuButton,
+  ],
+  template: `
+    <gr-sidebar-provider>
+      <gr-sidebar collapsible="none">
+        <gr-sidebar-content>
+          <gr-sidebar-group class="p-0">
+            <ul gr-sidebar-menu>
+              <li gr-sidebar-menu-item>
+                <button gr-sidebar-menu-button class="h-10">Home</button>
+              </li>
+            </ul>
+          </gr-sidebar-group>
+        </gr-sidebar-content>
+      </gr-sidebar>
+    </gr-sidebar-provider>
+  `,
+})
+class ClassHost {}

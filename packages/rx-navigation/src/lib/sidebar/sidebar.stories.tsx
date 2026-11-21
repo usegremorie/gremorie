@@ -22,6 +22,7 @@ import {
   SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarProvider,
+  SidebarSeparator,
   SidebarTrigger,
 } from './sidebar';
 
@@ -193,6 +194,7 @@ export const Workbench: Story = {
         <SidebarHeader className="text-sm font-semibold">
           Acme Inc
         </SidebarHeader>
+        <SidebarSeparator />
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Platform</SidebarGroupLabel>

@@ -5,6 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 
 /**
  * Spinner size variants. Matches the React companion spec.
@@ -62,10 +63,16 @@ const SIZE_CLASSES: Record<SpinnerSize, string> = {
     role: 'status',
     'aria-live': 'polite',
     'aria-label': 'Loading',
-    class: 'inline-flex items-center justify-center text-current',
+    '[class]': 'hostClass()',
   },
 })
 export class Spinner {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('inline-flex items-center justify-center text-current', this.class()),
+  );
+
   readonly size = input<SpinnerSize>('default');
 
   protected readonly iconClass = computed(

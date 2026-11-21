@@ -76,11 +76,19 @@ export class MenubarMenuState {
   template: `<ng-content />`,
   host: {
     'data-slot': 'menubar',
-    class:
-      'flex h-9 items-center gap-1 rounded-md border bg-background p-1 shadow-xs',
+    '[class]': 'hostClass()',
   },
 })
-export class Menubar {}
+export class Menubar {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'flex h-9 items-center gap-1 rounded-md border bg-background p-1 shadow-xs',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * MenubarMenu — one top-level menu (trigger + content). Mirrors React
@@ -95,10 +103,14 @@ export class Menubar {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'menubar-menu',
-    class: 'relative',
+    '[class]': 'hostClass()',
   },
 })
-export class MenubarMenu {}
+export class MenubarMenu {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() => cn('relative', this.class()));
+}
 
 /**
  * MenubarTrigger — opens this menu. Mirrors React `MenubarTrigger`. Reflects
@@ -223,10 +235,16 @@ export class MenubarRadioGroup {}
     role: 'menuitem',
     '[attr.data-inset]': 'inset() || null',
     '[attr.data-variant]': 'variant()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class MenubarItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Adds left padding so the label aligns with checkbox/radio items. Mirrors React `inset`. */
   readonly inset = input<boolean>(false);
   /** `default` or `destructive`. Mirrors React `variant`. */
@@ -273,11 +291,17 @@ export class MenubarItem {
     'data-slot': 'menubar-checkbox-item',
     role: 'menuitemcheckbox',
     '[attr.aria-checked]': 'checked()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
     '(click)': 'toggle()',
   },
 })
 export class MenubarCheckboxItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Whether the item is checked (two-way). Mirrors React `checked`. */
   readonly checked = model<boolean>(false);
 
@@ -323,10 +347,16 @@ export class MenubarCheckboxItem {
     role: 'menuitemradio',
     '[attr.aria-checked]': 'checked()',
     '[attr.data-value]': 'value()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class MenubarRadioItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** This option's value. Mirrors React `value`. */
   readonly value = input<string>('');
   /** Whether this option is the selected one. */
@@ -352,10 +382,16 @@ export class MenubarRadioItem {
   host: {
     'data-slot': 'menubar-label',
     '[attr.data-inset]': 'inset() || null',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class MenubarLabel {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Left padding to align with checkbox/radio items. Mirrors React `inset`. */
   readonly inset = input<boolean>(false);
 
@@ -377,10 +413,16 @@ export class MenubarLabel {
   host: {
     'data-slot': 'menubar-separator',
     role: 'separator',
-    class: '-mx-1 my-1 h-px bg-border',
+    '[class]': 'hostClass()',
   },
 })
-export class MenubarSeparator {}
+export class MenubarSeparator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('-mx-1 my-1 h-px bg-border', this.class()),
+  );
+}
 
 /**
  * MenubarShortcut — right-aligned keyboard hint. Mirrors React
@@ -394,10 +436,16 @@ export class MenubarSeparator {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'menubar-shortcut',
-    class: 'ml-auto text-xs tracking-widest text-muted-foreground',
+    '[class]': 'hostClass()',
   },
 })
-export class MenubarShortcut {}
+export class MenubarShortcut {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('ml-auto text-xs tracking-widest text-muted-foreground', this.class()),
+  );
+}
 
 /**
  * MenubarSub — a nested submenu wrapper. Mirrors React `MenubarSub`.
@@ -410,12 +458,16 @@ export class MenubarShortcut {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'menubar-sub',
-    class: 'relative',
+    '[class]': 'hostClass()',
     '(mouseenter)': 'open.set(true)',
     '(mouseleave)': 'open.set(false)',
   },
 })
 export class MenubarSub {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() => cn('relative', this.class()));
+
   /** Whether the submenu is open (hover-driven). */
   readonly open = signal<boolean>(false);
 }
@@ -448,10 +500,16 @@ export class MenubarSub {
     'data-slot': 'menubar-sub-trigger',
     '[attr.data-inset]': 'inset() || null',
     '[attr.data-state]': 'sub.open() ? "open" : "closed"',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class MenubarSubTrigger {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly sub = inject(MenubarSub);
 
   /** Left padding to align with checkbox/radio items. Mirrors React `inset`. */

@@ -69,10 +69,16 @@ import {
     '[attr.data-size]': 'size()',
     '[attr.data-spacing]': 'spacing()',
     '[style.--gap]': 'spacing()',
-    '[class]': 'rootClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class ToggleGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.rootClass(), this.class()),
+  );
+
   // NOTE: `type`, `value`, `nullable` and `disabled` are NOT redeclared here —
   // they are exposed on this component's selector by the `BrnToggleGroup`
   // hostDirective (`inputs: [...]` above) and forwarded straight to the brain,
@@ -108,6 +114,9 @@ export class ToggleGroup {
   imports: [BrnToggleGroupItem],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // The host stays out of layout (React's item IS the button); a caller's
+  // `class` is merged onto the button only.
+  host: { class: 'contents' },
   template: `
     <button
       brnToggleGroupItem
@@ -137,6 +146,8 @@ export class ToggleGroupItem {
   readonly variant = input<ToggleVariant>('default');
   /** Size fallback when not inside a ToggleGroup. Mirrors React `size`. */
   readonly size = input<ToggleSize>('default');
+  /** Extra classes merged onto the button via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
 
   /** Group variant wins (React context precedence), else the item's own input. */
   protected readonly resolvedVariant = computed<ToggleVariant>(
@@ -156,7 +167,11 @@ export class ToggleGroupItem {
         size: this.resolvedSize(),
       }),
       'w-auto min-w-0 shrink-0 px-3 focus:z-10 focus-visible:z-10',
-      'data-[spacing=0]:rounded-none data-[spacing=0]:shadow-none data-[spacing=0]:first:rounded-l-sm data-[spacing=0]:last:rounded-r-sm data-[spacing=0]:data-[variant=outline]:border-l-0 data-[spacing=0]:data-[variant=outline]:first:border-l',
+      // React's `first:` / `last:` target the button among its siblings. Here
+      // each button is the only child of its host, so the position is read
+      // from the host (`:first-child > button`).
+      'data-[spacing=0]:rounded-none data-[spacing=0]:shadow-none data-[spacing=0]:[:first-child>&]:rounded-l-sm data-[spacing=0]:[:last-child>&]:rounded-r-sm data-[spacing=0]:data-[variant=outline]:border-l-0 data-[spacing=0]:data-[variant=outline]:[:first-child>&]:border-l',
+      this.class(),
     ),
   );
 }
