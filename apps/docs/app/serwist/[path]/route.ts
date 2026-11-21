@@ -5,7 +5,7 @@ import path from 'node:path';
 
 import { createSerwistRoute } from '@serwist/turbopack';
 
-import { OFFLINE_LOCALES, offlinePath } from '@/lib/pwa';
+import { OFFLINE_LOCALES, PRECACHE_GLOBS, offlinePath } from '@/lib/pwa';
 
 /**
  * Builds and serves the service worker at /serwist/sw.js (plus its source
@@ -50,8 +50,7 @@ export const { dynamic, dynamicParams, revalidate, generateStaticParams, GET } =
       url: offlinePath(lang),
       revision: rev,
     })),
-    // The component registry (public/r, ~2.4 MB of JSON for the CLI) and the
-    // JSON schemas are fetched by tools, not by the site, so they stay out of
-    // the precache. Everything else in public/ is a few icons.
-    globIgnores: ['public/r/**', 'public/schema/**'],
+    // CSS, fonts and icons only; JavaScript is cached per page as it is
+    // opened (see PRECACHE_GLOBS). The registry JSON in public/r stays out.
+    globPatterns: [...PRECACHE_GLOBS],
   });

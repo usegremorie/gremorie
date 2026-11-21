@@ -4,6 +4,8 @@ import { Toaster, toast } from '@gremorie/rx-overlays';
 import { SerwistProvider, useSerwist } from '@serwist/turbopack/react';
 import { useEffect, type ReactNode } from 'react';
 
+import { ThemeColorSync } from './theme-color-sync';
+
 import { PWA_TOASTER_ID, SW_SCOPE, SW_URL } from '@/lib/pwa';
 
 /** UI copy of the update notice, per locale (the site's small-string pattern). */
@@ -39,6 +41,7 @@ export function PwaProvider({
       options={{ scope: SW_SCOPE }}
     >
       {children}
+      <ThemeColorSync />
       <UpdateNotice lang={lang} />
     </SerwistProvider>
   );

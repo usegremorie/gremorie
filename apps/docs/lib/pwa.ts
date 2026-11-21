@@ -23,3 +23,25 @@ export const offlinePath = (lang: string) => `/${lang}/~offline`;
 
 /** The Sonner toaster that carries the update notice, kept apart from demos. */
 export const PWA_TOASTER_ID = 'pwa';
+
+/**
+ * What the worker downloads at install, before any page is opened: the
+ * build's stylesheets and fonts, the app icons and (added in the route) the
+ * offline page. About 0.7 MB raw. JavaScript stays out: each page's chunks are
+ * cached the first time that page is opened (runtime cache, cache-first for
+ * hashed files), so a visited page still works offline without making the
+ * first visit download every chunk of the site (~15 MB).
+ */
+export const PRECACHE_GLOBS = [
+  '.next/static/**/*.{css,woff2}',
+  'public/icon-*.png',
+] as const;
+
+/**
+ * A pixel sampled from the page background, as the hex a theme-color meta
+ * tag takes. Sampling (instead of reading the computed color) turns any
+ * color space the token uses, oklch included, into sRGB.
+ */
+export function rgbaToHex([r, g, b]: readonly number[]): string {
+  return `#${[r, g, b].map((v) => (v ?? 0).toString(16).padStart(2, '0')).join('')}`;
+}
