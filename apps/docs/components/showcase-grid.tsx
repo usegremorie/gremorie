@@ -16,7 +16,7 @@ import { Assistant } from '@/components/preview/blocks/assistant';
 export function ShowcaseGrid() {
   return (
     <div
-      className="-mx-4 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10"
+      className="relative -mx-4 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10"
       data-slot="showcase-grid"
     >
       <Masonry

@@ -139,7 +139,7 @@ const ROWS = HOLDINGS.map((h) => {
         <div class="flex flex-wrap items-center justify-between gap-3">
           <!-- The group input has no value output; the native input
                event bubbles to the group, which is enough here. -->
-          <gr-input-group class="w-96" (input)="onQuery($event)">
+          <gr-input-group class="w-full sm:w-96" (input)="onQuery($event)">
             <gr-input-group-addon>
               <ng-icon name="lucideSearch" size="16" aria-hidden="true" />
             </gr-input-group-addon>

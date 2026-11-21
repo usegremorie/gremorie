@@ -99,7 +99,7 @@ export function StockHoldings() {
     <Card>
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <InputGroup className="w-96">
+          <InputGroup className="w-full sm:w-96">
             <InputGroupAddon>
               <SearchIcon />
             </InputGroupAddon>
