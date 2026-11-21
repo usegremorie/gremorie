@@ -38,7 +38,6 @@ export const SELECTOR_ALLOWLIST = new Set<string>([
   'checkpoint',
   'code-block',
   'confirmation',
-  'context',
   'conversation',
   'image',
   'inline-citation',

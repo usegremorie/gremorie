@@ -292,7 +292,10 @@ function Composer({
       usage={CONTEXT_USAGE}
       usedTokens={62_600}
     >
-      <ContextTrigger className={meterInHeader ? 'ml-auto' : undefined} />
+      <ContextTrigger
+        className={meterInHeader ? 'ml-auto' : undefined}
+        display="auto"
+      />
       <ContextContent>
         <ContextContentHeader />
         <ContextContentBody>

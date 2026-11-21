@@ -10,9 +10,9 @@ export const context = defineContract({
   category: 'chatbot',
   status: 'stable',
   anatomy: `
-    <context>
+    <Context> / <gr-context>
     └─ context (hover-card root)
-       ├─ context-trigger (percent used + ring icon)
+       ├─ context-trigger (percent used + ring icon; display full | compact | auto)
        └─ context-content (hover-card body)
           ├─ context-content-header (percent, used/total, progress bar)
           ├─ context-content-body
@@ -52,6 +52,12 @@ export const context = defineContract({
       desc: 'Angular-only cost function; React derives cost internally via tokenlens.',
     },
     {
+      name: 'display',
+      type: "'full' | 'compact' | 'auto'",
+      default: 'full',
+      desc: 'ContextTrigger: percentage + ring, the ring alone, or the ring alone once the nearest container (the PromptInput) is narrower than 24rem.',
+    },
+    {
       name: 'className',
       type: 'string',
       adapts: { ng: 'input: class' },
@@ -72,17 +78,18 @@ export const context = defineContract({
       },
     ],
     rules: [
+      'In a tight composer use display="auto" (or "compact"); the percentage stays in the trigger\'s accessible name and the hover card.',
       'Usage rows auto-hide when their value is 0; the header shows percent of maxTokens used.',
       'React computes cost internally (tokenlens); Angular takes an optional costResolver and inlines ContextUsage to drop the ai dependency.',
     ],
     example:
-      '<context [usedTokens]="42000" [maxTokens]="128000" [usage]="usage" />',
+      '<gr-context [usedTokens]="42000" [maxTokens]="128000" [usage]="usage" />',
   },
   preview: {
     rx: 'ai-chatbot-context--workbench',
     ng: 'ai-chatbot-context--workbench',
   },
-  tag: { rx: 'Context', ng: 'context' },
+  tag: { rx: 'Context', ng: 'gr-context' },
   example: {
     usedTokens: 12200,
     maxTokens: 200000,

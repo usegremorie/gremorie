@@ -165,7 +165,7 @@ export function PromptInputB2BPreview() {
           usage={USAGE}
           usedTokens={62_600}
         >
-          <ContextTrigger className="ml-auto" />
+          <ContextTrigger className="ml-auto" display="auto" />
           <ContextContent>
             <ContextContentHeader />
             <ContextContentBody>

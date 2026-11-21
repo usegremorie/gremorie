@@ -53,6 +53,7 @@ export default [
             'code-block',
             'confirmation',
             'context',
+            'gr-context',
             'conversation',
             'image',
             'inline-citation',

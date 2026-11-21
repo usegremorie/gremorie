@@ -12,7 +12,7 @@ import {
   BrnHoverCard,
   BrnHoverCardTrigger,
 } from '@spartan-ng/brain/hover-card';
-import { cn } from '@gremorie/ng-core';
+import { buttonVariants, cn } from '@gremorie/ng-core';
 
 const PERCENT_MAX = 100;
 const ICON_RADIUS = 10;
@@ -50,9 +50,13 @@ export type ContextCostResolver = (
  *   cost).
  * - `data-slot` is set on each surface for styling parity.
  *
+ * Selectors: `gr-context`, `gr-context-trigger`, ... The unprefixed names
+ * (`context`, `context-trigger`, ...) still match and are deprecated; they
+ * go away in 1.0.
+ *
  * Divergences:
  * 1. React uses `BrnHoverCard` content via a `<ng-template brnHoverCardContent>`
- *    (brain idiom) — the consumer wraps `<context-content>` in that template.
+ *    (brain idiom) — the consumer wraps `<gr-context-content>` in that template.
  * 2. React derives cost from `tokenlens` (`getUsage`). `tokenlens` is not a peer
  *    of `ng-ai`; pass an optional `costResolver` to reproduce cost output. When
  *    omitted, cost is shown as `$0.00` (same formatting, no external dep).
@@ -67,6 +71,9 @@ export interface ContextState {
 
 export const CONTEXT = new InjectionToken<ContextState>('ContextState');
 
+const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
+const usedFraction = (used: number, max: number) => (max > 0 ? used / max : 0);
+
 const pct = (v: number) =>
   new Intl.NumberFormat('en-US', {
     style: 'percent',
@@ -80,7 +87,7 @@ const usd = (v: number) =>
   );
 
 @Component({
-  selector: 'context',
+  selector: 'gr-context, context',
   standalone: true,
   hostDirectives: [BrnHoverCard],
   encapsulation: ViewEncapsulation.None,
@@ -98,25 +105,39 @@ export class Context implements ContextState {
   readonly costResolver = input<ContextCostResolver>();
 }
 
+/**
+ * How the trigger shows usage. Mirrors React `ContextTriggerDisplay`:
+ *   full     percentage + ring (default)
+ *   compact  ring only; the percentage stays in the accessible name and the
+ *            hover card
+ *   auto     full while there is room, the ring alone once the nearest
+ *            container (the PromptInput) is narrower than 24rem
+ */
+export type ContextTriggerDisplay = 'full' | 'compact' | 'auto';
+
 @Component({
-  selector: 'context-trigger',
+  selector: 'gr-context-trigger, context-trigger',
   standalone: true,
   hostDirectives: [BrnHoverCardTrigger],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content>
-      <button type="button" [class]="buttonClass()">
-        <span class="font-medium text-muted-foreground">{{
-          renderedPercent()
-        }}</span>
-        <!-- 16px: the React trigger is a Button, whose base class forces
-             inner svgs to size-4. -->
+      <button
+        type="button"
+        data-slot="button"
+        [attr.aria-label]="usageLabel()"
+        [attr.data-display]="display()"
+        [class]="buttonClass()"
+      >
+        @if (display() !== 'compact') {
+          <span [class]="percentClass()">{{ renderedPercent() }}</span>
+        }
         <svg
-          aria-label="Model context usage"
-          height="16"
-          width="16"
-          role="img"
+          aria-hidden="true"
+          focusable="false"
+          height="20"
+          width="20"
           [attr.viewBox]="viewBox"
           style="color: currentcolor"
         >
@@ -133,7 +154,7 @@ export class Context implements ContextState {
             [attr.cx]="center"
             [attr.cy]="center"
             fill="none"
-            opacity="0.7"
+            opacity="1"
             [attr.r]="radius"
             stroke="currentColor"
             [attr.stroke-dasharray]="dashArray()"
@@ -151,6 +172,7 @@ export class Context implements ContextState {
 export class ContextTrigger {
   private readonly ctx = inject(CONTEXT);
   readonly class = input<string>();
+  readonly display = input<ContextTriggerDisplay>('full');
 
   protected readonly viewBox = `0 0 ${ICON_VIEWBOX} ${ICON_VIEWBOX}`;
   protected readonly center = ICON_CENTER;
@@ -158,28 +180,44 @@ export class ContextTrigger {
   protected readonly strokeWidth = ICON_STROKE_WIDTH;
 
   private readonly circumference = 2 * Math.PI * ICON_RADIUS;
-  private readonly usedPercent = computed(
-    () => this.ctx.usedTokens() / this.ctx.maxTokens(),
+  // Raw fraction: the number may honestly read "107%" while the ring clamps.
+  private readonly fraction = computed(() =>
+    usedFraction(this.ctx.usedTokens(), this.ctx.maxTokens()),
   );
 
   protected readonly dashArray = () =>
     `${this.circumference} ${this.circumference}`;
   protected readonly dashOffset = computed(
-    () => this.circumference * (1 - this.usedPercent()),
+    () => this.circumference * (1 - clamp01(this.fraction())),
   );
-  protected readonly renderedPercent = computed(() => pct(this.usedPercent()));
-  // Mirrors the React default trigger: a ghost Button at its default size
-  // (h-9, gap-2, font-medium, px-3 with the gauge svg).
+  protected readonly renderedPercent = computed(() => pct(this.fraction()));
+  protected readonly usageLabel = computed(
+    () =>
+      `Context window: ${this.renderedPercent()} used (${compact(
+        this.ctx.usedTokens(),
+      )} of ${compact(this.ctx.maxTokens())} tokens)`,
+  );
+  // The React trigger is a ghost Button; same variants here.
   protected readonly buttonClass = computed(() =>
     cn(
-      'inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground',
+      buttonVariants({
+        variant: 'ghost',
+        size: this.display() === 'compact' ? 'icon' : 'default',
+      }),
+      this.display() === 'auto' && '@max-sm:w-8 @max-sm:px-0',
       this.class(),
+    ),
+  );
+  protected readonly percentClass = computed(() =>
+    cn(
+      'font-medium text-muted-foreground',
+      this.display() === 'auto' && '@max-sm:hidden',
     ),
   );
 }
 
 @Component({
-  selector: 'context-content',
+  selector: 'gr-context-content, context-content',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -200,7 +238,7 @@ export class ContextContent {
 }
 
 @Component({
-  selector: 'context-content-header',
+  selector: 'gr-context-content-header, context-content-header',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -230,14 +268,14 @@ export class ContextContent {
 export class ContextContentHeader {
   private readonly ctx = inject(CONTEXT);
   readonly class = input<string>();
-  private readonly usedPercent = computed(
-    () => this.ctx.usedTokens() / this.ctx.maxTokens(),
+  private readonly usedPercent = computed(() =>
+    usedFraction(this.ctx.usedTokens(), this.ctx.maxTokens()),
   );
   protected readonly displayPct = computed(() => pct(this.usedPercent()));
   protected readonly used = computed(() => compact(this.ctx.usedTokens()));
   protected readonly total = computed(() => compact(this.ctx.maxTokens()));
   protected readonly barWidth = computed(
-    () => this.usedPercent() * PERCENT_MAX,
+    () => clamp01(this.usedPercent()) * PERCENT_MAX,
   );
   protected readonly hostClass = computed(() =>
     cn('block w-full space-y-2 p-3', this.class()),
@@ -245,7 +283,7 @@ export class ContextContentHeader {
 }
 
 @Component({
-  selector: 'context-content-body',
+  selector: 'gr-context-content-body, context-content-body',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -263,7 +301,7 @@ export class ContextContentBody {
 }
 
 @Component({
-  selector: 'context-content-footer',
+  selector: 'gr-context-content-footer, context-content-footer',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -305,7 +343,7 @@ export class ContextContentFooter {
 const rowClassBase = 'flex items-center justify-between text-xs';
 
 @Component({
-  selector: 'context-input-usage',
+  selector: 'gr-context-input-usage, context-input-usage',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -346,7 +384,7 @@ export class ContextInputUsage {
 }
 
 @Component({
-  selector: 'context-output-usage',
+  selector: 'gr-context-output-usage, context-output-usage',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -387,7 +425,7 @@ export class ContextOutputUsage {
 }
 
 @Component({
-  selector: 'context-reasoning-usage',
+  selector: 'gr-context-reasoning-usage, context-reasoning-usage',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -428,7 +466,7 @@ export class ContextReasoningUsage {
 }
 
 @Component({
-  selector: 'context-cache-usage',
+  selector: 'gr-context-cache-usage, context-cache-usage',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
