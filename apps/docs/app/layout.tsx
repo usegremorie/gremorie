@@ -35,7 +35,8 @@ const isProduction = process.env.VERCEL_ENV === 'production';
  * - themeColor tints the browser and title bar. A meta tag cannot read CSS
  *   variables, so these are the resolved values of the page background
  *   token (--background: gray-50 in light, gray-950 in dark). They follow
- *   the OS scheme, which is what the media query can see.
+ *   the OS scheme for the first paint; components/pwa/theme-color-sync.tsx
+ *   then follows the site's own theme switch.
  */
 export const viewport: Viewport = {
   viewportFit: 'cover',

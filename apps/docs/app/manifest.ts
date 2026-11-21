@@ -16,8 +16,10 @@ import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site';
  * - `theme_color`/`background_color` are the light page background
  *   (--background, gray-50). The per-scheme tint lives in the root layout's
  *   `viewport.themeColor`, which browsers prefer over the manifest.
- * - No maskable icon yet: the symbol runs past the maskable safe zone and the
- *   corners are transparent, so it needs its own full-bleed asset.
+ * - Maskable icons (Android adaptive shapes): the white symbol on a full-bleed
+ *   black square, scaled so its farthest point stays inside the safe circle
+ *   (80% of the side, radius 40%). Rendered from
+ *   public/brand/gremorie-symbol-white.svg; 512px: symbol radius 193 of 205.
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -33,6 +35,18 @@ export default function manifest(): MetadataRoute.Manifest {
     icons: [
       { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
       { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      {
+        src: '/icon-maskable-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+      {
+        src: '/icon-maskable-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
     ],
   };
 }

@@ -8,8 +8,8 @@ import { OFFLINE_LOCALES, offlinePath } from '@/lib/pwa';
 /**
  * The site's service worker, bundled by app/serwist/[path]/route.ts.
  *
- * - Precache: the build's hashed assets (`.next/static`), the icons in
- *   `public/` and the offline page, versioned by the manifest below.
+ * - Precache: the build's stylesheets and fonts, the app icons and the
+ *   offline page (PRECACHE_GLOBS in lib/pwa.ts), versioned by the manifest.
  * - Runtime: the recommended Next.js strategies. Pages (HTML and RSC
  *   payloads) are network-first, so a visited page is still there offline
  *   and an online visit always gets the fresh one; hashed static assets are
