@@ -5,6 +5,7 @@ description: 'Parts of a whole, one slice per data row, with optional donut hole
 
 import { PieChartPreview } from '@/components/preview/data/pie-chart';
 import { PieChartDonutPreview } from '@/components/preview/data/pie-chart-donut';
+import { PieChartCenterPreview } from '@/components/preview/data/pie-chart-center';
 import { PieChartLabelsPreview } from '@/components/preview/data/pie-chart-labels';
 
 ## Overview
@@ -164,16 +165,20 @@ export class BrowserShareComponent {
 
 A recharts pie/donut composed inside the `chart` primitive (`ChartContainer`). Slice colors come from each row's `fill`; the optional `config` provides the labels shown in the tooltip.
 
-| Prop         | Type                    | Default | Description                                                                                                                                                          |
-| ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`       | `readonly ChartDatum[]` | -       | Tabular data. One row per slice. Each row needs a string field at `nameKey`, a numeric field at `dataKey`, and a `fill` for its slice color (e.g. `var(--chart-1)`). |
-| `nameKey`    | `string`                | -       | Name of the slice label field. Used to resolve the tooltip label.                                                                                                    |
-| `dataKey`    | `string`                | -       | Name of the numeric value field. Slices are sized proportionally to its sum.                                                                                         |
-| `config`     | `ChartConfig`           | `{}`    | Optional label/color map keyed by slice name (and value key). Powers the tooltip labels.                                                                             |
-| `donut`      | `boolean`               | `false` | When `true`, carves out a centered hole (`innerRadius` 60) to produce a donut chart.                                                                                 |
-| `showLabels` | `boolean`               | `false` | When `true`, draws each slice's name inside the slice via recharts `LabelList`.                                                                                      |
-| `tooltip`    | `boolean`               | `true`  | Toggles the hover tooltip (`ChartTooltip` + `ChartTooltipContent`).                                                                                                  |
-| `className`  | `string`                | -       | Merged onto the `ChartContainer`. The bundled style supplies a centered, square aspect frame.                                                                        |
+| Prop          | Type                    | Default | Description                                                                                                                                                          |
+| ------------- | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `readonly ChartDatum[]` | -       | Tabular data. One row per slice. Each row needs a string field at `nameKey`, a numeric field at `dataKey`, and a `fill` for its slice color (e.g. `var(--chart-1)`). |
+| `nameKey`     | `string`                | -       | Name of the slice label field. Used to resolve the tooltip label.                                                                                                    |
+| `dataKey`     | `string`                | -       | Name of the numeric value field. Slices are sized proportionally to its sum.                                                                                         |
+| `config`      | `ChartConfig`           | `{}`    | Optional label/color map keyed by slice name (and value key). Powers the tooltip labels.                                                                             |
+| `donut`       | `boolean`               | `false` | When `true`, carves out a centered hole (`innerRadius` 60) to produce a donut chart.                                                                                 |
+| `showLabels`  | `boolean`               | `false` | When `true`, draws each slice's name inside the slice via recharts `LabelList`.                                                                                      |
+| `centerValue` | `string`                | -       | Big figure in the donut hole, e.g. a total. Needs `donut`.                                                                                                           |
+| `centerLabel` | `string`                | -       | Caption under `centerValue`.                                                                                                                                         |
+| `framed`      | `boolean`               | `true`  | Draws the chart's own card frame. Turn off when the chart sits inside a `Card`.                                                                                      |
+| `legend`      | `boolean`               | `true`  | Shows the color legend. Turn off when the page already lists the slices.                                                                                             |
+| `tooltip`     | `boolean`               | `true`  | Toggles the hover tooltip (`ChartTooltip` + `ChartTooltipContent`).                                                                                                  |
+| `className`   | `string`                | -       | Merged onto the `ChartContainer`. The bundled style supplies a centered, square aspect frame.                                                                        |
 
 ### Chart primitives for custom composition
 
@@ -246,6 +251,25 @@ The default. Use when the surrounding surface is small (card, side panel) or whe
 ```
 
 Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses an `innerRadius` of 60.
+
+### Donut with a total
+
+Pass `centerValue` and `centerLabel` to write the total in the hole. Inside a `Card` that already lists the categories, add `framed={false}` and `legend={false}` so the chart is only the ring. The slices here use the categorical palette, `--chart-cat-1` to `--chart-cat-4`.
+
+<ComponentPreview name="data/pie-chart-center">
+  <PieChartCenterPreview />
+</ComponentPreview>
+
+```html
+<pie-chart
+  [data]="data"
+  nameKey="category"
+  dataKey="amount"
+  [donut]="true"
+  centerValue="$3,240"
+  centerLabel="81% of $4,000 budget"
+/>
+```
 
 ### Labels
 

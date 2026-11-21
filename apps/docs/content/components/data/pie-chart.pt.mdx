@@ -5,6 +5,7 @@ description: 'Partes de um todo, uma fatia por linha de dados, com furo de donut
 
 import { PieChartPreview } from '@/components/preview/data/pie-chart';
 import { PieChartDonutPreview } from '@/components/preview/data/pie-chart-donut';
+import { PieChartCenterPreview } from '@/components/preview/data/pie-chart-center';
 import { PieChartLabelsPreview } from '@/components/preview/data/pie-chart-labels';
 
 ## Visão geral
@@ -164,16 +165,20 @@ export class BrowserShareComponent {
 
 Um pie/donut recharts composto dentro do primitive `chart` (`ChartContainer`). As cores das fatias vêm do `fill` de cada linha; o `config` opcional fornece os labels mostrados no tooltip.
 
-| Prop         | Type                    | Default | Descrição                                                                                                                                                                        |
-| ------------ | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`       | `readonly ChartDatum[]` | -       | Dados tabulares. Uma linha por fatia. Cada linha precisa de um campo string em `nameKey`, um campo numérico em `dataKey` e um `fill` para a cor da fatia (ex. `var(--chart-1)`). |
-| `nameKey`    | `string`                | -       | Nome do campo de label da fatia. Usado para resolver o label do tooltip.                                                                                                         |
-| `dataKey`    | `string`                | -       | Nome do campo de valor numérico. As fatias são dimensionadas proporcionalmente à sua soma.                                                                                       |
-| `config`     | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de fatia (e chave de valor). Alimenta os labels do tooltip.                                                                                  |
-| `donut`      | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (`innerRadius` 60) para produzir um gráfico de donut.                                                                                |
-| `showLabels` | `boolean`               | `false` | Quando `true`, desenha o nome de cada fatia dentro da fatia via `LabelList` do recharts.                                                                                         |
-| `tooltip`    | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                                             |
-| `className`  | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                            |
+| Prop          | Type                    | Default | Descrição                                                                                                                                                                        |
+| ------------- | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `readonly ChartDatum[]` | -       | Dados tabulares. Uma linha por fatia. Cada linha precisa de um campo string em `nameKey`, um campo numérico em `dataKey` e um `fill` para a cor da fatia (ex. `var(--chart-1)`). |
+| `nameKey`     | `string`                | -       | Nome do campo de label da fatia. Usado para resolver o label do tooltip.                                                                                                         |
+| `dataKey`     | `string`                | -       | Nome do campo de valor numérico. As fatias são dimensionadas proporcionalmente à sua soma.                                                                                       |
+| `config`      | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de fatia (e chave de valor). Alimenta os labels do tooltip.                                                                                  |
+| `donut`       | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (`innerRadius` 60) para produzir um gráfico de donut.                                                                                |
+| `showLabels`  | `boolean`               | `false` | Quando `true`, desenha o nome de cada fatia dentro da fatia via `LabelList` do recharts.                                                                                         |
+| `centerValue` | `string`                | -       | Número grande no furo do donut, ex. um total. Exige `donut`.                                                                                                                     |
+| `centerLabel` | `string`                | -       | Legenda abaixo de `centerValue`.                                                                                                                                                 |
+| `framed`      | `boolean`               | `true`  | Desenha a moldura de card do próprio gráfico. Desligue quando o gráfico já está dentro de um `Card`.                                                                             |
+| `legend`      | `boolean`               | `true`  | Mostra a legenda de cores. Desligue quando a página já lista as fatias.                                                                                                          |
+| `tooltip`     | `boolean`               | `true`  | Alterna o tooltip de hover (`ChartTooltip` + `ChartTooltipContent`).                                                                                                             |
+| `className`   | `string`                | -       | Mesclado no `ChartContainer`. O estilo empacotado fornece um frame centralizado e de aspect quadrado.                                                                            |
 
 ### Primitives de chart para composição customizada
 
@@ -246,6 +251,25 @@ O padrão. Use quando a superfície ao redor é pequena (card, painel lateral) o
 ```
 
 Use quando você quer embutir um total ou label no centro do gráfico, ou quando uma pie sólida parece pesada demais em uma superfície grande. O furo usa um `innerRadius` de 60.
+
+### Donut com total
+
+Passe `centerValue` e `centerLabel` para escrever o total no furo. Dentro de um `Card` que já lista as categorias, use `framed={false}` e `legend={false}` para o gráfico ser só o anel. As fatias aqui usam a paleta categórica, de `--chart-cat-1` a `--chart-cat-4`.
+
+<ComponentPreview name="data/pie-chart-center">
+  <PieChartCenterPreview />
+</ComponentPreview>
+
+```html
+<pie-chart
+  [data]="data"
+  nameKey="category"
+  dataKey="amount"
+  [donut]="true"
+  centerValue="$3,240"
+  centerLabel="81% of $4,000 budget"
+/>
+```
 
 ### Labels
 
