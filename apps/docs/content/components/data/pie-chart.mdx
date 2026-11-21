@@ -38,7 +38,7 @@ PieChart                          recharts pie / donut on the chart primitive
    └─ RechartsPieChart            recharts pie surface
       ├─ ChartTooltip             hover card
       │  └─ ChartTooltipContent   themed tooltip body
-      └─ Pie                      one slice per row (nameKey + dataKey); innerRadius for donut
+      └─ Pie                      one slice per row (nameKey + dataKey); hole at 60% of the radius for donut
          └─ LabelList             optional slice labels (showLabels)
 ```
 
@@ -171,7 +171,7 @@ A recharts pie/donut composed inside the `chart` primitive (`ChartContainer`). S
 | `nameKey`     | `string`                | -       | Name of the slice label field. Used to resolve the tooltip label.                                                                                                    |
 | `dataKey`     | `string`                | -       | Name of the numeric value field. Slices are sized proportionally to its sum.                                                                                         |
 | `config`      | `ChartConfig`           | `{}`    | Optional label/color map keyed by slice name (and value key). Powers the tooltip labels.                                                                             |
-| `donut`       | `boolean`               | `false` | When `true`, carves out a centered hole (`innerRadius` 60) to produce a donut chart.                                                                                 |
+| `donut`       | `boolean`               | `false` | When `true`, carves out a centered hole (60% of the radius) to produce a donut chart.                                                                                |
 | `showLabels`  | `boolean`               | `false` | When `true`, draws each slice's name inside the slice via recharts `LabelList`.                                                                                      |
 | `centerValue` | `string`                | -       | Big figure in the donut hole, e.g. a total. Needs `donut`.                                                                                                           |
 | `centerLabel` | `string`                | -       | Caption under `centerValue`.                                                                                                                                         |
@@ -250,7 +250,7 @@ The default. Use when the surrounding surface is small (card, side panel) or whe
 />
 ```
 
-Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole uses an `innerRadius` of 60.
+Use when you want to embed a total or label at the center of the chart, or when a solid pie feels too heavy in a large surface. The hole is 60% of the radius, and the first slice starts at 12 o'clock, running clockwise.
 
 ### Donut with a total
 

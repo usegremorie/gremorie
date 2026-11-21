@@ -38,7 +38,7 @@ PieChart                          recharts pie / donut on the chart primitive
    └─ RechartsPieChart            recharts pie surface
       ├─ ChartTooltip             hover card
       │  └─ ChartTooltipContent   themed tooltip body
-      └─ Pie                      one slice per row (nameKey + dataKey); innerRadius for donut
+      └─ Pie                      one slice per row (nameKey + dataKey); hole at 60% of the radius for donut
          └─ LabelList             optional slice labels (showLabels)
 ```
 
@@ -171,7 +171,7 @@ Um pie/donut recharts composto dentro do primitive `chart` (`ChartContainer`). A
 | `nameKey`     | `string`                | -       | Nome do campo de label da fatia. Usado para resolver o label do tooltip.                                                                                                         |
 | `dataKey`     | `string`                | -       | Nome do campo de valor numérico. As fatias são dimensionadas proporcionalmente à sua soma.                                                                                       |
 | `config`      | `ChartConfig`           | `{}`    | Mapa opcional de label/cor por nome de fatia (e chave de valor). Alimenta os labels do tooltip.                                                                                  |
-| `donut`       | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (`innerRadius` 60) para produzir um gráfico de donut.                                                                                |
+| `donut`       | `boolean`               | `false` | Quando `true`, esculpe um furo centralizado (60% do raio) para produzir um gráfico de donut.                                                                                     |
 | `showLabels`  | `boolean`               | `false` | Quando `true`, desenha o nome de cada fatia dentro da fatia via `LabelList` do recharts.                                                                                         |
 | `centerValue` | `string`                | -       | Número grande no furo do donut, ex. um total. Exige `donut`.                                                                                                                     |
 | `centerLabel` | `string`                | -       | Legenda abaixo de `centerValue`.                                                                                                                                                 |
@@ -250,7 +250,7 @@ O padrão. Use quando a superfície ao redor é pequena (card, painel lateral) o
 />
 ```
 
-Use quando você quer embutir um total ou label no centro do gráfico, ou quando uma pie sólida parece pesada demais em uma superfície grande. O furo usa um `innerRadius` de 60.
+Use quando você quer embutir um total ou label no centro do gráfico, ou quando uma pie sólida parece pesada demais em uma superfície grande. O furo tem 60% do raio, e a primeira fatia começa às 12 horas, no sentido horário.
 
 ### Donut com total
 

@@ -99,7 +99,13 @@ export function PieChart({
               data={data as ChartDatum[]}
               dataKey={dataKey}
               nameKey={nameKey}
-              innerRadius={donut ? 60 : 0}
+              // Same geometry as the Angular chart: the first slice starts at
+              // 12 o'clock and runs clockwise; the radius leaves an 8px margin
+              // (94% of the half side) and the donut hole is 60% of it.
+              startAngle={90}
+              endAngle={-270}
+              outerRadius="94%"
+              innerRadius={donut ? '56%' : 0}
               labelLine={false}
             >
               {showLabels ? (
