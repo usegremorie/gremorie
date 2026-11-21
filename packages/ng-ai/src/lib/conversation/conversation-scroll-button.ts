@@ -25,7 +25,7 @@ import { CONVERSATION } from './conversation';
       <button
         type="button"
         (click)="scroll()"
-        class="absolute bottom-4 left-[50%] inline-flex size-9 -translate-x-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+        class="absolute bottom-4 left-1/2 inline-flex size-9 -translate-x-1/2 items-center justify-center rounded-full border bg-background text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
         aria-label="Scroll to bottom"
       >
         <svg

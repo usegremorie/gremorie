@@ -95,7 +95,7 @@ interface MentionGroup {
         role="listbox"
         aria-label="Add context"
         #panel
-        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-0 text-popover-foreground shadow-md motion-safe:animate-pop-in"
       >
         <div class="border-b p-2">
           <input
@@ -152,7 +152,7 @@ interface MentionGroup {
       <span
         class="inline-flex h-8 items-center gap-1 rounded-md border px-2.5 text-xs"
       >
-        <span class="max-w-[10rem] truncate">{{ item.label }}</span>
+        <span class="max-w-40 truncate">{{ item.label }}</span>
         <button
           type="button"
           [attr.aria-label]="'Remove ' + item.label"

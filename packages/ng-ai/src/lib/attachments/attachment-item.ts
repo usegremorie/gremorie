@@ -16,14 +16,14 @@ import { AttachmentData, AttachmentMediaCategory } from './attachment.types';
 import { getAttachmentLabel, getMediaCategory } from './attachment.utils';
 
 const itemVariants = cva(
-  'group/attachment relative rounded-md border border-border bg-card text-card-foreground transition-colors motion-safe:animate-[gremorie-fade-in_120ms_ease-out]',
+  'group/attachment relative rounded-md border border-border bg-card text-card-foreground transition-colors motion-safe:animate-fade-in',
   {
     variants: {
       variant: {
         // Column-flex card with thumbnail on top, info below.
-        grid: 'flex w-[220px] flex-col items-stretch gap-2 p-2',
+        grid: 'flex w-55 flex-col items-stretch gap-2 p-2',
         // Compact badge — row-flex, small icon + text + remove.
-        inline: 'inline-flex h-9 max-w-[220px] items-center gap-1.5 px-2 py-1',
+        inline: 'inline-flex h-9 max-w-55 items-center gap-1.5 px-2 py-1',
         // Wide row — square thumbnail, info, remove.
         list: 'flex w-full items-center gap-3 p-2',
       },

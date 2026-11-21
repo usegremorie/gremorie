@@ -248,7 +248,7 @@ export class PromptInputActionMenuContent {
 
   protected panelClass(): string {
     return cn(
-      'min-w-[12rem] origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-[gremorie-pop-in_120ms_ease-out]',
+      'min-w-48 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-pop-in',
       this.class(),
     );
   }
@@ -584,7 +584,7 @@ export class PromptInputActionMenuSubTrigger {
         tabindex="-1"
         data-slot="prompt-input-action-menu-sub-content"
         [attr.data-menu-id]="menu.menuId"
-        class="min-w-[10rem] origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="min-w-40 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-pop-in"
         (keydown)="onKeydown($event)"
       >
         <ng-content />

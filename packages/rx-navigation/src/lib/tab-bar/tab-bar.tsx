@@ -79,15 +79,15 @@ function useHideOnScroll(enabled: boolean) {
 }
 
 const tabBarVariants = cva(
-  'fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 ease-out data-[hidden=true]:translate-y-[calc(100%+1.5rem)] motion-reduce:transition-none',
+  'fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 ease-out data-[hidden=true]:translate-y-[calc(100%+(--spacing(6)))] motion-reduce:transition-none',
   {
     variants: {
       variant: {
         material:
           'border-t border-border bg-background-surface pb-[env(safe-area-inset-bottom)]',
-        ios: 'pointer-events-none px-4 pb-[max(env(safe-area-inset-bottom),1rem)]',
+        ios: 'pointer-events-none px-4 pb-[max(env(safe-area-inset-bottom),--spacing(4))]',
         floating:
-          'pointer-events-none flex justify-center px-4 pb-[max(env(safe-area-inset-bottom),1rem)]',
+          'pointer-events-none flex justify-center px-4 pb-[max(env(safe-area-inset-bottom),--spacing(4))]',
       },
     },
   },
@@ -177,7 +177,7 @@ function TabBar({
 }
 
 const tabBarItemVariants = cva(
-  "group/tab-bar-item relative flex items-center justify-center text-muted-foreground transition-colors outline-none select-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-6",
+  "group/tab-bar-item relative flex items-center justify-center text-muted-foreground transition-colors outline-none select-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-6",
   {
     variants: {
       variant: {
@@ -209,7 +209,7 @@ const tabBarLabelVariants = cva('truncate font-medium', {
   variants: {
     variant: {
       material: 'text-xs',
-      ios: 'text-[0.625rem]',
+      ios: 'text-2xs',
       floating: '',
     },
   },
@@ -265,7 +265,7 @@ function TabBarItem({
               variant === 'material' ? 'left-1/2 ml-1.5' : '-right-1.5',
               badge === true
                 ? 'size-2'
-                : 'flex h-4 min-w-4 items-center justify-center px-1 text-[0.625rem] leading-none font-semibold tabular-nums',
+                : 'flex h-4 min-w-4 items-center justify-center px-1 text-2xs leading-none font-semibold tabular-nums',
             )}
           >
             {badge === true ? null : badge > 99 ? '99+' : badge}

@@ -29,6 +29,7 @@ export const PRIMITIVE_FILES: Readonly<Record<string, CssBlock>> = {
   'primitive/radius.json': '@theme',
   'primitive/font.json': '@theme',
   'primitive/spacing.json': '@theme',
+  'primitive/motion.json': '@theme',
   'primitive/shadow.json': ':root',
 };
 /** Where a primitive file written to :root sits among the semantics. */

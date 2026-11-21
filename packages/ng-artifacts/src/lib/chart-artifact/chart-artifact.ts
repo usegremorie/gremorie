@@ -253,7 +253,7 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string): void {
              frame is dropped here. Mirrors React. -->
         <div
           #contentRef
-          class="@container [&>*]:aspect-auto [&>*]:h-[min(18rem,56.25cqw)] [&>*]:rounded-none [&>*]:border-0 [&>*]:bg-transparent [&>*]:p-0 [&>*]:shadow-none"
+          class="@container [&>*]:aspect-auto [&>*]:h-[min(--spacing(72),56.25cqw)] [&>*]:rounded-none [&>*]:border-0 [&>*]:bg-transparent [&>*]:p-0 [&>*]:shadow-none"
         >
           @if (view() === 'chart') {
             @switch (type()) {
@@ -330,7 +330,7 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string): void {
                         @if (!rowSwatch()) {
                           <span
                             aria-hidden="true"
-                            class="size-2.5 shrink-0 rounded-[3px]"
+                            class="size-2.5 shrink-0 rounded-xs"
                             [style.background-color]="s.color"
                           ></span>
                         }
@@ -350,7 +350,7 @@ function exportSvgToPng(svg: SVGSVGElement, fileName: string): void {
                         @if (rowSwatch()) {
                           <span
                             aria-hidden="true"
-                            class="size-2.5 shrink-0 rounded-[3px]"
+                            class="size-2.5 shrink-0 rounded-xs"
                             [style.background-color]="paletteColor(i)"
                           ></span>
                         }

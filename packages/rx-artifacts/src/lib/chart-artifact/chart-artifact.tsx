@@ -471,7 +471,7 @@ export function ChartArtifact({
             The artifact is the frame: the chart's own card frame (border,
             fill, padding) is dropped here, so there is no card in a card. */}
         <div
-          className="@container [&_[data-slot=chart]]:aspect-auto [&_[data-slot=chart]]:h-[min(18rem,56.25cqw)] [&>*]:rounded-none [&>*]:border-0 [&>*]:bg-transparent [&>*]:p-0 [&>*]:shadow-none"
+          className="@container [&_[data-slot=chart]]:aspect-auto [&_[data-slot=chart]]:h-[min(--spacing(72),56.25cqw)] [&>*]:rounded-none [&>*]:border-0 [&>*]:bg-transparent [&>*]:p-0 [&>*]:shadow-none"
           ref={contentRef}
         >
           {view === 'chart' ? (
@@ -487,7 +487,7 @@ export function ChartArtifact({
                         {!rowSwatch ? (
                           <span
                             aria-hidden
-                            className="size-2.5 shrink-0 rounded-[3px]"
+                            className="size-2.5 shrink-0 rounded-xs"
                             style={{ backgroundColor: s.color }}
                           />
                         ) : null}
@@ -505,7 +505,7 @@ export function ChartArtifact({
                         {rowSwatch ? (
                           <span
                             aria-hidden
-                            className="size-2.5 shrink-0 rounded-[3px]"
+                            className="size-2.5 shrink-0 rounded-xs"
                             style={{ backgroundColor: paletteColor(i) }}
                           />
                         ) : null}

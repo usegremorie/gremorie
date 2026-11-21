@@ -69,7 +69,7 @@ export function RadialChart({
     >
       <ChartContainer
         config={config}
-        className="mx-auto aspect-square max-h-[260px] w-full"
+        className="mx-auto aspect-square max-h-65 w-full"
       >
         <RechartsRadialBarChart
           data={data as ChartDatum[]}

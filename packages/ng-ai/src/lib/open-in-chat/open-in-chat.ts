@@ -22,7 +22,7 @@ import { cn } from '@gremorie/ng-core';
  * - Provider items: `OpenInChatGPT`, `OpenInClaude`, `OpenInT3`, `OpenInScira`,
  *   `OpenInv0`, `OpenInCursor` — identical URL builders to React.
  * - Container parts: `OpenInTrigger` (default "Open in chat" button),
- *   `OpenInContent` (w-[240px] menu), `OpenInItem`, `OpenInLabel`,
+ *   `OpenInContent` (w-60 menu), `OpenInItem`, `OpenInLabel`,
  *   `OpenInSeparator`.
  * - `data-slot` names match what React actually renders: React composes
  *   `DropdownMenu`, so the trigger/content/item/label/separator surfaces carry
@@ -156,7 +156,7 @@ export class OpenInContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'block w-[240px] overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md',
+      'block w-60 overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md',
       this.class(),
     ),
   );

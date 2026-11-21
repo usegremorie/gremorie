@@ -48,7 +48,7 @@ describe('Assistant', () => {
     const fixture = await render();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.getAttribute('data-slot')).toBe('assistant');
-    expect(host.className).toContain('h-[680px]');
+    expect(host.className).toContain('h-170');
   });
 
   it('renders a stick-to-bottom conversation scroll region', async () => {
