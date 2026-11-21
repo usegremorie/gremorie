@@ -5,6 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { BrnSonnerToaster, toast } from '@spartan-ng/brain/sonner';
 
 /**
@@ -60,7 +61,7 @@ import { BrnSonnerToaster, toast } from '@spartan-ng/brain/sonner';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'sonner',
-    class: 'toaster group',
+    '[class]': 'hostClass()',
   },
   template: `
     <brn-sonner-toaster
@@ -162,6 +163,12 @@ import { BrnSonnerToaster, toast } from '@spartan-ng/brain/sonner';
   `,
 })
 export class Sonner {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('toaster group', this.class()),
+  );
+
   /**
    * Toast theme — `'light'` | `'dark'` | `'system'`. Mirrors React `theme`.
    * Defaults to `'system'` (React `theme ?? 'system'`). Under `'system'` the

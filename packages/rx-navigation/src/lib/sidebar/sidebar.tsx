@@ -386,7 +386,12 @@ function SidebarSeparator({
     <Separator
       data-slot="sidebar-separator"
       data-sidebar="separator"
-      className={cn('mx-2 w-auto bg-sidebar-border', className)}
+      // Separator sizes itself with `data-[orientation=horizontal]:w-full`, which
+      // outranks a plain `w-auto`; override the same variant so mx-2 insets it.
+      className={cn(
+        'mx-2 w-auto bg-sidebar-border data-[orientation=horizontal]:w-auto',
+        className,
+      )}
       {...props}
     />
   );

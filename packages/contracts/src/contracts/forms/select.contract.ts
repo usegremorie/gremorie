@@ -47,6 +47,16 @@ export const select = defineContract({
     },
     { name: 'name', type: 'string', desc: 'Form control name.' },
     {
+      name: 'id',
+      type: 'string',
+      adapts: {
+        rx: 'on <SelectTrigger>',
+        ng: 'input: id on <gr-select-trigger>',
+      },
+      desc: 'SelectTrigger: id on the trigger button, so a label can point at it.',
+      control: false,
+    },
+    {
       name: 'placeholder',
       type: 'string',
       adapts: { rx: 'on <SelectValue>', ng: 'on <gr-select-value>' },

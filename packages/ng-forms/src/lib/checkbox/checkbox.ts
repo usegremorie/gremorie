@@ -58,7 +58,9 @@ export type CheckedState = boolean | 'indeterminate';
   // `id` is an input AND a static attribute: Angular would also leave it on this
   // host, a second element with the same id. A label's `for` would then find the
   // host (not labelable) before the real control. The control keeps the id.
-  host: { '[attr.id]': 'null' },
+  // `contents`: React's checkbox IS the button, with no wrapper. An inline host
+  // would add a text line box around the 16px control and grow the row.
+  host: { '[attr.id]': 'null', class: 'contents' },
   imports: [BrnCheckbox],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -91,7 +93,11 @@ export type CheckedState = boolean | 'indeterminate';
             stroke-linejoin="round"
             aria-hidden="true"
           >
-            <path d="M20 6 9 17l-5-5" />
+            @if (isIndeterminate()) {
+              <path d="M5 12h14" />
+            } @else {
+              <path d="M20 6 9 17l-5-5" />
+            }
           </svg>
         </span>
       }
@@ -123,6 +129,11 @@ export class Checkbox {
 
   /** Plain boolean checked state bridged to/from the brain `checked` model. */
   protected readonly brnChecked = model<boolean>(false);
+
+  /** Indeterminate wins over checked, like Radix `checked="indeterminate"`. */
+  protected readonly isIndeterminate = computed(
+    () => this.indeterminate() || this.checked() === 'indeterminate',
+  );
 
   /** Whether to render the check indicator (checked OR indeterminate). */
   protected readonly showIndicator = computed(

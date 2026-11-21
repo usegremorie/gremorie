@@ -57,10 +57,19 @@ export class NavigationMenuService {
     ></div>
   `,
   host: {
-    class: 'absolute top-full left-0 isolate z-50 flex justify-center',
+    '[class]': 'hostClass()',
   },
 })
-export class NavigationMenuViewport {}
+export class NavigationMenuViewport {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'absolute top-full left-0 isolate z-50 flex justify-center',
+      this.class(),
+    ),
+  );
+}
 
 const navigationMenuTriggerStyle = cva(
   'group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-[color,box-shadow] outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground data-[state=open]:hover:bg-accent data-[state=open]:focus:bg-accent',
@@ -130,10 +139,19 @@ export class NavigationMenu {
   template: `<ng-content />`,
   host: {
     'data-slot': 'navigation-menu-list',
-    class: 'group flex flex-1 list-none items-center justify-center gap-1',
+    '[class]': 'hostClass()',
   },
 })
-export class NavigationMenuList {}
+export class NavigationMenuList {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'group flex flex-1 list-none items-center justify-center gap-1',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * NavigationMenuItem — one top-level entry (trigger + content). Mirrors React
@@ -147,10 +165,14 @@ export class NavigationMenuList {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'navigation-menu-item',
-    class: 'relative',
+    '[class]': 'hostClass()',
   },
 })
 export class NavigationMenuItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() => cn('relative', this.class()));
+
   private static _counter = 0;
   /** Stable id shared with this item's trigger and content. */
   readonly id = `gr-navigation-menu-item-${NavigationMenuItem._counter++}`;
@@ -232,10 +254,16 @@ export class NavigationMenuTrigger {
   host: {
     'data-slot': 'navigation-menu-content',
     '[attr.data-state]': 'state()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class NavigationMenuContent {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   private readonly service = inject(NavigationMenuService);
   private readonly item = inject(NavigationMenuItem);
 
@@ -267,10 +295,16 @@ export class NavigationMenuContent {
   host: {
     'data-slot': 'navigation-menu-link',
     '[attr.data-active]': 'active() || null',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class NavigationMenuLink {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Marks the link as the current page. Mirrors React `active` (Radix `data-active`). */
   readonly active = input<boolean>(false);
 
@@ -297,10 +331,18 @@ export class NavigationMenuLink {
   `,
   host: {
     'data-slot': 'navigation-menu-indicator',
-    class:
-      'top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:animate-in data-[state=visible]:fade-in',
+    '[class]': 'hostClass()',
   },
 })
-export class NavigationMenuIndicator {}
+export class NavigationMenuIndicator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:animate-in data-[state=visible]:fade-in',
+      this.class(),
+    ),
+  );
+}
 
 export { navigationMenuTriggerStyle };

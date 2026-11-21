@@ -10,6 +10,7 @@ import {
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { ToggleGroup, ToggleGroupItem } from '@gremorie/ng-forms';
 
 import {
@@ -91,7 +92,7 @@ const lastStarted = (words: TimelineWord[], t: number): number => {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'word-timeline',
-    class: 'flex flex-col gap-2',
+    '[class]': 'hostClass()',
   },
   template: `
     <!--
@@ -158,6 +159,12 @@ const lastStarted = (words: TimelineWord[], t: number): number => {
   `,
 })
 export class WordTimeline {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-col gap-2', this.class()),
+  );
+
   /** Words with start/end seconds and speaker, sorted by start. */
   readonly words = input.required<TimelineWord[]>();
   /** Selected [in, out] in seconds. */

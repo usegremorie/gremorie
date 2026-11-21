@@ -56,10 +56,14 @@ import { cn } from '@gremorie/ng-core';
   template: `<ng-content />`,
   host: {
     'data-slot': 'radio-group',
-    class: 'grid gap-3',
+    '[class]': 'hostClass()',
   },
 })
-export class RadioGroup {}
+export class RadioGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() => cn('grid gap-3', this.class()));
+}
 
 /**
  * RadioGroupItem — a single option inside a RadioGroup. Mirrors React

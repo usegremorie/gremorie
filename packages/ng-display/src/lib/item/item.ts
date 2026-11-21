@@ -87,10 +87,16 @@ export type ItemSize = NonNullable<VariantProps<typeof itemVariants>['size']>;
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'dataSize()',
     '[attr.data-interactive]': 'interactive() || null',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Item {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly variant = input<ItemVariant>('default');
   readonly size = input<ItemSize>('md');
   readonly interactive = input<boolean>(false);
@@ -157,10 +163,16 @@ export type ItemMediaVariant = NonNullable<
   host: {
     'data-slot': 'item-media',
     '[attr.data-variant]': 'variant()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class ItemMedia {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly variant = input<ItemMediaVariant>('icon');
 
   protected readonly computedClass = computed(() =>
@@ -180,11 +192,19 @@ export class ItemMedia {
   template: `<ng-content />`,
   host: {
     'data-slot': 'item-content',
-    class:
-      'flex flex-1 flex-col gap-0.5 [&+[data-slot=item-content]]:flex-none',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemContent {}
+export class ItemContent {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'flex flex-1 flex-col gap-0.5 [&+[data-slot=item-content]]:flex-none',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * ItemTitle — the title line of an Item. Mirrors React `ItemTitle`.
@@ -198,11 +218,19 @@ export class ItemContent {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'item-title',
-    class:
-      'flex w-fit items-center gap-2 font-medium group-data-[size=lg]/item:text-sm group-data-[size=md]/item:text-sm group-data-[size=sm]/item:text-xs',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemTitle {}
+export class ItemTitle {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'flex w-fit items-center gap-2 font-medium group-data-[size=lg]/item:text-sm group-data-[size=md]/item:text-sm group-data-[size=sm]/item:text-xs',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * ItemDescription — supporting copy under the title. Mirrors React
@@ -216,11 +244,19 @@ export class ItemTitle {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'item-description',
-    class:
-      'line-clamp-2 font-normal text-balance text-muted-foreground group-data-[size=lg]/item:text-sm group-data-[size=md]/item:text-xs group-data-[size=sm]/item:text-xs [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemDescription {}
+export class ItemDescription {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'line-clamp-2 font-normal text-balance text-muted-foreground group-data-[size=lg]/item:text-sm group-data-[size=md]/item:text-xs group-data-[size=sm]/item:text-xs [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * ItemActions — trailing actions slot (badge · button · switch). Mirrors
@@ -234,10 +270,16 @@ export class ItemDescription {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'item-actions',
-    class: 'flex items-center gap-2',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemActions {}
+export class ItemActions {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex items-center gap-2', this.class()),
+  );
+}
 
 /**
  * ItemHeader — full-width row above the media/content. Mirrors React
@@ -251,10 +293,16 @@ export class ItemActions {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'item-header',
-    class: 'flex basis-full items-center justify-between gap-2',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemHeader {}
+export class ItemHeader {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex basis-full items-center justify-between gap-2', this.class()),
+  );
+}
 
 /**
  * ItemFooter — full-width row below the media/content. Mirrors React
@@ -268,10 +316,16 @@ export class ItemHeader {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'item-footer',
-    class: 'flex basis-full items-center justify-between gap-2',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemFooter {}
+export class ItemFooter {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex basis-full items-center justify-between gap-2', this.class()),
+  );
+}
 
 /**
  * ItemGroup — `role="list"` wrapper for stacked Items. Mirrors React
@@ -286,10 +340,16 @@ export class ItemFooter {}
   host: {
     role: 'list',
     'data-slot': 'item-group',
-    class: 'group/item-group flex flex-col',
+    '[class]': 'hostClass()',
   },
 })
-export class ItemGroup {}
+export class ItemGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('group/item-group flex flex-col', this.class()),
+  );
+}
 
 /**
  * ItemSeparator — divider between Items inside an ItemGroup. Mirrors React
@@ -312,10 +372,16 @@ export class ItemGroup {}
   host: {
     'data-slot': 'item-separator',
     '[attr.data-orientation]': 'orientation()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class ItemSeparator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly decorative = input<boolean>(true);
 

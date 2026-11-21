@@ -14,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarSeparator,
   SidebarTrigger,
 } from './sidebar';
 
@@ -35,6 +36,7 @@ const meta: Meta<Sidebar> = {
         SidebarHeader,
         SidebarContent,
         SidebarFooter,
+        SidebarSeparator,
         SidebarGroup,
         SidebarGroupLabel,
         SidebarGroupContent,
@@ -58,6 +60,7 @@ export const Workbench: Story = {
       <gr-sidebar-provider class="min-h-[420px] rounded-lg border">
         <gr-sidebar collapsible="none" class="border-r">
           <gr-sidebar-header class="text-sm font-semibold">Acme Inc</gr-sidebar-header>
+          <gr-sidebar-separator />
           <gr-sidebar-content>
             <gr-sidebar-group>
               <gr-sidebar-group-label>Platform</gr-sidebar-group-label>

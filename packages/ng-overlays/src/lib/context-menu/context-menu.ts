@@ -66,7 +66,8 @@ export class ContextMenu {}
   template: `
     <button
       type="button"
-      [brnPopoverTriggerFor]="content()"
+      brnPopoverTrigger
+      [brnPopoverTriggerFor]="overlay()"
       [class]="class()"
       (contextmenu)="onContextMenu($event)"
     >
@@ -76,9 +77,19 @@ export class ContextMenu {}
   host: { 'data-slot': 'context-menu-trigger', class: 'block' },
 })
 export class ContextMenuTrigger {
-  /** Template ref of the `<ng-template brnPopoverContent>` to open. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly content = input.required<any>();
+  /**
+   * Optional. The trigger opens the `BrnPopover` of the enclosing root, which
+   * picks up the sibling `<ng-template brnPopoverContent>` on its own. A
+   * template ref here is ignored; a `BrnPopover` instance targets that popover.
+   */
+  readonly content = input<unknown>();
+  // Brain's trigger calls `stateComputed()` on whatever `brnPopoverTriggerFor`
+  // holds, so only a real popover may reach it; otherwise the trigger falls
+  // back to the popover injected from the enclosing root.
+  protected readonly overlay = computed(() => {
+    const content = this.content();
+    return content instanceof BrnPopover ? content : undefined;
+  });
   readonly class = input<string>();
   private readonly popover = inject(BrnPopover);
 

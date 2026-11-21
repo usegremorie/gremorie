@@ -5,6 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
@@ -74,10 +75,16 @@ export type BadgeVariant = NonNullable<
   host: {
     'data-slot': 'badge',
     '[attr.data-variant]': 'variant()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Badge {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly variant = input<BadgeVariant>('default');
 
   protected readonly computedClass = computed(() =>

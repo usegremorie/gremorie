@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
+import { BrnPopoverContent } from '@spartan-ng/brain/popover';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuTrigger,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuCheckboxItem,
@@ -118,5 +120,100 @@ describe('DropdownMenu', () => {
     const radio = host.querySelector('[data-slot="dropdown-menu-radio-item"]');
     expect(checkbox?.querySelector('svg')).not.toBeNull();
     expect(radio?.querySelector('svg')).not.toBeNull();
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    BrnPopoverContent,
+  ],
+  template: `
+    <gr-dropdown-menu>
+      <gr-dropdown-menu-trigger ariaLabel="More actions"
+        >Open</gr-dropdown-menu-trigger
+      >
+      <ng-template brnPopoverContent>
+        <gr-dropdown-menu-content>
+          <gr-dropdown-menu-item>Edit</gr-dropdown-menu-item>
+        </gr-dropdown-menu-content>
+      </ng-template>
+    </gr-dropdown-menu>
+  `,
+})
+class OpenHost {}
+
+// Legacy wiring: a template ref passed through `[content]`. It must not crash
+// the trigger (the brain trigger expects an overlay instance, not a template).
+@Component({
+  standalone: true,
+  imports: [
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    BrnPopoverContent,
+  ],
+  template: `
+    <gr-dropdown-menu>
+      <gr-dropdown-menu-trigger [content]="tpl">Open</gr-dropdown-menu-trigger>
+      <ng-template #tpl brnPopoverContent>
+        <gr-dropdown-menu-content>Body</gr-dropdown-menu-content>
+      </ng-template>
+    </gr-dropdown-menu>
+  `,
+})
+class LegacyHost {}
+
+describe('DropdownMenu open behavior', () => {
+  afterEach(() => {
+    document
+      .querySelectorAll('.cdk-overlay-container')
+      .forEach((n) => n.remove());
+  });
+
+  it('opens the menu content when the trigger is clicked', async () => {
+    TestBed.configureTestingModule({ imports: [OpenHost] });
+    const fixture = TestBed.createComponent(OpenHost);
+    fixture.detectChanges();
+    const button = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-slot="dropdown-menu-trigger"] button',
+    ) as HTMLButtonElement;
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(
+      document.querySelector('[data-slot="dropdown-menu-content"]'),
+    ).not.toBeNull();
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('forwards ariaLabel to the trigger button', () => {
+    TestBed.configureTestingModule({ imports: [OpenHost] });
+    const fixture = TestBed.createComponent(OpenHost);
+    fixture.detectChanges();
+    const button = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-slot="dropdown-menu-trigger"] button',
+    );
+    expect(button?.getAttribute('aria-label')).toBe('More actions');
+  });
+
+  it('does not crash when a template ref is passed through [content]', async () => {
+    TestBed.configureTestingModule({ imports: [LegacyHost] });
+    const fixture = TestBed.createComponent(LegacyHost);
+    expect(() => fixture.detectChanges()).not.toThrow();
+    const button = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-slot="dropdown-menu-trigger"] button',
+    ) as HTMLButtonElement;
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(
+      document.querySelector('[data-slot="dropdown-menu-content"]'),
+    ).not.toBeNull();
   });
 });

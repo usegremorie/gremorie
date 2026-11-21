@@ -27,6 +27,22 @@ describe('checkParity (logic)', () => {
     expect(res.missingInNg).toContain('type');
   });
 
+  it('accepts the Angular `class` input as the contract `className`', () => {
+    const contract = {
+      ...chartArtifact,
+      props: [
+        ...chartArtifact.props,
+        { name: 'className', type: 'string', adapts: { ng: 'input: class' } },
+      ],
+    };
+    const rx = contract.props.filter((p) => !p.adapts?.rx).map((p) => p.name);
+    const ng = [
+      ...contract.props.filter((p) => !p.adapts?.ng).map((p) => p.name),
+      'class',
+    ];
+    expect(checkParity(contract, { rx, ng }).ok).toBe(true);
+  });
+
   it('flags a code prop missing from the contract', () => {
     const rx = [
       ...chartArtifact.props.filter((p) => !p.adapts?.rx).map((p) => p.name),

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 
+import { Label } from '../label/label';
 import { Checkbox } from './checkbox';
 
 /**
@@ -9,13 +10,14 @@ import { Checkbox } from './checkbox';
  * Angular wraps the spartan brain `BrnCheckbox`).
  *
  * Supports the three canonical states — unchecked, checked, indeterminate —
- * and renders a hand-inlined lucide `check` icon as the indicator.
+ * and renders a hand-inlined lucide `check` icon as the indicator (a `minus`
+ * dash when indeterminate).
  */
 const meta: Meta<Checkbox> = {
   title: 'Inputs/Selection/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
-  decorators: [moduleMetadata({ imports: [Checkbox] })],
+  decorators: [moduleMetadata({ imports: [Checkbox, Label] })],
   argTypes: {
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
@@ -56,6 +58,27 @@ export const Checked: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     template: `<gr-checkbox ariaLabel="Checked" [checked]="true" />`,
+  }),
+};
+
+/** Indeterminate — the "some but not all" parent state (draws a dash). */
+export const Indeterminate: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    template: `<gr-checkbox ariaLabel="Select all" checked="indeterminate" />`,
+  }),
+};
+
+/** Paired with a clickable Label via shared `id`. */
+export const WithLabel: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div class="flex items-center gap-2">
+        <gr-checkbox id="terms" />
+        <gr-label for="terms">Accept terms and conditions</gr-label>
+      </div>
+    `,
   }),
 };
 

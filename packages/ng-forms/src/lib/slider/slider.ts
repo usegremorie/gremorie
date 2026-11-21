@@ -1,9 +1,12 @@
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   input,
   model,
+  viewChildren,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -68,11 +71,7 @@ import { cn } from '@gremorie/ng-core';
         <div brnSliderRange [class]="rangeClass()"></div>
       </div>
       @for (thumb of value(); track $index) {
-        <span
-          brnSliderThumb
-          [attr.aria-label]="thumbLabel($index)"
-          [class]="thumbClass()"
-        ></span>
+        <span #thumb brnSliderThumb [class]="thumbClass()"></span>
       }
     </div>
   `,
@@ -97,6 +96,22 @@ export class Slider {
    * no adjacent visible label.
    */
   readonly thumbAriaLabel = input<string | string[]>();
+
+  private readonly thumbs = viewChildren('thumb', { read: ElementRef });
+
+  constructor() {
+    // The brain thumb binds its own `aria-label` (one slider-wide label or
+    // "Value n of m"), which would override a template binding. Write the
+    // per-thumb label after each render so `thumbAriaLabel` always wins.
+    afterRenderEffect(() => {
+      this.thumbs().forEach((thumb, index) => {
+        (thumb.nativeElement as HTMLElement).setAttribute(
+          'aria-label',
+          this.thumbLabel(index),
+        );
+      });
+    });
+  }
 
   protected thumbLabel(index: number): string {
     const label = this.thumbAriaLabel();

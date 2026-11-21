@@ -21,8 +21,8 @@ import {
  *
  * Mirrors React `DropdownMenu`. DIVERGENCE: built on spartan brain `BrnPopover`
  * (CDK overlay) because brain ships no menu primitive. The content lives in a
- * `<ng-template brnPopoverContent #content>` and the trigger opens it via
- * `[content]="content"`.
+ * `<ng-template brnPopoverContent>` inside `gr-dropdown-menu`; the trigger
+ * opens the root's popover, so no template ref needs wiring.
  */
 const meta: Meta<DropdownMenu> = {
   title: 'Interaction/Overlays/DropdownMenu',
@@ -57,12 +57,11 @@ export const Workbench: Story = {
   render: () => ({
     template: `
       <gr-dropdown-menu>
-        <gr-dropdown-menu-trigger [content]="content"
+        <gr-dropdown-menu-trigger
           class="inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open menu
         </gr-dropdown-menu-trigger>
-        <ng-template #content>
-          <ng-template brnPopoverContent>
+        <ng-template brnPopoverContent>
             <gr-dropdown-menu-content class="w-56">
               <gr-dropdown-menu-label>My Account</gr-dropdown-menu-label>
               <gr-dropdown-menu-separator />
@@ -75,7 +74,6 @@ export const Workbench: Story = {
               <gr-dropdown-menu-separator />
               <gr-dropdown-menu-item variant="destructive">Delete</gr-dropdown-menu-item>
             </gr-dropdown-menu-content>
-          </ng-template>
         </ng-template>
       </gr-dropdown-menu>
     `,
@@ -87,12 +85,11 @@ export const CheckboxAndRadio: Story = {
   render: () => ({
     template: `
       <gr-dropdown-menu>
-        <gr-dropdown-menu-trigger [content]="content"
+        <gr-dropdown-menu-trigger
           class="inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           View options
         </gr-dropdown-menu-trigger>
-        <ng-template #content>
-          <ng-template brnPopoverContent>
+        <ng-template brnPopoverContent>
             <gr-dropdown-menu-content class="w-56">
               <gr-dropdown-menu-label>Appearance</gr-dropdown-menu-label>
               <gr-dropdown-menu-checkbox-item [checked]="true">Status Bar</gr-dropdown-menu-checkbox-item>
@@ -103,7 +100,6 @@ export const CheckboxAndRadio: Story = {
                 <gr-dropdown-menu-radio-item>Bottom</gr-dropdown-menu-radio-item>
               </gr-dropdown-menu-radio-group>
             </gr-dropdown-menu-content>
-          </ng-template>
         </ng-template>
       </gr-dropdown-menu>
     `,

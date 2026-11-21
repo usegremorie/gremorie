@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   Directive,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
 import { cn } from '@gremorie/ng-core';
@@ -59,10 +60,16 @@ export class Table {
   standalone: true,
   host: {
     'data-slot': 'table-header',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableHeader {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() => cn('[&_tr]:border-b'));
 }
 
@@ -72,10 +79,16 @@ export class TableHeader {
   standalone: true,
   host: {
     'data-slot': 'table-body',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableBody {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn('[&_tr:last-child]:border-0'),
   );
@@ -87,10 +100,16 @@ export class TableBody {
   standalone: true,
   host: {
     'data-slot': 'table-footer',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableFooter {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0'),
   );
@@ -102,10 +121,16 @@ export class TableFooter {
   standalone: true,
   host: {
     'data-slot': 'table-row',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableRow {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
@@ -119,10 +144,16 @@ export class TableRow {
   standalone: true,
   host: {
     'data-slot': 'table-head',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableHead {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       'text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5',
@@ -136,10 +167,16 @@ export class TableHead {
   standalone: true,
   host: {
     'data-slot': 'table-cell',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableCell {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5',
@@ -153,10 +190,16 @@ export class TableCell {
   standalone: true,
   host: {
     'data-slot': 'table-caption',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class TableCaption {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn('text-muted-foreground mt-4 text-sm'),
   );

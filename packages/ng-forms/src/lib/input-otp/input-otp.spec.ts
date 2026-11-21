@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import {
+  BrnInputOtp,
   InputOtp,
   InputOtpGroup,
   InputOtpSeparator,
@@ -10,9 +11,15 @@ import {
 
 @Component({
   standalone: true,
-  imports: [InputOtp, InputOtpGroup, InputOtpSlot, InputOtpSeparator],
+  imports: [
+    BrnInputOtp,
+    InputOtp,
+    InputOtpGroup,
+    InputOtpSlot,
+    InputOtpSeparator,
+  ],
   template: `
-    <gr-input-otp [maxLength]="6">
+    <brn-input-otp grInputOtp [maxLength]="6">
       <gr-input-otp-group>
         <gr-input-otp-slot [index]="0" />
         <gr-input-otp-slot [index]="1" />
@@ -24,7 +31,7 @@ import {
         <gr-input-otp-slot [index]="4" />
         <gr-input-otp-slot [index]="5" />
       </gr-input-otp-group>
-    </gr-input-otp>
+    </brn-input-otp>
   `,
 })
 class Host {}

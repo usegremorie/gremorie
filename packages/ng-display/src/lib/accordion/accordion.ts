@@ -71,6 +71,7 @@ const ACCORDION_ROOT = new InjectionToken<AccordionRootState>('AccordionRoot');
   template: `<ng-content />`,
   host: {
     'data-slot': 'accordion',
+    class: 'block',
   },
   providers: [
     {
@@ -120,6 +121,8 @@ export class AccordionItem implements AfterViewInit {
   readonly isOpened = input<boolean>(false);
   /** Whether the item is disabled. */
   readonly disabled = input<boolean>(false);
+  /** Extra classes merged over the defaults. Mirrors React `className`. */
+  readonly class = input<string>();
 
   /** True when this item's own `isOpened` or the root `defaultValue` opens it. */
   protected readonly startsOpen = computed(() => {
@@ -130,7 +133,9 @@ export class AccordionItem implements AfterViewInit {
   });
 
   protected readonly computedClass = computed(() =>
-    cn('border-b last:border-b-0'),
+    // `block`: React renders a div; an inline custom element would draw the
+    // bottom border without adding its height.
+    cn('block border-b last:border-b-0', this.class()),
   );
 
   ngAfterViewInit(): void {
@@ -155,13 +160,16 @@ export class AccordionItem implements AfterViewInit {
   imports: [BrnAccordionTrigger, BrnAccordionHeader],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // The host stays out of layout (React renders no wrapper), so a caller's
+  // `class` lands only on the inner element it is merged into.
+  host: { class: 'contents' },
   template: `
     <h3 class="flex" brnAccordionHeader>
       <button
         type="button"
         brnAccordionTrigger
         data-slot="accordion-trigger"
-        class="flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180"
+        [class]="triggerClass()"
       >
         <ng-content />
         <svg
@@ -180,7 +188,16 @@ export class AccordionItem implements AfterViewInit {
     </h3>
   `,
 })
-export class AccordionTrigger {}
+export class AccordionTrigger {
+  /** Extra classes merged over the trigger button defaults. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly triggerClass = computed(() =>
+    cn(
+      'flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * AccordionContent — the collapsible body (animated open/close). Mirrors React
@@ -192,16 +209,21 @@ export class AccordionTrigger {}
   imports: [BrnAccordionContent],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // The host stays out of layout (React renders no wrapper), so a caller's
+  // `class` lands only on the inner element it is merged into.
+  host: { class: 'contents' },
   template: `
     <div
       brnAccordionContent
       data-slot="accordion-content"
-      class="overflow-hidden text-sm"
+      class="overflow-hidden text-sm data-[state=closed]:hidden"
     >
       <div [class]="innerClass()"><ng-content /></div>
     </div>
   `,
 })
 export class AccordionContent {
-  protected readonly innerClass = computed(() => cn('pt-0 pb-4'));
+  /** Extra classes merged over the inner wrapper. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly innerClass = computed(() => cn('pt-0 pb-4', this.class()));
 }
