@@ -77,7 +77,7 @@ interface LegendItem {
 
       @if (tooltip() && active() !== null) {
         <div
-          class="pointer-events-none absolute z-10 min-w-24 -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
+          class="pointer-events-none absolute z-10 min-w-24 -translate-x-1/2 -translate-y-1/2 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
           [style.left.px]="r.center().cx"
           [style.top.px]="r.center().cy"
         >
