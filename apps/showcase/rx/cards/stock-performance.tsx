@@ -50,12 +50,13 @@ const change = new Intl.NumberFormat('en-US', {
 export function StockPerformance() {
   const [ticker, setTicker] = useState<Ticker>('VOO');
   const closes = TICKERS[ticker].closes;
-  const first = closes[0];
-  const last = closes[closes.length - 1];
+  // Every fund carries six closes, so the first and last always exist.
+  const first = closes[0] ?? 0;
+  const last = closes[closes.length - 1] ?? first;
   const delta = (last - first) / first;
   const data = MONTHS.map((month, i) => ({
     month,
-    returnPct: Math.round(((closes[i] - first) / first) * 1000) / 10,
+    returnPct: Math.round((((closes[i] ?? first) - first) / first) * 1000) / 10,
   }));
 
   return (
