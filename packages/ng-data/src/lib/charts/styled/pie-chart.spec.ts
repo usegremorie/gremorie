@@ -43,4 +43,33 @@ describe('PieChart', () => {
     const host = fixture.nativeElement as HTMLElement;
     expect(host.getAttribute('aria-label')).toContain('Donut');
   });
+
+  it('writes the total in the donut hole', async () => {
+    const fixture = TestBed.createComponent(PieChart);
+    fixture.componentRef.setInput('data', DATA);
+    fixture.componentRef.setInput('nameKey', 'browser');
+    fixture.componentRef.setInput('dataKey', 'visitors');
+    fixture.componentRef.setInput('donut', true);
+    fixture.componentRef.setInput('centerValue', '$2,480');
+    fixture.componentRef.setInput('centerLabel', 'spent in May');
+    fixture.detectChanges();
+    const center = (fixture.nativeElement as HTMLElement).querySelector(
+      '[data-slot="pie-chart-center"]',
+    );
+    expect(center?.textContent).toContain('$2,480');
+    expect(center?.textContent).toContain('spent in May');
+  });
+
+  it('drops its frame and legend on request', async () => {
+    const fixture = TestBed.createComponent(PieChart);
+    fixture.componentRef.setInput('data', DATA);
+    fixture.componentRef.setInput('nameKey', 'browser');
+    fixture.componentRef.setInput('dataKey', 'visitors');
+    fixture.componentRef.setInput('framed', false);
+    fixture.componentRef.setInput('legend', false);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.className).not.toContain('border');
+    expect(host.querySelector('chart-legend')).toBeNull();
+  });
 });

@@ -145,3 +145,26 @@ export const Workbench: Story = {
     dataKey: 'visitors',
   },
 };
+
+/** Donut with the total in the hole, on the categorical palette. */
+export const DonutWithTotal: Story = {
+  args: {
+    data: [
+      { category: 'Housing', amount: 1450, fill: 'var(--chart-cat-1)' },
+      { category: 'Groceries', amount: 620, fill: 'var(--chart-cat-2)' },
+      { category: 'Transport', amount: 380, fill: 'var(--chart-cat-3)' },
+      { category: 'Leisure', amount: 790, fill: 'var(--chart-cat-4)' },
+    ],
+    config: { amount: { label: 'Spent' } },
+    nameKey: 'category',
+    dataKey: 'amount',
+    donut: true,
+    centerValue: '$3,240',
+    centerLabel: '81% of $4,000 budget',
+  },
+  render: (args) => (
+    <div style={{ width: 360 }}>
+      <PieChart {...args} />
+    </div>
+  ),
+};

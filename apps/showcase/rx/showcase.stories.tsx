@@ -8,6 +8,7 @@ import { AccountAccess } from './cards/account-access';
 import { ContributionHistory } from './cards/contribution-history';
 import { PayoutThreshold } from './cards/payout-threshold';
 import { ReceivingMethod } from './cards/receiving-method';
+import { MonthlySpending } from './cards/monthly-spending';
 import { Masonry } from './masonry';
 
 /**
@@ -26,7 +27,10 @@ export const All: StoryObj = {
   render: () => (
     <Masonry
       columns={[
-        [<ContributionHistory key="contribution-history" />],
+        [
+          <ContributionHistory key="contribution-history" />,
+          <MonthlySpending key="monthly-spending" />,
+        ],
         [<PayoutThreshold key="payout-threshold" />],
         [<Assistant key="assistant" initialView="empty" />],
         [<AccountAccess key="account-access" />],

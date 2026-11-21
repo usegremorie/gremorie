@@ -4,6 +4,7 @@
 // site and the Storybook render the very same files.
 import { AccountAccess } from '../../showcase/rx/cards/account-access';
 import { ContributionHistory } from '../../showcase/rx/cards/contribution-history';
+import { MonthlySpending } from '../../showcase/rx/cards/monthly-spending';
 import { PayoutThreshold } from '../../showcase/rx/cards/payout-threshold';
 import { ReceivingMethod } from '../../showcase/rx/cards/receiving-method';
 
@@ -19,6 +20,7 @@ export function ShowcaseGrid() {
   const cards = [
     <ContributionHistory key="contribution-history" />,
     <PayoutThreshold key="payout-threshold" />,
+    <MonthlySpending key="monthly-spending" />,
     <Assistant key="assistant" initialView="empty" />,
     <AccountAccess key="account-access" />,
     <ReceivingMethod key="receiving-method" />,

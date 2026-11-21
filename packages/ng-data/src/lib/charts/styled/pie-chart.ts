@@ -39,72 +39,93 @@ interface LegendItem {
     'data-slot': 'pie-chart',
     role: 'img',
     '[attr.aria-label]': 'ariaLabel()',
-    class:
-      'flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground',
+    '[class]': 'hostClass()',
   },
   template: `
     <div class="relative w-full">
-      <svg
-        chartFrame
-        [data]="data()"
-        [xKey]="nameKey()"
-        class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
-      >
-        <svg:g
-          [pie]="dataKey()"
-          [innerRadiusRatio]="donut() ? 0.6 : 0"
-          #p="pie"
-          [attr.transform]="p.transform()"
+      <div class="relative">
+        <svg
+          chartFrame
+          [data]="data()"
+          [xKey]="nameKey()"
+          class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
         >
-          @for (s of p.slices(); track s.name) {
-            <svg:path
-              [attr.d]="s.d"
-              [attr.fill]="sliceColor(s.index)"
-              stroke="var(--background)"
-              [attr.stroke-width]="active() === s.index ? 3 : 2"
-              class="cursor-pointer"
-              (pointerenter)="tooltip() && active.set(s.index)"
-              (pointerleave)="active.set(null)"
-            />
-          }
-          @if (showLabels()) {
-            @for (l of p.labels(); track l.index) {
-              <svg:text
-                [attr.x]="l.x"
-                [attr.y]="l.y"
-                text-anchor="middle"
-                dominant-baseline="middle"
-                class="pointer-events-none fill-background text-[10px] font-medium"
-              >
-                {{ l.name }}
-              </svg:text>
+          <svg:g
+            [pie]="dataKey()"
+            [innerRadiusRatio]="donut() ? 0.6 : 0"
+            #p="pie"
+            [attr.transform]="p.transform()"
+          >
+            @for (s of p.slices(); track s.name) {
+              <svg:path
+                [attr.d]="s.d"
+                [attr.fill]="sliceColor(s.index)"
+                stroke="var(--background)"
+                [attr.stroke-width]="active() === s.index ? 3 : 2"
+                class="cursor-pointer"
+                (pointerenter)="tooltip() && active.set(s.index)"
+                (pointerleave)="active.set(null)"
+              />
             }
-          }
-        </svg:g>
-      </svg>
+            @if (showLabels()) {
+              @for (l of p.labels(); track l.index) {
+                <svg:text
+                  [attr.x]="l.x"
+                  [attr.y]="l.y"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  class="pointer-events-none fill-background text-[10px] font-medium"
+                >
+                  {{ l.name }}
+                </svg:text>
+              }
+            }
+          </svg:g>
+        </svg>
 
-      @if (tooltip() && active() !== null && p.labels()[active()!]) {
-        <div
-          class="pointer-events-none absolute z-10 min-w-24 -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
-          [style.left.px]="p.center().cx + p.labels()[active()!].x"
-          [style.top.px]="p.center().cy + p.labels()[active()!].y"
-        >
-          <div class="flex items-center gap-1.5 text-muted-foreground">
-            <span
-              class="size-2 rounded-[2px]"
-              [style.background]="sliceColor(active()!)"
-            ></span>
-            <span>{{ activeName() }}</span>
-            <span
-              class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
-            >
-              {{ activeValue() }}
-            </span>
+        @if (donut() && (centerValue() || centerLabel())) {
+          <div
+            data-slot="pie-chart-center"
+            class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-0.5 text-center"
+          >
+            @if (centerValue()) {
+              <span class="text-2xl font-semibold tabular-nums">{{
+                centerValue()
+              }}</span>
+            }
+            @if (centerLabel()) {
+              <span class="text-xs text-muted-foreground">{{
+                centerLabel()
+              }}</span>
+            }
           </div>
-        </div>
-      }
+        }
 
-      <chart-legend [items]="legendItems()" />
+        @if (tooltip() && active() !== null && p.labels()[active()!]) {
+          <div
+            class="pointer-events-none absolute z-10 min-w-24 -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
+            [style.left.px]="p.center().cx + p.labels()[active()!].x"
+            [style.top.px]="p.center().cy + p.labels()[active()!].y"
+          >
+            <div class="flex items-center gap-1.5 text-muted-foreground">
+              <span
+                class="size-2 rounded-[2px]"
+                [style.background]="sliceColor(active()!)"
+              ></span>
+              <span>{{ activeName() }}</span>
+              <span
+                class="ml-auto pl-3 font-medium tabular-nums text-popover-foreground"
+              >
+                {{ activeValue() }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (legend()) {
+        <chart-legend [items]="legendItems()" />
+      }
 
       <table class="sr-only">
         <caption>
@@ -138,6 +159,20 @@ export class PieChart {
   readonly donut = input(false);
   readonly showLabels = input(false);
   readonly tooltip = input(true);
+  /** Big figure in the donut hole, e.g. a total. Needs `donut`. */
+  readonly centerValue = input<string>();
+  /** Caption under `centerValue`, e.g. "spent this month". */
+  readonly centerLabel = input<string>();
+  /** Draw the chart's own card frame. Turn off when it sits inside a Card. */
+  readonly framed = input(true);
+  /** Show the color legend. Turn off when the page already lists the slices. */
+  readonly legend = input(true);
+
+  protected readonly hostClass = computed(() =>
+    this.framed()
+      ? 'flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-card-foreground'
+      : 'flex flex-col gap-3',
+  );
 
   readonly active = signal<number | null>(null);
 
@@ -145,7 +180,7 @@ export class PieChart {
     return (this.data()[i]?.fill as string | undefined) ?? paletteColor(i);
   }
 
-  readonly legend = computed<LegendItem[]>(() =>
+  readonly legendRows = computed<LegendItem[]>(() =>
     this.data().map((row, i) => ({
       name: String(row[this.nameKey()]),
       color: this.sliceColor(i),
@@ -178,7 +213,7 @@ export class PieChart {
    * `icon` to forward — the swatch is always the right mark here.
    */
   protected readonly legendItems = computed<ChartLegendItem[]>(() =>
-    this.legend().map((item) => ({
+    this.legendRows().map((item) => ({
       key: item.name,
       label: item.name,
       color: item.color,
