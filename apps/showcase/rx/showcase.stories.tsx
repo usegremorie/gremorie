@@ -2,13 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 // The React Assistant is a docs block, not a package (the Angular one ships
 // in ng-ai); this dev-only showcase reaches into the docs app for it.
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { Assistant } from '../../docs/components/preview/blocks/assistant';
-import { AccountAccess } from './cards/account-access';
-import { ContributionHistory } from './cards/contribution-history';
-import { PayoutThreshold } from './cards/payout-threshold';
-import { ReceivingMethod } from './cards/receiving-method';
-import { MonthlySpending } from './cards/monthly-spending';
+import { showcaseColumns } from './columns';
 import { Masonry } from './masonry';
 
 /**
@@ -25,17 +20,12 @@ export default meta;
 
 export const All: StoryObj = {
   render: () => (
-    <Masonry
-      columns={[
-        [
-          <ContributionHistory key="contribution-history" />,
-          <MonthlySpending key="monthly-spending" />,
-        ],
-        [<PayoutThreshold key="payout-threshold" />],
-        [<Assistant key="assistant" initialView="empty" />],
-        [<AccountAccess key="account-access" />],
-        [<ReceivingMethod key="receiving-method" />],
-      ]}
-    />
+    <div className="min-h-screen bg-background p-10">
+      <Masonry
+        columns={showcaseColumns(
+          <Assistant key="assistant" initialView="empty" />,
+        )}
+      />
+    </div>
   ),
 };
