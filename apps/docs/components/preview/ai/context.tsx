@@ -2,31 +2,50 @@
 
 import {
   Context,
+  ContextCacheUsage,
   ContextContent,
   ContextContentBody,
+  ContextContentFooter,
   ContextContentHeader,
+  ContextInputUsage,
+  ContextOutputUsage,
+  ContextReasoningUsage,
   ContextTrigger,
 } from '@gremorie/rx-ai';
-import { Button } from '@gremorie/rx-forms';
 
 export function ContextPreview() {
   return (
-    <Context usedTokens={4321} maxTokens={8000}>
-      <ContextTrigger>
-        <Button variant="outline" size="sm">
-          4.3k / 8k tokens
-        </Button>
-      </ContextTrigger>
-      <ContextContent>
-        <ContextContentHeader>
-          <p className="text-sm font-medium">Context window</p>
-        </ContextContentHeader>
-        <ContextContentBody>
-          <p className="text-xs text-muted-foreground">
-            54 percent used. Detail token breakdown would render here.
-          </p>
-        </ContextContentBody>
-      </ContextContent>
-    </Context>
+    <div className="flex items-center justify-center p-8">
+      <Context
+        maxTokens={128_000}
+        modelId="openai:gpt-5"
+        usage={{
+          cachedInputTokens: 0,
+          inputTokens: 32_000,
+          outputTokens: 8000,
+          reasoningTokens: 0,
+          totalTokens: 40_000,
+          inputTokenDetails: {
+            noCacheTokens: 32_000,
+            cacheReadTokens: 0,
+            cacheWriteTokens: 0,
+          },
+          outputTokenDetails: { textTokens: 8000, reasoningTokens: 0 },
+        }}
+        usedTokens={40_000}
+      >
+        <ContextTrigger />
+        <ContextContent>
+          <ContextContentHeader />
+          <ContextContentBody>
+            <ContextInputUsage />
+            <ContextOutputUsage />
+            <ContextReasoningUsage />
+            <ContextCacheUsage />
+          </ContextContentBody>
+          <ContextContentFooter />
+        </ContextContent>
+      </Context>
+    </div>
   );
 }
