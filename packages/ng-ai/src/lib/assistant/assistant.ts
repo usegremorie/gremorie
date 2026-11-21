@@ -797,29 +797,32 @@ const COMPACT_SELECT_TRIGGER =
     <!-- The floating B2B composer (PromptInput). -->
     <!-- Context meter: in the header with mentions, beside the text without. -->
     <ng-template #contextMeterTpl>
-      <context
+      <gr-context
         [class]="meterInBody() ? '' : 'ml-auto'"
         [maxTokens]="200000"
         [usedTokens]="62600"
         modelId="anthropic:claude-3-5-sonnet"
         [usage]="contextUsage"
       >
-        <context-trigger [class]="meterInBody() ? '' : 'ml-auto'" />
+        <gr-context-trigger
+          display="auto"
+          [class]="meterInBody() ? '' : 'ml-auto'"
+        />
         <ng-template brnHoverCardContent>
-          <context-content>
-            <context-content-header />
-            <context-content-body>
+          <gr-context-content>
+            <gr-context-content-header />
+            <gr-context-content-body>
               <div class="space-y-1">
-                <context-input-usage />
-                <context-output-usage />
-                <context-reasoning-usage />
-                <context-cache-usage />
+                <gr-context-input-usage />
+                <gr-context-output-usage />
+                <gr-context-reasoning-usage />
+                <gr-context-cache-usage />
               </div>
-            </context-content-body>
-            <context-content-footer />
-          </context-content>
+            </gr-context-content-body>
+            <gr-context-content-footer />
+          </gr-context-content>
         </ng-template>
-      </context>
+      </gr-context>
     </ng-template>
 
     <ng-template #composer let-newChat="newChat">

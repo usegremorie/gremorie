@@ -369,3 +369,42 @@ export const Streaming: Story = {
   parameters: { controls: { disable: true } },
   render: () => <StreamingDemo />,
 };
+
+/**
+ * Display — the three ways the trigger shows usage. `compact` keeps only the
+ * ring; the percentage stays in the accessible name and the hover card.
+ * `auto` drops the number once its container (here a 20rem frame standing in
+ * for a narrow PromptInput) is under 24rem.
+ */
+export const Display: Story = {
+  args: { usedTokens: 62_600, maxTokens: 200_000, usage },
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      {(['full', 'compact'] as const).map((display) => (
+        <div className="flex items-center gap-3" key={display}>
+          <code className="w-20 text-xs text-muted-foreground">{display}</code>
+          <Context {...args}>
+            <ContextTrigger display={display} />
+            <Breakdown />
+          </Context>
+        </div>
+      ))}
+      {[32, 20].map((rem) => (
+        <div className="flex items-center gap-3" key={rem}>
+          <code className="w-20 text-xs text-muted-foreground">
+            auto {rem}rem
+          </code>
+          <div
+            className="@container flex justify-end rounded-md border p-1"
+            style={{ width: `${rem}rem` }}
+          >
+            <Context {...args}>
+              <ContextTrigger display="auto" />
+              <Breakdown />
+            </Context>
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+};

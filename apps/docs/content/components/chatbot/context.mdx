@@ -4,6 +4,7 @@ description: Token usage indicator - circular progress trigger with a hover card
 ---
 
 import { ContextPreview } from '@/components/preview/ai/context';
+import { ContextDisplayPreview } from '@/components/preview/ai/context-display';
 
 ## Overview
 
@@ -21,7 +22,7 @@ Use it in the chat toolbar next to the prompt input so users can pace longer con
 
 ```text
 Context                      token-usage hovercard (HoverCard)
-├─ ContextTrigger            % + ring gauge button
+├─ ContextTrigger            % + ring gauge button (display: full | compact | auto)
 └─ ContextContent
    ├─ ContextContentHeader    % + used/total + progress bar
    ├─ ContextContentBody
@@ -109,6 +110,10 @@ Extends `ComponentProps<typeof HoverCard>`.
 
 Renders a ghost `Button` with the percentage + a circular SVG gauge. Children override the default content. Forwards all `Button` props.
 
+| Prop      | Type                            | Default  | Description                                                                                                                                                                                                      |
+| --------- | ------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `display` | `'full' \| 'compact' \| 'auto'` | `'full'` | `full` shows percentage + ring. `compact` shows the ring alone, as an icon button. `auto` shows both while there is room and the ring alone once the nearest container (the PromptInput) is narrower than 24rem. |
+
 ### `<ContextContent>`
 
 Hover card body. Adds `min-w-60`, divides children with hairlines, removes default padding. Forwards `HoverCardContent` props.
@@ -139,6 +144,25 @@ Auto-hide when the corresponding usage bucket is zero. Render a label + token co
 4. Inside the content, **`<ContextContentHeader>`** shows the headline, **`<ContextContentBody>`** lists per-bucket rows, **`<ContextContentFooter>`** shows total cost.
 
 ## Variations
+
+### Compact and auto display
+
+In a tight composer, drop the number and keep the ring. `compact` always does; `auto` decides from the width of its container, not the screen, so a narrow side panel on a wide monitor still gets the compact meter. The PromptInput is already a container, so `display="auto"` works inside it with no extra setup. The percentage is never lost: it stays in the trigger's accessible name and in the hover card.
+
+<ComponentPreview name="ai/context-display">
+  <ContextDisplayPreview />
+</ComponentPreview>
+
+```tsx
+<PromptInputHeader>
+  <Context usedTokens={62_600} maxTokens={200_000}>
+    <ContextTrigger className="ml-auto" display="auto" />
+    <ContextContent>{/* ... */}</ContextContent>
+  </Context>
+</PromptInputHeader>
+```
+
+Angular: `<gr-context-trigger display="auto" />`.
 
 ### Minimal trigger + auto-populated card
 
@@ -201,7 +225,7 @@ Drop `modelId` and `ContextContentFooter` to hide pricing on free or self-hosted
 ## Accessibility
 
 - **Keyboard**: the trigger is a real `Button` and the hover card opens on focus as well as hover (Radix default).
-- **ARIA**: the circular gauge SVG carries `role="img"` and `aria-label="Model context usage"`. The percentage is also rendered as live text, so screen readers do not depend on the gauge alone.
+- **ARIA**: the trigger's accessible name is the full reading, e.g. "Context window: 31.3% used (62.6K of 200K tokens)", in every display mode. The ring gauge is decorative (`aria-hidden`).
 - **Screen readers**: each row pairs a label (`Input`, `Output`, `Reasoning`, `Cache`) with token + cost values, so the breakdown reads naturally.
 - **Focus management**: hover card uses Radix focus trapping; pressing Esc returns focus to the trigger.
 

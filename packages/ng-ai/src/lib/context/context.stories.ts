@@ -74,21 +74,21 @@ export const Workbench: Story = {
     props: { usage },
     template: `
       <div style="width: 320px;">
-        <context [usedTokens]="12200" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet">
-          <context-trigger />
+        <gr-context [usedTokens]="12200" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet">
+          <gr-context-trigger />
           <ng-template brnHoverCardContent>
-            <context-content>
-              <context-content-header />
-              <context-content-body>
-                <context-input-usage />
-                <context-output-usage />
-                <context-reasoning-usage />
-                <context-cache-usage />
-              </context-content-body>
-              <context-content-footer />
-            </context-content>
+            <gr-context-content>
+              <gr-context-content-header />
+              <gr-context-content-body>
+                <gr-context-input-usage />
+                <gr-context-output-usage />
+                <gr-context-reasoning-usage />
+                <gr-context-cache-usage />
+              </gr-context-content-body>
+              <gr-context-content-footer />
+            </gr-context-content>
           </ng-template>
-        </context>
+        </gr-context>
       </div>
     `,
   }),
@@ -101,19 +101,65 @@ export const NearLimit: Story = {
   render: () => ({
     props: { usage, demoCost },
     template: `
-      <context [usedTokens]="184000" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet" [costResolver]="demoCost">
-        <context-trigger />
+      <gr-context [usedTokens]="184000" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet" [costResolver]="demoCost">
+        <gr-context-trigger />
         <ng-template brnHoverCardContent>
-          <context-content>
-            <context-content-header />
-            <context-content-body>
-              <context-input-usage />
-              <context-output-usage />
-            </context-content-body>
-            <context-content-footer />
-          </context-content>
+          <gr-context-content>
+            <gr-context-content-header />
+            <gr-context-content-body>
+              <gr-context-input-usage />
+              <gr-context-output-usage />
+            </gr-context-content-body>
+            <gr-context-content-footer />
+          </gr-context-content>
         </ng-template>
-      </context>
+      </gr-context>
+    `,
+  }),
+};
+
+/**
+ * Display — the three ways the trigger shows usage. `compact` keeps only the
+ * ring; the percentage stays in the accessible name and the hover card.
+ * `auto` drops the number once its container (here a 20rem frame standing in
+ * for a narrow PromptInput) is under 24rem.
+ */
+export const Display: Story = {
+  render: () => ({
+    props: { usage, demoCost, fixed: ['full', 'compact'], frames: [32, 20] },
+    template: `
+      <div class="flex flex-col gap-4">
+        @for (display of fixed; track display) {
+          <div class="flex items-center gap-3">
+            <code class="w-20 text-xs text-muted-foreground">{{ display }}</code>
+            <gr-context [usedTokens]="62600" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet" [costResolver]="demoCost">
+              <gr-context-trigger [display]="display" />
+              <ng-template brnHoverCardContent>
+                <gr-context-content>
+                  <gr-context-content-header />
+                  <gr-context-content-footer />
+                </gr-context-content>
+              </ng-template>
+            </gr-context>
+          </div>
+        }
+        @for (rem of frames; track rem) {
+          <div class="flex items-center gap-3">
+            <code class="w-20 text-xs text-muted-foreground">auto {{ rem }}rem</code>
+            <div class="@container flex justify-end rounded-md border p-1" [style.width.rem]="rem">
+              <gr-context [usedTokens]="62600" [maxTokens]="200000" [usage]="usage" modelId="anthropic/claude-3-5-sonnet" [costResolver]="demoCost">
+                <gr-context-trigger display="auto" />
+                <ng-template brnHoverCardContent>
+                  <gr-context-content>
+                    <gr-context-content-header />
+                    <gr-context-content-footer />
+                  </gr-context-content>
+                </ng-template>
+              </gr-context>
+            </div>
+          </div>
+        }
+      </div>
     `,
   }),
 };

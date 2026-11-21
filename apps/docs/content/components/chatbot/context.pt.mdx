@@ -4,6 +4,7 @@ description: Indicador de uso de tokens - trigger de progresso circular com um h
 ---
 
 import { ContextPreview } from '@/components/preview/ai/context';
+import { ContextDisplayPreview } from '@/components/preview/ai/context-display';
 
 ## Visão geral
 
@@ -21,7 +22,7 @@ Use na toolbar do chat ao lado do prompt input para que os usuários possam ritm
 
 ```text
 Context                      hovercard de uso de tokens (HoverCard)
-├─ ContextTrigger            botão com % + medidor em anel
+├─ ContextTrigger            botão com % + medidor em anel (display: full | compact | auto)
 └─ ContextContent
    ├─ ContextContentHeader    % + usado/total + barra de progresso
    ├─ ContextContentBody
@@ -107,7 +108,11 @@ Estende `ComponentProps<typeof HoverCard>`.
 
 ### `<ContextTrigger>`
 
-Renderiza um `Button` ghost com a porcentagem + um medidor SVG circular. Children sobrescrevem o conteúdo padrão. Encaminha todas as props de `Button`.
+Renderiza um `Button` ghost com a porcentagem + um medidor circular em SVG. Children substituem o conteúdo padrão. Repassa todas as props de `Button`.
+
+| Prop      | Tipo                            | Padrão   | Descrição                                                                                                                                                                                                     |
+| --------- | ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `display` | `'full' \| 'compact' \| 'auto'` | `'full'` | `full` mostra porcentagem + anel. `compact` mostra só o anel, como botão de ícone. `auto` mostra os dois enquanto há espaço e só o anel quando o container mais próximo (o PromptInput) fica abaixo de 24rem. |
 
 ### `<ContextContent>`
 
@@ -139,6 +144,25 @@ Auto-ocultam quando o bucket de usage correspondente é zero. Renderizam um labe
 4. Dentro do content, **`<ContextContentHeader>`** mostra o destaque, **`<ContextContentBody>`** lista as linhas por bucket, **`<ContextContentFooter>`** mostra o custo total.
 
 ## Variações
+
+### Exibição compacta e automática
+
+Num composer apertado, tire o número e mantenha o anel. `compact` faz isso sempre; `auto` decide pela largura do container, não da tela, então um painel lateral estreito num monitor largo também recebe o medidor compacto. O PromptInput já é um container, então `display="auto"` funciona dentro dele sem configuração extra. A porcentagem nunca se perde: fica no nome acessível do trigger e no hover card.
+
+<ComponentPreview name="ai/context-display">
+  <ContextDisplayPreview />
+</ComponentPreview>
+
+```tsx
+<PromptInputHeader>
+  <Context usedTokens={62_600} maxTokens={200_000}>
+    <ContextTrigger className="ml-auto" display="auto" />
+    <ContextContent>{/* ... */}</ContextContent>
+  </Context>
+</PromptInputHeader>
+```
+
+Angular: `<gr-context-trigger display="auto" />`.
 
 ### Trigger mínimo + card auto-populado
 
@@ -201,7 +225,7 @@ Remova `modelId` e `ContextContentFooter` para ocultar o preço em modelos free 
 ## Acessibilidade
 
 - **Teclado**: o trigger é um `Button` de verdade e o hover card abre no focus além do hover (padrão Radix).
-- **ARIA**: o SVG do medidor circular carrega `role="img"` e `aria-label="Model context usage"`. A porcentagem também é renderizada como texto vivo, então leitores de tela não dependem só do medidor.
+- **ARIA**: o nome acessível do trigger é a leitura completa, ex. "Context window: 31.3% used (62.6K of 200K tokens)", em todos os modos de exibição. O medidor em anel é decorativo (`aria-hidden`).
 - **Leitores de tela**: cada linha combina um label (`Input`, `Output`, `Reasoning`, `Cache`) com valores de token + custo, então o detalhamento é lido naturalmente.
 - **Gestão de foco**: o hover card usa o focus trapping do Radix; pressionar Esc retorna o foco ao trigger.
 

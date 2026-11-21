@@ -126,9 +126,26 @@ const ContextIcon = () => {
   );
 };
 
-export type ContextTriggerProps = ComponentProps<typeof Button>;
+/**
+ * How the trigger shows usage:
+ *   full     percentage + ring (default)
+ *   compact  ring only; the percentage stays in the accessible name and the
+ *            hover card
+ *   auto     full while there is room, the ring alone once the nearest
+ *            container (the PromptInput) is narrower than 24rem
+ */
+export type ContextTriggerDisplay = 'full' | 'compact' | 'auto';
 
-export const ContextTrigger = ({ children, ...props }: ContextTriggerProps) => {
+export type ContextTriggerProps = ComponentProps<typeof Button> & {
+  display?: ContextTriggerDisplay;
+};
+
+export const ContextTrigger = ({
+  children,
+  className,
+  display = 'full',
+  ...props
+}: ContextTriggerProps) => {
   const { usedTokens, maxTokens } = useContextValue();
   const renderedPercent = formatPercent(usedFraction(usedTokens, maxTokens));
   const usageLabel = `Context window: ${renderedPercent} used (${formatCompact(
@@ -140,13 +157,26 @@ export const ContextTrigger = ({ children, ...props }: ContextTriggerProps) => {
       {children ?? (
         <Button
           aria-label={usageLabel}
+          className={cn(
+            display === 'auto' && '@max-sm:w-8 @max-sm:px-0',
+            className,
+          )}
+          data-display={display}
+          size={display === 'compact' ? 'icon' : 'default'}
           type="button"
           variant="ghost"
           {...props}
         >
-          <span className="font-medium text-muted-foreground">
-            {renderedPercent}
-          </span>
+          {display === 'compact' ? null : (
+            <span
+              className={cn(
+                'font-medium text-muted-foreground',
+                display === 'auto' && '@max-sm:hidden',
+              )}
+            >
+              {renderedPercent}
+            </span>
+          )}
           <ContextIcon />
         </Button>
       )}
