@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { withSerwist } from '@serwist/turbopack';
 import { createMDX } from 'fumadocs-mdx/next';
 
 const withMDX = createMDX();
@@ -171,6 +172,29 @@ const config = {
   async redirects() {
     return [...foundationsRedirects, ...aiRedirects, ...localeRedirects];
   },
+  /**
+   * The service worker script must never come from an HTTP cache: browsers
+   * compare it byte for byte to find updates, and a cached copy would hide a
+   * new deploy (and with it the "new version" notice). The route handler
+   * already sends Service-Worker-Allowed; it is repeated here so the header
+   * survives however the static route is served.
+   */
+  async headers() {
+    return [
+      {
+        source: '/serwist/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          { key: 'Service-Worker-Allowed', value: '/' },
+        ],
+      },
+    ];
+  },
 };
 
-export default withMDX(config);
+// withSerwist keeps esbuild (which bundles the worker at build time) out of
+// the server bundle.
+export default withSerwist(withMDX(config));
