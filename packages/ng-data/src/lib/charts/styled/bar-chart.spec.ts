@@ -90,4 +90,30 @@ describe('BarChart', () => {
     expect(host.className).not.toContain('border');
     expect(host.className).not.toContain('bg-card');
   });
+
+  it('keeps one tick per datum when labels repeat (J, F, M, A, M, J)', async () => {
+    const fixture = TestBed.createComponent(BarChart);
+    const months = ['J', 'F', 'M', 'A', 'M', 'J'];
+    fixture.componentRef.setInput(
+      'data',
+      months.map((month, i) => ({ month, sales: 10 + i })),
+    );
+    fixture.componentRef.setInput('config', {
+      sales: { label: 'Sales', color: 'var(--chart-1)' },
+    });
+    fixture.componentRef.setInput('xKey', 'month');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(
+      host.querySelectorAll(
+        'path[data-slot="bar-rect"], g[data-slot="bar"] path',
+      ).length,
+    ).toBe(6);
+    const labels = Array.from(host.querySelectorAll('svg text'))
+      .map((t) => t.textContent?.trim())
+      .filter((t) => t && /^[JFMA]$/.test(t));
+    expect(labels).toEqual(months);
+  });
 });

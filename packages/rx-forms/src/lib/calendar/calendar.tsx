@@ -35,7 +35,8 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn('p-3', className)}
+      // `relative`: the prev/next buttons are absolutely placed against the root.
+      className={cn('relative p-3', className)}
       classNames={{
         ...defaults,
         root: cn(defaults.root, 'group/calendar'),

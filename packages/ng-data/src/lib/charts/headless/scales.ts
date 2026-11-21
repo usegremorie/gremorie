@@ -22,9 +22,13 @@ export function pointScale(
   return (value: string) => scale(value) ?? 0;
 }
 
-/** A band scale: maps a category to its slot start, plus the slot geometry. */
+/**
+ * A band scale: maps a datum's index to its slot start, plus the slot geometry.
+ * Keyed by index, not label: repeated labels (J, F, M, A, M, J...) keep one
+ * band each, as recharts does.
+ */
 export interface BandScale {
-  (value: string): number;
+  (index: number): number;
   /** Width of each category's band (where bars are drawn). */
   bandwidth: number;
   /** Distance between adjacent band starts (bandwidth + padding). */
@@ -37,15 +41,15 @@ export function bandScale(
   range: readonly [number, number],
   padding = 0.2,
 ): BandScale {
-  const scale = scaleBand<string>()
-    .domain([...categories])
+  const scale = scaleBand<number>()
+    .domain(categories.map((_, i) => i))
     .range([...range])
     // recharts' barCategoryGap (10% of the slot on each side of the bars)
     // is paddingInner = padding, paddingOuter = padding / 2: the React and
     // Angular bar charts then give a bar the same width at the same size.
     .paddingInner(padding)
     .paddingOuter(padding / 2);
-  const fn = ((value: string) => scale(value) ?? 0) as BandScale;
+  const fn = ((index: number) => scale(index) ?? 0) as BandScale;
   fn.bandwidth = scale.bandwidth();
   fn.step = scale.step();
   return fn;

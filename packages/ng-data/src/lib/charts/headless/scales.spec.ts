@@ -22,8 +22,8 @@ describe('bandScale', () => {
   it('splits the range into equal slots (no padding)', () => {
     const b = bandScale(['a', 'b'], [0, 100], 0);
     expect(b.bandwidth).toBe(50);
-    expect(b('a')).toBe(0);
-    expect(b('b')).toBe(50);
+    expect(b(0)).toBe(0);
+    expect(b(1)).toBe(50);
   });
 
   it('reserves padding between bands', () => {
@@ -31,7 +31,16 @@ describe('bandScale', () => {
     // padding shrinks bandwidth below the no-padding slot size
     expect(b.bandwidth).toBeLessThan(50);
     expect(b.bandwidth).toBeGreaterThan(0);
-    expect(b('b')).toBeGreaterThan(b('a'));
+    expect(b(1)).toBeGreaterThan(b(0));
+  });
+});
+
+describe('bandScale with repeated labels', () => {
+  it('keeps one band per datum, keyed by index (recharts keeps duplicates)', () => {
+    const labels = ['J', 'F', 'M', 'A', 'M', 'J'];
+    const b = bandScale(labels, [0, 600], 0);
+    expect(b.bandwidth).toBe(100);
+    expect(labels.map((_, i) => b(i))).toEqual([0, 100, 200, 300, 400, 500]);
   });
 });
 

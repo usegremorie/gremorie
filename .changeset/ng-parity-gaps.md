@@ -22,3 +22,7 @@ Parity fixes between the React and Angular editions.
 - React `SidebarSeparator` no longer overflows its sidebar by 16px.
 - Angular AreaChart puts `aspect-video` on the padded frame, as React does, and strokes only the top edge (1px, the React default) instead of the whole closed area.
 - `gr-slider` keeps the per-thumb `thumbAriaLabel` (the brain thumb overwrote it).
+- `gr-switch` takes an `ariaLabel` input, forwarded to the switch button (React `aria-label`).
+- Angular Calendar shows the selected day: it styled `data-[selected]`, but the brain marks a picked day with `data-selected-single` (range start/end get the same fill, range middle the accent).
+- React Calendar root is `relative`, so the previous/next buttons stay inside the calendar instead of escaping to the page corners.
+- Angular bar charts key their bands by index, not label: repeated categories (J, F, M, A, M, J) keep one bar each, as in React.
