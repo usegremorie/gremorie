@@ -63,6 +63,7 @@ export type SwitchSize = 'sm' | 'default';
       [id]="id() || null"
       [name]="name() || null"
       [disabled]="disabled()"
+      [aria-label]="ariaLabel() || null"
     >
       <brn-switch-thumb data-slot="switch-thumb" [class]="thumbClass()" />
     </brn-switch>
@@ -88,6 +89,8 @@ export class Switch {
   readonly id = input<string>('');
   /** Form control name. Mirrors React `name`. */
   readonly name = input<string>('');
+  /** Accessible name when no visible label exists. Mirrors React `aria-label`. */
+  readonly ariaLabel = input<string>('');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 

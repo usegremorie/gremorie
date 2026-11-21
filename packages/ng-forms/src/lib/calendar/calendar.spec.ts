@@ -41,4 +41,27 @@ describe('Calendar', () => {
       render().querySelectorAll('button[brnCalendarCellButton]').length,
     ).toBeGreaterThan(27);
   });
+
+  it('styles the selected day (brain emits data-selected-single)', () => {
+    TestBed.configureTestingModule({ imports: [SelectedHost] });
+    const fixture = TestBed.createComponent(SelectedHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const selected = host.querySelector('button[data-selected-single]');
+    expect(selected?.textContent?.trim()).toBe('15');
+    expect(selected?.className).toContain('data-[selected-single]:bg-primary');
+    expect(selected?.className).toContain('data-[range-start]:bg-primary');
+    expect(selected?.className).toContain('data-[range-end]:bg-primary');
+    expect(selected?.className).toContain('data-[range-middle]:bg-accent');
+    expect(selected?.className).not.toContain('data-[selected]:');
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [Calendar],
+  template: `<gr-calendar [date]="date" />`,
+})
+class SelectedHost {
+  date = new Date(2026, 5, 15);
+}

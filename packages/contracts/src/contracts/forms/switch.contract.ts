@@ -51,7 +51,7 @@ export const switchContract = defineContract({
     {
       name: 'aria-label',
       type: 'string',
-      adapts: { ng: 'native attr' },
+      adapts: { ng: 'input: ariaLabel' },
       desc: 'Accessible label when there is no visible label.',
     },
     {

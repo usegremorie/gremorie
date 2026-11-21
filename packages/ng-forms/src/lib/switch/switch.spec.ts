@@ -56,4 +56,21 @@ describe('Switch', () => {
     fixture.detectChanges();
     expect(el?.getAttribute('data-size')).toBe('sm');
   });
+
+  it('forwards ariaLabel to the switch button', () => {
+    TestBed.configureTestingModule({ imports: [LabelHost] });
+    const fixture = TestBed.createComponent(LabelHost);
+    fixture.detectChanges();
+    const button = (fixture.nativeElement as HTMLElement).querySelector(
+      'button[role="switch"]',
+    );
+    expect(button?.getAttribute('aria-label')).toBe('Airplane mode');
+  });
 });
+
+@Component({
+  standalone: true,
+  imports: [Switch],
+  template: `<gr-switch ariaLabel="Airplane mode" />`,
+})
+class LabelHost {}
