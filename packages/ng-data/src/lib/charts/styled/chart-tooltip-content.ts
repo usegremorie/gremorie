@@ -37,7 +37,7 @@ export interface ChartTooltipRow {
   host: {
     'data-slot': 'chart-tooltip',
     class:
-      'block min-w-32 rounded-lg border border-border bg-popover-surface px-2.5 py-1.5 text-xs text-popover-foreground shadow-md',
+      'block min-w-32 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs text-popover-foreground shadow-md',
   },
   template: `
     @if (!hideLabel() && label()) {

@@ -123,7 +123,7 @@ interface ActivePoint {
 
       @if (tooltip() && active() !== null) {
         <div
-          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
+          class="pointer-events-none absolute z-10 min-w-28 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
           [style.left.px]="active()!.cx"
           [style.top.px]="active()!.cy"
           style="transform: translate(12px, -50%)"
