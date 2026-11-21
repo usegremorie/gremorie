@@ -11,8 +11,9 @@ import { Assistant } from '@/components/preview/blocks/assistant';
 
 /**
  * The showcase masonry: product cards built only with Gremorie components.
- * CSS columns, one per 375px of room (1 on phones, up to 4 on wide screens);
- * each card stays whole inside its column.
+ * CSS columns at least 24rem wide, as many as fit (1 on phones, more as the
+ * page widens), so a card is never narrower than the workbench's 375px
+ * column; each card stays whole inside its column.
  */
 export function ShowcaseGrid() {
   const cards = [
@@ -23,10 +24,7 @@ export function ShowcaseGrid() {
     <ReceivingMethod key="receiving-method" />,
   ];
   return (
-    <div
-      className="columns-1 gap-6 md:columns-2 xl:columns-3 2xl:columns-4"
-      data-slot="showcase-grid"
-    >
+    <div className="columns-sm gap-6" data-slot="showcase-grid">
       {cards.map((card) => (
         <div key={card.key} className="mb-6 break-inside-avoid">
           {card}
