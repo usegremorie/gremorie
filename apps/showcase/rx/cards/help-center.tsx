@@ -110,7 +110,7 @@ export function HelpCenter() {
               <Accordion
                 className="overflow-hidden rounded-lg border"
                 collapsible
-                defaultValue={t.questions[0].id}
+                defaultValue={t.questions[0]?.id}
                 type="single"
               >
                 {t.questions.map((q) => (
