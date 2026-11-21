@@ -18,7 +18,7 @@ const LOCALE_PREFIX = new RegExp(`^/(${i18n.languages.join('|')})(/|$)`);
  *
  * - i18n: every doc/home request is routed through Fumadocs' locale middleware
  *   (default English stays at `/`, Portuguese under `/pt`, missing translations
- *   fall back to English). Language-agnostic routes (/api, /r, /llms.txt,
+ *   fall back to English). Language-agnostic routes (/api, /r, /serwist, /llms.txt,
  *   /robots.txt, /sitemap.xml, /manifest.webmanifest) skip i18n and pass
  *   straight through.
  * - Telemetry: one structured JSON log line per high-signal request (the
@@ -38,6 +38,9 @@ function isAgnostic(pathname: string): boolean {
   return (
     pathname.startsWith('/api/') ||
     pathname.startsWith('/r/') ||
+    // The service worker (app/serwist/[path]/route.ts). Prefixing it with
+    // /en would move it out from under its Service-Worker-Allowed scope.
+    pathname.startsWith('/serwist/') ||
     pathname === '/llms.txt' ||
     pathname === '/llms-full.txt' ||
     pathname === '/robots.txt' ||

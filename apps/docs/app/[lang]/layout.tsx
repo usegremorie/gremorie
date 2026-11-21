@@ -5,6 +5,7 @@ import { Geist_Mono, Inter } from 'next/font/google';
 
 import type { ReactNode } from 'react';
 
+import { PwaProvider } from '@/components/pwa/pwa-provider';
 import { SiteTabBar } from '@/components/site-tab-bar';
 import { provider } from '@/lib/layout.shared';
 
@@ -30,6 +31,9 @@ const geistMono = Geist_Mono({
  * is the layout that renders <body> - the script has to land inside the
  * document. It is cookie-free and collects nothing in development or on
  * preview; only the production deployment reports.
+ *
+ * PwaProvider registers the service worker (offline reading) and shows the
+ * "new version available" notice; see components/pwa/pwa-provider.tsx.
  */
 export default async function LangLayout({
   params,
@@ -65,8 +69,10 @@ export default async function LangLayout({
             },
           }}
         >
-          {children}
-          <SiteTabBar lang={lang} />
+          <PwaProvider lang={lang}>
+            {children}
+            <SiteTabBar lang={lang} />
+          </PwaProvider>
         </RootProvider>
         <Analytics />
       </body>

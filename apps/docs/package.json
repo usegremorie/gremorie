@@ -43,12 +43,14 @@
   "devDependencies": {
     "@gremorie/eslint-config": "*",
     "@gremorie/tsconfig": "*",
+    "@serwist/turbopack": "^9.5.15",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "postcss": "^8.5.26",
+    "serwist": "^9.5.15",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.8.3"
   }
