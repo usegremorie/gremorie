@@ -257,7 +257,7 @@ const COMPACT_SELECT_TRIGGER =
   host: {
     'data-slot': 'assistant',
     class:
-      '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
+      '@container/assistant relative mx-auto flex h-170 w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
   },
   template: `
     <!-- AssistantHeader -->
@@ -275,7 +275,7 @@ const COMPACT_SELECT_TRIGGER =
           (pressedChange)="toggleThreadMenu()"
         >
           <ai-message-circle-icon class="size-4 text-muted-foreground" />
-          <span class="max-w-[14rem] truncate">{{ threadTitle() }}</span>
+          <span class="max-w-56 truncate">{{ threadTitle() }}</span>
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -300,7 +300,7 @@ const COMPACT_SELECT_TRIGGER =
           <div
             role="menu"
             #threadPanel
-            class="w-64 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+            class="w-64 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-pop-in"
           >
             <p class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
               Recent chats
@@ -429,7 +429,7 @@ const COMPACT_SELECT_TRIGGER =
             <div
               role="menu"
               #overflowPanel
-              class="w-44 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+              class="w-44 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-pop-in"
             >
               <button
                 type="button"

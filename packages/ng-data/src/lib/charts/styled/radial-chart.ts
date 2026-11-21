@@ -48,7 +48,7 @@ interface LegendItem {
         chartFrame
         [data]="data()"
         [xKey]="nameKey()"
-        class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
+        class="mx-auto aspect-square max-h-65 w-full overflow-visible text-muted-foreground"
       >
         <svg:g
           [radialBar]="dataKey()"
@@ -83,7 +83,7 @@ interface LegendItem {
         >
           <div class="flex items-center gap-1.5 text-muted-foreground">
             <span
-              class="size-2 rounded-[2px]"
+              class="size-2 rounded-xs"
               [style.background]="arcColor(active()!)"
             ></span>
             <span>{{ activeName() }}</span>

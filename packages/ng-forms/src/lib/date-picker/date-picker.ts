@@ -104,7 +104,7 @@ export class DatePicker {
   protected readonly triggerClass = computed(() =>
     cn(
       buttonVariants({ variant: 'outline' }),
-      'w-[240px] justify-start text-left font-normal',
+      'w-60 justify-start text-left font-normal',
       !this.date() && 'text-muted-foreground',
       this.class(),
     ),

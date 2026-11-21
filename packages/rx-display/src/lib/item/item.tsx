@@ -21,7 +21,7 @@ import { Separator } from '../separator';
  * cascade; `featured` / `avatar` / `image` follow it.
  */
 const itemVariants = cva(
-  'group/item flex flex-wrap items-center rounded-md border border-transparent text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+  'group/item flex flex-wrap items-center rounded-md border border-transparent text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
   {
     variants: {
       variant: {
@@ -90,7 +90,7 @@ const itemMediaVariants = cva(
         // The only fixed size: a bare 16px glyph (as in menus and 32px
         // controls), no container, no cascade.
         icon: "bg-transparent [&_svg:not([class*='size-'])]:size-4",
-        featured: `${mediaSizeCascade} rounded-sm border bg-muted [&_svg:not([class*='size-'])]:size-[60%]`,
+        featured: `${mediaSizeCascade} rounded-sm border bg-muted [&_svg:not([class*='size-'])]:size-3/5`,
         avatar: `${mediaSizeCascade} overflow-hidden rounded-full [&_img]:size-full [&_img]:object-cover`,
         image: `${mediaSizeCascade} overflow-hidden rounded-sm [&_img]:size-full [&_img]:object-cover`,
       },

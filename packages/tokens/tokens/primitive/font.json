@@ -13,5 +13,15 @@
       "$type": "fontFamily",
       "$value": ["ui-monospace", "JetBrains Mono", "Fira Code", "monospace"]
     }
+  },
+  "text": {
+    "2xs": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.625,
+        "unit": "rem"
+      },
+      "$description": "Type step below text-xs (10px): chart axis ticks, tab bar labels, compact badges. Sets only the size; line-height comes from the context."
+    }
   }
 }

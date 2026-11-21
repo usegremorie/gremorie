@@ -171,7 +171,7 @@ export class ModelSelectorInput {
 export class ModelSelectorList {
   readonly class = input<string>();
   protected readonly listClass = computed(() =>
-    cn('max-h-[300px] overflow-y-auto overflow-x-hidden', this.class()),
+    cn('max-h-75 overflow-y-auto overflow-x-hidden', this.class()),
   );
 }
 

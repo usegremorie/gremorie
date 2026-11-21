@@ -71,7 +71,7 @@ function wrappedTick(width: number) {
         y={y}
         textAnchor={textAnchor}
         dominantBaseline="middle"
-        className="fill-muted-foreground text-[10px]"
+        className="fill-muted-foreground text-2xs"
       >
         {lines.map((line, i) => (
           <tspan key={line} x={x} dy={i === 0 ? shift : LINE_HEIGHT}>
@@ -95,7 +95,7 @@ function RadiusTick({ x, y, payload }: PolarTickProps) {
       y={y}
       textAnchor="end"
       dominantBaseline="middle"
-      className="fill-muted-foreground text-[10px]"
+      className="fill-muted-foreground text-2xs"
     >
       {Number(payload?.value ?? 0).toLocaleString()}
     </text>
@@ -202,7 +202,7 @@ export function RadarChart({
     >
       <ChartContainer
         config={config}
-        className="mx-auto aspect-square max-h-[280px] w-full"
+        className="mx-auto aspect-square max-h-70 w-full"
       >
         <RechartsRadarChart data={data as ChartDatum[]}>
           {tooltip ? (

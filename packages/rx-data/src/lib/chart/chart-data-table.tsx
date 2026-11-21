@@ -50,7 +50,7 @@ export function ChartLegendList({
       {items.map((item, i) => (
         <li key={i} className="flex items-center gap-1.5">
           <span
-            className="size-2.5 rounded-[2px]"
+            className="size-2.5 rounded-xs"
             style={{ background: item.color }}
           />
           {item.name}

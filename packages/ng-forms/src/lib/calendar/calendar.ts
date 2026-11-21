@@ -146,7 +146,7 @@ import { buttonVariants, cn } from '@gremorie/ng-core';
             <th
               *brnCalendarWeekday="let weekday"
               scope="col"
-              class="w-8 text-[0.8rem] font-normal text-muted-foreground"
+              class="w-8 text-xs font-normal text-muted-foreground"
             >
               {{ formatWeekday(weekday) }}
             </th>

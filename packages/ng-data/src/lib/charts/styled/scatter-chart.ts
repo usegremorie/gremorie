@@ -95,7 +95,7 @@ interface ActivePoint {
                   [attr.x]="t.x"
                   [attr.y]="sc.labelY()"
                   text-anchor="middle"
-                  class="fill-muted-foreground text-[10px]"
+                  class="fill-muted-foreground text-2xs"
                 >
                   {{ t.label }}
                 </svg:text>
@@ -112,7 +112,7 @@ interface ActivePoint {
                 [attr.y]="t.y"
                 text-anchor="end"
                 dominant-baseline="middle"
-                class="fill-muted-foreground text-[10px]"
+                class="fill-muted-foreground text-2xs"
               >
                 {{ t.label }}
               </svg:text>
@@ -133,7 +133,7 @@ interface ActivePoint {
           </div>
           <div class="flex items-center gap-1.5 text-muted-foreground">
             <span
-              class="size-2 rounded-[2px]"
+              class="size-2 rounded-xs"
               [style.background]="activeSeries()?.color"
             ></span>
             <span>{{ activeSeries()?.label }}</span>

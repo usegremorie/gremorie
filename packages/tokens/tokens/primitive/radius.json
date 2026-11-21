@@ -8,6 +8,19 @@
       },
       "$description": "Radii base"
     },
+    "xs": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0.125,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.gremorie.derive": {
+          "from": "{radius.base}",
+          "multiply": 0.2
+        }
+      }
+    },
     "sm": {
       "$type": "dimension",
       "$value": {
