@@ -52,6 +52,7 @@ export default [
             'gr-table',
             'gr-featured-icon',
             'gr-item',
+            'gr-qr-code',
             'gr-media-range-player',
             'gr-word-timeline',
           ],

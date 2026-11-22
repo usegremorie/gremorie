@@ -93,6 +93,20 @@
       "registryDependencies": []
     },
     {
+      "name": "ng-qr-code",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "QR Code (Angular)",
+      "description": "Scannable QR code drawn as one SVG path, colored by tokens (text-foreground on bg-background) with a four-module quiet zone. Props: value, ecc (L, M, Q, H), size (sm, md, lg), aria-label, and a projected center mark. Encoded with uqr. Mirrors React QrCode from @gremorie/rx-display.",
+      "categories": [
+        "display",
+        "primitives"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
       "name": "ng-item",
       "type": "registry:block",
       "framework": "ng",
@@ -1603,6 +1617,19 @@
       "registryDependencies": [
         "rx-utils",
         "rx-separator"
+      ]
+    },
+    {
+      "name": "rx-qr-code",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "QR Code (React)",
+      "description": "Scannable QR code drawn as one SVG path, colored by tokens (text-foreground on bg-background) with a four-module quiet zone. Props: value, ecc (L, M, Q, H), size (sm, md, lg), aria-label, and a centered icon. Encoded with uqr.",
+      "categories": [
+        "display"
+      ],
+      "registryDependencies": [
+        "rx-utils"
       ]
     },
     {

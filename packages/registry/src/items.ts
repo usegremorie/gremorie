@@ -138,6 +138,24 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: [],
   },
   {
+    name: 'ng-qr-code',
+    framework: 'ng',
+    title: 'QR Code (Angular)',
+    description:
+      'Scannable QR code drawn as one SVG path, colored by tokens (text-foreground on bg-background) with a four-module quiet zone. Props: value, ecc (L, M, Q, H), size (sm, md, lg), aria-label, and a projected center mark. Encoded with uqr. Mirrors React QrCode from @gremorie/rx-display.',
+    categories: ['display', 'primitives'],
+    packageRoot: 'packages/ng-display',
+    sourceFiles: [
+      'src/lib/qr-code/qr-code.ts',
+      'src/lib/qr-code/qr-code.logic.ts',
+      'src/lib/qr-code/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/qr-code',
+    srcStrip: 'src/lib/qr-code/',
+    dependencies: ['@angular/core', 'class-variance-authority', 'uqr'],
+    registryDependencies: ['ng-utils'],
+  },
+  {
     name: 'ng-item',
     framework: 'ng',
     title: 'Item (Angular)',
@@ -2006,6 +2024,23 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/item/',
     dependencies: ['class-variance-authority', 'radix-ui'],
     registryDependencies: ['rx-utils', 'rx-separator'],
+  },
+  {
+    name: 'rx-qr-code',
+    framework: 'rx',
+    title: 'QR Code (React)',
+    description:
+      'Scannable QR code drawn as one SVG path, colored by tokens (text-foreground on bg-background) with a four-module quiet zone. Props: value, ecc (L, M, Q, H), size (sm, md, lg), aria-label, and a centered icon. Encoded with uqr.',
+    categories: ['display'],
+    packageRoot: 'packages/rx-display',
+    sourceFiles: [
+      'src/lib/qr-code/qr-code.tsx',
+      'src/lib/qr-code/qr-code.logic.ts',
+    ],
+    targetPrefix: 'src/components/gremorie/display/qr-code',
+    srcStrip: 'src/lib/qr-code/',
+    dependencies: ['class-variance-authority', 'uqr'],
+    registryDependencies: ['rx-utils'],
   },
   {
     name: 'rx-separator',

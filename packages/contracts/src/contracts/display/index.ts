@@ -7,6 +7,7 @@ import { collapsible } from './collapsible.contract';
 import { featuredIcon } from './featured-icon.contract';
 import { item } from './item.contract';
 import { mediaRangePlayer } from './media-range-player.contract';
+import { qrCode } from './qr-code.contract';
 import { separator } from './separator.contract';
 import { table } from './table.contract';
 import { wordTimeline } from './word-timeline.contract';
@@ -22,6 +23,7 @@ export const DISPLAY_CONTRACTS = [
   featuredIcon,
   item,
   mediaRangePlayer,
+  qrCode,
   separator,
   table,
   wordTimeline,

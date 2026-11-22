@@ -60,6 +60,14 @@ export {
   type FeaturedIconTheme,
 } from './lib/featured-icon';
 
+// QrCode
+export {
+  QrCode,
+  qrCodeVariants,
+  type QrCodeEcc,
+  type QrCodeSize,
+} from './lib/qr-code';
+
 // Item
 export {
   Item,

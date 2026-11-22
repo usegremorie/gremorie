@@ -1,0 +1,139 @@
+---
+title: QR Code
+description: 'Um código escaneável desenhado como um único path SVG e colorido por tokens. Value, nível de correção de erro, size e um ícone central opcional.'
+---
+
+import { QrCodePreview } from '@/components/preview/display/qr-code';
+import { QrCode } from '@gremorie/rx-display';
+
+## Visão geral
+
+`QrCode` transforma uma string em um código escaneável. A matriz é gerada pelo [`uqr`](https://github.com/unjs/uqr), um encoder sem dependências, e os módulos escuros são pintados como um único `<path>` SVG com `currentColor`. A cor vem, portanto, de tokens (`text-foreground` sobre `bg-background`) e acompanha tema e dark mode; não há imagem raster nem nada para recolorir à mão.
+
+A zona de silêncio de quatro módulos que os leitores exigem faz parte da caixa, então o código continua legível em qualquer card, sheet ou página desde que a superfície atrás seja lisa. Escolha o nível de correção de erro (`ecc`) conforme o dano que o código deve suportar, um `size` da escala de spacing e, se quiser, um ícone no centro.
+
+## Preview
+
+<ComponentPreview name="display/qr-code">
+  <QrCodePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+QrCode           caixa role="img", bg-background, zona de silêncio dentro
+├─ svg           aria-hidden, um path de módulos escuros (fill currentColor)
+└─ icon          marca central opcional sobre placa bg-background
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npm i @gremorie/rx-display
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm add @gremorie/rx-display
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn add @gremorie/rx-display
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bun add @gremorie/rx-display
+```
+
+</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import { QrCode } from "@gremorie/rx-display";
+
+export function Example() {
+  return (
+    <QrCode
+      aria-label="Pairing code"
+      value="https://pocketbook.example/link/K7Q2-M9XD"
+    />
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-qr-code
+```
+
+<AngularSetup />
+
+```html
+<gr-qr-code
+  aria-label="Pairing code"
+  value="https://pocketbook.example/link/K7Q2-M9XD"
+/>
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<QrCode>`
+
+| Prop         | Tipo                       | Padrão      | Descrição                                                                                |
+| ------------ | -------------------------- | ----------- | ---------------------------------------------------------------------------------------- |
+| `value`      | `string`                   | obrigatório | Texto que o código codifica, em geral uma URL. Valor grande demais gera uma caixa vazia. |
+| `ecc`        | `"L" \| "M" \| "Q" \| "H"` | `"M"`       | Nível de correção de erro: cerca de 7, 15, 25 e 30 por cento do código pode se perder.   |
+| `size`       | `"sm" \| "md" \| "lg"`     | `"md"`      | Caixa quadrada de 128, 192 ou 256 px (`size-32`, `size-48`, `size-64`).                  |
+| `aria-label` | `string`                   | `"QR code"` | Nome acessível do código (`role="img"`).                                                 |
+| `icon`       | `ReactNode`                | -           | Marca centralizada sobre o código. No Angular, projete como conteúdo.                    |
+| `className`  | `string`                   | -           | Classes extras mescladas via `cn`.                                                       |
+
+Todas as outras props de `div` são repassadas. A função CVA `qrCodeVariants` também é exportada.
+
+## Variações
+
+### Correção de erro
+
+Níveis maiores adicionam redundância: o código fica mais denso (mais módulos), mas suporta mais dano ou uma marca central maior.
+
+```tsx
+<QrCode ecc="L" value={url} />
+<QrCode ecc="H" value={url} />
+```
+
+### Ícone central
+
+```tsx
+<QrCode ecc="H" icon={<SparklesIcon aria-hidden="true" />} value={url} />
+```
+
+## Acessibilidade
+
+- **Dê nome ao código**: a caixa é uma única imagem, então use um `aria-label` que diga o que escanear faz (por exemplo "Pairing code"). O padrão é o genérico "QR code".
+- **Ofereça um caminho sem escanear**: nem todos conseguem usar um código. Mostre o link ou um código curto como texto por perto.
+- **O dark mode inverte o código**: os módulos ficam claros sobre fundo escuro. Câmeras atuais leem códigos invertidos, mas alguns apps de leitura antigos não; prefira um contexto claro quando o público é desconhecido.
+- **Contraste**: os módulos usam `foreground` sobre `background`, o par de maior contraste em todo tema.
+- **Ícone central**: suba o `ecc` para `Q` ou `H` e teste um escaneamento real antes de publicar uma marca grande.
+
+## Relacionados
+
+- [Card](/components/display/card) - host comum para um código com a sua chamada para ação.
+- [Featured Icon](/components/display/featured-icon) - o badge que costuma ancorar o mesmo card.
