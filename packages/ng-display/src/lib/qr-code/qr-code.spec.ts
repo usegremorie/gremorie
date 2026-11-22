@@ -59,8 +59,8 @@ describe('QrCode', () => {
 
   it('colors from tokens only', () => {
     const el = byId(render(), 'plain');
-    expect(el.classList).toContain('bg-background');
-    expect(el.classList).toContain('text-foreground');
+    expect(el.classList).toContain('bg-gray-50');
+    expect(el.classList).toContain('text-gray-950');
   });
 
   it('grows with the error correction level and maps size to a class', () => {

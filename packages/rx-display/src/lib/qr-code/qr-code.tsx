@@ -14,13 +14,14 @@ import {
  * QrCode: a scannable code drawn as one SVG path, so color comes from tokens.
  *
  * The matrix is built by `uqr` (value + error correction level) and the dark
- * modules are painted with `currentColor`: `text-foreground` on
- * `bg-background` by default, with the four-module quiet zone scanners need
+ * modules are painted with `currentColor`: dark modules on a light plate
+ * (`text-gray-950` on `bg-gray-50`) in every theme, because many camera
+ * readers fail on an inverted code. The four-module quiet zone scanners need
  * kept inside the box. An optional `icon` sits in the center; raise `ecc` to
  * `Q` or `H` when it covers more than a small mark.
  */
 const qrCodeVariants = cva(
-  'relative inline-flex shrink-0 overflow-hidden rounded-xl bg-background text-foreground',
+  'relative inline-flex shrink-0 overflow-hidden rounded-xl bg-gray-50 text-gray-950',
   {
     variants: {
       size: {
@@ -85,7 +86,7 @@ function QrCode({
       {icon ? (
         <span
           data-slot="qr-code-icon"
-          className="absolute inset-0 m-auto flex size-1/5 items-center justify-center rounded-md bg-background [&_svg]:size-full"
+          className="absolute inset-0 m-auto flex size-1/5 items-center justify-center rounded-md bg-gray-50 [&_svg]:size-full"
         >
           {icon}
         </span>
