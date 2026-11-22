@@ -68,6 +68,18 @@ export {
   type InputGroupAddonAlign,
   type InputGroupButtonSize,
 } from './lib/input-group';
+// Dropzone
+export {
+  Dropzone,
+  DropzoneAction,
+  DropzoneDescription,
+  DropzoneIcon,
+  DropzoneTitle,
+  type DropzoneAccept,
+  type DropzoneFilesDropped,
+  type FileError,
+  type FileRejection,
+} from './lib/dropzone';
 // Calendar
 export { Calendar } from './lib/calendar';
 // DatePicker

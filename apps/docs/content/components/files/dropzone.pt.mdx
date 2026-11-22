@@ -1,0 +1,206 @@
+---
+title: Dropzone
+description: Uma área para soltar arquivos que também abre o seletor nativo, com validação de tipo, tamanho e quantidade.
+---
+
+import { DropzonePreview } from '@/components/preview/forms/dropzone';
+
+## Visão geral
+
+`Dropzone` é uma área onde as pessoas soltam arquivos, ou a ativam (clique, `Enter`, `Space`) para abrir o seletor nativo. Tudo que entra é validado contra `accept`, `maxSize` e `maxFiles` e reportado separado em arquivos aceitos e rejeitados, cada rejeição com seus códigos de erro. A edição React envolve o `react-dropzone`; a edição Angular usa drag and drop nativo com as mesmas regras e códigos.
+
+O componente reporta arquivos; ele não os guarda, não os envia e não renderiza a lista. Componha a lista e as mensagens de rejeição ao lado, como no preview. Use para uploads de um ou vários arquivos. Para um único arquivo numa linha compacta de formulário, um `Input type="file"` simples é mais leve.
+
+## Preview
+
+<ComponentPreview name="forms/dropzone">
+  <DropzonePreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+Dropzone                    a área de drop; focável, com o input de arquivo oculto dentro
+├─ DropzoneIcon             container de glyph tematizado, opcional
+├─ DropzoneTitle            dá nome à área (aria-labelledby)
+├─ DropzoneDescription      dica: tipos aceitos, limites (aria-describedby)
+└─ DropzoneAction           botão opcional que também abre o seletor
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-dropzone
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-dropzone
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-dropzone
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-dropzone
+```
+
+</Tab>
+</Tabs>
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Dropzone,
+  DropzoneAction,
+  DropzoneDescription,
+  DropzoneIcon,
+  DropzoneTitle,
+} from "@gremorie/rx-forms";
+import { UploadIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Dropzone
+      accept={{ "image/*": [".png", ".jpg"] }}
+      maxSize={5 * 1024 * 1024}
+      onDrop={(accepted, rejected) => upload(accepted)}
+    >
+      <DropzoneIcon>
+        <UploadIcon />
+      </DropzoneIcon>
+      <DropzoneTitle>Arraste e solte imagens aqui</DropzoneTitle>
+      <DropzoneDescription>PNG ou JPG, até 5 MB</DropzoneDescription>
+      <DropzoneAction>Escolher arquivos</DropzoneAction>
+    </Dropzone>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-dropzone
+```
+
+<AngularSetup locale="pt" />
+
+```html
+<gr-dropzone
+  [accept]="{ 'image/*': ['.png', '.jpg'] }"
+  [maxSize]="5242880"
+  (filesAccepted)="upload($event)"
+>
+  <gr-dropzone-icon><!-- svg --></gr-dropzone-icon>
+  <gr-dropzone-title>Arraste e solte imagens aqui</gr-dropzone-title>
+  <gr-dropzone-description>PNG ou JPG, até 5 MB</gr-dropzone-description>
+  <gr-dropzone-action>Escolher arquivos</gr-dropzone-action>
+</gr-dropzone>
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Dropzone>`
+
+| Prop             | Tipo                                                    | Padrão  | Descrição                                                                                                                 |
+| ---------------- | ------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `accept`         | `Record<string, string[]>`                              | -       | Chaves MIME (wildcards permitidos) mapeadas para extensões, ex.: `{ "image/*": [".png"] }`. Qualquer tipo quando omitido. |
+| `multiple`       | `boolean`                                               | `true`  | Permite mais de um arquivo por drop ou seleção.                                                                           |
+| `maxSize`        | `number`                                                | -       | Maior arquivo aceito, em bytes.                                                                                           |
+| `maxFiles`       | `number`                                                | -       | Máximo de arquivos aceitos por drop; o excedente é rejeitado com `too-many-files`.                                        |
+| `disabled`       | `boolean`                                               | `false` | Desabilita drop, clique e teclado.                                                                                        |
+| `invalid`        | `boolean`                                               | `false` | Borda destrutiva; define `data-invalid`.                                                                                  |
+| `name`           | `string`                                                | -       | Nome do input de arquivo interno.                                                                                         |
+| `onDrop`         | `(accepted: File[], rejected: FileRejection[]) => void` | -       | Dispara após cada drop ou seleção. Angular: output `filesDropped` (`{ accepted, rejected }`).                             |
+| `onDropAccepted` | `(accepted: File[]) => void`                            | -       | Dispara quando ao menos um arquivo foi aceito. Angular: output `filesAccepted`.                                           |
+| `onDropRejected` | `(rejected: FileRejection[]) => void`                   | -       | Dispara quando ao menos um arquivo foi rejeitado. Angular: output `filesRejected`.                                        |
+| `className`      | `string`                                                | -       | Mesclado na área de drop. Angular: `class` do host.                                                                       |
+
+Em React, as demais props de `div` são repassadas à área.
+
+Uma `FileRejection` é `{ file, errors: { code, message }[] }`. Os códigos são `file-invalid-type`, `file-too-large` e `too-many-files`.
+
+### Atributos de estado
+
+| Atributo           | Presente quando                                               |
+| ------------------ | ------------------------------------------------------------- |
+| `data-drag-active` | Arquivos estão sendo arrastados sobre a área.                 |
+| `data-drag-reject` | Os arquivos arrastados seriam recusados (tipo ou quantidade). |
+| `data-disabled`    | `disabled` está ligado.                                       |
+| `data-invalid`     | `invalid` está ligado.                                        |
+
+Os filhos reagem a eles com utilities `group-data-[drag-active]/dropzone:`, como o ícone faz.
+
+### Partes
+
+| React                 | Angular                   | Renderiza                                                   |
+| --------------------- | ------------------------- | ----------------------------------------------------------- |
+| `DropzoneIcon`        | `gr-dropzone-icon`        | Container de glyph tematizado (decorativo, `aria-hidden`).  |
+| `DropzoneTitle`       | `gr-dropzone-title`       | O nome da área; rotula o grupo.                             |
+| `DropzoneDescription` | `gr-dropzone-description` | A dica; descreve o grupo.                                   |
+| `DropzoneAction`      | `gr-dropzone-action`      | Um botão (`variant` outline, `size` sm) que abre o seletor. |
+
+## Variações
+
+### Inválido
+
+Ligue `invalid` após uma validação que falhou e renderize os motivos ao lado da área com `role="alert"`.
+
+```tsx
+<Dropzone invalid={rejected.length > 0} onDrop={(_, rej) => setRejected(rej)}>
+  ...
+</Dropzone>
+```
+
+### Arquivo único
+
+`multiple={false}` torna o seletor de escolha única e rejeita todo arquivo depois do primeiro.
+
+```tsx
+<Dropzone multiple={false} accept={{ 'application/pdf': [] }}>
+  ...
+</Dropzone>
+```
+
+### Mínimo
+
+Só título e descrição: a superfície inteira é o alvo.
+
+```tsx
+<Dropzone>
+  <DropzoneTitle>Solte arquivos para anexar</DropzoneTitle>
+  <DropzoneDescription>ou clique para escolher</DropzoneDescription>
+</Dropzone>
+```
+
+## Acessibilidade
+
+- **Uma parada de foco**: a área é focável (`tabindex="0"`) e `Enter` ou `Space` abre o seletor, então quem usa teclado nunca precisa arrastar. Ela sai da ordem de tab quando `disabled`.
+- **Nome e dica**: o título rotula o grupo e a descrição o descreve, ligados automaticamente. Sem título, passe `aria-label` na área.
+- **A ação é um botão de verdade**: também é focável e abre o mesmo seletor. O clique sobe até a área, que é dona do seletor.
+- **Anuncie o resultado**: o componente não anuncia resultados. Renderize as rejeições num elemento com `role="alert"` (ou live region) para que sejam lidas.
+- **Não só cor**: os estados de drag e inválido mudam a borda e o tom; acompanhe com texto explicando o motivo, como a lista de rejeições faz.
+- **Desabilitado**: define `aria-disabled`, remove a parada de tab e desabilita o botão de ação.
+
+## Relacionados
+
+- [Input](/components/text/input) - o campo de linha única, com `type="file"` para um seletor compacto.
+- [Button](/components/buttons/button) - a ação dentro da área.
+- [Field](/components/field) - label, descrição e erro em volta de um dropzone num formulário.

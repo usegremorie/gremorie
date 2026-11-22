@@ -1,0 +1,6 @@
+{
+  "title": "Files",
+  "icon": "FileUp",
+  "description": "File upload - the dropzone.",
+  "pages": ["dropzone"]
+}

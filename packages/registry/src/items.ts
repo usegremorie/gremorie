@@ -800,6 +800,20 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['ng-utils'],
   },
   {
+    name: 'ng-dropzone',
+    framework: 'ng',
+    title: 'Dropzone (Angular)',
+    description:
+      'Drop target for files that also opens the native picker (click, Enter, Space), with accept, size and count validation and the same error codes as React. Native drag and drop, no extra dependency. Parts: gr-dropzone + icon + title + description + action. State in data-drag-active, data-drag-reject, data-disabled, data-invalid. Mirrors React Dropzone from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/dropzone/dropzone.ts', 'src/lib/dropzone/index.ts'],
+    targetPrefix: 'src/app/gremorie/dropzone',
+    srcStrip: 'src/lib/dropzone/',
+    dependencies: ['@angular/core'],
+    registryDependencies: ['ng-utils', 'ng-button'],
+  },
+  {
     name: 'ng-input-otp',
     framework: 'ng',
     title: 'Input OTP (Angular)',
@@ -2324,6 +2338,20 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/form/',
     dependencies: ['radix-ui', 'react-hook-form'],
     registryDependencies: ['rx-utils', 'rx-label'],
+  },
+  {
+    name: 'rx-dropzone',
+    framework: 'rx',
+    title: 'Dropzone (React)',
+    description:
+      'Drop target for files built on react-dropzone - drag files in or activate the area (click, Enter, Space) to open the picker, with accept, size and count validation. Parts: Dropzone + icon + title + description + action. State in data-drag-active, data-drag-reject, data-disabled, data-invalid.',
+    categories: ['forms'],
+    packageRoot: 'packages/rx-forms',
+    sourceFiles: ['src/lib/dropzone/dropzone.tsx'],
+    targetPrefix: 'src/components/gremorie/forms/dropzone',
+    srcStrip: 'src/lib/dropzone/',
+    dependencies: ['react-dropzone'],
+    registryDependencies: ['rx-utils', 'rx-button'],
   },
   {
     name: 'rx-input-otp',
