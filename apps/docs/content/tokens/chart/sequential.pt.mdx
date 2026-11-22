@@ -10,7 +10,7 @@ import {
 import { SEQUENTIAL_SCHEME } from '@/lib/chart-tokens';
 
 **Sequential** é o esquema de uma matiz só — cinco stops de blue,
-do `200` (mais claro) ao `900` (mais escuro). É color-blind safe
+do `100` (mais claro) ao `900` (mais escuro). É color-blind safe
 **por construção**: a leitura acontece pela claridade, não pela
 matiz. Mesmo um leitor com deuteranopia (a forma mais comum de
 deficiência de visão de cor) consegue ordenar os stops sem
@@ -53,7 +53,7 @@ Em vez disso, use [Categorical](/tokens/chart/categorical).
   Usar mais de 5 stops num gráfico Sequential — a partir de 6, a diferença de
   claridade entre stops adjacentes fica muito sutil para leitura confiável. Se
   você precisa de mais granularidade, considere uma escala contínua (e.g.
-  `interpolate(blue-200, blue-900)`) em vez de stops discretos.
+  `interpolate(blue-100, blue-900)`) em vez de stops discretos.
 </Callout>
 
 ## Exemplo de consumo

@@ -10,7 +10,7 @@ import {
 import { SEQUENTIAL_SCHEME } from '@/lib/chart-tokens';
 
 **Sequential** is the single-hue scheme - five blue stops, from
-`200` (lightest) to `900` (darkest). It is color-blind safe **by
+`100` (lightest) to `900` (darkest). It is color-blind safe **by
 construction**: the reading happens through lightness, not hue.
 Even a reader with deuteranopia (the most common form of color
 vision deficiency) can order the stops without trouble.
@@ -51,7 +51,7 @@ Use [Categorical](/tokens/chart/categorical) instead.
   Using more than 5 stops in a Sequential chart - from 6 on, the lightness
   difference between adjacent stops becomes too subtle for reliable reading. If
   you need more granularity, consider a continuous scale (e.g.
-  `interpolate(blue-200, blue-900)`) instead of discrete stops.
+  `interpolate(blue-100, blue-900)`) instead of discrete stops.
 </Callout>
 
 ## Usage example

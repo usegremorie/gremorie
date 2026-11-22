@@ -12,9 +12,17 @@ describe('linearScale', () => {
 describe('pointScale', () => {
   it('places categories evenly across the range', () => {
     const x = pointScale(['a', 'b', 'c'], [0, 100]);
-    expect(x('a')).toBe(0);
-    expect(x('c')).toBe(100);
-    expect(x('b')).toBe(50);
+    expect(x(0)).toBe(0);
+    expect(x(2)).toBe(100);
+    expect(x(1)).toBe(50);
+  });
+
+  it('keeps one point per datum, keyed by index (repeated labels)', () => {
+    const labels = ['J', 'F', 'M', 'A', 'M', 'J', 'J'];
+    const x = pointScale(labels, [0, 600]);
+    expect(labels.map((_, i) => x(i))).toEqual([
+      0, 100, 200, 300, 400, 500, 600,
+    ]);
   });
 });
 

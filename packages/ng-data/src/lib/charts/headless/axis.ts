@@ -65,6 +65,6 @@ export class XAxis {
     return this.ctx
       .data()
       .map((d) => String(d[this.ctx.xKey()]))
-      .map((label) => ({ label, x: x(label) }));
+      .map((label, i) => ({ label, x: x(i) }));
   });
 }

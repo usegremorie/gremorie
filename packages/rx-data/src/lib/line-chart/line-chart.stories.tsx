@@ -102,6 +102,29 @@ export const Dots: Story = {
   args: { data: MONTHS, config: SINGLE, xKey: 'month', dots: true },
 };
 
+const YEAR: ChartDatum[] = [
+  'J',
+  'F',
+  'M',
+  'A',
+  'M',
+  'J',
+  'J',
+  'A',
+  'S',
+  'O',
+  'N',
+  'D',
+  'J',
+  'F',
+  'M',
+].map((month, i) => ({ month, desktop: 120 + ((i * 53) % 170) }));
+
+/** Repeated x labels (J F M ... J F M): one point per datum, none collapsed. */
+export const RepeatedLabels: Story = {
+  args: { data: YEAR, config: SINGLE, xKey: 'month', dots: true },
+};
+
 /** Linear interpolation. */
 export const Linear: Story = {
   args: { data: MONTHS, config: SINGLE, xKey: 'month', type: 'linear' },

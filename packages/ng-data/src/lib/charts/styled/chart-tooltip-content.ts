@@ -55,7 +55,7 @@ export interface ChartTooltipRow {
             }
             @case ('dashed') {
               <span
-                class="h-3 w-0 shrink-0 border-l-2 border-dashed"
+                class="h-3 w-0 shrink-0 border-l-3 border-dashed"
                 [style.borderColor]="row.color"
               ></span>
             }

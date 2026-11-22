@@ -10,16 +10,20 @@ export function linearScale(
     .range([...range]);
 }
 
-/** Categorical position scale; categories land at discrete points across the range. */
+/**
+ * Categorical position scale: maps a datum's index to its point across the
+ * range. Keyed by index, not label, so repeated labels (J, F, M, A, M, J...)
+ * keep one point each, as recharts does; the label is only the tick text.
+ */
 export function pointScale(
   categories: readonly string[],
   range: readonly [number, number],
-): (value: string) => number {
-  const scale = scalePoint<string>()
-    .domain([...categories])
+): (index: number) => number {
+  const scale = scalePoint<number>()
+    .domain(categories.map((_, i) => i))
     .range([...range])
     .padding(0);
-  return (value: string) => scale(value) ?? 0;
+  return (index: number) => scale(index) ?? 0;
 }
 
 /**

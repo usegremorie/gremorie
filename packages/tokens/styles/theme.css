@@ -575,15 +575,14 @@
    *
    * One hue, light to dark, for data with a natural order. Read by lightness
    * rather than hue, so it survives colour-vision deficiency by construction.
-   * Steps are 200/400/600/800/950 rather than the evenly numbered ones: 600 to
-   * 700 measures ΔL 0.058, under the 0.06 the eye needs to call two steps
-   * apart.
+   * One scale for both themes: a bigger value is always darker
+   * (100/300/500/700/900).
    */
-  --chart-seq-1: var(--color-blue-200);
-  --chart-seq-2: var(--color-blue-400);
-  --chart-seq-3: var(--color-blue-600);
-  --chart-seq-4: var(--color-blue-800);
-  --chart-seq-5: var(--color-blue-950);
+  --chart-seq-1: var(--color-blue-100);
+  --chart-seq-2: var(--color-blue-300);
+  --chart-seq-3: var(--color-blue-500);
+  --chart-seq-4: var(--color-blue-700);
+  --chart-seq-5: var(--color-blue-900);
 
   /*
    * Divergent
@@ -707,16 +706,6 @@
   --chart-cat-3: var(--color-green-600);
   --chart-cat-4: var(--color-cyan-600);
   --chart-cat-5: var(--color-pink-600);
-
-  /*
-   * Sequential inverts: on a dark surface the scale has to climb towards light,
-   * or its top end disappears into the background.
-   */
-  --chart-seq-1: var(--color-blue-900);
-  --chart-seq-2: var(--color-blue-700);
-  --chart-seq-3: var(--color-blue-500);
-  --chart-seq-4: var(--color-blue-300);
-  --chart-seq-5: var(--color-blue-100);
 
   /*
    * Same poles; the pivot darkens so it still reads as the middle rather than

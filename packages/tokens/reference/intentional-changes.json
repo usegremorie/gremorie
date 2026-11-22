@@ -222,5 +222,40 @@
     "prop": "--animate-fade-in",
     "to": "gremorie-fade-in 120ms ease-out",
     "reason": "Animation token for the existing gremorie-fade-in keyframes, replacing animate-[gremorie-fade-in_120ms_ease-out]."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--chart-seq-1",
+    "to": "var(--color-blue-100)",
+    "reason": "Sequential is one scale for both themes: a bigger value is always darker."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--chart-seq-2",
+    "to": "var(--color-blue-300)",
+    "reason": "Sequential is one scale for both themes: a bigger value is always darker."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--chart-seq-3",
+    "to": "var(--color-blue-500)",
+    "reason": "Sequential is one scale for both themes: a bigger value is always darker."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--chart-seq-4",
+    "to": "var(--color-blue-700)",
+    "reason": "Sequential is one scale for both themes: a bigger value is always darker."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--chart-seq-5",
+    "to": "var(--color-blue-900)",
+    "reason": "Sequential is one scale for both themes: a bigger value is always darker."
   }
 ]

@@ -54,7 +54,7 @@ export class ChartTooltip {
     const i = this.activeIndex();
     const cats = this.categories();
     if (i === null || !cats.length) return 0;
-    return this.ctx.xScale()(cats[i] ?? '');
+    return this.ctx.xScale()(i);
   });
 
   /** The active data row, or `undefined`. */
@@ -91,7 +91,7 @@ export class ChartTooltip {
     let nearest = 0;
     let best = Infinity;
     for (let i = 0; i < cats.length; i++) {
-      const dx = Math.abs(xScale(cats[i]) - lx);
+      const dx = Math.abs(xScale(i) - lx);
       if (dx < best) {
         best = dx;
         nearest = i;

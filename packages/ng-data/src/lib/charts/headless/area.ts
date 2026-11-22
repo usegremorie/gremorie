@@ -13,16 +13,15 @@ import type { CurveType, Datum } from './types';
 /** Pure: project data through the scales into an area `d` string. */
 export function computeAreaPath(
   data: readonly Datum[],
-  xKey: string,
   yKey: string,
-  xScale: (v: string) => number,
+  xScale: (index: number) => number,
   yScale: (v: number) => number,
   baseline: number,
   curve: CurveType = 'linear',
 ): string {
   if (data.length === 0) return '';
-  const points = data.map((d) => ({
-    x: xScale(String(d[xKey])),
+  const points = data.map((d, i) => ({
+    x: xScale(i),
     y: yScale(Number(d[yKey])),
   }));
   return areaPath(points, baseline, curve);
@@ -58,7 +57,6 @@ export class Area implements OnInit, OnDestroy {
   readonly d = computed(() => {
     const data = this.ctx.data();
     if (data.length === 0) return '';
-    const xKey = this.ctx.xKey();
     const key = this.dataKey();
     const xScale = this.ctx.xScale();
     const yScale = this.ctx.yScale();
@@ -70,7 +68,7 @@ export class Area implements OnInit, OnDestroy {
           const lo = base[i] ?? 0;
           const hi = lo + Number(d[key] ?? 0);
           return {
-            x: xScale(String(d[xKey])),
+            x: xScale(i),
             y0: yScale(lo),
             y1: yScale(hi),
           };
@@ -81,9 +79,8 @@ export class Area implements OnInit, OnDestroy {
 
     return computeAreaPath(
       data,
-      xKey,
       key,
-      (v) => xScale(v),
+      (i) => xScale(i),
       (v) => yScale(v),
       yScale(0),
       this.curve(),
@@ -93,7 +90,6 @@ export class Area implements OnInit, OnDestroy {
   /** Top-edge pixel points (cumulative when stacked) — for tooltip markers. */
   readonly points = computed<XYPoint[]>(() => {
     const data = this.ctx.data();
-    const xKey = this.ctx.xKey();
     const key = this.dataKey();
     const xScale = this.ctx.xScale();
     const yScale = this.ctx.yScale();
@@ -101,7 +97,7 @@ export class Area implements OnInit, OnDestroy {
       ? this.ctx.stackBaseFor(key)
       : data.map(() => 0);
     return data.map((d, i) => ({
-      x: xScale(String(d[xKey])),
+      x: xScale(i),
       y: yScale((base[i] ?? 0) + Number(d[key] ?? 0)),
     }));
   });
