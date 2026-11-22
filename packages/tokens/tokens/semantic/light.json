@@ -155,24 +155,24 @@
   },
   "chart-seq-1": {
     "$type": "color",
-    "$value": "{color.blue.200}",
-    "$description": "Sequential\n\nOne hue, light to dark, for data with a natural order. Read by lightness rather than hue, so it survives colour-vision deficiency by construction. Steps are 200/400/600/800/950 rather than the evenly numbered ones: 600 to 700 measures ΔL 0.058, under the 0.06 the eye needs to call two steps apart."
+    "$value": "{color.blue.100}",
+    "$description": "Sequential\n\nOne hue, light to dark, for data with a natural order. Read by lightness rather than hue, so it survives colour-vision deficiency by construction. One scale for both themes: a bigger value is always darker (100/300/500/700/900)."
   },
   "chart-seq-2": {
     "$type": "color",
-    "$value": "{color.blue.400}"
+    "$value": "{color.blue.300}"
   },
   "chart-seq-3": {
     "$type": "color",
-    "$value": "{color.blue.600}"
+    "$value": "{color.blue.500}"
   },
   "chart-seq-4": {
     "$type": "color",
-    "$value": "{color.blue.800}"
+    "$value": "{color.blue.700}"
   },
   "chart-seq-5": {
     "$type": "color",
-    "$value": "{color.blue.950}"
+    "$value": "{color.blue.900}"
   },
   "chart-div-1": {
     "$type": "color",

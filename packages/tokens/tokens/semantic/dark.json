@@ -168,27 +168,6 @@
     "$type": "color",
     "$value": "{color.pink.600}"
   },
-  "chart-seq-1": {
-    "$type": "color",
-    "$value": "{color.blue.900}",
-    "$description": "Sequential inverts: on a dark surface the scale has to climb towards light, or its top end disappears into the background."
-  },
-  "chart-seq-2": {
-    "$type": "color",
-    "$value": "{color.blue.700}"
-  },
-  "chart-seq-3": {
-    "$type": "color",
-    "$value": "{color.blue.500}"
-  },
-  "chart-seq-4": {
-    "$type": "color",
-    "$value": "{color.blue.300}"
-  },
-  "chart-seq-5": {
-    "$type": "color",
-    "$value": "{color.blue.100}"
-  },
   "chart-div-1": {
     "$type": "color",
     "$value": "{color.blue.300}",

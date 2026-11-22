@@ -33,12 +33,7 @@ export interface ArbitraryValueFinding {
  * Do NOT add entries to dodge the guard: add or reuse a token instead. This list
  * only shrinks.
  */
-export const ARBITRARY_VALUE_ALLOWLIST = new Map<string, string>([
-  [
-    'packages/rx-data/src/lib/chart/chart.tsx::border-[1.5px]',
-    'dashed tooltip indicator; no 1.5px border width on the scale (proposal: border width token)',
-  ],
-]);
+export const ARBITRARY_VALUE_ALLOWLIST = new Map<string, string>([]);
 
 const LENGTH = /(?<![\w.-])-?(?:\d+\.?\d*|\.\d+)(px|rem|em)\b/g;
 const TIME = /(?<![\w.-])(?:\d+\.?\d*|\.\d+)(ms|s)\b/;

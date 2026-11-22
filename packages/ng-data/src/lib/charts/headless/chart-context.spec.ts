@@ -42,8 +42,8 @@ describe('ChartContext', () => {
   it('builds an X point scale across categories within the left/right gutters', () => {
     const ctx = makeCtx();
     const x = ctx.xScale();
-    expect(x('Jan')).toBe(40); // starts at plotLeft, not 0
-    expect(x('Mar')).toBe(412); // ends at plotRight, not innerWidth
+    expect(x(0)).toBe(40); // starts at plotLeft, not 0
+    expect(x(2)).toBe(412); // ends at plotRight, not innerWidth
   });
 
   it('unregister removes a series from the domain', () => {

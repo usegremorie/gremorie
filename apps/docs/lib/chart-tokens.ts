@@ -20,13 +20,13 @@ export const SEQUENTIAL_SCHEME: ChartScheme = {
   id: 'sequential',
   name: 'Sequential',
   description:
-    'Uma única matiz, claro para escuro, para dado com ordem natural. Lido por luminosidade e não por matiz, então sobrevive ao daltonismo por construção. Os steps são 200/400/600/800/950: de 600 para 700 a diferença mede ΔL 0.058, abaixo do 0.06 que o olho precisa para separar dois passos.',
+    'Uma única matiz, claro para escuro, para dado com ordem natural. Lido por luminosidade e não por matiz, então sobrevive ao daltonismo por construção. Uma escala só para os dois temas: valor maior é sempre mais escuro (100/300/500/700/900).',
   rows: [
-    { token: '--chart-seq-1', primitive: 'blue-200' },
-    { token: '--chart-seq-2', primitive: 'blue-400' },
-    { token: '--chart-seq-3', primitive: 'blue-600' },
-    { token: '--chart-seq-4', primitive: 'blue-800' },
-    { token: '--chart-seq-5', primitive: 'blue-950' },
+    { token: '--chart-seq-1', primitive: 'blue-100' },
+    { token: '--chart-seq-2', primitive: 'blue-300' },
+    { token: '--chart-seq-3', primitive: 'blue-500' },
+    { token: '--chart-seq-4', primitive: 'blue-700' },
+    { token: '--chart-seq-5', primitive: 'blue-900' },
   ],
 };
 

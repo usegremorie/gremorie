@@ -108,3 +108,30 @@ export const Workbench: Story = {
     tooltip: true,
   },
 };
+
+const YEAR: ChartDatum[] = [
+  'J',
+  'F',
+  'M',
+  'A',
+  'M',
+  'J',
+  'J',
+  'A',
+  'S',
+  'O',
+  'N',
+  'D',
+  'J',
+  'F',
+  'M',
+].map((month, i) => ({ month, sales: 120 + ((i * 53) % 170) }));
+
+/** Repeated x labels (J F M ... J F M): one point per datum, none collapsed. */
+export const RepeatedLabels: Story = {
+  args: {
+    data: YEAR,
+    dots: true,
+    config: { sales: { label: 'Sales', color: 'var(--chart-1)' } },
+  },
+};

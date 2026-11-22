@@ -13,16 +13,15 @@ import type { CurveType, Datum } from './types';
 /** Pure: project data through the scales into a line `d` string. */
 export function computeLinePath(
   data: readonly Datum[],
-  xKey: string,
   yKey: string,
-  xScale: (v: string) => number,
+  xScale: (index: number) => number,
   yScale: (v: number) => number,
   curve: CurveType = 'linear',
 ): string {
   if (data.length === 0) return '';
   return linePath(
-    data.map((d) => ({
-      x: xScale(String(d[xKey])),
+    data.map((d, i) => ({
+      x: xScale(i),
       y: yScale(Number(d[yKey])),
     })),
     curve,
@@ -56,9 +55,8 @@ export class Line implements OnInit, OnDestroy {
   readonly d = computed(() =>
     computeLinePath(
       this.ctx.data(),
-      this.ctx.xKey(),
       this.dataKey(),
-      (v) => this.ctx.xScale()(v),
+      (i) => this.ctx.xScale()(i),
       (v) => this.ctx.yScale()(v),
       this.curve(),
     ),
@@ -66,13 +64,12 @@ export class Line implements OnInit, OnDestroy {
 
   /** Pixel position of each datum — for dot markers / tooltip snapping. */
   readonly points = computed<XYPoint[]>(() => {
-    const xKey = this.ctx.xKey();
     const key = this.dataKey();
     const xScale = this.ctx.xScale();
     const yScale = this.ctx.yScale();
     return this.ctx
       .data()
-      .map((d) => ({ x: xScale(String(d[xKey])), y: yScale(Number(d[key])) }));
+      .map((d, i) => ({ x: xScale(i), y: yScale(Number(d[key])) }));
   });
 
   ngOnInit(): void {
