@@ -55,6 +55,7 @@ export default [
             'gr-calendar',
             'gr-date-picker',
             'gr-field',
+            'gr-dropzone',
             'gr-form-item',
             'gr-form-label',
             'gr-form-description',

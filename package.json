@@ -163,6 +163,7 @@
     "postcss": "^8.5.26",
     "prismjs": "^1.29.0",
     "react-day-picker": "^10.0.1",
+    "react-dropzone": "^20.2.1",
     "react-hook-form": "^7.76.1",
     "rxjs": "~7.8.0",
     "sonner": "^2.0.7",

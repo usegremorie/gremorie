@@ -145,6 +145,16 @@ const SOURCE_MAP: Record<
       sym: 'RadarChart',
     },
   },
+  dropzone: {
+    rx: {
+      file: '../rx-forms/src/lib/dropzone/dropzone.tsx',
+      sym: 'DropzoneProps',
+    },
+    ng: {
+      file: '../ng-forms/src/lib/dropzone/dropzone.ts',
+      sym: 'Dropzone',
+    },
+  },
   'media-range-player': {
     rx: {
       file: '../rx-display/src/lib/media-range-player/media-range-player.tsx',

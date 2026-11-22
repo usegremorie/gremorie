@@ -1,0 +1,206 @@
+---
+title: Dropzone
+description: A drop target for files that also opens the native picker, with accept, size and count validation.
+---
+
+import { DropzonePreview } from '@/components/preview/forms/dropzone';
+
+## Overview
+
+`Dropzone` is an area where people drop files, or activate it (click, `Enter`, `Space`) to open the native picker. Everything that comes in is validated against `accept`, `maxSize` and `maxFiles` and reported split into accepted and rejected files, each rejection carrying its error codes. The React edition wraps `react-dropzone`; the Angular edition uses native drag and drop with the same rules and codes.
+
+The component reports files; it does not store them, upload them or render the file list. Compose the list and the rejection messages next to it, as in the preview. Use it for uploads of one or many files. For a single file inside a compact form row, a plain `Input type="file"` is lighter.
+
+## Preview
+
+<ComponentPreview name="forms/dropzone">
+  <DropzonePreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+Dropzone                    the drop area; focusable, hidden file input inside
+├─ DropzoneIcon             optional themed glyph container
+├─ DropzoneTitle            names the area (aria-labelledby)
+├─ DropzoneDescription      hint: accepted types, limits (aria-describedby)
+└─ DropzoneAction           optional button that also opens the picker
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-dropzone
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-dropzone
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-dropzone
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-dropzone
+```
+
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Dropzone,
+  DropzoneAction,
+  DropzoneDescription,
+  DropzoneIcon,
+  DropzoneTitle,
+} from "@gremorie/rx-forms";
+import { UploadIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Dropzone
+      accept={{ "image/*": [".png", ".jpg"] }}
+      maxSize={5 * 1024 * 1024}
+      onDrop={(accepted, rejected) => upload(accepted)}
+    >
+      <DropzoneIcon>
+        <UploadIcon />
+      </DropzoneIcon>
+      <DropzoneTitle>Drag and drop images here</DropzoneTitle>
+      <DropzoneDescription>PNG or JPG, up to 5 MB</DropzoneDescription>
+      <DropzoneAction>Browse files</DropzoneAction>
+    </Dropzone>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-dropzone
+```
+
+<AngularSetup />
+
+```html
+<gr-dropzone
+  [accept]="{ 'image/*': ['.png', '.jpg'] }"
+  [maxSize]="5242880"
+  (filesAccepted)="upload($event)"
+>
+  <gr-dropzone-icon><!-- svg --></gr-dropzone-icon>
+  <gr-dropzone-title>Drag and drop images here</gr-dropzone-title>
+  <gr-dropzone-description>PNG or JPG, up to 5 MB</gr-dropzone-description>
+  <gr-dropzone-action>Browse files</gr-dropzone-action>
+</gr-dropzone>
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<Dropzone>`
+
+| Prop             | Type                                                    | Default | Description                                                                                                |
+| ---------------- | ------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `accept`         | `Record<string, string[]>`                              | -       | MIME keys (wildcards allowed) mapped to extensions, e.g. `{ "image/*": [".png"] }`. Anything when omitted. |
+| `multiple`       | `boolean`                                               | `true`  | Allow more than one file per drop or pick.                                                                 |
+| `maxSize`        | `number`                                                | -       | Largest accepted file, in bytes.                                                                           |
+| `maxFiles`       | `number`                                                | -       | Most files accepted per drop; the surplus is rejected with `too-many-files`.                               |
+| `disabled`       | `boolean`                                               | `false` | Disables dropping, clicking and the keyboard.                                                              |
+| `invalid`        | `boolean`                                               | `false` | Destructive border; sets `data-invalid`.                                                                   |
+| `name`           | `string`                                                | -       | Name of the underlying file input.                                                                         |
+| `onDrop`         | `(accepted: File[], rejected: FileRejection[]) => void` | -       | Fires after every drop or pick. Angular: output `filesDropped` (`{ accepted, rejected }`).                 |
+| `onDropAccepted` | `(accepted: File[]) => void`                            | -       | Fires when at least one file was accepted. Angular: output `filesAccepted`.                                |
+| `onDropRejected` | `(rejected: FileRejection[]) => void`                   | -       | Fires when at least one file was rejected. Angular: output `filesRejected`.                                |
+| `className`      | `string`                                                | -       | Merged onto the drop area. Angular: host `class`.                                                          |
+
+All other `div` props are forwarded to the area in React.
+
+A `FileRejection` is `{ file, errors: { code, message }[] }`. The codes are `file-invalid-type`, `file-too-large` and `too-many-files`.
+
+### State attributes
+
+| Attribute          | Present when                                        |
+| ------------------ | --------------------------------------------------- |
+| `data-drag-active` | Files are being dragged over the area.              |
+| `data-drag-reject` | The dragged files would be refused (type or count). |
+| `data-disabled`    | `disabled` is on.                                   |
+| `data-invalid`     | `invalid` is on.                                    |
+
+Children react to them with `group-data-[drag-active]/dropzone:` utilities, the way the icon does.
+
+### Parts
+
+| React                 | Angular                   | Renders                                                        |
+| --------------------- | ------------------------- | -------------------------------------------------------------- |
+| `DropzoneIcon`        | `gr-dropzone-icon`        | Themed glyph container (decorative, `aria-hidden`).            |
+| `DropzoneTitle`       | `gr-dropzone-title`       | The name of the area; labels the group.                        |
+| `DropzoneDescription` | `gr-dropzone-description` | The hint; describes the group.                                 |
+| `DropzoneAction`      | `gr-dropzone-action`      | A button (`variant` outline, `size` sm) that opens the picker. |
+
+## Variations
+
+### Invalid
+
+Set `invalid` after a failed validation and render the reasons next to the area with `role="alert"`.
+
+```tsx
+<Dropzone invalid={rejected.length > 0} onDrop={(_, rej) => setRejected(rej)}>
+  ...
+</Dropzone>
+```
+
+### Single file
+
+`multiple={false}` makes the picker single-select and rejects every file after the first one.
+
+```tsx
+<Dropzone multiple={false} accept={{ 'application/pdf': [] }}>
+  ...
+</Dropzone>
+```
+
+### Minimal
+
+Title and description only: the whole surface is the target.
+
+```tsx
+<Dropzone>
+  <DropzoneTitle>Drop files to attach</DropzoneTitle>
+  <DropzoneDescription>or click to browse</DropzoneDescription>
+</Dropzone>
+```
+
+## Accessibility
+
+- **One focus stop**: the area is focusable (`tabindex="0"`) and `Enter` or `Space` opens the picker, so keyboard users never need to drag. It leaves the tab order when `disabled`.
+- **Name and hint**: the title labels the group and the description describes it, wired automatically. Without a title, pass `aria-label` on the area.
+- **The action is a real button**: it is also focusable and opens the same picker. Its click bubbles to the area, which owns the picker.
+- **Announce the outcome**: the component does not announce results. Render rejections in an element with `role="alert"` (or a live region) so they are read out.
+- **Not color alone**: the drag and invalid states change the border and the tint; pair them with text for the reason, as the rejection list does.
+- **Disabled**: sets `aria-disabled`, drops the tab stop and disables the action button.
+
+## Related
+
+- [Input](/components/text/input) - the plain single-line field, with `type="file"` for a compact picker.
+- [Button](/components/buttons/button) - the action inside the area.
+- [Field](/components/field) - label, description and error around a dropzone in a form.
