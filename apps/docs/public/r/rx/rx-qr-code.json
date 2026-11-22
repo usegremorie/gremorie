@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gremorie.com/schema/registry-item.json",
+  "name": "rx-qr-code",
+  "type": "registry:block",
+  "framework": "rx",
+  "title": "QR Code (React)",
+  "description": "Scannable QR code drawn as one SVG path, colored by tokens (text-foreground on bg-background) with a four-module quiet zone. Props: value, ecc (L, M, Q, H), size (sm, md, lg), aria-label, and a centered icon. Encoded with uqr.",
+  "categories": [
+    "display"
+  ],
+  "dependencies": [
+    "class-variance-authority",
+    "uqr",
+    "@gremorie/rx-core"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [
+    "rx-utils"
+  ],
+  "files": [
+    {
+      "path": "src/lib/qr-code/qr-code.tsx",
+      "content": "import { cva, type VariantProps } from 'class-variance-authority';\nimport * as React from 'react';\n\nimport { cn } from '@gremorie/rx-core';\n\nimport {\n  buildQrMatrix,\n  QR_QUIET_ZONE,\n  type QrCodeEcc,\n  type QrCodeMatrix,\n} from './qr-code.logic';\n\n/**\n * QrCode: a scannable code drawn as one SVG path, so color comes from tokens.\n *\n * The matrix is built by `uqr` (value + error correction level) and the dark\n * modules are painted with `currentColor`: `text-foreground` on\n * `bg-background` by default, with the four-module quiet zone scanners need\n * kept inside the box. An optional `icon` sits in the center; raise `ecc` to\n * `Q` or `H` when it covers more than a small mark.\n */\nconst qrCodeVariants = cva(\n  'relative inline-flex shrink-0 overflow-hidden rounded-xl bg-background text-foreground',\n  {\n    variants: {\n      size: {\n        sm: 'size-32',\n        md: 'size-48',\n        lg: 'size-64',\n      },\n    },\n    defaultVariants: { size: 'md' },\n  },\n);\n\nexport type QrCodeProps = Omit<React.ComponentProps<'div'>, 'children'> &\n  VariantProps<typeof qrCodeVariants> & {\n    /** Text the code encodes, usually a URL. */\n    value: string;\n    /** Error correction level: L ~7%, M ~15%, Q ~25%, H ~30%. Default M. */\n    ecc?: QrCodeEcc;\n    /** Mark centered over the code (use `Q` or `H` for anything large). */\n    icon?: React.ReactNode;\n  };\n\nfunction QrCode({\n  className,\n  size,\n  value,\n  ecc = 'M',\n  icon,\n  'aria-label': ariaLabel = 'QR code',\n  ...props\n}: QrCodeProps) {\n  const matrix = React.useMemo<QrCodeMatrix | null>(() => {\n    try {\n      return buildQrMatrix(value, ecc);\n    } catch {\n      // Value longer than the largest code can hold: render an empty box.\n      return null;\n    }\n  }, [value, ecc]);\n  const span = matrix ? matrix.size + QR_QUIET_ZONE * 2 : 0;\n\n  return (\n    <div\n      data-slot=\"qr-code\"\n      data-ecc={ecc}\n      data-modules={matrix?.modules}\n      role=\"img\"\n      aria-label={ariaLabel}\n      className={cn(qrCodeVariants({ size }), className)}\n      {...props}\n    >\n      {matrix ? (\n        <svg\n          aria-hidden=\"true\"\n          className=\"size-full\"\n          shapeRendering=\"crispEdges\"\n          viewBox={`${-QR_QUIET_ZONE} ${-QR_QUIET_ZONE} ${span} ${span}`}\n        >\n          <path d={matrix.path} fill=\"currentColor\" />\n        </svg>\n      ) : null}\n      {icon ? (\n        <span\n          data-slot=\"qr-code-icon\"\n          className=\"absolute inset-0 m-auto flex size-1/5 items-center justify-center rounded-md bg-background [&_svg]:size-full\"\n        >\n          {icon}\n        </span>\n      ) : null}\n    </div>\n  );\n}\n\nexport { QrCode, qrCodeVariants };\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/display/qr-code/qr-code.tsx"
+    },
+    {
+      "path": "src/lib/qr-code/qr-code.logic.ts",
+      "content": "import { encode } from 'uqr';\n\n/** Error correction level: L ~7%, M ~15%, Q ~25%, H ~30% recoverable. */\nexport type QrCodeEcc = 'L' | 'M' | 'Q' | 'H';\n\nexport interface QrCodeMatrix {\n  /** Modules per side (quiet zone not included). */\n  size: number;\n  /** Number of dark modules. */\n  modules: number;\n  /** One SVG path covering every dark module, in module units. */\n  path: string;\n}\n\n/**\n * Quiet zone, in modules, kept clear on every side. The QR specification asks\n * for four; scanners lose the code below that.\n */\nexport const QR_QUIET_ZONE = 4;\n\n/**\n * Encode `value` with `uqr` and fold the dark modules into a single path:\n * horizontal runs of adjacent modules become one `h` segment each, which keeps\n * the markup small and avoids hairline gaps between neighbouring squares.\n *\n * Mirrors `packages/ng-display/src/lib/qr-code/qr-code.logic.ts`; both\n * editions must produce the same matrix and path for the same input.\n */\nexport function buildQrMatrix(\n  value: string,\n  ecc: QrCodeEcc = 'M',\n): QrCodeMatrix {\n  const { data, size } = encode(value, { ecc, border: 0 });\n  let modules = 0;\n  let path = '';\n  for (let y = 0; y < size; y++) {\n    let x = 0;\n    while (x < size) {\n      if (!data[y][x]) {\n        x++;\n        continue;\n      }\n      const start = x;\n      while (x < size && data[y][x]) x++;\n      modules += x - start;\n      path += `M${start} ${y}h${x - start}v1h-${x - start}z`;\n    }\n  }\n  return { size, modules, path };\n}\n",
+      "type": "registry:component",
+      "target": "src/components/gremorie/display/qr-code/qr-code.logic.ts"
+    }
+  ],
+  "cssVars": {},
+  "usage": {
+    "whenToUse": "TBD - document when to use rx-qr-code.",
+    "whenNotToUse": "TBD - document when to reach for something else.",
+    "bestPractices": [],
+    "antipatterns": []
+  }
+}

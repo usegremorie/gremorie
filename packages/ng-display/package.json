@@ -32,6 +32,9 @@
     "@gremorie/ng-core": ">=0.5.1",
     "@gremorie/ng-forms": ">=0.5.1"
   },
+  "dependencies": {
+    "uqr": "^0.1.3"
+  },
   "sideEffects": false,
   "homepage": "https://gremorie.com",
   "publishConfig": {

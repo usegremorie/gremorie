@@ -25,7 +25,7 @@ export function CoverArt() {
           className="flex items-center justify-center rounded-xl border border-border border-dashed bg-muted/30 text-muted-foreground"
           ratio={1}
         >
-          <ImageIcon aria-hidden="true" className="size-9" />
+          <ImageIcon aria-hidden="true" className="size-8" />
           <span className="sr-only">No artwork uploaded yet</span>
         </AspectRatio>
       </CardContent>

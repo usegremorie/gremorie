@@ -42,7 +42,7 @@ import {
           class="flex items-center justify-center rounded-xl border border-border border-dashed bg-muted/30 text-muted-foreground"
           [ratio]="1"
         >
-          <ng-icon name="lucideImage" class="text-4xl" aria-hidden="true" />
+          <ng-icon name="lucideImage" size="32" aria-hidden="true" />
           <span class="sr-only">No artwork uploaded yet</span>
         </gr-aspect-ratio>
       </gr-card-content>
