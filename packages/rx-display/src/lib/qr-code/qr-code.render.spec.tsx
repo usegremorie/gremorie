@@ -30,8 +30,8 @@ describe('QrCode', () => {
 
   it('colors from tokens only', () => {
     const out = html(<QrCode value={URL_VALUE} />);
-    expect(out).toContain('bg-background');
-    expect(out).toContain('text-foreground');
+    expect(out).toContain('bg-gray-50');
+    expect(out).toContain('text-gray-950');
   });
 
   it('grows with the error correction level', () => {

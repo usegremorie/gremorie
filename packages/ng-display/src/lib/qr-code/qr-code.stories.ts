@@ -8,7 +8,7 @@ const PAIRING_URL = 'https://pocketbook.example/link/K7Q2-M9XD';
  * QrCode: a scannable code drawn as one SVG path.
  *
  * Mirrors React `QrCode`. The matrix is built by `uqr`; the dark modules use
- * `currentColor`, so the code takes `text-foreground` on `bg-background`. The
+ * `currentColor`: `text-gray-950` on `bg-gray-50` in every theme. The
  * center mark is projected as content (React takes an `icon` prop).
  */
 const meta: Meta<QrCode> = {

@@ -8,7 +8,7 @@ import { QrCode } from '@gremorie/rx-display';
 
 ## Visão geral
 
-`QrCode` transforma uma string em um código escaneável. A matriz é gerada pelo [`uqr`](https://github.com/unjs/uqr), um encoder sem dependências, e os módulos escuros são pintados como um único `<path>` SVG com `currentColor`. A cor vem, portanto, de tokens (`text-foreground` sobre `bg-background`) e acompanha tema e dark mode; não há imagem raster nem nada para recolorir à mão.
+`QrCode` transforma uma string em um código escaneável. A matriz é gerada pelo [`uqr`](https://github.com/unjs/uqr), um encoder sem dependências, e os módulos escuros são pintados como um único `<path>` SVG com `currentColor`. A cor vem de tokens: módulos escuros sobre uma placa clara (`text-gray-950` sobre `bg-gray-50`) em todo tema, inclusive no dark mode, porque muitos leitores de câmera falham com código invertido. Não há imagem raster nem nada para recolorir à mão.
 
 A zona de silêncio de quatro módulos que os leitores exigem faz parte da caixa, então o código continua legível em qualquer card, sheet ou página desde que a superfície atrás seja lisa. Escolha o nível de correção de erro (`ecc`) conforme o dano que o código deve suportar, um `size` da escala de spacing e, se quiser, um ícone no centro.
 
@@ -21,9 +21,9 @@ A zona de silêncio de quatro módulos que os leitores exigem faz parte da caixa
 ## Anatomia
 
 ```text
-QrCode           caixa role="img", bg-background, zona de silêncio dentro
+QrCode           caixa role="img", bg-gray-50, zona de silêncio dentro
 ├─ svg           aria-hidden, um path de módulos escuros (fill currentColor)
-└─ icon          marca central opcional sobre placa bg-background
+└─ icon          marca central opcional sobre placa bg-gray-50
 ```
 
 ## Instalação
@@ -129,8 +129,8 @@ Níveis maiores adicionam redundância: o código fica mais denso (mais módulos
 
 - **Dê nome ao código**: a caixa é uma única imagem, então use um `aria-label` que diga o que escanear faz (por exemplo "Pairing code"). O padrão é o genérico "QR code".
 - **Ofereça um caminho sem escanear**: nem todos conseguem usar um código. Mostre o link ou um código curto como texto por perto.
-- **O dark mode inverte o código**: os módulos ficam claros sobre fundo escuro. Câmeras atuais leem códigos invertidos, mas alguns apps de leitura antigos não; prefira um contexto claro quando o público é desconhecido.
-- **Contraste**: os módulos usam `foreground` sobre `background`, o par de maior contraste em todo tema.
+- **Nunca invertido**: o código mantém módulos escuros sobre placa clara também no dark mode. Muitos apps de leitura falham com código claro sobre fundo escuro.
+- **Contraste**: `gray-950` sobre `gray-50`, o par de maior contraste da paleta.
 - **Ícone central**: suba o `ecc` para `Q` ou `H` e teste um escaneamento real antes de publicar uma marca grande.
 
 ## Relacionados

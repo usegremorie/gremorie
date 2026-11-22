@@ -8,7 +8,7 @@ import { QrCode } from '@gremorie/rx-display';
 
 ## Overview
 
-`QrCode` turns a string into a scannable code. The matrix is built by [`uqr`](https://github.com/unjs/uqr), a zero-dependency encoder, and the dark modules are painted as a single SVG `<path>` with `currentColor`. Color therefore comes from tokens (`text-foreground` on `bg-background`) and follows theme and dark mode; there is no raster image and nothing to recolor by hand.
+`QrCode` turns a string into a scannable code. The matrix is built by [`uqr`](https://github.com/unjs/uqr), a zero-dependency encoder, and the dark modules are painted as a single SVG `<path>` with `currentColor`. Color comes from tokens: dark modules on a light plate (`text-gray-950` on `bg-gray-50`) in every theme, including dark mode, because many camera readers fail on an inverted code. There is no raster image and nothing to recolor by hand.
 
 The four-module quiet zone scanners need is part of the box, so the code stays readable on any card, sheet, or page as long as the surface behind it is plain. Pick an error correction level (`ecc`) for how much damage the code should survive, a `size` from the spacing scale, and optionally place a mark in the center.
 
@@ -21,9 +21,9 @@ The four-module quiet zone scanners need is part of the box, so the code stays r
 ## Anatomy
 
 ```text
-QrCode           role="img" box, bg-background, quiet zone inside
+QrCode           role="img" box, bg-gray-50, quiet zone inside
 ├─ svg           aria-hidden, one path of dark modules (fill currentColor)
-└─ icon          optional centered mark on a bg-background plate
+└─ icon          optional centered mark on a bg-gray-50 plate
 ```
 
 ## Installation
@@ -129,8 +129,8 @@ Higher levels add redundancy, so the code gets denser (more modules) but survive
 
 - **Name the code**: the box is a single image, so give it an `aria-label` that says what scanning does (for example "Pairing code"). The default is the generic "QR code".
 - **Offer a non-scanning path**: a code is not usable by everyone. Show the link or a short code as text nearby for people who cannot scan.
-- **Dark mode inverts the code**: modules are light on a dark surface. Current phone cameras read inverted codes, but some older scanner apps do not; prefer showing the code in a light context when the audience is unknown.
-- **Contrast**: modules use `foreground` on `background`, the highest-contrast pair in every theme.
+- **Never inverted**: the code keeps dark modules on a light plate in dark mode too. Many scanner apps fail on light-on-dark codes.
+- **Contrast**: `gray-950` on `gray-50`, the highest-contrast pair of the palette.
 - **Center icon**: raise `ecc` to `Q` or `H` and test a real scan before shipping a large mark.
 
 ## Related

@@ -9,8 +9,8 @@ const PAIRING_URL = 'https://pocketbook.example/link/K7Q2-M9XD';
  * # QrCode
  *
  * A scannable code drawn as one SVG path. The matrix is built by `uqr`; the
- * dark modules use `currentColor`, so the code takes `text-foreground` on
- * `bg-background` and follows theme and dark mode with no raw colors.
+ * dark modules use `currentColor`: `text-gray-950` on `bg-gray-50` in every
+ * theme, never inverted, with no raw colors.
  *
  * ## Anatomy
  *
