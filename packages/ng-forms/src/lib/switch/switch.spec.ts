@@ -57,15 +57,15 @@ describe('Switch', () => {
     expect(el?.getAttribute('data-size')).toBe('sm');
   });
 
-  it('default track is 32px long (w-8) and the thumb travels 12px (translate-x-3)', () => {
+  it('default track is two thumbs plus a 2px gap each side: 36px (w-9), thumb travels 16px (translate-x-4)', () => {
     const host = render().nativeElement as HTMLElement;
     // brain moves the root classes onto its inner button and thumb span.
     const html = host.innerHTML;
-    expect(html).toContain('group-data-[size=default]/switch:w-8');
+    expect(html).toContain('group-data-[size=default]/switch:w-9');
     expect(html).toContain('group-data-[size=default]/switch:h-5');
     expect(html).not.toContain('w-11');
     expect(html).toContain(
-      'group-data-[size=default]/switch:group-data-[state=checked]/switch-state:translate-x-3',
+      'group-data-[size=default]/switch:group-data-[state=checked]/switch-state:translate-x-4',
     );
   });
 
