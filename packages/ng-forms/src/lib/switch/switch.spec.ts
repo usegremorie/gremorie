@@ -57,6 +57,18 @@ describe('Switch', () => {
     expect(el?.getAttribute('data-size')).toBe('sm');
   });
 
+  it('default track is 32px long (w-8) and the thumb travels 12px (translate-x-3)', () => {
+    const host = render().nativeElement as HTMLElement;
+    // brain moves the root classes onto its inner button and thumb span.
+    const html = host.innerHTML;
+    expect(html).toContain('group-data-[size=default]/switch:w-8');
+    expect(html).toContain('group-data-[size=default]/switch:h-5');
+    expect(html).not.toContain('w-11');
+    expect(html).toContain(
+      'group-data-[size=default]/switch:group-data-[state=checked]/switch-state:translate-x-3',
+    );
+  });
+
   it('forwards ariaLabel to the switch button', () => {
     TestBed.configureTestingModule({ imports: [LabelHost] });
     const fixture = TestBed.createComponent(LabelHost);
