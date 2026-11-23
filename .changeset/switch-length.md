@@ -3,4 +3,4 @@
 '@gremorie/ng-forms': patch
 ---
 
-Switch: the default track is 32px long instead of 44px (height stays 20px), so the thumb fills half the track again; the checked thumb now travels 12px.
+Switch: every size follows one rule, track length = two thumbs plus a 2px gap on each side. The default track is 36px long instead of 44px (height stays 20px, thumb travels 16px); `sm` already matched (28 × 16px).
