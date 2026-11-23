@@ -791,11 +791,13 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        {/* A filled field like every other Gremorie input: no border, no
-            shadow. Controls inside use outline or secondary, never a fill. */}
+        {/* A surface above the page, not a sunken field: --card in light
+            (lighter than --background), the translucent input fill in dark
+            (lighter than the dark page). No border, no shadow. Controls
+            inside use outline or secondary, never a fill. */}
         <InputGroup
           className={cn(
-            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50',
+            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-card shadow-none dark:bg-input/50',
             layout === 'inline' &&
               'h-auto flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
           )}
