@@ -793,11 +793,12 @@ export const PromptInput = ({
       >
         {/* A surface above the page, not a sunken field: --card in light
             (lighter than --background), the translucent input fill in dark
-            (lighter than the dark page). No border, no shadow. Controls
+            (lighter than the dark page). The DS subtle edge, as on Card
+            (ring-1 foreground/5, /10 in dark); no border, no shadow. Controls
             inside use outline or secondary, never a fill. */}
         <InputGroup
           className={cn(
-            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-card shadow-none dark:bg-input/50',
+            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-card shadow-none ring-1 ring-foreground/5 dark:bg-input/50 dark:ring-foreground/10',
             layout === 'inline' &&
               'h-auto flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
           )}
