@@ -200,7 +200,7 @@ export class PromptInputActionMenuTrigger {
   // rest, hover changes only the background.
   protected buttonClass(): string {
     return cn(
-      'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-muted aria-expanded:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-input/30 dark:aria-expanded:bg-input/30',
+      'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-accent aria-expanded:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
       this.class(),
     );
   }
@@ -354,7 +354,7 @@ export class PromptInputActionMenuItem {
         aria-hidden="true"
         data-slot="switch"
         [attr.data-state]="checked() ? 'checked' : 'unchecked'"
-        class="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+        class="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input"
       >
         <span
           [attr.data-state]="checked() ? 'checked' : 'unchecked'"

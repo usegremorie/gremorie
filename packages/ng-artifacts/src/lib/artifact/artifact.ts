@@ -259,9 +259,9 @@ export class ArtifactAction {
   protected readonly buttonClass = computed(() =>
     cn(
       // rx-forms buttonVariants base (verbatim)
-      "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       // variant: ghost (verbatim)
-      'hover:bg-accent dark:hover:bg-accent/50',
+      'hover:bg-accent',
       // size: icon-sm (verbatim)
       'size-8',
       // ArtifactAction overlay: secondary text at rest; hover changes only the
@@ -308,7 +308,7 @@ export interface ArtifactViewOption {
                 [attr.aria-label]="o.label"
                 [attr.aria-pressed]="o.value === value()"
                 (click)="select(o.value)"
-                class="inline-flex size-7 items-center justify-center rounded-sm text-secondary-foreground transition-colors hover:bg-muted"
+                class="inline-flex size-7 items-center justify-center rounded-sm text-secondary-foreground transition-colors hover:bg-accent"
                 [class.bg-accent]="o.value === value()"
                 [class.text-accent-foreground]="o.value === value()"
               >

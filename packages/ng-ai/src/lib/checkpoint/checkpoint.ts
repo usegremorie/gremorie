@@ -164,8 +164,9 @@ export class CheckpointTrigger {
       ghost: 'hover:bg-accent hover:text-accent-foreground',
       outline:
         'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
+      secondary:
+        'bg-secondary text-secondary-foreground hover:bg-secondary-hover',
     };
     return cn(
       'inline-flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
