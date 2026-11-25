@@ -531,12 +531,6 @@
    * group item. Sits one step lighter than the muted track in both modes.
    */
   --selected: var(--color-gray-0);
-
-  /*
-   * Subtle contour of a raised surface (Card, PromptInput): translucent, so it
-   * reads on any page or card.
-   */
-  --edge: var(--color-black-a5);
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-gray-50);
 
@@ -715,7 +709,6 @@
   --accent: var(--color-gray-800);
   --accent-foreground: var(--foreground);
   --selected: var(--color-gray-700);
-  --edge: var(--color-white-a10);
   --destructive: var(--color-red-400);
 
   /*
@@ -875,7 +868,6 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-selected: var(--selected);
-  --color-edge: var(--edge);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-destructive-hover: oklch(

@@ -372,13 +372,6 @@
   },
   {
     "file": "theme.css",
-    "selector": ":root",
-    "prop": "--edge",
-    "to": "var(--color-black-a5)",
-    "reason": "New edge token: subtle contour of a raised surface (Card, PromptInput) without a dark: override."
-  },
-  {
-    "file": "theme.css",
     "selector": ".dark",
     "prop": "--destructive-foreground",
     "to": "var(--color-gray-950)",
@@ -390,13 +383,6 @@
     "prop": "--selected",
     "to": "var(--color-gray-700)",
     "reason": "New selected token: the selected item inside a track (active tab, segmented control, toggle group), lighter than the muted track in both modes."
-  },
-  {
-    "file": "theme.css",
-    "selector": ".dark",
-    "prop": "--edge",
-    "to": "var(--color-white-a10)",
-    "reason": "New edge token: subtle contour of a raised surface (Card, PromptInput) without a dark: override."
   },
   {
     "file": "theme.css",
@@ -417,13 +403,6 @@
     "selector": "@theme inline",
     "prop": "--color-selected",
     "to": "var(--selected)",
-    "reason": "Tailwind wiring for the new semantic token."
-  },
-  {
-    "file": "theme.css",
-    "selector": "@theme inline",
-    "prop": "--color-edge",
-    "to": "var(--edge)",
     "reason": "Tailwind wiring for the new semantic token."
   },
   {

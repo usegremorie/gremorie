@@ -26,7 +26,7 @@ import {
 
 /**
  * The React composer card is `InputGroup` (rx-forms) + the rx-ai overrides
- * `overflow-hidden rounded-xl border-transparent bg-card shadow-none ring-1 ring-edge`. The class string below is
+ * `overflow-hidden rounded-xl border-transparent bg-card shadow-none ring-1 ring-border`. The class string below is
  * the same InputGroup base, with the layout that React derives from
  * `has-[>[data-align=block-*]]` selectors resolved statically (`h-auto
  * flex-col items-stretch`) because the Angular column always hosts block
@@ -35,7 +35,7 @@ import {
  * `packages/rx-ai/src/lib/prompt-input/prompt-input.tsx`.
  */
 const INPUT_GROUP_CARD =
-  '@container/prompt-input group/input-group border-input shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive overflow-hidden rounded-xl border-transparent bg-card shadow-none ring-1 ring-edge';
+  '@container/prompt-input group/input-group border-input shadow-xs relative flex w-full rounded-md border outline-none transition-[color,box-shadow] h-auto flex-col items-stretch has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive overflow-hidden rounded-xl border-transparent bg-card shadow-none ring-1 ring-border';
 
 const containerVariants = cva(INPUT_GROUP_CARD, {
   variants: {

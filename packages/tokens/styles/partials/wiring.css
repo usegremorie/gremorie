@@ -23,7 +23,6 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-selected: var(--selected);
-  --color-edge: var(--edge);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-destructive-hover: oklch(from var(--destructive) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)));

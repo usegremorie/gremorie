@@ -69,10 +69,6 @@
     "$type": "color",
     "$value": "{color.gray.700}"
   },
-  "edge": {
-    "$type": "color",
-    "$value": "{color.white.a10}"
-  },
   "destructive": {
     "$type": "color",
     "$value": "{color.red.400}"

@@ -45,7 +45,7 @@ describe('findBackgroundRoleViolations', () => {
     ['ring-destructive/20'],
     ['focus:bg-destructive/10'],
     ['bg-selected'],
-    ['ring-edge'],
+    ['ring-border'],
     ['var(--accent)'],
   ])('allows %s', (cls) => {
     expect(values(`const c = 'flex ${cls} px-2';`)).toEqual([]);

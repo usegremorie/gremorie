@@ -57,9 +57,9 @@ describe('background roles', () => {
     expect(decl(block('.dark'), '--selected')).toBe('var(--color-gray-700)');
   });
 
-  it('defines --edge: black-a5 light, white-a10 dark', () => {
-    expect(decl(block(':root'), '--edge')).toBe('var(--color-black-a5)');
-    expect(decl(block('.dark'), '--edge')).toBe('var(--color-white-a10)');
+  it('has no --edge token: raised surfaces use --border', () => {
+    expect(block(':root')).not.toMatch(/--edge:/);
+    expect(block('.dark')).not.toMatch(/--edge:/);
   });
 
   it('puts dark text on the light dark-mode destructive fill', () => {
@@ -98,13 +98,13 @@ describe('background roles', () => {
       'oklch(from color-mix(in oklab, var(--input) 30%, transparent) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)))',
     );
     expect(decl(wiring, '--color-selected')).toBe('var(--selected)');
-    expect(decl(wiring, '--color-edge')).toBe('var(--edge)');
+    expect(wiring).not.toMatch(/--color-edge:/);
   });
 
   it('Tailwind keeps the derived hover colour as relative colour syntax', async () => {
     const source = `@import 'tailwindcss' source(none);
 @import '${join(PACKAGE_ROOT, 'styles', 'theme.css')}';
-@source inline("hover:bg-primary-hover hover:bg-field-hover bg-selected ring-edge");`;
+@source inline("hover:bg-primary-hover hover:bg-field-hover bg-selected");`;
     const out = (
       await postcss([tailwind()]).process(source, {
         from: join(PACKAGE_ROOT, 'test', 'fixtures', 'roles.css'),
@@ -112,6 +112,5 @@ describe('background roles', () => {
     ).css;
     expect(out).toMatch(/oklch\(\s*from var\(--primary\)/);
     expect(out).toMatch(/\.bg-selected/);
-    expect(out).toMatch(/\.ring-edge/);
   });
 });

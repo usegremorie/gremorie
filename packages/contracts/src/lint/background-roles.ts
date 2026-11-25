@@ -55,7 +55,7 @@ export function backgroundRoleViolation(cls: string): string | null {
   if (/^bg-foreground(\/|$)/.test(u))
     return 'foreground is text and icon colour, not a background';
   if (/^ring-foreground(\/|$)/.test(u))
-    return 'foreground is text and icon colour, not a contour: use ring-edge';
+    return 'foreground is text and icon colour, not a contour: use ring-border';
   // A light wash (destructive/10 on a focused menu item) is a tint, not a
   // fill's hover; a fill's own colour at 50% or more is.
   const fill = /^bg-(primary|secondary|destructive)\/(\d+)$/.exec(u);

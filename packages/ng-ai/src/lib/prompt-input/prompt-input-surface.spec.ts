@@ -27,10 +27,10 @@ describe('PromptInput surface', () => {
     expect(classes().filter((c) => /^dark:(bg|ring)-/.test(c))).toEqual([]);
   });
 
-  it('carries the DS subtle edge, same as Card: ring-1 ring-edge', () => {
+  it('carries the border contour, same as Card: ring-1 ring-border', () => {
     const list = classes();
     expect(list).toContain('ring-1');
-    expect(list).toContain('ring-edge');
+    expect(list).toContain('ring-border');
     expect(list.some((c) => c.startsWith('ring-foreground'))).toBe(false);
   });
 });
