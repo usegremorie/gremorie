@@ -20,17 +20,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
         destructive:
-          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40',
-        outline:
-          'border border-foreground/10 bg-transparent hover:bg-muted dark:hover:bg-input/30',
+          'bg-destructive text-destructive-foreground hover:bg-destructive-hover focus-visible:ring-destructive/20',
+        outline: 'border border-foreground/10 bg-transparent hover:bg-accent',
         secondary:
           // Translucent, so it reads on any surface (a card or a filled field)
           // and its hover always shows.
-          'bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15',
-        ghost:
-          'bg-transparent text-foreground hover:bg-muted dark:hover:bg-input/30',
+          'bg-secondary text-secondary-foreground hover:bg-secondary-hover aria-expanded:bg-secondary-hover',
+        ghost: 'bg-transparent text-foreground hover:bg-accent',
         link: 'text-primary underline-offset-4 hover:underline bg-transparent',
       },
       size: {
