@@ -222,5 +222,229 @@
     "prop": "--animate-fade-in",
     "to": "gremorie-fade-in 120ms ease-out",
     "reason": "Animation token for the existing gremorie-fade-in keyframes, replacing animate-[gremorie-fade-in_120ms_ease-out]."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a3",
+    "to": "oklch(0 0 0 / 0.03)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a5",
+    "to": "oklch(0 0 0 / 0.05)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a8",
+    "to": "oklch(0 0 0 / 0.08)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a10",
+    "to": "oklch(0 0 0 / 0.1)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a12",
+    "to": "oklch(0 0 0 / 0.12)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a15",
+    "to": "oklch(0 0 0 / 0.15)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a20",
+    "to": "oklch(0 0 0 / 0.2)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a30",
+    "to": "oklch(0 0 0 / 0.3)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a40",
+    "to": "oklch(0 0 0 / 0.4)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-black-a60",
+    "to": "oklch(0 0 0 / 0.6)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a3",
+    "to": "oklch(1 0 0 / 0.03)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a5",
+    "to": "oklch(1 0 0 / 0.05)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a8",
+    "to": "oklch(1 0 0 / 0.08)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a10",
+    "to": "oklch(1 0 0 / 0.1)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a12",
+    "to": "oklch(1 0 0 / 0.12)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a15",
+    "to": "oklch(1 0 0 / 0.15)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a20",
+    "to": "oklch(1 0 0 / 0.2)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a30",
+    "to": "oklch(1 0 0 / 0.3)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a40",
+    "to": "oklch(1 0 0 / 0.4)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme",
+    "prop": "--color-white-a60",
+    "to": "oklch(1 0 0 / 0.6)",
+    "reason": "Alpha scale: translucent black and white primitives for contours and translucent presets."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--selected",
+    "to": "var(--color-gray-0)",
+    "reason": "New selected token: the selected item inside a track (active tab, segmented control, toggle group), lighter than the muted track in both modes."
+  },
+  {
+    "file": "theme.css",
+    "selector": ":root",
+    "prop": "--edge",
+    "to": "var(--color-black-a5)",
+    "reason": "New edge token: subtle contour of a raised surface (Card, PromptInput) without a dark: override."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--destructive-foreground",
+    "to": "var(--color-gray-950)",
+    "reason": "Dark text on the dark-mode red-400 destructive fill (was gray-50, 2.77:1)."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--selected",
+    "to": "var(--color-gray-700)",
+    "reason": "New selected token: the selected item inside a track (active tab, segmented control, toggle group), lighter than the muted track in both modes."
+  },
+  {
+    "file": "theme.css",
+    "selector": ".dark",
+    "prop": "--edge",
+    "to": "var(--color-white-a10)",
+    "reason": "New edge token: subtle contour of a raised surface (Card, PromptInput) without a dark: override."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-primary-hover",
+    "to": "oklch(from var(--primary) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)))",
+    "reason": "Derived hover colour: the fill moved by --hover-shift and --hover-opacity, no token per colour."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-secondary-hover",
+    "to": "oklch(from var(--secondary) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)))",
+    "reason": "Derived hover colour: the fill moved by --hover-shift and --hover-opacity, no token per colour."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-selected",
+    "to": "var(--selected)",
+    "reason": "Tailwind wiring for the new semantic token."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-edge",
+    "to": "var(--edge)",
+    "reason": "Tailwind wiring for the new semantic token."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-destructive-hover",
+    "to": "oklch(from var(--destructive) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)))",
+    "reason": "Derived hover colour: the fill moved by --hover-shift and --hover-opacity, no token per colour."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-field",
+    "to": "color-mix(in oklab, var(--input) 30%, transparent)",
+    "reason": "Field fill alias: the input colour at 30%, same in both modes."
+  },
+  {
+    "file": "theme.css",
+    "selector": "@theme inline",
+    "prop": "--color-field-hover",
+    "to": "oklch(from color-mix(in oklab, var(--input) 30%, transparent) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)))",
+    "reason": "Derived hover colour: the fill moved by --hover-shift and --hover-opacity, no token per colour."
   }
 ]

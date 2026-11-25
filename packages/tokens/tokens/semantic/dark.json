@@ -65,13 +65,22 @@
     "$type": "color",
     "$value": "{foreground}"
   },
+  "selected": {
+    "$type": "color",
+    "$value": "{color.gray.700}"
+  },
+  "edge": {
+    "$type": "color",
+    "$value": "{color.white.a10}"
+  },
   "destructive": {
     "$type": "color",
     "$value": "{color.red.400}"
   },
   "destructive-foreground": {
     "$type": "color",
-    "$value": "{color.gray.50}"
+    "$value": "{color.gray.950}",
+    "$description": "Text on the destructive fill. Dark mode's destructive is the lighter red-400, so its text turns near-black to stay readable."
   },
   "success": {
     "$type": "color",

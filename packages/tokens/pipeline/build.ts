@@ -31,6 +31,7 @@ export const PARTIALS = [
   'motion',
   'wiring',
   'surface',
+  'state',
   'base',
 ] as const;
 
@@ -83,6 +84,7 @@ export async function buildCss(
       partial('motion'),
       partial('wiring'),
       partial('surface'),
+      partial('state'),
       partial('base'),
     ].join('\n\n') + '\n',
   );

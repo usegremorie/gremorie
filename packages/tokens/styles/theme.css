@@ -60,6 +60,38 @@
   --color-gray-950: oklch(0.145 0 0); /* #0a0a0a */
 
   /*
+   * Black alpha scale: translucent black that reads on any surface.
+   * Mode-independent; a theme picks black steps for light and white steps for
+   * dark.
+   */
+  --color-black-a3: oklch(0 0 0 / 0.03); /* #00000008 */
+  --color-black-a5: oklch(0 0 0 / 0.05); /* #0000000d */
+  --color-black-a8: oklch(0 0 0 / 0.08); /* #00000014 */
+  --color-black-a10: oklch(0 0 0 / 0.1); /* #0000001a */
+  --color-black-a12: oklch(0 0 0 / 0.12); /* #0000001f */
+  --color-black-a15: oklch(0 0 0 / 0.15); /* #00000026 */
+  --color-black-a20: oklch(0 0 0 / 0.2); /* #00000033 */
+  --color-black-a30: oklch(0 0 0 / 0.3); /* #0000004d */
+  --color-black-a40: oklch(0 0 0 / 0.4); /* #00000066 */
+  --color-black-a60: oklch(0 0 0 / 0.6); /* #00000099 */
+
+  /*
+   * White alpha scale: translucent white that reads on any surface.
+   * Mode-independent; a theme picks black steps for light and white steps for
+   * dark.
+   */
+  --color-white-a3: oklch(1 0 0 / 0.03); /* #ffffff08 */
+  --color-white-a5: oklch(1 0 0 / 0.05); /* #ffffff0d */
+  --color-white-a8: oklch(1 0 0 / 0.08); /* #ffffff14 */
+  --color-white-a10: oklch(1 0 0 / 0.1); /* #ffffff1a */
+  --color-white-a12: oklch(1 0 0 / 0.12); /* #ffffff1f */
+  --color-white-a15: oklch(1 0 0 / 0.15); /* #ffffff26 */
+  --color-white-a20: oklch(1 0 0 / 0.2); /* #ffffff33 */
+  --color-white-a30: oklch(1 0 0 / 0.3); /* #ffffff4d */
+  --color-white-a40: oklch(1 0 0 / 0.4); /* #ffffff66 */
+  --color-white-a60: oklch(1 0 0 / 0.6); /* #ffffff99 */
+
+  /*
    * Full canonical red scale (Tailwind v4). NOTE: --destructive binds to
    * red-600 (light) / red-400 (dark) - red-600 here equals the project's
    * previous custom red-500, so the destructive surface is unchanged.
@@ -493,6 +525,18 @@
   --muted-foreground: var(--color-gray-500);
   --accent: var(--color-gray-100);
   --accent-foreground: var(--foreground);
+
+  /*
+   * Selected item inside a track: the active tab, a segmented control or toggle
+   * group item. Sits one step lighter than the muted track in both modes.
+   */
+  --selected: var(--color-gray-0);
+
+  /*
+   * Subtle contour of a raised surface (Card, PromptInput): translucent, so it
+   * reads on any page or card.
+   */
+  --edge: var(--color-black-a5);
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-gray-50);
 
@@ -670,8 +714,15 @@
   --muted-foreground: var(--color-gray-400);
   --accent: var(--color-gray-800);
   --accent-foreground: var(--foreground);
+  --selected: var(--color-gray-700);
+  --edge: var(--color-white-a10);
   --destructive: var(--color-red-400);
-  --destructive-foreground: var(--color-gray-50);
+
+  /*
+   * Text on the destructive fill. Dark mode's destructive is the lighter
+   * red-400, so its text turns near-black to stay readable.
+   */
+  --destructive-foreground: var(--color-gray-950);
 
   /*
    * On dark surfaces the fills invert: a lighter green/amber carries near-black
@@ -797,6 +848,7 @@
  * Tailwind v4 utility wiring.
  * Exposes the semantics above as Tailwind utilities so you can write
  * `bg-background`, `text-foreground`, `border-input`, etc.
+ * `*-hover` colours are derived from their fill (see the state partial).
  */
 @theme inline {
   --color-background: var(--background);
@@ -807,21 +859,41 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: oklch(
+    from var(--primary) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-switch-checked: var(--switch-checked);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: oklch(
+    from var(--secondary) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-selected: var(--selected);
+  --color-edge: var(--edge);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-hover: oklch(
+    from var(--destructive) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
+  /* Field fill: the input colour at 30%, same in both modes. */
+  --color-field: color-mix(in oklab, var(--input) 30%, transparent);
+  --color-field-hover: oklch(
+    from color-mix(in oklab, var(--input) 30%, transparent)
+      calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity))
+  );
   --color-ring: var(--ring);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -890,6 +962,32 @@ html {
   );
   -webkit-backdrop-filter: var(--surface-backdrop);
   backdrop-filter: var(--surface-backdrop);
+}
+
+/*
+ * ─── Interaction states ───────────────────────────────
+ * Hover colours are derived from the fill itself, never a token per colour:
+ *
+ *   oklch(from var(--x) calc(l + var(--hover-shift)) c h
+ *         / calc(alpha * var(--hover-opacity)))
+ *
+ *   --hover-shift    lightness step: darker on light, lighter on dark
+ *   --hover-opacity  alpha multiplier: a translucent fill gets denser
+ *
+ * A solid fill only moves in lightness (its alpha is already 1); a
+ * translucent black or white fill only moves in alpha. So one rule works
+ * for every colour, theme and surface. Utilities: `hover:bg-primary-hover`,
+ * `-secondary-hover`, `-destructive-hover`, `-field-hover`.
+ */
+html {
+  --hover-shift: -0.05;
+  --hover-opacity: 1.8;
+}
+
+/* :is() keeps .dark's specificity in a rule of its own (the generated .dark
+   block carries the token values). */
+:is(.dark) {
+  --hover-shift: 0.05;
 }
 
 /*

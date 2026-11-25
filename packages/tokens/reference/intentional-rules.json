@@ -23,5 +23,10 @@
     "file": "theme.css",
     "rule": "@utility bg-background-surface",
     "reason": "Translucent docked bar on --background (sticky header, chat composer), driven by the same surface tokens."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":is(.dark)",
+    "reason": "Dark-mode value of --hover-shift (derived hover colours lighten on dark)."
   }
 ]

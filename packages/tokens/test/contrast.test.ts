@@ -23,7 +23,7 @@ const label = (r: {
 
 describe('contrast, WCAG 2.2 AA', () => {
   it('checks every pair in every theme and mode', () => {
-    expect(results.length).toBe(runs.size * 16);
+    expect(results.length).toBe(runs.size * 17);
   });
 
   it('lists every failing pair as a deviation, at its measured ratio', () => {

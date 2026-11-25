@@ -42,7 +42,7 @@ function cssPrimitives(): Map<string, CssPrimitive> {
   const css = readFileSync(THEME_CSS, 'utf8');
   const out = new Map<string, CssPrimitive>();
   const declaration =
-    /(--color-[a-z]+-\d+):\s*(oklch\([^)]*\));(?:[ \t]*\/\*\s*(#[0-9a-fA-F]{6,8})\s*\*\/)?/g;
+    /(--color-[a-z]+-a?\d+):\s*(oklch\([^)]*\));(?:[ \t]*\/\*\s*(#[0-9a-fA-F]{6,8})\s*\*\/)?/g;
   for (const [, token, oklch, hex] of css.matchAll(declaration)) {
     // The first declaration is the primitive; later ones are overrides.
     if (token && oklch && !out.has(token)) out.set(token, { oklch, hex });
@@ -73,7 +73,7 @@ describe('primitive colour data mirrors theme.css', () => {
 
   it('documents every ramp theme.css declares', () => {
     const declared = new Set(
-      [...css.keys()].map((t) => t.replace(/^--color-|-\d+$/g, '')),
+      [...css.keys()].map((t) => t.replace(/^--color-|-a?\d+$/g, '')),
     );
     for (const ramp of UNDOCUMENTED_RAMPS) declared.delete(ramp);
     expect(Object.keys(PRIMITIVE_COLOR_RAMPS).sort()).toEqual(
