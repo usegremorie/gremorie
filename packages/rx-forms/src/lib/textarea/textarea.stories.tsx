@@ -14,7 +14,7 @@ import { Textarea } from './textarea';
  * ## Anatomy
  *
  * ```text
- * Textarea   single styled <textarea>, filled (bg-input/50), min-h-16 to max-h-64, auto-growing via field-sizing: content
+ * Textarea   single styled <textarea>, filled (bg-field), min-h-16 to max-h-64, auto-growing via field-sizing: content
  * ```
  *
  * ## Props
@@ -31,7 +31,7 @@ import { Textarea } from './textarea';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | filled field (`bg-input/50`, transparent border) |
+ * | `--input` | filled field (`bg-field`: input at 30%, transparent border) |
  * | `--ring` | focus ring |
  * | `--destructive` | `aria-invalid` border/ring |
  * | `--muted-foreground` | placeholder |

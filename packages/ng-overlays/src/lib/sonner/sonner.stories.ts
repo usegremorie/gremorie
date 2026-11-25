@@ -28,7 +28,7 @@ export default meta;
 type Story = StoryObj<Sonner>;
 
 const TRIGGER_CLASS =
-  'inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+  'inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
 /** Workbench — default toast on click; `theme` is controllable. */
 export const Workbench: Story = {

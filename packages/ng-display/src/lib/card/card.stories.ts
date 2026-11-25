@@ -120,7 +120,7 @@ export const WithFooter: Story = {
           <button class="rounded-md border px-3 py-2 text-sm hover:bg-accent">
             Cancel
           </button>
-          <button class="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground hover:bg-primary/90">
+          <button class="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground hover:bg-primary-hover">
             Subscribe
           </button>
         </gr-card-footer>

@@ -53,7 +53,7 @@ import {
  * | Token | Used for |
  * | --- | --- |
  * | `--card` / `--card-foreground` | surface background + text |
- * | `--foreground` | the 1px ring (`ring-foreground/5`, `/10` dark) |
+ * | `--edge` | the 1px ring (`ring-edge`) |
  * | `--border` | header/footer dividers (`border-b` / `border-t`) |
  * | `--muted-foreground` | `CardDescription` |
  */

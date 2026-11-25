@@ -64,7 +64,7 @@ import {
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | filled trigger (`bg-input/50`, transparent border) |
+ * | `--input` | filled trigger (`bg-field`: input at 30%, transparent border) |
  * | `--popover` / `--popover-foreground` | content surface (`bg-popover-surface`) |
  * | `--accent` / `--accent-foreground` | item hover/focus |
  * | `--ring` | focus ring |

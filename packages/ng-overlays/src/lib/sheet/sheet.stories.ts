@@ -65,7 +65,7 @@ export const Workbench: Story = {
               Panel body content.
             </div>
             <gr-sheet-footer>
-              <button gr-sheet-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+              <button gr-sheet-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary-hover">
                 Save changes
               </button>
             </gr-sheet-footer>
