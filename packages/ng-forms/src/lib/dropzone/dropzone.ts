@@ -214,7 +214,7 @@ export class Dropzone {
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
       'data-drag-active:border-primary data-drag-active:bg-primary/5',
       'data-drag-reject:border-destructive data-drag-reject:bg-destructive/5',
-      'data-invalid:border-destructive data-invalid:ring-destructive/20 dark:data-invalid:ring-destructive/40',
+      'data-invalid:border-destructive data-invalid:ring-destructive/20',
       'data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50',
       this.class(),
     ),
