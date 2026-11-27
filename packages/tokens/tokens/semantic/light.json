@@ -62,6 +62,11 @@
     "$type": "color",
     "$value": "{foreground}"
   },
+  "selected": {
+    "$type": "color",
+    "$value": "{color.gray.0}",
+    "$description": "Selected item inside a track: the active tab, a segmented control or toggle group item. Sits one step lighter than the muted track in both modes."
+  },
   "destructive": {
     "$type": "color",
     "$value": "{color.red.600}"

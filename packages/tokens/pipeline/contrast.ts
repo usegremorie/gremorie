@@ -13,6 +13,7 @@ export const TEXT_PAIRS = [
   ['secondary', 'secondary-foreground'],
   ['muted', 'muted-foreground'],
   ['accent', 'accent-foreground'],
+  ['selected', 'foreground'],
   ['destructive', 'destructive-foreground'],
   ['success', 'success-foreground'],
   ['warning', 'warning-foreground'],

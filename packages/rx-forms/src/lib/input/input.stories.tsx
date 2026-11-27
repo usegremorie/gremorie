@@ -9,7 +9,7 @@ import { Input } from './input';
  * Single-line text field. Renders a styled native
  * `<input>` that adopts every HTML `type` (text, email, password, number,
  * search, tel, url, file…). Visual states are token-driven: a filled field
- * (`bg-input/50`, transparent border, no shadow, `h-8`) by default,
+ * (`bg-field`, transparent border, no shadow, `h-8`) by default,
  * `ring-ring/50` on focus, `border-destructive` on `aria-invalid`.
  *
  * ## Anatomy
@@ -32,7 +32,7 @@ import { Input } from './input';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | filled field (`bg-input/50`) |
+ * | `--input` | filled field (`bg-field`: input at 30%) |
  * | `--ring` | focus ring |
  * | `--destructive` | `aria-invalid` border/ring |
  * | `--muted-foreground` | placeholder |

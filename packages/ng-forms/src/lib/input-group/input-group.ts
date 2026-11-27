@@ -67,7 +67,7 @@ export class InputGroup {
 
   protected readonly computedClass = computed(() =>
     cn(
-      'group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full items-center rounded-md border outline-none transition-[color,box-shadow]',
+      'group/input-group border-input bg-field shadow-xs relative flex w-full items-center rounded-md border outline-none transition-[color,box-shadow]',
       'h-9 has-[>textarea]:h-auto has-[>gr-input-group-textarea]:h-auto',
       'has-[>[data-align=inline-start]]:[&>input]:pl-2',
       'has-[>[data-align=inline-end]]:[&>input]:pr-2',
@@ -81,7 +81,7 @@ export class InputGroup {
       'has-[>[data-align=block-start]]:[&>gr-input-group-input>input]:pb-3',
       'has-[>[data-align=block-end]]:[&>gr-input-group-input>input]:pt-3',
       'has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1',
-      'has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
+      'has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive',
       this.class(),
     ),
   );
@@ -329,10 +329,10 @@ export class InputGroupInput implements ControlValueAccessor {
   // class string (see `gr-input`) followed by the group overrides.
   protected readonly computedClass = computed(() =>
     cn(
-      'h-8 w-full min-w-0 rounded-sm border border-transparent bg-input/50 px-3 py-1 text-base transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+      'h-8 w-full min-w-0 rounded-sm border border-transparent bg-field px-3 py-1 text-base transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
       'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-      'aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',
-      'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',
+      'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
+      'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0',
       this.class(),
     ),
   );
@@ -427,7 +427,7 @@ export class InputGroupTextarea {
   protected readonly computedClass = computed(() =>
     cn(
       'field-sizing-content min-h-16 w-full bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-      'flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent',
+      'flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0',
       this.class(),
     ),
   );

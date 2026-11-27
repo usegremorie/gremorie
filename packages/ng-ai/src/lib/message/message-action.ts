@@ -112,7 +112,7 @@ export class MessageAction {
         ? 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
         : '',
       v === 'default'
-        ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+        ? 'bg-primary text-primary-foreground hover:bg-primary-hover'
         : '',
       s === 'icon-sm' ? 'h-7 w-7' : '',
       s === 'icon' ? 'h-9 w-9' : '',

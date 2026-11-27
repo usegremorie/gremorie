@@ -223,11 +223,12 @@ export class ConfirmationAction {
   readonly class = input<string>();
   protected readonly buttonClass = computed(() => {
     const variantClass: Record<string, string> = {
-      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
       outline:
         'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
       ghost: 'hover:bg-accent hover:text-accent-foreground',
-      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      secondary:
+        'bg-secondary text-secondary-foreground hover:bg-secondary-hover',
     };
     return cn(
       'inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',

@@ -13,7 +13,9 @@ describe('PromptInput surface', () => {
   function classes(): string[] {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
-    const host = fixture.nativeElement.querySelector('prompt-input') as HTMLElement;
+    const host = fixture.nativeElement.querySelector(
+      'prompt-input',
+    ) as HTMLElement;
     return host.className.split(/\s+/);
   }
 
@@ -23,14 +25,14 @@ describe('PromptInput surface', () => {
     expect(list).not.toContain('bg-input/50');
   });
 
-  it('keeps the translucent input fill in dark mode', () => {
-    expect(classes()).toContain('dark:bg-input/50');
+  it('uses one token per part: no dark: swap of fill or contour', () => {
+    expect(classes().filter((c) => /^dark:(bg|ring)-/.test(c))).toEqual([]);
   });
 
-  it('carries the DS subtle edge, same as Card: ring-1 foreground/5, /10 in dark', () => {
+  it('carries the border contour, same as Card: ring-1 ring-border', () => {
     const list = classes();
     expect(list).toContain('ring-1');
-    expect(list).toContain('ring-foreground/5');
-    expect(list).toContain('dark:ring-foreground/10');
+    expect(list).toContain('ring-border');
+    expect(list.some((c) => c.startsWith('ring-foreground'))).toBe(false);
   });
 });

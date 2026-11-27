@@ -100,7 +100,7 @@ const DEFAULT_LABELS: MediaRangePlayerLabels = {
       ></div>
       <div
         data-slot="media-range-player-playhead"
-        class="absolute top-1/2 h-3 w-0.5 -translate-y-1/2 bg-foreground"
+        class="absolute top-1/2 h-3 w-0.5 -translate-y-1/2 bg-current"
         [style.left.%]="playhead()"
       ></div>
     </div>

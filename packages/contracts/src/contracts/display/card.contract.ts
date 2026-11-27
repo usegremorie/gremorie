@@ -10,7 +10,7 @@ export const card = defineContract({
   category: 'display',
   status: 'stable',
   anatomy: `
-    <card> (rounded surface: 1px ring-foreground/5 (/10 dark) + shadow-sm (shadow-md dark), no border; vertical flow)
+    <card> (rounded surface: 1px ring-border + shadow-sm (shadow-md dark), no border; vertical flow)
     ├─ card-header (title/description grid, gap-1; reserves a slot for action)
     │  ├─ card-title (text-base leading-6 font-medium heading line)
     │  ├─ card-description (muted supporting copy)

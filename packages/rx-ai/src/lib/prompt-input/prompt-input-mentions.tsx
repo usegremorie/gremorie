@@ -137,11 +137,7 @@ export const PromptInputMentions = ({
     <InputGroupButton
       aria-expanded={open}
       aria-label="Add context"
-      className={
-        variant === 'outline'
-          ? 'aria-expanded:bg-muted dark:aria-expanded:bg-input/30'
-          : undefined
-      }
+      className={variant === 'outline' ? 'aria-expanded:bg-accent' : undefined}
       size={hasSelection ? 'icon-sm' : 'sm'}
       type="button"
       variant={variant}
