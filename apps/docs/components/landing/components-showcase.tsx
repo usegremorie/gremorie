@@ -120,7 +120,7 @@ export function ComponentsShowcase({ lang }: { lang: string }) {
               {/* DS card pattern (as the features grid): featured icon and the
                   count, then the header as the Card ships it. Clickable, so
                   the ring answers hover and focus. */}
-              <Card className="h-full transition-[color,box-shadow] duration-200 group-hover:ring-foreground/20 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
+              <Card className="h-full transition-[color,box-shadow] duration-200 group-hover:ring-ring/50 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring">
                 <CardHeader>
                   <div className="mb-5 flex items-start justify-between">
                     <FeaturedIcon
