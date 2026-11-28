@@ -269,7 +269,7 @@ export function AssistantShowcase() {
               // (the props panel's surface, card radius); only the block
               // narrows, with 24px of stage above and below.
               viewport === 'mobile' &&
-                'rounded-xl bg-foreground/5 py-6 lg:py-0 dark:bg-foreground/[0.07]',
+                'rounded-xl bg-secondary py-6 lg:py-0',
             )}
           >
             <Assistant
