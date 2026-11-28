@@ -1,11 +1,21 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
 import kleur from 'kleur';
 
+import {
+  installSteps,
+  missingDependencies,
+  runInstall,
+  spawnRunner,
+  type PackageJsonLike,
+  type Runner,
+} from '../lib/dependencies.js';
 import { detectFramework } from '../lib/framework-detect.js';
+import { detectPackageManager } from '../lib/package-manager.js';
 import {
   createRegistryClient,
+  type RegistryClient,
   type RegistryFramework,
   type RegistryItem,
 } from '../registry.js';
@@ -13,6 +23,22 @@ import {
 export interface AddOptions {
   dryRun?: boolean;
   framework?: string;
+  /** `--no-install` sets this to false: write the files, install nothing. */
+  install?: boolean;
+  /** Injection points for tests; the CLI uses the defaults. */
+  cwd?: string;
+  client?: RegistryClient;
+  runner?: Runner;
+}
+
+function readPackageJson(cwd: string): PackageJsonLike | null {
+  const file = join(cwd, 'package.json');
+  if (!existsSync(file)) return null;
+  try {
+    return JSON.parse(readFileSync(file, 'utf-8')) as PackageJsonLike;
+  } catch {
+    return null;
+  }
 }
 
 /** Normalise friendly aliases to the registry framework labels. */
@@ -101,10 +127,10 @@ export async function addCommand(
   names: string[],
   options: AddOptions = {},
 ): Promise<void> {
-  const cwd = process.cwd();
+  const cwd = options.cwd ?? process.cwd();
   const requested = normaliseFramework(options.framework);
   const detected = detectFramework(cwd);
-  const client = createRegistryClient();
+  const client = options.client ?? createRegistryClient();
 
   console.log();
   console.log(kleur.bold().cyan(`gremorie add ${names.join(' ')}`));
@@ -139,7 +165,7 @@ export async function addCommand(
   }
   console.log();
 
-  // 2. Aggregate npm dependencies so the user knows what to install.
+  // 2. Aggregate the npm dependencies of every item.
   const npmDeps = new Set<string>();
   const npmDevDeps = new Set<string>();
   for (const item of ordered) {
@@ -182,18 +208,58 @@ export async function addCommand(
     );
   }
 
-  if (npmDeps.size > 0) {
-    console.log();
-    console.log(kleur.dim('Make sure these npm packages are installed:'));
-    for (const dep of [...npmDeps].sort()) {
-      console.log(`  ${kleur.cyan(dep)}`);
-    }
+  // 4. Install what the project does not declare yet. The files are already
+  // written, so a failed install leaves them in place and says what to run.
+  let dependencies: string[];
+  let devDependencies: string[];
+  try {
+    const pkg = readPackageJson(cwd);
+    dependencies = missingDependencies([...npmDeps].sort(), pkg);
+    devDependencies = missingDependencies([...npmDevDeps].sort(), pkg);
+  } catch (err) {
+    console.error(
+      kleur.red('x'),
+      err instanceof Error ? err.message : String(err),
+    );
+    process.exitCode = 1;
+    return;
   }
-  if (npmDevDeps.size > 0) {
+  const steps = installSteps(
+    detectPackageManager(cwd),
+    dependencies,
+    devDependencies,
+  );
+
+  console.log();
+  if (steps.length === 0) {
+    if (npmDeps.size + npmDevDeps.size > 0) {
+      console.log(
+        kleur.green('OK'),
+        kleur.dim('dependencies already installed.'),
+      );
+    }
+  } else if (options.dryRun) {
+    console.log(kleur.yellow('dry-run:'), 'would install with:');
+    for (const s of steps) console.log(`  ${kleur.cyan(s.display)}`);
+  } else if (options.install === false) {
+    console.log(kleur.dim('Skipped installing. Run:'));
+    for (const s of steps) console.log(`  ${kleur.cyan(s.display)}`);
+  } else {
+    console.log(kleur.dim('Installing dependencies:'));
+    for (const s of steps) console.log(`  ${kleur.cyan(s.display)}`);
     console.log();
-    console.log(kleur.dim('Plus dev dependencies:'));
-    for (const dep of [...npmDevDeps].sort()) {
-      console.log(`  ${kleur.cyan(dep)}`);
+    const result = runInstall(steps, cwd, options.runner ?? spawnRunner);
+    console.log();
+    if (result.ok) {
+      console.log(kleur.bold().green('OK'), 'dependencies installed.');
+    } else {
+      if (result.error) console.log(kleur.red('x'), result.error);
+      console.log(
+        kleur.red('x'),
+        'Install failed. The files are in place; fix the error above, then run:',
+      );
+      for (const line of result.manual) console.log(`  ${kleur.cyan(line)}`);
+      process.exitCode = 1;
     }
   }
   console.log();
