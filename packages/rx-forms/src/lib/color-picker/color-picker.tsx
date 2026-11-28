@@ -33,7 +33,7 @@ import * as React from 'react';
 
 import { cn } from '@gremorie/rx-core';
 
-import { buttonVariants } from '../button';
+import { buttonVariants } from '../button/button';
 
 /**
  * ColorPicker - pick a colour on an OKLCH area and channel sliders, type it in
