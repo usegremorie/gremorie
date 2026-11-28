@@ -45,7 +45,7 @@ const decl = (body: string, prop: string) =>
     .trim();
 
 const props = (body: string) =>
-  [...body.matchAll(/(--[\w-]+):/g)].map((m) => m[1]).sort();
+  [...body.matchAll(/(--[\w-]+):/g)].map((m) => m[1]!).sort();
 
 const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const ACCENTS = ['violet', 'blue', 'teal', 'green', 'orange', 'rose', 'red'];
