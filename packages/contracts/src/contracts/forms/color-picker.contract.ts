@@ -3,7 +3,7 @@ import { defineContract } from '../../types';
 /**
  * ColorPicker - pick a colour on an OKLCH area and channel sliders, type it in
  * any CSS format, choose from swatches and keep saved colours. Both editions
- * share the logic in `@gremorie/color`.
+ * share the logic in `@gremorie/headless/color-picker`.
  * React: `@gremorie/rx-forms`. Angular: `@gremorie/ng-forms`.
  */
 export const colorPicker = defineContract({

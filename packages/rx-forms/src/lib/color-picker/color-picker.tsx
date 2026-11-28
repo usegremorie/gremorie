@@ -26,7 +26,7 @@ import {
   type Color,
   type ColorChannel,
   type ColorFormat,
-} from '@gremorie/color';
+} from '@gremorie/headless/color-picker';
 import { PipetteIcon, PlusIcon } from 'lucide-react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
 import * as React from 'react';
@@ -40,7 +40,7 @@ import { buttonVariants } from '../button/button';
  * any CSS format, choose from swatches and keep saved colours.
  *
  * A composed set of parts sharing one state. The logic (colour model, keyboard,
- * geometry) lives in `@gremorie/color` and is the same in the Angular edition.
+ * geometry) lives in `@gremorie/headless/color-picker` and is the same in the Angular edition.
  * Values are OKLCH while editing; `format` only changes how the value is
  * printed. Renders in a popover from `ColorPickerTrigger`, or in place with
  * `inline`.

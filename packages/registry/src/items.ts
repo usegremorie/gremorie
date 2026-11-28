@@ -739,7 +739,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Color Picker (Angular)',
     description:
-      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a Spartan-ng brain popover or renders inline; works with formControl/ngModel. Logic shared with React through @gremorie/color. Mirrors React ColorPicker from @gremorie/rx-forms.',
+      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a Spartan-ng brain popover or renders inline; works with formControl/ngModel. Logic shared with React through @gremorie/headless/color-picker. Mirrors React ColorPicker from @gremorie/rx-forms.',
     categories: ['forms'],
     packageRoot: 'packages/ng-forms',
     sourceFiles: [
@@ -752,7 +752,7 @@ export const ITEMS: ItemConfig[] = [
       '@angular/core',
       '@angular/forms',
       '@spartan-ng/brain',
-      '@gremorie/color',
+      '@gremorie/headless',
     ],
     registryDependencies: ['ng-utils'],
   },
@@ -1899,13 +1899,13 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Color Picker (React)',
     description:
-      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a popover or renders inline. Logic shared with Angular through @gremorie/color.',
+      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a popover or renders inline. Logic shared with Angular through @gremorie/headless/color-picker.',
     categories: ['forms'],
     packageRoot: 'packages/rx-forms',
     sourceFiles: ['src/lib/color-picker/color-picker.tsx'],
     targetPrefix: 'src/components/gremorie/forms/color-picker',
     srcStrip: 'src/lib/color-picker/',
-    dependencies: ['@gremorie/color', 'lucide-react', 'radix-ui'],
+    dependencies: ['@gremorie/headless', 'lucide-react', 'radix-ui'],
     registryDependencies: ['rx-utils', 'rx-button'],
   },
   {

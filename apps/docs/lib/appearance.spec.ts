@@ -1,6 +1,6 @@
 import { converter, wcagContrast } from 'culori';
 import { describe, expect, it } from 'vitest';
-import { formatColor, maxChroma, parseColor } from '@gremorie/color';
+import { formatColor, maxChroma, parseColor } from '@gremorie/headless/color-picker';
 import {
   ACCENTS,
   APPEARANCE_KEY,

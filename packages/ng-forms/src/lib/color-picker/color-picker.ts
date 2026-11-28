@@ -47,7 +47,7 @@ import {
   type Color,
   type ColorChannel,
   type ColorFormat,
-} from '@gremorie/color';
+} from '@gremorie/headless/color-picker';
 import { BrnPopover, BrnPopoverTrigger } from '@spartan-ng/brain/popover';
 import { buttonVariants, cn } from '@gremorie/ng-core';
 
@@ -58,7 +58,7 @@ export type { ChannelLabels, Color, ColorChannel, ColorFormat };
  * any CSS format, choose from swatches and keep saved colours. Angular parity
  * port of React `ColorPicker` from `@gremorie/rx-forms`.
  *
- * The logic (colour model, keyboard, geometry) comes from `@gremorie/color`,
+ * The logic (colour model, keyboard, geometry) comes from `@gremorie/headless/color-picker`,
  * the same module the React edition uses, so both behave the same. Parts find
  * the root through DI; the popover is the spartan brain `BrnPopover`, carried
  * by the root as a host directive, so the panel goes in an

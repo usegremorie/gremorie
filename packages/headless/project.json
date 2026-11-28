@@ -1,7 +1,7 @@
 {
-  "name": "color",
+  "name": "headless",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/color/src",
+  "sourceRoot": "packages/headless/src",
   "projectType": "library",
   "tags": ["scope:lib", "type:core", "framework:none"],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "cwd": "packages/color",
+        "cwd": "packages/headless",
         "command": "tsc -p tsconfig.lib.json"
       }
     },
@@ -19,7 +19,7 @@
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "packages/color",
+        "cwd": "packages/headless",
         "command": "vitest run"
       }
     }
