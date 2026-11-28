@@ -157,8 +157,8 @@ export class Example {
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `value` | `string` | - | Controlled colour, any CSS colour. Angular: `[(value)]`. |
-| `defaultValue` | `string` | `"oklch(0 0 0)"` | Initial colour when uncontrolled. |
+| `value` | `string` | - | Controlled colour, any CSS colour. Angular: `[(value)]`, or `[value]` with `(valueChange)`; a parent that clamps the value wins. |
+| `defaultValue` | `string` | `"oklch(0 0 0)"` | Initial colour when uncontrolled (Angular: `defaultValue` with `value` unbound). |
 | `onValueChange` | `(details: { value: Color; valueAsString: string }) => void` | - | Every change, while dragging too. |
 | `onValueChangeEnd` | same | - | Committed changes: drag released, key, swatch or field. Angular: `(valueChangeEnd)`. |
 | `format` / `defaultFormat` | `"oklch" \| "hex" \| "rgb" \| "hsl"` | `"oklch"` | How the value and the field are printed. Angular: `[(format)]`. |

@@ -157,8 +157,8 @@ export class Example {
 
 | Prop | Tipo | Padrão | Descrição |
 | --- | --- | --- | --- |
-| `value` | `string` | - | Cor controlada, qualquer cor CSS. Angular: `[(value)]`. |
-| `defaultValue` | `string` | `"oklch(0 0 0)"` | Cor inicial sem controle. |
+| `value` | `string` | - | Cor controlada, qualquer cor CSS. Angular: `[(value)]`, ou `[value]` com `(valueChange)`; um pai que limita o valor prevalece. |
+| `defaultValue` | `string` | `"oklch(0 0 0)"` | Cor inicial sem controle (Angular: `defaultValue` com `value` sem binding). |
 | `onValueChange` | `(details: { value: Color; valueAsString: string }) => void` | - | Toda mudança, também durante o arrasto. |
 | `onValueChangeEnd` | igual | - | Mudanças confirmadas: arrasto solto, tecla, amostra ou campo. Angular: `(valueChangeEnd)`. |
 | `format` / `defaultFormat` | `"oklch" \| "hex" \| "rgb" \| "hsl"` | `"oklch"` | Como o valor e o campo são escritos. Angular: `[(format)]`. |

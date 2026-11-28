@@ -75,6 +75,18 @@ class Host {
 
 @Component({
   standalone: true,
+  imports: [ColorPicker, ColorPickerChannelSlider, ColorPickerValueText],
+  template: `
+    <gr-color-picker inline defaultValue="oklch(0.7 0.1 200)">
+      <gr-color-picker-channel-slider channel="hue" />
+      <gr-color-picker-value-text />
+    </gr-color-picker>
+  `,
+})
+class UncontrolledHost {}
+
+@Component({
+  standalone: true,
   imports: [ColorPicker, ColorPickerValueText, ReactiveFormsModule],
   template: `
     <gr-color-picker inline [formControl]="control" format="hex">
@@ -96,7 +108,7 @@ class FormHost {
     BrnPopoverContent,
   ],
   template: `
-    <gr-color-picker value="#3366cc">
+    <gr-color-picker defaultValue="#3366cc">
       <!-- The default label is under test. -->
       <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
       <button gr-color-picker-trigger></button>
@@ -109,6 +121,28 @@ class FormHost {
   `,
 })
 class PopoverHost {}
+
+@Component({
+  standalone: true,
+  imports: [...PARTS],
+  template: `
+    <gr-color-picker inline [value]="value()" (valueChange)="onChange($event)">
+      <gr-color-picker-content>
+        <gr-color-picker-channel-slider channel="chroma" />
+        <input gr-color-picker-channel-input />
+      </gr-color-picker-content>
+    </gr-color-picker>
+  `,
+})
+class ClampHost {
+  // Caps chroma at 0.1; the value is already there, so it hands back the same
+  // string and the binding never changes.
+  value = signal('oklch(0.7 0.1 200)');
+  onChange(text: string) {
+    const c = Number(/oklch\([\d.]+ ([\d.]+)/.exec(text)?.[1] ?? 0);
+    this.value.set(`oklch(0.7 ${Math.min(c, 0.1)} 200)`);
+  }
+}
 
 beforeEach(() => {
   HTMLCanvasElement.prototype.getContext = (() =>
@@ -327,6 +361,64 @@ describe('ColorPicker (Angular)', () => {
     const fixture = render();
     const swatch = q(fixture.nativeElement, '[data-slot="color-picker-swatch-trigger"]');
     expect(swatch.className).toContain('inline-flex');
+  });
+
+  it('shows the value a controlling parent clamps back to, even unchanged', () => {
+    TestBed.configureTestingModule({ imports: [ClampHost] });
+    const fixture = TestBed.createComponent(ClampHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const chroma = q<HTMLElement>(el, '[role="slider"][aria-label="Chroma"]');
+    key(chroma, 'End');
+    fixture.detectChanges();
+    TestBed.tick();
+    fixture.detectChanges();
+    expect(chroma.getAttribute('aria-valuenow')).toBe('0.1');
+    expect(q<HTMLInputElement>(el, '[data-slot="color-picker-channel-input"]').value).toBe(
+      'oklch(0.7 0.1 200)',
+    );
+  });
+
+  it('follows the parent back to a value it emitted before', () => {
+    const fixture = render();
+    const el = fixture.nativeElement as HTMLElement;
+    const text = () => q(el, '[data-slot="color-picker-value-text"]').textContent?.trim();
+    key(q(el, '[role="slider"][aria-label="Hue"]'), 'ArrowRight'); // A = hue 201
+    fixture.detectChanges();
+    TestBed.tick();
+    expect(text()).toBe('oklch(0.7 0.1 201)');
+    fixture.componentInstance.value.set('oklch(0.7 0.1 50)'); // B
+    fixture.detectChanges();
+    expect(text()).toBe('oklch(0.7 0.1 50)');
+    fixture.componentInstance.value.set('oklch(0.7 0.1 201)'); // back to A
+    fixture.detectChanges();
+    expect(text()).toBe('oklch(0.7 0.1 201)');
+  });
+
+  it('gives the area thumb the numbers of its y channel', () => {
+    const fixture = render();
+    const thumb = q<HTMLElement>(
+      fixture.nativeElement,
+      '[data-slot="color-picker-area-thumb"]',
+    );
+    expect(thumb.getAttribute('aria-valuenow')).toBe('0.7');
+    expect(thumb.getAttribute('aria-valuemin')).toBe('0');
+    expect(thumb.getAttribute('aria-valuemax')).toBe('1');
+    expect(thumb.getAttribute('aria-valuetext')).toBe('Chroma 0.1, Lightness 70%');
+  });
+
+  it('works without a bound value, from defaultValue', () => {
+    TestBed.configureTestingModule({ imports: [UncontrolledHost] });
+    const fixture = TestBed.createComponent(UncontrolledHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    key(q(el, '[role="slider"][aria-label="Hue"]'), 'ArrowRight');
+    fixture.detectChanges();
+    TestBed.tick();
+    fixture.detectChanges();
+    expect(q(el, '[data-slot="color-picker-value-text"]').textContent?.trim()).toBe(
+      'oklch(0.7 0.1 201)',
+    );
   });
 
   it('works as a form control', () => {

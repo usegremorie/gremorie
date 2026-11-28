@@ -66,7 +66,7 @@ const inlineRender = (alpha = true): Story['render'] => (args) => ({
     <gr-color-picker
       inline
       class="w-72"
-      [value]="value"
+      [defaultValue]="defaultValue"
       [format]="format"
       [disabled]="disabled"
       [readOnly]="readOnly"
@@ -81,17 +81,17 @@ const inlineRender = (alpha = true): Story['render'] => (args) => ({
  * story in `rx-forms`. Keep both datasets in sync.
  */
 export const Workbench: Story = {
-  args: { value: 'oklch(0.55 0.2 260)', format: 'oklch', disabled: false, readOnly: false },
+  args: { defaultValue: 'oklch(0.55 0.2 260)', format: 'oklch', disabled: false, readOnly: false },
   render: inlineRender(),
 };
 
 /** Trigger and field; the panel opens in a popover. */
 export const Default: Story = {
-  args: { value: 'oklch(0.55 0.2 260)', format: 'oklch' },
+  args: { defaultValue: 'oklch(0.55 0.2 260)', format: 'oklch' },
   render: (args) => ({
     props: { ...args, presets: PRESETS },
     template: `
-      <gr-color-picker [value]="value" [format]="format">
+      <gr-color-picker [defaultValue]="defaultValue" [format]="format">
         <label gr-color-picker-label>Brand color</label>
         <gr-color-picker-control class="w-60">
           <button gr-color-picker-trigger></button>
@@ -107,13 +107,13 @@ export const Default: Story = {
 
 /** In place, without a popover. */
 export const Inline: Story = {
-  args: { value: 'oklch(0.65 0.17 150)', format: 'oklch' },
+  args: { defaultValue: 'oklch(0.65 0.17 150)', format: 'oklch' },
   render: inlineRender(),
 };
 
 /** Opaque colours only: no alpha slider, hex field. */
 export const WithoutAlpha: Story = {
-  args: { value: '#3366cc', format: 'hex' },
+  args: { defaultValue: '#3366cc', format: 'hex' },
   render: inlineRender(false),
 };
 
@@ -141,6 +141,6 @@ export const SavedColors: Story = {
 
 /** Disabled. */
 export const Disabled: Story = {
-  args: { value: 'oklch(0.55 0.2 260)', format: 'oklch', disabled: true },
+  args: { defaultValue: 'oklch(0.55 0.2 260)', format: 'oklch', disabled: true },
   render: inlineRender(),
 };
