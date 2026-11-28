@@ -1,6 +1,6 @@
 import { converter, wcagContrast } from 'culori';
 import { describe, expect, it } from 'vitest';
-import { parseColor } from '@gremorie/color';
+import { formatColor, maxChroma, parseColor } from '@gremorie/color';
 import {
   ACCENTS,
   APPEARANCE_KEY,
@@ -218,13 +218,16 @@ describe('appearance state', () => {
 
 describe('seedFromColor', () => {
   // Primary is the custom scale's 600 step (L 0.56) in light and 500 (L 0.64)
-  // in dark, with the seed's chroma; its text is white below L 0.59.
+  // in dark, with the seed's chroma; its text is black or white, whichever
+  // contrasts more.
   const toRgb = converter('rgb');
   const primaryContrast = (seed: string, l: number) => {
     const c = parseColor(seed)!;
     const bg = { mode: 'oklch' as const, l, c: c.c, h: c.h };
-    const text = l < 0.59 ? '#ffffff' : '#000000';
-    return wcagContrast(text, toRgb(bg));
+    return Math.max(
+      wcagContrast('#ffffff', toRgb(bg)),
+      wcagContrast('#000000', toRgb(bg)),
+    );
   };
 
   it.each([25, 90, 145, 200, 264, 330])(
@@ -234,6 +237,16 @@ describe('seedFromColor', () => {
       expect(seed).toMatch(/^oklch\([\d.]+ [\d.]+ [\d.]+\)$/);
       expect(primaryContrast(seed, 0.56)).toBeGreaterThanOrEqual(4.5);
       expect(primaryContrast(seed, 0.64)).toBeGreaterThanOrEqual(4.5);
+    },
+  );
+
+  it.each([150, 190])(
+    'keeps all the chroma the screen shows at hue %i: the text adapts instead',
+    (h) => {
+      const gamut = Math.floor(Math.min(maxChroma(0.56, h), maxChroma(0.64, h)) * 1000) / 1000;
+      expect(seedFromColor({ l: 0.7, c: 0.4, h, alpha: 1 })).toBe(
+        formatColor({ l: 0.64, c: gamut, h, alpha: 1 }, 'oklch'),
+      );
     },
   );
 

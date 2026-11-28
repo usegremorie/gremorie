@@ -1,5 +1,4 @@
 import {
-  contrastRatio,
   formatColor,
   maxChroma,
   parseColor,
@@ -58,35 +57,23 @@ export const DEFAULT_APPEARANCE: Appearance = {
 
 /**
  * Lightness of the custom scale's primary steps: 600 in light, 500 in dark
- * (the CUSTOM table in packages/tokens/pipeline/appearance.ts). The button
- * text is white below 0.59 and black above, as the token layer decides.
+ * (the CUSTOM table in packages/tokens/pipeline/appearance.ts).
  */
 const PRIMARY_STEPS = [0.56, 0.64];
-const TEXT_THRESHOLD = 0.59;
-const WHITE: Color = { l: 1, c: 0, h: 0, alpha: 1 };
-const BLACK: Color = { l: 0, c: 0, h: 0, alpha: 1 };
-
-const readable = (c: number, h: number) =>
-  PRIMARY_STEPS.every((l) => {
-    const primary: Color = { l, c, h, alpha: 1 };
-    const text = l < TEXT_THRESHOLD ? WHITE : BLACK;
-    return contrastRatio(text, primary) >= 4.5;
-  });
 
 /**
  * The seed for a picked colour. The custom scale keeps its own lightness per
- * step and takes hue and chroma from the seed, so chroma is capped twice: to
- * what sRGB shows at the primary steps (past that the screen clips the colour)
- * and to what keeps the button text at 4.5:1 (strong greens and cyans read
- * lighter than their lightness says). Alpha is dropped: a translucent accent
- * would make every surface built on it translucent.
+ * step and takes hue and chroma from the seed, so chroma is capped to what
+ * sRGB shows at the primary steps (past that the screen clips the colour).
+ * Contrast needs no cap: the token layer gives primary black or white text,
+ * whichever contrasts more, and one of them always reaches 4.5:1. Alpha is
+ * dropped: a translucent accent would make every surface built on it
+ * translucent.
  */
 export function seedFromColor(color: Color): string {
   const h = Math.round(color.h) % 360;
-  let c = Math.min(color.c, ...PRIMARY_STEPS.map((l) => maxChroma(l, h)));
-  c = Math.floor(c * 1000) / 1000;
-  while (c > 0 && !readable(c, h)) c = Math.round((c - 0.001) * 1000) / 1000;
-  return formatColor({ l: 0.64, c, h, alpha: 1 }, 'oklch');
+  const c = Math.min(color.c, ...PRIMARY_STEPS.map((l) => maxChroma(l, h)));
+  return formatColor({ l: 0.64, c: Math.floor(c * 1000) / 1000, h, alpha: 1 }, 'oklch');
 }
 
 const validSaved = (list: unknown): string[] =>
