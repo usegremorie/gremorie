@@ -78,7 +78,7 @@ export const drawer = defineContract({
     ],
     rules: [
       'DrawerTrigger opens the drawer on click; it closes on overlay click, Escape, or a drag toward its edge.',
-      'Both editions drag to dismiss: React through vaul, Angular through the brain BrnDrawerHandle on the whole panel (25% of the panel or 0.4px/ms closes it). vaul-only extras such as shouldScaleBackground and snap points stay React-only.',
+      'Both editions drag to dismiss: React through vaul, Angular through the brain BrnDrawerHandle on the whole panel (25% of the panel or 0.4px/ms closes it). Neither edition starts a drag from a text field or from an element marked data-vaul-no-drag (Angular also accepts data-drawer-no-drag). vaul-only extras such as shouldScaleBackground and snap points stay React-only.',
       'Angular renders the panel from a `<ng-template brnDrawerContent>`; set direction on the gr-drawer root.',
     ],
     example:

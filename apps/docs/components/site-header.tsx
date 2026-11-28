@@ -3,11 +3,6 @@
 import { cn } from '@gremorie/rx-core';
 import { Button } from '@gremorie/rx-forms';
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -22,7 +17,6 @@ import {
   ComponentIcon,
   LayoutDashboardIcon,
   LibraryIcon,
-  MenuIcon,
   PaletteIcon,
   type LucideIcon,
 } from 'lucide-react';
@@ -33,6 +27,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { AppearanceControls } from '@/components/appearance/appearance-controls';
 import { copyFor } from '@/components/appearance/copy';
 import { GithubMark } from '@/components/github-mark';
+import { MobileNav } from '@/components/mobile-nav';
 import { GremorieSymbol } from '@/components/gremorie-symbol';
 
 /**
@@ -158,41 +153,11 @@ export function SiteHeader({ lang }: { lang: string }) {
               </Button>
             </IconAction>
             <AppearanceControls lang={lang} />
-            <Drawer>
-              <IconAction label={copyFor(lang).menu}>
-                <DrawerTrigger asChild>
-                  <Button
-                    aria-label={copyFor(lang).menu}
-                    className="lg:hidden"
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <MenuIcon />
-                  </Button>
-                </DrawerTrigger>
-              </IconAction>
-              <DrawerContent>
-                <DrawerHeader className="sr-only">
-                  <DrawerTitle>{copyFor(lang).menu}</DrawerTitle>
-                </DrawerHeader>
-                <nav
-                  aria-label="Main"
-                  className="grid gap-0.5 px-2 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
-                >
-                  {links.map(({ text, url, icon: Icon }) => (
-                    <Link
-                      aria-current={isActive(url) ? 'page' : undefined}
-                      className="flex items-center gap-3 rounded-md px-3 py-2.5 font-medium text-sm transition-colors hover:bg-accent aria-[current=page]:bg-accent"
-                      href={url}
-                      key={url}
-                    >
-                      <Icon aria-hidden="true" className="size-4 text-muted-foreground" />
-                      {text}
-                    </Link>
-                  ))}
-                </nav>
-              </DrawerContent>
-            </Drawer>
+            <MobileNav
+              isActive={isActive}
+              label={copyFor(lang).menu}
+              links={links}
+            />
           </div>
         </div>
       </header>

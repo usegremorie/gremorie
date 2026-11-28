@@ -83,7 +83,8 @@ describe('AppearanceControls', () => {
     act(() => violet.click());
     expect(document.documentElement.getAttribute('data-accent')).toBe('violet');
     expect(violet.getAttribute('aria-checked')).toBe('true');
-    expect(JSON.parse(localStorage.getItem(APPEARANCE_KEY)!).accent).toBe('violet');
+    const saved = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as { accent: string };
+    expect(saved.accent).toBe('violet');
   });
 
   it('shows an illustration for each translucency option', () => {

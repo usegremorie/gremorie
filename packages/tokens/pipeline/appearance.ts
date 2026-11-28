@@ -41,7 +41,9 @@ const CUSTOM: Record<(typeof STEPS)[number], [number, number]> = {
   950: [0.19, 0.35],
 };
 
-const TONAL = "[data-tonal='on']:not([data-accent='neutral'])";
+// Tonal needs a colour: the attribute must be present and not neutral (an
+// absent data-accent is the neutral default).
+const TONAL = "[data-tonal='on'][data-accent]:not([data-accent='neutral'])";
 
 const colorFile = (source: TokenSource) => {
   const key = Object.keys(PRIMITIVE_FILES).find((k) => k.endsWith('color.json'));
@@ -69,7 +71,15 @@ export function appearanceRules(source: TokenSource): string {
   const tint = (step: string) =>
     `oklch(from var(--seed) ${L(step)} calc(c * var(--tone)) h)`;
 
-  const out: string[] = [];
+  // Neutral (no data-accent, or data-accent="neutral") seeds from gray, at
+  // zero specificity so every accent rule wins: immersive and anything else
+  // reading --seed-* always resolves.
+  const out: string[] = [
+    ':where(:root) {',
+    ...STEPS.map((n) => `  --seed-${n}: var(--color-gray-${n});`),
+    '  --seed: var(--seed-500);',
+    '}',
+  ];
   for (const accent of ACCENTS) {
     out.push(
       `:root[data-accent='${accent}'] {`,
