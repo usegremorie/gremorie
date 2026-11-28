@@ -501,7 +501,7 @@ export class ColorPickerAreaThumb {
   `,
   host: {
     'data-slot': 'color-picker-area',
-    'data-drawer-no-drag': '',
+    'data-vaul-no-drag': '',
     '[attr.data-disabled]': 'root.isDisabled() ? "" : null',
     '[class]': 'hostClass()',
     '(pointerdown)': 'onPointerDown($event)',
@@ -597,7 +597,7 @@ export class ColorPickerArea {
   `,
   host: {
     'data-slot': 'color-picker-channel-slider',
-    'data-drawer-no-drag': '',
+    'data-vaul-no-drag': '',
     '[attr.data-channel]': 'channel()',
     '[attr.data-orientation]': 'orientation()',
     '[attr.data-disabled]': 'root.isDisabled() ? "" : null',

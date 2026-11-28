@@ -511,7 +511,7 @@ function ColorPickerArea({
       <div
         data-slot="color-picker-area"
         data-disabled={disabled ? '' : undefined}
-        data-drawer-no-drag=""
+        data-vaul-no-drag=""
         className={cn(
           'relative h-40 w-full touch-none rounded-md select-none data-disabled:opacity-50',
           className,
@@ -618,7 +618,7 @@ function ColorPickerChannelSlider({
       data-channel={channel}
       data-orientation={orientation}
       data-disabled={disabled ? '' : undefined}
-      data-drawer-no-drag=""
+      data-vaul-no-drag=""
       className={cn(
         'relative shrink-0 touch-none rounded-full select-none data-disabled:opacity-50',
         vertical ? 'h-40 w-3' : 'h-3 w-full',

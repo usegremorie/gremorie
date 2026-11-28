@@ -40,8 +40,8 @@ describe('AppearanceControls', () => {
       document.documentElement.removeAttribute(a);
     }
     document.documentElement.style.removeProperty('--seed');
-    HTMLCanvasElement.prototype.getContext = (() =>
-      null) as unknown as HTMLCanvasElement['getContext'];
+    // jsdom has no canvas.
+    HTMLCanvasElement.prototype.getContext = () => null;
     host = document.createElement('div');
     document.body.append(host);
     root = createRoot(host);

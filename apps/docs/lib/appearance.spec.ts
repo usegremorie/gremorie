@@ -153,6 +153,8 @@ describe('appearance state', () => {
     expect(root.attrs.get('data-accent')).toBe('violet');
   });
 
+  // The pre-paint script is a string by design, evaluated as the browser does.
+  /* eslint-disable @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
   it('the pre-paint script applies a custom colour like applyAppearance', () => {
     const root = fakeRoot();
     new Function('localStorage', 'document', APPEARANCE_SCRIPT)(
@@ -173,6 +175,7 @@ describe('appearance state', () => {
     expect(root.vars.size).toBe(0);
   });
 
+  /* eslint-enable @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
   it('sets the three attributes, and none for the default', () => {
     const root = fakeRoot();
     applyAppearance(VIOLET, root);
@@ -221,7 +224,7 @@ describe('seedFromColor', () => {
     const c = parseColor(seed)!;
     const bg = { mode: 'oklch' as const, l, c: c.c, h: c.h };
     const text = l < 0.59 ? '#ffffff' : '#000000';
-    return wcagContrast(toRgb(text), toRgb(bg));
+    return wcagContrast(text, toRgb(bg));
   };
 
   it.each([25, 90, 145, 200, 264, 330])(
