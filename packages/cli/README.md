@@ -28,18 +28,29 @@ Flags:
 - `--dry-run` — print what would happen without writing files
 - `-y, --yes` — skip confirmation prompts
 
-### `gremorie add <component>`
+### `gremorie add <items...>`
 
-Install a component family:
+Copy registry items into your project and install the npm packages they
+need:
 
 ```bash
-gremorie add prompt-input
+gremorie add rx-button
+gremorie add ng-prompt-input
 ```
 
-Installs the npm package and prints an import snippet. Currently available:
+The package manager is detected from the `packageManager` field of
+`package.json` or the lockfile (pnpm, yarn, bun, npm), looking up to the
+workspace root. Packages already declared in `package.json` are skipped, so
+existing version ranges are never rewritten.
 
-- `core` — utilities + Button primitive
-- `prompt-input` — PromptInput container family (10 components)
+Flags:
+
+- `--no-install` · write the files and print the install command instead of running it
+- `--dry-run` · write and install nothing; print the files and the install command
+- `--framework <fw>` · `ng` or `rx`, when the item name does not say
+
+If the install fails, the files stay in place, the CLI prints the command to
+run, and the exit code is 1.
 
 ### `gremorie list`
 

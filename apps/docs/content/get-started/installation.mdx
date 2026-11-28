@@ -228,8 +228,19 @@ npx gremorie@latest add rx-button
 
 The CLI writes the source to the item's target path
 (`src/components/gremorie/<category>/<name>/` for React,
-`src/app/gremorie/<name>/` for Angular) and lists the peer packages you
-need to install.
+`src/app/gremorie/<name>/` for Angular), then installs the npm packages
+the item needs with your package manager. Packages your `package.json`
+already declares are left as they are, so your version ranges never change.
+
+| Flag           | What it does                                                                  |
+| -------------- | ----------------------------------------------------------------------------- |
+| `--no-install` | Writes the files and prints the install command instead of running it         |
+| `--dry-run`    | Writes nothing and installs nothing; prints the files and the install command |
+
+The package manager comes from the `packageManager` field of
+`package.json` or from the lockfile, looking up to the workspace root, so
+an app inside a monorepo uses the workspace's manager. If the install
+fails, the files stay in place and the CLI prints the command to run.
 
 </Step>
 

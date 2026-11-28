@@ -43,7 +43,14 @@ program
   .description(
     'Install one or more Gremorie registry items (e.g. rx-button, ng-prompt-input).',
   )
-  .option('--dry-run', 'Print what would happen without writing files.')
+  .option(
+    '--dry-run',
+    'Print what would happen without writing files or installing.',
+  )
+  .option(
+    '--no-install',
+    'Write the files but skip installing npm dependencies.',
+  )
   .option(
     '--framework <fw>',
     'Framework to install for (ng | rx | vue | sv; angular/react aliases work too). Inferred from the item name prefix or your package.json when omitted.',
@@ -52,6 +59,7 @@ program
     await addCommand(components, {
       dryRun: options.dryRun,
       framework: options.framework,
+      install: options.install,
     });
   });
 
