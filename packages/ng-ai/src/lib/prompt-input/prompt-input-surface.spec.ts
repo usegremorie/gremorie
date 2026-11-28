@@ -13,7 +13,9 @@ describe('PromptInput surface', () => {
   function classes(): string[] {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
-    const host = fixture.nativeElement.querySelector('prompt-input') as HTMLElement;
+    const host = fixture.nativeElement.querySelector(
+      'prompt-input',
+    ) as HTMLElement;
     return host.className.split(/\s+/);
   }
 

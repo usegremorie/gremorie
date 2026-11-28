@@ -13,11 +13,17 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary-hover: oklch(from var(--primary) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)));
+  --color-primary-hover: oklch(
+    from var(--primary) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-switch-checked: var(--switch-checked);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary-hover: oklch(from var(--secondary) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)));
+  --color-secondary-hover: oklch(
+    from var(--secondary) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
@@ -25,7 +31,10 @@
   --color-selected: var(--selected);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-destructive-hover: oklch(from var(--destructive) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)));
+  --color-destructive-hover: oklch(
+    from var(--destructive) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
@@ -34,7 +43,10 @@
   --color-input: var(--input);
   /* Field fill: the input colour at 30%, same in both modes. */
   --color-field: color-mix(in oklab, var(--input) 30%, transparent);
-  --color-field-hover: oklch(from color-mix(in oklab, var(--input) 30%, transparent) calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity)));
+  --color-field-hover: oklch(
+    from color-mix(in oklab, var(--input) 30%, transparent)
+      calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity))
+  );
   --color-ring: var(--ring);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);

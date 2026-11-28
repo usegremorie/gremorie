@@ -268,8 +268,7 @@ export function AssistantShowcase() {
               // Mobile: the column stays full width and turns into a stage
               // (the props panel's surface, card radius); only the block
               // narrows, with 24px of stage above and below.
-              viewport === 'mobile' &&
-                'rounded-xl bg-secondary py-6 lg:py-0',
+              viewport === 'mobile' && 'rounded-xl bg-secondary py-6 lg:py-0',
             )}
           >
             <Assistant
