@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { contrastRatio } from '../pipeline/color.ts';
+import { contrastRatio, luminance, toSrgb8 } from '../pipeline/color.ts';
 import type { DtcgColor } from '../pipeline/model.ts';
 import { PACKAGE_ROOT } from './support/paths.ts';
 
@@ -53,8 +53,10 @@ const ACCENTED = ":root[data-accent]:not([data-accent='neutral'])";
 const ACCENTED_DARK = ".dark[data-accent]:not([data-accent='neutral'])";
 const IMMERSIVE = ":root[data-translucency='immersive']";
 const IMMERSIVE_DARK = ".dark[data-translucency='immersive']";
-const TONAL = ":root:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
-const TONAL_DARK = ".dark:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
+const TONAL =
+  ":root:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
+const TONAL_DARK =
+  ".dark:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
 
 describe('appearance: accent', () => {
   it('maps each accent to its primitive scale', () => {
@@ -80,7 +82,12 @@ describe('appearance: accent', () => {
   it('moves only primary and what follows it: 600 light, 500 dark', () => {
     const light = block(ACCENTED);
     expect(decl(light, '--primary')).toBe('var(--seed-600)');
-    for (const p of ['--ring', '--switch-checked', '--sidebar-primary', '--sidebar-ring']) {
+    for (const p of [
+      '--ring',
+      '--switch-checked',
+      '--sidebar-primary',
+      '--sidebar-ring',
+    ]) {
       expect(decl(light, p)).toBe('var(--primary)');
     }
     expect(decl(block(ACCENTED_DARK), '--primary')).toBe('var(--seed-500)');
@@ -89,22 +96,26 @@ describe('appearance: accent', () => {
     );
   });
 
-  it('keeps primary text at 4.5:1 or more on every accent, both modes', () => {
+  it('picks black or white primary text, whichever contrasts more, every accent and mode', () => {
+    // The text follows the primary's real luminance (WCAG Y, the y of
+    // xyz-d65): white below the point where both contrasts are equal.
     const fg = decl(block(ACCENTED), '--primary-foreground') ?? '';
-    const threshold = Number(/clamp\(0, \(([\d.]+) - l\)/.exec(fg)?.[1]);
-    expect(threshold).toBeGreaterThan(0);
+    expect(fg).toMatch(/^color\(from var\(--primary\) xyz-d65 /);
+    const threshold = Number(/\(([\d.]+) - y\)/.exec(fg)?.[1]);
+    expect(threshold).toBeCloseTo(Math.sqrt(1.05 * 0.05) - 0.05, 4);
+    const white: DtcgColor = { colorSpace: 'oklch', components: [1, 0, 0] };
+    const black: DtcgColor = { colorSpace: 'oklch', components: [0, 0, 0] };
     for (const a of ACCENTS) {
       for (const step of ['600', '500']) {
         const primary = palette[a]![step]!.$value;
-        const l = primary.components[0] as number;
-        const text: DtcgColor = {
-          colorSpace: 'oklch',
-          components: [l < threshold ? 1 : 0, 0, 0],
-        };
-        expect(
-          contrastRatio(text, primary),
-          `${a}-${step} with ${l < threshold ? 'white' : 'black'} text`,
-        ).toBeGreaterThanOrEqual(4.5);
+        const y = luminance(toSrgb8(primary));
+        const text = y < threshold ? white : black;
+        const best = Math.max(
+          contrastRatio(white, primary),
+          contrastRatio(black, primary),
+        );
+        expect(contrastRatio(text, primary), `${a}-${step}`).toBe(best);
+        expect(best, `${a}-${step}`).toBeGreaterThanOrEqual(4.5);
       }
     }
   });
@@ -151,7 +162,10 @@ describe('appearance: translucency', () => {
   });
 
   it('reduced transparency wins over immersive', () => {
-    const at = css.indexOf('@media (prefers-reduced-transparency: reduce)', css.indexOf(IMMERSIVE));
+    const at = css.indexOf(
+      '@media (prefers-reduced-transparency: reduce)',
+      css.indexOf(IMMERSIVE),
+    );
     expect(at).toBeGreaterThan(css.indexOf(`\n${IMMERSIVE_DARK} {`));
     expect(css.slice(at, at + 600)).toMatch(/--surface-opacity:\s*100%/);
   });
@@ -188,7 +202,11 @@ describe('appearance: tonal', () => {
 
 describe('appearance: primitives', () => {
   it('never redeclares a primitive inside an appearance rule', () => {
-    const rules = [...css.matchAll(/\n([^\n{]*data-(?:accent|translucency|tonal)[^\n{]*) \{/g)];
+    const rules = [
+      ...css.matchAll(
+        /\n([^\n{]*data-(?:accent|translucency|tonal)[^\n{]*) \{/g,
+      ),
+    ];
     expect(rules.length).toBeGreaterThan(5);
     for (const [, selector] of rules) {
       const body = block(selector!);

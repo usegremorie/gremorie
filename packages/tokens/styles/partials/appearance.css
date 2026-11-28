@@ -10,11 +10,17 @@
  *
  * --seed-50…950 is the scale of the chosen colour. The accent moves primary
  * (600 light, 500 dark) and what follows it: ring, the checked switch and the
- * sidebar primary. Its text is black or white, whichever reads on it.
+ * sidebar primary. Its text is black or white, whichever contrasts more.
  */
 :root[data-accent]:not([data-accent='neutral']) {
   --primary: var(--seed-600);
-  --primary-foreground: oklch(from var(--primary) clamp(0, (0.59 - l) * 1000, 1) 0 0);
+  /* White below luminance 0.17913, where white and black contrast equally. */
+  --primary-foreground: color(
+    from var(--primary) xyz-d65
+      calc(0.9505 * clamp(0, (0.17913 - y) * 100000, 1))
+      clamp(0, (0.17913 - y) * 100000, 1)
+      calc(1.089 * clamp(0, (0.17913 - y) * 100000, 1))
+  );
   --ring: var(--primary);
   --switch-checked: var(--primary);
   --sidebar-primary: var(--primary);
