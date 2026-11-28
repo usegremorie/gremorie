@@ -144,6 +144,9 @@ function useControllable<T>(
   return [current, set];
 }
 
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;
+
 const directionOf = (el: Element | null): 'ltr' | 'rtl' =>
   el && getComputedStyle(el).direction === 'rtl' ? 'rtl' : 'ltr';
 
@@ -192,14 +195,27 @@ function ColorPicker({
   const colorRef = React.useRef(color);
   colorRef.current = color;
   const lastEmitted = React.useRef<string | undefined>(undefined);
+  // Bumped on every emit, so a controlled value is checked again after the
+  // parent renders, even when it hands back the same string.
+  const [revision, setRevision] = React.useState(0);
 
-  // A controlled value is read back unless it is the one just emitted, so a
-  // hex round-trip never snaps the exact OKLCH value being dragged.
-  React.useEffect(() => {
+  // A controlled value is the source of truth. It is read back unless it is
+  // the one just emitted (so a hex round-trip never snaps the exact OKLCH
+  // value being dragged); a parent that clamps or refuses a change, even by
+  // keeping the same value, wins. Applying an outside value forgets the last
+  // emit, so returning to it later is read again.
+  useIsomorphicLayoutEffect(() => {
     if (value === undefined || value === lastEmitted.current) return;
+    lastEmitted.current = undefined;
     const parsed = parseColor(value, colorRef.current.h);
-    if (parsed) setColorState(parsed);
-  }, [value]);
+    if (
+      parsed &&
+      formatColor(parsed, 'oklch') !== formatColor(colorRef.current, 'oklch')
+    ) {
+      colorRef.current = parsed;
+      setColorState(parsed);
+    }
+  }, [value, revision]);
 
   const interactive = !disabled && !readOnly;
   const details = (next: Color): ColorPickerValueChangeDetails => ({
@@ -215,6 +231,7 @@ function ColorPicker({
     lastEmitted.current = d.valueAsString;
     onValueChange?.(d);
     if (end) onValueChangeEnd?.(d);
+    if (value !== undefined) setRevision((n) => n + 1);
   };
 
   const commit = () => onValueChangeEnd?.(details(colorRef.current));
@@ -460,14 +477,19 @@ function useDrag(
     onPointerMove: (event: React.PointerEvent<HTMLElement>) => {
       if (active.current) onPoint(event, event.currentTarget);
     },
-    onPointerUp: (event: React.PointerEvent<HTMLElement>) => {
-      if (!active.current) return;
-      active.current = false;
-      setDragging(false);
-      event.currentTarget.releasePointerCapture?.(event.pointerId);
-      commit();
-    },
+    onPointerUp: end,
+    // A cancelled or lost pointer ends the drag the same way a release does.
+    onPointerCancel: end,
+    onLostPointerCapture: end,
   };
+
+  function end(event: React.PointerEvent<HTMLElement>) {
+    if (!active.current) return;
+    active.current = false;
+    setDragging(false);
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+    commit();
+  }
 }
 
 const THUMB_CLASS =
@@ -575,6 +597,10 @@ function ColorPickerAreaThumb({
       tabIndex={disabled ? -1 : 0}
       aria-label={ariaLabel}
       aria-roledescription="2D slider"
+      // Numbers of the y channel; the text names both axes.
+      aria-valuemin={CHANNEL_RANGE[y].min}
+      aria-valuemax={CHANNEL_RANGE[y].max}
+      aria-valuenow={Number(getChannelValue(color, y).toFixed(3))}
       aria-valuetext={`${channelValueText(color, x, labels)}, ${channelValueText(color, y, labels)}`}
       aria-disabled={disabled || undefined}
       data-slot="color-picker-area-thumb"

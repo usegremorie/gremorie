@@ -33,20 +33,21 @@ export const colorPicker = defineContract({
     {
       name: 'value',
       type: 'string',
-      adapts: { ng: 'model: value (two-way), also ControlValueAccessor' },
+      adapts: {
+        ng: 'input: value + output: valueChange, two-way [(value)]; also ControlValueAccessor',
+      },
       desc: 'Colour as CSS text (controlled).',
     },
     {
       name: 'defaultValue',
       type: 'string',
       default: 'oklch(0 0 0)',
-      adapts: { ng: 'model: value' },
       desc: 'Initial colour (uncontrolled).',
     },
     {
       name: 'onValueChange',
       type: '(details: { value: Color; valueAsString: string }) => void',
-      adapts: { ng: 'model: value (valueChange emits the string)' },
+      adapts: { ng: 'output: valueChange (emits the string)' },
       desc: 'Fires on every change, while dragging too.',
     },
     {

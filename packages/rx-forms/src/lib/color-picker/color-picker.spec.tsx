@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act } from 'react';
+import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -259,7 +259,7 @@ describe('ColorPicker', () => {
     expect(onValueChange).not.toHaveBeenCalled();
   });
 
-  it('paints the area in the colour\'s hue', () => {
+  it("paints the area in the colour's hue", () => {
     let data: Uint8ClampedArray | undefined;
     HTMLCanvasElement.prototype.getContext = (() => ({
       createImageData: (w: number, h: number) => ({
@@ -281,6 +281,109 @@ describe('ColorPicker', () => {
     render();
     const swatch = q('[data-slot="color-picker-swatch-trigger"]');
     expect(swatch.className).toContain('inline-flex');
+  });
+
+  it('shows the value a controlling parent clamps back to, even unchanged', () => {
+    // The parent caps chroma at 0.1 and the value is already there: the
+    // emitted 0.4 comes back as the same string, so the prop never changes.
+    function Clamped() {
+      const [value, setValue] = useState('oklch(0.7 0.1 200)');
+      return (
+        <ColorPicker
+          inline
+          value={value}
+          onValueChange={(d) =>
+            setValue(`oklch(0.7 ${Math.min(d.value.c, 0.1)} 200)`)
+          }
+        >
+          <ColorPickerContent>
+            <ColorPickerChannelSlider channel="chroma" />
+            <ColorPickerChannelInput />
+          </ColorPickerContent>
+        </ColorPicker>
+      );
+    }
+    act(() => root.render(<Clamped />));
+    key(slider('Chroma'), 'End');
+    expect(slider('Chroma').getAttribute('aria-valuenow')).toBe('0.1');
+    expect(
+      q<HTMLInputElement>('[data-slot="color-picker-channel-input"]').value,
+    ).toBe('oklch(0.7 0.1 200)');
+  });
+
+  it('follows the parent back to a value it emitted before', () => {
+    let setOuter: (v: string) => void = () => undefined;
+    function Outer() {
+      const [value, setValue] = useState('oklch(0.7 0.1 200)');
+      setOuter = setValue;
+      return (
+        <ColorPicker
+          inline
+          value={value}
+          onValueChange={(d) => setValue(d.valueAsString)}
+        >
+          <ColorPickerContent>
+            <ColorPickerChannelSlider channel="hue" />
+            <ColorPickerValueText />
+          </ColorPickerContent>
+        </ColorPicker>
+      );
+    }
+    act(() => root.render(<Outer />));
+    key(slider('Hue'), 'ArrowRight'); // emits A = hue 201
+    expect(valueText()).toBe('oklch(0.7 0.1 201)');
+    act(() => setOuter('oklch(0.7 0.1 50)')); // B from outside
+    expect(valueText()).toBe('oklch(0.7 0.1 50)');
+    act(() => setOuter('oklch(0.7 0.1 201)')); // back to A
+    expect(valueText()).toBe('oklch(0.7 0.1 201)');
+  });
+
+  it('gives the area thumb the numbers of its y channel', () => {
+    render({ defaultValue: 'oklch(0.7 0.1 200)' });
+    const thumb = q<HTMLElement>('[data-slot="color-picker-area-thumb"]');
+    expect(thumb.getAttribute('aria-valuenow')).toBe('0.7');
+    expect(thumb.getAttribute('aria-valuemin')).toBe('0');
+    expect(thumb.getAttribute('aria-valuemax')).toBe('1');
+    expect(thumb.getAttribute('aria-valuetext')).toBe(
+      'Chroma 0.1, Lightness 70%',
+    );
+  });
+
+  it('ends a drag the browser cancels', () => {
+    const onValueChangeEnd = vi.fn();
+    render({ defaultValue: 'oklch(0.7 0.1 200)', onValueChangeEnd });
+    const track = q<HTMLElement>(
+      '[data-slot="color-picker-channel-slider"][data-channel="hue"]',
+    );
+    track.getBoundingClientRect = () =>
+      ({
+        left: 0,
+        top: 0,
+        width: 360,
+        height: 12,
+        right: 360,
+        bottom: 12,
+      }) as DOMRect;
+    track.setPointerCapture = () => undefined;
+    act(() => {
+      track.dispatchEvent(
+        new MouseEvent('pointerdown', {
+          bubbles: true,
+          clientX: 90,
+          button: 0,
+        }),
+      );
+    });
+    expect(q('[data-slot="color-picker"]').hasAttribute('data-dragging')).toBe(
+      true,
+    );
+    act(() => {
+      track.dispatchEvent(new MouseEvent('pointercancel', { bubbles: true }));
+    });
+    expect(onValueChangeEnd).toHaveBeenCalledTimes(1);
+    expect(q('[data-slot="color-picker"]').hasAttribute('data-dragging')).toBe(
+      false,
+    );
   });
 
   it('opens the panel from the trigger in popover mode', () => {

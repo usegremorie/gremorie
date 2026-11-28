@@ -5,6 +5,7 @@ import {
   Component,
   computed,
   ElementRef,
+  Injector,
   forwardRef,
   inject,
   input,
@@ -139,8 +140,16 @@ const directionOf = (el: Element | null): 'ltr' | 'rtl' =>
   },
 })
 export class ColorPicker implements ControlValueAccessor {
-  /** The colour as CSS text. Two-way `[(value)]`; also a form control. */
-  readonly value = model<string>('oklch(0 0 0)');
+  /**
+   * The colour as CSS text, controlled: two-way `[(value)]`, or `[value]`
+   * with `(valueChange)`. Leave it unbound and use `defaultValue` to let the
+   * picker keep its own value. Also a form control.
+   */
+  readonly value = input<string | undefined>(undefined);
+  /** Initial colour when `value` is not bound. */
+  readonly defaultValue = input<string>('oklch(0 0 0)');
+  /** Every change as CSS text, while dragging too. */
+  readonly valueChange = output<string>();
   /** Format of the value text and of the field. Two-way. */
   readonly format = model<ColorFormat>('oklch');
   /** Popover open state. Two-way. */
@@ -167,19 +176,37 @@ export class ColorPicker implements ControlValueAccessor {
 
   private readonly popover = inject(BrnPopover);
   private readonly formDisabled = signal(false);
+  private readonly injector = inject(Injector);
   private lastEmitted: string | undefined;
+  /** Value written by a form control, which is controlled like `value`. */
+  private readonly formValue = signal<string | undefined>(undefined);
+  private formBound = false;
+  /** Bumped after each emit renders, to check a controlled value again. */
+  private readonly revision = signal(0);
   private onChange: (value: string) => void = () => undefined;
   private onTouched: () => void = () => undefined;
 
   /**
-   * The exact colour being edited. Follows `value` unless the new text is the
-   * one just emitted, so a hex round-trip never snaps a drag.
+   * The exact colour being edited. A controlled value is the source of truth:
+   * it is read back unless it is the one just emitted (so a hex round-trip
+   * never snaps a drag); a parent that clamps or refuses a change, even by
+   * keeping the same value, wins once it has rendered. Applying an outside
+   * value forgets the last emit, so returning to it later is read again.
    */
-  readonly color = linkedSignal<string, Color>({
-    source: this.value,
-    computation: (text, previous) => {
+  readonly color = linkedSignal<
+    { text: string | undefined; revision: number },
+    Color
+  >({
+    source: () => ({
+      text: this.value() ?? this.formValue(),
+      revision: this.revision(),
+    }),
+    computation: ({ text }, previous) => {
       const prev = previous?.value;
+      if (text === undefined)
+        return prev ?? parseColor(this.defaultValue()) ?? BLACK;
       if (prev && text === this.lastEmitted) return prev;
+      this.lastEmitted = undefined;
       return parseColor(text, prev?.h ?? 0) ?? prev ?? BLACK;
     },
   });
@@ -217,9 +244,15 @@ export class ColorPicker implements ControlValueAccessor {
     const d = this.details(next);
     this.lastEmitted = d.valueAsString;
     this.color.set(next);
-    this.value.set(d.valueAsString);
+    if (this.formBound) this.formValue.set(d.valueAsString);
+    this.valueChange.emit(d.valueAsString);
     this.onChange(d.valueAsString);
     if (end) this.commit();
+    if (this.value() !== undefined) {
+      afterNextRender(() => this.revision.update((n) => n + 1), {
+        injector: this.injector,
+      });
+    }
   }
 
   commit(): void {
@@ -251,9 +284,10 @@ export class ColorPicker implements ControlValueAccessor {
   }
 
   writeValue(value: string | null): void {
-    if (value) this.value.set(value);
+    if (value) this.formValue.set(value);
   }
   registerOnChange(fn: (value: string) => void): void {
+    this.formBound = true;
     this.onChange = fn;
   }
   registerOnTouched(fn: () => void): void {
@@ -462,6 +496,10 @@ export class ColorPickerContent {
     'data-slot': 'color-picker-area-thumb',
     '[attr.tabindex]': 'root.isDisabled() ? -1 : 0',
     '[attr.aria-label]': 'ariaLabel()',
+    // Numbers of the y channel; the text names both axes.
+    '[attr.aria-valuemin]': 'yRange().min',
+    '[attr.aria-valuemax]': 'yRange().max',
+    '[attr.aria-valuenow]': 'yNow()',
     '[attr.aria-valuetext]': 'valueText()',
     '[attr.aria-disabled]': 'root.isDisabled() || null',
     '[class]': 'hostClass()',
@@ -476,12 +514,21 @@ export class ColorPickerAreaThumb {
   private readonly area = inject(forwardRef(() => ColorPickerArea));
   readonly ariaLabel = input<string>('Color', { alias: 'aria-label' });
   readonly class = input<string>('');
-  private readonly axes = computed(() => ({
+  private readonly axes = computed<{
+    xChannel: ColorChannel;
+    yChannel: ColorChannel;
+  }>(() => ({
     xChannel: this.area.xChannel(),
     yChannel: this.area.yChannel(),
   }));
   protected readonly position = computed(() =>
     areaThumbPosition(this.root.color(), this.axes()),
+  );
+  protected readonly yRange = computed(
+    () => CHANNEL_RANGE[this.axes().yChannel],
+  );
+  protected readonly yNow = computed(() =>
+    Number(getChannelValue(this.root.color(), this.axes().yChannel).toFixed(3)),
   );
   protected readonly valueText = computed(() => {
     const labels = this.root.channelLabels();
@@ -567,7 +614,10 @@ export class ColorPickerArea {
       const yChannel = this.yChannel();
       const ctx = el.getContext('2d');
       // Hue survives the round-trip through text even at chroma 0.
-      const base = parseColor(text, untracked(() => this.root.color().h));
+      const base = parseColor(
+        text,
+        untracked(() => this.root.color().h),
+      );
       if (ctx && base) {
         paintArea(ctx, base, {
           xChannel,
