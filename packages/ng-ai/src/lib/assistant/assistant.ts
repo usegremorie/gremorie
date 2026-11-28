@@ -257,7 +257,7 @@ const COMPACT_SELECT_TRIGGER =
   host: {
     'data-slot': 'assistant',
     class:
-      '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
+      '@container/assistant relative mx-auto flex h-170 w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-border dark:shadow-md',
   },
   template: `
     <!-- AssistantHeader -->
@@ -275,7 +275,7 @@ const COMPACT_SELECT_TRIGGER =
           (pressedChange)="toggleThreadMenu()"
         >
           <ai-message-circle-icon class="size-4 text-muted-foreground" />
-          <span class="max-w-[14rem] truncate">{{ threadTitle() }}</span>
+          <span class="max-w-56 truncate">{{ threadTitle() }}</span>
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -300,7 +300,7 @@ const COMPACT_SELECT_TRIGGER =
           <div
             role="menu"
             #threadPanel
-            class="w-64 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+            class="w-64 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-pop-in"
           >
             <p class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
               Recent chats
@@ -429,7 +429,7 @@ const COMPACT_SELECT_TRIGGER =
             <div
               role="menu"
               #overflowPanel
-              class="w-44 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+              class="w-44 rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-pop-in"
             >
               <button
                 type="button"
@@ -756,9 +756,7 @@ const COMPACT_SELECT_TRIGGER =
       <!-- AssistantComposer - floats over the conversation -->
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10">
         <div class="h-8 bg-gradient-to-t from-background to-transparent"></div>
-        <div
-          class="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm"
-        >
+        <div class="pointer-events-auto bg-background-surface px-3 pb-3">
           <!-- The composer shares the reading column. -->
           <div class="mx-auto w-full max-w-3xl space-y-2">
             <ng-container [ngTemplateOutlet]="composer" />

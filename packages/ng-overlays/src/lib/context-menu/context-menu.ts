@@ -66,7 +66,8 @@ export class ContextMenu {}
   template: `
     <button
       type="button"
-      [brnPopoverTriggerFor]="content()"
+      brnPopoverTrigger
+      [brnPopoverTriggerFor]="overlay()"
       [class]="class()"
       (contextmenu)="onContextMenu($event)"
     >
@@ -76,9 +77,19 @@ export class ContextMenu {}
   host: { 'data-slot': 'context-menu-trigger', class: 'block' },
 })
 export class ContextMenuTrigger {
-  /** Template ref of the `<ng-template brnPopoverContent>` to open. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly content = input.required<any>();
+  /**
+   * Optional. The trigger opens the `BrnPopover` of the enclosing root, which
+   * picks up the sibling `<ng-template brnPopoverContent>` on its own. A
+   * template ref here is ignored; a `BrnPopover` instance targets that popover.
+   */
+  readonly content = input<unknown>();
+  // Brain's trigger calls `stateComputed()` on whatever `brnPopoverTriggerFor`
+  // holds, so only a real popover may reach it; otherwise the trigger falls
+  // back to the popover injected from the enclosing root.
+  protected readonly overlay = computed(() => {
+    const content = this.content();
+    return content instanceof BrnPopover ? content : undefined;
+  });
   readonly class = input<string>();
   private readonly popover = inject(BrnPopover);
 
@@ -113,7 +124,7 @@ export class ContextMenuContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'z-50 max-h-(--radix-context-menu-content-available-height) min-w-[8rem] origin-(--radix-context-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+      'z-50 max-h-(--radix-context-menu-content-available-height) min-w-32 origin-(--radix-context-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
       this.class(),
     ),
   );
@@ -148,7 +159,7 @@ export class ContextMenuItem {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground data-[variant=destructive]:*:[svg]:text-destructive!",
+      "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground data-[variant=destructive]:*:[svg]:text-destructive!",
       this.class(),
     ),
   );
@@ -374,7 +385,7 @@ export class ContextMenuSubContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'z-50 min-w-[8rem] origin-(--radix-context-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-lg data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+      'z-50 min-w-32 origin-(--radix-context-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-lg data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
       this.class(),
     ),
   );

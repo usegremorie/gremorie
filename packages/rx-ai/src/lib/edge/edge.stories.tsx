@@ -13,7 +13,7 @@ import { Edge } from './edge';
 /**
  * # Edge
  *
- * A faithful port of the Vercel AI Elements **Edge** primitives — custom React
+ * The **Edge** primitives — custom React
  * Flow edge renderers. Two variants ship:
  *
  * - **`Edge.Temporary`** — a dashed, ring-colored simple bezier, used for edges

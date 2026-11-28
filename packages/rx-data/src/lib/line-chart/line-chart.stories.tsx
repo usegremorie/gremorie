@@ -7,7 +7,7 @@ import { LineChart } from './line-chart';
 /**
  * # LineChart
  *
- * A recharts line chart wired to Gremorie's design tokens through the shadcn
+ * A recharts line chart wired to Gremorie's design tokens through the
  * `chart` primitive (`ChartContainer`). One `<Line>` per `config` entry, stroked
  * with `var(--color-<key>)`.
  *

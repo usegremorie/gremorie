@@ -1,16 +1,14 @@
 ---
 title: AI
-description: Componentes vendorados da Vercel AI Elements, organizados pra montar UIs de IA — chat, agentes, fluxos.
+description: Componentes de IA organizados pra montar UIs de IA: chat, agentes, fluxos.
 ---
 
-A categoria **AI** importa os componentes da
-[Vercel AI Elements](https://elements.ai-sdk.dev/) para a KDS,
-ajustados pros nossos imports relativos e tokens semânticos. São 29
+A categoria **AI** reúne os componentes de IA da KDS,
+escritos com os nossos imports relativos e tokens semânticos. São 29
 primitivos pra montar UIs de IA — chat, agentes, paletas de modelo,
 visualização de tool-calls, workflows visuais.
 
-A separação em sub-categorias espelha a organização oficial da AI
-Elements:
+A separação em sub-categorias:
 
 <Cards>
   <Card
@@ -67,8 +65,7 @@ oficial nem de um pacote npm. As razões:
 
 ## O que NÃO está aqui (ainda)
 
-A AI Elements oficial ainda não publicou alguns componentes no registry
-público. Quando estiverem disponíveis, importamos:
+Alguns componentes ainda não foram construídos. Estão no plano:
 
 - **Voice (6)**: AudioPlayer, MicSelector, Persona, SpeechInput,
   Transcription, VoiceSelector
@@ -76,9 +73,3 @@ público. Quando estiverem disponíveis, importamos:
   JsxPreview, PackageInfo, Sandbox, SchemaDisplay, Snippet, StackTrace,
   Terminal, TestResults
 - **Chatbot (1)**: Attachments
-
-## Como vendorar mais
-
-A pipeline é repetível — está em
-[`tools/ai-elements/`](https://github.com/kalvner/bridge/tree/main/tools/ai-elements)
-no monorepo, com README explicando.

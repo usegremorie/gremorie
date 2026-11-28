@@ -8,11 +8,11 @@ import { AreaChartSinglePreview } from '@/components/preview/data/area-chart-sin
 
 ## Visão geral
 
-`AreaChart` é um gráfico recharts conectado aos design tokens do Gremorie através do primitive `chart` do shadcn (`ChartContainer`) para **área preenchida sobre uma categoria ordenada**. Passe `data` tabular, um `config` serializável que mapeia cada campo de valor para um `label` mais uma `color`, e o `xKey` que nomeia o campo de categoria. `ChartContainer` injeta a cor de cada série como `var(--color-<key>)`, e o recharts renderiza o cartesian grid, os ticks dos eixos e os paths preenchidos por série. Passe `stacked` para empilhar as séries ou `type` para escolher a curva de interpolação.
+`AreaChart` é um gráfico recharts conectado aos design tokens do Gremorie através do primitive `chart` (`ChartContainer`) para **área preenchida sobre uma categoria ordenada**. Passe `data` tabular, um `config` serializável que mapeia cada campo de valor para um `label` mais uma `color`, e o `xKey` que nomeia o campo de categoria. `ChartContainer` injeta a cor de cada série como `var(--color-<key>)`, e o recharts renderiza o cartesian grid, os ticks dos eixos e os paths preenchidos por série. Passe `stacked` para empilhar as séries ou `type` para escolher a curva de interpolação.
 
 Use AreaChart quando a **magnitude** de uma série importa tanto quanto sua tendência - tráfego por mês, receita por semana, contagem de erros por dia. Para comparação pura de forma sem ênfase na magnitude, prefira [`LineChart`](/components/data/line-chart); para comparações discretas de categoria-vs-categoria, prefira [`BarChart`](/components/data/bar-chart).
 
-A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart`; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
 
 ## Anatomia
 
@@ -29,7 +29,7 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
    └─ sr-only data table
 ```
 
-A edição React compõe esta superfície através do primitive `chart` do shadcn:
+A edição React compõe esta superfície através do primitive `chart`:
 
 ```text
 ChartContainer                  responsive frame + injects --color-<key> from config
@@ -51,11 +51,33 @@ ChartContainer                  responsive frame + injects --color-<key> from co
 ## Instalação
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-area-chart ```</Tab>
-  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-area-chart ```</Tab>
-  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-area-chart ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-area-chart
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-area-chart
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-area-chart
+```
+
+</Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-area-chart ```
+
+```bash
+bunx --bun gremorie@latest add rx-area-chart
+```
+
   </Tab>
 </Tabs>
 
@@ -142,7 +164,7 @@ O wrapper estilizado. Renderiza um div `ChartContainer` envolvendo um `<AreaChar
 
 ### Exports do primitive chart
 
-`@gremorie/rx-data` reexporta o primitive `chart` do shadcn para que você possa compor gráficos customizados. Envolva recharts cru (`Area`, `Bar`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) dentro de `ChartContainer`:
+`@gremorie/rx-data` reexporta o primitive `chart` para que você possa compor gráficos customizados. Envolva recharts cru (`Area`, `Bar`, `Line`, `CartesianGrid`, `XAxis`, `YAxis`) dentro de `ChartContainer`:
 
 | Export                                 | Papel                                                                                                      |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------- |

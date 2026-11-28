@@ -120,11 +120,19 @@ export class SidebarService implements OnDestroy {
     'data-slot': 'sidebar-wrapper',
     '[style.--sidebar-width]': 'sidebarWidth',
     '[style.--sidebar-width-icon]': 'sidebarWidthIcon',
-    class:
-      'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
+    '[class]': 'hostClass()',
   },
 })
 export class SidebarProvider {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
+      this.class(),
+    ),
+  );
+
   private readonly service = inject(SidebarService);
 
   protected readonly sidebarWidth = SIDEBAR_WIDTH;
@@ -158,7 +166,7 @@ const sidebarMenuButtonVariants = cva(
       variant: {
         default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
         outline:
-          'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
+          'bg-background shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]',
       },
       size: {
         default: 'h-8 text-sm',
@@ -295,7 +303,7 @@ export class Sidebar {
         ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
         : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
       this.variant() === 'floating' || this.variant() === 'inset'
-        ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
+        ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4.5)))]'
         : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
     ),
   );
@@ -361,15 +369,21 @@ export class SidebarTrigger {
     tabindex: '-1',
     title: 'Toggle Sidebar',
     '(click)': 'service.toggleSidebar()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class SidebarRail {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly service = inject(SidebarService);
 
   protected readonly computedClass = computed(() =>
     cn(
-      'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border sm:flex',
+      'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-0.5 hover:after:bg-sidebar-border sm:flex',
       'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
       '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
       'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full hover:group-data-[collapsible=offcanvas]:bg-sidebar',
@@ -391,11 +405,19 @@ export class SidebarRail {
   template: `<ng-content />`,
   host: {
     'data-slot': 'sidebar-inset',
-    class:
-      'relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarInset {}
+export class SidebarInset {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarInput — a search input tuned for the sidebar. Mirrors React
@@ -411,11 +433,19 @@ export class SidebarInset {}
   host: {
     'data-slot': 'sidebar-input',
     'data-sidebar': 'input',
-    class:
-      'h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarInput {}
+export class SidebarInput {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarHeader — top region of the sidebar. Mirrors React `SidebarHeader`.
@@ -429,10 +459,16 @@ export class SidebarInput {}
   host: {
     'data-slot': 'sidebar-header',
     'data-sidebar': 'header',
-    class: 'flex flex-col gap-2 p-2',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarHeader {}
+export class SidebarHeader {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-col gap-2 p-2', this.class()),
+  );
+}
 
 /**
  * SidebarFooter — bottom region of the sidebar. Mirrors React `SidebarFooter`.
@@ -446,10 +482,16 @@ export class SidebarHeader {}
   host: {
     'data-slot': 'sidebar-footer',
     'data-sidebar': 'footer',
-    class: 'flex flex-col gap-2 p-2',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarFooter {}
+export class SidebarFooter {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-col gap-2 p-2', this.class()),
+  );
+}
 
 /**
  * SidebarSeparator — divider styled for the sidebar. Mirrors React
@@ -465,10 +507,16 @@ export class SidebarFooter {}
     'data-slot': 'sidebar-separator',
     'data-sidebar': 'separator',
     role: 'separator',
-    class: 'mx-2 h-px w-auto shrink-0 bg-sidebar-border',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarSeparator {}
+export class SidebarSeparator {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('mx-2 h-px w-auto shrink-0 bg-sidebar-border', this.class()),
+  );
+}
 
 /**
  * SidebarContent — the scrollable middle region. Mirrors React
@@ -483,11 +531,19 @@ export class SidebarSeparator {}
   host: {
     'data-slot': 'sidebar-content',
     'data-sidebar': 'content',
-    class:
-      'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarContent {}
+export class SidebarContent {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarGroup — a labelled section of the sidebar. Mirrors React
@@ -502,10 +558,16 @@ export class SidebarContent {}
   host: {
     'data-slot': 'sidebar-group',
     'data-sidebar': 'group',
-    class: 'relative flex w-full min-w-0 flex-col p-2',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarGroup {}
+export class SidebarGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('relative flex w-full min-w-0 flex-col p-2', this.class()),
+  );
+}
 
 /**
  * SidebarGroupLabel — the heading of a SidebarGroup. Mirrors React
@@ -520,11 +582,19 @@ export class SidebarGroup {}
   host: {
     'data-slot': 'sidebar-group-label',
     'data-sidebar': 'group-label',
-    class:
-      'flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarGroupLabel {}
+export class SidebarGroupLabel {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarGroupAction — a top-right action for a SidebarGroup. Mirrors React
@@ -539,11 +609,19 @@ export class SidebarGroupLabel {}
   host: {
     'data-slot': 'sidebar-group-action',
     'data-sidebar': 'group-action',
-    class:
-      'absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0 after:absolute after:-inset-2 md:after:hidden group-data-[collapsible=icon]:hidden',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarGroupAction {}
+export class SidebarGroupAction {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0 after:absolute after:-inset-2 md:after:hidden group-data-[collapsible=icon]:hidden',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarGroupContent — body of a SidebarGroup. Mirrors React
@@ -558,10 +636,16 @@ export class SidebarGroupAction {}
   host: {
     'data-slot': 'sidebar-group-content',
     'data-sidebar': 'group-content',
-    class: 'w-full text-sm',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarGroupContent {}
+export class SidebarGroupContent {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('w-full text-sm', this.class()),
+  );
+}
 
 /**
  * SidebarMenu — the list of menu items. Mirrors React `SidebarMenu`.
@@ -575,10 +659,16 @@ export class SidebarGroupContent {}
   host: {
     'data-slot': 'sidebar-menu',
     'data-sidebar': 'menu',
-    class: 'flex w-full min-w-0 flex-col gap-1',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarMenu {}
+export class SidebarMenu {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex w-full min-w-0 flex-col gap-1', this.class()),
+  );
+}
 
 /**
  * SidebarMenuItem — one menu row. Mirrors React `SidebarMenuItem`.
@@ -592,10 +682,16 @@ export class SidebarMenu {}
   host: {
     'data-slot': 'sidebar-menu-item',
     'data-sidebar': 'menu-item',
-    class: 'group/menu-item relative',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarMenuItem {}
+export class SidebarMenuItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('group/menu-item relative', this.class()),
+  );
+}
 
 /**
  * SidebarMenuButton — the clickable menu entry. Mirrors React
@@ -645,10 +741,16 @@ export class SidebarMenuItem {}
     'data-sidebar': 'menu-button',
     '[attr.data-size]': 'size()',
     '[attr.data-active]': 'isActive()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class SidebarMenuButton {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly service = inject(SidebarService);
 
   /** Marks the active route. Mirrors React `isActive`. */
@@ -698,10 +800,16 @@ export class SidebarMenuButton {
   host: {
     'data-slot': 'sidebar-menu-action',
     'data-sidebar': 'menu-action',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class SidebarMenuAction {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Reveal only on row hover/focus. Mirrors React `showOnHover`. */
   readonly showOnHover = input<boolean>(false);
 
@@ -732,11 +840,19 @@ export class SidebarMenuAction {
   host: {
     'data-slot': 'sidebar-menu-badge',
     'data-sidebar': 'menu-badge',
-    class:
-      'pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium text-sidebar-foreground tabular-nums select-none peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground peer-data-[size=sm]/menu-button:top-1 peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 group-data-[collapsible=icon]:hidden',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarMenuBadge {}
+export class SidebarMenuBadge {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium text-sidebar-foreground tabular-nums select-none peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground peer-data-[size=sm]/menu-button:top-1 peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 group-data-[collapsible=icon]:hidden',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarMenuSkeleton — a loading placeholder row. Mirrors React
@@ -764,10 +880,16 @@ export class SidebarMenuBadge {}
   host: {
     'data-slot': 'sidebar-menu-skeleton',
     'data-sidebar': 'menu-skeleton',
-    class: 'flex h-8 items-center gap-2 rounded-md px-2',
+    '[class]': 'hostClass()',
   },
 })
 export class SidebarMenuSkeleton {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex h-8 items-center gap-2 rounded-md px-2', this.class()),
+  );
+
   /** Whether to render a leading icon placeholder. Mirrors React `showIcon`. */
   readonly showIcon = input<boolean>(false);
 
@@ -788,11 +910,19 @@ export class SidebarMenuSkeleton {
   host: {
     'data-slot': 'sidebar-menu-sub',
     'data-sidebar': 'menu-sub',
-    class:
-      'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5 group-data-[collapsible=icon]:hidden',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarMenuSub {}
+export class SidebarMenuSub {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5 group-data-[collapsible=icon]:hidden',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * SidebarMenuSubItem — one row in a SidebarMenuSub. Mirrors React
@@ -807,10 +937,16 @@ export class SidebarMenuSub {}
   host: {
     'data-slot': 'sidebar-menu-sub-item',
     'data-sidebar': 'menu-sub-item',
-    class: 'group/menu-sub-item relative',
+    '[class]': 'hostClass()',
   },
 })
-export class SidebarMenuSubItem {}
+export class SidebarMenuSubItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('group/menu-sub-item relative', this.class()),
+  );
+}
 
 /**
  * SidebarMenuSubButton — the clickable entry inside a SidebarMenuSub. Mirrors
@@ -827,10 +963,16 @@ export class SidebarMenuSubItem {}
     'data-sidebar': 'menu-sub-button',
     '[attr.data-size]': 'size()',
     '[attr.data-active]': 'isActive()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class SidebarMenuSubButton {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Row size. Mirrors React `size`. */
   readonly size = input<'sm' | 'md'>('md');
   /** Marks the active route. Mirrors React `isActive`. */

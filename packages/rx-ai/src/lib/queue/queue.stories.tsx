@@ -21,7 +21,7 @@ import {
 /**
  * # Queue
  *
- * A faithful port of the Vercel AI Elements **Queue** primitive — a scrollable
+ * The **Queue** primitive — a scrollable
  * list of queued messages / todos with per-item status (pending vs completed),
  * hover actions, descriptions and attachments. Items can be grouped into
  * collapsible sections.

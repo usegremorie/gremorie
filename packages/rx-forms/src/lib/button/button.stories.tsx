@@ -6,7 +6,7 @@ import { Button } from './button';
 /**
  * # Button
  *
- * Primary click target. A faithful shadcn port wired to a single
+ * Primary click target, wired to a single
  * class-variance-authority factory exposing six visual variants and eight size
  * presets (including icon-only sizes), plus an `asChild` escape hatch via Radix
  * Slot for rendering as a link or any other element.
@@ -33,8 +33,8 @@ import { Button } from './button';
  * | --- | --- |
  * | `--primary` / `--primary-foreground` | `variant="default"` fill |
  * | `--destructive` | `variant="destructive"` fill |
- * | `--foreground` / `--secondary-foreground` | `variant="secondary"`: translucent `bg-foreground/5` (`/8` dark), hover `/10` (`/15` dark) |
- * | `--muted` / `--input` | `ghost` / `outline` hover (`bg-muted`, `dark:bg-input/30`) |
+ * | `--secondary` / `--secondary-foreground` | `variant="secondary"`: `bg-secondary`, hover `bg-secondary-hover` (derived) |
+ * | `--accent` | `ghost` / `outline` hover (`bg-accent`) |
  * | `--foreground` | `outline` hairline (`border-foreground/10`, transparent fill) |
  * | `--ring` | focus ring |
  */

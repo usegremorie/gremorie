@@ -137,11 +137,7 @@ export const PromptInputMentions = ({
     <InputGroupButton
       aria-expanded={open}
       aria-label="Add context"
-      className={
-        variant === 'outline'
-          ? 'aria-expanded:bg-muted dark:aria-expanded:bg-input/30'
-          : undefined
-      }
+      className={variant === 'outline' ? 'aria-expanded:bg-accent' : undefined}
       size={hasSelection ? 'icon-sm' : 'sm'}
       type="button"
       variant={variant}
@@ -215,7 +211,7 @@ export const PromptInputMentions = ({
               {item.icon}
             </span>
           ) : null}
-          <span className="max-w-[10rem] truncate">{item.label}</span>
+          <span className="max-w-40 truncate">{item.label}</span>
           <button
             aria-label={`Remove ${item.label}`}
             className="relative ml-0.5 inline-flex size-4 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors after:absolute after:-inset-1 after:content-[''] hover:bg-accent hover:text-foreground"

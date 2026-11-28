@@ -51,7 +51,7 @@ export const Workbench: Story = {
     props: args,
     template: `
       <gr-avatar [size]="size">
-        <gr-avatar-image src="${SRC}" alt="@shadcn" />
+        <gr-avatar-image src="${SRC}" alt="User avatar" />
         <gr-avatar-fallback>CN</gr-avatar-fallback>
       </gr-avatar>
     `,
@@ -74,9 +74,9 @@ export const Sizes: Story = {
   render: () => ({
     template: `
       <div class="flex items-end gap-4">
-        <gr-avatar size="sm"><gr-avatar-image src="${SRC}" alt="@shadcn" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
-        <gr-avatar size="default"><gr-avatar-image src="${SRC}" alt="@shadcn" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
-        <gr-avatar size="lg"><gr-avatar-image src="${SRC}" alt="@shadcn" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
+        <gr-avatar size="sm"><gr-avatar-image src="${SRC}" alt="User avatar" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
+        <gr-avatar size="default"><gr-avatar-image src="${SRC}" alt="User avatar" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
+        <gr-avatar size="lg"><gr-avatar-image src="${SRC}" alt="User avatar" /><gr-avatar-fallback>CN</gr-avatar-fallback></gr-avatar>
       </div>
     `,
   }),
@@ -87,7 +87,7 @@ export const WithBadge: Story = {
   render: () => ({
     template: `
       <gr-avatar size="lg">
-        <gr-avatar-image src="${SRC}" alt="@shadcn" />
+        <gr-avatar-image src="${SRC}" alt="User avatar" />
         <gr-avatar-fallback>CN</gr-avatar-fallback>
         <gr-avatar-badge class="bg-success">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>

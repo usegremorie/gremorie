@@ -90,7 +90,7 @@ export const Card: Story = {
       <Skeleton className="h-[160px] w-[280px] rounded-xl" />
       <div className="flex flex-col gap-2">
         <Skeleton className="h-4 w-[280px]" />
-        <Skeleton className="h-4 w-[220px]" />
+        <Skeleton className="h-4 w-55" />
       </div>
     </div>
   ),

@@ -8,11 +8,11 @@ import { LineChartSinglePreview } from '@/components/preview/data/line-chart-sin
 
 ## Overview
 
-`LineChart` is a recharts chart wired to Gremorie's design tokens through the shadcn `chart` primitive (`ChartContainer`) for **trend lines over an ordered category**. Pass tabular `data`, a serializable `config` that maps each value field to a `label` plus a `color`, and the `xKey` that names the category field. `ChartContainer` injects each series color as `var(--color-<key>)`, and recharts renders the cartesian grid, axis ticks, and per-series stroked paths. Pass `type` to choose the interpolation curve or `dots` to mark each point.
+`LineChart` is a recharts chart wired to Gremorie's design tokens through the `chart` primitive (`ChartContainer`) for **trend lines over an ordered category**. Pass tabular `data`, a serializable `config` that maps each value field to a `label` plus a `color`, and the `xKey` that names the category field. `ChartContainer` injects each series color as `var(--color-<key>)`, and recharts renders the cartesian grid, axis ticks, and per-series stroked paths. Pass `type` to choose the interpolation curve or `dots` to mark each point.
 
 Reach for LineChart when **shape and direction** are the headline - month-over-month conversion, weekly active users, deploys per day. Use [`AreaChart`](/components/data/area-chart) when the filled magnitude is the story; use [`BarChart`](/components/data/bar-chart) for discrete category comparisons; use [`ScatterChart`](/components/data/scatter-chart) when the X axis is itself numeric and continuous.
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -30,7 +30,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
 LineChart                       styled wrapper; one Line per config entry
@@ -52,11 +52,33 @@ LineChart                       styled wrapper; one Line per config entry
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-line-chart ```</Tab>
-  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-line-chart ```</Tab>
-  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-line-chart ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-line-chart
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-line-chart
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-line-chart
+```
+
+</Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-line-chart ```
+
+```bash
+bunx --bun gremorie@latest add rx-line-chart
+```
+
   </Tab>
 </Tabs>
 
@@ -143,7 +165,7 @@ The styled wrapper. Renders a `ChartContainer` div wrapping a recharts `<LineCha
 
 ### Chart primitive exports
 
-`@gremorie/rx-data` re-exports the shadcn `chart` primitive so you can compose custom charts. Wrap raw recharts (`Line`, `Area`, `Bar`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
+`@gremorie/rx-data` re-exports the `chart` primitive so you can compose custom charts. Wrap raw recharts (`Line`, `Area`, `Bar`, `CartesianGrid`, `XAxis`, `YAxis`) inside `ChartContainer`:
 
 | Export                                 | Role                                                                                                  |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |

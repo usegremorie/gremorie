@@ -42,11 +42,11 @@ const submitVariants = cva(
   {
     variants: {
       state: {
-        ready: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        ready: 'bg-primary text-primary-foreground hover:bg-primary-hover',
         submitted: 'bg-muted text-muted-foreground',
         streaming: 'bg-destructive/10 text-destructive hover:bg-destructive/20',
         error:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground hover:bg-destructive-hover',
       },
       size: {
         'icon-sm': 'size-8',

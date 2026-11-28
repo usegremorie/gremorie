@@ -144,13 +144,13 @@ export class Bar implements OnInit, OnDestroy {
         if (stacked) {
           const lo = base?.[i] ?? 0;
           const fit = fitBar(band.bandwidth, cap);
-          y = band(categories[i]) + fit.offset;
+          y = band(i) + fit.offset;
           height = fit.size;
           x = vScale(lo);
           width = Math.max(0, vScale(lo + value) - x);
         } else {
           const fit = fitBar(subH, cap);
-          y = band(categories[i]) + (subH + gap) * index + fit.offset;
+          y = band(i) + (subH + gap) * index + fit.offset;
           height = fit.size;
           x = zero;
           width = Math.max(0, vScale(value) - zero);
@@ -185,13 +185,13 @@ export class Bar implements OnInit, OnDestroy {
       if (stacked) {
         const lo = base?.[i] ?? 0;
         const fit = fitBar(band.bandwidth, cap);
-        x = band(categories[i]) + fit.offset;
+        x = band(i) + fit.offset;
         width = fit.size;
         y = yScale(lo + value);
         height = Math.max(0, yScale(lo) - y);
       } else {
         const fit = fitBar(subW, cap);
-        x = band(categories[i]) + (subW + gap) * index + fit.offset;
+        x = band(i) + (subW + gap) * index + fit.offset;
         width = fit.size;
         y = yScale(value);
         height = Math.max(0, baseline - y);
@@ -222,10 +222,10 @@ export class Bar implements OnInit, OnDestroy {
         0.2,
       );
       const x = Math.max(0, this.ctx.plotLeft() - 8);
-      return categories.map((label) => ({
+      return categories.map((label, i) => ({
         label,
         x,
-        y: band(label) + band.bandwidth / 2,
+        y: band(i) + band.bandwidth / 2,
       }));
     }
     const band = bandScale(
@@ -234,9 +234,9 @@ export class Bar implements OnInit, OnDestroy {
       0.2,
     );
     const y = this.ctx.plotBottom() + 16;
-    return categories.map((label) => ({
+    return categories.map((label, i) => ({
       label,
-      x: band(label) + band.bandwidth / 2,
+      x: band(i) + band.bandwidth / 2,
       y,
     }));
   });

@@ -28,7 +28,7 @@ export default async function Layout({
 }) {
   const { lang } = await params;
   const base = baseOptions(lang);
-  // The top bar is our own (Luma layout: logo left, icon nav centred,
+  // The top bar is our own (logo left, icon nav centred,
   // actions right; border and translucent surface only once scrolled). It
   // keeps the 56px of Fumadocs' header, so nothing else shifts.
   return (

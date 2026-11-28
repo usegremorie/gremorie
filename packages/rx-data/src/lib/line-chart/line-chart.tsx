@@ -37,7 +37,7 @@ export interface LineChartProps {
 }
 
 /**
- * Line chart — recharts + the shadcn `chart` primitives. One `<Line>` per
+ * Line chart — recharts + the `chart` primitives. One `<Line>` per
  * `config` entry, stroked with `var(--color-<key>)`.
  *
  * @example

@@ -7,11 +7,11 @@ import { RadialChartPreview } from '@/components/preview/data/radial-chart';
 
 ## Overview
 
-`RadialChart` is a recharts chart built on the shadcn `chart` primitive (`ChartContainer`) for **concentric polar bars**. Each data row produces one bar around the chart center; each bar sweeps proportionally to its `dataKey` value. Bar colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip.
+`RadialChart` is a recharts chart built on the `chart` primitive (`ChartContainer`) for **concentric polar bars**. Each data row produces one bar around the chart center; each bar sweeps proportionally to its `dataKey` value. Bar colors come from each row's `fill` (e.g. `fill: "var(--chart-1)"`), and an optional `config` supplies the labels shown in the tooltip.
 
 Reach for RadialChart when you want a **compact, decorative ranking** of three to five items - top categories, leading drivers, ranked metrics in a hero card. For exact comparison [`BarChart`](/components/data/bar-chart) reads faster; for share-of-whole at a glance [`PieChart`](/components/data/pie-chart) is more familiar.
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -26,7 +26,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
 ChartContainer                     responsive square frame + tooltip label config
@@ -46,15 +46,33 @@ ChartContainer                     responsive square frame + tooltip label confi
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-radial-chart ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-radial-chart
+```
+
+</Tab>
   <Tab value="pnpm">
-    ```bash pnpm dlx gremorie@latest add rx-radial-chart ```
+
+```bash
+pnpm dlx gremorie@latest add rx-radial-chart
+```
+
   </Tab>
   <Tab value="yarn">
-    ```bash yarn dlx gremorie@latest add rx-radial-chart ```
+
+```bash
+yarn dlx gremorie@latest add rx-radial-chart
+```
+
   </Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-radial-chart ```
+
+```bash
+bunx --bun gremorie@latest add rx-radial-chart
+```
+
   </Tab>
 </Tabs>
 
@@ -136,7 +154,7 @@ export class TopBrowsersComponent {
 
 ### `<RadialChart>`
 
-A recharts radial bar chart composed inside the shadcn `chart` primitive (`ChartContainer`). One concentric bar per row; bar colors come from each row's `fill`, and the optional `config` provides the labels shown in the tooltip.
+A recharts radial bar chart composed inside the `chart` primitive (`ChartContainer`). One concentric bar per row; bar colors come from each row's `fill`, and the optional `config` provides the labels shown in the tooltip.
 
 | Prop        | Type                    | Default | Description                                                                                                                                                      |
 | ----------- | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -149,7 +167,7 @@ A recharts radial bar chart composed inside the shadcn `chart` primitive (`Chart
 
 ### Chart primitives for custom composition
 
-For full control, compose raw recharts inside `ChartContainer` using the shadcn chart primitives, all re-exported from `@gremorie/rx-data`. This mirrors the official shadcn radial block ([ui.shadcn.com/charts/radial](https://ui.shadcn.com/charts/radial)).
+For full control, compose raw recharts inside `ChartContainer` using the chart primitives, all re-exported from `@gremorie/rx-data`.
 
 | Export                                              | Role                                                                              |
 | --------------------------------------------------- | --------------------------------------------------------------------------------- |
@@ -260,7 +278,7 @@ Set `tooltip` to `false` for a static, decorative ranking - useful when the bars
 
 ### Custom composition
 
-When you need a different track treatment, gradient fills, a center label, or a legend, compose raw recharts inside `ChartContainer`. This mirrors the official shadcn radial block.
+When you need a different track treatment, gradient fills, a center label, or a legend, compose raw recharts inside `ChartContainer`.
 
 ```tsx
 import {

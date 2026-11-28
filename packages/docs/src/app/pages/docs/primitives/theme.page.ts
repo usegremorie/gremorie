@@ -142,9 +142,9 @@ export default class ThemePrimitivePage {
       description: '0.625rem (10px) — anchor for all derived radii.',
     },
     {
-      name: '--radius-sm / md / lg / xl',
+      name: '--radius-xs / sm / md / lg / xl',
       type: 'scale',
-      description: 'Derived as 0.6× / 0.8× / 1× / 1.4× of base.',
+      description: 'Derived as 0.2× / 0.6× / 0.8× / 1× / 1.2× of base.',
     },
   ];
 

@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  ElementRef,
   computed,
+  DestroyRef,
   effect,
+  ElementRef,
   inject,
   input,
   output,
@@ -13,7 +13,7 @@ import {
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { Button } from '@gremorie/ng-core';
+import { Button, cn } from '@gremorie/ng-core';
 
 import {
   contextWindow,
@@ -71,7 +71,7 @@ const DEFAULT_LABELS: MediaRangePlayerLabels = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'media-range-player',
-    class: 'flex flex-col gap-2',
+    '[class]': 'hostClass()',
   },
   template: `
     <video
@@ -100,7 +100,7 @@ const DEFAULT_LABELS: MediaRangePlayerLabels = {
       ></div>
       <div
         data-slot="media-range-player-playhead"
-        class="absolute top-1/2 h-3 w-0.5 -translate-y-1/2 bg-foreground"
+        class="absolute top-1/2 h-3 w-0.5 -translate-y-1/2 bg-current"
         [style.left.%]="playhead()"
       ></div>
     </div>
@@ -181,6 +181,12 @@ const DEFAULT_LABELS: MediaRangePlayerLabels = {
   `,
 })
 export class MediaRangePlayer {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-col gap-2', this.class()),
+  );
+
   /** Media URL. Served with HTTP Range so seeking does not download the whole file. */
   readonly src = input.required<string>();
   /** Clip in/out, in seconds of the source. */

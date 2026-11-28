@@ -13,8 +13,8 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
 /**
  * # Popover
  *
- * An anchored, click-triggered interactive content overlay — a faithful shadcn
- * port over Radix Popover. Hosts interactive content (mini forms, pickers, share
+ * An anchored, click-triggered interactive content overlay — built
+ * on Radix Popover. Hosts interactive content (mini forms, pickers, share
  * menus). Distinct from `Tooltip` (hover-only label) and `HoverCard` (hover-only
  * preview). When the content grows long or warrants blocking, escalate to
  * `Dialog` or `Sheet`.
@@ -57,7 +57,7 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--popover` / `--popover-foreground` | Surface, via `bg-popover-surface` (translucent 60% + blur; opaque with `data-menu="solid"`) |
+ * | `--popover` / `--popover-foreground` | Surface, via `bg-popover-surface` (translucent per `--surface-opacity` and `--surface-backdrop`; solid with `data-menu="solid"`) |
  * | `--border` | Border |
  * | `--muted-foreground` | Description text |
  */

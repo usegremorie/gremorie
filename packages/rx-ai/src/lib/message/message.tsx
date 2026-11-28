@@ -171,7 +171,7 @@ export const MessageBranch = ({
   return (
     <MessageBranchContext.Provider value={contextValue}>
       <div
-        className={cn('grid w-full gap-2 [&>div]:pb-0', className)}
+        className={cn('grid w-full grid-cols-1 gap-2 [&>div]:pb-0', className)}
         {...props}
       />
     </MessageBranchContext.Provider>
@@ -197,7 +197,7 @@ export const MessageBranchContent = ({
   return childrenArray.map((branch, index) => (
     <div
       className={cn(
-        'grid gap-2 overflow-hidden [&>div]:pb-0',
+        'grid grid-cols-1 gap-2 overflow-hidden [&>div]:pb-0',
         index === currentBranch ? 'block' : 'hidden',
       )}
       key={branch.key}

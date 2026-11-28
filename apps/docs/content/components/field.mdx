@@ -1,0 +1,338 @@
+---
+title: Field
+description: Compose a label, a control, helper text and an error into one accessible field, group fields into sets, and turn a field into a selectable choice card.
+---
+
+import { FieldPreview } from '@/components/preview/forms/field';
+import { FieldChoiceCardPreview } from '@/components/preview/forms/field-choice-card';
+import { FieldChoiceCardCheckboxPreview } from '@/components/preview/forms/field-choice-card-checkbox';
+import { FieldHorizontalPreview } from '@/components/preview/forms/field-horizontal';
+import { FieldResponsivePreview } from '@/components/preview/forms/field-responsive';
+import { FieldFieldsetPreview } from '@/components/preview/forms/field-fieldset';
+import { FieldErrorPreview } from '@/components/preview/forms/field-error';
+
+## Overview
+
+`Field` is the form-layout family. A `Field` stacks a `FieldLabel`, a control (`Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroupItem`, `Switch`), a `FieldDescription` and a `FieldError`, with the spacing and the label wiring done for you. `FieldSet` and `FieldGroup` group fields, and a `Field` wrapped in a `FieldLabel` becomes a **choice card**: the whole card is the click target of the radio or checkbox inside it.
+
+Reach for `Field` for the layout of any form. When the form state lives in react-hook-form and you want `id`, `aria-describedby` and `aria-invalid` wired from it, use [Form](/components/form); the two compose. For a bare caption, `Label` is enough.
+
+It ships in both editions with the same ten parts, the same props, the same `data-slot` names.
+
+## Preview
+
+<ComponentPreview name="forms/field">
+  <FieldPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+FieldSet                      fieldset, flex column (gap-6)
+├─ FieldLegend                legend (variant: legend | label)
+├─ FieldDescription           muted helper text
+└─ FieldGroup                 stacks fields (gap-7); container-query root
+   ├─ Field                   role=group, orientation: vertical | horizontal | responsive
+   │  ├─ FieldLabel           label; wrapping a whole Field makes it a choice card
+   │  ├─ control              Input, Select, Textarea, Checkbox, RadioGroupItem, Switch
+   │  ├─ FieldContent         label + description column beside a control
+   │  │  ├─ FieldTitle        label-looking text that is not a label
+   │  │  └─ FieldDescription
+   │  └─ FieldError           role=alert; hidden when empty
+   └─ FieldSeparator          rule, with optional centered text
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-field
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-field
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-field
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-field
+```
+
+</Tab>
+</Tabs>
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  Input,
+  Switch,
+} from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <FieldSet>
+      <FieldLegend>Profile</FieldLegend>
+      <FieldDescription>This appears on invoices and emails.</FieldDescription>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor="name">Full name</FieldLabel>
+          <Input id="name" placeholder="Ada Lovelace" />
+          <FieldDescription>As it is on your ID.</FieldDescription>
+        </Field>
+        <Field data-invalid="true">
+          <FieldLabel htmlFor="username">Username</FieldLabel>
+          <Input id="username" aria-invalid />
+          <FieldError>Choose another username.</FieldError>
+        </Field>
+        <Field orientation="horizontal">
+          <Switch id="newsletter" />
+          <FieldLabel htmlFor="newsletter">Subscribe to the newsletter</FieldLabel>
+        </Field>
+      </FieldGroup>
+    </FieldSet>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-field
+```
+
+<AngularSetup />
+
+```ts
+import { Component } from '@angular/core';
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  Input,
+  Switch,
+} from '@gremorie/ng-forms';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [
+    Field,
+    FieldDescription,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldLegend,
+    FieldSet,
+    Input,
+    Switch,
+  ],
+  template: `
+    <gr-field-set>
+      <gr-field-legend>Profile</gr-field-legend>
+      <gr-field-description
+        >This appears on invoices and emails.</gr-field-description
+      >
+      <gr-field-group>
+        <gr-field>
+          <gr-field-label for="name">Full name</gr-field-label>
+          <gr-input id="name" placeholder="Ada Lovelace" />
+          <gr-field-description>As it is on your ID.</gr-field-description>
+        </gr-field>
+        <gr-field data-invalid="true">
+          <gr-field-label for="username">Username</gr-field-label>
+          <gr-input id="username" [ariaInvalid]="true" />
+          <gr-field-error>Choose another username.</gr-field-error>
+        </gr-field>
+        <gr-field orientation="horizontal">
+          <gr-switch id="newsletter" />
+          <gr-field-label for="newsletter"
+            >Subscribe to the newsletter</gr-field-label
+          >
+        </gr-field>
+      </gr-field-group>
+    </gr-field-set>
+  `,
+})
+export class ExampleComponent {}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+Each part is a React component and an Angular element. The names are the same, in kebab case with the `gr-` prefix on the Angular side: `FieldLabel` is `gr-field-label`. Every part also takes `className` (Angular: `class`), merged with `cn`. In React every part forwards the native props of its element.
+
+### `<Field>` / `<gr-field>`
+
+One control with its label, text and error. Renders a `div` with `role="group"` and `data-orientation`.
+
+| Prop          | Type                                         | Default      | Description                                                                                |
+| ------------- | -------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------ |
+| `orientation` | `"vertical" \| "horizontal" \| "responsive"` | `"vertical"` | Layout of the parts. `responsive` is vertical until its `FieldGroup` is `md` (28rem) wide. |
+
+State lives in attributes: `data-invalid="true"` turns the text destructive (put `aria-invalid` on the control too), and `data-disabled="true"` dims the label and the text (put `disabled` on the control too).
+
+### `<FieldLabel>` / `<gr-field-label>`
+
+A native `<label>`. Wrapping a whole `Field` in it makes a choice card.
+
+| Prop      | Type     | Default | Description                        |
+| --------- | -------- | ------- | ---------------------------------- |
+| `htmlFor` | `string` | -       | Id of the control. Angular: `for`. |
+
+### `<FieldTitle>` / `<gr-field-title>`
+
+Label-looking text that is not a `<label>`: the heading of a choice card's content, where the label is the whole card.
+
+### `<FieldDescription>` / `<gr-field-description>`
+
+Muted helper text. Links inside it are underlined.
+
+### `<FieldError>` / `<gr-field-error>`
+
+The validation message, `role="alert"`. Hidden when empty.
+
+| Prop     | Type                                       | Default | Description                                                                                           |
+| -------- | ------------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------- |
+| `errors` | `Array<{ message?: string } \| undefined>` | -       | Messages. One renders as text, several as a list; duplicates are removed. Children win over `errors`. |
+
+### `<FieldContent>` / `<gr-field-content>`
+
+The column that holds a label and a description beside a control, in a horizontal `Field`.
+
+### `<FieldGroup>` / `<gr-field-group>`
+
+Stacks `Field`s (`gap-7`) and is the container-query root that `orientation="responsive"` reads. Groups nest.
+
+### `<FieldSet>` / `<gr-field-set>`
+
+Semantic grouping of related fields. React renders a `fieldset`; Angular renders a `role="group"` labelled by its `FieldLegend`.
+
+### `<FieldLegend>` / `<gr-field-legend>`
+
+The title of a `FieldSet`.
+
+| Prop      | Type                  | Default    | Description                                    |
+| --------- | --------------------- | ---------- | ---------------------------------------------- |
+| `variant` | `"legend" \| "label"` | `"legend"` | `legend` is `text-base`; `label` is `text-sm`. |
+
+### `<FieldSeparator>` / `<gr-field-separator>`
+
+A rule between fields. Pass children (React) or project content (Angular) for centered text on the rule.
+
+## Variations
+
+### Choice card
+
+Wrap a `Field` in a `FieldLabel` and put a `RadioGroupItem` inside it: the whole card selects the radio, and the selected card is highlighted.
+
+<ComponentPreview name="forms/field-choice-card">
+  <FieldChoiceCardPreview />
+</ComponentPreview>
+
+```tsx
+<RadioGroup defaultValue="kubernetes">
+  <FieldLabel htmlFor="kubernetes">
+    <Field orientation="horizontal">
+      <FieldContent>
+        <FieldTitle>Kubernetes</FieldTitle>
+        <FieldDescription>Run GPU workloads on a K8s cluster.</FieldDescription>
+      </FieldContent>
+      <RadioGroupItem value="kubernetes" id="kubernetes" />
+    </Field>
+  </FieldLabel>
+</RadioGroup>
+```
+
+The border of a choice card stays the same: selection and hover lift the fill. Keyboard focus draws the ring around the card. All of it comes from semantic tokens, with no literal opacity, so each theme and both modes keep their own look.
+
+| Token      | Used for                                  |
+| ---------- | ----------------------------------------- |
+| `--border` | border of every card, selected or not     |
+| `--accent` | fill of the selected and the hovered card |
+| `--ring`   | border and ring when the radio has focus  |
+
+### Choice card with a checkbox
+
+The same card with a `Checkbox`: any number of cards can be selected.
+
+<ComponentPreview name="forms/field-choice-card-checkbox">
+  <FieldChoiceCardCheckboxPreview />
+</ComponentPreview>
+
+### Horizontal
+
+`orientation="horizontal"` puts the control beside its label. With a `FieldContent` the control aligns to the top line of the text.
+
+<ComponentPreview name="forms/field-horizontal">
+  <FieldHorizontalPreview />
+</ComponentPreview>
+
+### Responsive
+
+`orientation="responsive"` stacks the parts until the `FieldGroup` is `md` wide, then lays them out in a row. It reads the group's width (a container query), not the viewport's.
+
+<ComponentPreview name="forms/field-responsive">
+  <FieldResponsivePreview />
+</ComponentPreview>
+
+### Fieldset and legend
+
+`FieldSet` with a `FieldLegend` names a group: an address, or a radio or checkbox group.
+
+<ComponentPreview name="forms/field-fieldset">
+  <FieldFieldsetPreview />
+</ComponentPreview>
+
+### Error and disabled
+
+Mark an invalid field with `data-invalid="true"` on the `Field` and `aria-invalid` on the control, and a disabled one with `data-disabled="true"` and `disabled`.
+
+<ComponentPreview name="forms/field-error">
+  <FieldErrorPreview />
+</ComponentPreview>
+
+## Accessibility
+
+- **Label wiring**: `FieldLabel` is a native `<label>`; `htmlFor` (Angular: `for`) must match the control's `id`. Clicking the label, or the whole card, activates the control.
+- **Grouping**: React renders a native `<fieldset>` with a `<legend>`. Angular renders `role="group"` and points `aria-labelledby` at the `FieldLegend`. Each `Field` is a `role="group"` too.
+- **Errors**: `FieldError` is `role="alert"`, so a message that appears is announced. Pair it with `aria-invalid` on the control.
+- **Choice cards**: the radio or checkbox inside stays the focusable, keyboard-operable control; the card only enlarges its click area. Radio groups keep their roving tabindex and arrow keys.
+- **Contrast**: the selected card's text is `--foreground` on `--accent`, and `FieldDescription` is `--muted-foreground`, the same pairs the rest of the system already uses.
+
+## Related
+
+- [Form](/components/form) - react-hook-form wiring for `id`, `aria-describedby` and `aria-invalid`
+- [Label](/components/text/label) - the caption primitive `FieldLabel` builds on
+- [Radio Group](/components/selection/radio-group) - the control inside a choice card
+- [Checkbox](/components/selection/checkbox) - multi-select choice cards
+- [Switch](/components/selection/switch) - a switch card
+- [Input](/components/text/input) / [Textarea](/components/text/textarea) - the controls a field wraps

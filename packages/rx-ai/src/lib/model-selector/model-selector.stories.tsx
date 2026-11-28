@@ -20,7 +20,7 @@ import {
 /**
  * # ModelSelector
  *
- * A faithful port of the Vercel AI Elements **ModelSelector** — a command-
+ * The **ModelSelector** — a command-
  * palette style model picker built on the design system `Dialog` + `Command`.
  * Users open it from a trigger, search, and pick a model grouped by provider,
  * with provider logos and keyboard shortcuts.

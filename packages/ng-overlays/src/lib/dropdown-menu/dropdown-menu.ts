@@ -71,17 +71,38 @@ export class DropdownMenuPortal {}
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button type="button" [brnPopoverTriggerFor]="content()" [class]="class()">
+    <button
+      type="button"
+      brnPopoverTrigger
+      [brnPopoverTriggerFor]="overlay()"
+      [class]="class()"
+      [attr.aria-label]="ariaLabel() || null"
+    >
       <ng-content />
     </button>
   `,
-  host: { 'data-slot': 'dropdown-menu-trigger', class: 'inline-flex' },
+  // The host stays out of layout: React's trigger IS the button, so a caller's
+  // `class` must style only the inner button, never a wrapper too.
+  host: { 'data-slot': 'dropdown-menu-trigger', class: 'contents' },
 })
 export class DropdownMenuTrigger {
-  /** Template ref of the `<ng-template brnPopoverContent>` to open. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly content = input.required<any>();
+  /**
+   * Optional. The trigger opens the `BrnPopover` of the enclosing
+   * `gr-dropdown-menu`, which picks up the sibling
+   * `<ng-template brnPopoverContent>` on its own. Kept for compatibility: a
+   * template ref here is ignored; a `BrnPopover` instance targets that popover.
+   */
+  readonly content = input<unknown>();
   readonly class = input<string>();
+  /** Accessible name for icon-only triggers (forwarded to the button). */
+  readonly ariaLabel = input<string>();
+  // Brain's trigger calls `stateComputed()` on whatever `brnPopoverTriggerFor`
+  // holds, so only a real popover may reach it; otherwise the trigger falls
+  // back to the popover injected from the enclosing root.
+  protected readonly overlay = computed(() => {
+    const content = this.content();
+    return content instanceof BrnPopover ? content : undefined;
+  });
 }
 
 @Component({
@@ -99,7 +120,7 @@ export class DropdownMenuContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+      'z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
       this.class(),
     ),
   );
@@ -138,7 +159,7 @@ export class DropdownMenuItem {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground data-[variant=destructive]:*:[svg]:text-destructive!",
+      "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground data-[variant=destructive]:*:[svg]:text-destructive!",
       this.class(),
     ),
   );
@@ -361,7 +382,7 @@ export class DropdownMenuSubContent {
   readonly class = input<string>();
   protected readonly hostClass = computed(() =>
     cn(
-      'z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-lg data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+      'z-50 min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover-surface p-1 text-popover-foreground shadow-lg data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
       this.class(),
     ),
   );

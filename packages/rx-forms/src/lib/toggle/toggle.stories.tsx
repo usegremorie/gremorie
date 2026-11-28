@@ -7,8 +7,8 @@ import { Toggle } from './toggle';
  * # Toggle
  *
  * A two-state button (`aria-pressed`) for stateful actions outside of form
- * submission — bold/italic in an editor, view-mode switches, filter chips. A
- * faithful shadcn/Radix port driven by a CVA factory with two variants and three
+ * submission — bold/italic in an editor, view-mode switches, filter chips. Built
+ * on Radix and driven by a CVA factory with two variants and three
  * sizes. For form-bound booleans use Checkbox or Switch; `ToggleGroup` is the
  * coordinated multi-button equivalent.
  *

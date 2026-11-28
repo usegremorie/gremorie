@@ -7,11 +7,11 @@ import { RadialChartPreview } from '@/components/preview/data/radial-chart';
 
 ## Visão geral
 
-`RadialChart` é um gráfico recharts construído sobre o primitive `chart` do shadcn (`ChartContainer`) para **barras polares concêntricas**. Cada linha de dados produz uma barra ao redor do centro do gráfico; cada barra varre proporcionalmente ao seu valor de `dataKey`. As cores das barras vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`), e um `config` opcional fornece os labels mostrados no tooltip.
+`RadialChart` é um gráfico recharts construído sobre o primitive `chart` (`ChartContainer`) para **barras polares concêntricas**. Cada linha de dados produz uma barra ao redor do centro do gráfico; cada barra varre proporcionalmente ao seu valor de `dataKey`. As cores das barras vêm do `fill` de cada linha (ex. `fill: "var(--chart-1)"`), e um `config` opcional fornece os labels mostrados no tooltip.
 
 Use RadialChart quando você quer um **ranking compacto e decorativo** de três a cinco itens - categorias principais, drivers líderes, métricas ranqueadas em um hero card. Para comparação exata [`BarChart`](/components/data/bar-chart) lê mais rápido; para share-of-whole num relance [`PieChart`](/components/data/pie-chart) é mais familiar.
 
-A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart` do shadcn; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
+A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitive `chart`; a edição Angular (`@gremorie/ng-data`) renderiza geometria d3 headless dentro de um SVG estilizado. O motor de renderização difere; a superfície pública é idêntica input-por-input.
 
 ## Anatomia
 
@@ -26,7 +26,7 @@ A edição React (`@gremorie/rx-data`) renderiza com recharts dentro do primitiv
    └─ sr-only data table
 ```
 
-A edição React compõe esta superfície através do primitive `chart` do shadcn:
+A edição React compõe esta superfície através do primitive `chart`:
 
 ```text
 ChartContainer                     responsive square frame + tooltip label config
@@ -46,15 +46,33 @@ ChartContainer                     responsive square frame + tooltip label confi
 ## Instalação
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-radial-chart ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-radial-chart
+```
+
+</Tab>
   <Tab value="pnpm">
-    ```bash pnpm dlx gremorie@latest add rx-radial-chart ```
+
+```bash
+pnpm dlx gremorie@latest add rx-radial-chart
+```
+
   </Tab>
   <Tab value="yarn">
-    ```bash yarn dlx gremorie@latest add rx-radial-chart ```
+
+```bash
+yarn dlx gremorie@latest add rx-radial-chart
+```
+
   </Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-radial-chart ```
+
+```bash
+bunx --bun gremorie@latest add rx-radial-chart
+```
+
   </Tab>
 </Tabs>
 
@@ -136,7 +154,7 @@ export class TopBrowsersComponent {
 
 ### `<RadialChart>`
 
-Um gráfico de barras radiais recharts composto dentro do primitive `chart` do shadcn (`ChartContainer`). Uma barra concêntrica por linha; as cores das barras vêm do `fill` de cada linha, e o `config` opcional fornece os labels mostrados no tooltip.
+Um gráfico de barras radiais recharts composto dentro do primitive `chart` (`ChartContainer`). Uma barra concêntrica por linha; as cores das barras vêm do `fill` de cada linha, e o `config` opcional fornece os labels mostrados no tooltip.
 
 | Prop        | Type                    | Default | Descrição                                                                                                                                                                        |
 | ----------- | ----------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -149,7 +167,7 @@ Um gráfico de barras radiais recharts composto dentro do primitive `chart` do s
 
 ### Primitives de chart para composição customizada
 
-Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart do shadcn, todos reexportados de `@gremorie/rx-data`. Isso espelha o bloco radial oficial do shadcn ([ui.shadcn.com/charts/radial](https://ui.shadcn.com/charts/radial)).
+Para controle total, componha recharts cru dentro de `ChartContainer` usando os primitives de chart, todos reexportados de `@gremorie/rx-data`.
 
 | Export                                              | Papel                                                                                         |
 | --------------------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -260,7 +278,7 @@ Defina `tooltip` como `false` para um ranking estático e decorativo - útil qua
 
 ### Composição customizada
 
-Quando você precisa de um tratamento de track diferente, preenchimentos de gradiente, um label central ou uma legenda, componha recharts cru dentro de `ChartContainer`. Isso espelha o bloco radial oficial do shadcn.
+Quando você precisa de um tratamento de track diferente, preenchimentos de gradiente, um label central ou uma legenda, componha recharts cru dentro de `ChartContainer`.
 
 ```tsx
 import {

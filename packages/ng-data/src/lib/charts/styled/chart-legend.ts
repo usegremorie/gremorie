@@ -79,7 +79,7 @@ export class ChartIconOutlet {
           } @else {
             <span
               data-slot="chart-legend-swatch"
-              class="size-2.5 rounded-[2px]"
+              class="size-2.5 rounded-xs"
               [style.background]="item.color"
             ></span>
           }

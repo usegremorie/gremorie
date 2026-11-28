@@ -7,7 +7,7 @@ import { AreaChart } from './area-chart';
 /**
  * # AreaChart
  *
- * A recharts area chart wired to Gremorie's design tokens through the shadcn
+ * A recharts area chart wired to Gremorie's design tokens through the
  * `chart` primitive (`ChartContainer`). One `<Area>` per `config` entry, filled
  * with `var(--color-<key>)`.
  *

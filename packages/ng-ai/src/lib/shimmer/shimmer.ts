@@ -60,7 +60,7 @@ export class Shimmer {
 
   protected readonly backgroundImage = computed(
     () =>
-      'linear-gradient(90deg, transparent calc(50% - var(--ng-shimmer-spread)), var(--background, #ffffff), transparent calc(50% + var(--ng-shimmer-spread))), linear-gradient(var(--muted-foreground, #71717a), var(--muted-foreground, #71717a))',
+      'linear-gradient(90deg, transparent calc(50% - var(--ng-shimmer-spread)), var(--background), transparent calc(50% + var(--ng-shimmer-spread))), linear-gradient(var(--muted-foreground), var(--muted-foreground))',
   );
 
   protected readonly spreadPx = computed(() => {

@@ -297,6 +297,28 @@ export const pieChart = defineContract({
       default: false,
       desc: 'Draw slice labels.',
     },
+    {
+      name: 'centerValue',
+      type: 'string',
+      desc: 'Big figure in the donut hole, e.g. a total. Needs donut.',
+    },
+    {
+      name: 'centerLabel',
+      type: 'string',
+      desc: 'Caption under centerValue.',
+    },
+    {
+      name: 'framed',
+      type: 'boolean',
+      default: true,
+      desc: "Draw the chart's own card frame. Turn off inside a Card.",
+    },
+    {
+      name: 'legend',
+      type: 'boolean',
+      default: true,
+      desc: 'Show the color legend. Turn off when the page already lists the slices.',
+    },
     TOOLTIP,
     CN,
   ],

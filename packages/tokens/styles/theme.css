@@ -60,6 +60,38 @@
   --color-gray-950: oklch(0.145 0 0); /* #0a0a0a */
 
   /*
+   * Black alpha scale: translucent black that reads on any surface.
+   * Mode-independent; a theme picks black steps for light and white steps for
+   * dark.
+   */
+  --color-black-a3: oklch(0 0 0 / 0.03); /* #00000008 */
+  --color-black-a5: oklch(0 0 0 / 0.05); /* #0000000d */
+  --color-black-a8: oklch(0 0 0 / 0.08); /* #00000014 */
+  --color-black-a10: oklch(0 0 0 / 0.1); /* #0000001a */
+  --color-black-a12: oklch(0 0 0 / 0.12); /* #0000001f */
+  --color-black-a15: oklch(0 0 0 / 0.15); /* #00000026 */
+  --color-black-a20: oklch(0 0 0 / 0.2); /* #00000033 */
+  --color-black-a30: oklch(0 0 0 / 0.3); /* #0000004d */
+  --color-black-a40: oklch(0 0 0 / 0.4); /* #00000066 */
+  --color-black-a60: oklch(0 0 0 / 0.6); /* #00000099 */
+
+  /*
+   * White alpha scale: translucent white that reads on any surface.
+   * Mode-independent; a theme picks black steps for light and white steps for
+   * dark.
+   */
+  --color-white-a3: oklch(1 0 0 / 0.03); /* #ffffff08 */
+  --color-white-a5: oklch(1 0 0 / 0.05); /* #ffffff0d */
+  --color-white-a8: oklch(1 0 0 / 0.08); /* #ffffff14 */
+  --color-white-a10: oklch(1 0 0 / 0.1); /* #ffffff1a */
+  --color-white-a12: oklch(1 0 0 / 0.12); /* #ffffff1f */
+  --color-white-a15: oklch(1 0 0 / 0.15); /* #ffffff26 */
+  --color-white-a20: oklch(1 0 0 / 0.2); /* #ffffff33 */
+  --color-white-a30: oklch(1 0 0 / 0.3); /* #ffffff4d */
+  --color-white-a40: oklch(1 0 0 / 0.4); /* #ffffff66 */
+  --color-white-a60: oklch(1 0 0 / 0.6); /* #ffffff99 */
+
+  /*
    * Full canonical red scale (Tailwind v4). NOTE: --destructive binds to
    * red-600 (light) / red-400 (dark) - red-600 here equals the project's
    * previous custom red-500, so the destructive surface is unchanged.
@@ -432,21 +464,35 @@
    * Radii base
    */
   --radius-base: 0.625rem;
+  --radius-xs: calc(var(--radius-base) * 0.2);
   --radius-sm: calc(var(--radius-base) * 0.6);
   --radius-md: calc(var(--radius-base) * 0.8);
   --radius-lg: var(--radius-base);
   --radius-xl: calc(var(--radius-base) * 1.2);
 
   /*
-   * Typography, spacing, tracking (tweakcn contract). Themes may override.
+   * Typography, spacing, tracking (theme contract). Themes may override.
    */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-serif: ui-serif, 'Georgia', 'Times New Roman', serif;
   --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', monospace;
 
+  /*
+   * Type step below text-xs (10px): chart axis ticks, tab bar labels, compact
+   * badges. Sets only the size; line-height comes from the context.
+   */
+  --text-2xs: 0.625rem;
+
   --spacing: 0.25rem;
 
   --tracking-normal: 0em;
+
+  /*
+   * Entrance animations over the gremorie-* keyframes (motion partial): menus
+   * and dropdowns pop in, attachments fade in.
+   */
+  --animate-pop-in: gremorie-pop-in 120ms ease-out;
+  --animate-fade-in: gremorie-fade-in 120ms ease-out;
 }
 
 :root {
@@ -454,7 +500,7 @@
    * 2. SEMANTICS
    */
   --background: var(--color-gray-50);
-  --foreground: var(--color-gray-950);
+  --foreground: var(--color-gray-900);
 
   /*
    * Elevated surfaces are pure white (gray-0), one step above the off-white
@@ -478,7 +524,13 @@
   --muted: var(--color-gray-100);
   --muted-foreground: var(--color-gray-500);
   --accent: var(--color-gray-100);
-  --accent-foreground: var(--color-gray-900);
+  --accent-foreground: var(--foreground);
+
+  /*
+   * Selected item inside a track: the active tab, a segmented control or toggle
+   * group item. Sits one step lighter than the muted track in both modes.
+   */
+  --selected: var(--color-gray-0);
   --destructive: var(--color-red-600);
   --destructive-foreground: var(--color-gray-50);
 
@@ -499,19 +551,19 @@
   --ring: var(--color-gray-400);
 
   /*
-   * Sidebar (shadcn/tweakcn)
+   * Sidebar
    */
   --sidebar: var(--color-gray-50);
-  --sidebar-foreground: var(--color-gray-950);
+  --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--color-gray-900);
   --sidebar-primary-foreground: var(--color-gray-50);
   --sidebar-accent: var(--color-gray-100);
-  --sidebar-accent-foreground: var(--color-gray-900);
+  --sidebar-accent-foreground: var(--foreground);
   --sidebar-border: var(--color-gray-200);
   --sidebar-ring: var(--color-gray-400);
 
   /*
-   * Shadows (tweakcn contract; themes may override)
+   * Shadows (theme contract; themes may override)
    */
   --shadow-2xs: 0 1px 2px 0 oklch(0 0 0 / 0.04);
   --shadow-xs: 0 1px 3px 0 oklch(0 0 0 / 0.06);
@@ -636,11 +688,11 @@
    * Only remap semantics. Primitives stay intact.
    */
   --background: var(--color-gray-950);
-  --foreground: var(--color-gray-50);
+  --foreground: var(--color-gray-200);
   --card: var(--color-gray-900);
-  --card-foreground: var(--color-gray-50);
+  --card-foreground: var(--foreground);
   --popover: var(--color-gray-800);
-  --popover-foreground: var(--color-gray-50);
+  --popover-foreground: var(--foreground);
   --primary: var(--color-gray-100);
   --primary-foreground: var(--color-gray-900);
 
@@ -655,9 +707,15 @@
   --muted: var(--color-gray-800);
   --muted-foreground: var(--color-gray-400);
   --accent: var(--color-gray-800);
-  --accent-foreground: var(--color-gray-50);
+  --accent-foreground: var(--foreground);
+  --selected: var(--color-gray-700);
   --destructive: var(--color-red-400);
-  --destructive-foreground: var(--color-gray-50);
+
+  /*
+   * Text on the destructive fill. Dark mode's destructive is the lighter
+   * red-400, so its text turns near-black to stay readable.
+   */
+  --destructive-foreground: var(--color-gray-950);
 
   /*
    * On dark surfaces the fills invert: a lighter green/amber carries near-black
@@ -675,11 +733,11 @@
    * Sidebar (dark)
    */
   --sidebar: var(--color-gray-900);
-  --sidebar-foreground: var(--color-gray-50);
+  --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--color-gray-100);
   --sidebar-primary-foreground: var(--color-gray-900);
   --sidebar-accent: var(--color-gray-800);
-  --sidebar-accent-foreground: var(--color-gray-50);
+  --sidebar-accent-foreground: var(--foreground);
   --sidebar-border: oklch(1 0 0 / 0.1);
   --sidebar-ring: var(--color-gray-500);
 
@@ -783,6 +841,7 @@
  * Tailwind v4 utility wiring.
  * Exposes the semantics above as Tailwind utilities so you can write
  * `bg-background`, `text-foreground`, `border-input`, etc.
+ * `*-hover` colours are derived from their fill (see the state partial).
  */
 @theme inline {
   --color-background: var(--background);
@@ -793,21 +852,40 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: oklch(
+    from var(--primary) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-switch-checked: var(--switch-checked);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: oklch(
+    from var(--secondary) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-selected: var(--selected);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-hover: oklch(
+    from var(--destructive) calc(l + var(--hover-shift)) c h /
+      calc(alpha * var(--hover-opacity))
+  );
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
+  /* Field fill: the input colour at 30%, same in both modes. */
+  --color-field: color-mix(in oklab, var(--input) 30%, transparent);
+  --color-field-hover: oklch(
+    from color-mix(in oklab, var(--input) 30%, transparent)
+      calc(l + var(--hover-shift)) c h / calc(alpha * var(--hover-opacity))
+  );
   --color-ring: var(--ring);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -821,46 +899,94 @@
 
 /*
  * ─── Floating surfaces ────────────────────────────────
- * Menus, selects, popovers and hover cards paint a translucent
- * popover with a soft backdrop blur by default. Use them through
- * the `bg-popover-surface` utility, never `bg-popover/NN`.
+ * Everything that floats over content paints a translucent fill with a
+ * soft backdrop blur: menus, selects, popovers and hover cards
+ * (`bg-popover-surface`), and docked bars such as a sticky header or a
+ * chat composer (`bg-background-surface`). Use these utilities, never
+ * `bg-popover/NN` or `bg-background/NN` plus a hand-written blur.
  *
- * Inside the surface, accent (item hover/highlight) and muted (tracks,
- * subtle fills) become translucent foreground, as in Luma: an opaque fill
+ * Two tokens drive every floating surface:
+ *   --surface-opacity   how much of the fill is paint (100% = solid)
+ *   --surface-backdrop  the backdrop filter behind it (none = no blur)
+ *
+ * Solid, no blur: set --surface-opacity: 100% and --surface-backdrop: none,
+ * or use the shortcut <html data-menu="solid">. Users who ask the OS to
+ * reduce transparency get the solid surface automatically.
+ *
+ * Inside a popover surface, accent (item hover/highlight) and muted (tracks,
+ * subtle fills) become translucent foreground: an opaque fill
  * close to the popover color would vanish over whatever sits behind.
- *
- * Opt out (opaque, no blur): <html data-menu="solid">.
- * Users who ask the OS to reduce transparency get the opaque
- * surface automatically.
  */
+html {
+  --surface-opacity: 70%;
+  --surface-backdrop: blur(24px) saturate(1.5);
+}
+
 :root[data-menu='solid'] {
-  --popover-surface: var(--popover);
-  --popover-backdrop: none;
+  --surface-opacity: 100%;
+  --surface-backdrop: none;
 }
 
 @media (prefers-reduced-transparency: reduce) {
   :root {
-    --popover-surface: var(--popover);
-    --popover-backdrop: none;
+    --surface-opacity: 100%;
+    --surface-backdrop: none;
   }
 }
 
 @utility bg-popover-surface {
+  /* --popover-surface and --popover-backdrop still override, for 0.11 code. */
   background-color: var(
     --popover-surface,
-    color-mix(in oklab, var(--popover) 60%, transparent)
+    color-mix(in oklab, var(--popover) var(--surface-opacity), transparent)
   );
-  -webkit-backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
-  backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
+  -webkit-backdrop-filter: var(--popover-backdrop, var(--surface-backdrop));
+  backdrop-filter: var(--popover-backdrop, var(--surface-backdrop));
   --accent: color-mix(in oklab, var(--foreground) 10%, transparent);
   --muted: color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+@utility bg-background-surface {
+  background-color: color-mix(
+    in oklab,
+    var(--background) var(--surface-opacity),
+    transparent
+  );
+  -webkit-backdrop-filter: var(--surface-backdrop);
+  backdrop-filter: var(--surface-backdrop);
+}
+
+/*
+ * ─── Interaction states ───────────────────────────────
+ * Hover colours are derived from the fill itself, never a token per colour:
+ *
+ *   oklch(from var(--x) calc(l + var(--hover-shift)) c h
+ *         / calc(alpha * var(--hover-opacity)))
+ *
+ *   --hover-shift    lightness step: darker on light, lighter on dark
+ *   --hover-opacity  alpha multiplier: a translucent fill gets denser
+ *
+ * A solid fill only moves in lightness (its alpha is already 1); a
+ * translucent black or white fill only moves in alpha. So one rule works
+ * for every colour, theme and surface. Utilities: `hover:bg-primary-hover`,
+ * `-secondary-hover`, `-destructive-hover`, `-field-hover`.
+ */
+html {
+  --hover-shift: -0.05;
+  --hover-opacity: 1.8;
+}
+
+/* :is() keeps .dark's specificity in a rule of its own (the generated .dark
+   block carries the token values). */
+:is(.dark) {
+  --hover-shift: 0.05;
 }
 
 /*
  * Default border + outline color.
  * Tailwind v4's Preflight leaves bare `border` / `outline` at `currentColor`,
  * which renders DS borders as the (near-black) foreground instead of the
- * subtle `--border` token. This is the canonical shadcn base layer, without
+ * subtle `--border` token. This base layer is required: without
  * it, every `border` utility falls back to currentColor (e.g. black card
  * borders in Storybook). Explicit utilities like `border-input` still win
  * (utilities layer > base).

@@ -7,6 +7,7 @@ import { CheckboxPreview } from '@/components/preview/forms/checkbox';
 import { CheckboxStatesPreview } from '@/components/preview/forms/checkbox-states';
 import { CheckboxWithLabelPreview } from '@/components/preview/forms/checkbox-with-label';
 import { CheckboxDisabledPreview } from '@/components/preview/forms/checkbox-disabled';
+import { FieldChoiceCardCheckboxPreview } from '@/components/preview/forms/field-choice-card-checkbox';
 
 ## Visão geral
 
@@ -29,10 +30,34 @@ Checkbox   4×4 rounded box; renders the check glyph when checked
 ## Instalação
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-checkbox ```</Tab>
-  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-checkbox ```</Tab>
-  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-checkbox ```</Tab>
-  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-checkbox ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-checkbox
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-checkbox
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-checkbox
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-checkbox
+```
+
+</Tab>
 </Tabs>
 
 ## Uso
@@ -92,11 +117,31 @@ Encaminha todas as props para `CheckboxPrimitive.Root` e renderiza um `CheckboxP
 
 ### Com label e descrição
 
-O padrão canônico de formulário: checkbox, label e uma linha de helper opcional. Clicar no label alterna o controle.
+O padrão canônico de formulário: checkbox, label e uma linha de helper opcional, montados com [`Field`](/components/field). Clicar no label alterna o controle.
 
 <ComponentPreview name="forms/checkbox-with-label">
   <CheckboxWithLabelPreview />
 </ComponentPreview>
+
+### Card de escolha
+
+Envolva um `Field` em um `FieldLabel` e o card inteiro vira a área de clique do seu checkbox; qualquer número de cards pode ser selecionado. O card selecionado recebe a borda `--primary` e o preenchimento `--accent`.
+
+<ComponentPreview name="forms/field-choice-card-checkbox">
+  <FieldChoiceCardCheckboxPreview />
+</ComponentPreview>
+
+```tsx
+<FieldLabel htmlFor="push">
+  <Field orientation="horizontal">
+    <Checkbox id="push" />
+    <FieldContent>
+      <FieldTitle>Push</FieldTitle>
+      <FieldDescription>Instant alerts on your phone.</FieldDescription>
+    </FieldContent>
+  </Field>
+</FieldLabel>
+```
 
 ### States
 
@@ -150,5 +195,6 @@ function SelectAll({ items, selected, onChange }) {
 
 - [Switch](/components/selection/switch) - toggle de efeito imediato (vs seleção de envio de formulário)
 - [Radio Group](/components/selection/radio-group) - primo de single-select
+- [Field](/components/field) - labels, descrições, erros e cards de escolha em volta de um checkbox
 - [Label](/components/text/label) - o companheiro canônico
 - [Form](/components/form) - conecte o Checkbox no react-hook-form

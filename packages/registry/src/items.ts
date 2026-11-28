@@ -111,7 +111,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'ng',
     title: 'Carousel (Angular)',
     description:
-      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).',
+      'Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display.',
     categories: ['display'],
     packageRoot: 'packages/ng-display',
     sourceFiles: ['src/lib/carousel/carousel.ts', 'src/lib/carousel/index.ts'],
@@ -817,6 +817,21 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['ng-utils'],
   },
   {
+    name: 'ng-field',
+    framework: 'ng',
+    title: 'Field (Angular)',
+    description:
+      'Form-layout family for the Angular edition - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox). Mirrors React Field from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: ['src/lib/field/field.ts', 'src/lib/field/index.ts'],
+    targetPrefix: 'src/app/gremorie/field',
+    srcStrip: 'src/lib/field/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
+    // field.ts imports the label base class from `../label/label`.
+    registryDependencies: ['ng-utils', 'ng-label'],
+  },
+  {
     name: 'ng-label',
     framework: 'ng',
     title: 'Label (Angular)',
@@ -1194,6 +1209,20 @@ export const ITEMS: ItemConfig[] = [
       '@angular/common',
       'class-variance-authority',
     ],
+    registryDependencies: ['ng-utils', 'ng-tooltip'],
+  },
+  {
+    name: 'ng-tab-bar',
+    framework: 'ng',
+    title: 'Tab Bar (Angular)',
+    description:
+      'Bottom tab bar for phone screens - TabBar, TabBarItem (gr-tab-bar, gr-tab-bar-item, a[gr-tab-bar-item]). Three looks on one API: material, ios and floating. Badges, hide on scroll, safe-area aware. Mirrors React TabBar from @gremorie/rx-navigation.',
+    categories: ['navigation'],
+    packageRoot: 'packages/ng-navigation',
+    sourceFiles: ['src/lib/tab-bar/tab-bar.ts', 'src/lib/tab-bar/index.ts'],
+    targetPrefix: 'src/app/gremorie/tab-bar',
+    srcStrip: 'src/lib/tab-bar/',
+    dependencies: ['@angular/core', 'class-variance-authority'],
     registryDependencies: ['ng-utils', 'ng-tooltip'],
   },
   {
@@ -1617,6 +1646,21 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/input/',
     dependencies: [],
     registryDependencies: ['rx-utils'],
+  },
+  {
+    name: 'rx-field',
+    framework: 'rx',
+    title: 'Field (React)',
+    description:
+      'Form-layout family - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox).',
+    categories: ['forms'],
+    packageRoot: 'packages/rx-forms',
+    sourceFiles: ['src/lib/field/field.tsx'],
+    targetPrefix: 'src/components/gremorie/forms/field',
+    srcStrip: 'src/lib/field/',
+    dependencies: ['class-variance-authority'],
+    // field.tsx imports `../label/label`.
+    registryDependencies: ['rx-utils', 'rx-label'],
   },
   {
     name: 'rx-label',
@@ -2192,6 +2236,20 @@ export const ITEMS: ItemConfig[] = [
       'rx-sheet',
       'rx-tooltip',
     ],
+  },
+  {
+    name: 'rx-tab-bar',
+    framework: 'rx',
+    title: 'Tab Bar (React)',
+    description:
+      'Bottom tab bar for phone screens - TabBar, TabBarItem. Three looks on one API: material (full-width bar with a pill indicator), ios (floating translucent capsule) and floating (compact icon-only pill). Badges, hide on scroll, safe-area aware, asChild for router links.',
+    categories: ['navigation'],
+    packageRoot: 'packages/rx-navigation',
+    sourceFiles: ['src/lib/tab-bar/tab-bar.tsx'],
+    targetPrefix: 'src/components/gremorie/navigation/tab-bar',
+    srcStrip: 'src/lib/tab-bar/',
+    dependencies: ['radix-ui', 'class-variance-authority'],
+    registryDependencies: ['rx-utils', 'rx-tooltip'],
   },
   {
     name: 'rx-tabs',
@@ -2864,7 +2922,7 @@ export const ITEMS: ItemConfig[] = [
   },
 
   // ============================================================
-  // React data viz - recharts + the shadcn `chart` primitive (1 base + 7 charts).
+  // React data viz - recharts + the `chart` primitive (1 base + 7 charts).
   // A shared `rx-chart` base carries the chart primitive (ChartContainer /
   // ChartTooltip / ChartTooltipContent / ChartLegend) wired to the design
   // tokens; each styled chart composes it with recharts. (Replaces the former

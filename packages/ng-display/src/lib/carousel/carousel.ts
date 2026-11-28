@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   ElementRef,
   inject,
@@ -12,7 +13,6 @@ import {
   signal,
   ViewChild,
   ViewEncapsulation,
-  computed,
   type WritableSignal,
 } from '@angular/core';
 import EmblaCarousel, {
@@ -24,8 +24,7 @@ import { cn } from '@gremorie/ng-core';
 
 /**
  * Carousel — horizontally (or vertically) scrollable slide region. Mirrors
- * React `Carousel` from `@gremorie/rx-display`, which follows the shadcn/ui
- * pattern built on Embla. Five parts:
+ * React `Carousel` from `@gremorie/rx-display`, both built on Embla. Five parts:
  * `gr-carousel` (root), `gr-carousel-content`, `gr-carousel-item`,
  * `gr-carousel-previous`, `gr-carousel-next`.
  *
@@ -93,13 +92,19 @@ export class CarouselService {
   template: `<ng-content />`,
   host: {
     'data-slot': 'carousel',
-    class: 'relative block',
+    '[class]': 'hostClass()',
     role: 'region',
     'aria-roledescription': 'carousel',
     '(keydown)': 'onKeydown($event)',
   },
 })
 export class Carousel {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('relative block', this.class()),
+  );
+
   protected readonly service = inject(CarouselService);
 
   readonly orientation = input<CarouselOrientation>('horizontal');
@@ -174,10 +179,16 @@ export class CarouselContent implements AfterViewInit, OnDestroy {
     role: 'group',
     'aria-roledescription': 'slide',
     'data-slot': 'carousel-item',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class CarouselItem {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   private readonly service = inject(CarouselService);
   protected readonly computedClass = computed(() =>
     cn(

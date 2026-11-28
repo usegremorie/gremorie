@@ -7,7 +7,7 @@ import { BarChart } from './bar-chart';
 /**
  * # BarChart
  *
- * A recharts bar chart wired to Gremorie's design tokens through the shadcn
+ * A recharts bar chart wired to Gremorie's design tokens through the
  * `chart` primitive (`ChartContainer`). One `<Bar>` per `config` entry, colored
  * `var(--color-<key>)`; for a single categorical series, give each row a `fill`
  * and the bars take those colors.

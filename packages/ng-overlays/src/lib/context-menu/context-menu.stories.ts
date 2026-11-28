@@ -57,12 +57,11 @@ export const Workbench: Story = {
   render: () => ({
     template: `
       <gr-context-menu>
-        <gr-context-menu-trigger [content]="content"
+        <gr-context-menu-trigger
           class="flex h-40 w-72 items-center justify-center rounded-md border border-dashed text-sm">
           Right-click here
         </gr-context-menu-trigger>
-        <ng-template #content>
-          <ng-template brnPopoverContent>
+        <ng-template brnPopoverContent>
             <gr-context-menu-content class="w-52">
               <gr-context-menu-label>Actions</gr-context-menu-label>
               <gr-context-menu-separator />
@@ -75,7 +74,6 @@ export const Workbench: Story = {
               <gr-context-menu-separator />
               <gr-context-menu-item variant="destructive">Delete</gr-context-menu-item>
             </gr-context-menu-content>
-          </ng-template>
         </ng-template>
       </gr-context-menu>
     `,
@@ -87,12 +85,11 @@ export const CheckboxAndRadio: Story = {
   render: () => ({
     template: `
       <gr-context-menu>
-        <gr-context-menu-trigger [content]="content"
+        <gr-context-menu-trigger
           class="flex h-40 w-72 items-center justify-center rounded-md border border-dashed text-sm">
           Right-click here
         </gr-context-menu-trigger>
-        <ng-template #content>
-          <ng-template brnPopoverContent>
+        <ng-template brnPopoverContent>
             <gr-context-menu-content class="w-52">
               <gr-context-menu-checkbox-item [checked]="true">Show Bookmarks</gr-context-menu-checkbox-item>
               <gr-context-menu-checkbox-item>Show Full URLs</gr-context-menu-checkbox-item>
@@ -102,7 +99,6 @@ export const CheckboxAndRadio: Story = {
                 <gr-context-menu-radio-item>Colm</gr-context-menu-radio-item>
               </gr-context-menu-radio-group>
             </gr-context-menu-content>
-          </ng-template>
         </ng-template>
       </gr-context-menu>
     `,

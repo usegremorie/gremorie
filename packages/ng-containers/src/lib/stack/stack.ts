@@ -86,10 +86,16 @@ export type StackJustify = NonNullable<
   template: `<ng-content />`,
   host: {
     'data-slot': 'stack',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class Stack {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly gap = input<StackGap>('md');
   readonly align = input<StackAlign>('stretch');
   readonly justify = input<StackJustify>('start');

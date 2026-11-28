@@ -2,7 +2,7 @@
 
 > AI-native design system distributed via registry and MCP server. Two editions: Angular and React.
 
-Gremorie is the design system of AI-native components that should exist but doesn't. Built on [spartan-ng](https://www.spartan.ng) primitives (Angular edition) and [Radix](https://www.radix-ui.com) primitives (React edition), designed to integrate cleanly with [Hashbrown](https://hashbrown.dev) for LLM logic. Built on the registry-distribution pattern pioneered by shadcn/ui (MIT, see `NOTICE.md`).
+Gremorie is the design system of AI-native components that should exist but doesn't. Built on [spartan-ng](https://www.spartan.ng) primitives (Angular edition) and [Radix](https://www.radix-ui.com) primitives (React edition), designed to integrate cleanly with [Hashbrown](https://hashbrown.dev) for LLM logic. Distributed through a copy-in registry (third-party licenses in `NOTICE.md`).
 
 **Status:** pre-release. Two editions in active development.
 
@@ -10,9 +10,9 @@ Gremorie is the design system of AI-native components that should exist but does
 
 Teams adding AI features hit four frictions:
 
-1. **No AI component library.** AI Elements (Vercel), assistant-ui - all React-only or scattered.
+1. **No AI component library.** The existing options are React-only or scattered.
 2. **Streaming and tool calls are complex.** SSE, chunk parsing, tool dispatch - risky to write from scratch.
-3. **Fragmented design.** spartan-ng has primitives but nothing AI-specific. shadcn/ui covers a lot but doesn't ship AI primitives.
+3. **Fragmented design.** spartan-ng has primitives but nothing AI-specific, and general-purpose component kits don't ship AI primitives.
 4. **Docs scattered.** Medium tutorials, no curation, no standard.
 
 Gremorie fills the visual layer. Logic stays in Hashbrown.

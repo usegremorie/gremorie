@@ -42,7 +42,7 @@ describe('Sonner', () => {
     expect(list).not.toBeNull();
     expect(list?.style.getPropertyValue('--normal-bg')).toBe('var(--popover)');
     expect(list?.style.getPropertyValue('--border-radius')).toBe(
-      'var(--radius)',
+      'var(--radius-md)',
     );
 
     toast.dismiss();

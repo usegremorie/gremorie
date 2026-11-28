@@ -34,7 +34,7 @@ import { CodeBlock } from '@gremorie/ng-artifacts';
   },
 })
 export class ToolInput {
-  // Public binding is `input` (mirrors the AI Elements ToolInput prop); the
+  // Public binding is `input` (matches the React ToolInput prop); the
   // internal field keeps `value` to avoid shadowing Angular's `input()`.
   // eslint-disable-next-line @angular-eslint/no-input-rename
   readonly value = input<unknown>(null, { alias: 'input' });

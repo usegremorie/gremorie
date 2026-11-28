@@ -184,7 +184,7 @@ const GREMORIE_IMPORT_RE =
  * appended sorted). This keeps the emitted item JSON self-contained even when
  * the hand-maintained config forgets a workspace import.
  *
- * Follow-up (option A, shadcn-style): rewrite `@gremorie/rx-core` cn imports
+ * Follow-up (option A, copy-in style): rewrite `@gremorie/rx-core` cn imports
  * to the locally copied `rx-utils` file and map bundle-entrypoint imports
  * (e.g. `@gremorie/rx-forms` -> the copied rx-button) to registry items so
  * consumers do not need the npm packages at all. Until then the rx-utils /

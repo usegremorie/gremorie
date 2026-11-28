@@ -9,8 +9,9 @@ import { cn } from '@gremorie/rx-core';
 import { formatValue } from './format';
 
 /**
- * Chart primitives — ported from shadcn/ui (new-york-v4), the proven recharts
- * wrapper, adapted to Gremorie (`cn` from `@gremorie/rx-core`; design tokens).
+ * Chart primitives: the recharts wrapper every Gremorie chart composes on
+ * (`cn` from `@gremorie/rx-core`; design tokens). Third-party licenses: see
+ * NOTICE.md.
  *
  * This is the foundation every React (`rx-*`) chart composes on: `ChartContainer`
  * provides the responsive frame + per-series CSS color vars (`--color-<key>`),
@@ -301,7 +302,7 @@ function ChartTooltipContent({
   return (
     <div
       className={cn(
-        'grid min-w-32 items-start gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md',
+        'grid min-w-32 items-start gap-1.5 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs text-popover-foreground shadow-md',
         className,
       )}
     >
@@ -332,7 +333,7 @@ function ChartTooltipContent({
                       !hideIndicator && (
                         <div
                           className={cn(
-                            'shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)',
+                            'shrink-0 rounded-xs border-(--color-border) bg-(--color-bg)',
                             {
                               'h-2.5 w-2.5': indicator === 'dot',
                               'w-1': indicator === 'line',
@@ -423,7 +424,7 @@ function ChartLegendContent({
                 <itemConfig.icon />
               ) : (
                 <div
-                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  className="h-2 w-2 shrink-0 rounded-xs"
                   style={{
                     backgroundColor: item.color,
                   }}

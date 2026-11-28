@@ -6,7 +6,7 @@ import { Checkbox } from './checkbox';
 /**
  * # Checkbox
  *
- * Binary (or indeterminate) selection control, a faithful shadcn/Radix port.
+ * Binary (or indeterminate) selection control, built on Radix.
  * Supports the three canonical states — unchecked, checked, indeterminate — via
  * the Radix `checked` prop (`true | false | "indeterminate"`). The indicator is
  * a lucide `CheckIcon`.

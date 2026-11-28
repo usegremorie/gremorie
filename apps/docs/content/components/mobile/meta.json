@@ -1,0 +1,10 @@
+{
+  "title": "Mobile",
+  "icon": "Smartphone",
+  "description": "Built for phones: bottom tab bar, drawers and sheets.",
+  "pages": [
+    "tab-bar",
+    "[Drawer](/en/components/overlays/drawer)",
+    "[Sheet](/en/components/overlays/sheet)"
+  ]
+}

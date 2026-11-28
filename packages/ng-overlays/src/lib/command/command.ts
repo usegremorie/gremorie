@@ -164,10 +164,7 @@ export class CommandInput {
 export class CommandList {
   readonly class = input<string>();
   protected readonly listClass = computed(() =>
-    cn(
-      'max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto',
-      this.class(),
-    ),
+    cn('max-h-75 scroll-py-1 overflow-x-hidden overflow-y-auto', this.class()),
   );
 }
 

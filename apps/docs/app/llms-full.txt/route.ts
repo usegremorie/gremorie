@@ -6,8 +6,7 @@ import { mdxToText } from './mdx-to-text';
 import { source } from '@/lib/source';
 
 /**
- * /llms-full.txt — the full docs corpus in one plain-markdown stream, the way
- * shadcn/ui and Vercel AI Elements ship it. Where /llms.txt is the index
+ * /llms-full.txt — the full docs corpus in one plain-markdown stream. Where /llms.txt is the index
  * (links only), this route concatenates the CONTENT of every public docs page
  * (components, blocks, artifacts, tokens, get-started, platform, corpus) so
  * an agent can ingest the whole documentation in a single fetch.

@@ -27,9 +27,9 @@ export const openInChat = defineContract({
     },
     {
       name: 'content',
-      type: 'TemplateRef',
+      type: 'BrnPopover',
       adapts: { rx: 'n/a (Radix wires trigger↔content internally)' },
-      desc: 'Angular only: OpenInTrigger ref to the <ng-template brnPopoverContent>.',
+      desc: 'Angular only, optional: the trigger opens the enclosing OpenIn popover by default; pass a BrnPopover to target another one (a template ref is ignored).',
     },
     {
       name: 'className',

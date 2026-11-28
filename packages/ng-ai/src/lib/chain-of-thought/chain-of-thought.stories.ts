@@ -106,7 +106,7 @@ export const WithSearchResults: Story = {
             <chain-of-thought-search-results>
               <chain-of-thought-search-result>radix-ui · primitives</chain-of-thought-search-result>
               <chain-of-thought-search-result>React docs · forwardRef</chain-of-thought-search-result>
-              <chain-of-thought-search-result>shadcn · slot pattern</chain-of-thought-search-result>
+              <chain-of-thought-search-result>Gremorie docs · slot pattern</chain-of-thought-search-result>
             </chain-of-thought-search-results>
           </chain-of-thought-step>
           <chain-of-thought-step label="Synthesize the response" status="active" />

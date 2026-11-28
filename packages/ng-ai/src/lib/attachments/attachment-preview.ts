@@ -82,7 +82,7 @@ const ICON_BY_CATEGORY: Record<
     }
     @if (parent.errored()) {
       <span
-        class="absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-[10px] font-medium text-destructive-foreground"
+        class="absolute inset-x-0 bottom-0 bg-destructive py-0.5 text-center text-2xs font-medium text-destructive-foreground"
       >
         Error
       </span>

@@ -255,7 +255,7 @@ export const MediaRangePlayer = React.forwardRef<
         />
         <div
           data-slot="media-range-player-playhead"
-          className="absolute top-1/2 h-3 w-0.5 -translate-y-1/2 bg-foreground"
+          className="absolute top-1/2 h-3 w-0.5 -translate-y-1/2 bg-current"
           style={{ left: `${toPercent(time, win)}%` }}
         />
       </div>

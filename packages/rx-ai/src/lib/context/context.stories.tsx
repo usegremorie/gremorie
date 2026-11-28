@@ -18,7 +18,7 @@ import {
 /**
  * # Context
  *
- * A faithful port of the Vercel AI Elements **Context** primitive — a token-
+ * The **Context** primitive — a token-
  * usage hovercard. The trigger shows the percentage of the model's context
  * window consumed (with a tiny ring gauge); hovering reveals a breakdown of
  * input / output / reasoning / cache tokens and the estimated cost. Cost is

@@ -20,6 +20,7 @@ import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import {
   BlocksIcon,
   ComponentIcon,
+  LayoutDashboardIcon,
   LibraryIcon,
   MenuIcon,
   PaletteIcon,
@@ -33,7 +34,7 @@ import { GithubMark } from '@/components/github-mark';
 import { GremorieSymbol } from '@/components/gremorie-symbol';
 
 /**
- * Site top bar, in the Luma app's layout:
+ * Site top bar:
  *
  *   header (sticky, 56px)
  *   ├─ logo                     left: the symbol, home link
@@ -54,6 +55,7 @@ const NAV: { text: string; path: string; icon: LucideIcon }[] = [
   { text: 'Blocks', path: '/blocks', icon: BlocksIcon },
   { text: 'Tokens', path: '/tokens', icon: PaletteIcon },
   { text: 'Corpus', path: '/corpus', icon: LibraryIcon },
+  { text: 'Showcase', path: '/showcase', icon: LayoutDashboardIcon },
 ];
 
 function IconAction({
@@ -94,8 +96,7 @@ export function SiteHeader({ lang }: { lang: string }) {
       <header
         className={cn(
           'sticky top-0 z-40 h-14 border-b border-transparent transition-[background-color,border-color] duration-200',
-          scrolled &&
-            'border-border bg-background/60 backdrop-blur-[16px] backdrop-saturate-150 [[data-menu=solid]_&]:bg-background [[data-menu=solid]_&]:backdrop-blur-none [@media(prefers-reduced-transparency:reduce)]:bg-background [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none',
+          scrolled && 'border-border bg-background-surface',
         )}
         data-scrolled={scrolled || undefined}
         data-slot="site-header"

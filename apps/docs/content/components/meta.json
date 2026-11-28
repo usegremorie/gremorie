@@ -11,6 +11,7 @@
     "utilities",
     "---Inputs---",
     "form",
+    "field",
     "buttons",
     "text",
     "selection",
@@ -22,6 +23,7 @@
     "---Interaction---",
     "overlays",
     "navigation",
+    "mobile",
     "feedback"
   ]
 }

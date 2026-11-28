@@ -1,0 +1,25 @@
+/*
+ * ─── Interaction states ───────────────────────────────
+ * Hover colours are derived from the fill itself, never a token per colour:
+ *
+ *   oklch(from var(--x) calc(l + var(--hover-shift)) c h
+ *         / calc(alpha * var(--hover-opacity)))
+ *
+ *   --hover-shift    lightness step: darker on light, lighter on dark
+ *   --hover-opacity  alpha multiplier: a translucent fill gets denser
+ *
+ * A solid fill only moves in lightness (its alpha is already 1); a
+ * translucent black or white fill only moves in alpha. So one rule works
+ * for every colour, theme and surface. Utilities: `hover:bg-primary-hover`,
+ * `-secondary-hover`, `-destructive-hover`, `-field-hover`.
+ */
+html {
+  --hover-shift: -0.05;
+  --hover-opacity: 1.8;
+}
+
+/* :is() keeps .dark's specificity in a rule of its own (the generated .dark
+   block carries the token values). */
+:is(.dark) {
+  --hover-shift: 0.05;
+}

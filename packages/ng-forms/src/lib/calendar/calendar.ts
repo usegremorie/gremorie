@@ -35,7 +35,7 @@ import { buttonVariants, cn } from '@gremorie/ng-core';
  * focus + full arrow/Home/End/PageUp/PageDown keyboard navigation, selection
  * state, and `min` / `max` / `dateDisabled` constraints. It emits the same
  * per-cell state react-day-picker exposes — surfaced here as
- * `data-selected` / `data-today` / `data-outside` / `data-disabled` host
+ * `data-selected-single` / `data-range-*` / `data-today` / `data-outside` / `data-disabled` host
  * attributes — so the verbatim KDS class strings (which key off those
  * attributes) render identically across editions.
  *
@@ -146,7 +146,7 @@ import { buttonVariants, cn } from '@gremorie/ng-core';
             <th
               *brnCalendarWeekday="let weekday"
               scope="col"
-              class="w-8 text-[0.8rem] font-normal text-muted-foreground"
+              class="w-8 text-xs font-normal text-muted-foreground"
             >
               {{ formatWeekday(weekday) }}
             </th>
@@ -211,7 +211,12 @@ export class Calendar {
     cn(
       buttonVariants({ variant: 'ghost' }),
       'size-8 p-0 font-normal',
-      'data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary data-[selected]:hover:text-primary-foreground data-[selected]:focus:bg-primary data-[selected]:focus:text-primary-foreground',
+      // The brain marks a picked day with data-selected-single (and the ends of
+      // a range with data-range-start / -end), never a bare data-selected.
+      'data-[selected-single]:bg-primary data-[selected-single]:text-primary-foreground data-[selected-single]:hover:bg-primary data-[selected-single]:hover:text-primary-foreground data-[selected-single]:focus:bg-primary data-[selected-single]:focus:text-primary-foreground',
+      'data-[range-start]:bg-primary data-[range-start]:text-primary-foreground data-[range-start]:hover:bg-primary data-[range-start]:hover:text-primary-foreground',
+      'data-[range-end]:bg-primary data-[range-end]:text-primary-foreground data-[range-end]:hover:bg-primary data-[range-end]:hover:text-primary-foreground',
+      'data-[range-middle]:bg-accent data-[range-middle]:text-accent-foreground',
       'data-[today]:bg-accent data-[today]:text-accent-foreground',
       'data-[outside]:text-muted-foreground',
       'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50 data-[disabled]:pointer-events-none',

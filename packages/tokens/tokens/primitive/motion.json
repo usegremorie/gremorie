@@ -1,0 +1,29 @@
+{
+  "animate": {
+    "pop-in": {
+      "$type": "dimension",
+      "$value": {
+        "value": 120,
+        "unit": "ms"
+      },
+      "$extensions": {
+        "com.gremorie.css": {
+          "value": "gremorie-pop-in 120ms ease-out"
+        }
+      },
+      "$description": "Entrance animations over the gremorie-* keyframes (motion partial): menus and dropdowns pop in, attachments fade in."
+    },
+    "fade-in": {
+      "$type": "dimension",
+      "$value": {
+        "value": 120,
+        "unit": "ms"
+      },
+      "$extensions": {
+        "com.gremorie.css": {
+          "value": "gremorie-fade-in 120ms ease-out"
+        }
+      }
+    }
+  }
+}

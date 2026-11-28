@@ -200,7 +200,7 @@ export class PromptInputActionMenuTrigger {
   // rest, hover changes only the background.
   protected buttonClass(): string {
     return cn(
-      'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-muted aria-expanded:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-input/30 dark:aria-expanded:bg-input/30',
+      'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-accent aria-expanded:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
       this.class(),
     );
   }
@@ -248,7 +248,7 @@ export class PromptInputActionMenuContent {
 
   protected panelClass(): string {
     return cn(
-      'min-w-[12rem] origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-[gremorie-pop-in_120ms_ease-out]',
+      'min-w-48 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-pop-in',
       this.class(),
     );
   }
@@ -354,7 +354,7 @@ export class PromptInputActionMenuItem {
         aria-hidden="true"
         data-slot="switch"
         [attr.data-state]="checked() ? 'checked' : 'unchecked'"
-        class="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+        class="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input"
       >
         <span
           [attr.data-state]="checked() ? 'checked' : 'unchecked'"
@@ -584,7 +584,7 @@ export class PromptInputActionMenuSubTrigger {
         tabindex="-1"
         data-slot="prompt-input-action-menu-sub-content"
         [attr.data-menu-id]="menu.menuId"
-        class="min-w-[10rem] origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="min-w-40 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md outline-none motion-safe:animate-pop-in"
         (keydown)="onKeydown($event)"
       >
         <ng-content />

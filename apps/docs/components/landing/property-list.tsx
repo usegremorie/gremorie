@@ -11,7 +11,7 @@
  *   └─ PropertyText          value + pencil; edits in a popover
  *
  * Built on Item (ItemGroup / Item / ItemMedia / ItemContent / ItemActions /
- * ItemSeparator), the shadcn way to lay out settings rows.
+ * ItemSeparator), the Gremorie way to lay out settings rows.
  */
 
 import { cn } from '@gremorie/rx-core';
@@ -40,7 +40,7 @@ import { Children, Fragment, type ReactNode } from 'react';
 // Row: 40px tall, 12px sides, 12px between icon and label. Hover changes only
 // the background. Title at 14px (Item `sm` would set 12px).
 const ROW =
-  'min-h-10 flex-nowrap gap-3 rounded-none border-0 px-3 py-1 hover:bg-foreground/5 [&_[data-slot=item-title]]:block [&_[data-slot=item-title]]:w-full [&_[data-slot=item-title]]:truncate [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
+  'min-h-10 flex-nowrap gap-3 rounded-none border-0 px-3 py-1 hover:bg-accent [&_[data-slot=item-title]]:block [&_[data-slot=item-title]]:w-full [&_[data-slot=item-title]]:truncate [&_[data-slot=item-title]]:text-sm [&_[data-slot=item-title]]:font-normal [&_[data-slot=item-title]]:text-secondary-foreground';
 
 function RowIcon({ icon: Icon }: { icon: LucideIcon }) {
   // ItemMedia "icon": a bare 16px glyph, as in menus.
@@ -64,12 +64,12 @@ export function PropertyGroup({
       <h4 className="px-1 font-medium text-muted-foreground text-xs">
         {title}
       </h4>
-      <ItemGroup className="overflow-hidden rounded-lg bg-foreground/5 dark:bg-foreground/[0.07]">
+      <ItemGroup className="overflow-hidden rounded-lg bg-secondary">
         {rows.map((row, i) => (
           <Fragment key={i}>
             {i > 0 && (
               // Starts where the text starts: 12px side + 16px icon + 12px gap.
-              <ItemSeparator className="my-0 ml-10 w-auto bg-foreground/8" />
+              <ItemSeparator className="my-0 ml-10 w-auto bg-border" />
             )}
             {row}
           </Fragment>
@@ -118,15 +118,17 @@ export function PropertySelect({
   value,
   options,
   onValueChange,
+  className,
 }: {
   icon: LucideIcon;
   label: string;
   value: string;
   options: { value: string; label: string }[];
   onValueChange: (value: string) => void;
+  className?: string;
 }) {
   return (
-    <Item className={ROW} size="sm">
+    <Item className={cn(ROW, className)} size="sm">
       <RowIcon icon={icon} />
       <ItemContent className="min-w-0 flex-1">
         <ItemTitle>{label}</ItemTitle>
@@ -135,7 +137,7 @@ export function PropertySelect({
         <Select onValueChange={onValueChange} value={value}>
           <SelectTrigger
             aria-label={label}
-            className="-mr-2 h-7 shrink-0 gap-1 border-none data-[size=sm]:h-7 bg-transparent px-2 text-muted-foreground shadow-none hover:bg-foreground/5 dark:bg-transparent"
+            className="-mr-2 h-7 shrink-0 gap-1 border-none data-[size=sm]:h-7 bg-transparent px-2 text-muted-foreground shadow-none hover:bg-accent"
             size="sm"
           >
             <SelectValue />
@@ -177,7 +179,7 @@ export function PropertyText({
           <PopoverTrigger asChild>
             <button
               aria-label={`Edit ${label.toLowerCase()}`}
-              className="-mr-2 flex h-7 min-w-0 items-center gap-1.5 rounded-sm px-2 text-muted-foreground text-sm hover:bg-foreground/5"
+              className="-mr-2 flex h-7 min-w-0 items-center gap-1.5 rounded-sm px-2 text-muted-foreground text-sm hover:bg-accent"
               type="button"
             >
               <span className="truncate">{value}</span>

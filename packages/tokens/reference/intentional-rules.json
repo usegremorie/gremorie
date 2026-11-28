@@ -12,6 +12,21 @@
   {
     "file": "theme.css",
     "rule": "@utility bg-popover-surface",
-    "reason": "Translucent floating surface (popover 60% + backdrop blur), the default for menus, selects, popovers and hover cards."
+    "reason": "Translucent floating surface (popover at --surface-opacity + --surface-backdrop), the default for menus, selects, popovers and hover cards."
+  },
+  {
+    "file": "theme.css",
+    "rule": "html",
+    "reason": "Defaults of the floating surface tokens (--surface-opacity, --surface-backdrop), on html so a consumer :root override always wins."
+  },
+  {
+    "file": "theme.css",
+    "rule": "@utility bg-background-surface",
+    "reason": "Translucent docked bar on --background (sticky header, chat composer), driven by the same surface tokens."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":is(.dark)",
+    "reason": "Dark-mode value of --hover-shift (derived hover colours lighten on dark)."
   }
 ]

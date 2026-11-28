@@ -76,7 +76,7 @@ export const popover = defineContract({
     rules: [
       'Opens on click of PopoverTrigger (intentional, unlike hover-driven Tooltip/HoverCard).',
       'modal defaults to false - the page stays interactive; set true to trap focus.',
-      'Angular renders the panel from a `<ng-template brnPopoverContent>` referenced by the trigger via `[content]`/`brnPopoverTriggerFor`; React composes PopoverContent inline through a Radix portal. align/sideOffset live on the Angular root, not on PopoverContent.',
+      'Angular renders the panel from a `<ng-template brnPopoverContent>` inside `gr-popover`; the trigger opens the root popover (no template ref to wire); React composes PopoverContent inline through a Radix portal. align/sideOffset live on the Angular root, not on PopoverContent.',
     ],
     example:
       '<Popover><PopoverTrigger>Open</PopoverTrigger><PopoverContent align="start"><PopoverHeader><PopoverTitle>Dimensions</PopoverTitle></PopoverHeader></PopoverContent></Popover>',

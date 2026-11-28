@@ -28,8 +28,8 @@ export type SpinnerProps = React.ComponentProps<'svg'> &
   VariantProps<typeof spinnerVariants>;
 
 /**
- * Spinner - indeterminate "thinking" indicator. A faithful shadcn/ui port
- * (lucide `Loader2Icon` + `animate-spin`), extended with a `size` variant so
+ * Spinner - indeterminate "thinking" indicator, drawn
+ * with lucide `Loader2Icon` + `animate-spin`), extended with a `size` variant so
  * the API matches `@gremorie/ng-feedback`.
  *
  * Renders a single rotating glyph, so it lives anywhere a glyph fits -

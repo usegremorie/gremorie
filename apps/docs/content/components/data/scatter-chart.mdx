@@ -8,11 +8,11 @@ import { ScatterChartMultiPreview } from '@/components/preview/data/scatter-char
 
 ## Overview
 
-`ScatterChart` is the styled wrapper over recharts' `ScatterChart`, composed on the shadcn `chart` primitive (`ChartContainer`). `xKey` is a numeric field (linear X axis); each entry in `config` is a numeric Y series. The chart wires up the cartesian grid, the numeric X and Y axes, an optional tooltip, and one set of dots per series.
+`ScatterChart` is the styled wrapper over recharts' `ScatterChart`, composed on the `chart` primitive (`ChartContainer`). `xKey` is a numeric field (linear X axis); each entry in `config` is a numeric Y series. The chart wires up the cartesian grid, the numeric X and Y axes, an optional tooltip, and one set of dots per series.
 
 Reach for ScatterChart when you need to surface **correlation, density, or outliers** - response time vs payload size, conversion rate vs traffic, runtime vs input. For ordered category trends use [`LineChart`](/components/data/line-chart) or [`AreaChart`](/components/data/area-chart); for discrete category comparison use [`BarChart`](/components/data/bar-chart).
 
-The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
+The React edition (`@gremorie/rx-data`) renders with recharts inside the `chart` primitive; the Angular edition (`@gremorie/ng-data`) renders headless d3 geometry inside a styled SVG. The rendering engine differs; the public surface is identical input-for-input.
 
 ## Anatomy
 
@@ -29,7 +29,7 @@ The React edition (`@gremorie/rx-data`) renders with recharts inside the shadcn 
    └─ sr-only data table
 ```
 
-The React edition composes this surface through the shadcn `chart` primitive:
+The React edition composes this surface through the `chart` primitive:
 
 ```text
 ChartContainer                      responsive frame + injects --color-<key>
@@ -51,15 +51,33 @@ ChartContainer                      responsive frame + injects --color-<key>
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-scatter-chart ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-scatter-chart
+```
+
+</Tab>
   <Tab value="pnpm">
-    ```bash pnpm dlx gremorie@latest add rx-scatter-chart ```
+
+```bash
+pnpm dlx gremorie@latest add rx-scatter-chart
+```
+
   </Tab>
   <Tab value="yarn">
-    ```bash yarn dlx gremorie@latest add rx-scatter-chart ```
+
+```bash
+yarn dlx gremorie@latest add rx-scatter-chart
+```
+
   </Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-scatter-chart ```
+
+```bash
+bunx --bun gremorie@latest add rx-scatter-chart
+```
+
   </Tab>
 </Tabs>
 
@@ -142,7 +160,7 @@ The styled wrapper over recharts' `ScatterChart`, composed on `ChartContainer`. 
 
 ### Composing with the chart primitive
 
-For full control, compose recharts directly inside `ChartContainer` using the exported primitives. shadcn ships no scatter block, but the composition follows the same pattern as the [other shadcn chart blocks](https://ui.shadcn.com/charts).
+For full control, compose recharts directly inside `ChartContainer` using the exported primitives. The composition follows the same pattern as the other Gremorie charts.
 
 | Export                | Role                                                                     |
 | --------------------- | ------------------------------------------------------------------------ |

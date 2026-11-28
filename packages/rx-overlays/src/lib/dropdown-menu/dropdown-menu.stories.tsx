@@ -31,7 +31,7 @@ import { Button } from '@gremorie/rx-forms';
 /**
  * # DropdownMenu
  *
- * A verb-led action menu attached to a trigger — a faithful shadcn port over
+ * A verb-led action menu attached to a trigger — built on
  * Radix DropdownMenu. Use it for *actions* (Edit, Delete, Duplicate); reach for
  * `Select` when the items are *values*. When the rows read like verbs, this is
  * the right primitive.
@@ -83,7 +83,7 @@ import { Button } from '@gremorie/rx-forms';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--popover` / `--popover-foreground` | Menu surface, via `bg-popover-surface` (translucent 60% + blur; opaque with `data-menu="solid"`) |
+ * | `--popover` / `--popover-foreground` | Menu surface, via `bg-popover-surface` (translucent per `--surface-opacity` and `--surface-backdrop`; solid with `data-menu="solid"`) |
  * | `--accent` / `--accent-foreground` | Focused item |
  * | `--destructive` | Destructive item |
  * | `--border` | Separator |

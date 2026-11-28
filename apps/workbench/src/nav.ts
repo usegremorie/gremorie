@@ -228,8 +228,8 @@ export function categoryOf(name: string): string | undefined {
 }
 
 /**
- * The showcase views, pinned at the top of the sidebar: the shadcn reference
- * cards rebuilt in each edition, plus the reference itself to compare against.
+ * The showcase views, pinned at the top of the sidebar: the showcase cards
+ * in each edition, plus a reference view to compare against.
  */
 export type ShowcaseView = 'rx' | 'ng' | 'ref';
 

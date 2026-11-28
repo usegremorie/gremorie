@@ -30,10 +30,34 @@ Switch   pill track with a sliding thumb; toggles state on click
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-switch ```</Tab>
-  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-switch ```</Tab>
-  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-switch ```</Tab>
-  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-switch ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-switch
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-switch
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-switch
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-switch
+```
+
+</Tab>
 </Tabs>
 
 ## Usage
@@ -93,18 +117,18 @@ Forwards to `SwitchPrimitive.Root`. Renders an internal `SwitchPrimitive.Thumb` 
 
 ### Settings row
 
-The canonical pattern for settings pages - label on the left, switch on the right, both vertically centered.
+The canonical pattern for settings pages - label on the left, switch on the right, both vertically centered. It is a [`Field`](/components/field) choice card: the whole row toggles the switch, and the row is highlighted while it is on.
 
 ```tsx
-<div className="flex items-center justify-between rounded-md border p-4">
-  <div className="grid gap-0.5">
-    <Label htmlFor="dark-mode">Dark mode</Label>
-    <p className="text-sm text-muted-foreground">
-      Use a dark theme across the app.
-    </p>
-  </div>
-  <Switch id="dark-mode" defaultChecked />
-</div>
+<FieldLabel htmlFor="dark-mode">
+  <Field orientation="horizontal">
+    <FieldContent>
+      <FieldTitle>Dark mode</FieldTitle>
+      <FieldDescription>Use a dark theme across the app.</FieldDescription>
+    </FieldContent>
+    <Switch id="dark-mode" defaultChecked />
+  </Field>
+</FieldLabel>
 ```
 
 ### Sizes
@@ -166,5 +190,6 @@ function NotificationToggle() {
 
 - [Checkbox](/components/selection/checkbox) - form-submission counterpart
 - [Toggle](/components/buttons/toggle) - press-button (text/icon affordance) for stateful actions
+- [Field](/components/field) - labels, descriptions and choice cards around a switch
 - [Label](/components/text/label) - the canonical companion
 - [Form](/components/form) - wire Switch into react-hook-form

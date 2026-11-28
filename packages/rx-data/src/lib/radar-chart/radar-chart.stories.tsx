@@ -7,7 +7,7 @@ import { RadarChart } from './radar-chart';
 /**
  * # RadarChart
  *
- * A recharts radar chart wired to Gremorie's design tokens through the shadcn
+ * A recharts radar chart wired to Gremorie's design tokens through the
  * `chart` primitive (`ChartContainer`). One `<Radar>` polygon per `config` entry
  * over a shared angular axis (`xKey`).
  *

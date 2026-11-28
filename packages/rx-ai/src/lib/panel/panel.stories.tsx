@@ -13,7 +13,7 @@ import { Panel } from './panel';
 /**
  * # Panel
  *
- * A faithful port of the Vercel AI Elements **Panel** — a restyled wrapper
+ * The **Panel** — a restyled wrapper
  * around React Flow's `Panel` for floating toolbars, legends or action clusters
  * pinned to a corner of the canvas viewport. It applies the design system card
  * surface with a border, rounded corners and a small inset.

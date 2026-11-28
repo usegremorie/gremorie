@@ -5,7 +5,7 @@ import { Image } from './image';
 /**
  * # Image
  *
- * A faithful port of the Vercel AI Elements **Image** primitive — renders an
+ * The **Image** primitive — renders an
  * AI-generated image returned by the AI SDK as a base64 data URL. It accepts the
  * `Experimental_GeneratedImage` shape (`base64`, `mediaType`, `uint8Array`) and
  * produces a responsive, rounded `<img>`.

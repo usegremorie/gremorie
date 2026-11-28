@@ -20,9 +20,9 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@gremorie/ng-display';
-import { Input, Label } from '@gremorie/ng-forms';
+import { Field, FieldGroup, FieldLabel, Input } from '@gremorie/ng-forms';
 
-/** shadcn reference card (column 4): credentials and the danger zone. */
+/** Showcase card (column 4): credentials and the danger zone. */
 @Component({
   selector: 'showcase-account-access',
   standalone: true,
@@ -41,7 +41,9 @@ import { Input, Label } from '@gremorie/ng-forms';
     ItemDescription,
     ItemMedia,
     ItemTitle,
-    Label,
+    Field,
+    FieldGroup,
+    FieldLabel,
     NgIcon,
   ],
   providers: [
@@ -57,18 +59,20 @@ import { Input, Label } from '@gremorie/ng-forms';
         </gr-card-description>
       </gr-card-header>
       <gr-card-content>
-        <div class="flex flex-col gap-6">
-          <div class="flex flex-col gap-3">
-            <gr-label for="email-address">Email Address</gr-label>
+        <gr-field-group class="gap-6">
+          <gr-field>
+            <gr-field-label for="email-address">Email Address</gr-field-label>
             <gr-input
               id="email-address"
               type="email"
               value="artist@studio.inc"
             />
-          </div>
-          <div class="flex flex-col gap-3">
+          </gr-field>
+          <gr-field>
             <div class="flex items-center justify-between">
-              <gr-label for="current-password">Current Password</gr-label>
+              <gr-field-label for="current-password"
+                >Current Password</gr-field-label
+              >
               <a
                 class="font-medium text-muted-foreground text-xs uppercase tracking-wider hover:text-foreground"
                 href="#forgot"
@@ -80,8 +84,8 @@ import { Input, Label } from '@gremorie/ng-forms';
               type="password"
               value="password123"
             />
-          </div>
-        </div>
+          </gr-field>
+        </gr-field-group>
       </gr-card-content>
       <gr-card-footer class="flex-col gap-4">
         <ai-button class="w-full">

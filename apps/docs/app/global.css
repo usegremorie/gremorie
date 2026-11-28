@@ -8,6 +8,7 @@
 
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
 @source "../../../packages/rx-*/src/**/*.{ts,tsx}";
+@source "../../showcase/rx/**/*.{ts,tsx}";
 
 /* ---------------------------------------------------------------- *\
  * Customizations (intentionally minimal).
@@ -147,4 +148,12 @@
    that a @layer base rule cannot override. */
 body:has([data-slot='site-header']) {
   background-color: var(--background);
+}
+
+/* Phones: nothing may push the page sideways. The known overflows are fixed
+   at the source; this keeps an off-canvas drawer or a stray decoration from
+   making the whole page pannable. `clip` (not `hidden`) keeps sticky working. */
+html,
+body {
+  overflow-x: clip;
 }

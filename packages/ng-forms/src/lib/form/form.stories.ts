@@ -71,7 +71,7 @@ export const Default: Story = {
     template: `
       <gr-form-item class="w-80">
         <gr-form-label>Username</gr-form-label>
-        <gr-input grFormControl placeholder="shadcn" class="w-full" />
+        <gr-input grFormControl placeholder="gremorie" class="w-full" />
         <gr-form-description>This is your public display name.</gr-form-description>
       </gr-form-item>
     `,

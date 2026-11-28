@@ -10,6 +10,7 @@ import {
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { ToggleGroup, ToggleGroupItem } from '@gremorie/ng-forms';
 
 import {
@@ -91,7 +92,7 @@ const lastStarted = (words: TimelineWord[], t: number): number => {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'data-slot': 'word-timeline',
-    class: 'flex flex-col gap-2',
+    '[class]': 'hostClass()',
   },
   template: `
     <!--
@@ -158,6 +159,12 @@ const lastStarted = (words: TimelineWord[], t: number): number => {
   `,
 })
 export class WordTimeline {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-col gap-2', this.class()),
+  );
+
   /** Words with start/end seconds and speaker, sorted by start. */
   readonly words = input.required<TimelineWord[]>();
   /** Selected [in, out] in seconds. */
@@ -249,7 +256,7 @@ export class WordTimeline {
   // without color alone. Repainting it on focus would hide the edge exactly
   // while the user is on it.
   protected readonly wordClass = [
-    'rounded border-primary px-0.5 outline-none hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50',
+    'rounded border-primary px-0.5 outline-none hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50',
     'data-[in-range=true]:bg-primary/15 data-[in-range=true]:hover:bg-primary/25',
     'data-[edge=start]:rounded-l-none data-[edge=start]:border-l-2',
     'data-[edge=end]:rounded-r-none data-[edge=end]:border-r-2',

@@ -8,12 +8,13 @@ import { AccountAccess } from './cards/account-access';
 import { ContributionHistory } from './cards/contribution-history';
 import { PayoutThreshold } from './cards/payout-threshold';
 import { ReceivingMethod } from './cards/receiving-method';
+import { MonthlySpending } from './cards/monthly-spending';
 import { Masonry } from './masonry';
 
 /**
- * The React showcase: the shadcn reference cards rebuilt with Gremorie
- * components, in the reference's column order. The workbench embeds this
- * story (id `showcase--all`) next to the Angular one and the reference.
+ * The React showcase: a set of product cards built with Gremorie
+ * components, in a fixed column order. The workbench embeds this
+ * story (id `showcase--all`) next to the Angular one.
  */
 const meta = {
   title: 'Showcase',
@@ -26,7 +27,10 @@ export const All: StoryObj = {
   render: () => (
     <Masonry
       columns={[
-        [<ContributionHistory key="contribution-history" />],
+        [
+          <ContributionHistory key="contribution-history" />,
+          <MonthlySpending key="monthly-spending" />,
+        ],
         [<PayoutThreshold key="payout-threshold" />],
         [<Assistant key="assistant" initialView="empty" />],
         [<AccountAccess key="account-access" />],

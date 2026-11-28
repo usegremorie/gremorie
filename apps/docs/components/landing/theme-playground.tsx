@@ -48,7 +48,7 @@ const SEATS_USED = 8;
 const SEATS_TOTAL = 12;
 
 /**
- * Tweakcn-style live playground. The controls column stays; the preview is
+ * Live theme playground. The controls column stays; the preview is
  * now ONE Card with a header row (title, live dot, dark/light toggle) whose
  * body composes a credible mini product surface from REAL Gremorie
  * primitives: Tabs, Label + Input, Switch, Badge, Progress and Buttons.

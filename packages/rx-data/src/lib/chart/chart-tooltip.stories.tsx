@@ -12,8 +12,8 @@ import {
 /**
  * # Chart Tooltip
  *
- * `ChartTooltipContent` is the floating card the charts show on hover — the
- * shadcn chart tooltip, wired to Gremorie tokens. It reads the chart `config`
+ * `ChartTooltipContent` is the floating card the charts show on hover, wired
+ * to Gremorie tokens. It reads the chart `config`
  * (via `useChart`) for labels/colors and renders the hovered series.
  *
  * It is **recharts-context-bound**: in a chart you pass it to a recharts
@@ -114,7 +114,7 @@ export const Dashed: Story = {
   render: () => <TooltipCard indicator="dashed" />,
 };
 
-/** Single series with the header hidden (the categorical / shadcn look). */
+/** Single series with the header hidden (the categorical look). */
 export const HideLabel: Story = {
   render: () => <TooltipCard hideLabel payload={ONE as never} />,
 };

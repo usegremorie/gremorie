@@ -63,7 +63,7 @@ export const Workbench: Story = {
             </gr-drawer-header>
             <div class="px-4 text-sm text-muted-foreground">Drawer body content.</div>
             <gr-drawer-footer>
-              <button gr-drawer-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+              <button gr-drawer-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary-hover">
                 Submit
               </button>
               <button gr-drawer-close class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">

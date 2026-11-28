@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 
 /**
  * Card — surface primitive for grouping related content. Mirrors React
@@ -37,11 +40,19 @@ import {
   template: `<ng-content />`,
   host: {
     'data-slot': 'card',
-    class:
-      'bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10 has-data-[slot=card-action]:grid',
+    '[class]': 'hostClass()',
   },
 })
-export class Card {}
+export class Card {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm ring-1 ring-border dark:shadow-md has-data-[slot=card-action]:grid',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * CardHeader — header block of a Card. Mirrors React `CardHeader`.
@@ -57,11 +68,19 @@ export class Card {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-header',
-    class:
-      '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
+    '[class]': 'hostClass()',
   },
 })
-export class CardHeader {}
+export class CardHeader {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * CardTitle — title text inside a CardHeader. Mirrors React `CardTitle`.
@@ -74,10 +93,16 @@ export class CardHeader {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-title',
-    class: 'text-base leading-6 font-medium',
+    '[class]': 'hostClass()',
   },
 })
-export class CardTitle {}
+export class CardTitle {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('text-base leading-6 font-medium', this.class()),
+  );
+}
 
 /**
  * CardDescription — secondary text inside a CardHeader. Mirrors React
@@ -91,10 +116,16 @@ export class CardTitle {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-description',
-    class: 'text-muted-foreground text-sm',
+    '[class]': 'hostClass()',
   },
 })
-export class CardDescription {}
+export class CardDescription {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('text-muted-foreground text-sm', this.class()),
+  );
+}
 
 /**
  * CardAction — top-right action slot inside a CardHeader. Mirrors React
@@ -109,10 +140,19 @@ export class CardDescription {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-action',
-    class: 'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
+    '[class]': 'hostClass()',
   },
 })
-export class CardAction {}
+export class CardAction {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn(
+      'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
+      this.class(),
+    ),
+  );
+}
 
 /**
  * CardContent — primary body slot. Mirrors React `CardContent`.
@@ -125,10 +165,14 @@ export class CardAction {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-content',
-    class: 'px-6',
+    '[class]': 'hostClass()',
   },
 })
-export class CardContent {}
+export class CardContent {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() => cn('px-6', this.class()));
+}
 
 /**
  * CardFooter — footer block. Mirrors React `CardFooter`. When the prior
@@ -142,7 +186,13 @@ export class CardContent {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'card-footer',
-    class: 'flex items-center px-6 [.border-t]:pt-6',
+    '[class]': 'hostClass()',
   },
 })
-export class CardFooter {}
+export class CardFooter {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex items-center px-6 [.border-t]:pt-6', this.class()),
+  );
+}

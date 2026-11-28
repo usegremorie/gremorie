@@ -48,7 +48,7 @@ interface LegendItem {
         chartFrame
         [data]="data()"
         [xKey]="nameKey()"
-        class="mx-auto aspect-square max-h-[260px] w-full overflow-visible text-muted-foreground"
+        class="mx-auto aspect-square max-h-65 w-full overflow-visible text-muted-foreground"
       >
         <svg:g
           [radialBar]="dataKey()"
@@ -77,13 +77,13 @@ interface LegendItem {
 
       @if (tooltip() && active() !== null) {
         <div
-          class="pointer-events-none absolute z-10 min-w-24 -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
+          class="pointer-events-none absolute z-10 min-w-24 -translate-x-1/2 -translate-y-1/2 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
           [style.left.px]="r.center().cx"
           [style.top.px]="r.center().cy"
         >
           <div class="flex items-center gap-1.5 text-muted-foreground">
             <span
-              class="size-2 rounded-[2px]"
+              class="size-2 rounded-xs"
               [style.background]="arcColor(active()!)"
             ></span>
             <span>{{ activeName() }}</span>

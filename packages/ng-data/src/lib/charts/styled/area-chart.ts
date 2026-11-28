@@ -61,11 +61,13 @@ interface TooltipRow {
     'data-slot': 'area-chart',
     role: 'img',
     '[attr.aria-label]': 'ariaLabel()',
+    // aspect-video sits on the padded frame, as React's ChartContainer does;
+    // the svg fills what is left inside the padding.
     class:
-      'flex flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
+      'flex aspect-video flex-col gap-2 rounded-xl border border-border bg-card p-4 text-card-foreground',
   },
   template: `
-    <div class="relative w-full">
+    <div class="relative min-h-0 w-full flex-1">
       <svg
         chartFrame
         chartTooltip
@@ -74,7 +76,7 @@ interface TooltipRow {
         [xKey]="xKey()"
         [stacked]="stacked()"
         [margin]="margin()"
-        class="aspect-video w-full overflow-visible text-muted-foreground"
+        class="size-full overflow-visible text-muted-foreground"
       >
         <svg:g cartesianGrid #grid="cartesianGrid">
           @for (gline of grid.lines(); track $index) {
@@ -96,8 +98,15 @@ interface TooltipRow {
             [color]="s.color"
             [curve]="type()"
             [fillOpacity]="0.4"
+          ></svg:path>
+          <!-- Stroke the top edge only (no outline on the sides/baseline), 1px
+               like the recharts Area default. -->
+          <svg:path
+            data-slot="area-line"
+            [attr.d]="a.topLine()"
+            fill="none"
             [attr.stroke]="s.color"
-            stroke-width="2"
+            stroke-width="1"
           ></svg:path>
           @if (
             tooltip() &&
@@ -121,7 +130,7 @@ interface TooltipRow {
               [attr.x]="t.x"
               [attr.y]="x.labelY()"
               text-anchor="middle"
-              class="fill-muted-foreground text-[10px]"
+              class="fill-muted-foreground text-2xs"
             >
               {{ t.label }}
             </svg:text>
@@ -136,7 +145,7 @@ interface TooltipRow {
                 [attr.y]="t.y"
                 text-anchor="end"
                 dominant-baseline="middle"
-                class="fill-muted-foreground text-[10px]"
+                class="fill-muted-foreground text-2xs"
               >
                 {{ t.label }}
               </svg:text>

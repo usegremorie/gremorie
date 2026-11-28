@@ -19,11 +19,14 @@ const stats = [
 export function ProofStrip() {
   return (
     <section className="border-y border-border/60 bg-muted/20">
-      <ul className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-3 gap-y-1.5 px-6 py-4 text-muted-foreground text-sm">
+      <ul className="mx-auto grid max-w-7xl grid-cols-2 gap-x-3 gap-y-1.5 px-6 py-4 text-center text-muted-foreground text-sm sm:flex sm:flex-wrap sm:items-center sm:justify-center">
         {stats.map((stat, index) => (
-          <li key={stat.label} className="flex items-center gap-x-3">
+          <li
+            key={stat.label}
+            className="flex items-center justify-center gap-x-3"
+          >
             {index > 0 && (
-              <span aria-hidden="true" className="text-border">
+              <span aria-hidden="true" className="hidden text-border sm:inline">
                 ·
               </span>
             )}

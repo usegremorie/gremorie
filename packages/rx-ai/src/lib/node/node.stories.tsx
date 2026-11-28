@@ -23,7 +23,7 @@ import {
 /**
  * # Node
  *
- * A faithful port of the Vercel AI Elements **Node** primitive — a styled
+ * The **Node** primitive — a styled
  * card used as a custom React Flow node. It composes the design system `Card`
  * with target/source handles and ergonomic sub-slots for a header, body and
  * footer, so agent steps and workflow blocks share one consistent look.

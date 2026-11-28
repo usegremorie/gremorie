@@ -41,15 +41,33 @@ ChainOfThought
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-chain-of-thought ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-chain-of-thought
+```
+
+</Tab>
   <Tab value="pnpm">
-    ```bash pnpm dlx gremorie@latest add rx-chain-of-thought ```
+
+```bash
+pnpm dlx gremorie@latest add rx-chain-of-thought
+```
+
   </Tab>
   <Tab value="yarn">
-    ```bash yarn dlx gremorie@latest add rx-chain-of-thought ```
+
+```bash
+yarn dlx gremorie@latest add rx-chain-of-thought
+```
+
   </Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-chain-of-thought ```
+
+```bash
+bunx --bun gremorie@latest add rx-chain-of-thought
+```
+
   </Tab>
 </Tabs>
 
@@ -203,10 +221,10 @@ When a step represents a search, nest the citations as `SearchResult` chips.
 ```tsx
 <ChainOfThoughtStep
   status="complete"
-  label="Searched the web for 'shadcn registry'"
+  label="Searched the web for 'component registry'"
 >
   <ChainOfThoughtSearchResults>
-    <ChainOfThoughtSearchResult>ui.shadcn.com</ChainOfThoughtSearchResult>
+    <ChainOfThoughtSearchResult>gremorie.com</ChainOfThoughtSearchResult>
     <ChainOfThoughtSearchResult>vercel.com</ChainOfThoughtSearchResult>
     <ChainOfThoughtSearchResult>github.com</ChainOfThoughtSearchResult>
   </ChainOfThoughtSearchResults>

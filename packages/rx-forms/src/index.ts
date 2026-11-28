@@ -7,6 +7,7 @@ export * from './lib/textarea';
 export * from './lib/button-group';
 export * from './lib/calendar';
 export * from './lib/checkbox';
+export * from './lib/field';
 export * from './lib/form';
 export * from './lib/input-otp';
 export * from './lib/radio-group';

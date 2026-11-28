@@ -140,7 +140,7 @@ export function ArtifactsSpotlight({ lang }: { lang: string }) {
           </Button>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-2">
           {/* The real ChartArtifact, rendered live. Its header carries the
               working chart/table toggle, the Download menu (PNG / CSV) and
               the More menu, exactly as shipped in the registry. Props are

@@ -16,7 +16,7 @@ import { PromptInput } from './prompt-input';
 import { PromptInputModelOption } from './prompt-input.types';
 
 const triggerVariants = cva(
-  'inline-flex h-9 min-w-0 max-w-[12rem] items-center gap-2 rounded-md px-2.5 text-sm font-medium bg-transparent text-foreground motion-safe:transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex h-9 min-w-0 max-w-48 items-center gap-2 rounded-md px-2.5 text-sm font-medium bg-transparent text-foreground motion-safe:transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       open: {
@@ -80,7 +80,7 @@ const optionVariants = cva(
       <div
         role="listbox"
         [attr.aria-label]="ariaLabel()"
-        class="absolute z-50 mt-2 min-w-full origin-top-left rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="absolute z-50 mt-2 min-w-full origin-top-left rounded-md border border-border bg-popover-surface p-1 text-popover-foreground shadow-md motion-safe:animate-pop-in"
         [style.top.px]="menuTopOffset"
       >
         @for (option of options(); track option.id) {
@@ -98,7 +98,7 @@ const optionVariants = cva(
                 <span class="truncate font-medium">{{ option.label }}</span>
                 @if (option.badge) {
                   <span
-                    class="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground"
+                    class="shrink-0 rounded bg-muted px-1.5 py-0.5 text-2xs font-medium uppercase tracking-wide text-muted-foreground"
                   >
                     {{ option.badge }}
                   </span>

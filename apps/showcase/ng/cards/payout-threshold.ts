@@ -12,7 +12,9 @@ import {
   CardTitle,
 } from '@gremorie/ng-display';
 import {
-  Label,
+  Field,
+  FieldGroup,
+  FieldLabel,
   Select,
   SelectContent,
   SelectItem,
@@ -22,7 +24,7 @@ import {
   Textarea,
 } from '@gremorie/ng-forms';
 
-/** shadcn reference card 2 (column 2): minimum payout settings. */
+/** Showcase card 2 (column 2): minimum payout settings. */
 @Component({
   selector: 'showcase-payout-threshold',
   standalone: true,
@@ -35,7 +37,9 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-    Label,
+    Field,
+    FieldGroup,
+    FieldLabel,
     NgIcon,
     Select,
     SelectContent,
@@ -66,9 +70,11 @@ import {
         </gr-card-action>
       </gr-card-header>
       <gr-card-content>
-        <div class="flex flex-col gap-6">
-          <div class="flex flex-col gap-3">
-            <gr-label for="preferred-currency">Preferred Currency</gr-label>
+        <gr-field-group class="gap-6">
+          <gr-field>
+            <gr-field-label for="preferred-currency"
+              >Preferred Currency</gr-field-label
+            >
             <gr-select [value]="'usd'" [itemToString]="currencyLabel">
               <gr-select-trigger id="preferred-currency" class="w-full">
                 <gr-select-value />
@@ -81,10 +87,12 @@ import {
                 <gr-select-item value="gbp">GBP — British Pound</gr-select-item>
               </gr-select-content>
             </gr-select>
-          </div>
-          <div class="flex flex-col gap-3">
+          </gr-field>
+          <gr-field>
             <div class="flex items-baseline justify-between">
-              <gr-label for="min-payout">Minimum Payout Amount</gr-label>
+              <gr-field-label for="min-payout"
+                >Minimum Payout Amount</gr-field-label
+              >
               <span class="font-semibold text-2xl tabular-nums"
                 >\${{ amount()[0].toFixed(2) }}</span
               >
@@ -102,16 +110,16 @@ import {
               <span>$50 (MIN)</span>
               <span>$10,000 (MAX)</span>
             </div>
-          </div>
-          <div class="flex flex-col gap-3">
-            <gr-label for="payout-notes">Notes</gr-label>
+          </gr-field>
+          <gr-field>
+            <gr-field-label for="payout-notes">Notes</gr-field-label>
             <gr-textarea
               id="payout-notes"
               placeholder="Add any notes for this payout configuration..."
               class="min-h-[100px]"
             />
-          </div>
-        </div>
+          </gr-field>
+        </gr-field-group>
       </gr-card-content>
       <gr-card-footer>
         <ai-button class="w-full">Save Threshold</ai-button>

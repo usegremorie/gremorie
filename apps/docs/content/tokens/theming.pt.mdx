@@ -180,23 +180,36 @@ seu próprio iframe.
 
 ## Superfícies flutuantes
 
-Menus, selects, popovers, hover cards e os painéis de menubar e navigation menu pintam o painel com a
-utility `bg-popover-surface`, nunca `bg-popover/NN`. É um popover translúcido:
-`--popover` a 60% sobre um blur de fundo de 16px (`blur(16px) saturate(1.5)`).
+Tudo que flutua sobre o conteúdo é translúcido: menus, selects, popovers,
+hover cards e os painéis de menubar e navigation menu usam
+`bg-popover-surface`; barras fixas, como um header sticky ou o composer do
+Assistant, usam `bg-background-surface`. Nunca escreva `bg-popover/NN` ou
+`bg-background/NN` com um blur feito à mão.
 
-Dentro da superfície, `--accent` (hover e destaque de item) e `--muted`
-(trilhos, preenchimentos sutis) viram foreground a 10%. Um preenchimento opaco
-próximo da cor do popover sumiria sobre o que estiver atrás do painel.
+Dois tokens controlam todas as superfícies flutuantes:
 
-| Situação                                      | Superfície                                   |
-| --------------------------------------------- | -------------------------------------------- |
-| Padrão                                        | `--popover` a 60% + blur de 16px             |
-| `<html data-menu="solid">`                    | `--popover` opaco, sem blur (o opt-out)      |
-| O sistema pede `prefers-reduced-transparency` | `--popover` opaco, sem blur, automaticamente |
+| Token                | Padrão                     | O que controla                                |
+| -------------------- | -------------------------- | --------------------------------------------- |
+| `--surface-opacity`  | `70%`                      | Quanto do fundo é tinta (100% é sólido)       |
+| `--surface-backdrop` | `blur(24px) saturate(1.5)` | O filtro atrás da superfície (`none` desliga) |
 
-```html
-<!-- Menus e popovers opacos no app inteiro -->
-<html data-menu="solid"></html>
+Dentro de uma superfície de popover, `--accent` (hover e destaque de item) e
+`--muted` (trilhos, preenchimentos sutis) viram foreground a 10%. Um
+preenchimento opaco próximo da cor do popover sumiria sobre o que estiver atrás
+do painel.
+
+| Situação                                      | Superfície                              |
+| --------------------------------------------- | --------------------------------------- |
+| Padrão                                        | Fundo a 70% + blur de 24px              |
+| `<html data-menu="solid">`                    | Fundo sólido, sem blur (o opt-out)      |
+| O sistema pede `prefers-reduced-transparency` | Fundo sólido, sem blur, automaticamente |
+
+```css
+/* Menus, popovers e barras sólidos no app inteiro */
+:root {
+  --surface-opacity: 100%;
+  --surface-backdrop: none;
+}
 ```
 
 ## Veja também

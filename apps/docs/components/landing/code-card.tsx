@@ -58,7 +58,7 @@ export function CodeCard({
         >
           {/* Backdrop like the install command's copy: code scrolling under
               the button stays out of the icon's way. */}
-          <CodeBlockCopyButton className="bg-background/80 backdrop-blur-lg" />
+          <CodeBlockCopyButton className="bg-background-surface" />
         </CodeBlock>
       </div>
     </Card>

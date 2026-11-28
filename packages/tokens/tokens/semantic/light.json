@@ -6,7 +6,7 @@
   },
   "foreground": {
     "$type": "color",
-    "$value": "{color.gray.950}"
+    "$value": "{color.gray.900}"
   },
   "card": {
     "$type": "color",
@@ -60,7 +60,12 @@
   },
   "accent-foreground": {
     "$type": "color",
-    "$value": "{color.gray.900}"
+    "$value": "{foreground}"
+  },
+  "selected": {
+    "$type": "color",
+    "$value": "{color.gray.0}",
+    "$description": "Selected item inside a track: the active tab, a segmented control or toggle group item. Sits one step lighter than the muted track in both modes."
   },
   "destructive": {
     "$type": "color",
@@ -102,11 +107,11 @@
   "sidebar": {
     "$type": "color",
     "$value": "{color.gray.50}",
-    "$description": "Sidebar (shadcn/tweakcn)"
+    "$description": "Sidebar"
   },
   "sidebar-foreground": {
     "$type": "color",
-    "$value": "{color.gray.950}"
+    "$value": "{foreground}"
   },
   "sidebar-primary": {
     "$type": "color",
@@ -122,7 +127,7 @@
   },
   "sidebar-accent-foreground": {
     "$type": "color",
-    "$value": "{color.gray.900}"
+    "$value": "{foreground}"
   },
   "sidebar-border": {
     "$type": "color",

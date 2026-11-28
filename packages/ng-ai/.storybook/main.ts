@@ -25,7 +25,7 @@ const config: StorybookConfig = {
     '../../ng-forms/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../ng-overlays/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     '../../ng-navigation/src/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-    // Showcase: the shadcn reference cards rebuilt, embedded by the workbench.
+    // Showcase: the showcase cards, embedded by the workbench.
     '../../../apps/showcase/ng/**/*.stories.@(js|jsx|ts|tsx|mdx)',
   ],
   addons: [],

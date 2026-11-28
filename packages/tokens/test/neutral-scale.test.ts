@@ -3,8 +3,8 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 // The semantic tokens build on --color-gray-*. That scale is meant to be the
-// shadcn/Tailwind Neutral ramp; --color-neutral-* is the canonical copy of it.
-// Every step must match, so the surfaces read the same as the reference.
+// Tailwind Neutral ramp; --color-neutral-* is the canonical copy of it.
+// Every step must match, so the surfaces read the same as that ramp.
 const SOURCE = JSON.parse(
   readFileSync(join(__dirname, '../tokens/primitive/color.json'), 'utf8'),
 );

@@ -9,8 +9,15 @@ import {
 } from '@gremorie/rx-display';
 import {
   Button,
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  FieldTitle,
   Input,
-  Label,
   RadioGroup,
   RadioGroupItem,
 } from '@gremorie/rx-forms';
@@ -23,8 +30,8 @@ const METHODS = [
 ];
 
 /**
- * shadcn reference card (column 5): where payouts go. The eyebrow sits above
- * the title, as in the reference; saving waits for an account number.
+ * Showcase card (column 5): where payouts go. The eyebrow sits above
+ * the title; saving waits for an account number.
  */
 export function ReceivingMethod() {
   const [method, setMethod] = useState('bank');
@@ -46,52 +53,46 @@ export function ReceivingMethod() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="account-holder">Account Holder Name</Label>
+        <FieldGroup className="gap-6">
+          <Field>
+            <FieldLabel htmlFor="account-holder">
+              Account Holder Name
+            </FieldLabel>
             <Input
               defaultValue="Synthetic Horizons Music LLC"
               id="account-holder"
             />
-          </div>
-          <fieldset className="flex flex-col gap-3">
-            <legend className="mb-3 font-medium text-secondary-foreground text-sm">
-              Receiving Method
-            </legend>
+          </Field>
+          <FieldSet>
+            <FieldLegend variant="label">Receiving Method</FieldLegend>
             <RadioGroup
               className="grid grid-cols-2 gap-3"
               onValueChange={setMethod}
               value={method}
             >
               {METHODS.map((m) => (
-                <Label
-                  className="flex items-start gap-3 rounded-lg border p-4 font-normal"
-                  htmlFor={`method-${m.value}`}
-                  key={m.value}
-                >
-                  <RadioGroupItem id={`method-${m.value}`} value={m.value} />
-                  <span className="flex flex-col gap-1">
-                    <span className="font-medium text-foreground text-sm">
-                      {m.title}
-                    </span>
-                    <span className="text-muted-foreground text-sm">
-                      {m.description}
-                    </span>
-                  </span>
-                </Label>
+                <FieldLabel htmlFor={`method-${m.value}`} key={m.value}>
+                  <Field orientation="horizontal">
+                    <RadioGroupItem id={`method-${m.value}`} value={m.value} />
+                    <FieldContent>
+                      <FieldTitle>{m.title}</FieldTitle>
+                      <FieldDescription>{m.description}</FieldDescription>
+                    </FieldContent>
+                  </Field>
+                </FieldLabel>
               ))}
             </RadioGroup>
-          </fieldset>
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="iban">IBAN / Account Number</Label>
+          </FieldSet>
+          <Field>
+            <FieldLabel htmlFor="iban">IBAN / Account Number</FieldLabel>
             <Input
               id="iban"
               onChange={(e) => setIban(e.target.value)}
               placeholder="DE89 3704 0044 ...."
               value={iban}
             />
-          </div>
-        </div>
+          </Field>
+        </FieldGroup>
       </CardContent>
       <CardFooter>
         <Button className="w-full" disabled={!iban.trim()}>

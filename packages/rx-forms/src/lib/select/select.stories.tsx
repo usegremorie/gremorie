@@ -15,7 +15,7 @@ import {
 /**
  * # Select
  *
- * Dropdown chooser for short, fixed lists — a faithful shadcn/Radix port. A
+ * Dropdown chooser for short, fixed lists — built on Radix. A
  * compound primitive: the trigger and value live in page flow while the listbox
  * is portalled and animated by Radix.
  *
@@ -64,7 +64,7 @@ import {
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | filled trigger (`bg-input/50`, transparent border) |
+ * | `--input` | filled trigger (`bg-field`: input at 30%, transparent border) |
  * | `--popover` / `--popover-foreground` | content surface (`bg-popover-surface`) |
  * | `--accent` / `--accent-foreground` | item hover/focus |
  * | `--ring` | focus ring |

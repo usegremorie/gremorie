@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 
 /**
  * AspectRatio — reserves vertical space for media before content loads.
@@ -37,11 +39,17 @@ import {
   template: `<ng-content />`,
   host: {
     'data-slot': 'aspect-ratio',
-    class: 'block w-full',
+    '[class]': 'hostClass()',
     '[style.aspect-ratio]': 'ratio()',
   },
 })
 export class AspectRatio {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('block w-full', this.class()),
+  );
+
   /** Width / height ratio (e.g. `16 / 9`, `4 / 3`). Defaults to `1`. */
   readonly ratio = input<number>(1);
 }

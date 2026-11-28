@@ -5,6 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
+import { cn } from '@gremorie/ng-core';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
@@ -140,10 +141,16 @@ export type FeaturedIconColor = NonNullable<
     'data-slot': 'featured-icon',
     '[attr.data-color]': 'color()',
     '[attr.data-theme]': 'theme()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class FeaturedIcon {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   readonly size = input<FeaturedIconSize>('md');
   readonly shape = input<FeaturedIconShape>('square');
   readonly theme = input<FeaturedIconTheme>('light');

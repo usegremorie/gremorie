@@ -72,7 +72,7 @@
       "type": "registry:block",
       "framework": "ng",
       "title": "Carousel (Angular)",
-      "description": "Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display (shadcn pattern).",
+      "description": "Horizontal (or vertical) slide region built on the framework-agnostic embla-carousel core - drag, keyboard navigation, prev/next controls. Five parts: gr-carousel + content + item + previous + next. Mirrors React Carousel from @gremorie/rx-display.",
       "categories": [
         "display"
       ],
@@ -593,6 +593,20 @@
       ]
     },
     {
+      "name": "ng-field",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Field (Angular)",
+      "description": "Form-layout family for the Angular edition - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox). Mirrors React Field from @gremorie/rx-forms.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-label"
+      ]
+    },
+    {
       "name": "ng-label",
       "type": "registry:block",
       "framework": "ng",
@@ -898,6 +912,20 @@
       "framework": "ng",
       "title": "Sidebar (Angular)",
       "description": "Composable app-shell sidebar - provider, Sidebar, SidebarTrigger, SidebarMenu plus mobile drawer integration. Persisted collapsed state, keyboard shortcut, full keyboard navigation. The largest navigation primitive in the registry. Mirrors React Sidebar from @gremorie/rx-navigation.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "ng-utils",
+        "ng-tooltip"
+      ]
+    },
+    {
+      "name": "ng-tab-bar",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Tab Bar (Angular)",
+      "description": "Bottom tab bar for phone screens - TabBar, TabBarItem (gr-tab-bar, gr-tab-bar-item, a[gr-tab-bar-item]). Three looks on one API: material, ios and floating. Badges, hide on scroll, safe-area aware. Mirrors React TabBar from @gremorie/rx-navigation.",
       "categories": [
         "navigation"
       ],
@@ -1238,6 +1266,20 @@
       ],
       "registryDependencies": [
         "rx-utils"
+      ]
+    },
+    {
+      "name": "rx-field",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Field (React)",
+      "description": "Form-layout family - Field, FieldLabel, FieldTitle, FieldDescription, FieldError, FieldContent, FieldGroup, FieldSet, FieldLegend and FieldSeparator. Composes a label, a control, helper text and an error into one accessible unit, plus choice cards (a Field inside a FieldLabel around a radio or checkbox).",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-label"
       ]
     },
     {
@@ -1762,6 +1804,20 @@
         "rx-separator",
         "rx-skeleton",
         "rx-sheet",
+        "rx-tooltip"
+      ]
+    },
+    {
+      "name": "rx-tab-bar",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Tab Bar (React)",
+      "description": "Bottom tab bar for phone screens - TabBar, TabBarItem. Three looks on one API: material (full-width bar with a pill indicator), ios (floating translucent capsule) and floating (compact icon-only pill). Badges, hide on scroll, safe-area aware, asChild for router links.",
+      "categories": [
+        "navigation"
+      ],
+      "registryDependencies": [
+        "rx-utils",
         "rx-tooltip"
       ]
     },

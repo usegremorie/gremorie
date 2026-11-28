@@ -15,7 +15,7 @@ import {
 /**
  * # Plan
  *
- * A faithful port of the Vercel AI Elements **Plan** primitive — a collapsible
+ * The **Plan** primitive — a collapsible
  * card summarizing an agent's plan: a title, description and a body of steps,
  * with a footer for meta. When `isStreaming` is set, the title and description
  * animate with the `Shimmer` effect to signal the plan is still being written.

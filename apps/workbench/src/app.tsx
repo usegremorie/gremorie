@@ -65,7 +65,7 @@ import { Sidebar } from './sidebar';
 const RX_BASE = import.meta.env.VITE_RX_BASE ?? 'http://localhost:4401';
 const NG_BASE = import.meta.env.VITE_NG_BASE ?? 'http://localhost:4400';
 
-/** The shadcn showcase the Gremorie showcase is rebuilt from (Luma style). */
+/** The reference showcase the Gremorie showcase is compared against. */
 const REFERENCE_URL =
   'https://ui.shadcn.com/preview/base/preview-02?preset=b1VnZgxu&style=luma&theme=fuchsia&menuColor=default-translucent&radius=small';
 /** Story id of the showcase screen in both Storybooks. */
@@ -206,7 +206,7 @@ function PropInfo({ text }: { text: string }) {
   );
 }
 
-/** One playground row, Luma-style: the name on the left (required marker and
+/** One playground row: the name on the left (required marker and
  *  info tip beside it) and the control on the right. Type is implied by the
  *  control: a switch, a compact select, or a value edited in a popover. */
 function PropField({
@@ -349,7 +349,10 @@ function FrameworkColumn({
           className="m-0 min-h-0 flex-1 overflow-hidden"
         >
           {url ? (
+            // A new iframe per URL: changing src on the same element adds a
+            // browser history entry, which would hijack the back button.
             <iframe
+              key={url}
               title={`${title} preview`}
               src={url}
               className="h-full w-full border-0 bg-background"
@@ -408,17 +411,92 @@ function FrameworkColumn({
   );
 }
 
+interface UrlState {
+  component: string | null;
+  showcase: ShowcaseView | null;
+  dark: boolean;
+  theme: string;
+}
+
+const SHOWCASE_VIEWS: ShowcaseView[] = ['rx', 'ng', 'ref'];
+
+/** Reads the workbench screen and theme from the query string. */
+function readUrlState(): UrlState {
+  const q = new URLSearchParams(window.location.search);
+  const view = q.get('showcase') as ShowcaseView | null;
+  return {
+    component: q.get('component'),
+    showcase: view && SHOWCASE_VIEWS.includes(view) ? view : null,
+    dark: q.get('mode') !== 'light',
+    theme: q.get('theme') || 'default',
+  };
+}
+
+/** Serializes the screen and theme; defaults are left out of the URL. */
+function writeUrlState(s: {
+  component: string;
+  showcase: ShowcaseView | null;
+  dark: boolean;
+  theme: string;
+}): string {
+  const q = new URLSearchParams();
+  if (s.showcase) q.set('showcase', s.showcase);
+  else q.set('component', s.component);
+  if (!s.dark) q.set('mode', 'light');
+  if (s.theme !== 'default') q.set('theme', s.theme);
+  return `?${q.toString()}`;
+}
+
 export function App() {
   const entries = useMemo(
     () => workbenchManifest(CONTRACTS, { ngRegistryItems: NG_REGISTRY_ITEMS }),
     [],
   );
-  const [name, setName] = useState(entries[0]?.name ?? '');
+  // The URL is the source of truth for where you are, so a refresh, a shared
+  // link or the back button land on the same screen and theme.
+  const initial = useMemo(() => readUrlState(), []);
+  const [name, setName] = useState(
+    entries.some((e) => e.name === initial.component)
+      ? (initial.component as string)
+      : (entries[0]?.name ?? ''),
+  );
   const entry = entries.find((e) => e.name === name) ?? entries[0];
   const [values, setValues] = useState<Values>(() => defaults(entry));
-  const [dark, setDark] = useState(true);
-  const [theme, setTheme] = useState<string>('default');
-  const [showcase, setShowcase] = useState<ShowcaseView | null>(null);
+  const [dark, setDark] = useState(initial.dark);
+  const [theme, setTheme] = useState<string>(initial.theme);
+  const [showcase, setShowcase] = useState<ShowcaseView | null>(
+    initial.showcase,
+  );
+
+  // Screen changes push a history entry; theme and mode only replace it.
+  useEffect(() => {
+    const next = writeUrlState({ component: name, showcase, dark, theme });
+    if (next === window.location.search) return;
+    const was = readUrlState();
+    const screen = (c: string | null, v: ShowcaseView | null) =>
+      v ? `showcase:${v}` : `component:${c}`;
+    // The first write only normalizes the URL the page was opened with.
+    const pushed =
+      window.location.search !== '' &&
+      screen(was.component, was.showcase) !== screen(name, showcase);
+    window.history[pushed ? 'pushState' : 'replaceState'](null, '', next);
+  }, [name, showcase, dark, theme]);
+
+  useEffect(() => {
+    const onPop = () => {
+      const s = readUrlState();
+      const next = entries.find((e) => e.name === s.component);
+      if (next) {
+        setName(next.name);
+        setValues(defaults(next));
+      }
+      setShowcase(s.showcase);
+      setDark(s.dark);
+      setTheme(s.theme);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [entries]);
 
   // Drive both the CSS-var tokens (`.dark`) and the brand palette (`data-theme`)
   // from the root element, so the whole shell - every rx-* component and the
@@ -528,7 +606,7 @@ export function App() {
             <main data-showcase={showcase} className="min-h-0 min-w-0 flex-1">
               <iframe
                 key={showcase}
-                title={`Showcase: ${showcase === 'ref' ? 'shadcn reference' : showcase === 'rx' ? 'React' : 'Angular'}`}
+                title={`Showcase: ${showcase === 'ref' ? 'Reference' : showcase === 'rx' ? 'React' : 'Angular'}`}
                 className="size-full border-0"
                 src={
                   showcase === 'ref'

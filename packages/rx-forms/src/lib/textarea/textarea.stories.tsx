@@ -6,7 +6,7 @@ import { Textarea } from './textarea';
 /**
  * # Textarea
  *
- * Multi-line text field — a faithful shadcn port. Uses CSS
+ * Multi-line text field. Uses CSS
  * `field-sizing: content` so it grows automatically as the user types, with no
  * manual `rows` or JS measurement in modern browsers. Pair with labels and
  * validation messages.
@@ -14,7 +14,7 @@ import { Textarea } from './textarea';
  * ## Anatomy
  *
  * ```text
- * Textarea   single styled <textarea>, filled (bg-input/50), min-h-16 to max-h-64, auto-growing via field-sizing: content
+ * Textarea   single styled <textarea>, filled (bg-field), min-h-16 to max-h-64, auto-growing via field-sizing: content
  * ```
  *
  * ## Props
@@ -31,7 +31,7 @@ import { Textarea } from './textarea';
  *
  * | Token | Used for |
  * | --- | --- |
- * | `--input` | filled field (`bg-input/50`, transparent border) |
+ * | `--input` | filled field (`bg-field`: input at 30%, transparent border) |
  * | `--ring` | focus ring |
  * | `--destructive` | `aria-invalid` border/ring |
  * | `--muted-foreground` | placeholder |

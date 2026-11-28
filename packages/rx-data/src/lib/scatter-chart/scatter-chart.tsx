@@ -33,9 +33,9 @@ export interface ScatterChartProps {
 }
 
 /**
- * Scatter chart — recharts + the shadcn `chart` primitives. Each `config` entry
- * is a numeric Y series plotted against the numeric `xKey`. (shadcn ships no
- * scatter block; this follows the same composition pattern as the others.)
+ * Scatter chart — recharts + the `chart` primitives. Each `config` entry
+ * is a numeric Y series plotted against the numeric `xKey`. It follows the
+ * same composition pattern as the other charts.
  *
  * @example
  * ```tsx

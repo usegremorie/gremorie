@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import {
@@ -47,13 +47,15 @@ describe('Tooltip', () => {
     expect(host.querySelector('[data-slot="tooltip-content"]')).toBeNull();
   });
 
-  it('shows an arrowless surface on hover (no legacy square, brain arrow hidden)', fakeAsync(() => {
+  it('shows an arrowless surface on hover (no legacy square, brain arrow hidden)', () => {
+    // Zoneless TestBed: drive the show/hide delays with vitest fake timers.
+    vi.useFakeTimers();
     const fixture = render();
     const anchor = (fixture.nativeElement as HTMLElement).querySelector(
       '[data-slot="tooltip-trigger"] > span',
     ) as HTMLElement;
     anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-    tick(300);
+    vi.advanceTimersByTime(300);
     fixture.detectChanges();
 
     const surface = document.querySelector('[data-slot="tooltip-content"]');
@@ -70,9 +72,10 @@ describe('Tooltip', () => {
     }
 
     anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-    tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
-  }));
+    vi.useRealTimers();
+  });
 
   it('gives the brnTooltip anchor span a real box (never display: contents)', () => {
     // Regression: with `class="contents"` the anchor reported an empty

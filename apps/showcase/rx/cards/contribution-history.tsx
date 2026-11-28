@@ -30,7 +30,7 @@ const SUMMARY = [
   { label: 'Auto-Save Plan', value: 'Accelerated', detail: 'Recurring weekly' },
 ];
 
-/** shadcn reference card 1 (column 1): six months of contributions. */
+/** Showcase card 1 (column 1): six months of contributions. */
 export function ContributionHistory() {
   return (
     <Card>

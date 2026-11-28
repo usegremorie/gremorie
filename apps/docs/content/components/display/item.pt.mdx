@@ -7,7 +7,7 @@ import { ItemPreview } from '@/components/preview/display/item';
 
 ## Visão geral
 
-`Item` é o primitive composto de linha de lista: um slot de mídia, um bloco de título/descrição e um slot de ações finais, dispostos em uma linha. Adaptado do shadcn/ui para uma **cascata de `size` único** — o `size` que você define no `Item` (`lg`, `md`, `sm` ou `none`) dirige o tamanho da mídia _e_ a tipografia de título/descrição de uma vez através de seletores `data-size` + `group-data`, então nenhuma sub-parte repete medidas.
+`Item` é o primitive composto de linha de lista: um slot de mídia, um bloco de título/descrição e um slot de ações finais, dispostos em uma linha. Ele é construído em torno de uma **cascata de `size` único** — o `size` que você define no `Item` (`lg`, `md`, `sm` ou `none`) dirige o tamanho da mídia _e_ a tipografia de título/descrição de uma vez através de seletores `data-size` + `group-data`, então nenhuma sub-parte repete medidas.
 
 A altura da mídia acompanha o bloco de texto: com uma descrição ela é mais alta (lg 40 · md 36 · sm 32px), sem uma ela combina com o título (lg/md 20 · sm 16px). A variante de mídia `icon` é a única de tamanho fixo — um glyph nu de 16px, como nos menus; `featured`, `avatar` e `image` seguem a cascata. Use `variant` (`default`, `outline`, `muted`) para a superfície, `interactive` para o affordance de hover, e `asChild` para renderizar a linha como um link ou botão.
 
@@ -35,10 +35,34 @@ ItemGroup                  role="list" column wrapping rows
 ## Instalação
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-item ```</Tab>
-  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-item ```</Tab>
-  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-item ```</Tab>
-  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-item ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-item
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-item
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-item
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-item
+```
+
+</Tab>
 </Tabs>
 
 Traz `rx-separator` (para `ItemSeparator`) como dependência de registry.

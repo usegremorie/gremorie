@@ -1,0 +1,10 @@
+{
+  "title": "Mobile",
+  "icon": "Smartphone",
+  "description": "Feito para o celular: barra de abas, drawers e sheets.",
+  "pages": [
+    "tab-bar",
+    "[Drawer](/en/components/overlays/drawer)",
+    "[Sheet](/en/components/overlays/sheet)"
+  ]
+}

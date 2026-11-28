@@ -26,7 +26,7 @@ import { MessageBranchItem } from './message-branch';
   template: `
     @for (item of items(); track $index) {
       <div
-        class="grid gap-2 overflow-hidden [&>div]:pb-0"
+        class="grid grid-cols-1 gap-2 overflow-hidden [&>div]:pb-0"
         [class.hidden]="$index !== current()"
       >
         <ng-container *ngTemplateOutlet="item.template" />

@@ -7,7 +7,7 @@ import { Label } from './label';
 /**
  * # Label
  *
- * Accessible label primitive (Radix `Label.Root`), a faithful shadcn port. Use
+ * Accessible label primitive built on Radix `Label.Root`. Use
  * it as the static label above or beside any control. When `htmlFor` matches a
  * control's `id`, clicking the label focuses (or toggles) the control. It also
  * dims automatically when a peer/`group` control is disabled.

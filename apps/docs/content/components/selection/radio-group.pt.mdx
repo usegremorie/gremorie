@@ -6,6 +6,7 @@ description: Grupo de single-select de opções mutuamente exclusivas construíd
 import { RadioGroupPreview } from '@/components/preview/forms/radio-group';
 import { RadioGroupWithDescriptionPreview } from '@/components/preview/forms/radio-group-with-description';
 import { RadioGroupDisabledPreview } from '@/components/preview/forms/radio-group-disabled';
+import { FieldChoiceCardPreview } from '@/components/preview/forms/field-choice-card';
 
 ## Visão geral
 
@@ -30,15 +31,33 @@ RadioGroup               the Root, a grid gap-3 owning the value
 ## Instalação
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-radio-group ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-radio-group
+```
+
+</Tab>
   <Tab value="pnpm">
-    ```bash pnpm dlx gremorie@latest add rx-radio-group ```
+
+```bash
+pnpm dlx gremorie@latest add rx-radio-group
+```
+
   </Tab>
   <Tab value="yarn">
-    ```bash yarn dlx gremorie@latest add rx-radio-group ```
+
+```bash
+yarn dlx gremorie@latest add rx-radio-group
+```
+
   </Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-radio-group ```
+
+```bash
+bunx --bun gremorie@latest add rx-radio-group
+```
+
   </Tab>
 </Tabs>
 
@@ -156,11 +175,33 @@ Quando as opções são curtas e o context ao redor é largo o suficiente, mude 
 
 ### Com descrições
 
-Adicione um parágrafo de hint após cada label quando a escolha tem consequências que valem explicar. Alinhe o item ao topo da linha com `mt-0.5`.
+Adicione um hint após cada label quando a escolha tem consequências que valem explicar. `Field` com `orientation="horizontal"` e um `FieldContent` monta o layout e alinha o item à primeira linha do texto.
 
 <ComponentPreview name="forms/radio-group-with-description">
   <RadioGroupWithDescriptionPreview />
 </ComponentPreview>
+
+### Card de escolha
+
+Envolva cada opção em um [`Field`](/components/field) dentro de um `FieldLabel` e o card inteiro vira a área de clique do seu radio. O card selecionado recebe a borda `--primary` e o preenchimento `--accent`.
+
+<ComponentPreview name="forms/field-choice-card">
+  <FieldChoiceCardPreview />
+</ComponentPreview>
+
+```tsx
+<RadioGroup defaultValue="kubernetes">
+  <FieldLabel htmlFor="kubernetes">
+    <Field orientation="horizontal">
+      <FieldContent>
+        <FieldTitle>Kubernetes</FieldTitle>
+        <FieldDescription>Run GPU workloads on a K8s cluster.</FieldDescription>
+      </FieldContent>
+      <RadioGroupItem value="kubernetes" id="kubernetes" />
+    </Field>
+  </FieldLabel>
+</RadioGroup>
+```
 
 ### Opção desabilitada
 
@@ -187,5 +228,6 @@ Desabilite um único `RadioGroupItem` para travar uma escolha indisponível enqu
 - [Checkbox](/components/selection/checkbox) - irmão de multi-select
 - [Select](/components/selection/select) - alternativa dropdown para listas mais longas
 - [Toggle Group](/components/buttons/toggle-group) - single-select liderado por ícone para toolbars compactas
+- [Field](/components/field) - labels, descrições, erros e cards de escolha em volta de um radio
 - [Label](/components/text/label) - o companheiro canônico
 - [Form](/components/form) - conecte o RadioGroup no react-hook-form

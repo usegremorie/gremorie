@@ -45,6 +45,10 @@ import { cn } from '@gremorie/ng-core';
 @Component({
   selector: 'gr-textarea',
   standalone: true,
+  // `id` is an input AND a static attribute: Angular would also leave it on this
+  // host, a second element with the same id. A label's `for` would then find the
+  // host (not labelable) before the real control. The control keeps the id.
+  host: { '[attr.id]': 'null' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -108,7 +112,7 @@ export class Textarea implements ControlValueAccessor {
 
   protected readonly textareaClass = computed(() =>
     cn(
-      'flex field-sizing-content min-h-16 max-h-64 w-full rounded-sm border border-transparent bg-input/50 px-3 py-2 text-base transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:ring-destructive/40',
+      'flex field-sizing-content min-h-16 max-h-64 w-full rounded-sm border border-transparent bg-field px-3 py-2 text-base transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm',
       this.resizable() ? 'resize-y' : 'resize-none',
       this.class(),
     ),

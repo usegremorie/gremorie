@@ -95,7 +95,7 @@ interface MentionGroup {
         role="listbox"
         aria-label="Add context"
         #panel
-        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-0 text-popover-foreground shadow-md motion-safe:animate-[gremorie-pop-in_120ms_ease-out]"
+        class="w-64 origin-top-left overflow-hidden rounded-md border border-border bg-popover-surface p-0 text-popover-foreground shadow-md motion-safe:animate-pop-in"
       >
         <div class="border-b p-2">
           <input
@@ -152,7 +152,7 @@ interface MentionGroup {
       <span
         class="inline-flex h-8 items-center gap-1 rounded-md border px-2.5 text-xs"
       >
-        <span class="max-w-[10rem] truncate">{{ item.label }}</span>
+        <span class="max-w-40 truncate">{{ item.label }}</span>
         <button
           type="button"
           [attr.aria-label]="'Remove ' + item.label"
@@ -210,8 +210,8 @@ export class PromptInputMentions {
     cn(
       'inline-flex h-8 items-center gap-1.5 rounded-sm border border-solid px-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
       this.variant() === 'secondary'
-        ? 'border-transparent bg-foreground/5 text-secondary-foreground hover:bg-foreground/10 aria-expanded:bg-foreground/10 dark:bg-foreground/8 dark:hover:bg-foreground/15 dark:aria-expanded:bg-foreground/15'
-        : 'border-foreground/10 bg-transparent text-foreground hover:bg-muted dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        ? 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary-hover aria-expanded:bg-secondary-hover'
+        : 'border-foreground/10 bg-transparent text-foreground hover:bg-accent aria-expanded:bg-accent',
       this.hasSelection() && 'size-8 justify-center px-0',
     ),
   );

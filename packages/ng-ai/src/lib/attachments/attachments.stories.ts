@@ -13,7 +13,7 @@ import type { AttachmentData } from './attachment.types';
  * Attachments — a flexible, composable surface for displaying files, images,
  * video, audio and source documents. Standalone (no PromptInput context
  * required), so the same family renders attachments in a composer *and* on a
- * sent message. Parity port of the React AI Elements **Attachments**
+ * sent message. Parity port of the React **Attachments**
  * (`@gremorie/rx-ai`).
  *
  * ## Variants

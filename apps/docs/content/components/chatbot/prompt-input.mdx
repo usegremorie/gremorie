@@ -71,15 +71,33 @@ PromptInputActionMenu
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-prompt-input ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-prompt-input
+```
+
+</Tab>
   <Tab value="pnpm">
-    ```bash pnpm dlx gremorie@latest add rx-prompt-input ```
+
+```bash
+pnpm dlx gremorie@latest add rx-prompt-input
+```
+
   </Tab>
   <Tab value="yarn">
-    ```bash yarn dlx gremorie@latest add rx-prompt-input ```
+
+```bash
+yarn dlx gremorie@latest add rx-prompt-input
+```
+
   </Tab>
   <Tab value="bun">
-    ```bash bunx --bun gremorie@latest add rx-prompt-input ```
+
+```bash
+bunx --bun gremorie@latest add rx-prompt-input
+```
+
   </Tab>
 </Tabs>
 
@@ -248,8 +266,7 @@ export function ChatBox() {
 ## Recipes
 
 `PromptInput` is customized by composition, not configuration. There is no
-`showAttachments` or `showVoice` prop, by design (the same contract as Vercel
-AI Elements): every part is a component you include in the tree or leave out.
+`showAttachments` or `showVoice` prop, by design: every part is a component you include in the tree or leave out.
 To remove the context section, the voice button or the attachments flow, you
 delete the part from your code instead of toggling a flag. The recipes below
 are complete, copyable starting points ordered from the smallest possible
@@ -511,9 +528,9 @@ Wrappers around `Select` from `@gremorie/rx-forms` (`PromptInputSelect`, `Prompt
 
 `PromptInputSelectTrigger` takes `variant`:
 
-| Prop      | Type                                  | Default   | Description                                                                                                                                                                                                                                                                 |
-| --------- | ------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `"ghost" \| "outline" \| "secondary"` | `"ghost"` | `ghost` is the AI Elements look: borderless, transparent, `text-secondary-foreground`, with a `bg-muted` surface on hover and while open. `outline` and `secondary` use the Select's own trigger variants, so the trigger reads like the other controls on a filled prompt. |
+| Prop      | Type                                  | Default   | Description                                                                                                                                                                                                                                                           |
+| --------- | ------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant` | `"ghost" \| "outline" \| "secondary"` | `"ghost"` | `ghost` is the quiet look: borderless, transparent, `text-secondary-foreground`, with a `bg-muted` surface on hover and while open. `outline` and `secondary` use the Select's own trigger variants, so the trigger reads like the other controls on a filled prompt. |
 
 ### `<PromptInputMentions>`
 

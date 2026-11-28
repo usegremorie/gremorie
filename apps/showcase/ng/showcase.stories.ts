@@ -4,12 +4,13 @@ import { Assistant } from '@gremorie/ng-ai';
 
 import { AccountAccess } from './cards/account-access';
 import { ContributionHistory } from './cards/contribution-history';
+import { MonthlySpending } from './cards/monthly-spending';
 import { PayoutThreshold } from './cards/payout-threshold';
 import { ReceivingMethod } from './cards/receiving-method';
 
 /**
- * The Angular showcase: the shadcn reference cards rebuilt with Gremorie
- * components, in the reference's column order, mirroring the React showcase
+ * The Angular showcase: a set of product cards built with Gremorie
+ * components, in a fixed column order, mirroring the React showcase
  * (same id, `showcase--all`). Fixed 375px columns, 40px apart.
  */
 const meta: Meta = {
@@ -19,6 +20,7 @@ const meta: Meta = {
     moduleMetadata({
       imports: [
         ContributionHistory,
+        MonthlySpending,
         PayoutThreshold,
         Assistant,
         AccountAccess,
@@ -36,6 +38,7 @@ export const All: StoryObj = {
       <div class="flex min-h-screen items-start gap-10 bg-background p-10">
         <div class="flex w-[375px] shrink-0 flex-col gap-10">
           <showcase-contribution-history />
+          <showcase-monthly-spending />
         </div>
         <div class="flex w-[375px] shrink-0 flex-col gap-10">
           <showcase-payout-threshold />

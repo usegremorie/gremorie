@@ -2,11 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
+  forwardRef,
   inject,
   input,
+  output,
+  signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { buttonVariants, cn, type ButtonVariant } from '@gremorie/ng-core';
 
@@ -62,14 +67,21 @@ export class InputGroup {
 
   protected readonly computedClass = computed(() =>
     cn(
-      'group/input-group border-input dark:bg-input/30 shadow-xs relative flex w-full items-center rounded-md border outline-none transition-[color,box-shadow]',
-      'h-9 has-[>textarea]:h-auto',
+      'group/input-group border-input bg-field shadow-xs relative flex w-full items-center rounded-md border outline-none transition-[color,box-shadow]',
+      'h-9 has-[>textarea]:h-auto has-[>gr-input-group-textarea]:h-auto',
       'has-[>[data-align=inline-start]]:[&>input]:pl-2',
       'has-[>[data-align=inline-end]]:[&>input]:pr-2',
       'has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-start]]:[&>input]:pb-3',
       'has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3',
+      // The same rules reaching the native input through the
+      // `gr-input-group-input` host (display: contents, so a child selector
+      // from the group would otherwise miss it).
+      'has-[>[data-align=inline-start]]:[&>gr-input-group-input>input]:pl-2',
+      'has-[>[data-align=inline-end]]:[&>gr-input-group-input>input]:pr-2',
+      'has-[>[data-align=block-start]]:[&>gr-input-group-input>input]:pb-3',
+      'has-[>[data-align=block-end]]:[&>gr-input-group-input>input]:pt-3',
       'has-[[data-slot=input-group-control]:focus-visible]:ring-ring has-[[data-slot=input-group-control]:focus-visible]:ring-1',
-      'has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40',
+      'has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive',
       this.class(),
     ),
   );
@@ -78,19 +90,21 @@ export class InputGroup {
 export type InputGroupAddonAlign =
   'inline-start' | 'inline-end' | 'block-start' | 'block-end';
 
+// `has-[>button]` cannot see through the `gr-input-group-button` host, so each
+// button rule has a twin keyed on that host.
 const inputGroupAddonVariants = cva(
-  "text-muted-foreground flex h-auto cursor-text select-none items-center justify-center gap-2 py-1.5 text-sm font-medium group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4",
+  "text-muted-foreground flex h-auto cursor-text select-none items-center justify-center gap-2 py-1.5 text-sm font-medium group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-sm [&>svg:not([class*='size-'])]:size-4",
   {
     variants: {
       align: {
         'inline-start':
-          'order-first pl-3 has-[>button]:ml-[-0.45rem] has-[>kbd]:ml-[-0.35rem]',
+          'order-first pl-3 has-[>button]:-ml-2 has-[>gr-input-group-button]:-ml-2 has-[>kbd]:-ml-1.5',
         'inline-end':
-          'order-last pr-3 has-[>button]:mr-[-0.4rem] has-[>kbd]:mr-[-0.35rem]',
+          'order-last pr-3 has-[>button]:-mr-1.5 has-[>gr-input-group-button]:-mr-1.5 has-[>kbd]:-mr-1.5',
         'block-start':
-          '[.border-b]:pb-3 order-first w-full justify-start px-3 pt-3 group-has-[>input]/input-group:pt-2.5',
+          '[.border-b]:pb-3 order-first w-full justify-start px-3 pt-3 group-has-[>input]/input-group:pt-2.5 group-has-[>gr-input-group-input]/input-group:pt-2.5',
         'block-end':
-          '[.border-t]:pt-3 order-last w-full justify-start px-3 pb-3 group-has-[>input]/input-group:pb-2.5',
+          '[.border-t]:pt-3 order-last w-full justify-start px-3 pb-3 group-has-[>input]/input-group:pb-2.5 group-has-[>gr-input-group-input]/input-group:pb-2.5',
       },
     },
     defaultVariants: {
@@ -145,10 +159,9 @@ const inputGroupButtonVariants = cva(
   {
     variants: {
       size: {
-        xs: "h-6 gap-1 rounded-[calc(var(--radius)-5px)] px-2 has-[>svg]:px-2 [&>svg:not([class*='size-'])]:size-3.5",
+        xs: "h-6 gap-1 rounded-sm px-2 has-[>svg]:px-2 [&>svg:not([class*='size-'])]:size-3.5",
         sm: 'h-8 gap-1.5 rounded-sm px-2.5 has-[>svg]:px-2.5',
-        'icon-xs':
-          'size-6 rounded-[calc(var(--radius)-5px)] p-0 has-[>svg]:p-0',
+        'icon-xs': 'size-6 rounded-sm p-0 has-[>svg]:p-0',
         'icon-sm': 'size-8 p-0 has-[>svg]:p-0',
       },
     },
@@ -239,16 +252,30 @@ export class InputGroupText {
  * wraps the native input inside a host element, which would break the parent
  * group's `> input` child selectors and the
  * `has-[[data-slot=input-group-control]:focus-visible]` focus ring. So this
- * control renders the native `<input>` directly — carrying
- * `data-slot="input-group-control"` and the same base + override classes as
- * `gr-input` — keeping it a direct `<input>` child of the group, exactly as
- * React produces.
+ * control renders the native `<input>` itself, carrying
+ * `data-slot="input-group-control"` and the React `Input` base classes plus the
+ * group overrides. Its host is `display: contents`, so the input is the flex
+ * item (`flex-1`, like React); the group's `> input` rules have a twin that
+ * reaches through the host.
+ *
+ * Value: same surface as `gr-input` (`value` seed, `valueChange` output and
+ * ControlValueAccessor for `ngModel` / reactive forms).
  */
 @Component({
   selector: 'gr-input-group-input',
   standalone: true,
+  // The control keeps the `id` (see Input: a host copy would shadow it for
+  // labels). `contents`: the native input is the flex item, as in React.
+  host: { '[attr.id]': 'null', class: 'contents' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputGroupInput),
+      multi: true,
+    },
+  ],
   template: `
     <input
       data-slot="input-group-control"
@@ -257,13 +284,16 @@ export class InputGroupText {
       [attr.id]="id() || null"
       [attr.name]="name() || null"
       [attr.placeholder]="placeholder() || null"
+      [attr.inputmode]="inputmode() || null"
       [attr.aria-invalid]="ariaInvalid() ? 'true' : null"
-      [disabled]="disabled()"
-      [value]="value()"
+      [disabled]="isDisabled()"
+      [value]="model()"
+      (input)="handleInput($event)"
+      (blur)="handleBlur()"
     />
   `,
 })
-export class InputGroupInput {
+export class InputGroupInput implements ControlValueAccessor {
   /** Native input type. Mirrors React `type` (default 'text'). */
   readonly type = input<string>('text');
   /** Placeholder text. Mirrors React `placeholder`. */
@@ -278,16 +308,75 @@ export class InputGroupInput {
   readonly id = input<string>('');
   /** Form control name. Mirrors React `name`. */
   readonly name = input<string>('');
+  /** Virtual keyboard hint. Mirrors the native React `inputMode` prop. */
+  readonly inputmode = input<string>('');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
+  /** Emits the current string value on every keystroke. Mirrors `gr-input`. */
+  readonly valueChange = output<string>();
+
+  /** Internal model: seeded from `value`, then driven by CVA/`(input)`. */
+  protected readonly model = signal('');
+  /** Internal disabled state: `disabled` input OR `setDisabledState`. */
+  protected readonly disabledState = signal(false);
+
+  protected readonly isDisabled = computed(
+    () => this.disabled() || this.disabledState(),
+  );
+
+  // React renders `Input` with these overrides, so the base is the `Input`
+  // class string (see `gr-input`) followed by the group overrides.
   protected readonly computedClass = computed(() =>
     cn(
-      'h-9 w-full min-w-0 bg-transparent px-3 py-1 text-base outline-none placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-      'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',
+      'h-8 w-full min-w-0 rounded-sm border border-transparent bg-field px-3 py-1 text-base transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+      'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+      'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
+      'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0',
       this.class(),
     ),
   );
+
+  private onChange: (value: string) => void = () => undefined;
+  private onTouched: () => void = () => undefined;
+
+  constructor() {
+    // Seed from `value` (static use without forms); CVA and keystrokes drive
+    // the model afterwards. Same contract as `gr-input`.
+    effect(() => {
+      const seed = this.value();
+      if (seed) {
+        this.model.set(seed);
+      }
+    });
+  }
+
+  protected handleInput(event: Event): void {
+    const next = (event.target as HTMLInputElement).value;
+    this.model.set(next);
+    this.onChange(next);
+    this.valueChange.emit(next);
+  }
+
+  protected handleBlur(): void {
+    this.onTouched();
+  }
+
+  writeValue(value: string | null): void {
+    this.model.set(value ?? '');
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabledState.set(isDisabled);
+  }
 }
 
 /**
@@ -301,6 +390,9 @@ export class InputGroupInput {
 @Component({
   selector: 'gr-input-group-textarea',
   standalone: true,
+  // The control keeps the `id` (see Input: a host copy would shadow it for
+  // labels). `contents`: the native textarea is the flex item, as in React.
+  host: { '[attr.id]': 'null', class: 'contents' },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -335,7 +427,7 @@ export class InputGroupTextarea {
   protected readonly computedClass = computed(() =>
     cn(
       'field-sizing-content min-h-16 w-full bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-      'flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent',
+      'flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0',
       this.class(),
     ),
   );

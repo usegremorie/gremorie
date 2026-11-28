@@ -1,36 +1,58 @@
 /*
  * ─── Floating surfaces ────────────────────────────────
- * Menus, selects, popovers and hover cards paint a translucent
- * popover with a soft backdrop blur by default. Use them through
- * the `bg-popover-surface` utility, never `bg-popover/NN`.
+ * Everything that floats over content paints a translucent fill with a
+ * soft backdrop blur: menus, selects, popovers and hover cards
+ * (`bg-popover-surface`), and docked bars such as a sticky header or a
+ * chat composer (`bg-background-surface`). Use these utilities, never
+ * `bg-popover/NN` or `bg-background/NN` plus a hand-written blur.
  *
- * Inside the surface, accent (item hover/highlight) and muted (tracks,
- * subtle fills) become translucent foreground, as in Luma: an opaque fill
+ * Two tokens drive every floating surface:
+ *   --surface-opacity   how much of the fill is paint (100% = solid)
+ *   --surface-backdrop  the backdrop filter behind it (none = no blur)
+ *
+ * Solid, no blur: set --surface-opacity: 100% and --surface-backdrop: none,
+ * or use the shortcut <html data-menu="solid">. Users who ask the OS to
+ * reduce transparency get the solid surface automatically.
+ *
+ * Inside a popover surface, accent (item hover/highlight) and muted (tracks,
+ * subtle fills) become translucent foreground: an opaque fill
  * close to the popover color would vanish over whatever sits behind.
- *
- * Opt out (opaque, no blur): <html data-menu="solid">.
- * Users who ask the OS to reduce transparency get the opaque
- * surface automatically.
  */
+html {
+  --surface-opacity: 70%;
+  --surface-backdrop: blur(24px) saturate(1.5);
+}
+
 :root[data-menu='solid'] {
-  --popover-surface: var(--popover);
-  --popover-backdrop: none;
+  --surface-opacity: 100%;
+  --surface-backdrop: none;
 }
 
 @media (prefers-reduced-transparency: reduce) {
   :root {
-    --popover-surface: var(--popover);
-    --popover-backdrop: none;
+    --surface-opacity: 100%;
+    --surface-backdrop: none;
   }
 }
 
 @utility bg-popover-surface {
+  /* --popover-surface and --popover-backdrop still override, for 0.11 code. */
   background-color: var(
     --popover-surface,
-    color-mix(in oklab, var(--popover) 60%, transparent)
+    color-mix(in oklab, var(--popover) var(--surface-opacity), transparent)
   );
-  -webkit-backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
-  backdrop-filter: var(--popover-backdrop, blur(16px) saturate(1.5));
+  -webkit-backdrop-filter: var(--popover-backdrop, var(--surface-backdrop));
+  backdrop-filter: var(--popover-backdrop, var(--surface-backdrop));
   --accent: color-mix(in oklab, var(--foreground) 10%, transparent);
   --muted: color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+@utility bg-background-surface {
+  background-color: color-mix(
+    in oklab,
+    var(--background) var(--surface-opacity),
+    transparent
+  );
+  -webkit-backdrop-filter: var(--surface-backdrop);
+  backdrop-filter: var(--surface-backdrop);
 }

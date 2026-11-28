@@ -66,7 +66,7 @@ interface SeriesView {
         [data]="data()"
         [xKey]="xKey()"
         [domain]="pinnedDomain()"
-        class="mx-auto aspect-square max-h-[280px] w-full overflow-visible text-muted-foreground"
+        class="mx-auto aspect-square max-h-70 w-full overflow-visible text-muted-foreground"
         (pointermove)="onPointerMove($event)"
         (pointerleave)="clearActive()"
       >
@@ -110,7 +110,7 @@ interface SeriesView {
                     [attr.y]="t.y"
                     text-anchor="end"
                     dominant-baseline="middle"
-                    class="fill-muted-foreground text-[10px]"
+                    class="fill-muted-foreground text-2xs"
                   >
                     {{ t.value }}
                   </svg:text>
@@ -130,7 +130,7 @@ interface SeriesView {
                   [attr.y]="ax.ly"
                   [attr.text-anchor]="ax.anchor"
                   dominant-baseline="middle"
-                  class="fill-muted-foreground text-[10px]"
+                  class="fill-muted-foreground text-2xs"
                 >
                   @for (
                     line of labelLines(ax.label);
@@ -193,7 +193,7 @@ interface SeriesView {
         <div
           #tip
           data-slot="radar-tooltip"
-          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
+          class="pointer-events-none absolute z-10 min-w-28 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
           [style.left.px]="pos.x"
           [style.top.px]="pos.y"
         >
@@ -203,7 +203,7 @@ interface SeriesView {
           @for (row of tipRows(active()!); track row.key) {
             <div class="flex items-center gap-1.5 text-muted-foreground">
               <span
-                class="size-2 rounded-[2px]"
+                class="size-2 rounded-xs"
                 [style.background]="row.color"
               ></span>
               <span>{{ row.label }}</span>

@@ -22,11 +22,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        ghost:
-          'bg-transparent text-secondary-foreground hover:bg-muted dark:hover:bg-input/30',
+        ghost: 'bg-transparent text-secondary-foreground hover:bg-accent',
         outline:
-          'border border-foreground/10 border-solid bg-transparent text-secondary-foreground hover:bg-muted dark:hover:bg-input/30',
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+          'border border-foreground/10 border-solid bg-transparent text-secondary-foreground hover:bg-accent',
+        default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
       },
       size: {
         'icon-sm': 'size-8',
@@ -115,8 +114,7 @@ export class PromptInputButton {
   protected readonly buttonClass = computed(() =>
     cn(
       buttonVariants({ variant: this.variant(), size: this.size() }),
-      this.active() &&
-        'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
+      this.active() && 'bg-secondary text-foreground hover:bg-secondary-hover',
       this.class(),
     ),
   );

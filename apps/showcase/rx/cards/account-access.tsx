@@ -12,10 +12,16 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@gremorie/rx-display';
-import { Button, Input, Label } from '@gremorie/rx-forms';
+import {
+  Button,
+  Field,
+  FieldGroup,
+  FieldLabel,
+  Input,
+} from '@gremorie/rx-forms';
 import { ArrowRightIcon, CircleAlertIcon, LockKeyholeIcon } from 'lucide-react';
 
-/** shadcn reference card (column 4): credentials and the danger zone. */
+/** Showcase card (column 4): credentials and the danger zone. */
 export function AccountAccess() {
   return (
     <Card>
@@ -26,18 +32,20 @@ export function AccountAccess() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="email-address">Email Address</Label>
+        <FieldGroup className="gap-6">
+          <Field>
+            <FieldLabel htmlFor="email-address">Email Address</FieldLabel>
             <Input
               defaultValue="artist@studio.inc"
               id="email-address"
               type="email"
             />
-          </div>
-          <div className="flex flex-col gap-3">
+          </Field>
+          <Field>
             <div className="flex items-center justify-between">
-              <Label htmlFor="current-password">Current Password</Label>
+              <FieldLabel htmlFor="current-password">
+                Current Password
+              </FieldLabel>
               <a
                 className="font-medium text-muted-foreground text-xs uppercase tracking-wider hover:text-foreground"
                 href="#forgot"
@@ -50,8 +58,8 @@ export function AccountAccess() {
               id="current-password"
               type="password"
             />
-          </div>
-        </div>
+          </Field>
+        </FieldGroup>
       </CardContent>
       <CardFooter className="flex-col gap-4">
         <Button className="w-full">

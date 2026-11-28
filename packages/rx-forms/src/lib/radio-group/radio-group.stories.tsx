@@ -6,8 +6,8 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
 /**
  * # RadioGroup
  *
- * Single-select group of mutually-exclusive options, a faithful shadcn/Radix
- * port. The `Root` owns the selected value; each `Item` is one option. The Radix
+ * Single-select group of mutually-exclusive options, built on
+ * Radix. The `Root` owns the selected value; each `Item` is one option. The Radix
  * primitive handles roving tabindex and arrow-key navigation. Cap visible
  * options around five — beyond that, prefer `Select`.
  *

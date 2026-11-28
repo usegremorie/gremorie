@@ -87,7 +87,7 @@ export const WithoutCloseButton: Story = {
               <p gr-dialog-description>Use the footer button to dismiss.</p>
             </gr-dialog-header>
             <gr-dialog-footer>
-              <button gr-dialog-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+              <button gr-dialog-close class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary-hover">
                 Done
               </button>
             </gr-dialog-footer>

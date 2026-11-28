@@ -791,11 +791,13 @@ export const PromptInput = ({
         ref={formRef}
         {...props}
       >
-        {/* A filled field like every other Gremorie input: no border, no
-            shadow. Controls inside use outline or secondary, never a fill. */}
+        {/* A surface above the page, not a sunken field: --card in both
+            modes (one step lighter than --background). The DS subtle edge,
+            as on Card (ring-1 ring-border); no border, no shadow. Controls
+            inside use outline or secondary, never a fill. */}
         <InputGroup
           className={cn(
-            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-input/50 shadow-none dark:bg-input/50',
+            '@container/prompt-input overflow-hidden rounded-xl border-transparent bg-card shadow-none ring-1 ring-border',
             layout === 'inline' &&
               'h-auto flex-row items-end gap-1 p-2 [&_[data-slot=input-group-control]]:min-h-8 [&_[data-slot=input-group-control]]:px-1.5 [&_[data-slot=input-group-control]]:py-1.5',
           )}
@@ -1049,8 +1051,7 @@ export const PromptInputButton = ({
         // changes only the background. Only the active (pressed) state moves to
         // the full foreground.
         'text-secondary-foreground',
-        active &&
-          'bg-foreground/10 text-foreground hover:bg-foreground/15 dark:bg-foreground/15 dark:hover:bg-foreground/20',
+        active && 'bg-secondary text-foreground hover:bg-secondary-hover',
         className,
       )}
       size={newSize}
@@ -1191,7 +1192,7 @@ export const PromptInputActionMenuTrigger = ({
     <PromptInputButton
       className={cn(
         // Open state shows, as the prompt selects do.
-        'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        'aria-expanded:bg-accent',
         className,
       )}
       {...props}
@@ -1256,7 +1257,7 @@ export const PromptInputActionMenuSwitchItem = ({
     {/* Same look as Switch (size sm); keep in lock-step with rx-forms. */}
     <span
       aria-hidden="true"
-      className="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80"
+      className="inline-flex h-4 w-7 shrink-0 items-center rounded-full border-2 border-transparent transition-all data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input"
       data-slot="switch"
       data-state={checked ? 'checked' : 'unchecked'}
     >
@@ -1475,8 +1476,7 @@ export const PromptInputSpeechButton = ({
       aria-label="Toggle voice input"
       className={cn(
         'relative transition-all duration-200',
-        isListening &&
-          'animate-pulse bg-muted text-foreground dark:bg-input/30',
+        isListening && 'animate-pulse bg-muted text-foreground',
         className,
       )}
       disabled={!recognition}
@@ -1503,7 +1503,7 @@ export type PromptInputSelectTriggerProps = ComponentProps<
 >;
 
 /**
- * `ghost` (default) is the AI Elements look: no surface until hover. On a
+ * `ghost` (default) is the quiet look: no surface until hover. On a
  * filled prompt, `outline` or `secondary` draw the trigger like the other
  * controls, through the Select's own variants.
  */
@@ -1518,7 +1518,7 @@ export const PromptInputSelectTrigger = ({
     <SelectTrigger
       className={cn(
         'border-none bg-transparent font-medium text-secondary-foreground shadow-none transition-colors',
-        'hover:bg-muted dark:hover:bg-input/30 aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        'hover:bg-accent aria-expanded:bg-accent',
         className,
       )}
       {...props}
@@ -1528,8 +1528,7 @@ export const PromptInputSelectTrigger = ({
       variant={variant}
       className={cn(
         'font-medium',
-        variant === 'outline' &&
-          'aria-expanded:bg-muted dark:aria-expanded:bg-input/30',
+        variant === 'outline' && 'aria-expanded:bg-accent',
         className,
       )}
       {...props}

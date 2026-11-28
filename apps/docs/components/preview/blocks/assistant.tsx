@@ -683,7 +683,7 @@ export function Assistant({
     <TooltipProvider>
       <div
         className={cn(
-          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-foreground/5 dark:shadow-md dark:ring-foreground/10',
+          '@container/assistant relative mx-auto flex h-[680px] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-background text-foreground shadow-sm ring-1 ring-border dark:shadow-md',
           className,
         )}
       >
@@ -904,7 +904,7 @@ export function Assistant({
                 scrolls behind it, fading out through the gradient. */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
               <div className="h-8 bg-gradient-to-t from-background to-transparent" />
-              <div className="pointer-events-auto bg-background/80 px-3 pb-3 backdrop-blur-sm">
+              <div className="pointer-events-auto bg-background-surface px-3 pb-3">
                 <div className="mx-auto w-full max-w-3xl space-y-2">
                   <Composer
                     onSubmit={handleSubmit}

@@ -31,7 +31,7 @@ import { MESSAGE_BRANCH } from './message-branch';
         <gr-tooltip-trigger>
           <button
             type="button"
-            class="inline-flex size-8 items-center justify-center rounded-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-input/30"
+            class="inline-flex size-8 items-center justify-center rounded-sm transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
             aria-label="Previous branch"
             [disabled]="disabled()"
             (click)="prev()"
@@ -81,7 +81,7 @@ export class MessageBranchPrevious {
         <gr-tooltip-trigger>
           <button
             type="button"
-            class="inline-flex size-8 items-center justify-center rounded-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-input/30"
+            class="inline-flex size-8 items-center justify-center rounded-sm transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
             aria-label="Next branch"
             [disabled]="disabled()"
             (click)="next()"

@@ -21,13 +21,12 @@ import {
 import { PromptInput } from './prompt-input';
 
 const buttonClass = cva(
-  'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-muted dark:hover:bg-input/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex size-8 shrink-0 items-center justify-center rounded-sm bg-transparent text-secondary-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         ghost: '',
-        outline:
-          'border border-foreground/10 hover:bg-muted dark:hover:bg-input/30',
+        outline: 'border border-foreground/10 hover:bg-accent',
       },
     },
     defaultVariants: { variant: 'ghost' },

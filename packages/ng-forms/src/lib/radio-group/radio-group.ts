@@ -5,7 +5,11 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { BrnRadio, BrnRadioGroup } from '@spartan-ng/brain/radio-group';
+import {
+  BrnRadio,
+  BrnRadioGroup,
+  injectBrnRadioGroup,
+} from '@spartan-ng/brain/radio-group';
 import { cn } from '@gremorie/ng-core';
 
 /**
@@ -52,10 +56,14 @@ import { cn } from '@gremorie/ng-core';
   template: `<ng-content />`,
   host: {
     'data-slot': 'radio-group',
-    class: 'grid gap-3',
+    '[class]': 'hostClass()',
   },
 })
-export class RadioGroup {}
+export class RadioGroup {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() => cn('grid gap-3', this.class()));
+}
 
 /**
  * RadioGroupItem — a single option inside a RadioGroup. Mirrors React
@@ -81,14 +89,16 @@ export class RadioGroup {}
   imports: [BrnRadio],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // The host wraps the 16px control: it must not shrink in a flex row.
-  host: { class: 'inline-flex shrink-0' },
+  // The host wraps the 16px control: it must not shrink in a flex row. The
+  // control keeps the `id` (see Input: a host copy would shadow it for labels).
+  host: { class: 'inline-flex shrink-0', '[attr.id]': 'null' },
   template: `
     <brn-radio
       data-slot="radio-group-item"
       [class]="computedClass()"
       [value]="value()"
       [disabled]="disabled()"
+      [attr.data-state]="state()"
       [id]="id() || undefined"
       [aria-label]="ariaLabel() || undefined"
     >
@@ -126,6 +136,17 @@ export class RadioGroupItem {
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
+  private readonly group = injectBrnRadioGroup();
+
+  /**
+   * `checked` or `unchecked`, as Radix puts it in `data-state`. It lets one
+   * selector (`has-data-[state=checked]`, used by `FieldLabel` for the selected
+   * choice card) serve both editions.
+   */
+  protected readonly state = computed(() =>
+    this.group.value() === this.value() ? 'checked' : 'unchecked',
+  );
+
   /**
    * The React `RadioGroupItem` class string, verbatim, applied to the brain
    * `brn-radio` host and merged with any consumer `class`. The leading `group`
@@ -136,7 +157,7 @@ export class RadioGroupItem {
    */
   protected readonly computedClass = computed(() =>
     cn(
-      'group inline-flex aspect-square size-4 shrink-0 items-center justify-center rounded-full border border-input text-primary shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:ring-destructive/40',
+      'group inline-flex aspect-square size-4 shrink-0 items-center justify-center rounded-full border border-input bg-field text-primary shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20',
       this.class(),
     ),
   );

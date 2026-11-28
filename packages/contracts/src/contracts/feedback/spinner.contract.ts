@@ -2,7 +2,7 @@ import { defineContract } from '../../types';
 
 /**
  * Spinner - an indeterminate "thinking" indicator (a single rotating Loader2
- * glyph). React: `@gremorie/rx-feedback` (faithful shadcn/ui port, lucide
+ * glyph). React: `@gremorie/rx-feedback` (lucide
  * `Loader2Icon` + `animate-spin`). Angular: `@gremorie/ng-feedback` (inline
  * SVG with the same geometry).
  */

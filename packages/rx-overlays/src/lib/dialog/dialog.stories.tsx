@@ -15,7 +15,7 @@ import { Button, Input, Label } from '@gremorie/rx-forms';
 /**
  * # Dialog
  *
- * A modal overlay anchored at viewport center — a faithful shadcn port over
+ * A modal overlay anchored at viewport center — built on
  * Radix Dialog. Use it for focused decisions or short flows that must interrupt
  * the user: confirmations, single-step forms, detail cards. For longer flows
  * prefer `Sheet`; for inline contextual content use `Popover`.

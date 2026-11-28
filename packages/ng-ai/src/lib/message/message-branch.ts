@@ -69,7 +69,7 @@ export class MessageBranchItem implements AfterContentInit, OnDestroy {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: {
-    class: 'grid w-full gap-2 [&>div]:pb-0',
+    class: 'grid w-full grid-cols-1 gap-2 [&>div]:pb-0',
   },
   providers: [
     {

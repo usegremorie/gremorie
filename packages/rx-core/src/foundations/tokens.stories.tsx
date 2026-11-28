@@ -246,7 +246,7 @@ const SEMANTIC_CORE: Row[] = [
   {
     token: '--foreground',
     className: 'text-foreground',
-    primitive: '--color-gray-950',
+    primitive: '--color-gray-900',
   },
   { token: '--card', className: 'bg-card', primitive: '--color-gray-0' },
   {
@@ -290,7 +290,7 @@ const SEMANTIC_CORE: Row[] = [
   {
     token: '--accent-foreground',
     className: 'text-accent-foreground',
-    primitive: '--color-gray-900',
+    primitive: '--foreground',
   },
   {
     token: '--destructive',
@@ -340,7 +340,7 @@ const SEMANTIC_SIDEBAR: Row[] = [
   {
     token: '--sidebar-foreground',
     className: 'text-sidebar-foreground',
-    primitive: '--color-gray-950',
+    primitive: '--foreground',
   },
   {
     token: '--sidebar-primary',
@@ -360,7 +360,7 @@ const SEMANTIC_SIDEBAR: Row[] = [
   {
     token: '--sidebar-accent-foreground',
     className: 'text-sidebar-accent-foreground',
-    primitive: '--color-gray-900',
+    primitive: '--foreground',
   },
   {
     token: '--sidebar-border',

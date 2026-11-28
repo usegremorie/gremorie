@@ -5,8 +5,8 @@ import { Spinner } from './spinner';
 /**
  * # Spinner
  *
- * An indeterminate "thinking" indicator — a faithful shadcn/ui port (lucide
- * `Loader2Icon` + `animate-spin`), extended with a `size` variant matching the
+ * An indeterminate "thinking" indicator drawn with lucide
+ * `Loader2Icon` + `animate-spin`, extended with a `size` variant matching the
  * Angular companion. Use it when duration is unknown; use `Progress` when the
  * percent complete is known; use `Skeleton` to reserve layout for content
  * shape. It inherits `currentColor`, so it tints with the surrounding text.

@@ -13,7 +13,7 @@ import {
   ItemDescription,
 } from '@gremorie/ng-display';
 
-/** shadcn reference card 1 (column 1): six months of contributions. */
+/** Showcase card 1 (column 1): six months of contributions. */
 @Component({
   selector: 'showcase-contribution-history',
   standalone: true,

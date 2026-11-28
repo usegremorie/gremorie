@@ -34,10 +34,16 @@ import { buttonVariants, cn, type ButtonSize } from '@gremorie/ng-core';
     role: 'navigation',
     'aria-label': 'pagination',
     'data-slot': 'pagination',
-    class: 'mx-auto flex w-full justify-center',
+    '[class]': 'hostClass()',
   },
 })
-export class Pagination {}
+export class Pagination {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('mx-auto flex w-full justify-center', this.class()),
+  );
+}
 
 /**
  * PaginationContent — the list row of items. Mirrors React
@@ -51,10 +57,16 @@ export class Pagination {}
   template: `<ng-content />`,
   host: {
     'data-slot': 'pagination-content',
-    class: 'flex flex-row items-center gap-1',
+    '[class]': 'hostClass()',
   },
 })
-export class PaginationContent {}
+export class PaginationContent {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-row items-center gap-1', this.class()),
+  );
+}
 
 /**
  * PaginationItem — one list item. Mirrors React `PaginationItem`.
@@ -86,10 +98,16 @@ export class PaginationItem {}
     'data-slot': 'pagination-link',
     '[attr.aria-current]': "isActive() ? 'page' : null",
     '[attr.data-active]': 'isActive()',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class PaginationLink {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   /** Marks the link as the current page (outline variant). Mirrors React `isActive`. */
   readonly isActive = input<boolean>(false);
   /** Button size token. Mirrors React `size` (defaults to `icon`). */
@@ -131,10 +149,16 @@ export class PaginationLink {
   host: {
     'aria-label': 'Go to previous page',
     'data-slot': 'pagination-link',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class PaginationPrevious {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       buttonVariants({ variant: 'ghost', size: 'default' }),
@@ -168,10 +192,16 @@ export class PaginationPrevious {
   host: {
     'aria-label': 'Go to next page',
     'data-slot': 'pagination-link',
-    '[class]': 'computedClass()',
+    '[class]': 'mergedClass()',
   },
 })
 export class PaginationNext {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly mergedClass = computed(() =>
+    cn(this.computedClass(), this.class()),
+  );
+
   protected readonly computedClass = computed(() =>
     cn(
       buttonVariants({ variant: 'ghost', size: 'default' }),
@@ -209,7 +239,13 @@ export class PaginationNext {
   host: {
     'aria-hidden': 'true',
     'data-slot': 'pagination-ellipsis',
-    class: 'flex size-9 items-center justify-center',
+    '[class]': 'hostClass()',
   },
 })
-export class PaginationEllipsis {}
+export class PaginationEllipsis {
+  /** Extra classes merged over the defaults via `cn`. Mirrors React `className`. */
+  readonly class = input<string>();
+  protected readonly hostClass = computed(() =>
+    cn('flex size-9 items-center justify-center', this.class()),
+  );
+}

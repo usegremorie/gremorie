@@ -76,7 +76,7 @@ const MODELS: readonly ModelOption[] = [
 
 /**
  * The full composed PromptInput, used as the story component so the `status`
- * control is a real prop. Mirrors the official AI Elements composed example.
+ * control is a real prop.
  */
 const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
   <PromptInput
@@ -134,8 +134,8 @@ const IntegratedPromptInput = ({ status }: { status: ChatStatus }) => (
 );
 
 /**
- * PromptInput is the full container for AI prompt entry (React edition),
- * faithful to the official AI Elements PromptInput. It owns the form, the
+ * PromptInput is the full container for AI prompt entry (React edition).
+ * It owns the form, the
  * keyboard shortcuts, and attachment validation, and composes from Gremorie
  * primitives (InputGroup, Button, Select from rx-forms; DropdownMenu, HoverCard,
  * Command from rx-overlays).

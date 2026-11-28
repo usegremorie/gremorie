@@ -114,7 +114,7 @@ interface TooltipRow {
             }
 
             @if (i === 0) {
-              @for (t of b.categoryTicks(); track t.label) {
+              @for (t of b.categoryTicks(); track $index) {
                 <svg:text
                   [attr.x]="t.x"
                   [attr.y]="t.y"

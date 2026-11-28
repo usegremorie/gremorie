@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckIcon } from 'lucide-react';
+import { CheckIcon, MinusIcon } from 'lucide-react';
 import { Checkbox as CheckboxPrimitive } from 'radix-ui';
 import * as React from 'react';
 
@@ -12,7 +12,7 @@ import { cn } from '@gremorie/rx-core';
  * Built over Radix. Supports the three
  * canonical states - unchecked, checked, indeterminate - via the
  * Radix `checked` prop (`true | false | "indeterminate"`). The
- * indicator renders a `CheckIcon` from lucide.
+ * indicator renders a `CheckIcon`, or a `MinusIcon` when indeterminate.
  *
  * Use Checkbox when the value is part of a form to be submitted.
  * Reach for `Switch` instead when the change takes effect
@@ -25,16 +25,18 @@ function Checkbox({ className, ...props }: CheckboxProps) {
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        'peer size-4 shrink-0 rounded-[4px] border border-input shadow-xs transition-shadow outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:bg-input/30 dark:aria-invalid:ring-destructive/40 dark:data-[state=checked]:bg-primary',
+        'peer size-4 shrink-0 rounded-xs border border-input bg-field shadow-xs transition-shadow outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
         className,
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"
-        className="grid place-content-center text-current transition-none"
+        className="group/checkbox-indicator grid place-content-center text-current transition-none"
       >
-        <CheckIcon className="size-3.5" />
+        {/* The indicator mirrors the root's data-state: a dash when indeterminate. */}
+        <CheckIcon className="size-3.5 group-data-[state=indeterminate]/checkbox-indicator:hidden" />
+        <MinusIcon className="hidden size-3.5 group-data-[state=indeterminate]/checkbox-indicator:block" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

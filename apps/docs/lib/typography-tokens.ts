@@ -36,6 +36,14 @@ export interface TrackingRow {
 
 export const TYPE_SIZES: TypeSizeRow[] = [
   {
+    token: '--text-2xs',
+    utility: 'text-2xs',
+    size: '0.625rem',
+    px: '10px',
+    lineHeight: 'herdada do contexto',
+    useCase: 'Ticks de eixo de gráfico, rótulos da tab bar, badges compactos',
+  },
+  {
     token: '--text-xs',
     utility: 'text-xs',
     size: '0.75rem',

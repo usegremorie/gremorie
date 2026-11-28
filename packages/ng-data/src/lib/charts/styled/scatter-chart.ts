@@ -95,7 +95,7 @@ interface ActivePoint {
                   [attr.x]="t.x"
                   [attr.y]="sc.labelY()"
                   text-anchor="middle"
-                  class="fill-muted-foreground text-[10px]"
+                  class="fill-muted-foreground text-2xs"
                 >
                   {{ t.label }}
                 </svg:text>
@@ -112,7 +112,7 @@ interface ActivePoint {
                 [attr.y]="t.y"
                 text-anchor="end"
                 dominant-baseline="middle"
-                class="fill-muted-foreground text-[10px]"
+                class="fill-muted-foreground text-2xs"
               >
                 {{ t.label }}
               </svg:text>
@@ -123,7 +123,7 @@ interface ActivePoint {
 
       @if (tooltip() && active() !== null) {
         <div
-          class="pointer-events-none absolute z-10 min-w-28 rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md"
+          class="pointer-events-none absolute z-10 min-w-28 rounded-sm border border-border bg-popover-surface px-2.5 py-1.5 text-xs shadow-md"
           [style.left.px]="active()!.cx"
           [style.top.px]="active()!.cy"
           style="transform: translate(12px, -50%)"
@@ -133,7 +133,7 @@ interface ActivePoint {
           </div>
           <div class="flex items-center gap-1.5 text-muted-foreground">
             <span
-              class="size-2 rounded-[2px]"
+              class="size-2 rounded-xs"
               [style.background]="activeSeries()?.color"
             ></span>
             <span>{{ activeSeries()?.label }}</span>

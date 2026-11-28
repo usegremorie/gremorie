@@ -63,11 +63,14 @@ export type SwitchSize = 'sm' | 'default';
       [id]="id() || null"
       [name]="name() || null"
       [disabled]="disabled()"
+      [aria-label]="ariaLabel() || null"
     >
       <brn-switch-thumb data-slot="switch-thumb" [class]="thumbClass()" />
     </brn-switch>
   `,
   host: {
+    // The control keeps the `id` (see Input: a host copy would shadow it).
+    '[attr.id]': 'null',
     '[attr.data-size]': 'size()',
     class: 'group/switch contents',
   },
@@ -86,6 +89,8 @@ export class Switch {
   readonly id = input<string>('');
   /** Form control name. Mirrors React `name`. */
   readonly name = input<string>('');
+  /** Accessible name when no visible label exists. Mirrors React `aria-label`. */
+  readonly ariaLabel = input<string>('');
   /** Extra classes merged via `cn`. Mirrors React `className`. */
   readonly class = input<string>('');
 
@@ -97,7 +102,7 @@ export class Switch {
    */
   protected readonly rootClass = computed(() =>
     cn(
-      'peer inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 group-data-[size=default]/switch:h-5 group-data-[size=default]/switch:w-11 group-data-[size=sm]/switch:h-4 group-data-[size=sm]/switch:w-7 data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input dark:data-[state=unchecked]:bg-input/80',
+      'peer inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-all outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 group-data-[size=default]/switch:h-5 group-data-[size=default]/switch:w-11 group-data-[size=sm]/switch:h-4 group-data-[size=sm]/switch:w-7 data-[state=checked]:bg-switch-checked data-[state=unchecked]:bg-input',
       this.class(),
     ),
   );

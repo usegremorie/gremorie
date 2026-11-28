@@ -412,7 +412,7 @@
   --radius-lg: var(--radius-base);
   --radius-xl: calc(var(--radius-base) * 1.2);
 
-  /* Typography, spacing, tracking (tweakcn contract). Themes may override. */
+  /* Typography, spacing, tracking (theme contract). Themes may override. */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-serif: ui-serif, Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', monospace;
@@ -465,7 +465,7 @@
   --input: var(--color-gray-200);
   --ring: var(--color-gray-400);
 
-  /* ─── Sidebar (shadcn/tweakcn) ───── */
+  /* ─── Sidebar ───── */
   --sidebar: var(--color-gray-50);
   --sidebar-foreground: var(--color-gray-950);
   --sidebar-primary: var(--color-gray-900);
@@ -475,7 +475,7 @@
   --sidebar-border: var(--color-gray-200);
   --sidebar-ring: var(--color-gray-400);
 
-  /* ─── Shadows (tweakcn contract; themes may override) ───── */
+  /* ─── Shadows (theme contract; themes may override) ───── */
   --shadow-2xs: 0 1px 2px 0 oklch(0 0 0 / 0.04);
   --shadow-xs: 0 1px 3px 0 oklch(0 0 0 / 0.06);
   --shadow-sm:
@@ -760,7 +760,7 @@
  * Default border + outline color.
  * Tailwind v4's Preflight leaves bare `border` / `outline` at `currentColor`,
  * which renders DS borders as the (near-black) foreground instead of the
- * subtle `--border` token. This is the canonical shadcn base layer — without
+ * subtle `--border` token. This base layer is required: without
  * it, every `border` utility falls back to currentColor (e.g. black card
  * borders in Storybook). Explicit utilities like `border-input` still win
  * (utilities layer > base).

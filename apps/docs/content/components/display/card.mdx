@@ -34,10 +34,34 @@ Card                       the surface (bg-card, rounded, 1px ring + shadow, no 
 ## Installation
 
 <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
-  <Tab value="npm">```bash npx gremorie@latest add rx-card ```</Tab>
-  <Tab value="pnpm">```bash pnpm dlx gremorie@latest add rx-card ```</Tab>
-  <Tab value="yarn">```bash yarn dlx gremorie@latest add rx-card ```</Tab>
-  <Tab value="bun">```bash bunx --bun gremorie@latest add rx-card ```</Tab>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-card
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-card
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-card
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-card
+```
+
+</Tab>
 </Tabs>
 
 ## Usage
@@ -135,7 +159,7 @@ export class ExampleComponent {}
 
 ### `<Card>`
 
-The root surface. Renders a rounded `div` with a background, no border but a 1px ring (`ring-1 ring-foreground/5`, `/10` in dark) over `shadow-sm` (`shadow-md` in dark), and a `flex flex-col gap-6` rhythm.
+The root surface. Renders a rounded `div` with a background, no border but a 1px ring (`ring-1 ring-border`) over `shadow-sm` (`shadow-md` in dark), and a `flex flex-col gap-6` rhythm.
 
 | Prop        | Type     | Default | Description                                                                                       |
 | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |

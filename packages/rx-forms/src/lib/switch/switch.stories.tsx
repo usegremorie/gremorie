@@ -6,7 +6,7 @@ import { Switch } from './switch';
 /**
  * # Switch
  *
- * Immediate-effect toggle, a faithful shadcn/Radix port. Use Switch when
+ * Immediate-effect toggle, built on Radix. Use Switch when
  * flipping it changes state right away (notifications, dark mode). For a checked
  * value submitted with a form, use `Checkbox` instead — Switch is for "now",
  * Checkbox for "on submit". Two sizes: `sm` and `default`.

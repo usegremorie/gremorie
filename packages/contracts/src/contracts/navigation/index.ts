@@ -3,6 +3,7 @@ import { menubar } from './menubar.contract';
 import { navigationMenu } from './navigation-menu.contract';
 import { pagination } from './pagination.contract';
 import { sidebar } from './sidebar.contract';
+import { tabBar } from './tab-bar.contract';
 import { tabs } from './tabs.contract';
 
 /** All `navigation` category contracts. */
@@ -12,5 +13,6 @@ export const NAVIGATION_CONTRACTS = [
   navigationMenu,
   pagination,
   sidebar,
+  tabBar,
   tabs,
 ];

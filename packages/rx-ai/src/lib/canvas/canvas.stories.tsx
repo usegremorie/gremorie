@@ -13,7 +13,7 @@ import { Panel } from '../panel';
 /**
  * # Canvas
  *
- * A faithful port of the Vercel AI Elements **Canvas** primitive. It wraps
+ * The **Canvas** primitive. It wraps
  * `@xyflow/react`'s `ReactFlow` with opinionated defaults (pan on scroll,
  * fit-to-view, themed background) so AI agent graphs, workflow builders and
  * node editors render consistently with the rest of the design system.

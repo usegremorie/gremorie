@@ -177,24 +177,35 @@ comparison, render each brand on its own route or in its own iframe.
 
 ## Floating surfaces
 
-Menus, selects, popovers, hover cards and menubar or navigation-menu panels paint their panel
-with the `bg-popover-surface` utility, never `bg-popover/NN`. It is a
-translucent popover: `--popover` at 60% over a 16px backdrop blur
-(`blur(16px) saturate(1.5)`).
+Everything that floats over content is translucent: menus, selects, popovers,
+hover cards and menubar or navigation-menu panels use `bg-popover-surface`;
+docked bars such as a sticky header or the Assistant composer use
+`bg-background-surface`. Never write `bg-popover/NN` or `bg-background/NN`
+with a hand-made blur.
 
-Inside the surface, `--accent` (item hover and highlight) and `--muted`
+Two tokens drive every floating surface:
+
+| Token                | Default                    | What it controls                                    |
+| -------------------- | -------------------------- | --------------------------------------------------- |
+| `--surface-opacity`  | `70%`                      | How much of the fill is paint (100% is solid)       |
+| `--surface-backdrop` | `blur(24px) saturate(1.5)` | The filter behind the surface (`none` turns it off) |
+
+Inside a popover surface, `--accent` (item hover and highlight) and `--muted`
 (tracks, subtle fills) become foreground at 10%. An opaque fill close to the
 popover colour would vanish over whatever sits behind the panel.
 
-| Situation                                  | Surface                                    |
-| ------------------------------------------ | ------------------------------------------ |
-| Default                                    | `--popover` at 60% + 16px blur             |
-| `<html data-menu="solid">`                 | Opaque `--popover`, no blur (the opt-out)  |
-| OS asks for `prefers-reduced-transparency` | Opaque `--popover`, no blur, automatically |
+| Situation                                  | Surface                            |
+| ------------------------------------------ | ---------------------------------- |
+| Default                                    | 70% fill + 24px blur               |
+| `<html data-menu="solid">`                 | Solid fill, no blur (the opt-out)  |
+| OS asks for `prefers-reduced-transparency` | Solid fill, no blur, automatically |
 
-```html
-<!-- Opaque menus and popovers across the app -->
-<html data-menu="solid"></html>
+```css
+/* Solid menus, popovers and bars across the app */
+:root {
+  --surface-opacity: 100%;
+  --surface-backdrop: none;
+}
 ```
 
 ## See also

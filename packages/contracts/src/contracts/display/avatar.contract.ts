@@ -76,7 +76,7 @@ export const avatar = defineContract({
   example: {
     size: 'default',
     src: 'https://github.com/shadcn.png',
-    alt: '@shadcn',
+    alt: 'User avatar',
   },
   figma: { nodeId: null },
 });

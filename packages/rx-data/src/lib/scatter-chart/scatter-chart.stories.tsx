@@ -7,7 +7,7 @@ import { ScatterChart } from './scatter-chart';
 /**
  * # ScatterChart
  *
- * A recharts scatter chart wired to Gremorie's design tokens through the shadcn
+ * A recharts scatter chart wired to Gremorie's design tokens through the
  * `chart` primitive (`ChartContainer`). Each `config` entry is a numeric Y
  * series plotted against the numeric `xKey`.
  *
