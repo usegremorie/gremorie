@@ -6,6 +6,7 @@
     [
       "@gremorie/react",
       "@gremorie/angular",
+      "@gremorie/color",
       "@gremorie/rx-core",
       "@gremorie/rx-ai",
       "@gremorie/rx-artifacts",
