@@ -37,7 +37,9 @@ export default [
       '@angular-eslint/component-selector': [
         'error',
         {
-          type: 'element',
+          // Attribute components (`button[gr-color-picker-trigger]`) keep the
+          // native element, as the parts that are buttons or inputs need.
+          type: ['element', 'attribute'],
           prefix: [
             'gr-input',
             'gr-input-otp',
@@ -54,6 +56,7 @@ export default [
             'gr-button-group',
             'gr-calendar',
             'gr-date-picker',
+            'gr-color-picker',
             'gr-field',
             'gr-form-item',
             'gr-form-label',

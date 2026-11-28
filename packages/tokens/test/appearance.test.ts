@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { contrastRatio } from '../pipeline/color.ts';
+import { contrastRatio, luminance, toSrgb8 } from '../pipeline/color.ts';
 import type { DtcgColor } from '../pipeline/model.ts';
 import { PACKAGE_ROOT } from './support/paths.ts';
 
@@ -96,22 +96,26 @@ describe('appearance: accent', () => {
     );
   });
 
-  it('keeps primary text at 4.5:1 or more on every accent, both modes', () => {
+  it('picks black or white primary text, whichever contrasts more, every accent and mode', () => {
+    // The text follows the primary's real luminance (WCAG Y, the y of
+    // xyz-d65): white below the point where both contrasts are equal.
     const fg = decl(block(ACCENTED), '--primary-foreground') ?? '';
-    const threshold = Number(/clamp\(0, \(([\d.]+) - l\)/.exec(fg)?.[1]);
-    expect(threshold).toBeGreaterThan(0);
+    expect(fg).toMatch(/^color\(from var\(--primary\) xyz-d65 /);
+    const threshold = Number(/\(([\d.]+) - y\)/.exec(fg)?.[1]);
+    expect(threshold).toBeCloseTo(Math.sqrt(1.05 * 0.05) - 0.05, 4);
+    const white: DtcgColor = { colorSpace: 'oklch', components: [1, 0, 0] };
+    const black: DtcgColor = { colorSpace: 'oklch', components: [0, 0, 0] };
     for (const a of ACCENTS) {
       for (const step of ['600', '500']) {
         const primary = palette[a]![step]!.$value;
-        const l = primary.components[0] as number;
-        const text: DtcgColor = {
-          colorSpace: 'oklch',
-          components: [l < threshold ? 1 : 0, 0, 0],
-        };
-        expect(
-          contrastRatio(text, primary),
-          `${a}-${step} with ${l < threshold ? 'white' : 'black'} text`,
-        ).toBeGreaterThanOrEqual(4.5);
+        const y = luminance(toSrgb8(primary));
+        const text = y < threshold ? white : black;
+        const best = Math.max(
+          contrastRatio(white, primary),
+          contrastRatio(black, primary),
+        );
+        expect(contrastRatio(text, primary), `${a}-${step}`).toBe(best);
+        expect(best, `${a}-${step}`).toBeGreaterThanOrEqual(4.5);
       }
     }
   });

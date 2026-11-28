@@ -12,6 +12,14 @@ type Copy = {
   themeLight: string;
   menu: string;
   colors: Record<Accent, string>;
+  custom: string;
+  customHint: string;
+  hue: string;
+  chroma: string;
+  degrees: string;
+  hex: string;
+  saveColor: string;
+  savedColors: string;
 };
 
 const en: Copy = {
@@ -48,6 +56,15 @@ const en: Copy = {
     rose: 'Rose',
     red: 'Red',
   },
+  custom: 'Custom color',
+  customHint:
+    'Any hue. Intensity stops where button text would get hard to read.',
+  hue: 'Hue',
+  chroma: 'Intensity',
+  degrees: 'degrees',
+  hex: 'Hex color',
+  saveColor: 'Save color',
+  savedColors: 'Saved colors',
 };
 
 const pt: Copy = {
@@ -81,6 +98,15 @@ const pt: Copy = {
     rose: 'Rosa',
     red: 'Vermelho',
   },
+  custom: 'Cor personalizada',
+  customHint:
+    'Qualquer matiz. A intensidade para onde o texto dos botões perderia leitura.',
+  hue: 'Matiz',
+  chroma: 'Intensidade',
+  degrees: 'graus',
+  hex: 'Cor em hex',
+  saveColor: 'Salvar cor',
+  savedColors: 'Cores salvas',
 };
 
 export const copyFor = (lang: string): Copy => (lang === 'pt' ? pt : en);

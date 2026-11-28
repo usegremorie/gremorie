@@ -247,6 +247,8 @@ every surface solid. `data-menu="solid"` keeps working as an alias of
 ></html>
 ```
 
+The custom scale keeps its own lightness per step and takes hue and chroma from `--seed`. Keep the seed's chroma within what sRGB shows at mid lightness: past that the screen clips the colour. The button text needs no care: it is black or white, whichever contrasts more with the primary, so it stays at 4.5:1 or more on any seed. The site's accent menu pairs the DS colours with a [Color Picker](/components/selection/color-picker) for hue and intensity, and stops the intensity where the screen would clip.
+
 ## See also
 
 - [Semantic tokens](/tokens/semantic): what the seven themes remap, and the full token table.

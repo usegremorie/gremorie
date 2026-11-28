@@ -21,6 +21,9 @@
   "references": [
     {
       "path": "../rx-core/tsconfig.lib.json"
+    },
+    {
+      "path": "../headless/tsconfig.lib.json"
     }
   ]
 }

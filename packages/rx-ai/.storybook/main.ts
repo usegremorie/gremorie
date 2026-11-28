@@ -83,6 +83,15 @@ const config: StorybookConfig = {
           join(root, 'packages', p, 'src', 'index.ts'),
         ]),
       ),
+      // The colour logic the ColorPicker shares with the Angular edition.
+      '@gremorie/headless/color-picker': join(
+        root,
+        'packages',
+        'headless',
+        'src',
+        'color-picker',
+        'index.ts',
+      ),
     };
     return cfg;
   },

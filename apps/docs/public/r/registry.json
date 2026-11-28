@@ -525,6 +525,19 @@
       ]
     },
     {
+      "name": "ng-color-picker",
+      "type": "registry:block",
+      "framework": "ng",
+      "title": "Color Picker (Angular)",
+      "description": "Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a Spartan-ng brain popover or renders inline; works with formControl/ngModel. Logic shared with React through @gremorie/headless/color-picker. Mirrors React ColorPicker from @gremorie/rx-forms.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "ng-utils"
+      ]
+    },
+    {
       "name": "ng-date-picker",
       "type": "registry:block",
       "framework": "ng",
@@ -1483,6 +1496,20 @@
         "feedback"
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "rx-color-picker",
+      "type": "registry:block",
+      "framework": "rx",
+      "title": "Color Picker (React)",
+      "description": "Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a popover or renders inline. Logic shared with Angular through @gremorie/headless/color-picker.",
+      "categories": [
+        "forms"
+      ],
+      "registryDependencies": [
+        "rx-utils",
+        "rx-button"
+      ]
     },
     {
       "name": "rx-date-picker",

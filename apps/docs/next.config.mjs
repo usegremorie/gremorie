@@ -155,6 +155,7 @@ const config = {
     root: workspaceRoot,
   },
   transpilePackages: [
+    '@gremorie/headless',
     '@gremorie/contracts',
     '@gremorie/rx-ai',
     '@gremorie/rx-artifacts',

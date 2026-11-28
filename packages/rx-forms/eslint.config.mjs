@@ -10,7 +10,9 @@ export default [
         {
           ignoredFiles: [
             '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
+            '{projectRoot}/vitest.config.{js,ts,mts}',
             '{projectRoot}/**/*.stories.{ts,tsx,js,jsx}',
+            '{projectRoot}/**/*.spec.{ts,tsx,js,jsx}',
           ],
         },
       ],

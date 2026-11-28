@@ -1,0 +1,27 @@
+{
+  "name": "headless",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/headless/src",
+  "projectType": "library",
+  "tags": ["scope:lib", "type:core", "framework:none"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "packages/headless",
+        "command": "tsc -p tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/headless",
+        "command": "vitest run"
+      }
+    }
+  }
+}

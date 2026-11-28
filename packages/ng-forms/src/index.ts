@@ -72,6 +72,29 @@ export {
 export { Calendar } from './lib/calendar';
 // DatePicker
 export { DatePicker } from './lib/date-picker';
+// ColorPicker
+export {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerAreaThumb,
+  ColorPickerChannelInput,
+  ColorPickerChannelSlider,
+  ColorPickerContent,
+  ColorPickerControl,
+  ColorPickerEyeDropperTrigger,
+  ColorPickerFormatSelect,
+  ColorPickerImports,
+  ColorPickerLabel,
+  ColorPickerSaveTrigger,
+  ColorPickerSavedColors,
+  ColorPickerSwatch,
+  ColorPickerSwatchGroup,
+  ColorPickerSwatchTrigger,
+  ColorPickerTransparencyGrid,
+  ColorPickerTrigger,
+  ColorPickerValueText,
+  type ColorPickerValueChangeDetails,
+} from './lib/color-picker';
 // Field
 export {
   Field,

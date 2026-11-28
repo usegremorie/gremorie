@@ -14,6 +14,7 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@gremorie/headless": "*",
     "@gremorie/rx-ai": "*",
     "@gremorie/rx-artifacts": "*",
     "@gremorie/rx-containers": "*",
