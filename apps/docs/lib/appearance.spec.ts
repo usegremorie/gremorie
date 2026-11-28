@@ -64,7 +64,10 @@ describe('appearance state', () => {
     ['nothing stored', undefined],
     ['invalid JSON', '{nope'],
     ['an unknown accent', JSON.stringify({ ...VIOLET, accent: 'lime' })],
-    ['an unknown translucency', JSON.stringify({ ...VIOLET, translucency: 'glass' })],
+    [
+      'an unknown translucency',
+      JSON.stringify({ ...VIOLET, translucency: 'glass' }),
+    ],
     ['a non-object', '"violet"'],
   ])('falls back to the default with %s', (_, raw) => {
     expect(readAppearance(memoryStorage(raw))).toEqual(DEFAULT_APPEARANCE);

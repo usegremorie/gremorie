@@ -128,20 +128,31 @@ export const Right: Story = {
     <ng-template #options>
       <div class="grid gap-1 p-1">
         @for (size of sizes; track size) {
-          <button class="inline-flex h-9 items-center rounded-md px-3 text-sm hover:bg-accent">{{ size }}</button>
+          <button
+            class="inline-flex h-9 items-center rounded-md px-3 text-sm hover:bg-accent"
+          >
+            {{ size }}
+          </button>
         }
       </div>
     </ng-template>
     @if (isMobile()) {
       <gr-drawer direction="bottom">
-        <button gr-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">Text size</button>
+        <button
+          gr-drawer-trigger
+          class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent"
+        >
+          Text size
+        </button>
         <ng-template brnDrawerContent>
           <gr-drawer-content>
             <gr-drawer-header>
               <h2 gr-drawer-title>Text size</h2>
               <p gr-drawer-description>Applies to every page.</p>
             </gr-drawer-header>
-            <div class="px-4 pb-6"><ng-container [ngTemplateOutlet]="options" /></div>
+            <div class="px-4 pb-6">
+              <ng-container [ngTemplateOutlet]="options" />
+            </div>
           </gr-drawer-content>
         </ng-template>
       </gr-drawer>
@@ -149,7 +160,9 @@ export const Right: Story = {
       <gr-popover align="start">
         <gr-popover-trigger [content]="menu">Text size</gr-popover-trigger>
         <ng-template #menu brnPopoverContent>
-          <gr-popover-content class="w-56 p-1"><ng-container [ngTemplateOutlet]="options" /></gr-popover-content>
+          <gr-popover-content class="w-56 p-1"
+            ><ng-container [ngTemplateOutlet]="options"
+          /></gr-popover-content>
         </ng-template>
       </gr-popover>
     }

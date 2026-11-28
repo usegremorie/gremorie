@@ -20,7 +20,10 @@ const en: Copy = {
   translucency: 'Translucency',
   translucencyHint: 'How much of the page shows through the interface.',
   modes: {
-    solid: { name: 'Solid', hint: 'Nothing see-through. Opaque menus and cards.' },
+    solid: {
+      name: 'Solid',
+      hint: 'Nothing see-through. Opaque menus and cards.',
+    },
     subtle: {
       name: 'Subtle',
       hint: 'Only menus, popovers and the top bar show what is behind.',

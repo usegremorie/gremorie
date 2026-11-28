@@ -104,7 +104,11 @@ export function AppearanceControls({ lang }: { lang: string }) {
         label={t.accent}
         title={t.accent}
       >
-        <div aria-label={t.accent} className="flex flex-wrap gap-2.5 p-1" role="radiogroup">
+        <div
+          aria-label={t.accent}
+          className="flex flex-wrap gap-2.5 p-1"
+          role="radiogroup"
+        >
           {ACCENTS.map((a) => (
             <button
               aria-checked={state.accent === a}
@@ -127,7 +131,11 @@ export function AppearanceControls({ lang }: { lang: string }) {
         label={t.translucency}
         title={t.translucency}
       >
-        <div aria-label={t.translucency} className="grid gap-0.5" role="radiogroup">
+        <div
+          aria-label={t.translucency}
+          className="grid gap-0.5"
+          role="radiogroup"
+        >
           {TRANSLUCENCIES.map((mode) => (
             <button
               aria-checked={state.translucency === mode}
@@ -141,7 +149,9 @@ export function AppearanceControls({ lang }: { lang: string }) {
             >
               <TranslucencyIllustration mode={mode} />
               <span>
-                <span className="block font-medium text-sm">{t.modes[mode].name}</span>
+                <span className="block font-medium text-sm">
+                  {t.modes[mode].name}
+                </span>
                 <span className="block text-muted-foreground text-xs">
                   {t.modes[mode].hint}
                 </span>
@@ -163,7 +173,11 @@ export function AppearanceControls({ lang }: { lang: string }) {
         label={themeLabel}
         onClick={() => setTheme(dark ? 'light' : 'dark')}
       >
-        {dark ? <SunIcon aria-hidden="true" /> : <MoonIcon aria-hidden="true" />}
+        {dark ? (
+          <SunIcon aria-hidden="true" />
+        ) : (
+          <MoonIcon aria-hidden="true" />
+        )}
       </IconButton>
     </div>
   );

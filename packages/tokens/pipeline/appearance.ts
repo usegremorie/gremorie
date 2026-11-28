@@ -46,7 +46,9 @@ const CUSTOM: Record<(typeof STEPS)[number], [number, number]> = {
 const TONAL = "[data-tonal='on'][data-accent]:not([data-accent='neutral'])";
 
 const colorFile = (source: TokenSource) => {
-  const key = Object.keys(PRIMITIVE_FILES).find((k) => k.endsWith('color.json'));
+  const key = Object.keys(PRIMITIVE_FILES).find((k) =>
+    k.endsWith('color.json'),
+  );
   const file = source.files[key!] as DtcgGroup;
   return ((file as Record<string, unknown>).color ?? file) as Record<
     string,
@@ -55,12 +57,17 @@ const colorFile = (source: TokenSource) => {
 };
 
 const grayStep = (value: unknown) =>
-  typeof value === 'string' ? /^\{color\.gray\.(\d+)\}$/.exec(value)?.[1] : undefined;
+  typeof value === 'string'
+    ? /^\{color\.gray\.(\d+)\}$/.exec(value)?.[1]
+    : undefined;
 
 /** CSS for a semantic value: a reference becomes var(), a colour is printed. */
 const cssOf = (value: unknown): string =>
   typeof value === 'string'
-    ? `var(--${value.slice(1, -1).replace(/^color\./, 'color-').replace(/\./g, '-')})`
+    ? `var(--${value
+        .slice(1, -1)
+        .replace(/^color\./, 'color-')
+        .replace(/\./g, '-')})`
     : formatColor(value as DtcgColor);
 
 export function appearanceRules(source: TokenSource): string {
@@ -99,7 +106,9 @@ export function appearanceRules(source: TokenSource): string {
 
   const light = source.files[SEMANTIC_FILES.light] as Record<string, DtcgToken>;
   const dark = source.files[SEMANTIC_FILES.dark] as Record<string, DtcgToken>;
-  const lightProps = Object.entries(light).filter(([, t]) => grayStep(t.$value));
+  const lightProps = Object.entries(light).filter(([, t]) =>
+    grayStep(t.$value),
+  );
   out.push(`:root:where(${TONAL}) {`, '  --tone: 0.06;');
   for (const [name, t] of lightProps) {
     out.push(`  --${name}: ${tint(grayStep(t.$value)!)};`);

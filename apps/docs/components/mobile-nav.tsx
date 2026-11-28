@@ -32,7 +32,12 @@ export function MobileNav({
       <Tooltip>
         <TooltipTrigger asChild>
           <DrawerTrigger asChild>
-            <Button aria-label={label} className="lg:hidden" size="icon-sm" variant="ghost">
+            <Button
+              aria-label={label}
+              className="lg:hidden"
+              size="icon-sm"
+              variant="ghost"
+            >
               <MenuIcon />
             </Button>
           </DrawerTrigger>
@@ -56,7 +61,10 @@ export function MobileNav({
                 className="flex items-center gap-3 rounded-md px-3 py-2.5 font-medium text-sm transition-colors hover:bg-accent aria-[current=page]:bg-accent"
                 href={url}
               >
-                <Icon aria-hidden="true" className="size-4 text-muted-foreground" />
+                <Icon
+                  aria-hidden="true"
+                  className="size-4 text-muted-foreground"
+                />
                 {text}
               </Link>
             </DrawerClose>

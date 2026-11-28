@@ -75,7 +75,9 @@ export function applyAppearance(
   root: HTMLElement = document.documentElement,
 ): void {
   const set = (name: string, value: string | null) =>
-    value === null ? root.removeAttribute(name) : root.setAttribute(name, value);
+    value === null
+      ? root.removeAttribute(name)
+      : root.setAttribute(name, value);
   set('data-accent', a.accent === 'neutral' ? null : a.accent);
   set('data-translucency', a.translucency === 'subtle' ? null : a.translucency);
   set('data-tonal', a.tonal && a.accent !== 'neutral' ? 'on' : null);

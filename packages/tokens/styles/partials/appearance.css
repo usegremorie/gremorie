@@ -14,7 +14,9 @@
  */
 :root[data-accent]:not([data-accent='neutral']) {
   --primary: var(--seed-600);
-  --primary-foreground: oklch(from var(--primary) clamp(0, (0.59 - l) * 1000, 1) 0 0);
+  --primary-foreground: oklch(
+    from var(--primary) clamp(0, (0.59 - l) * 1000, 1) 0 0
+  );
   --ring: var(--primary);
   --switch-checked: var(--primary);
   --sidebar-primary: var(--primary);

@@ -6,7 +6,14 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('next/link', () => ({
-  default: ({ href, children, ...rest }: { href: string; children: React.ReactNode }) => (
+  default: ({
+    href,
+    children,
+    ...rest
+  }: {
+    href: string;
+    children: React.ReactNode;
+  }) => (
     <a
       href={href}
       {...rest}
@@ -57,13 +64,21 @@ describe('MobileNav', () => {
           <MobileNav
             isActive={() => false}
             label="Menu"
-            links={[{ text: 'Components', url: '/en/components', icon: HomeIcon }]}
+            links={[
+              { text: 'Components', url: '/en/components', icon: HomeIcon },
+            ]}
           />
         </TooltipProvider>,
       ),
     );
-    act(() => document.querySelector<HTMLButtonElement>('button[aria-label="Menu"]')!.click());
-    const link = document.querySelector<HTMLAnchorElement>('a[href="/en/components"]');
+    act(() =>
+      document
+        .querySelector<HTMLButtonElement>('button[aria-label="Menu"]')!
+        .click(),
+    );
+    const link = document.querySelector<HTMLAnchorElement>(
+      'a[href="/en/components"]',
+    );
     expect(link).not.toBeNull();
     act(() => link!.click());
     await act(() => new Promise((r) => setTimeout(r, 600)));
