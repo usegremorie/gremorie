@@ -193,11 +193,18 @@ export class ColorPicker implements ControlValueAccessor {
    * keeping the same value, wins once it has rendered. Applying an outside
    * value forgets the last emit, so returning to it later is read again.
    */
-  readonly color = linkedSignal<{ text: string | undefined; revision: number }, Color>({
-    source: () => ({ text: this.value() ?? this.formValue(), revision: this.revision() }),
+  readonly color = linkedSignal<
+    { text: string | undefined; revision: number },
+    Color
+  >({
+    source: () => ({
+      text: this.value() ?? this.formValue(),
+      revision: this.revision(),
+    }),
     computation: ({ text }, previous) => {
       const prev = previous?.value;
-      if (text === undefined) return prev ?? parseColor(this.defaultValue()) ?? BLACK;
+      if (text === undefined)
+        return prev ?? parseColor(this.defaultValue()) ?? BLACK;
       if (prev && text === this.lastEmitted) return prev;
       this.lastEmitted = undefined;
       return parseColor(text, prev?.h ?? 0) ?? prev ?? BLACK;
@@ -207,7 +214,9 @@ export class ColorPicker implements ControlValueAccessor {
   readonly dragging = signal(false);
   readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
   readonly interactive = computed(() => !this.isDisabled() && !this.readOnly());
-  readonly valueAsString = computed(() => formatColor(this.color(), this.format()));
+  readonly valueAsString = computed(() =>
+    formatColor(this.color(), this.format()),
+  );
   protected readonly hostClass = computed(() => cn('grid gap-2', this.class()));
 
   constructor() {
@@ -221,7 +230,9 @@ export class ColorPicker implements ControlValueAccessor {
         if (!open && state === 'open') this.popover.close();
       });
     });
-    this.popover.stateChanged.subscribe((state) => this.open.set(state === 'open'));
+    this.popover.stateChanged.subscribe((state) =>
+      this.open.set(state === 'open'),
+    );
   }
 
   private details(color: Color): ColorPickerValueChangeDetails {
@@ -259,7 +270,11 @@ export class ColorPicker implements ControlValueAccessor {
   saveColor(): void {
     if (!this.interactive()) return;
     this.savedColors.set(
-      addSavedColor(this.savedColors(), this.valueAsString(), this.maxSavedColors()),
+      addSavedColor(
+        this.savedColors(),
+        this.valueAsString(),
+        this.maxSavedColors(),
+      ),
     );
   }
 
@@ -294,7 +309,9 @@ function startDrag(
   el.setPointerCapture?.(event.pointerId);
   root.dragging.set(true);
   onPoint(event, el);
-  el.querySelector<HTMLElement>('[role="slider"]')?.focus({ preventScroll: true });
+  el.querySelector<HTMLElement>('[role="slider"]')?.focus({
+    preventScroll: true,
+  });
   event.preventDefault();
   const move = (e: Event) => onPoint(e as PointerEvent, el);
   const up = (e: Event) => {
@@ -327,7 +344,10 @@ const THUMB_CLASS =
 export class ColorPickerLabel {
   readonly class = input<string>('');
   protected readonly hostClass = computed(() =>
-    cn('flex items-center gap-2 text-sm leading-none font-medium select-none', this.class()),
+    cn(
+      'flex items-center gap-2 text-sm leading-none font-medium select-none',
+      this.class(),
+    ),
   );
 }
 
@@ -365,7 +385,9 @@ export class ColorPickerControl {
 })
 export class ColorPickerTransparencyGrid {
   readonly class = input<string>('');
-  protected readonly hostClass = computed(() => cn('absolute inset-0', this.class()));
+  protected readonly hostClass = computed(() =>
+    cn('absolute inset-0', this.class()),
+  );
 }
 
 @Component({
@@ -400,7 +422,10 @@ export class ColorPickerSwatch {
   });
   protected readonly css = computed(() => toCss(this.shown()));
   protected readonly hostClass = computed(() =>
-    cn('relative inline-block size-7 shrink-0 overflow-hidden rounded-full', this.class()),
+    cn(
+      'relative inline-block size-7 shrink-0 overflow-hidden rounded-full',
+      this.class(),
+    ),
   );
 }
 
@@ -411,7 +436,9 @@ export class ColorPickerSwatch {
   hostDirectives: [BrnPopoverTrigger],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content><gr-color-picker-swatch [value]="root.valueAsString()" class="size-5" /></ng-content>`,
+  template: `<ng-content
+    ><gr-color-picker-swatch [value]="root.valueAsString()" class="size-5"
+  /></ng-content>`,
   host: {
     type: 'button',
     'data-slot': 'color-picker-trigger',
@@ -487,14 +514,19 @@ export class ColorPickerAreaThumb {
   private readonly area = inject(forwardRef(() => ColorPickerArea));
   readonly ariaLabel = input<string>('Color', { alias: 'aria-label' });
   readonly class = input<string>('');
-  private readonly axes = computed<{ xChannel: ColorChannel; yChannel: ColorChannel }>(() => ({
+  private readonly axes = computed<{
+    xChannel: ColorChannel;
+    yChannel: ColorChannel;
+  }>(() => ({
     xChannel: this.area.xChannel(),
     yChannel: this.area.yChannel(),
   }));
   protected readonly position = computed(() =>
     areaThumbPosition(this.root.color(), this.axes()),
   );
-  protected readonly yRange = computed(() => CHANNEL_RANGE[this.axes().yChannel]);
+  protected readonly yRange = computed(
+    () => CHANNEL_RANGE[this.axes().yChannel],
+  );
   protected readonly yNow = computed(() =>
     Number(getChannelValue(this.root.color(), this.axes().yChannel).toFixed(3)),
   );
@@ -503,7 +535,9 @@ export class ColorPickerAreaThumb {
     const { xChannel, yChannel } = this.axes();
     return `${channelValueText(this.root.color(), xChannel, labels)}, ${channelValueText(this.root.color(), yChannel, labels)}`;
   });
-  protected readonly css = computed(() => toCss({ ...this.root.color(), alpha: 1 }));
+  protected readonly css = computed(() =>
+    toCss({ ...this.root.color(), alpha: 1 }),
+  );
   protected readonly hostClass = computed(() => cn(THUMB_CLASS, this.class()));
 
   protected onKeydown(event: KeyboardEvent): void {
@@ -513,7 +547,10 @@ export class ColorPickerAreaThumb {
     });
     if (!step) return;
     event.preventDefault();
-    this.root.setColor(applyAreaStep(this.root.color(), step, this.axes()), true);
+    this.root.setColor(
+      applyAreaStep(this.root.color(), step, this.axes()),
+      true,
+    );
   }
 }
 
@@ -549,7 +586,8 @@ export class ColorPickerArea {
   /** Channel on the vertical axis (grows upwards). */
   readonly yChannel = input<ColorChannel>('lightness');
   readonly class = input<string>('');
-  private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
+  private readonly canvas =
+    viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   protected readonly hostClass = computed(() =>
     cn(
       'relative block h-40 w-full touch-none rounded-md select-none data-disabled:opacity-50',
@@ -576,9 +614,17 @@ export class ColorPickerArea {
       const yChannel = this.yChannel();
       const ctx = el.getContext('2d');
       // Hue survives the round-trip through text even at chroma 0.
-      const base = parseColor(text, untracked(() => this.root.color().h));
+      const base = parseColor(
+        text,
+        untracked(() => this.root.color().h),
+      );
       if (ctx && base) {
-        paintArea(ctx, base, { xChannel, yChannel, width: el.width, height: el.height });
+        paintArea(ctx, base, {
+          xChannel,
+          yChannel,
+          width: el.width,
+          height: el.height,
+        });
       }
     });
   }
@@ -590,7 +636,11 @@ export class ColorPickerArea {
           this.root.color(),
           { x: e.clientX, y: e.clientY },
           el.getBoundingClientRect(),
-          { xChannel: this.xChannel(), yChannel: this.yChannel(), dir: directionOf(el) },
+          {
+            xChannel: this.xChannel(),
+            yChannel: this.yChannel(),
+            dir: directionOf(el),
+          },
         ),
       );
     });
@@ -646,12 +696,18 @@ export class ColorPickerChannelSlider {
   /** The channel this track edits. */
   readonly channel = input.required<ColorChannel>();
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
-  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, {
+    alias: 'aria-label',
+  });
   readonly class = input<string>('');
 
-  protected readonly vertical = computed(() => this.orientation() === 'vertical');
+  protected readonly vertical = computed(
+    () => this.orientation() === 'vertical',
+  );
   protected readonly range = computed(() => CHANNEL_RANGE[this.channel()]);
-  protected readonly ratio = computed(() => channelRatio(this.root.color(), this.channel()));
+  protected readonly ratio = computed(() =>
+    channelRatio(this.root.color(), this.channel()),
+  );
   protected readonly name = computed(
     () =>
       this.ariaLabel() ??
@@ -671,7 +727,11 @@ export class ColorPickerChannelSlider {
     channelGradient(this.root.color(), this.channel(), this.orientation()),
   );
   protected readonly thumbCss = computed(() =>
-    toCss(this.channel() === 'alpha' ? this.root.color() : { ...this.root.color(), alpha: 1 }),
+    toCss(
+      this.channel() === 'alpha'
+        ? this.root.color()
+        : { ...this.root.color(), alpha: 1 },
+    ),
   );
   protected readonly thumbClass = computed(() =>
     cn(THUMB_CLASS, this.vertical() ? 'left-1/2' : 'top-1/2'),
@@ -717,7 +777,8 @@ type InputChannel = ColorChannel | 'hex' | 'css';
 
 const toField = (color: Color, channel: ColorChannel) => {
   const v = getChannelValue(color, channel);
-  if (channel === 'lightness' || channel === 'alpha') return String(Math.round(v * 100));
+  if (channel === 'lightness' || channel === 'alpha')
+    return String(Math.round(v * 100));
   if (channel === 'hue') return String(Math.round(v));
   return String(Number(v.toFixed(3)));
 };
@@ -757,7 +818,9 @@ export class ColorPickerChannelInput {
   protected readonly root = inject(ColorPicker);
   /** `css` prints the current format, `hex` always hex, a channel its number. */
   readonly channel = input<InputChannel>('css');
-  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, {
+    alias: 'aria-label',
+  });
   readonly class = input<string>('');
   protected readonly draft = signal<string | null>(null);
   protected readonly numeric = computed(
@@ -766,7 +829,9 @@ export class ColorPickerChannelInput {
   protected readonly label = computed(
     () =>
       this.ariaLabel() ??
-      (this.numeric() ? DEFAULT_NAMES[this.channel() as ColorChannel] : 'Color value'),
+      (this.numeric()
+        ? DEFAULT_NAMES[this.channel() as ColorChannel]
+        : 'Color value'),
   );
   protected readonly shown = computed(() => {
     const color = this.root.color();
@@ -860,7 +925,9 @@ export class ColorPickerFormatSelect {
 })
 export class ColorPickerSwatchGroup {
   readonly class = input<string>('');
-  protected readonly hostClass = computed(() => cn('flex flex-wrap gap-2', this.class()));
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-wrap gap-2', this.class()),
+  );
 }
 
 const SWATCH_TRIGGER_CLASS =
@@ -872,7 +939,9 @@ const SWATCH_TRIGGER_CLASS =
   imports: [ColorPickerSwatch],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content><gr-color-picker-swatch [value]="value()" /></ng-content>`,
+  template: `<ng-content
+    ><gr-color-picker-swatch [value]="value()"
+  /></ng-content>`,
   host: {
     type: 'button',
     'data-slot': 'color-picker-swatch-trigger',
@@ -889,13 +958,17 @@ export class ColorPickerSwatchTrigger {
   protected readonly root = inject(ColorPicker);
   /** The colour this swatch picks. */
   readonly value = input.required<string>();
-  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+  readonly ariaLabel = input<string | undefined>(undefined, {
+    alias: 'aria-label',
+  });
   readonly class = input<string>('');
   protected readonly selected = computed(() => {
     const parsed = parseColor(this.value());
     return !!parsed && sameColor(parsed, this.root.color());
   });
-  protected readonly hostClass = computed(() => cn(SWATCH_TRIGGER_CLASS, this.class()));
+  protected readonly hostClass = computed(() =>
+    cn(SWATCH_TRIGGER_CLASS, this.class()),
+  );
 }
 
 @Component({
@@ -928,7 +1001,9 @@ export class ColorPickerSavedColors {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly ariaLabel = input<string>('Saved colors', { alias: 'aria-label' });
   readonly class = input<string>('');
-  protected readonly hostClass = computed(() => cn('flex flex-wrap gap-2', this.class()));
+  protected readonly hostClass = computed(() =>
+    cn('flex flex-wrap gap-2', this.class()),
+  );
 
   protected onKeydown(event: KeyboardEvent, color: string): void {
     if (event.key !== 'Delete' && event.key !== 'Backspace') return;
@@ -1006,8 +1081,12 @@ interface EyeDropperResult {
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        <path d="m12 9-8.414 8.414A2 2 0 0 0 3 18.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 3.828 21h1.344a2 2 0 0 0 1.414-.586L15 12" />
-        <path d="m18 9 .4.4a1 1 0 1 1-3 3l-3.8-3.8a1 1 0 1 1 3-3l.4.4 3.4-3.4a1 1 0 1 1 3 3z" />
+        <path
+          d="m12 9-8.414 8.414A2 2 0 0 0 3 18.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 3.828 21h1.344a2 2 0 0 0 1.414-.586L15 12"
+        />
+        <path
+          d="m18 9 .4.4a1 1 0 1 1-3 3l-3.8-3.8a1 1 0 1 1 3-3l.4.4 3.4-3.4a1 1 0 1 1 3 3z"
+        />
         <path d="m2 22 .414-.414" />
       </svg>
     </ng-content>
@@ -1074,7 +1153,9 @@ export class ColorPickerValueText {
   readonly class = input<string>('');
   protected readonly text = computed(() => {
     const format = this.format();
-    return format ? formatColor(this.root.color(), format) : this.root.valueAsString();
+    return format
+      ? formatColor(this.root.color(), format)
+      : this.root.valueAsString();
   });
   protected readonly hostClass = computed(() =>
     cn('font-mono text-sm tabular-nums', this.class()),

@@ -43,7 +43,8 @@ export type Appearance = {
  * alpha, nothing after it. Shared with the pre-paint script, which writes the
  * seed into a style property.
  */
-export const SEED_PATTERN = /^oklch\((?:0|1|0?\.\d+) (?:0|0?\.\d+) \d{1,3}(?:\.\d+)?\)$/;
+export const SEED_PATTERN =
+  /^oklch\((?:0|1|0?\.\d+) (?:0|0?\.\d+) \d{1,3}(?:\.\d+)?\)$/;
 const MAX_SAVED = 16;
 
 export const APPEARANCE_KEY = 'gr-appearance';
@@ -73,7 +74,10 @@ const PRIMARY_STEPS = [0.56, 0.64];
 export function seedFromColor(color: Color): string {
   const h = Math.round(color.h) % 360;
   const c = Math.min(color.c, ...PRIMARY_STEPS.map((l) => maxChroma(l, h)));
-  return formatColor({ l: 0.64, c: Math.floor(c * 1000) / 1000, h, alpha: 1 }, 'oklch');
+  return formatColor(
+    { l: 0.64, c: Math.floor(c * 1000) / 1000, h, alpha: 1 },
+    'oklch',
+  );
 }
 
 const validSaved = (list: unknown): string[] =>
@@ -101,7 +105,9 @@ function parse(raw: string | null): Appearance {
     }
     // A custom accent needs a safe seed; without one it falls back to neutral.
     const custom =
-      accent === 'custom' && typeof v.seed === 'string' && SEED_PATTERN.test(v.seed);
+      accent === 'custom' &&
+      typeof v.seed === 'string' &&
+      SEED_PATTERN.test(v.seed);
     return {
       accent: accent === 'custom' && !custom ? 'neutral' : accent,
       seed: custom ? (v.seed as string) : '',
@@ -135,7 +141,9 @@ export function applyAppearance(
   root: HTMLElement = document.documentElement,
 ): void {
   const set = (name: string, value: string | null) =>
-    value === null ? root.removeAttribute(name) : root.setAttribute(name, value);
+    value === null
+      ? root.removeAttribute(name)
+      : root.setAttribute(name, value);
   const custom = a.accent === 'custom' && SEED_PATTERN.test(a.seed);
   const accent = a.accent === 'custom' && !custom ? 'neutral' : a.accent;
   set('data-accent', accent === 'neutral' ? null : accent);

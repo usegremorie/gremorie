@@ -16,7 +16,10 @@
   --primary: var(--seed-600);
   /* White below luminance 0.17913, where white and black contrast equally. */
   --primary-foreground: color(
-    from var(--primary) xyz-d65 calc(0.9505 * clamp(0, (0.17913 - y) * 100000, 1)) clamp(0, (0.17913 - y) * 100000, 1) calc(1.089 * clamp(0, (0.17913 - y) * 100000, 1))
+    from var(--primary) xyz-d65
+      calc(0.9505 * clamp(0, (0.17913 - y) * 100000, 1))
+      clamp(0, (0.17913 - y) * 100000, 1)
+      calc(1.089 * clamp(0, (0.17913 - y) * 100000, 1))
   );
   --ring: var(--primary);
   --switch-checked: var(--primary);

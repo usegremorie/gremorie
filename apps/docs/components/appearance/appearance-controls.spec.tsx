@@ -63,7 +63,12 @@ describe('AppearanceControls', () => {
 
   it('renders four icon buttons named for screen readers, no visible label', () => {
     render();
-    for (const label of ['Accent color', 'Translucency', 'Tonal', 'Dark theme']) {
+    for (const label of [
+      'Accent color',
+      'Translucency',
+      'Tonal',
+      'Dark theme',
+    ]) {
       const b = button(label);
       expect(b, label).not.toBeNull();
       expect(b!.textContent?.trim()).toBe('');
@@ -72,7 +77,12 @@ describe('AppearanceControls', () => {
 
   it('speaks Portuguese on the pt site', () => {
     render('pt');
-    for (const label of ['Cor de destaque', 'Translucidez', 'Tonal', 'Tema escuro']) {
+    for (const label of [
+      'Cor de destaque',
+      'Translucidez',
+      'Tonal',
+      'Tema escuro',
+    ]) {
       expect(button(label), label).not.toBeNull();
     }
   });
@@ -80,27 +90,41 @@ describe('AppearanceControls', () => {
   it('picks an accent from a radio group and saves it', () => {
     render();
     act(() => button('Accent color')!.click());
-    const radios = document.querySelectorAll('[role="radiogroup"] [role="radio"]');
+    const radios = document.querySelectorAll(
+      '[role="radiogroup"] [role="radio"]',
+    );
     expect(radios).toHaveLength(8);
-    const violet = document.querySelector<HTMLButtonElement>('[role="radio"][aria-label="Violet"]')!;
+    const violet = document.querySelector<HTMLButtonElement>(
+      '[role="radio"][aria-label="Violet"]',
+    )!;
     act(() => violet.click());
     expect(document.documentElement.getAttribute('data-accent')).toBe('violet');
     expect(violet.getAttribute('aria-checked')).toBe('true');
-    const saved = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as { accent: string };
+    const saved = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as {
+      accent: string;
+    };
     expect(saved.accent).toBe('violet');
   });
 
   it('picks a custom colour with the hue and chroma sliders', () => {
     render();
     act(() => button('Accent color')!.click());
-    const hue = document.querySelector<HTMLElement>('[role="slider"][aria-label="Hue"]')!;
-    expect(document.querySelector('[role="slider"][aria-label="Intensity"]')).not.toBeNull();
+    const hue = document.querySelector<HTMLElement>(
+      '[role="slider"][aria-label="Hue"]',
+    )!;
+    expect(
+      document.querySelector('[role="slider"][aria-label="Intensity"]'),
+    ).not.toBeNull();
     act(() => {
-      hue.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+      hue.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'End', bubbles: true }),
+      );
     });
     const root = document.documentElement;
     expect(root.getAttribute('data-accent')).toBe('custom');
-    expect(root.style.getPropertyValue('--seed')).toMatch(/^oklch\(0\.64 [\d.]+ 359\)$/);
+    expect(root.style.getPropertyValue('--seed')).toMatch(
+      /^oklch\(0\.64 [\d.]+ 359\)$/,
+    );
     const saved = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as {
       accent: string;
       seed: string;
@@ -112,15 +136,23 @@ describe('AppearanceControls', () => {
   it('keeps saved colours and goes back to a DS colour', () => {
     render();
     act(() => button('Accent color')!.click());
-    const hue = document.querySelector<HTMLElement>('[role="slider"][aria-label="Hue"]')!;
+    const hue = document.querySelector<HTMLElement>(
+      '[role="slider"][aria-label="Hue"]',
+    )!;
     act(() => {
-      hue.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+      hue.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+      );
     });
     act(() => button('Save color')!.click());
-    const stored = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as { saved: string[] };
+    const stored = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as {
+      saved: string[];
+    };
     expect(stored.saved).toHaveLength(1);
     act(() =>
-      document.querySelector<HTMLButtonElement>('[role="radio"][aria-label="Teal"]')!.click(),
+      document
+        .querySelector<HTMLButtonElement>('[role="radio"][aria-label="Teal"]')!
+        .click(),
     );
     expect(document.documentElement.getAttribute('data-accent')).toBe('teal');
     expect(document.documentElement.style.getPropertyValue('--seed')).toBe('');
@@ -129,11 +161,15 @@ describe('AppearanceControls', () => {
   it('shows an illustration for each translucency option', () => {
     render();
     act(() => button('Translucency')!.click());
-    const options = document.querySelectorAll('[role="radiogroup"] [role="radio"]');
+    const options = document.querySelectorAll(
+      '[role="radiogroup"] [role="radio"]',
+    );
     expect(options).toHaveLength(3);
     for (const o of options) expect(o.querySelector('svg')).not.toBeNull();
     act(() => (options[2] as HTMLButtonElement).click());
-    expect(document.documentElement.getAttribute('data-translucency')).toBe('immersive');
+    expect(document.documentElement.getAttribute('data-translucency')).toBe(
+      'immersive',
+    );
   });
 
   it('toggles tonal as a pressed button', () => {
@@ -147,7 +183,9 @@ describe('AppearanceControls', () => {
   it('opens a popover on desktop', () => {
     render();
     act(() => button('Translucency')!.click());
-    expect(document.querySelector('[data-slot="popover-content"]')).not.toBeNull();
+    expect(
+      document.querySelector('[data-slot="popover-content"]'),
+    ).not.toBeNull();
     expect(document.querySelector('[data-slot="drawer-content"]')).toBeNull();
   });
 
@@ -156,7 +194,9 @@ describe('AppearanceControls', () => {
     mockMedia();
     render();
     act(() => button('Translucency')!.click());
-    expect(document.querySelector('[data-slot="drawer-content"]')).not.toBeNull();
+    expect(
+      document.querySelector('[data-slot="drawer-content"]'),
+    ).not.toBeNull();
     expect(document.querySelector('[data-slot="popover-content"]')).toBeNull();
   });
 });

@@ -33,7 +33,9 @@ export const colorPicker = defineContract({
     {
       name: 'value',
       type: 'string',
-      adapts: { ng: 'input: value + output: valueChange, two-way [(value)]; also ControlValueAccessor' },
+      adapts: {
+        ng: 'input: value + output: valueChange, two-way [(value)]; also ControlValueAccessor',
+      },
       desc: 'Colour as CSS text (controlled).',
     },
     {
@@ -129,7 +131,12 @@ export const colorPicker = defineContract({
       default: 16,
       desc: 'Most saved colours kept; the oldest goes first.',
     },
-    { name: 'disabled', type: 'boolean', default: false, desc: 'Disables every part.' },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      default: false,
+      desc: 'Disables every part.',
+    },
     {
       name: 'readOnly',
       type: 'boolean',

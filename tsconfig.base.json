@@ -28,7 +28,9 @@
       "@gremorie/ng-forms": ["./packages/ng-forms/src/index.ts"],
       "@gremorie/ng-overlays": ["./packages/ng-overlays/src/index.ts"],
       "@gremorie/ng-navigation": ["./packages/ng-navigation/src/index.ts"],
-      "@gremorie/headless/color-picker": ["./packages/headless/src/color-picker/index.ts"],
+      "@gremorie/headless/color-picker": [
+        "./packages/headless/src/color-picker/index.ts"
+      ],
       "@gremorie/rx-core": ["./packages/rx-core/src/index.ts"],
       "@gremorie/rx-ai": ["./packages/rx-ai/src/index.ts"],
       "@gremorie/rx-forms": ["./packages/rx-forms/src/index.ts"],

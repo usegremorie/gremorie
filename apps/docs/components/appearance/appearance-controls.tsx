@@ -46,7 +46,9 @@ function primitiveColor(a: Accent): string {
   const fallback = 'oklch(0.64 0 0)';
   if (typeof window === 'undefined') return fallback;
   const name = a === 'neutral' ? '--color-gray-500' : `--color-${a}-500`;
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim();
   return parseColor(value) ? value : fallback;
 }
 
@@ -115,10 +117,19 @@ export function AppearanceControls({ lang }: { lang: string }) {
   // would clip the colour. While dragging the page follows; the choice is
   // saved when the drag ends.
   const pickerValue =
-    state.accent === 'custom' ? state.seed : mounted ? primitiveColor(state.accent) : 'oklch(0.64 0 0)';
+    state.accent === 'custom'
+      ? state.seed
+      : mounted
+        ? primitiveColor(state.accent)
+        : 'oklch(0.64 0 0)';
   const pick = (d: ColorPickerValueChangeDetails, save: boolean) => {
     const seed = seedFromColor(d.value);
-    if (stateRef.current.accent === 'custom' && stateRef.current.seed === seed && !save) return;
+    if (
+      stateRef.current.accent === 'custom' &&
+      stateRef.current.seed === seed &&
+      !save
+    )
+      return;
     update({ accent: 'custom', seed }, save);
   };
 
@@ -136,14 +147,19 @@ export function AppearanceControls({ lang }: { lang: string }) {
             aria-hidden="true"
             className="size-3.5 rounded-full ring-1 ring-border"
             style={{
-              background: state.accent === 'custom' ? state.seed : swatch(state.accent),
+              background:
+                state.accent === 'custom' ? state.seed : swatch(state.accent),
             }}
           />
         }
         label={t.accent}
         title={t.accent}
       >
-        <div aria-label={t.accent} className="flex flex-wrap gap-2.5 p-1" role="radiogroup">
+        <div
+          aria-label={t.accent}
+          className="flex flex-wrap gap-2.5 p-1"
+          role="radiogroup"
+        >
           {ACCENTS.map((a) => (
             <button
               aria-checked={state.accent === a}
@@ -158,7 +174,10 @@ export function AppearanceControls({ lang }: { lang: string }) {
             />
           ))}
         </div>
-        <div className="mt-3 grid gap-2.5 border-t pt-3" data-slot="appearance-custom-color">
+        <div
+          className="mt-3 grid gap-2.5 border-t pt-3"
+          data-slot="appearance-custom-color"
+        >
           <div>
             <p className="font-medium text-sm">{t.custom}</p>
             <p className="text-muted-foreground text-xs">{t.customHint}</p>
@@ -175,9 +194,16 @@ export function AppearanceControls({ lang }: { lang: string }) {
           >
             <ColorPickerContent className="w-full">
               <ColorPickerChannelSlider aria-label={t.hue} channel="hue" />
-              <ColorPickerChannelSlider aria-label={t.chroma} channel="chroma" />
+              <ColorPickerChannelSlider
+                aria-label={t.chroma}
+                channel="chroma"
+              />
               <div className="flex items-center gap-2">
-                <ColorPickerChannelInput aria-label={t.hex} channel="hex" className="flex-1" />
+                <ColorPickerChannelInput
+                  aria-label={t.hex}
+                  channel="hex"
+                  className="flex-1"
+                />
               </div>
               <ColorPickerSavedColors aria-label={t.savedColors}>
                 <ColorPickerSaveTrigger aria-label={t.saveColor} />
@@ -193,7 +219,11 @@ export function AppearanceControls({ lang }: { lang: string }) {
         label={t.translucency}
         title={t.translucency}
       >
-        <div aria-label={t.translucency} className="grid gap-0.5" role="radiogroup">
+        <div
+          aria-label={t.translucency}
+          className="grid gap-0.5"
+          role="radiogroup"
+        >
           {TRANSLUCENCIES.map((mode) => (
             <button
               aria-checked={state.translucency === mode}
@@ -207,7 +237,9 @@ export function AppearanceControls({ lang }: { lang: string }) {
             >
               <TranslucencyIllustration mode={mode} />
               <span>
-                <span className="block font-medium text-sm">{t.modes[mode].name}</span>
+                <span className="block font-medium text-sm">
+                  {t.modes[mode].name}
+                </span>
                 <span className="block text-muted-foreground text-xs">
                   {t.modes[mode].hint}
                 </span>
@@ -229,7 +261,11 @@ export function AppearanceControls({ lang }: { lang: string }) {
         label={themeLabel}
         onClick={() => setTheme(dark ? 'light' : 'dark')}
       >
-        {dark ? <SunIcon aria-hidden="true" /> : <MoonIcon aria-hidden="true" />}
+        {dark ? (
+          <SunIcon aria-hidden="true" />
+        ) : (
+          <MoonIcon aria-hidden="true" />
+        )}
       </IconButton>
     </div>
   );

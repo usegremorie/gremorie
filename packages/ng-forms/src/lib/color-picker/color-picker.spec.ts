@@ -52,9 +52,16 @@ const PARTS = [
         <gr-color-picker-channel-slider channel="hue" />
         <gr-color-picker-channel-slider channel="alpha" />
         <input gr-color-picker-channel-input channel="hex" />
-        <button gr-color-picker-eye-dropper-trigger aria-label="Eye dropper"></button>
+        <button
+          gr-color-picker-eye-dropper-trigger
+          aria-label="Eye dropper"
+        ></button>
         <gr-color-picker-swatch-group>
-          <button gr-color-picker-swatch-trigger value="#ff0000" aria-label="Red"></button>
+          <button
+            gr-color-picker-swatch-trigger
+            value="#ff0000"
+            aria-label="Red"
+          ></button>
         </gr-color-picker-swatch-group>
         <gr-color-picker-saved-colors>
           <button gr-color-picker-save-trigger aria-label="Save color"></button>
@@ -166,7 +173,9 @@ function render() {
 const q = <T extends Element>(root: ParentNode, sel: string) =>
   root.querySelector<T>(sel) as T;
 const key = (el: Element, k: string, init: KeyboardEventInit = {}) =>
-  el.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, ...init }));
+  el.dispatchEvent(
+    new KeyboardEvent('keydown', { key: k, bubbles: true, ...init }),
+  );
 const typeIn = (input: HTMLInputElement, text: string) => {
   input.value = text;
   input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -176,15 +185,15 @@ describe('ColorPicker (Angular)', () => {
   it('prints the value in the format', () => {
     const fixture = render();
     const el = fixture.nativeElement as HTMLElement;
-    expect(q(el, '[data-slot="color-picker-value-text"]').textContent?.trim()).toBe(
-      'oklch(0.7 0.1 200)',
-    );
+    expect(
+      q(el, '[data-slot="color-picker-value-text"]').textContent?.trim(),
+    ).toBe('oklch(0.7 0.1 200)');
     fixture.componentInstance.value.set('#3366cc');
     fixture.componentInstance.format.set('hex');
     fixture.detectChanges();
-    expect(q(el, '[data-slot="color-picker-value-text"]').textContent?.trim()).toBe(
-      '#3366cc',
-    );
+    expect(
+      q(el, '[data-slot="color-picker-value-text"]').textContent?.trim(),
+    ).toBe('#3366cc');
   });
 
   it('steps a channel with the keyboard, two-way', () => {
@@ -220,11 +229,23 @@ describe('ColorPicker (Angular)', () => {
       '[data-slot="color-picker-channel-slider"][data-channel="hue"]',
     );
     track.getBoundingClientRect = () =>
-      ({ left: 0, top: 0, width: 360, height: 12, right: 360, bottom: 12 }) as DOMRect;
+      ({
+        left: 0,
+        top: 0,
+        width: 360,
+        height: 12,
+        right: 360,
+        bottom: 12,
+      }) as DOMRect;
     track.setPointerCapture = () => undefined;
     const fire = (type: string, x: number) =>
       track.dispatchEvent(
-        new MouseEvent(type, { bubbles: true, clientX: x, clientY: 6, button: 0 }),
+        new MouseEvent(type, {
+          bubbles: true,
+          clientX: x,
+          clientY: 6,
+          button: 0,
+        }),
       );
     fire('pointerdown', 90);
     fire('pointermove', 180);
@@ -330,14 +351,17 @@ describe('ColorPicker (Angular)', () => {
     const fixture = render();
     fixture.componentInstance.disabled.set(true);
     fixture.detectChanges();
-    const hue = q<HTMLElement>(fixture.nativeElement, '[role="slider"][aria-label="Hue"]');
+    const hue = q<HTMLElement>(
+      fixture.nativeElement,
+      '[role="slider"][aria-label="Hue"]',
+    );
     expect(hue.getAttribute('tabindex')).toBe('-1');
     key(hue, 'ArrowRight');
     fixture.detectChanges();
     expect(fixture.componentInstance.value()).toBe('oklch(0.7 0.1 200)');
   });
 
-  it('paints the area in the colour\'s hue', () => {
+  it("paints the area in the colour's hue", () => {
     let data: Uint8ClampedArray | undefined;
     HTMLCanvasElement.prototype.getContext = (() => ({
       createImageData: (w: number, h: number) => ({
@@ -359,7 +383,10 @@ describe('ColorPicker (Angular)', () => {
 
   it('keeps swatch triggers as tall as their swatch', () => {
     const fixture = render();
-    const swatch = q(fixture.nativeElement, '[data-slot="color-picker-swatch-trigger"]');
+    const swatch = q(
+      fixture.nativeElement,
+      '[data-slot="color-picker-swatch-trigger"]',
+    );
     expect(swatch.className).toContain('inline-flex');
   });
 
@@ -374,15 +401,16 @@ describe('ColorPicker (Angular)', () => {
     TestBed.tick();
     fixture.detectChanges();
     expect(chroma.getAttribute('aria-valuenow')).toBe('0.1');
-    expect(q<HTMLInputElement>(el, '[data-slot="color-picker-channel-input"]').value).toBe(
-      'oklch(0.7 0.1 200)',
-    );
+    expect(
+      q<HTMLInputElement>(el, '[data-slot="color-picker-channel-input"]').value,
+    ).toBe('oklch(0.7 0.1 200)');
   });
 
   it('follows the parent back to a value it emitted before', () => {
     const fixture = render();
     const el = fixture.nativeElement as HTMLElement;
-    const text = () => q(el, '[data-slot="color-picker-value-text"]').textContent?.trim();
+    const text = () =>
+      q(el, '[data-slot="color-picker-value-text"]').textContent?.trim();
     key(q(el, '[role="slider"][aria-label="Hue"]'), 'ArrowRight'); // A = hue 201
     fixture.detectChanges();
     TestBed.tick();
@@ -404,7 +432,9 @@ describe('ColorPicker (Angular)', () => {
     expect(thumb.getAttribute('aria-valuenow')).toBe('0.7');
     expect(thumb.getAttribute('aria-valuemin')).toBe('0');
     expect(thumb.getAttribute('aria-valuemax')).toBe('1');
-    expect(thumb.getAttribute('aria-valuetext')).toBe('Chroma 0.1, Lightness 70%');
+    expect(thumb.getAttribute('aria-valuetext')).toBe(
+      'Chroma 0.1, Lightness 70%',
+    );
   });
 
   it('works without a bound value, from defaultValue', () => {
@@ -416,9 +446,9 @@ describe('ColorPicker (Angular)', () => {
     fixture.detectChanges();
     TestBed.tick();
     fixture.detectChanges();
-    expect(q(el, '[data-slot="color-picker-value-text"]').textContent?.trim()).toBe(
-      'oklch(0.7 0.1 201)',
-    );
+    expect(
+      q(el, '[data-slot="color-picker-value-text"]').textContent?.trim(),
+    ).toBe('oklch(0.7 0.1 201)');
   });
 
   it('works as a form control', () => {
@@ -426,14 +456,14 @@ describe('ColorPicker (Angular)', () => {
     const fixture = TestBed.createComponent(FormHost);
     fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
-    expect(q(el, '[data-slot="color-picker-value-text"]').textContent?.trim()).toBe(
-      '#3366cc',
-    );
+    expect(
+      q(el, '[data-slot="color-picker-value-text"]').textContent?.trim(),
+    ).toBe('#3366cc');
     fixture.componentInstance.control.setValue('#00ff00');
     fixture.detectChanges();
-    expect(q(el, '[data-slot="color-picker-value-text"]').textContent?.trim()).toBe(
-      '#00ff00',
-    );
+    expect(
+      q(el, '[data-slot="color-picker-value-text"]').textContent?.trim(),
+    ).toBe('#00ff00');
   });
 
   it('opens the panel from the trigger in popover mode', () => {

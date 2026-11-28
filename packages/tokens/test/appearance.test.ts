@@ -53,8 +53,10 @@ const ACCENTED = ":root[data-accent]:not([data-accent='neutral'])";
 const ACCENTED_DARK = ".dark[data-accent]:not([data-accent='neutral'])";
 const IMMERSIVE = ":root[data-translucency='immersive']";
 const IMMERSIVE_DARK = ".dark[data-translucency='immersive']";
-const TONAL = ":root:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
-const TONAL_DARK = ".dark:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
+const TONAL =
+  ":root:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
+const TONAL_DARK =
+  ".dark:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
 
 describe('appearance: accent', () => {
   it('maps each accent to its primitive scale', () => {
@@ -80,7 +82,12 @@ describe('appearance: accent', () => {
   it('moves only primary and what follows it: 600 light, 500 dark', () => {
     const light = block(ACCENTED);
     expect(decl(light, '--primary')).toBe('var(--seed-600)');
-    for (const p of ['--ring', '--switch-checked', '--sidebar-primary', '--sidebar-ring']) {
+    for (const p of [
+      '--ring',
+      '--switch-checked',
+      '--sidebar-primary',
+      '--sidebar-ring',
+    ]) {
       expect(decl(light, p)).toBe('var(--primary)');
     }
     expect(decl(block(ACCENTED_DARK), '--primary')).toBe('var(--seed-500)');
@@ -103,7 +110,10 @@ describe('appearance: accent', () => {
         const primary = palette[a]![step]!.$value;
         const y = luminance(toSrgb8(primary));
         const text = y < threshold ? white : black;
-        const best = Math.max(contrastRatio(white, primary), contrastRatio(black, primary));
+        const best = Math.max(
+          contrastRatio(white, primary),
+          contrastRatio(black, primary),
+        );
         expect(contrastRatio(text, primary), `${a}-${step}`).toBe(best);
         expect(best, `${a}-${step}`).toBeGreaterThanOrEqual(4.5);
       }
@@ -152,7 +162,10 @@ describe('appearance: translucency', () => {
   });
 
   it('reduced transparency wins over immersive', () => {
-    const at = css.indexOf('@media (prefers-reduced-transparency: reduce)', css.indexOf(IMMERSIVE));
+    const at = css.indexOf(
+      '@media (prefers-reduced-transparency: reduce)',
+      css.indexOf(IMMERSIVE),
+    );
     expect(at).toBeGreaterThan(css.indexOf(`\n${IMMERSIVE_DARK} {`));
     expect(css.slice(at, at + 600)).toMatch(/--surface-opacity:\s*100%/);
   });
@@ -189,7 +202,11 @@ describe('appearance: tonal', () => {
 
 describe('appearance: primitives', () => {
   it('never redeclares a primitive inside an appearance rule', () => {
-    const rules = [...css.matchAll(/\n([^\n{]*data-(?:accent|translucency|tonal)[^\n{]*) \{/g)];
+    const rules = [
+      ...css.matchAll(
+        /\n([^\n{]*data-(?:accent|translucency|tonal)[^\n{]*) \{/g,
+      ),
+    ];
     expect(rules.length).toBeGreaterThan(5);
     for (const [, selector] of rules) {
       const body = block(selector!);

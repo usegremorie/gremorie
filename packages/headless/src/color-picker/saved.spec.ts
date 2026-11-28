@@ -21,7 +21,10 @@ describe('saved colours', () => {
   });
 
   it('drops the oldest past the limit', () => {
-    const list = Array.from({ length: 16 }, (_, i) => `oklch(0.5 0.1 ${i * 10})`);
+    const list = Array.from(
+      { length: 16 },
+      (_, i) => `oklch(0.5 0.1 ${i * 10})`,
+    );
     const next = addSavedColor(list, '#ff0000');
     expect(next).toHaveLength(16);
     expect(next[0]).toBe('#ff0000');
@@ -38,8 +41,8 @@ describe('saved colours', () => {
   });
 
   it('removes a colour by value, equivalent spellings included', () => {
-    expect(removeSavedColor(['#ff0000', '#00ff00'], 'rgb(255, 0, 0)')).toEqual(
-      ['#00ff00'],
-    );
+    expect(removeSavedColor(['#ff0000', '#00ff00'], 'rgb(255, 0, 0)')).toEqual([
+      '#00ff00',
+    ]);
   });
 });

@@ -1,8 +1,6 @@
 /** The result of a key on a one-channel slider. */
 export type KeyStep =
-  | { kind: 'delta'; steps: number }
-  | { kind: 'min' }
-  | { kind: 'max' };
+  { kind: 'delta'; steps: number } | { kind: 'min' } | { kind: 'max' };
 
 interface Modifiers {
   shiftKey: boolean;
@@ -46,7 +44,10 @@ export function stepFromKey(
 }
 
 /** A move on the 2D area: steps or an end on one axis. */
-export type AreaStep = { x?: number | 'min' | 'max'; y?: number | 'min' | 'max' };
+export type AreaStep = {
+  x?: number | 'min' | 'max';
+  y?: number | 'min' | 'max';
+};
 
 /**
  * Maps a key to a move on the 2D area: left/right move x, up/down move y (one

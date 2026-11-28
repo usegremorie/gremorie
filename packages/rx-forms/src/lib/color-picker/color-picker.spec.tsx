@@ -119,15 +119,33 @@ describe('ColorPicker', () => {
   it('fires onValueChangeEnd only when a drag ends', () => {
     const onValueChange = vi.fn();
     const onValueChangeEnd = vi.fn();
-    render({ defaultValue: 'oklch(0.7 0.1 200)', onValueChange, onValueChangeEnd });
-    const track = q<HTMLElement>('[data-slot="color-picker-channel-slider"][data-channel="hue"]');
+    render({
+      defaultValue: 'oklch(0.7 0.1 200)',
+      onValueChange,
+      onValueChangeEnd,
+    });
+    const track = q<HTMLElement>(
+      '[data-slot="color-picker-channel-slider"][data-channel="hue"]',
+    );
     track.getBoundingClientRect = () =>
-      ({ left: 0, top: 0, width: 360, height: 12, right: 360, bottom: 12 }) as DOMRect;
+      ({
+        left: 0,
+        top: 0,
+        width: 360,
+        height: 12,
+        right: 360,
+        bottom: 12,
+      }) as DOMRect;
     track.setPointerCapture = () => undefined;
     const fire = (type: string, x: number) =>
       act(() => {
         track.dispatchEvent(
-          new MouseEvent(type, { bubbles: true, clientX: x, clientY: 6, button: 0 }),
+          new MouseEvent(type, {
+            bubbles: true,
+            clientX: x,
+            clientY: 6,
+            button: 0,
+          }),
         );
       });
     fire('pointerdown', 90);
@@ -142,7 +160,9 @@ describe('ColorPicker', () => {
   it('keeps invalid text until blur, then restores the last valid value', () => {
     const onValueChange = vi.fn();
     render({ defaultValue: '#3366cc', onValueChange });
-    const input = q<HTMLInputElement>('[data-slot="color-picker-channel-input"]');
+    const input = q<HTMLInputElement>(
+      '[data-slot="color-picker-channel-input"]',
+    );
     expect(input.value).toBe('#3366cc');
     act(() => {
       input.focus();
@@ -161,7 +181,9 @@ describe('ColorPicker', () => {
 
   it('accepts a valid colour typed in the field on Enter', () => {
     render({ defaultValue: '#3366cc', defaultFormat: 'hex' });
-    const input = q<HTMLInputElement>('[data-slot="color-picker-channel-input"]');
+    const input = q<HTMLInputElement>(
+      '[data-slot="color-picker-channel-input"]',
+    );
     act(() => {
       input.focus();
       const setter = Object.getOwnPropertyDescriptor(
@@ -184,7 +206,9 @@ describe('ColorPicker', () => {
 
   it('picks a swatch', () => {
     render({ defaultValue: '#3366cc', defaultFormat: 'hex' });
-    const swatch = q<HTMLButtonElement>('[data-slot="color-picker-swatch-trigger"]');
+    const swatch = q<HTMLButtonElement>(
+      '[data-slot="color-picker-swatch-trigger"]',
+    );
     act(() => swatch.click());
     expect(valueText()).toBe('#ff0000');
     expect(swatch.getAttribute('aria-pressed')).toBe('true');
@@ -192,8 +216,14 @@ describe('ColorPicker', () => {
 
   it('saves the current colour and removes it with Delete', () => {
     const onSavedColorsChange = vi.fn();
-    render({ defaultValue: '#3366cc', defaultFormat: 'hex', onSavedColorsChange });
-    act(() => q<HTMLButtonElement>('[data-slot="color-picker-save-trigger"]').click());
+    render({
+      defaultValue: '#3366cc',
+      defaultFormat: 'hex',
+      onSavedColorsChange,
+    });
+    act(() =>
+      q<HTMLButtonElement>('[data-slot="color-picker-save-trigger"]').click(),
+    );
     expect(onSavedColorsChange).toHaveBeenLastCalledWith(['#3366cc']);
     const saved = q<HTMLButtonElement>(
       '[data-slot="color-picker-saved-colors"] [data-slot="color-picker-swatch-trigger"]',
@@ -215,9 +245,9 @@ describe('ColorPicker', () => {
 
   it('submits the value through a hidden input when named', () => {
     render({ defaultValue: '#3366cc', defaultFormat: 'hex', name: 'brand' });
-    expect(q<HTMLInputElement>('input[type="hidden"][name="brand"]').value).toBe(
-      '#3366cc',
-    );
+    expect(
+      q<HTMLInputElement>('input[type="hidden"][name="brand"]').value,
+    ).toBe('#3366cc');
   });
 
   it('ignores input when disabled', () => {
@@ -229,7 +259,7 @@ describe('ColorPicker', () => {
     expect(onValueChange).not.toHaveBeenCalled();
   });
 
-  it('paints the area in the colour\'s hue', () => {
+  it("paints the area in the colour's hue", () => {
     let data: Uint8ClampedArray | undefined;
     HTMLCanvasElement.prototype.getContext = (() => ({
       createImageData: (w: number, h: number) => ({
@@ -314,7 +344,9 @@ describe('ColorPicker', () => {
     expect(thumb.getAttribute('aria-valuenow')).toBe('0.7');
     expect(thumb.getAttribute('aria-valuemin')).toBe('0');
     expect(thumb.getAttribute('aria-valuemax')).toBe('1');
-    expect(thumb.getAttribute('aria-valuetext')).toBe('Chroma 0.1, Lightness 70%');
+    expect(thumb.getAttribute('aria-valuetext')).toBe(
+      'Chroma 0.1, Lightness 70%',
+    );
   });
 
   it('ends a drag the browser cancels', () => {
@@ -324,19 +356,34 @@ describe('ColorPicker', () => {
       '[data-slot="color-picker-channel-slider"][data-channel="hue"]',
     );
     track.getBoundingClientRect = () =>
-      ({ left: 0, top: 0, width: 360, height: 12, right: 360, bottom: 12 }) as DOMRect;
+      ({
+        left: 0,
+        top: 0,
+        width: 360,
+        height: 12,
+        right: 360,
+        bottom: 12,
+      }) as DOMRect;
     track.setPointerCapture = () => undefined;
     act(() => {
       track.dispatchEvent(
-        new MouseEvent('pointerdown', { bubbles: true, clientX: 90, button: 0 }),
+        new MouseEvent('pointerdown', {
+          bubbles: true,
+          clientX: 90,
+          button: 0,
+        }),
       );
     });
-    expect(q('[data-slot="color-picker"]').hasAttribute('data-dragging')).toBe(true);
+    expect(q('[data-slot="color-picker"]').hasAttribute('data-dragging')).toBe(
+      true,
+    );
     act(() => {
       track.dispatchEvent(new MouseEvent('pointercancel', { bubbles: true }));
     });
     expect(onValueChangeEnd).toHaveBeenCalledTimes(1);
-    expect(q('[data-slot="color-picker"]').hasAttribute('data-dragging')).toBe(false);
+    expect(q('[data-slot="color-picker"]').hasAttribute('data-dragging')).toBe(
+      false,
+    );
   });
 
   it('opens the panel from the trigger in popover mode', () => {
@@ -354,7 +401,9 @@ describe('ColorPicker', () => {
     const trigger = q<HTMLButtonElement>('[data-slot="color-picker-trigger"]');
     expect(trigger.getAttribute('aria-label')).toBe('Pick a color');
     act(() => {
-      trigger.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, button: 0 }));
+      trigger.dispatchEvent(
+        new MouseEvent('pointerdown', { bubbles: true, button: 0 }),
+      );
       trigger.click();
     });
     expect(document.querySelector('[role="slider"]')).not.toBeNull();

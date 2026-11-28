@@ -52,7 +52,11 @@ describe('area geometry', () => {
 
 describe('paintArea', () => {
   function fakeContext(width: number, height: number) {
-    const image = { data: new Uint8ClampedArray(width * height * 4), width, height };
+    const image = {
+      data: new Uint8ClampedArray(width * height * 4),
+      width,
+      height,
+    };
     let put: typeof image | undefined;
     return {
       ctx: {
@@ -70,11 +74,15 @@ describe('paintArea', () => {
 
   it('paints white at the top-left and dims colours outside sRGB', () => {
     const { ctx, pixel } = fakeContext(16, 16);
-    paintArea(ctx, { l: 0.5, c: 0.1, h: 150, alpha: 1 }, {
-      ...axes,
-      width: 16,
-      height: 16,
-    });
+    paintArea(
+      ctx,
+      { l: 0.5, c: 0.1, h: 150, alpha: 1 },
+      {
+        ...axes,
+        width: 16,
+        height: 16,
+      },
+    );
     expect(pixel(0, 0)).toEqual([255, 255, 255, 255]);
     expect(pixel(15, 8)[3]).toBeLessThan(255);
     expect(pixel(0, 8)[3]).toBe(255);

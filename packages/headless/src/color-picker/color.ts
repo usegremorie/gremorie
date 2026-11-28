@@ -67,7 +67,10 @@ export function parseColor(input: string, fallbackHue = 0): Color | null {
   return {
     l: round(o.l, 6),
     c: round(c, 6),
-    h: hue === undefined || Number.isNaN(hue) || c < 1e-4 ? fallbackHue : round(hue, 4),
+    h:
+      hue === undefined || Number.isNaN(hue) || c < 1e-4
+        ? fallbackHue
+        : round(hue, 4),
     alpha: o.alpha ?? 1,
   };
 }
@@ -113,7 +116,10 @@ export function toGamut(color: Color): Color {
   return {
     l: mapped.l,
     c,
-    h: mapped.h === undefined || Number.isNaN(mapped.h) || c < 1e-4 ? color.h : mapped.h,
+    h:
+      mapped.h === undefined || Number.isNaN(mapped.h) || c < 1e-4
+        ? color.h
+        : mapped.h,
     alpha: color.alpha,
   };
 }
@@ -159,4 +165,5 @@ export const toCss = (color: Color): string => formatColor(color, 'oklch');
 /** Two colours print the same in sRGB with alpha (used to dedupe). */
 export const sameColor = (a: Color, b: Color): boolean =>
   formatColor({ ...a, alpha: 1 }, 'hex') ===
-    formatColor({ ...b, alpha: 1 }, 'hex') && round(a.alpha, 3) === round(b.alpha, 3);
+    formatColor({ ...b, alpha: 1 }, 'hex') &&
+  round(a.alpha, 3) === round(b.alpha, 3);

@@ -148,6 +148,7 @@ export class Example {
 ```
 
 `value` é um model de duas vias com a string CSS, e o `gr-color-picker` também funciona com `formControl` e `ngModel`.
+
 </Tab>
 </Tabs>
 
@@ -155,38 +156,38 @@ export class Example {
 
 ### `<ColorPicker>`
 
-| Prop | Tipo | Padrão | Descrição |
-| --- | --- | --- | --- |
-| `value` | `string` | - | Cor controlada, qualquer cor CSS. Angular: `[(value)]`, ou `[value]` com `(valueChange)`; um pai que limita o valor prevalece. |
-| `defaultValue` | `string` | `"oklch(0 0 0)"` | Cor inicial sem controle (Angular: `defaultValue` com `value` sem binding). |
-| `onValueChange` | `(details: { value: Color; valueAsString: string }) => void` | - | Toda mudança, também durante o arrasto. |
-| `onValueChangeEnd` | igual | - | Mudanças confirmadas: arrasto solto, tecla, amostra ou campo. Angular: `(valueChangeEnd)`. |
-| `format` / `defaultFormat` | `"oklch" \| "hex" \| "rgb" \| "hsl"` | `"oklch"` | Como o valor e o campo são escritos. Angular: `[(format)]`. |
-| `onFormatChange` | `(format) => void` | - | O formato mudou. |
-| `open` / `defaultOpen` / `onOpenChange` | `boolean` | `false` | Estado do popover. Angular: `[(open)]`. |
-| `inline` | `boolean` | `false` | Painel no lugar. |
-| `closeOnSelect` | `boolean` | `false` | Fecha o popover ao escolher uma amostra. |
-| `savedColors` / `defaultSavedColors` | `string[]` | `[]` | Cores salvas, a mais recente primeiro. Angular: `[(savedColors)]`. |
-| `onSavedColorsChange` | `(colors: string[]) => void` | - | Uma cor foi salva ou removida. |
-| `maxSavedColors` | `number` | `16` | Máximo de cores salvas; a mais antiga sai primeiro. |
-| `disabled` | `boolean` | `false` | Desativa todas as partes. |
-| `readOnly` | `boolean` | `false` | Mostra o valor sem aceitar mudanças. |
-| `required` | `boolean` | `false` | Marca o input oculto do formulário como obrigatório. |
-| `invalid` | `boolean` | `false` | Estilo de erro no trigger e no campo. |
-| `name` | `string` | - | Nome do campo: cria um input oculto com o valor. |
-| `channelLabels` | `ChannelLabels` | - | Palavras do texto assistivo (`{ hue: "Matiz", degrees: "graus" }`). |
+| Prop                                    | Tipo                                                         | Padrão           | Descrição                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `value`                                 | `string`                                                     | -                | Cor controlada, qualquer cor CSS. Angular: `[(value)]`, ou `[value]` com `(valueChange)`; um pai que limita o valor prevalece. |
+| `defaultValue`                          | `string`                                                     | `"oklch(0 0 0)"` | Cor inicial sem controle (Angular: `defaultValue` com `value` sem binding).                                                    |
+| `onValueChange`                         | `(details: { value: Color; valueAsString: string }) => void` | -                | Toda mudança, também durante o arrasto.                                                                                        |
+| `onValueChangeEnd`                      | igual                                                        | -                | Mudanças confirmadas: arrasto solto, tecla, amostra ou campo. Angular: `(valueChangeEnd)`.                                     |
+| `format` / `defaultFormat`              | `"oklch" \| "hex" \| "rgb" \| "hsl"`                         | `"oklch"`        | Como o valor e o campo são escritos. Angular: `[(format)]`.                                                                    |
+| `onFormatChange`                        | `(format) => void`                                           | -                | O formato mudou.                                                                                                               |
+| `open` / `defaultOpen` / `onOpenChange` | `boolean`                                                    | `false`          | Estado do popover. Angular: `[(open)]`.                                                                                        |
+| `inline`                                | `boolean`                                                    | `false`          | Painel no lugar.                                                                                                               |
+| `closeOnSelect`                         | `boolean`                                                    | `false`          | Fecha o popover ao escolher uma amostra.                                                                                       |
+| `savedColors` / `defaultSavedColors`    | `string[]`                                                   | `[]`             | Cores salvas, a mais recente primeiro. Angular: `[(savedColors)]`.                                                             |
+| `onSavedColorsChange`                   | `(colors: string[]) => void`                                 | -                | Uma cor foi salva ou removida.                                                                                                 |
+| `maxSavedColors`                        | `number`                                                     | `16`             | Máximo de cores salvas; a mais antiga sai primeiro.                                                                            |
+| `disabled`                              | `boolean`                                                    | `false`          | Desativa todas as partes.                                                                                                      |
+| `readOnly`                              | `boolean`                                                    | `false`          | Mostra o valor sem aceitar mudanças.                                                                                           |
+| `required`                              | `boolean`                                                    | `false`          | Marca o input oculto do formulário como obrigatório.                                                                           |
+| `invalid`                               | `boolean`                                                    | `false`          | Estilo de erro no trigger e no campo.                                                                                          |
+| `name`                                  | `string`                                                     | -                | Nome do campo: cria um input oculto com o valor.                                                                               |
+| `channelLabels`                         | `ChannelLabels`                                              | -                | Palavras do texto assistivo (`{ hue: "Matiz", degrees: "graus" }`).                                                            |
 
 ### Partes
 
-| Parte | Props | Notas |
-| --- | --- | --- |
-| `ColorPickerArea` | `xChannel = "chroma"`, `yChannel = "lightness"` | O canal y cresce para cima. Cores fora do sRGB aparecem esmaecidas. |
-| `ColorPickerChannelSlider` | `channel` (obrigatório), `orientation` | Alfa é desenhado sobre um xadrez. |
-| `ColorPickerChannelInput` | `channel = "css"` | `css` segue o `format`; `hex` é sempre hex; um canal mostra o número (percentual para claridade e alfa). Texto inválido fica até o blur, e então volta o último valor válido. |
-| `ColorPickerSwatchTrigger` | `value` (obrigatório) | `aria-pressed` quando bate com a cor atual. |
-| `ColorPickerSwatch` | `value`, `respectAlpha = true` | Amostra estática. |
-| `ColorPickerSavedColors` | - | Mostra as cores salvas; coloque o `ColorPickerSaveTrigger` dentro. |
-| `ColorPickerValueText` | `format` | Escreve o valor, no formato do picker se não for definido. |
+| Parte                      | Props                                           | Notas                                                                                                                                                                         |
+| -------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ColorPickerArea`          | `xChannel = "chroma"`, `yChannel = "lightness"` | O canal y cresce para cima. Cores fora do sRGB aparecem esmaecidas.                                                                                                           |
+| `ColorPickerChannelSlider` | `channel` (obrigatório), `orientation`          | Alfa é desenhado sobre um xadrez.                                                                                                                                             |
+| `ColorPickerChannelInput`  | `channel = "css"`                               | `css` segue o `format`; `hex` é sempre hex; um canal mostra o número (percentual para claridade e alfa). Texto inválido fica até o blur, e então volta o último valor válido. |
+| `ColorPickerSwatchTrigger` | `value` (obrigatório)                           | `aria-pressed` quando bate com a cor atual.                                                                                                                                   |
+| `ColorPickerSwatch`        | `value`, `respectAlpha = true`                  | Amostra estática.                                                                                                                                                             |
+| `ColorPickerSavedColors`   | -                                               | Mostra as cores salvas; coloque o `ColorPickerSaveTrigger` dentro.                                                                                                            |
+| `ColorPickerValueText`     | `format`                                        | Escreve o valor, no formato do picker se não for definido.                                                                                                                    |
 
 ## Composição
 

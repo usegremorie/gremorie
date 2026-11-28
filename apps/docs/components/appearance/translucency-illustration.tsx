@@ -18,8 +18,22 @@ export function TranslucencyIllustration({ mode }: { mode: Translucency }) {
       {immersive && (
         <>
           <rect fill={seed} height="60" opacity="0.16" width="88" />
-          <circle cx="14" cy="10" fill={seed} filter={`url(#${id}-soft)`} opacity="0.32" r="22" />
-          <circle cx="80" cy="56" fill={seed} filter={`url(#${id}-soft)`} opacity="0.22" r="20" />
+          <circle
+            cx="14"
+            cy="10"
+            fill={seed}
+            filter={`url(#${id}-soft)`}
+            opacity="0.32"
+            r="22"
+          />
+          <circle
+            cx="80"
+            cy="56"
+            fill={seed}
+            filter={`url(#${id}-soft)`}
+            opacity="0.22"
+            r="20"
+          />
         </>
       )}
       <rect
@@ -35,7 +49,15 @@ export function TranslucencyIllustration({ mode }: { mode: Translucency }) {
         <rect height="3" rx="1.5" width="34" x="12" y="13" />
         <rect height="3" rx="1.5" width="24" x="12" y="20" />
       </g>
-      <rect fill={seed} height="13" opacity="0.9" rx="3" width="38" x="12" y="28" />
+      <rect
+        fill={seed}
+        height="13"
+        opacity="0.9"
+        rx="3"
+        width="38"
+        x="12"
+        y="28"
+      />
     </>
   );
 
@@ -80,7 +102,15 @@ export function TranslucencyIllustration({ mode }: { mode: Translucency }) {
           <rect height="2.5" rx="1.25" width="24" x="35" y="31" />
           <rect height="2.5" rx="1.25" width="14" x="35" y="38" />
         </g>
-        <rect fill="var(--primary)" height="6" opacity="0.14" rx="2" width="34" x="33" y="29.3" />
+        <rect
+          fill="var(--primary)"
+          height="6"
+          opacity="0.14"
+          rx="2"
+          width="34"
+          x="33"
+          y="29.3"
+        />
       </g>
     </svg>
   );

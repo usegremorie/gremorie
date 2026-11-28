@@ -53,8 +53,10 @@ export interface ColorPickerValueChangeDetails {
   valueAsString: string;
 }
 
-export interface ColorPickerProps
-  extends Omit<React.ComponentProps<'div'>, 'defaultValue' | 'onChange'> {
+export interface ColorPickerProps extends Omit<
+  React.ComponentProps<'div'>,
+  'defaultValue' | 'onChange'
+> {
   /** Controlled value: any CSS colour. */
   value?: string;
   /** Initial value when uncontrolled. */
@@ -119,7 +121,8 @@ const ColorPickerContext = React.createContext<ColorPickerContextValue | null>(
 
 function useColorPicker(): ColorPickerContextValue {
   const ctx = React.useContext(ColorPickerContext);
-  if (!ctx) throw new Error('ColorPicker parts must be used inside <ColorPicker>.');
+  if (!ctx)
+    throw new Error('ColorPicker parts must be used inside <ColorPicker>.');
   return ctx;
 }
 
@@ -205,7 +208,10 @@ function ColorPicker({
     if (value === undefined || value === lastEmitted.current) return;
     lastEmitted.current = undefined;
     const parsed = parseColor(value, colorRef.current.h);
-    if (parsed && formatColor(parsed, 'oklch') !== formatColor(colorRef.current, 'oklch')) {
+    if (
+      parsed &&
+      formatColor(parsed, 'oklch') !== formatColor(colorRef.current, 'oklch')
+    ) {
       colorRef.current = parsed;
       setColorState(parsed);
     }
@@ -300,7 +306,10 @@ function ColorPicker({
   );
 }
 
-function ColorPickerLabel({ className, ...props }: React.ComponentProps<'label'>) {
+function ColorPickerLabel({
+  className,
+  ...props
+}: React.ComponentProps<'label'>) {
   const { labelId } = useColorPicker();
   return (
     <label
@@ -315,7 +324,10 @@ function ColorPickerLabel({ className, ...props }: React.ComponentProps<'label'>
   );
 }
 
-function ColorPickerControl({ className, ...props }: React.ComponentProps<'div'>) {
+function ColorPickerControl({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="color-picker-control"
@@ -394,10 +406,15 @@ function ColorPickerTrigger({
         aria-label={ariaLabel}
         aria-invalid={invalid || undefined}
         disabled={disabled}
-        className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), className)}
+        className={cn(
+          buttonVariants({ variant: 'outline', size: 'icon' }),
+          className,
+        )}
         {...props}
       >
-        {children ?? <ColorPickerSwatch value={valueAsString} className="size-5" />}
+        {children ?? (
+          <ColorPickerSwatch value={valueAsString} className="size-5" />
+        )}
       </button>
     </PopoverPrimitive.Trigger>
   );
@@ -440,7 +457,9 @@ function ColorPickerContent({
 }
 
 /** Pointer drag on an element: maps each point to a colour until release. */
-function useDrag(onPoint: (event: React.PointerEvent<HTMLElement>, el: HTMLElement) => void) {
+function useDrag(
+  onPoint: (event: React.PointerEvent<HTMLElement>, el: HTMLElement) => void,
+) {
   const { interactive, setDragging, commit } = useColorPicker();
   const active = React.useRef(false);
   return {
@@ -501,7 +520,11 @@ function ColorPickerArea({
   const hue = color.h;
   // Only the channels off the axes change the picture.
   const backdrop = formatColor(
-    setChannelValue(setChannelValue({ ...color, alpha: 1 }, xChannel, 0), yChannel, 0),
+    setChannelValue(
+      setChannelValue({ ...color, alpha: 1 }, xChannel, 0),
+      yChannel,
+      0,
+    ),
     'oklch',
   );
 
@@ -512,7 +535,12 @@ function ColorPickerArea({
     // Hue survives the round-trip through text even at chroma 0.
     const base = parseColor(backdrop, hue);
     if (base) {
-      paintArea(ctx, base, { xChannel, yChannel, width: el.width, height: el.height });
+      paintArea(ctx, base, {
+        xChannel,
+        yChannel,
+        width: el.width,
+        height: el.height,
+      });
     }
   }, [backdrop, hue, xChannel, yChannel]);
 
@@ -625,7 +653,8 @@ function ColorPickerChannelSlider({
   const { color, setColor, interactive, disabled, labels } = useColorPicker();
   const vertical = orientation === 'vertical';
   const ratio = channelRatio(color, channel);
-  const name = ariaLabel ?? labels[CHANNEL_NAMES[channel]] ?? DEFAULT_NAMES[channel];
+  const name =
+    ariaLabel ?? labels[CHANNEL_NAMES[channel]] ?? DEFAULT_NAMES[channel];
 
   const drag = useDrag((event, el) => {
     const rect = el.getBoundingClientRect();
@@ -675,8 +704,11 @@ function ColorPickerChannelSlider({
         data-slot="color-picker-channel-slider-thumb"
         className={cn(THUMB_CLASS, vertical ? 'left-1/2' : 'top-1/2')}
         style={{
-          [vertical ? 'top' : 'left']: `${(vertical ? 1 - ratio : ratio) * 100}%`,
-          background: toCss(channel === 'alpha' ? color : { ...color, alpha: 1 }),
+          [vertical ? 'top' : 'left']:
+            `${(vertical ? 1 - ratio : ratio) * 100}%`,
+          background: toCss(
+            channel === 'alpha' ? color : { ...color, alpha: 1 },
+          ),
         }}
         onKeyDown={(event) => {
           if (!interactive) return;
@@ -700,8 +732,10 @@ function ColorPickerChannelSlider({
 
 type InputChannel = ColorChannel | 'hex' | 'css';
 
-interface ColorPickerChannelInputProps
-  extends Omit<React.ComponentProps<'input'>, 'value' | 'defaultValue'> {
+interface ColorPickerChannelInputProps extends Omit<
+  React.ComponentProps<'input'>,
+  'value' | 'defaultValue'
+> {
   /** `css` prints the current format, `hex` always hex, a channel its number. */
   channel?: InputChannel;
 }
@@ -709,7 +743,8 @@ interface ColorPickerChannelInputProps
 /** Display units of a channel in a field: percent for L and alpha. */
 const toField = (color: Color, channel: ColorChannel) => {
   const v = getChannelValue(color, channel);
-  if (channel === 'lightness' || channel === 'alpha') return String(Math.round(v * 100));
+  if (channel === 'lightness' || channel === 'alpha')
+    return String(Math.round(v * 100));
   if (channel === 'hue') return String(Math.round(v));
   return String(Number(v.toFixed(3)));
 };
@@ -729,7 +764,8 @@ function ColorPickerChannelInput({
   'aria-label': ariaLabel,
   ...props
 }: ColorPickerChannelInputProps) {
-  const { color, format, setColor, disabled, readOnly, invalid } = useColorPicker();
+  const { color, format, setColor, disabled, readOnly, invalid } =
+    useColorPicker();
   const shown =
     channel === 'css'
       ? formatColor(color, format)
@@ -828,7 +864,10 @@ function ColorPickerFormatSelect({
   );
 }
 
-function ColorPickerSwatchGroup({ className, ...props }: React.ComponentProps<'div'>) {
+function ColorPickerSwatchGroup({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
   return (
     <div
       role="group"
@@ -985,7 +1024,10 @@ function ColorPickerEyeDropperTrigger({
           // The user cancelled.
         }
       }}
-      className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), className)}
+      className={cn(
+        buttonVariants({ variant: 'outline', size: 'icon' }),
+        className,
+      )}
       {...props}
     >
       {children ?? <PipetteIcon aria-hidden="true" />}
@@ -998,7 +1040,11 @@ interface ColorPickerValueTextProps extends React.ComponentProps<'span'> {
   format?: ColorFormat;
 }
 
-function ColorPickerValueText({ format, className, ...props }: ColorPickerValueTextProps) {
+function ColorPickerValueText({
+  format,
+  className,
+  ...props
+}: ColorPickerValueTextProps) {
   const { color, valueAsString } = useColorPicker();
   return (
     <span

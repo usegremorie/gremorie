@@ -1,6 +1,10 @@
 import { converter, wcagContrast } from 'culori';
 import { describe, expect, it } from 'vitest';
-import { formatColor, maxChroma, parseColor } from '@gremorie/headless/color-picker';
+import {
+  formatColor,
+  maxChroma,
+  parseColor,
+} from '@gremorie/headless/color-picker';
 import {
   ACCENTS,
   APPEARANCE_KEY,
@@ -85,7 +89,10 @@ describe('appearance state', () => {
     ['nothing stored', undefined],
     ['invalid JSON', '{nope'],
     ['an unknown accent', JSON.stringify({ ...VIOLET, accent: 'lime' })],
-    ['an unknown translucency', JSON.stringify({ ...VIOLET, translucency: 'glass' })],
+    [
+      'an unknown translucency',
+      JSON.stringify({ ...VIOLET, translucency: 'glass' }),
+    ],
     ['a non-object', '"violet"'],
   ])('falls back to the default with %s', (_, raw) => {
     expect(readAppearance(memoryStorage(raw))).toEqual(DEFAULT_APPEARANCE);
@@ -110,7 +117,11 @@ describe('appearance state', () => {
   });
 
   it('reads the earlier shape, without seed or saved colours', () => {
-    const old = JSON.stringify({ accent: 'teal', translucency: 'solid', tonal: true });
+    const old = JSON.stringify({
+      accent: 'teal',
+      translucency: 'solid',
+      tonal: true,
+    });
     expect(readAppearance(memoryStorage(old))).toEqual({
       accent: 'teal',
       seed: '',
@@ -135,8 +146,15 @@ describe('appearance state', () => {
   });
 
   it('keeps only valid saved colours, at most 16', () => {
-    const saved = ['#ff0000', 'nope', 42, ...Array.from({ length: 20 }, (_, i) => `oklch(0.5 0.1 ${i})`)];
-    const read = readAppearance(memoryStorage(JSON.stringify({ ...VIOLET, saved })));
+    const saved = [
+      '#ff0000',
+      'nope',
+      42,
+      ...Array.from({ length: 20 }, (_, i) => `oklch(0.5 0.1 ${i})`),
+    ];
+    const read = readAppearance(
+      memoryStorage(JSON.stringify({ ...VIOLET, saved })),
+    );
     expect(read.saved[0]).toBe('#ff0000');
     expect(read.saved).not.toContain('nope');
     expect(read.saved).toHaveLength(16);
@@ -168,7 +186,9 @@ describe('appearance state', () => {
   it('the pre-paint script ignores an unsafe seed', () => {
     const root = fakeRoot();
     new Function('localStorage', 'document', APPEARANCE_SCRIPT)(
-      memoryStorage(JSON.stringify({ ...CUSTOM, seed: 'red;}html{display:none' })),
+      memoryStorage(
+        JSON.stringify({ ...CUSTOM, seed: 'red;}html{display:none' }),
+      ),
       { documentElement: root },
     );
     expect(root.attrs.has('data-accent')).toBe(false);
@@ -243,7 +263,9 @@ describe('seedFromColor', () => {
   it.each([150, 190])(
     'keeps all the chroma the screen shows at hue %i: the text adapts instead',
     (h) => {
-      const gamut = Math.floor(Math.min(maxChroma(0.56, h), maxChroma(0.64, h)) * 1000) / 1000;
+      const gamut =
+        Math.floor(Math.min(maxChroma(0.56, h), maxChroma(0.64, h)) * 1000) /
+        1000;
       expect(seedFromColor({ l: 0.7, c: 0.4, h, alpha: 1 })).toBe(
         formatColor({ l: 0.64, c: gamut, h, alpha: 1 }, 'oklch'),
       );

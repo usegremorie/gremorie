@@ -60,9 +60,11 @@ const panel = (alpha = true) => `
   </gr-color-picker-saved-colors>
 `;
 
-const inlineRender = (alpha = true): Story['render'] => (args) => ({
-  props: { ...args, presets: PRESETS },
-  template: `
+const inlineRender =
+  (alpha = true): Story['render'] =>
+  (args) => ({
+    props: { ...args, presets: PRESETS },
+    template: `
     <gr-color-picker
       inline
       class="w-72"
@@ -74,14 +76,19 @@ const inlineRender = (alpha = true): Story['render'] => (args) => ({
       <gr-color-picker-content>${panel(alpha)}</gr-color-picker-content>
     </gr-color-picker>
   `,
-});
+  });
 
 /**
  * Workbench preset: renders the IDENTICAL use case as the React `Workbench`
  * story in `rx-forms`. Keep both datasets in sync.
  */
 export const Workbench: Story = {
-  args: { defaultValue: 'oklch(0.55 0.2 260)', format: 'oklch', disabled: false, readOnly: false },
+  args: {
+    defaultValue: 'oklch(0.55 0.2 260)',
+    format: 'oklch',
+    disabled: false,
+    readOnly: false,
+  },
   render: inlineRender(),
 };
 
@@ -141,6 +148,10 @@ export const SavedColors: Story = {
 
 /** Disabled. */
 export const Disabled: Story = {
-  args: { defaultValue: 'oklch(0.55 0.2 260)', format: 'oklch', disabled: true },
+  args: {
+    defaultValue: 'oklch(0.55 0.2 260)',
+    format: 'oklch',
+    disabled: true,
+  },
   render: inlineRender(),
 };

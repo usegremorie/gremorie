@@ -28,7 +28,10 @@ const en: Copy = {
   translucency: 'Translucency',
   translucencyHint: 'How much of the page shows through the interface.',
   modes: {
-    solid: { name: 'Solid', hint: 'Nothing see-through. Opaque menus and cards.' },
+    solid: {
+      name: 'Solid',
+      hint: 'Nothing see-through. Opaque menus and cards.',
+    },
     subtle: {
       name: 'Subtle',
       hint: 'Only menus, popovers and the top bar show what is behind.',
@@ -54,7 +57,8 @@ const en: Copy = {
     red: 'Red',
   },
   custom: 'Custom color',
-  customHint: 'Any hue. Intensity stops where button text would get hard to read.',
+  customHint:
+    'Any hue. Intensity stops where button text would get hard to read.',
   hue: 'Hue',
   chroma: 'Intensity',
   degrees: 'degrees',
@@ -95,7 +99,8 @@ const pt: Copy = {
     red: 'Vermelho',
   },
   custom: 'Cor personalizada',
-  customHint: 'Qualquer matiz. A intensidade para onde o texto dos botões perderia leitura.',
+  customHint:
+    'Qualquer matiz. A intensidade para onde o texto dos botões perderia leitura.',
   hue: 'Matiz',
   chroma: 'Intensidade',
   degrees: 'graus',

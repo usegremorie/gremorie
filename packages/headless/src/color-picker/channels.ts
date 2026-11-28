@@ -55,7 +55,10 @@ export function stepChannel(
     channel,
     getChannelValue(color, channel) + steps * step,
   );
-  return { ...moved, [KEY[channel]]: fix(getChannelValue(moved, channel), step) };
+  return {
+    ...moved,
+    [KEY[channel]]: fix(getChannelValue(moved, channel), step),
+  };
 }
 
 /** Sets a channel to its minimum or maximum. */
@@ -67,7 +70,11 @@ export function channelToEnd(
   const { min, max } = CHANNEL_RANGE[channel];
   // Hue's max is the same angle as its min; stop one step short.
   const value =
-    end === 'min' ? min : channel === 'hue' ? max - CHANNEL_RANGE.hue.step : max;
+    end === 'min'
+      ? min
+      : channel === 'hue'
+        ? max - CHANNEL_RANGE.hue.step
+        : max;
   return setChannelValue(color, channel, value);
 }
 
@@ -86,9 +93,13 @@ export function colorAtRatio(
   const { min, max, step } = CHANNEL_RANGE[channel];
   const r = Math.min(1, Math.max(0, ratio));
   // A full drag to the end of the hue track stays at 359, not back to 0.
-  const value = channel === 'hue' && r === 1 ? max - step : min + r * (max - min);
+  const value =
+    channel === 'hue' && r === 1 ? max - step : min + r * (max - min);
   const next = setChannelValue(color, channel, value);
-  return { ...next, [KEY[channel]]: fix(getChannelValue(next, channel), step / 10) };
+  return {
+    ...next,
+    [KEY[channel]]: fix(getChannelValue(next, channel), step / 10),
+  };
 }
 
 /** CSS gradient showing the channel's range for the current colour. */
@@ -140,7 +151,9 @@ export function channelValueText(
 ): string {
   const words = { ...LABELS, ...labels };
   const value = getChannelValue(color, channel);
-  if (channel === 'hue') return `${words.hue} ${Math.round(value)} ${words.degrees}`;
-  if (channel === 'chroma') return `${words.chroma} ${Number(value.toFixed(3))}`;
+  if (channel === 'hue')
+    return `${words.hue} ${Math.round(value)} ${words.degrees}`;
+  if (channel === 'chroma')
+    return `${words.chroma} ${Number(value.toFixed(3))}`;
   return `${words[channel]} ${Math.round(value * 100)}%`;
 }

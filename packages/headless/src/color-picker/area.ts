@@ -78,21 +78,33 @@ const EPS = 1e-5;
 export function paintArea(
   ctx: CanvasRenderingContext2D,
   color: Color,
-  { xChannel, yChannel, width, height }: AreaAxes & { width: number; height: number },
+  {
+    xChannel,
+    yChannel,
+    width,
+    height,
+  }: AreaAxes & { width: number; height: number },
 ): void {
   const image = ctx.createImageData(width, height);
   const ch = (v: number) => Math.round(Math.min(1, Math.max(0, v)) * 255);
-  const key = { lightness: 'l', chroma: 'c', hue: 'h', alpha: 'alpha' } as const;
+  const key = {
+    lightness: 'l',
+    chroma: 'c',
+    hue: 'h',
+    alpha: 'alpha',
+  } as const;
   const xr = CHANNEL_RANGE[xChannel];
   const yr = CHANNEL_RANGE[yChannel];
   // One mutable sample, reused: a repaint follows a hue drag frame by frame.
   const at: Oklch = { mode: 'oklch', l: color.l, c: color.c, h: color.h };
   for (let py = 0; py < height; py++) {
     const yRatio = height === 1 ? 1 : 1 - py / (height - 1);
-    (at as unknown as Record<string, number>)[key[yChannel]] = yr.min + yRatio * (yr.max - yr.min);
+    (at as unknown as Record<string, number>)[key[yChannel]] =
+      yr.min + yRatio * (yr.max - yr.min);
     for (let px = 0; px < width; px++) {
       const xRatio = width === 1 ? 0 : px / (width - 1);
-      (at as unknown as Record<string, number>)[key[xChannel]] = xr.min + xRatio * (xr.max - xr.min);
+      (at as unknown as Record<string, number>)[key[xChannel]] =
+        xr.min + xRatio * (xr.max - xr.min);
       const { r, g, b } = toRgb(at);
       const inside = [r, g, b].every((v) => v >= -EPS && v <= 1 + EPS);
       const i = (py * width + px) * 4;
