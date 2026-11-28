@@ -10,3 +10,4 @@ export * from './lib/context-menu';
 export * from './lib/drawer';
 export * from './lib/sonner';
 export * from './lib/date-picker';
+export * from './lib/use-is-mobile';

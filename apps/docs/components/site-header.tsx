@@ -3,10 +3,6 @@
 import { cn } from '@gremorie/rx-core';
 import { Button } from '@gremorie/rx-forms';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -16,13 +12,11 @@ import {
   FullSearchTrigger,
   SearchTrigger,
 } from 'fumadocs-ui/layouts/shared/slots/search-trigger';
-import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import {
   BlocksIcon,
   ComponentIcon,
   LayoutDashboardIcon,
   LibraryIcon,
-  MenuIcon,
   PaletteIcon,
   type LucideIcon,
 } from 'lucide-react';
@@ -30,7 +24,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 
+import { AppearanceControls } from '@/components/appearance/appearance-controls';
+import { copyFor } from '@/components/appearance/copy';
 import { GithubMark } from '@/components/github-mark';
+import { MobileNav } from '@/components/mobile-nav';
 import { GremorieSymbol } from '@/components/gremorie-symbol';
 
 /**
@@ -39,15 +36,17 @@ import { GremorieSymbol } from '@/components/gremorie-symbol';
  *   header (sticky, 56px)
  *   ├─ logo                     left: the symbol, home link
  *   ├─ nav                      centre: icon + label, 14px / 500 in every state
- *   └─ actions                  right: Fumadocs' search field and theme
- *                               switch (as on the docs pages), GitHub as a
- *                               DS ghost icon button; below md the search is
- *                               an icon and the nav moves into a menu here
+ *   └─ actions                  right: Fumadocs' search field, GitHub and
+ *                               the appearance controls (accent, translucency,
+ *                               tonal, theme) as DS ghost icon buttons; the
+ *                               search is a field from 1440px and an icon
+ *                               below; below lg the nav moves into a bottom
+ *                               drawer here
  *
  * At the top of the page the bar has no surface and no border. Once the page
  * scrolls it gets the bottom border and the DS translucent treatment (60% of
  * the page background, blur 16px, saturate 1.5), opaque again for
- * data-menu="solid" or reduced transparency, as the floating surfaces.
+ * data-translucency="solid" or reduced transparency, as the floating surfaces.
  */
 
 const NAV: { text: string; path: string; icon: LucideIcon }[] = [
@@ -113,7 +112,7 @@ export function SiteHeader({ lang }: { lang: string }) {
 
           <nav
             aria-label="Main"
-            className="-translate-x-1/2 absolute left-1/2 flex items-center gap-1 max-md:hidden"
+            className="-translate-x-1/2 absolute left-1/2 flex items-center gap-1 max-lg:hidden"
             data-slot="site-header-nav"
           >
             {links.map(({ text, url, icon: Icon }) => (
@@ -133,14 +132,14 @@ export function SiteHeader({ lang }: { lang: string }) {
             className="ml-auto flex items-center"
             data-slot="site-header-actions"
           >
-            {/* Search and theme are Fumadocs' own controls, the same as on
-                the docs pages: the search field (with its shortcut) from md
-                up, the icon trigger below it. */}
+            {/* Search is Fumadocs' own control, the same as on the docs
+                pages: the search field (with its shortcut) from 1440px, where
+                it fits beside the centred nav; the icon trigger below it. */}
             <FullSearchTrigger
-              className="mr-2 w-56 rounded-full ps-2.5 max-md:hidden"
+              className="mr-2 w-56 rounded-full ps-2.5 max-[1440px]:hidden"
               hideIfDisabled
             />
-            <SearchTrigger className="p-2 md:hidden" hideIfDisabled />
+            <SearchTrigger className="p-2 min-[1440px]:hidden" hideIfDisabled />
             <IconAction label="GitHub">
               <Button asChild size="icon-sm" variant="ghost">
                 <a
@@ -153,31 +152,12 @@ export function SiteHeader({ lang }: { lang: string }) {
                 </a>
               </Button>
             </IconAction>
-            <ThemeSwitch className="ml-2" />
-            <DropdownMenu>
-              <IconAction label="Menu">
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    aria-label="Menu"
-                    className="md:hidden"
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <MenuIcon />
-                  </Button>
-                </DropdownMenuTrigger>
-              </IconAction>
-              <DropdownMenuContent align="end" className="w-48">
-                {links.map(({ text, url, icon: Icon }) => (
-                  <DropdownMenuItem asChild key={url}>
-                    <Link href={url}>
-                      <Icon aria-hidden="true" />
-                      {text}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <AppearanceControls lang={lang} />
+            <MobileNav
+              isActive={isActive}
+              label={copyFor(lang).menu}
+              links={links}
+            />
           </div>
         </div>
       </header>

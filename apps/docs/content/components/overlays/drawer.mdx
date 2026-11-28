@@ -5,6 +5,7 @@ description: 'Direction-aware sheet (top, bottom, left, right) built on vaul wit
 
 import { DrawerPreview } from '@/components/preview/overlays/drawer';
 import { DrawerDirectionsPreview } from '@/components/preview/overlays/drawer-directions';
+import { DrawerResponsivePreview } from '@/components/preview/overlays/drawer-responsive';
 
 ## Overview
 
@@ -110,7 +111,7 @@ npx gremorie@latest add ng-drawer
 <AngularSetup />
 
 <Callout type="info">
-The Angular edition of this component ships from source today (see the workbench for the side-by-side); its registry entry is coming next.
+The Angular edition of this component ships from source today (see the workbench for the side-by-side); its registry entry is coming next. Set `direction` on `gr-drawer` and render the panel from `<ng-template brnDrawerContent>`; dragging the panel toward its edge dismisses it, as in React. A press on a text field, or on an element marked `data-vaul-no-drag`, never starts a drag in either edition.
 </Callout>
 </Tab>
 </Tabs>
@@ -170,6 +171,23 @@ Set the `direction` prop on `Drawer` to slide the panel in from any edge (`top`,
 <ComponentPreview name="overlays/drawer-directions">
   <DrawerDirectionsPreview />
 </ComponentPreview>
+
+### Responsive
+
+A menu that opens as a popover on desktop should open as a bottom drawer on a phone. `useIsMobile()` (React) and `injectIsMobile()` (Angular) read a media query, 768px by default, so the trigger and the body stay the same and only the overlay changes.
+
+<ComponentPreview name="overlays/drawer-responsive">
+  <DrawerResponsivePreview />
+</ComponentPreview>
+
+```tsx
+const isMobile = useIsMobile();
+return isMobile ? <Drawer>…</Drawer> : <Popover>…</Popover>;
+```
+
+```ts
+protected readonly isMobile = injectIsMobile(); // Signal<boolean>
+```
 
 ### Bottom drawer with form
 

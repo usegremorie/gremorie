@@ -1,3 +1,4 @@
+import { APPEARANCE_SCRIPT } from '@/lib/appearance';
 import '../global.css';
 import { Analytics } from '@vercel/analytics/next';
 import { RootProvider } from 'fumadocs-ui/provider/next';
@@ -46,6 +47,10 @@ export default async function LangLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${geistMono.variable}`}
     >
+      <head>
+        {/* Applies the saved appearance before the first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: APPEARANCE_SCRIPT }} />
+      </head>
       <body className="flex flex-col min-h-screen font-sans max-md:pb-24">
         <a
           href="#main"

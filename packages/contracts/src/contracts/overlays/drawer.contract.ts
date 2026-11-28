@@ -3,7 +3,7 @@ import { defineContract } from '../../types';
 /**
  * Drawer - touch-friendly panel that slides in from an edge (bottom by default).
  * React: `@gremorie/rx-overlays` (vaul). Angular: `@gremorie/ng-overlays`
- * (spartan brain `BrnSheet`, no vaul drag physics).
+ * (spartan brain `BrnDrawer`, a port of vaul).
  */
 export const drawer = defineContract({
   name: 'drawer',
@@ -31,7 +31,7 @@ export const drawer = defineContract({
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
-      adapts: { ng: 'output: openChange (via BrnSheet)' },
+      adapts: { ng: 'output: openChange (via BrnDrawer)' },
       desc: 'Fires when the open state changes.',
     },
     {
@@ -40,7 +40,7 @@ export const drawer = defineContract({
       default: 'bottom',
       options: ['top', 'right', 'bottom', 'left'],
       adapts: {
-        ng: 'direction on gr-drawer-content (+ side on gr-drawer root)',
+        ng: 'direction on gr-drawer (gr-drawer-content reads it)',
       },
       desc: 'Which edge the drawer slides in from.',
     },
@@ -77,9 +77,9 @@ export const drawer = defineContract({
       { text: 'A short focused dialog centered on screen', use: 'dialog' },
     ],
     rules: [
-      'DrawerTrigger opens the drawer on click; it closes on overlay click, Escape, or (React) drag-down.',
-      'React uses vaul, which adds drag-to-dismiss, momentum, and shouldScaleBackground; the Angular edition is built on the brain BrnSheet and has no vaul drag physics - it renders a static handle and sets data-vaul-drawer-direction for class parity.',
-      'Angular renders the panel from a `<ng-template brnSheetContent>`; pass direction to gr-drawer-content (and the matching side to the gr-drawer root).',
+      'DrawerTrigger opens the drawer on click; it closes on overlay click, Escape, or a drag toward its edge.',
+      'Both editions drag to dismiss: React through vaul, Angular through the brain BrnDrawerHandle on the whole panel (25% of the panel or 0.4px/ms closes it). Neither edition starts a drag from a text field or from an element marked data-vaul-no-drag (Angular also accepts data-drawer-no-drag). vaul-only extras such as shouldScaleBackground and snap points stay React-only.',
+      'Angular renders the panel from a `<ng-template brnDrawerContent>`; set direction on the gr-drawer root.',
     ],
     example:
       '<Drawer><DrawerTrigger>Open</DrawerTrigger><DrawerContent><DrawerHeader><DrawerTitle>Filters</DrawerTitle></DrawerHeader><DrawerFooter><DrawerClose>Close</DrawerClose></DrawerFooter></DrawerContent></Drawer>',

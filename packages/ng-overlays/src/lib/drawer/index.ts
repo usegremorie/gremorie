@@ -7,4 +7,5 @@ export {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
+  type DrawerDirection,
 } from './drawer';

@@ -5,6 +5,7 @@ description: 'Sheet ciente de direção (top, bottom, left, right) construído s
 
 import { DrawerPreview } from '@/components/preview/overlays/drawer';
 import { DrawerDirectionsPreview } from '@/components/preview/overlays/drawer-directions';
+import { DrawerResponsivePreview } from '@/components/preview/overlays/drawer-responsive';
 
 ## Visão geral
 
@@ -110,7 +111,7 @@ npx gremorie@latest add ng-drawer
 <AngularSetup locale="pt" />
 
 <Callout type="info">
-A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir.
+A edição Angular deste componente hoje é distribuída a partir do source (veja o workbench para o lado a lado); a entrada no registry vem a seguir. Defina `direction` no `gr-drawer` e renderize o painel a partir de `<ng-template brnDrawerContent>`; arrastar o painel em direção à borda fecha o drawer, como no React. Um toque num campo de texto, ou num elemento marcado com `data-vaul-no-drag`, nunca inicia o arrasto, nas duas edições.
 </Callout>
 </Tab>
 </Tabs>
@@ -170,6 +171,23 @@ Defina a prop `direction` no `Drawer` para deslizar o painel a partir de qualque
 <ComponentPreview name="overlays/drawer-directions">
   <DrawerDirectionsPreview />
 </ComponentPreview>
+
+### Responsivo
+
+Um menu que abre como popover no desktop deve abrir como drawer de baixo no celular. `useIsMobile()` (React) e `injectIsMobile()` (Angular) leem uma media query, 768px por padrão, então o gatilho e o conteúdo são os mesmos e só a camada muda.
+
+<ComponentPreview name="overlays/drawer-responsive">
+  <DrawerResponsivePreview />
+</ComponentPreview>
+
+```tsx
+const isMobile = useIsMobile();
+return isMobile ? <Drawer>…</Drawer> : <Popover>…</Popover>;
+```
+
+```ts
+protected readonly isMobile = injectIsMobile(); // Signal<boolean>
+```
 
 ### Bottom drawer com formulário
 

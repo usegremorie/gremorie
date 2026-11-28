@@ -127,3 +127,4 @@ export {
 
 // Sonner
 export { Sonner, toast } from './lib/sonner';
+export * from './lib/is-mobile';
