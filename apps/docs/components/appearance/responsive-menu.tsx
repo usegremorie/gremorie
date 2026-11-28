@@ -48,7 +48,7 @@ export function ResponsiveMenu({
       <Drawer>
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent>
-          <DrawerHeader className="text-left">
+          <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
