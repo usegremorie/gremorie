@@ -1,11 +1,12 @@
 import {
+  CHANNEL_RANGE,
   channelRatio,
   channelToEnd,
   colorAtRatio,
   stepChannel,
   type ColorChannel,
 } from './channels';
-import { isInGamut, toGamut, type Color } from './color';
+import type { Color } from './color';
 import { converter, type Oklch } from 'culori/fn';
 import type { AreaStep } from './keyboard';
 
@@ -66,11 +67,13 @@ export function applyAreaStep(
 }
 
 const toRgb = converter('rgb');
+const EPS = 1e-5;
 
 /**
  * Paints the area into a canvas: each pixel is the colour at that point.
- * Colours outside sRGB show their mapped colour at reduced opacity, so the
- * reachable region reads at a glance.
+ * Colours outside sRGB show clipped at reduced opacity, so the reachable
+ * region reads at a glance. One conversion per pixel keeps a repaint cheap
+ * enough to follow a hue drag.
  */
 export function paintArea(
   ctx: CanvasRenderingContext2D,
@@ -78,21 +81,25 @@ export function paintArea(
   { xChannel, yChannel, width, height }: AreaAxes & { width: number; height: number },
 ): void {
   const image = ctx.createImageData(width, height);
-  const base: Color = { ...color, alpha: 1 };
+  const ch = (v: number) => Math.round(Math.min(1, Math.max(0, v)) * 255);
+  const key = { lightness: 'l', chroma: 'c', hue: 'h', alpha: 'alpha' } as const;
+  const xr = CHANNEL_RANGE[xChannel];
+  const yr = CHANNEL_RANGE[yChannel];
+  // One mutable sample, reused: a repaint follows a hue drag frame by frame.
+  const at: Oklch = { mode: 'oklch', l: color.l, c: color.c, h: color.h };
   for (let py = 0; py < height; py++) {
     const yRatio = height === 1 ? 1 : 1 - py / (height - 1);
-    const row = colorAtRatio(base, yChannel, yRatio);
+    (at as unknown as Record<string, number>)[key[yChannel]] = yr.min + yRatio * (yr.max - yr.min);
     for (let px = 0; px < width; px++) {
       const xRatio = width === 1 ? 0 : px / (width - 1);
-      const at = colorAtRatio(row, xChannel, xRatio);
-      const shown = toGamut(at);
-      const rgb = toRgb({ mode: 'oklch', l: shown.l, c: shown.c, h: shown.h } as Oklch);
+      (at as unknown as Record<string, number>)[key[xChannel]] = xr.min + xRatio * (xr.max - xr.min);
+      const { r, g, b } = toRgb(at);
+      const inside = [r, g, b].every((v) => v >= -EPS && v <= 1 + EPS);
       const i = (py * width + px) * 4;
-      const ch = (v: number) => Math.round(Math.min(1, Math.max(0, v)) * 255);
-      image.data[i] = ch(rgb.r);
-      image.data[i + 1] = ch(rgb.g);
-      image.data[i + 2] = ch(rgb.b);
-      image.data[i + 3] = isInGamut(at) ? 255 : 96;
+      image.data[i] = ch(r);
+      image.data[i + 1] = ch(g);
+      image.data[i + 2] = ch(b);
+      image.data[i + 3] = inside ? 255 : 96;
     }
   }
   ctx.putImageData(image, 0, 0);
