@@ -24,6 +24,7 @@ export const THEME_BLOCK_PRIMITIVES: readonly string[] = [
   'primitive/radius.json',
   'primitive/font.json',
   'primitive/spacing.json',
+  'primitive/motion.json',
 ];
 /** Written to :root (shadows): the CSS parser saw them as semantics. */
 export const ROOT_PRIMITIVES: readonly string[] = ['primitive/shadow.json'];
