@@ -111,9 +111,9 @@ export function AppearanceControls({ lang }: { lang: string }) {
     if (save) writeAppearance(next);
   };
 
-  // The picker edits a custom seed: hue and intensity, capped where the button
-  // text keeps 4.5:1. While dragging the page follows; the choice is saved
-  // when the drag ends.
+  // The picker edits a custom seed: hue and intensity, capped where the screen
+  // would clip the colour. While dragging the page follows; the choice is
+  // saved when the drag ends.
   const pickerValue =
     state.accent === 'custom' ? state.seed : mounted ? primitiveColor(state.accent) : 'oklch(0.64 0 0)';
   const pick = (d: ColorPickerValueChangeDetails, save: boolean) => {
