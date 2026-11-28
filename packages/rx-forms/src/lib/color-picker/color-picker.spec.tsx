@@ -259,6 +259,30 @@ describe('ColorPicker', () => {
     expect(onValueChange).not.toHaveBeenCalled();
   });
 
+  it('paints the area in the colour\'s hue', () => {
+    let data: Uint8ClampedArray | undefined;
+    HTMLCanvasElement.prototype.getContext = (() => ({
+      createImageData: (w: number, h: number) => ({
+        data: new Uint8ClampedArray(w * h * 4),
+        width: w,
+        height: h,
+      }),
+      putImageData: (img: { data: Uint8ClampedArray }) => {
+        data = img.data;
+      },
+    })) as unknown as HTMLCanvasElement['getContext'];
+    render({ defaultValue: 'oklch(0.6 0.2 264)' });
+    // Middle row, a third of the way in: a blue, not the red of hue 0.
+    const i = (32 * 96 + 32) * 4;
+    expect(data![i + 2]).toBeGreaterThan(data![i]);
+  });
+
+  it('keeps swatch triggers as tall as their swatch', () => {
+    render();
+    const swatch = q('[data-slot="color-picker-swatch-trigger"]');
+    expect(swatch.className).toContain('inline-flex');
+  });
+
   it('opens the panel from the trigger in popover mode', () => {
     act(() =>
       root.render(

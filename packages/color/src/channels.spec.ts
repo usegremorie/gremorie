@@ -67,8 +67,10 @@ describe('channels', () => {
   it('draws a gradient across the channel in oklch', () => {
     const hue = channelGradient(teal, 'hue');
     expect(hue).toMatch(/^linear-gradient\(to right in oklch/);
-    expect(hue).toContain('oklch(0.7 0.1 0)');
-    expect(hue).toContain('oklch(0.7 0.1 360)');
+    // The hue track always shows the spectrum, even for a gray.
+    expect(hue).toContain('oklch(0.7 0.15 0)');
+    expect(hue).toContain('oklch(0.7 0.15 360)');
+    expect(channelGradient({ ...teal, c: 0 }, 'hue')).toBe(hue);
     const alpha = channelGradient(teal, 'alpha');
     expect(alpha).toContain('oklch(0.7 0.1 200 / 0)');
     expect(alpha).toContain('oklch(0.7 0.1 200)');

@@ -495,6 +495,7 @@ function ColorPickerArea({
   const { color, setColor, disabled } = useColorPicker();
   const canvas = React.useRef<HTMLCanvasElement>(null);
   const axes = { xChannel, yChannel };
+  const hue = color.h;
   // Only the channels off the axes change the picture.
   const backdrop = formatColor(
     setChannelValue(
@@ -509,7 +510,8 @@ function ColorPickerArea({
     const el = canvas.current;
     const ctx = el?.getContext('2d');
     if (!el || !ctx) return;
-    const base = parseColor(backdrop);
+    // Hue survives the round-trip through text even at chroma 0.
+    const base = parseColor(backdrop, hue);
     if (base) {
       paintArea(ctx, base, {
         xChannel,
@@ -518,7 +520,7 @@ function ColorPickerArea({
         height: el.height,
       });
     }
-  }, [backdrop, xChannel, yChannel]);
+  }, [backdrop, hue, xChannel, yChannel]);
 
   const drag = useDrag((event, el) => {
     setColor(
@@ -856,7 +858,7 @@ interface ColorPickerSwatchTriggerProps extends React.ComponentProps<'button'> {
 }
 
 const SWATCH_TRIGGER_CLASS =
-  'rounded-full outline-offset-2 transition-[outline-color] focus-visible:outline-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-pressed:outline-2 aria-pressed:outline-foreground';
+  'inline-flex shrink-0 rounded-full outline-offset-2 transition-[outline-color] focus-visible:outline-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-pressed:outline-2 aria-pressed:outline-foreground';
 
 function ColorPickerSwatchTrigger({
   value,

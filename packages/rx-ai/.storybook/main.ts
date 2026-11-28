@@ -83,6 +83,8 @@ const config: StorybookConfig = {
           join(root, 'packages', p, 'src', 'index.ts'),
         ]),
       ),
+      // The colour logic the ColorPicker shares with the Angular edition.
+      '@gremorie/color': join(root, 'packages', 'color', 'src', 'index.ts'),
     };
     return cfg;
   },
