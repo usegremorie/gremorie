@@ -66,10 +66,17 @@ export function AppearanceControls({ lang }: { lang: string }) {
   const t = copyFor(lang);
   const { resolvedTheme, setTheme } = useTheme();
   const [state, setState] = useState<Appearance>(DEFAULT_APPEARANCE);
+  const [mounted, setMounted] = useState(false);
 
-  // The pre-paint script already applied the saved choice to <html>; this
-  // only syncs the controls with it after hydration.
-  useEffect(() => setState(readAppearance()), []);
+  // The pre-paint script already applied the saved choice to <html>. After
+  // hydration the controls read it back and apply it again, in case React
+  // redrew <html> and dropped the attributes.
+  useEffect(() => {
+    const saved = readAppearance();
+    setState(saved);
+    applyAppearance(saved);
+    setMounted(true);
+  }, []);
 
   const update = (patch: Partial<Appearance>) => {
     const next = { ...state, ...patch };
@@ -78,7 +85,9 @@ export function AppearanceControls({ lang }: { lang: string }) {
     writeAppearance(next);
   };
 
-  const dark = resolvedTheme === 'dark';
+  // The server cannot know the theme: the first render is always the light
+  // one, so the markup hydrates; the real theme shows once mounted.
+  const dark = mounted && resolvedTheme === 'dark';
   const themeLabel = dark ? t.themeLight : t.themeDark;
 
   return (
