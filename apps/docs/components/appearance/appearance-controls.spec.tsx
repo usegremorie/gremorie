@@ -18,10 +18,10 @@ function mockMedia() {
   window.matchMedia = ((query: string) => ({
     matches: query.startsWith('(max-width') ? mobile : false,
     media: query,
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    addListener: () => {},
-    removeListener: () => {},
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    addListener: () => undefined,
+    removeListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
 }
 

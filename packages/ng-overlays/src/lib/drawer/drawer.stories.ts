@@ -108,7 +108,7 @@ export const Right: Story = {
  * trigger and the body stay the same.
  */
 @Component({
-  selector: 'story-drawer-responsive',
+  selector: 'gr-drawer-responsive-story',
   standalone: true,
   imports: [
     Drawer,
@@ -162,5 +162,5 @@ class ResponsiveMenu {
 
 export const Responsive: Story = {
   decorators: [moduleMetadata({ imports: [ResponsiveMenu] })],
-  render: () => ({ template: `<story-drawer-responsive />` }),
+  render: () => ({ template: `<gr-drawer-responsive-story />` }),
 };

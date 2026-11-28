@@ -94,6 +94,9 @@ describe('appearance state', () => {
     expect(root.attrs.size).toBe(0);
   });
 
+  // The inline script is a string by design (it runs before any bundle), so
+  // the test evaluates it the way the browser does.
+  /* eslint-disable @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
   it('the pre-paint script applies the same attributes as applyAppearance', () => {
     const root = fakeRoot();
     const storage = memoryStorage(JSON.stringify(VIOLET));
