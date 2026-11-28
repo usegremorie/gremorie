@@ -39,7 +39,7 @@
     "@gremorie/ng-core": ">=0.5.1"
   },
   "dependencies": {
-    "@gremorie/color": "^0.11.0"
+    "@gremorie/headless": "^0.11.0"
   },
   "sideEffects": false,
   "homepage": "https://gremorie.com",

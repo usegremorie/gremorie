@@ -1,6 +1,6 @@
 'use client';
 
-import { parseColor } from '@gremorie/color';
+import { parseColor } from '@gremorie/headless/color-picker';
 import { cn } from '@gremorie/rx-core';
 import {
   Button,

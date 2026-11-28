@@ -3,7 +3,7 @@ import {
   maxChroma,
   parseColor,
   type Color,
-} from '@gremorie/color';
+} from '@gremorie/headless/color-picker';
 
 /**
  * The visitor's appearance choice for the site: accent colour (one of the DS

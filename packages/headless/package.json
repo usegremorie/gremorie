@@ -1,0 +1,47 @@
+{
+  "name": "@gremorie/headless",
+  "version": "0.11.0",
+  "description": "Framework-agnostic component logic for Gremorie, shared by the React and Angular editions. Each component has its own entry point: @gremorie/headless/color-picker holds the OKLCH colour model, parsing and formatting, channels, keyboard steps, area geometry and saved colours.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usegremorie/gremorie.git",
+    "directory": "packages/headless"
+  },
+  "keywords": [
+    "headless",
+    "oklch",
+    "color-picker"
+  ],
+  "type": "module",
+  "exports": {
+    "./color-picker": {
+      "types": "./dist/color-picker/index.d.ts",
+      "import": "./dist/color-picker/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "culori": "^4.0.1",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "homepage": "https://gremorie.com",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/usegremorie/gremorie/issues"
+  },
+  "author": "Gremorie (https://github.com/usegremorie)",
+  "typesVersions": {
+    "*": {
+      "color-picker": [
+        "dist/color-picker/index.d.ts"
+      ]
+    }
+  }
+}

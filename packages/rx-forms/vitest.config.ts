@@ -11,7 +11,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@gremorie/rx-core': src('rx-core'),
-      '@gremorie/color': src('color'),
+      '@gremorie/headless/color-picker': fileURLToPath(
+        new URL('../headless/src/color-picker/index.ts', import.meta.url),
+      ),
     },
   },
   test: {

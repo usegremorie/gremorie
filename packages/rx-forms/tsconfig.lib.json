@@ -23,7 +23,7 @@
       "path": "../rx-core/tsconfig.lib.json"
     },
     {
-      "path": "../color/tsconfig.lib.json"
+      "path": "../headless/tsconfig.lib.json"
     }
   ]
 }

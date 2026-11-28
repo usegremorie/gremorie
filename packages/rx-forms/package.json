@@ -52,7 +52,7 @@
     "react": "^18 || ^19"
   },
   "dependencies": {
-    "@gremorie/color": "^0.11.0",
+    "@gremorie/headless": "^0.11.0",
     "class-variance-authority": "^0.7.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.547.0",
