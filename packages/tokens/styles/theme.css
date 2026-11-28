@@ -899,7 +899,8 @@
  *   --surface-backdrop  the backdrop filter behind it (none = no blur)
  *
  * Solid, no blur: set --surface-opacity: 100% and --surface-backdrop: none,
- * or use the shortcut <html data-menu="solid">. Users who ask the OS to
+ * or use the shortcut <html data-translucency="solid"> (appearance.css;
+ * data-menu="solid" still works as an alias). Users who ask the OS to
  * reduce transparency get the solid surface automatically.
  *
  * Inside a popover surface, accent (item hover/highlight) and muted (tracks,
@@ -969,6 +970,275 @@ html {
    block carries the token values). */
 :is(.dark) {
   --hover-shift: 0.05;
+}
+
+:root[data-accent='violet'] {
+  --seed-50: var(--color-violet-50);
+  --seed-100: var(--color-violet-100);
+  --seed-200: var(--color-violet-200);
+  --seed-300: var(--color-violet-300);
+  --seed-400: var(--color-violet-400);
+  --seed-500: var(--color-violet-500);
+  --seed-600: var(--color-violet-600);
+  --seed-700: var(--color-violet-700);
+  --seed-800: var(--color-violet-800);
+  --seed-900: var(--color-violet-900);
+  --seed-950: var(--color-violet-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='blue'] {
+  --seed-50: var(--color-blue-50);
+  --seed-100: var(--color-blue-100);
+  --seed-200: var(--color-blue-200);
+  --seed-300: var(--color-blue-300);
+  --seed-400: var(--color-blue-400);
+  --seed-500: var(--color-blue-500);
+  --seed-600: var(--color-blue-600);
+  --seed-700: var(--color-blue-700);
+  --seed-800: var(--color-blue-800);
+  --seed-900: var(--color-blue-900);
+  --seed-950: var(--color-blue-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='teal'] {
+  --seed-50: var(--color-teal-50);
+  --seed-100: var(--color-teal-100);
+  --seed-200: var(--color-teal-200);
+  --seed-300: var(--color-teal-300);
+  --seed-400: var(--color-teal-400);
+  --seed-500: var(--color-teal-500);
+  --seed-600: var(--color-teal-600);
+  --seed-700: var(--color-teal-700);
+  --seed-800: var(--color-teal-800);
+  --seed-900: var(--color-teal-900);
+  --seed-950: var(--color-teal-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='green'] {
+  --seed-50: var(--color-green-50);
+  --seed-100: var(--color-green-100);
+  --seed-200: var(--color-green-200);
+  --seed-300: var(--color-green-300);
+  --seed-400: var(--color-green-400);
+  --seed-500: var(--color-green-500);
+  --seed-600: var(--color-green-600);
+  --seed-700: var(--color-green-700);
+  --seed-800: var(--color-green-800);
+  --seed-900: var(--color-green-900);
+  --seed-950: var(--color-green-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='orange'] {
+  --seed-50: var(--color-orange-50);
+  --seed-100: var(--color-orange-100);
+  --seed-200: var(--color-orange-200);
+  --seed-300: var(--color-orange-300);
+  --seed-400: var(--color-orange-400);
+  --seed-500: var(--color-orange-500);
+  --seed-600: var(--color-orange-600);
+  --seed-700: var(--color-orange-700);
+  --seed-800: var(--color-orange-800);
+  --seed-900: var(--color-orange-900);
+  --seed-950: var(--color-orange-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='rose'] {
+  --seed-50: var(--color-rose-50);
+  --seed-100: var(--color-rose-100);
+  --seed-200: var(--color-rose-200);
+  --seed-300: var(--color-rose-300);
+  --seed-400: var(--color-rose-400);
+  --seed-500: var(--color-rose-500);
+  --seed-600: var(--color-rose-600);
+  --seed-700: var(--color-rose-700);
+  --seed-800: var(--color-rose-800);
+  --seed-900: var(--color-rose-900);
+  --seed-950: var(--color-rose-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='red'] {
+  --seed-50: var(--color-red-50);
+  --seed-100: var(--color-red-100);
+  --seed-200: var(--color-red-200);
+  --seed-300: var(--color-red-300);
+  --seed-400: var(--color-red-400);
+  --seed-500: var(--color-red-500);
+  --seed-600: var(--color-red-600);
+  --seed-700: var(--color-red-700);
+  --seed-800: var(--color-red-800);
+  --seed-900: var(--color-red-900);
+  --seed-950: var(--color-red-950);
+  --seed: var(--seed-500);
+}
+:root[data-accent='custom'] {
+  --seed-50: oklch(from var(--seed) 0.975 calc(c * 0.12) h);
+  --seed-100: oklch(from var(--seed) 0.95 calc(c * 0.22) h);
+  --seed-200: oklch(from var(--seed) 0.9 calc(c * 0.42) h);
+  --seed-300: oklch(from var(--seed) 0.82 calc(c * 0.65) h);
+  --seed-400: oklch(from var(--seed) 0.72 calc(c * 0.9) h);
+  --seed-500: oklch(from var(--seed) 0.64 calc(c * 1) h);
+  --seed-600: oklch(from var(--seed) 0.56 calc(c * 1) h);
+  --seed-700: oklch(from var(--seed) 0.46 calc(c * 0.85) h);
+  --seed-800: oklch(from var(--seed) 0.33 calc(c * 0.6) h);
+  --seed-900: oklch(from var(--seed) 0.25 calc(c * 0.45) h);
+  --seed-950: oklch(from var(--seed) 0.19 calc(c * 0.35) h);
+}
+:root:where([data-tonal='on']:not([data-accent='neutral'])) {
+  --tone: 0.06;
+  --background: oklch(from var(--seed) 0.985 calc(c * var(--tone)) h);
+  --foreground: oklch(from var(--seed) 0.205 calc(c * var(--tone)) h);
+  --card: oklch(from var(--seed) 1 calc(c * var(--tone)) h);
+  --popover: oklch(from var(--seed) 1 calc(c * var(--tone)) h);
+  --primary: oklch(from var(--seed) 0.205 calc(c * var(--tone)) h);
+  --primary-foreground: oklch(from var(--seed) 0.985 calc(c * var(--tone)) h);
+  --secondary: oklch(from var(--seed) 0.97 calc(c * var(--tone)) h);
+  --secondary-foreground: oklch(from var(--seed) 0.371 calc(c * var(--tone)) h);
+  --muted: oklch(from var(--seed) 0.97 calc(c * var(--tone)) h);
+  --muted-foreground: oklch(from var(--seed) 0.556 calc(c * var(--tone)) h);
+  --accent: oklch(from var(--seed) 0.97 calc(c * var(--tone)) h);
+  --selected: oklch(from var(--seed) 1 calc(c * var(--tone)) h);
+  --destructive-foreground: oklch(
+    from var(--seed) 0.985 calc(c * var(--tone)) h
+  );
+  --success-foreground: oklch(from var(--seed) 0.985 calc(c * var(--tone)) h);
+  --warning-foreground: oklch(from var(--seed) 0.145 calc(c * var(--tone)) h);
+  --border: oklch(from var(--seed) 0.922 calc(c * var(--tone)) h);
+  --input: oklch(from var(--seed) 0.922 calc(c * var(--tone)) h);
+  --ring: oklch(from var(--seed) 0.708 calc(c * var(--tone)) h);
+  --sidebar: oklch(from var(--seed) 0.985 calc(c * var(--tone)) h);
+  --sidebar-primary: oklch(from var(--seed) 0.205 calc(c * var(--tone)) h);
+  --sidebar-primary-foreground: oklch(
+    from var(--seed) 0.985 calc(c * var(--tone)) h
+  );
+  --sidebar-accent: oklch(from var(--seed) 0.97 calc(c * var(--tone)) h);
+  --sidebar-border: oklch(from var(--seed) 0.922 calc(c * var(--tone)) h);
+  --sidebar-ring: oklch(from var(--seed) 0.708 calc(c * var(--tone)) h);
+}
+.dark:where([data-tonal='on']:not([data-accent='neutral'])) {
+  --background: oklch(from var(--seed) 0.145 calc(c * var(--tone)) h);
+  --foreground: oklch(from var(--seed) 0.922 calc(c * var(--tone)) h);
+  --card: oklch(from var(--seed) 0.205 calc(c * var(--tone)) h);
+  --popover: oklch(from var(--seed) 0.269 calc(c * var(--tone)) h);
+  --primary: oklch(from var(--seed) 0.97 calc(c * var(--tone)) h);
+  --primary-foreground: oklch(from var(--seed) 0.205 calc(c * var(--tone)) h);
+  --secondary: oklch(from var(--seed) 0.269 calc(c * var(--tone)) h);
+  --secondary-foreground: oklch(from var(--seed) 0.87 calc(c * var(--tone)) h);
+  --muted: oklch(from var(--seed) 0.269 calc(c * var(--tone)) h);
+  --muted-foreground: oklch(from var(--seed) 0.708 calc(c * var(--tone)) h);
+  --accent: oklch(from var(--seed) 0.269 calc(c * var(--tone)) h);
+  --selected: oklch(from var(--seed) 0.371 calc(c * var(--tone)) h);
+  --destructive-foreground: oklch(
+    from var(--seed) 0.145 calc(c * var(--tone)) h
+  );
+  --success-foreground: oklch(from var(--seed) 0.145 calc(c * var(--tone)) h);
+  --warning-foreground: oklch(from var(--seed) 0.145 calc(c * var(--tone)) h);
+  --border: oklch(1 0 0 / 0.1);
+  --input: oklch(1 0 0 / 0.15);
+  --ring: oklch(from var(--seed) 0.556 calc(c * var(--tone)) h);
+  --sidebar: oklch(from var(--seed) 0.205 calc(c * var(--tone)) h);
+  --sidebar-primary: oklch(from var(--seed) 0.97 calc(c * var(--tone)) h);
+  --sidebar-primary-foreground: oklch(
+    from var(--seed) 0.205 calc(c * var(--tone)) h
+  );
+  --sidebar-accent: oklch(from var(--seed) 0.269 calc(c * var(--tone)) h);
+  --sidebar-border: oklch(1 0 0 / 0.1);
+  --sidebar-ring: oklch(from var(--seed) 0.556 calc(c * var(--tone)) h);
+}
+
+/*
+ * ─── Appearance ───────────────────────────────────────
+ * Three optional settings on <html>, all made by remapping semantic tokens
+ * (primitives never change). Without the attributes nothing changes.
+ *
+ *   data-accent        neutral (default) · violet · blue · teal · green ·
+ *                      orange · rose · red · custom (set --seed yourself)
+ *   data-translucency  solid · subtle (default) · immersive
+ *   data-tonal="on"    neutrals take the accent hue at low chroma
+ *
+ * --seed-50…950 is the scale of the chosen colour. The accent moves primary
+ * (600 light, 500 dark) and what follows it: ring, the checked switch and the
+ * sidebar primary. Its text is black or white, whichever reads on it.
+ */
+:root[data-accent]:not([data-accent='neutral']) {
+  --primary: var(--seed-600);
+  --primary-foreground: oklch(
+    from var(--primary) clamp(0, (0.59 - l) * 1000, 1) 0 0
+  );
+  --ring: var(--primary);
+  --switch-checked: var(--primary);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-ring: var(--primary);
+}
+
+.dark[data-accent]:not([data-accent='neutral']) {
+  --primary: var(--seed-500);
+}
+
+:root[data-translucency='solid'] {
+  --surface-opacity: 100%;
+  --surface-backdrop: none;
+}
+
+/* Immersive: the page takes the scale, everything on it turns translucent. */
+:root[data-translucency='immersive'] {
+  --background: var(--seed-100);
+  --card: var(--color-white-a60);
+  --surface-opacity: 80%;
+  --secondary: var(--color-black-a5);
+  --muted: var(--color-black-a5);
+  --accent: var(--color-black-a8);
+  --border: var(--color-black-a10);
+  --input: var(--color-black-a10);
+  --selected: var(--color-gray-0);
+}
+
+.dark[data-translucency='immersive'] {
+  --background: var(--seed-900);
+  --card: var(--color-white-a5);
+  --popover: var(--seed-950);
+  --surface-opacity: 70%;
+  --secondary: var(--color-white-a8);
+  --muted: var(--color-white-a8);
+  --accent: var(--color-white-a10);
+  --border: var(--color-white-a10);
+  --input: var(--color-white-a15);
+  --selected: var(--color-white-a15);
+}
+
+:root[data-translucency='immersive'] body {
+  background-image:
+    radial-gradient(60% 50% at 15% 10%, var(--seed-200), transparent 70%),
+    radial-gradient(
+      50% 60% at 90% 80%,
+      oklch(from var(--seed-200) l c calc(h + 60)),
+      transparent 70%
+    );
+  background-attachment: fixed;
+}
+
+.dark[data-translucency='immersive'] body {
+  background-image:
+    radial-gradient(60% 50% at 15% 10%, var(--seed-800), transparent 70%),
+    radial-gradient(
+      50% 60% at 90% 80%,
+      oklch(from var(--seed-800) l c calc(h + 60)),
+      transparent 70%
+    );
+}
+
+/* The OS asking for less transparency wins over every preset. */
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-translucency] {
+    --surface-opacity: 100%;
+    --surface-backdrop: none;
+  }
+  :root[data-translucency='immersive'] {
+    --card: var(--color-gray-0);
+  }
+  .dark[data-translucency='immersive'] {
+    --card: var(--color-gray-900);
+  }
 }
 
 /*

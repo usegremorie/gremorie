@@ -201,7 +201,7 @@ do painel.
 | Situação                                      | Superfície                              |
 | --------------------------------------------- | --------------------------------------- |
 | Padrão                                        | Fundo a 70% + blur de 24px              |
-| `<html data-menu="solid">`                    | Fundo sólido, sem blur (o opt-out)      |
+| `<html data-translucency="solid">`            | Fundo sólido, sem blur (o opt-out)      |
 | O sistema pede `prefers-reduced-transparency` | Fundo sólido, sem blur, automaticamente |
 
 ```css
@@ -210,6 +210,45 @@ do painel.
   --surface-opacity: 100%;
   --surface-backdrop: none;
 }
+```
+
+## Aparência
+
+Três ajustes opcionais no `<html>`, feitos só remapeando tokens semânticos.
+Sem os atributos nada muda: neutro, translucidez sutil, sem tom.
+
+| Atributo            | Valores                                                                                  |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| `data-accent`       | `neutral` (padrão), `violet`, `blue`, `teal`, `green`, `orange`, `rose`, `red`, `custom` |
+| `data-translucency` | `solid`, `subtle` (padrão), `immersive`                                                  |
+| `data-tonal`        | `on`                                                                                     |
+
+A cor escolhida vira `--seed` e a escala dela, `--seed-50` a `--seed-950` (a
+escala primitiva da própria cor, ou uma derivada de `--seed` com `custom`).
+
+| Ajuste   | Token                        | Claro                                | Escuro                               |
+| -------- | ---------------------------- | ------------------------------------ | ------------------------------------ |
+| Destaque | `--primary`                  | `seed-600`                           | `seed-500`                           |
+| Destaque | `--ring`, `--switch-checked` | `--primary`                          | `--primary`                          |
+| Imersiva | `--background`               | `seed-100`                           | `seed-900`                           |
+| Imersiva | `--card`                     | `white-a60`                          | `white-a5`                           |
+| Imersiva | `--popover`                  | igual, a 80%                         | `seed-950` a 70%                     |
+| Imersiva | `--secondary`, `--muted`     | `black-a5`                           | `white-a8`                           |
+| Imersiva | `--accent`, `--border`       | `black-a8`, `black-a10`              | `white-a10`                          |
+| Tonal    | semânticos neutros           | matiz da semente, mesma luminosidade | matiz da semente, mesma luminosidade |
+
+O texto sobre o destaque é preto ou branco, o que tiver contraste de 4.5:1 ou
+mais. Tonal não tem efeito com `neutral`. `prefers-reduced-transparency`
+continua deixando toda superfície sólida. `data-menu="solid"` continua
+funcionando como alias de `data-translucency="solid"`.
+
+```html
+<!-- Qualquer cor: defina a semente e use o destaque custom -->
+<html
+  data-accent="custom"
+  data-tonal="on"
+  style="--seed: oklch(0.62 0.19 250)"
+></html>
 ```
 
 ## Veja também

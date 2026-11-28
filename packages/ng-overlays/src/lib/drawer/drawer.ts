@@ -2,19 +2,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
   ViewEncapsulation,
 } from '@angular/core';
 import {
-  BrnSheet,
-  BrnSheetClose,
-  BrnSheetDescription,
-  BrnSheetTitle,
-  BrnSheetTrigger,
-} from '@spartan-ng/brain/sheet';
+  BrnDrawer,
+  BrnDrawerClose,
+  BrnDrawerDescription,
+  BrnDrawerHandle,
+  BrnDrawerTitle,
+  BrnDrawerTrigger,
+} from '@spartan-ng/brain/drawer';
 import { cn } from '@gremorie/ng-core';
 
-type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
+export type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
 
 /**
  * Drawer — bottom-up sheet for mobile contexts. Mirrors React `Drawer` from
@@ -26,15 +28,16 @@ type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
  * Dialog or Sheet above.
  *
  * Anatomy: `gr-drawer` (root) → `gr-drawer-trigger` + a
- * `<ng-template brnSheetContent>` wrapping `gr-drawer-content` (which renders
+ * `<ng-template brnDrawerContent>` wrapping `gr-drawer-content` (which renders
  * the `mx-auto` drag-handle) → `gr-drawer-header` / `gr-drawer-footer` /
  * `gr-drawer-title` / `gr-drawer-description` / `gr-drawer-close`.
  *
- * Divergence vs. React: there is **no Angular `vaul`**. The Angular edition is
- * built on the spartan brain **Sheet** (`BrnSheet`), locked to the requested
- * `direction` via the brain `side` input. Native drag-to-dismiss / momentum
- * gestures from vaul are **not** reproduced. To preserve the React Tailwind
- * class strings verbatim, `gr-drawer-content` sets a
+ * Built on the spartan brain **Drawer** (`BrnDrawer`), a port of vaul: the
+ * whole panel carries `BrnDrawerHandle`, so dragging it toward its edge past
+ * 25% of its size, or flicking faster than 0.4px/ms, dismisses it; a shorter
+ * drag springs back. A tap does not start a drag (the gesture needs 10px on
+ * touch, 2px with a mouse). To preserve the React Tailwind class strings
+ * verbatim, `gr-drawer-content` sets a
  * `data-vaul-drawer-direction` attribute itself and applies the same
  * `data-[vaul-drawer-direction=...]` and `group/drawer-content` classes — so the
  * directional layout and the bottom-only drag-handle visual match React exactly.
@@ -44,8 +47,8 @@ type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
  * ```html
  * <gr-drawer direction="bottom">
  *   <button gr-drawer-trigger>Open</button>
- *   <ng-template brnSheetContent>
- *     <gr-drawer-content direction="bottom">
+ *   <ng-template brnDrawerContent>
+ *     <gr-drawer-content>
  *       <gr-drawer-header>
  *         <h2 gr-drawer-title>Title</h2>
  *         <p gr-drawer-description>Description</p>
@@ -59,7 +62,7 @@ type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
 @Component({
   selector: 'gr-drawer',
   standalone: true,
-  hostDirectives: [{ directive: BrnSheet, inputs: ['side'] }],
+  hostDirectives: [{ directive: BrnDrawer, inputs: ['direction'] }],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
@@ -69,12 +72,12 @@ export class Drawer {}
 
 /**
  * DrawerTrigger — opens the drawer. Mirrors React `DrawerTrigger`. Renders a
- * `<button brnSheetTrigger>` that resolves the ancestor `BrnSheet` via DI.
+ * `<button brnDrawerTrigger>` that resolves the ancestor `BrnDrawer` via DI.
  */
 @Component({
   selector: 'gr-drawer-trigger, button[gr-drawer-trigger]',
   standalone: true,
-  hostDirectives: [BrnSheetTrigger],
+  hostDirectives: [BrnDrawerTrigger],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
@@ -84,13 +87,14 @@ export class DrawerTrigger {}
 
 /**
  * DrawerContent — the styled panel + drag handle. Mirrors React
- * `DrawerContent`. Place inside `<ng-template brnSheetContent>`. Renders the
+ * `DrawerContent`. Place inside `<ng-template brnDrawerContent>`. Renders the
  * `mx-auto` handle that is only visible for the `bottom` direction (matching
  * React's `group-data-[vaul-drawer-direction=bottom]` rule).
  */
 @Component({
   selector: 'gr-drawer-content',
   standalone: true,
+  hostDirectives: [BrnDrawerHandle],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -101,14 +105,21 @@ export class DrawerTrigger {}
   `,
   host: {
     'data-slot': 'drawer-content',
-    '[attr.data-vaul-drawer-direction]': 'direction()',
+    '[attr.data-vaul-drawer-direction]': 'resolvedDirection()',
     '[class]': 'hostClass()',
   },
 })
 export class DrawerContent {
   readonly class = input<string>();
-  /** Edge the drawer slides from. Mirrors vaul `direction` (default `bottom`). */
-  readonly direction = input<DrawerDirection>('bottom');
+  /**
+   * Edge the drawer slides from. Defaults to the `direction` of the enclosing
+   * `gr-drawer`, as React reads it from `Drawer`; set it only to override.
+   */
+  readonly direction = input<DrawerDirection>();
+  private readonly drawer = inject(BrnDrawer, { optional: true });
+  protected readonly resolvedDirection = computed<DrawerDirection>(
+    () => this.direction() ?? this.drawer?.directionState() ?? 'bottom',
+  );
   protected readonly hostClass = computed(() =>
     cn(
       'group/drawer-content fixed z-50 flex h-auto flex-col bg-background',
@@ -166,7 +177,7 @@ export class DrawerFooter {
 @Component({
   selector: 'gr-drawer-title, [gr-drawer-title]',
   standalone: true,
-  hostDirectives: [BrnSheetTitle],
+  hostDirectives: [BrnDrawerTitle],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
@@ -186,7 +197,7 @@ export class DrawerTitle {
 @Component({
   selector: 'gr-drawer-description, [gr-drawer-description]',
   standalone: true,
-  hostDirectives: [BrnSheetDescription],
+  hostDirectives: [BrnDrawerDescription],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
@@ -204,12 +215,12 @@ export class DrawerDescription {
 
 /**
  * DrawerClose — dismisses the drawer. Mirrors React `DrawerClose`. Renders a
- * `<button brnSheetClose>` for consumer-placed close actions.
+ * `<button brnDrawerClose>` for consumer-placed close actions.
  */
 @Component({
   selector: 'gr-drawer-close, button[gr-drawer-close]',
   standalone: true,
-  hostDirectives: [BrnSheetClose],
+  hostDirectives: [BrnDrawerClose],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,

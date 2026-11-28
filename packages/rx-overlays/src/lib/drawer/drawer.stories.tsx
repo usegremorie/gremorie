@@ -10,6 +10,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from './drawer';
+import { Popover, PopoverContent, PopoverTrigger } from '../popover';
+import { useIsMobile } from '../use-is-mobile';
 import { Button } from '@gremorie/rx-forms';
 
 /**
@@ -179,3 +181,48 @@ export const FromRight: Story = {
     </Drawer>
   ),
 };
+
+/**
+ * Responsive — the same menu as a Popover from `md` up and a bottom Drawer
+ * below it. `useIsMobile()` (768px by default) picks the overlay; the trigger
+ * and the body stay the same.
+ */
+export const Responsive: Story = {
+  render: () => <ResponsiveMenu />,
+};
+
+function ResponsiveMenu() {
+  const isMobile = useIsMobile();
+  const trigger = <Button variant="outline">Text size</Button>;
+  const options = (
+    <div className="grid gap-1 p-1">
+      {['Small', 'Medium', 'Large'].map((size) => (
+        <Button className="justify-start" key={size} variant="ghost">
+          {size}
+        </Button>
+      ))}
+    </div>
+  );
+  if (isMobile) {
+    return (
+      <Drawer>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Text size</DrawerTitle>
+            <DrawerDescription>Applies to every page.</DrawerDescription>
+          </DrawerHeader>
+          <div className="px-4 pb-6">{options}</div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+  return (
+    <Popover>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverContent align="start" className="w-56 p-1">
+        {options}
+      </PopoverContent>
+    </Popover>
+  );
+}

@@ -28,5 +28,90 @@
     "file": "theme.css",
     "rule": ":is(.dark)",
     "reason": "Dark-mode value of --hover-shift (derived hover colours lighten on dark)."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='violet']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='blue']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='teal']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='green']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='orange']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='rose']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='red']",
+    "reason": "Appearance: the seed scale (--seed-50…950) on this accent's primitive scale."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent='custom']",
+    "reason": "Appearance: the seed scale derived from a consumer --seed."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-accent]:not([data-accent='neutral'])",
+    "reason": "Appearance: the accent moves primary (seed 600) and what follows it."
+  },
+  {
+    "file": "theme.css",
+    "rule": ".dark[data-accent]:not([data-accent='neutral'])",
+    "reason": "Appearance: dark primary on seed 500."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-translucency='solid']",
+    "reason": "Appearance: opaque floating surfaces, no blur."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-translucency='immersive']",
+    "reason": "Appearance: page on the seed scale, translucent surfaces over it."
+  },
+  {
+    "file": "theme.css",
+    "rule": ".dark[data-translucency='immersive']",
+    "reason": "Appearance: immersive dark values."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root[data-translucency='immersive'] body",
+    "reason": "Appearance: soft gradient of the seed on the immersive page."
+  },
+  {
+    "file": "theme.css",
+    "rule": ".dark[data-translucency='immersive'] body",
+    "reason": "Appearance: immersive page gradient in dark."
+  },
+  {
+    "file": "theme.css",
+    "rule": ":root:where([data-tonal='on']:not([data-accent='neutral']))",
+    "reason": "Appearance: neutrals tinted with the seed hue (tonal)."
+  },
+  {
+    "file": "theme.css",
+    "rule": ".dark:where([data-tonal='on']:not([data-accent='neutral']))",
+    "reason": "Appearance: tonal neutrals in dark."
   }
 ]
