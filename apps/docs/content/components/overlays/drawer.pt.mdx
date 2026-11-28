@@ -5,6 +5,7 @@ description: 'Sheet ciente de direção (top, bottom, left, right) construído s
 
 import { DrawerPreview } from '@/components/preview/overlays/drawer';
 import { DrawerDirectionsPreview } from '@/components/preview/overlays/drawer-directions';
+import { DrawerResponsivePreview } from '@/components/preview/overlays/drawer-responsive';
 
 ## Visão geral
 
@@ -170,6 +171,24 @@ Defina a prop `direction` no `Drawer` para deslizar o painel a partir de qualque
 <ComponentPreview name="overlays/drawer-directions">
   <DrawerDirectionsPreview />
 </ComponentPreview>
+
+### Responsivo
+
+Um menu que abre como popover no desktop deve abrir como drawer de baixo no celular. `useIsMobile()` (React) e `injectIsMobile()` (Angular) leem uma media query, 768px por padrão, então o gatilho e o conteúdo são os mesmos e só a camada muda.
+
+<ComponentPreview name="overlays/drawer-responsive">
+  <DrawerResponsivePreview />
+</ComponentPreview>
+
+```tsx
+const isMobile = useIsMobile();
+return isMobile ? <Drawer>…</Drawer> : <Popover>…</Popover>;
+```
+
+```ts
+protected readonly isMobile = injectIsMobile(); // Signal<boolean>
+```
+
 
 ### Bottom drawer com formulário
 

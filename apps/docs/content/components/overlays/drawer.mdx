@@ -5,6 +5,7 @@ description: 'Direction-aware sheet (top, bottom, left, right) built on vaul wit
 
 import { DrawerPreview } from '@/components/preview/overlays/drawer';
 import { DrawerDirectionsPreview } from '@/components/preview/overlays/drawer-directions';
+import { DrawerResponsivePreview } from '@/components/preview/overlays/drawer-responsive';
 
 ## Overview
 
@@ -170,6 +171,24 @@ Set the `direction` prop on `Drawer` to slide the panel in from any edge (`top`,
 <ComponentPreview name="overlays/drawer-directions">
   <DrawerDirectionsPreview />
 </ComponentPreview>
+
+### Responsive
+
+A menu that opens as a popover on desktop should open as a bottom drawer on a phone. `useIsMobile()` (React) and `injectIsMobile()` (Angular) read a media query, 768px by default, so the trigger and the body stay the same and only the overlay changes.
+
+<ComponentPreview name="overlays/drawer-responsive">
+  <DrawerResponsivePreview />
+</ComponentPreview>
+
+```tsx
+const isMobile = useIsMobile();
+return isMobile ? <Drawer>…</Drawer> : <Popover>…</Popover>;
+```
+
+```ts
+protected readonly isMobile = injectIsMobile(); // Signal<boolean>
+```
+
 
 ### Bottom drawer with form
 
