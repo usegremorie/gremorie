@@ -303,6 +303,32 @@ describe('ColorPicker (Angular)', () => {
     expect(fixture.componentInstance.value()).toBe('oklch(0.7 0.1 200)');
   });
 
+  it('paints the area in the colour\'s hue', () => {
+    let data: Uint8ClampedArray | undefined;
+    HTMLCanvasElement.prototype.getContext = (() => ({
+      createImageData: (w: number, h: number) => ({
+        data: new Uint8ClampedArray(w * h * 4),
+        width: w,
+        height: h,
+      }),
+      putImageData: (img: { data: Uint8ClampedArray }) => {
+        data = img.data;
+      },
+    })) as unknown as HTMLCanvasElement['getContext'];
+    const fixture = render();
+    fixture.componentInstance.value.set('oklch(0.6 0.2 264)');
+    fixture.detectChanges();
+    TestBed.tick();
+    const i = (32 * 96 + 32) * 4;
+    expect(data![i + 2]).toBeGreaterThan(data![i]);
+  });
+
+  it('keeps swatch triggers as tall as their swatch', () => {
+    const fixture = render();
+    const swatch = q(fixture.nativeElement, '[data-slot="color-picker-swatch-trigger"]');
+    expect(swatch.className).toContain('inline-flex');
+  });
+
   it('works as a form control', () => {
     TestBed.configureTestingModule({ imports: [FormHost] });
     const fixture = TestBed.createComponent(FormHost);

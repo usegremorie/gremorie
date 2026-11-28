@@ -101,7 +101,12 @@ export function channelGradient(
   const count = channel === 'hue' ? 7 : 2;
   const stops = Array.from({ length: count }, (_, i) => {
     const value = min + ((max - min) * i) / (count - 1);
-    const at = { ...color, [KEY[channel]]: value };
+    // The hue track shows the spectrum at a fixed, vivid tone, so it reads
+    // the same for any colour, a gray included.
+    const at =
+      channel === 'hue'
+        ? { l: 0.7, c: 0.15, h: value, alpha: 1 }
+        : { ...color, [KEY[channel]]: value };
     // The other channels show without alpha, so the track reads clearly.
     if (channel !== 'alpha') at.alpha = 1;
     return formatColor(at, 'oklch');

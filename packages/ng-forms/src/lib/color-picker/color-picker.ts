@@ -540,7 +540,8 @@ export class ColorPickerArea {
       const xChannel = this.xChannel();
       const yChannel = this.yChannel();
       const ctx = el.getContext('2d');
-      const base = parseColor(text);
+      // Hue survives the round-trip through text even at chroma 0.
+      const base = parseColor(text, untracked(() => this.root.color().h));
       if (ctx && base) {
         paintArea(ctx, base, { xChannel, yChannel, width: el.width, height: el.height });
       }
@@ -828,7 +829,7 @@ export class ColorPickerSwatchGroup {
 }
 
 const SWATCH_TRIGGER_CLASS =
-  'rounded-full outline-offset-2 transition-[outline-color] focus-visible:outline-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-pressed:outline-2 aria-pressed:outline-foreground';
+  'inline-flex shrink-0 rounded-full outline-offset-2 transition-[outline-color] focus-visible:outline-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-pressed:outline-2 aria-pressed:outline-foreground';
 
 @Component({
   selector: 'button[gr-color-picker-swatch-trigger]',
