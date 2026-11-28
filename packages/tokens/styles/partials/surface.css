@@ -11,7 +11,8 @@
  *   --surface-backdrop  the backdrop filter behind it (none = no blur)
  *
  * Solid, no blur: set --surface-opacity: 100% and --surface-backdrop: none,
- * or use the shortcut <html data-menu="solid">. Users who ask the OS to
+ * or use the shortcut <html data-translucency="solid"> (appearance.css;
+ * data-menu="solid" still works as an alias). Users who ask the OS to
  * reduce transparency get the solid surface automatically.
  *
  * Inside a popover surface, accent (item hover/highlight) and muted (tracks,

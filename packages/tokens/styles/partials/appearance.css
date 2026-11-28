@@ -1,0 +1,93 @@
+/*
+ * ─── Appearance ───────────────────────────────────────
+ * Three optional settings on <html>, all made by remapping semantic tokens
+ * (primitives never change). Without the attributes nothing changes.
+ *
+ *   data-accent        neutral (default) · violet · blue · teal · green ·
+ *                      orange · rose · red · custom (set --seed yourself)
+ *   data-translucency  solid · subtle (default) · immersive
+ *   data-tonal="on"    neutrals take the accent hue at low chroma
+ *
+ * --seed-50…950 is the scale of the chosen colour. The accent moves primary
+ * (600 light, 500 dark) and what follows it: ring, the checked switch and the
+ * sidebar primary. Its text is black or white, whichever reads on it.
+ */
+:root[data-accent]:not([data-accent='neutral']) {
+  --primary: var(--seed-600);
+  --primary-foreground: oklch(from var(--primary) clamp(0, (0.59 - l) * 1000, 1) 0 0);
+  --ring: var(--primary);
+  --switch-checked: var(--primary);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-ring: var(--primary);
+}
+
+.dark[data-accent]:not([data-accent='neutral']) {
+  --primary: var(--seed-500);
+}
+
+:root[data-translucency='solid'] {
+  --surface-opacity: 100%;
+  --surface-backdrop: none;
+}
+
+/* Immersive: the page takes the scale, everything on it turns translucent. */
+:root[data-translucency='immersive'] {
+  --background: var(--seed-100);
+  --card: var(--color-white-a60);
+  --surface-opacity: 80%;
+  --secondary: var(--color-black-a5);
+  --muted: var(--color-black-a5);
+  --accent: var(--color-black-a8);
+  --border: var(--color-black-a10);
+  --input: var(--color-black-a10);
+  --selected: var(--color-gray-0);
+}
+
+.dark[data-translucency='immersive'] {
+  --background: var(--seed-900);
+  --card: var(--color-white-a5);
+  --popover: var(--seed-950);
+  --surface-opacity: 70%;
+  --secondary: var(--color-white-a8);
+  --muted: var(--color-white-a8);
+  --accent: var(--color-white-a10);
+  --border: var(--color-white-a10);
+  --input: var(--color-white-a15);
+  --selected: var(--color-white-a15);
+}
+
+:root[data-translucency='immersive'] body {
+  background-image:
+    radial-gradient(60% 50% at 15% 10%, var(--seed-200), transparent 70%),
+    radial-gradient(
+      50% 60% at 90% 80%,
+      oklch(from var(--seed-200) l c calc(h + 60)),
+      transparent 70%
+    );
+  background-attachment: fixed;
+}
+
+.dark[data-translucency='immersive'] body {
+  background-image:
+    radial-gradient(60% 50% at 15% 10%, var(--seed-800), transparent 70%),
+    radial-gradient(
+      50% 60% at 90% 80%,
+      oklch(from var(--seed-800) l c calc(h + 60)),
+      transparent 70%
+    );
+}
+
+/* The OS asking for less transparency wins over every preset. */
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-translucency] {
+    --surface-opacity: 100%;
+    --surface-backdrop: none;
+  }
+  :root[data-translucency='immersive'] {
+    --card: var(--color-gray-0);
+  }
+  .dark[data-translucency='immersive'] {
+    --card: var(--color-gray-900);
+  }
+}

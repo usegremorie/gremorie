@@ -22,6 +22,7 @@ import {
   type NamedTheme,
 } from './model.ts';
 import { formatCss } from './prettier.ts';
+import { appearanceRules } from './appearance.ts';
 import { blockOf, runTheme, type Run } from './run.ts';
 import { loadSource, validateSource, type TokenSource } from './source.ts';
 
@@ -32,6 +33,7 @@ export const PARTIALS = [
   'wiring',
   'surface',
   'state',
+  'appearance',
   'base',
 ] as const;
 
@@ -85,6 +87,8 @@ export async function buildCss(
       partial('wiring'),
       partial('surface'),
       partial('state'),
+      appearanceRules(source),
+      partial('appearance'),
       partial('base'),
     ].join('\n\n') + '\n',
   );
