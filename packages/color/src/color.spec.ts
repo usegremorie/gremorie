@@ -35,6 +35,13 @@ describe('parseColor', () => {
     expect(parseColor('rebeccapurple')).not.toBeNull();
   });
 
+  it('reads lab, lch, hwb and display-p3, as browsers print computed colours', () => {
+    close(parseColor('lab(70.5521% -66.5147 45.8073)')!.h, 150, -1);
+    expect(parseColor('lch(50% 60 270)')).not.toBeNull();
+    expect(parseColor('hwb(120 10% 20%)')).not.toBeNull();
+    expect(parseColor('color(display-p3 0.2 0.6 0.3)')).not.toBeNull();
+  });
+
   it('returns null for anything that is not a colour', () => {
     expect(parseColor('nope')).toBeNull();
     expect(parseColor('')).toBeNull();

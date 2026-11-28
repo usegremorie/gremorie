@@ -4,7 +4,11 @@ import {
   formatHex8,
   inGamut,
   modeHsl,
+  modeHwb,
+  modeLab,
+  modeLch,
   modeLrgb,
+  modeP3,
   modeOklab,
   modeOklch,
   modeRgb,
@@ -18,6 +22,11 @@ import {
 // Register only the modes the picker needs, so bundles stay small.
 registerMode(modeRgb);
 registerMode(modeHsl);
+// Browsers print computed colours in these spaces, so the picker reads them.
+registerMode(modeHwb);
+registerMode(modeLab);
+registerMode(modeLch);
+registerMode(modeP3);
 registerMode(modeLrgb);
 registerMode(modeOklab);
 registerMode(modeOklch);
