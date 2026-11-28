@@ -3,7 +3,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { Component } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { BrnPopoverContent } from '@spartan-ng/brain/popover';
-import { BrnSheetContent } from '@spartan-ng/brain/sheet';
+import { BrnDrawerContent } from '@spartan-ng/brain/drawer';
 
 import { injectIsMobile } from '../is-mobile';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover';
@@ -22,11 +22,9 @@ import {
 /**
  * Drawer — bottom-up sheet for mobile contexts. Mirrors React `Drawer`.
  *
- * Divergence: there is no Angular `vaul`. The Angular edition is built on the
- * spartan brain `BrnSheet`, locked to the requested `direction` via the brain
- * `side` input. Native drag-to-dismiss gestures from vaul are not reproduced,
- * but the directional layout and bottom-only drag-handle visual match React.
- * Pass the same `direction` to `<gr-drawer>` (`side`) and `<gr-drawer-content>`.
+ * Built on the spartan brain `BrnDrawer` (a port of vaul): drag the panel
+ * toward its edge to dismiss it, as in React. Set `direction` on `<gr-drawer>`;
+ * `<gr-drawer-content>` reads it from there.
  */
 const meta: Meta<Drawer> = {
   title: 'Interaction/Overlays/Drawer',
@@ -44,7 +42,7 @@ const meta: Meta<Drawer> = {
         DrawerTitle,
         DrawerDescription,
         DrawerClose,
-        BrnSheetContent,
+        BrnDrawerContent,
       ],
     }),
   ],
@@ -57,12 +55,12 @@ type Story = StoryObj<Drawer>;
 export const Workbench: Story = {
   render: () => ({
     template: `
-      <gr-drawer side="bottom">
+      <gr-drawer direction="bottom">
         <button gr-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open drawer
         </button>
-        <ng-template brnSheetContent>
-          <gr-drawer-content direction="bottom">
+        <ng-template brnDrawerContent>
+          <gr-drawer-content>
             <gr-drawer-header>
               <h2 gr-drawer-title>Move goal</h2>
               <p gr-drawer-description>Set your daily activity goal.</p>
@@ -87,12 +85,12 @@ export const Workbench: Story = {
 export const Right: Story = {
   render: () => ({
     template: `
-      <gr-drawer side="right">
+      <gr-drawer direction="right">
         <button gr-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">
           Open from right
         </button>
-        <ng-template brnSheetContent>
-          <gr-drawer-content direction="right">
+        <ng-template brnDrawerContent>
+          <gr-drawer-content>
             <gr-drawer-header>
               <h2 gr-drawer-title>Details</h2>
               <p gr-drawer-description>Side-anchored drawer panel.</p>
@@ -119,7 +117,7 @@ export const Right: Story = {
     DrawerHeader,
     DrawerTitle,
     DrawerDescription,
-    BrnSheetContent,
+    BrnDrawerContent,
     Popover,
     PopoverTrigger,
     PopoverContent,
@@ -135,10 +133,10 @@ export const Right: Story = {
       </div>
     </ng-template>
     @if (isMobile()) {
-      <gr-drawer side="bottom">
+      <gr-drawer direction="bottom">
         <button gr-drawer-trigger class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent">Text size</button>
-        <ng-template brnSheetContent>
-          <gr-drawer-content direction="bottom">
+        <ng-template brnDrawerContent>
+          <gr-drawer-content>
             <gr-drawer-header>
               <h2 gr-drawer-title>Text size</h2>
               <p gr-drawer-description>Applies to every page.</p>
