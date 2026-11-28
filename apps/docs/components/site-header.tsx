@@ -43,9 +43,10 @@ import { GremorieSymbol } from '@/components/gremorie-symbol';
  *   ├─ nav                      centre: icon + label, 14px / 500 in every state
  *   └─ actions                  right: Fumadocs' search field, GitHub and
  *                               the appearance controls (accent, translucency,
- *                               tonal, theme) as DS ghost icon buttons; below
- *                               md the search is an icon and the nav moves
- *                               into a bottom drawer here
+ *                               tonal, theme) as DS ghost icon buttons; the
+ *                               search is a field from 1440px and an icon
+ *                               below; below lg the nav moves into a bottom
+ *                               drawer here
  *
  * At the top of the page the bar has no surface and no border. Once the page
  * scrolls it gets the bottom border and the DS translucent treatment (60% of
@@ -116,7 +117,7 @@ export function SiteHeader({ lang }: { lang: string }) {
 
           <nav
             aria-label="Main"
-            className="-translate-x-1/2 absolute left-1/2 flex items-center gap-1 max-md:hidden"
+            className="-translate-x-1/2 absolute left-1/2 flex items-center gap-1 max-lg:hidden"
             data-slot="site-header-nav"
           >
             {links.map(({ text, url, icon: Icon }) => (
@@ -137,13 +138,13 @@ export function SiteHeader({ lang }: { lang: string }) {
             data-slot="site-header-actions"
           >
             {/* Search is Fumadocs' own control, the same as on the docs
-                pages: the search field (with its shortcut) from md up, the
-                icon trigger below it. */}
+                pages: the search field (with its shortcut) from 1440px, where
+                it fits beside the centred nav; the icon trigger below it. */}
             <FullSearchTrigger
-              className="mr-2 w-56 rounded-full ps-2.5 max-md:hidden"
+              className="mr-2 w-56 rounded-full ps-2.5 max-[1440px]:hidden"
               hideIfDisabled
             />
-            <SearchTrigger className="p-2 md:hidden" hideIfDisabled />
+            <SearchTrigger className="p-2 min-[1440px]:hidden" hideIfDisabled />
             <IconAction label="GitHub">
               <Button asChild size="icon-sm" variant="ghost">
                 <a
@@ -162,7 +163,7 @@ export function SiteHeader({ lang }: { lang: string }) {
                 <DrawerTrigger asChild>
                   <Button
                     aria-label={copyFor(lang).menu}
-                    className="md:hidden"
+                    className="lg:hidden"
                     size="icon-sm"
                     variant="ghost"
                   >
