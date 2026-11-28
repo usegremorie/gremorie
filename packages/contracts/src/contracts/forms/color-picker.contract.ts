@@ -115,9 +115,8 @@ export const colorPicker = defineContract({
     {
       name: 'defaultSavedColors',
       type: 'string[]',
-      default: [],
       adapts: { ng: 'model: savedColors' },
-      desc: 'Initial saved colours (uncontrolled).',
+      desc: 'Initial saved colours (uncontrolled). Defaults to none.',
     },
     {
       name: 'onSavedColorsChange',

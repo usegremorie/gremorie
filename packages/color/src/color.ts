@@ -4,18 +4,21 @@ import {
   formatHex8,
   inGamut,
   modeHsl,
+  modeLrgb,
   modeOklab,
   modeOklch,
   modeRgb,
   parse,
   toGamut as culoriToGamut,
   useMode as registerMode,
+  wcagContrast,
   type Oklch,
 } from 'culori/fn';
 
 // Register only the modes the picker needs, so bundles stay small.
 registerMode(modeRgb);
 registerMode(modeHsl);
+registerMode(modeLrgb);
 registerMode(modeOklab);
 registerMode(modeOklch);
 
@@ -77,6 +80,22 @@ export function isInGamut(color: Color): boolean {
   return [r, g, b].every((v) => v >= -eps && v <= 1 + eps);
 }
 
+/**
+ * The most chroma sRGB can show at this lightness and hue (to 1e-4), for
+ * keeping a colour displayable while its hue or lightness change.
+ */
+export function maxChroma(l: number, h: number): number {
+  let lo = 0;
+  let hi = 0.4;
+  if (isInGamut({ l, c: hi, h, alpha: 1 })) return hi;
+  while (hi - lo > 1e-4) {
+    const mid = (lo + hi) / 2;
+    if (isInGamut({ l, c: mid, h, alpha: 1 })) lo = mid;
+    else hi = mid;
+  }
+  return lo;
+}
+
 /** The closest sRGB colour, keeping lightness and hue as far as possible. */
 export function toGamut(color: Color): Color {
   if (isInGamut(color)) return color;
@@ -117,6 +136,12 @@ export function formatColor(color: Color, format: ColorFormat): string {
   const s = Math.round((hsl.s ?? 0) * 100);
   const l = Math.round(hsl.l * 100);
   return `hsl(${h} ${s}% ${l}%${alphaSuffix(color.alpha)})`;
+}
+
+/** WCAG 2 contrast ratio between two colours, as shown on an sRGB screen. */
+export function contrastRatio(a: Color, b: Color): number {
+  const srgb = (c: Color) => ({ ...mapToSrgb(asCulori(c)), alpha: 1 });
+  return wcagContrast(srgb(a), srgb(b));
 }
 
 /** CSS for painting the colour (the OKLCH string). */

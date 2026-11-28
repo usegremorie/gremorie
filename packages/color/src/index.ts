@@ -1,6 +1,8 @@
 export {
   formatColor,
   isInGamut,
+  maxChroma,
+  contrastRatio,
   parseColor,
   sameColor,
   toCss,

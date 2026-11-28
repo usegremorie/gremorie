@@ -39,6 +39,9 @@ describe('AppearanceControls', () => {
     for (const a of ['data-accent', 'data-translucency', 'data-tonal']) {
       document.documentElement.removeAttribute(a);
     }
+    document.documentElement.style.removeProperty('--seed');
+    HTMLCanvasElement.prototype.getContext = (() =>
+      null) as unknown as HTMLCanvasElement['getContext'];
     host = document.createElement('div');
     document.body.append(host);
     root = createRoot(host);
@@ -85,6 +88,42 @@ describe('AppearanceControls', () => {
     expect(violet.getAttribute('aria-checked')).toBe('true');
     const saved = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as { accent: string };
     expect(saved.accent).toBe('violet');
+  });
+
+  it('picks a custom colour with the hue and chroma sliders', () => {
+    render();
+    act(() => button('Accent color')!.click());
+    const hue = document.querySelector<HTMLElement>('[role="slider"][aria-label="Hue"]')!;
+    expect(document.querySelector('[role="slider"][aria-label="Intensity"]')).not.toBeNull();
+    act(() => {
+      hue.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    });
+    const root = document.documentElement;
+    expect(root.getAttribute('data-accent')).toBe('custom');
+    expect(root.style.getPropertyValue('--seed')).toMatch(/^oklch\(0\.64 [\d.]+ 359\)$/);
+    const saved = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as {
+      accent: string;
+      seed: string;
+    };
+    expect(saved.accent).toBe('custom');
+    expect(saved.seed).toBe(root.style.getPropertyValue('--seed'));
+  });
+
+  it('keeps saved colours and goes back to a DS colour', () => {
+    render();
+    act(() => button('Accent color')!.click());
+    const hue = document.querySelector<HTMLElement>('[role="slider"][aria-label="Hue"]')!;
+    act(() => {
+      hue.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    });
+    act(() => button('Save color')!.click());
+    const stored = JSON.parse(localStorage.getItem(APPEARANCE_KEY)!) as { saved: string[] };
+    expect(stored.saved).toHaveLength(1);
+    act(() =>
+      document.querySelector<HTMLButtonElement>('[role="radio"][aria-label="Teal"]')!.click(),
+    );
+    expect(document.documentElement.getAttribute('data-accent')).toBe('teal');
+    expect(document.documentElement.style.getPropertyValue('--seed')).toBe('');
   });
 
   it('shows an illustration for each translucency option', () => {

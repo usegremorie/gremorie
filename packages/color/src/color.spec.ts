@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   formatColor,
+  maxChroma,
+  contrastRatio,
   isInGamut,
   parseColor,
   toCss,
@@ -93,5 +95,25 @@ describe('gamut', () => {
     expect(formatColor(wild, 'hex')).toMatch(/^#[0-9a-f]{6}$/);
     expect(formatColor(wild, 'hex')).toBe(formatColor(toGamut(wild), 'hex'));
     expect(formatColor(wild, 'oklch')).toBe('oklch(0.7 0.4 150)');
+  });
+});
+
+describe('maxChroma', () => {
+  it('finds the most chroma sRGB can show at a lightness and hue', () => {
+    const c = maxChroma(0.56, 145);
+    expect(isInGamut({ l: 0.56, c, h: 145, alpha: 1 })).toBe(true);
+    expect(isInGamut({ l: 0.56, c: c + 0.005, h: 145, alpha: 1 })).toBe(false);
+    expect(maxChroma(1, 145)).toBeLessThan(0.001);
+    expect(maxChroma(0.6, 264)).toBeGreaterThan(maxChroma(0.6, 145));
+  });
+});
+
+describe('contrastRatio', () => {
+  it('measures WCAG contrast between two colours', () => {
+    const white = parseColor('#ffffff')!;
+    const black = parseColor('#000000')!;
+    expect(contrastRatio(white, black)).toBeCloseTo(21, 1);
+    expect(contrastRatio(white, white)).toBeCloseTo(1, 5);
+    expect(contrastRatio(parseColor('#767676')!, white)).toBeCloseTo(4.54, 2);
   });
 });
