@@ -1,0 +1,237 @@
+---
+title: Color Picker
+description: Escolha uma cor numa área e em faixas OKLCH, digite em qualquer formato CSS, use cores pré-definidas e guarde cores salvas. Em popover ou no lugar, com transparência.
+---
+
+import { ColorPickerPreview } from '@/components/preview/forms/color-picker';
+import { ColorPickerInlinePreview } from '@/components/preview/forms/color-picker-inline';
+import { ColorPickerAlphaPreview } from '@/components/preview/forms/color-picker-alpha';
+import { ColorPickerSavedPreview } from '@/components/preview/forms/color-picker-saved';
+
+## Visão geral
+
+`ColorPicker` é um conjunto de partes com um estado só: área 2D, faixas por canal, campo de texto, cores pré-definidas e cores salvas. Monte só as partes que precisar. Abre num popover a partir do `ColorPickerTrigger`, ou fica no lugar com `inline`.
+
+As cores ficam em **OKLCH** durante a edição, o mesmo espaço dos tokens. Um passo na área ou numa faixa muda a claridade percebida por igual, um cinza mantém a matiz quando a intensidade volta, e uma cor fora do sRGB fica como escolhida. `format` só muda como o valor é escrito: `hex`, `rgb` e `hsl` escrevem a cor mais próxima que uma tela sRGB mostra; `oklch` escreve o valor exato.
+
+Use quando a pessoa pode escolher **qualquer** cor. Para uma paleta curta e fixa, um `RadioGroup` de amostras é mais simples.
+
+## Preview
+
+<ComponentPreview name="forms/color-picker">
+  <ColorPickerPreview />
+</ComponentPreview>
+
+## Anatomia
+
+```text
+ColorPicker                       raiz, estado compartilhado
+├─ ColorPickerLabel
+├─ ColorPickerControl
+│  ├─ ColorPickerTrigger          abre o popover; mostra a cor atual
+│  └─ ColorPickerChannelInput     campo: css, hex ou um canal
+└─ ColorPickerContent             painel (popover, ou no lugar com inline)
+   ├─ ColorPickerArea             área 2D, intensidade × claridade por padrão
+   │  └─ ColorPickerAreaThumb
+   ├─ ColorPickerChannelSlider    matiz, alfa, claridade ou intensidade
+   ├─ ColorPickerFormatSelect     oklch, hex, rgb, hsl
+   ├─ ColorPickerEyeDropperTrigger  só onde o navegador suporta
+   ├─ ColorPickerSwatchGroup
+   │  └─ ColorPickerSwatchTrigger
+   │     └─ ColorPickerSwatch     com ColorPickerTransparencyGrid sob alfa
+   ├─ ColorPickerSavedColors
+   │  └─ ColorPickerSaveTrigger
+   └─ ColorPickerValueText
+```
+
+## Instalação
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-color-picker
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-color-picker
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-color-picker
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-color-picker
+```
+
+</Tab>
+</Tabs>
+
+O componente traz o `@gremorie/color`, a lógica de cor que as duas edições compartilham.
+
+## Uso
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerChannelInput,
+  ColorPickerChannelSlider,
+  ColorPickerContent,
+  ColorPickerControl,
+  ColorPickerTrigger,
+} from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <ColorPicker defaultValue="oklch(0.55 0.2 260)">
+      <ColorPickerControl>
+        <ColorPickerTrigger />
+        <ColorPickerChannelInput />
+      </ColorPickerControl>
+      <ColorPickerContent>
+        <ColorPickerArea />
+        <ColorPickerChannelSlider channel="hue" />
+        <ColorPickerChannelSlider channel="alpha" />
+      </ColorPickerContent>
+    </ColorPicker>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-color-picker
+```
+
+<AngularSetup />
+
+```ts
+import { Component, signal } from '@angular/core';
+import { BrnPopoverContent } from '@spartan-ng/brain/popover';
+import { ColorPickerImports } from '@gremorie/ng-forms';
+
+@Component({
+  selector: 'app-example',
+  imports: [...ColorPickerImports, BrnPopoverContent],
+  template: `
+    <gr-color-picker [(value)]="brand">
+      <gr-color-picker-control>
+        <button gr-color-picker-trigger></button>
+        <input gr-color-picker-channel-input />
+      </gr-color-picker-control>
+      <ng-template brnPopoverContent>
+        <gr-color-picker-content>
+          <gr-color-picker-area />
+          <gr-color-picker-channel-slider channel="hue" />
+          <gr-color-picker-channel-slider channel="alpha" />
+        </gr-color-picker-content>
+      </ng-template>
+    </gr-color-picker>
+  `,
+})
+export class Example {
+  brand = signal('oklch(0.55 0.2 260)');
+}
+```
+
+`value` é um model de duas vias com a string CSS, e o `gr-color-picker` também funciona com `formControl` e `ngModel`.
+
+</Tab>
+</Tabs>
+
+## API
+
+### `<ColorPicker>`
+
+| Prop                                    | Tipo                                                         | Padrão           | Descrição                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------------------------ |
+| `value`                                 | `string`                                                     | -                | Cor controlada, qualquer cor CSS. Angular: `[(value)]`.                                    |
+| `defaultValue`                          | `string`                                                     | `"oklch(0 0 0)"` | Cor inicial sem controle.                                                                  |
+| `onValueChange`                         | `(details: { value: Color; valueAsString: string }) => void` | -                | Toda mudança, também durante o arrasto.                                                    |
+| `onValueChangeEnd`                      | igual                                                        | -                | Mudanças confirmadas: arrasto solto, tecla, amostra ou campo. Angular: `(valueChangeEnd)`. |
+| `format` / `defaultFormat`              | `"oklch" \| "hex" \| "rgb" \| "hsl"`                         | `"oklch"`        | Como o valor e o campo são escritos. Angular: `[(format)]`.                                |
+| `onFormatChange`                        | `(format) => void`                                           | -                | O formato mudou.                                                                           |
+| `open` / `defaultOpen` / `onOpenChange` | `boolean`                                                    | `false`          | Estado do popover. Angular: `[(open)]`.                                                    |
+| `inline`                                | `boolean`                                                    | `false`          | Painel no lugar.                                                                           |
+| `closeOnSelect`                         | `boolean`                                                    | `false`          | Fecha o popover ao escolher uma amostra.                                                   |
+| `savedColors` / `defaultSavedColors`    | `string[]`                                                   | `[]`             | Cores salvas, a mais recente primeiro. Angular: `[(savedColors)]`.                         |
+| `onSavedColorsChange`                   | `(colors: string[]) => void`                                 | -                | Uma cor foi salva ou removida.                                                             |
+| `maxSavedColors`                        | `number`                                                     | `16`             | Máximo de cores salvas; a mais antiga sai primeiro.                                        |
+| `disabled`                              | `boolean`                                                    | `false`          | Desativa todas as partes.                                                                  |
+| `readOnly`                              | `boolean`                                                    | `false`          | Mostra o valor sem aceitar mudanças.                                                       |
+| `required`                              | `boolean`                                                    | `false`          | Marca o input oculto do formulário como obrigatório.                                       |
+| `invalid`                               | `boolean`                                                    | `false`          | Estilo de erro no trigger e no campo.                                                      |
+| `name`                                  | `string`                                                     | -                | Nome do campo: cria um input oculto com o valor.                                           |
+| `channelLabels`                         | `ChannelLabels`                                              | -                | Palavras do texto assistivo (`{ hue: "Matiz", degrees: "graus" }`).                        |
+
+### Partes
+
+| Parte                      | Props                                           | Notas                                                                                                                                                                         |
+| -------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ColorPickerArea`          | `xChannel = "chroma"`, `yChannel = "lightness"` | O canal y cresce para cima. Cores fora do sRGB aparecem esmaecidas.                                                                                                           |
+| `ColorPickerChannelSlider` | `channel` (obrigatório), `orientation`          | Alfa é desenhado sobre um xadrez.                                                                                                                                             |
+| `ColorPickerChannelInput`  | `channel = "css"`                               | `css` segue o `format`; `hex` é sempre hex; um canal mostra o número (percentual para claridade e alfa). Texto inválido fica até o blur, e então volta o último valor válido. |
+| `ColorPickerSwatchTrigger` | `value` (obrigatório)                           | `aria-pressed` quando bate com a cor atual.                                                                                                                                   |
+| `ColorPickerSwatch`        | `value`, `respectAlpha = true`                  | Amostra estática.                                                                                                                                                             |
+| `ColorPickerSavedColors`   | -                                               | Mostra as cores salvas; coloque o `ColorPickerSaveTrigger` dentro.                                                                                                            |
+| `ColorPickerValueText`     | `format`                                        | Escreve o valor, no formato do picker se não for definido.                                                                                                                    |
+
+## Composição
+
+1. **Escolha as partes.** Um campo de cor de marca precisa do trigger, do campo e de um painel com área e matiz. Um preenchimento com transparência acrescenta a faixa de alfa.
+2. **Use inline** em painéis de configuração e bottom sheets; use o popover ao lado de outros campos.
+3. **Guarde as cores salvas** onde o app guarda preferências: elas são controladas por `savedColors` / `onSavedColorsChange`.
+4. **Use `onValueChangeEnd`** para o que é caro (salvar, rede). `onValueChange` dispara a cada passo do arrasto.
+
+## Variações
+
+### Inline
+
+<ComponentPreview name="forms/color-picker-inline">
+  <ColorPickerInlinePreview />
+</ComponentPreview>
+
+### Com alfa
+
+A faixa de alfa e as amostras mostram a transparência sobre um xadrez; `rgb`, `hsl` e `hex` escrevem o alfa (`#rrggbbaa` no hex).
+
+<ComponentPreview name="forms/color-picker-alpha">
+  <ColorPickerAlphaPreview />
+</ComponentPreview>
+
+### Cores salvas e só faixas
+
+Sem área: faixas de matiz e intensidade, um campo e cores salvas. `Delete` numa cor salva a remove.
+
+<ComponentPreview name="forms/color-picker-saved">
+  <ColorPickerSavedPreview />
+</ComponentPreview>
+
+## Acessibilidade
+
+- **Papéis**: o thumb da área e o de cada faixa são `role="slider"` com `aria-valuetext` em palavras, como "Hue 200 degrees" ou "Chroma 0.1, Lightness 70%". Traduza as palavras com `channelLabels`.
+- **Teclado nas faixas**: setas movem um passo, `Shift` + setas dez, `PageUp` / `PageDown` dez, `Home` / `End` vão aos extremos. Em páginas da direita para a esquerda as setas laterais se invertem.
+- **Teclado na área**: esquerda e direita movem o canal x, cima e baixo o canal y, `PageUp` / `PageDown` pulam no y, `Home` / `End` vão aos extremos do x.
+- **Campo**: `Enter` aplica o texto, `Escape` descarta.
+- **Cores salvas**: cada uma é um botão com o valor como nome; `Delete` ou `Backspace` remove e o foco fica no grupo.
+- **Conta-gotas**: só aparece onde o navegador tem a API EyeDropper (Chromium no desktop hoje).
+- **Movimento**: o thumb não tem transição com `prefers-reduced-motion`.
+- **Drawers**: a área e as faixas têm `data-vaul-no-drag`, então arrastar uma cor dentro de um bottom sheet nunca o fecha.
+
+## Relacionados
+
+- [Slider](/components/selection/slider) - um valor numérico
+- [Theming](/tokens/theming) - a cor de destaque do site usa este picker

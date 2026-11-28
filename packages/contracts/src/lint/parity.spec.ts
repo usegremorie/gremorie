@@ -175,6 +175,16 @@ const SOURCE_MAP: Record<
       sym: 'WordTimeline',
     },
   },
+  'color-picker': {
+    rx: {
+      file: '../rx-forms/src/lib/color-picker/color-picker.tsx',
+      sym: 'ColorPickerProps',
+    },
+    ng: {
+      file: '../ng-forms/src/lib/color-picker/color-picker.ts',
+      sym: 'ColorPicker',
+    },
+  },
   'radial-chart': {
     rx: {
       file: '../rx-data/src/lib/radial-chart/radial-chart.tsx',

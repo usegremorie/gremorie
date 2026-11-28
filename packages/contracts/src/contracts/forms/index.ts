@@ -2,6 +2,7 @@ import { button } from './button.contract';
 import { buttonGroup } from './button-group.contract';
 import { calendar } from './calendar.contract';
 import { checkbox } from './checkbox.contract';
+import { colorPicker } from './color-picker.contract';
 import { datePicker } from './date-picker.contract';
 import { dropzone } from './dropzone.contract';
 import { field } from './field.contract';
@@ -37,6 +38,7 @@ export const FORMS_CONTRACTS = [
   calendar,
   datePicker,
   dropzone,
+  colorPicker,
   field,
   form,
 ];

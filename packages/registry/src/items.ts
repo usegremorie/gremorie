@@ -753,6 +753,28 @@ export const ITEMS: ItemConfig[] = [
     registryDependencies: ['ng-utils'],
   },
   {
+    name: 'ng-color-picker',
+    framework: 'ng',
+    title: 'Color Picker (Angular)',
+    description:
+      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a Spartan-ng brain popover or renders inline; works with formControl/ngModel. Logic shared with React through @gremorie/color. Mirrors React ColorPicker from @gremorie/rx-forms.',
+    categories: ['forms'],
+    packageRoot: 'packages/ng-forms',
+    sourceFiles: [
+      'src/lib/color-picker/color-picker.ts',
+      'src/lib/color-picker/index.ts',
+    ],
+    targetPrefix: 'src/app/gremorie/color-picker',
+    srcStrip: 'src/lib/color-picker/',
+    dependencies: [
+      '@angular/core',
+      '@angular/forms',
+      '@spartan-ng/brain',
+      '@gremorie/color',
+    ],
+    registryDependencies: ['ng-utils'],
+  },
+  {
     name: 'ng-date-picker',
     framework: 'ng',
     title: 'Date Picker (Angular)',
@@ -1903,6 +1925,20 @@ export const ITEMS: ItemConfig[] = [
     srcStrip: 'src/lib/sonner/',
     dependencies: ['sonner', 'lucide-react'],
     registryDependencies: [],
+  },
+  {
+    name: 'rx-color-picker',
+    framework: 'rx',
+    title: 'Color Picker (React)',
+    description:
+      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a popover or renders inline. Logic shared with Angular through @gremorie/color.',
+    categories: ['forms'],
+    packageRoot: 'packages/rx-forms',
+    sourceFiles: ['src/lib/color-picker/color-picker.tsx'],
+    targetPrefix: 'src/components/gremorie/forms/color-picker',
+    srcStrip: 'src/lib/color-picker/',
+    dependencies: ['@gremorie/color', 'lucide-react', 'radix-ui'],
+    registryDependencies: ['rx-utils', 'rx-button'],
   },
   {
     name: 'rx-date-picker',
