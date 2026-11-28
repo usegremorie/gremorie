@@ -1,6 +1,13 @@
 {
   "title": "Selection",
   "icon": "ListChecks",
-  "description": "Choice controls - checkbox, radio group, select, switch, slider.",
-  "pages": ["checkbox", "radio-group", "select", "switch", "slider"]
+  "description": "Choice controls - checkbox, radio group, select, switch, slider, color picker.",
+  "pages": [
+    "checkbox",
+    "radio-group",
+    "select",
+    "switch",
+    "slider",
+    "color-picker"
+  ]
 }

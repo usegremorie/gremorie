@@ -53,7 +53,7 @@ import { buttonVariants, cn } from '@gremorie/ng-core';
 export type { ChannelLabels, Color, ColorChannel, ColorFormat };
 
 /**
- * ColorPicker — pick a colour on an OKLCH area and channel sliders, type it in
+ * ColorPicker - pick a colour on an OKLCH area and channel sliders, type it in
  * any CSS format, choose from swatches and keep saved colours. Angular parity
  * port of React `ColorPicker` from `@gremorie/rx-forms`.
  *

@@ -1899,7 +1899,7 @@ export const ITEMS: ItemConfig[] = [
     framework: 'rx',
     title: 'Color Picker (React)',
     description:
-      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a Radix popover or renders inline. Logic shared with Angular through @gremorie/color.',
+      'Colour picker on an OKLCH area and channel sliders (hue, alpha, lightness, chroma), with a text field in oklch/hex/rgb/hsl, eye dropper, swatches and saved colours. Opens in a popover or renders inline. Logic shared with Angular through @gremorie/color.',
     categories: ['forms'],
     packageRoot: 'packages/rx-forms',
     sourceFiles: ['src/lib/color-picker/color-picker.tsx'],

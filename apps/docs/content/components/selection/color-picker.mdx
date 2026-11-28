@@ -1,0 +1,236 @@
+---
+title: Color Picker
+description: Pick a colour on an OKLCH area and channel sliders, type it in any CSS format, choose from swatches and keep saved colours. Popover or inline, with alpha.
+---
+
+import { ColorPickerPreview } from '@/components/preview/forms/color-picker';
+import { ColorPickerInlinePreview } from '@/components/preview/forms/color-picker-inline';
+import { ColorPickerAlphaPreview } from '@/components/preview/forms/color-picker-alpha';
+import { ColorPickerSavedPreview } from '@/components/preview/forms/color-picker-saved';
+
+## Overview
+
+`ColorPicker` is a set of parts sharing one state: a 2D area, channel sliders, a text field, swatches and saved colours. Compose only the parts you need. It opens in a popover from `ColorPickerTrigger`, or renders in place with `inline`.
+
+Colours stay in **OKLCH** while editing, the same space as the design tokens. A step on the area or a slider changes perceived lightness evenly, a gray keeps its hue when chroma comes back, and a wide-gamut choice is kept as chosen. `format` only changes how the value is printed: `hex`, `rgb` and `hsl` print the closest colour an sRGB screen can show; `oklch` prints the exact value.
+
+Use it when people may choose **any** colour. For a short fixed palette, a `RadioGroup` of swatches is simpler.
+
+## Preview
+
+<ComponentPreview name="forms/color-picker">
+  <ColorPickerPreview />
+</ComponentPreview>
+
+## Anatomy
+
+```text
+ColorPicker                       root, shared state
+├─ ColorPickerLabel
+├─ ColorPickerControl
+│  ├─ ColorPickerTrigger          opens the popover; shows the current colour
+│  └─ ColorPickerChannelInput     text field: css, hex or one channel
+└─ ColorPickerContent             panel (popover, or in place with inline)
+   ├─ ColorPickerArea             2D area, chroma × lightness by default
+   │  └─ ColorPickerAreaThumb
+   ├─ ColorPickerChannelSlider    hue, alpha, lightness or chroma
+   ├─ ColorPickerFormatSelect     oklch, hex, rgb, hsl
+   ├─ ColorPickerEyeDropperTrigger  only where the browser supports it
+   ├─ ColorPickerSwatchGroup
+   │  └─ ColorPickerSwatchTrigger
+   │     └─ ColorPickerSwatch     with ColorPickerTransparencyGrid under alpha
+   ├─ ColorPickerSavedColors
+   │  └─ ColorPickerSaveTrigger
+   └─ ColorPickerValueText
+```
+
+## Installation
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+
+```bash
+npx gremorie@latest add rx-color-picker
+```
+
+</Tab>
+  <Tab value="pnpm">
+
+```bash
+pnpm dlx gremorie@latest add rx-color-picker
+```
+
+</Tab>
+  <Tab value="yarn">
+
+```bash
+yarn dlx gremorie@latest add rx-color-picker
+```
+
+</Tab>
+  <Tab value="bun">
+
+```bash
+bunx --bun gremorie@latest add rx-color-picker
+```
+
+</Tab>
+</Tabs>
+
+The component brings `@gremorie/color`, the colour logic both editions share.
+
+## Usage
+
+<Tabs items={['React', 'Angular']}>
+<Tab value="React">
+```tsx
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerChannelInput,
+  ColorPickerChannelSlider,
+  ColorPickerContent,
+  ColorPickerControl,
+  ColorPickerTrigger,
+} from "@gremorie/rx-forms";
+
+export function Example() {
+  return (
+    <ColorPicker defaultValue="oklch(0.55 0.2 260)">
+      <ColorPickerControl>
+        <ColorPickerTrigger />
+        <ColorPickerChannelInput />
+      </ColorPickerControl>
+      <ColorPickerContent>
+        <ColorPickerArea />
+        <ColorPickerChannelSlider channel="hue" />
+        <ColorPickerChannelSlider channel="alpha" />
+      </ColorPickerContent>
+    </ColorPicker>
+  );
+}
+```
+</Tab>
+<Tab value="Angular">
+```bash
+npx gremorie@latest add ng-color-picker
+```
+
+<AngularSetup />
+
+```ts
+import { Component, signal } from '@angular/core';
+import { BrnPopoverContent } from '@spartan-ng/brain/popover';
+import { ColorPickerImports } from '@gremorie/ng-forms';
+
+@Component({
+  selector: 'app-example',
+  imports: [...ColorPickerImports, BrnPopoverContent],
+  template: `
+    <gr-color-picker [(value)]="brand">
+      <gr-color-picker-control>
+        <button gr-color-picker-trigger></button>
+        <input gr-color-picker-channel-input />
+      </gr-color-picker-control>
+      <ng-template brnPopoverContent>
+        <gr-color-picker-content>
+          <gr-color-picker-area />
+          <gr-color-picker-channel-slider channel="hue" />
+          <gr-color-picker-channel-slider channel="alpha" />
+        </gr-color-picker-content>
+      </ng-template>
+    </gr-color-picker>
+  `,
+})
+export class Example {
+  brand = signal('oklch(0.55 0.2 260)');
+}
+```
+
+`value` is a two-way model holding the CSS string, and `gr-color-picker` also works with `formControl` and `ngModel`.
+</Tab>
+</Tabs>
+
+## API
+
+### `<ColorPicker>`
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | - | Controlled colour, any CSS colour. Angular: `[(value)]`. |
+| `defaultValue` | `string` | `"oklch(0 0 0)"` | Initial colour when uncontrolled. |
+| `onValueChange` | `(details: { value: Color; valueAsString: string }) => void` | - | Every change, while dragging too. |
+| `onValueChangeEnd` | same | - | Committed changes: drag released, key, swatch or field. Angular: `(valueChangeEnd)`. |
+| `format` / `defaultFormat` | `"oklch" \| "hex" \| "rgb" \| "hsl"` | `"oklch"` | How the value and the field are printed. Angular: `[(format)]`. |
+| `onFormatChange` | `(format) => void` | - | Format changed. |
+| `open` / `defaultOpen` / `onOpenChange` | `boolean` | `false` | Popover state. Angular: `[(open)]`. |
+| `inline` | `boolean` | `false` | Render the panel in place. |
+| `closeOnSelect` | `boolean` | `false` | Close the popover when a swatch is picked. |
+| `savedColors` / `defaultSavedColors` | `string[]` | `[]` | Saved colours, newest first. Angular: `[(savedColors)]`. |
+| `onSavedColorsChange` | `(colors: string[]) => void` | - | A colour was saved or removed. |
+| `maxSavedColors` | `number` | `16` | Most saved colours kept; the oldest goes first. |
+| `disabled` | `boolean` | `false` | Disables every part. |
+| `readOnly` | `boolean` | `false` | Shows the value but takes no changes. |
+| `required` | `boolean` | `false` | Marks the hidden form input as required. |
+| `invalid` | `boolean` | `false` | Error styling on the trigger and field. |
+| `name` | `string` | - | Form field name: renders a hidden input with the value. |
+| `channelLabels` | `ChannelLabels` | - | Words used in assistive text (`{ hue: "Matiz", degrees: "graus" }`). |
+
+### Parts
+
+| Part | Props | Notes |
+| --- | --- | --- |
+| `ColorPickerArea` | `xChannel = "chroma"`, `yChannel = "lightness"` | The y channel grows upwards. Colours outside sRGB show faded. |
+| `ColorPickerChannelSlider` | `channel` (required), `orientation` | Alpha draws over a checkerboard. |
+| `ColorPickerChannelInput` | `channel = "css"` | `css` follows `format`; `hex` is always hex; a channel shows its number (percent for lightness and alpha). Invalid text is kept until blur, then the last valid value returns. |
+| `ColorPickerSwatchTrigger` | `value` (required) | `aria-pressed` when it matches the current colour. |
+| `ColorPickerSwatch` | `value`, `respectAlpha = true` | Static swatch. |
+| `ColorPickerSavedColors` | - | Renders the saved colours; put `ColorPickerSaveTrigger` inside. |
+| `ColorPickerValueText` | `format` | Prints the value, in the picker's format unless set. |
+
+## Composition
+
+1. **Pick the parts.** A brand-colour field needs the trigger, the field and a panel with area and hue. An opacity-aware fill adds the alpha slider.
+2. **Keep it inline** inside settings panels and sheets; use the popover next to other form fields.
+3. **Store saved colours** where the app keeps preferences: they are controlled with `savedColors` / `onSavedColorsChange`.
+4. **Use `onValueChangeEnd`** for anything expensive (saving, network). `onValueChange` fires on every drag step.
+
+## Variations
+
+### Inline
+
+<ComponentPreview name="forms/color-picker-inline">
+  <ColorPickerInlinePreview />
+</ComponentPreview>
+
+### With alpha
+
+The alpha slider and the swatches show translucency over a checkerboard; `rgb`, `hsl` and `hex` print it (`#rrggbbaa` for hex).
+
+<ComponentPreview name="forms/color-picker-alpha">
+  <ColorPickerAlphaPreview />
+</ComponentPreview>
+
+### Saved colours and sliders only
+
+No area: hue and chroma sliders, a field and saved colours. Press `Delete` on a saved colour to remove it.
+
+<ComponentPreview name="forms/color-picker-saved">
+  <ColorPickerSavedPreview />
+</ComponentPreview>
+
+## Accessibility
+
+- **Roles**: the area thumb and each channel thumb are `role="slider"` with `aria-valuetext` in words, e.g. "Hue 200 degrees" or "Chroma 0.1, Lightness 70%". Translate the words with `channelLabels`.
+- **Keyboard on sliders**: arrows move one step, `Shift` + arrows ten, `PageUp` / `PageDown` ten, `Home` / `End` jump to the ends. In right-to-left pages the left and right arrows swap.
+- **Keyboard on the area**: left and right move the x channel, up and down the y channel, `PageUp` / `PageDown` page y, `Home` / `End` jump x.
+- **Field**: `Enter` applies the text, `Escape` drops it.
+- **Saved colours**: each one is a button named by its value; `Delete` or `Backspace` removes it and focus stays in the group.
+- **Eye dropper**: rendered only where the browser has the EyeDropper API (desktop Chromium today).
+- **Motion**: the thumb has no transition under `prefers-reduced-motion`.
+- **Drawers**: the area and sliders carry `data-drawer-no-drag`, so dragging a colour inside a bottom sheet never closes it.
+
+## Related
+
+- [Slider](/components/selection/slider) - a single numeric value
+- [Theming](/tokens/theming) - the accent colour of the site uses this picker
