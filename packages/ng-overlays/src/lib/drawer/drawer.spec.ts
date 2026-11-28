@@ -40,6 +40,8 @@ import {
             <h2 gr-drawer-title>Move goal</h2>
             <p gr-drawer-description>Set your daily activity goal.</p>
           </gr-drawer-header>
+          <textarea aria-label="Note"></textarea>
+          <div data-drawer-no-drag><span>Slider</span></div>
           <gr-drawer-footer>
             <button gr-drawer-close>Cancel</button>
           </gr-drawer-footer>
@@ -101,5 +103,25 @@ describe('Drawer', () => {
   it('takes its direction from gr-drawer, as React takes it from Drawer', () => {
     const content = open(render('right'));
     expect(content?.getAttribute('data-vaul-drawer-direction')).toBe('right');
+  });
+
+  const press = (target: Element) =>
+    target.dispatchEvent(
+      new MouseEvent('pointerdown', { bubbles: true, cancelable: true }),
+    );
+
+  it('starts a drag from the panel itself', () => {
+    const content = open(render()) as HTMLElement;
+    press(content.querySelector('[gr-drawer-title]')!);
+    // The brain handle drops the transition while it tracks a drag.
+    expect(content.style.transition).toBe('none');
+  });
+
+  it('never starts a drag from a text field or a no-drag area', () => {
+    const content = open(render()) as HTMLElement;
+    press(content.querySelector('textarea')!);
+    expect(content.style.transition).not.toBe('none');
+    press(content.querySelector('[data-drawer-no-drag] span')!);
+    expect(content.style.transition).not.toBe('none');
   });
 });

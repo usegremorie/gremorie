@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
+  ElementRef,
   inject,
   input,
   ViewEncapsulation,
@@ -17,6 +19,11 @@ import {
 import { cn } from '@gremorie/ng-core';
 
 export type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
+
+/** Where a press never starts a drag: text entry and opted-out areas. */
+const NO_DRAG =
+  'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [data-drawer-no-drag], [data-vaul-no-drag]';
+const stop = (event: Event) => event.stopPropagation();
 
 /**
  * Drawer — bottom-up sheet for mobile contexts. Mirrors React `Drawer` from
@@ -36,7 +43,8 @@ export type DrawerDirection = 'top' | 'bottom' | 'left' | 'right';
  * whole panel carries `BrnDrawerHandle`, so dragging it toward its edge past
  * 25% of its size, or flicking faster than 0.4px/ms, dismisses it; a shorter
  * drag springs back. A tap does not start a drag (the gesture needs 10px on
- * touch, 2px with a mouse). To preserve the React Tailwind class strings
+ * touch, 2px with a mouse), and neither does a press on a text field or on an
+ * element marked `data-drawer-no-drag` (or vaul's `data-vaul-no-drag`). To preserve the React Tailwind class strings
  * verbatim, `gr-drawer-content` sets a
  * `data-vaul-drawer-direction` attribute itself and applies the same
  * `data-[vaul-drawer-direction=...]` and `group/drawer-content` classes — so the
@@ -120,6 +128,24 @@ export class DrawerContent {
   protected readonly resolvedDirection = computed<DrawerDirection>(
     () => this.direction() ?? this.drawer?.directionState() ?? 'bottom',
   );
+
+  constructor() {
+    // A press on a text field or a [data-drawer-no-drag] area must select or
+    // operate, never drag the panel (React's vaul skips them too). In the
+    // capture phase, give the pressed element a one-time listener that stops
+    // the event there: the field's own handlers still run, only the panel's
+    // drag handle, further up, never hears it.
+    const host = inject(ElementRef<HTMLElement>).nativeElement;
+    const guard = (event: Event) => {
+      const target = event.target as Element | null;
+      if (!target?.closest?.(NO_DRAG) || !host.contains(target)) return;
+      target.addEventListener('pointerdown', stop, { once: true });
+    };
+    host.addEventListener('pointerdown', guard, { capture: true });
+    inject(DestroyRef).onDestroy(() =>
+      host.removeEventListener('pointerdown', guard, { capture: true }),
+    );
+  }
   protected readonly hostClass = computed(() =>
     cn(
       'group/drawer-content fixed z-50 flex h-auto flex-col bg-background',

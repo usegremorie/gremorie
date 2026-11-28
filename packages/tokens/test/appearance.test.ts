@@ -53,8 +53,8 @@ const ACCENTED = ":root[data-accent]:not([data-accent='neutral'])";
 const ACCENTED_DARK = ".dark[data-accent]:not([data-accent='neutral'])";
 const IMMERSIVE = ":root[data-translucency='immersive']";
 const IMMERSIVE_DARK = ".dark[data-translucency='immersive']";
-const TONAL = ":root:where([data-tonal='on']:not([data-accent='neutral']))";
-const TONAL_DARK = ".dark:where([data-tonal='on']:not([data-accent='neutral']))";
+const TONAL = ":root:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
+const TONAL_DARK = ".dark:where([data-tonal='on'][data-accent]:not([data-accent='neutral']))";
 
 describe('appearance: accent', () => {
   it('maps each accent to its primitive scale', () => {
@@ -110,6 +110,18 @@ describe('appearance: accent', () => {
   });
 });
 
+describe('appearance: neutral seed', () => {
+  it('gives neutral (no data-accent) a gray seed scale, below every accent', () => {
+    // Immersive and anything else reading --seed-* must never resolve to
+    // nothing on the default accent.
+    const body = block(':where(:root)');
+    for (const n of STEPS) {
+      expect(decl(body, `--seed-${n}`)).toBe(`var(--color-gray-${n})`);
+    }
+    expect(decl(body, '--seed')).toBe('var(--seed-500)');
+  });
+});
+
 describe('appearance: translucency', () => {
   it('solid paints floating surfaces opaque, without blur', () => {
     const body = block(":root[data-translucency='solid']");
@@ -154,8 +166,11 @@ describe('appearance: tonal', () => {
     expect(decl(block(TONAL), '--tone')).toBe('0.06');
   });
 
-  it('never applies with the neutral accent', () => {
+  it('never applies with the neutral accent, nor without an accent', () => {
     expect(css).not.toMatch(/\n:root\[data-tonal='on'\] \{/);
+    for (const rule of css.matchAll(/\n([^\n{]*data-tonal[^\n{]*) \{/g)) {
+      expect(rule[1]).toContain("[data-accent]:not([data-accent='neutral'])");
+    }
   });
 
   it('dark tonal covers every token light tonal sets', () => {
